@@ -35,7 +35,7 @@ export default function Page() {
               The first impression. Configure headline, subheadline, and CTAs.
             */}
             <HeroSection
-                headline={siteConfig.business.tagline}
+                headline={siteConfig.business.tagline ?? ''}
                 subheadline={siteConfig.business.description}
                 badge='Welcome to Our Platform'
                 primaryCTA={{
