@@ -1,5 +1,5 @@
-import { PostMarkdown } from '@/components/blog/PostMarkdown.component'
-import { ContainerLayout } from '@/components/ContainerLayout.component'
+import { PostMarkdown } from '@/components/blog/post-markdown.component'
+import { ContainerLayout } from '@/components/container-layout.component'
 
 type LegalPageLayoutProps = {
     title: string

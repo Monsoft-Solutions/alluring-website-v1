@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { CalloutBox } from './CalloutBox.component'
+import { CalloutBox } from './callout-box.component'
 
 type MDXComponents = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

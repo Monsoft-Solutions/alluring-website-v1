@@ -25,9 +25,9 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Star } from 'lucide-react'
 import Image from 'next/image'
 
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
-import { SectionContainer } from '@/components/shared/SectionContainer.component'
-import { SectionHeader } from '@/components/shared/SectionHeader.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
+import { SectionHeader } from '@/components/shared/section-header.component'
 import { servicesTestimonials } from '@/lib/data/services/services-page-content'
 import type { ServicesTestimonialsProps } from '@/lib/types/services/services-page.type'
 

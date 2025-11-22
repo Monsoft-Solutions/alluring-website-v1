@@ -29,8 +29,8 @@ import Link from 'next/link'
 
 import type { ImageSectionProps } from '@/lib/types/sections/image-section.type'
 
-import { ContentWrapper } from './ContentWrapper.component'
-import { SectionContainer } from './SectionContainer.component'
+import { ContentWrapper } from './content-wrapper.component'
+import { SectionContainer } from './section-container.component'
 
 /**
  * Maps content alignment to flexbox classes

@@ -23,10 +23,10 @@
  */
 import { cn } from '@workspace/ui/lib/utils'
 
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
-import { IconCard } from '@/components/shared/IconCard.component'
-import { SectionContainer } from '@/components/shared/SectionContainer.component'
-import { SectionHeader } from '@/components/shared/SectionHeader.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { IconCard } from '@/components/shared/icon-card.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
+import { SectionHeader } from '@/components/shared/section-header.component'
 import type { FeaturesSectionProps } from '@/lib/types/sections/features-section.type'
 
 /**

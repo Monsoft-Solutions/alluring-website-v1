@@ -15,7 +15,7 @@
  */
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 
-import { PostCard } from './PostCard.component'
+import { PostCard } from './post-card.component'
 
 type RelatedPostsProps = {
     readonly posts: BlogPostCard[]

@@ -11,10 +11,10 @@ import { Heading, Hr, Link, Section, Text } from '@react-email/components'
 
 import type { ContactConfirmationProps } from '@/lib/types/email/email-service.type'
 
-import { EmailButton } from '../components/EmailButton.component'
-import { EmailFooter } from '../components/EmailFooter.component'
-import { EmailHeader } from '../components/EmailHeader.component'
-import { EmailLayout } from '../components/EmailLayout.component'
+import { EmailButton } from '../components/email-button.component'
+import { EmailFooter } from '../components/email-footer.component'
+import { EmailHeader } from '../components/email-header.component'
+import { EmailLayout } from '../components/email-layout.component'
 
 /**
  * Contact confirmation email template

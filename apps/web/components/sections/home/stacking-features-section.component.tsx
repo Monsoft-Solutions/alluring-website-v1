@@ -26,11 +26,11 @@
  * />
  * ```
  */
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
-import { SectionContainer } from '@/components/shared/SectionContainer.component'
-import { SectionHeader } from '@/components/shared/SectionHeader.component'
-import { StackingCard } from '@/components/shared/StackingCard.component'
-import { StackingFeatureCard } from '@/components/shared/StackingFeatureCard.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
+import { SectionHeader } from '@/components/shared/section-header.component'
+import { StackingCard } from '@/components/shared/stacking-card.component'
+import { StackingFeatureCard } from '@/components/shared/stacking-feature-card.component'
 import type {
     AnimationIntensity,
     StackingCardConfig,

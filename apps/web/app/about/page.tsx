@@ -7,12 +7,12 @@
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 import { ArrowRight } from 'lucide-react'
 
-import { AboutHeroSection } from '@/components/sections/about/AboutHeroSection.component'
-import { MissionSection } from '@/components/sections/about/MissionSection.component'
-import { StackingFeaturesSection } from '@/components/sections/home/StackingFeaturesSection.component'
-import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
-import { CTASection } from '@/components/shared/CTASection.component'
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { AboutHeroSection } from '@/components/sections/about/about-hero-section.component'
+import { MissionSection } from '@/components/sections/about/mission-section.component'
+import { StackingFeaturesSection } from '@/components/sections/home/stacking-features-section.component'
+import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
+import { CTASection } from '@/components/shared/cta-section.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import {
     aboutCTAData,
     aboutHeroData,

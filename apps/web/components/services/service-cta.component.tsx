@@ -24,7 +24,7 @@
  */
 import type { ServiceCTA as ServiceCTAType } from '@/lib/types/services/service-cta.type'
 
-import { CTASection } from '../shared/CTASection.component'
+import { CTASection } from '../shared/cta-section.component'
 
 /**
  * ServiceCTA Component Props

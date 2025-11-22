@@ -1,6 +1,6 @@
 import type { BlogPostCard } from '@/types/blog/post-card.type'
 
-import { PostCard } from './PostCard.component'
+import { PostCard } from './post-card.component'
 
 type PostListProps = {
     posts: BlogPostCard[]

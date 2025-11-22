@@ -25,9 +25,9 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import type { ServiceBenefit } from '@/lib/types/services/service-benefit.type'
 
-import { ContentWrapper } from '../shared/ContentWrapper.component'
-import { SectionContainer } from '../shared/SectionContainer.component'
-import { SectionHeader } from '../shared/SectionHeader.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
+import { SectionContainer } from '../shared/section-container.component'
+import { SectionHeader } from '../shared/section-header.component'
 
 /**
  * ServiceBenefits Component Props

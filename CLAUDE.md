@@ -295,7 +295,7 @@ For complex pages with multiple sections (home, about, services):
 **1. SectionContainer** - Outer wrapper for page sections:
 
 ```tsx
-import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
 
 ;<SectionContainer
     variant='muted' // 'default' | 'muted' | 'accent'
@@ -312,7 +312,7 @@ import { SectionContainer } from '@/components/shared/SectionContainer.component
 **2. ContentWrapper** - Inner content constraint:
 
 ```tsx
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 
 ;<ContentWrapper
     size='lg' // 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -355,7 +355,7 @@ For simple content pages with consistent layout (blog posts, category pages, sin
 **3. ContainerLayout** - All-in-one container:
 
 ```tsx
-import { ContainerLayout } from '@/components/ContainerLayout.component'
+import { ContainerLayout } from '@/components/container-layout.component'
 
 ;<ContainerLayout
     size='sm' // 'default' | 'sm' | 'md' | 'lg' | 'xl' | 'full'

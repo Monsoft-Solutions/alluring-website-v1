@@ -28,10 +28,10 @@
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { useConsent } from '@/lib/analytics/consent.context'
 
-import { Clarity } from './Clarity.component'
-import { FacebookPixel } from './FacebookPixel.component'
-import { GoogleAnalytics } from './GoogleAnalytics.component'
-import { GoogleTagManager } from './GoogleTagManager.component'
+import { Clarity } from './clarity.component'
+import { FacebookPixel } from './facebook-pixel.component'
+import { GoogleAnalytics } from './google-analytics.component'
+import { GoogleTagManager } from './google-tag-manager.component'
 
 export function AnalyticsProvider() {
     const analyticsConfig = getAnalyticsConfig()

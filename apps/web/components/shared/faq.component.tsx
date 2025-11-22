@@ -37,9 +37,9 @@ import { FAQSchema } from '@workspace/seo/react'
 
 import type { FaqItem } from '@/lib/types/shared/faq.type'
 
-import { ContentWrapper } from './ContentWrapper.component'
-import { SectionContainer } from './SectionContainer.component'
-import { SectionHeader } from './SectionHeader.component'
+import { ContentWrapper } from './content-wrapper.component'
+import { SectionContainer } from './section-container.component'
+import { SectionHeader } from './section-header.component'
 
 /**
  * FAQ Component Props

@@ -22,8 +22,8 @@ import Link from 'next/link'
 
 import type { CTASectionProps } from '@/lib/types/sections/cta-section.type'
 
-import { ContentWrapper } from './ContentWrapper.component'
-import { SectionContainer } from './SectionContainer.component'
+import { ContentWrapper } from './content-wrapper.component'
+import { SectionContainer } from './section-container.component'
 
 const containerStyles = 'flex items-center'
 

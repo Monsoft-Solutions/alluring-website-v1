@@ -39,9 +39,9 @@ import {
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
-import { SectionContainer } from '@/components/shared/SectionContainer.component'
-import { SectionHeader } from '@/components/shared/SectionHeader.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
+import { SectionHeader } from '@/components/shared/section-header.component'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import {
     type ContactFormData,

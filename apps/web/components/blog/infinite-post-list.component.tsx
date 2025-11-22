@@ -3,8 +3,8 @@
 import { useInfiniteBlogPosts } from '@/hooks/useInfiniteBlogPosts.hook'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 
-import { PostCard } from './PostCard.component'
-import { PostCardSkeleton } from './PostCardSkeleton.component'
+import { PostCard } from './post-card.component'
+import { PostCardSkeleton } from './post-card-skeleton.component'
 
 type InfinitePostListProps = {
     initialPosts: BlogPostCard[]

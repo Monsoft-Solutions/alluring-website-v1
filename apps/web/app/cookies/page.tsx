@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { LegalPageLayout } from '@/components/legal/LegalPageLayout.component'
+import { LegalPageLayout } from '@/components/legal/legal-page-layout.component'
 import { cookiePolicyContent } from '@/lib/data/legal/cookie-policy.content'
 
 export const metadata: Metadata = {

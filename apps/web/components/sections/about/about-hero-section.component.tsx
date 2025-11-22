@@ -17,8 +17,8 @@
 import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
 
-import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
-import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
 import type { AboutHeroSectionProps } from '@/lib/types/sections/about-hero-section.type'
 
 export function AboutHeroSection({

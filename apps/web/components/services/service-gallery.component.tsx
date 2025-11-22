@@ -26,10 +26,10 @@
  * ```
  */
 
-import { SectionContainer } from '../shared/SectionContainer.component'
-import { ContentWrapper } from '../shared/ContentWrapper.component'
-import { SectionHeader } from '../shared/SectionHeader.component'
-import { Gallery } from '../shared/Gallery.component'
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
+import { SectionHeader } from '../shared/section-header.component'
+import { Gallery } from '../shared/gallery.component'
 import { GalleryImage } from '@/lib/types/shared/gallery-image.type'
 
 /**

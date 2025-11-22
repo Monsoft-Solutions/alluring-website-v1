@@ -7,10 +7,10 @@
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 import { ArrowRight } from 'lucide-react'
 
-import { ContactForm } from '@/components/sections/contact/ContactForm.component'
-import { ContactHeroSection } from '@/components/sections/contact/ContactHeroSection.component'
-import { ContactInfoSection } from '@/components/sections/contact/ContactInfoSection.component'
-import { CTASection } from '@/components/shared/CTASection.component'
+import { ContactForm } from '@/components/sections/contact/contact-form.component'
+import { ContactHeroSection } from '@/components/sections/contact/contact-hero-section.component'
+import { ContactInfoSection } from '@/components/sections/contact/contact-info-section.component'
+import { CTASection } from '@/components/shared/cta-section.component'
 import {
     contactCTAData,
     contactFormData,
