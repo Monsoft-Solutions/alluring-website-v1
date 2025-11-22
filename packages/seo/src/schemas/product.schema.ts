@@ -1,6 +1,9 @@
 import type { AggregateRating, Offer, Product, WithContext } from 'schema-dts'
 
-import type { ProductOffer, ProductSchemaProps } from '../types/schema'
+import type {
+    ProductOffer,
+    ProductSchemaProps,
+} from '../types/schema/product.type'
 import { withContext } from './_internal'
 
 export function buildProductJsonLd(

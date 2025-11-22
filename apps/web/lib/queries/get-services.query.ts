@@ -13,7 +13,8 @@
  * @example Get all categories
  * const categories = getServiceCategories()
  */
-import type { Service, ServiceCategory } from '@/lib/types/services'
+import type { Service } from '@/lib/types/services/service.type'
+import type { ServiceCategory } from '@/lib/types/services/service-category.type'
 import { services } from '@/lib/data/services/services-data'
 
 /**

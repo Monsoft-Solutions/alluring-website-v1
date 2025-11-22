@@ -8,7 +8,7 @@ import {
     blogTag,
     createResourceSchema,
     images,
-} from '@workspace/db/schema'
+} from '@workspace/db/schema/blog'
 import { type ExtractTablesWithRelations, inArray } from 'drizzle-orm'
 import type { PgTransaction } from 'drizzle-orm/pg-core'
 import type { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js'
@@ -20,8 +20,8 @@ import { withApiAuth } from '@/lib/api/withApiAuth.middleware'
 // Type alias for Drizzle transaction
 type DbTransaction = PgTransaction<
     PostgresJsQueryResultHKT,
-    typeof import('@workspace/db/schema'),
-    ExtractTablesWithRelations<typeof import('@workspace/db/schema')>
+    typeof import('@workspace/db/schema/blog'),
+    ExtractTablesWithRelations<typeof import('@workspace/db/schema/blog')>
 >
 
 /**

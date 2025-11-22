@@ -7,9 +7,12 @@
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 import { ArrowRight } from 'lucide-react'
 
-import { AboutHeroSection, MissionSection } from '@/components/sections/about'
-import { StackingFeaturesSection } from '@/components/sections/home'
-import { Breadcrumbs, CTASection, ContentWrapper } from '@/components/shared'
+import { AboutHeroSection } from '@/components/sections/about/AboutHeroSection.component'
+import { MissionSection } from '@/components/sections/about/MissionSection.component'
+import { StackingFeaturesSection } from '@/components/sections/home/StackingFeaturesSection.component'
+import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
+import { CTASection } from '@/components/shared/CTASection.component'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
 import {
     aboutCTAData,
     aboutHeroData,

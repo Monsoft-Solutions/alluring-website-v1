@@ -9,7 +9,7 @@ import {
     createCommonRobotsRules,
     detectEnvironment,
     generateRobots,
-} from '@workspace/seo'
+} from '@workspace/seo/utils/robots-generator.util'
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'

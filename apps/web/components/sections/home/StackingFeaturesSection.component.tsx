@@ -26,19 +26,17 @@
  * />
  * ```
  */
-import {
-    ContentWrapper,
-    SectionContainer,
-    SectionHeader,
-    StackingCard,
-    StackingFeatureCard,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
+import { StackingCard } from '@/components/shared/StackingCard.component'
+import { StackingFeatureCard } from '@/components/shared/StackingFeatureCard.component'
 import type {
     AnimationIntensity,
     StackingCardConfig,
     StackingVariant,
 } from '@/lib/types/sections/stacking.type'
-import type { Feature } from '@/lib/types/sections'
+import type { Feature } from '@/lib/types/sections/features-section.type'
 
 export type StackingFeaturesSectionProps = {
     /** Section title */

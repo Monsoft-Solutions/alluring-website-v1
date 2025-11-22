@@ -6,7 +6,7 @@ import type {
     WithContext,
 } from 'schema-dts'
 
-import type { LocalBusinessSchemaProps } from '../types/schema'
+import type { LocalBusinessSchemaProps } from '../types/schema/local-business.type'
 import { withContext } from './_internal'
 
 export function buildLocalBusinessJsonLd(

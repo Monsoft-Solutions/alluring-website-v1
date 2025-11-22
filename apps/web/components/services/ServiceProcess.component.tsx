@@ -26,8 +26,9 @@ import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
 
 import type { ServiceProcessStep } from '@/lib/types/services/service-process-step.type'
-
-import { ContentWrapper, SectionContainer, SectionHeader } from '../shared'
+import { SectionContainer } from '../shared/SectionContainer.component'
+import { ContentWrapper } from '../shared/ContentWrapper.component'
+import { SectionHeader } from '../shared/SectionHeader.component'
 
 /**
  * ServiceProcess Component Props

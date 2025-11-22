@@ -10,7 +10,7 @@ import { env } from '@/env'
  * @module components/blog/BlogPostScrollTracker
  */
 
-import { useScrollDepth } from '@/lib/analytics'
+import { useScrollDepth } from '@/lib/analytics/useScrollDepth.hook'
 
 export interface BlogPostScrollTrackerProps {
     children: React.ReactNode

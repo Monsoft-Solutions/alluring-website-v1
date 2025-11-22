@@ -1,6 +1,6 @@
 import type { BreadcrumbList, ListItem, WithContext } from 'schema-dts'
 
-import type { BreadcrumbSchemaProps } from '../types/schema'
+import type { BreadcrumbSchemaProps } from '../types/schema/breadcrumb.type'
 import { withContext } from './_internal'
 
 export function buildBreadcrumbJsonLd(

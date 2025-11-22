@@ -6,8 +6,8 @@
  * - All active category slugs
  * - All active tag slugs
  */
-import { db } from '@workspace/db'
-import { blogCategory, blogPost, blogTag } from '@workspace/db'
+import { db } from '@workspace/db/client'
+import { blogCategory, blogPost, blogTag } from '@workspace/db/schema/blog'
 import { and, eq, isNotNull } from 'drizzle-orm'
 import { cache } from 'react'
 

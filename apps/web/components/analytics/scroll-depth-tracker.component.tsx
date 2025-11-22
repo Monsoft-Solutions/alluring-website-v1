@@ -15,7 +15,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { env } from '@/env'
-import { useScrollDepth } from '@/lib/analytics'
+import { useScrollDepth } from '@/lib/analytics/useScrollDepth.hook'
 
 /**
  * Global Scroll Depth Tracker Component

@@ -1,7 +1,7 @@
 import type { Organization, WithContext } from 'schema-dts'
 
 import { buildOrganizationJsonLd } from '../../schemas/organization.schema'
-import type { OrganizationSchemaProps } from '../../types/schema'
+import type { OrganizationSchemaProps } from '../../types/schema/organization.type'
 import { JsonLd } from '../JsonLd.component'
 
 export function OrganizationSchema(props: OrganizationSchemaProps) {

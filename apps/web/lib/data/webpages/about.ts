@@ -13,13 +13,11 @@ import {
     Target,
 } from 'lucide-react'
 
-import type {
-    AboutHeroSectionProps,
-    Feature,
-    MissionSectionProps,
-    TeamMember,
-    TeamSectionProps,
-} from '@/lib/types/sections'
+import type { AboutHeroSectionProps } from '@/lib/types/sections/about-hero-section.type'
+import type { Feature } from '@/lib/types/sections/features-section.type'
+import type { MissionSectionProps } from '@/lib/types/sections/mission-section.type'
+import type { TeamMember } from '@/lib/types/sections/team-section.type'
+import type { TeamSectionProps } from '@/lib/types/sections/team-section.type'
 
 /**
  * About Hero Section Content

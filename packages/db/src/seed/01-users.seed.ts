@@ -1,5 +1,5 @@
 import { db } from '../client'
-import { author } from '../schema'
+import { author } from '../schema/blog'
 
 type RunProps = {
     db: typeof db

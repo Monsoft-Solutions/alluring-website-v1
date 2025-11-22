@@ -36,7 +36,7 @@ import { useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 
-import type { GalleryImage } from '@/lib/types/shared'
+import type { GalleryImage } from '@/lib/types/shared/gallery-image.type'
 
 /**
  * Gallery Component Props

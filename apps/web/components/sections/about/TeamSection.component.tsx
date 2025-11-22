@@ -26,11 +26,9 @@ import { Linkedin, Mail, Twitter } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import {
-    ContentWrapper,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import type { TeamSectionProps } from '@/lib/types/sections/team-section.type'
 
 /**

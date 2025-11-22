@@ -35,7 +35,7 @@ import {
 import { cn } from '@workspace/ui/lib/utils'
 import { FAQSchema } from '@workspace/seo/react'
 
-import type { FaqItem } from '@/lib/types/shared'
+import type { FaqItem } from '@/lib/types/shared/faq.type'
 
 import { ContentWrapper } from './ContentWrapper.component'
 import { SectionContainer } from './SectionContainer.component'

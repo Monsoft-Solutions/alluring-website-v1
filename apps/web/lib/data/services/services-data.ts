@@ -22,7 +22,7 @@
  * - Sitemap and search engines
  */
 
-import type { Service } from '@/lib/types/services'
+import type { Service } from '@/lib/types/services/service.type'
 
 // Import individual service definitions
 import { seoOptimizationService } from './seo-optimization.service'

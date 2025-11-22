@@ -13,7 +13,7 @@ import { db } from '@workspace/db/client'
 import {
     contactSubmission,
     type InsertContactSubmission,
-} from '@workspace/db/schema'
+} from '@workspace/db/schema/contact'
 
 import {
     type ContactFormData,

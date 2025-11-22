@@ -4,10 +4,11 @@
     "private": true,
     "type": "module",
     "exports": {
-        ".": "./src/index.ts",
         "./client": "./src/client.ts",
-        "./schema": "./src/schema/index.ts",
-        "./types": "./src/types/index.ts"
+        "./schema/blog": "./src/schema/blog/index.ts",
+        "./schema/contact": "./src/schema/contact/index.ts",
+        "./schema/emails": "./src/schema/emails/index.ts",
+        "./types": "./src/schema/contact/contact-submission.table.ts"
     },
     "scripts": {
         "db:generate": "drizzle-kit generate",

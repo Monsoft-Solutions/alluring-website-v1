@@ -1,7 +1,7 @@
 import type { WebSite, WithContext } from 'schema-dts'
 
 import { SEARCH_INPUT_ENCODING } from '../config'
-import type { WebSiteSchemaProps } from '../types/schema'
+import type { WebSiteSchemaProps } from '../types/schema/website.type'
 import { withContext } from './_internal'
 
 export function buildWebSiteJsonLd(

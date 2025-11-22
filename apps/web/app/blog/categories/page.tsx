@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { ContainerLayout } from '@/components/ContainerLayout.component'
 import { BlogHeroSection } from '@/components/blog/BlogHeroSection.component'
-import { Breadcrumbs } from '@/components/shared'
+import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
 import { listActiveCategoriesWithCounts } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'

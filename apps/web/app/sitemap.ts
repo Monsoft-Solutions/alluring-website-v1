@@ -8,8 +8,8 @@ import {
     type SitemapConfig,
     convertToNextjsSitemap,
     generateSitemapEntries,
-} from '@workspace/seo'
-import type { SitemapRoute } from '@workspace/seo'
+} from '@workspace/seo/utils/sitemap-generator.util'
+import type { SitemapRoute } from '@workspace/seo/types/sitemap/sitemap-route.type'
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'

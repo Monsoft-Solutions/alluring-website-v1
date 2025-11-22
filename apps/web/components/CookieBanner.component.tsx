@@ -13,7 +13,7 @@
 import { Button } from '@workspace/ui/components/button'
 import { Info } from 'lucide-react'
 
-import { useConsent } from '@/lib/analytics'
+import { useConsent } from '@/lib/analytics/consent.context'
 import { env } from '@/env'
 
 /**

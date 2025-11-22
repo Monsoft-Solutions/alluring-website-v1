@@ -14,7 +14,7 @@
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useRef } from 'react'
 
-import { trackPageView } from '@/lib/analytics'
+import { trackPageView } from '@/lib/analytics/analytics.client'
 
 /**
  * Internal component that uses useSearchParams (requires Suspense boundary)

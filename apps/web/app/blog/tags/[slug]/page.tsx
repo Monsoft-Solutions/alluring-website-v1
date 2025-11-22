@@ -4,7 +4,7 @@ import { cache } from 'react'
 
 import { ContainerLayout } from '@/components/ContainerLayout.component'
 import { InfinitePostList } from '@/components/blog/InfinitePostList.component'
-import { Breadcrumbs } from '@/components/shared'
+import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getActiveTagBySlug } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'

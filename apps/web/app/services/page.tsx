@@ -20,14 +20,12 @@ import { BreadcrumbSchema, JsonLd, WebPageSchema } from '@workspace/seo/react'
 import { ServiceCardHorizontal } from '@/components/services/ServiceCardHorizontal.component'
 import { ServicesContact } from '@/components/services/ServicesContact.component'
 import { ServicesTestimonials } from '@/components/services/ServicesTestimonials.component'
-import {
-    Breadcrumbs,
-    ContentWrapper,
-    FAQComponent,
-    Gallery,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { FAQComponent } from '@/components/shared/FAQ.component'
+import { Gallery } from '@/components/shared/Gallery.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import { servicesFAQ } from '@/lib/data/services/services-page-content'
 import { siteConfig } from '@/lib/data/site-config'
 import { getPublishedServices } from '@/lib/queries/get-services.query'

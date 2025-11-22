@@ -27,7 +27,9 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import type { ServiceFeature } from '@/lib/types/services/service-feature.type'
 
-import { ContentWrapper, SectionContainer, SectionHeader } from '../shared'
+import { ContentWrapper } from '../shared/ContentWrapper.component'
+import { SectionContainer } from '../shared/SectionContainer.component'
+import { SectionHeader } from '../shared/SectionHeader.component'
 
 /**
  * ServiceFeatures Component Props

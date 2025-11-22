@@ -12,11 +12,9 @@ import {
     getFullAddress,
     getPhoneLink,
 } from '@/lib/data/site-config'
-import type {
-    ContactFormSectionProps,
-    ContactHeroSectionProps,
-    ContactInfoSectionProps,
-} from '@/lib/types/sections'
+import type { ContactFormSectionProps } from '@/lib/types/sections/contact-form-section.type'
+import type { ContactHeroSectionProps } from '@/lib/types/sections/contact-hero-section.type'
+import type { ContactInfoSectionProps } from '@/lib/types/sections/contact-info-section.type'
 
 /**
  * Contact Hero Section Content

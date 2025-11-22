@@ -7,7 +7,13 @@ export { buildFAQJsonLd } from './faq.schema'
 export { buildProductJsonLd } from './product.schema'
 export { buildReviewJsonLd } from './review.schema'
 export { buildLocalBusinessJsonLd } from './local-business.schema'
-export type {
-    OrganizationSchemaProps,
-    ArticleSchemaProps,
-} from '../types/schema'
+
+export * from '../types/schema/article.type'
+export * from '../types/schema/breadcrumb.type'
+export * from '../types/schema/faq.type'
+export * from '../types/schema/product.type'
+export * from '../types/schema/review.type'
+export * from '../types/schema/local-business.type'
+export * from '../types/schema/organization.type'
+export * from '../types/schema/website.type'
+export * from '../types/schema/webpage.type'

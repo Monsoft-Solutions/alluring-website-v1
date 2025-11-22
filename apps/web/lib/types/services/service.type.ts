@@ -1,12 +1,12 @@
-import type { FaqItem } from '@/lib/types/shared'
+import type { FaqItem } from '@/lib/types/shared/faq.type'
 
 import type { ServiceBenefit } from './service-benefit.type'
 import type { ServiceCategory } from './service-category.type'
 import type { ServiceCTA } from './service-cta.type'
 import type { ServiceFeature } from './service-feature.type'
-import type { ServiceGalleryImage } from './service-gallery-image.type'
 import type { ServiceIcon } from './service-icon.type'
 import type { ServiceProcessStep } from './service-process-step.type'
+import { GalleryImage } from '../shared/gallery-image.type'
 
 /**
  * Main Service Type
@@ -101,7 +101,7 @@ export type Service = {
      * Optional gallery images for detail page
      * 4-6 images recommended if included
      */
-    readonly gallery?: ServiceGalleryImage[]
+    readonly gallery?: GalleryImage[]
 
     /**
      * Optional frequently asked questions

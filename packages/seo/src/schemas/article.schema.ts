@@ -1,6 +1,6 @@
 import type { Article, BlogPosting, WithContext } from 'schema-dts'
 
-import type { ArticleSchemaProps } from '../types/schema'
+import type { ArticleSchemaProps } from '../types/schema/article.type'
 import { withContext } from './_internal'
 
 export function buildArticleJsonLd(

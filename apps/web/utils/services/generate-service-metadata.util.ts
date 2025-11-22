@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
-import type { Service } from '@/lib/types/services'
+import type { Service } from '@/lib/types/services/service.type'
 
 /**
  * Generate metadata for a service detail page.

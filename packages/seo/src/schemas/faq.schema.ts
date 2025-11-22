@@ -1,6 +1,6 @@
 import type { FAQPage, Question, WithContext } from 'schema-dts'
 
-import type { FAQSchemaProps } from '../types/schema'
+import type { FAQSchemaProps } from '../types/schema/faq.type'
 import { withContext } from './_internal'
 
 export function buildFAQJsonLd(props: FAQSchemaProps): WithContext<FAQPage> {

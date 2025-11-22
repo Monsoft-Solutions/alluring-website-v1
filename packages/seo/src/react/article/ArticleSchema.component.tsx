@@ -1,8 +1,8 @@
 import type { Article, BlogPosting, WithContext } from 'schema-dts'
 
 import { buildArticleJsonLd } from '../../schemas/article.schema'
-import type { ArticleSchemaProps } from '../../types/schema'
 import { JsonLd } from '../JsonLd.component'
+import type { ArticleSchemaProps } from '../../types/schema/article.type'
 
 export function ArticleSchema(props: ArticleSchemaProps) {
     const data: WithContext<Article | BlogPosting> = buildArticleJsonLd(props)

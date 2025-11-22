@@ -7,12 +7,10 @@
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 import { ArrowRight } from 'lucide-react'
 
-import {
-    ContactForm,
-    ContactHeroSection,
-    ContactInfoSection,
-} from '@/components/sections/contact'
-import { CTASection } from '@/components/shared'
+import { ContactForm } from '@/components/sections/contact/ContactForm.component'
+import { ContactHeroSection } from '@/components/sections/contact/ContactHeroSection.component'
+import { ContactInfoSection } from '@/components/sections/contact/ContactInfoSection.component'
+import { CTASection } from '@/components/shared/CTASection.component'
 import {
     contactCTAData,
     contactFormData,

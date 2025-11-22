@@ -10,7 +10,7 @@ import { render } from '@react-email/render'
 import { Resend } from 'resend'
 
 import { db } from '@workspace/db/client'
-import { emailLog, type InsertEmailLog } from '@workspace/db/schema'
+import { emailLog, type InsertEmailLog } from '@workspace/db/schema/emails'
 
 import { env } from '@/env'
 import { siteConfig } from '@/lib/data/site-config'

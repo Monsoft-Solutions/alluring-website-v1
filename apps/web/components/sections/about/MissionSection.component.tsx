@@ -20,12 +20,10 @@
  */
 import { cn } from '@workspace/ui/lib/utils'
 
-import {
-    ContentWrapper,
-    IconCard,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { IconCard } from '@/components/shared/IconCard.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import type { MissionSectionProps } from '@/lib/types/sections/mission-section.type'
 
 export function MissionSection({

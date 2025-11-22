@@ -28,11 +28,9 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 import { ServiceCard } from '@/components/services/ServiceCard.component'
-import {
-    ContentWrapper,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import { getPublishedServices } from '@/lib/queries/get-services.query'
 import type { CommonSectionProps } from '@/lib/types/sections/section.type'
 

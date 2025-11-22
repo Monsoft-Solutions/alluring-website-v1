@@ -5,7 +5,10 @@
  *
  * @module lib/types/email/email-log.type
  */
-import type { InsertEmailLog, SelectEmailLog } from '@workspace/db/schema'
+import type {
+    InsertEmailLog,
+    SelectEmailLog,
+} from '@workspace/db/schema/emails'
 
 /**
  * Email log record from database

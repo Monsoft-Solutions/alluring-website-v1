@@ -6,7 +6,7 @@
  */
 import { Blocks, LineChart, Palette, Search, Shield, Zap } from 'lucide-react'
 
-import type { Feature } from '@/lib/types/sections'
+import type { Feature } from '@/lib/types/sections/features-section.type'
 
 /**
  * Key Features Section Content

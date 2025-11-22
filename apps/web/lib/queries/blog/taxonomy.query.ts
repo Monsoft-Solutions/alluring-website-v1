@@ -1,11 +1,11 @@
-import { db } from '@workspace/db'
+import { db } from '@workspace/db/client'
 import {
     blogCategory,
     blogPost,
     blogPostCategory,
     blogPostTag,
     blogTag,
-} from '@workspace/db'
+} from '@workspace/db/schema/blog'
 import { and, count, eq, isNotNull } from 'drizzle-orm'
 import { cache } from 'react'
 

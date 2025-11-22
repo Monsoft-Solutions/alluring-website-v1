@@ -1,11 +1,11 @@
-import { db } from '@workspace/db'
+import { db } from '@workspace/db/client'
 import {
     author,
     blogPost,
     blogPostCategory,
     blogPostTag,
     images,
-} from '@workspace/db'
+} from '@workspace/db/schema/blog'
 import { and, desc, eq, inArray, isNotNull, ne } from 'drizzle-orm'
 
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'

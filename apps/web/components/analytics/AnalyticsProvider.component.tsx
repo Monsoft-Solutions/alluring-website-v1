@@ -25,7 +25,8 @@
 
 'use client'
 
-import { getAnalyticsConfig, useConsent } from '@/lib/analytics'
+import { getAnalyticsConfig } from '@/lib/analytics/config'
+import { useConsent } from '@/lib/analytics/consent.context'
 
 import { Clarity } from './Clarity.component'
 import { FacebookPixel } from './FacebookPixel.component'

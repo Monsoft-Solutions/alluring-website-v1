@@ -5,7 +5,7 @@
  * Content aligned with Keel brand guidelines: clear, direct, production-focused.
  */
 
-import type { Service } from '@/lib/types/services'
+import type { Service } from '@/lib/types/services/service.type'
 
 export const websiteModernizationService: Service = {
     slug: 'website-modernization',

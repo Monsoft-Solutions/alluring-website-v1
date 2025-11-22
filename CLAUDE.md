@@ -40,8 +40,8 @@ This is a **Turborepo monorepo** template using **shadcn/ui** components, built 
 - Shared Drizzle ORM package with PostgreSQL support
 - Schema files are in `packages/db/src/schema/` directory
 - Database client is exported from `@workspace/db/client`
-- Type-safe schema exports from `@workspace/db/schema`
-- Generated TypeScript types from `@workspace/db/types`
+- Type-safe schema exports from `@workspace/db/schema/blog`, `@workspace/db/schema/contact`, `@workspace/db/schema/emails`
+- Direct imports from individual schema files for optimal tree-shaking
 - Requires `POSTGRES_URL` environment variable in root `.env` file
 
 **SEO Package (@workspace/seo):**
@@ -157,15 +157,18 @@ import { cn } from '@workspace/ui/lib/utils'
 **Importing database in apps/web:**
 
 ```tsx
-import { type NewUser, type User, db } from '@workspace/db/client'
-import { users } from '@workspace/db/schema'
+import { db } from '@workspace/db/client'
+import { blogCategory, blogPost } from '@workspace/db/schema/blog'
+import { contactSubmission } from '@workspace/db/schema/contact'
+import { emailLog } from '@workspace/db/schema/emails'
 
 // Query example
-const allUsers = await db.select().from(users)
+const posts = await db.select().from(blogPost)
 
 // Insert example
-const newUser: NewUser = { name: 'John', email: 'john@example.com' }
-await db.insert(users).values(newUser)
+await db
+    .insert(contactSubmission)
+    .values({ name: 'John', email: 'john@example.com' })
 ```
 
 **Importing SEO utilities in apps/web:**
@@ -176,7 +179,9 @@ import {
     getSiteUrl,
     mergeSEOConfig,
 } from '@workspace/seo/config'
-import type { SEOConfig } from '@workspace/seo/types'
+import { OrganizationSchema } from '@workspace/seo/react'
+import type { SitemapRoute } from '@workspace/seo/types/sitemap/sitemap-route.type'
+import { generateSitemapEntries } from '@workspace/seo/utils/sitemap-generator.util'
 
 // Create default SEO configuration from environment variables
 const seoConfig = createDefaultSEOConfig()
@@ -197,10 +202,14 @@ const customConfig = mergeSEOConfig(seoConfig, {
 - `@/lib` → apps/web/lib
 - `@workspace/ui/lib/utils` → packages/ui/src/lib/utils.ts
 - `@workspace/ui/components` → packages/ui/src/components/
-- `@workspace/db/client` → packages/db/src/index.ts
-- `@workspace/db/schema` → packages/db/src/schema/index.ts
-- `@workspace/db/types` → packages/db/src/types.ts
+- `@workspace/db/client` → packages/db/src/client.ts
+- `@workspace/db/schema/blog` → packages/db/src/schema/blog/index.ts
+- `@workspace/db/schema/contact` → packages/db/src/schema/contact/index.ts
+- `@workspace/db/schema/emails` → packages/db/src/schema/emails/index.ts
 - `@workspace/seo/config` → packages/seo/src/config/index.ts
+- `@workspace/seo/utils` → packages/seo/src/utils/index.ts
+- `@workspace/seo/react` → packages/seo/src/react/index.ts
+- `@workspace/seo/types` → packages/seo/src/types/index.ts
 - `@workspace/seo/utils` → packages/seo/src/utils/index.ts
 - `@workspace/seo/types` → packages/seo/src/types/index.ts
 

@@ -1,4 +1,4 @@
-import { db } from '@workspace/db'
+import { db } from '@workspace/db/client'
 import {
     author,
     blogCategory,
@@ -7,7 +7,7 @@ import {
     blogPostTag,
     blogTag,
     images,
-} from '@workspace/db'
+} from '@workspace/db/schema/blog'
 import { and, eq, isNotNull } from 'drizzle-orm'
 
 import type { BlogPostDetail } from '@/types/blog/post-detail.type'

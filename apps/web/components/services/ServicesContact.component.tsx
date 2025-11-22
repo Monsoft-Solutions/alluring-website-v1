@@ -24,11 +24,9 @@ import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import { ArrowRight, Mail, Phone } from 'lucide-react'
 
-import {
-    ContentWrapper,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import { siteConfig } from '@/lib/data/site-config'
 import type { ServicesContactProps } from '@/lib/types/services/services-page.type'
 

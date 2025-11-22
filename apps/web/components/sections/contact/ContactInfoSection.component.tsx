@@ -24,11 +24,9 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Github, Linkedin, Sparkles, Twitter } from 'lucide-react'
 import Link from 'next/link'
 
-import {
-    ContentWrapper,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import { socialLinks } from '@/lib/data/navigation'
 import type { ContactInfoSectionProps } from '@/lib/types/sections/contact-info-section.type'
 

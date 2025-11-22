@@ -26,14 +26,11 @@
  * ```
  */
 
-import type { ServiceGalleryImage } from '@/lib/types/services'
-
-import {
-    ContentWrapper,
-    Gallery,
-    SectionContainer,
-    SectionHeader,
-} from '../shared'
+import { SectionContainer } from '../shared/SectionContainer.component'
+import { ContentWrapper } from '../shared/ContentWrapper.component'
+import { SectionHeader } from '../shared/SectionHeader.component'
+import { Gallery } from '../shared/Gallery.component'
+import { GalleryImage } from '@/lib/types/shared/gallery-image.type'
 
 /**
  * ServiceGallery Component Props
@@ -42,7 +39,7 @@ export type ServiceGalleryProps = {
     /**
      * Array of gallery images to display
      */
-    readonly images: ServiceGalleryImage[]
+    readonly images: GalleryImage[]
 
     /**
      * Optional section title

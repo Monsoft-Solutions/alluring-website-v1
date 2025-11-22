@@ -2,16 +2,14 @@ import { OrganizationSchema, WebSiteSchema } from '@workspace/seo/react'
 import '@workspace/ui/globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 
-import {
-    AnalyticsProvider,
-    PageViewTracker,
-    ScrollDepthTracker,
-} from '@/components/analytics'
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider.component'
+import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
+import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/CookieBanner.component'
 import { Footer } from '@/components/layout/Footer.component'
 import { Header } from '@/components/layout/Header.component'
 import { Providers } from '@/components/providers'
-import { MobileCallButton } from '@/components/shared'
+import { MobileCallButton } from '@/components/shared/MobileCallButton.component'
 import { WebVitals } from '@/components/web-vitals.component'
 import { env } from '@/env'
 import { seoConfig } from '@/lib/seo-config'

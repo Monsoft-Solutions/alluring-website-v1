@@ -5,7 +5,7 @@
  * Aggregates gallery images across all services for the services listing page.
  */
 
-import type { GalleryImage } from '@/lib/types/shared'
+import type { GalleryImage } from '@/lib/types/shared/gallery-image.type'
 
 import { getPublishedServices } from './get-services.query'
 

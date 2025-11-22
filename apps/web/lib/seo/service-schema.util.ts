@@ -15,7 +15,7 @@ import type {
 } from 'schema-dts'
 
 import { siteConfig } from '@/lib/data/site-config'
-import type { Service } from '@/lib/types/services'
+import type { Service } from '@/lib/types/services/service.type'
 
 /**
  * Generate Service schema for individual service pages

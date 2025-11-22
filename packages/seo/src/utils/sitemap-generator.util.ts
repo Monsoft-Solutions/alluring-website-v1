@@ -6,8 +6,8 @@
  */
 import type { MetadataRoute } from 'next'
 
-import type { SitemapEntry, SitemapRoute } from '../types/sitemap'
-import { getAbsoluteUrl } from './url.util'
+import type { SitemapEntry } from '../types/sitemap/sitemap-entry.type'
+import type { SitemapRoute } from '../types/sitemap/sitemap-route.type'
 
 /**
  * Configuration for sitemap generation
@@ -210,7 +210,7 @@ export function generateSitemapIndex(
  * })
  * ```
  */
-export function createStaticRoutes(config: SitemapConfig): SitemapRoute[] {
+export function createStaticRoutes(): SitemapRoute[] {
     return [
         {
             path: '/',

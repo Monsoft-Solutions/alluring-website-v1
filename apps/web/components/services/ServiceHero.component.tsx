@@ -31,7 +31,7 @@ import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { ServiceHeroProps } from '@/lib/types/services'
+import type { ServiceHeroProps } from '@/lib/types/services/service-hero.type'
 
 export function ServiceHero({
     title,

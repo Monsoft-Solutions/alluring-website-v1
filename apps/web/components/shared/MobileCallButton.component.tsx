@@ -4,7 +4,7 @@ import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import { Phone } from 'lucide-react'
 
-import type { MobileCallButtonProps } from '@/lib/types/mobile-call-button'
+import type { MobileCallButtonProps } from '@/lib/types/mobile-call-button/mobile-call-button-props.type'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 /**

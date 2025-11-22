@@ -17,11 +17,9 @@
 import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
 
-import {
-    ContentWrapper,
-    SectionContainer,
-    SectionHeader,
-} from '@/components/shared'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
+import { SectionHeader } from '@/components/shared/SectionHeader.component'
 import type { StorySectionProps } from '@/lib/types/sections/story-section.type'
 
 export function StorySection({

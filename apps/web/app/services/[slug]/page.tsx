@@ -26,7 +26,9 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures.component
 import { ServiceGallery } from '@/components/services/ServiceGallery.component'
 import { ServiceHero } from '@/components/services/ServiceHero.component'
 import { ServiceProcess } from '@/components/services/ServiceProcess.component'
-import { Breadcrumbs, ContentWrapper, FAQComponent } from '@/components/shared'
+import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { FAQComponent } from '@/components/shared/FAQ.component'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     getPublishedServices,

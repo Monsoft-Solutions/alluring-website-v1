@@ -15,8 +15,9 @@
  */
 import { cn } from '@workspace/ui/lib/utils'
 
-import { ContentWrapper, SectionContainer } from '@/components/shared'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs.component'
+import { ContentWrapper } from '@/components/shared/ContentWrapper.component'
+import { SectionContainer } from '@/components/shared/SectionContainer.component'
 import type { ContactHeroSectionProps } from '@/lib/types/sections/contact-hero-section.type'
 
 export function ContactHeroSection({
