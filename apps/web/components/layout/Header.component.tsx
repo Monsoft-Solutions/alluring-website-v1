@@ -15,8 +15,7 @@ import {
     SheetTrigger,
 } from '@workspace/ui/components/sheet'
 import { cn } from '@workspace/ui/lib/utils'
-import { Menu, Moon, Sun } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { Menu } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -32,15 +31,8 @@ import { brandAssets } from '@/lib/data/site-config'
  */
 export function Header() {
     const pathname = usePathname()
-    const { theme, setTheme } = useTheme()
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const [mounted, setMounted] = useState(false)
-
-    // Handle theme toggle only after component is mounted
-    useEffect(() => {
-        setMounted(true)
-    }, [])
 
     // Handle scroll behavior for sticky header
     useEffect(() => {
@@ -68,10 +60,6 @@ export function Header() {
             return pathname === href
         }
         return pathname?.startsWith(href)
-    }
-
-    const toggleTheme = () => {
-        setTheme(theme === 'dark' ? 'light' : 'dark')
     }
 
     return (
@@ -127,23 +115,6 @@ export function Header() {
 
                     {/* Actions */}
                     <div className='flex items-center space-x-2'>
-                        {/* Theme Toggle */}
-                        {mounted && (
-                            <Button
-                                variant='ghost'
-                                size='icon'
-                                onClick={toggleTheme}
-                                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-                                className='hidden md:flex'
-                            >
-                                {theme === 'dark' ? (
-                                    <Sun className='h-5 w-5' />
-                                ) : (
-                                    <Moon className='h-5 w-5' />
-                                )}
-                            </Button>
-                        )}
-
                         {/* Mobile Menu */}
                         <Sheet
                             open={isMobileMenuOpen}
@@ -193,27 +164,6 @@ export function Header() {
                                             {item.label}
                                         </Link>
                                     ))}
-                                    {/* Theme Toggle for Mobile */}
-                                    {mounted && (
-                                        <Button
-                                            variant='outline'
-                                            onClick={toggleTheme}
-                                            className='h-auto justify-start px-4 py-3'
-                                            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-                                        >
-                                            {theme === 'dark' ? (
-                                                <>
-                                                    <Sun className='mr-2 h-5 w-5' />
-                                                    <span>Light Mode</span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Moon className='mr-2 h-5 w-5' />
-                                                    <span>Dark Mode</span>
-                                                </>
-                                            )}
-                                        </Button>
-                                    )}
                                 </nav>
                             </SheetContent>
                         </Sheet>

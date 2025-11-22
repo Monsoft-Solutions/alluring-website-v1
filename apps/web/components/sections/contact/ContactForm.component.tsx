@@ -325,11 +325,11 @@ export function ContactForm({
                         {/* Submission State Messages */}
                         {submissionState.status === 'success' && (
                             <div
-                                className='animate-in slide-in-from-bottom-2 flex items-start gap-4 rounded-xl border border-green-200/60 bg-gradient-to-r from-green-50 to-emerald-50 p-6 text-green-700 shadow-sm duration-300 dark:border-green-800/60 dark:from-green-950/50 dark:to-emerald-950/50 dark:text-green-300'
+                                className='animate-in slide-in-from-bottom-2 flex items-start gap-4 rounded-xl border border-green-200/60 bg-gradient-to-r from-green-50 to-emerald-50 p-6 text-green-700 shadow-sm duration-300'
                                 role='alert'
                                 aria-live='polite'
                             >
-                                <div className='rounded-full bg-green-100 p-2 dark:bg-green-900/50'>
+                                <div className='rounded-full bg-green-100 p-2'>
                                     <CheckCircle2 className='size-5 flex-shrink-0' />
                                 </div>
                                 <div className='space-y-1'>
@@ -345,11 +345,11 @@ export function ContactForm({
 
                         {submissionState.status === 'error' && (
                             <div
-                                className='animate-in slide-in-from-bottom-2 flex items-start gap-4 rounded-xl border border-red-200/60 bg-gradient-to-r from-red-50 to-rose-50 p-6 text-red-700 shadow-sm duration-300 dark:border-red-800/60 dark:from-red-950/50 dark:to-rose-950/50 dark:text-red-300'
+                                className='animate-in slide-in-from-bottom-2 flex items-start gap-4 rounded-xl border border-red-200/60 bg-gradient-to-r from-red-50 to-rose-50 p-6 text-red-700 shadow-sm duration-300'
                                 role='alert'
                                 aria-live='assertive'
                             >
-                                <div className='rounded-full bg-red-100 p-2 dark:bg-red-900/50'>
+                                <div className='rounded-full bg-red-100 p-2'>
                                     <AlertCircle className='size-5 flex-shrink-0' />
                                 </div>
                                 <div className='space-y-1'>

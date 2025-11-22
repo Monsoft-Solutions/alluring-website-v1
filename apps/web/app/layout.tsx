@@ -42,7 +42,7 @@ export default function RootLayout({
         env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON !== 'false'
 
     return (
-        <html lang='en' suppressHydrationWarning>
+        <html lang='en'>
             <head>
                 {/* Resource hints for external domains */}
                 <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
