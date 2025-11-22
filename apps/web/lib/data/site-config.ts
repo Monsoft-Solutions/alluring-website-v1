@@ -41,14 +41,14 @@ export const siteConfig: SiteConfig = {
      * Business Information
      */
     business: {
-        name: 'Keel',
-        legalName: 'Keel by MonsoftLabs',
-        tagline: 'The foundation for production websites.',
+        name: 'Acme Corp',
+        legalName: 'Acme Corporation Inc.',
+        tagline: 'Innovating for a Better Tomorrow',
         description:
-            'Production-ready Next.js template. Built with React 19 and TypeScript. Ready in hours, not weeks.',
+            'We provide cutting-edge solutions for modern businesses. Transform your digital presence with our expert services.',
         foundedYear: 2024,
-        founders: ['MonsoftLabs'],
-        organizationType: 'Product',
+        founders: ['Jane Doe', 'John Smith'],
+        organizationType: 'Corporation',
     },
 
     /**
@@ -59,13 +59,13 @@ export const siteConfig: SiteConfig = {
         phoneDisplay: '+1 (555) 123-4567',
         email: 'contact@example.com',
         supportEmail: 'support@example.com',
-        address: '123 Main St',
+        address: '123 Business Rd',
         addressLine2: 'Suite 100',
-        city: 'San Francisco',
-        state: 'CA',
-        postalCode: '94105',
+        city: 'Metropolis',
+        state: 'NY',
+        postalCode: '10001',
         country: 'United States',
-        timezone: 'America/Los_Angeles',
+        timezone: 'America/New_York',
 
         // Business hours
         businessHours: [
@@ -108,17 +108,17 @@ export const siteConfig: SiteConfig = {
     social: [
         {
             platform: 'github',
-            url: 'https://github.com/Monsoft-Solutions/website-template-v2',
+            url: 'https://github.com/example',
             label: 'GitHub',
         },
         {
             platform: 'twitter',
-            url: 'https://twitter.com/monsoft_labs',
+            url: 'https://twitter.com/example',
             label: 'Twitter/X',
         },
         {
             platform: 'linkedin',
-            url: 'https://www.linkedin.com/company/monsoft-solutions/',
+            url: 'https://linkedin.com/company/example',
             label: 'LinkedIn',
         },
     ],
@@ -128,7 +128,7 @@ export const siteConfig: SiteConfig = {
      */
     brand: {
         logo: '/logo.png',
-        logoAlt: 'Keel Logo',
+        logoAlt: 'Acme Corp Logo',
         favicon: '/favicon.png',
         appleTouchIcon: '/apple-touch-icon.png',
         ogImage: '/og-image.jpg',
@@ -139,25 +139,20 @@ export const siteConfig: SiteConfig = {
      */
     seo: {
         siteUrl: getSiteUrl(), // Dynamically from environment
-        siteName: 'Keel',
+        siteName: 'Acme Corp',
         siteDescription:
-            'Production-ready Next.js template. Built with React 19, TypeScript, and Drizzle ORM. Blog, analytics, and SEO included. Type-safe from database to UI.',
+            'Leading provider of innovative business solutions. We help companies grow and succeed in the digital age.',
         keywords: [
-            'production website template',
-            'Next.js 15 template',
-            'React 19 template',
-            'TypeScript template',
-            'Next.js blog template',
-            'shadcn/ui template',
-            'monorepo template',
-            'Drizzle ORM template',
-            'production-ready Next.js',
-            'developer website template',
-            'type-safe template',
-            'Next.js monorepo',
+            'business solutions',
+            'digital transformation',
+            'consulting',
+            'innovation',
+            'technology',
+            'growth',
+            'acme corp',
         ],
         locale: 'en-US',
-        twitterHandle: '@example',
+        twitterHandle: '@acmecorp',
         facebookAppId: '',
         enableIndexing: true,
     },

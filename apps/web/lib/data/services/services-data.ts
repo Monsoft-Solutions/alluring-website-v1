@@ -24,7 +24,9 @@
 
 import type { Service } from '@/lib/types/services/service.type'
 
-// Import individual service definitions
+// Import generic example services
+
+// NOTE: The following specific services are kept for reference but not used in the generic template
 import { seoOptimizationService } from './seo-optimization.service'
 import { websiteDesignDevelopmentService } from './website-design-development.service'
 import { websiteModernizationService } from './website-modernization.service'
@@ -32,7 +34,6 @@ import { websiteModernizationService } from './website-modernization.service'
 /**
  * All Services
  *
- * Services aligned with Keel brand: production-ready Next.js template.
  * Services are automatically sorted by the `order` field.
  */
 export const services: Service[] = [
