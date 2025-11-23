@@ -126,7 +126,7 @@ export function MobileCallButton({
             aria-label={`Call us at ${phoneDisplay}`}
         >
             <Button
-                size={style === 'icon-only' ? 'icon' : 'default'}
+                size={style === 'icon-only' ? 'icon' : 'lg'}
                 className={cn(
                     // Spacing
                     'gap-2',
@@ -137,7 +137,7 @@ export function MobileCallButton({
                     // Hover effect
                     'hover:shadow-xl',
                     // Ensure proper padding for different styles
-                    style === 'icon-only' && 'h-14 w-14 rounded-full',
+                    style === 'icon-only' && 'rounded-full',
                     style === 'text-only' && 'px-6',
                     style === 'icon-text' && 'px-6'
                 )}

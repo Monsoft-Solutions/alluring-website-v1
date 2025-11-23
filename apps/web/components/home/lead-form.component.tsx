@@ -1,7 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Button } from './button.component'
+import { Button } from '@workspace/ui/components/button'
 
 export const LeadForm = () => {
     return (

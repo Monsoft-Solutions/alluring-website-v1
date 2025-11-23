@@ -64,7 +64,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         },
         secondaryButton: {
             text: 'Learn More',
-            href: '/services',
+            href: '/about',
             variant: 'outline',
         },
     },
@@ -109,8 +109,8 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
             iconName: 'mail',
         },
         secondaryButton: {
-            text: 'Browse Services',
-            href: '/services',
+            text: 'Learn More',
+            href: '/about',
             variant: 'outline',
         },
     },

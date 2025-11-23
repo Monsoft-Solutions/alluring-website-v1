@@ -16,6 +16,8 @@
  * />
  * ```
  */
+'use client'
+
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import Link from 'next/link'
@@ -138,7 +140,7 @@ export function CTASection({
                                 variant={
                                     isPrimaryVariant
                                         ? 'secondary'
-                                        : primaryButton.variant || 'default'
+                                        : primaryButton.variant || 'primary'
                                 }
                                 onClick={primaryButton.onClick}
                                 className='min-w-[140px]'
@@ -158,7 +160,7 @@ export function CTASection({
                                 variant={
                                     isPrimaryVariant
                                         ? 'secondary'
-                                        : primaryButton.variant || 'default'
+                                        : primaryButton.variant || 'primary'
                                 }
                                 className='min-w-[140px]'
                             >

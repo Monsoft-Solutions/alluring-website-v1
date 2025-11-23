@@ -18,7 +18,6 @@ import {
     getActiveTagSlugs,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
-import { getPublishedServices } from '@/lib/queries/get-services.query'
 
 /**
  * Get the base URL for the site
@@ -106,30 +105,6 @@ async function createDynamicRoutes(): Promise<SitemapRoute[]> {
                     lastModified: now,
                     changeFrequency: 'weekly' as const,
                     priority: 0.6,
-                })),
-            ]
-        },
-    })
-
-    // Services listing and detail pages
-    dynamicRoutes.push({
-        path: '/services',
-        getEntries: async () => {
-            const services = getPublishedServices()
-            const now = new Date().toISOString()
-
-            return [
-                {
-                    url: '/services',
-                    lastModified: now,
-                    changeFrequency: 'weekly',
-                    priority: 0.9,
-                },
-                ...services.map((service) => ({
-                    url: `/services/${service.slug}`,
-                    lastModified: now,
-                    changeFrequency: 'monthly' as const,
-                    priority: 0.8,
                 })),
             ]
         },

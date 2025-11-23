@@ -1,16 +1,18 @@
 'use client'
 
+import { Slot } from '@radix-ui/react-slot'
 import { ArrowRight } from 'lucide-react'
 import { motion, HTMLMotionProps } from 'framer-motion'
-import { ReactNode } from 'react'
+import { ReactNode, ComponentPropsWithoutRef } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 
 interface ButtonProps extends HTMLMotionProps<'button'> {
-    variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold'
-    size?: 'sm' | 'md' | 'lg'
+    variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold' | 'default'
+    size?: 'sm' | 'md' | 'lg' | 'icon'
     withArrow?: boolean
     children?: ReactNode
     className?: string
+    asChild?: boolean
 }
 
 export const Button = ({
@@ -19,10 +21,14 @@ export const Button = ({
     size = 'md',
     className = '',
     withArrow = false,
+    asChild = false,
     ...props
 }: ButtonProps) => {
     const baseStyles =
         'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group'
+
+    // Map 'default' variant to 'primary'
+    const effectiveVariant = variant === 'default' ? 'primary' : variant
 
     const variants = {
         primary:
@@ -39,20 +45,11 @@ export const Button = ({
         sm: 'px-5 py-3',
         md: 'px-8 py-4',
         lg: 'px-10 py-5',
+        icon: 'h-14 w-14 p-0',
     }
 
-    return (
-        <motion.button
-            whileHover={{ scale: 1.0 }}
-            whileTap={{ scale: 0.98 }}
-            className={cn(
-                baseStyles,
-                variants[variant],
-                sizes[size],
-                className
-            )}
-            {...props}
-        >
+    const buttonContent = (
+        <>
             <span className='relative z-10 flex items-center'>
                 {children}
                 {withArrow && (
@@ -61,9 +58,41 @@ export const Button = ({
             </span>
 
             {/* Shine effect for primary/gold buttons */}
-            {(variant === 'primary' || variant === 'gold') && (
+            {(effectiveVariant === 'primary' ||
+                effectiveVariant === 'gold') && (
                 <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
             )}
+        </>
+    )
+
+    const buttonClassName = cn(
+        baseStyles,
+        variants[effectiveVariant],
+        sizes[size],
+        className
+    )
+
+    if (asChild) {
+        // When using asChild, extract only standard HTML button props
+        // by converting to ComponentPropsWithoutRef which excludes motion props
+        const standardProps =
+            props as unknown as ComponentPropsWithoutRef<'button'>
+
+        return (
+            <Slot className={buttonClassName} {...standardProps}>
+                {children}
+            </Slot>
+        )
+    }
+
+    return (
+        <motion.button
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.98 }}
+            className={buttonClassName}
+            {...props}
+        >
+            {buttonContent}
         </motion.button>
     )
 }

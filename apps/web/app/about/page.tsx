@@ -5,7 +5,6 @@
  * and team. Includes SEO optimization and structured data.
  */
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
-import { ArrowRight } from 'lucide-react'
 
 import { AboutHeroSection } from '@/components/sections/about/about-hero-section.component'
 import { MissionSection } from '@/components/sections/about/mission-section.component'
@@ -113,7 +112,11 @@ export default function AboutPage() {
                     id='our-story'
                     title='Our Story'
                     description='How we built a template that works for everyone'
-                    features={ourStoryData}
+                    features={ourStoryData.map((feature) => {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        const { icon, ...rest } = feature
+                        return rest
+                    })}
                     variant='muted'
                     animationIntensity='subtle'
                     stackingVariant='compact'
@@ -128,8 +131,6 @@ export default function AboutPage() {
                         text: aboutCTAData.primaryButton.text,
                         href: aboutCTAData.primaryButton.href,
                         variant: 'default',
-                        icon: <ArrowRight className='size-5' />,
-                        iconPosition: 'right',
                     }}
                     secondaryButton={{
                         text: aboutCTAData.secondaryButton.text,

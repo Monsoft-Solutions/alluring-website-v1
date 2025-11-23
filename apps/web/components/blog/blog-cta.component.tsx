@@ -125,14 +125,14 @@ function getTextColorClasses(colorScheme: CTAColorScheme) {
  */
 function getButtonVariant(
     colorScheme: CTAColorScheme
-): 'cta-blue' | 'cta-green' | 'cta-orange' | 'default' {
+): 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold' | 'default' {
     switch (colorScheme) {
         case 'blue':
-            return 'cta-blue'
+            return 'primary'
         case 'green':
-            return 'cta-green'
+            return 'primary'
         case 'orange':
-            return 'cta-orange'
+            return 'gold'
         default:
             return 'default'
     }
@@ -161,8 +161,23 @@ export function BlogCTA({
         propColorScheme ?? ctaContent.colorScheme ?? 'blue'
 
     const primaryIcon = getIcon(ctaContent.primaryButton.iconName)
+    // Map CTA-specific variants to Button variants
+    const mapVariantToButtonVariant = (
+        variant?: 'cta-blue' | 'cta-green' | 'cta-orange'
+    ): 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold' | 'default' => {
+        if (!variant) return getButtonVariant(colorScheme)
+        switch (variant) {
+            case 'cta-blue':
+                return 'primary'
+            case 'cta-green':
+                return 'primary'
+            case 'cta-orange':
+                return 'gold'
+        }
+    }
     const buttonVariant =
-        ctaContent.primaryButton.variant ?? getButtonVariant(colorScheme)
+        mapVariantToButtonVariant(ctaContent.primaryButton.variant) ??
+        getButtonVariant(colorScheme)
     const textColors = getTextColorClasses(colorScheme)
 
     if (variant === 'inline') {
