@@ -205,9 +205,7 @@ export function generateSitemapIndex(
  *
  * @example
  * ```typescript
- * const staticRoutes = createStaticRoutes({
- *   baseUrl: 'https://example.com'
- * })
+ * const staticRoutes = createStaticRoutes()
  * ```
  */
 export function createStaticRoutes(): SitemapRoute[] {
