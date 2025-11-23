@@ -233,7 +233,7 @@ export function ContactForm({
                                             <FormControl>
                                                 <Input
                                                     type='email'
-                                                    placeholder='john@example.com'
+                                                    placeholder='your.email@example.com'
                                                     {...field}
                                                     disabled={isSubmitting}
                                                     aria-label='Your email address'

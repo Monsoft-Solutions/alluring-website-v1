@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a **Turborepo monorepo** template using **shadcn/ui** components, built with Next.js 15, React 19, and Tailwind CSS v4. The repository uses **pnpm** as the package manager with workspace configuration.
+This is a **Turborepo monorepo** for the Alluring Plastic Surgery website, using **shadcn/ui** components, built with Next.js 15, React 19, and Tailwind CSS v4. The repository uses **pnpm** as the package manager with workspace configuration.
 
 ## Project Structure
 
@@ -168,7 +168,7 @@ const posts = await db.select().from(blogPost)
 // Insert example
 await db
     .insert(contactSubmission)
-    .values({ name: 'John', email: 'john@example.com' })
+    .values({ name: 'John', email: 'info@alluringplasticsurgery.com' })
 ```
 
 **Importing SEO utilities in apps/web:**
@@ -263,7 +263,7 @@ import {
 } from '@/lib/data/site-config'
 
 // Access business info
-const companyName = siteConfig.business.name
+const clinicName = siteConfig.business.name
 const tagline = siteConfig.business.tagline
 
 // Access contact info
@@ -279,7 +279,7 @@ const telLink = getPhoneLink()
 
 - Environment variables (env.ts) handle environment-specific config
 - Site config (site-config.ts) handles business/content data
-- Update site-config.ts when creating websites for new clients
+- Contains Alluring Plastic Surgery clinic information
 - Used across SEO metadata, contact pages, footer, header, and structured data
 
 ## Shared UI Components
@@ -472,10 +472,10 @@ Create a `.env` file in the repository root with:
 POSTGRES_URL="postgresql://user:password@localhost:5432/dbname"
 
 # SEO Configuration
-NEXT_PUBLIC_SITE_URL=https://example.com
-NEXT_PUBLIC_SITE_NAME="My Website"
-NEXT_PUBLIC_SITE_DESCRIPTION="A modern web application built with Next.js"
-NEXT_PUBLIC_TWITTER_HANDLE=@yourbrand
+NEXT_PUBLIC_SITE_URL=https://alluringplasticsurgery.com
+NEXT_PUBLIC_SITE_NAME="Alluring Plastic Surgery"
+NEXT_PUBLIC_SITE_DESCRIPTION="Luxury cosmetic and plastic surgery clinic in Miami"
+NEXT_PUBLIC_TWITTER_HANDLE=@alluringplasticsurgery
 NEXT_PUBLIC_FACEBOOK_APP_ID=
 NEXT_PUBLIC_LOCALE=en-US
 NEXT_PUBLIC_ENABLE_INDEXING=false

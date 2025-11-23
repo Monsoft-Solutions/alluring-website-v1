@@ -1,6 +1,6 @@
-# 🚀 Modern Website Template
+# Alluring Plastic Surgery Website
 
-A production-ready, enterprise-grade website template built with Next.js 15, React 19, and TypeScript. Designed for agencies and developers who need to create professional marketing websites quickly and efficiently.
+A production-ready website for Alluring Plastic Surgery, a Miami-based cosmetic and plastic surgery clinic. Built with Next.js 15, React 19, and TypeScript.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.4.5-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)](https://react.dev/)
@@ -28,9 +28,9 @@ A production-ready, enterprise-grade website template built with Next.js 15, Rea
 
 ## 🎯 Overview
 
-This is a **professional website template** designed to help agencies and developers create high-quality marketing websites in hours, not weeks. Built with modern technologies and best practices, it provides a solid foundation for any business website, portfolio, or SaaS landing page.
+This is the official website for **Alluring Plastic Surgery**, a luxury cosmetic and plastic surgery clinic located in Miami, Florida. The website showcases our board-certified surgeons, procedures, and patient resources, built with modern web technologies for optimal performance and user experience.
 
-### What Makes This Template Special?
+### Key Features
 
 - **🏗️ Monorepo Architecture** - Organized Turborepo with shared packages for maximum code reuse
 - **📦 Production Ready** - Enterprise-grade code with TypeScript, error handling, and testing infrastructure
@@ -38,11 +38,9 @@ This is a **professional website template** designed to help agencies and develo
 - **🔍 SEO Optimized** - Comprehensive SEO package with structured data, metadata, and sitemap generation
 - **📊 Analytics Ready** - Pre-integrated Google Analytics, Microsoft Clarity, GTM, and Facebook Pixel
 - **📝 Full Blog System** - Complete blog with categories, tags, markdown support, and infinite scroll
-- **🎨 Fully Customizable** - Easy-to-update configuration for rapid client customization
 - **♿ Accessible** - WCAG compliant with proper ARIA labels and keyboard navigation
 - **📱 Mobile First** - Responsive design that works flawlessly on all devices
 - **🌙 Dark Mode** - Built-in theme switching with next-themes
-- **🤖 AI-Powered Development** - Specialized Claude agents for rapid development
 
 ---
 
@@ -232,7 +230,7 @@ This is a **professional website template** designed to help agencies and develo
 
 ```bash
 git clone <your-repo-url>
-cd website-template-v2
+cd alluring-website-1
 ```
 
 2. **Install dependencies**
@@ -252,10 +250,10 @@ The template includes a `.env.example` file as a reference. Create your local en
 POSTGRES_URL="postgresql://user:password@localhost:5432/dbname"
 
 # SEO
-NEXT_PUBLIC_SITE_URL=https://example.com
-NEXT_PUBLIC_SITE_NAME="My Website"
-NEXT_PUBLIC_SITE_DESCRIPTION="A modern web application"
-NEXT_PUBLIC_TWITTER_HANDLE=@yourbrand
+NEXT_PUBLIC_SITE_URL=https://alluringplasticsurgery.com
+NEXT_PUBLIC_SITE_NAME="Alluring Plastic Surgery"
+NEXT_PUBLIC_SITE_DESCRIPTION="Luxury cosmetic and plastic surgery clinic in Miami"
+NEXT_PUBLIC_TWITTER_HANDLE=@alluringplasticsurgery
 NEXT_PUBLIC_LOCALE=en-US
 NEXT_PUBLIC_ENABLE_INDEXING=false
 
@@ -308,21 +306,19 @@ pnpm dev
 
 Navigate to [http://localhost:3000](http://localhost:3000)
 
-### 🎨 Customize for Your Client
+### 🎨 Customization
 
-1. **Update site configuration** - Edit `apps/web/lib/data/site-config.ts` with client information
+1. **Update site configuration** - Edit `apps/web/lib/data/site-config.ts` with clinic information
 2. **Replace brand assets** - Update logo, favicon, and OG image in `apps/web/public/`
 3. **Customize color scheme** - Modify Tailwind theme in `packages/ui/tailwind.config.ts`
-4. **Update environment variables** - Configure `.env` with client-specific values
-
-**That's it!** Your website is ready to launch. 🎉
+4. **Update environment variables** - Configure `.env` with clinic-specific values
 
 ---
 
 ## 📁 Project Structure
 
 ```
-website-template-v2/
+alluring-website-1/
 ├── apps/
 │   └── web/                          # Next.js 15 application
 │       ├── app/                      # App Router pages
@@ -405,30 +401,29 @@ website-template-v2/
 
 **File:** `apps/web/lib/data/site-config.ts`
 
-This is the **central source of truth** for all business information. Update this file for each new client:
+This is the **central source of truth** for all business information. Contains clinic information for Alluring Plastic Surgery:
 
 ```typescript
 export const siteConfig: SiteConfig = {
     business: {
-        name: 'Your Company',
-        legalName: 'Your Company LLC',
-        tagline: 'Your tagline',
-        description: 'Company description',
-        foundedYear: 2024,
-        founders: ['Founder 1', 'Founder 2'],
+        name: 'Alluring Plastic Surgery',
+        legalName: 'Alluring Plastic Surgery',
+        tagline: 'Luxury Surgeries Made Affordable',
+        description: 'World-class aesthetic procedures in Miami...',
     },
     contact: {
-        phone: '+1-555-123-4567',
-        email: 'contact@example.com',
-        address: '123 Main St',
-        city: 'San Francisco',
-        state: 'CA',
-        postalCode: '94105',
+        phone: '+1-786-305-8649',
+        email: 'info@alluringplasticsurgery.com',
+        address: '8435 SW 24th St',
+        city: 'Miami',
+        state: 'FL',
+        postalCode: '33155',
         country: 'United States',
     },
     social: [
-        { platform: 'twitter', url: 'https://twitter.com/...' },
-        { platform: 'linkedin', url: 'https://linkedin.com/company/...' },
+        { platform: 'facebook', url: 'https://facebook.com/...' },
+        { platform: 'instagram', url: 'https://instagram.com/...' },
+        { platform: 'tiktok', url: 'https://tiktok.com/@...' },
     ],
     brand: {
         logo: '/logo.png',
@@ -450,8 +445,8 @@ See the [Quick Start](#-quick-start) section for the complete list of environmen
 **Key variables:**
 
 - `POSTGRES_URL` - PostgreSQL connection string
-- `NEXT_PUBLIC_SITE_URL` - Your website URL
-- `NEXT_PUBLIC_SITE_NAME` - Website name
+- `NEXT_PUBLIC_SITE_URL` - Website URL (https://alluringplasticsurgery.com)
+- `NEXT_PUBLIC_SITE_NAME` - Website name (Alluring Plastic Surgery)
 - `BLOG_API_KEY` - API authentication key
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics ID
 - `NEXT_PUBLIC_CLARITY_PROJECT_ID` - Microsoft Clarity ID
@@ -703,8 +698,8 @@ Set these in your Vercel project settings:
 
 ```bash
 POSTGRES_URL=postgresql://...
-NEXT_PUBLIC_SITE_URL=https://yourdomain.com
-NEXT_PUBLIC_SITE_NAME="Your Site"
+NEXT_PUBLIC_SITE_URL=https://alluringplasticsurgery.com
+NEXT_PUBLIC_SITE_NAME="Alluring Plastic Surgery"
 BLOG_API_KEY=your-production-api-key
 ```
 
@@ -851,7 +846,7 @@ Contributions are welcome! Please follow these guidelines:
 
 ## 📝 License
 
-Private template for internal use. All rights reserved.
+Private website for Alluring Plastic Surgery. All rights reserved.
 
 ---
 

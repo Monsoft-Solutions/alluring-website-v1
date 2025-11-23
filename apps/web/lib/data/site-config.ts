@@ -28,7 +28,7 @@ function getSiteUrl(): string {
         return env.NEXT_PUBLIC_SITE_URL
     }
 
-    return 'https://example.com' // Fallback for local development
+    return 'https://alluringplasticsurgery.com' // Fallback for local development
 }
 
 /**
@@ -41,29 +41,29 @@ export const siteConfig: SiteConfig = {
      * Business Information
      */
     business: {
-        name: 'Acme Corp',
-        legalName: 'Acme Corporation Inc.',
-        tagline: 'Innovating for a Better Tomorrow',
+        name: 'Alluring Plastic Surgery',
+        legalName: 'Alluring Plastic Surgery',
+        tagline: 'Luxury Surgeries Made Affordable',
         description:
-            'We provide cutting-edge solutions for modern businesses. Transform your digital presence with our expert services.',
-        foundedYear: 2024,
-        founders: ['Jane Doe', 'John Smith'],
-        organizationType: 'Corporation',
+            'World-class aesthetic procedures in Miami combining high-end results with flexible financing and personalized care. Where luxury meets affordability.',
+        foundedYear: undefined,
+        founders: undefined,
+        organizationType: 'Medical Practice',
     },
 
     /**
      * Contact Information
      */
     contact: {
-        phone: '+1-555-123-4567',
-        phoneDisplay: '+1 (555) 123-4567',
-        email: 'contact@example.com',
-        supportEmail: 'support@example.com',
-        address: '123 Business Rd',
-        addressLine2: 'Suite 100',
-        city: 'Metropolis',
-        state: 'NY',
-        postalCode: '10001',
+        phone: '+1-786-305-8649',
+        phoneDisplay: '+1 (786) 305-8649',
+        email: 'info@alluringplasticsurgery.com',
+        supportEmail: 'info@alluringplasticsurgery.com',
+        address: '8435 SW 24th St',
+        addressLine2: undefined,
+        city: 'Miami',
+        state: 'FL',
+        postalCode: '33155',
         country: 'United States',
         timezone: 'America/New_York',
 
@@ -76,8 +76,8 @@ export const siteConfig: SiteConfig = {
             },
             {
                 days: 'Saturday',
-                open: '10:00 AM',
-                close: '2:00 PM',
+                open: '9:00 AM',
+                close: '3:00 PM',
             },
             {
                 days: 'Sunday',
@@ -91,13 +91,13 @@ export const siteConfig: SiteConfig = {
         supportHours: [
             {
                 days: 'Monday - Friday',
-                open: '8:00 AM',
-                close: '8:00 PM',
+                open: '9:00 AM',
+                close: '5:00 PM',
             },
             {
-                days: 'Saturday - Sunday',
-                open: '10:00 AM',
-                close: '4:00 PM',
+                days: 'Saturday',
+                open: '9:00 AM',
+                close: '3:00 PM',
             },
         ],
     },
@@ -107,19 +107,19 @@ export const siteConfig: SiteConfig = {
      */
     social: [
         {
-            platform: 'github',
-            url: 'https://github.com/example',
-            label: 'GitHub',
+            platform: 'facebook',
+            url: 'https://facebook.com/alluringplasticsurgery',
+            label: 'Facebook',
         },
         {
-            platform: 'twitter',
-            url: 'https://twitter.com/example',
-            label: 'Twitter/X',
+            platform: 'instagram',
+            url: 'https://instagram.com/alluringplasticsurgery',
+            label: 'Instagram',
         },
         {
-            platform: 'linkedin',
-            url: 'https://linkedin.com/company/example',
-            label: 'LinkedIn',
+            platform: 'tiktok',
+            url: 'https://tiktok.com/@alluringplasticsurgery',
+            label: 'TikTok',
         },
     ],
 
@@ -128,7 +128,7 @@ export const siteConfig: SiteConfig = {
      */
     brand: {
         logo: '/logo.png',
-        logoAlt: 'Acme Corp Logo',
+        logoAlt: 'Alluring Plastic Surgery Logo',
         favicon: '/favicon.png',
         appleTouchIcon: '/apple-touch-icon.png',
         ogImage: '/og-image.jpg',
@@ -139,20 +139,25 @@ export const siteConfig: SiteConfig = {
      */
     seo: {
         siteUrl: getSiteUrl(), // Dynamically from environment
-        siteName: 'Acme Corp',
+        siteName: 'Alluring Plastic Surgery',
         siteDescription:
-            'Leading provider of innovative business solutions. We help companies grow and succeed in the digital age.',
+            'Luxury cosmetic and plastic surgery clinic in Miami. Board-certified surgeons specializing in BBL, breast augmentation, tummy tuck, liposuction, mommy makeover, and facial procedures. Where luxury meets affordability.',
         keywords: [
-            'business solutions',
-            'digital transformation',
-            'consulting',
-            'innovation',
-            'technology',
-            'growth',
-            'acme corp',
+            'plastic surgery Miami',
+            'cosmetic surgery Miami',
+            'BBL Miami',
+            'Brazilian Butt Lift',
+            'breast augmentation Miami',
+            'tummy tuck Miami',
+            'liposuction Miami',
+            'mommy makeover Miami',
+            'facial surgery Miami',
+            'cosmetic gynecology',
+            'alluring plastic surgery',
+            'Miami plastic surgeon',
         ],
         locale: 'en-US',
-        twitterHandle: '@acmecorp',
+        twitterHandle: '@alluringplasticsurgery',
         facebookAppId: '',
         enableIndexing: true,
     },

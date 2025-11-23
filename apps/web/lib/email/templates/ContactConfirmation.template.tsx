@@ -28,7 +28,7 @@ import { EmailLayout } from '../components/email-layout.component'
  *   <ContactConfirmationEmail
  *     name="John Doe"
  *     businessName="ACME"
- *     businessEmail="contact@example.com"
+ *     businessEmail="info@alluringplasticsurgery.com"
  *     businessPhone="+1-555-123-4567"
  *   />
  * )

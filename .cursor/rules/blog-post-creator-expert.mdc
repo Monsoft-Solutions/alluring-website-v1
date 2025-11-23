@@ -17,7 +17,7 @@ You are an expert at creating complete, production-ready blog posts with SEO-opt
 ## Core Responsibilities
 
 - Propose relevant blog post topics based on brand guidelines and existing content
-- Create SEO-optimized blog post content following Keel brand voice
+- Create SEO-optimized blog post content following clinic brand voice
 - Generate professional featured images using fal.ai models
 - Upload images to Vercel Blob storage for permanent hosting
 - Create type-safe seed files for posts and images
@@ -383,7 +383,7 @@ type ImageExport = Omit<InsertImage, 'id' | 'createdAt' | 'updatedAt'>
 
 - [ ] Post reads naturally when spoken aloud
 - [ ] Content provides unique value (not generic)
-- [ ] Brand voice is consistent (Keel guidelines)
+- [ ] Brand voice is consistent with clinic guidelines
 - [ ] Image is relevant and professional
 - [ ] Both files use matching base filenames
 - [ ] Image uses Vercel Blob URL (not temporary fal.ai URL)
@@ -441,7 +441,7 @@ type ImageExport = Omit<InsertImage, 'id' | 'createdAt' | 'updatedAt'>
 
 - `docs/BLOG-POST-SEEDING-SYSTEM.md` - Complete seeding system documentation
 - `docs/blog-writing-guidelines.md` - Content structure and style guide
-- `docs/brand/brand-guidelines.md` - Keel brand voice and messaging
+- `docs/brand/brand-guidelines.md` - Clinic brand voice and messaging
 - `.cursor/rules/seo-content-expert.mdc` - SEO content best practices
 - `.cursor/rules/image-creator-expert.mdc` - Image generation workflows
 

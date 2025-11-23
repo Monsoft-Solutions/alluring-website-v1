@@ -28,7 +28,7 @@ import type { Service } from '@/lib/types/services/service.type'
  * @returns Schema.org Service object
  *
  * @example
- * const schema = generateServiceSchema(service, 'https://example.com/services/web-development')
+ * const schema = generateServiceSchema(service, 'https://alluringplasticsurgery.com/services/breast-augmentation')
  */
 export function generateServiceSchema(
     service: Service,
@@ -70,7 +70,7 @@ export function generateServiceSchema(
  * @returns Schema.org ItemList object
  *
  * @example
- * const schema = generateServicesListSchema(services, 'https://example.com')
+ * const schema = generateServicesListSchema(services, 'https://alluringplasticsurgery.com')
  */
 export function generateServicesListSchema(
     services: Service[],
