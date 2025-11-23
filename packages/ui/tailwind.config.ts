@@ -54,6 +54,47 @@ const config = {
                 'cta-orange-hover': 'var(--cta-orange-hover)',
                 'cta-orange-bg': 'var(--cta-orange-bg)',
                 'cta-orange-border': 'var(--cta-orange-border)',
+                // Prototype color palette - using CSS custom properties
+                stone: {
+                    50: 'var(--stone-50)',
+                    100: 'var(--stone-100)',
+                    200: 'var(--stone-200)',
+                    300: 'var(--stone-300)',
+                    400: 'var(--stone-400)',
+                    500: 'var(--stone-500)',
+                    600: 'var(--stone-600)',
+                    700: 'var(--stone-700)',
+                    800: 'var(--stone-800)',
+                    900: 'var(--stone-900)',
+                    950: 'var(--stone-950)',
+                },
+                gold: {
+                    100: 'var(--gold-100)',
+                    200: 'var(--gold-200)',
+                    300: 'var(--gold-300)',
+                    400: 'var(--gold-400)', // Classic Gold
+                    500: 'var(--gold-500)', // Darker Gold
+                    600: 'var(--gold-600)',
+                },
+                blush: {
+                    50: '#FDF8F8',
+                    100: '#FCE7E7',
+                },
+            },
+            fontFamily: {
+                sans: ['var(--font-sans)', 'sans-serif'],
+                serif: ['var(--font-playfair)', 'serif'],
+            },
+            letterSpacing: {
+                tighter: '-0.05em',
+                tight: '-0.025em',
+                widest: '0.25em',
+            },
+            backgroundImage: {
+                'gold-gradient':
+                    'linear-gradient(135deg, #E6CB7D 0%, #D4AF37 50%, #B4941F 100%)',
+                'dark-gradient':
+                    'linear-gradient(to bottom, rgba(28,25,23,0) 0%, rgba(28,25,23,0.8) 100%)',
             },
             borderRadius: {
                 sm: 'calc(var(--radius) - 4px)',
@@ -70,10 +111,15 @@ const config = {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: '0' },
                 },
+                shimmer: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(100%)' },
+                },
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
+                shimmer: 'shimmer 1.5s infinite',
             },
         },
     },

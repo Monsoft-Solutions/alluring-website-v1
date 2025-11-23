@@ -1,6 +1,6 @@
 import { OrganizationSchema, WebSiteSchema } from '@workspace/seo/react'
 import '@workspace/ui/globals.css'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
 
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
@@ -8,6 +8,7 @@ import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.
 import { CookieBanner } from '@/components/cookie-banner.component'
 import { Footer } from '@/components/layout/footer.component'
 import { Header } from '@/components/layout/header.component'
+import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { Providers } from '@/components/providers'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { WebVitals } from '@/components/web-vitals.component'
@@ -17,9 +18,10 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 
 export const metadata = toNextMetadata(seoConfig)
 
-const fontSans = Geist({
+const fontLato = Lato({
     subsets: ['latin'],
-    variable: '--font-sans',
+    weight: ['300', '400', '700'],
+    variable: '--font-lato',
     display: 'swap',
     preload: true,
 })
@@ -27,6 +29,21 @@ const fontSans = Geist({
 const fontMono = Geist_Mono({
     subsets: ['latin'],
     variable: '--font-mono',
+    display: 'swap',
+})
+
+// Geist kept for potential future use, but Lato is the primary sans-serif
+const fontGeist = Geist({
+    subsets: ['latin'],
+    variable: '--font-geist',
+    display: 'swap',
+})
+
+const fontPlayfair = Playfair_Display({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700'],
+    style: ['normal', 'italic'],
+    variable: '--font-playfair',
     display: 'swap',
 })
 
@@ -40,7 +57,7 @@ export default function RootLayout({
         env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON !== 'false'
 
     return (
-        <html lang='en'>
+        <html lang='en' className='scroll-smooth'>
             <head>
                 {/* Resource hints for external domains */}
                 <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
@@ -55,7 +72,7 @@ export default function RootLayout({
                 <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
             </head>
             <body
-                className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+                className={`${fontLato.variable} ${fontMono.variable} ${fontGeist.variable} ${fontPlayfair.variable} font-sans antialiased`}
             >
                 <WebVitals />
                 <PageViewTracker />
@@ -79,9 +96,14 @@ export default function RootLayout({
                     <AnalyticsProvider />
                     {/* Cookie Consent Banner */}
                     <CookieBanner />
+                    {/* Site Header */}
                     <Header />
+                    {/* Main Content */}
                     <main id='main-content'>{children}</main>
+                    {/* Site Footer */}
                     <Footer />
+                    {/* Exit Intent Popup - Only on homepage */}
+                    <ExitIntentPopup />
                     {/* Mobile Call Button - visible on mobile devices only */}
                     {isMobileCallButtonEnabled && (
                         <MobileCallButton

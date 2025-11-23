@@ -1,183 +1,158 @@
-/**
- * Header Component
- *
- * Main site header with responsive navigation, mobile menu, and theme toggle
- */
-
 'use client'
 
-import { Button } from '@workspace/ui/components/button'
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@workspace/ui/components/sheet'
-import { cn } from '@workspace/ui/lib/utils'
-import { Menu } from 'lucide-react'
-import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { Menu, X } from 'lucide-react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Button } from '@workspace/ui/components/button'
 
-import { mainNavigation } from '@/lib/data/navigation'
-import { brandAssets } from '@/lib/data/site-config'
-
-/**
- * Header Component
- *
- * Main site header with responsive navigation, mobile menu, and theme toggle
- */
-export function Header() {
-    const pathname = usePathname()
+export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const { scrollY } = useScroll()
 
-    // Handle scroll behavior for sticky header
+    // Header height shrinks slightly on scroll
+    const headerPadding = useTransform(scrollY, [0, 100], ['1.5rem', '1rem'])
+
     useEffect(() => {
-        let rafId: number | null = null
-
         const handleScroll = () => {
-            if (rafId) return
-
-            rafId = requestAnimationFrame(() => {
-                setIsScrolled(window.scrollY > 10)
-                rafId = null
-            })
+            setIsScrolled(window.scrollY > 20)
         }
-
         window.addEventListener('scroll', handleScroll)
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-            if (rafId) cancelAnimationFrame(rafId)
-        }
+        return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    const isActive = (href: string) => {
-        if (href === '/') {
-            return pathname === href
-        }
-        return pathname?.startsWith(href)
-    }
+    const navLinks = [
+        { label: 'Procedures', href: '#procedures' },
+        { label: 'Gallery', href: '#gallery' },
+        { label: 'Surgeons', href: '#surgeons' },
+        { label: 'The Experience', href: '#experience' },
+    ]
 
     return (
-        <header
-            className={cn(
-                'bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur transition-shadow',
-                isScrolled && 'shadow-sm'
-            )}
-        >
-            <div className='container mx-auto max-w-7xl px-6'>
-                <div className='flex h-16 items-center justify-between'>
-                    {/* Logo / Brand */}
+        <>
+            <motion.header
+                style={{
+                    paddingTop: headerPadding,
+                    paddingBottom: headerPadding,
+                }}
+                className={`fixed top-0 right-0 left-0 z-50 transition-colors duration-500 ${
+                    isScrolled
+                        ? 'border-b border-stone-100 bg-white/80 backdrop-blur-md'
+                        : 'bg-transparent'
+                }`}
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+                <div className='container mx-auto flex items-center justify-between px-6 md:px-12'>
+                    {/* Logo */}
                     <Link
                         href='/'
-                        className='flex items-center space-x-2 transition-opacity hover:opacity-80'
-                        aria-label='Home'
+                        className='group relative z-50 flex flex-col items-start'
                     >
-                        <Image
-                            src={brandAssets.logo}
-                            alt={brandAssets.logoAlt}
-                            className='h-8 w-auto'
-                            width={120}
-                            height={32}
-                            style={{ width: 'auto', height: '2rem' }}
-                            priority
-                        />
+                        <span
+                            className={`font-serif text-2xl font-medium tracking-tighter ${
+                                isScrolled || isMobileMenuOpen
+                                    ? 'text-stone-900'
+                                    : 'text-stone-900'
+                            }`}
+                        >
+                            ALLURING
+                        </span>
+                        <span className='text-gold-500 ml-0.5 text-[0.65rem] font-bold tracking-[0.3em] uppercase'>
+                            Plastic Surgery
+                        </span>
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <nav
-                        className='hidden items-center space-x-1 md:flex'
-                        aria-label='Main navigation'
-                    >
-                        {mainNavigation.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={cn(
-                                    'rounded-md px-4 py-2 text-sm font-medium transition-colors',
-                                    'hover:bg-accent hover:text-accent-foreground',
-                                    isActive(item.href)
-                                        ? 'bg-accent text-accent-foreground'
-                                        : 'text-foreground/60'
-                                )}
-                                aria-current={
-                                    isActive(item.href) ? 'page' : undefined
-                                }
+                    {/* Desktop Nav */}
+                    <nav className='hidden items-center space-x-10 lg:flex'>
+                        {navLinks.map((link) => (
+                            <a
+                                key={link.label}
+                                href={link.href}
+                                className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
                             >
-                                {item.label}
-                            </Link>
+                                {link.label}
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                            </a>
                         ))}
                     </nav>
 
-                    {/* Actions */}
-                    <div className='flex items-center space-x-2'>
-                        {/* Mobile Menu */}
-                        <Sheet
-                            open={isMobileMenuOpen}
-                            onOpenChange={setIsMobileMenuOpen}
+                    {/* CTA Right */}
+                    <div className='hidden items-center space-x-8 lg:flex'>
+                        <a
+                            href='tel:7863058649'
+                            className='hover:text-gold-500 flex items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors'
                         >
-                            <SheetTrigger asChild>
-                                <Button
-                                    variant='ghost'
-                                    size='icon'
-                                    className='md:hidden'
-                                    aria-label='Open menu'
-                                >
-                                    <Menu className='h-5 w-5' />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent
-                                side='right'
-                                className='w-[300px] sm:w-[400px]'
-                            >
-                                <SheetHeader>
-                                    <SheetTitle>Menu</SheetTitle>
-                                </SheetHeader>
-                                <nav
-                                    className='mt-8 flex flex-col space-y-4'
-                                    aria-label='Mobile navigation'
-                                >
-                                    {mainNavigation.map((item) => (
-                                        <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            onClick={() =>
-                                                setIsMobileMenuOpen(false)
-                                            }
-                                            className={cn(
-                                                'rounded-md px-4 py-3 text-base font-medium transition-colors',
-                                                'hover:bg-accent hover:text-accent-foreground',
-                                                isActive(item.href)
-                                                    ? 'bg-accent text-accent-foreground'
-                                                    : 'text-foreground/60'
-                                            )}
-                                            aria-current={
-                                                isActive(item.href)
-                                                    ? 'page'
-                                                    : undefined
-                                            }
-                                        >
-                                            {item.label}
-                                        </Link>
-                                    ))}
-                                </nav>
-                            </SheetContent>
-                        </Sheet>
+                            (786) 305-8649
+                        </a>
+                        <Button size='sm' variant='primary'>
+                            Request Consult
+                        </Button>
                     </div>
-                </div>
-            </div>
 
-            {/* Skip to content link for accessibility */}
-            <a
-                href='#main-content'
-                className='focus:bg-primary focus:text-primary-foreground sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:px-4 focus:py-2'
-            >
-                Skip to content
-            </a>
-        </header>
+                    {/* Mobile Toggle */}
+                    <button
+                        className='relative z-50 p-2 text-stone-900 lg:hidden'
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? (
+                            <X className='h-6 w-6' />
+                        ) : (
+                            <Menu className='h-6 w-6' />
+                        )}
+                    </button>
+                </div>
+            </motion.header>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            clipPath: 'circle(0% at 100% 0%)',
+                        }}
+                        animate={{
+                            opacity: 1,
+                            clipPath: 'circle(150% at 100% 0%)',
+                        }}
+                        exit={{
+                            opacity: 0,
+                            clipPath: 'circle(0% at 100% 0%)',
+                        }}
+                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        className='fixed inset-0 z-40 flex items-center justify-center bg-stone-50'
+                    >
+                        <div className='container flex flex-col items-center justify-center space-y-8 px-6'>
+                            {navLinks.map((link, idx) => (
+                                <motion.a
+                                    key={link.label}
+                                    href={link.href}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 + idx * 0.1 }}
+                                    className='hover:text-gold-500 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
+                                >
+                                    {link.label}
+                                </motion.a>
+                            ))}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 }}
+                                className='flex w-full max-w-xs flex-col gap-4 pt-8'
+                            >
+                                <Button size='lg' className='w-full'>
+                                    Book Consultation
+                                </Button>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
     )
 }
