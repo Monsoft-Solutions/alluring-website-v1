@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
+import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 
 export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [isSurgeonsDropdownOpen, setIsSurgeonsDropdownOpen] = useState(false)
+    const [isSurgeonsMobileOpen, setIsSurgeonsMobileOpen] = useState(false)
     const { scrollY } = useScroll()
 
     // Header height shrinks slightly on scroll
@@ -25,9 +28,14 @@ export const Header = () => {
     const navLinks = [
         { label: 'Procedures', href: '#procedures' },
         { label: 'Gallery', href: '#gallery' },
-        { label: 'Surgeons', href: '#surgeons' },
         { label: 'The Experience', href: '#experience' },
     ]
+
+    // Generate surgeon links dynamically
+    const surgeonLinks = surgeons.map((surgeon) => ({
+        label: surgeon.name,
+        href: `/${surgeon.slug}`,
+    }))
 
     return (
         <>
@@ -77,6 +85,49 @@ export const Header = () => {
                                 <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
                             </a>
                         ))}
+                        {/* Surgeons Dropdown */}
+                        <div
+                            className='group relative'
+                            onMouseEnter={() => setIsSurgeonsDropdownOpen(true)}
+                            onMouseLeave={() =>
+                                setIsSurgeonsDropdownOpen(false)
+                            }
+                        >
+                            <button className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'>
+                                Surgeons
+                                <ChevronDown
+                                    className={`ml-1 h-3 w-3 transition-transform duration-200 ${
+                                        isSurgeonsDropdownOpen
+                                            ? 'rotate-180'
+                                            : ''
+                                    }`}
+                                />
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                            </button>
+                            <AnimatePresence>
+                                {isSurgeonsDropdownOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                        className='absolute top-full left-0 mt-2 min-w-[200px] rounded-md border border-stone-200 bg-white shadow-lg'
+                                    >
+                                        <div className='py-2'>
+                                            {surgeonLinks.map((link) => (
+                                                <Link
+                                                    key={link.href}
+                                                    href={link.href}
+                                                    className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
+                                                >
+                                                    {link.label}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </nav>
 
                     {/* CTA Right */}
@@ -95,7 +146,12 @@ export const Header = () => {
                     {/* Mobile Toggle */}
                     <button
                         className='relative z-50 p-2 text-stone-900 lg:hidden'
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        onClick={() => {
+                            setIsMobileMenuOpen(!isMobileMenuOpen)
+                            if (isMobileMenuOpen) {
+                                setIsSurgeonsMobileOpen(false)
+                            }
+                        }}
                     >
                         {isMobileMenuOpen ? (
                             <X className='h-6 w-6' />
@@ -139,6 +195,79 @@ export const Header = () => {
                                     {link.label}
                                 </motion.a>
                             ))}
+                            {/* Mobile Surgeons Dropdown */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    delay: 0.1 + navLinks.length * 0.1,
+                                }}
+                                className='w-full'
+                            >
+                                <button
+                                    onClick={() =>
+                                        setIsSurgeonsMobileOpen(
+                                            !isSurgeonsMobileOpen
+                                        )
+                                    }
+                                    className='hover:text-gold-500 flex w-full items-center justify-center gap-2 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
+                                >
+                                    Surgeons
+                                    <ChevronDown
+                                        className={`h-6 w-6 transition-transform duration-200 ${
+                                            isSurgeonsMobileOpen
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                <AnimatePresence>
+                                    {isSurgeonsMobileOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{
+                                                opacity: 1,
+                                                height: 'auto',
+                                            }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className='mt-4 space-y-4 overflow-hidden'
+                                        >
+                                            {surgeonLinks.map((link, idx) => (
+                                                <motion.div
+                                                    key={link.href}
+                                                    initial={{
+                                                        opacity: 0,
+                                                        x: -20,
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        x: 0,
+                                                    }}
+                                                    transition={{
+                                                        delay: idx * 0.05,
+                                                    }}
+                                                >
+                                                    <Link
+                                                        href={link.href}
+                                                        onClick={() => {
+                                                            setIsMobileMenuOpen(
+                                                                false
+                                                            )
+                                                            setIsSurgeonsMobileOpen(
+                                                                false
+                                                            )
+                                                        }}
+                                                        className='hover:text-gold-500 block text-center font-serif text-3xl text-stone-700 transition-colors md:text-4xl'
+                                                    >
+                                                        {link.label}
+                                                    </Link>
+                                                </motion.div>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}

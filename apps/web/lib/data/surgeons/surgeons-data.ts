@@ -52,35 +52,41 @@ export const surgeons: Surgeon[] = [
         slug: 'dr-andrew-lofman',
         title: 'Board Certified Plastic Surgeon',
         role: 'Plastic Surgeon',
-        quote: 'Precision, artistry, and a deep understanding of anatomy allow me to create results that look and feel natural.',
+        quote: "Plastic surgery is where medical precision meets artistic vision. My goal is to create results that don't just look natural, but feel like they were always meant to be there.",
         shortBio:
-            'A board-certified plastic and reconstructive surgeon with over 20 years of experience. Dr. Lofman specializes in Breast Augmentation, Tummy Tucks, and Mommy Makeovers, prioritizing exceptional patient care.',
+            'A board-certified plastic surgeon with over 20 years of experience. Dr. Lofman combines seasoned expertise with a compassionate approach to deliver stunning breast and body transformations.',
         fullBio:
-            'Dr. Andrew Lofman is a board-certified plastic and reconstructive surgeon with over two decades of experience helping patients achieve their aesthetic goals. He brings a wealth of expertise and a keen artistic eye to Alluring Plastic Surgery, specializing in transformative procedures like Breast Augmentation, Tummy Tucks, and Mommy Makeovers.\n\nDr. Lofman is dedicated to a patient-first approach, believing that the best results come from a collaborative relationship built on trust and transparency. He takes the time to understand each patient’s unique desires and anatomy, developing tailored treatment plans that ensure natural-looking and harmonious outcomes. His commitment to safety and education creates a supportive environment where patients feel confident and informed throughout their journey.',
+            'Dr. Andrew Lofman is a board-certified plastic and reconstructive surgeon who has dedicated over two decades to the art of aesthetic enhancement. Known for his warm bedside manner and meticulous surgical technique, Dr. Lofman believes that every patient deserves a transformative journey that prioritizes both safety and satisfaction.\n\nSpecializing in breast augmentation, tummy tucks, and mommy makeovers, Dr. Lofman approaches every procedure as a unique collaboration. He takes the time to listen deeply to your goals, ensuring that your surgical plan is perfectly aligned with your vision. His philosophy focuses on enhancing your natural beauty rather than altering your identity, resulting in outcomes that are harmonious, balanced, and timeless.\n\nFrom your initial consultation to your final follow-up, Dr. Lofman and his team provide a supportive, pressure-free environment where you can feel confident in your decisions. With Dr. Lofman, you are choosing a surgeon who sees the person behind the patient and is committed to helping you look and feel your absolute best.',
         images: {
-            featured: '/images/placeholder-doctor.jpg', // Placeholder - Image not found on source site
-            portrait: '/images/placeholder-doctor.jpg', // Placeholder
+            featured: '/images/surgeons/dr-andrew-lofman.jpg',
+            portrait: '/images/surgeons/dr-andrew-lofman.jpg',
         },
         education: [
-            'Board Certified Plastic Surgeon',
-            'Medical Degree (MD)',
-            'General Surgery Residency',
-            'Plastic Surgery Fellowship',
+            'MD, Ross University School of Medicine',
+            'Plastic Surgery Fellowship, Providence Hospital and Medical Center',
+            'General Surgery Residency, Mercy Catholic Medical Center (Chief Resident)',
+            'BA, Wayne State University',
         ],
         certifications: [
-            'Board Certified by the American Board of Plastic Surgery',
-            'Member of the American Society of Plastic Surgeons',
+            'Board Certified, American Board of Plastic Surgery',
+            'Member, American Society of Plastic Surgeons (ASPS)',
+            'Fellow, American College of Surgeons (FACS)',
         ],
         specialties: [
             'Breast Augmentation',
-            'Body Contouring',
-            'Liposuction',
-            'Facial Rejuvenation',
             'Mommy Makeover',
-            'Tummy Tuck',
+            'Tummy Tuck (Abdominoplasty)',
+            'Liposuction',
+            'Body Contouring',
+            'Facial Rejuvenation',
         ],
         philosophy:
-            'Dr. Lofman believes in a collaborative approach to plastic surgery, where the patient and surgeon work together to achieve the best possible outcome. He is committed to transparency, education, and providing a supportive environment for every patient.',
+            "Dr. Lofman's philosophy is simple: exceptional results start with a strong patient-surgeon relationship. He believes that plastic surgery should be an empowering experience that boosts self-esteem and improves quality of life. By combining advanced surgical techniques with a personalized, compassionate approach, he ensures that every patient feels heard, valued, and thrilled with their results. For Dr. Lofman, the ultimate measure of success is a happy, confident patient.",
+        social: {
+            instagram: 'https://instagram.com/alluringplasticsurgery',
+            facebook: 'https://facebook.com/alluringplasticsurgery',
+            tiktok: 'https://tiktok.com/@alluringplasticsurgery',
+        },
     },
     {
         id: 'dr-shats',
@@ -88,32 +94,40 @@ export const surgeons: Surgeon[] = [
         slug: 'dr-rita-shats',
         title: 'Board Certified Cosmetic Gynecologist',
         role: 'Cosmetic Gynecologist',
-        quote: 'Enhancing your natural beauty is my passion. I strive to provide results that are both beautiful and harmonious.',
+        quote: "True confidence comes from within, but sometimes, it needs a little help to shine. I'm here to help you reclaim your comfort and embrace your most confident self.",
         shortBio:
-            'A highly respected board-certified cosmetic gynecologist recognized for her medical expertise and empathetic patient care. Dr. Shats specializes in personalized treatment plans tailored to your unique needs.',
+            'A board-certified cosmetic gynecologist known for her empathetic approach and advanced surgical skill. Dr. Shats specializes in intimate wellness and rejuvenation, offering personalized care that empowers women.',
         fullBio:
-            'Dr. Rita Shats is a highly respected obstetrician and gynecologist recognized for her medical expertise, empathetic patient care, and forward-thinking approach. As a Board Certified Cosmetic Gynecologist, she brings a unique perspective to aesthetic wellness, prioritizing personalized treatment plans that empower her patients.\n\nServing as an Attending Physician and Associate Director of Gynecology at Richmond University Medical Center, Dr. Shats combines extensive clinical experience with advanced surgical skill. She is known for crafting comprehensive strategies tailored to each patient’s unique needs and goals, ensuring results that are not only beautiful but also enhance overall well-being. Her compassionate demeanor makes her a trusted partner for women seeking to rejuvenate and restore their confidence.',
+            "Dr. Rita Shats is a leading authority in cosmetic gynecology, blending exceptional medical expertise with a deeply empathetic approach to patient care. As a Board Certified Cosmetic Gynecologist and Associate Director of Gynecology at Richmond University Medical Center, she brings years of specialized experience to Alluring Plastic Surgery.\n\nDr. Shats understands that intimate aesthetic concerns can deeply affect a woman's quality of life and self-image. That's why she is dedicated to providing a safe, judgment-free space where women can openly discuss their goals. Whether performing a labiaplasty, vaginoplasty, or a comprehensive mommy makeover, Dr. Shats combines technical precision with an artistic touch to deliver results that improve both function and aesthetics.\n\nHer forward-thinking approach prioritizes your comfort and unique anatomy, ensuring that every treatment plan is as individual as you are. With Dr. Shats, you are choosing a partner who champions your well-being and empowers you to feel truly at home in your body.",
         images: {
-            featured: '/images/placeholder-doctor.jpg', // Placeholder - Image not found on source site
-            portrait: '/images/placeholder-doctor.jpg', // Placeholder
+            featured: '/images/surgeons/dr-rita-shats.png',
+            portrait: '/images/surgeons/dr-rita-shats.png',
         },
         education: [
-            'Medical Degree (MD)',
-            'Residency in Obstetrics and Gynecology',
+            'MD, Ross University School of Medicine',
+            'Cosmetic Gynecology Surgery Mini-Fellowship, ISCG',
+            'Certified Console Robotic Surgeon, Intuitiv Surgical',
         ],
         certifications: [
-            'Board Certified Cosmetic Gynecologist',
-            'Attending Physician, Richmond University Medical Center',
-            'Associate Director of Gynecology, Richmond University Medical Center',
+            'Board Certified, Obstetrics and Gynecology (FACOG)',
+            'Board Certified, Pediatric and Adolescent Gynecology (FACOG)',
+            'Certified Cosmetic Gynecology Surgery',
+            'Advanced Laparoscopic & Robotic Surgeon',
         ],
         specialties: [
-            'Cosmetic Gynecology',
-            'Vaginal Rejuvenation',
             'Labiaplasty',
+            'Vaginoplasty',
+            'Clitoral Hood Reduction',
+            'Perineoplasty',
+            'Hymenoplasty',
             'Mommy Makeover',
-            'Body Contouring',
         ],
         philosophy:
-            'Dr. Shats’ philosophy focuses on open communication and trust. She believes that a successful outcome starts with a strong doctor-patient relationship. She takes the time to listen to her patients and explain every step of the process, ensuring they feel comfortable and informed.',
+            'Dr. Shats believes that every woman deserves to feel confident and comfortable in her own skin. Her philosophy focuses on holistic empowerment—addressing both physical and emotional well-being. She advocates for open, honest communication and takes the time to educate her patients, ensuring they feel supported and informed at every stage of their journey. For Dr. Shats, the most rewarding outcome is seeing her patients walk away with renewed self-assurance and a better quality of life.',
+        social: {
+            instagram: 'https://instagram.com/alluringplasticsurgery',
+            facebook: 'https://facebook.com/alluringplasticsurgery',
+            tiktok: 'https://tiktok.com/@alluringplasticsurgery',
+        },
     },
 ]

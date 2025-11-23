@@ -1,7 +1,9 @@
 'use client'
 
 import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from 'lucide-react'
+import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site-config'
+import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 
 export const Footer = () => {
     return (
@@ -68,6 +70,24 @@ export const Footer = () => {
                             <li className='cursor-pointer transition-colors hover:text-white'>
                                 Tummy Tuck
                             </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            Surgeons
+                        </h4>
+                        <ul className='space-y-4 text-base text-stone-400'>
+                            {surgeons.map((surgeon) => (
+                                <li key={surgeon.id}>
+                                    <Link
+                                        href={`/${surgeon.slug}`}
+                                        className='cursor-pointer transition-colors hover:text-white'
+                                    >
+                                        {surgeon.name}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
