@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
+import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
 
@@ -81,23 +82,34 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 </ContainerLayout>
             </section>
 
-            {/* Introduction Section */}
-            <section className='py-16 lg:py-24'>
-                <ContainerLayout>
-                    <div className='mx-auto max-w-3xl'>
-                        <p className='text-muted-foreground text-lg leading-relaxed'>
-                            At Alluring Plastic Surgery, we take pride in
-                            delivering life-changing results that enhance our
-                            patients&apos; natural beauty. Explore our gallery
-                            of real patient transformations to see the
-                            incredible outcomes from procedures like Brazilian
-                            Butt Lift, Breast Augmentation, Rhinoplasty, and
-                            more. Each photo reflects the personalized care and
-                            attention to detail we bring to every surgery.
-                        </p>
-                    </div>
-                </ContainerLayout>
-            </section>
+            {/* Content Section - Markdown or Fallback Introduction */}
+            {procedure.content ? (
+                <section className='py-16 lg:py-24'>
+                    <ContainerLayout>
+                        <div className='prose prose-neutral prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-h1:text-3xl prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-snug prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:leading-snug prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-muted-foreground prose-li:mb-2 prose-blockquote:border-l-4 prose-blockquote:border-primary/20 prose-blockquote:bg-muted/30 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-code:bg-muted prose-code:text-foreground prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-transparent prose-pre:p-4 prose-pre:my-6 prose-pre:border prose-pre:border-border prose-pre:rounded-lg prose-a:text-foreground prose-a:underline prose-a:decoration-muted-foreground/50 prose-a:underline-offset-4 hover:prose-a:decoration-foreground prose-strong:text-foreground prose-strong:font-semibold mx-auto max-w-none'>
+                            <PostMarkdown content={procedure.content} />
+                        </div>
+                    </ContainerLayout>
+                </section>
+            ) : (
+                <section className='py-16 lg:py-24'>
+                    <ContainerLayout>
+                        <div className='mx-auto max-w-3xl'>
+                            <p className='text-muted-foreground text-lg leading-relaxed'>
+                                At Alluring Plastic Surgery, we take pride in
+                                delivering life-changing results that enhance
+                                our patients&apos; natural beauty. Explore our
+                                gallery of real patient transformations to see
+                                the incredible outcomes from procedures like
+                                Brazilian Butt Lift, Breast Augmentation,
+                                Rhinoplasty, and more. Each photo reflects the
+                                personalized care and attention to detail we
+                                bring to every surgery.
+                            </p>
+                        </div>
+                    </ContainerLayout>
+                </section>
+            )}
 
             {/* FAQs Section */}
             {procedure.faqs && procedure.faqs.length > 0 && (

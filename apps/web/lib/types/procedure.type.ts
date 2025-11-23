@@ -13,6 +13,7 @@ export interface Procedure {
     keywords?: string[]
     category?: 'face' | 'breast' | 'body' | 'combined'
     faqs?: ProcedureFAQ[]
+    content?: string // Markdown content for the main procedure description
     // We can add more detailed fields later for the content sections
     details?: {
         intro: string
