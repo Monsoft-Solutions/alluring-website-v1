@@ -1,10 +1,11 @@
 'use client'
 
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import {
     Plane,
     Shield,
-    Clock,
     Sparkles,
     CalendarCheck,
     HeartHandshake,
@@ -35,12 +36,20 @@ export const WhyUs = () => {
     ]
 
     return (
-        <section className='relative overflow-hidden py-32'>
+        <SectionContainer
+            className='relative overflow-hidden'
+            paddingY='py-32'
+            variant='default'
+        >
             {/* Background Decor */}
             <div className='absolute inset-0 bg-stone-100'></div>
             <div className="absolute top-0 left-0 h-full w-full bg-[url('https://www.transparenttextures.com/patterns/diamond-upholstery.png')] opacity-[0.03]"></div>
 
-            <div className='relative z-10 container mx-auto px-6 md:px-12'>
+            <ContentWrapper
+                size='lg'
+                paddingX='px-6 md:px-12'
+                className='relative z-10'
+            >
                 <div className='grid items-center gap-12 lg:grid-cols-12'>
                     <div className='lg:col-span-5'>
                         <div className='bg-gold-100 text-gold-600 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase'>
@@ -83,7 +92,7 @@ export const WhyUs = () => {
                         ))}
                     </div>
                 </div>
-            </div>
-        </section>
+            </ContentWrapper>
+        </SectionContainer>
     )
 }

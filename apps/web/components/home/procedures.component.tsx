@@ -1,5 +1,7 @@
 'use client'
 
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
@@ -37,27 +39,31 @@ export const Procedures = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null)
 
     return (
-        <section
+        <SectionContainer
             id='procedures'
-            className='overflow-hidden bg-stone-900 py-24 text-white'
+            variant='default'
+            className='overflow-hidden bg-stone-900 text-white'
+            paddingY='py-24'
         >
-            <div className='container mx-auto mb-16 flex flex-col items-end justify-between px-6 md:flex-row md:px-12'>
-                <div className='max-w-xl'>
-                    <span className='text-gold-400 mb-4 block text-sm font-bold tracking-widest uppercase'>
-                        Expertise
-                    </span>
-                    <h2 className='mb-6 font-serif text-4xl text-white md:text-5xl lg:text-6xl'>
-                        Signature Procedures
-                    </h2>
-                    <p className='text-xl font-light text-stone-400'>
-                        Tailored surgical plans for your body, your lifestyle,
-                        and your definition of confidence.
-                    </p>
+            <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                <div className='mb-16 flex flex-col items-end justify-between md:flex-row'>
+                    <div className='max-w-xl'>
+                        <span className='text-gold-400 mb-4 block text-sm font-bold tracking-widest uppercase'>
+                            Expertise
+                        </span>
+                        <h2 className='mb-6 font-serif text-4xl text-white md:text-5xl lg:text-6xl'>
+                            Signature Procedures
+                        </h2>
+                        <p className='text-xl font-light text-stone-400'>
+                            Tailored surgical plans for your body, your
+                            lifestyle, and your definition of confidence.
+                        </p>
+                    </div>
+                    <button className='hover:text-gold-400 hover:border-gold-400 hidden items-center gap-2 border-b border-stone-600 pb-2 text-sm tracking-widest uppercase transition-all md:flex'>
+                        View All Procedures <ArrowRight className='h-4 w-4' />
+                    </button>
                 </div>
-                <button className='hover:text-gold-400 hover:border-gold-400 hidden items-center gap-2 border-b border-stone-600 pb-2 text-sm tracking-widest uppercase transition-all md:flex'>
-                    View All Procedures <ArrowRight className='h-4 w-4' />
-                </button>
-            </div>
+            </ContentWrapper>
 
             {/* Horizontal Scroll Area */}
             <div
@@ -69,11 +75,13 @@ export const Procedures = () => {
                         key={idx}
                         proc={proc}
                         index={idx}
-                        containerRef={scrollContainerRef}
+                        containerRef={
+                            scrollContainerRef as React.RefObject<HTMLDivElement>
+                        }
                     />
                 ))}
             </div>
-        </section>
+        </SectionContainer>
     )
 }
 

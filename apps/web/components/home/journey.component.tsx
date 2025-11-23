@@ -1,6 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 
 export const Journey = () => {
     const steps = [
@@ -22,11 +24,13 @@ export const Journey = () => {
     ]
 
     return (
-        <section
+        <SectionContainer
             id='experience'
-            className='relative z-20 overflow-hidden bg-stone-50 py-24 lg:py-32'
+            variant='default'
+            className='relative z-20 overflow-hidden bg-stone-50'
+            paddingY='py-24 lg:py-32'
         >
-            <div className='container mx-auto px-6 md:px-12'>
+            <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
                 <div className='grid items-start gap-16 lg:grid-cols-2 lg:gap-24'>
                     {/* Left: Sticky Content */}
                     <div className='lg:sticky lg:top-32'>
@@ -44,14 +48,14 @@ export const Journey = () => {
                         >
                             Designed for Women Who Are Done{' '}
                             <span className='text-stone-400 italic'>
-                                "Just Dealing With It."
+                                &quot;Just Dealing With It.&quot;
                             </span>
                         </motion.h2>
                         <p className='max-w-md text-xl leading-relaxed text-stone-600'>
-                            At Alluring Plastic Surgery, we don't just change
-                            how you look. We protect your health, respect your
-                            time, and guide you through every decision with full
-                            transparency.
+                            At Alluring Plastic Surgery, we don&apos;t just
+                            change how you look. We protect your health, respect
+                            your time, and guide you through every decision with
+                            full transparency.
                         </p>
                     </div>
 
@@ -89,7 +93,7 @@ export const Journey = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </ContentWrapper>
+        </SectionContainer>
     )
 }

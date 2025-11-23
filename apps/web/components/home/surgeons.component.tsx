@@ -1,16 +1,24 @@
 'use client'
 
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import { Button } from './button.component'
 import Image from 'next/image'
 
 export const Surgeons = () => {
     return (
-        <section
+        <SectionContainer
             id='surgeons'
-            className='relative overflow-hidden bg-stone-900 py-32 text-white'
+            variant='default'
+            className='relative overflow-hidden bg-stone-900 text-white'
+            paddingY='py-32'
         >
-            <div className='relative z-10 container mx-auto px-6 md:px-12'>
+            <ContentWrapper
+                size='lg'
+                paddingX='px-6 md:px-12'
+                className='relative z-10'
+            >
                 <div className='flex flex-col items-center gap-16 lg:flex-row lg:items-stretch'>
                     {/* Image Stack */}
                     <div className='relative flex min-h-[400px] w-full justify-center lg:block lg:w-1/2'>
@@ -46,10 +54,10 @@ export const Surgeons = () => {
 
                         <div className='mb-12 space-y-8 border-l border-stone-800 pl-8'>
                             <p className='font-serif text-2xl leading-relaxed text-stone-300 italic'>
-                                "Cosmetic surgery is never just about a single
-                                feature. It's about how you feel when you walk
-                                into a room — and knowing we prioritized your
-                                safety at every step."
+                                &quot;Cosmetic surgery is never just about a
+                                single feature. It&apos;s about how you feel
+                                when you walk into a room — and knowing we
+                                prioritized your safety at every step.&quot;
                             </p>
                             <div className='flex flex-col gap-2'>
                                 <span className='text-base font-bold tracking-wider text-white uppercase'>
@@ -74,7 +82,7 @@ export const Surgeons = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </ContentWrapper>
+        </SectionContainer>
     )
 }

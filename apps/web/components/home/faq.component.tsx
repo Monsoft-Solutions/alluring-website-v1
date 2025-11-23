@@ -1,5 +1,7 @@
 'use client'
 
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus, Sparkles } from 'lucide-react'
@@ -64,19 +66,27 @@ export const FAQ = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(0)
 
     return (
-        <section className='relative overflow-hidden bg-stone-100 py-24 lg:py-32'>
+        <SectionContainer
+            className='relative overflow-hidden bg-stone-100'
+            paddingY='py-24 lg:py-32'
+            variant='default'
+        >
             {/* Background Decoration */}
             <div className='pointer-events-none absolute top-0 left-0 h-full w-full overflow-hidden'>
                 <div className='bg-gold-200/20 absolute top-[-10%] right-[-5%] h-[500px] w-[500px] rounded-full blur-3xl'></div>
                 <div className='absolute bottom-[-10%] left-[-10%] h-[600px] w-[600px] rounded-full bg-stone-200/50 blur-3xl'></div>
             </div>
 
-            <div className='relative z-10 container mx-auto px-6 md:px-12'>
+            <ContentWrapper
+                size='lg'
+                paddingX='px-6 md:px-12'
+                className='relative z-10'
+            >
                 <div className='grid gap-12 lg:grid-cols-12 lg:gap-24'>
                     {/* Left Column: Header & Navigation */}
                     <div className='lg:col-span-4'>
                         <div className='lg:sticky lg:top-32'>
-                            <span className='text-gold-500 mb-4 block flex items-center gap-2 text-sm font-bold tracking-widest uppercase'>
+                            <span className='text-gold-500 mb-4 flex items-center gap-2 text-sm font-bold tracking-widest uppercase'>
                                 <Sparkles className='h-3 w-3' />
                                 Clarity & Confidence
                             </span>
@@ -215,7 +225,7 @@ export const FAQ = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </ContentWrapper>
+        </SectionContainer>
     )
 }

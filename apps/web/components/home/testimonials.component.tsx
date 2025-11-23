@@ -1,18 +1,24 @@
 'use client'
 
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Star, Quote } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 export const Testimonials = () => {
     return (
-        <section className='overflow-hidden bg-white py-32'>
-            <div className='container mx-auto px-6 md:px-12'>
+        <SectionContainer
+            variant='default'
+            className='overflow-hidden bg-white'
+            paddingY='py-32'
+        >
+            <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
                 <div className='grid gap-20 lg:grid-cols-2'>
                     <div className='flex flex-col justify-center'>
                         <Quote className='text-gold-200 mb-8 h-16 w-16 fill-current' />
                         <h2 className='mb-8 font-serif text-4xl leading-tight text-stone-900 md:text-5xl'>
-                            "I wish I had <br /> done this sooner."
+                            &quot;I wish I had <br /> done this sooner.&quot;
                         </h2>
                         <p className='mb-8 max-w-md text-lg leading-relaxed text-stone-500'>
                             See why hundreds of patients rate Alluring Plastic
@@ -58,11 +64,11 @@ export const Testimonials = () => {
                                     ))}
                                 </div>
                                 <p className='mb-6 font-serif text-xl leading-relaxed text-stone-700 italic'>
-                                    "From my first call, I never felt rushed or
-                                    pushed. They explained every option, every
-                                    risk. Three months post-surgery, I finally
-                                    feel like my body matches the way I see
-                                    myself."
+                                    &quot;From my first call, I never felt
+                                    rushed or pushed. They explained every
+                                    option, every risk. Three months
+                                    post-surgery, I finally feel like my body
+                                    matches the way I see myself.&quot;
                                 </p>
                                 <div>
                                     <span className='mb-1 block text-sm font-bold tracking-widest text-stone-900 uppercase'>
@@ -88,10 +94,10 @@ export const Testimonials = () => {
                                     ))}
                                 </div>
                                 <p className='mb-6 font-serif text-xl leading-relaxed text-stone-700 italic'>
-                                    "My BBL looks natural, not exaggerated. The
-                                    team checked on me constantly after surgery
-                                    and answered every late-night question I
-                                    had."
+                                    &quot;My BBL looks natural, not exaggerated.
+                                    The team checked on me constantly after
+                                    surgery and answered every late-night
+                                    question I had.&quot;
                                 </p>
                                 <div>
                                     <span className='mb-1 block text-sm font-bold tracking-widest text-stone-900 uppercase'>
@@ -105,7 +111,7 @@ export const Testimonials = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </ContentWrapper>
+        </SectionContainer>
     )
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import { SectionContainer } from '../shared/section-container.component'
+import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
@@ -47,8 +49,13 @@ const GalleryCard = ({
 
 export const BeforeAfter = () => {
     return (
-        <section id='gallery' className='bg-stone-50 py-32'>
-            <div className='container mx-auto px-6 md:px-12'>
+        <SectionContainer
+            id='gallery'
+            variant='default'
+            className='bg-stone-50'
+            paddingY='py-32'
+        >
+            <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
                 <div className='mx-auto mb-20 max-w-3xl text-center'>
                     <span className='text-gold-500 mb-3 block text-sm font-bold tracking-widest uppercase'>
                         The Evidence
@@ -93,7 +100,7 @@ export const BeforeAfter = () => {
                         View Full Gallery
                     </motion.button>
                 </div>
-            </div>
-        </section>
+            </ContentWrapper>
+        </SectionContainer>
     )
 }
