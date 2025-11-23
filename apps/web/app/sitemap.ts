@@ -18,6 +18,7 @@ import {
     getActiveTagSlugs,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
+import { procedures } from '@/lib/data/procedures.data'
 
 /**
  * Get the base URL for the site
@@ -107,6 +108,35 @@ async function createDynamicRoutes(): Promise<SitemapRoute[]> {
                     priority: 0.6,
                 })),
             ]
+        },
+    })
+
+    // Procedures main listing page
+    dynamicRoutes.push({
+        path: '/procedures',
+        getEntries: async () => {
+            return [
+                {
+                    url: '/procedures',
+                    lastModified: new Date().toISOString(),
+                    changeFrequency: 'monthly',
+                    priority: 0.9,
+                },
+            ]
+        },
+    })
+
+    // Procedure detail pages
+    dynamicRoutes.push({
+        path: '/procedures/detail',
+        getEntries: async () => {
+            const now = new Date().toISOString()
+            return procedures.map((procedure) => ({
+                url: `/procedures/${procedure.slug}`,
+                lastModified: now,
+                changeFrequency: 'monthly' as const,
+                priority: 0.8,
+            }))
         },
     })
 

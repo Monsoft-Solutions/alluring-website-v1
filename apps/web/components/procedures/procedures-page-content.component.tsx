@@ -1,0 +1,218 @@
+'use client'
+
+import { Procedure } from '@/lib/types/procedure.type'
+import { useState } from 'react'
+import { ContainerLayout } from '@/components/container-layout.component'
+import { CategoryNav } from './category-nav.component'
+import { ProcedureHero } from './procedure-hero.component'
+import { ProceduresGrid } from './procedures-grid.component'
+import { FeatureCard } from '@/components/shared/feature-card.component'
+import { CTASection } from '@/components/shared/cta-section.component'
+import { siteConfig } from '@/lib/data/site-config'
+import { Shield, UserCheck, HeartHandshake, Star } from 'lucide-react'
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@workspace/ui/components/accordion'
+
+interface ProceduresPageContentProps {
+    procedures: Procedure[]
+}
+
+export function ProceduresPageContent({
+    procedures,
+}: ProceduresPageContentProps) {
+    const [activeCategory, setActiveCategory] = useState('all')
+
+    return (
+        <>
+            <ProcedureHero />
+
+            <CategoryNav
+                activeCategory={activeCategory}
+                onSelectCategory={setActiveCategory}
+            />
+
+            <section className='py-24 lg:py-32'>
+                <ContainerLayout>
+                    <div className='mb-16 max-w-3xl'>
+                        <div className='mb-4 flex items-center gap-3'>
+                            <span className='bg-gold-400 h-[1px] w-12'></span>
+                            <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
+                                Excellence in Aesthetics
+                            </span>
+                        </div>
+                        <h2 className='mb-6 font-serif text-4xl text-stone-900 md:text-5xl'>
+                            Curated Procedures
+                        </h2>
+                        <p className='text-xl leading-relaxed font-light text-stone-600'>
+                            At <strong>Alluring Plastic Surgery</strong>, we
+                            believe in delivering results that help you feel
+                            confident, beautiful, and empowered. Whether
+                            you&apos;re looking for subtle enhancements or
+                            transformative changes, our expert team guides you
+                            every step of the way.
+                        </p>
+                    </div>
+
+                    <ProceduresGrid
+                        procedures={procedures}
+                        activeCategory={activeCategory}
+                    />
+                </ContainerLayout>
+            </section>
+
+            {/* Why Choose Us Section */}
+            <section className='bg-stone-50 py-24 lg:py-32'>
+                <ContainerLayout>
+                    <div className='mb-16 text-center'>
+                        <span className='text-gold-500 mb-4 block text-sm font-bold tracking-[0.2em] uppercase'>
+                            The Alluring Difference
+                        </span>
+                        <h2 className='mb-6 font-serif text-4xl text-stone-900 md:text-5xl'>
+                            Why Choose Alluring Plastic Surgery?
+                        </h2>
+                        <p className='mx-auto max-w-2xl text-xl font-light text-stone-600'>
+                            Experience the difference of world-class care,
+                            safety, and exceptional results in a luxury setting.
+                        </p>
+                    </div>
+
+                    <div className='mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
+                        <FeatureCard
+                            icon={UserCheck}
+                            title='Board-Certified Surgeons'
+                            description='Led by Dr. Victoria Karlinsky, our team consists of highly skilled, board-certified surgeons.'
+                            iconVariant='accent' // Using accent which maps to gold typically or custom
+                            className='border-stone-100 bg-white'
+                        />
+                        <FeatureCard
+                            icon={Shield}
+                            title='State-of-the-Art Facility'
+                            description='Our cutting-edge facilities ensure your procedure is performed with the highest level of safety.'
+                            iconVariant='accent'
+                            className='border-stone-100 bg-white'
+                        />
+                        <FeatureCard
+                            icon={HeartHandshake}
+                            title='Personalized Care'
+                            description='Your journey is unique. We provide a tailored approach to meet your specific aesthetic goals.'
+                            iconVariant='accent'
+                            className='border-stone-100 bg-white'
+                        />
+                        <FeatureCard
+                            icon={Star}
+                            title='Natural Results'
+                            description='We prioritize results that look and feel natural, enhancing your inherent beauty.'
+                            iconVariant='accent'
+                            className='border-stone-100 bg-white'
+                        />
+                    </div>
+                </ContainerLayout>
+            </section>
+
+            {/* FAQ Section */}
+            <section className='py-24 lg:py-32'>
+                <ContainerLayout>
+                    <div className='grid gap-16 lg:grid-cols-2'>
+                        <div>
+                            <span className='text-gold-500 mb-4 block text-sm font-bold tracking-[0.2em] uppercase'>
+                                Common Questions
+                            </span>
+                            <h2 className='mb-8 font-serif text-4xl text-stone-900'>
+                                Frequently Asked Questions
+                            </h2>
+                            <p className='mb-8 text-lg leading-relaxed font-light text-stone-600'>
+                                We understand that considering plastic surgery
+                                is a big decision. Here are answers to some of
+                                the most common questions our patients ask. If
+                                you don&apos;t see your question here, please
+                                don&apos;t hesitate to contact us.
+                            </p>
+                        </div>
+
+                        <Accordion type='single' collapsible className='w-full'>
+                            <AccordionItem
+                                value='item-1'
+                                className='border-stone-200'
+                            >
+                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
+                                    What types of procedures do you specialize
+                                    in?
+                                </AccordionTrigger>
+                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
+                                    We specialize in a comprehensive range of
+                                    cosmetic procedures including Breast
+                                    Augmentation, Brazilian Butt Lift (BBL),
+                                    Tummy Tucks, Mommy Makeovers, Liposuction,
+                                    Rhinoplasty, and Facelifts.
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem
+                                value='item-2'
+                                className='border-stone-200'
+                            >
+                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
+                                    Is Dr. Karlinsky board-certified?
+                                </AccordionTrigger>
+                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
+                                    Yes, Dr. Victoria Karlinsky is a
+                                    board-certified cosmetic and general surgeon
+                                    and a Fellow of the American College of
+                                    Surgeons (FACS). She is also a member of the
+                                    American Academy of Cosmetic Surgery.
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem
+                                value='item-3'
+                                className='border-stone-200'
+                            >
+                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
+                                    Do you offer financing options?
+                                </AccordionTrigger>
+                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
+                                    Yes, we believe luxury surgeries should be
+                                    accessible. We offer flexible financing
+                                    options to help you manage the cost of your
+                                    procedure. Our team can assist you in
+                                    finding a plan that fits your budget.
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem
+                                value='item-4'
+                                className='border-stone-200'
+                            >
+                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
+                                    How do I book a consultation?
+                                </AccordionTrigger>
+                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
+                                    Booking a consultation is easy! You can fill
+                                    out our contact form, call us directly, or
+                                    request a virtual consultation. We&apos;ll
+                                    discuss your goals and help you take the
+                                    next step.
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                </ContainerLayout>
+            </section>
+
+            {/* CTA Section */}
+            <CTASection
+                heading='Ready to Begin Your Transformation?'
+                description='Schedule a free consultation with our expert surgeons to discuss your goals and create a personalized treatment plan.'
+                primaryButton={{
+                    text: 'Schedule Consultation',
+                    href: '/contact',
+                }}
+                secondaryButton={{
+                    text: 'Call Us Now',
+                    href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
+                }}
+            />
+        </>
+    )
+}

@@ -26,7 +26,7 @@ export const Header = () => {
     }, [])
 
     const navLinks = [
-        { label: 'Procedures', href: '#procedures' },
+        { label: 'Procedures', href: '/procedures' },
         { label: 'Gallery', href: '#gallery' },
         { label: 'The Experience', href: '#experience' },
     ]
