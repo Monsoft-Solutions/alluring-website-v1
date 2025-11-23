@@ -9,7 +9,7 @@ export const SurgeonCTA = () => {
     return (
         <SectionContainer className='relative overflow-hidden bg-white py-24 lg:py-32'>
             <div className='absolute inset-0 opacity-5'>
-                <div className='absolute inset-0 bg-[url("/images/texture-noise.png")]' />
+                <div className='absolute inset-0' />
             </div>
 
             <ContentWrapper size='md' className='relative z-10 text-center'>

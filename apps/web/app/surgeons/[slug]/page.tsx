@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
+import { siteConfig } from '@/lib/data/site-config'
 import { SurgeonHero } from '@/components/surgeons/surgeon-hero.component'
 import { SurgeonBio } from '@/components/surgeons/surgeon-bio.component'
 import { SurgeonCredentials } from '@/components/surgeons/surgeon-credentials.component'
@@ -29,13 +30,24 @@ export async function generateMetadata({
         }
     }
 
+    const ogImage = surgeon.images.featured.startsWith('http')
+        ? surgeon.images.featured
+        : `${siteConfig.seo.siteUrl}${surgeon.images.featured}`
+
     return {
         title: `${surgeon.name} | Alluring Plastic Surgery`,
         description: surgeon.shortBio,
         openGraph: {
             title: `${surgeon.name} | Alluring Plastic Surgery`,
             description: surgeon.shortBio,
-            images: [surgeon.images.featured],
+            images: [
+                {
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: surgeon.name,
+                },
+            ],
         },
     }
 }

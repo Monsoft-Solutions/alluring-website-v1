@@ -41,7 +41,7 @@ export const SurgeonHero = ({ surgeon }: SurgeonHeroProps) => {
         >
             {/* Background Texture */}
             <div className='absolute inset-0 z-0 opacity-20'>
-                <div className='absolute inset-0 bg-[url("/images/texture-noise.png")] opacity-30 mix-blend-overlay' />
+                <div className='absolute inset-0 opacity-30 mix-blend-overlay' />
             </div>
 
             <div className='relative z-10 container mx-auto flex h-full min-h-screen flex-col-reverse items-center px-6 pt-32 pb-16 lg:flex-row lg:justify-between lg:pt-0 lg:pb-0'>
