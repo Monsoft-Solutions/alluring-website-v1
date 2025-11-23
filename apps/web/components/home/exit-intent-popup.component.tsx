@@ -98,7 +98,7 @@ export const ExitIntentPopup = () => {
                                     <Sparkles className='text-gold-400 h-3 w-3' />
                                 </div>
                                 <span className='text-gold-400 text-xs font-bold tracking-widest uppercase'>
-                                    Don't Miss Out
+                                    Don&apos;t Miss Out
                                 </span>
                             </div>
 
