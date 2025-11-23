@@ -14,11 +14,12 @@ export function ProcedureHero() {
                 <div className='pointer-events-none absolute inset-0 z-10 bg-stone-900/30' />
 
                 <Image
-                    src='/images/hero.jpg'
-                    alt='Alluring Plastic Surgery Procedures'
+                    src='/images/procedures-hero-image.jpg'
+                    alt='Beautiful woman - Alluring Plastic Surgery'
                     fill
-                    className='h-full w-full object-cover'
                     priority
+                    className='scale-[1.15] object-cover'
+                    sizes='100vw'
                     quality={90}
                 />
 

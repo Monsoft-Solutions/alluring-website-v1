@@ -15,15 +15,19 @@ const categories = [
 interface CategoryNavProps {
     activeCategory: string
     onSelectCategory: (category: string) => void
+    disableSticky?: boolean
 }
 
 export function CategoryNav({
     activeCategory,
     onSelectCategory,
+    disableSticky = false,
 }: CategoryNavProps) {
     const [isSticky, setIsSticky] = useState(false)
 
     useEffect(() => {
+        if (disableSticky) return
+
         const handleScroll = () => {
             // Adjust threshold based on hero height
             const offset = window.scrollY
@@ -32,13 +36,13 @@ export function CategoryNav({
 
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+    }, [disableSticky])
 
     return (
         <div
             className={cn(
                 'z-40 w-full transition-all duration-500',
-                isSticky
+                !disableSticky && isSticky
                     ? 'fixed top-20 border-b border-stone-200 bg-white/80 py-2 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60'
                     : 'sticky top-0 border-b border-stone-100 bg-white py-4'
             )}

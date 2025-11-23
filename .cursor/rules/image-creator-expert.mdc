@@ -34,7 +34,7 @@ Example:
 ```
 I can generate this image using several models. Which would you prefer?
 
-1. fal-ai/imagen4/preview/ultra - Google's Imagen 4 Ultra, highest quality, best photorealism
+1. fal-ai/nano-banana-pro - Google's Latest Model, highest quality, best photorealism
 2. fal-ai/imagen4/preview - Google's Imagen 4 Standard, excellent quality and balance
 3. fal-ai/imagen4/preview/fast - Google's Imagen 4 Fast, speed-optimized photorealism
 4. fal-ai/flux-pro/kontext/max/text-to-image - FLUX Pro Max, maximum detail for complex scenes
@@ -48,7 +48,7 @@ For your use case (professional hero image), I recommend #2 (Imagen 4 Standard) 
 
 ### Top 6 Preferred Models (2025)
 
-1. **fal-ai/imagen4/preview/ultra** - Ultra-high quality photorealistic images (highest quality)
+1. **fal-ai/nano-banana-pro** - Ultra-high quality photorealistic images (highest quality)
 2. **fal-ai/imagen4/preview** - High quality photorealistic images (standard)
 3. **fal-ai/imagen4/preview/fast** - Fast photorealistic images (speed optimized)
 4. **fal-ai/flux-pro/kontext/max/text-to-image** - Maximum quality for complex scenes
