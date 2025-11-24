@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Button } from './button.component'
+import { Button } from '@workspace/ui/components/button'
 import { ShieldCheck, Star } from 'lucide-react'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 

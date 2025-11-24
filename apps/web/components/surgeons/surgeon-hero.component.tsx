@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
-import { Button } from '../home/button.component'
+import { Button } from '@workspace/ui/components/button'
 import { Surgeon } from '@/lib/types/surgeon.type'
 import { getPhoneLink } from '@/lib/data/site-config'
 

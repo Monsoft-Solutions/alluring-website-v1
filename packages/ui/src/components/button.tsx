@@ -66,7 +66,7 @@ export const Button = ({
             {/* Shine effect for primary/gold buttons */}
             {(effectiveVariant === 'primary' ||
                 effectiveVariant === 'gold') && (
-                <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+                <span className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
             )}
         </>
     )
@@ -112,7 +112,7 @@ export const Button = ({
                     {/* Shine effect for primary/gold buttons */}
                     {(effectiveVariant === 'primary' ||
                         effectiveVariant === 'gold') && (
-                        <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+                        <span className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
                     )}
                 </>
             )

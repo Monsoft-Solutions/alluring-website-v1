@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
-import { Button } from '../home/button.component'
+import { Button } from '@workspace/ui/components/button'
 import { getPhoneLink } from '@/lib/data/site-config'
 
 export const SurgeonCTA = () => {

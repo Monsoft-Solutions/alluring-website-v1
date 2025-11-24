@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Sparkles } from 'lucide-react'
-import { Button } from './button.component'
+import { Button } from '@workspace/ui/components/button'
 
 export const ExitIntentPopup = () => {
     const [isVisible, setIsVisible] = useState(false)
