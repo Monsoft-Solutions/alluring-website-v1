@@ -1,8 +1,9 @@
 'use client'
 
+import { Slot } from '@radix-ui/react-slot'
 import { ArrowRight } from 'lucide-react'
 import { motion, HTMLMotionProps } from 'framer-motion'
-import { ReactNode } from 'react'
+import { ReactNode, cloneElement, isValidElement } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 
 interface ButtonProps extends HTMLMotionProps<'button'> {
@@ -11,6 +12,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
     withArrow?: boolean
     children?: ReactNode
     className?: string
+    asChild?: boolean
 }
 
 export const Button = ({
@@ -19,10 +21,11 @@ export const Button = ({
     size = 'md',
     className = '',
     withArrow = false,
+    asChild = false,
     ...props
 }: ButtonProps) => {
     const baseStyles =
-        'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group'
+        'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group cursor-pointer'
 
     const variants = {
         primary:
@@ -41,18 +44,8 @@ export const Button = ({
         lg: 'px-10 py-5',
     }
 
-    return (
-        <motion.button
-            whileHover={{ scale: 1.0 }}
-            whileTap={{ scale: 0.98 }}
-            className={cn(
-                baseStyles,
-                variants[variant],
-                sizes[size],
-                className
-            )}
-            {...props}
-        >
+    const buttonContent = (
+        <>
             <span className='relative z-10 flex items-center'>
                 {children}
                 {withArrow && (
@@ -64,6 +57,68 @@ export const Button = ({
             {(variant === 'primary' || variant === 'gold') && (
                 <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
             )}
+        </>
+    )
+
+    const buttonClassName = cn(
+        baseStyles,
+        variants[variant],
+        sizes[size],
+        className
+    )
+
+    if (asChild) {
+        // When using asChild, we only pass className to the Slot
+        // The child element (Link/anchor) will receive the className via Slot's merge
+        // We don't pass other button props as they're not valid for links
+
+        // Clone the child element and wrap its content with button effects
+        if (isValidElement(children)) {
+            const childElement = children as React.ReactElement<{
+                children?: ReactNode
+                className?: string
+            }>
+            const childContent = childElement.props.children
+
+            return (
+                <Slot className={buttonClassName}>
+                    {cloneElement(childElement, {
+                        className: cn(
+                            buttonClassName,
+                            childElement.props.className
+                        ),
+                        children: (
+                            <>
+                                <span className='relative z-10 flex items-center'>
+                                    {childContent}
+                                    {withArrow && (
+                                        <ArrowRight className='ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
+                                    )}
+                                </span>
+
+                                {/* Shine effect for primary/gold buttons */}
+                                {(variant === 'primary' ||
+                                    variant === 'gold') && (
+                                    <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+                                )}
+                            </>
+                        ),
+                    })}
+                </Slot>
+            )
+        }
+
+        return <Slot className={buttonClassName}>{children}</Slot>
+    }
+
+    return (
+        <motion.button
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.98 }}
+            className={buttonClassName}
+            {...props}
+        >
+            {buttonContent}
         </motion.button>
     )
 }

@@ -5,6 +5,7 @@ import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
+// TODO: Add a link to the full gallery
 const GalleryCard = ({
     image,
     label,

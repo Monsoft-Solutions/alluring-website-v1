@@ -29,20 +29,28 @@ export const LeadForm = () => {
                     >
                         <div className='grid gap-8 md:grid-cols-2'>
                             <div className='group space-y-2'>
-                                <label className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'>
+                                <label
+                                    htmlFor='fullName'
+                                    className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
+                                >
                                     Full Name
                                 </label>
                                 <input
+                                    id='fullName'
                                     type='text'
                                     className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
                                     placeholder='Jane Doe'
                                 />
                             </div>
                             <div className='group space-y-2'>
-                                <label className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'>
+                                <label
+                                    htmlFor='phone'
+                                    className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
+                                >
                                     Phone
                                 </label>
                                 <input
+                                    id='phone'
                                     type='tel'
                                     className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
                                     placeholder='(555) 555-5555'
@@ -51,10 +59,14 @@ export const LeadForm = () => {
                         </div>
 
                         <div className='group space-y-2'>
-                            <label className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'>
+                            <label
+                                htmlFor='email'
+                                className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
+                            >
                                 Email
                             </label>
                             <input
+                                id='email'
                                 type='email'
                                 className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
                                 placeholder='jane@example.com'
@@ -62,10 +74,16 @@ export const LeadForm = () => {
                         </div>
 
                         <div className='group space-y-2'>
-                            <label className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'>
+                            <label
+                                htmlFor='interestedIn'
+                                className='text-gold-500 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
+                            >
                                 Interested In
                             </label>
-                            <select className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white transition-colors focus:outline-none'>
+                            <select
+                                id='interestedIn'
+                                className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white transition-colors focus:outline-none'
+                            >
                                 <option className='bg-stone-900 text-stone-300'>
                                     Select a procedure
                                 </option>

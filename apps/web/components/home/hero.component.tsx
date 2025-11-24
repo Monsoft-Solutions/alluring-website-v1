@@ -1,8 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { Button } from './button.component'
 import { ShieldCheck, Star } from 'lucide-react'
+import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 export const Hero = () => {
     return (
@@ -92,11 +94,21 @@ export const Hero = () => {
                             </p>
 
                             <div className='mb-10 flex flex-col gap-5 sm:flex-row'>
-                                <Button size='md' withArrow>
-                                    Start Consultation
+                                <Button size='md' withArrow asChild>
+                                    <Link
+                                        href='/contact'
+                                        aria-label='Start your consultation - Navigate to contact page'
+                                    >
+                                        Start Consultation
+                                    </Link>
                                 </Button>
-                                <Button size='md' variant='outline'>
-                                    Call (786) 305-8649
+                                <Button size='md' variant='outline' asChild>
+                                    <a
+                                        href={getPhoneLink()}
+                                        aria-label={`Call us at ${siteConfig.contact.phoneDisplay}`}
+                                    >
+                                        Call (786) 305-8649
+                                    </a>
                                 </Button>
                             </div>
 
