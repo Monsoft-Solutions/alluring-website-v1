@@ -44,7 +44,7 @@ export function ProcedureBenefits({ benefits }: ProcedureBenefitsProps) {
             y: 0,
             transition: {
                 duration: 0.9,
-                ease: [0.22, 1, 0.36, 1], // Custom easing for "luxury" feel
+                ease: [0.22, 1, 0.36, 1] as const, // Custom easing for "luxury" feel
             },
         },
     }
