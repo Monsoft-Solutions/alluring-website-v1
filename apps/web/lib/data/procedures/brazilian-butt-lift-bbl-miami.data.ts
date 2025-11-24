@@ -16,6 +16,67 @@ export const brazilianButtLiftBblMiami: Procedure = {
         'butt augmentation',
         'fat transfer to buttocks',
     ],
+    quickStats: {
+        duration: '3 to 5 Hours',
+        anesthesia: 'General Anesthesia',
+        recovery: '1-2 Weeks Initial',
+        results: 'Long-lasting',
+        inpatientOutpatient: 'Outpatient',
+    },
+    benefits: [
+        {
+            title: 'Natural Enhancement',
+            description:
+                'Uses your own fat rather than synthetic implants for results that move naturally and feel authentic.',
+        },
+        {
+            title: 'Dual Body Contouring',
+            description:
+                'Slims your waist, abdomen, or thighs via liposuction while simultaneously enhancing your buttocks.',
+        },
+        {
+            title: 'Customizable Outcomes',
+            description:
+                'Tailored to your unique anatomy and goals, from subtle fullness to dramatic transformation.',
+        },
+        {
+            title: 'Minimal Scarring',
+            description:
+                'Uses tiny incisions for liposuction and injection that heal into nearly invisible marks.',
+        },
+    ],
+    process: [
+        {
+            step: 1,
+            title: 'Consultation & Plan',
+            description:
+                'Your surgeon assesses your anatomy, discusses your goals, and creates a personalized surgical plan.',
+        },
+        {
+            step: 2,
+            title: 'Liposuction',
+            description:
+                'Excess fat is gently harvested from donor areas (abdomen, flanks, thighs) to contour your figure.',
+        },
+        {
+            step: 3,
+            title: 'Purification',
+            description:
+                'Harvested fat is carefully processed to isolate the healthiest cells for transfer.',
+        },
+        {
+            step: 4,
+            title: 'Strategic Injection',
+            description:
+                'Purified fat is injected into the buttocks at various depths to create lift, volume, and shape.',
+        },
+        {
+            step: 5,
+            title: 'Recovery & Reveal',
+            description:
+                'Follow post-op care instructions to protect the fat grafts. Final results emerge as swelling subsides.',
+        },
+    ],
     content: `## Brazilian Butt Lift Miami Florida: Expert Fat Transfer for Lasting Curves
 
 If you've been dreaming of a fuller, more sculpted silhouette that turns heads on South Beach or fits your favorite swimwear with newfound confidence, a **Brazilian Butt Lift** in Miami might be the transformative solution you're seeking. This **procedure** has become one of the most popular **body contouring** options for **patients** who want natural-looking curves without implants—using your own **fat** to enhance and reshape your **buttocks** while slimming areas like your abdomen, thighs, or flanks.

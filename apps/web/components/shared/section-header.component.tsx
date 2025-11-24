@@ -14,7 +14,6 @@
  * />
  * ```
  */
-import { Badge } from '@workspace/ui/components/badge'
 import { cn } from '@workspace/ui/lib/utils'
 
 import type {
@@ -28,7 +27,7 @@ import type {
  */
 const headingStyles: Record<HeadingLevel, string> = {
     h1: 'text-4xl md:text-5xl lg:text-6xl font-bold',
-    h2: 'text-3xl md:text-4xl lg:text-5xl font-bold',
+    h2: 'text-3xl md:text-4xl lg:text-5xl',
     h3: 'text-2xl md:text-3xl lg:text-4xl font-semibold',
     h4: 'text-xl md:text-2xl font-semibold',
     h5: 'text-lg md:text-xl font-semibold',
@@ -63,6 +62,7 @@ export function SectionHeader({
     descriptionClassName,
     badge,
     spacing = 'default',
+    sticky = false,
 }: SectionHeaderProps) {
     const isBadgeString = typeof badge === 'string'
 
@@ -75,6 +75,8 @@ export function SectionHeader({
                 spacingStyles[spacing],
                 // Alignment
                 alignmentStyles[align],
+                // Sticky behavior
+                sticky && 'lg:sticky lg:top-32',
                 // Custom classes
                 className
             )}
@@ -83,12 +85,9 @@ export function SectionHeader({
             {badge && (
                 <div className='inline-flex'>
                     {isBadgeString ? (
-                        <Badge
-                            variant='secondary'
-                            className='text-xs font-medium'
-                        >
+                        <span className='text-gold-500 block text-sm font-bold tracking-[0.2em] uppercase'>
                             {badge}
-                        </Badge>
+                        </span>
                     ) : (
                         badge
                     )}
@@ -99,7 +98,7 @@ export function SectionHeader({
             <Heading
                 className={cn(
                     headingStyles[Heading],
-                    'text-foreground tracking-tight',
+                    'font-serif tracking-tight text-stone-900',
                     titleClassName
                 )}
             >
@@ -110,7 +109,7 @@ export function SectionHeader({
             {description && (
                 <div
                     className={cn(
-                        'text-muted-foreground max-w-3xl text-base md:text-lg',
+                        'max-w-md text-lg leading-relaxed font-light text-stone-600',
                         align === 'center' && 'mx-auto',
                         descriptionClassName
                     )}

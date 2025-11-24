@@ -67,4 +67,10 @@ export interface SectionHeaderProps {
      * @default 'default'
      */
     readonly spacing?: 'tight' | 'default' | 'loose'
+
+    /**
+     * Whether the section header should be sticky on large screens
+     * @default false
+     */
+    readonly sticky?: boolean
 }

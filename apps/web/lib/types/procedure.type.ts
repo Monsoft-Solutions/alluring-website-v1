@@ -3,6 +3,26 @@ export interface ProcedureFAQ {
     answer: string
 }
 
+export interface ProcedureBenefit {
+    title: string
+    description: string
+    iconName?: string // For dynamic icon loading if needed
+}
+
+export interface ProcedureStep {
+    title: string
+    description: string
+    step: number
+}
+
+export interface ProcedureStats {
+    duration: string
+    anesthesia: string
+    recovery: string
+    results: string
+    inpatientOutpatient?: string
+}
+
 export interface Procedure {
     title: string
     slug: string
@@ -14,7 +34,13 @@ export interface Procedure {
     category?: 'face' | 'breast' | 'body' | 'combined'
     faqs?: ProcedureFAQ[]
     content?: string // Markdown content for the main procedure description
-    // We can add more detailed fields later for the content sections
+
+    // Structured content for redesign
+    quickStats?: ProcedureStats
+    benefits?: ProcedureBenefit[]
+    process?: ProcedureStep[]
+
+    // Legacy/Optional details
     details?: {
         intro: string
         benefits: string[]
