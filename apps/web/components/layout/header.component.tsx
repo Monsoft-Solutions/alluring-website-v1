@@ -94,7 +94,26 @@ export const Header = () => {
                                 setIsProceduresDropdownOpen(false)
                             }
                         >
-                            <button className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'>
+                            <button
+                                onClick={() =>
+                                    setIsProceduresDropdownOpen(
+                                        !isProceduresDropdownOpen
+                                    )
+                                }
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault()
+                                        setIsProceduresDropdownOpen(
+                                            !isProceduresDropdownOpen
+                                        )
+                                    } else if (e.key === 'Escape') {
+                                        setIsProceduresDropdownOpen(false)
+                                    }
+                                }}
+                                aria-haspopup='true'
+                                aria-expanded={isProceduresDropdownOpen}
+                                className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                            >
                                 Procedures
                                 <ChevronDown
                                     className={`ml-1 h-3 w-3 transition-transform duration-200 ${
@@ -148,7 +167,26 @@ export const Header = () => {
                                 setIsSurgeonsDropdownOpen(false)
                             }
                         >
-                            <button className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'>
+                            <button
+                                onClick={() =>
+                                    setIsSurgeonsDropdownOpen(
+                                        !isSurgeonsDropdownOpen
+                                    )
+                                }
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault()
+                                        setIsSurgeonsDropdownOpen(
+                                            !isSurgeonsDropdownOpen
+                                        )
+                                    } else if (e.key === 'Escape') {
+                                        setIsSurgeonsDropdownOpen(false)
+                                    }
+                                }}
+                                aria-haspopup='true'
+                                aria-expanded={isSurgeonsDropdownOpen}
+                                className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                            >
                                 Surgeons
                                 <ChevronDown
                                     className={`ml-1 h-3 w-3 transition-transform duration-200 ${
