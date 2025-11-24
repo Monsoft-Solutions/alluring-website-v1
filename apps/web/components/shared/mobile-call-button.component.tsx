@@ -3,6 +3,7 @@
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import { Phone } from 'lucide-react'
+import Link from 'next/link'
 
 import type { MobileCallButtonProps } from '@/lib/types/mobile-call-button/mobile-call-button-props.type'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
@@ -76,7 +77,7 @@ export function MobileCallButton({
                     'pb-safe'
                 )}
             >
-                <a
+                <Link
                     href={phoneLink}
                     className={cn(
                         // Full width container
@@ -103,14 +104,14 @@ export function MobileCallButton({
                     >
                         {renderContent()}
                     </div>
-                </a>
+                </Link>
             </div>
         )
     }
 
     // Non-banner mode (floating button)
     return (
-        <a
+        <Link
             href={phoneLink}
             className={cn(
                 // Base styles - fixed positioning
@@ -144,6 +145,6 @@ export function MobileCallButton({
             >
                 {renderContent()}
             </Button>
-        </a>
+        </Link>
     )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Button } from '../home/button.component'
@@ -29,11 +30,11 @@ export const SurgeonCTA = () => {
                     <Button variant='primary' size='lg' withArrow>
                         Schedule Consultation
                     </Button>
-                    <a href={getPhoneLink()}>
+                    <Link href={getPhoneLink()}>
                         <Button variant='outline' size='lg'>
                             Call (786) 305-8649
                         </Button>
-                    </a>
+                    </Link>
                 </div>
             </ContentWrapper>
         </SectionContainer>

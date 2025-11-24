@@ -36,6 +36,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
+import Link from 'next/link'
 import { FAQSchema } from '@workspace/seo/react'
 
 import type { FaqItem, FaqCtaConfig } from '@/lib/types/shared/faq.type'
@@ -228,12 +229,12 @@ export function FAQComponent({
                                     {ctaConfig.description}
                                 </p>
                             </div>
-                            <a
+                            <Link
                                 href={`tel:${ctaConfig.phoneNumber}`}
                                 className='bg-gold-500 hover:bg-gold-400 mt-6 inline-flex items-center justify-center px-6 py-3 text-sm font-bold tracking-widest text-white uppercase transition-colors md:mt-0'
                             >
                                 {ctaConfig.buttonText}
-                            </a>
+                            </Link>
                         </div>
                     )}
                 </ContentWrapper>

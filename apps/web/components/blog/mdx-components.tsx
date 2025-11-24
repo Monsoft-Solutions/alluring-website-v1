@@ -16,14 +16,14 @@ export function getMDXComponents(): MDXComponents {
             // External links
             if (href?.startsWith('http')) {
                 return (
-                    <a
+                    <Link
                         href={href}
                         target='_blank'
                         rel='noopener noreferrer'
                         {...props}
                     >
                         {children}
-                    </a>
+                    </Link>
                 )
             }
             // Internal links

@@ -24,7 +24,7 @@ export const Footer = () => {
                             {siteConfig.social
                                 .filter((s) => s.platform === 'instagram')
                                 .map((social) => (
-                                    <a
+                                    <Link
                                         key={social.platform}
                                         href={social.url}
                                         target='_blank'
@@ -32,12 +32,12 @@ export const Footer = () => {
                                         aria-label={social.label}
                                     >
                                         <Instagram className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
-                                    </a>
+                                    </Link>
                                 ))}
                             {siteConfig.social
                                 .filter((s) => s.platform === 'facebook')
                                 .map((social) => (
-                                    <a
+                                    <Link
                                         key={social.platform}
                                         href={social.url}
                                         target='_blank'
@@ -45,7 +45,7 @@ export const Footer = () => {
                                         aria-label={social.label}
                                     >
                                         <Facebook className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
-                                    </a>
+                                    </Link>
                                 ))}
                             <Youtube className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
                         </div>
@@ -125,20 +125,20 @@ export const Footer = () => {
                                     {siteConfig.contact.postalCode}
                                 </span>
                             </div>
-                            <a
+                            <Link
                                 href={`tel:${siteConfig.contact.phone.replace(/[^0-9]/g, '')}`}
                                 className='flex cursor-pointer items-center transition-colors hover:text-white'
                             >
                                 <Phone className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
                                 <span>{siteConfig.contact.phoneDisplay}</span>
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                                 href={`mailto:${siteConfig.contact.email}`}
                                 className='flex cursor-pointer items-center transition-colors hover:text-white'
                             >
                                 <Mail className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
                                 <span>{siteConfig.contact.email}</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

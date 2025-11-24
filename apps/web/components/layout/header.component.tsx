@@ -131,14 +131,14 @@ export const Header = () => {
                         </div>
 
                         {navLinks.map((link) => (
-                            <a
+                            <Link
                                 key={link.label}
                                 href={link.href}
                                 className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
                             >
                                 {link.label}
                                 <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
-                            </a>
+                            </Link>
                         ))}
                         {/* Surgeons Dropdown */}
                         <div
@@ -187,12 +187,12 @@ export const Header = () => {
 
                     {/* CTA Right */}
                     <div className='hidden items-center space-x-8 lg:flex'>
-                        <a
+                        <Link
                             href='tel:7863058649'
                             className='hover:text-gold-500 flex items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors'
                         >
                             (786) 305-8649
-                        </a>
+                        </Link>
                         <Button size='sm' variant='primary'>
                             Request Consult
                         </Button>
@@ -311,17 +311,22 @@ export const Header = () => {
                             </motion.div>
 
                             {navLinks.map((link, idx) => (
-                                <motion.a
+                                <motion.div
                                     key={link.label}
-                                    href={link.href}
-                                    onClick={() => setIsMobileMenuOpen(false)}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2 + idx * 0.1 }}
-                                    className='hover:text-gold-500 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
                                 >
-                                    {link.label}
-                                </motion.a>
+                                    <Link
+                                        href={link.href}
+                                        onClick={() =>
+                                            setIsMobileMenuOpen(false)
+                                        }
+                                        className='hover:text-gold-500 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </motion.div>
                             ))}
                             {/* Mobile Surgeons Dropdown */}
                             <motion.div

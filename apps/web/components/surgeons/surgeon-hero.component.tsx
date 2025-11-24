@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRef } from 'react'
 import { Button } from '../home/button.component'
 import { Surgeon } from '@/lib/types/surgeon.type'
@@ -106,7 +107,7 @@ export const SurgeonHero = ({ surgeon }: SurgeonHeroProps) => {
                         <Button variant='gold' size='lg' withArrow>
                             Book Consultation
                         </Button>
-                        <a href={getPhoneLink()}>
+                        <Link href={getPhoneLink()}>
                             <Button
                                 variant='outline'
                                 className='border-stone-700 text-white hover:border-white hover:text-white'
@@ -114,7 +115,7 @@ export const SurgeonHero = ({ surgeon }: SurgeonHeroProps) => {
                             >
                                 Call Now
                             </Button>
-                        </a>
+                        </Link>
                     </motion.div>
                 </div>
 
