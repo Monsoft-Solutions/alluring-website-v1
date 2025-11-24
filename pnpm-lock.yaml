@@ -293,9 +293,6 @@ importers:
       '@workspace/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
       next:
         specifier: ^16.0.4
         version: 16.0.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
