@@ -165,13 +165,13 @@ export async function POST(
         // Handle Zod validation errors
         if (error instanceof ZodError) {
             // Extract first error message for user-friendly response
-            const firstError = error.errors[0]
+            const firstError = error.issues[0]
             const errorMessage = firstError
                 ? `${firstError.path.join('.')}: ${firstError.message}`
                 : 'Validation failed'
 
             console.error('Validation error:', {
-                errors: error.errors,
+                errors: error.issues,
                 timestamp: new Date().toISOString(),
             })
 
