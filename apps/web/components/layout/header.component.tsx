@@ -134,10 +134,26 @@ export const Header = () => {
                                         className='absolute top-full -left-4 mt-2 min-w-[260px] rounded-md border border-stone-200 bg-white shadow-lg'
                                     >
                                         <div className='max-h-[80vh] overflow-y-auto py-2'>
+                                            <Link
+                                                href='/procedures'
+                                                onClick={() =>
+                                                    setIsProceduresDropdownOpen(
+                                                        false
+                                                    )
+                                                }
+                                                className='hover:text-gold-500 block border-b border-stone-200 px-4 py-2 text-sm font-bold text-stone-900 transition-colors hover:bg-stone-50'
+                                            >
+                                                View All Procedures
+                                            </Link>
                                             {procedureLinks.map((link) => (
                                                 <Link
                                                     key={link.href}
                                                     href={link.href}
+                                                    onClick={() =>
+                                                        setIsProceduresDropdownOpen(
+                                                            false
+                                                        )
+                                                    }
                                                     className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
                                                 >
                                                     {link.label}
@@ -312,6 +328,34 @@ export const Header = () => {
                                             transition={{ duration: 0.2 }}
                                             className='mt-4 space-y-4 overflow-hidden'
                                         >
+                                            <motion.div
+                                                initial={{
+                                                    opacity: 0,
+                                                    x: -20,
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    x: 0,
+                                                }}
+                                                transition={{
+                                                    delay: 0,
+                                                }}
+                                            >
+                                                <Link
+                                                    href='/procedures'
+                                                    onClick={() => {
+                                                        setIsMobileMenuOpen(
+                                                            false
+                                                        )
+                                                        setIsProceduresMobileOpen(
+                                                            false
+                                                        )
+                                                    }}
+                                                    className='hover:text-gold-500 block text-center font-serif text-3xl font-bold text-stone-900 transition-colors md:text-4xl'
+                                                >
+                                                    View All Procedures
+                                                </Link>
+                                            </motion.div>
                                             {procedureLinks.map((link, idx) => (
                                                 <motion.div
                                                     key={link.href}
@@ -324,7 +368,7 @@ export const Header = () => {
                                                         x: 0,
                                                     }}
                                                     transition={{
-                                                        delay: idx * 0.05,
+                                                        delay: (idx + 1) * 0.05,
                                                     }}
                                                 >
                                                     <Link
