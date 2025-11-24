@@ -64,9 +64,6 @@ export function toNextMetadata(
     const base: Metadata = {
         title,
         description,
-        alternates: {
-            canonical: getCanonicalUrl('/'),
-        },
         openGraph,
         twitter,
         robots,
@@ -87,9 +84,11 @@ export function toNextMetadata(
         robots: mergeRobots(base.robots, overrides?.robots),
     }
 
+    // Only set canonical URL when explicitly provided
     if (overrides?.canonical) {
-        merged.alternates = merged.alternates ?? {}
-        merged.alternates.canonical = getCanonicalUrl(overrides.canonical)
+        merged.alternates = {
+            canonical: getCanonicalUrl(overrides.canonical),
+        }
     }
 
     return merged
