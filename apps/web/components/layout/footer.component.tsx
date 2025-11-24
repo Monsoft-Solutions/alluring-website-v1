@@ -149,24 +149,24 @@ export const Footer = () => {
                         Surgery. All rights reserved.
                     </p>
                     <div className='mt-4 flex space-x-8 md:mt-0'>
-                        <a
+                        <Link
                             href='/privacy'
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Privacy Policy
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href='/terms'
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Terms of Service
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href='/sitemap'
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Sitemap
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -49,9 +49,8 @@ export function SignatureProcedureCard({
     // Range is -10% to 10% to create a subtle depth effect
     // Only apply parallax if containerRef is provided
     const staticX = useMotionValue('0%')
-    const x = containerRef
-        ? useTransform(scrollXProgress, [0, 1], ['-10%', '10%'])
-        : staticX
+    const parallaxX = useTransform(scrollXProgress, [0, 1], ['-10%', '10%'])
+    const x = containerRef ? parallaxX : staticX
 
     const categoryDisplay = getCategoryDisplayName(procedure.category)
     const imageSrc = procedure.image || '/images/placeholder.jpg'

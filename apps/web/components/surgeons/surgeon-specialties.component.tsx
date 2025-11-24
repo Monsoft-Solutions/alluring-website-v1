@@ -3,7 +3,7 @@
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Surgeon } from '@/lib/types/surgeon.type'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 

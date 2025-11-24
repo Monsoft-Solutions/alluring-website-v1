@@ -12,7 +12,6 @@ import { ProcedureStats } from '@/components/procedures/procedure-stats.componen
 import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.component'
 import { ProcedureProcess } from '@/components/procedures/procedure-process.component'
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
-import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
 
 interface ProcedurePageProps {
