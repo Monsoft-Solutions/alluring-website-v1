@@ -21,6 +21,10 @@ export const SurgeonBio = ({ surgeon }: SurgeonBioProps) => {
 
     const y = useTransform(scrollYProgress, [0, 1], [100, -100])
 
+    // Safely extract last name token for background text
+    const parts = surgeon.name.trim().split(/\s+/).filter(Boolean)
+    const bgText = parts.length > 1 ? parts[parts.length - 1] : surgeon.name
+
     return (
         <SectionContainer className='relative overflow-hidden bg-white'>
             {/* Decorative Background Text */}
@@ -28,7 +32,7 @@ export const SurgeonBio = ({ surgeon }: SurgeonBioProps) => {
                 style={{ y }}
                 className='pointer-events-none absolute top-20 -left-20 font-serif text-[20vw] leading-none whitespace-nowrap text-stone-100 opacity-60 select-none'
             >
-                {surgeon.name.split(' ')[1]}
+                {bgText}
             </motion.div>
 
             <ContentWrapper size='lg' className='relative z-10'>
