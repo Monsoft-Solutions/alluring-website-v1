@@ -107,15 +107,14 @@ export const SurgeonHero = ({ surgeon }: SurgeonHeroProps) => {
                         <Button variant='gold' size='lg' withArrow>
                             Book Consultation
                         </Button>
-                        <Link href={getPhoneLink()}>
-                            <Button
-                                variant='outline'
-                                className='border-stone-700 text-white hover:border-white hover:text-white'
-                                size='lg'
-                            >
-                                Call Now
-                            </Button>
-                        </Link>
+                        <Button
+                            variant='outline'
+                            className='border-stone-700 text-white hover:border-white hover:text-white'
+                            size='lg'
+                            asChild
+                        >
+                            <Link href={getPhoneLink()}>Call Now</Link>
+                        </Button>
                     </motion.div>
                 </div>
 
