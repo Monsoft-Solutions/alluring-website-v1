@@ -73,9 +73,6 @@ export function ProcedureStats({ stats, className }: ProcedureStatsProps) {
                 className
             )}
         >
-            {/* Subtle grain texture overlay could go here if using an image */}
-            <div className="pointer-events-none absolute inset-0 bg-[url('/images/texture/noise.png')] opacity-5 mix-blend-overlay" />
-
             <ContainerLayout>
                 <motion.div
                     variants={container}
