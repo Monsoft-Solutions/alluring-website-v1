@@ -230,7 +230,7 @@ This is the official website for **Alluring Plastic Surgery**, a luxury cosmetic
 
 ```bash
 git clone <your-repo-url>
-cd alluring-website-1
+cd alluring-website-v1
 ```
 
 2. **Install dependencies**
@@ -318,7 +318,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 📁 Project Structure
 
 ```
-alluring-website-1/
+alluring-website-v1/
 ├── apps/
 │   └── web/                          # Next.js 15 application
 │       ├── app/                      # App Router pages
