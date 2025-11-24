@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { CTASection } from '@/components/shared/cta-section.component'
@@ -13,6 +11,7 @@ import { ProcedureDetailHero } from '@/components/procedures/procedure-detail-he
 import { ProcedureStats } from '@/components/procedures/procedure-stats.component'
 import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.component'
 import { ProcedureProcess } from '@/components/procedures/procedure-process.component'
+import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 
 interface ProcedurePageProps {
@@ -149,27 +148,15 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                             Explore Other Procedures
                         </h2>
                         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                            {relatedProcedures.map((relatedProcedure) => (
-                                <Link
-                                    key={relatedProcedure.slug}
-                                    href={`/procedures/${relatedProcedure.slug}`}
-                                    className='group hover:border-gold-400 relative overflow-hidden rounded-xl border border-stone-200 bg-white p-8 shadow-sm transition-all hover:shadow-md'
-                                >
-                                    <div className='mb-4'>
-                                        <h3 className='group-hover:text-gold-600 mb-3 font-serif text-xl font-medium text-stone-900 transition-colors'>
-                                            {relatedProcedure.title}
-                                        </h3>
-                                        <p className='line-clamp-3 text-sm leading-relaxed text-stone-500'>
-                                            {relatedProcedure.shortDescription ||
-                                                relatedProcedure.description}
-                                        </p>
-                                    </div>
-                                    <div className='text-gold-500 flex items-center gap-2 text-sm font-bold tracking-wider uppercase'>
-                                        Learn More
-                                        <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-1' />
-                                    </div>
-                                </Link>
-                            ))}
+                            {relatedProcedures.map(
+                                (relatedProcedure, index) => (
+                                    <ProcedureCard
+                                        key={relatedProcedure.slug}
+                                        procedure={relatedProcedure}
+                                        index={index}
+                                    />
+                                )
+                            )}
                         </div>
                     </ContainerLayout>
                 </section>
