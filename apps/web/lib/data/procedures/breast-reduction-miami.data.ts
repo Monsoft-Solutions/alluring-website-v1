@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const breastReductionMiami: Procedure = {
     title: 'Breast Reduction Miami',
@@ -191,7 +192,7 @@ If oversized breasts are affecting your physical health, limiting your lifestyle
 
 We invite you to schedule a consultation at **Alluring Plastic Surgery** to discuss how **breast reduction** can transform your daily experience. Our team will answer your questions, address your concerns, and create a surgical plan tailored to your **individual needs**.
 
-**Ready to feel like yourself again? Call (786) 305-8649 today** to book your consultation and discover the life-changing benefits of **breast reduction in Miami**.`,
+**Ready to feel like yourself again? Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to book your consultation and discover the life-changing benefits of **breast reduction in Miami**.`,
     faqs: [
         {
             question: 'What is a breast reduction?',

@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const faceliftMiami: Procedure = {
     title: 'Facelift (Rhytidectomy) Miami',
@@ -186,7 +187,7 @@ Beyond technical skill, our team understands the emotional journey that accompan
 
 Ready to explore your options? If you've been thinking about a **facelift**—whether to restore your youthful appearance, feel more confident in professional settings, or simply look as vibrant as you feel—there's no better time to take action.
 
-At **Alluring Plastic Surgery**, we're committed to helping you achieve your aesthetic goals with skill, care, and integrity. Contact **Alluring Plastic Surgery** today at **(786) 305-8649** to schedule your consultation. Rediscover the face that reflects how you truly feel—youthful, confident, and ready to embrace whatever comes next.`,
+At **Alluring Plastic Surgery**, we're committed to helping you achieve your aesthetic goals with skill, care, and integrity. Contact **Alluring Plastic Surgery** today at **[${siteConfig.contact.phoneDisplay}](${getPhoneLink()})** to schedule your consultation. Rediscover the face that reflects how you truly feel—youthful, confident, and ready to embrace whatever comes next.`,
     faqs: [
         {
             question: 'How much does a facelift cost in Miami?',

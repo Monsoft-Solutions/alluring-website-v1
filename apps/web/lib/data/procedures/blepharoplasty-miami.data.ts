@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const blepharoplastyMiami: Procedure = {
     title: 'Blepharoplasty (Eyelid Surgery) Miami',
@@ -183,7 +184,7 @@ Your eyes tell your story—make sure they're telling the right one. If drooping
 
 At **Alluring Plastic Surgery**, we combine surgical precision with artistic sensibility to deliver results that look natural and feel authentic. Our team is dedicated to making your experience comfortable, transparent, and rewarding from start to finish.
 
-**Ready to see the difference? Contact Alluring Plastic Surgery today at (786) 305-8649** to schedule your personalized **blepharoplasty consultation**. Discover how **eyelid surgery** can help you look as refreshed and confident as you feel—whether you're heading to the beach, the boardroom, or anywhere in between.`,
+**Ready to see the difference? Contact Alluring Plastic Surgery today at [${siteConfig.contact.phoneDisplay}](${getPhoneLink()})** to schedule your personalized **blepharoplasty consultation**. Discover how **eyelid surgery** can help you look as refreshed and confident as you feel—whether you're heading to the beach, the boardroom, or anywhere in between.`,
     faqs: [
         {
             question: 'How much does eyelid surgery cost?',

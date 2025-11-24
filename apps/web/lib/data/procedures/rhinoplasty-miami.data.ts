@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const rhinoplastyMiami: Procedure = {
     title: 'Rhinoplasty (Nose Job) Miami',
@@ -198,7 +199,7 @@ Whether you're considering primary **rhinoplasty** or **revision rhinoplasty**, 
 
 If you've been thinking about **rhinoplasty**—whether to enhance your appearance, improve your breathing, or both—there's no better time to explore your options. You deserve to feel confident and comfortable in your own skin, and **rhinoplasty** can help you get there.
 
-At **Alluring Plastic Surgery**, we're committed to helping you achieve your aesthetic goals with skill, care, and integrity. **Call (786) 305-8649 today to schedule your private consultation**. Together, we'll discuss your concerns, answer your questions, and create a personalized plan to bring your vision to life. Your transformation starts with a single conversation—let's begin.`,
+At **Alluring Plastic Surgery**, we're committed to helping you achieve your aesthetic goals with skill, care, and integrity. **Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today to schedule your private consultation**. Together, we'll discuss your concerns, answer your questions, and create a personalized plan to bring your vision to life. Your transformation starts with a single conversation—let's begin.`,
     faqs: [
         {
             question: 'What is rhinoplasty?',

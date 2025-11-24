@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const breastAugmentationMiami: Procedure = {
     title: 'Breast Augmentation Miami',
@@ -169,7 +170,7 @@ Choosing **breast augmentation** in **Miami** is about more than changing your a
 
 Our team combines surgical excellence with genuine care, ensuring you feel supported, informed, and excited about your results. From your first consultation through your final follow-up, we're committed to making your experience as seamless and rewarding as possible.
 
-**Ready to start your journey? Contact Alluring Plastic Surgery today at (786) 305-8649** to schedule your personalized consultation. Discover how breast augmentation can help you embrace every moment—from sunrise beach walks to confident evenings out—with the curves and self-assurance you've always envisioned.`,
+**Ready to start your journey? Contact Alluring Plastic Surgery today at [${siteConfig.contact.phoneDisplay}](${getPhoneLink()})** to schedule your personalized consultation. Discover how breast augmentation can help you embrace every moment—from sunrise beach walks to confident evenings out—with the curves and self-assurance you've always envisioned.`,
     faqs: [
         {
             question: 'What is breast augmentation, and how does it work?',

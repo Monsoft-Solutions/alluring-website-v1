@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const tummyTuckMiami: Procedure = {
     title: 'Tummy Tuck Miami',
@@ -226,7 +227,7 @@ Beyond surgical expertise, choosing **Alluring Plastic Surgery** means receiving
 
 If you've been dreaming of a flatter, firmer abdomen but haven't been able to achieve it through diet and exercise alone, a **tummy tuck** may be the answer. Whether you're recovering from pregnancy, celebrating major weight loss, or simply want to feel more confident in your body, **Alluring Plastic Surgery** is here to help you achieve your goals.
 
-**Call (786) 305-8649 today** to schedule your consultation and discover how **tummy tuck surgery** can transform your confidence and help you embrace the body you've always wanted. Your journey to a flatter, more confident you starts here.`,
+**Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your consultation and discover how **tummy tuck surgery** can transform your confidence and help you embrace the body you've always wanted. Your journey to a flatter, more confident you starts here.`,
     faqs: [
         {
             question: 'What is a tummy tuck?',

@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const mommyMakeoverMiami: Procedure = {
     title: 'Mommy Makeover Miami',
@@ -204,7 +205,7 @@ We also offer flexible financing options to help make your transformation more a
 
 If you're ready to restore your pre-baby **body** and feel like yourself again, a **Mommy Makeover** might be exactly what you've been searching for. At **Alluring Plastic Surgery**, we're committed to helping you achieve your goals with compassionate care, surgical expertise, and results that help you embrace motherhood with renewed confidence.
 
-**Call (786) 305-8649 today** to schedule your consultation and take the first step toward the transformation you deserve. Your journey back to feeling confident in your **body** starts here.`,
+**Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your consultation and take the first step toward the transformation you deserve. Your journey back to feeling confident in your **body** starts here.`,
     faqs: [
         {
             question: 'What is a mommy makeover?',

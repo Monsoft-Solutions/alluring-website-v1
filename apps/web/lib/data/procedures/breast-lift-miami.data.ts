@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const breastLiftMiami: Procedure = {
     title: 'Breast Lift Miami',
@@ -165,7 +166,7 @@ A **Miami breast lift** isn't just about enhancing your appearance—it's about 
 
 For those seeking additional volume restoration, **breast implants** or **breast reduction** treatment options can be discussed during your consultation. Schedule a private consultation with **Alluring Plastic Surgery** to explore your options, ask questions, and see how a **lift surgery** can transform your silhouette.
 
-**Call (786) 305-8649 today** and start your journey toward a lifted, more youthful you.`,
+**Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** and start your journey toward a lifted, more youthful you.`,
     faqs: [
         {
             question: 'How does the breast lift work?',

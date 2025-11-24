@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const liposuctionMiami: Procedure = {
     title: 'Liposuction Miami',
@@ -204,7 +205,7 @@ We've built our reputation on trust, transparency, and exceptional outcomes. Our
 
 If stubborn **fat** deposits have been preventing you from achieving the **body** contours you desire, **liposuction** may be the solution you've been searching for. Whether you're interested in targeting specific problem areas or pursuing comprehensive **body** contouring with **Lipo 360**, we're here to help you achieve your goals.
 
-**Ready to transform your body? Call (786) 305-8649 today** to schedule your consultation at **Alluring Plastic Surgery**. Discover how our advanced **liposuction** techniques can help you achieve the sculpted, confident silhouette you've always wanted.`,
+**Ready to transform your body? Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your consultation at **Alluring Plastic Surgery**. Discover how our advanced **liposuction** techniques can help you achieve the sculpted, confident silhouette you've always wanted.`,
     faqs: [
         {
             question: 'What is liposuction?',

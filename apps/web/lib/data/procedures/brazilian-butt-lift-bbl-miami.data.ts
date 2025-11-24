@@ -1,4 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 
 export const brazilianButtLiftBblMiami: Procedure = {
     title: 'Brazilian Butt Lift (BBL) Miami',
@@ -163,7 +164,7 @@ Our approach prioritizes safety, natural-looking results, and open communication
 
 ## Take the First Step Toward Your Transformation
 
-If you're ready to explore how a **Brazilian Butt Lift** can enhance your natural beauty and boost your confidence, we'd love to hear from you. **Schedule a consultation with Alluring Plastic Surgery today** by calling (786) 305-8649. During your visit, we'll discuss your goals, answer all your questions, and create a personalized plan that brings your vision to life.
+If you're ready to explore how a **Brazilian Butt Lift** can enhance your natural beauty and boost your confidence, we'd love to hear from you. **Schedule a consultation with Alluring Plastic Surgery today** by calling [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}). During your visit, we'll discuss your goals, answer all your questions, and create a personalized plan that brings your vision to life.
 
 Your journey to a more sculpted, confident you starts with a single conversation. Let's make it happen together.`,
     faqs: [
