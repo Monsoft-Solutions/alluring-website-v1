@@ -4,6 +4,7 @@ import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
+import { procedures } from '@/lib/data/procedures.data'
 
 export const Footer = () => {
     return (
@@ -55,21 +56,16 @@ export const Footer = () => {
                             Procedures
                         </h4>
                         <ul className='space-y-4 text-base text-stone-400'>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Brazilian Butt Lift
-                            </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Mommy Makeover
-                            </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Breast Augmentation
-                            </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Lipo 360
-                            </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Tummy Tuck
-                            </li>
+                            {procedures.map((procedure) => (
+                                <li key={procedure.slug}>
+                                    <Link
+                                        href={`/procedures/${procedure.slug}`}
+                                        className='cursor-pointer transition-colors hover:text-white'
+                                    >
+                                        {procedure.title}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 

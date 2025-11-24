@@ -6,12 +6,16 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
+import { procedures } from '@/lib/data/procedures.data'
 
 export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isSurgeonsDropdownOpen, setIsSurgeonsDropdownOpen] = useState(false)
+    const [isProceduresDropdownOpen, setIsProceduresDropdownOpen] =
+        useState(false)
     const [isSurgeonsMobileOpen, setIsSurgeonsMobileOpen] = useState(false)
+    const [isProceduresMobileOpen, setIsProceduresMobileOpen] = useState(false)
     const { scrollY } = useScroll()
 
     // Header height shrinks slightly on scroll
@@ -26,7 +30,6 @@ export const Header = () => {
     }, [])
 
     const navLinks = [
-        { label: 'Procedures', href: '/procedures' },
         { label: 'Gallery', href: '#gallery' },
         { label: 'The Experience', href: '#experience' },
     ]
@@ -35,6 +38,12 @@ export const Header = () => {
     const surgeonLinks = surgeons.map((surgeon) => ({
         label: surgeon.name,
         href: `/${surgeon.slug}`,
+    }))
+
+    // Generate procedure links dynamically
+    const procedureLinks = procedures.map((procedure) => ({
+        label: procedure.title,
+        href: `/procedures/${procedure.slug}`,
     }))
 
     return (
@@ -75,6 +84,52 @@ export const Header = () => {
 
                     {/* Desktop Nav */}
                     <nav className='hidden items-center space-x-10 lg:flex'>
+                        {/* Procedures Dropdown */}
+                        <div
+                            className='group relative'
+                            onMouseEnter={() =>
+                                setIsProceduresDropdownOpen(true)
+                            }
+                            onMouseLeave={() =>
+                                setIsProceduresDropdownOpen(false)
+                            }
+                        >
+                            <button className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'>
+                                Procedures
+                                <ChevronDown
+                                    className={`ml-1 h-3 w-3 transition-transform duration-200 ${
+                                        isProceduresDropdownOpen
+                                            ? 'rotate-180'
+                                            : ''
+                                    }`}
+                                />
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                            </button>
+                            <AnimatePresence>
+                                {isProceduresDropdownOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                        className='absolute top-full -left-4 mt-2 min-w-[260px] rounded-md border border-stone-200 bg-white shadow-lg'
+                                    >
+                                        <div className='max-h-[80vh] overflow-y-auto py-2'>
+                                            {procedureLinks.map((link) => (
+                                                <Link
+                                                    key={link.href}
+                                                    href={link.href}
+                                                    className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
+                                                >
+                                                    {link.label}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
                         {navLinks.map((link) => (
                             <a
                                 key={link.label}
@@ -150,6 +205,7 @@ export const Header = () => {
                             setIsMobileMenuOpen(!isMobileMenuOpen)
                             if (isMobileMenuOpen) {
                                 setIsSurgeonsMobileOpen(false)
+                                setIsProceduresMobileOpen(false)
                             }
                         }}
                     >
@@ -182,6 +238,78 @@ export const Header = () => {
                         className='fixed inset-0 z-40 flex items-center justify-center bg-stone-50'
                     >
                         <div className='container flex flex-col items-center justify-center space-y-8 px-6'>
+                            {/* Mobile Procedures Dropdown */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className='w-full'
+                            >
+                                <button
+                                    onClick={() =>
+                                        setIsProceduresMobileOpen(
+                                            !isProceduresMobileOpen
+                                        )
+                                    }
+                                    className='hover:text-gold-500 flex w-full items-center justify-center gap-2 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
+                                >
+                                    Procedures
+                                    <ChevronDown
+                                        className={`h-6 w-6 transition-transform duration-200 ${
+                                            isProceduresMobileOpen
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                <AnimatePresence>
+                                    {isProceduresMobileOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{
+                                                opacity: 1,
+                                                height: 'auto',
+                                            }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className='mt-4 space-y-4 overflow-hidden'
+                                        >
+                                            {procedureLinks.map((link, idx) => (
+                                                <motion.div
+                                                    key={link.href}
+                                                    initial={{
+                                                        opacity: 0,
+                                                        x: -20,
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        x: 0,
+                                                    }}
+                                                    transition={{
+                                                        delay: idx * 0.05,
+                                                    }}
+                                                >
+                                                    <Link
+                                                        href={link.href}
+                                                        onClick={() => {
+                                                            setIsMobileMenuOpen(
+                                                                false
+                                                            )
+                                                            setIsProceduresMobileOpen(
+                                                                false
+                                                            )
+                                                        }}
+                                                        className='hover:text-gold-500 block text-center font-serif text-3xl text-stone-700 transition-colors md:text-4xl'
+                                                    >
+                                                        {link.label}
+                                                    </Link>
+                                                </motion.div>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+
                             {navLinks.map((link, idx) => (
                                 <motion.a
                                     key={link.label}
@@ -189,7 +317,7 @@ export const Header = () => {
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.1 + idx * 0.1 }}
+                                    transition={{ delay: 0.2 + idx * 0.1 }}
                                     className='hover:text-gold-500 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
                                 >
                                     {link.label}
@@ -200,7 +328,7 @@ export const Header = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
-                                    delay: 0.1 + navLinks.length * 0.1,
+                                    delay: 0.2 + navLinks.length * 0.1,
                                 }}
                                 className='w-full'
                             >
