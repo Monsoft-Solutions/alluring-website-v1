@@ -1,12 +1,14 @@
+/* eslint-disable no-restricted-properties */
 import { createEnv } from '@t3-oss/env-core'
-import { config } from 'dotenv'
 import z from 'zod'
 
-config({
-    path: '.env.local',
-})
-config()
-
+/**
+ * Environment configuration for SEO package
+ *
+ * Note: This package is shared and may be imported in both server and client contexts.
+ * Environment variables are loaded by the Next.js app (apps/web/env.ts), so we don't
+ * need to load dotenv here.
+ */
 export const env = createEnv({
     server: {
         NODE_ENV: z
@@ -16,5 +18,5 @@ export const env = createEnv({
         VERCEL_URL: z.string().optional(),
         NEXT_PUBLIC_BASE_URL: z.string().optional(),
     },
-    runtimeEnv: process.env,
+    runtimeEnv: typeof window === 'undefined' ? process.env : {},
 })

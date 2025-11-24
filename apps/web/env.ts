@@ -1,12 +1,19 @@
 /* eslint-disable no-restricted-properties */
 import { createEnv } from '@t3-oss/env-nextjs'
-import { config } from 'dotenv'
 import { z } from 'zod'
 
-config({
-    path: '.env.local',
-})
-config()
+// Only load dotenv in server-side environments
+// When this module is imported client-side, skip dotenv loading
+if (typeof window === 'undefined') {
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const dotenv = require('dotenv')
+        dotenv.config({ path: '.env.local' })
+        dotenv.config()
+    } catch {
+        // Dotenv not available or already loaded
+    }
+}
 
 /**
  * Environment Variables Configuration
