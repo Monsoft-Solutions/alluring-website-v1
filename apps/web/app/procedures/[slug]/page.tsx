@@ -13,6 +13,7 @@ import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.co
 import { ProcedureProcess } from '@/components/procedures/procedure-process.component'
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
+import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
 
 interface ProcedurePageProps {
     params: Promise<{
@@ -75,20 +76,13 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 <ProcedureStats stats={procedure.quickStats} />
             )}
 
-            {/* Intro Content (First paragraph of description if possible, or short desc) */}
-            <section className='bg-white py-16 lg:py-24'>
-                <ContainerLayout>
-                    <div className='mx-auto max-w-3xl text-center'>
-                        <h2 className='mb-6 font-serif text-3xl text-stone-900 md:text-4xl'>
-                            Refine Your Beauty
-                        </h2>
-                        <p className='text-lg leading-relaxed font-light text-stone-600 md:text-xl'>
-                            {procedure.shortDescription ||
-                                procedure.description}
-                        </p>
-                    </div>
-                </ContainerLayout>
-            </section>
+            {/* Intro Section */}
+            <ProcedureIntro
+                title={procedure.title}
+                description={
+                    procedure.shortDescription || procedure.description
+                }
+            />
 
             {/* Benefits Section */}
             {procedure.benefits && (
@@ -102,7 +96,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
 
             {/* Main Content Section - Markdown */}
             {procedure.content ? (
-                <section className='bg-stone-50 py-16 lg:py-24'>
+                <section className='bg-white py-16 lg:py-24'>
                     <ContainerLayout>
                         <div className='mx-auto max-w-3xl'>
                             <div className='prose prose-stone prose-lg prose-headings:font-serif prose-headings:font-medium prose-p:font-light prose-p:leading-relaxed prose-a:text-gold-600 prose-a:no-underline hover:prose-a:underline mx-auto'>
@@ -136,7 +130,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 <FAQComponent
                     faqs={procedure.faqs}
                     title='Common Questions About Your Procedure'
-                    variant='default'
+                    variant='muted'
                 />
             )}
 
@@ -166,6 +160,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
             <CTASection
                 heading='Ready to Transform Your Look?'
                 description='Schedule a free consultation with our expert surgeons to discuss your goals and create a personalized treatment plan.'
+                backgroundImage={procedure.image}
                 primaryButton={{
                     text: 'Schedule Consultation',
                     href: '/contact',
@@ -175,8 +170,6 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
                 }}
             />
-
-            <MobileCallButton />
         </>
     )
 }
