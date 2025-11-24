@@ -28,12 +28,11 @@ function getBaseUrl(): string {
 function getAppSpecificDisallows(): string[] {
     return [
         // Add app-specific paths to block
+        '/search?*',
         '/dashboard/*',
         '/user/*',
         '/temp/*',
-        '*.pdf',
         '/downloads/*',
-        '/uploads/*',
     ]
 }
 

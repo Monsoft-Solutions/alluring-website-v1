@@ -1,12 +1,19 @@
 /* eslint-disable no-restricted-properties */
 import { createEnv } from '@t3-oss/env-nextjs'
-import { config } from 'dotenv'
 import { z } from 'zod'
 
-config({
-    path: '.env.local',
-})
-config()
+// Only load dotenv in server-side environments
+// When this module is imported client-side, skip dotenv loading
+if (typeof window === 'undefined') {
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const dotenv = require('dotenv')
+        dotenv.config({ path: '.env.local' })
+        dotenv.config()
+    } catch {
+        // Dotenv not available or already loaded
+    }
+}
 
 /**
  * Environment Variables Configuration
@@ -19,19 +26,19 @@ config()
 export const env = createEnv({
     server: {
         // Database & Storage (required for runtime)
-        POSTGRES_URL: z.string().url(),
+        POSTGRES_URL: z.url(),
         BLOG_API_KEY: z.string().min(1),
         BLOB_READ_WRITE_TOKEN: z.string().min(1).optional(),
         VERCEL_URL: z.string().optional(),
 
         // Email (required for contact form)
         RESEND_API_KEY: z.string().min(1),
-        RESEND_FROM_EMAIL: z.string().email(),
-        OWNER_EMAIL: z.string().email(),
+        RESEND_FROM_EMAIL: z.email(),
+        OWNER_EMAIL: z.email(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)
-        NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+        NEXT_PUBLIC_SITE_URL: z.url().optional(),
 
         // Other SEO variables are OPTIONAL - defaults come from site-config.ts
         NEXT_PUBLIC_SITE_NAME: z.string().min(1).optional(),

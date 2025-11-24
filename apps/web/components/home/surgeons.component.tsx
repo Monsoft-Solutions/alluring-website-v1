@@ -3,7 +3,7 @@
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
-import { Button } from './button.component'
+import { Button } from '@workspace/ui/components/button'
 import Image from 'next/image'
 
 export const Surgeons = () => {

@@ -17,17 +17,19 @@
         "format": "pnpm -w format"
     },
     "dependencies": {
-        "schema-dts": "^1.1.5"
+        "@t3-oss/env-core": "^0.13.8",
+        "schema-dts": "^1.1.5",
+        "zod": "^4.1.13"
     },
     "peerDependencies": {
         "next": "^15.0.0"
     },
     "devDependencies": {
+        "@types/node": "^24.10.1",
+        "@types/react": "^19.2.7",
         "@workspace/eslint-config": "workspace:*",
         "@workspace/typescript-config": "workspace:*",
-        "typescript": "^5.9.2",
-        "@types/node": "^20.19.9",
-        "@types/react": "^19.1.9",
-        "next": "^15.4.5"
+        "next": "^16.0.4",
+        "typescript": "^5.9.3"
     }
 }

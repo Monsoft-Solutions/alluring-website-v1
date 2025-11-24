@@ -44,7 +44,7 @@ import { SectionContainer } from '@/components/shared/section-container.componen
 import { SectionHeader } from '@/components/shared/section-header.component'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import {
-    type ContactFormData,
+    type ContactFormInput,
     type ContactFormResponse,
     contactFormSchema,
 } from '@/lib/types/forms/contact-form.type'
@@ -74,7 +74,9 @@ export function ContactForm({
     const { trackFormSubmit, track } = useAnalyticsEvent()
 
     // Initialize react-hook-form with zod validation
-    const form = useForm<ContactFormData>({
+    // Use ContactFormInput for form state (pre-validation)
+    // zodResolver will transform to ContactFormData on submit
+    const form = useForm<ContactFormInput>({
         resolver: zodResolver(contactFormSchema),
         defaultValues: {
             name: '',
@@ -87,8 +89,10 @@ export function ContactForm({
 
     /**
      * Handle form submission
+     * Note: data is typed as ContactFormInput for TypeScript compatibility,
+     * but zodResolver ensures data is validated/transformed before reaching here
      */
-    const onSubmit = async (data: ContactFormData) => {
+    const onSubmit = async (data: ContactFormInput) => {
         try {
             // Reset submission state
             setSubmissionState({ status: 'idle', message: '' })
@@ -375,7 +379,7 @@ export function ContactForm({
                                 }
                             >
                                 {/* Button background animation */}
-                                <div className='from-primary/20 absolute inset-0 bg-gradient-to-r to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+                                <span className='from-primary/20 absolute inset-0 bg-gradient-to-r to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
 
                                 {isSubmitting ? (
                                     <>

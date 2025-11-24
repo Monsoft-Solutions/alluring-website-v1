@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Button } from '@/components/home/button.component'
+import { Button } from '@workspace/ui/components/button'
 import { Sparkles, ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

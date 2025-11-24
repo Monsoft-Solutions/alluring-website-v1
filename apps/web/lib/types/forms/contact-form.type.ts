@@ -31,9 +31,14 @@ export const contactFormSchema = z.object({
     name: z.string().trim().min(2, {
         message: 'Name must be at least 2 characters.',
     }),
-    email: z.string().trim().email({
-        message: 'Please enter a valid email address.',
-    }),
+    email: z
+        .string()
+        .trim()
+        .pipe(
+            z.email({
+                message: 'Please enter a valid email address.',
+            })
+        ),
     phone: z
         .string()
         .trim()
@@ -123,9 +128,16 @@ export const contactFormSchema = z.object({
 })
 
 /**
- * Inferred type from contact form schema
+ * Input type for contact form (what the form fields accept)
+ * Used by react-hook-form for form state management
  */
-export type ContactFormData = z.infer<typeof contactFormSchema>
+export type ContactFormInput = z.input<typeof contactFormSchema>
+
+/**
+ * Output type from contact form schema (after transforms/validation)
+ * This is what you get after parsing with contactFormSchema.parse()
+ */
+export type ContactFormData = z.output<typeof contactFormSchema>
 
 /**
  * API response type for contact form submission

@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Button } from './button.component'
-import { ShieldCheck, Star } from 'lucide-react'
+import { Button } from '@workspace/ui/components/button'
+import { ArrowRight, ShieldCheck, Star } from 'lucide-react'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 export const Hero = () => {
@@ -94,12 +94,16 @@ export const Hero = () => {
                             </p>
 
                             <div className='mb-10 flex flex-col gap-5 sm:flex-row'>
-                                <Button size='md' withArrow asChild>
+                                <Button size='md' asChild>
                                     <Link
                                         href='/contact'
                                         aria-label='Start your consultation - Navigate to contact page'
+                                        className='group'
                                     >
-                                        Start Consultation
+                                        <span className='flex items-center'>
+                                            Start Consultation
+                                            <ArrowRight className='ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
+                                        </span>
                                     </Link>
                                 </Button>
                                 <Button size='md' variant='outline' asChild>

@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site-config'
-import { Button } from '@/components/home/button.component'
+import { Button } from '@workspace/ui/components/button'
 import { useRef } from 'react'
 
 interface ProcedureDetailHeroProps {

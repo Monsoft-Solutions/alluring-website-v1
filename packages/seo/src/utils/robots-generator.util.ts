@@ -6,6 +6,8 @@
  */
 import type { MetadataRoute } from 'next'
 
+import { env } from '../env'
+
 /**
  * Environment types for robots.txt generation
  */
@@ -87,11 +89,8 @@ export function generateRobots(
     const baseDisallows = [
         '/api/*',
         '/admin/*',
-        '/_next/*',
         '/private/*',
         '*.json',
-        '*.xml',
-        '/search?*',
         ...additionalDisallows,
     ]
 
@@ -102,7 +101,7 @@ export function generateRobots(
         // Production: Allow most crawling with some restrictions
         rules.push({
             userAgent: '*',
-            allow: '/',
+            allow: ['/', '/_next/static/*', '/_next/image/*'],
             disallow: baseDisallows,
             crawlDelay: crawlDelay,
         })
@@ -185,14 +184,14 @@ export function createCommonRobotsRules(): RobotsRule[] {
         // Google-specific rules
         {
             userAgent: 'Googlebot',
-            allow: ['/'],
+            allow: ['/', '/_next/static/*', '/_next/image/*'],
             disallow: ['/search', '/admin'],
             crawlDelay: 1,
         },
         // Bing-specific rules
         {
             userAgent: 'Bingbot',
-            allow: ['/'],
+            allow: ['/', '/_next/static/*', '/_next/image/*'],
             disallow: ['/search', '/admin'],
             crawlDelay: 2,
         },
@@ -208,12 +207,12 @@ export function createCommonRobotsRules(): RobotsRule[] {
         // Social media crawlers - allow but with restrictions
         {
             userAgent: 'facebookexternalhit',
-            allow: ['/'],
+            allow: ['/', '/_next/static/*', '/_next/image/*'],
             disallow: ['/admin', '/api'],
         },
         {
             userAgent: 'Twitterbot',
-            allow: ['/'],
+            allow: ['/', '/_next/static/*', '/_next/image/*'],
             disallow: ['/admin', '/api'],
         },
     ]
@@ -308,8 +307,8 @@ export function validateRobotsConfig(config: RobotsGeneratorConfig): string[] {
  * ```
  */
 export function detectEnvironment(): RobotsEnvironment {
-    const nodeEnv = process.env.NODE_ENV
-    const vercelEnv = process.env.VERCEL_ENV
+    const nodeEnv = env.NODE_ENV
+    const vercelEnv = env.VERCEL_ENV
 
     // Vercel-specific environment detection
     if (vercelEnv === 'production') return 'production'
@@ -320,7 +319,7 @@ export function detectEnvironment(): RobotsEnvironment {
     if (nodeEnv === 'development') return 'development'
 
     // Check for staging indicators
-    const url = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
+    const url = env.NEXT_PUBLIC_BASE_URL || env.VERCEL_URL
     if (url && (url.includes('staging') || url.includes('dev'))) {
         return 'staging'
     }

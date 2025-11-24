@@ -3,13 +3,7 @@
 import { Slot } from '@radix-ui/react-slot'
 import { ArrowRight } from 'lucide-react'
 import { motion, HTMLMotionProps } from 'framer-motion'
-import {
-    ReactNode,
-    ComponentPropsWithoutRef,
-    isValidElement,
-    cloneElement,
-    ReactElement,
-} from 'react'
+import { ReactNode, ComponentPropsWithoutRef } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 
 interface ButtonProps extends HTMLMotionProps<'button'> {
@@ -66,7 +60,7 @@ export const Button = ({
             {/* Shine effect for primary/gold buttons */}
             {(effectiveVariant === 'primary' ||
                 effectiveVariant === 'gold') && (
-                <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+                <span className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
             )}
         </>
     )
@@ -79,56 +73,11 @@ export const Button = ({
     )
 
     if (asChild) {
-        // When using asChild, extract only standard HTML button props
-        // by converting to ComponentPropsWithoutRef which excludes motion props
+        // When using asChild, we let Radix Slot handle prop merging naturally
+        // We DO NOT manipulate the child's structure (no wrapping, no adding elements)
+        // This prevents nested interactive element issues and ensures proper HTML structure
         const standardProps =
             props as unknown as ComponentPropsWithoutRef<'button'>
-
-        // Ensure if the resolved element is a native button it gets type="button" unless caller provided a type
-        let defaultType = standardProps.type
-        if (
-            !defaultType &&
-            isValidElement(children) &&
-            (children as ReactElement<{ type?: string }>).type === 'button' &&
-            !(children as ReactElement<{ type?: string }>).props.type
-        ) {
-            defaultType = 'button'
-        }
-
-        if (isValidElement(children)) {
-            const child = children as ReactElement<{ type?: string }>
-            const childChildren = (child.props as { children?: ReactNode })
-                .children
-
-            const newChildren = (
-                <>
-                    <span className='relative z-10 flex items-center'>
-                        {childChildren}
-                        {withArrow && (
-                            <ArrowRight className='ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
-                        )}
-                    </span>
-
-                    {/* Shine effect for primary/gold buttons */}
-                    {(effectiveVariant === 'primary' ||
-                        effectiveVariant === 'gold') && (
-                        <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
-                    )}
-                </>
-            )
-
-            const clonedChild = cloneElement(child, {}, newChildren)
-
-            return (
-                <Slot
-                    className={buttonClassName}
-                    {...standardProps}
-                    {...(defaultType ? { type: defaultType } : {})}
-                >
-                    {clonedChild}
-                </Slot>
-            )
-        }
 
         return (
             <Slot className={buttonClassName} {...standardProps}>

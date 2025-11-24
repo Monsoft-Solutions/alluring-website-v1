@@ -4,7 +4,7 @@ import { z } from 'zod'
  * Schema for image data to be uploaded to Vercel Blob
  */
 export const imageDataSchema = z.object({
-    url: z.string().url('Invalid image URL'),
+    url: z.url('Invalid image URL'),
 })
 
 /**
@@ -21,11 +21,11 @@ export const createResourceSchema = z.object({
     readingTime: z.string().optional(),
     content: z.string().min(1, 'Content is required'),
     status: z.enum(['draft', 'readyToPublish', 'published']).default('draft'),
-    authorId: z.string().uuid('Invalid author ID'),
-    featuredImageUrl: z.string().url('Invalid featured image URL').optional(),
+    authorId: z.uuid('Invalid author ID'),
+    featuredImageUrl: z.url('Invalid featured image URL').optional(),
     featuredImage: imageDataSchema.optional(),
-    categoryIds: z.array(z.string().uuid('Invalid category ID')).default([]),
-    tagIds: z.array(z.string().uuid('Invalid tag ID')).default([]),
+    categoryIds: z.array(z.uuid('Invalid category ID')).default([]),
+    tagIds: z.array(z.uuid('Invalid tag ID')).default([]),
 })
 
 export type CreateResourceInput = z.infer<typeof createResourceSchema>
