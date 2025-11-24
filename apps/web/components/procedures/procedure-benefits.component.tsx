@@ -6,7 +6,6 @@ import type { ProcedureBenefit } from '@/lib/types/procedure.type'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionHeader } from '@/components/shared/section-header.component'
-import { cn } from '@workspace/ui/lib/utils'
 
 interface ProcedureBenefitsProps {
     benefits: ProcedureBenefit[]
