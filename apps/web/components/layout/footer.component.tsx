@@ -2,6 +2,7 @@
 
 import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
@@ -12,9 +13,15 @@ export const Footer = () => {
             <div className='container mx-auto px-6 md:px-12'>
                 <div className='mb-20 grid gap-12 lg:grid-cols-4'>
                     <div className='lg:col-span-1'>
-                        <span className='mb-4 block font-serif text-2xl font-semibold tracking-tight text-white'>
-                            ALLURING
-                        </span>
+                        <Link href='/' className='mb-4 block'>
+                            <Image
+                                src='/logo-dark.png'
+                                alt='Alluring Plastic Surgery'
+                                width={150}
+                                height={150}
+                                className='h-auto w-auto max-w-[180px] transition-opacity hover:opacity-80'
+                            />
+                        </Link>
                         <p className='mb-8 text-base leading-relaxed text-stone-500'>
                             Premier plastic surgery center in Miami, FL
                             providing world-class aesthetic results with

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
@@ -28,11 +29,6 @@ export const Header = () => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
-
-    const navLinks = [
-        { label: 'Gallery', href: '#gallery' },
-        { label: 'The Experience', href: '#experience' },
-    ]
 
     // Generate surgeon links dynamically
     const surgeonLinks = surgeons.map((surgeon) => ({
@@ -66,20 +62,16 @@ export const Header = () => {
                     {/* Logo */}
                     <Link
                         href='/'
-                        className='group relative z-50 flex flex-col items-start'
+                        className='group relative z-50 flex items-center'
                     >
-                        <span
-                            className={`font-serif text-2xl font-medium tracking-tighter ${
-                                isScrolled || isMobileMenuOpen
-                                    ? 'text-stone-900'
-                                    : 'text-stone-900'
-                            }`}
-                        >
-                            ALLURING
-                        </span>
-                        <span className='text-gold-500 ml-0.5 text-[0.65rem] font-bold tracking-[0.3em] uppercase'>
-                            Plastic Surgery
-                        </span>
+                        <Image
+                            src='/logo.png'
+                            alt='Alluring Plastic Surgery'
+                            width={150}
+                            height={67}
+                            className='h-auto w-auto max-w-[180px] transition-opacity group-hover:opacity-80'
+                            priority
+                        />
                     </Link>
 
                     {/* Desktop Nav */}
@@ -165,16 +157,6 @@ export const Header = () => {
                             </AnimatePresence>
                         </div>
 
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.label}
-                                href={link.href}
-                                className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
-                            >
-                                {link.label}
-                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
-                            </Link>
-                        ))}
                         {/* Surgeons Dropdown */}
                         <div
                             className='group relative'
@@ -392,30 +374,12 @@ export const Header = () => {
                                 </AnimatePresence>
                             </motion.div>
 
-                            {navLinks.map((link, idx) => (
-                                <motion.div
-                                    key={link.label}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.2 + idx * 0.1 }}
-                                >
-                                    <Link
-                                        href={link.href}
-                                        onClick={() =>
-                                            setIsMobileMenuOpen(false)
-                                        }
-                                        className='hover:text-gold-500 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </motion.div>
-                            ))}
                             {/* Mobile Surgeons Dropdown */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
-                                    delay: 0.2 + navLinks.length * 0.1,
+                                    delay: 0.2,
                                 }}
                                 className='w-full'
                             >
