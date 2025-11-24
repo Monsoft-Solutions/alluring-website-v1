@@ -1,5 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import {
+    BreadcrumbSchema,
+    FAQSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { CTASection } from '@/components/shared/cta-section.component'
@@ -39,12 +44,59 @@ export async function generateMetadata(
         }
     }
 
+    const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
+    const pageUrl = `${siteUrl}/procedures/${params.slug}`
+    const ogImage = procedure.image
+        ? `${siteUrl}${procedure.image}`
+        : `${siteUrl}/og-image.jpg`
+
     return {
         title: procedure.title,
         description: procedure.description,
         keywords: procedure.keywords,
+
+        // Canonical URL
         alternates: {
-            canonical: `${env.NEXT_PUBLIC_SITE_URL}/procedures/${params.slug}`,
+            canonical: pageUrl,
+        },
+
+        // Open Graph tags for social sharing (Facebook, LinkedIn, etc.)
+        openGraph: {
+            type: 'website',
+            url: pageUrl,
+            title: procedure.title,
+            description: procedure.shortDescription || procedure.description,
+            siteName: siteConfig.business.name,
+            locale: 'en_US',
+            images: [
+                {
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: `${procedure.title} - ${siteConfig.business.name}`,
+                },
+            ],
+        },
+
+        // Twitter Card tags
+        twitter: {
+            card: 'summary_large_image',
+            title: procedure.title,
+            description: procedure.shortDescription || procedure.description,
+            images: [ogImage],
+        },
+
+        // Robots directives
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
         },
     }
 }
@@ -57,6 +109,9 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
         notFound()
     }
 
+    const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
+    const pageUrl = `${siteUrl}/procedures/${params.slug}`
+
     // Filter out the current procedure from related procedures
     const relatedProcedures = procedures
         .filter(
@@ -65,8 +120,36 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
         )
         .slice(0, 3)
 
+    // Prepare FAQ items for schema (if FAQs exist)
+    const faqSchemaItems = procedure.faqs?.map((faq) => ({
+        question: faq.question,
+        answer: faq.answer,
+    }))
+
+    // Breadcrumb items for schema
+    const breadcrumbItems = [
+        { name: 'Home', item: siteUrl },
+        { name: 'Procedures', item: `${siteUrl}/procedures` },
+        { name: procedure.title, item: pageUrl },
+    ]
+
     return (
         <>
+            {/* Structured Data - WebPage Schema */}
+            <WebPageSchema
+                name={procedure.title}
+                url={pageUrl}
+                description={procedure.description}
+            />
+
+            {/* Structured Data - Breadcrumb Schema */}
+            <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* Structured Data - FAQ Schema (only if FAQs exist) */}
+            {faqSchemaItems && faqSchemaItems.length > 0 && (
+                <FAQSchema items={faqSchemaItems} />
+            )}
+
             {/* Hero Section */}
             <ProcedureDetailHero
                 title={procedure.title}
