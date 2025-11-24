@@ -85,6 +85,10 @@
     --gold-400: lab(72% 0.12 30); /* Classic Gold #D4AF37 */
     --gold-500: lab(62% 0.15 35); /* Darker Gold #B4941F */
     --gold-600: lab(54% 0.12 32);
+
+    /* Blush Color Palette */
+    --blush-50: lab(99.2% 0.01 5); /* #FDF8F8 */
+    --blush-100: lab(96.5% 0.02 8); /* #FCE7E7 */
 }
 
 @theme inline {
@@ -161,6 +165,10 @@
     --color-gold-400: var(--gold-400);
     --color-gold-500: var(--gold-500);
     --color-gold-600: var(--gold-600);
+
+    /* Blush Color Palette */
+    --color-blush-50: var(--blush-50);
+    --color-blush-100: var(--blush-100);
 
     /* Font Families - Tailwind v4 uses these for font utilities */
     --font-family-sans: var(--font-lato), sans-serif;

@@ -77,8 +77,8 @@ const config = {
                     600: 'var(--gold-600)',
                 },
                 blush: {
-                    50: '#FDF8F8',
-                    100: '#FCE7E7',
+                    50: 'var(--blush-50)',
+                    100: 'var(--blush-100)',
                 },
             },
             fontFamily: {
