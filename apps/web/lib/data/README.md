@@ -32,8 +32,8 @@ business: {
 contact: {
     phone: '+1-555-123-4567',
     phoneDisplay: '+1 (555) 123-4567',   // Formatted version
-    email: 'contact@example.com',
-    supportEmail: 'support@example.com',
+    email: 'info@alluringplasticsurgery.com',
+    supportEmail: 'info@alluringplasticsurgery.com',
     address: '123 Main St',
     addressLine2: 'Suite 100',
     city: 'San Francisco',
@@ -112,8 +112,8 @@ getFullAddress() → "123 Main St, Suite 100, San Francisco, CA 94105, United St
 getPhoneLink() → "tel:+15551234567"
 
 // Get email links
-getEmailLink() → "mailto:contact@example.com"
-getSupportEmailLink() → "mailto:support@example.com"
+getEmailLink() → "mailto:info@alluringplasticsurgery.com"
+getSupportEmailLink() → "mailto:info@alluringplasticsurgery.com"
 ```
 
 ## Environment Variables
@@ -127,7 +127,7 @@ Most site data comes from `site-config.ts`, but some environment-specific variab
 
 **Optional:**
 
-- `NEXT_PUBLIC_SITE_URL` - Site URL (used for dynamic environments, fallback: VERCEL_URL or https://example.com)
+- `NEXT_PUBLIC_SITE_URL` - Site URL (used for dynamic environments, fallback: VERCEL_URL or https://alluringplasticsurgery.com)
 - `BLOB_READ_WRITE_TOKEN` - Blob storage (optional)
 - Other SEO vars are optional - defaults from `site-config.ts`
 

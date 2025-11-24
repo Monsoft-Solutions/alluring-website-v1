@@ -64,6 +64,31 @@
     --cta-orange-hover: oklch(0.57 0.2 40);
     --cta-orange-bg: oklch(0.6 0.22 40); /* Bold darker orange background */
     --cta-orange-border: oklch(0.5 0.24 40); /* Bold darker orange border */
+
+    /* Stone Color Palette */
+    --stone-50: lab(98.5% -0.05 0.2);
+    --stone-100: lab(96.5286% -0.0991821 0.364268);
+    --stone-200: lab(91.055% 0.663072 0.865579);
+    --stone-300: lab(84.7909% 0.928015 1.59738);
+    --stone-400: lab(66.2166% 1.88044 3.20326);
+    --stone-500: lab(48.1164% 2.35701 4.26852);
+    --stone-600: lab(35.5168% 1.08604 4.07829);
+    --stone-700: lab(27.3812% 1.32917 3.57789);
+    --stone-800: lab(15.0353% 1.96067 1.53427);
+    --stone-900: lab(9.03835% 1.15298 1.92955);
+    --stone-950: lab(2.86037% 0.455312 0.568903);
+
+    /* Gold Color Palette */
+    --gold-100: lab(95.5% 0.02 12);
+    --gold-200: lab(93% 0.03 14);
+    --gold-300: lab(83% 0.08 22);
+    --gold-400: lab(72% 0.12 30); /* Classic Gold #D4AF37 */
+    --gold-500: lab(62% 0.15 35); /* Darker Gold #B4941F */
+    --gold-600: lab(54% 0.12 32);
+
+    /* Blush Color Palette */
+    --blush-50: lab(99.2% 0.01 5); /* #FDF8F8 */
+    --blush-100: lab(96.5% 0.02 8); /* #FCE7E7 */
 }
 
 @theme inline {
@@ -119,6 +144,38 @@
     --color-cta-orange-hover: var(--cta-orange-hover);
     --color-cta-orange-bg: var(--cta-orange-bg);
     --color-cta-orange-border: var(--cta-orange-border);
+
+    /* Stone Color Palette */
+    --color-stone-50: var(--stone-50);
+    --color-stone-100: var(--stone-100);
+    --color-stone-200: var(--stone-200);
+    --color-stone-300: var(--stone-300);
+    --color-stone-400: var(--stone-400);
+    --color-stone-500: var(--stone-500);
+    --color-stone-600: var(--stone-600);
+    --color-stone-700: var(--stone-700);
+    --color-stone-800: var(--stone-800);
+    --color-stone-900: var(--stone-900);
+    --color-stone-950: var(--stone-950);
+
+    /* Gold Color Palette */
+    --color-gold-100: var(--gold-100);
+    --color-gold-200: var(--gold-200);
+    --color-gold-300: var(--gold-300);
+    --color-gold-400: var(--gold-400);
+    --color-gold-500: var(--gold-500);
+    --color-gold-600: var(--gold-600);
+
+    /* Blush Color Palette */
+    --color-blush-50: var(--blush-50);
+    --color-blush-100: var(--blush-100);
+
+    /* Font Families - Tailwind v4 uses these for font utilities */
+    --font-family-sans: var(--font-lato), sans-serif;
+    --font-family-serif: var(--font-playfair), serif;
+
+    /* Alias --font-sans to --font-lato for Tailwind v4 compatibility */
+    --font-sans: var(--font-lato);
 }
 
 @layer base {
@@ -127,17 +184,41 @@
     }
     body {
         @apply bg-background text-foreground;
+        overflow-x: hidden;
+    }
+
+    /* Luxury Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #1c1917;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #57534e;
+        border-radius: 0px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #d4af37;
+    }
+
+    /* Custom Selection Color */
+    ::selection {
+        background: #d4af37;
+        color: #ffffff;
     }
 }
 
 @layer utilities {
     /* Hide scrollbar for Chrome, Safari, Edge, and Opera */
-    .no-scrollbar::-webkit-scrollbar {
+    .no-scrollbar::-webkit-scrollbar,
+    .scrollbar-hide::-webkit-scrollbar {
         display: none;
     }
 
     /* Hide scrollbar for IE and Firefox */
-    .no-scrollbar {
+    .no-scrollbar,
+    .scrollbar-hide {
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }

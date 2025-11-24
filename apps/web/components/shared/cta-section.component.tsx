@@ -1,31 +1,18 @@
-/**
- * CTASection Component
- *
- * A prominent call-to-action section with heading, description,
- * and primary/secondary buttons. Features flexible layouts and
- * background variants.
- *
- * @example
- * ```tsx
- * <CTASection
- *   heading="Ready to Get Started?"
- *   description="Join thousands of satisfied customers today"
- *   primaryButton={{ text: "Sign Up Now", href: "/signup" }}
- *   secondaryButton={{ text: "Learn More", href: "/about", variant: "outline" }}
- *   variant="accent"
- * />
- * ```
- */
+'use client'
+
+import { useRef } from 'react'
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import Link from 'next/link'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import Image from 'next/image'
 
 import type { CTASectionProps } from '@/lib/types/sections/cta-section.type'
 
 import { ContentWrapper } from './content-wrapper.component'
 import { SectionContainer } from './section-container.component'
 
-const containerStyles = 'flex items-center'
+const containerStyles = 'flex items-center relative overflow-hidden'
 
 /**
  * Maps variant to background classes
@@ -66,22 +53,59 @@ export function CTASection({
     id,
     buttonLayout = 'stack',
     size = 'default',
+    backgroundImage,
 }: CTASectionProps) {
     const isPrimaryVariant = variant === 'primary'
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start end', 'end start'],
+    })
+
+    const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
 
     return (
         <SectionContainer
             id={id}
-            variant={variant === 'primary' ? 'default' : variant}
+            variant={
+                backgroundImage
+                    ? 'default'
+                    : variant === 'primary'
+                      ? 'default'
+                      : variant
+            }
             noPadding
             className={cn(
-                variantStyles[variant],
+                !backgroundImage && variantStyles[variant],
                 sizeStyles[size],
                 containerStyles,
                 className
             )}
         >
-            <ContentWrapper size='md'>
+            {/* Parallax Background Image */}
+            {backgroundImage && (
+                <div
+                    ref={containerRef}
+                    className='absolute inset-0 -top-[10%] z-0 h-[120%]'
+                >
+                    <motion.div
+                        style={{ y }}
+                        className='relative h-full w-full'
+                    >
+                        <Image
+                            src={backgroundImage}
+                            alt='Background'
+                            fill
+                            className='object-cover'
+                            priority={false}
+                        />
+                        <div className='absolute inset-0 bg-stone-900/60 backdrop-blur-[2px]' />
+                    </motion.div>
+                </div>
+            )}
+
+            <ContentWrapper size='md' className='relative z-10'>
                 <div
                     className={cn(
                         'flex flex-col gap-8',
@@ -97,10 +121,10 @@ export function CTASection({
                     >
                         <h2
                             className={cn(
-                                'text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl',
-                                isPrimaryVariant
-                                    ? 'text-primary-foreground'
-                                    : 'text-foreground'
+                                'font-serif text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl',
+                                isPrimaryVariant || backgroundImage
+                                    ? 'text-white'
+                                    : 'text-stone-900'
                             )}
                         >
                             {heading}
@@ -109,9 +133,9 @@ export function CTASection({
                         {description && (
                             <div
                                 className={cn(
-                                    'text-base md:text-lg',
-                                    isPrimaryVariant
-                                        ? 'text-primary-foreground/90'
+                                    'text-base leading-relaxed font-light md:text-lg',
+                                    isPrimaryVariant || backgroundImage
+                                        ? 'text-stone-200'
                                         : 'text-muted-foreground'
                                 )}
                             >
@@ -136,12 +160,16 @@ export function CTASection({
                             <Button
                                 size='lg'
                                 variant={
-                                    isPrimaryVariant
-                                        ? 'secondary'
-                                        : primaryButton.variant || 'default'
+                                    isPrimaryVariant || backgroundImage
+                                        ? 'default' // Use default (gold) on dark bg
+                                        : primaryButton.variant || 'primary'
                                 }
                                 onClick={primaryButton.onClick}
-                                className='min-w-[140px]'
+                                className={cn(
+                                    'min-w-[140px] font-bold tracking-wide uppercase',
+                                    (isPrimaryVariant || backgroundImage) &&
+                                        'bg-gold-500 hover:bg-gold-600 border-none text-white'
+                                )}
                             >
                                 {primaryButton.icon &&
                                     primaryButton.iconPosition !== 'right' &&
@@ -156,11 +184,15 @@ export function CTASection({
                                 asChild
                                 size='lg'
                                 variant={
-                                    isPrimaryVariant
-                                        ? 'secondary'
-                                        : primaryButton.variant || 'default'
+                                    isPrimaryVariant || backgroundImage
+                                        ? 'default'
+                                        : primaryButton.variant || 'primary'
                                 }
-                                className='min-w-[140px]'
+                                className={cn(
+                                    'min-w-[140px] font-bold tracking-wide uppercase',
+                                    (isPrimaryVariant || backgroundImage) &&
+                                        'bg-gold-500 hover:bg-gold-600 border-none text-white'
+                                )}
                             >
                                 <Link
                                     href={primaryButton.href}
@@ -189,16 +221,17 @@ export function CTASection({
                                     <Button
                                         size='lg'
                                         variant={
-                                            isPrimaryVariant
+                                            isPrimaryVariant || backgroundImage
                                                 ? 'outline'
                                                 : secondaryButton.variant ||
                                                   'outline'
                                         }
                                         onClick={secondaryButton.onClick}
                                         className={cn(
-                                            'min-w-[140px]',
-                                            isPrimaryVariant &&
-                                                'border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10'
+                                            'min-w-[140px] font-bold tracking-wide uppercase',
+                                            (isPrimaryVariant ||
+                                                backgroundImage) &&
+                                                'border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white'
                                         )}
                                     >
                                         {secondaryButton.icon &&
@@ -216,15 +249,16 @@ export function CTASection({
                                         asChild
                                         size='lg'
                                         variant={
-                                            isPrimaryVariant
+                                            isPrimaryVariant || backgroundImage
                                                 ? 'outline'
                                                 : secondaryButton.variant ||
                                                   'outline'
                                         }
                                         className={cn(
-                                            'min-w-[140px]',
-                                            isPrimaryVariant &&
-                                                'border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10'
+                                            'min-w-[140px] font-bold tracking-wide uppercase',
+                                            (isPrimaryVariant ||
+                                                backgroundImage) &&
+                                                'border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white'
                                         )}
                                     >
                                         <Link

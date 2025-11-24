@@ -106,4 +106,9 @@ export interface CTASectionProps {
      * @default 'default'
      */
     readonly size?: 'sm' | 'default' | 'lg'
+
+    /**
+     * Optional background image URL for immersive effect
+     */
+    readonly backgroundImage?: string
 }

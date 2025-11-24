@@ -33,7 +33,7 @@ type EmailButtonProps = {
  *
  * @example
  * ```tsx
- * <EmailButton href="https://example.com/contact" variant="primary">
+ * <EmailButton href="https://alluringplasticsurgery.com/contact" variant="primary">
  *   Contact Us
  * </EmailButton>
  * ```

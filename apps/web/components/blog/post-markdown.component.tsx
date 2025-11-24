@@ -13,9 +13,16 @@ type PostMarkdownProps = {
     className?: string
 }
 
-// Extend sanitize schema to allow syntax highlighting classes
+// Extend sanitize schema to allow syntax highlighting classes and tel: links
 const sanitizeSchema = {
     ...defaultSchema,
+    protocols: {
+        ...(defaultSchema.protocols || {}),
+        href: [
+            ...(defaultSchema.protocols?.href || ['http', 'https', 'mailto']),
+            'tel', // Allow tel: protocol for phone number links
+        ],
+    },
     attributes: {
         ...defaultSchema.attributes,
         code: [...(defaultSchema.attributes?.code || []), 'className'],

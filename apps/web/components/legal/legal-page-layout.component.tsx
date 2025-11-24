@@ -1,5 +1,6 @@
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { ContainerLayout } from '@/components/container-layout.component'
+import Link from 'next/link'
 
 type LegalPageLayoutProps = {
     title: string
@@ -55,12 +56,12 @@ export function LegalPageLayout({
             <footer className='text-muted-foreground mt-12 border-t pt-6 text-center text-sm'>
                 <p>
                     For questions or concerns about this policy, please{' '}
-                    <a
+                    <Link
                         href='/contact'
-                        className='text-foreground decoration-muted-foreground/50 hover:decoration-foreground underline underline-offset-4'
+                        className='text-foreground decoration-muted-foreground/50 hover:decoration-foreground cursor-pointer underline underline-offset-4'
                     >
                         contact us
-                    </a>
+                    </Link>
                     .
                 </p>
             </footer>

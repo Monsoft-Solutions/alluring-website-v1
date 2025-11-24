@@ -1,125 +1,172 @@
-/**
- * Footer Component
- *
- * Site footer with multi-column layout, navigation links, contact info, and social media
- */
-import { Separator } from '@workspace/ui/components/separator'
-import { Github, Linkedin, Mail, Phone, X } from 'lucide-react'
+'use client'
+
+import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
+import { siteConfig } from '@/lib/data/site-config'
+import { surgeons } from '@/lib/data/surgeons/surgeons-data'
+import { procedures } from '@/lib/data/procedures.data'
 
-import { copyrightText, footerSections } from '@/lib/data/footer'
-import { contactInfo, socialLinks } from '@/lib/data/navigation'
-import { businessInfo } from '@/lib/data/site-config'
-
-const socialIcons = {
-    github: Github,
-    twitter: X,
-    linkedin: Linkedin,
-} as const
-
-export function Footer() {
+export const Footer = () => {
     return (
-        <footer className='bg-background border-t'>
-            <div className='container mx-auto max-w-7xl px-6 py-12 md:py-16'>
-                <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5'>
-                    {/* Brand and Description */}
-                    <div className='lg:col-span-2'>
-                        <Link
-                            href='/'
-                            className='mb-4 inline-block text-xl font-bold'
-                        >
-                            {businessInfo.name}
-                        </Link>
-                        <p className='text-muted-foreground mb-6 max-w-sm text-sm'>
-                            {businessInfo.description}
+        <footer className='border-t border-stone-900 bg-stone-950 pt-24 pb-12 text-white'>
+            <div className='container mx-auto px-6 md:px-12'>
+                <div className='mb-20 grid gap-12 lg:grid-cols-4'>
+                    <div className='lg:col-span-1'>
+                        <span className='mb-4 block font-serif text-2xl font-semibold tracking-tight text-white'>
+                            ALLURING
+                        </span>
+                        <p className='mb-8 text-base leading-relaxed text-stone-500'>
+                            Premier plastic surgery center in Miami, FL
+                            providing world-class aesthetic results with
+                            concierge care.
                         </p>
-                        {/* Contact Information */}
-                        <div className='space-y-3'>
-                            <a
-                                href={`mailto:${contactInfo.email}`}
-                                className='text-muted-foreground hover:text-foreground flex items-center text-sm transition-colors'
-                            >
-                                <Mail className='mr-2 h-4 w-4' />
-                                {contactInfo.email}
-                            </a>
-                            <a
-                                href={`tel:${contactInfo.phone}`}
-                                className='text-muted-foreground hover:text-foreground flex items-center text-sm transition-colors'
-                            >
-                                <Phone className='mr-2 h-4 w-4' />
-                                {contactInfo.phone}
-                            </a>
+                        <div className='flex space-x-6'>
+                            {siteConfig.social
+                                .filter((s) => s.platform === 'instagram')
+                                .map((social) => (
+                                    <Link
+                                        key={social.platform}
+                                        href={social.url}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        aria-label={social.label}
+                                    >
+                                        <Instagram className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
+                                    </Link>
+                                ))}
+                            {siteConfig.social
+                                .filter((s) => s.platform === 'facebook')
+                                .map((social) => (
+                                    <Link
+                                        key={social.platform}
+                                        href={social.url}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        aria-label={social.label}
+                                    >
+                                        <Facebook className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
+                                    </Link>
+                                ))}
+                            <Youtube className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
                         </div>
                     </div>
 
-                    {/* Footer Navigation Sections */}
-                    {footerSections.map((section) => (
-                        <div key={section.title}>
-                            <h3 className='mb-4 font-semibold'>
-                                {section.title}
-                            </h3>
-                            <ul className='space-y-3'>
-                                {section.items.map((item) => (
-                                    <li key={item.href}>
-                                        <Link
-                                            href={item.href}
-                                            className='text-muted-foreground hover:text-foreground text-sm transition-colors'
-                                            target={
-                                                item.external
-                                                    ? '_blank'
-                                                    : undefined
-                                            }
-                                            rel={
-                                                item.external
-                                                    ? 'noopener noreferrer'
-                                                    : undefined
-                                            }
-                                        >
-                                            {item.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            Procedures
+                        </h4>
+                        <ul className='space-y-4 text-base text-stone-400'>
+                            {procedures.map((procedure) => (
+                                <li key={procedure.slug}>
+                                    <Link
+                                        href={`/procedures/${procedure.slug}`}
+                                        className='cursor-pointer transition-colors hover:text-white'
+                                    >
+                                        {procedure.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            Surgeons
+                        </h4>
+                        <ul className='space-y-4 text-base text-stone-400'>
+                            {surgeons.map((surgeon) => (
+                                <li key={surgeon.id}>
+                                    <Link
+                                        href={`/${surgeon.slug}`}
+                                        className='cursor-pointer transition-colors hover:text-white'
+                                    >
+                                        {surgeon.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            Patients
+                        </h4>
+                        <ul className='space-y-4 text-base text-stone-400'>
+                            <li className='cursor-pointer transition-colors hover:text-white'>
+                                Financing Options
+                            </li>
+                            <li className='cursor-pointer transition-colors hover:text-white'>
+                                Out-of-Town Guests
+                            </li>
+                            <li className='cursor-pointer transition-colors hover:text-white'>
+                                Before & After Gallery
+                            </li>
+                            <li className='cursor-pointer transition-colors hover:text-white'>
+                                Patient Reviews
+                            </li>
+                            <li className='cursor-pointer transition-colors hover:text-white'>
+                                Blog & Education
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            Contact
+                        </h4>
+                        <div className='space-y-4 text-base text-stone-400'>
+                            <div className='flex cursor-pointer items-start transition-colors hover:text-white'>
+                                <MapPin className='mt-1 mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
+                                <span>
+                                    {siteConfig.contact.address}
+                                    <br />
+                                    {siteConfig.contact.city},{' '}
+                                    {siteConfig.contact.state}{' '}
+                                    {siteConfig.contact.postalCode}
+                                </span>
+                            </div>
+                            <Link
+                                href={`tel:${siteConfig.contact.phone.replace(/[^0-9]/g, '')}`}
+                                className='flex cursor-pointer items-center transition-colors hover:text-white'
+                            >
+                                <Phone className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
+                                <span>{siteConfig.contact.phoneDisplay}</span>
+                            </Link>
+                            <Link
+                                href={`mailto:${siteConfig.contact.email}`}
+                                className='flex cursor-pointer items-center transition-colors hover:text-white'
+                            >
+                                <Mail className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
+                                <span>{siteConfig.contact.email}</span>
+                            </Link>
                         </div>
-                    ))}
+                    </div>
                 </div>
 
-                <Separator className='my-8' />
-
-                {/* Bottom Section */}
-                <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
-                    {/* Copyright */}
-                    <p className='text-muted-foreground text-sm'>
-                        {copyrightText}
+                <div className='flex flex-col items-center justify-between border-t border-stone-900 pt-8 text-sm text-stone-600 md:flex-row'>
+                    <p>
+                        &copy; {new Date().getFullYear()} Alluring Plastic
+                        Surgery. All rights reserved.
                     </p>
-
-                    {/* Social Links */}
-                    <div className='flex items-center space-x-4'>
-                        {socialLinks.map((social) => {
-                            const Icon =
-                                socialIcons[
-                                    social.platform as keyof typeof socialIcons
-                                ]
-                            if (!Icon) {
-                                console.error(
-                                    `No icon mapping for platform: ${social.platform}`
-                                )
-                                return null
-                            }
-
-                            return (
-                                <a
-                                    key={social.platform}
-                                    href={social.url}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    aria-label={social.label || social.platform}
-                                    className='text-muted-foreground hover:text-foreground transition-colors'
-                                >
-                                    <Icon className='h-5 w-5' />
-                                </a>
-                            )
-                        })}
+                    <div className='mt-4 flex space-x-8 md:mt-0'>
+                        <Link
+                            href='/privacy'
+                            className='cursor-pointer transition-colors hover:text-white'
+                        >
+                            Privacy Policy
+                        </Link>
+                        <Link
+                            href='/terms'
+                            className='cursor-pointer transition-colors hover:text-white'
+                        >
+                            Terms of Service
+                        </Link>
+                        <Link
+                            href='/sitemap'
+                            className='cursor-pointer transition-colors hover:text-white'
+                        >
+                            Sitemap
+                        </Link>
                     </div>
                 </div>
             </div>

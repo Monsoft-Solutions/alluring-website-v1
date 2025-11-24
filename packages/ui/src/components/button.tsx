@@ -1,63 +1,151 @@
+'use client'
+
 import { Slot } from '@radix-ui/react-slot'
+import { ArrowRight } from 'lucide-react'
+import { motion, HTMLMotionProps } from 'framer-motion'
+import {
+    ReactNode,
+    ComponentPropsWithoutRef,
+    isValidElement,
+    cloneElement,
+    ReactElement,
+} from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { type VariantProps, cva } from 'class-variance-authority'
-import * as React from 'react'
 
-const buttonVariants = cva(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
-    {
-        variants: {
-            variant: {
-                default:
-                    'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
-                destructive:
-                    'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20',
-                outline:
-                    'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
-                secondary:
-                    'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
-                ghost: 'hover:bg-accent hover:text-accent-foreground',
-                link: 'text-primary underline-offset-4 hover:underline',
-                'cta-blue':
-                    'bg-cta-blue text-cta-blue-foreground shadow-lg hover:bg-cta-blue-hover hover:shadow-xl font-semibold transition-all duration-200 hover:scale-[1.02]',
-                'cta-green':
-                    'bg-cta-green text-cta-green-foreground shadow-lg hover:bg-cta-green-hover hover:shadow-xl font-semibold transition-all duration-200 hover:scale-[1.02]',
-                'cta-orange':
-                    'bg-cta-orange text-cta-orange-foreground shadow-lg hover:bg-cta-orange-hover hover:shadow-xl font-semibold transition-all duration-200 hover:scale-[1.02]',
-            },
-            size: {
-                default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-                sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
-                lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
-                icon: 'size-9',
-            },
-        },
-        defaultVariants: {
-            variant: 'default',
-            size: 'default',
-        },
-    }
-)
-
-function Button({
-    className,
-    variant,
-    size,
-    asChild = false,
-    ...props
-}: React.ComponentProps<'button'> &
-    VariantProps<typeof buttonVariants> & {
-        asChild?: boolean
-    }) {
-    const Comp = asChild ? Slot : 'button'
-
-    return (
-        <Comp
-            data-slot='button'
-            className={cn(buttonVariants({ variant, size, className }))}
-            {...props}
-        />
-    )
+interface ButtonProps extends HTMLMotionProps<'button'> {
+    variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold' | 'default'
+    size?: 'sm' | 'md' | 'lg' | 'icon'
+    withArrow?: boolean
+    children?: ReactNode
+    className?: string
+    asChild?: boolean
 }
 
-export { Button, buttonVariants }
+export const Button = ({
+    children,
+    variant = 'primary',
+    size = 'md',
+    className = '',
+    withArrow = false,
+    asChild = false,
+    ...props
+}: ButtonProps) => {
+    const baseStyles =
+        'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group'
+
+    // Map 'default' variant to 'primary'
+    const effectiveVariant = variant === 'default' ? 'primary' : variant
+
+    const variants = {
+        primary:
+            'bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 hover:text-gold-200',
+        secondary:
+            'bg-stone-50 text-stone-900 border border-stone-200 hover:border-gold-400',
+        outline:
+            'bg-transparent text-stone-900 border border-stone-300 hover:border-stone-900',
+        gold: 'bg-gold-400 text-white border border-gold-400 hover:bg-gold-500',
+        ghost: "bg-transparent text-stone-500 hover:text-stone-900 after:content-[''] after:block after:w-full after:h-[1px] after:bg-stone-900 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300",
+    }
+
+    const sizes = {
+        sm: 'px-5 py-3',
+        md: 'px-8 py-4',
+        lg: 'px-10 py-5',
+        icon: 'h-14 w-14 p-0',
+    }
+
+    const buttonContent = (
+        <>
+            <span className='relative z-10 flex items-center'>
+                {children}
+                {withArrow && (
+                    <ArrowRight className='ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
+                )}
+            </span>
+
+            {/* Shine effect for primary/gold buttons */}
+            {(effectiveVariant === 'primary' ||
+                effectiveVariant === 'gold') && (
+                <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+            )}
+        </>
+    )
+
+    const buttonClassName = cn(
+        baseStyles,
+        variants[effectiveVariant],
+        sizes[size],
+        className
+    )
+
+    if (asChild) {
+        // When using asChild, extract only standard HTML button props
+        // by converting to ComponentPropsWithoutRef which excludes motion props
+        const standardProps =
+            props as unknown as ComponentPropsWithoutRef<'button'>
+
+        // Ensure if the resolved element is a native button it gets type="button" unless caller provided a type
+        let defaultType = standardProps.type
+        if (
+            !defaultType &&
+            isValidElement(children) &&
+            (children as ReactElement<{ type?: string }>).type === 'button' &&
+            !(children as ReactElement<{ type?: string }>).props.type
+        ) {
+            defaultType = 'button'
+        }
+
+        if (isValidElement(children)) {
+            const child = children as ReactElement<{ type?: string }>
+            const childChildren = (child.props as { children?: ReactNode })
+                .children
+
+            const newChildren = (
+                <>
+                    <span className='relative z-10 flex items-center'>
+                        {childChildren}
+                        {withArrow && (
+                            <ArrowRight className='ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
+                        )}
+                    </span>
+
+                    {/* Shine effect for primary/gold buttons */}
+                    {(effectiveVariant === 'primary' ||
+                        effectiveVariant === 'gold') && (
+                        <div className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+                    )}
+                </>
+            )
+
+            const clonedChild = cloneElement(child, {}, newChildren)
+
+            return (
+                <Slot
+                    className={buttonClassName}
+                    {...standardProps}
+                    {...(defaultType ? { type: defaultType } : {})}
+                >
+                    {clonedChild}
+                </Slot>
+            )
+        }
+
+        return (
+            <Slot className={buttonClassName} {...standardProps}>
+                {children}
+            </Slot>
+        )
+    }
+
+    return (
+        <motion.button
+            type='button'
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.98 }}
+            className={buttonClassName}
+            {...props}
+        >
+            {buttonContent}
+        </motion.button>
+    )
+}

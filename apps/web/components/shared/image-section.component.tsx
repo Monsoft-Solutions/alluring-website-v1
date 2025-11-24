@@ -137,7 +137,7 @@ export function ImageSection({
                                         asChild
                                         size='lg'
                                         variant={
-                                            primaryButton.variant || 'default'
+                                            primaryButton.variant || 'primary'
                                         }
                                     >
                                         <Link

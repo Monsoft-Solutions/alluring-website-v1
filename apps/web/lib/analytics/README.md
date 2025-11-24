@@ -308,7 +308,7 @@ track('form_submit', {
 
 ```tsx
 track('form_submit', {
-    email: 'user@example.com',
+    email: 'info@alluringplasticsurgery.com',
     name: 'John Doe',
 })
 ```

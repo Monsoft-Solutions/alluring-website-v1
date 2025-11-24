@@ -2,40 +2,44 @@
  * FAQ Component
  *
  * Displays frequently asked questions in an accordion layout.
- * Uses shadcn/ui Accordion component for smooth expand/collapse animations.
+ * Uses framer-motion for smooth expand/collapse animations.
  * Automatically includes FAQ structured data (JSON-LD schema) for SEO.
  *
  * Features:
  * - Single item open at a time (collapsible behavior)
  * - Smooth expand/collapse animations
- * - Keyboard navigation support
- * - Proper accessibility attributes
+ * - Modern styling with stone color palette
+ * - Optional CTA section
  * - Mobile-first responsive design
  * - Automatic FAQ schema markup for rich results
  *
  * @example
  * ```tsx
- * <FAQ
+ * <FAQComponent
  *   faqs={[
  *     { question: 'How long does it take?', answer: '4-6 weeks typically...' },
  *     { question: 'What is the cost?', answer: 'Pricing depends on...' }
  *   ]}
  *   title="Frequently Asked Questions"
  *   description="Common questions about our service"
- *   includeSchema={true} // Default: true - enables rich results in search
+ *   ctaConfig={{
+ *     title: "Still have questions?",
+ *     description: "Our team is ready to help you.",
+ *     buttonText: "Contact Us",
+ *     phoneNumber: "7863058649"
+ *   }}
  * />
  * ```
  */
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@workspace/ui/components/accordion'
-import { cn } from '@workspace/ui/lib/utils'
+'use client'
+
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Plus, Minus } from 'lucide-react'
+import Link from 'next/link'
 import { FAQSchema } from '@workspace/seo/react'
 
-import type { FaqItem } from '@/lib/types/shared/faq.type'
+import type { FaqItem, FaqCtaConfig } from '@/lib/types/shared/faq.type'
 
 import { ContentWrapper } from './content-wrapper.component'
 import { SectionContainer } from './section-container.component'
@@ -89,6 +93,11 @@ export type FAQProps = {
      * @default true
      */
     readonly includeSchema?: boolean
+
+    /**
+     * Optional CTA configuration for "Still have questions?" section
+     */
+    readonly ctaConfig?: FaqCtaConfig
 }
 
 /**
@@ -105,7 +114,10 @@ export function FAQComponent({
     id = 'faq',
     className,
     includeSchema = true,
+    ctaConfig,
 }: FAQProps) {
+    const [openIndex, setOpenIndex] = useState<number | null>(0)
+
     // Handle empty FAQs array
     if (!faqs || faqs.length === 0) {
         return null
@@ -134,38 +146,97 @@ export function FAQComponent({
                     />
 
                     {/* FAQ Accordion */}
-                    <Accordion
-                        type='single'
-                        collapsible
-                        className='w-full space-y-4'
-                    >
+                    <div className='space-y-4'>
                         {faqs.map((faq, index) => (
-                            <AccordionItem
-                                key={`faq-${index}`}
-                                value={`item-${index}`}
-                                className={cn(
-                                    'border-border bg-card rounded-lg border px-6',
-                                    'hover:border-primary/50 transition-colors'
-                                )}
+                            <div
+                                key={index}
+                                className={`group border border-stone-200 bg-white transition-all duration-300 ${
+                                    openIndex === index
+                                        ? 'border-gold-400 shadow-lg'
+                                        : 'hover:border-stone-300'
+                                }`}
                             >
-                                <AccordionTrigger
-                                    className={cn(
-                                        'text-foreground py-4 text-left font-semibold hover:no-underline',
-                                        'text-base md:text-lg'
-                                    )}
+                                <button
+                                    onClick={() =>
+                                        setOpenIndex(
+                                            openIndex === index ? null : index
+                                        )
+                                    }
+                                    className='flex w-full items-center justify-between p-6 text-left focus:outline-none md:p-8'
                                 >
-                                    {faq.question}
-                                </AccordionTrigger>
-                                <AccordionContent
-                                    className={cn(
-                                        'text-muted-foreground pt-2 pb-4 text-sm leading-relaxed md:text-base'
+                                    <span
+                                        className={`font-serif text-xl transition-colors duration-300 ${
+                                            openIndex === index
+                                                ? 'text-stone-900'
+                                                : 'text-stone-600 group-hover:text-stone-900'
+                                        }`}
+                                    >
+                                        {faq.question}
+                                    </span>
+                                    <span
+                                        className={`ml-6 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                                            openIndex === index
+                                                ? 'bg-gold-500 border-gold-500 rotate-180 text-white'
+                                                : 'group-hover:border-gold-400 group-hover:text-gold-400 border-stone-200 text-stone-400'
+                                        }`}
+                                    >
+                                        {openIndex === index ? (
+                                            <Minus size={16} />
+                                        ) : (
+                                            <Plus size={16} />
+                                        )}
+                                    </span>
+                                </button>
+
+                                <AnimatePresence>
+                                    {openIndex === index && (
+                                        <motion.div
+                                            initial={{
+                                                height: 0,
+                                                opacity: 0,
+                                            }}
+                                            animate={{
+                                                height: 'auto',
+                                                opacity: 1,
+                                            }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{
+                                                duration: 0.3,
+                                                ease: 'easeInOut',
+                                            }}
+                                            className='overflow-hidden'
+                                        >
+                                            <div className='px-6 pt-0 pb-8 md:px-8'>
+                                                <p className='border-t border-stone-100 pt-6 text-lg leading-relaxed text-stone-500'>
+                                                    {faq.answer}
+                                                </p>
+                                            </div>
+                                        </motion.div>
                                     )}
-                                >
-                                    {faq.answer}
-                                </AccordionContent>
-                            </AccordionItem>
+                                </AnimatePresence>
+                            </div>
                         ))}
-                    </Accordion>
+                    </div>
+
+                    {/* Optional CTA Section */}
+                    {ctaConfig && (
+                        <div className='mt-12 items-center justify-between rounded-sm bg-stone-900 p-8 text-center md:flex md:text-left'>
+                            <div>
+                                <h4 className='mb-2 font-serif text-xl text-white'>
+                                    {ctaConfig.title}
+                                </h4>
+                                <p className='text-base text-stone-400'>
+                                    {ctaConfig.description}
+                                </p>
+                            </div>
+                            <Link
+                                href={`tel:${ctaConfig.phoneNumber}`}
+                                className='bg-gold-500 hover:bg-gold-400 mt-6 inline-flex items-center justify-center px-6 py-3 text-sm font-bold tracking-widest text-white uppercase transition-colors md:mt-0'
+                            >
+                                {ctaConfig.buttonText}
+                            </Link>
+                        </div>
+                    )}
                 </ContentWrapper>
             </SectionContainer>
         </>

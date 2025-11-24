@@ -3,6 +3,7 @@
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import { Phone } from 'lucide-react'
+import Link from 'next/link'
 
 import type { MobileCallButtonProps } from '@/lib/types/mobile-call-button/mobile-call-button-props.type'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
@@ -76,7 +77,7 @@ export function MobileCallButton({
                     'pb-safe'
                 )}
             >
-                <a
+                <Link
                     href={phoneLink}
                     className={cn(
                         // Full width container
@@ -103,14 +104,14 @@ export function MobileCallButton({
                     >
                         {renderContent()}
                     </div>
-                </a>
+                </Link>
             </div>
         )
     }
 
     // Non-banner mode (floating button)
     return (
-        <a
+        <Link
             href={phoneLink}
             className={cn(
                 // Base styles - fixed positioning
@@ -126,7 +127,7 @@ export function MobileCallButton({
             aria-label={`Call us at ${phoneDisplay}`}
         >
             <Button
-                size={style === 'icon-only' ? 'icon' : 'default'}
+                size={style === 'icon-only' ? 'icon' : 'lg'}
                 className={cn(
                     // Spacing
                     'gap-2',
@@ -137,13 +138,13 @@ export function MobileCallButton({
                     // Hover effect
                     'hover:shadow-xl',
                     // Ensure proper padding for different styles
-                    style === 'icon-only' && 'h-14 w-14 rounded-full',
+                    style === 'icon-only' && 'rounded-full',
                     style === 'text-only' && 'px-6',
                     style === 'icon-text' && 'px-6'
                 )}
             >
                 {renderContent()}
             </Button>
-        </a>
+        </Link>
     )
 }
