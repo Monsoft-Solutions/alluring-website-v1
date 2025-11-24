@@ -136,7 +136,7 @@ export const ExitIntentPopup = () => {
                                 <Button
                                     variant='gold'
                                     size='md'
-                                    className='w-full justify-center !py-3 text-sm'
+                                    className='w-full justify-center py-3! text-sm'
                                 >
                                     Check Availability
                                 </Button>

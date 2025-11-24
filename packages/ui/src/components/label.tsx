@@ -2,7 +2,10 @@
 
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { cn } from '@workspace/ui/lib/utils'
-import * as React from 'react'
+
+type LabelProps = React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+    ref?: React.Ref<React.ComponentRef<typeof LabelPrimitive.Root>>
+}
 
 /**
  * Label component that wraps Radix UI Label primitive.
@@ -11,10 +14,7 @@ import * as React from 'react'
  * @example
  * <Label htmlFor="email">Email Address</Label>
  */
-const Label = React.forwardRef<
-    React.ElementRef<typeof LabelPrimitive.Root>,
-    React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
+const Label = ({ className, ref, ...props }: LabelProps) => {
     return (
         <LabelPrimitive.Root
             ref={ref}
@@ -26,8 +26,6 @@ const Label = React.forwardRef<
             {...props}
         />
     )
-})
-
-Label.displayName = 'Label'
+}
 
 export { Label }
