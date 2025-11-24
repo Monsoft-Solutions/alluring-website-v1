@@ -1,69 +1,67 @@
 /**
  * Contact Page
  *
- * Comprehensive Contact page with hero section, contact form, and contact information.
- * Includes SEO optimization, structured data, and proper accessibility.
+ * World-class contact page for Alluring Plastic Surgery.
+ * Features immersive hero with contact form, trust-building sections,
+ * surgeon previews, testimonials, and categorized FAQ.
+ *
+ * Optimized for conversions with the contact form as the primary hero element.
  */
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
-import { ArrowRight } from 'lucide-react'
 
-import { ContactForm } from '@/components/sections/contact/contact-form.component'
-import { ContactHeroSection } from '@/components/sections/contact/contact-hero-section.component'
-import { ContactInfoSection } from '@/components/sections/contact/contact-info-section.component'
-import { CTASection } from '@/components/shared/cta-section.component'
+import { ContactHeroForm } from '@/components/sections/contact/contact-hero-form.component'
+import { ConsultationBenefits } from '@/components/sections/contact/consultation-benefits.component'
+import { ContactStatsStrip } from '@/components/sections/contact/contact-stats-strip.component'
+import { SurgeonPreview } from '@/components/sections/contact/surgeon-preview.component'
+import { ContactTestimonial } from '@/components/sections/contact/contact-testimonial.component'
+import { ContactAlternative } from '@/components/sections/contact/contact-alternative.component'
+import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import {
-    contactCTAData,
-    contactFormData,
-    contactHeroData,
-    contactInfoData,
-} from '@/lib/data/webpages/contact'
+    faqCategoriesContact,
+    faqDataContact,
+} from '@/lib/data/faq/contact-faq-data'
+import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 /**
  * Contact Page Metadata
  *
- * Implements SEO best practices for the Contact page including:
- * - Unique, descriptive title
- * - Compelling meta description
+ * SEO-optimized metadata for the contact page including:
+ * - Compelling title and description
  * - Open Graph tags for social sharing
  * - Twitter Card configuration
  * - Canonical URL
  */
 export const metadata = toNextMetadata(seoConfig, {
-    // Canonical URL for contact page
     canonical: '/contact',
-
-    // Page-specific metadata
-    title: 'Contact Us - Get In Touch',
+    title: 'Schedule Your Consultation | Alluring Plastic Surgery Miami',
     description:
-        "Have a question or want to work together? Get in touch with our team. We're here to help and will respond within 24 hours.",
+        'Request your private consultation with our board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey. Complimentary, confidential, no obligation.',
 
-    // Open Graph tags for social sharing
     openGraph: {
-        title: "Contact Us - Let's Start a Conversation",
+        title: 'Schedule Your Consultation | Alluring Plastic Surgery',
         description:
-            'Get in touch with our team. Fill out our contact form or reach us directly via phone, email, or social media.',
+            'Request your private consultation with board-certified plastic surgeons in Miami. BBL, Mommy Makeover, Breast Augmentation & more. Luxury results, personalized care.',
         url: `${seoConfig.siteUrl}/contact`,
         type: 'website',
         siteName: seoConfig.siteName,
         images: [
             {
-                url: `${seoConfig.siteUrl}/og-contact.jpg`,
+                url: `${seoConfig.siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: 'Contact us - Get in touch',
+                alt: 'Schedule Your Consultation - Alluring Plastic Surgery Miami',
             },
         ],
     },
 
-    // Twitter Card configuration
     twitter: {
         card: 'summary_large_image',
-        title: 'Contact Us - Get In Touch',
+        title: 'Schedule Your Consultation | Alluring Plastic Surgery Miami',
         description:
-            'Have a question or want to work together? Get in touch with our team.',
-        images: [`${seoConfig.siteUrl}/og-contact.jpg`],
+            'Request your private consultation with board-certified plastic surgeons in Miami. Luxury results, personalized care.',
+        images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
 
@@ -72,9 +70,9 @@ export default function ContactPage() {
         <>
             {/* SEO Schema */}
             <WebPageSchema
-                name={metadata.title as string}
+                name='Schedule Your Consultation - Alluring Plastic Surgery Miami'
                 url={`${seoConfig.siteUrl}/contact`}
-                description={metadata.description as string}
+                description='Request your private consultation with board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey.'
             />
 
             <OrganizationSchema
@@ -87,36 +85,46 @@ export default function ContactPage() {
             />
 
             {/* Main Content */}
-            <main>
-                {/* Contact Hero Section */}
-                <ContactHeroSection id='contact-hero' {...contactHeroData} />
+            <main className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
+                {/* Section 1: Hero Contact Form */}
+                <ContactHeroForm id='contact-form' />
 
-                {/* Contact Form Section */}
-                <ContactForm id='contact-form' {...contactFormData} />
+                {/* Section 2: Consultation Benefits */}
+                <ConsultationBenefits id='what-to-expect' />
 
-                {/* Contact Information Section */}
-                <ContactInfoSection id='contact-info' {...contactInfoData} />
+                {/* Section 3: Stats Strip */}
+                <ContactStatsStrip id='stats' />
 
-                {/* Final CTA Section */}
-                <CTASection
-                    id='contact-cta'
-                    heading={contactCTAData.title}
-                    description={contactCTAData.description}
-                    primaryButton={{
-                        text: contactCTAData.primaryButton.text,
-                        href: contactCTAData.primaryButton.href,
-                        variant: 'default',
-                        icon: <ArrowRight className='size-5' />,
-                        iconPosition: 'right',
+                {/* Section 4: Surgeon Preview */}
+                <SurgeonPreview id='surgeons' />
+
+                {/* Section 5: Featured Testimonial */}
+                <ContactTestimonial id='testimonial' />
+
+                {/* Section 6: Categorized FAQ */}
+                <CategorizedFAQ
+                    id='faq'
+                    categories={faqCategoriesContact}
+                    faqData={faqDataContact}
+                    badge='Common Questions'
+                    title='Before You Visit,'
+                    subtitle='Know This.'
+                    description='We believe in complete transparency. Here are answers to the most common questions patients ask before their consultation.'
+                    variant='default'
+                    showBackgroundDecoration={true}
+                    ctaConfig={{
+                        title: 'Have a specific question?',
+                        description: 'Our patient concierge is ready to help.',
+                        buttonText: 'Call Now',
+                        phoneNumber: siteConfig.contact.phone.replace(
+                            /\D/g,
+                            ''
+                        ),
                     }}
-                    secondaryButton={{
-                        text: contactCTAData.secondaryButton.text,
-                        href: contactCTAData.secondaryButton.href,
-                        variant: 'outline',
-                    }}
-                    variant={contactCTAData.variant}
-                    align='center'
                 />
+
+                {/* Section 7: Alternative Contact Methods */}
+                <ContactAlternative id='location' />
             </main>
         </>
     )

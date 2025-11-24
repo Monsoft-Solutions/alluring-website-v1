@@ -3,6 +3,9 @@
  *
  * Data structures and content for the contact page sections.
  * Contact information is pulled from centralized site-config.
+ *
+ * Note: Most contact page components now have their own data embedded.
+ * This file contains shared data and legacy compatibility exports.
  */
 import { Mail, MapPin, Phone } from 'lucide-react'
 
@@ -17,24 +20,26 @@ import type { ContactHeroSectionProps } from '@/lib/types/sections/contact-hero-
 import type { ContactInfoSectionProps } from '@/lib/types/sections/contact-info-section.type'
 
 /**
- * Contact Hero Section Content
+ * Contact Hero Section Content (Legacy)
+ * Note: ContactHeroForm component has its own content
  */
 export const contactHeroData: Omit<ContactHeroSectionProps, 'id'> = {
-    badge: 'Get In Touch',
-    headline: "Let's build your website.",
+    badge: 'Start Your Journey',
+    headline: 'Your Transformation Begins Here',
     description:
-        'Questions about Keel? Need a quote? Send us a message. We respond within 24 hours.',
+        "Schedule your private consultation with our board-certified surgeons. We'll discuss your goals, answer every question, and create a personalized plan for your aesthetic journey.",
     enableAnimations: true,
 }
 
 /**
- * Contact Form Section Content
+ * Contact Form Section Content (Legacy)
+ * Note: ContactHeroForm component has its own content
  */
 export const contactFormData: Omit<ContactFormSectionProps, 'id'> = {
-    badge: 'Send a Message',
-    headline: 'Get In Touch',
+    badge: 'Request Consultation',
+    headline: 'Schedule Your Visit',
     description:
-        'Fill out the form. We respond within 24 hours on business days.',
+        'Fill out the form below and our concierge will contact you within 24 hours to schedule your consultation.',
 }
 
 /**
@@ -45,7 +50,7 @@ export const contactInfoData: Omit<ContactInfoSectionProps, 'id'> = {
     badge: 'Contact Information',
     headline: 'Other Ways to Reach Us',
     description:
-        'Prefer phone or email? Contact us directly using the information below.',
+        'Prefer to call or visit? Use the information below to connect with our team directly.',
     contactItems: [
         {
             icon: Phone,
@@ -71,19 +76,20 @@ export const contactInfoData: Omit<ContactInfoSectionProps, 'id'> = {
 }
 
 /**
- * Final CTA Section Content (for end of contact page)
+ * Final CTA Section Content
+ * Encourages visitors to take the next step
  */
 export const contactCTAData = {
-    title: 'Ready to Start Building?',
+    title: 'Ready to Begin Your Transformation?',
     description:
-        'Get Keel documentation. View pricing and features. Or schedule a call to discuss your project.',
+        'Explore our procedures or view before & after results to learn more about what we can achieve together.',
     primaryButton: {
-        text: 'View Documentation',
-        href: '/docs',
+        text: 'View Procedures',
+        href: '/procedures',
     },
     secondaryButton: {
-        text: 'See Features',
-        href: '/#features',
+        text: 'See Results',
+        href: '/#before-after',
     },
     variant: 'accent' as const,
 }
