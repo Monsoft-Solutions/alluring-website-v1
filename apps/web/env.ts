@@ -26,19 +26,19 @@ if (typeof window === 'undefined') {
 export const env = createEnv({
     server: {
         // Database & Storage (required for runtime)
-        POSTGRES_URL: z.url(),
+        POSTGRES_URL: z.string().url(),
         BLOG_API_KEY: z.string().min(1),
         BLOB_READ_WRITE_TOKEN: z.string().min(1).optional(),
         VERCEL_URL: z.string().optional(),
 
         // Email (required for contact form)
         RESEND_API_KEY: z.string().min(1),
-        RESEND_FROM_EMAIL: z.email(),
-        OWNER_EMAIL: z.email(),
+        RESEND_FROM_EMAIL: z.string().email(),
+        OWNER_EMAIL: z.string().email(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)
-        NEXT_PUBLIC_SITE_URL: z.url().optional(),
+        NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
 
         // Other SEO variables are OPTIONAL - defaults come from site-config.ts
         NEXT_PUBLIC_SITE_NAME: z.string().min(1).optional(),

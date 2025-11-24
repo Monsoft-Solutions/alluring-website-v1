@@ -7,6 +7,7 @@ import { SurgeonBio } from '@/components/surgeons/surgeon-bio.component'
 import { SurgeonCredentials } from '@/components/surgeons/surgeon-credentials.component'
 import { SurgeonSpecialties } from '@/components/surgeons/surgeon-specialties.component'
 import { SurgeonCTA } from '@/components/surgeons/surgeon-cta.component'
+import { env } from '@/env'
 
 interface PageProps {
     params: Promise<{ slug: string }>
@@ -32,11 +33,14 @@ export async function generateMetadata({
 
     const ogImage = surgeon.images.featured.startsWith('http')
         ? surgeon.images.featured
-        : `${siteConfig.seo.siteUrl}${surgeon.images.featured}`
+        : `${env.NEXT_PUBLIC_SITE_URL}${surgeon.images.featured}`
 
     return {
         title: `${surgeon.name} | Alluring Plastic Surgery`,
         description: surgeon.shortBio,
+        alternates: {
+            canonical: `${env.NEXT_PUBLIC_SITE_URL}/${slug}`,
+        },
         openGraph: {
             title: `${surgeon.name} | Alluring Plastic Surgery`,
             description: surgeon.shortBio,

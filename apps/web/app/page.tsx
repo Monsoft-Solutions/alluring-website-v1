@@ -18,6 +18,7 @@ import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
  * Homepage Metadata
  */
 export const metadata: Metadata = toNextMetadata(seoConfig, {
+    canonical: '/',
     title: {
         default: siteConfig.business.name,
         template: `%s | ${siteConfig.business.name}`,

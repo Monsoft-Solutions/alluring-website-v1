@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
-
 import { LegalPageLayout } from '@/components/legal/legal-page-layout.component'
 import { privacyPolicyContent } from '@/lib/data/legal/privacy-policy.content'
+import { seoConfig } from '@/lib/seo-config'
+import { toNextMetadata } from '@/lib/seo/metadata'
 
-export const metadata: Metadata = {
+export const metadata = toNextMetadata(seoConfig, {
+    canonical: '/privacy',
     title: 'Privacy Policy',
     description:
         'Our privacy policy explains how we collect, use, and protect your personal information when you visit our website.',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
-}
+})
 
 /**
  * Privacy Policy Page

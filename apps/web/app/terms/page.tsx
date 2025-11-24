@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
-
 import { LegalPageLayout } from '@/components/legal/legal-page-layout.component'
 import { termsOfServiceContent } from '@/lib/data/legal/terms-of-service.content'
+import { seoConfig } from '@/lib/seo-config'
+import { toNextMetadata } from '@/lib/seo/metadata'
 
-export const metadata: Metadata = {
+export const metadata = toNextMetadata(seoConfig, {
+    canonical: '/terms',
     title: 'Terms of Service',
     description:
         'Our terms of service outline the rules and guidelines for using our website and services.',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
-}
+})
 
 /**
  * Terms of Service Page

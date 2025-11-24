@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
-
 import { LegalPageLayout } from '@/components/legal/legal-page-layout.component'
 import { cookiePolicyContent } from '@/lib/data/legal/cookie-policy.content'
+import { seoConfig } from '@/lib/seo-config'
+import { toNextMetadata } from '@/lib/seo/metadata'
 
-export const metadata: Metadata = {
+export const metadata = toNextMetadata(seoConfig, {
+    canonical: '/cookies',
     title: 'Cookie Policy',
     description:
         'Our cookie policy explains what cookies we use, why we use them, and how you can control them.',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
-}
+})
 
 /**
  * Cookie Policy Page

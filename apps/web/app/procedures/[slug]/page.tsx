@@ -13,6 +13,7 @@ import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.co
 import { ProcedureProcess } from '@/components/procedures/procedure-process.component'
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
+import { env } from '@/env'
 
 interface ProcedurePageProps {
     params: Promise<{
@@ -42,6 +43,9 @@ export async function generateMetadata(
         title: procedure.title,
         description: procedure.description,
         keywords: procedure.keywords,
+        alternates: {
+            canonical: `${env.NEXT_PUBLIC_SITE_URL}/procedures/${params.slug}`,
+        },
     }
 }
 
