@@ -27,8 +27,8 @@ export const SurgeonCTA = () => {
                 </p>
 
                 <div className='flex flex-col justify-center gap-4 sm:flex-row'>
-                    <Button variant='primary' size='lg' withArrow>
-                        Schedule Consultation
+                    <Button variant='primary' size='lg' withArrow asChild>
+                        <Link href='/contact-us'>Schedule Consultation</Link>
                     </Button>
                     <Link href={getPhoneLink()}>
                         <Button variant='outline' size='lg'>

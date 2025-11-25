@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
+import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
 
 export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
@@ -69,7 +70,7 @@ export const Header = () => {
                             alt='Alluring Plastic Surgery'
                             width={150}
                             height={67}
-                            className='h-auto w-auto max-w-[180px] transition-opacity group-hover:opacity-80'
+                            className='h-10 w-auto transition-opacity group-hover:opacity-80 md:h-12 lg:h-14'
                             priority
                         />
                     </Link>
@@ -114,7 +115,7 @@ export const Header = () => {
                                             : ''
                                     }`}
                                 />
-                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                             </button>
                             <AnimatePresence>
                                 {isProceduresDropdownOpen && (
@@ -193,7 +194,7 @@ export const Header = () => {
                                             : ''
                                     }`}
                                 />
-                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                             </button>
                             <AnimatePresence>
                                 {isSurgeonsDropdownOpen && (
@@ -224,13 +225,13 @@ export const Header = () => {
                     {/* CTA Right */}
                     <div className='hidden items-center space-x-8 lg:flex'>
                         <Link
-                            href='tel:7863058649'
+                            href={getPhoneLink()}
                             className='hover:text-gold-500 flex items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors'
                         >
-                            (786) 305-8649
+                            {contactInfo.phoneDisplay}
                         </Link>
-                        <Button size='sm' variant='primary'>
-                            Request Consult
+                        <Button size='sm' variant='primary' asChild>
+                            <Link href='/contact-us'>Request Consult</Link>
                         </Button>
                     </div>
 
@@ -258,204 +259,287 @@ export const Header = () => {
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{
-                            opacity: 0,
-                            clipPath: 'circle(0% at 100% 0%)',
-                        }}
-                        animate={{
-                            opacity: 1,
-                            clipPath: 'circle(150% at 100% 0%)',
-                        }}
-                        exit={{
-                            opacity: 0,
-                            clipPath: 'circle(0% at 100% 0%)',
-                        }}
-                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                        className='fixed inset-0 z-40 flex items-center justify-center bg-stone-50'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        className='fixed inset-0 z-[60] bg-white/95 backdrop-blur-xl'
                     >
-                        <div className='container flex flex-col items-center justify-center space-y-8 px-6'>
-                            {/* Mobile Procedures Dropdown */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 }}
-                                className='w-full'
+                        {/* Mobile Menu Header */}
+                        <div className='container mx-auto flex h-20 items-center justify-between px-6 md:px-12'>
+                            <Link
+                                href='/'
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className='relative z-50'
                             >
-                                <button
-                                    onClick={() =>
-                                        setIsProceduresMobileOpen(
-                                            !isProceduresMobileOpen
-                                        )
-                                    }
-                                    className='hover:text-gold-500 flex w-full items-center justify-center gap-2 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
-                                >
-                                    Procedures
-                                    <ChevronDown
-                                        className={`h-6 w-6 transition-transform duration-200 ${
-                                            isProceduresMobileOpen
-                                                ? 'rotate-180'
-                                                : ''
-                                        }`}
-                                    />
-                                </button>
-                                <AnimatePresence>
-                                    {isProceduresMobileOpen && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                                height: 'auto',
-                                            }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.2 }}
-                                            className='mt-4 space-y-4 overflow-hidden'
-                                        >
-                                            <motion.div
-                                                initial={{
-                                                    opacity: 0,
-                                                    x: -20,
-                                                }}
-                                                animate={{
-                                                    opacity: 1,
-                                                    x: 0,
-                                                }}
-                                                transition={{
-                                                    delay: 0,
-                                                }}
-                                            >
-                                                <Link
-                                                    href='/procedures'
-                                                    onClick={() => {
-                                                        setIsMobileMenuOpen(
-                                                            false
-                                                        )
-                                                        setIsProceduresMobileOpen(
-                                                            false
-                                                        )
-                                                    }}
-                                                    className='hover:text-gold-500 block text-center font-serif text-3xl font-bold text-stone-900 transition-colors md:text-4xl'
-                                                >
-                                                    View All Procedures
-                                                </Link>
-                                            </motion.div>
-                                            {procedureLinks.map((link, idx) => (
-                                                <motion.div
-                                                    key={link.href}
-                                                    initial={{
-                                                        opacity: 0,
-                                                        x: -20,
-                                                    }}
-                                                    animate={{
-                                                        opacity: 1,
-                                                        x: 0,
-                                                    }}
-                                                    transition={{
-                                                        delay: (idx + 1) * 0.05,
-                                                    }}
-                                                >
-                                                    <Link
-                                                        href={link.href}
-                                                        onClick={() => {
-                                                            setIsMobileMenuOpen(
-                                                                false
-                                                            )
-                                                            setIsProceduresMobileOpen(
-                                                                false
-                                                            )
-                                                        }}
-                                                        className='hover:text-gold-500 block text-center font-serif text-3xl text-stone-700 transition-colors md:text-4xl'
-                                                    >
-                                                        {link.label}
-                                                    </Link>
-                                                </motion.div>
-                                            ))}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
+                                <Image
+                                    src='/logo-dark.png'
+                                    alt='Alluring Plastic Surgery'
+                                    width={140}
+                                    height={62}
+                                    className='h-10 w-auto md:h-12'
+                                />
+                            </Link>
+                            <button
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className='group relative z-50 rounded-full bg-stone-100 p-3 text-stone-900 transition-colors hover:bg-stone-200'
+                            >
+                                <X className='h-6 w-6 transition-transform duration-300 group-hover:rotate-90' />
+                            </button>
+                        </div>
 
-                            {/* Mobile Surgeons Dropdown */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    delay: 0.2,
-                                }}
-                                className='w-full'
-                            >
-                                <button
-                                    onClick={() =>
-                                        setIsSurgeonsMobileOpen(
-                                            !isSurgeonsMobileOpen
-                                        )
-                                    }
-                                    className='hover:text-gold-500 flex w-full items-center justify-center gap-2 text-center font-serif text-4xl text-stone-900 transition-colors md:text-5xl'
-                                >
-                                    Surgeons
-                                    <ChevronDown
-                                        className={`h-6 w-6 transition-transform duration-200 ${
-                                            isSurgeonsMobileOpen
-                                                ? 'rotate-180'
-                                                : ''
-                                        }`}
-                                    />
-                                </button>
-                                <AnimatePresence>
-                                    {isSurgeonsMobileOpen && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                                height: 'auto',
-                                            }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.2 }}
-                                            className='mt-4 space-y-4 overflow-hidden'
+                        {/* Mobile Menu Content */}
+                        <div className='container mx-auto flex h-[calc(100vh-80px)] flex-col px-6 pb-10 md:px-12'>
+                            <div className='no-scrollbar flex-1 overflow-y-auto py-8'>
+                                <div className='flex flex-col space-y-8'>
+                                    {/* Procedures Section */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.1 }}
+                                        className='w-full'
+                                    >
+                                        <button
+                                            onClick={() =>
+                                                setIsProceduresMobileOpen(
+                                                    !isProceduresMobileOpen
+                                                )
+                                            }
+                                            className='group flex w-full items-center justify-between py-4 text-left'
                                         >
-                                            {surgeonLinks.map((link, idx) => (
+                                            <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
+                                                Procedures
+                                            </span>
+                                            <span
+                                                className={`flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 transition-all duration-300 ${isProceduresMobileOpen ? 'rotate-180 border-stone-900 bg-stone-900 text-white' : 'text-stone-400 group-hover:border-stone-400'}`}
+                                            >
+                                                <ChevronDown className='h-5 w-5' />
+                                            </span>
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {isProceduresMobileOpen && (
                                                 <motion.div
-                                                    key={link.href}
                                                     initial={{
                                                         opacity: 0,
-                                                        x: -20,
+                                                        height: 0,
                                                     }}
                                                     animate={{
                                                         opacity: 1,
-                                                        x: 0,
+                                                        height: 'auto',
+                                                    }}
+                                                    exit={{
+                                                        opacity: 0,
+                                                        height: 0,
                                                     }}
                                                     transition={{
-                                                        delay: idx * 0.05,
+                                                        duration: 0.3,
+                                                        ease: [0.16, 1, 0.3, 1],
                                                     }}
+                                                    className='overflow-hidden'
                                                 >
-                                                    <Link
-                                                        href={link.href}
-                                                        onClick={() => {
-                                                            setIsMobileMenuOpen(
-                                                                false
-                                                            )
-                                                            setIsSurgeonsMobileOpen(
-                                                                false
-                                                            )
-                                                        }}
-                                                        className='hover:text-gold-500 block text-center font-serif text-3xl text-stone-700 transition-colors md:text-4xl'
-                                                    >
-                                                        {link.label}
-                                                    </Link>
+                                                    <div className='ml-4 space-y-4 border-l border-stone-200 py-4 pl-6'>
+                                                        <motion.div
+                                                            initial={{
+                                                                opacity: 0,
+                                                                x: -10,
+                                                            }}
+                                                            animate={{
+                                                                opacity: 1,
+                                                                x: 0,
+                                                            }}
+                                                            transition={{
+                                                                delay: 0.1,
+                                                            }}
+                                                        >
+                                                            <Link
+                                                                href='/procedures'
+                                                                onClick={() =>
+                                                                    setIsMobileMenuOpen(
+                                                                        false
+                                                                    )
+                                                                }
+                                                                className='text-gold-600 hover:text-gold-700 flex items-center gap-2 text-sm font-bold tracking-widest uppercase transition-colors'
+                                                            >
+                                                                View All
+                                                                Procedures
+                                                                <span className='text-lg'>
+                                                                    →
+                                                                </span>
+                                                            </Link>
+                                                        </motion.div>
+
+                                                        <div className='grid grid-cols-1 gap-y-3 md:grid-cols-2 md:gap-x-8'>
+                                                            {procedureLinks.map(
+                                                                (link, idx) => (
+                                                                    <motion.div
+                                                                        key={
+                                                                            link.href
+                                                                        }
+                                                                        initial={{
+                                                                            opacity: 0,
+                                                                            x: -10,
+                                                                        }}
+                                                                        animate={{
+                                                                            opacity: 1,
+                                                                            x: 0,
+                                                                        }}
+                                                                        transition={{
+                                                                            delay:
+                                                                                0.1 +
+                                                                                idx *
+                                                                                    0.02,
+                                                                        }}
+                                                                    >
+                                                                        <Link
+                                                                            href={
+                                                                                link.href
+                                                                            }
+                                                                            onClick={() =>
+                                                                                setIsMobileMenuOpen(
+                                                                                    false
+                                                                                )
+                                                                            }
+                                                                            className='block py-1 text-lg text-stone-600 transition-colors hover:text-stone-900'
+                                                                        >
+                                                                            {
+                                                                                link.label
+                                                                            }
+                                                                        </Link>
+                                                                    </motion.div>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </motion.div>
-                                            ))}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+
+                                    {/* Surgeons Section */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.2 }}
+                                        className='w-full'
+                                    >
+                                        <button
+                                            onClick={() =>
+                                                setIsSurgeonsMobileOpen(
+                                                    !isSurgeonsMobileOpen
+                                                )
+                                            }
+                                            className='group flex w-full items-center justify-between py-4 text-left'
+                                        >
+                                            <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
+                                                Surgeons
+                                            </span>
+                                            <span
+                                                className={`flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 transition-all duration-300 ${isSurgeonsMobileOpen ? 'rotate-180 border-stone-900 bg-stone-900 text-white' : 'text-stone-400 group-hover:border-stone-400'}`}
+                                            >
+                                                <ChevronDown className='h-5 w-5' />
+                                            </span>
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {isSurgeonsMobileOpen && (
+                                                <motion.div
+                                                    initial={{
+                                                        opacity: 0,
+                                                        height: 0,
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        height: 'auto',
+                                                    }}
+                                                    exit={{
+                                                        opacity: 0,
+                                                        height: 0,
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.3,
+                                                        ease: [0.16, 1, 0.3, 1],
+                                                    }}
+                                                    className='overflow-hidden'
+                                                >
+                                                    <div className='ml-4 space-y-4 border-l border-stone-200 py-4 pl-6'>
+                                                        {surgeonLinks.map(
+                                                            (link, idx) => (
+                                                                <motion.div
+                                                                    key={
+                                                                        link.href
+                                                                    }
+                                                                    initial={{
+                                                                        opacity: 0,
+                                                                        x: -10,
+                                                                    }}
+                                                                    animate={{
+                                                                        opacity: 1,
+                                                                        x: 0,
+                                                                    }}
+                                                                    transition={{
+                                                                        delay:
+                                                                            0.1 +
+                                                                            idx *
+                                                                                0.05,
+                                                                    }}
+                                                                >
+                                                                    <Link
+                                                                        href={
+                                                                            link.href
+                                                                        }
+                                                                        onClick={() =>
+                                                                            setIsMobileMenuOpen(
+                                                                                false
+                                                                            )
+                                                                        }
+                                                                        className='block py-1 text-lg text-stone-600 transition-colors hover:text-stone-900'
+                                                                    >
+                                                                        {
+                                                                            link.label
+                                                                        }
+                                                                    </Link>
+                                                                </motion.div>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+                                </div>
+                            </div>
+
+                            {/* Footer CTA */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5 }}
-                                className='flex w-full max-w-xs flex-col gap-4 pt-8'
+                                transition={{ delay: 0.3 }}
+                                className='mt-auto border-t border-stone-100 pt-6'
                             >
-                                <Button size='lg' className='w-full'>
-                                    Book Consultation
-                                </Button>
+                                <div className='flex flex-col gap-4'>
+                                    <div className='flex justify-between text-sm font-medium text-stone-500'>
+                                        <span>
+                                            {contactInfo.city},{' '}
+                                            {contactInfo.state}
+                                        </span>
+                                        <Link
+                                            href={getPhoneLink()}
+                                            className='transition-colors hover:text-stone-900'
+                                        >
+                                            {contactInfo.phoneDisplay}
+                                        </Link>
+                                    </div>
+                                    <Button
+                                        size='lg'
+                                        className='h-14 w-full text-lg'
+                                        asChild
+                                    >
+                                        <Link href='/contact-us'>
+                                            Request Consultation
+                                        </Link>
+                                    </Button>
+                                </div>
                             </motion.div>
                         </div>
                     </motion.div>
