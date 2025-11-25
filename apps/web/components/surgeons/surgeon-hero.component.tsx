@@ -104,8 +104,8 @@ export const SurgeonHero = ({ surgeon }: SurgeonHeroProps) => {
                         variants={textVariants}
                         className='flex flex-col gap-5 sm:flex-row'
                     >
-                        <Button variant='gold' size='lg' withArrow>
-                            Book Consultation
+                        <Button variant='gold' size='lg' withArrow asChild>
+                            <Link href='/contact-us'>Book Consultation</Link>
                         </Button>
                         <Button
                             variant='outline'

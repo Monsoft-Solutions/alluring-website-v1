@@ -69,7 +69,7 @@ export const Header = () => {
                             alt='Alluring Plastic Surgery'
                             width={150}
                             height={67}
-                            className='h-auto w-auto max-w-[180px] transition-opacity group-hover:opacity-80'
+                            className='h-10 w-auto transition-opacity group-hover:opacity-80 md:h-12 lg:h-14'
                             priority
                         />
                     </Link>
@@ -229,8 +229,8 @@ export const Header = () => {
                         >
                             (786) 305-8649
                         </Link>
-                        <Button size='sm' variant='primary'>
-                            Request Consult
+                        <Button size='sm' variant='primary' asChild>
+                            <Link href='/contact-us'>Request Consult</Link>
                         </Button>
                     </div>
 
@@ -453,8 +453,10 @@ export const Header = () => {
                                 transition={{ delay: 0.5 }}
                                 className='flex w-full max-w-xs flex-col gap-4 pt-8'
                             >
-                                <Button size='lg' className='w-full'>
-                                    Book Consultation
+                                <Button size='lg' className='w-full' asChild>
+                                    <Link href='/contact-us'>
+                                        Book Consultation
+                                    </Link>
                                 </Button>
                             </motion.div>
                         </div>
