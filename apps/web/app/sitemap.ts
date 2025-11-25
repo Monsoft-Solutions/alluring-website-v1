@@ -13,12 +13,21 @@ import type { SitemapRoute } from '@workspace/seo/types/sitemap/sitemap-route.ty
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
+import { env } from '@/env'
 import {
     getActiveCategorySlugs,
     getActiveTagSlugs,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { procedures } from '@/lib/data/procedures.data'
+
+/**
+ * Check if crawling is allowed
+ * Defaults to false (block crawling) if not explicitly set to 'true'
+ */
+function isCrawlingAllowed(): boolean {
+    return env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
+}
 
 /**
  * Get the base URL for the site
@@ -222,6 +231,11 @@ function createAppStaticRoutes(): SitemapRoute[] {
  * This is called by Next.js to generate the sitemap.xml
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    // Return empty sitemap if crawling is not allowed
+    if (!isCrawlingAllowed()) {
+        return []
+    }
+
     const baseUrl = getBaseUrl()
 
     const config: SitemapConfig = {

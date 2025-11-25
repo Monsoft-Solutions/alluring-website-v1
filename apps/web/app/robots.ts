@@ -13,6 +13,7 @@ import {
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
+import { env } from '@/env'
 
 /**
  * Get the base URL for the site
@@ -37,10 +38,30 @@ function getAppSpecificDisallows(): string[] {
 }
 
 /**
+ * Check if crawling is allowed
+ * Defaults to false (block crawling) if not explicitly set to 'true'
+ */
+function isCrawlingAllowed(): boolean {
+    return env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
+}
+
+/**
  * Main robots.txt generation function
  * This is called by Next.js to generate the robots.txt
  */
 export default function robots(): MetadataRoute.Robots {
+    // Block all crawling if not explicitly allowed
+    if (!isCrawlingAllowed()) {
+        return {
+            rules: [
+                {
+                    userAgent: '*',
+                    disallow: ['/'],
+                },
+            ],
+        }
+    }
+
     const environment = detectEnvironment()
     const baseUrl = getBaseUrl()
 
