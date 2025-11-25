@@ -114,7 +114,7 @@ export const Header = () => {
                                             : ''
                                     }`}
                                 />
-                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                             </button>
                             <AnimatePresence>
                                 {isProceduresDropdownOpen && (
@@ -193,7 +193,7 @@ export const Header = () => {
                                             : ''
                                     }`}
                                 />
-                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-[1px] w-0 transition-all duration-300 group-hover:w-full'></span>
+                                <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                             </button>
                             <AnimatePresence>
                                 {isSurgeonsDropdownOpen && (
@@ -527,7 +527,7 @@ export const Header = () => {
                                         </Link>
                                     </div>
                                     <Button
-                                        size='xl'
+                                        size='lg'
                                         className='h-14 w-full text-lg'
                                         asChild
                                     >
