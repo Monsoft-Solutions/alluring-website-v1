@@ -95,7 +95,7 @@ export function ProcedureDetailHero({
                                     transition={{ delay: 0.6, duration: 0.8 }}
                                     className='mt-10 flex flex-col gap-4 sm:flex-row'
                                 >
-                                    <Link href='/contact' passHref>
+                                    <Link href='/contact-us' passHref>
                                         <Button
                                             variant='gold'
                                             size='lg'

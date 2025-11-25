@@ -47,7 +47,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         colorScheme: 'blue',
         primaryButton: {
             text: 'Get Started',
-            href: '/contact',
+            href: '/contact-us',
             iconName: 'arrow-right',
         },
     },
@@ -59,7 +59,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         colorScheme: 'blue',
         primaryButton: {
             text: 'Book Consultation',
-            href: '/contact',
+            href: '/contact-us',
             iconName: 'message-circle',
         },
         secondaryButton: {
@@ -93,7 +93,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         colorScheme: 'blue',
         primaryButton: {
             text: 'Subscribe Now',
-            href: '/contact',
+            href: '/contact-us',
             iconName: 'mail',
         },
     },
@@ -105,7 +105,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         colorScheme: 'blue',
         primaryButton: {
             text: 'Contact Us',
-            href: '/contact',
+            href: '/contact-us',
             iconName: 'mail',
         },
         secondaryButton: {

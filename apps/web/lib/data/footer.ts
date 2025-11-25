@@ -13,7 +13,7 @@ export const footerSections: NavigationSection[] = [
         items: [
             { label: 'About', href: '/about', external: false },
             { label: 'Blog', href: '/blog', external: false },
-            { label: 'Contact', href: '/contact', external: false },
+            { label: 'Contact', href: '/contact-us', external: false },
         ],
     },
     {

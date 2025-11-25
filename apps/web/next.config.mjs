@@ -29,6 +29,15 @@ const nextConfig = {
             },
         ],
     },
+    async redirects() {
+        return [
+            {
+                source: '/contact',
+                destination: '/contact-us',
+                permanent: true, // 308 permanent redirect
+            },
+        ]
+    },
 }
 
 export default nextConfig

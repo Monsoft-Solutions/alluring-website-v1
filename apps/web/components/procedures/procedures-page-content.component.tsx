@@ -262,7 +262,7 @@ export function ProceduresPageContent({
                 description='Schedule a free consultation with our expert surgeons to discuss your goals and create a personalized treatment plan.'
                 primaryButton={{
                     text: 'Schedule Consultation',
-                    href: '/contact',
+                    href: '/contact-us',
                 }}
                 secondaryButton={{
                     text: 'Call Us Now',

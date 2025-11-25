@@ -171,10 +171,10 @@ function createAppStaticRoutes(): SitemapRoute[] {
             ],
         },
         {
-            path: '/contact',
+            path: '/contact-us',
             getEntries: () => [
                 {
-                    url: '/contact',
+                    url: '/contact-us',
                     changeFrequency: 'monthly',
                     priority: 0.7,
                     lastModified: new Date().toISOString(),

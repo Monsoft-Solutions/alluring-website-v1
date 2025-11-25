@@ -23,6 +23,16 @@ export type BusinessHours = {
 }
 
 /**
+ * Geographic coordinates
+ */
+export type Coordinates = {
+    /** Latitude */
+    lat: number
+    /** Longitude */
+    lng: number
+}
+
+/**
  * Contact information with extended details
  */
 export type ContactInfo = {
@@ -46,6 +56,8 @@ export type ContactInfo = {
     postalCode?: string
     /** Country */
     country?: string
+    /** Geographic coordinates (latitude/longitude) */
+    coordinates?: Coordinates
     /** Business hours */
     businessHours?: BusinessHours[]
     /** Support hours (if different from business hours) */

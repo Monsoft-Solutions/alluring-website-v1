@@ -18,7 +18,7 @@ export const mainNavigation: NavigationItem[] = [
     { label: 'Home', href: '/', external: false },
     { label: 'About', href: '/about', external: false },
     { label: 'Blog', href: '/blog', external: false },
-    { label: 'Contact', href: '/contact', external: false },
+    { label: 'Contact', href: '/contact-us', external: false },
 ]
 
 /**
