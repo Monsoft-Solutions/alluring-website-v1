@@ -58,8 +58,9 @@ export function CTASection({
     const isPrimaryVariant = variant === 'primary'
     const containerRef = useRef<HTMLDivElement>(null)
 
+    // Only use scroll-based animations when we have a background image
     const { scrollYProgress } = useScroll({
-        target: containerRef,
+        target: backgroundImage ? containerRef : undefined,
         offset: ['start end', 'end start'],
     })
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { Procedure } from '@/lib/types/procedure.type'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SignatureProcedureCard } from '@/components/shared/signature-procedure-card.component'
@@ -27,7 +27,13 @@ export function ProceduresPageContent({
     procedures,
 }: ProceduresPageContentProps) {
     const [activeCategory, setActiveCategory] = useState('all')
+    const [isMounted, setIsMounted] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
+
+    // Ensure component is mounted before using scroll-based animations
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
 
     // Filter procedures based on active category
     const filteredProcedures =
@@ -36,7 +42,8 @@ export function ProceduresPageContent({
             : procedures.filter((p) => p.category === activeCategory)
 
     const { scrollYProgress } = useScroll({
-        target: targetRef,
+        target: isMounted ? targetRef : undefined,
+        offset: ['start start', 'end end'],
     })
 
     const x = useTransform(scrollYProgress, [0, 1], ['1%', '-95%'])
