@@ -57,7 +57,7 @@ export function LegalPageLayout({
                 <p>
                     For questions or concerns about this policy, please{' '}
                     <Link
-                        href='/contact'
+                        href='/contact-us'
                         className='text-foreground decoration-muted-foreground/50 hover:decoration-foreground cursor-pointer underline underline-offset-4'
                     >
                         contact us

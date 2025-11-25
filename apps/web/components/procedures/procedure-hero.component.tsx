@@ -81,7 +81,10 @@ export function ProcedureHero() {
                             </p>
 
                             <div className='mb-10 flex flex-col gap-5 sm:flex-row'>
-                                <Link href='/contact' className='inline-block'>
+                                <Link
+                                    href='/contact-us'
+                                    className='inline-block'
+                                >
                                     <Button size='md' withArrow>
                                         Schedule Consultation
                                     </Button>

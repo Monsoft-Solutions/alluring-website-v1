@@ -96,7 +96,7 @@ export const Hero = () => {
                             <div className='mb-10 flex flex-col gap-5 sm:flex-row'>
                                 <Button size='md' asChild>
                                     <Link
-                                        href='/contact'
+                                        href='/contact-us'
                                         aria-label='Start your consultation - Navigate to contact page'
                                         className='group'
                                     >

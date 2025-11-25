@@ -249,7 +249,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 backgroundImage={procedure.image}
                 primaryButton={{
                     text: 'Schedule Consultation',
-                    href: '/contact',
+                    href: '/contact-us',
                 }}
                 secondaryButton={{
                     text: 'Call Us Now',

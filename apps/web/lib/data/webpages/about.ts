@@ -193,7 +193,7 @@ export const aboutCTAData = {
         'Start with production-ready code. Full documentation included. Build your first site this week.',
     primaryButton: {
         text: 'Contact Us',
-        href: '/contact',
+        href: '/contact-us',
     },
     secondaryButton: {
         text: 'Key Features',
