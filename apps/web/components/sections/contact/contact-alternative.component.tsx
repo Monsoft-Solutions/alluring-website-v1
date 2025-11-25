@@ -32,6 +32,7 @@ import {
     getPhoneLink,
     getEmailLink,
     getFullAddress,
+    getMapEmbedUrl,
 } from '@/lib/data/site-config'
 
 export type ContactAlternativeProps = {
@@ -42,6 +43,7 @@ export function ContactAlternative({
     id = 'contact-info',
 }: ContactAlternativeProps) {
     const { contact, social } = siteConfig
+    const mapEmbedUrl = getMapEmbedUrl()
 
     return (
         <SectionContainer
@@ -73,7 +75,7 @@ export function ContactAlternative({
                         {/* Google Maps Embed */}
                         <div className='relative aspect-[4/3] overflow-hidden border border-white/10 bg-stone-800'>
                             <iframe
-                                src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d-80.3309!3d25.7529!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b82dc3d8d25d%3A0x45e7c6ee8f91b6d5!2s8435%20SW%2024th%20St%2C%20Miami%2C%20FL%2033155!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus'
+                                src={mapEmbedUrl}
                                 width='100%'
                                 height='100%'
                                 style={{ border: 0 }}
@@ -125,7 +127,8 @@ export function ContactAlternative({
                                 Other Ways to Reach Us
                             </h2>
                             <p className='text-lg text-stone-400'>
-                                Prefer to call or visit? We're here for you.
+                                Prefer to call or visit? We&apos;re here for
+                                you.
                             </p>
                         </div>
 

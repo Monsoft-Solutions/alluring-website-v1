@@ -65,6 +65,10 @@ export const siteConfig: SiteConfig = {
         state: 'FL',
         postalCode: '33155',
         country: 'United States',
+        coordinates: {
+            lat: 25.7529,
+            lng: -80.3309,
+        },
         timezone: 'America/New_York',
 
         // Business hours
@@ -200,6 +204,27 @@ export function getEmailLink(): string {
  */
 export function getSupportEmailLink(): string {
     return `mailto:${siteConfig.contact.supportEmail || siteConfig.contact.email}`
+}
+
+/**
+ * Helper function to build Google Maps embed URL
+ * Uses coordinates if available, otherwise falls back to address
+ */
+export function getMapEmbedUrl(): string {
+    const { coordinates } = siteConfig.contact
+    const address = getFullAddress()
+
+    if (coordinates) {
+        // Use coordinates-based embed URL (more reliable)
+        // Format: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d[zoom]!2d[lng]!3d[lat]!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s[place_id]!2s[address]!5e0!3m2!1sen!2sus!4v[version]!5m2!1sen!2sus
+        // Simplified version using coordinates and address
+        const encodedAddress = encodeURIComponent(address)
+        return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d${coordinates.lng}!3d${coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b82dc3d8d25d%3A0x45e7c6ee8f91b6d5!2s${encodedAddress}!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus`
+    }
+
+    // Fallback to address-only embed URL
+    const encodedAddress = encodeURIComponent(address)
+    return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d-80.3309!3d25.7529!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b82dc3d8d25d%3A0x45e7c6ee8f91b6d5!2s${encodedAddress}!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus`
 }
 
 /**
