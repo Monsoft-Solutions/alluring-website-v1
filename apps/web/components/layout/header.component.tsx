@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
+import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
 
 export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
@@ -224,10 +225,10 @@ export const Header = () => {
                     {/* CTA Right */}
                     <div className='hidden items-center space-x-8 lg:flex'>
                         <Link
-                            href='tel:7863058649'
+                            href={getPhoneLink()}
                             className='hover:text-gold-500 flex items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors'
                         >
-                            (786) 305-8649
+                            {contactInfo.phoneDisplay}
                         </Link>
                         <Button size='sm' variant='primary' asChild>
                             <Link href='/contact-us'>Request Consult</Link>
@@ -518,12 +519,15 @@ export const Header = () => {
                             >
                                 <div className='flex flex-col gap-4'>
                                     <div className='flex justify-between text-sm font-medium text-stone-500'>
-                                        <span>Miami, FL</span>
+                                        <span>
+                                            {contactInfo.city},{' '}
+                                            {contactInfo.state}
+                                        </span>
                                         <Link
-                                            href='tel:7863058649'
+                                            href={getPhoneLink()}
                                             className='transition-colors hover:text-stone-900'
                                         >
-                                            (786) 305-8649
+                                            {contactInfo.phoneDisplay}
                                         </Link>
                                     </div>
                                     <Button
