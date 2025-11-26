@@ -17,6 +17,11 @@ import type { NavigationItem } from '@/lib/types/navigation.type'
 export const mainNavigation: NavigationItem[] = [
     { label: 'Home', href: '/', external: false },
     { label: 'About', href: '/about', external: false },
+    {
+        label: 'Financing',
+        href: '/plastic-surgery-financing-miami',
+        external: false,
+    },
     { label: 'Blog', href: '/blog', external: false },
     { label: 'Contact', href: '/contact-us', external: false },
 ]

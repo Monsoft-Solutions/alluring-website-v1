@@ -1,8 +1,7 @@
 /**
  * Contact Page
  *
- * World-class contact page for Alluring Plastic Surgery.
- * Features immersive hero with contact form, trust-building sections,
+ * World-class contact page with immersive hero contact form, trust-building sections,
  * surgeon previews, testimonials, and categorized FAQ.
  *
  * Optimized for conversions with the contact form as the primary hero element.
@@ -35,12 +34,12 @@ import { toNextMetadata } from '@/lib/seo/metadata'
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',
-    title: 'Schedule Your Consultation | Alluring Plastic Surgery Miami',
+    title: `Schedule Your Consultation | ${siteConfig.business.name} Miami`,
     description:
         'Request your private consultation with our board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey. Complimentary, confidential, no obligation.',
 
     openGraph: {
-        title: 'Schedule Your Consultation | Alluring Plastic Surgery',
+        title: `Schedule Your Consultation | ${siteConfig.business.name}`,
         description:
             'Request your private consultation with board-certified plastic surgeons in Miami. BBL, Mommy Makeover, Breast Augmentation & more. Luxury results, personalized care.',
         url: `${seoConfig.siteUrl}/contact-us`,
@@ -51,14 +50,14 @@ export const metadata = toNextMetadata(seoConfig, {
                 url: `${seoConfig.siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: 'Schedule Your Consultation - Alluring Plastic Surgery Miami',
+                alt: `Schedule Your Consultation - ${siteConfig.business.name} Miami`,
             },
         ],
     },
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Schedule Your Consultation | Alluring Plastic Surgery Miami',
+        title: `Schedule Your Consultation | ${siteConfig.business.name} Miami`,
         description:
             'Request your private consultation with board-certified plastic surgeons in Miami. Luxury results, personalized care.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
@@ -70,7 +69,7 @@ export default function ContactPage() {
         <>
             {/* SEO Schema */}
             <WebPageSchema
-                name='Schedule Your Consultation - Alluring Plastic Surgery Miami'
+                name={`Schedule Your Consultation - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/contact-us`}
                 description='Request your private consultation with board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey.'
             />

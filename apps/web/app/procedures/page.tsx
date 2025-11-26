@@ -13,8 +13,7 @@ const pageUrl = `${siteUrl}/procedures`
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/procedures',
     title: 'Procedures | Transform Your Look with Confidence',
-    description:
-        'Discover our comprehensive range of cosmetic procedures at Alluring Plastic Surgery Miami. Expert surgeons, natural results, and personalized care.',
+    description: `Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. Expert surgeons, natural results, and personalized care.`,
     keywords: [
         'plastic surgery miami',
         'cosmetic surgery miami',
@@ -31,7 +30,7 @@ export const metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: 'Cosmetic Surgery Procedures | Alluring Plastic Surgery Miami',
+        title: `Cosmetic Surgery Procedures | ${siteConfig.business.name} Miami`,
         description:
             'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery. Board-certified surgeons in Miami.',
         siteName: siteConfig.business.name,
@@ -40,7 +39,7 @@ export const metadata = toNextMetadata(seoConfig, {
                 url: `${siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: 'Cosmetic Surgery Procedures at Alluring Plastic Surgery Miami',
+                alt: `Cosmetic Surgery Procedures at ${siteConfig.business.name} Miami`,
             },
         ],
     },
@@ -48,7 +47,7 @@ export const metadata = toNextMetadata(seoConfig, {
     // Twitter Card tags
     twitter: {
         card: 'summary_large_image',
-        title: 'Cosmetic Surgery Procedures | Alluring Plastic Surgery Miami',
+        title: `Cosmetic Surgery Procedures | ${siteConfig.business.name} Miami`,
         description:
             'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery.',
         images: [`${siteUrl}/og-image.jpg`],
@@ -79,9 +78,9 @@ export default function ProceduresPage() {
         <>
             {/* Structured Data - WebPage Schema */}
             <WebPageSchema
-                name='Cosmetic Surgery Procedures | Alluring Plastic Surgery Miami'
+                name={`Cosmetic Surgery Procedures | ${siteConfig.business.name} Miami`}
                 url={pageUrl}
-                description='Discover our comprehensive range of cosmetic procedures at Alluring Plastic Surgery Miami. Expert surgeons, natural results, and personalized care.'
+                description={`Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. Expert surgeons, natural results, and personalized care.`}
             />
 
             {/* Structured Data - Breadcrumb Schema */}

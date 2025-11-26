@@ -81,13 +81,30 @@ export function toNextMetadata(
 
     const robots = mapRobots(config.robots)
 
+    // Ensure we have a valid siteUrl for metadataBase
+    const siteUrl = config.environment?.siteUrl ?? config.siteUrl
+    if (!siteUrl) {
+        throw new Error(
+            'SEO config missing siteUrl. Please set NEXT_PUBLIC_SITE_URL environment variable or configure siteUrl in site-config.ts'
+        )
+    }
+
+    let metadataBase: URL
+    try {
+        metadataBase = new URL(siteUrl)
+    } catch (error) {
+        throw new Error(
+            `Invalid siteUrl in SEO config: "${siteUrl}". Please provide a valid URL.`
+        )
+    }
+
     const base: Metadata = {
         title,
         description,
         openGraph,
         twitter,
         robots,
-        metadataBase: new URL(config.environment?.siteUrl ?? config.siteUrl),
+        metadataBase,
     }
 
     const merged: Metadata = {
