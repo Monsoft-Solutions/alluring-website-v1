@@ -66,7 +66,7 @@ export const metadata = toNextMetadata(seoConfig, {
                 url: `${siteUrl}/images/hero-beautiful-latin-woman.jpg`,
                 width: 1200,
                 height: 630,
-                alt: 'Plastic Surgery Financing at Alluring Plastic Surgery Miami',
+                alt: `Plastic Surgery Financing at ${siteConfig.business.name} Miami`,
             },
         ],
     },

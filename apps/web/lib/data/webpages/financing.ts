@@ -245,9 +245,8 @@ export const financingPageData: FinancingPageData = {
  * SEO metadata for financing page
  */
 export const financingSeoData: FinancingSeoData = {
-    title: 'Plastic Surgery Financing Miami | 0% APR Plans | Alluring Plastic Surgery',
-    description:
-        'Affordable plastic surgery financing in Miami. Get approved in seconds with 0% APR options. Finance BBL, breast augmentation, tummy tuck & more. Call (786) 305-8649.',
+    title: `Plastic Surgery Financing Miami | 0% APR Plans | ${siteConfig.business.name}`,
+    description: `Affordable plastic surgery financing in Miami. Get approved in seconds with 0% APR options. Finance BBL, breast augmentation, tummy tuck & more. Call ${siteConfig.contact.phoneDisplay}.`,
     keywords: [
         'plastic surgery financing miami',
         'cosmetic surgery payment plans',

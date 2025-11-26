@@ -82,7 +82,7 @@ export function ContactAlternative({
                                 allowFullScreen
                                 loading='lazy'
                                 referrerPolicy='no-referrer-when-downgrade'
-                                title='Alluring Plastic Surgery Location'
+                                title={`${siteConfig.business.name} Location`}
                                 className='grayscale invert-[0.9] filter'
                             />
 

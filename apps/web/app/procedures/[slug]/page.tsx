@@ -196,7 +196,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     <ContainerLayout>
                         <div className='mx-auto max-w-3xl'>
                             <p className='text-muted-foreground text-lg leading-relaxed'>
-                                At Alluring Plastic Surgery, we take pride in
+                                At {siteConfig.business.name}, we take pride in
                                 delivering life-changing results that enhance
                                 our patients&apos; natural beauty. Explore our
                                 gallery of real patient transformations to see
