@@ -172,6 +172,17 @@ function createAppStaticRoutes(): SitemapRoute[] {
             ],
         },
         {
+            path: '/plastic-surgery-financing-miami',
+            getEntries: () => [
+                {
+                    url: '/plastic-surgery-financing-miami',
+                    changeFrequency: 'monthly',
+                    priority: 0.9,
+                    lastModified: new Date().toISOString(),
+                },
+            ],
+        },
+        {
             path: '/contact-us',
             getEntries: () => [
                 {

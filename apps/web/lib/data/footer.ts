@@ -12,6 +12,11 @@ export const footerSections: NavigationSection[] = [
         title: 'Company',
         items: [
             { label: 'About', href: '/about', external: false },
+            {
+                label: 'Financing',
+                href: '/plastic-surgery-financing-miami',
+                external: false,
+            },
             { label: 'Blog', href: '/blog', external: false },
             { label: 'Contact', href: '/contact-us', external: false },
         ],
