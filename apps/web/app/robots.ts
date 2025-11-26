@@ -13,6 +13,7 @@ import {
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
 /**
  * Get the base URL for the site
@@ -41,6 +42,18 @@ function getAppSpecificDisallows(): string[] {
  * This is called by Next.js to generate the robots.txt
  */
 export default function robots(): MetadataRoute.Robots {
+    // Block all crawling if not explicitly allowed
+    if (!isCrawlingAllowed()) {
+        return {
+            rules: [
+                {
+                    userAgent: '*',
+                    disallow: ['/'],
+                },
+            ],
+        }
+    }
+
     const environment = detectEnvironment()
     const baseUrl = getBaseUrl()
 

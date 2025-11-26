@@ -6,7 +6,27 @@ import type {
 import { generateImageMetadata, getCanonicalUrl } from '@workspace/seo/utils'
 import type { Metadata } from 'next'
 
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
+
 function mapRobots(robots?: RobotsConfig): Metadata['robots'] | undefined {
+    // If crawling is not allowed, force noindex, nofollow
+    if (!isCrawlingAllowed()) {
+        return {
+            index: false,
+            follow: false,
+            noarchive: true,
+            nosnippet: true,
+            noimageindex: true,
+            googleBot: {
+                index: false,
+                follow: false,
+                noarchive: true,
+                nosnippet: true,
+                noimageindex: true,
+            },
+        }
+    }
+
     if (!robots) return undefined
     const { index, follow, noarchive, nosnippet, noimageindex, notranslate } =
         robots

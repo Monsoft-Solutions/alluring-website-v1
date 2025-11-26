@@ -19,6 +19,7 @@ import {
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { procedures } from '@/lib/data/procedures.data'
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
 /**
  * Get the base URL for the site
@@ -222,6 +223,11 @@ function createAppStaticRoutes(): SitemapRoute[] {
  * This is called by Next.js to generate the sitemap.xml
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    // Return empty sitemap if crawling is not allowed
+    if (!isCrawlingAllowed()) {
+        return []
+    }
+
     const baseUrl = getBaseUrl()
 
     const config: SitemapConfig = {
