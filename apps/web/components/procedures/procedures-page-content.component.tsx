@@ -16,6 +16,7 @@ import {
     faqDataProcedures,
 } from '@/lib/data/faq/procedures-faq-data'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { Shield, Award, Users, Building2 } from 'lucide-react'
 
 interface ProceduresPageContentProps {
     procedures: Procedure[]
@@ -177,18 +178,39 @@ export function ProceduresPageContent({
                 }}
             />
 
-            {/* CTA Section */}
+            {/* CTA Section - Luxury Variant */}
             <CTASection
-                heading='Ready to Begin Your Transformation?'
-                description='Schedule a FREE Consultation with our dedicated Specialists who will guide you through the process and help create your personalized treatment plan.'
+                variant='luxury'
+                eyebrow='Your Journey Starts Here'
+                heading='Your Confidence Deserves This'
+                description="Taking this step takes courage. Our board-certified surgeons and dedicated specialists are here to guide you through a personalized consultation — completely free, with no pressure. Just clarity on your options and what's possible for you."
                 primaryButton={{
-                    text: 'Schedule Consultation',
+                    text: 'Schedule Your Free Consultation',
                     href: '/contact-us',
                 }}
                 secondaryButton={{
                     text: 'Call Us Now',
                     href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
                 }}
+                backgroundImage='/images/hero-beautiful-latin-woman.jpg'
+                trustBadges={[
+                    {
+                        icon: <Award className='h-5 w-5' />,
+                        label: 'Board-Certified Surgeons',
+                    },
+                    {
+                        icon: <Shield className='h-5 w-5' />,
+                        label: 'Accredited Facility',
+                    },
+                    {
+                        icon: <Users className='h-5 w-5' />,
+                        label: '5,000+ Happy Patients',
+                    },
+                    {
+                        icon: <Building2 className='h-5 w-5' />,
+                        label: '15+ Years Experience',
+                    },
+                ]}
             />
         </>
     )

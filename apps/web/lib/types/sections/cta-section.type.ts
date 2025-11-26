@@ -7,6 +7,21 @@
 import type { ReactNode } from 'react'
 
 /**
+ * Trust badge configuration for luxury CTA variant
+ */
+export interface CTATrustBadge {
+    /**
+     * Icon to display (React element)
+     */
+    readonly icon: ReactNode
+
+    /**
+     * Badge label text
+     */
+    readonly label: string
+}
+
+/**
  * CTA button configuration
  */
 export interface CTAButton {
@@ -75,12 +90,17 @@ export interface CTASectionProps {
 
     /**
      * Background variant
+     * - default: White/light background
+     * - muted: Subtle muted background
+     * - accent: Accent color background
+     * - primary: Primary color background
+     * - luxury: Premium split-layout with background image, trust badges, and gold accents
      * @default 'accent'
      */
-    readonly variant?: 'default' | 'muted' | 'accent' | 'primary'
+    readonly variant?: 'default' | 'muted' | 'accent' | 'primary' | 'luxury'
 
     /**
-     * Text alignment
+     * Text alignment (not applicable to luxury variant which uses split layout)
      * @default 'center'
      */
     readonly align?: 'left' | 'center' | 'right'
@@ -111,4 +131,16 @@ export interface CTASectionProps {
      * Optional background image URL for immersive effect
      */
     readonly backgroundImage?: string
+
+    /**
+     * Trust badges to display (only applicable to luxury variant)
+     * Shows credibility indicators like "Board-Certified", "15+ Years Experience"
+     */
+    readonly trustBadges?: readonly CTATrustBadge[]
+
+    /**
+     * Eyebrow/badge text above the heading (luxury variant)
+     * Example: "Your Journey Starts Here"
+     */
+    readonly eyebrow?: string
 }
