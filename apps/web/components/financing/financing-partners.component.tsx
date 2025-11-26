@@ -20,10 +20,30 @@ import { SectionHeader } from '@/components/shared/section-header.component'
 import type { FinancingPartnersProps } from '@/lib/types/financing.type'
 
 /**
+ * Valid accent color keys
+ */
+type AccentColorKey = 'rose' | 'blue' | 'emerald'
+
+/**
+ * Default accent color
+ */
+const DEFAULT_ACCENT_COLOR: AccentColorKey = 'blue'
+
+/**
+ * Helper function to safely get accent color key
+ */
+function getAccentColorKey(color: string | undefined): AccentColorKey {
+    if (color === 'rose' || color === 'blue' || color === 'emerald') {
+        return color
+    }
+    return DEFAULT_ACCENT_COLOR
+}
+
+/**
  * Accent color mappings for partner cards
  */
 const accentColors: Record<
-    string,
+    AccentColorKey,
     {
         bg: string
         border: string
@@ -63,7 +83,7 @@ const accentColors: Record<
  * Dark mode accent color mappings
  */
 const darkAccentColors: Record<
-    string,
+    AccentColorKey,
     {
         logoBg: string
         highlightBg: string
@@ -127,10 +147,14 @@ export function FinancingPartners({
                     aria-label='Financing partners'
                 >
                     {partners.map((partner, idx) => {
+                        // Safely resolve accent color with fallback to 'blue'
+                        const colorKey = getAccentColorKey(partner.accentColor)
                         const colors =
-                            accentColors[partner.accentColor || 'blue']!
+                            accentColors[colorKey] ??
+                            accentColors[DEFAULT_ACCENT_COLOR]
                         const darkColors =
-                            darkAccentColors[partner.accentColor || 'blue']!
+                            darkAccentColors[colorKey] ??
+                            darkAccentColors[DEFAULT_ACCENT_COLOR]
                         const delayClass =
                             animationDelays[idx % animationDelays.length]
 
