@@ -35,7 +35,7 @@ const features = [
 export function WhyChooseSection() {
     return (
         <SectionContainer
-            id='why-choose'
+            id='why-choose-alluring'
             className='relative overflow-hidden'
             paddingY='py-24 lg:py-32'
             variant='default'

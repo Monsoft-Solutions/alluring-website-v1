@@ -2,22 +2,20 @@
 
 import { Procedure } from '@/lib/types/procedure.type'
 import { useState, useRef, useEffect } from 'react'
-import { ContainerLayout } from '@/components/container-layout.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SignatureProcedureCard } from '@/components/shared/signature-procedure-card.component'
+import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CategoryNav } from './category-nav.component'
 import { ProcedureCard } from './procedure-card.component'
 import { ProcedureHero } from './procedure-hero.component'
 import { WhyChooseSection } from './why-choose-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { siteConfig } from '@/lib/data/site-config'
-import { motion, useScroll, useTransform } from 'framer-motion'
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@workspace/ui/components/accordion'
+    faqCategoriesProcedures,
+    faqDataProcedures,
+} from '@/lib/data/faq/procedures-faq-data'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 interface ProceduresPageContentProps {
     procedures: Procedure[]
@@ -161,96 +159,28 @@ export function ProceduresPageContent({
             <WhyChooseSection />
 
             {/* FAQ Section */}
-            <section className='py-24 lg:py-32'>
-                <ContainerLayout>
-                    <div className='grid gap-16 lg:grid-cols-2'>
-                        <div>
-                            <span className='text-gold-500 mb-4 block text-sm font-bold tracking-[0.2em] uppercase'>
-                                Common Questions
-                            </span>
-                            <h2 className='mb-8 font-serif text-4xl text-stone-900'>
-                                Frequently Asked Questions
-                            </h2>
-                            <p className='mb-8 text-lg leading-relaxed font-light text-stone-600'>
-                                We understand that considering plastic surgery
-                                is a big decision. Here are answers to some of
-                                the most common questions our patients ask. If
-                                you don&apos;t see your question here, please
-                                don&apos;t hesitate to contact us.
-                            </p>
-                        </div>
-
-                        <Accordion type='single' collapsible className='w-full'>
-                            <AccordionItem
-                                value='item-1'
-                                className='border-stone-200'
-                            >
-                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
-                                    What types of procedures do you specialize
-                                    in?
-                                </AccordionTrigger>
-                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
-                                    We specialize in a comprehensive range of
-                                    cosmetic procedures including Breast
-                                    Augmentation, Brazilian Butt Lift (BBL),
-                                    Tummy Tucks, Mommy Makeovers, Liposuction,
-                                    Rhinoplasty, and Facelifts.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem
-                                value='item-2'
-                                className='border-stone-200'
-                            >
-                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
-                                    Is Dr. Karlinsky board-certified?
-                                </AccordionTrigger>
-                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
-                                    Yes, Dr. Victoria Karlinsky is a
-                                    board-certified cosmetic and general surgeon
-                                    and a Fellow of the American College of
-                                    Surgeons (FACS). She is also a member of the
-                                    American Academy of Cosmetic Surgery.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem
-                                value='item-3'
-                                className='border-stone-200'
-                            >
-                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
-                                    Do you offer financing options?
-                                </AccordionTrigger>
-                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
-                                    Yes, we believe luxury surgeries should be
-                                    accessible. We offer flexible financing
-                                    options to help you manage the cost of your
-                                    procedure. Our team can assist you in
-                                    finding a plan that fits your budget.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem
-                                value='item-4'
-                                className='border-stone-200'
-                            >
-                                <AccordionTrigger className='hover:text-gold-600 font-serif text-lg text-stone-900'>
-                                    How do I book a consultation?
-                                </AccordionTrigger>
-                                <AccordionContent className='leading-relaxed font-light text-stone-600'>
-                                    Booking a consultation is easy! You can fill
-                                    out our contact form, call us directly, or
-                                    request a virtual consultation. We&apos;ll
-                                    discuss your goals and help you take the
-                                    next step.
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
-                    </div>
-                </ContainerLayout>
-            </section>
+            <CategorizedFAQ
+                categories={faqCategoriesProcedures}
+                faqData={faqDataProcedures}
+                title='Questions About'
+                subtitle='Your Transformation'
+                description='We understand that considering plastic surgery is a significant decision. Browse our comprehensive FAQ organized by topic, or call us directly for personalized guidance.'
+                badge='Expert Answers'
+                variant='default'
+                showBackgroundDecoration={true}
+                ctaConfig={{
+                    title: 'Still have questions?',
+                    description:
+                        'Our Specialists are ready to guide you through every step of your journey.',
+                    buttonText: 'Call Now',
+                    phoneNumber: siteConfig.contact.phone.replace(/\D/g, ''),
+                }}
+            />
 
             {/* CTA Section */}
             <CTASection
                 heading='Ready to Begin Your Transformation?'
-                description='Schedule a free consultation with our expert surgeons to discuss your goals and create a personalized treatment plan.'
+                description='Schedule a FREE Consultation with our dedicated Specialists who will guide you through the process and help create your personalized treatment plan.'
                 primaryButton={{
                     text: 'Schedule Consultation',
                     href: '/contact-us',
