@@ -24,8 +24,15 @@ import type { SiteConfig } from '@/lib/types/site-config.type'
  */
 function getSiteUrl(): string {
     // Use NEXT_PUBLIC_SITE_URL or fallback to default
-    if (env.NEXT_PUBLIC_SITE_URL) {
-        return env.NEXT_PUBLIC_SITE_URL
+    const url = env.NEXT_PUBLIC_SITE_URL?.trim()
+    if (url && url.length > 0) {
+        // Validate URL format
+        try {
+            new URL(url)
+            return url
+        } catch {
+            // Invalid URL, use fallback
+        }
     }
 
     return 'https://alluringplasticsurgery.com' // Fallback for local development

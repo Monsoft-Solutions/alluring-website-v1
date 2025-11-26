@@ -22,8 +22,6 @@ import {
     FinancingPartners,
     FinancingProcedures,
 } from '@/components/financing'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
-import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import {
@@ -65,7 +63,7 @@ export const metadata = toNextMetadata(seoConfig, {
         siteName: siteConfig.business.name,
         images: [
             {
-                url: `${siteUrl}/og-image.jpg`,
+                url: `${siteUrl}/images/hero-beautiful-latin-woman.jpg`,
                 width: 1200,
                 height: 630,
                 alt: 'Plastic Surgery Financing at Alluring Plastic Surgery Miami',
@@ -78,7 +76,7 @@ export const metadata = toNextMetadata(seoConfig, {
         title: 'Plastic Surgery Financing Miami | Affordable Payment Plans',
         description:
             'Flexible financing for cosmetic surgery. 0% APR options, instant approval. Cherry, CareCredit, United Credit accepted.',
-        images: [`${siteUrl}/og-image.jpg`],
+        images: [`${siteUrl}/images/hero-beautiful-latin-woman.jpg`],
     },
 
     robots: {
@@ -126,18 +124,6 @@ export default function FinancingPage() {
             <main>
                 {/* Hero Section - Full viewport with parallax */}
                 <FinancingHero id='financing-hero' {...financingHeroData} />
-
-                {/* Breadcrumbs - After hero for better UX */}
-                <div className='bg-muted/30 py-4'>
-                    <ContentWrapper>
-                        <Breadcrumbs
-                            items={[
-                                { label: 'Home', href: '/' },
-                                { label: 'Financing' },
-                            ]}
-                        />
-                    </ContentWrapper>
-                </div>
 
                 {/* How It Works Section */}
                 <FinancingHowItWorks

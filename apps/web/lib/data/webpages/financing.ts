@@ -60,6 +60,7 @@ const financingPartners: FinancingPartner[] = [
             { label: 'Approval', value: 'Instant', icon: 'Zap' },
             { label: 'Max Amount', value: '$10K', icon: 'Banknote' },
         ],
+        logoUrl: '/images/financing/cherry-logo.svg',
         accentColor: 'rose',
     },
     {
@@ -79,6 +80,7 @@ const financingPartners: FinancingPartner[] = [
             { label: 'Type', value: 'Credit Line', icon: 'CreditCard' },
             { label: 'Network', value: '250K+', icon: 'BadgeCheck' },
         ],
+        logoUrl: '/images/financing/carecredit-logo.png',
         accentColor: 'blue',
     },
     {
@@ -98,6 +100,7 @@ const financingPartners: FinancingPartner[] = [
             { label: 'Early Payoff', value: 'No Fee', icon: 'CheckCircle' },
             { label: 'Terms', value: 'Flexible', icon: 'CalendarCheck' },
         ],
+        logoUrl: '/images/financing/united-credit-logo.png',
         accentColor: 'emerald',
     },
 ]
@@ -198,8 +201,7 @@ export const financingPageData: FinancingPageData = {
             text: 'View Procedures',
             href: '/procedures',
         },
-        backgroundImage:
-            'https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/images/alluring-financing-hero-bg.jpg',
+        backgroundImage: `/images/hero-beautiful-latin-woman.jpg`,
     },
     partners: {
         badge: 'Our Partners',
