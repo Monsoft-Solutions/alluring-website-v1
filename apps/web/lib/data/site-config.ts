@@ -165,6 +165,18 @@ export const siteConfig: SiteConfig = {
         facebookAppId: '',
         enableIndexing: true,
     },
+
+    /**
+     * Trust Statistics
+     * Business credibility metrics displayed in CTA sections and trust badges
+     */
+    trustStats: {
+        patients: '5,000+',
+        years: '15+',
+        certified: '100%',
+        rating: '4.9',
+        accreditation: 'AAAASF',
+    },
 }
 
 /**
@@ -235,3 +247,4 @@ export const contactInfo = siteConfig.contact
 export const socialLinks = siteConfig.social
 export const brandAssets = siteConfig.brand
 export const seoDefaults = siteConfig.seo
+export const trustStats = siteConfig.trustStats

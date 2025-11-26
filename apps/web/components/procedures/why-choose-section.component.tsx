@@ -4,6 +4,7 @@ import { SectionContainer } from '@/components/shared/section-container.componen
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import { Shield, UserCheck, HeartHandshake, Star, Sparkles } from 'lucide-react'
+import { siteConfig } from '@/lib/data/site-config'
 
 const features = [
     {
@@ -88,7 +89,7 @@ export function WhyChooseSection() {
                         <div className='mt-12 hidden gap-8 lg:flex'>
                             <div>
                                 <div className='text-gold-600 font-serif text-4xl font-bold'>
-                                    15+
+                                    {siteConfig.trustStats?.years ?? '15+'}
                                 </div>
                                 <div className='text-sm text-stone-500'>
                                     Years Experience
@@ -96,7 +97,8 @@ export function WhyChooseSection() {
                             </div>
                             <div>
                                 <div className='text-gold-600 font-serif text-4xl font-bold'>
-                                    5,000+
+                                    {siteConfig.trustStats?.patients ??
+                                        '5,000+'}
                                 </div>
                                 <div className='text-sm text-stone-500'>
                                     Happy Patients

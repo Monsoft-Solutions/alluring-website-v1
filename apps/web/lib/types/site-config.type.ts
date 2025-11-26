@@ -139,6 +139,23 @@ export type BusinessInfo = {
 }
 
 /**
+ * Trust statistics for displaying business credibility metrics
+ * Used in CTA sections and trust badges
+ */
+export type TrustStats = {
+    /** Number of patients (e.g., "5,000+") */
+    patients: string
+    /** Years of experience (e.g., "15+") */
+    years: string
+    /** Certification percentage (e.g., "100%") */
+    certified: string
+    /** Star rating (e.g., "4.9" or "5.0") */
+    rating: string
+    /** Accreditation body (e.g., "AAAASF") */
+    accreditation?: string
+}
+
+/**
  * Complete site configuration
  *
  * Central source of truth for all business and site information.
@@ -155,4 +172,6 @@ export type SiteConfig = {
     brand: BrandAssets
     /** SEO defaults and metadata */
     seo: SEODefaults
+    /** Trust statistics for credibility metrics */
+    trustStats?: TrustStats
 }

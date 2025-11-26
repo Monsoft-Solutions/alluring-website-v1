@@ -13,26 +13,27 @@
 
 import { motion } from 'framer-motion'
 import { Award, Users, Star, ShieldCheck } from 'lucide-react'
+import { siteConfig } from '@/lib/data/site-config'
 
 const STATS = [
     {
         icon: Users,
-        value: '5,000+',
+        value: siteConfig.trustStats?.patients ?? '5,000+',
         label: 'Successful Procedures',
     },
     {
         icon: Award,
-        value: '15+',
+        value: siteConfig.trustStats?.years ?? '15+',
         label: 'Years of Excellence',
     },
     {
         icon: Star,
-        value: '5.0',
+        value: siteConfig.trustStats?.rating ?? '4.9',
         label: 'Star Rating',
     },
     {
         icon: ShieldCheck,
-        value: 'AAAASF',
+        value: siteConfig.trustStats?.accreditation ?? 'AAAASF',
         label: 'Accredited Facility',
     },
 ]

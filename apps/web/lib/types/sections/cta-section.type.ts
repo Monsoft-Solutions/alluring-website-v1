@@ -22,6 +22,36 @@ export interface CTATrustBadge {
 }
 
 /**
+ * Trust statistics for Premium Stats Card in luxury CTA variant
+ */
+export interface CTAStats {
+    /**
+     * Number of patients (e.g., "5,000+")
+     */
+    readonly patients: string
+
+    /**
+     * Years of experience (e.g., "15+")
+     */
+    readonly years: string
+
+    /**
+     * Certification percentage (e.g., "100%")
+     */
+    readonly certified: string
+
+    /**
+     * Star rating (e.g., "4.9" or "5.0")
+     */
+    readonly rating: string
+
+    /**
+     * Accreditation body (e.g., "AAAASF")
+     */
+    readonly accreditation?: string
+}
+
+/**
  * CTA button configuration
  */
 export interface CTAButton {
@@ -143,4 +173,10 @@ export interface CTASectionProps {
      * Example: "Your Journey Starts Here"
      */
     readonly eyebrow?: string
+
+    /**
+     * Trust statistics for Premium Stats Card (luxury variant)
+     * If not provided, falls back to siteConfig.trustStats
+     */
+    readonly stats?: CTAStats
 }

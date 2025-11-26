@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Sparkles } from 'lucide-react'
 
 import type { CTASectionProps } from '@/lib/types/sections/cta-section.type'
+import { siteConfig } from '@/lib/data/site-config'
 
 import { ContentWrapper } from './content-wrapper.component'
 import { SectionContainer } from './section-container.component'
@@ -59,8 +60,20 @@ function LuxuryCTASection({
     backgroundImage,
     trustBadges,
     eyebrow,
+    stats,
 }: CTASectionProps) {
     const containerRef = useRef<HTMLDivElement>(null)
+
+    // Use stats from props if provided, otherwise fall back to siteConfig
+    // Default values as fallback if neither is provided
+    const displayStats = stats ??
+        siteConfig.trustStats ?? {
+            patients: '5,000+',
+            years: '15+',
+            certified: '100%',
+            rating: '4.9',
+            accreditation: 'AAAASF',
+        }
 
     const { scrollYProgress } = useScroll({
         target: backgroundImage ? containerRef : undefined,
@@ -295,47 +308,49 @@ function LuxuryCTASection({
                         viewport={{ once: true }}
                     >
                         {/* Premium Stats Card */}
-                        <div className='relative w-full max-w-sm'>
-                            {/* Glass card effect */}
-                            <div className='rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md'>
-                                <div className='mb-6 text-center'>
-                                    <div className='mb-2 font-serif text-sm font-medium tracking-widest text-stone-400 uppercase'>
-                                        Trusted By
+                        {displayStats && (
+                            <div className='relative w-full max-w-sm'>
+                                {/* Glass card effect */}
+                                <div className='rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md'>
+                                    <div className='mb-6 text-center'>
+                                        <div className='mb-2 font-serif text-sm font-medium tracking-widest text-stone-400 uppercase'>
+                                            Trusted By
+                                        </div>
+                                        <div className='text-gold-400 font-serif text-6xl font-bold'>
+                                            {displayStats.patients}
+                                        </div>
+                                        <div className='text-lg text-stone-300'>
+                                            Happy Patients
+                                        </div>
                                     </div>
-                                    <div className='text-gold-400 font-serif text-6xl font-bold'>
-                                        5,000+
-                                    </div>
-                                    <div className='text-lg text-stone-300'>
-                                        Happy Patients
+
+                                    <div className='border-t border-white/10 pt-6'>
+                                        <div className='grid grid-cols-2 gap-4'>
+                                            <div className='text-center'>
+                                                <div className='text-gold-400 font-serif text-3xl font-bold'>
+                                                    {displayStats.years}
+                                                </div>
+                                                <div className='text-sm text-stone-400'>
+                                                    Years Experience
+                                                </div>
+                                            </div>
+                                            <div className='text-center'>
+                                                <div className='text-gold-400 font-serif text-3xl font-bold'>
+                                                    {displayStats.certified}
+                                                </div>
+                                                <div className='text-sm text-stone-400'>
+                                                    Board-Certified
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className='border-t border-white/10 pt-6'>
-                                    <div className='grid grid-cols-2 gap-4'>
-                                        <div className='text-center'>
-                                            <div className='text-gold-400 font-serif text-3xl font-bold'>
-                                                15+
-                                            </div>
-                                            <div className='text-sm text-stone-400'>
-                                                Years Experience
-                                            </div>
-                                        </div>
-                                        <div className='text-center'>
-                                            <div className='text-gold-400 font-serif text-3xl font-bold'>
-                                                100%
-                                            </div>
-                                            <div className='text-sm text-stone-400'>
-                                                Board-Certified
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {/* Decorative corner accent */}
+                                <div className='bg-gold-500 absolute -top-2 -right-2 h-16 w-16 rounded-tr-2xl opacity-20 blur-xl' />
+                                <div className='border-gold-500 absolute -top-2 -right-2 h-8 w-8 rounded-tr-xl border-t-2 border-r-2' />
                             </div>
-
-                            {/* Decorative corner accent */}
-                            <div className='bg-gold-500 absolute -top-2 -right-2 h-16 w-16 rounded-tr-2xl opacity-20 blur-xl' />
-                            <div className='border-gold-500 absolute -top-2 -right-2 h-8 w-8 rounded-tr-xl border-t-2 border-r-2' />
-                        </div>
+                        )}
                     </motion.div>
                 </div>
             </ContentWrapper>
