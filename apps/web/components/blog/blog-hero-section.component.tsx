@@ -1,69 +1,105 @@
-import Link from 'next/link'
-import type { ReactNode } from 'react'
+/**
+ * BlogHeroSection Component
+ *
+ * Luxury hero section for the blog landing page.
+ * Features dark stone-900 background with gold accents,
+ * serif typography, and category navigation pills.
+ *
+ * SSR-compatible: Uses CSS animations instead of Framer Motion.
+ */
+import { BookOpen } from 'lucide-react'
+import Image from 'next/image'
 
-type BlogHeroBadge = {
-    icon: ReactNode
-    text: string
-}
+import { cn } from '@workspace/ui/lib/utils'
 
-type BlogHeroNavigationLink = {
-    href: string
-    icon: ReactNode
-    text: string
-}
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 
 type BlogHeroSectionProps = {
-    badge?: BlogHeroBadge
-    title: string
-    description: ReactNode
-    navigationLinks?: BlogHeroNavigationLink[]
+    badge: string
+    headline: string
+    subheadline?: string
+    description: string
+    backgroundImage?: string
+    className?: string
 }
 
 export function BlogHeroSection({
     badge,
-    title,
+    headline,
+    subheadline,
     description,
-    navigationLinks,
+    backgroundImage,
+    className,
 }: BlogHeroSectionProps) {
     return (
-        <header className='mb-24 space-y-12'>
-            {/* Hero Content */}
-            <div className='space-y-8 text-center'>
-                <div className='space-y-4'>
-                    {badge && (
-                        <div className='bg-primary/10 text-primary inline-flex items-center rounded-full px-4 py-2'>
-                            {badge.icon}
-                            <span className='text-sm font-medium'>
-                                {badge.text}
-                            </span>
-                        </div>
-                    )}
-
-                    <h1 className='text-foreground mx-auto text-5xl leading-tight font-bold tracking-tight sm:text-6xl sm:leading-tight lg:text-7xl lg:leading-tight'>
-                        {title}
-                    </h1>
-
-                    <div className='text-muted-foreground mx-auto max-w-4xl text-xl leading-relaxed sm:text-2xl sm:leading-relaxed'>
-                        {description}
-                    </div>
-                </div>
-            </div>
-
-            {/* Navigation Links */}
-            {navigationLinks && navigationLinks.length > 0 && (
-                <div className='border-border/30 flex flex-wrap items-center gap-6 border-t pt-10'>
-                    {navigationLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className='text-primary hover:text-primary/80 inline-flex items-center gap-2 text-sm font-medium transition-colors duration-200 hover:underline hover:decoration-1 hover:underline-offset-4'
-                        >
-                            {link.icon}
-                            {link.text}
-                        </Link>
-                    ))}
+        <section
+            className={cn(
+                'relative min-h-[70vh] overflow-hidden bg-stone-900 lg:min-h-[80vh]',
+                className
+            )}
+        >
+            {/* Background Image with Overlay */}
+            {backgroundImage && (
+                <div className='absolute inset-0 z-0'>
+                    <Image
+                        src={backgroundImage}
+                        alt='Blog hero background'
+                        fill
+                        priority
+                        className='object-cover'
+                        sizes='100vw'
+                    />
+                    {/* Gradient overlays for depth */}
+                    <div className='absolute inset-0 bg-linear-to-r from-stone-900/95 via-stone-900/80 to-stone-900/60' />
+                    <div className='absolute inset-0 bg-linear-to-t from-stone-900/90 via-transparent to-stone-900/40' />
                 </div>
             )}
-        </header>
+
+            {/* Decorative gold blur elements */}
+            <div className='bg-gold-500/10 pointer-events-none absolute top-1/4 left-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full blur-[120px]' />
+            <div className='bg-gold-400/5 pointer-events-none absolute right-0 bottom-1/4 h-[300px] w-[300px] translate-x-1/3 rounded-full blur-[100px]' />
+
+            {/* Content */}
+            <div className='relative z-10 flex min-h-[70vh] items-center lg:min-h-[80vh]'>
+                <ContentWrapper
+                    size='lg'
+                    paddingX='px-6 md:px-12'
+                    className='py-20 pt-32 lg:pt-40'
+                >
+                    <div className='animate-fade-in-up max-w-3xl'>
+                        {/* Badge */}
+                        <div className='animate-fade-in-up mb-6'>
+                            <span className='border-gold-500/40 bg-gold-500/10 text-gold-400 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium tracking-wide'>
+                                <BookOpen className='h-4 w-4' />
+                                {badge}
+                            </span>
+                        </div>
+
+                        {/* Headline */}
+                        <h1 className='animate-fade-in-up mb-4 font-serif text-4xl leading-[1.1] text-white [animation-delay:100ms] md:text-5xl lg:text-6xl xl:text-7xl'>
+                            {headline}
+                        </h1>
+
+                        {/* Subheadline */}
+                        {subheadline && (
+                            <p className='text-gold-400 animate-fade-in-up mb-6 font-serif text-xl font-light italic [animation-delay:200ms] md:text-2xl'>
+                                {subheadline}
+                            </p>
+                        )}
+
+                        {/* Gold accent line */}
+                        <div className='bg-gold-500 animate-fade-in-up mb-8 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)] [animation-delay:300ms]' />
+
+                        {/* Description */}
+                        <p className='animate-fade-in-up max-w-2xl text-base leading-relaxed font-light text-stone-300 [animation-delay:400ms] md:text-lg'>
+                            {description}
+                        </p>
+                    </div>
+                </ContentWrapper>
+            </div>
+
+            {/* Bottom gradient fade */}
+            <div className='absolute right-0 bottom-0 left-0 h-32 bg-linear-to-t from-stone-50 to-transparent' />
+        </section>
     )
 }

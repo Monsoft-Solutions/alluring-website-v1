@@ -1,5 +1,20 @@
+/**
+ * InfinitePostList Component
+ *
+ * Displays blog posts in a grid with infinite scroll loading.
+ * Features luxury styling with section header, improved grid,
+ * and elegant loading/end states.
+ *
+ * Client component for scroll-based loading behavior.
+ */
 'use client'
 
+import { BookOpen } from 'lucide-react'
+
+import { cn } from '@workspace/ui/lib/utils'
+
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
 import { useInfiniteBlogPosts } from '@/hooks/useInfiniteBlogPosts.hook'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 
@@ -13,6 +28,10 @@ type InfinitePostListProps = {
     pageSize?: number
     categorySlug?: string
     tagSlug?: string
+    badge?: string
+    title?: string
+    description?: string
+    showHeader?: boolean
 }
 
 export function InfinitePostList({
@@ -22,6 +41,10 @@ export function InfinitePostList({
     pageSize = 12,
     categorySlug,
     tagSlug,
+    badge = 'Knowledge Hub',
+    title = 'All Articles',
+    description = 'Explore our collection of expert articles covering procedures, recovery, and everything you need to know about your transformation journey.',
+    showHeader = true,
 }: InfinitePostListProps) {
     const { posts, isLoading, hasMore, observerRef } = useInfiniteBlogPosts({
         initialPosts,
@@ -31,87 +54,103 @@ export function InfinitePostList({
         tagSlug,
     })
 
+    // Empty state
     if (posts.length === 0 && !isLoading) {
         return (
-            <div className='flex min-h-[500px] items-center justify-center'>
-                <div className='space-y-4 px-4 text-center'>
-                    <div className='bg-muted mx-auto flex h-20 w-20 items-center justify-center rounded-full'>
-                        <svg
-                            className='text-muted-foreground h-10 w-10'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            aria-hidden='true'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                strokeWidth={1.5}
-                                d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'
-                            />
-                        </svg>
-                    </div>
-                    <div className='space-y-2'>
-                        <h2 className='text-foreground text-2xl font-bold tracking-tight'>
-                            No posts found
+            <SectionContainer variant='muted' className='py-24'>
+                <ContentWrapper size='md'>
+                    <div className='flex min-h-[400px] flex-col items-center justify-center text-center'>
+                        <div className='mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-stone-200'>
+                            <BookOpen className='h-10 w-10 text-stone-400' />
+                        </div>
+                        <h2 className='mb-3 font-serif text-2xl text-stone-900'>
+                            No Articles Found
                         </h2>
-                        <p className='text-muted-foreground mx-auto max-w-md text-sm'>
-                            Try adjusting your filters or check back later.
+                        <p className='max-w-md text-stone-600'>
+                            We&apos;re working on new content. Check back soon
+                            for expert insights and guides.
                         </p>
                     </div>
-                </div>
-            </div>
+                </ContentWrapper>
+            </SectionContainer>
         )
     }
 
     return (
-        <div className='space-y-16'>
-            <div
-                className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 ${className}`}
-            >
-                {posts.map((post, index) => (
-                    <div
-                        key={post.id}
-                        style={{
-                            animationDelay: `${index * 0.05}s`,
-                            animationFillMode: 'backwards',
-                        }}
-                        className='animate-fade-in'
-                    >
-                        <PostCard post={post} />
+        <SectionContainer
+            variant='muted'
+            className={cn('py-16 md:py-24', className)}
+        >
+            <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                {/* Section Header */}
+                {showHeader && (
+                    <div className='mb-12 max-w-2xl'>
+                        <div className='mb-4 flex items-center gap-3'>
+                            <span className='bg-gold-400 h-px w-12' />
+                            <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
+                                {badge}
+                            </span>
+                        </div>
+                        <h2 className='mb-4 font-serif text-3xl text-stone-900 md:text-4xl'>
+                            {title}
+                        </h2>
+                        <p className='text-base leading-relaxed font-light text-stone-600'>
+                            {description}
+                        </p>
                     </div>
-                ))}
-            </div>
+                )}
 
-            {/* Loading skeleton for additional posts */}
-            {isLoading && (
-                <div className='grid gap-10 sm:grid-cols-2 lg:grid-cols-3'>
-                    {Array.from({ length: 3 }).map((_, index) => (
-                        <PostCardSkeleton key={`skeleton-${index}`} />
+                {/* Posts Grid */}
+                <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+                    {posts.map((post, index) => (
+                        <div
+                            key={post.id}
+                            className='animate-fade-in-up'
+                            style={{
+                                animationDelay: `${Math.min(index * 50, 300)}ms`,
+                                animationFillMode: 'backwards',
+                            }}
+                        >
+                            <PostCard post={post} />
+                        </div>
                     ))}
                 </div>
-            )}
 
-            {/* Intersection observer trigger */}
-            {hasMore && !isLoading && (
-                <div
-                    ref={observerRef}
-                    className='flex justify-center py-8'
-                    aria-label='Loading more posts'
-                    aria-live='polite'
-                />
-            )}
+                {/* Loading skeletons */}
+                {isLoading && (
+                    <div className='mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <PostCardSkeleton key={`skeleton-${index}`} />
+                        ))}
+                    </div>
+                )}
 
-            {/* End of list message */}
-            {!hasMore && posts.length > 0 && (
-                <div className='flex flex-col items-center justify-center gap-3 py-12'>
-                    <div className='bg-muted h-px w-24' />
-                    <p className='text-muted-foreground text-sm font-medium'>
-                        You&apos;ve reached the end
-                    </p>
-                    <div className='bg-muted h-px w-24' />
-                </div>
-            )}
-        </div>
+                {/* Intersection observer trigger */}
+                {hasMore && !isLoading && (
+                    <div
+                        ref={observerRef}
+                        className='flex justify-center py-8'
+                        aria-label='Loading more posts'
+                        aria-live='polite'
+                    />
+                )}
+
+                {/* End of list */}
+                {!hasMore && posts.length > 0 && (
+                    <div className='mt-16 flex flex-col items-center justify-center gap-4 py-8'>
+                        <div className='flex items-center gap-4'>
+                            <div className='bg-gold-500/30 h-px w-16' />
+                            <span className='text-gold-600 text-xs font-bold tracking-[0.2em] uppercase'>
+                                End of Articles
+                            </span>
+                            <div className='bg-gold-500/30 h-px w-16' />
+                        </div>
+                        <p className='text-sm text-stone-500'>
+                            You&apos;ve explored all our articles
+                        </p>
+                    </div>
+                )}
+            </ContentWrapper>
+        </SectionContainer>
     )
 }

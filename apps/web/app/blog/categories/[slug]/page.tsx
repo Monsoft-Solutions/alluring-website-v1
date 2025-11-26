@@ -1,10 +1,18 @@
+/**
+ * Blog Category Detail Page
+ *
+ * Displays posts from a specific category.
+ * Features luxury styling with dark header and gold accents.
+ */
 import { WebPageSchema } from '@workspace/seo/react'
+import { ArrowLeft, FolderOpen } from 'lucide-react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { cache } from 'react'
 
-import { ContainerLayout } from '@/components/container-layout.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getActiveCategoryBySlug } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -29,8 +37,8 @@ export async function generateMetadata({
     }
 
     return toNextMetadata(seoConfig, {
-        title: `${category.name} Articles`,
-        description: `Browse all articles in the ${category.name} category. Stay updated with our latest insights and tutorials.`,
+        title: `${category.name} Articles | Alluring Plastic Surgery Blog`,
+        description: `Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`,
         canonical: `/blog/categories/${category.slug}`,
     })
 }
@@ -41,12 +49,28 @@ export default async function CategoryDetailPage({ params }: PageProps) {
     const category = await getCachedCategoryBySlug(slug)
     if (!category) {
         return (
-            <ContainerLayout className='py-12 lg:py-16'>
-                <h1 className='text-2xl font-semibold'>Category not found</h1>
-                <p className='text-muted-foreground mt-2'>
-                    The category you are looking for does not exist.
-                </p>
-            </ContainerLayout>
+            <main className='bg-stone-50'>
+                <SectionContainer
+                    variant='default'
+                    className='bg-stone-900 py-24'
+                >
+                    <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                        <h1 className='font-serif text-3xl text-white'>
+                            Category Not Found
+                        </h1>
+                        <p className='mt-4 text-stone-400'>
+                            The category you are looking for does not exist.
+                        </p>
+                        <Link
+                            href='/blog/categories'
+                            className='text-gold-400 hover:text-gold-300 mt-8 inline-flex items-center gap-2 text-sm font-medium transition-colors'
+                        >
+                            <ArrowLeft className='h-4 w-4' />
+                            Back to Categories
+                        </Link>
+                    </ContentWrapper>
+                </SectionContainer>
+            </main>
         )
     }
 
@@ -68,48 +92,66 @@ export default async function CategoryDetailPage({ params }: PageProps) {
         : undefined
 
     return (
-        <ContainerLayout as='main' className='py-16 lg:py-20'>
+        <>
             <WebPageSchema
                 name={`${category.name} Articles`}
                 url={`${seoConfig.siteUrl}/blog/categories/${category.slug}`}
-                description={`Browse all articles in the ${category.name} category. Stay updated with our latest insights and tutorials.`}
+                description={`Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`}
             />
 
-            <div className='mb-16'>
-                <Breadcrumbs
-                    items={[
-                        { label: 'Home', href: '/' },
-                        { label: 'Blog', href: '/blog' },
-                        { label: 'Categories', href: '/blog/categories' },
-                        { label: category.name },
-                    ]}
-                    showBackground={false}
+            <main className='bg-stone-50'>
+                {/* Header */}
+                <SectionContainer
+                    variant='default'
+                    className='bg-stone-900 py-16 md:py-24'
+                >
+                    <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                        {/* Back Link */}
+                        <Link
+                            href='/blog/categories'
+                            className='text-gold-400 hover:text-gold-300 mb-8 inline-flex items-center gap-2 text-sm font-medium transition-colors'
+                        >
+                            <ArrowLeft className='h-4 w-4' />
+                            All Categories
+                        </Link>
+
+                        <div className='max-w-2xl'>
+                            {/* Badge */}
+                            <div className='mb-4 flex items-center gap-3'>
+                                <span className='bg-gold-400 h-px w-12' />
+                                <span className='text-gold-500 inline-flex items-center gap-2 text-sm font-bold tracking-[0.2em] uppercase'>
+                                    <FolderOpen className='h-4 w-4' />
+                                    Category
+                                </span>
+                            </div>
+
+                            {/* Title */}
+                            <h1 className='mb-4 font-serif text-4xl text-white md:text-5xl'>
+                                {category.name}
+                            </h1>
+
+                            {/* Gold accent line */}
+                            <div className='bg-gold-500 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(234,179,8,0.3)]' />
+
+                            {/* Description */}
+                            <p className='text-base leading-relaxed font-light text-stone-300 md:text-lg'>
+                                Browse all articles in this category and
+                                discover expert insights, recovery guides, and
+                                best practices.
+                            </p>
+                        </div>
+                    </ContentWrapper>
+                </SectionContainer>
+
+                {/* Posts List */}
+                <InfinitePostList
+                    initialPosts={initialPosts}
+                    initialCursor={encodedCursor}
+                    pageSize={pageSize}
+                    categorySlug={slug}
+                    showHeader={false}
                 />
-            </div>
-
-            <header className='mb-20 space-y-10'>
-                <div className='space-y-6'>
-                    <div className='flex flex-wrap items-center gap-4'>
-                        <h1 className='text-foreground text-4xl leading-tight font-bold tracking-tight sm:text-5xl sm:leading-tight lg:text-6xl lg:leading-tight'>
-                            {category.name}
-                        </h1>
-                        <span className='bg-primary/10 text-primary inline-flex items-center rounded-full px-4 py-2 text-sm font-medium'>
-                            Category
-                        </span>
-                    </div>
-                    <p className='text-muted-foreground max-w-3xl text-lg leading-relaxed sm:text-xl sm:leading-relaxed'>
-                        Browse all articles in this category and discover
-                        insights, tutorials, and best practices.
-                    </p>
-                </div>
-            </header>
-
-            <InfinitePostList
-                initialPosts={initialPosts}
-                initialCursor={encodedCursor}
-                pageSize={pageSize}
-                categorySlug={slug}
-            />
-        </ContainerLayout>
+            </main>
+        </>
     )
 }

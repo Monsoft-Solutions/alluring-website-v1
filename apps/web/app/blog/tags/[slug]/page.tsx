@@ -1,10 +1,18 @@
+/**
+ * Blog Tag Detail Page
+ *
+ * Displays posts with a specific tag.
+ * Features luxury styling with dark header and gold accents.
+ */
 import { WebPageSchema } from '@workspace/seo/react'
+import { ArrowLeft, Hash } from 'lucide-react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { cache } from 'react'
 
-import { ContainerLayout } from '@/components/container-layout.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { SectionContainer } from '@/components/shared/section-container.component'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getActiveTagBySlug } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -29,8 +37,8 @@ export async function generateMetadata({
     }
 
     return toNextMetadata(seoConfig, {
-        title: `${tag.name} Articles`,
-        description: `Explore articles tagged with ${tag.name}. Find insights and tutorials on this topic.`,
+        title: `${tag.name} Articles | Alluring Plastic Surgery Blog`,
+        description: `Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`,
         canonical: `/blog/tags/${tag.slug}`,
     })
 }
@@ -41,12 +49,28 @@ export default async function TagDetailPage({ params }: PageProps) {
     const tag = await getCachedTagBySlug(slug)
     if (!tag) {
         return (
-            <ContainerLayout className='py-12 lg:py-16'>
-                <h1 className='text-2xl font-semibold'>Tag not found</h1>
-                <p className='text-muted-foreground mt-2'>
-                    The tag you are looking for does not exist.
-                </p>
-            </ContainerLayout>
+            <main className='bg-stone-50'>
+                <SectionContainer
+                    variant='default'
+                    className='bg-stone-900 py-24'
+                >
+                    <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                        <h1 className='font-serif text-3xl text-white'>
+                            Tag Not Found
+                        </h1>
+                        <p className='mt-4 text-stone-400'>
+                            The tag you are looking for does not exist.
+                        </p>
+                        <Link
+                            href='/blog/tags'
+                            className='text-gold-400 hover:text-gold-300 mt-8 inline-flex items-center gap-2 text-sm font-medium transition-colors'
+                        >
+                            <ArrowLeft className='h-4 w-4' />
+                            Back to Tags
+                        </Link>
+                    </ContentWrapper>
+                </SectionContainer>
+            </main>
         )
     }
 
@@ -68,54 +92,74 @@ export default async function TagDetailPage({ params }: PageProps) {
         : undefined
 
     return (
-        <ContainerLayout as='main' className='py-16 lg:py-20'>
+        <>
             <WebPageSchema
                 name={`${tag.name} Articles`}
                 url={`${seoConfig.siteUrl}/blog/tags/${tag.slug}`}
-                description={`Explore articles tagged with ${tag.name}. Find insights and tutorials on this topic.`}
+                description={`Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`}
             />
 
-            <div className='mb-16'>
-                <Breadcrumbs
-                    items={[
-                        { label: 'Home', href: '/' },
-                        { label: 'Blog', href: '/blog' },
-                        { label: 'Tags', href: '/blog/tags' },
-                        { label: tag.name },
-                    ]}
-                    showBackground={false}
-                />
-            </div>
-
-            <header className='mb-20 space-y-10'>
-                <div className='space-y-6'>
-                    <div className='flex flex-wrap items-center gap-4'>
-                        <span
-                            className='text-muted-foreground text-3xl font-medium sm:text-4xl lg:text-5xl'
-                            aria-hidden='true'
+            <main className='bg-stone-50'>
+                {/* Header */}
+                <SectionContainer
+                    variant='default'
+                    className='bg-stone-900 py-16 md:py-24'
+                >
+                    <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                        {/* Back Link */}
+                        <Link
+                            href='/blog/tags'
+                            className='text-gold-400 hover:text-gold-300 mb-8 inline-flex items-center gap-2 text-sm font-medium transition-colors'
                         >
-                            #
-                        </span>
-                        <h1 className='text-foreground text-4xl leading-tight font-bold tracking-tight sm:text-5xl sm:leading-tight lg:text-6xl lg:leading-tight'>
-                            {tag.name}
-                        </h1>
-                        <span className='bg-muted/60 text-muted-foreground inline-flex items-center rounded-full px-4 py-2 text-sm font-medium'>
-                            Tag
-                        </span>
-                    </div>
-                    <p className='text-muted-foreground max-w-3xl text-lg leading-relaxed sm:text-xl sm:leading-relaxed'>
-                        Explore articles tagged with this topic and discover
-                        related insights, tutorials, and best practices.
-                    </p>
-                </div>
-            </header>
+                            <ArrowLeft className='h-4 w-4' />
+                            All Tags
+                        </Link>
 
-            <InfinitePostList
-                initialPosts={initialPosts}
-                initialCursor={encodedCursor}
-                pageSize={pageSize}
-                tagSlug={slug}
-            />
-        </ContainerLayout>
+                        <div className='max-w-2xl'>
+                            {/* Badge */}
+                            <div className='mb-4 flex items-center gap-3'>
+                                <span className='bg-gold-400 h-px w-12' />
+                                <span className='text-gold-500 inline-flex items-center gap-2 text-sm font-bold tracking-[0.2em] uppercase'>
+                                    <Hash className='h-4 w-4' />
+                                    Tag
+                                </span>
+                            </div>
+
+                            {/* Title */}
+                            <div className='mb-4 flex items-center gap-3'>
+                                <span
+                                    className='text-gold-500/50 text-4xl font-light md:text-5xl'
+                                    aria-hidden='true'
+                                >
+                                    #
+                                </span>
+                                <h1 className='font-serif text-4xl text-white md:text-5xl'>
+                                    {tag.name}
+                                </h1>
+                            </div>
+
+                            {/* Gold accent line */}
+                            <div className='bg-gold-500 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(234,179,8,0.3)]' />
+
+                            {/* Description */}
+                            <p className='text-base leading-relaxed font-light text-stone-300 md:text-lg'>
+                                Explore articles tagged with this topic and
+                                discover related insights, guides, and best
+                                practices.
+                            </p>
+                        </div>
+                    </ContentWrapper>
+                </SectionContainer>
+
+                {/* Posts List */}
+                <InfinitePostList
+                    initialPosts={initialPosts}
+                    initialCursor={encodedCursor}
+                    pageSize={pageSize}
+                    tagSlug={slug}
+                    showHeader={false}
+                />
+            </main>
+        </>
     )
 }
