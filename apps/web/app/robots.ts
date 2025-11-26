@@ -13,7 +13,7 @@ import {
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
-import { env } from '@/env'
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
 /**
  * Get the base URL for the site
@@ -35,14 +35,6 @@ function getAppSpecificDisallows(): string[] {
         '/temp/*',
         '/downloads/*',
     ]
-}
-
-/**
- * Check if crawling is allowed
- * Defaults to false (block crawling) if not explicitly set to 'true'
- */
-function isCrawlingAllowed(): boolean {
-    return env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
 }
 
 /**

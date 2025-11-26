@@ -13,21 +13,13 @@ import type { SitemapRoute } from '@workspace/seo/types/sitemap/sitemap-route.ty
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
-import { env } from '@/env'
 import {
     getActiveCategorySlugs,
     getActiveTagSlugs,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { procedures } from '@/lib/data/procedures.data'
-
-/**
- * Check if crawling is allowed
- * Defaults to false (block crawling) if not explicitly set to 'true'
- */
-function isCrawlingAllowed(): boolean {
-    return env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
-}
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
 /**
  * Get the base URL for the site

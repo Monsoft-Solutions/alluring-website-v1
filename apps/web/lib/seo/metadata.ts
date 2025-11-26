@@ -6,15 +6,7 @@ import type {
 import { generateImageMetadata, getCanonicalUrl } from '@workspace/seo/utils'
 import type { Metadata } from 'next'
 
-import { env } from '@/env'
-
-/**
- * Check if crawling is allowed
- * Defaults to false (block crawling) if not explicitly set to 'true'
- */
-function isCrawlingAllowed(): boolean {
-    return env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
-}
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
 function mapRobots(robots?: RobotsConfig): Metadata['robots'] | undefined {
     // If crawling is not allowed, force noindex, nofollow
