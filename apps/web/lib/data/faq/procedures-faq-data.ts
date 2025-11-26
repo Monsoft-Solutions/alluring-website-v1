@@ -111,7 +111,7 @@ export const faqDataProcedures: Record<string, FaqItem[]> = {
         },
         {
             question: 'Is there a consultation fee?',
-            answer: 'Yes, there is a consultation fee that demonstrates your commitment and allows us to provide you with undivided, personalized attention. If you proceed with surgery, the consultation fee is applied toward your procedure cost. The specific fee amount is provided when you schedule.',
+            answer: "No, consultations are completely free. We believe in making it easy for you to explore your options and get personalized guidance from our Specialists without any upfront cost. During your free consultation, you'll receive undivided attention and a thorough evaluation to help you make informed decisions about your procedure.",
         },
         {
             question: 'Do you offer package pricing for multiple procedures?',
