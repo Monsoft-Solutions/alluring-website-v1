@@ -204,11 +204,11 @@ export function ProceduresPageContent({
                     },
                     {
                         icon: <Users className='h-5 w-5' />,
-                        label: '5,000+ Happy Patients',
+                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
                     },
                     {
                         icon: <Building2 className='h-5 w-5' />,
-                        label: '15+ Years Experience',
+                        label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
                     },
                 ]}
             />
