@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { siteConfig } from '@/lib/data/site-config'
+import { getPhoneLink } from '@/lib/data/site-config'
 import { Button } from '@workspace/ui/components/button'
 import { useRef } from 'react'
 
@@ -95,28 +95,27 @@ export function ProcedureDetailHero({
                                     transition={{ delay: 0.6, duration: 0.8 }}
                                     className='mt-10 flex flex-col gap-4 sm:flex-row'
                                 >
-                                    <Link href='/contact-us' passHref>
-                                        <Button
-                                            variant='gold'
-                                            size='lg'
-                                            withArrow
-                                            className='w-full sm:w-auto'
-                                        >
-                                            Schedule Consultation
-                                        </Button>
-                                    </Link>
-                                    <Link
-                                        href={`tel:${siteConfig.contact.phone.replace(/\D/g, '')}`}
-                                        passHref
+                                    <Button
+                                        asChild
+                                        variant='gold'
+                                        size='lg'
+                                        withArrow
+                                        className='w-full sm:w-auto'
                                     >
-                                        <Button
-                                            variant='outline'
-                                            size='lg'
-                                            className='w-full border-white text-white hover:border-white hover:bg-white hover:text-stone-900 sm:w-auto'
-                                        >
+                                        <Link href='/contact-us'>
+                                            Schedule Consultation
+                                        </Link>
+                                    </Button>
+                                    <Button
+                                        asChild
+                                        variant='outline'
+                                        size='lg'
+                                        className='w-full border-white text-white hover:border-white hover:bg-white hover:text-stone-900 sm:w-auto'
+                                    >
+                                        <Link href={getPhoneLink()}>
                                             Call Us Now
-                                        </Button>
-                                    </Link>
+                                        </Link>
+                                    </Button>
                                 </motion.div>
                             </div>
                         </motion.div>

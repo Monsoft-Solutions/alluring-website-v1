@@ -113,25 +113,27 @@ export function ProcedureHero() {
                                     transition={{ delay: 0.6, duration: 0.8 }}
                                     className='mb-10 flex flex-col gap-4 sm:flex-row'
                                 >
-                                    <Link href='/contact-us' passHref>
-                                        <Button
-                                            variant='gold'
-                                            size='lg'
-                                            withArrow
-                                            className='w-full sm:w-auto'
-                                        >
+                                    <Button
+                                        asChild
+                                        variant='gold'
+                                        size='lg'
+                                        withArrow
+                                        className='w-full sm:w-auto'
+                                    >
+                                        <Link href='/contact-us'>
                                             Schedule Consultation
-                                        </Button>
-                                    </Link>
-                                    <Link href='#procedures-grid' passHref>
-                                        <Button
-                                            variant='outline'
-                                            size='lg'
-                                            className='w-full border-white text-white hover:border-white hover:bg-white hover:text-stone-900 sm:w-auto'
-                                        >
+                                        </Link>
+                                    </Button>
+                                    <Button
+                                        asChild
+                                        variant='outline'
+                                        size='lg'
+                                        className='w-full border-white text-white hover:border-white hover:bg-white hover:text-stone-900 sm:w-auto'
+                                    >
+                                        <Link href='#procedures-grid'>
                                             View Procedures
-                                        </Button>
-                                    </Link>
+                                        </Link>
+                                    </Button>
                                 </motion.div>
 
                                 {/* Trust Signals */}

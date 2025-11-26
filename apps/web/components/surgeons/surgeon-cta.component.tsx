@@ -30,11 +30,9 @@ export const SurgeonCTA = () => {
                     <Button variant='primary' size='lg' withArrow asChild>
                         <Link href='/contact-us'>Schedule Consultation</Link>
                     </Button>
-                    <Link href={getPhoneLink()}>
-                        <Button variant='outline' size='lg'>
-                            Call (786) 305-8649
-                        </Button>
-                    </Link>
+                    <Button variant='outline' size='lg' asChild>
+                        <Link href={getPhoneLink()}>Call (786) 305-8649</Link>
+                    </Button>
                 </div>
             </ContentWrapper>
         </SectionContainer>
