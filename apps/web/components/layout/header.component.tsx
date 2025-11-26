@@ -220,6 +220,15 @@ export const Header = () => {
                                 )}
                             </AnimatePresence>
                         </div>
+
+                        {/* Financing Link */}
+                        <Link
+                            href='/plastic-surgery-financing-miami'
+                            className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                        >
+                            Financing
+                            <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                        </Link>
                     </nav>
 
                     {/* CTA Right */}
@@ -506,6 +515,26 @@ export const Header = () => {
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
+                                    </motion.div>
+
+                                    {/* Financing Link */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.25 }}
+                                        className='w-full'
+                                    >
+                                        <Link
+                                            href='/plastic-surgery-financing-miami'
+                                            onClick={() =>
+                                                setIsMobileMenuOpen(false)
+                                            }
+                                            className='group flex w-full items-center py-4 text-left'
+                                        >
+                                            <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
+                                                Financing
+                                            </span>
+                                        </Link>
                                     </motion.div>
                                 </div>
                             </div>

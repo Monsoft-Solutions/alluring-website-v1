@@ -99,8 +99,13 @@ export const Footer = () => {
                             Patients
                         </h4>
                         <ul className='space-y-4 text-base text-stone-400'>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Financing Options
+                            <li>
+                                <Link
+                                    href='/plastic-surgery-financing-miami'
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    Financing Options
+                                </Link>
                             </li>
                             <li className='cursor-pointer transition-colors hover:text-white'>
                                 Out-of-Town Guests
