@@ -6,6 +6,7 @@
  */
 
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
+import { getFinancingPartnersString } from '@/lib/data/site-config'
 
 /**
  * Contact page FAQ categories
@@ -60,7 +61,7 @@ export const faqDataContact: Record<string, FaqItem[]> = {
     financing: [
         {
             question: 'What financing options do you offer?',
-            answer: 'We partner with CareCredit, Alphaeon Credit, and PatientFi to offer flexible payment plans. Many patients qualify for 0% interest promotional periods. Our financial coordinator can help you explore options and find a plan that fits your budget.',
+            answer: `We partner with ${getFinancingPartnersString()} to offer flexible payment plans. Many patients qualify for 0% interest promotional periods. Our financial coordinator can help you explore options and find a plan that fits your budget.`,
         },
         {
             question: 'When is payment due?',

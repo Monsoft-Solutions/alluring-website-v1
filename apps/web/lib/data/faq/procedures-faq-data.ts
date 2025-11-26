@@ -13,6 +13,7 @@
  */
 
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
+import { getFinancingPartnersString } from '@/lib/data/site-config'
 
 /**
  * Procedures page FAQ categories
@@ -102,7 +103,7 @@ export const faqDataProcedures: Record<string, FaqItem[]> = {
     cost: [
         {
             question: 'Do you offer financing options?',
-            answer: 'Yes—we believe luxury results should be accessible. We partner with CareCredit, Alphaeon, and PatientFi to offer flexible monthly payment plans, many with promotional 0% interest periods for qualified applicants. Our patient coordinator can help you explore options that fit your budget.',
+            answer: `Yes—we believe luxury results should be accessible. We partner with ${getFinancingPartnersString()} to offer flexible monthly payment plans, many with promotional 0% interest periods for qualified applicants. Our patient coordinator can help you explore options that fit your budget.`,
         },
         {
             question: "What's included in the procedure price?",
