@@ -139,6 +139,7 @@ const howItWorksSteps: FinancingStep[] = [
         description:
             'With financing secured, focus on what matters—your results. Enjoy comfortable monthly payments while achieving the look you deserve.',
         icon: 'Sparkles',
+        duration: 'Your Timeline',
     },
 ]
 

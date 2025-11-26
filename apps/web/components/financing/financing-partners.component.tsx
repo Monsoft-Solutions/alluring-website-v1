@@ -1,13 +1,13 @@
-'use client'
-
 /**
  * FinancingPartners Component
  *
  * Showcases financing partners (Cherry, CareCredit, United Credit) with
  * interactive cards featuring official logos, hover animations, benefits reveal,
  * and highlight statistics.
+ *
+ * SSR-optimized: Content renders visible by default for SEO crawlers.
+ * CSS animations enhance UX for users with JavaScript enabled.
  */
-import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 
@@ -83,6 +83,15 @@ const darkAccentColors: Record<
     },
 }
 
+/**
+ * Animation delay classes for staggered reveal
+ */
+const animationDelays = [
+    'animate-delay-0',
+    'animate-delay-150',
+    'animate-delay-300',
+] as const
+
 export function FinancingPartners({
     badge,
     title,
@@ -97,6 +106,7 @@ export function FinancingPartners({
             id={id}
             variant={variant}
             className={cn('py-20 md:py-28', className)}
+            aria-labelledby={`${id}-title`}
         >
             <ContentWrapper size='lg'>
                 {/* Section Header */}
@@ -107,28 +117,31 @@ export function FinancingPartners({
                     align='center'
                     spacing='loose'
                     className='mb-16'
+                    titleClassName='text-balance'
                 />
 
-                {/* Partners Grid */}
-                <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
+                {/* Partners Grid - Using semantic structure for SEO */}
+                <div
+                    className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'
+                    role='list'
+                    aria-label='Financing partners'
+                >
                     {partners.map((partner, idx) => {
                         const colors =
                             accentColors[partner.accentColor || 'blue']!
                         const darkColors =
                             darkAccentColors[partner.accentColor || 'blue']!
+                        const delayClass =
+                            animationDelays[idx % animationDelays.length]
 
                         return (
-                            <motion.div
+                            <article
                                 key={partner.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: '-50px' }}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: idx * 0.15,
-                                    ease: [0.21, 0.47, 0.32, 0.98],
-                                }}
-                                className='group relative'
+                                className={cn(
+                                    'group animate-fade-in-up relative',
+                                    delayClass
+                                )}
+                                role='listitem'
                             >
                                 <div
                                     className={cn(
@@ -144,6 +157,7 @@ export function FinancingPartners({
                                             'absolute inset-0 bg-gradient-to-b opacity-0 transition-opacity duration-500 group-hover:opacity-100',
                                             colors.gradient
                                         )}
+                                        aria-hidden='true'
                                     />
 
                                     {/* Content */}
@@ -160,10 +174,11 @@ export function FinancingPartners({
                                                 >
                                                     <Image
                                                         src={partner.logoUrl}
-                                                        alt={`${partner.name} logo`}
+                                                        alt={`${partner.name} financing partner logo`}
                                                         width={180}
                                                         height={60}
                                                         className='h-auto max-h-12 w-auto object-contain'
+                                                        loading='eager'
                                                     />
                                                 </div>
                                             ) : (
@@ -179,7 +194,7 @@ export function FinancingPartners({
                                             )}
                                         </div>
 
-                                        {/* Tagline */}
+                                        {/* Tagline - Using h3 for proper heading hierarchy */}
                                         <h3 className='mb-3 text-xl font-bold text-stone-900 dark:text-white'>
                                             {partner.tagline}
                                         </h3>
@@ -189,8 +204,11 @@ export function FinancingPartners({
                                             {partner.description}
                                         </p>
 
-                                        {/* Highlights */}
-                                        <div className='mb-6 grid grid-cols-3 gap-2'>
+                                        {/* Highlights - Key stats for SEO value */}
+                                        <div
+                                            className='mb-6 grid grid-cols-3 gap-2'
+                                            aria-label={`${partner.name} key statistics`}
+                                        >
                                             {partner.highlights.map(
                                                 (highlight, hIdx) => (
                                                     <div
@@ -217,8 +235,11 @@ export function FinancingPartners({
                                             )}
                                         </div>
 
-                                        {/* Benefits */}
-                                        <ul className='mb-6 space-y-2.5'>
+                                        {/* Benefits - Semantic list for crawlers */}
+                                        <ul
+                                            className='mb-6 space-y-2.5'
+                                            aria-label={`${partner.name} benefits`}
+                                        >
                                             {partner.benefits.map(
                                                 (benefit, bIdx) => (
                                                     <li
@@ -230,6 +251,7 @@ export function FinancingPartners({
                                                                 'mt-0.5 h-4 w-4 shrink-0',
                                                                 colors.text
                                                             )}
+                                                            aria-hidden='true'
                                                         />
                                                         <span>{benefit}</span>
                                                     </li>
@@ -237,7 +259,7 @@ export function FinancingPartners({
                                             )}
                                         </ul>
 
-                                        {/* Apply Button */}
+                                        {/* Apply Button - External link with proper attributes */}
                                         {partner.applyUrl && (
                                             <Button
                                                 asChild
@@ -252,30 +274,28 @@ export function FinancingPartners({
                                                     href={partner.applyUrl}
                                                     target='_blank'
                                                     rel='noopener noreferrer'
+                                                    aria-label={`Apply for financing with ${partner.name} (opens in new tab)`}
                                                 >
                                                     Apply with {partner.name}
-                                                    <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1' />
+                                                    <ArrowRight
+                                                        className='ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1'
+                                                        aria-hidden='true'
+                                                    />
                                                 </a>
                                             </Button>
                                         )}
                                     </div>
                                 </div>
-                            </motion.div>
+                            </article>
                         )
                     })}
                 </div>
 
-                {/* Disclaimer */}
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.6 }}
-                    className='text-muted-foreground mt-12 text-center text-xs'
-                >
+                {/* Disclaimer - Visible for crawlers */}
+                <p className='text-muted-foreground mt-12 text-center text-xs'>
                     *Subject to credit approval. Terms and conditions apply.
                     Visit each partner&apos;s website for complete details.
-                </motion.p>
+                </p>
             </ContentWrapper>
         </SectionContainer>
     )
