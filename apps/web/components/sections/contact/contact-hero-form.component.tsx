@@ -209,7 +209,9 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                             <div className='flex items-center gap-2 text-stone-400'>
                                 <ShieldCheck className='text-gold-400 h-5 w-5' />
                                 <span className='text-sm font-medium'>
-                                    AAAASF Accredited
+                                    {siteConfig.trustStats?.accreditation ??
+                                        'AAAASF'}{' '}
+                                    Accredited
                                 </span>
                             </div>
                             <div className='flex items-center gap-2 text-stone-400'>

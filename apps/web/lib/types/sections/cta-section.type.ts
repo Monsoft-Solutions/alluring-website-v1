@@ -7,6 +7,51 @@
 import type { ReactNode } from 'react'
 
 /**
+ * Trust badge configuration for luxury CTA variant
+ */
+export interface CTATrustBadge {
+    /**
+     * Icon to display (React element)
+     */
+    readonly icon: ReactNode
+
+    /**
+     * Badge label text
+     */
+    readonly label: string
+}
+
+/**
+ * Trust statistics for Premium Stats Card in luxury CTA variant
+ */
+export interface CTAStats {
+    /**
+     * Number of patients (e.g., "5,000+")
+     */
+    readonly patients: string
+
+    /**
+     * Years of experience (e.g., "15+")
+     */
+    readonly years: string
+
+    /**
+     * Certification percentage (e.g., "100%")
+     */
+    readonly certified: string
+
+    /**
+     * Star rating (e.g., "4.9" or "5.0")
+     */
+    readonly rating: string
+
+    /**
+     * Accreditation body (e.g., "AAAASF")
+     */
+    readonly accreditation?: string
+}
+
+/**
  * CTA button configuration
  */
 export interface CTAButton {
@@ -75,12 +120,17 @@ export interface CTASectionProps {
 
     /**
      * Background variant
+     * - default: White/light background
+     * - muted: Subtle muted background
+     * - accent: Accent color background
+     * - primary: Primary color background
+     * - luxury: Premium split-layout with background image, trust badges, and gold accents
      * @default 'accent'
      */
-    readonly variant?: 'default' | 'muted' | 'accent' | 'primary'
+    readonly variant?: 'default' | 'muted' | 'accent' | 'primary' | 'luxury'
 
     /**
-     * Text alignment
+     * Text alignment (not applicable to luxury variant which uses split layout)
      * @default 'center'
      */
     readonly align?: 'left' | 'center' | 'right'
@@ -111,4 +161,22 @@ export interface CTASectionProps {
      * Optional background image URL for immersive effect
      */
     readonly backgroundImage?: string
+
+    /**
+     * Trust badges to display (only applicable to luxury variant)
+     * Shows credibility indicators like "Board-Certified", "15+ Years Experience"
+     */
+    readonly trustBadges?: readonly CTATrustBadge[]
+
+    /**
+     * Eyebrow/badge text above the heading (luxury variant)
+     * Example: "Your Journey Starts Here"
+     */
+    readonly eyebrow?: string
+
+    /**
+     * Trust statistics for Premium Stats Card (luxury variant)
+     * If not provided, falls back to siteConfig.trustStats
+     */
+    readonly stats?: CTAStats
 }

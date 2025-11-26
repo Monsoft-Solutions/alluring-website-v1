@@ -165,6 +165,18 @@ export const siteConfig: SiteConfig = {
         facebookAppId: '',
         enableIndexing: true,
     },
+
+    /**
+     * Trust Statistics
+     * Business credibility metrics displayed in CTA sections and trust badges
+     */
+    trustStats: {
+        patients: '5,000+',
+        years: '15+',
+        certified: '100%',
+        rating: '4.9',
+        accreditation: 'AAAASF',
+    },
 }
 
 /**
@@ -228,6 +240,41 @@ export function getMapEmbedUrl(): string {
 }
 
 /**
+ * Financing Partners
+ *
+ * Canonical list of financing partners used across the site.
+ * Normalized partner names for consistent display.
+ * Based on: https://www.alluringplasticsurgery.com/plastic-surgery-financing-miami/
+ */
+export const FINANCING_PARTNERS = [
+    'Cherry',
+    'CareCredit',
+    'United Credit',
+] as const
+
+/**
+ * Helper function to format financing partners as a comma-separated string
+ * Returns format: "Cherry, CareCredit, and United Credit"
+ */
+export function getFinancingPartnersString(): string {
+    const partners = [...FINANCING_PARTNERS] // Convert readonly tuple to array
+
+    if (partners.length === 0) {
+        return ''
+    }
+    if (partners.length === 1) {
+        return partners[0]!
+    }
+    if (partners.length === 2) {
+        return `${partners[0]!} and ${partners[1]!}`
+    }
+    // For 3+ partners: "Partner1, Partner2, and Partner3"
+    const lastPartner = partners[partners.length - 1]!
+    const otherPartners = partners.slice(0, -1).join(', ')
+    return `${otherPartners}, and ${lastPartner}`
+}
+
+/**
  * Export individual sections for convenience
  */
 export const businessInfo = siteConfig.business
@@ -235,3 +282,4 @@ export const contactInfo = siteConfig.contact
 export const socialLinks = siteConfig.social
 export const brandAssets = siteConfig.brand
 export const seoDefaults = siteConfig.seo
+export const trustStats = siteConfig.trustStats

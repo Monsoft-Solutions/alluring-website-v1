@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Button } from '@workspace/ui/components/button'
-import { Sparkles, ShieldCheck } from 'lucide-react'
+import { Award, Star, ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -11,7 +11,9 @@ export function ProcedureHero() {
         <section className='relative w-full'>
             {/* Sticky Background */}
             <div className='sticky top-0 z-0 h-screen w-full overflow-hidden'>
-                <div className='pointer-events-none absolute inset-0 z-10 bg-stone-900/30' />
+                {/* Gradient overlay for better text legibility */}
+                <div className='pointer-events-none absolute inset-0 z-10 bg-linear-to-b from-stone-900/30 via-stone-900/10 to-stone-900/60' />
+                <div className='pointer-events-none absolute inset-0 z-10 bg-stone-900/20 backdrop-blur-[1px]' />
 
                 <Image
                     src='/images/procedures-hero-image.jpg'
@@ -25,14 +27,24 @@ export function ProcedureHero() {
 
                 {/* Scroll Indicator */}
                 <motion.div
-                    className='absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2 text-white/80 md:left-12 md:translate-x-0'
+                    className='absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 text-white/80 md:left-12 md:translate-x-0'
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                 >
-                    <span className='text-xs tracking-widest uppercase shadow-black/50 drop-shadow-md'>
-                        Explore
+                    <span className='text-xs font-bold tracking-[0.3em] uppercase drop-shadow-md'>
+                        Scroll to Explore
                     </span>
-                    <div className='h-12 w-[1px] bg-white/50 shadow-black/50 drop-shadow-md'></div>
+                    <div className='flex h-10 w-px overflow-hidden bg-white/20'>
+                        <motion.div
+                            className='h-1/2 w-full bg-white'
+                            animate={{ y: ['-100%', '200%'] }}
+                            transition={{
+                                duration: 1.5,
+                                repeat: Infinity,
+                                ease: 'linear',
+                            }}
+                        />
+                    </div>
                 </motion.div>
             </div>
 
@@ -49,65 +61,101 @@ export function ProcedureHero() {
                     {/* The Card */}
                     <div className='pointer-events-auto md:w-[80%] lg:w-[55%]'>
                         <motion.div
-                            initial={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, y: 120 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                            className='relative border border-white/50 bg-white/80 p-8 shadow-2xl backdrop-blur-xl md:p-16 lg:bg-white/60'
+                            transition={{
+                                duration: 1.4,
+                                ease: [0.19, 1, 0.22, 1],
+                            }}
+                            className='relative overflow-hidden border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-md md:p-16'
                         >
-                            {/* Decorative Line */}
-                            <div className='absolute top-0 left-8 h-16 w-[1px] bg-stone-900/20 md:left-16'></div>
+                            {/* Decorative blur orbs */}
+                            <div className='bg-gold-400/20 absolute top-0 right-0 -mt-24 -mr-24 h-80 w-80 rounded-full blur-3xl' />
+                            <div className='absolute bottom-0 left-0 -mb-24 -ml-24 h-80 w-80 rounded-full bg-stone-500/20 blur-3xl' />
 
-                            <div className='mb-8 flex items-center gap-3'>
-                                <span className='bg-gold-400 h-[1px] w-8'></span>
-                                <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
-                                    Expertise • Artistry
-                                </span>
-                            </div>
-
-                            <h1 className='mb-8 font-serif text-5xl leading-[1.05] md:text-6xl lg:text-7xl'>
-                                <span className='text-stone-900'>
-                                    Refined Beauty,
-                                </span>
-                                <br />
-                                <span className='font-light text-stone-600 italic'>
-                                    Expertly Crafted.
-                                </span>
-                            </h1>
-
-                            <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-600'>
-                                Explore our curated collection of transformative
-                                procedures, designed to enhance your natural
-                                elegance and restore your confidence.
-                            </p>
-
-                            <div className='mb-10 flex flex-col gap-5 sm:flex-row'>
-                                <Link
-                                    href='/contact-us'
-                                    className='inline-block'
+                            <div className='relative z-10'>
+                                {/* Tagline with staggered animation */}
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.8 }}
+                                    className='mb-6 flex items-center gap-4'
                                 >
-                                    <Button size='md' withArrow>
-                                        Schedule Consultation
-                                    </Button>
-                                </Link>
-                                <Link
-                                    href='#procedures-grid'
-                                    className='inline-block'
-                                >
-                                    <Button size='md' variant='outline'>
-                                        View Procedures
-                                    </Button>
-                                </Link>
-                            </div>
+                                    <span className='bg-gold-400 h-px w-12 shadow-[0_0_10px_rgba(234,179,8,0.5)]'></span>
+                                    <span className='text-gold-400 text-xs font-bold tracking-[0.3em] uppercase drop-shadow-sm'>
+                                        Excellence in Aesthetics
+                                    </span>
+                                </motion.div>
 
-                            <div className='flex items-center gap-8 border-t border-stone-200 pt-8 text-sm font-bold tracking-widest text-stone-400 uppercase'>
-                                <div className='flex items-center gap-2'>
-                                    <ShieldCheck className='text-gold-500 h-5 w-5' />
-                                    <span>Safety First</span>
-                                </div>
-                                <div className='flex items-center gap-2'>
-                                    <Sparkles className='text-gold-500 h-5 w-5' />
-                                    <span>Natural Results</span>
-                                </div>
+                                {/* Title */}
+                                <h1 className='mb-8 font-serif text-5xl leading-[1.05] font-medium text-white drop-shadow-lg md:text-6xl lg:text-7xl'>
+                                    <span className='text-white'>
+                                        Refined Beauty,
+                                    </span>
+                                    <br />
+                                    <span className='font-light text-stone-200 italic'>
+                                        Expertly Crafted.
+                                    </span>
+                                </h1>
+
+                                {/* Description */}
+                                <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-200 drop-shadow-md'>
+                                    Explore our curated collection of
+                                    transformative procedures, designed to
+                                    enhance your natural elegance and restore
+                                    your confidence.
+                                </p>
+
+                                {/* CTAs with staggered animation */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.6, duration: 0.8 }}
+                                    className='mb-10 flex flex-col gap-4 sm:flex-row'
+                                >
+                                    <Button
+                                        asChild
+                                        variant='gold'
+                                        size='lg'
+                                        withArrow
+                                        className='w-full sm:w-auto'
+                                    >
+                                        <Link href='/contact-us'>
+                                            Schedule Consultation
+                                        </Link>
+                                    </Button>
+                                    <Button
+                                        asChild
+                                        variant='outline'
+                                        size='lg'
+                                        className='w-full border-white text-white hover:border-white hover:bg-white hover:text-stone-900 sm:w-auto'
+                                    >
+                                        <Link href='#procedures-grid'>
+                                            View Procedures
+                                        </Link>
+                                    </Button>
+                                </motion.div>
+
+                                {/* Trust Signals */}
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.8, duration: 0.8 }}
+                                    className='flex flex-wrap items-center gap-6 border-t border-white/10 pt-8 text-xs font-bold tracking-widest text-stone-300 uppercase md:gap-8'
+                                >
+                                    <div className='flex items-center gap-2'>
+                                        <Award className='text-gold-400 h-5 w-5' />
+                                        <span>Board-Certified</span>
+                                    </div>
+                                    <div className='flex items-center gap-2'>
+                                        <Star className='text-gold-400 h-5 w-5' />
+                                        <span>5-Star Rated</span>
+                                    </div>
+                                    <div className='flex items-center gap-2'>
+                                        <ShieldCheck className='text-gold-400 h-5 w-5' />
+                                        <span>Accredited Facility</span>
+                                    </div>
+                                </motion.div>
                             </div>
                         </motion.div>
                     </div>

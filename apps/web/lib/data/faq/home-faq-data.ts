@@ -6,6 +6,7 @@
  */
 
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
+import { getFinancingPartnersString } from '@/lib/data/site-config'
 
 /**
  * Available FAQ categories
@@ -52,7 +53,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
     financing: [
         {
             question: 'Do you offer payment plans?',
-            answer: 'Yes. We believe luxury care should be accessible. We work with CareCredit, Alphaeon, and PatientFi to offer flexible monthly payment plans, some with 0% interest for qualified applicants.',
+            answer: `Yes. We believe luxury care should be accessible. We work with ${getFinancingPartnersString()} to offer flexible monthly payment plans, some with 0% interest for qualified applicants.`,
         },
         {
             question: 'Does insurance cover these procedures?',
