@@ -6,6 +6,7 @@ import { ContainerLayout } from '@/components/container-layout.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SignatureProcedureCard } from '@/components/shared/signature-procedure-card.component'
 import { CategoryNav } from './category-nav.component'
+import { ProcedureCard } from './procedure-card.component'
 import { ProcedureHero } from './procedure-hero.component'
 import { FeatureCard } from '@/components/shared/feature-card.component'
 import { CTASection } from '@/components/shared/cta-section.component'
@@ -52,11 +53,44 @@ export function ProceduresPageContent({
         <>
             <ProcedureHero />
 
-            {/* Curated Procedures Section with Horizontal Scroll */}
+            {/* Mobile: Cinematic full-bleed vertical layout */}
+            <section id='procedures-grid' className='bg-stone-900 md:hidden'>
+                {/* Header with padding */}
+                <div className='px-6 pt-16 pb-10'>
+                    <div className='max-w-3xl'>
+                        <div className='mb-4 flex items-center gap-3'>
+                            <span className='bg-gold-400 h-px w-12'></span>
+                            <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
+                                Excellence in Aesthetics
+                            </span>
+                        </div>
+                        <h2 className='mb-6 font-serif text-4xl text-white'>
+                            Curated Procedures
+                        </h2>
+                        <p className='text-lg leading-relaxed font-light text-stone-400'>
+                            At <strong>Alluring Plastic Surgery</strong>, we
+                            believe in delivering results that help you feel
+                            confident, beautiful, and empowered.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Mobile Grid - Edge-to-edge cinematic cards */}
+                <div className='flex flex-col gap-4 pb-16'>
+                    {procedures.map((procedure, idx) => (
+                        <ProcedureCard
+                            key={procedure.slug}
+                            procedure={procedure}
+                            index={idx}
+                        />
+                    ))}
+                </div>
+            </section>
+
+            {/* Desktop: Curated Procedures Section with Horizontal Scroll */}
             <section
-                id='procedures-grid'
                 ref={targetRef}
-                className='relative bg-stone-900'
+                className='relative hidden bg-stone-900 md:block'
                 style={{
                     height: `${Math.max(150, filteredProcedures.length * 50)}vh`,
                 }}
@@ -71,15 +105,15 @@ export function ProceduresPageContent({
                     </div>
 
                     <div className='flex flex-1 flex-col justify-center py-12'>
-                        <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                        <ContentWrapper size='lg' paddingX='px-12'>
                             <div className='mb-12 max-w-3xl'>
                                 <div className='mb-4 flex items-center gap-3'>
-                                    <span className='bg-gold-400 h-[1px] w-12'></span>
+                                    <span className='bg-gold-400 h-px w-12'></span>
                                     <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
                                         Excellence in Aesthetics
                                     </span>
                                 </div>
-                                <h2 className='mb-6 font-serif text-4xl text-white md:text-5xl'>
+                                <h2 className='mb-6 font-serif text-5xl text-white'>
                                     Curated Procedures
                                 </h2>
                                 <p className='text-xl leading-relaxed font-light text-stone-400'>
@@ -98,14 +132,13 @@ export function ProceduresPageContent({
                         {filteredProcedures.length > 0 ? (
                             <motion.div
                                 style={{ x }}
-                                className='flex gap-6 px-6 md:gap-8 md:px-12'
+                                className='flex gap-8 px-12'
                             >
                                 {filteredProcedures.map((procedure, idx) => (
                                     <SignatureProcedureCard
                                         key={procedure.slug}
                                         procedure={procedure}
                                         index={idx}
-                                        // Pass targetRef to enable parallax within card if supported
                                         containerRef={
                                             targetRef as React.RefObject<HTMLDivElement>
                                         }
@@ -113,7 +146,7 @@ export function ProceduresPageContent({
                                 ))}
                             </motion.div>
                         ) : (
-                            <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                            <ContentWrapper size='lg' paddingX='px-12'>
                                 <div className='py-20 text-center'>
                                     <p className='text-lg text-stone-400'>
                                         No procedures found in this category.
