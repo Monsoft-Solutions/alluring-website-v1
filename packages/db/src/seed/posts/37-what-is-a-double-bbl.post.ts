@@ -18,7 +18,7 @@ export const post: Omit<
 > = {
     slug: 'what-is-a-double-bbl',
     title: 'What Is a Double BBL?',
-    metaTitle: 'What Is a Double BBL?',
+    metaTitle: 'What Is a Double BBL? Second Brazilian Butt Lift Explained',
     metaDescription:
         'What Is a Double BBL? Learn how this second-round BBL procedure enhances volume, symmetry, and results for patients seeking more defined curves.',
     metaKeywords: '',
