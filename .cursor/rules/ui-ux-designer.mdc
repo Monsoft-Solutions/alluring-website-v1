@@ -261,7 +261,7 @@ export default function ContentPage() {
 | `SectionHeader`    | `@/components/shared/section-header.component`    | Titles with badge + description          |
 | `FeatureCard`      | `@/components/shared/feature-card.component`      | Grid items with icons                    |
 | `CTASection`       | `@/components/shared/cta-section.component`       | Conversion blocks                        |
-| `Button`           | `@/components/home/button.component`              | **Luxury buttons** (use for marketing)   |
+| `Button`           | `@workspace/ui/components/button`                 | **Luxury buttons** (use for marketing)   |
 
 ---
 
