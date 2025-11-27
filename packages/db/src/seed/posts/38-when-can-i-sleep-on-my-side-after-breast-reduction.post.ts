@@ -8,7 +8,7 @@ import {
  * Blog Post: When Can I Sleep on My Side After Breast Reduction?
  *
  * Migrated from old website
- * Categories: Breast Augmentation, Recovery, Post-Op Care
+ * Categories: Breast Reduction, Recovery, Post-Op Care
  * Tags: Breast Reduction, Recovery, Swelling, Post-Op Care, Hygiene, Recovery Timeline
  */
 
@@ -32,7 +32,7 @@ export const post: Omit<
     allowComments: true,
 }
 
-export const categories = ['Breast Augmentation', 'Recovery', 'Post-Op Care']
+export const categories = ['Breast Reduction', 'Recovery', 'Post-Op Care']
 export const tags = [
     'Breast Reduction',
     'Recovery',
