@@ -8,18 +8,19 @@ type RunProps = {
 export async function run({ db }: RunProps) {
     console.log('Seeding authors...')
 
+    // Note: Author cleanup happens in 02-blog.seed.ts (after blog posts are deleted)
+    // due to foreign key constraints. This seed only inserts if no conflict.
+
     const data: (typeof author.$inferInsert)[] = [
         {
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            bio: 'A passionate writer and tech enthusiast.',
-            avatarUrl: 'https://example.com/avatar/john.jpg',
-        },
-        {
-            name: 'Jane Smith',
-            email: 'jane.smith@example.com',
-            bio: 'Lover of coffee, code, and cats.',
-            avatarUrl: 'https://example.com/avatar/jane.jpg',
+            name: 'Alluring Editorial Team',
+            email: 'editorial@alluringplasticsurgery.com',
+            bio: 'Expert insights from our team of board-certified surgeons and medical professionals at Alluring Plastic Surgery in Miami, FL.',
+            avatarUrl: '/logo.png',
+            website: 'https://alluringplasticsurgery.com',
+            socialLinks: {
+                instagram: 'https://instagram.com/alluringplasticsurgery',
+            },
         },
     ]
 
