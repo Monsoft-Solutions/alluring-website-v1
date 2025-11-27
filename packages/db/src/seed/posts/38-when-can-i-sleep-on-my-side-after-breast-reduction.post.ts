@@ -9,7 +9,7 @@ import {
  *
  * Migrated from old website
  * Categories: Breast Augmentation, Recovery, Post-Op Care
- * Tags: Breast Reduction, Recovery, Swelling, Post-Op Care, Hygiene, Recovery Timeline, Post-Op Care
+ * Tags: Breast Reduction, Recovery, Swelling, Post-Op Care, Hygiene, Recovery Timeline
  */
 
 export const post: Omit<
@@ -40,5 +40,4 @@ export const tags = [
     'Post-Op Care',
     'Hygiene',
     'Recovery Timeline',
-    'Post-Op Care',
 ]
