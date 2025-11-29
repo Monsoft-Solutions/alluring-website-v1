@@ -192,7 +192,7 @@ export default async function DynamicPage({ params }: PageProps) {
                 tableOfContents={tableOfContents}
                 beforeCTA={beforeCTA}
                 afterCTA={afterCTA}
-                ctaId={ctaId}
+                ctaId={ctaId ?? null}
             />
         )
     }
