@@ -8,7 +8,7 @@
  * SSR-optimized: Content renders visible by default for SEO crawlers.
  * CSS animations enhance UX for users with JavaScript enabled.
  */
-import { ArrowRight, CheckCircle, ExternalLink } from 'lucide-react'
+import { CheckCircle, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 
 import { Button } from '@workspace/ui/components/button'
