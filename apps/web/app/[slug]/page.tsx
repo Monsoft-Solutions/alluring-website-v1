@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import { cache } from 'react'
 
+// Surgeon imports
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { siteConfig } from '@/lib/data/site-config'
 import { SurgeonHero } from '@/components/surgeons/surgeon-hero.component'
@@ -11,28 +13,65 @@ import { SurgeonSpecialties } from '@/components/surgeons/surgeon-specialties.co
 import { SurgeonCTA } from '@/components/surgeons/surgeon-cta.component'
 import { env } from '@/env'
 
-interface PageProps {
+// Blog imports
+import { BlogPostContent } from '@/components/blog/blog-post-content.component'
+import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
+import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
+import { seoConfig } from '@/lib/seo-config'
+import { toNextMetadata } from '@/lib/seo/metadata'
+import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
+import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
+
+type PageProps = {
     params: Promise<{ slug: string }>
 }
 
+// Cache the blog post query to avoid duplicate fetches
+const getCachedPostBySlug = cache(async (slug: string) =>
+    getPublishedPostBySlug(slug)
+)
+
+/**
+ * Generate static params for surgeon pages
+ * Blog posts are fetched dynamically from the database
+ */
 export async function generateStaticParams() {
     return surgeons.map((surgeon) => ({
         slug: surgeon.slug,
     }))
 }
 
+/**
+ * Generate metadata for the page
+ * Checks surgeons first (static), then blog posts (database)
+ */
 export async function generateMetadata({
     params,
 }: PageProps): Promise<Metadata> {
     const { slug } = await params
-    const surgeon = surgeons.find((s) => s.slug === slug)
 
-    if (!surgeon) {
-        return {
-            title: 'Surgeon Not Found',
-        }
+    // Check surgeons first (static, instant)
+    const surgeon = surgeons.find((s) => s.slug === slug)
+    if (surgeon) {
+        return generateSurgeonMetadata(surgeon, slug)
     }
 
+    // Check blog posts (database query)
+    const post = await getCachedPostBySlug(slug)
+    if (post) {
+        return generateBlogPostMetadata(post)
+    }
+
+    return { title: 'Not Found' }
+}
+
+/**
+ * Generate metadata for surgeon pages
+ */
+function generateSurgeonMetadata(
+    surgeon: (typeof surgeons)[0],
+    slug: string
+): Metadata {
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
     const pageUrl = `${siteUrl}/${slug}`
     const ogImage = surgeon.images.featured.startsWith('http')
@@ -92,14 +131,85 @@ export async function generateMetadata({
     }
 }
 
-export default async function SurgeonPage({ params }: PageProps) {
-    const { slug } = await params
-    const surgeon = surgeons.find((s) => s.slug === slug)
+/**
+ * Generate metadata for blog post pages
+ * Uses root-level canonical URL to match WordPress structure
+ */
+function generateBlogPostMetadata(
+    post: NonNullable<Awaited<ReturnType<typeof getPublishedPostBySlug>>>
+): Metadata {
+    return toNextMetadata(seoConfig, {
+        title: post.title,
+        description: post.excerpt ?? undefined,
+        openGraph: {
+            type: 'article',
+            images: post.featuredImage
+                ? [
+                      {
+                          url: post.featuredImage.url,
+                          alt: post.featuredImage.alt,
+                      },
+                  ]
+                : undefined,
+        },
+        // Root-level canonical URL to match WordPress structure
+        canonical: `/${post.slug}`,
+    })
+}
 
-    if (!surgeon) {
-        notFound()
+/**
+ * Dynamic page handler for both surgeons and blog posts
+ * Checks surgeons first (static), then blog posts (database)
+ */
+export default async function DynamicPage({ params }: PageProps) {
+    const { slug } = await params
+
+    // Check surgeons first (static, instant)
+    const surgeon = surgeons.find((s) => s.slug === slug)
+    if (surgeon) {
+        return <SurgeonContent surgeon={surgeon} slug={slug} />
     }
 
+    // Check blog posts (database query)
+    const post = await getCachedPostBySlug(slug)
+    if (post) {
+        // Fetch related data for blog post
+        const tableOfContents = extractTableOfContents(post.content)
+        const relatedPosts = await getRelatedPosts(
+            post.id,
+            post.categories.map((c) => c.id),
+            post.tags.map((t) => t.id),
+            3
+        )
+        const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
+            post.content
+        )
+
+        return (
+            <BlogPostContent
+                post={post}
+                relatedPosts={relatedPosts}
+                tableOfContents={tableOfContents}
+                beforeCTA={beforeCTA}
+                afterCTA={afterCTA}
+                ctaId={ctaId}
+            />
+        )
+    }
+
+    notFound()
+}
+
+/**
+ * Surgeon page content component
+ */
+function SurgeonContent({
+    surgeon,
+    slug,
+}: {
+    surgeon: (typeof surgeons)[0]
+    slug: string
+}) {
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
     const pageUrl = `${siteUrl}/${slug}`
 

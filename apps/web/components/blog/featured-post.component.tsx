@@ -49,7 +49,7 @@ export function FeaturedPost({
                 {/* Featured Card */}
                 <article className='group relative overflow-hidden rounded-2xl bg-stone-900 shadow-2xl'>
                     <Link
-                        href={`/blog/${post.slug}`}
+                        href={`/${post.slug}`}
                         className='absolute inset-0 z-20'
                         aria-label={`Read full article: ${post.title}`}
                     >

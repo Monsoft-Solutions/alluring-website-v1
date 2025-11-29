@@ -42,7 +42,7 @@ export function PostCard({ post, className }: PostCardProps) {
         >
             {/* Clickable overlay */}
             <Link
-                href={`/blog/${post.slug}`}
+                href={`/${post.slug}`}
                 aria-labelledby={titleId}
                 className='focus:ring-gold-500/50 absolute inset-0 z-10 focus:ring-2 focus:ring-offset-2 focus:outline-none'
             >
