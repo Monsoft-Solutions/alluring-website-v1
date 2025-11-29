@@ -4,7 +4,8 @@
  * FinancingProcedures Component
  *
  * Displays available procedures organized by category (Face, Body, Breast)
- * with links to individual procedure pages. Demonstrates what can be financed.
+ * with links to individual procedure pages. Beautiful card design with
+ * elegant hover effects and category icons.
  */
 import { motion } from 'framer-motion'
 import {
@@ -30,6 +31,30 @@ const iconMap: Record<string, LucideIcon> = {
     Smile,
     Heart,
     Sparkles,
+}
+
+/**
+ * Category accent colors for visual distinction
+ */
+const categoryColors: Record<
+    string,
+    { bg: string; icon: string; text: string }
+> = {
+    Smile: {
+        bg: 'bg-amber-50 dark:bg-amber-950/30',
+        icon: 'text-amber-600 dark:text-amber-400',
+        text: 'text-amber-700 dark:text-amber-400',
+    },
+    Heart: {
+        bg: 'bg-rose-50 dark:bg-rose-950/30',
+        icon: 'text-rose-600 dark:text-rose-400',
+        text: 'text-rose-700 dark:text-rose-400',
+    },
+    Sparkles: {
+        bg: 'bg-violet-50 dark:bg-violet-950/30',
+        icon: 'text-violet-600 dark:text-violet-400',
+        text: 'text-violet-700 dark:text-violet-400',
+    },
 }
 
 export function FinancingProcedures({
@@ -62,6 +87,10 @@ export function FinancingProcedures({
                 <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
                     {categories.map((category, idx) => {
                         const IconComponent = iconMap[category.icon]
+                        const colors =
+                            categoryColors[category.icon] ||
+                            categoryColors.Sparkles
+
                         return (
                             <motion.div
                                 key={category.id}
@@ -70,48 +99,94 @@ export function FinancingProcedures({
                                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                                 className='group'
                             >
-                                <div className='h-full rounded-2xl border border-stone-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-stone-300 hover:shadow-md dark:border-stone-800 dark:bg-stone-900/50'>
-                                    {/* Category Header */}
-                                    <div className='mb-6 flex items-center gap-4'>
-                                        <div className='bg-gold-500/10 flex h-14 w-14 items-center justify-center rounded-xl'>
-                                            {IconComponent && (
-                                                <IconComponent className='text-gold-500 h-7 w-7' />
-                                            )}
+                                <div
+                                    className={cn(
+                                        'relative h-full overflow-hidden rounded-3xl border bg-white/90 backdrop-blur-sm transition-all duration-500',
+                                        'border-stone-200/80 hover:border-stone-300',
+                                        'shadow-lg shadow-stone-200/40 hover:shadow-xl hover:shadow-stone-300/50',
+                                        'hover:-translate-y-1',
+                                        'dark:border-stone-700/60 dark:bg-stone-900/80 dark:hover:border-stone-600',
+                                        'dark:shadow-stone-950/40 dark:hover:shadow-stone-950/60'
+                                    )}
+                                >
+                                    {/* Category Header with Icon */}
+                                    <div className={cn('p-8 pb-6', colors.bg)}>
+                                        <div className='flex items-center gap-4'>
+                                            <div
+                                                className={cn(
+                                                    'flex h-16 w-16 items-center justify-center rounded-2xl',
+                                                    'bg-white/80 shadow-md ring-1 ring-stone-200/50',
+                                                    'transition-transform duration-300 group-hover:scale-105',
+                                                    'dark:bg-stone-800/80 dark:ring-stone-700/50'
+                                                )}
+                                            >
+                                                {IconComponent && (
+                                                    <IconComponent
+                                                        className={cn(
+                                                            'h-8 w-8',
+                                                            colors.icon
+                                                        )}
+                                                        strokeWidth={1.5}
+                                                    />
+                                                )}
+                                            </div>
+                                            <div>
+                                                <h3 className='text-xl font-bold tracking-tight text-stone-900 dark:text-white'>
+                                                    {category.name}
+                                                </h3>
+                                                <p className='mt-0.5 text-sm text-stone-500 dark:text-stone-400'>
+                                                    {category.procedures.length}{' '}
+                                                    procedures
+                                                </p>
+                                            </div>
                                         </div>
-                                        <h3 className='text-xl font-bold text-stone-900 dark:text-white'>
-                                            {category.name}
-                                        </h3>
                                     </div>
 
                                     {/* Procedures List */}
-                                    <ul className='space-y-3'>
-                                        {category.procedures.map(
-                                            (procedure) => (
-                                                <li key={procedure.slug}>
-                                                    <Link
-                                                        href={`/procedures/${procedure.slug}`}
-                                                        className='group/link flex items-center justify-between rounded-lg px-4 py-3 transition-all duration-200 hover:bg-stone-100 dark:hover:bg-stone-800'
-                                                    >
-                                                        <span className='text-stone-700 dark:text-stone-300'>
-                                                            {procedure.name}
-                                                        </span>
-                                                        <ArrowRight className='text-gold-500 h-4 w-4 opacity-0 transition-all duration-200 group-hover/link:translate-x-1 group-hover/link:opacity-100' />
-                                                    </Link>
-                                                </li>
-                                            )
-                                        )}
-                                    </ul>
+                                    <div className='p-8 pt-4'>
+                                        <ul className='space-y-1'>
+                                            {category.procedures.map(
+                                                (procedure) => (
+                                                    <li key={procedure.slug}>
+                                                        <Link
+                                                            href={`/procedures/${procedure.slug}`}
+                                                            className={cn(
+                                                                'group/link flex items-center justify-between rounded-xl px-4 py-3.5',
+                                                                'transition-all duration-200',
+                                                                'hover:bg-stone-100/80 dark:hover:bg-stone-800/60'
+                                                            )}
+                                                        >
+                                                            <span className='font-medium text-stone-700 transition-colors group-hover/link:text-stone-900 dark:text-stone-300 dark:group-hover/link:text-white'>
+                                                                {procedure.name}
+                                                            </span>
+                                                            <ArrowRight
+                                                                className={cn(
+                                                                    'h-4 w-4 opacity-0 transition-all duration-200',
+                                                                    'group-hover/link:translate-x-1 group-hover/link:opacity-100',
+                                                                    colors.icon
+                                                                )}
+                                                            />
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
 
-                                    {/* Category CTA */}
-                                    <div className='mt-6 border-t border-stone-200 pt-6 dark:border-stone-700'>
-                                        <Link
-                                            href='/procedures'
-                                            className='text-gold-600 hover:text-gold-500 dark:text-gold-400 group/cta inline-flex items-center text-sm font-medium'
-                                        >
-                                            View all{' '}
-                                            {category.name.toLowerCase()}
-                                            <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover/cta:translate-x-1' />
-                                        </Link>
+                                        {/* Category CTA */}
+                                        <div className='mt-6 border-t border-stone-200/80 pt-6 dark:border-stone-700/60'>
+                                            <Link
+                                                href='/procedures'
+                                                className={cn(
+                                                    'group/cta inline-flex items-center text-sm font-semibold tracking-wide',
+                                                    'transition-colors duration-200',
+                                                    colors.text
+                                                )}
+                                            >
+                                                View all{' '}
+                                                {category.name.toLowerCase()}
+                                                <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover/cta:translate-x-1' />
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -124,12 +199,16 @@ export function FinancingProcedures({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
-                    className='bg-gold-500/10 mt-12 rounded-2xl p-8 text-center'
+                    className={cn(
+                        'mt-14 rounded-3xl p-10 text-center',
+                        'bg-linear-to-br from-stone-900 via-stone-900 to-stone-800',
+                        'shadow-xl ring-1 ring-stone-700/50'
+                    )}
                 >
-                    <p className='text-lg font-medium text-stone-900 dark:text-white'>
+                    <p className='text-gold-400 text-lg font-semibold'>
                         All procedures are eligible for financing
                     </p>
-                    <p className='text-muted-foreground mt-2 text-sm'>
+                    <p className='mx-auto mt-2 max-w-md text-sm text-stone-400'>
                         Contact us to discuss a customized payment plan for your
                         specific procedure
                     </p>

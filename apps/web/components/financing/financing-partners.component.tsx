@@ -2,13 +2,13 @@
  * FinancingPartners Component
  *
  * Showcases financing partners (Cherry, CareCredit, United Credit) with
- * interactive cards featuring official logos, hover animations, benefits reveal,
- * and highlight statistics.
+ * beautiful glassmorphic cards featuring official logos, hover animations,
+ * benefits reveal, and highlight statistics.
  *
  * SSR-optimized: Content renders visible by default for SEO crawlers.
  * CSS animations enhance UX for users with JavaScript enabled.
  */
-import { ArrowRight, CheckCircle } from 'lucide-react'
+import { ArrowRight, CheckCircle, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 
 import { Button } from '@workspace/ui/components/button'
@@ -40,42 +40,62 @@ function getAccentColorKey(color: string | undefined): AccentColorKey {
 }
 
 /**
- * Accent color mappings for partner cards
+ * Accent color mappings for partner cards - refined luxury aesthetic
  */
 const accentColors: Record<
     AccentColorKey,
     {
         bg: string
         border: string
+        borderHover: string
         text: string
+        textDark: string
         gradient: string
         logoBg: string
         highlightBg: string
+        buttonBg: string
+        buttonHover: string
+        ring: string
     }
 > = {
     rose: {
-        bg: 'bg-rose-500/10',
-        border: 'border-rose-500/20 hover:border-rose-500/40',
-        text: 'text-rose-500',
-        gradient: 'from-rose-500/5 via-rose-500/10 to-transparent',
-        logoBg: 'bg-gradient-to-br from-rose-50 to-rose-100/80',
-        highlightBg: 'bg-rose-50/80',
+        bg: 'bg-rose-50',
+        border: 'border-rose-200/60',
+        borderHover: 'hover:border-rose-400',
+        text: 'text-rose-600',
+        textDark: 'dark:text-rose-400',
+        gradient: 'from-rose-500/10 via-rose-500/5 to-transparent',
+        logoBg: 'bg-linear-to-br from-rose-100 to-rose-50',
+        highlightBg: 'bg-rose-100/80',
+        buttonBg: 'bg-rose-600 hover:bg-rose-700',
+        buttonHover: 'hover:bg-rose-50',
+        ring: 'ring-rose-200',
     },
     blue: {
-        bg: 'bg-blue-500/10',
-        border: 'border-blue-500/20 hover:border-blue-500/40',
-        text: 'text-blue-500',
-        gradient: 'from-blue-500/5 via-blue-500/10 to-transparent',
-        logoBg: 'bg-gradient-to-br from-blue-50 to-blue-100/80',
-        highlightBg: 'bg-blue-50/80',
+        bg: 'bg-blue-50',
+        border: 'border-blue-200/60',
+        borderHover: 'hover:border-blue-400',
+        text: 'text-blue-600',
+        textDark: 'dark:text-blue-400',
+        gradient: 'from-blue-500/10 via-blue-500/5 to-transparent',
+        logoBg: 'bg-linear-to-br from-blue-100 to-blue-50',
+        highlightBg: 'bg-blue-100/80',
+        buttonBg: 'bg-blue-600 hover:bg-blue-700',
+        buttonHover: 'hover:bg-blue-50',
+        ring: 'ring-blue-200',
     },
     emerald: {
-        bg: 'bg-emerald-500/10',
-        border: 'border-emerald-500/20 hover:border-emerald-500/40',
+        bg: 'bg-emerald-50',
+        border: 'border-emerald-200/60',
+        borderHover: 'hover:border-emerald-400',
         text: 'text-emerald-600',
-        gradient: 'from-emerald-500/5 via-emerald-500/10 to-transparent',
-        logoBg: 'bg-gradient-to-br from-emerald-800 to-emerald-900',
-        highlightBg: 'bg-emerald-50/80',
+        textDark: 'dark:text-emerald-400',
+        gradient: 'from-emerald-500/10 via-emerald-500/5 to-transparent',
+        logoBg: 'bg-linear-to-br from-emerald-100 to-emerald-50',
+        highlightBg: 'bg-emerald-100/80',
+        buttonBg: 'bg-emerald-600 hover:bg-emerald-700',
+        buttonHover: 'hover:bg-emerald-50',
+        ring: 'ring-emerald-200',
     },
 }
 
@@ -87,19 +107,23 @@ const darkAccentColors: Record<
     {
         logoBg: string
         highlightBg: string
+        cardBg: string
     }
 > = {
     rose: {
-        logoBg: 'dark:bg-gradient-to-br dark:from-rose-950/50 dark:to-rose-900/30',
-        highlightBg: 'dark:bg-rose-950/40',
+        logoBg: 'dark:bg-linear-to-br dark:from-rose-950/80 dark:to-rose-900/40',
+        highlightBg: 'dark:bg-rose-950/50',
+        cardBg: 'dark:bg-stone-900/80',
     },
     blue: {
-        logoBg: 'dark:bg-gradient-to-br dark:from-blue-950/50 dark:to-blue-900/30',
-        highlightBg: 'dark:bg-blue-950/40',
+        logoBg: 'dark:bg-linear-to-br dark:from-blue-950/80 dark:to-blue-900/40',
+        highlightBg: 'dark:bg-blue-950/50',
+        cardBg: 'dark:bg-stone-900/80',
     },
     emerald: {
-        logoBg: 'dark:bg-gradient-to-br dark:from-emerald-900 dark:to-emerald-950',
-        highlightBg: 'dark:bg-emerald-950/40',
+        logoBg: 'dark:bg-linear-to-br dark:from-emerald-950/80 dark:to-emerald-900/40',
+        highlightBg: 'dark:bg-emerald-950/50',
+        cardBg: 'dark:bg-stone-900/80',
     },
 }
 
@@ -169,46 +193,52 @@ export function FinancingPartners({
                             >
                                 <div
                                     className={cn(
-                                        'relative h-full overflow-hidden rounded-2xl border-2 bg-white p-8 transition-all duration-500',
-                                        'shadow-sm hover:shadow-xl hover:shadow-stone-200/50',
-                                        'dark:bg-stone-900/50 dark:backdrop-blur-sm dark:hover:shadow-stone-900/50',
-                                        colors.border
+                                        'relative h-full overflow-hidden rounded-3xl border bg-white/90 backdrop-blur-sm transition-all duration-500',
+                                        'shadow-lg shadow-stone-200/40 hover:shadow-2xl hover:shadow-stone-300/50',
+                                        'hover:-translate-y-1',
+                                        darkColors.cardBg,
+                                        'dark:shadow-stone-950/50 dark:backdrop-blur-md dark:hover:shadow-stone-950/70',
+                                        colors.border,
+                                        colors.borderHover
                                     )}
                                 >
-                                    {/* Background gradient on hover */}
+                                    {/* Decorative top accent bar */}
                                     <div
                                         className={cn(
-                                            'absolute inset-0 bg-gradient-to-b opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+                                            'absolute inset-x-0 top-0 h-1.5 bg-linear-to-r opacity-80',
                                             colors.gradient
                                         )}
                                         aria-hidden='true'
                                     />
 
                                     {/* Content */}
-                                    <div className='relative z-10'>
+                                    <div className='relative z-10 p-8'>
                                         {/* Logo Section */}
-                                        <div className='mb-6'>
+                                        <div className='mb-8'>
                                             {partner.logoUrl ? (
                                                 <div
                                                     className={cn(
-                                                        'flex h-20 items-center justify-center rounded-xl p-4 transition-transform duration-300 group-hover:scale-[1.02]',
+                                                        'flex h-24 items-center justify-center rounded-2xl p-5 ring-1 transition-all duration-300',
+                                                        'group-hover:scale-[1.02] group-hover:shadow-md',
                                                         colors.logoBg,
-                                                        darkColors.logoBg
+                                                        colors.ring,
+                                                        darkColors.logoBg,
+                                                        'dark:ring-stone-700'
                                                     )}
                                                 >
                                                     <Image
                                                         src={partner.logoUrl}
                                                         alt={`${partner.name} financing partner logo`}
-                                                        width={180}
-                                                        height={60}
-                                                        className='h-auto max-h-12 w-auto object-contain'
+                                                        width={200}
+                                                        height={70}
+                                                        className='h-auto max-h-14 w-auto object-contain'
                                                         loading='eager'
                                                     />
                                                 </div>
                                             ) : (
                                                 <div
                                                     className={cn(
-                                                        'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold tracking-wider uppercase',
+                                                        'inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold tracking-wider uppercase',
                                                         colors.bg,
                                                         colors.text
                                                     )}
@@ -219,18 +249,18 @@ export function FinancingPartners({
                                         </div>
 
                                         {/* Tagline - Using h3 for proper heading hierarchy */}
-                                        <h3 className='mb-3 text-xl font-bold text-stone-900 dark:text-white'>
+                                        <h3 className='mb-4 text-xl font-bold tracking-tight text-stone-900 dark:text-white'>
                                             {partner.tagline}
                                         </h3>
 
                                         {/* Description */}
-                                        <p className='text-muted-foreground mb-6 text-sm leading-relaxed'>
+                                        <p className='mb-8 text-sm leading-relaxed text-stone-600 dark:text-stone-400'>
                                             {partner.description}
                                         </p>
 
-                                        {/* Highlights - Key stats for SEO value */}
+                                        {/* Highlights - Key stats in elegant grid */}
                                         <div
-                                            className='mb-6 grid grid-cols-3 gap-2'
+                                            className='mb-8 grid grid-cols-3 gap-3'
                                             aria-label={`${partner.name} key statistics`}
                                         >
                                             {partner.highlights.map(
@@ -238,20 +268,24 @@ export function FinancingPartners({
                                                     <div
                                                         key={hIdx}
                                                         className={cn(
-                                                            'rounded-lg p-3 text-center transition-colors duration-300',
+                                                            'rounded-xl p-4 text-center transition-all duration-300',
+                                                            'ring-1 ring-stone-200/50 ring-inset',
+                                                            'group-hover:ring-stone-300/60',
                                                             colors.highlightBg,
-                                                            darkColors.highlightBg
+                                                            darkColors.highlightBg,
+                                                            'dark:ring-stone-700/50'
                                                         )}
                                                     >
                                                         <div
                                                             className={cn(
-                                                                'text-lg font-bold',
-                                                                colors.text
+                                                                'text-xl font-bold tracking-tight',
+                                                                colors.text,
+                                                                colors.textDark
                                                             )}
                                                         >
                                                             {highlight.value}
                                                         </div>
-                                                        <div className='text-muted-foreground text-xs'>
+                                                        <div className='mt-1 text-xs font-medium text-stone-500 dark:text-stone-500'>
                                                             {highlight.label}
                                                         </div>
                                                     </div>
@@ -259,39 +293,41 @@ export function FinancingPartners({
                                             )}
                                         </div>
 
-                                        {/* Benefits - Semantic list for crawlers */}
+                                        {/* Benefits - Semantic list with elegant styling */}
                                         <ul
-                                            className='mb-6 space-y-2.5'
+                                            className='mb-8 space-y-3'
                                             aria-label={`${partner.name} benefits`}
                                         >
                                             {partner.benefits.map(
                                                 (benefit, bIdx) => (
                                                     <li
                                                         key={bIdx}
-                                                        className='flex items-start gap-2.5 text-sm text-stone-600 dark:text-stone-300'
+                                                        className='flex items-start gap-3 text-sm text-stone-700 dark:text-stone-300'
                                                     >
                                                         <CheckCircle
                                                             className={cn(
-                                                                'mt-0.5 h-4 w-4 shrink-0',
-                                                                colors.text
+                                                                'mt-0.5 h-5 w-5 shrink-0',
+                                                                colors.text,
+                                                                colors.textDark
                                                             )}
                                                             aria-hidden='true'
                                                         />
-                                                        <span>{benefit}</span>
+                                                        <span className='leading-relaxed'>
+                                                            {benefit}
+                                                        </span>
                                                     </li>
                                                 )
                                             )}
                                         </ul>
 
-                                        {/* Apply Button - External link with proper attributes */}
+                                        {/* Apply Button - Refined style */}
                                         {partner.applyUrl && (
                                             <Button
                                                 asChild
-                                                variant='outline'
                                                 className={cn(
-                                                    'group/btn w-full transition-all duration-300',
-                                                    'hover:border-current',
-                                                    colors.text
+                                                    'w-full gap-2 font-semibold tracking-wide transition-all duration-300',
+                                                    colors.buttonBg,
+                                                    'text-white shadow-md hover:shadow-lg'
                                                 )}
                                             >
                                                 <a
@@ -301,8 +337,8 @@ export function FinancingPartners({
                                                     aria-label={`Apply for financing with ${partner.name} (opens in new tab)`}
                                                 >
                                                     Apply with {partner.name}
-                                                    <ArrowRight
-                                                        className='ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1'
+                                                    <ExternalLink
+                                                        className='h-4 w-4'
                                                         aria-hidden='true'
                                                     />
                                                 </a>
@@ -315,8 +351,8 @@ export function FinancingPartners({
                     })}
                 </div>
 
-                {/* Disclaimer - Visible for crawlers */}
-                <p className='text-muted-foreground mt-12 text-center text-xs'>
+                {/* Disclaimer - Elegant styling */}
+                <p className='mt-14 text-center text-sm text-stone-500 dark:text-stone-500'>
                     *Subject to credit approval. Terms and conditions apply.
                     Visit each partner&apos;s website for complete details.
                 </p>
