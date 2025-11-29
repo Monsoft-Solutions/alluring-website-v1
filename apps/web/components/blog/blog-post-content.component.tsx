@@ -153,11 +153,17 @@ export function BlogPostContent({
                         type='BlogPosting'
                         headline={post.title}
                         description={post.excerpt ?? undefined}
-                        author={post.author?.name ?? 'Unknown'}
-                        datePublished={
-                            post.publishedAt ?? new Date().toISOString()
+                        author={
+                            post.author?.name ??
+                            seoConfig.organization?.name ??
+                            seoConfig.siteName
                         }
-                        dateModified={post.publishedAt ?? undefined}
+                        datePublished={
+                            post.publishedAt ??
+                            post.updatedAt ??
+                            new Date().toISOString()
+                        }
+                        dateModified={post.updatedAt ?? undefined}
                         image={post.featuredImage?.url}
                         mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
                         publisher={{
