@@ -50,13 +50,13 @@ async function createDynamicRoutes(): Promise<SitemapRoute[]> {
         },
     })
 
-    // Blog post detail pages
+    // Blog post detail pages (root-level URLs to match WordPress structure)
     dynamicRoutes.push({
-        path: '/blog/posts',
+        path: '/posts',
         getEntries: async () => {
             const posts = await getPublishedPostSlugs()
             return posts.map((post) => ({
-                url: `/blog/${post.slug}`,
+                url: `/${post.slug}`,
                 lastModified: post.updatedAt.toISOString(),
                 changeFrequency: 'weekly' as const,
                 priority: 0.7,

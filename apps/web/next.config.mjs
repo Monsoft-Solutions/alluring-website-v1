@@ -36,6 +36,12 @@ const nextConfig = {
                 destination: '/contact-us',
                 permanent: true, // 308 permanent redirect
             },
+            // Redirect old /blog/:slug URLs to root-level /:slug (WordPress URL structure)
+            {
+                source: '/blog/:slug',
+                destination: '/:slug',
+                permanent: true, // 301 permanent redirect for SEO
+            },
         ]
     },
 }

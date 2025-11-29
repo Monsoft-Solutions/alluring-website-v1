@@ -50,19 +50,20 @@ function slugify(text: string): string {
 
 /**
  * Generates a color based on the string hash (deterministic)
+ * Uses brand-aligned Stone + Gold palette
  */
 function generateColor(str: string): string {
     const colors = [
-        '#3B82F6', // Blue
-        '#10B981', // Green
-        '#F59E0B', // Amber
-        '#EF4444', // Red
-        '#8B5CF6', // Purple
-        '#EC4899', // Pink
-        '#14B8A6', // Teal
-        '#F97316', // Orange
-        '#6366F1', // Indigo
-        '#84CC16', // Lime
+        '#B8860B', // Gold (dark goldenrod)
+        '#D4AF37', // Gold (metallic)
+        '#78716C', // Stone-500
+        '#57534E', // Stone-600
+        '#44403C', // Stone-700
+        '#292524', // Stone-800
+        '#A8A29E', // Stone-400
+        '#C4A052', // Gold (muted)
+        '#1C1917', // Stone-900
+        '#E7E5E4', // Stone-200
     ]
     let hash = 0
     for (let i = 0; i < str.length; i++) {
@@ -73,12 +74,6 @@ function generateColor(str: string): string {
 
 export async function run({ db }: RunProps) {
     console.log('Seeding blog posts, categories, and tags...')
-
-    const authors = await db.select().from(author)
-    if (authors.length === 0) {
-        console.error('❌ No authors found. Please seed authors first.')
-        return
-    }
 
     const isDevelopment = env.NODE_ENV === 'development'
     const shouldClearData = isDevelopment
@@ -94,6 +89,31 @@ export async function run({ db }: RunProps) {
         await db.delete(blogCategory)
         await db.delete(blogTag)
         await db.delete(images)
+        // Delete authors after blog posts are deleted (due to FK constraint)
+        await db.delete(author)
+        console.log('🗑️  Cleared authors to refresh with new team author')
+
+        // Re-insert the team author
+        await db.insert(author).values({
+            name: 'Alluring Editorial Team',
+            email: 'editorial@alluringplasticsurgery.com',
+            bio: 'Expert insights from our team of board-certified surgeons and medical professionals at Alluring Plastic Surgery in Miami, FL.',
+            avatarUrl: '/logo.png',
+            website: 'https://alluringplasticsurgery.com',
+            socialLinks: {
+                instagram: 'https://instagram.com/alluringplasticsurgery',
+            },
+        })
+        console.log('✅ Inserted Alluring Editorial Team author')
+    }
+
+    // Re-fetch authors after potential cleanup
+    const freshAuthors = await db.select().from(author)
+    if (freshAuthors.length === 0) {
+        console.error(
+            '❌ No authors found after cleanup. Please check seed order.'
+        )
+        return
     }
 
     // Load blog post files from the posts directory
@@ -213,10 +233,10 @@ export async function run({ db }: RunProps) {
 
     // Only insert posts if table is empty or we're in development
     if (shouldClearData || existingPosts.length === 0) {
-        // Get a random author for posts
-        const randomAuthor = authors[Math.floor(Math.random() * authors.length)]
+        // Get the team author for posts
+        const teamAuthor = freshAuthors[0]
 
-        if (!randomAuthor) {
+        if (!teamAuthor) {
             console.error('❌ No author available for posts')
             return
         }
@@ -246,7 +266,7 @@ export async function run({ db }: RunProps) {
                 .insert(blogPost)
                 .values({
                     ...postData,
-                    authorId: randomAuthor.id,
+                    authorId: teamAuthor.id,
                     featuredImageId,
                 })
                 .returning()
