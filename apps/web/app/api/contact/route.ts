@@ -1,8 +1,11 @@
 /**
  * Contact Form API Handler
  *
- * Handles POST requests for contact form submissions with server-side validation.
- * Currently logs submissions to console; email integration to be added.
+ * Unified handler for all contact form submissions with server-side validation.
+ * Supports multiple form types via 'source' field:
+ * - contact-page: Full contact form (email required)
+ * - blog-lead: Minimal lead capture (phone required, no email)
+ * - general: Default behavior
  *
  * @module app/api/contact/route
  */
@@ -16,34 +19,30 @@ import {
 } from '@workspace/db/schema/contact'
 
 import {
+    CONTACT_SOURCES,
     type ContactFormData,
     type ContactFormResponse,
     contactFormSchema,
 } from '@/lib/types/forms/contact-form.type'
 import { sendContactEmails } from '@/lib/services/email.service'
+import { env } from '@/env'
 
 /**
  * Redacts sensitive fields from contact form data for safe logging
- *
- * @param data - Contact form data to redact
- * @returns Redacted data with sensitive fields masked
  */
 function redactPII(data: ContactFormData): Record<string, unknown> {
     return {
         name: '[REDACTED]',
-        email: '[REDACTED]',
+        email: data.email ? '[REDACTED]' : 'Not provided',
         phone: data.phone ? '[REDACTED]' : 'Not provided',
-        subject: data.subject,
-        message: '[REDACTED]',
+        subject: data.subject || 'Not provided',
+        message: data.message ? '[REDACTED]' : 'Not provided',
+        source: data.source || 'Not specified',
     }
 }
 
 /**
  * Formats contact form data for console logging
- *
- * @param data - Validated contact form data
- * @param redact - Whether to redact sensitive fields
- * @returns Formatted string for console output
  */
 function formatConsoleLog(
     data: ContactFormData | Record<string, unknown>,
@@ -54,20 +53,85 @@ function formatConsoleLog(
     return `
 === New Contact Form Submission ===
 Name: ${displayData.name}
-Email: ${displayData.email}
+Email: ${displayData.email || 'Not provided'}
 Phone: ${displayData.phone || 'Not provided'}
-Subject: ${displayData.subject}
-Message: ${displayData.message}
+Subject: ${displayData.subject || 'Not provided'}
+Message: ${displayData.message || 'Not provided'}
+Source: ${displayData.source || 'Not specified'}
 Submitted at: ${new Date().toISOString()}
 ===================================
     `.trim()
 }
 
 /**
+ * Validates data based on the form source
+ * Different forms have different required fields
+ */
+function validateBySource(data: ContactFormData): {
+    valid: boolean
+    error?: string
+} {
+    const source = data.source || CONTACT_SOURCES.GENERAL
+
+    switch (source) {
+        case CONTACT_SOURCES.CONTACT_PAGE:
+            // Contact page requires email
+            if (!data.email) {
+                return { valid: false, error: 'Email is required' }
+            }
+            break
+
+        case CONTACT_SOURCES.BLOG_LEAD:
+            // Blog lead requires phone
+            if (!data.phone) {
+                return { valid: false, error: 'Phone number is required' }
+            }
+            break
+
+        case CONTACT_SOURCES.FOOTER:
+        case CONTACT_SOURCES.GENERAL:
+        default:
+            // General form: at least email or phone must be provided
+            if (!data.email && !data.phone) {
+                return {
+                    valid: false,
+                    error: 'Please provide either an email or phone number',
+                }
+            }
+            break
+    }
+
+    return { valid: true }
+}
+
+/**
+ * Get appropriate success message based on source
+ */
+function getSuccessMessage(
+    source?: string,
+    confirmationSent?: boolean
+): string {
+    switch (source) {
+        case CONTACT_SOURCES.BLOG_LEAD:
+            return "Thank you! We'll call you within 24 hours."
+
+        case CONTACT_SOURCES.CONTACT_PAGE:
+            return confirmationSent
+                ? "Thank you for contacting us! We've sent you a confirmation email and will get back to you soon."
+                : "Thank you for contacting us! We'll get back to you soon."
+
+        default:
+            return "Thank you for contacting us! We'll get back to you soon."
+    }
+}
+
+/**
  * POST handler for contact form submissions
  *
- * Validates incoming form data, logs submission details, and prepares for email integration.
- * Implements comprehensive error handling for validation and server errors.
+ * Unified handler that supports multiple form types:
+ * - contact-page: Full contact form with email required
+ * - blog-lead: Minimal lead capture with phone required
+ * - footer/general: Flexible - email or phone required
  *
  * Security considerations:
  * - Zod schema validation sanitizes and validates all inputs
@@ -78,18 +142,6 @@ Submitted at: ${new Date().toISOString()}
  *
  * @param request - Next.js request object
  * @returns JSON response with success status and message
- *
- * @example
- * ```ts
- * // Success response
- * { success: true, message: "Thank you for contacting us! We'll get back to you soon." }
- *
- * // Validation error response
- * { success: false, message: "Validation failed", error: "Email is invalid" }
- *
- * // Server error response
- * { success: false, message: "Something went wrong. Please try again later.", error: "Error details" }
- * ```
  */
 export async function POST(
     request: NextRequest
@@ -112,15 +164,45 @@ export async function POST(
         const body = (await request.json()) as unknown
 
         // Validate request body against schema
-        // Zod automatically sanitizes and validates the data
         const validatedData = contactFormSchema.parse(body)
+
+        // Apply source-specific validation
+        const sourceValidation = validateBySource(validatedData)
+        if (!sourceValidation.valid) {
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Validation failed',
+                    error: sourceValidation.error,
+                },
+                { status: 400 }
+            )
+        }
+
+        // Prepare data for insertion
+        // For blog leads without email, use placeholder
+        const source = validatedData.source || CONTACT_SOURCES.GENERAL
+        const isBlogLead = source === CONTACT_SOURCES.BLOG_LEAD
+
+        // Email is required in DB - use placeholder for forms without email
+        const email =
+            validatedData.email ||
+            (isBlogLead
+                ? `lead-${Date.now()}@blog.capture`
+                : `contact-${Date.now()}@form.capture`)
 
         const insertData: InsertContactSubmission = {
             name: validatedData.name,
-            email: validatedData.email,
+            email,
             phone: validatedData.phone,
-            subject: validatedData.subject,
-            message: validatedData.message,
+            subject:
+                validatedData.subject ||
+                (isBlogLead ? 'Blog Lead Capture' : 'Contact Form'),
+            message:
+                validatedData.message ||
+                (isBlogLead
+                    ? `Lead capture from: ${source}. Callback requested.`
+                    : 'Contact form submission'),
         }
 
         // Persist submission
@@ -135,25 +217,40 @@ export async function POST(
 
         console.log(formatConsoleLog(validatedData, true))
 
-        // Send emails (notification to owner and confirmation to submitter)
-        const emailResult = await sendContactEmails(
-            validatedData,
-            submission.id
-        )
+        // Send emails based on form type
+        let emailResult = { confirmationSent: false, errors: [] as string[] }
 
-        // Log email results (don't fail the request if emails fail)
-        if (emailResult.errors.length > 0) {
-            console.error('Email sending errors:', emailResult.errors)
+        if (isBlogLead) {
+            // For blog leads, send notification email to owner only
+            try {
+                await sendContactEmails(
+                    {
+                        name: validatedData.name,
+                        email: env.RESEND_FROM_EMAIL,
+                        phone: validatedData.phone,
+                        subject: `Blog Lead: ${validatedData.name} - Callback Requested`,
+                        message: `New lead from blog:\n\nName: ${validatedData.name}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
+                    },
+                    submission.id
+                )
+            } catch (emailError) {
+                console.error(
+                    'Failed to send lead notification email:',
+                    emailError
+                )
+            }
+        } else if (validatedData.email) {
+            // For forms with email, send both notification and confirmation
+            emailResult = await sendContactEmails(validatedData, submission.id)
+
+            if (emailResult.errors.length > 0) {
+                console.error('Email sending errors:', emailResult.errors)
+            }
         }
 
-        // Determine success message based on email results
-        let message = "Thank you for contacting us! We'll get back to you soon."
-        if (emailResult.confirmationSent) {
-            message =
-                "Thank you for contacting us! We've sent you a confirmation email and will get back to you soon."
-        }
+        // Return success response with source-appropriate message
+        const message = getSuccessMessage(source, emailResult.confirmationSent)
 
-        // Return success response (even if emails failed)
         return NextResponse.json<ContactFormResponse>(
             {
                 success: true,

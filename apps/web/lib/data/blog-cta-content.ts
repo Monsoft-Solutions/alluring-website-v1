@@ -2,7 +2,7 @@
  * Blog CTA Content Configuration
  *
  * Predefined CTA content variants for blog posts.
- * Add new CTA variants here to use across different blog posts.
+ * Branded for Alluring Plastic Surgery with conversion-focused messaging.
  *
  * ## Usage in Blog Posts
  *
@@ -31,90 +31,131 @@
  * Your content after the CTA...
  * ```
  *
- * Available CTA IDs: default, consultation, keel-product, newsletter, contact
+ * Available CTA IDs: default, consultation, bbl, breast, body, facial
  */
 import type { BlogCTAContent } from '@/lib/types/blog/blog-cta.type'
 
 /**
- * Available CTA content variants
+ * Available CTA content variants - Branded for Alluring Plastic Surgery
  */
 export const blogCTAContents: readonly BlogCTAContent[] = [
     {
         id: 'default',
-        heading: 'Need Help Getting Started?',
+        heading: 'Considering Your Transformation?',
         description:
-            'Our team is here to help you implement these solutions for your business. Get in touch for a free consultation.',
-        colorScheme: 'blue',
+            'Our board-certified surgeons at Alluring Plastic Surgery combine artistry with precision to help you achieve your aesthetic goals. Schedule your free consultation today.',
+        colorScheme: 'gold',
+        phoneNumber: '+1 (786) 305-8649',
         primaryButton: {
-            text: 'Get Started',
+            text: 'Book Free Consultation',
             href: '/contact-us',
             iconName: 'arrow-right',
         },
     },
     {
         id: 'consultation',
-        heading: 'Ready to Take the Next Step?',
+        heading: 'Ready for Your Free Consultation?',
         description:
-            'Schedule a free consultation to discuss your specific needs and how we can help you achieve your goals.',
-        colorScheme: 'blue',
+            'Take the first step toward your transformation. Our Miami specialists will create a personalized plan tailored to your unique goals.',
+        colorScheme: 'gold',
+        phoneNumber: '+1 (786) 305-8649',
         primaryButton: {
+            text: 'Schedule Now',
+            href: '/contact-us',
+            iconName: 'arrow-right',
+        },
+        secondaryButton: {
+            text: 'Call Us',
+            href: 'tel:+17863058649',
+            variant: 'outline',
+        },
+    },
+    {
+        id: 'bbl',
+        heading: 'Transform Your Curves with BBL',
+        description:
+            "Miami's premier Brazilian Butt Lift specialists. Our signature technique combines liposuction with precise fat transfer for natural, stunning results.",
+        colorScheme: 'gold',
+        phoneNumber: '+1 (786) 305-8649',
+        primaryButton: {
+            text: 'Explore BBL Options',
+            href: '/procedures/bbl-miami',
+            iconName: 'arrow-right',
+        },
+        secondaryButton: {
             text: 'Book Consultation',
             href: '/contact-us',
-            iconName: 'message-circle',
-        },
-        secondaryButton: {
-            text: 'Learn More',
-            href: '/about',
             variant: 'outline',
         },
     },
     {
-        id: 'keel-product',
-        heading: 'Build Your Production Website Today',
+        id: 'breast',
+        heading: 'Enhance Your Confidence',
         description:
-            'Keel gives you everything you need to launch a professional website in hours, not weeks. Type-safe, production-ready, and fully customizable.',
-        colorScheme: 'blue',
+            'From augmentation to lift and reduction, our board-certified surgeons deliver natural-looking results that complement your body.',
+        colorScheme: 'gold',
+        phoneNumber: '+1 (786) 305-8649',
         primaryButton: {
-            text: 'Get Keel',
-            href: '/#features',
-            iconName: 'sparkles',
+            text: 'View Breast Procedures',
+            href: '/procedures/breast-augmentation-miami',
+            iconName: 'arrow-right',
         },
         secondaryButton: {
-            text: 'View Documentation',
-            href: '/blog',
+            text: 'Free Consultation',
+            href: '/contact-us',
             variant: 'outline',
         },
     },
     {
-        id: 'newsletter',
-        heading: 'Want More Tips Like This?',
+        id: 'body',
+        heading: 'Sculpt Your Dream Body',
         description:
-            'Subscribe to our newsletter for weekly insights, tutorials, and best practices delivered straight to your inbox.',
-        colorScheme: 'blue',
+            "Whether it's liposuction, tummy tuck, or mommy makeover — our Miami surgeons combine precision techniques with artistic vision.",
+        colorScheme: 'gold',
+        phoneNumber: '+1 (786) 305-8649',
         primaryButton: {
-            text: 'Subscribe Now',
+            text: 'Explore Body Contouring',
+            href: '/procedures/liposuction-miami',
+            iconName: 'arrow-right',
+        },
+        secondaryButton: {
+            text: 'Book Consultation',
             href: '/contact-us',
-            iconName: 'mail',
+            variant: 'outline',
         },
     },
     {
-        id: 'contact',
-        heading: 'Questions About Implementation?',
+        id: 'facial',
+        heading: 'Reveal Your Best Self',
         description:
-            'Our experts are ready to answer your questions and guide you through the implementation process.',
-        colorScheme: 'blue',
+            'Expert facial procedures including facelift, rhinoplasty, and blepharoplasty. Turn back the clock with natural-looking rejuvenation.',
+        colorScheme: 'gold',
+        phoneNumber: '+1 (786) 305-8649',
         primaryButton: {
-            text: 'Contact Us',
-            href: '/contact-us',
-            iconName: 'mail',
+            text: 'View Facial Procedures',
+            href: '/procedures/facelift-miami',
+            iconName: 'arrow-right',
         },
         secondaryButton: {
-            text: 'Learn More',
-            href: '/about',
+            text: 'Free Consultation',
+            href: '/contact-us',
             variant: 'outline',
         },
     },
 ] as const
+
+/**
+ * Footer CTA configuration for lead capture form
+ */
+export const footerCTAConfig = {
+    heading: 'Start Your Journey Today',
+    subheading: 'Get a Free Consultation at Alluring Plastic Surgery',
+    description:
+        "Leave your name and phone number. We'll call you within 24 hours to discuss your goals.",
+    submitButtonText: 'Request Callback',
+    trustBadge: '5,000+ Happy Patients • Board-Certified Surgeons',
+    phoneNumber: '+1 (786) 305-8649',
+}
 
 /**
  * Default CTA content to use when no ctaId or content is provided

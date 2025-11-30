@@ -2,10 +2,11 @@
  * Blog CTA Types
  *
  * Type definitions for the blog CTA system that supports
- * multiple content variants and extensible configurations.
+ * multiple content variants, extensible configurations,
+ * and lead capture forms.
  */
 
-export type CTAColorScheme = 'blue' | 'green' | 'orange' | 'default'
+export type CTAColorScheme = 'blue' | 'green' | 'orange' | 'gold' | 'default'
 
 export type BlogCTAContent = {
     /**
@@ -30,13 +31,18 @@ export type BlogCTAContent = {
     readonly colorScheme?: CTAColorScheme
 
     /**
+     * Phone number to display for immediate conversion
+     */
+    readonly phoneNumber?: string
+
+    /**
      * Primary call-to-action button
      */
     readonly primaryButton: {
         readonly text: string
         readonly href: string
         readonly iconName?: string
-        readonly variant?: 'cta-blue' | 'cta-green' | 'cta-orange'
+        readonly variant?: 'cta-blue' | 'cta-green' | 'cta-orange' | 'cta-gold'
     }
 
     /**
@@ -53,7 +59,7 @@ export type BlogCTAProps = {
     /**
      * Visual variant of the CTA
      * - inline: Accent box within content flow
-     * - footer: Large prominent section at end of post
+     * - footer: Lead capture form at end of post
      */
     readonly variant: 'inline' | 'footer'
 
@@ -75,3 +81,9 @@ export type BlogCTAProps = {
      */
     readonly colorScheme?: CTAColorScheme
 }
+
+/**
+ * NOTE: Lead capture submissions use the unified /api/contact endpoint
+ * with CONTACT_SOURCES.BLOG_LEAD as the source.
+ * See @/lib/types/forms/contact-form.type.ts for response types.
+ */
