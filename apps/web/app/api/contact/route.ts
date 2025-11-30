@@ -4,8 +4,12 @@
  * Unified handler for all contact form submissions with server-side validation.
  * Supports multiple form types via 'source' field:
  * - contact-page: Full contact form (email required)
+ * - contact-hero: Hero section form (email required)
  * - blog-lead: Minimal lead capture (phone required, no email)
- * - general: Default behavior
+ * - exit-intent: Exit intent popup (phone required)
+ * - lead-form: Home page lead form (phone required)
+ * - footer: Footer contact form (email or phone required)
+ * - general: Default behavior (email or phone required)
  *
  * @module app/api/contact/route
  */
@@ -75,14 +79,17 @@ function validateBySource(data: ContactFormData): {
 
     switch (source) {
         case CONTACT_SOURCES.CONTACT_PAGE:
-            // Contact page requires email
+        case CONTACT_SOURCES.CONTACT_HERO:
+            // Contact page and hero forms require email
             if (!data.email) {
                 return { valid: false, error: 'Email is required' }
             }
             break
 
         case CONTACT_SOURCES.BLOG_LEAD:
-            // Blog lead requires phone
+        case CONTACT_SOURCES.EXIT_INTENT:
+        case CONTACT_SOURCES.LEAD_FORM:
+            // Lead capture forms require phone
             if (!data.phone) {
                 return { valid: false, error: 'Phone number is required' }
             }
@@ -113,9 +120,12 @@ function getSuccessMessage(
 ): string {
     switch (source) {
         case CONTACT_SOURCES.BLOG_LEAD:
+        case CONTACT_SOURCES.EXIT_INTENT:
+        case CONTACT_SOURCES.LEAD_FORM:
             return "Thank you! We'll call you within 24 hours."
 
         case CONTACT_SOURCES.CONTACT_PAGE:
+        case CONTACT_SOURCES.CONTACT_HERO:
             return confirmationSent
                 ? "Thank you for contacting us! We've sent you a confirmation email and will get back to you soon."
                 : "Thank you for contacting us! We'll get back to you soon."
@@ -130,7 +140,10 @@ function getSuccessMessage(
  *
  * Unified handler that supports multiple form types:
  * - contact-page: Full contact form with email required
+ * - contact-hero: Hero section form with email required
  * - blog-lead: Minimal lead capture with phone required
+ * - exit-intent: Exit intent popup with phone required
+ * - lead-form: Home page lead form with phone required
  * - footer/general: Flexible - email or phone required
  *
  * Security considerations:
@@ -180,27 +193,45 @@ export async function POST(
         }
 
         // Prepare data for insertion
-        // For blog leads without email, use placeholder
         const source = validatedData.source || CONTACT_SOURCES.GENERAL
-        const isBlogLead = source === CONTACT_SOURCES.BLOG_LEAD
+
+        // Determine if this is a lead capture form (phone-first, no email required)
+        const isLeadCapture =
+            source === CONTACT_SOURCES.BLOG_LEAD ||
+            source === CONTACT_SOURCES.EXIT_INTENT ||
+            source === CONTACT_SOURCES.LEAD_FORM
 
         // Email is required in DB - use placeholder for forms without email
         const email =
             validatedData.email ||
-            (isBlogLead
-                ? `lead-${Date.now()}@blog.capture`
+            (isLeadCapture
+                ? `lead-${Date.now()}@${source}.capture`
                 : `contact-${Date.now()}@form.capture`)
+
+        // Generate default subject based on source
+        const getDefaultSubject = (): string => {
+            switch (source) {
+                case CONTACT_SOURCES.BLOG_LEAD:
+                    return 'Blog Lead Capture'
+                case CONTACT_SOURCES.EXIT_INTENT:
+                    return 'Exit Intent Lead'
+                case CONTACT_SOURCES.LEAD_FORM:
+                    return 'Lead Form Request'
+                case CONTACT_SOURCES.CONTACT_HERO:
+                    return 'Consultation Request'
+                default:
+                    return 'Contact Form'
+            }
+        }
 
         const insertData: InsertContactSubmission = {
             name: validatedData.name,
             email,
             phone: validatedData.phone,
-            subject:
-                validatedData.subject ||
-                (isBlogLead ? 'Blog Lead Capture' : 'Contact Form'),
+            subject: validatedData.subject || getDefaultSubject(),
             message:
                 validatedData.message ||
-                (isBlogLead
+                (isLeadCapture
                     ? `Lead capture from: ${source}. Callback requested.`
                     : 'Contact form submission'),
         }
@@ -220,16 +251,23 @@ export async function POST(
         // Send emails based on form type
         let emailResult = { confirmationSent: false, errors: [] as string[] }
 
-        if (isBlogLead) {
-            // For blog leads, send notification email to owner only
+        if (isLeadCapture) {
+            // For lead capture forms, send notification email to owner only
             try {
+                const sourceLabel =
+                    source === CONTACT_SOURCES.BLOG_LEAD
+                        ? 'Blog'
+                        : source === CONTACT_SOURCES.EXIT_INTENT
+                          ? 'Exit Intent Popup'
+                          : 'Lead Form'
+
                 await sendContactEmails(
                     {
                         name: validatedData.name,
                         email: env.RESEND_FROM_EMAIL,
                         phone: validatedData.phone,
-                        subject: `Blog Lead: ${validatedData.name} - Callback Requested`,
-                        message: `New lead from blog:\n\nName: ${validatedData.name}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
+                        subject: `${sourceLabel} Lead: ${validatedData.name} - Callback Requested`,
+                        message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${validatedData.name}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
                     },
                     submission.id
                 )

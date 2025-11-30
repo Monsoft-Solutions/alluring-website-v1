@@ -44,6 +44,7 @@ import { SectionContainer } from '@/components/shared/section-container.componen
 import { SectionHeader } from '@/components/shared/section-header.component'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import {
+    CONTACT_SOURCES,
     type ContactFormInput,
     type ContactFormResponse,
     contactFormSchema,
@@ -109,7 +110,10 @@ export function ContactForm({
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    ...data,
+                    source: CONTACT_SOURCES.CONTACT_PAGE,
+                }),
             })
 
             const result: ContactFormResponse = await response.json()

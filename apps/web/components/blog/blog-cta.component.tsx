@@ -45,7 +45,6 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import {
     defaultCTAContent,
@@ -59,24 +58,9 @@ import type {
 import {
     CONTACT_SOURCES,
     type ContactFormResponse,
+    type LeadCaptureInput,
+    leadCaptureSchema,
 } from '@/lib/types/forms/contact-form.type'
-
-/**
- * Lead capture form schema - minimal fields for conversion
- */
-const leadCaptureSchema = z.object({
-    name: z.string().trim().min(2, 'Please enter your name'),
-    phone: z
-        .string()
-        .trim()
-        .min(10, 'Please enter a valid phone number')
-        .regex(
-            /^[0-9()+\-\s.]*$/,
-            'Phone number can only include digits and common symbols'
-        ),
-})
-
-type LeadCaptureInput = z.infer<typeof leadCaptureSchema>
 
 /**
  * Map icon names to lucide-react components

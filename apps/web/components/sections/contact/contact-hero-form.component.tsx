@@ -32,6 +32,12 @@ import { Button } from '@workspace/ui/components/button'
 
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { siteConfig } from '@/lib/data/site-config'
+import {
+    CONTACT_SOURCES,
+    nameSchema,
+    requiredEmailSchema,
+    requiredPhoneSchema,
+} from '@/lib/types/forms/contact-form.type'
 
 /**
  * Procedure options for the dropdown
@@ -54,11 +60,12 @@ const PROCEDURE_OPTIONS = [
 
 /**
  * Contact hero form validation schema
+ * Uses shared validation schemas for robust email and phone validation
  */
 const contactHeroFormSchema = z.object({
-    name: z.string().trim().min(2, 'Name must be at least 2 characters.'),
-    email: z.string().trim().email('Please enter a valid email address.'),
-    phone: z.string().trim().min(10, 'Please enter a valid phone number.'),
+    name: nameSchema,
+    email: requiredEmailSchema,
+    phone: requiredPhoneSchema,
     procedure: z.string().optional(),
     message: z.string().trim().optional(),
 })
@@ -110,6 +117,7 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                     subject: data.procedure
                         ? `Consultation Request: ${PROCEDURE_OPTIONS.find((p) => p.value === data.procedure)?.label || data.procedure}`
                         : 'Consultation Request',
+                    source: CONTACT_SOURCES.CONTACT_HERO,
                 }),
             })
 
