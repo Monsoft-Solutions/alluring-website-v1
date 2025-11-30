@@ -351,6 +351,22 @@ export const contactFormSchema = z.object({
     preferredContactTime: preferredContactTimeSchema,
     consentGiven: z.boolean().optional(),
     source: z.string().optional(),
+
+    // UTM tracking fields (automatically populated by UTMTrackingProvider)
+    utmSource: z.string().optional(),
+    utmMedium: z.string().optional(),
+    utmCampaign: z.string().optional(),
+    utmContent: z.string().optional(),
+    utmTerm: z.string().optional(),
+
+    // Ad platform click IDs
+    gclid: z.string().optional(),
+    fbclid: z.string().optional(),
+    ttclid: z.string().optional(),
+
+    // Session context
+    referrer: z.string().optional(),
+    landingPage: z.string().optional(),
 })
 
 /**

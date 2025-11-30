@@ -13,6 +13,20 @@ export const contactSubmission = pgTable('contact_submission', {
     preferredContactTime: text('preferred_contact_time'),
     consentGiven: boolean('consent_given').default(false),
     source: text('source'),
+
+    // Analytics tracking fields
+    ipAddress: text('ip_address'),
+    utmSource: text('utm_source'),
+    utmMedium: text('utm_medium'),
+    utmCampaign: text('utm_campaign'),
+    utmContent: text('utm_content'),
+    utmTerm: text('utm_term'),
+    gclid: text('gclid'),
+    fbclid: text('fbclid'),
+    ttclid: text('ttclid'),
+    referrer: text('referrer'),
+    landingPage: text('landing_page'),
+
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
         .defaultNow()

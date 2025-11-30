@@ -11,6 +11,8 @@
  * - footer: Footer contact form (email or phone required)
  * - general: Default behavior (email or phone required)
  *
+ * Also captures UTM parameters and ad platform click IDs for attribution tracking.
+ *
  * @module app/api/contact/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
@@ -30,6 +32,30 @@ import {
 } from '@/lib/types/forms/contact-form.type'
 import { sendContactEmails } from '@/lib/services/email.service'
 import { env } from '@/env'
+
+/**
+ * Extract client IP address from request headers
+ * Handles various proxy configurations (Vercel, Cloudflare, nginx, etc.)
+ */
+function getClientIP(request: NextRequest): string | undefined {
+    // Vercel / common proxy headers
+    const xForwardedFor = request.headers.get('x-forwarded-for')
+    if (xForwardedFor) {
+        // x-forwarded-for may contain multiple IPs; first is the client
+        const firstIP = xForwardedFor.split(',')[0]?.trim()
+        if (firstIP) return firstIP
+    }
+
+    // Cloudflare
+    const cfConnectingIP = request.headers.get('cf-connecting-ip')
+    if (cfConnectingIP) return cfConnectingIP
+
+    // Standard proxy header
+    const xRealIP = request.headers.get('x-real-ip')
+    if (xRealIP) return xRealIP
+
+    return undefined
+}
 
 /**
  * Redacts sensitive fields from contact form data for safe logging
@@ -240,6 +266,9 @@ export async function POST(
                 ? `${validatedData.firstName} ${validatedData.lastName}`.trim()
                 : validatedData.name
 
+        // Extract client IP for analytics
+        const clientIP = getClientIP(request)
+
         const insertData: InsertContactSubmission = {
             name: fullName,
             firstName: validatedData.firstName,
@@ -256,6 +285,18 @@ export async function POST(
             preferredContactTime: validatedData.preferredContactTime,
             consentGiven: validatedData.consentGiven,
             source,
+            // Analytics tracking fields
+            ipAddress: clientIP,
+            utmSource: validatedData.utmSource,
+            utmMedium: validatedData.utmMedium,
+            utmCampaign: validatedData.utmCampaign,
+            utmContent: validatedData.utmContent,
+            utmTerm: validatedData.utmTerm,
+            gclid: validatedData.gclid,
+            fbclid: validatedData.fbclid,
+            ttclid: validatedData.ttclid,
+            referrer: validatedData.referrer,
+            landingPage: validatedData.landingPage,
         }
 
         // Persist submission

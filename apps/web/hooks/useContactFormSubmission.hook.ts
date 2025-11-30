@@ -4,13 +4,14 @@
  * Contact Form Submission Hook
  *
  * Unified hook for handling contact form submissions across the application.
- * Encapsulates API interaction, state management, and optional analytics tracking.
+ * Encapsulates API interaction, state management, UTM tracking, and optional analytics.
  *
  * @module hooks/useContactFormSubmission
  */
 import { useCallback, useState } from 'react'
 
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import { useUTMTracking } from '@/lib/analytics/utm-tracking.context'
 import {
     type ContactFormResponse,
     type ContactSource,
@@ -105,6 +106,7 @@ export function useContactFormSubmission(
 
     const [state, setState] = useState<SubmissionState>(INITIAL_STATE)
     const { track, trackFormSubmit } = useAnalyticsEvent()
+    const { utmData } = useUTMTracking()
 
     const formName = analyticsFormName ?? source
 
@@ -135,6 +137,8 @@ export function useContactFormSubmission(
                     body: JSON.stringify({
                         ...data,
                         source,
+                        // Include UTM tracking data for attribution
+                        ...(utmData ?? {}),
                     }),
                 })
 
@@ -207,6 +211,7 @@ export function useContactFormSubmission(
             trackFormSubmit,
             onSuccess,
             onError,
+            utmData,
         ]
     )
 
