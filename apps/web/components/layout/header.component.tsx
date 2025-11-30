@@ -229,6 +229,15 @@ export const Header = () => {
                             Financing
                             <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                         </Link>
+
+                        {/* Blog Link */}
+                        <Link
+                            href='/blog'
+                            className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                        >
+                            Blog
+                            <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                        </Link>
                     </nav>
 
                     {/* CTA Right */}
@@ -536,6 +545,26 @@ export const Header = () => {
                                             </span>
                                         </Link>
                                     </motion.div>
+
+                                    {/* Blog Link */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.3 }}
+                                        className='w-full'
+                                    >
+                                        <Link
+                                            href='/blog'
+                                            onClick={() =>
+                                                setIsMobileMenuOpen(false)
+                                            }
+                                            className='group flex w-full items-center py-4 text-left'
+                                        >
+                                            <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
+                                                Blog
+                                            </span>
+                                        </Link>
+                                    </motion.div>
                                 </div>
                             </div>
 
@@ -543,7 +572,7 @@ export const Header = () => {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
+                                transition={{ delay: 0.35 }}
                                 className='mt-auto border-t border-stone-100 pt-6'
                             >
                                 <div className='flex flex-col gap-4'>
