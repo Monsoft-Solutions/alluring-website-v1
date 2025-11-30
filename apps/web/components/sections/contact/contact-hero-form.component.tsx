@@ -13,24 +13,23 @@
  */
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Form } from '@workspace/ui/components/form'
+import { motion } from 'framer-motion'
+import { Award, CheckCircle2, Clock, ShieldCheck } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-    Loader2,
-    Send,
-    ShieldCheck,
-    Award,
-    Clock,
-    Sparkles,
-    CheckCircle2,
-    AlertCircle,
-} from 'lucide-react'
-import { Button } from '@workspace/ui/components/button'
 
-import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import {
+    EmailField,
+    FormFeedback,
+    MessageField,
+    NameField,
+    PhoneField,
+    SelectField,
+    SubmitButton,
+} from '@/components/shared/forms'
+import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     CONTACT_SOURCES,
@@ -72,23 +71,11 @@ const contactHeroFormSchema = z.object({
 
 type ContactHeroFormInput = z.infer<typeof contactHeroFormSchema>
 
-type SubmissionState = {
-    status: 'idle' | 'success' | 'error'
-    message: string
-}
-
 export type ContactHeroFormProps = {
     readonly id?: string
 }
 
 export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
-    const [submissionState, setSubmissionState] = useState<SubmissionState>({
-        status: 'idle',
-        message: '',
-    })
-
-    const { trackFormSubmit, track } = useAnalyticsEvent()
-
     const form = useForm<ContactHeroFormInput>({
         resolver: zodResolver(contactHeroFormSchema),
         defaultValues: {
@@ -100,66 +87,25 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
         },
     })
 
+    const { submit, state, isSubmitting, isSuccess, isError } =
+        useContactFormSubmission({
+            source: CONTACT_SOURCES.CONTACT_HERO,
+            enableAnalytics: true,
+            analyticsFormName: 'contact_hero_form',
+            onSuccess: () => form.reset(),
+        })
+
     const onSubmit = async (data: ContactHeroFormInput) => {
-        try {
-            setSubmissionState({ status: 'idle', message: '' })
-
-            track('form_start', {
-                form_name: 'contact_hero_form',
-                procedure: data.procedure || 'not_specified',
-            })
-
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...data,
-                    subject: data.procedure
-                        ? `Consultation Request: ${PROCEDURE_OPTIONS.find((p) => p.value === data.procedure)?.label || data.procedure}`
-                        : 'Consultation Request',
-                    source: CONTACT_SOURCES.CONTACT_HERO,
-                }),
-            })
-
-            const result = await response.json()
-
-            if (response.ok && result.success) {
-                setSubmissionState({
-                    status: 'success',
-                    message:
-                        'Thank you! Our concierge will contact you within 24 hours to schedule your consultation.',
-                })
-                trackFormSubmit('contact_hero_form', {
-                    status: 'success',
-                    procedure: data.procedure || 'not_specified',
-                })
-                form.reset()
-            } else {
-                setSubmissionState({
-                    status: 'error',
-                    message:
-                        result.error ||
-                        'Something went wrong. Please try again.',
-                })
-                track('form_error', {
-                    form_name: 'contact_hero_form',
-                    error_type: 'api_error',
-                })
-            }
-        } catch {
-            setSubmissionState({
-                status: 'error',
-                message:
-                    'Network error. Please check your connection and try again.',
-            })
-            track('form_error', {
-                form_name: 'contact_hero_form',
-                error_type: 'network_error',
-            })
-        }
+        const procedureLabel = PROCEDURE_OPTIONS.find(
+            (p) => p.value === data.procedure
+        )?.label
+        await submit({
+            ...data,
+            subject: data.procedure
+                ? `Consultation Request: ${procedureLabel || data.procedure}`
+                : 'Consultation Request',
+        })
     }
-
-    const isSubmitting = form.formState.isSubmitting
 
     return (
         <section
@@ -169,7 +115,7 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
             {/* Background Layers */}
             <div className='pointer-events-none absolute inset-0'>
                 {/* Gradient Overlay */}
-                <div className='absolute inset-0 bg-gradient-to-br from-stone-900 via-stone-800 to-stone-900' />
+                <div className='absolute inset-0 bg-linear-to-br from-stone-900 via-stone-800 to-stone-900' />
 
                 {/* Decorative Blurs */}
                 <div className='bg-gold-600/10 absolute -top-[20%] -right-[15%] h-[800px] w-[800px] rounded-full blur-3xl' />
@@ -207,9 +153,9 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
 
                         <p className='mx-auto mb-10 max-w-xl text-xl leading-relaxed font-light text-stone-300 lg:mx-0'>
                             Schedule your private consultation with our
-                            board-certified surgeons. We'll discuss your goals,
-                            answer every question, and create a personalized
-                            plan for your aesthetic journey.
+                            board-certified surgeons. We&apos;ll discuss your
+                            goals, answer every question, and create a
+                            personalized plan for your aesthetic journey.
                         </p>
 
                         {/* Trust Indicators */}
@@ -258,196 +204,116 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                                 </p>
                             </div>
 
-                            <form
-                                onSubmit={form.handleSubmit(onSubmit)}
-                                className='space-y-6'
-                            >
-                                {/* Name & Email Row */}
-                                <div className='grid gap-6 md:grid-cols-2'>
-                                    <div className='group space-y-2'>
-                                        <label
-                                            htmlFor='name'
-                                            className='text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
-                                        >
-                                            Full Name *
-                                        </label>
-                                        <input
-                                            id='name'
-                                            type='text'
-                                            {...form.register('name')}
-                                            disabled={isSubmitting}
-                                            className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
-                                            placeholder='Your name'
-                                        />
-                                        {form.formState.errors.name && (
-                                            <p className='text-xs text-red-400'>
-                                                {
-                                                    form.formState.errors.name
-                                                        .message
-                                                }
-                                            </p>
-                                        )}
+                            {isSuccess ? (
+                                <div className='rounded-xl border border-green-500/30 bg-green-500/10 p-8 text-center'>
+                                    <div className='mb-4 flex justify-center'>
+                                        <div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20'>
+                                            <CheckCircle2 className='h-8 w-8 text-green-400' />
+                                        </div>
                                     </div>
+                                    <h3 className='mb-2 text-xl font-semibold text-white'>
+                                        Thank You!
+                                    </h3>
+                                    <p className='text-stone-300'>
+                                        {state.message}
+                                    </p>
+                                </div>
+                            ) : (
+                                <Form {...form}>
+                                    <form
+                                        onSubmit={form.handleSubmit(onSubmit)}
+                                        className='space-y-6'
+                                    >
+                                        {/* Name & Email Row */}
+                                        <div className='grid gap-6 md:grid-cols-2'>
+                                            <NameField
+                                                control={form.control}
+                                                name='name'
+                                                label='Full Name'
+                                                placeholder='Your name'
+                                                disabled={isSubmitting}
+                                                variant='dark'
+                                                required
+                                            />
+                                            <EmailField
+                                                control={form.control}
+                                                name='email'
+                                                label='Email'
+                                                placeholder='your@email.com'
+                                                disabled={isSubmitting}
+                                                variant='dark'
+                                                required
+                                            />
+                                        </div>
 
-                                    <div className='group space-y-2'>
-                                        <label
-                                            htmlFor='email'
-                                            className='text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
-                                        >
-                                            Email *
-                                        </label>
-                                        <input
-                                            id='email'
-                                            type='email'
-                                            {...form.register('email')}
+                                        {/* Phone */}
+                                        <PhoneField
+                                            control={form.control}
+                                            name='phone'
+                                            label='Phone Number'
+                                            placeholder='(555) 555-5555'
                                             disabled={isSubmitting}
-                                            className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
-                                            placeholder='your@email.com'
+                                            variant='dark'
+                                            required
                                         />
-                                        {form.formState.errors.email && (
-                                            <p className='text-xs text-red-400'>
-                                                {
-                                                    form.formState.errors.email
-                                                        .message
-                                                }
-                                            </p>
+
+                                        {/* Procedure Selector */}
+                                        <SelectField
+                                            control={form.control}
+                                            name='procedure'
+                                            label='Procedure of Interest'
+                                            disabled={isSubmitting}
+                                            variant='dark'
+                                            options={PROCEDURE_OPTIONS}
+                                        />
+
+                                        {/* Message */}
+                                        <MessageField
+                                            control={form.control}
+                                            name='message'
+                                            label='Tell Us About Your Goals'
+                                            placeholder="Share any details about what you're hoping to achieve..."
+                                            disabled={isSubmitting}
+                                            variant='dark'
+                                            required={false}
+                                            rows={3}
+                                        />
+
+                                        {/* Error feedback */}
+                                        {isError && (
+                                            <FormFeedback
+                                                status='error'
+                                                message={state.message}
+                                                variant='dark'
+                                            />
                                         )}
-                                    </div>
-                                </div>
 
-                                {/* Phone */}
-                                <div className='group space-y-2'>
-                                    <label
-                                        htmlFor='phone'
-                                        className='text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
-                                    >
-                                        Phone Number *
-                                    </label>
-                                    <input
-                                        id='phone'
-                                        type='tel'
-                                        {...form.register('phone')}
-                                        disabled={isSubmitting}
-                                        className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
-                                        placeholder='(555) 555-5555'
-                                    />
-                                    {form.formState.errors.phone && (
-                                        <p className='text-xs text-red-400'>
-                                            {
-                                                form.formState.errors.phone
-                                                    .message
-                                            }
-                                        </p>
-                                    )}
-                                </div>
-
-                                {/* Procedure Selector */}
-                                <div className='group space-y-2'>
-                                    <label
-                                        htmlFor='procedure'
-                                        className='text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
-                                    >
-                                        Procedure of Interest
-                                    </label>
-                                    <select
-                                        id='procedure'
-                                        {...form.register('procedure')}
-                                        disabled={isSubmitting}
-                                        className='focus:border-gold-400 w-full border-b border-stone-700 bg-transparent py-3 text-white transition-colors focus:outline-none'
-                                    >
-                                        {PROCEDURE_OPTIONS.map((option) => (
-                                            <option
-                                                key={option.value}
-                                                value={option.value}
-                                                className='bg-stone-900 text-white'
+                                        {/* Submit Button */}
+                                        <div className='pt-4'>
+                                            <SubmitButton
+                                                isSubmitting={isSubmitting}
+                                                size='lg'
+                                                variant='gold'
+                                                fullWidth
+                                                showSendIcon
+                                                showSparkles
                                             >
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Message */}
-                                <div className='group space-y-2'>
-                                    <label
-                                        htmlFor='message'
-                                        className='text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
-                                    >
-                                        Tell Us About Your Goals{' '}
-                                        <span className='font-normal text-stone-500'>
-                                            (Optional)
-                                        </span>
-                                    </label>
-                                    <textarea
-                                        id='message'
-                                        {...form.register('message')}
-                                        disabled={isSubmitting}
-                                        rows={3}
-                                        className='focus:border-gold-400 w-full resize-none border-b border-stone-700 bg-transparent py-3 text-white placeholder-stone-600 transition-colors focus:outline-none'
-                                        placeholder="Share any details about what you're hoping to achieve..."
-                                    />
-                                </div>
-
-                                {/* Submission State Messages */}
-                                {submissionState.status === 'success' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className='flex items-start gap-3 border border-green-500/30 bg-green-500/10 p-4'
-                                    >
-                                        <CheckCircle2 className='mt-0.5 h-5 w-5 flex-shrink-0 text-green-400' />
-                                        <p className='text-sm text-green-300'>
-                                            {submissionState.message}
-                                        </p>
-                                    </motion.div>
-                                )}
-
-                                {submissionState.status === 'error' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className='flex items-start gap-3 border border-red-500/30 bg-red-500/10 p-4'
-                                    >
-                                        <AlertCircle className='mt-0.5 h-5 w-5 flex-shrink-0 text-red-400' />
-                                        <p className='text-sm text-red-300'>
-                                            {submissionState.message}
-                                        </p>
-                                    </motion.div>
-                                )}
-
-                                {/* Submit Button */}
-                                <div className='pt-4'>
-                                    <Button
-                                        type='submit'
-                                        size='lg'
-                                        variant='gold'
-                                        disabled={isSubmitting}
-                                        className='group w-full'
-                                    >
-                                        {isSubmitting ? (
-                                            <>
-                                                <Loader2 className='mr-2 h-5 w-5 animate-spin' />
-                                                Sending...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Send className='mr-2 h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5' />
                                                 Request My Consultation
-                                                <Sparkles className='ml-2 h-4 w-4 opacity-60' />
-                                            </>
-                                        )}
-                                    </Button>
-                                </div>
+                                            </SubmitButton>
+                                        </div>
 
-                                {/* Privacy Note */}
-                                <p className='text-center text-xs text-stone-500'>
-                                    Your information is private and secure.
-                                    <br />
-                                    By submitting, you agree to receive
-                                    communication from{' '}
-                                    {siteConfig.business.name}.
-                                </p>
-                            </form>
+                                        {/* Privacy Note */}
+                                        <p className='text-center text-xs text-stone-500'>
+                                            Your information is private and
+                                            secure.
+                                            <br />
+                                            By submitting, you agree to receive
+                                            communication from{' '}
+                                            {siteConfig.business.name}.
+                                        </p>
+                                    </form>
+                                </Form>
+                            )}
                         </div>
                     </motion.div>
                 </div>

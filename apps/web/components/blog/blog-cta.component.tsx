@@ -22,20 +22,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@workspace/ui/components/button'
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
-} from '@workspace/ui/components/form'
-import { Input } from '@workspace/ui/components/input'
+import { Form } from '@workspace/ui/components/form'
 import { cn } from '@workspace/ui/lib/utils'
 import {
-    AlertCircle,
     ArrowRight,
     CheckCircle2,
-    Loader2,
     Mail,
     MessageCircle,
     Phone,
@@ -43,9 +34,15 @@ import {
     Star,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import {
+    FormFeedback,
+    NameField,
+    PhoneField,
+    SubmitButton,
+} from '@/components/shared/forms'
+import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import {
     defaultCTAContent,
     footerCTAConfig,
@@ -57,7 +54,6 @@ import type {
 } from '@/lib/types/blog/blog-cta.type'
 import {
     CONTACT_SOURCES,
-    type ContactFormResponse,
     type LeadCaptureInput,
     leadCaptureSchema,
 } from '@/lib/types/forms/contact-form.type'
@@ -158,15 +154,6 @@ export function BlogCTA({
     ctaId,
     colorScheme: propColorScheme,
 }: BlogCTAProps) {
-    // Form state for footer variant
-    const [submissionState, setSubmissionState] = useState<{
-        status: 'idle' | 'success' | 'error'
-        message: string
-    }>({
-        status: 'idle',
-        message: '',
-    })
-
     const form = useForm<LeadCaptureInput>({
         resolver: zodResolver(leadCaptureSchema),
         defaultValues: {
@@ -174,6 +161,12 @@ export function BlogCTA({
             phone: '',
         },
     })
+
+    const { submit, state, isSubmitting, isSuccess, isError } =
+        useContactFormSubmission({
+            source: CONTACT_SOURCES.BLOG_LEAD,
+            onSuccess: () => form.reset(),
+        })
 
     // Determine which content to use (priority: content prop > ctaId > default)
     const ctaContent =
@@ -194,53 +187,9 @@ export function BlogCTA({
     const primaryIcon = getIcon(ctaContent.primaryButton.iconName)
     const textColors = getTextColorClasses(colorScheme)
 
-    /**
-     * Handle lead capture form submission
-     * Uses unified /api/contact endpoint with blog-lead source
-     */
     const onSubmit = async (data: LeadCaptureInput) => {
-        try {
-            setSubmissionState({ status: 'idle', message: '' })
-
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ...data,
-                    source: CONTACT_SOURCES.BLOG_LEAD,
-                }),
-            })
-
-            const result: ContactFormResponse = await response.json()
-
-            if (response.ok && result.success) {
-                setSubmissionState({
-                    status: 'success',
-                    message:
-                        result.message ||
-                        "Thank you! We'll call you within 24 hours.",
-                })
-                form.reset()
-            } else {
-                setSubmissionState({
-                    status: 'error',
-                    message:
-                        result.error ||
-                        'Something went wrong. Please try again.',
-                })
-            }
-        } catch (error) {
-            console.error('Lead capture submission error:', error)
-            setSubmissionState({
-                status: 'error',
-                message: 'Network error. Please check your connection.',
-            })
-        }
+        await submit(data)
     }
-
-    const isSubmitting = form.formState.isSubmitting
 
     // Inline variant - branded CTA box with phone number
     if (variant === 'inline') {
@@ -348,7 +297,7 @@ export function BlogCTA({
         <section
             className={cn(
                 'relative mt-20 overflow-hidden rounded-2xl border',
-                'bg-gradient-to-br from-stone-900 via-stone-900 to-stone-800',
+                'bg-linear-to-br from-stone-900 via-stone-900 to-stone-800',
                 'border-gold-500/30'
             )}
         >
@@ -375,7 +324,7 @@ export function BlogCTA({
                     </div>
 
                     {/* Success state */}
-                    {submissionState.status === 'success' ? (
+                    {isSuccess ? (
                         <div className='rounded-xl border border-green-500/30 bg-green-500/10 p-8 text-center'>
                             <div className='mb-4 flex justify-center'>
                                 <div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20'>
@@ -385,9 +334,7 @@ export function BlogCTA({
                             <h3 className='mb-2 text-xl font-semibold text-white'>
                                 Thank You!
                             </h3>
-                            <p className='text-stone-300'>
-                                {submissionState.message}
-                            </p>
+                            <p className='text-stone-300'>{state.message}</p>
                         </div>
                     ) : (
                         /* Lead capture form */
@@ -398,73 +345,46 @@ export function BlogCTA({
                             >
                                 {/* Form fields */}
                                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                                    <FormField
+                                    <NameField
                                         control={form.control}
                                         name='name'
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder='Your Name'
-                                                        {...field}
-                                                        disabled={isSubmitting}
-                                                        className='focus:border-gold-500/50 focus:ring-gold-500/20 h-14 border-stone-700 bg-white/5 text-white placeholder:text-stone-500'
-                                                    />
-                                                </FormControl>
-                                                <FormMessage className='text-red-400' />
-                                            </FormItem>
-                                        )}
+                                        label='Your Name'
+                                        placeholder='Your Name'
+                                        disabled={isSubmitting}
+                                        variant='dark'
+                                        required={false}
                                     />
-                                    <FormField
+                                    <PhoneField
                                         control={form.control}
                                         name='phone'
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Input
-                                                        type='tel'
-                                                        placeholder='Phone Number'
-                                                        {...field}
-                                                        disabled={isSubmitting}
-                                                        className='focus:border-gold-500/50 focus:ring-gold-500/20 h-14 border-stone-700 bg-white/5 text-white placeholder:text-stone-500'
-                                                    />
-                                                </FormControl>
-                                                <FormMessage className='text-red-400' />
-                                            </FormItem>
-                                        )}
+                                        label='Phone Number'
+                                        placeholder='Phone Number'
+                                        disabled={isSubmitting}
+                                        variant='dark'
+                                        required
                                     />
                                 </div>
 
                                 {/* Error message */}
-                                {submissionState.status === 'error' && (
-                                    <div className='flex items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-400'>
-                                        <AlertCircle className='h-5 w-5 flex-shrink-0' />
-                                        <p className='text-sm'>
-                                            {submissionState.message}
-                                        </p>
-                                    </div>
+                                {isError && (
+                                    <FormFeedback
+                                        status='error'
+                                        message={state.message}
+                                        variant='dark'
+                                    />
                                 )}
 
                                 {/* Submit button */}
-                                <Button
-                                    type='submit'
+                                <SubmitButton
+                                    isSubmitting={isSubmitting}
                                     size='lg'
                                     variant='gold'
-                                    disabled={isSubmitting}
-                                    className='h-14 w-full text-base font-semibold shadow-lg transition-all hover:shadow-xl'
+                                    fullWidth
+                                    className='h-14 text-base font-semibold shadow-lg transition-all hover:shadow-xl'
                                 >
-                                    {isSubmitting ? (
-                                        <>
-                                            <Loader2 className='mr-2 h-5 w-5 animate-spin' />
-                                            Sending...
-                                        </>
-                                    ) : (
-                                        <>
-                                            {footerCTAConfig.submitButtonText}
-                                            <ArrowRight className='ml-2 h-5 w-5' />
-                                        </>
-                                    )}
-                                </Button>
+                                    {footerCTAConfig.submitButtonText}
+                                    <ArrowRight className='ml-2 h-5 w-5' />
+                                </SubmitButton>
 
                                 {/* Trust badge */}
                                 <div className='flex items-center justify-center gap-2 text-sm text-stone-400'>
