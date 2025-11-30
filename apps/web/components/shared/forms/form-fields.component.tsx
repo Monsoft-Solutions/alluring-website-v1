@@ -49,13 +49,22 @@ type BaseFieldProps<TFieldValues extends FieldValues> = {
 
 /**
  * Get input styles based on variant
+ * Includes autofill-resistant styling for dark theme
  */
 function getInputStyles(variant: FormFieldVariant) {
     if (variant === 'dark') {
         return cn(
             'w-full border-b border-stone-700 bg-transparent py-3 text-white',
             'placeholder-stone-600 transition-colors focus:outline-none',
-            'focus:border-gold-400'
+            'focus:border-gold-400',
+            // Autofill-resistant styling for dark theme
+            'autofill:bg-transparent autofill:text-white',
+            'autofill:shadow-[inset_0_0_0px_1000px_transparent]',
+            '[-webkit-text-fill-color:white]',
+            '[&:-webkit-autofill]:[-webkit-box-shadow:0_0_0px_1000px_rgb(28_25_23)_inset]',
+            '[&:-webkit-autofill]:[-webkit-text-fill-color:white]',
+            '[&:-webkit-autofill:hover]:[-webkit-box-shadow:0_0_0px_1000px_rgb(28_25_23)_inset]',
+            '[&:-webkit-autofill:focus]:[-webkit-box-shadow:0_0_0px_1000px_rgb(28_25_23)_inset]'
         )
     }
 
@@ -583,6 +592,252 @@ export function SelectField<TFieldValues extends FieldValues>({
                             ))}
                         </select>
                     </FormControl>
+                    <FormMessage className='text-xs' />
+                </FormItem>
+            )}
+        />
+    )
+}
+
+/**
+ * FirstNameField - Pre-configured first name input field
+ */
+export function FirstNameField<TFieldValues extends FieldValues>({
+    control,
+    name,
+    label = 'First Name',
+    placeholder = 'First name',
+    disabled = false,
+    variant = 'light',
+    required = true,
+    className,
+}: BaseFieldProps<TFieldValues>) {
+    const inputStyles = getInputStyles(variant)
+    const labelStyles = getLabelStyles(variant, required)
+
+    if (variant === 'dark') {
+        return (
+            <FormField
+                control={control}
+                name={name}
+                render={({ field }) => (
+                    <FormItem className={cn('group space-y-2', className)}>
+                        <FormLabel className={labelStyles}>
+                            {label}
+                            {required && ' *'}
+                        </FormLabel>
+                        <FormControl>
+                            <input
+                                type='text'
+                                {...field}
+                                disabled={disabled}
+                                placeholder={placeholder}
+                                className={inputStyles}
+                            />
+                        </FormControl>
+                        <FormMessage className='text-xs text-red-400' />
+                    </FormItem>
+                )}
+            />
+        )
+    }
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className={cn('space-y-3', className)}>
+                    <FormLabel className={labelStyles}>
+                        {label}
+                        {required && (
+                            <span className='text-destructive ml-1 text-xs'>
+                                *
+                            </span>
+                        )}
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            {...field}
+                            disabled={disabled}
+                            placeholder={placeholder}
+                            aria-label={label}
+                            className={inputStyles}
+                        />
+                    </FormControl>
+                    <FormMessage className='text-xs' />
+                </FormItem>
+            )}
+        />
+    )
+}
+
+/**
+ * LastNameField - Pre-configured last name input field
+ */
+export function LastNameField<TFieldValues extends FieldValues>({
+    control,
+    name,
+    label = 'Last Name',
+    placeholder = 'Last name',
+    disabled = false,
+    variant = 'light',
+    required = true,
+    className,
+}: BaseFieldProps<TFieldValues>) {
+    const inputStyles = getInputStyles(variant)
+    const labelStyles = getLabelStyles(variant, required)
+
+    if (variant === 'dark') {
+        return (
+            <FormField
+                control={control}
+                name={name}
+                render={({ field }) => (
+                    <FormItem className={cn('group space-y-2', className)}>
+                        <FormLabel className={labelStyles}>
+                            {label}
+                            {required && ' *'}
+                        </FormLabel>
+                        <FormControl>
+                            <input
+                                type='text'
+                                {...field}
+                                disabled={disabled}
+                                placeholder={placeholder}
+                                className={inputStyles}
+                            />
+                        </FormControl>
+                        <FormMessage className='text-xs text-red-400' />
+                    </FormItem>
+                )}
+            />
+        )
+    }
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className={cn('space-y-3', className)}>
+                    <FormLabel className={labelStyles}>
+                        {label}
+                        {required && (
+                            <span className='text-destructive ml-1 text-xs'>
+                                *
+                            </span>
+                        )}
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            {...field}
+                            disabled={disabled}
+                            placeholder={placeholder}
+                            aria-label={label}
+                            className={inputStyles}
+                        />
+                    </FormControl>
+                    <FormMessage className='text-xs' />
+                </FormItem>
+            )}
+        />
+    )
+}
+
+/**
+ * Props for CheckboxField
+ */
+type CheckboxFieldProps<TFieldValues extends FieldValues> = Omit<
+    BaseFieldProps<TFieldValues>,
+    'placeholder'
+> & {
+    /** Content to render as the checkbox label (can include links) */
+    readonly children: React.ReactNode
+}
+
+/**
+ * CheckboxField - Pre-configured checkbox field for consent/agreement
+ */
+export function CheckboxField<TFieldValues extends FieldValues>({
+    control,
+    name,
+    label,
+    disabled = false,
+    variant = 'light',
+    required = false,
+    className,
+    children,
+}: CheckboxFieldProps<TFieldValues>) {
+    if (variant === 'dark') {
+        return (
+            <FormField
+                control={control}
+                name={name}
+                render={({ field }) => (
+                    <FormItem className={cn('group space-y-2', className)}>
+                        <div className='flex items-start gap-3'>
+                            <FormControl>
+                                <input
+                                    type='checkbox'
+                                    checked={field.value as boolean}
+                                    onChange={field.onChange}
+                                    disabled={disabled}
+                                    className={cn(
+                                        'mt-1 h-4 w-4 shrink-0 cursor-pointer rounded border-stone-600',
+                                        'text-gold-500 focus:ring-gold-400 bg-transparent focus:ring-offset-stone-900',
+                                        'checked:bg-gold-500 checked:border-gold-500'
+                                    )}
+                                />
+                            </FormControl>
+                            <label
+                                htmlFor={name}
+                                className='cursor-pointer text-sm leading-relaxed text-stone-400'
+                            >
+                                {children}
+                                {required && (
+                                    <span className='text-gold-400 ml-1'>
+                                        *
+                                    </span>
+                                )}
+                            </label>
+                        </div>
+                        <FormMessage className='text-xs text-red-400' />
+                    </FormItem>
+                )}
+            />
+        )
+    }
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className={cn('space-y-2', className)}>
+                    <div className='flex items-start gap-3'>
+                        <FormControl>
+                            <input
+                                type='checkbox'
+                                checked={field.value as boolean}
+                                onChange={field.onChange}
+                                disabled={disabled}
+                                className={cn(
+                                    'border-border mt-1 h-4 w-4 shrink-0 cursor-pointer rounded',
+                                    'bg-background text-primary focus:ring-primary focus:ring-offset-background'
+                                )}
+                            />
+                        </FormControl>
+                        <label
+                            htmlFor={name}
+                            className='text-muted-foreground cursor-pointer text-sm leading-relaxed'
+                        >
+                            {children}
+                            {required && (
+                                <span className='text-destructive ml-1'>*</span>
+                            )}
+                        </label>
+                    </div>
                     <FormMessage className='text-xs' />
                 </FormItem>
             )}

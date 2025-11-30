@@ -37,10 +37,15 @@ import { env } from '@/env'
 function redactPII(data: ContactFormData): Record<string, unknown> {
     return {
         name: '[REDACTED]',
+        firstName: data.firstName ? '[REDACTED]' : 'Not provided',
+        lastName: data.lastName ? '[REDACTED]' : 'Not provided',
         email: data.email ? '[REDACTED]' : 'Not provided',
         phone: data.phone ? '[REDACTED]' : 'Not provided',
         subject: data.subject || 'Not provided',
         message: data.message ? '[REDACTED]' : 'Not provided',
+        procedure: data.procedure || 'Not specified',
+        preferredContactTime: data.preferredContactTime || 'Not specified',
+        consentGiven: data.consentGiven ?? false,
         source: data.source || 'Not specified',
     }
 }
@@ -57,10 +62,15 @@ function formatConsoleLog(
     return `
 === New Contact Form Submission ===
 Name: ${displayData.name}
+First Name: ${displayData.firstName || 'Not provided'}
+Last Name: ${displayData.lastName || 'Not provided'}
 Email: ${displayData.email || 'Not provided'}
 Phone: ${displayData.phone || 'Not provided'}
 Subject: ${displayData.subject || 'Not provided'}
 Message: ${displayData.message || 'Not provided'}
+Procedure: ${displayData.procedure || 'Not specified'}
+Preferred Contact Time: ${displayData.preferredContactTime || 'Not specified'}
+Consent Given: ${displayData.consentGiven ?? 'Not specified'}
 Source: ${displayData.source || 'Not specified'}
 Submitted at: ${new Date().toISOString()}
 ===================================
@@ -224,8 +234,16 @@ export async function POST(
             }
         }
 
+        // Compute full name from firstName + lastName if available
+        const fullName =
+            validatedData.firstName && validatedData.lastName
+                ? `${validatedData.firstName} ${validatedData.lastName}`.trim()
+                : validatedData.name
+
         const insertData: InsertContactSubmission = {
-            name: validatedData.name,
+            name: fullName,
+            firstName: validatedData.firstName,
+            lastName: validatedData.lastName,
             email,
             phone: validatedData.phone,
             subject: validatedData.subject || getDefaultSubject(),
@@ -234,6 +252,10 @@ export async function POST(
                 (isLeadCapture
                     ? `Lead capture from: ${source}. Callback requested.`
                     : 'Contact form submission'),
+            procedure: validatedData.procedure,
+            preferredContactTime: validatedData.preferredContactTime,
+            consentGiven: validatedData.consentGiven,
+            source,
         }
 
         // Persist submission

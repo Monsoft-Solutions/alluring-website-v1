@@ -292,11 +292,54 @@ export const nameSchema = z.string().trim().min(2, {
 })
 
 /**
+ * First name validation schema
+ */
+export const firstNameSchema = z.string().trim().min(1, {
+    message: 'First name is required.',
+})
+
+/**
+ * Last name validation schema
+ */
+export const lastNameSchema = z.string().trim().min(1, {
+    message: 'Last name is required.',
+})
+
+/**
+ * Preferred contact time options
+ */
+export const PREFERRED_CONTACT_TIME_OPTIONS = [
+    { value: '', label: 'Select preferred time' },
+    { value: 'morning', label: '9am - 12pm' },
+    { value: 'afternoon', label: '12pm - 5pm' },
+    { value: 'evening', label: '5pm - 7pm' },
+] as const
+
+export type PreferredContactTime = 'morning' | 'afternoon' | 'evening' | ''
+
+/**
+ * Preferred contact time validation schema
+ */
+export const preferredContactTimeSchema = z
+    .enum(['', 'morning', 'afternoon', 'evening'])
+    .optional()
+
+/**
+ * Consent validation schema
+ * Requires explicit consent (must be true)
+ */
+export const consentSchema = z.boolean().refine((val) => val === true, {
+    message: 'You must agree to the terms to continue.',
+})
+
+/**
  * Base contact form schema - all fields optional initially
  * Conditional requirements are applied in the API route based on source
  */
 export const contactFormSchema = z.object({
     name: nameSchema,
+    firstName: firstNameSchema.optional(),
+    lastName: lastNameSchema.optional(),
     email: emailSchema,
     phone: phoneSchema,
     subject: optionalTrimmedString(3, 'Subject must be at least 3 characters.'),
@@ -304,6 +347,9 @@ export const contactFormSchema = z.object({
         10,
         'Message must be at least 10 characters.'
     ),
+    procedure: z.string().optional(),
+    preferredContactTime: preferredContactTimeSchema,
+    consentGiven: z.boolean().optional(),
     source: z.string().optional(),
 })
 
@@ -327,6 +373,44 @@ export interface ContactFormResponse {
     readonly message: string
     readonly error?: string
 }
+
+/**
+ * Procedure options for consultation forms
+ */
+export const PROCEDURE_OPTIONS = [
+    { value: '', label: 'Select a procedure of interest' },
+    { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
+    { value: 'mommy-makeover', label: 'Mommy Makeover' },
+    { value: 'breast-augmentation', label: 'Breast Augmentation' },
+    { value: 'breast-lift', label: 'Breast Lift' },
+    { value: 'breast-reduction', label: 'Breast Reduction' },
+    { value: 'tummy-tuck', label: 'Tummy Tuck' },
+    { value: 'liposuction', label: 'Liposuction / Lipo 360' },
+    { value: 'facelift', label: 'Facelift' },
+    { value: 'rhinoplasty', label: 'Rhinoplasty (Nose Job)' },
+    { value: 'blepharoplasty', label: 'Eyelid Surgery (Blepharoplasty)' },
+    { value: 'multiple', label: 'Multiple Procedures' },
+    { value: 'other', label: 'Other / Not Sure Yet' },
+] as const
+
+/**
+ * Consultation form schema
+ * Used by the shared ConsultationForm component
+ * Requires: firstName, lastName, email, phone, consent
+ * Optional: procedure, preferredContactTime
+ */
+export const consultationFormSchema = z.object({
+    firstName: firstNameSchema,
+    lastName: lastNameSchema,
+    email: requiredEmailSchema,
+    phone: requiredPhoneSchema,
+    procedure: z.string().optional(),
+    preferredContactTime: preferredContactTimeSchema,
+    consentGiven: consentSchema,
+})
+
+export type ConsultationFormInput = z.input<typeof consultationFormSchema>
+export type ConsultationFormData = z.output<typeof consultationFormSchema>
 
 /**
  * Lead capture schema - minimal fields for conversion-focused forms

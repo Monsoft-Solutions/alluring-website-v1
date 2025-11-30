@@ -1,112 +1,29 @@
 /**
  * ContactHeroForm Component
  *
- * An immersive hero section with an integrated contact form.
+ * An immersive hero section with an integrated consultation form.
  * Designed as the primary conversion element for the contact page.
  *
  * Features:
  * - Full viewport hero with elegant background treatment
- * - Procedure of interest dropdown
+ * - Uses shared ConsultationForm component
  * - Trust badges below the form
  * - Responsive design with mobile-first approach
- * - Form validation with react-hook-form and zod
  */
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Form } from '@workspace/ui/components/form'
 import { motion } from 'framer-motion'
-import { Award, CheckCircle2, Clock, ShieldCheck } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { Award, Clock, ShieldCheck } from 'lucide-react'
 
-import {
-    EmailField,
-    FormFeedback,
-    MessageField,
-    NameField,
-    PhoneField,
-    SelectField,
-    SubmitButton,
-} from '@/components/shared/forms'
-import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { ConsultationForm } from '@/components/shared/forms'
 import { siteConfig } from '@/lib/data/site-config'
-import {
-    CONTACT_SOURCES,
-    nameSchema,
-    requiredEmailSchema,
-    requiredPhoneSchema,
-} from '@/lib/types/forms/contact-form.type'
-
-/**
- * Procedure options for the dropdown
- */
-const PROCEDURE_OPTIONS = [
-    { value: '', label: 'Select a procedure of interest' },
-    { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
-    { value: 'mommy-makeover', label: 'Mommy Makeover' },
-    { value: 'breast-augmentation', label: 'Breast Augmentation' },
-    { value: 'breast-lift', label: 'Breast Lift' },
-    { value: 'breast-reduction', label: 'Breast Reduction' },
-    { value: 'tummy-tuck', label: 'Tummy Tuck' },
-    { value: 'liposuction', label: 'Liposuction / Lipo 360' },
-    { value: 'facelift', label: 'Facelift' },
-    { value: 'rhinoplasty', label: 'Rhinoplasty (Nose Job)' },
-    { value: 'blepharoplasty', label: 'Eyelid Surgery (Blepharoplasty)' },
-    { value: 'multiple', label: 'Multiple Procedures' },
-    { value: 'other', label: 'Other / Not Sure Yet' },
-] as const
-
-/**
- * Contact hero form validation schema
- * Uses shared validation schemas for robust email and phone validation
- */
-const contactHeroFormSchema = z.object({
-    name: nameSchema,
-    email: requiredEmailSchema,
-    phone: requiredPhoneSchema,
-    procedure: z.string().optional(),
-    message: z.string().trim().optional(),
-})
-
-type ContactHeroFormInput = z.infer<typeof contactHeroFormSchema>
+import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type ContactHeroFormProps = {
     readonly id?: string
 }
 
 export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
-    const form = useForm<ContactHeroFormInput>({
-        resolver: zodResolver(contactHeroFormSchema),
-        defaultValues: {
-            name: '',
-            email: '',
-            phone: '',
-            procedure: '',
-            message: '',
-        },
-    })
-
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.CONTACT_HERO,
-            enableAnalytics: true,
-            analyticsFormName: 'contact_hero_form',
-            onSuccess: () => form.reset(),
-        })
-
-    const onSubmit = async (data: ContactHeroFormInput) => {
-        const procedureLabel = PROCEDURE_OPTIONS.find(
-            (p) => p.value === data.procedure
-        )?.label
-        await submit({
-            ...data,
-            subject: data.procedure
-                ? `Consultation Request: ${procedureLabel || data.procedure}`
-                : 'Consultation Request',
-        })
-    }
-
     return (
         <section
             id={id}
@@ -137,7 +54,7 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                         className='text-center lg:text-left'
                     >
                         <div className='mb-6 inline-flex items-center gap-2'>
-                            <span className='bg-gold-400 h-[1px] w-8' />
+                            <span className='bg-gold-400 h-px w-8' />
                             <span className='text-gold-400 text-sm font-bold tracking-[0.2em] uppercase'>
                                 Start Your Journey
                             </span>
@@ -194,126 +111,13 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                         }}
                     >
                         <div className='border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl md:p-10'>
-                            {/* Form Header */}
-                            <div className='mb-8 text-center'>
-                                <h2 className='mb-2 font-serif text-2xl text-white md:text-3xl'>
-                                    Request Your Consultation
-                                </h2>
-                                <p className='text-stone-400'>
-                                    Complimentary • Confidential • No Obligation
-                                </p>
-                            </div>
-
-                            {isSuccess ? (
-                                <div className='rounded-xl border border-green-500/30 bg-green-500/10 p-8 text-center'>
-                                    <div className='mb-4 flex justify-center'>
-                                        <div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20'>
-                                            <CheckCircle2 className='h-8 w-8 text-green-400' />
-                                        </div>
-                                    </div>
-                                    <h3 className='mb-2 text-xl font-semibold text-white'>
-                                        Thank You!
-                                    </h3>
-                                    <p className='text-stone-300'>
-                                        {state.message}
-                                    </p>
-                                </div>
-                            ) : (
-                                <Form {...form}>
-                                    <form
-                                        onSubmit={form.handleSubmit(onSubmit)}
-                                        className='space-y-6'
-                                    >
-                                        {/* Name & Email Row */}
-                                        <div className='grid gap-6 md:grid-cols-2'>
-                                            <NameField
-                                                control={form.control}
-                                                name='name'
-                                                label='Full Name'
-                                                placeholder='Your name'
-                                                disabled={isSubmitting}
-                                                variant='dark'
-                                                required
-                                            />
-                                            <EmailField
-                                                control={form.control}
-                                                name='email'
-                                                label='Email'
-                                                placeholder='your@email.com'
-                                                disabled={isSubmitting}
-                                                variant='dark'
-                                                required
-                                            />
-                                        </div>
-
-                                        {/* Phone */}
-                                        <PhoneField
-                                            control={form.control}
-                                            name='phone'
-                                            label='Phone Number'
-                                            placeholder='(555) 555-5555'
-                                            disabled={isSubmitting}
-                                            variant='dark'
-                                            required
-                                        />
-
-                                        {/* Procedure Selector */}
-                                        <SelectField
-                                            control={form.control}
-                                            name='procedure'
-                                            label='Procedure of Interest'
-                                            disabled={isSubmitting}
-                                            variant='dark'
-                                            options={PROCEDURE_OPTIONS}
-                                        />
-
-                                        {/* Message */}
-                                        <MessageField
-                                            control={form.control}
-                                            name='message'
-                                            label='Tell Us About Your Goals'
-                                            placeholder="Share any details about what you're hoping to achieve..."
-                                            disabled={isSubmitting}
-                                            variant='dark'
-                                            required={false}
-                                            rows={3}
-                                        />
-
-                                        {/* Error feedback */}
-                                        {isError && (
-                                            <FormFeedback
-                                                status='error'
-                                                message={state.message}
-                                                variant='dark'
-                                            />
-                                        )}
-
-                                        {/* Submit Button */}
-                                        <div className='pt-4'>
-                                            <SubmitButton
-                                                isSubmitting={isSubmitting}
-                                                size='lg'
-                                                variant='gold'
-                                                fullWidth
-                                                showSendIcon
-                                                showSparkles
-                                            >
-                                                Request My Consultation
-                                            </SubmitButton>
-                                        </div>
-
-                                        {/* Privacy Note */}
-                                        <p className='text-center text-xs text-stone-500'>
-                                            Your information is private and
-                                            secure.
-                                            <br />
-                                            By submitting, you agree to receive
-                                            communication from{' '}
-                                            {siteConfig.business.name}.
-                                        </p>
-                                    </form>
-                                </Form>
-                            )}
+                            <ConsultationForm
+                                title='Request Your Consultation'
+                                subtitle='Complimentary • Confidential • No Obligation'
+                                source={CONTACT_SOURCES.CONTACT_HERO}
+                                analyticsFormName='contact_hero_form'
+                                enableAnalytics
+                            />
                         </div>
                     </motion.div>
                 </div>
