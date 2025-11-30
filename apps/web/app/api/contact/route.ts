@@ -30,8 +30,10 @@ import {
     type ContactFormResponse,
     contactFormSchema,
 } from '@/lib/types/forms/contact-form.type'
-import { sendContactEmails } from '@/lib/services/email.service'
-import { env } from '@/env'
+import {
+    sendContactEmails,
+    sendContactNotification,
+} from '@/lib/services/email.service'
 
 /**
  * Extract client IP address from request headers
@@ -231,16 +233,23 @@ export async function POST(
         // Prepare data for insertion
         const source = validatedData.source || CONTACT_SOURCES.GENERAL
 
-        // Determine if this is a lead capture form (phone-first, no email required)
-        const isLeadCapture =
-            source === CONTACT_SOURCES.BLOG_LEAD ||
-            source === CONTACT_SOURCES.EXIT_INTENT ||
-            source === CONTACT_SOURCES.LEAD_FORM
+        // Check if user provided a real email (source of truth for email sending)
+        const hasUserProvidedEmail = Boolean(validatedData.email)
+
+        // Sources that typically don't collect email (used for placeholder generation)
+        const SOURCES_WITHOUT_EMAIL_FIELD = [
+            CONTACT_SOURCES.BLOG_LEAD,
+            CONTACT_SOURCES.EXIT_INTENT,
+            CONTACT_SOURCES.LEAD_FORM,
+        ] as const
+        const isLeadCaptureSource = SOURCES_WITHOUT_EMAIL_FIELD.includes(
+            source as (typeof SOURCES_WITHOUT_EMAIL_FIELD)[number]
+        )
 
         // Email is required in DB - use placeholder for forms without email
         const email =
             validatedData.email ||
-            (isLeadCapture
+            (isLeadCaptureSource
                 ? `lead-${Date.now()}@${source}.capture`
                 : `contact-${Date.now()}@form.capture`)
 
@@ -278,7 +287,7 @@ export async function POST(
             subject: validatedData.subject || getDefaultSubject(),
             message:
                 validatedData.message ||
-                (isLeadCapture
+                (isLeadCaptureSource
                     ? `Lead capture from: ${source}. Callback requested.`
                     : 'Contact form submission'),
             procedure: validatedData.procedure,
@@ -311,11 +320,18 @@ export async function POST(
 
         console.log(formatConsoleLog(validatedData, true))
 
-        // Send emails based on form type
+        // Send emails based on whether user provided a real email (not form source)
         let emailResult = { confirmationSent: false, errors: [] as string[] }
 
-        if (isLeadCapture) {
-            // For lead capture forms, send notification email to owner only
+        if (hasUserProvidedEmail) {
+            // User provided email - send both notification and confirmation
+            emailResult = await sendContactEmails(validatedData, submission.id)
+
+            if (emailResult.errors.length > 0) {
+                console.error('Email sending errors:', emailResult.errors)
+            }
+        } else {
+            // No email provided - send notification only (lead capture style)
             try {
                 const sourceLabel =
                     source === CONTACT_SOURCES.BLOG_LEAD
@@ -324,10 +340,10 @@ export async function POST(
                           ? 'Exit Intent Popup'
                           : 'Lead Form'
 
-                await sendContactEmails(
+                await sendContactNotification(
                     {
                         name: validatedData.name,
-                        email: env.RESEND_FROM_EMAIL,
+                        email: '',
                         phone: validatedData.phone,
                         subject: `${sourceLabel} Lead: ${validatedData.name} - Callback Requested`,
                         message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${validatedData.name}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
@@ -339,13 +355,6 @@ export async function POST(
                     'Failed to send lead notification email:',
                     emailError
                 )
-            }
-        } else if (validatedData.email) {
-            // For forms with email, send both notification and confirmation
-            emailResult = await sendContactEmails(validatedData, submission.id)
-
-            if (emailResult.errors.length > 0) {
-                console.error('Email sending errors:', emailResult.errors)
             }
         }
 

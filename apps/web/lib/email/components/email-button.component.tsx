@@ -35,11 +35,15 @@ type EmailButtonProps = {
  * - Primary: Gold background with dark text (main CTAs)
  * - Secondary: Stone background with dark text (secondary actions)
  *
+ * Note: Button is inline-block and should be wrapped in a centered container.
+ *
  * @example
  * ```tsx
- * <EmailButton href="https://alluringplasticsurgery.com/contact" variant="primary">
- *   Schedule Your Consultation
- * </EmailButton>
+ * <Section className="text-center">
+ *   <EmailButton href="https://alluringplasticsurgery.com/contact" variant="primary">
+ *     Schedule Your Consultation
+ *   </EmailButton>
+ * </Section>
  * ```
  */
 export function EmailButton({
@@ -48,16 +52,18 @@ export function EmailButton({
     variant = 'primary',
 }: EmailButtonProps) {
     // Using inline styles with hex colors for maximum email client compatibility
+    // Using inline-block with constrained width for proper centering and sizing
     const baseStyles = {
-        display: 'block',
-        width: '100%',
-        padding: '14px 24px',
+        display: 'inline-block',
+        padding: '14px 32px',
         borderRadius: '8px',
         textAlign: 'center' as const,
         fontSize: '15px',
         fontWeight: 600,
         textDecoration: 'none',
         letterSpacing: '0.025em',
+        minWidth: '180px',
+        maxWidth: '280px',
     }
 
     const variantStyles =

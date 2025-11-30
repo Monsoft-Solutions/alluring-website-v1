@@ -105,7 +105,7 @@ export function ContactConfirmationEmail({
                 <Text className='m-0 mb-4 text-base leading-relaxed text-stone-600'>
                     Thank you for reaching out to{' '}
                     <strong>{businessName}</strong>. Your inquiry is important
-                    to us, and we're excited to be part of your aesthetic
+                    to us, and we&apos;re excited to be part of your aesthetic
                     journey.
                 </Text>
 
@@ -122,16 +122,16 @@ export function ContactConfirmationEmail({
 
                 {/* What to Expect */}
                 <Text className='m-0 mb-2 text-base leading-relaxed text-stone-600'>
-                    During your consultation, we'll discuss your goals, answer
-                    all your questions, and create a personalized treatment plan
-                    tailored just for you.
+                    During your consultation, we&apos;ll discuss your goals,
+                    answer all your questions, and create a personalized
+                    treatment plan tailored just for you.
                 </Text>
 
                 <Text className='m-0 mb-6 text-base leading-relaxed text-stone-600'>
                     At {businessName}, we believe that luxury aesthetic care
                     should be accessible to everyone. Our flexible financing
-                    options make it easier than ever to achieve the look you've
-                    always wanted.
+                    options make it easier than ever to achieve the look
+                    you&apos;ve always wanted.
                 </Text>
 
                 <Hr className='my-8 border-stone-200' />
@@ -208,7 +208,7 @@ export function ContactConfirmationEmail({
 
                 <Text className='m-0 mb-4 text-base leading-relaxed text-stone-600'>
                     If you have urgent questions or would prefer to speak with
-                    us directly, we're here for you:
+                    us directly, we&apos;re here for you:
                 </Text>
 
                 <Text className='m-0 mb-2 text-base text-stone-600'>
@@ -232,7 +232,7 @@ export function ContactConfirmationEmail({
                 </Text>
 
                 {/* CTA Button */}
-                <Section className='my-8'>
+                <Section className='my-8 text-center'>
                     <EmailButton
                         href={`tel:${businessPhone}`}
                         variant='primary'

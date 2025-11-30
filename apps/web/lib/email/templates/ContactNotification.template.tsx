@@ -154,7 +154,7 @@ export function ContactNotificationEmail({
                     Quick Actions
                 </Heading>
 
-                <Section className='mb-4'>
+                <Section className='mb-4 text-center'>
                     <EmailButton
                         href={`mailto:${contactData.email}?subject=Re: ${contactData.subject || 'Your inquiry to Alluring Plastic Surgery'}`}
                         variant='primary'
@@ -164,7 +164,7 @@ export function ContactNotificationEmail({
                 </Section>
 
                 {contactData.phone && (
-                    <Section className='mb-4'>
+                    <Section className='mb-4 text-center'>
                         <EmailButton
                             href={`tel:${contactData.phone}`}
                             variant='secondary'
