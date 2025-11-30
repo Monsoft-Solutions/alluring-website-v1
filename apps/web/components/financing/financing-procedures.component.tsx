@@ -34,27 +34,48 @@ const iconMap: Record<string, LucideIcon> = {
 }
 
 /**
- * Category accent colors for visual distinction
+ * Category accent colors following Stone + Gold design system
+ * Uses subtle stone variations with strategic gold accents
  */
 const categoryColors: Record<
     string,
     { bg: string; icon: string; text: string }
 > = {
     Smile: {
-        bg: 'bg-amber-50 dark:bg-amber-950/30',
-        icon: 'text-amber-600 dark:text-amber-400',
-        text: 'text-amber-700 dark:text-amber-400',
+        bg: 'bg-stone-100/50 dark:bg-stone-800/40',
+        icon: 'text-gold-500 dark:text-gold-400',
+        text: 'text-gold-600 dark:text-gold-400',
     },
     Heart: {
-        bg: 'bg-rose-50 dark:bg-rose-950/30',
-        icon: 'text-rose-600 dark:text-rose-400',
-        text: 'text-rose-700 dark:text-rose-400',
+        bg: 'bg-stone-100/60 dark:bg-stone-800/50',
+        icon: 'text-gold-500 dark:text-gold-400',
+        text: 'text-gold-600 dark:text-gold-400',
     },
     Sparkles: {
-        bg: 'bg-violet-50 dark:bg-violet-950/30',
-        icon: 'text-violet-600 dark:text-violet-400',
-        text: 'text-violet-700 dark:text-violet-400',
+        bg: 'bg-gold-500/10 dark:bg-gold-500/15',
+        icon: 'text-gold-500 dark:text-gold-400',
+        text: 'text-gold-600 dark:text-gold-400',
     },
+}
+
+/**
+ * Default colors fallback - using gold accent background
+ */
+const defaultColors: { bg: string; icon: string; text: string } = {
+    bg: 'bg-gold-500/10 dark:bg-gold-500/15',
+    icon: 'text-gold-500 dark:text-gold-400',
+    text: 'text-gold-600 dark:text-gold-400',
+}
+
+/**
+ * Get category colors with fallback to Sparkles
+ */
+function getCategoryColors(icon: string): {
+    bg: string
+    icon: string
+    text: string
+} {
+    return categoryColors[icon] ?? defaultColors
 }
 
 export function FinancingProcedures({
@@ -87,9 +108,7 @@ export function FinancingProcedures({
                 <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
                     {categories.map((category, idx) => {
                         const IconComponent = iconMap[category.icon]
-                        const colors =
-                            categoryColors[category.icon] ||
-                            categoryColors.Sparkles
+                        const colors = getCategoryColors(category.icon)
 
                         return (
                             <motion.div
@@ -101,11 +120,11 @@ export function FinancingProcedures({
                             >
                                 <div
                                     className={cn(
-                                        'relative h-full overflow-hidden rounded-3xl border bg-white/90 backdrop-blur-sm transition-all duration-500',
-                                        'border-stone-200/80 hover:border-stone-300',
+                                        'relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white/90 backdrop-blur-sm transition-all duration-500',
+                                        'hover:border-gold-500/30 border-stone-200/80',
                                         'shadow-lg shadow-stone-200/40 hover:shadow-xl hover:shadow-stone-300/50',
                                         'hover:-translate-y-1',
-                                        'dark:border-stone-700/60 dark:bg-stone-900/80 dark:hover:border-stone-600',
+                                        'dark:hover:border-gold-500/30 dark:border-stone-700/60 dark:bg-stone-900/80',
                                         'dark:shadow-stone-950/40 dark:hover:shadow-stone-950/60'
                                     )}
                                 >
@@ -142,8 +161,8 @@ export function FinancingProcedures({
                                         </div>
                                     </div>
 
-                                    {/* Procedures List */}
-                                    <div className='p-8 pt-4'>
+                                    {/* Procedures List - flex-1 to fill available space */}
+                                    <div className='flex flex-1 flex-col p-8 pt-4'>
                                         <ul className='space-y-1'>
                                             {category.procedures.map(
                                                 (procedure) => (
@@ -172,8 +191,8 @@ export function FinancingProcedures({
                                             )}
                                         </ul>
 
-                                        {/* Category CTA */}
-                                        <div className='mt-6 border-t border-stone-200/80 pt-6 dark:border-stone-700/60'>
+                                        {/* Category CTA - Always at bottom */}
+                                        <div className='mt-auto border-t border-stone-200/80 pt-6 dark:border-stone-700/60'>
                                             <Link
                                                 href='/procedures'
                                                 className={cn(

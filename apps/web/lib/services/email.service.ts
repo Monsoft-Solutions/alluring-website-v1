@@ -149,6 +149,14 @@ export async function sendContactConfirmation(
     contactData: ContactFormData,
     submissionId: string
 ): Promise<SendEmailResult> {
+    // Early return if no email provided
+    if (!contactData.email) {
+        return {
+            success: false,
+            error: 'Email address is required for confirmation email',
+        }
+    }
+
     const subject = `Thank you for contacting ${siteConfig.business.name}`
 
     try {
