@@ -2,13 +2,22 @@
  * Contact Confirmation Email Template
  *
  * Email sent to the person who submitted the contact form.
- * Confirms receipt and provides next steps.
- * Styled with Tailwind CSS for consistent design.
+ * Confirms receipt, sets expectations, and provides useful resources.
+ * Styled with Alluring Plastic Surgery brand colors (Stone + Gold palette).
  *
  * @module lib/email/templates/ContactConfirmation.template
  */
-import { Heading, Hr, Link, Section, Text } from '@react-email/components'
+import {
+    Column,
+    Heading,
+    Hr,
+    Link,
+    Row,
+    Section,
+    Text,
+} from '@react-email/components'
 
+import { siteConfig } from '@/lib/data/site-config'
 import type { ContactConfirmationProps } from '@/lib/types/email/email-service.type'
 
 import { EmailButton } from '../components/email-button.component'
@@ -17,19 +26,54 @@ import { EmailHeader } from '../components/email-header.component'
 import { EmailLayout } from '../components/email-layout.component'
 
 /**
+ * Useful resource links for the "While You Wait" section
+ */
+const resourceLinks = [
+    {
+        title: 'Browse Our Procedures',
+        description: 'Explore our full range of cosmetic surgery options',
+        path: '/procedures',
+    },
+    {
+        title: 'Financing Options',
+        description: 'Flexible payment plans through Cherry & CareCredit',
+        path: '/plastic-surgery-financing-miami',
+    },
+    {
+        title: 'Meet Our Surgeons',
+        description: 'Learn about our board-certified specialists',
+        path: '/about',
+    },
+    {
+        title: 'Read Our Blog',
+        description: 'Tips, insights, and patient success stories',
+        path: '/blog',
+    },
+]
+
+/**
+ * Trust statistics for credibility
+ */
+const trustStats = [
+    { value: '5,000+', label: 'Happy Patients' },
+    { value: '15+', label: 'Years Experience' },
+    { value: 'AAAASF', label: 'Accredited' },
+]
+
+/**
  * Contact confirmation email template
  *
  * Sent to the form submitter confirming receipt of their message.
- * Provides assurance and sets expectations for response time.
+ * Features luxury tone, useful resource links, and trust indicators.
  *
  * @example
  * ```tsx
  * const email = render(
  *   <ContactConfirmationEmail
- *     name="John Doe"
- *     businessName="ACME"
+ *     name="Maria"
+ *     businessName="Alluring Plastic Surgery"
  *     businessEmail="info@alluringplasticsurgery.com"
- *     businessPhone="+1-555-123-4567"
+ *     businessPhone="+1-786-305-8649"
  *   />
  * )
  * ```
@@ -40,83 +84,174 @@ export function ContactConfirmationEmail({
     businessEmail,
     businessPhone,
 }: ContactConfirmationProps) {
+    const siteUrl = siteConfig.seo.siteUrl
+    const firstName = name.split(' ')[0]
+
     return (
-        <EmailLayout preview='Thank you for contacting us!'>
-            <EmailHeader title='Thank You for Reaching Out!' />
+        <EmailLayout
+            preview={`Thank you for contacting ${businessName}, ${firstName}!`}
+        >
+            <EmailHeader title="We've Received Your Message" />
 
-            <Section className='px-10 py-5'>
-                <Text className='my-4 text-lg font-semibold text-gray-900'>
-                    Hi {name},
+            <Section className='px-10 py-8'>
+                {/* Personal Greeting */}
+                <Text
+                    className='m-0 mb-4 text-xl font-semibold text-stone-900'
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                    Dear {firstName},
                 </Text>
 
-                <Text className='my-4 text-base leading-relaxed text-gray-600'>
-                    Thank you for contacting <strong>{businessName}</strong>.
-                    We&apos;ve received your message and appreciate you taking
-                    the time to reach out to us.
+                <Text className='m-0 mb-4 text-base leading-relaxed text-stone-600'>
+                    Thank you for reaching out to{' '}
+                    <strong>{businessName}</strong>. Your inquiry is important
+                    to us, and we're excited to be part of your aesthetic
+                    journey.
                 </Text>
 
-                <Section className='my-6 rounded-lg border-2 border-blue-500 bg-blue-50 p-5 text-center'>
-                    <Text className='my-2 text-base leading-relaxed text-blue-800'>
-                        <strong>✓ Your message has been received</strong>
+                {/* Confirmation Box */}
+                <Section className='my-6 rounded-lg border-2 border-[#D4AF37] bg-[#faf8f3] p-6 text-center'>
+                    <Text className='m-0 mb-2 text-lg font-semibold text-stone-900'>
+                        ✓ Your Message Has Been Received
                     </Text>
-                    <Text className='my-2 text-base leading-relaxed text-blue-800'>
-                        We typically respond within 1-2 business days
+                    <Text className='m-0 text-base text-stone-600'>
+                        A member of our patient care team will personally
+                        respond within <strong>1 business day</strong>.
                     </Text>
                 </Section>
 
-                <Text className='my-4 text-base leading-relaxed text-gray-600'>
-                    One of our team members will review your inquiry and get
-                    back to you as soon as possible. If your matter is urgent,
-                    please don&apos;t hesitate to contact us directly.
+                {/* What to Expect */}
+                <Text className='m-0 mb-2 text-base leading-relaxed text-stone-600'>
+                    During your consultation, we'll discuss your goals, answer
+                    all your questions, and create a personalized treatment plan
+                    tailored just for you.
                 </Text>
 
-                <Hr className='my-8 border-gray-200' />
+                <Text className='m-0 mb-6 text-base leading-relaxed text-stone-600'>
+                    At {businessName}, we believe that luxury aesthetic care
+                    should be accessible to everyone. Our flexible financing
+                    options make it easier than ever to achieve the look you've
+                    always wanted.
+                </Text>
 
-                <Heading className='mt-6 mb-4 text-lg font-semibold text-gray-900'>
-                    Need Immediate Help?
+                <Hr className='my-8 border-stone-200' />
+
+                {/* While You Wait Section */}
+                <Heading
+                    className='m-0 mb-6 text-center text-lg font-semibold text-stone-900'
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                    While You Wait, Explore
                 </Heading>
 
-                <Text className='my-4 text-base leading-relaxed text-gray-600'>
-                    If you need urgent assistance, you can reach us directly:
+                <Row className='mb-6'>
+                    {resourceLinks.slice(0, 2).map((link) => (
+                        <Column key={link.path} className='w-1/2 px-2'>
+                            <Section className='rounded-lg border border-stone-200 bg-stone-50 p-4'>
+                                <Link
+                                    href={`${siteUrl}${link.path}`}
+                                    className='text-base font-semibold text-[#D4AF37] no-underline'
+                                >
+                                    {link.title} →
+                                </Link>
+                                <Text className='m-0 mt-2 text-sm text-stone-500'>
+                                    {link.description}
+                                </Text>
+                            </Section>
+                        </Column>
+                    ))}
+                </Row>
+
+                <Row className='mb-8'>
+                    {resourceLinks.slice(2, 4).map((link) => (
+                        <Column key={link.path} className='w-1/2 px-2'>
+                            <Section className='rounded-lg border border-stone-200 bg-stone-50 p-4'>
+                                <Link
+                                    href={`${siteUrl}${link.path}`}
+                                    className='text-base font-semibold text-[#D4AF37] no-underline'
+                                >
+                                    {link.title} →
+                                </Link>
+                                <Text className='m-0 mt-2 text-sm text-stone-500'>
+                                    {link.description}
+                                </Text>
+                            </Section>
+                        </Column>
+                    ))}
+                </Row>
+
+                <Hr className='my-8 border-stone-200' />
+
+                {/* Trust Stats */}
+                <Row className='mb-8'>
+                    {trustStats.map((stat) => (
+                        <Column key={stat.label} className='text-center'>
+                            <Text className='m-0 text-2xl font-bold text-[#D4AF37]'>
+                                {stat.value}
+                            </Text>
+                            <Text className='m-0 text-xs tracking-wide text-stone-500 uppercase'>
+                                {stat.label}
+                            </Text>
+                        </Column>
+                    ))}
+                </Row>
+
+                <Hr className='my-8 border-stone-200' />
+
+                {/* Urgent Contact */}
+                <Heading
+                    className='m-0 mb-4 text-lg font-semibold text-stone-900'
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                    Need Immediate Assistance?
+                </Heading>
+
+                <Text className='m-0 mb-4 text-base leading-relaxed text-stone-600'>
+                    If you have urgent questions or would prefer to speak with
+                    us directly, we're here for you:
                 </Text>
 
-                <Text className='my-2 text-[15px] leading-relaxed text-gray-600'>
+                <Text className='m-0 mb-2 text-base text-stone-600'>
+                    <strong>Call us:</strong>{' '}
+                    <Link
+                        href={`tel:${businessPhone}`}
+                        className='font-semibold text-[#D4AF37] no-underline'
+                    >
+                        {siteConfig.contact.phoneDisplay}
+                    </Link>
+                </Text>
+
+                <Text className='m-0 mb-6 text-base text-stone-600'>
                     <strong>Email:</strong>{' '}
                     <Link
                         href={`mailto:${businessEmail}`}
-                        className='text-blue-500 no-underline'
+                        className='font-semibold text-[#D4AF37] no-underline'
                     >
                         {businessEmail}
                     </Link>
                 </Text>
 
-                <Text className='my-2 text-[15px] leading-relaxed text-gray-600'>
-                    <strong>Phone:</strong>{' '}
-                    <Link
-                        href={`tel:${businessPhone}`}
-                        className='text-blue-500 no-underline'
-                    >
-                        {businessPhone}
-                    </Link>
-                </Text>
-
+                {/* CTA Button */}
                 <Section className='my-8'>
                     <EmailButton
-                        href={`mailto:${businessEmail}`}
-                        variant='secondary'
+                        href={`tel:${businessPhone}`}
+                        variant='primary'
                     >
-                        Send Another Message
+                        Call Us Now
                     </EmailButton>
                 </Section>
 
-                <Text className='mt-6 mb-4 text-base leading-relaxed text-gray-600'>
-                    Thank you for your interest in {businessName}. We look
-                    forward to speaking with you soon!
+                {/* Closing */}
+                <Text className='m-0 mb-2 text-base leading-relaxed text-stone-600'>
+                    Thank you for considering {businessName} for your aesthetic
+                    goals. We look forward to helping you look and feel your
+                    absolute best.
                 </Text>
 
-                <Text className='my-6 text-base leading-relaxed font-medium text-gray-900'>
-                    Best regards,
-                    <br />
+                <Text className='m-0 mt-6 text-base font-medium text-stone-900'>
+                    Warmly,
+                </Text>
+                <Text className='m-0 text-base text-stone-600'>
                     The {businessName} Team
                 </Text>
             </Section>

@@ -3,6 +3,7 @@
  *
  * Base layout wrapper for all email templates.
  * Provides consistent structure, styling, and responsive design using Tailwind CSS.
+ * Styled with Alluring Plastic Surgery brand colors (Stone + Gold palette).
  *
  * @module lib/email/components/EmailLayout.component
  */
@@ -23,10 +24,41 @@ type EmailLayoutProps = {
 }
 
 /**
+ * Brand color configuration for emails
+ * Using hex values for maximum email client compatibility
+ */
+const tailwindConfig = {
+    theme: {
+        extend: {
+            colors: {
+                stone: {
+                    50: '#fafaf9',
+                    100: '#f5f5f4',
+                    200: '#e7e5e4',
+                    300: '#d6d3d1',
+                    400: '#a8a29e',
+                    500: '#78716c',
+                    600: '#57534e',
+                    700: '#44403c',
+                    800: '#292524',
+                    900: '#1c1917',
+                },
+                gold: {
+                    400: '#E5C158',
+                    500: '#D4AF37',
+                    600: '#B8963D',
+                },
+            },
+        },
+    },
+}
+
+/**
  * Base email layout component
  *
  * Provides responsive container, consistent styling with Tailwind CSS, and proper HTML structure.
  * All email templates should use this as the root wrapper.
+ * Uses Alluring Plastic Surgery brand palette for luxury aesthetic.
  *
  * @example
  * ```tsx
@@ -40,11 +72,17 @@ type EmailLayoutProps = {
 export function EmailLayout({ preview, children }: EmailLayoutProps) {
     return (
         <Html>
-            <Head />
+            <Head>
+                <style>
+                    {`
+                        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+                    `}
+                </style>
+            </Head>
             {preview && <Preview>{preview}</Preview>}
-            <Tailwind>
-                <Body className='bg-gray-50 font-sans'>
-                    <Container className='mx-auto my-0 mb-16 max-w-[600px] bg-white px-0 pt-5 pb-12'>
+            <Tailwind config={tailwindConfig}>
+                <Body className='bg-stone-100 font-sans'>
+                    <Container className='mx-auto my-8 max-w-[600px] overflow-hidden rounded-lg border border-stone-200 bg-white shadow-lg'>
                         {children}
                     </Container>
                 </Body>
