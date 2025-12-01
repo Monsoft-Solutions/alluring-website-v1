@@ -142,9 +142,44 @@ export function useContactFormSubmission(
                     }),
                 })
 
-                const result: ContactFormResponse = await response.json()
+                // Handle non-OK responses before attempting JSON parse
+                if (!response.ok) {
+                    let errorBody: string | undefined
+                    try {
+                        errorBody = await response.text()
+                    } catch {
+                        // Ignore if we can't read the body
+                    }
 
-                if (response.ok && result.success) {
+                    const httpError = new Error(
+                        `HTTP error ${response.status}: ${response.statusText}`
+                    ) as Error & {
+                        status: number
+                        body?: string
+                        isHttpError: true
+                    }
+                    httpError.status = response.status
+                    httpError.body = errorBody
+                    httpError.isHttpError = true
+                    throw httpError
+                }
+
+                // Parse JSON with explicit error handling
+                let result: ContactFormResponse
+                const responseText = await response.text()
+
+                try {
+                    result = JSON.parse(responseText) as ContactFormResponse
+                } catch {
+                    const parseError = new Error(
+                        `Invalid JSON response (status ${response.status}): ${responseText.slice(0, 200)}`
+                    ) as Error & { isJsonParseError: true; rawBody: string }
+                    parseError.isJsonParseError = true
+                    parseError.rawBody = responseText
+                    throw parseError
+                }
+
+                if (result.success) {
                     setState({
                         status: 'success',
                         message: result.message,
@@ -159,7 +194,7 @@ export function useContactFormSubmission(
                     return true
                 }
 
-                // API returned an error
+                // API returned an error in the response body
                 const errorMessage =
                     result.error ??
                     result.message ??
@@ -181,21 +216,56 @@ export function useContactFormSubmission(
                 onError?.(errorMessage)
                 return false
             } catch (error) {
-                const errorMessage =
-                    'Network error. Please check your connection and try again.'
+                // Determine error type and message
+                const typedError = error as Error & {
+                    isHttpError?: boolean
+                    isJsonParseError?: boolean
+                    status?: number
+                    body?: string
+                }
 
-                console.error('Contact form submission error:', error)
+                let errorMessage: string
+                let errorType:
+                    | 'http_error'
+                    | 'json_parse_error'
+                    | 'network_error'
+
+                if (typedError.isHttpError) {
+                    errorType = 'http_error'
+                    errorMessage =
+                        'Server error. Please try again later or contact support.'
+                    console.error(
+                        `Contact form HTTP error (${typedError.status}):`,
+                        typedError.body?.slice(0, 500)
+                    )
+                } else if (typedError.isJsonParseError) {
+                    errorType = 'json_parse_error'
+                    errorMessage =
+                        'Unexpected server response. Please try again later.'
+                    console.error(
+                        'Contact form JSON parse error:',
+                        typedError.message
+                    )
+                } else {
+                    errorType = 'network_error'
+                    errorMessage =
+                        'Network error. Please check your connection and try again.'
+                    console.error('Contact form network error:', error)
+                }
 
                 setState({
                     status: 'error',
                     message: errorMessage,
                 })
 
-                // Track network error
+                // Track error with specific type
                 if (enableAnalytics) {
                     track('form_error', {
                         form_name: formName,
-                        error_type: 'network_error',
+                        error_type: errorType,
+                        ...(typedError.status && {
+                            http_status: typedError.status,
+                        }),
                     })
                 }
 
