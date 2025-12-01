@@ -158,17 +158,14 @@ export function detectDevice(): DeviceType {
         return 'mobile-android' // Default to Android for unknown mobile
     }
 
-    // Large screen without touch indicators
-    if (screenWidth > 1366 || !hasTouch) {
-        return 'desktop'
+    // Large screen: touch indicates laptop (2-in-1), otherwise desktop
+    if (screenWidth > 1366) {
+        return hasTouch ? 'laptop' : 'desktop'
     }
 
-    // Medium-large touch screen could be laptop with touch
-    if (hasTouch && screenWidth > 1366) {
-        return 'laptop'
-    }
-
-    // Default to desktop for larger screens
+    // Medium-large screens and remaining cases
+    // Non-touch devices default to desktop/laptop by size
+    // Touch devices reaching here are edge cases (e.g., unusual viewport/screen combos)
     return screenWidth > 1024 ? 'desktop' : 'laptop'
 }
 
