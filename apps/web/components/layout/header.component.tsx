@@ -593,7 +593,12 @@ export const Header = () => {
                                         className='h-14 w-full text-lg'
                                         asChild
                                     >
-                                        <Link href='/contact-us'>
+                                        <Link
+                                            href='/contact-us'
+                                            onClick={() =>
+                                                setIsMobileMenuOpen(false)
+                                            }
+                                        >
                                             Request Consultation
                                         </Link>
                                     </Button>

@@ -845,3 +845,476 @@ export function CheckboxField<TFieldValues extends FieldValues>({
         />
     )
 }
+
+/**
+ * Props for RatingField
+ */
+type RatingFieldProps<TFieldValues extends FieldValues> = Omit<
+    BaseFieldProps<TFieldValues>,
+    'placeholder'
+> & {
+    /** Minimum rating value */
+    readonly min?: number
+    /** Maximum rating value */
+    readonly max?: number
+    /** Labels for the rating scale (optional) */
+    readonly ratingLabels?: Record<number, string>
+    /** Whether to show labels inline */
+    readonly showLabels?: boolean
+}
+
+/**
+ * RatingField - Linear scale rating (1-5 by default)
+ */
+export function RatingField<TFieldValues extends FieldValues>({
+    control,
+    name,
+    label,
+    disabled = false,
+    variant = 'light',
+    required = false,
+    className,
+    min = 1,
+    max = 5,
+    ratingLabels,
+    showLabels = true,
+}: RatingFieldProps<TFieldValues>) {
+    const labelStyles = getLabelStyles(variant, required)
+
+    const ratings = Array.from({ length: max - min + 1 }, (_, i) => min + i)
+
+    const getButtonStyles = (isSelected: boolean) => {
+        if (variant === 'dark') {
+            return cn(
+                'h-10 w-10 rounded-full border-2 font-semibold transition-all duration-200',
+                'focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-stone-900',
+                isSelected
+                    ? 'border-gold-500 bg-gold-500 text-stone-900'
+                    : 'border-stone-600 bg-transparent text-stone-400 hover:border-gold-400 hover:text-gold-400'
+            )
+        }
+
+        return cn(
+            'h-10 w-10 rounded-full border-2 font-semibold transition-all duration-200',
+            'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+            isSelected
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-border bg-background text-muted-foreground hover:border-primary/60 hover:text-foreground'
+        )
+    }
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className={cn('space-y-3', className)}>
+                    {label && (
+                        <FormLabel className={labelStyles}>
+                            {label}
+                            {required && (
+                                <span
+                                    className={cn(
+                                        'ml-1 text-xs',
+                                        variant === 'dark'
+                                            ? 'text-gold-400'
+                                            : 'text-destructive'
+                                    )}
+                                >
+                                    *
+                                </span>
+                            )}
+                        </FormLabel>
+                    )}
+                    <FormControl>
+                        <div className='space-y-2'>
+                            <div
+                                className='flex items-center gap-2'
+                                role='radiogroup'
+                                aria-label={label}
+                            >
+                                {ratings.map((rating) => (
+                                    <button
+                                        key={rating}
+                                        type='button'
+                                        disabled={disabled}
+                                        onClick={() => field.onChange(rating)}
+                                        className={getButtonStyles(
+                                            field.value === rating
+                                        )}
+                                        role='radio'
+                                        aria-checked={field.value === rating}
+                                        aria-label={
+                                            ratingLabels?.[rating] ||
+                                            `${rating} out of ${max}`
+                                        }
+                                    >
+                                        {rating}
+                                    </button>
+                                ))}
+                            </div>
+                            {showLabels && ratingLabels && (
+                                <div
+                                    className={cn(
+                                        'flex justify-between text-xs',
+                                        variant === 'dark'
+                                            ? 'text-stone-500'
+                                            : 'text-muted-foreground'
+                                    )}
+                                >
+                                    <span>{ratingLabels[min]}</span>
+                                    <span>{ratingLabels[max]}</span>
+                                </div>
+                            )}
+                        </div>
+                    </FormControl>
+                    <FormMessage
+                        className={cn(
+                            'text-xs',
+                            variant === 'dark' && 'text-red-400'
+                        )}
+                    />
+                </FormItem>
+            )}
+        />
+    )
+}
+
+/**
+ * Props for RadioGroupField
+ */
+type RadioGroupFieldProps<TFieldValues extends FieldValues> = Omit<
+    BaseFieldProps<TFieldValues>,
+    'placeholder'
+> & {
+    /** Options for the radio group */
+    readonly options: readonly {
+        readonly value: string
+        readonly label: string
+    }[]
+    /** Whether to include an "Other" option with text input */
+    readonly includeOther?: boolean
+    /** Name for the "Other" text field */
+    readonly otherFieldName?: FieldPath<TFieldValues>
+    /** Placeholder for "Other" text input */
+    readonly otherPlaceholder?: string
+    /** Layout direction */
+    readonly direction?: 'horizontal' | 'vertical'
+}
+
+/**
+ * RadioGroupField - Radio button group with optional "Other" text input
+ */
+export function RadioGroupField<TFieldValues extends FieldValues>({
+    control,
+    name,
+    label,
+    disabled = false,
+    variant = 'light',
+    required = false,
+    className,
+    options,
+    includeOther = false,
+    otherFieldName,
+    otherPlaceholder = 'Please specify...',
+    direction = 'vertical',
+}: RadioGroupFieldProps<TFieldValues>) {
+    const labelStyles = getLabelStyles(variant, required)
+
+    const getRadioStyles = (isSelected: boolean) => {
+        if (variant === 'dark') {
+            return cn(
+                'h-4 w-4 shrink-0 rounded-full border-2 transition-all duration-200',
+                'focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-1 focus:ring-offset-stone-900',
+                isSelected
+                    ? 'border-gold-500 bg-gold-500'
+                    : 'border-stone-600 bg-transparent hover:border-gold-400'
+            )
+        }
+
+        return cn(
+            'h-4 w-4 shrink-0 rounded-full border-2 transition-all duration-200',
+            'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1',
+            isSelected
+                ? 'border-primary bg-primary'
+                : 'border-border bg-background hover:border-primary/60'
+        )
+    }
+
+    const inputStyles = getInputStyles(variant)
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className={cn('space-y-3', className)}>
+                    {label && (
+                        <FormLabel className={labelStyles}>
+                            {label}
+                            {required && (
+                                <span
+                                    className={cn(
+                                        'ml-1 text-xs',
+                                        variant === 'dark'
+                                            ? 'text-gold-400'
+                                            : 'text-destructive'
+                                    )}
+                                >
+                                    *
+                                </span>
+                            )}
+                        </FormLabel>
+                    )}
+                    <FormControl>
+                        <div
+                            className={cn(
+                                'space-y-2',
+                                direction === 'horizontal' &&
+                                    'flex flex-wrap gap-4 space-y-0'
+                            )}
+                            role='radiogroup'
+                            aria-label={label}
+                        >
+                            {options.map((option) => (
+                                <label
+                                    key={option.value}
+                                    className={cn(
+                                        'flex cursor-pointer items-center gap-3',
+                                        disabled &&
+                                            'cursor-not-allowed opacity-50'
+                                    )}
+                                >
+                                    <button
+                                        type='button'
+                                        disabled={disabled}
+                                        onClick={() =>
+                                            field.onChange(option.value)
+                                        }
+                                        className={getRadioStyles(
+                                            field.value === option.value
+                                        )}
+                                        role='radio'
+                                        aria-checked={
+                                            field.value === option.value
+                                        }
+                                    >
+                                        {field.value === option.value && (
+                                            <span
+                                                className={cn(
+                                                    'block h-2 w-2 rounded-full',
+                                                    variant === 'dark'
+                                                        ? 'bg-stone-900'
+                                                        : 'bg-primary-foreground'
+                                                )}
+                                            />
+                                        )}
+                                    </button>
+                                    <span
+                                        className={cn(
+                                            'text-sm',
+                                            variant === 'dark'
+                                                ? 'text-stone-300'
+                                                : 'text-foreground'
+                                        )}
+                                    >
+                                        {option.label}
+                                    </span>
+                                </label>
+                            ))}
+                            {includeOther && (
+                                <label
+                                    className={cn(
+                                        'flex cursor-pointer items-center gap-3',
+                                        disabled &&
+                                            'cursor-not-allowed opacity-50'
+                                    )}
+                                >
+                                    <button
+                                        type='button'
+                                        disabled={disabled}
+                                        onClick={() => field.onChange('other')}
+                                        className={getRadioStyles(
+                                            field.value === 'other'
+                                        )}
+                                        role='radio'
+                                        aria-checked={field.value === 'other'}
+                                    >
+                                        {field.value === 'other' && (
+                                            <span
+                                                className={cn(
+                                                    'block h-2 w-2 rounded-full',
+                                                    variant === 'dark'
+                                                        ? 'bg-stone-900'
+                                                        : 'bg-primary-foreground'
+                                                )}
+                                            />
+                                        )}
+                                    </button>
+                                    <span
+                                        className={cn(
+                                            'text-sm',
+                                            variant === 'dark'
+                                                ? 'text-stone-300'
+                                                : 'text-foreground'
+                                        )}
+                                    >
+                                        Other
+                                    </span>
+                                </label>
+                            )}
+                        </div>
+                    </FormControl>
+                    {includeOther &&
+                        field.value === 'other' &&
+                        otherFieldName && (
+                            <FormField
+                                control={control}
+                                name={otherFieldName}
+                                render={({ field: otherField }) => (
+                                    <FormItem className='mt-2 pl-7'>
+                                        <FormControl>
+                                            <input
+                                                type='text'
+                                                {...otherField}
+                                                disabled={disabled}
+                                                placeholder={otherPlaceholder}
+                                                className={cn(
+                                                    inputStyles,
+                                                    'w-full'
+                                                )}
+                                            />
+                                        </FormControl>
+                                        <FormMessage
+                                            className={cn(
+                                                'text-xs',
+                                                variant === 'dark' &&
+                                                    'text-red-400'
+                                            )}
+                                        />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                    <FormMessage
+                        className={cn(
+                            'text-xs',
+                            variant === 'dark' && 'text-red-400'
+                        )}
+                    />
+                </FormItem>
+            )}
+        />
+    )
+}
+
+/**
+ * Props for YesNoField
+ */
+type YesNoFieldProps<TFieldValues extends FieldValues> = Omit<
+    BaseFieldProps<TFieldValues>,
+    'placeholder'
+> & {
+    /** Labels for yes/no options */
+    readonly yesLabel?: string
+    readonly noLabel?: string
+}
+
+/**
+ * YesNoField - Simple yes/no toggle (boolean)
+ */
+export function YesNoField<TFieldValues extends FieldValues>({
+    control,
+    name,
+    label,
+    disabled = false,
+    variant = 'light',
+    required = false,
+    className,
+    yesLabel = 'Yes',
+    noLabel = 'No',
+}: YesNoFieldProps<TFieldValues>) {
+    const labelStyles = getLabelStyles(variant, required)
+
+    const getButtonStyles = (isSelected: boolean) => {
+        if (variant === 'dark') {
+            return cn(
+                'flex-1 rounded-lg border-2 px-4 py-2 text-sm font-medium transition-all duration-200',
+                'focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-stone-900',
+                isSelected
+                    ? 'border-gold-500 bg-gold-500/10 text-gold-400'
+                    : 'border-stone-700 bg-transparent text-stone-400 hover:border-stone-500'
+            )
+        }
+
+        return cn(
+            'flex-1 rounded-lg border-2 px-4 py-2 text-sm font-medium transition-all duration-200',
+            'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+            isSelected
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-border bg-background text-muted-foreground hover:border-border/80'
+        )
+    }
+
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className={cn('space-y-3', className)}>
+                    {label && (
+                        <FormLabel className={labelStyles}>
+                            {label}
+                            {required && (
+                                <span
+                                    className={cn(
+                                        'ml-1 text-xs',
+                                        variant === 'dark'
+                                            ? 'text-gold-400'
+                                            : 'text-destructive'
+                                    )}
+                                >
+                                    *
+                                </span>
+                            )}
+                        </FormLabel>
+                    )}
+                    <FormControl>
+                        <div className='flex gap-3' role='radiogroup'>
+                            <button
+                                type='button'
+                                disabled={disabled}
+                                onClick={() => field.onChange(false)}
+                                className={getButtonStyles(
+                                    field.value === false
+                                )}
+                                role='radio'
+                                aria-checked={field.value === false}
+                            >
+                                {noLabel}
+                            </button>
+                            <button
+                                type='button'
+                                disabled={disabled}
+                                onClick={() => field.onChange(true)}
+                                className={getButtonStyles(
+                                    field.value === true
+                                )}
+                                role='radio'
+                                aria-checked={field.value === true}
+                            >
+                                {yesLabel}
+                            </button>
+                        </div>
+                    </FormControl>
+                    <FormMessage
+                        className={cn(
+                            'text-xs',
+                            variant === 'dark' && 'text-red-400'
+                        )}
+                    />
+                </FormItem>
+            )}
+        />
+    )
+}
