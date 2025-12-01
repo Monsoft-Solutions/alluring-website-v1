@@ -1,13 +1,63 @@
+/**
+ * ExitIntentPopup Component
+ *
+ * Lead capture popup that triggers on exit intent (desktop) or scroll depth (mobile).
+ * Submits to the unified /api/contact endpoint with EXIT_INTENT source.
+ *
+ * Features:
+ * - Desktop: Triggers when mouse leaves top of viewport
+ * - Mobile/Tablet: Triggers at 70% scroll depth
+ * - Robust phone validation using shared schema
+ * - Session-based dismissal tracking
+ */
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X, Sparkles } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@workspace/ui/components/button'
+import { Form } from '@workspace/ui/components/form'
+import { AnimatePresence, motion } from 'framer-motion'
+import { CheckCircle2, Loader2, Sparkles, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+
+import { FormFeedback, NameField, PhoneField } from '@/components/shared/forms'
+import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import {
+    CONTACT_SOURCES,
+    type LeadCaptureInput,
+    leadCaptureSchema,
+} from '@/lib/types/forms/contact-form.type'
 
 export const ExitIntentPopup = () => {
     const [isVisible, setIsVisible] = useState(false)
     const [hasTriggered, setHasTriggered] = useState(false)
+
+    const form = useForm<LeadCaptureInput>({
+        resolver: zodResolver(leadCaptureSchema),
+        defaultValues: {
+            name: '',
+            phone: '',
+        },
+    })
+
+    const handleClose = () => {
+        setIsVisible(false)
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem('alluring_popup_seen', 'true')
+        }
+    }
+
+    const { submit, state, isSubmitting, isSuccess, isError } =
+        useContactFormSubmission({
+            source: CONTACT_SOURCES.EXIT_INTENT,
+            onSuccess: () => {
+                form.reset()
+                // Auto-close after success
+                setTimeout(() => {
+                    handleClose()
+                }, 3000)
+            },
+        })
 
     useEffect(() => {
         // Check if previously dismissed in this session
@@ -51,17 +101,14 @@ export const ExitIntentPopup = () => {
         }
     }, [hasTriggered])
 
-    const handleClose = () => {
-        setIsVisible(false)
-        if (typeof window !== 'undefined') {
-            sessionStorage.setItem('alluring_popup_seen', 'true')
-        }
+    const onSubmit = async (data: LeadCaptureInput) => {
+        await submit(data)
     }
 
     return (
         <AnimatePresence>
             {isVisible && (
-                <div className='pointer-events-none fixed inset-0 z-[100] flex items-end justify-center p-0 md:items-end md:justify-end md:p-6'>
+                <div className='pointer-events-none fixed inset-0 z-100 flex items-end justify-center p-0 md:items-end md:justify-end md:p-6'>
                     {/* Mobile Backdrop - only visible on small screens to focus attention */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -83,12 +130,13 @@ export const ExitIntentPopup = () => {
                         className='border-gold-500/30 pointer-events-auto relative w-full overflow-hidden rounded-t-2xl border-t bg-stone-900 shadow-2xl md:w-[400px] md:rounded-xl md:border'
                     >
                         {/* Gold Top Line decoration */}
-                        <div className='from-gold-600 via-gold-300 to-gold-600 absolute top-0 right-0 left-0 h-1 bg-gradient-to-r'></div>
+                        <div className='from-gold-600 via-gold-300 to-gold-600 absolute top-0 right-0 left-0 h-1 bg-linear-to-r'></div>
 
                         <div className='p-6 md:p-8'>
                             <button
                                 onClick={handleClose}
                                 className='absolute top-4 right-4 rounded-full bg-stone-800/50 p-1 text-stone-500 transition-colors hover:text-white'
+                                aria-label='Close popup'
                             >
                                 <X size={16} />
                             </button>
@@ -111,36 +159,63 @@ export const ExitIntentPopup = () => {
                                 your phone.
                             </p>
 
-                            <form
-                                onSubmit={(e) => {
-                                    e.preventDefault()
-                                    handleClose()
-                                }}
-                                className='space-y-3'
-                            >
-                                <div className='space-y-1'>
-                                    <input
-                                        type='text'
-                                        placeholder='Your Name'
-                                        className='focus:border-gold-400 w-full rounded-sm border border-stone-700 bg-stone-800/50 px-4 py-3 text-base text-white placeholder-stone-500 transition-colors focus:outline-none'
-                                    />
+                            {isSuccess ? (
+                                <div className='flex items-center gap-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-400'>
+                                    <CheckCircle2 className='h-5 w-5 shrink-0' />
+                                    <p className='text-sm'>{state.message}</p>
                                 </div>
-                                <div className='space-y-1'>
-                                    <input
-                                        type='tel'
-                                        placeholder='Phone Number'
-                                        className='focus:border-gold-400 w-full rounded-sm border border-stone-700 bg-stone-800/50 px-4 py-3 text-base text-white placeholder-stone-500 transition-colors focus:outline-none'
-                                    />
-                                </div>
+                            ) : (
+                                <Form {...form}>
+                                    <form
+                                        onSubmit={form.handleSubmit(onSubmit)}
+                                        className='space-y-3'
+                                    >
+                                        <NameField
+                                            control={form.control}
+                                            name='name'
+                                            label=''
+                                            placeholder='Your Name'
+                                            disabled={isSubmitting}
+                                            variant='dark'
+                                            required={false}
+                                        />
+                                        <PhoneField
+                                            control={form.control}
+                                            name='phone'
+                                            label=''
+                                            placeholder='Phone Number'
+                                            disabled={isSubmitting}
+                                            variant='dark'
+                                            required
+                                        />
 
-                                <Button
-                                    variant='gold'
-                                    size='md'
-                                    className='w-full justify-center py-3! text-sm'
-                                >
-                                    Check Availability
-                                </Button>
-                            </form>
+                                        {isError && (
+                                            <FormFeedback
+                                                status='error'
+                                                message={state.message}
+                                                variant='dark'
+                                            />
+                                        )}
+
+                                        <Button
+                                            type='submit'
+                                            variant='gold'
+                                            size='md'
+                                            disabled={isSubmitting}
+                                            className='w-full justify-center py-3! text-sm'
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                                    Sending...
+                                                </>
+                                            ) : (
+                                                'Check Availability'
+                                            )}
+                                        </Button>
+                                    </form>
+                                </Form>
+                            )}
 
                             <p className='mt-4 text-center text-xs text-stone-600'>
                                 Respecting your privacy. No spam.

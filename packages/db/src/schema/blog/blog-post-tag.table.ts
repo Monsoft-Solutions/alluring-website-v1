@@ -1,4 +1,4 @@
-import { foreignKey, pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core'
 
 import { blogPost } from './blog-post.table'
 import { blogTag } from './blog-tag.table'
@@ -10,22 +10,19 @@ import { blogTag } from './blog-tag.table'
 export const blogPostTag = pgTable(
     'blog_post_tag',
     {
-        blogPostId: uuid('blog_post_id').notNull(),
-        tagId: uuid('tag_id').notNull(),
+        blogPostId: uuid('blog_post_id')
+            .notNull()
+            .references(() => blogPost.id, { onDelete: 'cascade' }),
+        tagId: uuid('tag_id')
+            .notNull()
+            .references(() => blogTag.id, { onDelete: 'cascade' }),
     },
     (table) => [
         {
             pk: primaryKey({ columns: [table.blogPostId, table.tagId] }),
-            blogPostFk: foreignKey({
-                columns: [table.blogPostId],
-                foreignColumns: [blogPost.id],
-                name: 'blog_post_tags_blog_post_id_fk',
-            }).onDelete('cascade'),
-            tagFk: foreignKey({
-                columns: [table.tagId],
-                foreignColumns: [blogTag.id],
-                name: 'blog_posts_tags_tag_id_fk',
-            }).onDelete('cascade'),
         },
     ]
 )
+
+export type BlogPostTag = typeof blogPostTag.$inferSelect
+export type InsertBlogPostTag = typeof blogPostTag.$inferInsert

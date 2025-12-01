@@ -23,6 +23,7 @@ export async function getPublishedPostBySlug(
             excerpt: blogPost.excerpt,
             content: blogPost.content,
             publishedAt: blogPost.publishedAt,
+            updatedAt: blogPost.updatedAt,
             readingTime: blogPost.readingTime,
             authorName: author.name,
             imageUrl: images.url,
@@ -70,6 +71,7 @@ export async function getPublishedPostBySlug(
         excerpt: row.excerpt,
         content: row.content,
         publishedAt: row.publishedAt ? row.publishedAt.toISOString() : null,
+        updatedAt: row.updatedAt ? row.updatedAt.toISOString() : null,
         readingTime: row.readingTime,
         featuredImage: row.imageUrl
             ? {

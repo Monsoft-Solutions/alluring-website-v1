@@ -2,7 +2,7 @@
  * Email Button Component
  *
  * Reusable button component for email templates.
- * Styled with Tailwind CSS for consistent design.
+ * Styled with Alluring Plastic Surgery brand colors (Gold + Stone palette).
  *
  * @module lib/email/components/EmailButton.component
  */
@@ -21,6 +21,8 @@ type EmailButtonProps = {
 
     /**
      * Button color variant
+     * - primary: Gold background (luxury CTA)
+     * - secondary: Stone background (subtle action)
      */
     variant?: 'primary' | 'secondary'
 }
@@ -28,14 +30,20 @@ type EmailButtonProps = {
 /**
  * Email button component
  *
- * Styled button with consistent design for email templates using Tailwind CSS.
- * Supports primary (blue) and secondary (gray) color variants.
+ * Styled button with consistent luxury design for email templates.
+ * Uses Alluring Plastic Surgery brand colors:
+ * - Primary: Gold background with dark text (main CTAs)
+ * - Secondary: Stone background with dark text (secondary actions)
+ *
+ * Note: Button is inline-block and should be wrapped in a centered container.
  *
  * @example
  * ```tsx
- * <EmailButton href="https://alluringplasticsurgery.com/contact" variant="primary">
- *   Contact Us
- * </EmailButton>
+ * <Section className="text-center">
+ *   <EmailButton href="https://alluringplasticsurgery.com/contact" variant="primary">
+ *     Schedule Your Consultation
+ *   </EmailButton>
+ * </Section>
  * ```
  */
 export function EmailButton({
@@ -43,13 +51,36 @@ export function EmailButton({
     children,
     variant = 'primary',
 }: EmailButtonProps) {
-    const buttonClass =
+    // Using inline styles with hex colors for maximum email client compatibility
+    // Using inline-block with constrained width for proper centering and sizing
+    const baseStyles = {
+        display: 'inline-block',
+        padding: '14px 32px',
+        borderRadius: '8px',
+        textAlign: 'center' as const,
+        fontSize: '15px',
+        fontWeight: 600,
+        textDecoration: 'none',
+        letterSpacing: '0.025em',
+        minWidth: '180px',
+        maxWidth: '280px',
+    }
+
+    const variantStyles =
         variant === 'primary'
-            ? 'block w-full rounded-md bg-blue-500 px-5 py-3 text-center text-base font-semibold text-white no-underline'
-            : 'block w-full rounded-md bg-gray-100 px-5 py-3 text-center text-base font-semibold text-gray-900 no-underline'
+            ? {
+                  backgroundColor: '#D4AF37', // Gold-500
+                  color: '#1c1917', // Stone-900
+                  border: '2px solid #D4AF37',
+              }
+            : {
+                  backgroundColor: '#f5f5f4', // Stone-100
+                  color: '#1c1917', // Stone-900
+                  border: '2px solid #e7e5e4', // Stone-200
+              }
 
     return (
-        <Button href={href} className={buttonClass}>
+        <Button href={href} style={{ ...baseStyles, ...variantStyles }}>
             {children}
         </Button>
     )

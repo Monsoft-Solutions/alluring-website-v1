@@ -149,17 +149,30 @@ export async function sendContactConfirmation(
     contactData: ContactFormData,
     submissionId: string
 ): Promise<SendEmailResult> {
+    // Early return if no email provided
+    if (!contactData.email) {
+        return {
+            success: false,
+            error: 'Email address is required for confirmation email',
+        }
+    }
+
     const subject = `Thank you for contacting ${siteConfig.business.name}`
 
     try {
+        // Extract firstName: prefer direct firstName field, otherwise extract from name
+        // Always provide a fallback to ensure we never have an empty greeting
+        const firstName =
+            contactData.firstName?.trim() ||
+            (contactData.name || '').trim().split(' ')[0] ||
+            'there'
+
         // Render email template
         const emailHtml = await render(
             ContactConfirmationEmail({
-                name: contactData.name,
+                firstName,
                 businessName: siteConfig.business.name,
                 businessEmail: siteConfig.contact.email,
-                businessPhone:
-                    siteConfig.contact.phoneDisplay || siteConfig.contact.phone,
             })
         )
 

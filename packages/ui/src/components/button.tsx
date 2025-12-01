@@ -6,7 +6,7 @@ import { motion, HTMLMotionProps } from 'framer-motion'
 import { ReactNode, ComponentPropsWithoutRef } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 
-interface ButtonProps extends HTMLMotionProps<'button'> {
+export interface ButtonProps extends HTMLMotionProps<'button'> {
     variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold' | 'default'
     size?: 'sm' | 'md' | 'lg' | 'icon'
     withArrow?: boolean

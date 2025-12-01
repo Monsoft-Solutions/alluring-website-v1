@@ -268,6 +268,7 @@ export async function run({ db }: RunProps) {
                     ...postData,
                     authorId: teamAuthor.id,
                     featuredImageId,
+                    updatedAt: new Date(),
                 })
                 .returning()
 

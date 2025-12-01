@@ -116,8 +116,13 @@ export const Footer = () => {
                             <li className='cursor-pointer transition-colors hover:text-white'>
                                 Patient Reviews
                             </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Blog & Education
+                            <li>
+                                <Link
+                                    href='/blog'
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    Blog & Education
+                                </Link>
                             </li>
                         </ul>
                     </div>

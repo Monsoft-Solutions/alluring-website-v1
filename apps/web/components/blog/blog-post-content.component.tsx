@@ -35,13 +35,21 @@ export function BlogPostContent({
     afterCTA,
     ctaId,
 }: BlogPostContentProps) {
-    const publishedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-          })
-        : null
+    // Guard: publishedAt is required for published posts
+    if (!post.publishedAt) {
+        throw new Error(
+            `BlogPostContent: publishedAt is required for published post "${post.slug}"`
+        )
+    }
+
+    const publishedDate = new Date(post.publishedAt).toLocaleDateString(
+        'en-US',
+        {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }
+    )
 
     return (
         <ContainerLayout as='article' size='lg' className='py-16 lg:py-20'>
@@ -78,24 +86,16 @@ export function BlogPostContent({
                                     {post.author.name}
                                 </span>
                             )}
-                            {publishedDate && (
-                                <>
-                                    <span
-                                        className='text-muted-foreground/30'
-                                        aria-hidden='true'
-                                    >
-                                        •
-                                    </span>
-                                    <time
-                                        dateTime={post.publishedAt ?? undefined}
-                                    >
-                                        <span className='sr-only'>
-                                            Published on{' '}
-                                        </span>
-                                        {publishedDate}
-                                    </time>
-                                </>
-                            )}
+                            <span
+                                className='text-muted-foreground/30'
+                                aria-hidden='true'
+                            >
+                                •
+                            </span>
+                            <time dateTime={post.publishedAt}>
+                                <span className='sr-only'>Published on </span>
+                                {publishedDate}
+                            </time>
                             {post.readingTime && (
                                 <>
                                     <span
@@ -153,11 +153,13 @@ export function BlogPostContent({
                         type='BlogPosting'
                         headline={post.title}
                         description={post.excerpt ?? undefined}
-                        author={post.author?.name ?? 'Unknown'}
-                        datePublished={
-                            post.publishedAt ?? new Date().toISOString()
+                        author={
+                            post.author?.name ??
+                            seoConfig.organization?.name ??
+                            seoConfig.siteName
                         }
-                        dateModified={post.publishedAt ?? undefined}
+                        datePublished={post.publishedAt}
+                        dateModified={post.updatedAt ?? undefined}
                         image={post.featuredImage?.url}
                         mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
                         publisher={{
