@@ -78,7 +78,7 @@ function getInputStyles(variant: FormFieldVariant) {
 /**
  * Get label styles based on variant
  */
-function getLabelStyles(variant: FormFieldVariant, required?: boolean) {
+function getLabelStyles(variant: FormFieldVariant, _required?: boolean) {
     const base =
         variant === 'dark'
             ? 'text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
@@ -762,7 +762,6 @@ type CheckboxFieldProps<TFieldValues extends FieldValues> = Omit<
 export function CheckboxField<TFieldValues extends FieldValues>({
     control,
     name,
-    label,
     disabled = false,
     variant = 'light',
     required = false,
@@ -780,6 +779,7 @@ export function CheckboxField<TFieldValues extends FieldValues>({
                             <FormControl>
                                 <input
                                     type='checkbox'
+                                    id={name}
                                     checked={field.value as boolean}
                                     onChange={field.onChange}
                                     disabled={disabled}
@@ -819,6 +819,7 @@ export function CheckboxField<TFieldValues extends FieldValues>({
                         <FormControl>
                             <input
                                 type='checkbox'
+                                id={name}
                                 checked={field.value as boolean}
                                 onChange={field.onChange}
                                 disabled={disabled}
