@@ -7,7 +7,7 @@
  *
  * @module lib/email/components/EmailFooter.component
  */
-import { Column, Hr, Link, Row, Section, Text } from '@react-email/components'
+import { Hr, Link, Section, Text } from '@react-email/components'
 
 import { getFullAddress, siteConfig } from '@/lib/data/site-config'
 
@@ -33,9 +33,28 @@ const quickLinks = [
  * <EmailFooter />
  * ```
  */
+/**
+ * Formats business hours array into a display string
+ * Filters out closed days and joins with separator
+ *
+ * @example "Mon-Fri: 9AM-5PM · Sat: 9AM-3PM"
+ */
+function formatBusinessHours(): string {
+    const hours = siteConfig.contact.businessHours
+    if (!hours || hours.length === 0) {
+        return ''
+    }
+
+    return hours
+        .filter((h) => h.open !== 'Closed' && h.close !== 'Closed')
+        .map((h) => `${h.days}: ${h.open}-${h.close}`)
+        .join(' · ')
+}
+
 export function EmailFooter() {
     const currentYear = new Date().getFullYear()
     const siteUrl = siteConfig.seo.siteUrl
+    const businessHoursDisplay = formatBusinessHours()
 
     return (
         <Section className='bg-stone-50 px-10 py-8'>
@@ -108,9 +127,11 @@ export function EmailFooter() {
             </Text>
 
             {/* Business Hours */}
-            <Text className='m-0 mt-3 text-center text-xs text-stone-400'>
-                Mon-Fri: 9AM-5PM · Sat: 9AM-3PM
-            </Text>
+            {businessHoursDisplay && (
+                <Text className='m-0 mt-3 text-center text-xs text-stone-400'>
+                    {businessHoursDisplay}
+                </Text>
+            )}
 
             <Hr className='my-6 border-stone-200' />
 
