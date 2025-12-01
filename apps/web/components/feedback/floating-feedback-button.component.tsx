@@ -38,7 +38,7 @@ export function FloatingFeedbackButton() {
     return (
         <>
             {/* Floating Button Container */}
-            <div className='fixed right-6 bottom-6 z-50 flex flex-col items-end gap-3'>
+            <div className='items-left fixed bottom-4 left-4 z-50 flex flex-col gap-3'>
                 {/* Menu Items */}
                 <div
                     className={cn(
@@ -89,7 +89,7 @@ export function FloatingFeedbackButton() {
                 <button
                     onClick={toggleMenu}
                     className={cn(
-                        'group relative flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300',
+                        'group relative flex h-10 w-10 items-center justify-center rounded-full shadow-lg transition-all duration-300',
                         'bg-primary hover:bg-primary/90 text-primary-foreground',
                         'focus:ring-primary focus:ring-2 focus:ring-offset-2 focus:outline-none',
                         isMenuOpen && 'rotate-0'
@@ -121,7 +121,7 @@ export function FloatingFeedbackButton() {
                     {/* Beta badge */}
                     {!isMenuOpen && (
                         <span className='absolute -top-1 -right-1 flex h-5 items-center justify-center rounded-full bg-amber-500 px-1.5 text-[10px] font-bold text-white shadow'>
-                            BETA
+                            FEEDBACK
                         </span>
                     )}
                 </button>
