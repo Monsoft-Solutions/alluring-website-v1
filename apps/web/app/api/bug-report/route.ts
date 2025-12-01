@@ -12,6 +12,7 @@ import { ZodError } from 'zod'
 import { db } from '@workspace/db/client'
 import { bugReport, type InsertBugReport } from '@workspace/db/schema/feedback'
 
+import { siteConfig } from '@/lib/data/site-config'
 import { sendBugReportNotification } from '@/lib/services/email.service'
 import {
     type BugReportFormData,
@@ -191,10 +192,24 @@ export async function POST(
 /**
  * OPTIONS handler for CORS preflight requests
  */
-export async function OPTIONS(): Promise<NextResponse> {
+export async function OPTIONS(request: NextRequest): Promise<NextResponse> {
+    // Get the origin from the request header
+    const requestOrigin = request.headers.get('origin')
+
+    // Use site URL from config as the allowed origin
+    const allowedOrigin = siteConfig.seo.siteUrl
+
+    // Echo the request origin if it matches the site URL, otherwise use the configured site URL
+    // This allows cross-origin requests from the same site and provides a safe fallback
+    const origin =
+        requestOrigin && requestOrigin === allowedOrigin
+            ? requestOrigin
+            : allowedOrigin
+
     return new NextResponse(null, {
         status: 204,
         headers: {
+            'Access-Control-Allow-Origin': origin,
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
         },
