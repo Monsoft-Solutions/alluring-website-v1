@@ -239,7 +239,6 @@ export function ConsultationForm({
                             <Link
                                 href='/privacy'
                                 className='text-gold-400 hover:text-gold-300 underline'
-                                target='_blank'
                             >
                                 Privacy Policy
                             </Link>{' '}
@@ -247,7 +246,6 @@ export function ConsultationForm({
                             <Link
                                 href='/terms'
                                 className='text-gold-400 hover:text-gold-300 underline'
-                                target='_blank'
                             >
                                 Terms
                             </Link>
