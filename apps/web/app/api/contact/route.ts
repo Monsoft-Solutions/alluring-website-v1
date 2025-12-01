@@ -342,11 +342,11 @@ export async function POST(
 
                 await sendContactNotification(
                     {
-                        name: validatedData.name,
+                        name: fullName,
                         email: '',
                         phone: validatedData.phone,
-                        subject: `${sourceLabel} Lead: ${validatedData.name} - Callback Requested`,
-                        message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${validatedData.name}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
+                        subject: `${sourceLabel} Lead: ${fullName} - Callback Requested`,
+                        message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${fullName}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
                     },
                     submission.id
                 )

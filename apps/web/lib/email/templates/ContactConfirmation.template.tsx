@@ -53,12 +53,24 @@ const resourceLinks = [
 
 /**
  * Trust statistics for credibility
+ * Transformed from siteConfig.trustStats to match template format
  */
-const trustStats = [
-    { value: '5,000+', label: 'Happy Patients' },
-    { value: '15+', label: 'Years Experience' },
-    { value: 'AAAASF', label: 'Accredited' },
-]
+const trustStats = siteConfig.trustStats
+    ? [
+          {
+              value: siteConfig.trustStats.patients,
+              label: 'Happy Patients',
+          },
+          {
+              value: siteConfig.trustStats.years,
+              label: 'Years Experience',
+          },
+          {
+              value: siteConfig.trustStats.accreditation || '',
+              label: 'Accredited',
+          },
+      ]
+    : []
 
 /**
  * Contact confirmation email template

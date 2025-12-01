@@ -431,9 +431,10 @@ export type ConsultationFormData = z.output<typeof consultationFormSchema>
 /**
  * Lead capture schema - minimal fields for conversion-focused forms
  * Used by: BlogCTA footer, ExitIntentPopup, LeadForm
+ * Name is optional to minimize friction in lead capture forms
  */
 export const leadCaptureSchema = z.object({
-    name: nameSchema,
+    name: nameSchema.optional(),
     phone: requiredPhoneSchema,
 })
 
