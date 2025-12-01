@@ -396,18 +396,20 @@ export function BlogCTA({
                     )}
 
                     {/* Alternative: Call directly */}
-                    <div className='mt-8 border-t border-stone-700/50 pt-8 text-center'>
-                        <p className='mb-3 text-sm text-stone-400'>
-                            Or call us directly
-                        </p>
-                        <a
-                            href={`tel:${footerCTAConfig.phoneNumber.replace(/[\s()-]/g, '')}`}
-                            className='hover:text-gold-400 inline-flex items-center gap-2 text-xl font-bold text-white transition-colors'
-                        >
-                            <Phone className='h-5 w-5' />
-                            {footerCTAConfig.phoneNumber}
-                        </a>
-                    </div>
+                    {footerCTAConfig.phoneNumber && (
+                        <div className='mt-8 border-t border-stone-700/50 pt-8 text-center'>
+                            <p className='mb-3 text-sm text-stone-400'>
+                                Or call us directly
+                            </p>
+                            <a
+                                href={`tel:${footerCTAConfig.phoneNumber.replace(/[\s()-]/g, '')}`}
+                                className='hover:text-gold-400 inline-flex items-center gap-2 text-xl font-bold text-white transition-colors'
+                            >
+                                <Phone className='h-5 w-5' />
+                                {footerCTAConfig.phoneNumber}
+                            </a>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
