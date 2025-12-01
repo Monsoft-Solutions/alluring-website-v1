@@ -36,6 +36,13 @@
       "when": 1764526027655,
       "tag": "0004_silky_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1764552090423,
+      "tag": "0005_flashy_triathlon",
+      "breakpoints": true
     }
   ]
 }
