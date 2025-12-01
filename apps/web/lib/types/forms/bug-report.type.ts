@@ -137,6 +137,9 @@ export function detectDeviceInfo(): {
     const ua = navigator.userAgent.toLowerCase()
 
     // Detect device type
+    // Note: UA-based laptop detection is not reliable as user agents contain OS info
+    // (e.g., "Macintosh", "Windows NT") rather than device form factors.
+    // Use client-side screen-size heuristics if laptop detection is required.
     let deviceType = 'desktop'
     if (/iphone/.test(ua)) {
         deviceType = 'mobile-iphone'
@@ -144,9 +147,8 @@ export function detectDeviceInfo(): {
         deviceType = 'mobile-android'
     } else if (/ipad/.test(ua) || (/android/.test(ua) && !/mobile/.test(ua))) {
         deviceType = 'tablet'
-    } else if (/macbook|laptop/.test(ua)) {
-        deviceType = 'laptop'
     }
+    // All other cases (including laptops) default to 'desktop'
 
     // Detect browser
     let browserType = 'other'
