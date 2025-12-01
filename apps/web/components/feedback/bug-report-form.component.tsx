@@ -35,6 +35,7 @@ import {
     bugReportFormSchema,
     detectDeviceInfo,
 } from '@/lib/types/forms/bug-report.type'
+import { detectUserEnvironment } from '@/lib/utils/user-agent.util'
 
 type BugReportFormProps = {
     readonly isOpen: boolean
@@ -54,13 +55,33 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
     // Auto-detect device info when dialog opens
     useEffect(() => {
         if (isOpen && typeof window !== 'undefined') {
-            const deviceInfo = detectDeviceInfo()
+            // Use the shared detection utility for better accuracy
+            const { browser, device, metadata } = detectUserEnvironment()
+
+            // Legacy detection for browser version (not in shared utility)
+            const legacyInfo = detectDeviceInfo()
+
+            // Set basic info
             form.setValue('pageUrl', window.location.href)
-            form.setValue('deviceType', deviceInfo.deviceType)
-            form.setValue('browserType', deviceInfo.browserType)
-            form.setValue('browserVersion', deviceInfo.browserVersion)
-            form.setValue('screenSize', deviceInfo.screenSize)
+            form.setValue('deviceType', device)
+            form.setValue('browserType', browser)
+            form.setValue('browserVersion', legacyInfo.browserVersion)
+            form.setValue(
+                'screenSize',
+                `${metadata.viewportWidth}x${metadata.viewportHeight}`
+            )
             form.setValue('userAgent', navigator.userAgent)
+
+            // Set enhanced metadata
+            form.setValue('screenWidth', metadata.screenWidth)
+            form.setValue('screenHeight', metadata.screenHeight)
+            form.setValue('viewportWidth', metadata.viewportWidth)
+            form.setValue('viewportHeight', metadata.viewportHeight)
+            form.setValue('devicePixelRatio', metadata.devicePixelRatio)
+            form.setValue('timezone', metadata.timezone)
+            form.setValue('language', metadata.language)
+            form.setValue('referrer', metadata.referrer)
+            form.setValue('connectionType', metadata.connectionType)
         }
     }, [isOpen, form])
 
@@ -221,11 +242,24 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
                                         {form.watch('browserType') || '...'}{' '}
                                         {form.watch('browserVersion')}
                                     </div>
-                                    <div className='col-span-2'>
+                                    <div>
+                                        <span className='font-medium'>
+                                            Viewport:
+                                        </span>{' '}
+                                        {form.watch('screenSize') || '...'}
+                                    </div>
+                                    <div>
                                         <span className='font-medium'>
                                             Screen:
                                         </span>{' '}
-                                        {form.watch('screenSize') || '...'}
+                                        {form.watch('screenWidth') &&
+                                        form.watch('screenHeight')
+                                            ? `${form.watch('screenWidth')}x${form.watch('screenHeight')}`
+                                            : '...'}
+                                        {form.watch('devicePixelRatio') &&
+                                        form.watch('devicePixelRatio') !== 1
+                                            ? ` @${form.watch('devicePixelRatio')}x`
+                                            : ''}
                                     </div>
                                 </div>
                             </div>

@@ -57,6 +57,13 @@
       "when": 1764598238710,
       "tag": "0007_easy_metal_master",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1764598693494,
+      "tag": "0008_wide_metal_master",
+      "breakpoints": true
     }
   ]
 }

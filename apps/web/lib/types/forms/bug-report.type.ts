@@ -49,6 +49,19 @@ export const bugReportFormSchema = z.object({
 
     // Technical metadata (auto-filled)
     userAgent: z.string().optional(),
+
+    // Screen & viewport dimensions (structured)
+    screenWidth: z.number().int().nonnegative().optional(),
+    screenHeight: z.number().int().nonnegative().optional(),
+    viewportWidth: z.number().int().nonnegative().optional(),
+    viewportHeight: z.number().int().nonnegative().optional(),
+    devicePixelRatio: z.number().positive().optional(),
+
+    // Environment metadata
+    timezone: z.string().optional(),
+    language: z.string().optional(),
+    referrer: z.string().optional(),
+    connectionType: z.string().optional(),
 })
 
 /**
@@ -63,6 +76,8 @@ export type BugReportFormData = z.output<typeof bugReportFormSchema>
 
 /**
  * Default values for bug report form
+ * Note: Device/browser info and metadata are populated dynamically
+ * via useEffect in the form component using the user-agent detection utilities.
  */
 export const bugReportDefaultValues: Partial<BugReportFormInput> = {
     pageUrl: '',
@@ -77,6 +92,16 @@ export const bugReportDefaultValues: Partial<BugReportFormInput> = {
     screenSize: '',
     reporterEmail: '',
     reporterName: '',
+    // Metadata fields (auto-populated on client)
+    screenWidth: undefined,
+    screenHeight: undefined,
+    viewportWidth: undefined,
+    viewportHeight: undefined,
+    devicePixelRatio: undefined,
+    timezone: undefined,
+    language: undefined,
+    referrer: undefined,
+    connectionType: undefined,
 }
 
 /**
@@ -91,6 +116,8 @@ export type BugReportResponse = {
 
 /**
  * Helper to detect device info from user agent
+ * @deprecated Use detectUserEnvironment from '@/lib/utils/user-agent.util' instead
+ * for more comprehensive detection including User-Agent Client Hints.
  */
 export function detectDeviceInfo(): {
     deviceType: string

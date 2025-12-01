@@ -6,7 +6,14 @@
  *
  * @module packages/db/src/schema/feedback/bug-report.table
  */
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import {
+    integer,
+    pgTable,
+    real,
+    text,
+    timestamp,
+    uuid,
+} from 'drizzle-orm/pg-core'
 
 /**
  * Bug severity levels
@@ -63,6 +70,19 @@ export const bugReport = pgTable('bug_report', {
     // Technical metadata
     userAgent: text('user_agent'),
     ipAddress: text('ip_address'),
+
+    // Screen & viewport dimensions (structured)
+    screenWidth: integer('screen_width'),
+    screenHeight: integer('screen_height'),
+    viewportWidth: integer('viewport_width'),
+    viewportHeight: integer('viewport_height'),
+    devicePixelRatio: real('device_pixel_ratio'),
+
+    // Environment metadata
+    timezone: text('timezone'),
+    language: text('language'),
+    referrer: text('referrer'),
+    connectionType: text('connection_type'),
 
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')

@@ -51,6 +51,17 @@ function formatForLog(data: BugReportFormData): Record<string, unknown> {
         hasDescription: Boolean(data.description),
         hasSteps: Boolean(data.stepsToReproduce),
         reporterProvided: Boolean(data.reporterEmail || data.reporterName),
+        // Environment metadata
+        viewport: data.viewportWidth
+            ? `${data.viewportWidth}x${data.viewportHeight}`
+            : data.screenSize,
+        screen: data.screenWidth
+            ? `${data.screenWidth}x${data.screenHeight}`
+            : undefined,
+        devicePixelRatio: data.devicePixelRatio,
+        timezone: data.timezone,
+        language: data.language,
+        connectionType: data.connectionType,
     }
 }
 
@@ -100,6 +111,17 @@ export async function POST(
             userAgent: validatedData.userAgent,
             ipAddress: clientIP,
             status: 'new',
+            // Screen & viewport dimensions
+            screenWidth: validatedData.screenWidth,
+            screenHeight: validatedData.screenHeight,
+            viewportWidth: validatedData.viewportWidth,
+            viewportHeight: validatedData.viewportHeight,
+            devicePixelRatio: validatedData.devicePixelRatio,
+            // Environment metadata
+            timezone: validatedData.timezone,
+            language: validatedData.language,
+            referrer: validatedData.referrer,
+            connectionType: validatedData.connectionType,
         }
 
         // Insert into database
