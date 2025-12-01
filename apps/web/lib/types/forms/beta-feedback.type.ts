@@ -130,6 +130,19 @@ export const betaFeedbackFormSchema = z
         // Metadata (auto-filled)
         userAgent: z.string().optional(),
         pageUrl: z.string().optional(),
+
+        // Screen & viewport dimensions
+        screenWidth: z.number().int().nonnegative().optional(),
+        screenHeight: z.number().int().nonnegative().optional(),
+        viewportWidth: z.number().int().nonnegative().optional(),
+        viewportHeight: z.number().int().nonnegative().optional(),
+        devicePixelRatio: z.number().positive().optional(),
+
+        // Environment metadata
+        timezone: z.string().optional(),
+        language: z.string().optional(),
+        referrer: z.string().optional(),
+        connectionType: z.string().optional(),
     })
     .superRefine((data, ctx) => {
         // Validate "Other" device type requires description
@@ -204,6 +217,8 @@ export type BetaFeedbackFormData = z.output<typeof betaFeedbackFormSchema>
 
 /**
  * Default values for beta feedback form
+ * Note: deviceType, browserType, and metadata fields are populated dynamically
+ * via useEffect in the form component using the user-agent detection utilities.
  */
 export const betaFeedbackDefaultValues: Partial<BetaFeedbackFormInput> = {
     deviceType: '',
@@ -226,6 +241,16 @@ export const betaFeedbackDefaultValues: Partial<BetaFeedbackFormInput> = {
     recommendations: '',
     wantsUxTesting: false,
     email: '',
+    // Metadata fields (auto-populated on client)
+    screenWidth: undefined,
+    screenHeight: undefined,
+    viewportWidth: undefined,
+    viewportHeight: undefined,
+    devicePixelRatio: undefined,
+    timezone: undefined,
+    language: undefined,
+    referrer: undefined,
+    connectionType: undefined,
 }
 
 /**

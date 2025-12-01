@@ -10,6 +10,7 @@ import {
     boolean,
     integer,
     pgTable,
+    real,
     text,
     timestamp,
     uuid,
@@ -98,6 +99,19 @@ export const betaFeedback = pgTable('beta_feedback', {
     userAgent: text('user_agent'),
     ipAddress: text('ip_address'),
     pageUrl: text('page_url'),
+
+    // Screen & viewport dimensions
+    screenWidth: integer('screen_width'),
+    screenHeight: integer('screen_height'),
+    viewportWidth: integer('viewport_width'),
+    viewportHeight: integer('viewport_height'),
+    devicePixelRatio: real('device_pixel_ratio'),
+
+    // Environment metadata
+    timezone: text('timezone'),
+    language: text('language'),
+    referrer: text('referrer'),
+    connectionType: text('connection_type'),
 
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')

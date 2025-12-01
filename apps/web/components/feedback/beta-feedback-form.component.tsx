@@ -18,9 +18,18 @@ import {
 } from '@workspace/ui/components/dialog'
 import { Form } from '@workspace/ui/components/form'
 import { cn } from '@workspace/ui/lib/utils'
-import { ArrowLeft, ArrowRight, Loader2, Send, X } from 'lucide-react'
-import { useState } from 'react'
+import {
+    AlertCircle,
+    ArrowLeft,
+    ArrowRight,
+    Loader2,
+    Send,
+    X,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
+import { detectUserEnvironment } from '@/lib/utils/user-agent.util'
 
 import {
     EmailField,
@@ -52,6 +61,8 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
     const [currentStep, setCurrentStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const [isAutoDetected, setIsAutoDetected] = useState(false)
 
     const form = useForm<BetaFeedbackFormInput>({
         resolver: zodResolver(betaFeedbackFormSchema),
@@ -63,7 +74,34 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
         mode: 'onChange',
     })
 
-    const { watch, trigger } = form
+    const { watch, trigger, setValue } = form
+
+    /**
+     * Auto-detect browser, device, and collect metadata when form opens
+     */
+    useEffect(() => {
+        if (isOpen && typeof window !== 'undefined') {
+            const { browser, device, metadata } = detectUserEnvironment()
+
+            // Pre-fill browser and device type
+            setValue('deviceType', device)
+            setValue('browserType', browser)
+            setIsAutoDetected(true)
+
+            // Set metadata fields
+            setValue('userAgent', navigator.userAgent)
+            setValue('pageUrl', window.location.href)
+            setValue('screenWidth', metadata.screenWidth)
+            setValue('screenHeight', metadata.screenHeight)
+            setValue('viewportWidth', metadata.viewportWidth)
+            setValue('viewportHeight', metadata.viewportHeight)
+            setValue('devicePixelRatio', metadata.devicePixelRatio)
+            setValue('timezone', metadata.timezone)
+            setValue('language', metadata.language)
+            setValue('referrer', metadata.referrer)
+            setValue('connectionType', metadata.connectionType)
+        }
+    }, [isOpen, setValue])
 
     // Watch conditional fields
     const deviceType = watch('deviceType')
@@ -141,6 +179,7 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
 
     const handleSubmit = async (data: BetaFeedbackFormInput) => {
         setIsSubmitting(true)
+        setErrorMessage(null)
         try {
             const response = await fetch('/api/feedback', {
                 method: 'POST',
@@ -159,9 +198,16 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
             } else {
                 const error = await response.json()
                 console.error('Feedback submission failed:', error)
+                setErrorMessage(
+                    error?.message ||
+                        'Failed to submit feedback. Please try again.'
+                )
             }
         } catch (error) {
             console.error('Feedback submission error:', error)
+            setErrorMessage(
+                'An unexpected error occurred. Please check your connection and try again.'
+            )
         } finally {
             setIsSubmitting(false)
         }
@@ -170,6 +216,8 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
     const handleClose = () => {
         onClose()
         setCurrentStep(1)
+        setErrorMessage(null)
+        setIsAutoDetected(false)
         form.reset()
     }
 
@@ -208,6 +256,32 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
                             currentStep={currentStep}
                             totalSteps={FEEDBACK_FORM_STEPS}
                         />
+
+                        {/* Error Message Display */}
+                        {errorMessage && (
+                            <div
+                                className='flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-red-800'
+                                role='alert'
+                            >
+                                <AlertCircle className='mt-0.5 h-5 w-5 flex-shrink-0' />
+                                <div className='flex-1'>
+                                    <p className='text-sm font-medium'>
+                                        Submission Failed
+                                    </p>
+                                    <p className='mt-1 text-sm'>
+                                        {errorMessage}
+                                    </p>
+                                </div>
+                                <button
+                                    type='button'
+                                    onClick={() => setErrorMessage(null)}
+                                    className='text-red-600 hover:text-red-800'
+                                    aria-label='Dismiss error'
+                                >
+                                    <X className='h-4 w-4' />
+                                </button>
+                            </div>
+                        )}
 
                         <Form {...form}>
                             <form
@@ -248,6 +322,19 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
                                 {/* Step 2: Basic Information */}
                                 {currentStep === 2 && (
                                     <div className='space-y-6'>
+                                        {isAutoDetected && (
+                                            <div className='bg-primary/5 border-primary/20 rounded-lg border p-3'>
+                                                <p className='text-muted-foreground text-sm'>
+                                                    <span className='text-primary font-medium'>
+                                                        Auto-detected:
+                                                    </span>{' '}
+                                                    We&apos;ve pre-filled your
+                                                    device and browser. Feel
+                                                    free to change if incorrect.
+                                                </p>
+                                            </div>
+                                        )}
+
                                         <RadioGroupField
                                             control={form.control}
                                             name='deviceType'

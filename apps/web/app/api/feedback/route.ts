@@ -58,6 +58,17 @@ function formatForLog(data: BetaFeedbackFormData): Record<string, unknown> {
         overallSatisfactionRating: data.overallSatisfactionRating,
         wantsUxTesting: data.wantsUxTesting,
         email: data.email ? '[PROVIDED]' : 'Not provided',
+        // Environment metadata
+        viewport: data.viewportWidth
+            ? `${data.viewportWidth}x${data.viewportHeight}`
+            : undefined,
+        screen: data.screenWidth
+            ? `${data.screenWidth}x${data.screenHeight}`
+            : undefined,
+        devicePixelRatio: data.devicePixelRatio,
+        timezone: data.timezone,
+        language: data.language,
+        connectionType: data.connectionType,
     }
 }
 
@@ -116,6 +127,17 @@ export async function POST(
             userAgent: validatedData.userAgent,
             pageUrl: validatedData.pageUrl,
             ipAddress: clientIP,
+            // Screen & viewport dimensions
+            screenWidth: validatedData.screenWidth,
+            screenHeight: validatedData.screenHeight,
+            viewportWidth: validatedData.viewportWidth,
+            viewportHeight: validatedData.viewportHeight,
+            devicePixelRatio: validatedData.devicePixelRatio,
+            // Environment metadata
+            timezone: validatedData.timezone,
+            language: validatedData.language,
+            referrer: validatedData.referrer,
+            connectionType: validatedData.connectionType,
         }
 
         // Insert into database

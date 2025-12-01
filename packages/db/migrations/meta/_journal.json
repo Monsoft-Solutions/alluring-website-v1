@@ -50,6 +50,13 @@
       "when": 1764592615860,
       "tag": "0006_normal_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1764598238710,
+      "tag": "0007_easy_metal_master",
+      "breakpoints": true
     }
   ]
 }
