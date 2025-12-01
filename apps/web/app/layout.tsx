@@ -6,6 +6,7 @@ import { AnalyticsProvider } from '@/components/analytics/analytics-provider.com
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
 import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
+import { FloatingFeedbackButton } from '@/components/feedback'
 import { Footer } from '@/components/layout/footer.component'
 import { Header } from '@/components/layout/header.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -55,6 +56,9 @@ export default function RootLayout({
     // Check if mobile call button should be enabled (default: true)
     const isMobileCallButtonEnabled =
         env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON !== 'false'
+
+    // Check if beta mode is enabled (shows feedback button)
+    const isBetaMode = env.NEXT_PUBLIC_BETA_MODE === 'true'
 
     return (
         <html lang='en' className='scroll-smooth'>
@@ -112,6 +116,8 @@ export default function RootLayout({
                             isBanner={false}
                         />
                     )}
+                    {/* Beta Feedback Button - visible during beta testing */}
+                    {isBetaMode && <FloatingFeedbackButton />}
                 </Providers>
             </body>
         </html>

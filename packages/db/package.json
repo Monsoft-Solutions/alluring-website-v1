@@ -8,6 +8,7 @@
         "./schema/blog": "./src/schema/blog/index.ts",
         "./schema/contact": "./src/schema/contact/index.ts",
         "./schema/emails": "./src/schema/emails/index.ts",
+        "./schema/feedback": "./src/schema/feedback/index.ts",
         "./types": "./src/schema/contact/contact-submission.table.ts"
     },
     "scripts": {

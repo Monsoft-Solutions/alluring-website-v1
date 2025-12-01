@@ -64,6 +64,9 @@ export const env = createEnv({
 
         // Crawling control (optional, defaults to 'false' to block crawling)
         NEXT_PUBLIC_ALLOW_CRAWLING: z.enum(['true', 'false']).optional(),
+
+        // Beta mode - enables feedback button on all pages
+        NEXT_PUBLIC_BETA_MODE: z.enum(['true', 'false']).optional(),
     },
     shared: {
         NODE_ENV: z
@@ -90,6 +93,7 @@ export const env = createEnv({
         NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON:
             process.env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON,
         NEXT_PUBLIC_ALLOW_CRAWLING: process.env.NEXT_PUBLIC_ALLOW_CRAWLING,
+        NEXT_PUBLIC_BETA_MODE: process.env.NEXT_PUBLIC_BETA_MODE,
         NODE_ENV: process.env.NODE_ENV,
     },
 

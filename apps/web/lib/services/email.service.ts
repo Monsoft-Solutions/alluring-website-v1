@@ -14,14 +14,18 @@ import { emailLog, type InsertEmailLog } from '@workspace/db/schema/emails'
 
 import { env } from '@/env'
 import { siteConfig } from '@/lib/data/site-config'
+import type { BetaFeedbackFormData } from '@/lib/types/forms/beta-feedback.type'
+import type { BugReportFormData } from '@/lib/types/forms/bug-report.type'
 import type { ContactFormData } from '@/lib/types/forms/contact-form.type'
 import type {
     SendContactEmailsResult,
     SendEmailResult,
 } from '@/lib/types/email/email-service.type'
 
+import { BugReportNotificationEmail } from '../email/templates/BugReportNotification.template'
 import { ContactConfirmationEmail } from '../email/templates/ContactConfirmation.template'
 import { ContactNotificationEmail } from '../email/templates/ContactNotification.template'
+import { FeedbackNotificationEmail } from '../email/templates/FeedbackNotification.template'
 
 /**
  * Initialize Resend client with API key
@@ -275,5 +279,119 @@ export async function sendContactEmails(
         notificationSent: notificationResult.success,
         confirmationSent: confirmationResult.success,
         errors,
+    }
+}
+
+/**
+ * Send feedback notification email to site owner
+ *
+ * Sends an email with beta feedback submission details.
+ *
+ * @param feedbackData - Beta feedback form submission data
+ * @param feedbackId - Database ID of the feedback submission
+ * @returns Promise resolving to send result
+ */
+export async function sendFeedbackNotification(
+    feedbackData: BetaFeedbackFormData,
+    feedbackId: string
+): Promise<SendEmailResult> {
+    const subject = `Beta Website Feedback - Overall: ${feedbackData.overallSatisfactionRating}/5`
+
+    try {
+        // Render email template
+        const emailHtml = await render(
+            FeedbackNotificationEmail({
+                feedbackData,
+                submittedAt: new Date().toISOString(),
+                feedbackId,
+            })
+        )
+
+        // Send email via Resend
+        const { data, error } = await resend.emails.send({
+            from: env.RESEND_FROM_EMAIL,
+            to: env.OWNER_EMAIL,
+            subject,
+            html: emailHtml,
+        })
+
+        if (error) {
+            console.error('Failed to send feedback notification:', error)
+            return {
+                success: false,
+                error: error.message || 'Failed to send email',
+            }
+        }
+
+        return {
+            success: true,
+            emailId: data?.id,
+        }
+    } catch (error) {
+        console.error('Error sending feedback notification:', error)
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        }
+    }
+}
+
+/**
+ * Send bug report notification email to site owner
+ *
+ * Sends an email with bug report details.
+ *
+ * @param bugData - Bug report form submission data
+ * @param bugId - Database ID of the bug report
+ * @returns Promise resolving to send result
+ */
+export async function sendBugReportNotification(
+    bugData: BugReportFormData,
+    bugId: string
+): Promise<SendEmailResult> {
+    const severityEmoji =
+        bugData.severity === 'critical'
+            ? '🚨'
+            : bugData.severity === 'high'
+              ? '⚠️'
+              : '🐛'
+    const subject = `${severityEmoji} Bug Report [${bugData.severity?.toUpperCase()}]: ${bugData.description.slice(0, 50)}...`
+
+    try {
+        // Render email template
+        const emailHtml = await render(
+            BugReportNotificationEmail({
+                bugData,
+                submittedAt: new Date().toISOString(),
+                bugId,
+            })
+        )
+
+        // Send email via Resend
+        const { data, error } = await resend.emails.send({
+            from: env.RESEND_FROM_EMAIL,
+            to: env.OWNER_EMAIL,
+            subject,
+            html: emailHtml,
+        })
+
+        if (error) {
+            console.error('Failed to send bug report notification:', error)
+            return {
+                success: false,
+                error: error.message || 'Failed to send email',
+            }
+        }
+
+        return {
+            success: true,
+            emailId: data?.id,
+        }
+    } catch (error) {
+        console.error('Error sending bug report notification:', error)
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        }
     }
 }
