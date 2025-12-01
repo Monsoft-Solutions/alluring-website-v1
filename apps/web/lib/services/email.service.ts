@@ -160,10 +160,17 @@ export async function sendContactConfirmation(
     const subject = `Thank you for contacting ${siteConfig.business.name}`
 
     try {
+        // Extract firstName: prefer direct firstName field, otherwise extract from name
+        // Always provide a fallback to ensure we never have an empty greeting
+        const firstName =
+            contactData.firstName?.trim() ||
+            (contactData.name || '').trim().split(' ')[0] ||
+            'there'
+
         // Render email template
         const emailHtml = await render(
             ContactConfirmationEmail({
-                name: contactData.name,
+                firstName,
                 businessName: siteConfig.business.name,
                 businessEmail: siteConfig.contact.email,
                 businessPhone:

@@ -37,7 +37,7 @@ export type ContactNotificationProps = {
  * Props for contact confirmation email template
  */
 export type ContactConfirmationProps = {
-    name: string
+    firstName: string
     businessName: string
     businessEmail: string
     businessPhone: string

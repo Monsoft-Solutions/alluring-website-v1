@@ -82,7 +82,7 @@ const trustStats = siteConfig.trustStats
  * ```tsx
  * const email = render(
  *   <ContactConfirmationEmail
- *     name="Maria"
+ *     firstName="Maria"
  *     businessName="Alluring Plastic Surgery"
  *     businessEmail="info@alluringplasticsurgery.com"
  *     businessPhone="+1-786-305-8649"
@@ -91,13 +91,12 @@ const trustStats = siteConfig.trustStats
  * ```
  */
 export function ContactConfirmationEmail({
-    name,
+    firstName,
     businessName,
     businessEmail,
     businessPhone,
 }: ContactConfirmationProps) {
     const siteUrl = siteConfig.seo.siteUrl
-    const firstName = name.split(' ')[0]
 
     return (
         <EmailLayout
