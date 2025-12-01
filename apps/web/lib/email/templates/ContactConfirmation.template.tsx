@@ -17,7 +17,7 @@ import {
     Text,
 } from '@react-email/components'
 
-import { siteConfig } from '@/lib/data/site-config'
+import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 import type { ContactConfirmationProps } from '@/lib/types/email/email-service.type'
 
 import { EmailButton } from '../components/email-button.component'
@@ -85,7 +85,6 @@ const trustStats = siteConfig.trustStats
  *     firstName="Maria"
  *     businessName="Alluring Plastic Surgery"
  *     businessEmail="info@alluringplasticsurgery.com"
- *     businessPhone="+1-786-305-8649"
  *   />
  * )
  * ```
@@ -94,7 +93,6 @@ export function ContactConfirmationEmail({
     firstName,
     businessName,
     businessEmail,
-    businessPhone,
 }: ContactConfirmationProps) {
     const siteUrl = siteConfig.seo.siteUrl
 
@@ -225,7 +223,7 @@ export function ContactConfirmationEmail({
                 <Text className='m-0 mb-2 text-base text-stone-600'>
                     <strong>Call us:</strong>{' '}
                     <Link
-                        href={`tel:${businessPhone}`}
+                        href={getPhoneLink()}
                         className='font-semibold text-[#D4AF37] no-underline'
                     >
                         {siteConfig.contact.phoneDisplay}
@@ -244,10 +242,7 @@ export function ContactConfirmationEmail({
 
                 {/* CTA Button */}
                 <Section className='my-8 text-center'>
-                    <EmailButton
-                        href={`tel:${businessPhone}`}
-                        variant='primary'
-                    >
+                    <EmailButton href={getPhoneLink()} variant='primary'>
                         Call Us Now
                     </EmailButton>
                 </Section>

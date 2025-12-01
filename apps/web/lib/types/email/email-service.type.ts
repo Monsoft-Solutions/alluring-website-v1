@@ -40,7 +40,6 @@ export type ContactConfirmationProps = {
     firstName: string
     businessName: string
     businessEmail: string
-    businessPhone: string
 }
 
 /**

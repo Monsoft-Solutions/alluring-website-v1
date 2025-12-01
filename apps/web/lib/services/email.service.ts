@@ -173,8 +173,6 @@ export async function sendContactConfirmation(
                 firstName,
                 businessName: siteConfig.business.name,
                 businessEmail: siteConfig.contact.email,
-                businessPhone:
-                    siteConfig.contact.phoneDisplay || siteConfig.contact.phone,
             })
         )
 
