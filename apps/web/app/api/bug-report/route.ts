@@ -3,15 +3,18 @@
  *
  * Handles quick bug report form submissions.
  * Validates data, stores in database, and sends email notification.
+ * Supports optional screenshot upload via multipart/form-data.
  *
  * @module app/api/bug-report/route
  */
+import { put } from '@vercel/blob'
 import { type NextRequest, NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 
 import { db } from '@workspace/db/client'
 import { bugReport, type InsertBugReport } from '@workspace/db/schema/feedback'
 
+import { env } from '@/env'
 import { siteConfig } from '@/lib/data/site-config'
 import { sendBugReportNotification } from '@/lib/services/email.service'
 import {
@@ -19,6 +22,18 @@ import {
     bugReportFormSchema,
     type BugReportResponse,
 } from '@/lib/types/forms/bug-report.type'
+
+/**
+ * Allowed image types for bug report screenshots
+ */
+const ALLOWED_IMAGE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+]
+const MAX_FILE_SIZE_MB = 5
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
 /**
  * Extract client IP address from request headers
@@ -42,7 +57,10 @@ function getClientIP(request: NextRequest): string | undefined {
 /**
  * Format bug report data for logging (redacted)
  */
-function formatForLog(data: BugReportFormData): Record<string, unknown> {
+function formatForLog(
+    data: BugReportFormData,
+    hasScreenshot: boolean
+): Record<string, unknown> {
     return {
         pageUrl: data.pageUrl,
         severity: data.severity,
@@ -50,6 +68,7 @@ function formatForLog(data: BugReportFormData): Record<string, unknown> {
         browserType: data.browserType,
         hasDescription: Boolean(data.description),
         hasSteps: Boolean(data.stepsToReproduce),
+        hasScreenshot,
         reporterProvided: Boolean(data.reporterEmail || data.reporterName),
         // Environment metadata
         viewport: data.viewportWidth
@@ -66,33 +85,138 @@ function formatForLog(data: BugReportFormData): Record<string, unknown> {
 }
 
 /**
+ * Upload screenshot to Vercel Blob storage
+ * @param file - The file to upload
+ * @param bugId - The bug report ID (used for filename)
+ * @returns The URL of the uploaded image, or null if upload is skipped
+ */
+async function uploadScreenshotToBlob(
+    file: File,
+    bugId: string
+): Promise<string | null> {
+    // Check if Blob token is configured
+    const blobToken = env.BLOB_READ_WRITE_TOKEN
+    if (!blobToken) {
+        console.warn(
+            'BLOB_READ_WRITE_TOKEN not configured, skipping screenshot upload'
+        )
+        return null
+    }
+
+    // Validate file type
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        throw new Error(
+            `Invalid file type: ${file.type}. Allowed: ${ALLOWED_IMAGE_TYPES.join(', ')}`
+        )
+    }
+
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+        throw new Error(
+            `File too large: ${(file.size / 1024 / 1024).toFixed(2)}MB. Maximum: ${MAX_FILE_SIZE_MB}MB`
+        )
+    }
+
+    // Get file extension from mime type
+    const extension = file.type.split('/')[1] || 'png'
+    const filename = `bug-screenshots/${bugId}.${extension}`
+
+    // Upload to Vercel Blob
+    const uploadedBlob = await put(filename, file, {
+        access: 'public',
+        contentType: file.type,
+        token: blobToken,
+    })
+
+    return uploadedBlob.url
+}
+
+/**
  * POST handler for bug report submissions
+ * Supports both JSON and multipart/form-data (for screenshot upload)
  */
 export async function POST(
     request: NextRequest
 ): Promise<NextResponse<BugReportResponse>> {
     try {
-        // Validate Content-Type header
-        const contentType = request.headers.get('content-type')
-        if (!contentType?.includes('application/json')) {
+        const contentType = request.headers.get('content-type') || ''
+
+        let body: unknown
+        let screenshotFile: File | null = null
+
+        // Handle multipart/form-data (with optional screenshot)
+        if (contentType.includes('multipart/form-data')) {
+            const formData = await request.formData()
+            const dataField = formData.get('data')
+            const screenshotField = formData.get('screenshot')
+
+            if (!dataField || typeof dataField !== 'string') {
+                return NextResponse.json<BugReportResponse>(
+                    {
+                        success: false,
+                        message: 'Missing form data',
+                        error: 'The "data" field is required',
+                    },
+                    { status: 400 }
+                )
+            }
+
+            try {
+                body = JSON.parse(dataField)
+            } catch {
+                return NextResponse.json<BugReportResponse>(
+                    {
+                        success: false,
+                        message: 'Invalid JSON in data field',
+                        error: 'The "data" field must contain valid JSON',
+                    },
+                    { status: 400 }
+                )
+            }
+
+            // Extract screenshot file if present
+            if (screenshotField && screenshotField instanceof File) {
+                screenshotFile = screenshotField
+            }
+        }
+        // Handle JSON (backwards compatibility)
+        else if (contentType.includes('application/json')) {
+            body = (await request.json()) as unknown
+        }
+        // Invalid content type
+        else {
             return NextResponse.json<BugReportResponse>(
                 {
                     success: false,
-                    message: 'Invalid content type. Expected application/json.',
-                    error: 'Content-Type must be application/json',
+                    message: 'Invalid content type',
+                    error: 'Content-Type must be application/json or multipart/form-data',
                 },
                 { status: 400 }
             )
         }
-
-        // Parse request body
-        const body = (await request.json()) as unknown
 
         // Validate against schema
         const validatedData = bugReportFormSchema.parse(body)
 
         // Extract client IP
         const clientIP = getClientIP(request)
+
+        // Generate a temporary ID for the screenshot filename
+        const tempId = crypto.randomUUID()
+
+        // Upload screenshot if present
+        let screenshotUrl: string | null = null
+        if (screenshotFile) {
+            try {
+                screenshotUrl = await uploadScreenshotToBlob(
+                    screenshotFile,
+                    tempId
+                )
+            } catch (uploadError) {
+                console.error('Screenshot upload failed:', uploadError)
+                // Continue without screenshot rather than failing the entire report
+            }
+        }
 
         // Prepare data for insertion
         const insertData: InsertBugReport = {
@@ -101,6 +225,7 @@ export async function POST(
             stepsToReproduce: validatedData.stepsToReproduce,
             expectedBehavior: validatedData.expectedBehavior,
             actualBehavior: validatedData.actualBehavior,
+            screenshotUrl,
             severity: validatedData.severity,
             deviceType: validatedData.deviceType,
             browserType: validatedData.browserType,
@@ -134,7 +259,10 @@ export async function POST(
             throw new Error('Failed to create bug report')
         }
 
-        console.log('Bug report received:', formatForLog(validatedData))
+        console.log(
+            'Bug report received:',
+            formatForLog(validatedData, Boolean(screenshotUrl))
+        )
 
         // Send email notification
         try {
