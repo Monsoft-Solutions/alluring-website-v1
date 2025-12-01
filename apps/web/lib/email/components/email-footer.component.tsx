@@ -43,9 +43,9 @@ export function EmailFooter() {
             <Text className='m-0 mb-4 text-center text-xs font-semibold tracking-widest text-stone-500 uppercase'>
                 Explore More
             </Text>
-            <Row className='mb-6'>
+            <Text className='m-0 mb-6 text-center'>
                 {quickLinks.map((link, index) => (
-                    <Column key={link.path} className='text-center'>
+                    <span key={link.path}>
                         <Link
                             href={`${siteUrl}${link.path}`}
                             className='text-sm font-medium text-[#D4AF37] no-underline'
@@ -53,14 +53,11 @@ export function EmailFooter() {
                             {link.label}
                         </Link>
                         {index < quickLinks.length - 1 && (
-                            <Text className='m-0 inline text-stone-300'>
-                                {' '}
-                                ·{' '}
-                            </Text>
+                            <span className='text-stone-300'> · </span>
                         )}
-                    </Column>
+                    </span>
                 ))}
-            </Row>
+            </Text>
 
             <Hr className='my-6 border-stone-200' />
 
