@@ -33,6 +33,7 @@
  *
  * Available CTA IDs: default, consultation, bbl, breast, body, facial
  */
+import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import type { BlogCTAContent } from '@/lib/types/blog/blog-cta.type'
 
 /**
@@ -45,7 +46,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         description:
             'Our board-certified surgeons at Alluring Plastic Surgery combine artistry with precision to help you achieve your aesthetic goals. Schedule your free consultation today.',
         colorScheme: 'gold',
-        phoneNumber: '+1 (786) 305-8649',
+        phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'Book Free Consultation',
             href: '/contact-us',
@@ -58,7 +59,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         description:
             'Take the first step toward your transformation. Our Miami specialists will create a personalized plan tailored to your unique goals.',
         colorScheme: 'gold',
-        phoneNumber: '+1 (786) 305-8649',
+        phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'Schedule Now',
             href: '/contact-us',
@@ -66,7 +67,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         },
         secondaryButton: {
             text: 'Call Us',
-            href: 'tel:+17863058649',
+            href: getPhoneLink(),
             variant: 'outline',
         },
     },
@@ -76,7 +77,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         description:
             "Miami's premier Brazilian Butt Lift specialists. Our signature technique combines liposuction with precise fat transfer for natural, stunning results.",
         colorScheme: 'gold',
-        phoneNumber: '+1 (786) 305-8649',
+        phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'Explore BBL Options',
             href: '/procedures/bbl-miami',
@@ -94,7 +95,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         description:
             'From augmentation to lift and reduction, our board-certified surgeons deliver natural-looking results that complement your body.',
         colorScheme: 'gold',
-        phoneNumber: '+1 (786) 305-8649',
+        phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'View Breast Procedures',
             href: '/procedures/breast-augmentation-miami',
@@ -112,7 +113,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         description:
             "Whether it's liposuction, tummy tuck, or mommy makeover — our Miami surgeons combine precision techniques with artistic vision.",
         colorScheme: 'gold',
-        phoneNumber: '+1 (786) 305-8649',
+        phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'Explore Body Contouring',
             href: '/procedures/liposuction-miami',
@@ -130,7 +131,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         description:
             'Expert facial procedures including facelift, rhinoplasty, and blepharoplasty. Turn back the clock with natural-looking rejuvenation.',
         colorScheme: 'gold',
-        phoneNumber: '+1 (786) 305-8649',
+        phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'View Facial Procedures',
             href: '/procedures/facelift-miami',
@@ -154,7 +155,7 @@ export const footerCTAConfig = {
         "Leave your name and phone number. We'll call you within 24 hours to discuss your goals.",
     submitButtonText: 'Request Callback',
     trustBadge: '5,000+ Happy Patients • Board-Certified Surgeons',
-    phoneNumber: '+1 (786) 305-8649',
+    phoneNumber: siteConfig.contact.phoneDisplay,
 }
 
 /**
