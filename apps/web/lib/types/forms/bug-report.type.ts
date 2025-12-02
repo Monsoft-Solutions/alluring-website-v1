@@ -65,7 +65,7 @@ export const bugReportFormSchema = z.object({
 })
 
 /**
- * Input type for bug report form
+ * Input type for bug report form (JSON data only, excludes file)
  */
 export type BugReportFormInput = z.input<typeof bugReportFormSchema>
 
@@ -75,11 +75,19 @@ export type BugReportFormInput = z.input<typeof bugReportFormSchema>
 export type BugReportFormData = z.output<typeof bugReportFormSchema>
 
 /**
+ * Extended form input type that includes the optional screenshot file
+ * Used by the form component (client-side only)
+ */
+export type BugReportFormWithScreenshot = BugReportFormInput & {
+    screenshot?: File | null
+}
+
+/**
  * Default values for bug report form
  * Note: Device/browser info and metadata are populated dynamically
  * via useEffect in the form component using the user-agent detection utilities.
  */
-export const bugReportDefaultValues: Partial<BugReportFormInput> = {
+export const bugReportDefaultValues: BugReportFormWithScreenshot = {
     pageUrl: '',
     description: '',
     stepsToReproduce: '',
@@ -92,6 +100,8 @@ export const bugReportDefaultValues: Partial<BugReportFormInput> = {
     screenSize: '',
     reporterEmail: '',
     reporterName: '',
+    // Screenshot (optional)
+    screenshot: null,
     // Metadata fields (auto-populated on client)
     screenWidth: undefined,
     screenHeight: undefined,

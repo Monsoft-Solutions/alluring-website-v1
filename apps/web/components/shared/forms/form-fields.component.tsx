@@ -18,6 +18,7 @@ import {
 import { Input } from '@workspace/ui/components/input'
 import { Textarea } from '@workspace/ui/components/textarea'
 import { cn } from '@workspace/ui/lib/utils'
+import { useEffect, useState } from 'react'
 import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 /**
@@ -1316,5 +1317,231 @@ export function YesNoField<TFieldValues extends FieldValues>({
                 </FormItem>
             )}
         />
+    )
+}
+
+/**
+ * Allowed image types for upload
+ */
+const ALLOWED_IMAGE_TYPES: readonly string[] = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+] as const
+const MAX_FILE_SIZE_MB = 5
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
+/**
+ * Props for ImageUploadField
+ */
+type ImageUploadFieldProps = {
+    /** Field label */
+    readonly label?: string
+    /** Current file value */
+    readonly value?: File | null
+    /** Change handler */
+    readonly onChange: (file: File | null) => void
+    /** Whether the field is disabled */
+    readonly disabled?: boolean
+    /** Theme variant */
+    readonly variant?: FormFieldVariant
+    /** Additional class names for the container */
+    readonly className?: string
+    /** Error message to display */
+    readonly error?: string
+}
+
+/**
+ * ImageUploadField - File upload field with image preview
+ *
+ * Standalone component (not using FormField) since File objects
+ * require special handling outside of standard form state.
+ */
+export function ImageUploadField({
+    label = 'Screenshot',
+    value,
+    onChange,
+    disabled = false,
+    variant = 'light',
+    className,
+    error,
+}: ImageUploadFieldProps) {
+    const inputId = `image-upload-${Math.random().toString(36).slice(2, 9)}`
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+    const [localError, setLocalError] = useState<string | null>(null)
+
+    // Generate preview URL when file changes
+    useEffect(() => {
+        if (value) {
+            const url = URL.createObjectURL(value)
+            setPreviewUrl(url)
+            return () => URL.revokeObjectURL(url)
+        }
+        setPreviewUrl(null)
+    }, [value])
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        setLocalError(null)
+
+        if (!file) {
+            onChange(null)
+            return
+        }
+
+        // Validate file type
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            setLocalError(
+                'Please select a valid image (JPEG, PNG, GIF, or WebP)'
+            )
+            e.target.value = ''
+            return
+        }
+
+        // Validate file size
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+            setLocalError(`Image must be smaller than ${MAX_FILE_SIZE_MB}MB`)
+            e.target.value = ''
+            return
+        }
+
+        onChange(file)
+    }
+
+    const handleRemove = () => {
+        onChange(null)
+        setLocalError(null)
+    }
+
+    const displayError = error || localError
+    const isDark = variant === 'dark'
+    const labelStyles = isDark
+        ? 'text-gold-400 text-xs font-bold tracking-widest uppercase'
+        : 'text-foreground/90 text-sm font-semibold'
+
+    return (
+        <div className={cn('space-y-2', className)}>
+            {label && (
+                <label htmlFor={inputId} className={labelStyles}>
+                    {label}
+                    <span
+                        className={cn(
+                            'ml-1 font-normal',
+                            isDark ? 'text-stone-500' : 'text-muted-foreground'
+                        )}
+                    >
+                        (Optional)
+                    </span>
+                </label>
+            )}
+
+            {/* Preview or Upload Area */}
+            {previewUrl ? (
+                <div className='relative'>
+                    <div
+                        className={cn(
+                            'relative overflow-hidden rounded-lg border',
+                            isDark ? 'border-stone-700' : 'border-border/60'
+                        )}
+                    >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src={previewUrl}
+                            alt='Screenshot preview'
+                            className='h-auto max-h-48 w-full object-contain'
+                        />
+                    </div>
+                    <button
+                        type='button'
+                        onClick={handleRemove}
+                        disabled={disabled}
+                        className={cn(
+                            'absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full',
+                            'bg-destructive text-destructive-foreground shadow-sm',
+                            'hover:bg-destructive/90 transition-colors',
+                            'focus:ring-destructive/50 focus:ring-2 focus:outline-none'
+                        )}
+                        aria-label='Remove screenshot'
+                    >
+                        <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            viewBox='0 0 20 20'
+                            fill='currentColor'
+                            className='h-4 w-4'
+                        >
+                            <path d='M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z' />
+                        </svg>
+                    </button>
+                </div>
+            ) : (
+                <label
+                    htmlFor={inputId}
+                    className={cn(
+                        'flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-6 transition-colors',
+                        isDark
+                            ? 'border-stone-700 hover:border-stone-600 hover:bg-stone-800/50'
+                            : 'border-border/60 hover:border-border hover:bg-muted/50',
+                        disabled && 'cursor-not-allowed opacity-50'
+                    )}
+                >
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='currentColor'
+                        strokeWidth='1.5'
+                        className={cn(
+                            'h-8 w-8',
+                            isDark ? 'text-stone-500' : 'text-muted-foreground'
+                        )}
+                    >
+                        <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
+                        />
+                    </svg>
+                    <span
+                        className={cn(
+                            'text-sm',
+                            isDark ? 'text-stone-400' : 'text-muted-foreground'
+                        )}
+                    >
+                        Click to upload a screenshot
+                    </span>
+                    <span
+                        className={cn(
+                            'text-xs',
+                            isDark
+                                ? 'text-stone-600'
+                                : 'text-muted-foreground/70'
+                        )}
+                    >
+                        PNG, JPG, GIF, WebP (max {MAX_FILE_SIZE_MB}MB)
+                    </span>
+                </label>
+            )}
+
+            <input
+                id={inputId}
+                type='file'
+                accept={ALLOWED_IMAGE_TYPES.join(',')}
+                onChange={handleFileChange}
+                disabled={disabled}
+                className='sr-only'
+            />
+
+            {displayError && (
+                <p
+                    className={cn(
+                        'text-xs',
+                        isDark ? 'text-red-400' : 'text-destructive'
+                    )}
+                >
+                    {displayError}
+                </p>
+            )}
+        </div>
     )
 }

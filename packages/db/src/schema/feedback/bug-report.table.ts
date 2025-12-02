@@ -52,6 +52,7 @@ export const bugReport = pgTable('bug_report', {
     stepsToReproduce: text('steps_to_reproduce'),
     expectedBehavior: text('expected_behavior'),
     actualBehavior: text('actual_behavior'),
+    screenshotUrl: text('screenshot_url'),
 
     // Device/browser info (auto-detected)
     deviceType: text('device_type'),

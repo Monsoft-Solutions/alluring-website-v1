@@ -1,18 +1,8 @@
 {
-    "$schema": "https://json.schemastore.org/tsconfig",
-    "extends": "@workspace/typescript-config/base.json",
+    "extends": "@workspace/typescript-config/react-library.json",
     "compilerOptions": {
         "outDir": "dist",
-        "rootDir": "src",
-        "strict": true,
-        "moduleResolution": "bundler",
-        "module": "ESNext",
-        "target": "ES2022",
-        "jsx": "react-jsx",
-        "types": ["node", "react"],
-        "skipLibCheck": true,
-        "noEmit": false,
-        "emitDeclarationOnly": true
+        "rootDir": "src"
     },
     "include": ["src"],
     "exclude": ["node_modules", "dist"]

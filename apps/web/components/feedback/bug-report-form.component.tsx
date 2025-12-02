@@ -24,6 +24,7 @@ import { useForm } from 'react-hook-form'
 
 import {
     EmailField,
+    ImageUploadField,
     MessageField,
     NameField,
     SelectField,
@@ -33,6 +34,7 @@ import {
     bugReportDefaultValues,
     type BugReportFormInput,
     bugReportFormSchema,
+    type BugReportFormWithScreenshot,
     detectDeviceInfo,
 } from '@/lib/types/forms/bug-report.type'
 import { detectUserEnvironment } from '@/lib/utils/user-agent.util'
@@ -45,6 +47,7 @@ type BugReportFormProps = {
 export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
+    const [screenshot, setScreenshot] = useState<File | null>(null)
 
     const form = useForm<BugReportFormInput>({
         resolver: zodResolver(bugReportFormSchema),
@@ -88,10 +91,20 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
     const handleSubmit = async (data: BugReportFormInput) => {
         setIsSubmitting(true)
         try {
+            // Create FormData for multipart submission (to support file upload)
+            const formData = new FormData()
+
+            // Add all form fields as JSON
+            formData.append('data', JSON.stringify(data))
+
+            // Add screenshot if present
+            if (screenshot) {
+                formData.append('screenshot', screenshot)
+            }
+
             const response = await fetch('/api/bug-report', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                body: formData,
             })
 
             if (response.ok) {
@@ -100,6 +113,7 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
                     onClose()
                     setIsSuccess(false)
                     form.reset()
+                    setScreenshot(null)
                 }, 2000)
             } else {
                 const error = await response.json()
@@ -115,6 +129,7 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
     const handleClose = () => {
         onClose()
         form.reset()
+        setScreenshot(null)
     }
 
     const pageUrl = form.watch('pageUrl')
@@ -197,6 +212,14 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
                                 label='Steps to reproduce (optional)'
                                 placeholder='1. Go to...&#10;2. Click on...&#10;3. See error...'
                                 rows={3}
+                            />
+
+                            {/* Screenshot Upload */}
+                            <ImageUploadField
+                                label='Screenshot'
+                                value={screenshot}
+                                onChange={setScreenshot}
+                                disabled={isSubmitting}
                             />
 
                             {/* Expected vs Actual (collapsible details) */}
