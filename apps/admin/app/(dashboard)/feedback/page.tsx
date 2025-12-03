@@ -1,4 +1,5 @@
 import { Badge } from '@workspace/ui/components/badge'
+import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
 import {
     Table,
@@ -14,7 +15,7 @@ import {
     TabsList,
     TabsTrigger,
 } from '@workspace/ui/components/tabs'
-import { Bug, MessageSquare, ExternalLink } from 'lucide-react'
+import { Bug, MessageSquare, ExternalLink, Eye } from 'lucide-react'
 import Link from 'next/link'
 
 import { getBugReports, getBetaFeedback } from '@/lib/queries/feedback.query'
@@ -60,13 +61,14 @@ export default async function FeedbackPage() {
                                         <TableHead>Status</TableHead>
                                         <TableHead>Device</TableHead>
                                         <TableHead>Date</TableHead>
+                                        <TableHead className='w-[60px]'></TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {bugReportsData.reports.length === 0 ? (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={6}
+                                                colSpan={7}
                                                 className='text-muted-foreground py-8 text-center'
                                             >
                                                 No bug reports yet
@@ -136,6 +138,19 @@ export default async function FeedbackPage() {
                                                         ).toLocaleDateString()}
                                                     </span>
                                                 </TableCell>
+                                                <TableCell>
+                                                    <Button
+                                                        variant='ghost'
+                                                        size='sm'
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={`/feedback/bugs/${report.id}`}
+                                                        >
+                                                            <Eye className='h-4 w-4' />
+                                                        </Link>
+                                                    </Button>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     )}
@@ -157,13 +172,14 @@ export default async function FeedbackPage() {
                                         <TableHead>Browser</TableHead>
                                         <TableHead>Email</TableHead>
                                         <TableHead>Date</TableHead>
+                                        <TableHead className='w-[60px]'></TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {betaFeedbackData.feedback.length === 0 ? (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={6}
+                                                colSpan={7}
                                                 className='text-muted-foreground py-8 text-center'
                                             >
                                                 No beta feedback yet
@@ -214,6 +230,19 @@ export default async function FeedbackPage() {
                                                                 feedback.createdAt
                                                             ).toLocaleDateString()}
                                                         </span>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Button
+                                                            variant='ghost'
+                                                            size='sm'
+                                                            asChild
+                                                        >
+                                                            <Link
+                                                                href={`/feedback/beta/${feedback.id}`}
+                                                            >
+                                                                <Eye className='h-4 w-4' />
+                                                            </Link>
+                                                        </Button>
                                                     </TableCell>
                                                 </TableRow>
                                             )

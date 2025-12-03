@@ -1,8 +1,9 @@
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema/blog'
 import { contactSubmission } from '@workspace/db/schema/contact'
+import { emailLog } from '@workspace/db/schema/emails'
 import { betaFeedback, bugReport } from '@workspace/db/schema/feedback'
-import { count, eq, desc } from 'drizzle-orm'
+import { count, eq, desc, sql, gte } from 'drizzle-orm'
 
 export type DashboardStats = {
     blogPosts: {
@@ -18,6 +19,12 @@ export type DashboardStats = {
         bugReports: number
         betaFeedback: number
     }
+    emails: {
+        total: number
+        sent: number
+        failed: number
+        successRate: number
+    }
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
@@ -28,6 +35,9 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         totalContactsResult,
         totalBugReportsResult,
         totalBetaFeedbackResult,
+        totalEmailsResult,
+        sentEmailsResult,
+        failedEmailsResult,
     ] = await Promise.all([
         db.select({ count: count() }).from(blogPost),
         db
@@ -41,7 +51,20 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         db.select({ count: count() }).from(contactSubmission),
         db.select({ count: count() }).from(bugReport),
         db.select({ count: count() }).from(betaFeedback),
+        db.select({ count: count() }).from(emailLog),
+        db
+            .select({ count: count() })
+            .from(emailLog)
+            .where(eq(emailLog.status, 'sent')),
+        db
+            .select({ count: count() })
+            .from(emailLog)
+            .where(eq(emailLog.status, 'failed')),
     ])
+
+    const totalEmails = totalEmailsResult[0]?.count ?? 0
+    const sentEmails = sentEmailsResult[0]?.count ?? 0
+    const failedEmails = failedEmailsResult[0]?.count ?? 0
 
     return {
         blogPosts: {
@@ -51,11 +74,20 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         },
         contacts: {
             total: totalContactsResult[0]?.count ?? 0,
-            recent: totalContactsResult[0]?.count ?? 0, // Could filter by date
+            recent: totalContactsResult[0]?.count ?? 0,
         },
         feedback: {
             bugReports: totalBugReportsResult[0]?.count ?? 0,
             betaFeedback: totalBetaFeedbackResult[0]?.count ?? 0,
+        },
+        emails: {
+            total: totalEmails,
+            sent: sentEmails,
+            failed: failedEmails,
+            successRate:
+                totalEmails > 0
+                    ? Math.round((sentEmails / totalEmails) * 100)
+                    : 0,
         },
     }
 }
@@ -110,4 +142,151 @@ export async function getRecentBugReports(
         .limit(limit)
 
     return reports
+}
+
+// Time-series data for charts
+
+export type DailyCount = {
+    date: string
+    count: number
+}
+
+export async function getContactsOverTime(days = 30): Promise<DailyCount[]> {
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - days)
+
+    const results = await db
+        .select({
+            date: sql<string>`DATE(${contactSubmission.createdAt})`.as('date'),
+            count: count(),
+        })
+        .from(contactSubmission)
+        .where(gte(contactSubmission.createdAt, startDate))
+        .groupBy(sql`DATE(${contactSubmission.createdAt})`)
+        .orderBy(sql`DATE(${contactSubmission.createdAt})`)
+
+    // Fill in missing dates with 0
+    const filledResults = fillMissingDates(results, days)
+    return filledResults
+}
+
+export type SeverityCount = {
+    severity: string
+    count: number
+}
+
+export async function getBugsBySeverity(): Promise<SeverityCount[]> {
+    const results = await db
+        .select({
+            severity: sql<string>`COALESCE(${bugReport.severity}, 'medium')`.as(
+                'severity'
+            ),
+            count: count(),
+        })
+        .from(bugReport)
+        .groupBy(bugReport.severity)
+
+    return results
+}
+
+export type PostStatusCount = {
+    status: string
+    count: number
+}
+
+export async function getPostsByStatus(): Promise<PostStatusCount[]> {
+    const results = await db
+        .select({
+            status: sql<string>`COALESCE(${blogPost.status}, 'draft')`.as(
+                'status'
+            ),
+            count: count(),
+        })
+        .from(blogPost)
+        .groupBy(blogPost.status)
+
+    return results
+}
+
+export type TopPost = {
+    title: string
+    views: number
+    slug: string
+}
+
+export async function getTopPostsByViews(limit = 5): Promise<TopPost[]> {
+    const results = await db
+        .select({
+            title: blogPost.title,
+            views: blogPost.views,
+            slug: blogPost.slug,
+        })
+        .from(blogPost)
+        .where(eq(blogPost.status, 'published'))
+        .orderBy(desc(blogPost.views))
+        .limit(limit)
+
+    return results
+}
+
+export async function getEmailsOverTime(days = 30): Promise<DailyCount[]> {
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - days)
+
+    const results = await db
+        .select({
+            date: sql<string>`DATE(${emailLog.sentAt})`.as('date'),
+            count: count(),
+        })
+        .from(emailLog)
+        .where(gte(emailLog.sentAt, startDate))
+        .groupBy(sql`DATE(${emailLog.sentAt})`)
+        .orderBy(sql`DATE(${emailLog.sentAt})`)
+
+    return fillMissingDates(results, days)
+}
+
+export type EmailStatusCount = {
+    status: string
+    count: number
+}
+
+export async function getEmailsByStatus(): Promise<EmailStatusCount[]> {
+    const results = await db
+        .select({
+            status: emailLog.status,
+            count: count(),
+        })
+        .from(emailLog)
+        .groupBy(emailLog.status)
+
+    return results
+}
+
+// Helper function to fill in missing dates
+function fillMissingDates(
+    results: { date: string | null; count: number }[],
+    days: number
+): DailyCount[] {
+    const dateMap = new Map(
+        results
+            .filter(
+                (r): r is { date: string; count: number } => r.date !== null
+            )
+            .map((r) => [r.date, r.count])
+    )
+    const filledResults: DailyCount[] = []
+    const today = new Date()
+
+    for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(today)
+        date.setDate(date.getDate() - i)
+        const dateStr = date.toISOString().split('T')[0]!
+        filledResults.push({
+            date: dateStr,
+            count: dateMap.get(dateStr) ?? 0,
+        })
+    }
+
+    return filledResults
 }

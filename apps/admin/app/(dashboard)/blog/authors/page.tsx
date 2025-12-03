@@ -4,6 +4,7 @@ import {
     AvatarImage,
 } from '@workspace/ui/components/avatar'
 import { Badge } from '@workspace/ui/components/badge'
+import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
 import {
     Table,
@@ -13,7 +14,8 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { FileText } from 'lucide-react'
+import { FileText, Plus, Pencil } from 'lucide-react'
+import Link from 'next/link'
 
 import { getAuthors } from '@/lib/queries/blog.query'
 
@@ -24,11 +26,19 @@ export default async function AuthorsPage() {
 
     return (
         <div className='space-y-6'>
-            <div>
-                <h1 className='text-2xl font-semibold'>Authors</h1>
-                <p className='text-muted-foreground'>
-                    Manage blog post authors ({authors.length} total)
-                </p>
+            <div className='flex items-center justify-between'>
+                <div>
+                    <h1 className='text-2xl font-semibold'>Authors</h1>
+                    <p className='text-muted-foreground'>
+                        Manage blog post authors ({authors.length} total)
+                    </p>
+                </div>
+                <Button asChild>
+                    <Link href='/blog/authors/new'>
+                        <Plus className='mr-2 h-4 w-4' />
+                        New Author
+                    </Link>
+                </Button>
             </div>
 
             <Card>
@@ -43,16 +53,25 @@ export default async function AuthorsPage() {
                                     Posts
                                 </TableHead>
                                 <TableHead>Joined</TableHead>
+                                <TableHead className='w-[80px]'>
+                                    Actions
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {authors.length === 0 ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={5}
+                                        colSpan={6}
                                         className='text-muted-foreground py-8 text-center'
                                     >
-                                        No authors found
+                                        No authors found.{' '}
+                                        <Link
+                                            href='/blog/authors/new'
+                                            className='text-blue-600 hover:underline'
+                                        >
+                                            Create your first author
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -74,9 +93,12 @@ export default async function AuthorsPage() {
                                                         )}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <span className='font-medium'>
+                                                <Link
+                                                    href={`/blog/authors/${author.id}/edit`}
+                                                    className='font-medium hover:text-blue-600 hover:underline'
+                                                >
                                                     {author.name}
-                                                </span>
+                                                </Link>
                                             </div>
                                         </TableCell>
                                         <TableCell>
@@ -111,6 +133,19 @@ export default async function AuthorsPage() {
                                                     author.createdAt
                                                 ).toLocaleDateString()}
                                             </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button
+                                                variant='ghost'
+                                                size='sm'
+                                                asChild
+                                            >
+                                                <Link
+                                                    href={`/blog/authors/${author.id}/edit`}
+                                                >
+                                                    <Pencil className='h-4 w-4' />
+                                                </Link>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))

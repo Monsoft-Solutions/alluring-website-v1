@@ -1,16 +1,15 @@
 'use client'
 
 import { Button } from '@workspace/ui/components/button'
-import { LogOut, Menu } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 
 type HeaderProps = {
     title?: string
-    onMenuClick?: () => void
 }
 
-export function Header({ title = 'Dashboard', onMenuClick }: HeaderProps) {
+export function Header({ title = 'Dashboard' }: HeaderProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
 
@@ -23,21 +22,8 @@ export function Header({ title = 'Dashboard', onMenuClick }: HeaderProps) {
     }
 
     return (
-        <header className='bg-card flex h-16 items-center justify-between border-b px-6'>
-            <div className='flex items-center gap-4'>
-                {onMenuClick && (
-                    <Button
-                        variant='ghost'
-                        size='icon'
-                        className='lg:hidden'
-                        onClick={onMenuClick}
-                    >
-                        <Menu className='h-5 w-5' />
-                        <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                )}
-                <h1 className='text-xl font-semibold'>{title}</h1>
-            </div>
+        <header className='bg-card flex h-16 items-center justify-end border-b px-6 lg:justify-between'>
+            <h1 className='hidden text-xl font-semibold lg:block'>{title}</h1>
 
             <Button
                 variant='ghost'
@@ -47,7 +33,7 @@ export function Header({ title = 'Dashboard', onMenuClick }: HeaderProps) {
                 className='text-muted-foreground hover:text-foreground'
             >
                 <LogOut className='mr-2 h-4 w-4' />
-                Logout
+                <span className='hidden sm:inline'>Logout</span>
             </Button>
         </header>
     )

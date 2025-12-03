@@ -1,6 +1,6 @@
 import { db } from '@workspace/db/client'
 import { author, blogPost, images } from '@workspace/db/schema/blog'
-import { count, desc, eq, sql } from 'drizzle-orm'
+import { count, desc, eq, sql, asc } from 'drizzle-orm'
 
 export type BlogPostListItem = {
     id: string
@@ -88,4 +88,100 @@ export async function updateBlogPostStatus(
     }
 
     await db.update(blogPost).set(updateData).where(eq(blogPost.id, postId))
+}
+
+export type BlogPostDetail = {
+    id: string
+    slug: string
+    title: string
+    content: string
+    metaDescription: string
+    metaTitle: string | null
+    metaKeywords: string | null
+    excerpt: string | null
+    status: 'draft' | 'readyToPublish' | 'published' | null
+    publishedAt: Date | null
+    readingTime: number | null
+    authorId: string | null
+    featuredImageUrl: string | null
+}
+
+export async function getBlogPostById(
+    id: string
+): Promise<BlogPostDetail | null> {
+    const result = await db
+        .select({
+            id: blogPost.id,
+            slug: blogPost.slug,
+            title: blogPost.title,
+            content: blogPost.content,
+            metaDescription: blogPost.metaDescription,
+            metaTitle: blogPost.metaTitle,
+            metaKeywords: blogPost.metaKeywords,
+            excerpt: blogPost.excerpt,
+            status: blogPost.status,
+            publishedAt: blogPost.publishedAt,
+            readingTime: blogPost.readingTime,
+            authorId: blogPost.authorId,
+            featuredImageUrl: images.url,
+        })
+        .from(blogPost)
+        .leftJoin(images, eq(blogPost.featuredImageId, images.id))
+        .where(eq(blogPost.id, id))
+        .limit(1)
+
+    return result[0] ?? null
+}
+
+export type AuthorOption = {
+    id: string
+    name: string
+}
+
+export async function getAuthorsForSelect(): Promise<AuthorOption[]> {
+    return db
+        .select({
+            id: author.id,
+            name: author.name,
+        })
+        .from(author)
+        .where(eq(author.isActive, true))
+        .orderBy(asc(author.name))
+}
+
+export type AuthorDetail = {
+    id: string
+    name: string
+    email: string
+    bio: string | null
+    avatarUrl: string | null
+    website: string | null
+    socialLinks: {
+        twitter?: string
+        linkedin?: string
+        github?: string
+        instagram?: string
+    } | null
+    isActive: boolean
+    createdAt: Date
+}
+
+export async function getAuthorById(id: string): Promise<AuthorDetail | null> {
+    const result = await db
+        .select({
+            id: author.id,
+            name: author.name,
+            email: author.email,
+            bio: author.bio,
+            avatarUrl: author.avatarUrl,
+            website: author.website,
+            socialLinks: author.socialLinks,
+            isActive: author.isActive,
+            createdAt: author.createdAt,
+        })
+        .from(author)
+        .where(eq(author.id, id))
+        .limit(1)
+
+    return result[0] ?? null
 }

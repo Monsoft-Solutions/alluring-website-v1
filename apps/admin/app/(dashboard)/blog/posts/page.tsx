@@ -9,7 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { Eye, ExternalLink } from 'lucide-react'
+import { Eye, ExternalLink, Plus, Pencil } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -38,6 +38,12 @@ export default async function BlogPostsPage({
                         Manage your blog posts ({total} total)
                     </p>
                 </div>
+                <Button asChild>
+                    <Link href='/blog/posts/new'>
+                        <Plus className='mr-2 h-4 w-4' />
+                        New Post
+                    </Link>
+                </Button>
             </div>
 
             <Card>
@@ -55,7 +61,7 @@ export default async function BlogPostsPage({
                                     Views
                                 </TableHead>
                                 <TableHead>Published</TableHead>
-                                <TableHead className='w-[100px]'>
+                                <TableHead className='w-[120px]'>
                                     Actions
                                 </TableHead>
                             </TableRow>
@@ -67,7 +73,13 @@ export default async function BlogPostsPage({
                                         colSpan={7}
                                         className='text-muted-foreground py-8 text-center'
                                     >
-                                        No blog posts found
+                                        No blog posts found.{' '}
+                                        <Link
+                                            href='/blog/posts/new'
+                                            className='text-blue-600 hover:underline'
+                                        >
+                                            Create your first post
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -92,9 +104,12 @@ export default async function BlogPostsPage({
                                         </TableCell>
                                         <TableCell>
                                             <div className='max-w-[300px]'>
-                                                <p className='truncate font-medium'>
+                                                <Link
+                                                    href={`/blog/posts/${post.id}/edit`}
+                                                    className='truncate font-medium hover:text-blue-600 hover:underline'
+                                                >
                                                     {post.title}
-                                                </p>
+                                                </Link>
                                                 <p className='text-muted-foreground truncate text-sm'>
                                                     /{post.slug}
                                                 </p>
@@ -126,18 +141,34 @@ export default async function BlogPostsPage({
                                             </span>
                                         </TableCell>
                                         <TableCell>
-                                            <Button
-                                                variant='ghost'
-                                                size='sm'
-                                                asChild
-                                            >
-                                                <Link
-                                                    href={`/${post.slug}`}
-                                                    target='_blank'
+                                            <div className='flex items-center gap-1'>
+                                                <Button
+                                                    variant='ghost'
+                                                    size='sm'
+                                                    asChild
                                                 >
-                                                    <ExternalLink className='h-4 w-4' />
-                                                </Link>
-                                            </Button>
+                                                    <Link
+                                                        href={`/blog/posts/${post.id}/edit`}
+                                                    >
+                                                        <Pencil className='h-4 w-4' />
+                                                    </Link>
+                                                </Button>
+                                                {post.status ===
+                                                    'published' && (
+                                                    <Button
+                                                        variant='ghost'
+                                                        size='sm'
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={`/blog/${post.slug}`}
+                                                            target='_blank'
+                                                        >
+                                                            <ExternalLink className='h-4 w-4' />
+                                                        </Link>
+                                                    </Button>
+                                                )}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))

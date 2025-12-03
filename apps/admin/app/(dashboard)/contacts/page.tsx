@@ -9,10 +9,10 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { Mail, Phone } from 'lucide-react'
+import { Mail, Phone, Eye, Download } from 'lucide-react'
 import Link from 'next/link'
 
-import { getContacts } from '@/lib/queries/contacts.query'
+import { getContacts, type ContactListItem } from '@/lib/queries/contacts.query'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,11 +30,22 @@ export default async function ContactsPage({
 
     return (
         <div className='space-y-6'>
-            <div>
-                <h1 className='text-2xl font-semibold'>Contact Submissions</h1>
-                <p className='text-muted-foreground'>
-                    View contact form submissions ({total} total)
-                </p>
+            <div className='flex items-center justify-between'>
+                <div>
+                    <h1 className='text-2xl font-semibold'>
+                        Contact Submissions
+                    </h1>
+                    <p className='text-muted-foreground'>
+                        View contact form submissions with UTM tracking ({total}{' '}
+                        total)
+                    </p>
+                </div>
+                <Button variant='outline' asChild>
+                    <a href='/api/contacts/export' download>
+                        <Download className='mr-2 h-4 w-4' />
+                        Export CSV
+                    </a>
+                </Button>
             </div>
 
             <Card>
@@ -44,8 +55,8 @@ export default async function ContactsPage({
                             <TableRow>
                                 <TableHead>Contact</TableHead>
                                 <TableHead>Subject / Procedure</TableHead>
-                                <TableHead>Message</TableHead>
                                 <TableHead>Source</TableHead>
+                                <TableHead>UTM</TableHead>
                                 <TableHead>Date</TableHead>
                                 <TableHead className='w-[100px]'>
                                     Actions
@@ -113,25 +124,31 @@ export default async function ContactsPage({
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <p className='text-muted-foreground line-clamp-2 max-w-[300px] text-sm'>
-                                                {contact.message ??
-                                                    'No message'}
-                                            </p>
-                                        </TableCell>
-                                        <TableCell>
                                             <span className='text-muted-foreground text-sm'>
                                                 {contact.source ?? 'Direct'}
                                             </span>
                                         </TableCell>
                                         <TableCell>
+                                            <UtmBadges contact={contact} />
+                                        </TableCell>
+                                        <TableCell>
                                             <span className='text-muted-foreground text-sm'>
-                                                {new Date(
-                                                    contact.createdAt
-                                                ).toLocaleDateString()}
+                                                {formatDate(contact.createdAt)}
                                             </span>
                                         </TableCell>
                                         <TableCell>
                                             <div className='flex items-center gap-1'>
+                                                <Button
+                                                    variant='ghost'
+                                                    size='sm'
+                                                    asChild
+                                                >
+                                                    <Link
+                                                        href={`/contacts/${contact.id}`}
+                                                    >
+                                                        <Eye className='h-4 w-4' />
+                                                    </Link>
+                                                </Button>
                                                 <Button
                                                     variant='ghost'
                                                     size='sm'
@@ -143,19 +160,6 @@ export default async function ContactsPage({
                                                         <Mail className='h-4 w-4' />
                                                     </a>
                                                 </Button>
-                                                {contact.phone && (
-                                                    <Button
-                                                        variant='ghost'
-                                                        size='sm'
-                                                        asChild
-                                                    >
-                                                        <a
-                                                            href={`tel:${contact.phone}`}
-                                                        >
-                                                            <Phone className='h-4 w-4' />
-                                                        </a>
-                                                    </Button>
-                                                )}
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -204,4 +208,51 @@ export default async function ContactsPage({
             )}
         </div>
     )
+}
+
+function UtmBadges({ contact }: { contact: ContactListItem }) {
+    const hasUtm =
+        contact.utmSource ||
+        contact.utmMedium ||
+        contact.utmCampaign ||
+        contact.gclid ||
+        contact.fbclid ||
+        contact.ttclid
+
+    if (!hasUtm) {
+        return <span className='text-muted-foreground text-xs'>—</span>
+    }
+
+    return (
+        <div className='flex flex-wrap gap-1'>
+            {contact.utmSource && (
+                <Badge variant='outline' className='text-xs'>
+                    {contact.utmSource}
+                </Badge>
+            )}
+            {contact.gclid && (
+                <Badge variant='outline' className='bg-blue-50 text-xs'>
+                    Google
+                </Badge>
+            )}
+            {contact.fbclid && (
+                <Badge variant='outline' className='bg-indigo-50 text-xs'>
+                    Meta
+                </Badge>
+            )}
+            {contact.ttclid && (
+                <Badge variant='outline' className='bg-pink-50 text-xs'>
+                    TikTok
+                </Badge>
+            )}
+        </div>
+    )
+}
+
+function formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(new Date(date))
 }

@@ -1,25 +1,57 @@
 import {
     Card,
     CardContent,
+    CardDescription,
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'
-import { FileText, Mail, MessageSquare, Bug, Clock } from 'lucide-react'
+import {
+    FileText,
+    Mail,
+    MessageSquare,
+    Bug,
+    Clock,
+    Send,
+    TrendingUp,
+    BarChart3,
+} from 'lucide-react'
 import Link from 'next/link'
 
+import {
+    BugsChart,
+    ContactsChart,
+    EmailsChart,
+    PostsChart,
+} from '@/components/charts'
 import {
     getDashboardStats,
     getRecentBugReports,
     getRecentContacts,
+    getContactsOverTime,
+    getBugsBySeverity,
+    getTopPostsByViews,
+    getEmailsByStatus,
 } from '@/lib/queries/stats.query'
 
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
-    const [stats, recentContacts, recentBugReports] = await Promise.all([
+    const [
+        stats,
+        recentContacts,
+        recentBugReports,
+        contactsOverTime,
+        bugsBySeverity,
+        topPosts,
+        emailsByStatus,
+    ] = await Promise.all([
         getDashboardStats(),
         getRecentContacts(5),
         getRecentBugReports(5),
+        getContactsOverTime(30),
+        getBugsBySeverity(),
+        getTopPostsByViews(5),
+        getEmailsByStatus(),
     ])
 
     return (
@@ -41,19 +73,89 @@ export default async function DashboardPage() {
                     href='/contacts'
                 />
                 <StatsCard
+                    title='Emails Sent'
+                    value={stats.emails.total}
+                    description={`${stats.emails.successRate}% delivery rate`}
+                    icon={Send}
+                    href='/emails'
+                />
+                <StatsCard
                     title='Bug Reports'
                     value={stats.feedback.bugReports}
-                    description='Issues reported'
+                    description={`${stats.feedback.betaFeedback} beta feedback`}
                     icon={Bug}
                     href='/feedback'
                 />
-                <StatsCard
-                    title='Beta Feedback'
-                    value={stats.feedback.betaFeedback}
-                    description='Feedback submissions'
-                    icon={MessageSquare}
-                    href='/feedback'
-                />
+            </div>
+
+            {/* Charts Row */}
+            <div className='grid gap-6 lg:grid-cols-2'>
+                {/* Contacts Over Time */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2 text-lg'>
+                            <TrendingUp className='h-5 w-5' />
+                            Contacts Over Time
+                        </CardTitle>
+                        <CardDescription>
+                            Last 30 days of contact submissions
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ContactsChart data={contactsOverTime} />
+                    </CardContent>
+                </Card>
+
+                {/* Top Posts by Views */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2 text-lg'>
+                            <BarChart3 className='h-5 w-5' />
+                            Top Posts by Views
+                        </CardTitle>
+                        <CardDescription>
+                            Most viewed published posts
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <PostsChart data={topPosts} />
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Second Charts Row */}
+            <div className='grid gap-6 lg:grid-cols-2'>
+                {/* Bug Reports by Severity */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2 text-lg'>
+                            <Bug className='h-5 w-5' />
+                            Bugs by Severity
+                        </CardTitle>
+                        <CardDescription>
+                            Distribution of bug report severity
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <BugsChart data={bugsBySeverity} />
+                    </CardContent>
+                </Card>
+
+                {/* Email Delivery Status */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2 text-lg'>
+                            <Send className='h-5 w-5' />
+                            Email Delivery
+                        </CardTitle>
+                        <CardDescription>
+                            Email delivery success rate
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <EmailsChart data={emailsByStatus} />
+                    </CardContent>
+                </Card>
             </div>
 
             {/* Recent Activity */}
