@@ -1,6 +1,6 @@
 import { db } from '@workspace/db/client'
-import { blogTag, blogPostTag } from '@workspace/db/schema/blog'
-import { desc, eq, sql, asc } from 'drizzle-orm'
+import { blogTag } from '@workspace/db/schema/blog'
+import { desc, eq, asc } from 'drizzle-orm'
 
 export type TagListItem = {
     id: string

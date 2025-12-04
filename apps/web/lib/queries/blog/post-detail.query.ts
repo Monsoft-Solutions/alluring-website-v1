@@ -16,7 +16,7 @@ import type { BlogPostDetail } from '@/types/blog/post-detail.type'
 
 /**
  * Internal function to fetch blog post by slug from database
- * This is wrapped by getCachedPublishedPostBySlug for caching
+ * This is wrapped by getPublishedPostBySlug for caching
  */
 async function fetchPublishedPostBySlug(
     slug: string

@@ -62,6 +62,9 @@ export default function TagsPage() {
     async function fetchTags() {
         try {
             const res = await fetch('/api/tags')
+            if (!res.ok) {
+                throw new Error(`Failed to fetch: ${res.status}`)
+            }
             const data = await res.json()
             setTags(data)
         } catch (error) {
@@ -218,6 +221,20 @@ function TagDialog({ mode, tag, onSuccess, trigger }: TagDialogProps) {
         color: tag?.color ?? '#78716c',
         isActive: tag?.isActive ?? true,
     })
+
+    // Reset form state when dialog opens or tag changes
+    useEffect(() => {
+        if (open) {
+            setFormData({
+                name: tag?.name ?? '',
+                slug: tag?.slug ?? '',
+                description: tag?.description ?? '',
+                color: tag?.color ?? '#78716c',
+                isActive: tag?.isActive ?? true,
+            })
+            setError(null)
+        }
+    }, [open, tag])
 
     const handleChange = (
         field: keyof TagFormData,

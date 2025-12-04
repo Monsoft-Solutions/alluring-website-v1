@@ -38,21 +38,7 @@ export async function createAuthor(
             return { success: false, error: 'Email is required' }
         }
 
-        // Check if email already exists
-        const existingAuthor = await db
-            .select({ id: author.id })
-            .from(author)
-            .where(eq(author.email, data.email))
-            .limit(1)
-
-        if (existingAuthor.length > 0) {
-            return {
-                success: false,
-                error: 'An author with this email already exists',
-            }
-        }
-
-        // Create the author
+        // Create the author - rely on database unique constraint for email
         const [newAuthor] = await db
             .insert(author)
             .values({
@@ -71,6 +57,19 @@ export async function createAuthor(
         return { success: true, id: newAuthor?.id }
     } catch (error) {
         console.error('Error creating author:', error)
+
+        // Handle PostgreSQL unique constraint violation
+        if (
+            error instanceof Error &&
+            'code' in error &&
+            (error as { code: string }).code === '23505'
+        ) {
+            return {
+                success: false,
+                error: 'An author with this email already exists',
+            }
+        }
+
         return {
             success: false,
             error:

@@ -111,7 +111,8 @@ export default async function BetaFeedbackDetailPage({ params }: PageProps) {
                                 Navigation Ease
                             </span>
                             <Badge variant='outline' className='capitalize'>
-                                {feedback.navigationEase.replace(/-/g, ' ')}
+                                {feedback.navigationEase?.replace(/-/g, ' ') ??
+                                    'Unknown'}
                             </Badge>
                         </div>
                         {feedback.hasBrokenLinks !== null && (
@@ -147,7 +148,8 @@ export default async function BetaFeedbackDetailPage({ params }: PageProps) {
                             label='Device Type'
                             value={
                                 feedback.deviceTypeOther ??
-                                feedback.deviceType.replace(/-/g, ' ')
+                                feedback.deviceType?.replace(/-/g, ' ') ??
+                                'Unknown'
                             }
                         />
                         <DataRow

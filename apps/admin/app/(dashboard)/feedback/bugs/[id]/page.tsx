@@ -27,6 +27,19 @@ import {
     updateBugReportStatus,
 } from '@/lib/queries/feedback.query'
 
+/**
+ * Validates that a URL uses only http or https protocols
+ * to prevent XSS attacks via javascript:, data:, or vbscript: URLs
+ */
+function isValidHttpUrl(url: string): boolean {
+    try {
+        const parsed = new URL(url)
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+    } catch {
+        return false
+    }
+}
+
 export const dynamic = 'force-dynamic'
 
 type PageProps = {
@@ -78,14 +91,20 @@ export default async function BugReportDetailPage({ params }: PageProps) {
                             Bug Description
                         </CardTitle>
                         <CardDescription>
-                            <Link
-                                href={report.pageUrl}
-                                target='_blank'
-                                className='flex items-center gap-1 text-blue-600 hover:underline'
-                            >
-                                {report.pageUrl}
-                                <ExternalLink className='h-3 w-3' />
-                            </Link>
+                            {isValidHttpUrl(report.pageUrl) ? (
+                                <Link
+                                    href={report.pageUrl}
+                                    target='_blank'
+                                    className='flex items-center gap-1 text-blue-600 hover:underline'
+                                >
+                                    {report.pageUrl}
+                                    <ExternalLink className='h-3 w-3' />
+                                </Link>
+                            ) : (
+                                <span className='text-muted-foreground'>
+                                    {report.pageUrl}
+                                </span>
+                            )}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className='space-y-4'>

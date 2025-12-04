@@ -54,7 +54,14 @@ export default async function BlogPostsPage({
     searchParams: SearchParams
 }) {
     const params = await searchParams
-    const page = Number(params.page) || 1
+    const pageSize = 10
+
+    let requestedPage = Number(params.page)
+    if (!Number.isFinite(requestedPage) || requestedPage < 1) {
+        requestedPage = 1
+    }
+    requestedPage = Math.floor(requestedPage)
+
     const sortBy: BlogPostSortBy = isValidSortBy(params.sortBy)
         ? params.sortBy
         : 'createdAt'
@@ -62,13 +69,29 @@ export default async function BlogPostsPage({
         ? params.sortOrder
         : 'desc'
 
-    const { posts, total } = await getBlogPosts({
-        page,
-        pageSize: 10,
+    // First fetch to get total count
+    let { posts, total } = await getBlogPosts({
+        page: requestedPage,
+        pageSize,
         sortBy,
         sortOrder,
     })
-    const totalPages = Math.ceil(total / 10)
+
+    const totalPages = Math.ceil(total / pageSize)
+
+    // Clamp page to valid range
+    const page = Math.min(requestedPage, Math.max(1, totalPages))
+
+    // Re-fetch if page was clamped and we got empty results
+    if (page !== requestedPage && posts.length === 0 && totalPages > 0) {
+        const refetch = await getBlogPosts({
+            page,
+            pageSize,
+            sortBy,
+            sortOrder,
+        })
+        posts = refetch.posts
+    }
 
     // Helper to build URL with sort params
     const buildSortUrl = (newSortBy: BlogPostSortBy) => {

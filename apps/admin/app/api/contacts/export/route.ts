@@ -69,7 +69,7 @@ export async function GET() {
             contact.email,
             contact.phone ?? '',
             contact.subject ?? '',
-            escapeCSV(contact.message ?? ''),
+            contact.message ?? '',
             contact.procedure ?? '',
             contact.preferredContactTime ?? '',
             contact.source ?? '',

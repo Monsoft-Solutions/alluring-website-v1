@@ -35,24 +35,43 @@ import {
 
 export const dynamic = 'force-dynamic'
 
+const DEFAULT_STATS = {
+    blogPosts: { total: 0, published: 0, draft: 0 },
+    contacts: { total: 0, recent: 0 },
+    feedback: { bugReports: 0, betaFeedback: 0 },
+    emails: { total: 0, sent: 0, failed: 0, successRate: 0 },
+}
+
 export default async function DashboardPage() {
-    const [
-        stats,
-        recentContacts,
-        recentBugReports,
-        contactsOverTime,
-        bugsBySeverity,
-        topPosts,
-        emailsByStatus,
-    ] = await Promise.all([
-        getDashboardStats(),
-        getRecentContacts(5),
-        getRecentBugReports(5),
-        getContactsOverTime(30),
-        getBugsBySeverity(),
-        getTopPostsByViews(5),
-        getEmailsByStatus(),
-    ])
+    let stats = DEFAULT_STATS
+    let recentContacts: Awaited<ReturnType<typeof getRecentContacts>> = []
+    let recentBugReports: Awaited<ReturnType<typeof getRecentBugReports>> = []
+    let contactsOverTime: Awaited<ReturnType<typeof getContactsOverTime>> = []
+    let bugsBySeverity: Awaited<ReturnType<typeof getBugsBySeverity>> = []
+    let topPosts: Awaited<ReturnType<typeof getTopPostsByViews>> = []
+    let emailsByStatus: Awaited<ReturnType<typeof getEmailsByStatus>> = []
+
+    try {
+        ;[
+            stats,
+            recentContacts,
+            recentBugReports,
+            contactsOverTime,
+            bugsBySeverity,
+            topPosts,
+            emailsByStatus,
+        ] = await Promise.all([
+            getDashboardStats(),
+            getRecentContacts(5),
+            getRecentBugReports(5),
+            getContactsOverTime(30),
+            getBugsBySeverity(),
+            getTopPostsByViews(5),
+            getEmailsByStatus(),
+        ])
+    } catch (error) {
+        console.error('Failed to fetch dashboard data:', error)
+    }
 
     return (
         <div className='space-y-8'>

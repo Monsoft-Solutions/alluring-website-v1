@@ -14,11 +14,21 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
     const [isPending, startTransition] = useTransition()
 
     async function handleLogout() {
-        startTransition(async () => {
-            await fetch('/api/auth', { method: 'DELETE' })
-            router.push('/login')
-            router.refresh()
-        })
+        try {
+            const response = await fetch('/api/auth', { method: 'DELETE' })
+
+            if (!response.ok) {
+                throw new Error('Logout failed')
+            }
+
+            startTransition(() => {
+                router.push('/login')
+                router.refresh()
+            })
+        } catch (error) {
+            console.error('Logout error:', error)
+            alert('Failed to logout. Please try again.')
+        }
     }
 
     return (

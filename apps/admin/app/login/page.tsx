@@ -14,6 +14,34 @@ import { Lock, Loader2 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState, useTransition } from 'react'
 
+const getSafeRedirectPath = (path: string | null): string => {
+    if (!path) return '/'
+
+    // 1. Basic string validation
+    if (!path.startsWith('/') || path.startsWith('//')) {
+        return '/'
+    }
+
+    try {
+        // 2. Parsing and normalization using URL
+        // We use a dummy base to check if the path attempts to change origin
+        const dummyBase = 'http://localhost'
+        const url = new URL(path, dummyBase)
+
+        // 3. Explicit checks
+        // If origin changes, it's an absolute URL or protocol-relative URL
+        if (url.origin !== dummyBase) {
+            return '/'
+        }
+
+        // Return the valid relative path
+        return path
+    } catch {
+        // If parsing fails, fallback to safe default
+        return '/'
+    }
+}
+
 function LoginForm() {
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -21,7 +49,7 @@ function LoginForm() {
     const [error, setError] = useState('')
     const [isPending, startTransition] = useTransition()
 
-    const redirectTo = searchParams.get('redirect') || '/'
+    const redirectTo = getSafeRedirectPath(searchParams.get('redirect'))
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
@@ -103,7 +131,7 @@ function LoginFormSkeleton() {
 
 export default function LoginPage() {
     return (
-        <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-stone-100 to-stone-200 p-4'>
+        <div className='flex min-h-screen items-center justify-center bg-linear-to-br from-stone-100 to-stone-200 p-4'>
             <Card className='w-full max-w-md shadow-xl'>
                 <CardHeader className='space-y-1 text-center'>
                     <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-stone-900'>

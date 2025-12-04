@@ -5,6 +5,8 @@ import { emailLog } from '@workspace/db/schema/emails'
 import { betaFeedback, bugReport } from '@workspace/db/schema/feedback'
 import { count, eq, desc, sql, gte } from 'drizzle-orm'
 
+import { fillMissingDatesSimple, type DailyCount } from '@/lib/utils/date.util'
+
 export type DashboardStats = {
     blogPosts: {
         total: number
@@ -28,11 +30,16 @@ export type DashboardStats = {
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
+    // Calculate date for "recent" contacts (last 7 days)
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
     const [
         totalPostsResult,
         publishedPostsResult,
         draftPostsResult,
         totalContactsResult,
+        recentContactsResult,
         totalBugReportsResult,
         totalBetaFeedbackResult,
         totalEmailsResult,
@@ -49,6 +56,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
             .from(blogPost)
             .where(eq(blogPost.status, 'draft')),
         db.select({ count: count() }).from(contactSubmission),
+        db
+            .select({ count: count() })
+            .from(contactSubmission)
+            .where(gte(contactSubmission.createdAt, sevenDaysAgo)),
         db.select({ count: count() }).from(bugReport),
         db.select({ count: count() }).from(betaFeedback),
         db.select({ count: count() }).from(emailLog),
@@ -74,7 +85,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         },
         contacts: {
             total: totalContactsResult[0]?.count ?? 0,
-            recent: totalContactsResult[0]?.count ?? 0,
+            recent: recentContactsResult[0]?.count ?? 0,
         },
         feedback: {
             bugReports: totalBugReportsResult[0]?.count ?? 0,
@@ -145,11 +156,8 @@ export async function getRecentBugReports(
 }
 
 // Time-series data for charts
-
-export type DailyCount = {
-    date: string
-    count: number
-}
+// Re-export DailyCount from shared utility for backwards compatibility
+export type { DailyCount }
 
 export async function getContactsOverTime(days = 30): Promise<DailyCount[]> {
     const startDate = new Date()
@@ -165,9 +173,8 @@ export async function getContactsOverTime(days = 30): Promise<DailyCount[]> {
         .groupBy(sql`DATE(${contactSubmission.createdAt})`)
         .orderBy(sql`DATE(${contactSubmission.createdAt})`)
 
-    // Fill in missing dates with 0
-    const filledResults = fillMissingDates(results, days)
-    return filledResults
+    // Fill in missing dates with 0 using shared utility
+    return fillMissingDatesSimple(results, days)
 }
 
 export type SeverityCount = {
@@ -243,7 +250,7 @@ export async function getEmailsOverTime(days = 30): Promise<DailyCount[]> {
         .groupBy(sql`DATE(${emailLog.sentAt})`)
         .orderBy(sql`DATE(${emailLog.sentAt})`)
 
-    return fillMissingDates(results, days)
+    return fillMissingDatesSimple(results, days)
 }
 
 export type EmailStatusCount = {
@@ -261,32 +268,4 @@ export async function getEmailsByStatus(): Promise<EmailStatusCount[]> {
         .groupBy(emailLog.status)
 
     return results
-}
-
-// Helper function to fill in missing dates
-function fillMissingDates(
-    results: { date: string | null; count: number }[],
-    days: number
-): DailyCount[] {
-    const dateMap = new Map(
-        results
-            .filter(
-                (r): r is { date: string; count: number } => r.date !== null
-            )
-            .map((r) => [r.date, r.count])
-    )
-    const filledResults: DailyCount[] = []
-    const today = new Date()
-
-    for (let i = days - 1; i >= 0; i--) {
-        const date = new Date(today)
-        date.setDate(date.getDate() - i)
-        const dateStr = date.toISOString().split('T')[0]!
-        filledResults.push({
-            date: dateStr,
-            count: dateMap.get(dateStr) ?? 0,
-        })
-    }
-
-    return filledResults
 }

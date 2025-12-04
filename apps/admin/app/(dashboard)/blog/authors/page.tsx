@@ -129,9 +129,11 @@ export default async function AuthorsPage() {
                                         </TableCell>
                                         <TableCell>
                                             <span className='text-muted-foreground text-sm'>
-                                                {new Date(
-                                                    author.createdAt
-                                                ).toLocaleDateString()}
+                                                {author.createdAt
+                                                    ? new Date(
+                                                          author.createdAt
+                                                      ).toLocaleDateString()
+                                                    : '—'}
                                             </span>
                                         </TableCell>
                                         <TableCell>
@@ -159,10 +161,17 @@ export default async function AuthorsPage() {
 }
 
 function getInitials(name: string): string {
-    return name
-        .split(' ')
-        .map((n) => n[0])
+    const trimmed = name.trim()
+    if (!trimmed) return ''
+
+    const segments = trimmed
+        .split(/\s+/)
+        .filter((segment) => segment.length > 0)
+        .map((segment) => segment[0])
+        .filter((char) => char !== undefined)
         .join('')
         .toUpperCase()
         .slice(0, 2)
+
+    return segments || ''
 }
