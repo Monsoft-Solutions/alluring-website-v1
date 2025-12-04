@@ -1,0 +1,135 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { X, Sparkles, ArrowRight } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+type AnnouncementBarClientProps = {
+    promotionId: string
+    title: string
+    discount: string | null
+    ctaText: string
+    link: string
+}
+
+const STORAGE_KEY_PREFIX = 'dismissed_promo_'
+const ANNOUNCEMENT_BAR_HEIGHT = 40
+
+/**
+ * AnnouncementBarClient Component
+ *
+ * Client-side component that handles dismissal state and animations
+ * for the announcement bar. Stores dismissal in localStorage.
+ */
+export function AnnouncementBarClient({
+    promotionId,
+    title,
+    discount,
+    ctaText,
+    link,
+}: AnnouncementBarClientProps) {
+    const [isDismissed, setIsDismissed] = useState(true) // Start hidden to prevent flash
+    const [isLoaded, setIsLoaded] = useState(false)
+
+    // Check localStorage on mount
+    useEffect(() => {
+        const storageKey = `${STORAGE_KEY_PREFIX}${promotionId}`
+        const wasDismissed = localStorage.getItem(storageKey) === 'true'
+        setIsDismissed(wasDismissed)
+        setIsLoaded(true)
+
+        // Set CSS variable for header positioning
+        if (!wasDismissed) {
+            document.documentElement.style.setProperty(
+                '--announcement-bar-height',
+                `${ANNOUNCEMENT_BAR_HEIGHT}px`
+            )
+        }
+
+        return () => {
+            document.documentElement.style.setProperty(
+                '--announcement-bar-height',
+                '0px'
+            )
+        }
+    }, [promotionId])
+
+    const handleDismiss = () => {
+        const storageKey = `${STORAGE_KEY_PREFIX}${promotionId}`
+        localStorage.setItem(storageKey, 'true')
+        setIsDismissed(true)
+        document.documentElement.style.setProperty(
+            '--announcement-bar-height',
+            '0px'
+        )
+    }
+
+    // Don't render anything until we've checked localStorage
+    if (!isLoaded) {
+        return null
+    }
+
+    return (
+        <AnimatePresence>
+            {!isDismissed && (
+                <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: ANNOUNCEMENT_BAR_HEIGHT, opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className='fixed top-0 right-0 left-0 z-[60] overflow-hidden bg-stone-900'
+                    role='banner'
+                    aria-label='Special offer announcement'
+                >
+                    {/* Subtle gold accent line at bottom */}
+                    <div className='bg-gold-500/40 absolute right-0 bottom-0 left-0 h-px' />
+
+                    {/* Full-width clickable link area */}
+                    <Link
+                        href={link}
+                        className='group absolute inset-0 flex items-center justify-center pr-12'
+                    >
+                        <div className='flex items-center gap-2 md:gap-3'>
+                            <Sparkles className='text-gold-400 hidden h-3.5 w-3.5 sm:block' />
+
+                            <span className='flex items-center gap-1.5 text-xs font-medium tracking-wide text-stone-300 uppercase md:gap-2 md:text-sm'>
+                                <span className='hidden sm:inline'>
+                                    Limited Time:
+                                </span>
+                                {discount && (
+                                    <span className='text-gold-400 font-bold'>
+                                        {discount}
+                                    </span>
+                                )}
+                                <span className='max-w-[150px] truncate sm:max-w-none'>
+                                    {title}
+                                </span>
+                            </span>
+
+                            <span className='text-gold-400 ml-1 flex items-center gap-1 text-xs font-bold tracking-wide uppercase transition-colors group-hover:text-white md:ml-2'>
+                                <span className='hidden sm:inline'>
+                                    {ctaText}
+                                </span>
+                                <ArrowRight className='h-3 w-3 transition-transform group-hover:translate-x-0.5' />
+                            </span>
+                        </div>
+                    </Link>
+
+                    {/* Dismiss button - positioned above link */}
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            handleDismiss()
+                        }}
+                        className='absolute top-1/2 right-4 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-800 hover:text-white md:right-6'
+                        aria-label='Dismiss promotion'
+                    >
+                        <X className='h-3.5 w-3.5' />
+                    </button>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    )
+}

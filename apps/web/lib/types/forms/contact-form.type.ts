@@ -25,6 +25,7 @@ export const CONTACT_SOURCES = {
     LEAD_FORM: 'lead-form',
     FOOTER: 'footer',
     GENERAL: 'general',
+    PROMO_MODAL: 'promo-modal',
 } as const
 
 export type ContactSource =

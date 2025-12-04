@@ -4,9 +4,9 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack --port 3005",
+        "dev": "next dev --port 3105",
         "build": "next build",
-        "start": "next start --port 3005",
+        "start": "next start --port 3105",
         "lint": "eslint . --max-warnings 0",
         "lint:fix": "next lint --fix",
         "typecheck": "tsc --noEmit",
@@ -14,6 +14,7 @@
     },
     "dependencies": {
         "@hookform/resolvers": "^5.2.2",
+        "@vercel/blob": "^1.1.1",
         "@radix-ui/react-slot": "^1.2.4",
         "@t3-oss/env-nextjs": "^0.13.8",
         "@tiptap/extension-code-block-lowlight": "^3.12.1",
