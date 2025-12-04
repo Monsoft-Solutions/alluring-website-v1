@@ -169,11 +169,15 @@ export function MediaUpload({
                             <Video className='h-12 w-12 text-stone-400' />
                         </div>
                     ) : (
-                        <Image
-                            src={value}
-                            alt='Uploaded media'
-                            className='h-32 w-full object-cover'
-                        />
+                        <div className='relative h-32 w-full'>
+                            <Image
+                                src={value}
+                                alt='Uploaded media'
+                                fill
+                                sizes='(max-width: 768px) 100vw, 400px'
+                                className='object-cover'
+                            />
+                        </div>
                     )}
                     <Button
                         type='button'
