@@ -247,6 +247,7 @@ export async function getPromotionStats(): Promise<{
     active: number
     scheduled: number
     draft: number
+    paused: number
     expired: number
 }> {
     const results = await db
@@ -262,6 +263,7 @@ export async function getPromotionStats(): Promise<{
         active: 0,
         scheduled: 0,
         draft: 0,
+        paused: 0,
         expired: 0,
     }
 
@@ -271,6 +273,7 @@ export async function getPromotionStats(): Promise<{
         if (row.status === 'active') stats.active = count
         if (row.status === 'scheduled') stats.scheduled = count
         if (row.status === 'draft') stats.draft = count
+        if (row.status === 'paused') stats.paused = count
         if (row.status === 'expired') stats.expired = count
     }
 
