@@ -1,0 +1,156 @@
+import { db } from '@workspace/db/client'
+import { contactSubmission } from '@workspace/db/schema/contact'
+import { emailLog } from '@workspace/db/schema/emails'
+import { count, desc, eq, and, gte, lte, sql } from 'drizzle-orm'
+
+export type EmailLogListItem = {
+    id: string
+    to: string
+    from: string
+    subject: string
+    status: 'sent' | 'failed' | 'pending'
+    resendEmailId: string | null
+    error: string | null
+    sentAt: Date
+    contactSubmissionId: string | null
+    contactName: string | null
+    contactEmail: string | null
+}
+
+export type EmailFilters = {
+    status?: 'sent' | 'failed' | 'pending' | 'all'
+    startDate?: Date
+    endDate?: Date
+}
+
+export async function getEmailLogs(
+    page = 1,
+    pageSize = 10,
+    filters?: EmailFilters
+): Promise<{ emails: EmailLogListItem[]; total: number }> {
+    const offset = (page - 1) * pageSize
+
+    // Build where conditions
+    const conditions = []
+
+    if (filters?.status && filters.status !== 'all') {
+        conditions.push(eq(emailLog.status, filters.status))
+    }
+
+    if (filters?.startDate) {
+        conditions.push(gte(emailLog.sentAt, filters.startDate))
+    }
+
+    if (filters?.endDate) {
+        conditions.push(lte(emailLog.sentAt, filters.endDate))
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
+    const [emails, totalResult] = await Promise.all([
+        db
+            .select({
+                id: emailLog.id,
+                to: emailLog.to,
+                from: emailLog.from,
+                subject: emailLog.subject,
+                status: emailLog.status,
+                resendEmailId: emailLog.resendEmailId,
+                error: emailLog.error,
+                sentAt: emailLog.sentAt,
+                contactSubmissionId: emailLog.contactSubmissionId,
+                contactName: contactSubmission.name,
+                contactEmail: contactSubmission.email,
+            })
+            .from(emailLog)
+            .leftJoin(
+                contactSubmission,
+                eq(emailLog.contactSubmissionId, contactSubmission.id)
+            )
+            .where(whereClause)
+            .orderBy(desc(emailLog.sentAt))
+            .limit(pageSize)
+            .offset(offset),
+        db.select({ count: count() }).from(emailLog).where(whereClause),
+    ])
+
+    return {
+        emails,
+        total: totalResult[0]?.count ?? 0,
+    }
+}
+
+export type EmailStats = {
+    total: number
+    sent: number
+    failed: number
+    pending: number
+    successRate: number
+}
+
+export async function getEmailStats(): Promise<EmailStats> {
+    const [totalResult, sentResult, failedResult, pendingResult] =
+        await Promise.all([
+            db.select({ count: count() }).from(emailLog),
+            db
+                .select({ count: count() })
+                .from(emailLog)
+                .where(eq(emailLog.status, 'sent')),
+            db
+                .select({ count: count() })
+                .from(emailLog)
+                .where(eq(emailLog.status, 'failed')),
+            db
+                .select({ count: count() })
+                .from(emailLog)
+                .where(eq(emailLog.status, 'pending')),
+        ])
+
+    const total = totalResult[0]?.count ?? 0
+    const sent = sentResult[0]?.count ?? 0
+    const failed = failedResult[0]?.count ?? 0
+    const pending = pendingResult[0]?.count ?? 0
+
+    return {
+        total,
+        sent,
+        failed,
+        pending,
+        successRate: total > 0 ? Math.round((sent / total) * 100) : 0,
+    }
+}
+
+export type EmailLogById = EmailLogListItem & {
+    contactPhone: string | null
+    contactMessage: string | null
+}
+
+export async function getEmailLogById(
+    id: string
+): Promise<EmailLogById | null> {
+    const result = await db
+        .select({
+            id: emailLog.id,
+            to: emailLog.to,
+            from: emailLog.from,
+            subject: emailLog.subject,
+            status: emailLog.status,
+            resendEmailId: emailLog.resendEmailId,
+            error: emailLog.error,
+            sentAt: emailLog.sentAt,
+            contactSubmissionId: emailLog.contactSubmissionId,
+            contactName: contactSubmission.name,
+            contactEmail: contactSubmission.email,
+            contactPhone: contactSubmission.phone,
+            contactMessage: contactSubmission.message,
+        })
+        .from(emailLog)
+        .leftJoin(
+            contactSubmission,
+            eq(emailLog.contactSubmissionId, contactSubmission.id)
+        )
+        .where(eq(emailLog.id, id))
+        .limit(1)
+
+    return result[0] ?? null
+}

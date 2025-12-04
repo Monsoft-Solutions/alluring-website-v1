@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogCTA } from '@/components/blog/blog-cta.component'
+import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
@@ -53,6 +54,9 @@ export function BlogPostContent({
 
     return (
         <ContainerLayout as='article' size='lg' className='py-16 lg:py-20'>
+            {/* Track blog post view */}
+            <BlogViewTracker postId={post.id} />
+
             <div className='mb-16'>
                 <Breadcrumbs
                     items={[
