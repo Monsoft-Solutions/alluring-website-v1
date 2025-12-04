@@ -24,7 +24,18 @@ export default async function ContactsPage({
     searchParams: SearchParams
 }) {
     const params = await searchParams
-    const page = Number(params.page) || 1
+
+    const MAX_PAGE = 1000
+    let page = Number(params.page)
+
+    // Validate: ensure it's a finite integer and positive
+    if (!Number.isInteger(page) || !Number.isFinite(page) || page < 1) {
+        page = 1
+    }
+
+    // Clamp to safe range
+    page = Math.min(page, MAX_PAGE)
+
     const { contacts, total } = await getContacts(page, 10)
     const totalPages = Math.ceil(total / 10)
 
