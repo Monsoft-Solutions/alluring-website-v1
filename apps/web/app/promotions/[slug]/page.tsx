@@ -13,8 +13,8 @@ import {
     formatDiscount,
     getRemainingDays,
     isExpiringSoon,
-    incrementPromotionViews,
 } from '@/lib/queries/promotion.query'
+import { PromotionViewTracker } from '@/components/promotions'
 import { siteConfig } from '@/lib/data/site-config'
 
 type Params = Promise<{ slug: string }>
@@ -62,9 +62,6 @@ export default async function PromotionDetailPage({
         notFound()
     }
 
-    // Increment view count
-    await incrementPromotionViews(promotion.id)
-
     const link = getPromotionLink(promotion)
     const discount = formatDiscount(promotion)
     const daysRemaining = getRemainingDays(promotion)
@@ -79,7 +76,10 @@ export default async function PromotionDetailPage({
 
     return (
         <ContainerLayout>
-            <div className='py-12 md:py-16'>
+            <div className='relative py-12 md:py-16'>
+                {/* Client-side view tracking - triggers after user views promotion */}
+                <PromotionViewTracker promotionId={promotion.id} />
+
                 {/* Breadcrumb */}
                 <nav className='mb-8'>
                     <Button
