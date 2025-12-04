@@ -54,7 +54,13 @@ export default async function BlogPostsPage({
     searchParams: SearchParams
 }) {
     const params = await searchParams
-    const page = Number(params.page) || 1
+
+    let page = Number(params.page)
+    if (!Number.isFinite(page) || page < 1) {
+        page = 1
+    }
+    page = Math.floor(page)
+
     const sortBy: BlogPostSortBy = isValidSortBy(params.sortBy)
         ? params.sortBy
         : 'createdAt'
@@ -68,7 +74,11 @@ export default async function BlogPostsPage({
         sortBy,
         sortOrder,
     })
+
     const totalPages = Math.ceil(total / 10)
+
+    // Clamp page for UI to show valid upper bound
+    page = Math.min(page, Math.max(1, totalPages))
 
     // Helper to build URL with sort params
     const buildSortUrl = (newSortBy: BlogPostSortBy) => {
