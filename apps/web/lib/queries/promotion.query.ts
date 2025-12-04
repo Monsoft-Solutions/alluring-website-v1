@@ -1,6 +1,6 @@
 import { db } from '@workspace/db/client'
 import { promotion, type Promotion } from '@workspace/db/schema/promotion'
-import { desc, eq, and, or, lte, gte, sql } from 'drizzle-orm'
+import { desc, eq, and, or, lte, gte, sql, isNotNull } from 'drizzle-orm'
 
 export type PromotionType = 'discount' | 'seasonal' | 'bundle' | 'financing'
 
@@ -199,4 +199,31 @@ export function getRemainingDays(promo: Promotion): number | null {
     )
 
     return daysRemaining > 0 ? daysRemaining : 0
+}
+
+/**
+ * Get the highest priority active promotion for the timed modal
+ * Only returns promotions that have modalDelaySeconds set (not null)
+ */
+export async function getFeaturedPromotionForModal(): Promise<Promotion | null> {
+    const now = new Date()
+
+    const [result] = await db
+        .select()
+        .from(promotion)
+        .where(
+            and(
+                eq(promotion.status, 'active'),
+                isNotNull(promotion.modalDelaySeconds),
+                or(
+                    sql`${promotion.startsAt} IS NULL`,
+                    lte(promotion.startsAt, now)
+                ),
+                or(sql`${promotion.endsAt} IS NULL`, gte(promotion.endsAt, now))
+            )
+        )
+        .orderBy(desc(promotion.priority), desc(promotion.createdAt))
+        .limit(1)
+
+    return result ?? null
 }

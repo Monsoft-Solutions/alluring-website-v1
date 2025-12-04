@@ -27,6 +27,7 @@ export type PromotionFormData = {
     customUrl?: string | null
     ctaText?: string
     priority?: number
+    modalDelaySeconds?: number | null
 }
 
 type ActionResult = {
@@ -95,6 +96,7 @@ export async function createPromotion(
                 customUrl: data.customUrl ?? null,
                 ctaText: data.ctaText ?? 'Learn More',
                 priority: data.priority ?? 0,
+                modalDelaySeconds: data.modalDelaySeconds ?? 60,
             })
             .returning({ id: promotion.id })
 
@@ -183,6 +185,7 @@ export async function updatePromotion(
                 customUrl: data.customUrl ?? null,
                 ctaText: data.ctaText ?? 'Learn More',
                 priority: data.priority ?? 0,
+                modalDelaySeconds: data.modalDelaySeconds ?? 60,
             })
             .where(eq(promotion.id, id))
 

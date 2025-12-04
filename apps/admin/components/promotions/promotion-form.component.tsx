@@ -10,6 +10,7 @@ import {
     Calendar,
     DollarSign,
     Percent,
+    Monitor,
 } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -118,6 +119,7 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
         customUrl: initialData?.customUrl ?? '',
         ctaText: initialData?.ctaText ?? 'Learn More',
         priority: initialData?.priority ?? 0,
+        modalDelaySeconds: initialData?.modalDelaySeconds ?? 60,
     })
 
     const handleChange = <K extends keyof PromotionFormData>(
@@ -535,6 +537,56 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
                                 }
                                 min={0}
                             />
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Display Settings */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2'>
+                            <Monitor className='h-4 w-4' />
+                            Display Settings
+                        </CardTitle>
+                        <CardDescription>
+                            Control how this promotion appears on the site
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className='space-y-4'>
+                        <div className='space-y-2'>
+                            <Label htmlFor='modalDelaySeconds'>
+                                Modal Popup Delay (seconds)
+                            </Label>
+                            <Input
+                                id='modalDelaySeconds'
+                                type='number'
+                                value={formData.modalDelaySeconds ?? ''}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'modalDelaySeconds',
+                                        e.target.value
+                                            ? Number(e.target.value)
+                                            : null
+                                    )
+                                }
+                                placeholder='60'
+                                min={0}
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                Time in seconds before the promotion modal
+                                appears. Leave empty to disable the modal for
+                                this promotion.
+                            </p>
+                        </div>
+
+                        <div className='rounded-lg border bg-blue-50 p-3'>
+                            <p className='text-xs text-blue-800'>
+                                <strong>Note:</strong> The promotion with the
+                                highest priority that has a modal delay set will
+                                be displayed site-wide. Banner and homepage
+                                section always show the highest priority active
+                                promotion.
+                            </p>
                         </div>
                     </CardContent>
                 </Card>

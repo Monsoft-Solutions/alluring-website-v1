@@ -8,9 +8,11 @@ import { PageViewTracker } from '@/components/analytics/page-view-tracker.compon
 import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
 import { FloatingFeedbackButton } from '@/components/feedback'
+import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { Footer } from '@/components/layout/footer.component'
 import { Header } from '@/components/layout/header.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
+import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
+import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { WebVitals } from '@/components/web-vitals.component'
@@ -102,6 +104,8 @@ export default function RootLayout({
                     <AnalyticsProvider />
                     {/* Cookie Consent Banner */}
                     <CookieBanner />
+                    {/* Promotion Announcement Bar */}
+                    <AnnouncementBar />
                     {/* Site Header */}
                     <Header />
                     {/* Main Content */}
@@ -110,6 +114,8 @@ export default function RootLayout({
                     <Footer />
                     {/* Exit Intent Popup - Only on homepage */}
                     <ExitIntentPopup />
+                    {/* Promotion Modal - Timed popup with lead capture */}
+                    <PromoModalWrapper />
                     {/* Mobile Call Button - visible on mobile devices only */}
                     {isMobileCallButtonEnabled && (
                         <MobileCallButton

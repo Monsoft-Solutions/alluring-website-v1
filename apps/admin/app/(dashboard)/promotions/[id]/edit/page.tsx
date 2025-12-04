@@ -60,6 +60,7 @@ export default async function EditPromotionPage({
         customUrl: promotion.customUrl,
         ctaText: promotion.ctaText,
         priority: promotion.priority,
+        modalDelaySeconds: promotion.modalDelaySeconds,
     }
 
     async function handleDelete() {

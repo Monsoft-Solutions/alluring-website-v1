@@ -1,2 +1,6 @@
+export { AnnouncementBar } from './announcement-bar.component'
 export { PromotionBanner } from './promotion-banner.component'
 export { PromotionCard } from './promotion-card.component'
+export { PromoSection } from './promo-section.component'
+export { PromoModal } from './promo-modal.component'
+export { PromoModalWrapper } from './promo-modal-wrapper.component'

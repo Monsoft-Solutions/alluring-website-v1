@@ -49,8 +49,9 @@ export const Header = () => {
                 style={{
                     paddingTop: headerPadding,
                     paddingBottom: headerPadding,
+                    top: 'var(--announcement-bar-height, 0px)',
                 }}
-                className={`fixed top-0 right-0 left-0 z-50 transition-colors duration-500 ${
+                className={`fixed right-0 left-0 z-50 transition-all duration-500 ${
                     isScrolled
                         ? 'border-b border-stone-100 bg-white/80 backdrop-blur-md'
                         : 'bg-transparent'

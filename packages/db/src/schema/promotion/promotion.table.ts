@@ -104,6 +104,9 @@ export const promotion = pgTable(
             .default('Learn More')
             .notNull(),
 
+        // Display Settings
+        modalDelaySeconds: integer('modal_delay_seconds').default(60), // null = don't show in modal
+
         // Metadata
         priority: integer('priority').default(0).notNull(), // Higher = more prominent
         views: integer('views').default(0).notNull(),

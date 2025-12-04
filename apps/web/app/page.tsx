@@ -2,7 +2,6 @@ import { Metadata } from 'next'
 import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { Hero } from '@/components/home/hero.component'
-import { PromotionBanner } from '@/components/promotions/promotion-banner.component'
 import { Journey } from '@/components/home/journey.component'
 import { Procedures } from '@/components/home/procedures.component'
 import { BeforeAfter } from '@/components/home/before-after.component'
@@ -11,10 +10,12 @@ import { Surgeons } from '@/components/home/surgeons.component'
 import { Testimonials } from '@/components/home/testimonials.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { LeadForm } from '@/components/home/lead-form.component'
+import { PromoSection } from '@/components/promotions'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
+import { getFeaturedPromotion } from '@/lib/queries/promotion.query'
 import { env } from '@/env'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
@@ -76,7 +77,10 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
  * The main landing page of the website.
  * Adapted from the prototype design with all sections in order.
  */
-export default function Page() {
+export default async function Page() {
+    // Fetch featured promotion for homepage section
+    const featuredPromotion = await getFeaturedPromotion()
+
     // Flatten FAQ data for schema (combine all categories)
     const allFaqItems = Object.values(faqDataHome).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
@@ -98,9 +102,12 @@ export default function Page() {
 
             <div className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
                 <Hero />
-                <PromotionBanner />
                 <Journey />
                 <Procedures />
+                {/* Featured Promotion Section - Only shown when active promotion exists */}
+                {featuredPromotion && (
+                    <PromoSection promotion={featuredPromotion} />
+                )}
                 <BeforeAfter />
                 <WhyUs />
                 <Surgeons />
