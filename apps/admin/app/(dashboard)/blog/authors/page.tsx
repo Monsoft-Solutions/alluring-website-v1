@@ -129,9 +129,11 @@ export default async function AuthorsPage() {
                                         </TableCell>
                                         <TableCell>
                                             <span className='text-muted-foreground text-sm'>
-                                                {new Date(
-                                                    author.createdAt
-                                                ).toLocaleDateString()}
+                                                {author.createdAt
+                                                    ? new Date(
+                                                          author.createdAt
+                                                      ).toLocaleDateString()
+                                                    : '—'}
                                             </span>
                                         </TableCell>
                                         <TableCell>

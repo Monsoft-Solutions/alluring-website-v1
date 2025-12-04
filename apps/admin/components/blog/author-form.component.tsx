@@ -107,6 +107,8 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                     } else {
                         setError(result.error ?? 'Failed to update author')
                     }
+                } else {
+                    setError('Invalid author ID for update')
                 }
             } catch (error) {
                 console.error('Error saving author:', error)

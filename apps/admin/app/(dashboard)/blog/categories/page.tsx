@@ -78,6 +78,9 @@ export default function CategoriesPage() {
     async function fetchCategories() {
         try {
             const res = await fetch('/api/categories')
+            if (!res.ok) {
+                throw new Error(`Failed to fetch: ${res.status}`)
+            }
             const data = await res.json()
             setCategories(data)
         } catch (error) {
@@ -244,6 +247,21 @@ function CategoryDialog({
         sortOrder: category?.sortOrder ?? 0,
         isActive: category?.isActive ?? true,
     })
+
+    // Reset form state when dialog opens or category changes
+    useEffect(() => {
+        if (open) {
+            setFormData({
+                name: category?.name ?? '',
+                slug: category?.slug ?? '',
+                description: category?.description ?? '',
+                color: category?.color ?? '#78716c',
+                sortOrder: category?.sortOrder ?? 0,
+                isActive: category?.isActive ?? true,
+            })
+            setError(null)
+        }
+    }, [open, category])
 
     const handleChange = (
         field: keyof CategoryFormData,

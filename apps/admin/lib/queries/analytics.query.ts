@@ -10,6 +10,11 @@ import { db } from '@workspace/db/client'
 import { pageView } from '@workspace/db/schema/analytics'
 import { count, desc, gte, sql, countDistinct } from 'drizzle-orm'
 
+import {
+    fillMissingDatesWithViews,
+    type DailyViewCount,
+} from '@/lib/utils/date.util'
+
 // ============================================================================
 // Types
 // ============================================================================
@@ -22,11 +27,8 @@ export type AnalyticsSummary = {
     topSource: string | null
 }
 
-export type DailyViewCount = {
-    date: string
-    views: number
-    sessions: number
-}
+// Re-export DailyViewCount from shared utility for backwards compatibility
+export type { DailyViewCount }
 
 export type TopPage = {
     pagePath: string
@@ -158,8 +160,8 @@ export async function getPageViewsOverTime(
         .groupBy(sql`DATE(${pageView.createdAt})`)
         .orderBy(sql`DATE(${pageView.createdAt})`)
 
-    // Fill in missing dates with zeros
-    return fillMissingDates(results, days)
+    // Fill in missing dates with zeros using shared utility
+    return fillMissingDatesWithViews(results, days)
 }
 
 // ============================================================================
@@ -363,39 +365,17 @@ export async function getGeoDistribution(limit = 20): Promise<GeoStats[]> {
 }
 
 // ============================================================================
-// Helpers
+// Notes
 // ============================================================================
 
 /**
- * Fill in missing dates with zero values
+ * Note on percentage calculations (e.g., getBrowserBreakdown):
+ *
+ * Percentages are calculated from the limited result set (top N items),
+ * not from all data. This is intentional for "top N" breakdowns where
+ * showing relative proportions within the visible items is more useful
+ * than showing absolute percentages of total traffic.
+ *
+ * For accurate total percentages, a separate total count query would
+ * be needed, which adds query complexity for minimal UX benefit.
  */
-function fillMissingDates(
-    results: { date: string | null; views: number; sessions: number }[],
-    days: number
-): DailyViewCount[] {
-    const dateMap = new Map(
-        results
-            .filter(
-                (r): r is { date: string; views: number; sessions: number } =>
-                    r.date !== null
-            )
-            .map((r) => [r.date, { views: r.views, sessions: r.sessions }])
-    )
-
-    const filledResults: DailyViewCount[] = []
-    const today = new Date()
-
-    for (let i = days - 1; i >= 0; i--) {
-        const date = new Date(today)
-        date.setDate(date.getDate() - i)
-        const dateStr = date.toISOString().split('T')[0]!
-        const data = dateMap.get(dateStr)
-        filledResults.push({
-            date: dateStr,
-            views: data?.views ?? 0,
-            sessions: data?.sessions ?? 0,
-        })
-    }
-
-    return filledResults
-}

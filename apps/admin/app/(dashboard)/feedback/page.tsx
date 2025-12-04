@@ -203,17 +203,16 @@ export default async function FeedbackPage() {
                                                     </TableCell>
                                                     <TableCell>
                                                         <span className='text-sm capitalize'>
-                                                            {feedback.deviceType.replace(
-                                                                '-',
-                                                                ' '
-                                                            )}
+                                                            {(
+                                                                feedback.deviceType ??
+                                                                'unknown'
+                                                            ).replace('-', ' ')}
                                                         </span>
                                                     </TableCell>
                                                     <TableCell>
                                                         <span className='text-sm capitalize'>
-                                                            {
-                                                                feedback.browserType
-                                                            }
+                                                            {feedback.browserType ??
+                                                                'unknown'}
                                                         </span>
                                                     </TableCell>
                                                     <TableCell>
