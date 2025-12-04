@@ -1,8 +1,21 @@
 import { put, del } from '@vercel/blob'
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { env } from '@/env'
+
+const AUTH_COOKIE_NAME = 'admin-auth'
+
+/**
+ * Validates admin authentication by checking for the auth cookie
+ * @returns true if authenticated, false otherwise
+ */
+async function isAuthenticated(): Promise<boolean> {
+    const cookieStore = await cookies()
+    const authCookie = cookieStore.get(AUTH_COOKIE_NAME)
+    return !!authCookie?.value
+}
 
 /**
  * Route segment config for handling large file uploads
@@ -208,11 +221,24 @@ export async function POST(
 /**
  * DELETE /api/upload
  * Delete a file from Vercel Blob storage
+ * Requires admin authentication
  */
 export async function DELETE(
     request: NextRequest
 ): Promise<NextResponse<{ success: boolean; error?: string }>> {
     try {
+        // Validate admin authentication
+        const authenticated = await isAuthenticated()
+        if (!authenticated) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'Unauthorized - Admin authentication required',
+                },
+                { status: 401 }
+            )
+        }
+
         const { url } = await request.json()
 
         if (!url || typeof url !== 'string') {
