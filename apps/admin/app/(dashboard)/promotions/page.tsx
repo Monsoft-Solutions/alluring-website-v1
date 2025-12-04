@@ -22,6 +22,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { env } from '@/env'
 import {
     getPromotions,
     type PromotionSortBy,
@@ -372,8 +373,9 @@ export default async function PromotionsPage({
                                                         asChild
                                                     >
                                                         <Link
-                                                            href={`/promotions/${promo.slug}`}
+                                                            href={`${env.NEXT_PUBLIC_WEB_URL}/promotions/${promo.slug}`}
                                                             target='_blank'
+                                                            rel='noopener noreferrer'
                                                         >
                                                             <ExternalLink className='h-4 w-4' />
                                                         </Link>
