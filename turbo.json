@@ -9,6 +9,7 @@
             "env": [
                 "NODE_ENV",
                 "POSTGRES_URL",
+                "ADMIN_PASSWORD",
                 "BLOG_API_KEY",
                 "BLOB_READ_WRITE_TOKEN",
                 "VERCEL_URL",
@@ -51,6 +52,7 @@
             "env": [
                 "NODE_ENV",
                 "POSTGRES_URL",
+                "ADMIN_PASSWORD",
                 "BLOG_API_KEY",
                 "BLOB_READ_WRITE_TOKEN",
                 "VERCEL_URL",

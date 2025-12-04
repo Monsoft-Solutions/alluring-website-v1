@@ -3,6 +3,7 @@ import '@workspace/ui/globals.css'
 import { Geist, Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
 
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
+import { InternalPageViewTracker } from '@/components/analytics/internal-page-view-tracker.component'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
 import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
@@ -79,6 +80,7 @@ export default function RootLayout({
                 className={`${fontLato.variable} ${fontMono.variable} ${fontGeist.variable} ${fontPlayfair.variable} font-sans antialiased`}
             >
                 <WebVitals />
+                <InternalPageViewTracker />
                 <PageViewTracker />
                 <ScrollDepthTracker />
                 <OrganizationSchema
