@@ -5,6 +5,7 @@
     "type": "module",
     "exports": {
         "./client": "./src/client.ts",
+        "./schema/analytics": "./src/schema/analytics/index.ts",
         "./schema/blog": "./src/schema/blog/index.ts",
         "./schema/contact": "./src/schema/contact/index.ts",
         "./schema/emails": "./src/schema/emails/index.ts",

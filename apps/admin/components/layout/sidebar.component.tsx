@@ -2,6 +2,7 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import {
+    BarChart3,
     FileText,
     Home,
     Mail,
@@ -37,6 +38,11 @@ const navItems: NavItem[] = [
         title: 'Dashboard',
         href: '/',
         icon: Home,
+    },
+    {
+        title: 'Analytics',
+        href: '/analytics',
+        icon: BarChart3,
     },
     {
         title: 'Blog',
