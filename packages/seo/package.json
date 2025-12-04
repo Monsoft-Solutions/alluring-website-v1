@@ -29,7 +29,7 @@
         "@types/react": "^19.2.7",
         "@workspace/eslint-config": "workspace:*",
         "@workspace/typescript-config": "workspace:*",
-        "next": "^16.0.4",
+        "next": "^16.0.7",
         "typescript": "^5.9.3"
     }
 }
