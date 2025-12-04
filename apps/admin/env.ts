@@ -24,6 +24,9 @@ export const env = createEnv({
 
         // Admin authentication (min 4 chars for dev, use longer in production)
         ADMIN_PASSWORD: z.string().min(4),
+
+        // Vercel Blob storage for media uploads
+        BLOB_READ_WRITE_TOKEN: z.string().min(1),
     },
     client: {},
     shared: {

@@ -17,6 +17,13 @@ const nextConfig = {
             },
         ],
     },
+    // Increase body size limit for file uploads (50MB for videos)
+    serverExternalPackages: [],
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '50mb',
+        },
+    },
 }
 
 export default nextConfig

@@ -40,6 +40,7 @@ import {
 } from '@workspace/ui/components/tabs'
 
 import { PostEditor } from '../blog/editor.component'
+import { MediaUpload } from '../shared/media-upload.component'
 import {
     createPromotion,
     updatePromotion,
@@ -267,33 +268,23 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
                     <CardHeader>
                         <CardTitle>Media</CardTitle>
                         <CardDescription>
-                            Images and videos for the promotion (Vercel Blob
-                            URLs)
+                            Upload images and videos for the promotion
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className='space-y-4'>
-                        <div className='grid gap-4 sm:grid-cols-2'>
-                            <div className='space-y-2'>
-                                <Label htmlFor='imageUrl'>Hero Image URL</Label>
-                                <Input
-                                    id='imageUrl'
-                                    value={formData.imageUrl ?? ''}
-                                    onChange={(e) =>
-                                        handleChange('imageUrl', e.target.value)
-                                    }
-                                    placeholder='https://...'
-                                />
-                                {formData.imageUrl && (
-                                    <div className='mt-2 overflow-hidden rounded-lg border'>
-                                        <img
-                                            src={formData.imageUrl}
-                                            alt='Preview'
-                                            className='h-32 w-full object-cover'
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
+                    <CardContent className='space-y-6'>
+                        {/* Hero Image */}
+                        <div className='space-y-3'>
+                            <Label>Hero Image</Label>
+                            <MediaUpload
+                                value={formData.imageUrl}
+                                onChange={(url) =>
+                                    handleChange('imageUrl', url ?? '')
+                                }
+                                accept='image/*'
+                                maxSize={5 * 1024 * 1024}
+                                folder='promotions/images'
+                                placeholder='Drop hero image or click to upload'
+                            />
                             <div className='space-y-2'>
                                 <Label htmlFor='imageAlt'>Image Alt Text</Label>
                                 <Input
@@ -307,37 +298,35 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
                             </div>
                         </div>
 
-                        <div className='grid gap-4 sm:grid-cols-2'>
-                            <div className='space-y-2'>
-                                <Label htmlFor='videoUrl'>
-                                    Video URL (optional)
-                                </Label>
-                                <Input
-                                    id='videoUrl'
-                                    value={formData.videoUrl ?? ''}
-                                    onChange={(e) =>
-                                        handleChange('videoUrl', e.target.value)
-                                    }
-                                    placeholder='https://...'
-                                />
-                            </div>
+                        {/* Video (optional) */}
+                        <div className='space-y-3'>
+                            <Label>Video (optional)</Label>
+                            <MediaUpload
+                                value={formData.videoUrl}
+                                onChange={(url) =>
+                                    handleChange('videoUrl', url ?? '')
+                                }
+                                accept='video/*'
+                                maxSize={50 * 1024 * 1024}
+                                folder='promotions/videos'
+                                placeholder='Drop video or click to upload'
+                                isVideo
+                            />
+                        </div>
 
-                            <div className='space-y-2'>
-                                <Label htmlFor='thumbnailUrl'>
-                                    Video Thumbnail URL
-                                </Label>
-                                <Input
-                                    id='thumbnailUrl'
-                                    value={formData.thumbnailUrl ?? ''}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            'thumbnailUrl',
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder='https://...'
-                                />
-                            </div>
+                        {/* Video Thumbnail */}
+                        <div className='space-y-3'>
+                            <Label>Video Thumbnail</Label>
+                            <MediaUpload
+                                value={formData.thumbnailUrl}
+                                onChange={(url) =>
+                                    handleChange('thumbnailUrl', url ?? '')
+                                }
+                                accept='image/*'
+                                maxSize={5 * 1024 * 1024}
+                                folder='promotions/thumbnails'
+                                placeholder='Drop thumbnail image or click to upload'
+                            />
                         </div>
                     </CardContent>
                 </Card>
