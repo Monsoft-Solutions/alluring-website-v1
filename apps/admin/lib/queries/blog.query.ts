@@ -14,11 +14,37 @@ export type BlogPostListItem = {
     createdAt: Date | null
 }
 
+export type BlogPostSortBy = 'createdAt' | 'views' | 'publishedAt'
+
+export type BlogPostSortOrder = 'asc' | 'desc'
+
+export type GetBlogPostsOptions = {
+    page?: number
+    pageSize?: number
+    sortBy?: BlogPostSortBy
+    sortOrder?: BlogPostSortOrder
+}
+
 export async function getBlogPosts(
-    page = 1,
-    pageSize = 10
+    options: GetBlogPostsOptions = {}
 ): Promise<{ posts: BlogPostListItem[]; total: number }> {
+    const {
+        page = 1,
+        pageSize = 10,
+        sortBy = 'createdAt',
+        sortOrder = 'desc',
+    } = options
     const offset = (page - 1) * pageSize
+
+    // Determine sort column and direction
+    const sortColumn =
+        sortBy === 'views'
+            ? blogPost.views
+            : sortBy === 'publishedAt'
+              ? blogPost.publishedAt
+              : blogPost.createdAt
+
+    const orderDirection = sortOrder === 'asc' ? asc : desc
 
     const [posts, totalResult] = await Promise.all([
         db
@@ -36,7 +62,7 @@ export async function getBlogPosts(
             .from(blogPost)
             .leftJoin(author, eq(blogPost.authorId, author.id))
             .leftJoin(images, eq(blogPost.featuredImageId, images.id))
-            .orderBy(desc(blogPost.createdAt))
+            .orderBy(orderDirection(sortColumn))
             .limit(pageSize)
             .offset(offset),
         db.select({ count: count() }).from(blogPost),

@@ -1,3 +1,5 @@
+import { unstable_cache } from 'next/cache'
+
 import { db } from '@workspace/db/client'
 import {
     author,
@@ -12,7 +14,11 @@ import { and, eq, isNotNull } from 'drizzle-orm'
 
 import type { BlogPostDetail } from '@/types/blog/post-detail.type'
 
-export async function getPublishedPostBySlug(
+/**
+ * Internal function to fetch blog post by slug from database
+ * This is wrapped by getCachedPublishedPostBySlug for caching
+ */
+async function fetchPublishedPostBySlug(
     slug: string
 ): Promise<BlogPostDetail | null> {
     const base = await db
@@ -86,4 +92,26 @@ export async function getPublishedPostBySlug(
     }
 
     return detail
+}
+
+/**
+ * Get a published blog post by slug with persistent caching
+ *
+ * Uses Next.js unstable_cache for cross-request caching.
+ * Cache is tagged with 'blog-posts' and specific post slug for targeted invalidation.
+ *
+ * @param slug - The blog post slug
+ * @returns The blog post detail or null if not found
+ */
+export const getPublishedPostBySlug = (
+    slug: string
+): Promise<BlogPostDetail | null> => {
+    return unstable_cache(
+        () => fetchPublishedPostBySlug(slug),
+        [`blog-post-${slug}`],
+        {
+            tags: ['blog-posts', `blog-post-${slug}`],
+            revalidate: 60, // Cache for 60 seconds
+        }
+    )()
 }

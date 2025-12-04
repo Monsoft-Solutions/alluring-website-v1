@@ -9,15 +9,44 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { Eye, ExternalLink, Plus, Pencil } from 'lucide-react'
+import {
+    ArrowDown,
+    ArrowUp,
+    Eye,
+    ExternalLink,
+    Plus,
+    Pencil,
+    TrendingUp,
+} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { getBlogPosts } from '@/lib/queries/blog.query'
+import {
+    getBlogPosts,
+    type BlogPostSortBy,
+    type BlogPostSortOrder,
+} from '@/lib/queries/blog.query'
 
 export const dynamic = 'force-dynamic'
 
-type SearchParams = Promise<{ page?: string }>
+type SearchParams = Promise<{
+    page?: string
+    sortBy?: string
+    sortOrder?: string
+}>
+
+const VALID_SORT_BY: BlogPostSortBy[] = ['createdAt', 'views', 'publishedAt']
+const VALID_SORT_ORDER: BlogPostSortOrder[] = ['asc', 'desc']
+
+function isValidSortBy(value: string | undefined): value is BlogPostSortBy {
+    return VALID_SORT_BY.includes(value as BlogPostSortBy)
+}
+
+function isValidSortOrder(
+    value: string | undefined
+): value is BlogPostSortOrder {
+    return VALID_SORT_ORDER.includes(value as BlogPostSortOrder)
+}
 
 export default async function BlogPostsPage({
     searchParams,
@@ -26,8 +55,43 @@ export default async function BlogPostsPage({
 }) {
     const params = await searchParams
     const page = Number(params.page) || 1
-    const { posts, total } = await getBlogPosts(page, 10)
+    const sortBy: BlogPostSortBy = isValidSortBy(params.sortBy)
+        ? params.sortBy
+        : 'createdAt'
+    const sortOrder: BlogPostSortOrder = isValidSortOrder(params.sortOrder)
+        ? params.sortOrder
+        : 'desc'
+
+    const { posts, total } = await getBlogPosts({
+        page,
+        pageSize: 10,
+        sortBy,
+        sortOrder,
+    })
     const totalPages = Math.ceil(total / 10)
+
+    // Helper to build URL with sort params
+    const buildSortUrl = (newSortBy: BlogPostSortBy) => {
+        const newOrder =
+            sortBy === newSortBy && sortOrder === 'desc' ? 'asc' : 'desc'
+        return `/blog/posts?sortBy=${newSortBy}&sortOrder=${newOrder}`
+    }
+
+    // Helper to build pagination URL preserving sort
+    const buildPageUrl = (newPage: number) => {
+        return `/blog/posts?page=${newPage}&sortBy=${sortBy}&sortOrder=${sortOrder}`
+    }
+
+    const SortIcon = ({ column }: { column: BlogPostSortBy }) => {
+        if (sortBy !== column) return <span className='ml-1 inline-block w-3' />
+        return sortOrder === 'asc' ? (
+            <ArrowUp className='ml-1 inline h-3 w-3' />
+        ) : (
+            <ArrowDown className='ml-1 inline h-3 w-3' />
+        )
+    }
+
+    const isSortedByViews = sortBy === 'views' && sortOrder === 'desc'
 
     return (
         <div className='space-y-6'>
@@ -38,12 +102,24 @@ export default async function BlogPostsPage({
                         Manage your blog posts ({total} total)
                     </p>
                 </div>
-                <Button asChild>
-                    <Link href='/blog/posts/new'>
-                        <Plus className='mr-2 h-4 w-4' />
-                        New Post
-                    </Link>
-                </Button>
+                <div className='flex items-center gap-3'>
+                    <Button
+                        variant={isSortedByViews ? 'secondary' : 'outline'}
+                        size='sm'
+                        asChild
+                    >
+                        <Link href='/blog/posts?sortBy=views&sortOrder=desc'>
+                            <TrendingUp className='mr-2 h-4 w-4' />
+                            Most Viewed
+                        </Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href='/blog/posts/new'>
+                            <Plus className='mr-2 h-4 w-4' />
+                            New Post
+                        </Link>
+                    </Button>
+                </div>
             </div>
 
             <Card>
@@ -58,9 +134,23 @@ export default async function BlogPostsPage({
                                 <TableHead>Author</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead className='text-right'>
-                                    Views
+                                    <Link
+                                        href={buildSortUrl('views')}
+                                        className='hover:text-foreground inline-flex items-center'
+                                    >
+                                        Views
+                                        <SortIcon column='views' />
+                                    </Link>
                                 </TableHead>
-                                <TableHead>Published</TableHead>
+                                <TableHead>
+                                    <Link
+                                        href={buildSortUrl('publishedAt')}
+                                        className='hover:text-foreground inline-flex items-center'
+                                    >
+                                        Published
+                                        <SortIcon column='publishedAt' />
+                                    </Link>
+                                </TableHead>
                                 <TableHead className='w-[120px]'>
                                     Actions
                                 </TableHead>
@@ -188,9 +278,7 @@ export default async function BlogPostsPage({
                         asChild={page > 1}
                     >
                         {page > 1 ? (
-                            <Link href={`/blog/posts?page=${page - 1}`}>
-                                Previous
-                            </Link>
+                            <Link href={buildPageUrl(page - 1)}>Previous</Link>
                         ) : (
                             <span>Previous</span>
                         )}
@@ -205,9 +293,7 @@ export default async function BlogPostsPage({
                         asChild={page < totalPages}
                     >
                         {page < totalPages ? (
-                            <Link href={`/blog/posts?page=${page + 1}`}>
-                                Next
-                            </Link>
+                            <Link href={buildPageUrl(page + 1)}>Next</Link>
                         ) : (
                             <span>Next</span>
                         )}
