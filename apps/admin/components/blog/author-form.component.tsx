@@ -29,6 +29,19 @@ import {
     type AuthorFormData,
 } from '@/lib/actions/author.action'
 
+/**
+ * Validates that a URL uses only http or https protocols
+ * to prevent XSS attacks via javascript:, data:, or vbscript: URLs
+ */
+function isValidImageUrl(url: string): boolean {
+    try {
+        const parsed = new URL(url)
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+    } catch {
+        return false
+    }
+}
+
 type AuthorFormProps = {
     initialData?: AuthorFormData & { id: string }
     mode: 'create' | 'edit'
@@ -95,8 +108,13 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                         setError(result.error ?? 'Failed to update author')
                     }
                 }
-            } catch {
-                setError('An unexpected error occurred')
+            } catch (error) {
+                console.error('Error saving author:', error)
+                setError(
+                    error instanceof Error
+                        ? error.message
+                        : 'An unexpected error occurred'
+                )
             }
         })
     }
@@ -188,20 +206,21 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                             </div>
                         </div>
 
-                        {formData.avatarUrl && (
-                            <div className='flex items-center gap-4'>
-                                <div className='h-16 w-16 overflow-hidden rounded-full bg-stone-100'>
-                                    <img
-                                        src={formData.avatarUrl}
-                                        alt='Avatar preview'
-                                        className='h-full w-full object-cover'
-                                    />
+                        {formData.avatarUrl &&
+                            isValidImageUrl(formData.avatarUrl) && (
+                                <div className='flex items-center gap-4'>
+                                    <div className='h-16 w-16 overflow-hidden rounded-full bg-stone-100'>
+                                        <img
+                                            src={formData.avatarUrl}
+                                            alt='Avatar preview'
+                                            className='h-full w-full object-cover'
+                                        />
+                                    </div>
+                                    <span className='text-muted-foreground text-sm'>
+                                        Avatar preview
+                                    </span>
                                 </div>
-                                <span className='text-muted-foreground text-sm'>
-                                    Avatar preview
-                                </span>
-                            </div>
-                        )}
+                            )}
                     </CardContent>
                 </Card>
 

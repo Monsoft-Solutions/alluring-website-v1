@@ -177,6 +177,9 @@ export async function updateBlogPost(
 
                 featuredImageId = imageRecord?.id ?? null
             }
+        } else if (featuredImageId) {
+            // Clear the image association if URL was removed
+            featuredImageId = null
         }
 
         // Determine if we need to update publishedAt

@@ -28,11 +28,16 @@ export type DashboardStats = {
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
+    // Calculate date for "recent" contacts (last 7 days)
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
     const [
         totalPostsResult,
         publishedPostsResult,
         draftPostsResult,
         totalContactsResult,
+        recentContactsResult,
         totalBugReportsResult,
         totalBetaFeedbackResult,
         totalEmailsResult,
@@ -49,6 +54,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
             .from(blogPost)
             .where(eq(blogPost.status, 'draft')),
         db.select({ count: count() }).from(contactSubmission),
+        db
+            .select({ count: count() })
+            .from(contactSubmission)
+            .where(gte(contactSubmission.createdAt, sevenDaysAgo)),
         db.select({ count: count() }).from(bugReport),
         db.select({ count: count() }).from(betaFeedback),
         db.select({ count: count() }).from(emailLog),
@@ -74,7 +83,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         },
         contacts: {
             total: totalContactsResult[0]?.count ?? 0,
-            recent: totalContactsResult[0]?.count ?? 0,
+            recent: recentContactsResult[0]?.count ?? 0,
         },
         feedback: {
             bugReports: totalBugReportsResult[0]?.count ?? 0,
