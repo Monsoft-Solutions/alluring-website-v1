@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import type { ReactNode, KeyboardEvent } from 'react'
 import {
     Search,
     ArrowUpDown,
@@ -36,7 +37,7 @@ export type Column<T> = {
     header: string
     sortable?: boolean
     searchable?: boolean
-    render?: (item: T) => React.ReactNode
+    render?: (item: T) => ReactNode
     className?: string
 }
 
@@ -47,7 +48,7 @@ export type DataTableProps<T> = {
     pageSize?: number
     pageSizeOptions?: number[]
     emptyMessage?: string
-    emptyIcon?: React.ReactNode
+    emptyIcon?: ReactNode
     onRowClick?: (item: T) => void
     getRowKey: (item: T) => string
 }
@@ -144,7 +145,7 @@ export function DataTable<T>({
 
     // Handle page size change
     const handlePageSizeChange = (newPageSize: string) => {
-        setPageSize(parseInt(newPageSize))
+        setPageSize(parseInt(newPageSize, 10))
         setCurrentPage(1)
     }
 
@@ -152,6 +153,17 @@ export function DataTable<T>({
     const handleSearchChange = (value: string) => {
         setSearchQuery(value)
         setCurrentPage(1)
+    }
+
+    // Handle keyboard navigation for clickable rows
+    const handleRowKeyDown = (
+        event: KeyboardEvent<HTMLTableRowElement>,
+        item: T
+    ) => {
+        if (onRowClick && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault()
+            onRowClick(item)
+        }
     }
 
     return (
@@ -244,6 +256,11 @@ export function DataTable<T>({
                                                 : undefined
                                         }
                                         onClick={() => onRowClick?.(item)}
+                                        onKeyDown={(e) =>
+                                            handleRowKeyDown(e, item)
+                                        }
+                                        role={onRowClick ? 'button' : undefined}
+                                        tabIndex={onRowClick ? 0 : undefined}
                                     >
                                         {columns.map((column) => (
                                             <TableCell

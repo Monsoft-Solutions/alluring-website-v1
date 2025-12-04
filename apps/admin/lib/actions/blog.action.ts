@@ -223,7 +223,22 @@ export async function updateBlogPost(
 
 export async function deleteBlogPost(id: string): Promise<ActionResult> {
     try {
+        // Fetch the post to get featuredImageId before deletion
+        const [existingPost] = await db
+            .select({ featuredImageId: blogPost.featuredImageId })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        // Delete the blog post first
         await db.delete(blogPost).where(eq(blogPost.id, id))
+
+        // Clean up orphaned featured image if it exists
+        if (existingPost?.featuredImageId) {
+            await db
+                .delete(images)
+                .where(eq(images.id, existingPost.featuredImageId))
+        }
 
         revalidatePath('/blog/posts')
         revalidatePath('/')
