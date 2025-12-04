@@ -164,7 +164,8 @@ function getClientIp(request: NextRequest): string {
     const forwardedFor = request.headers.get('x-forwarded-for')
     if (forwardedFor) {
         // Take the first IP in the chain (client IP)
-        return forwardedFor.split(',')[0].trim()
+        const firstIp = forwardedFor.split(',')[0]
+        return firstIp?.trim() ?? 'unknown'
     }
 
     const realIp = request.headers.get('x-real-ip')

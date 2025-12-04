@@ -63,6 +63,7 @@ export function PromotionViewTracker({
 
         const handleIntersection = (entries: IntersectionObserverEntry[]) => {
             const entry = entries[0]
+            if (!entry) return
 
             if (entry.isIntersecting) {
                 // Element became visible
