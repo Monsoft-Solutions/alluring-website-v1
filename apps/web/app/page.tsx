@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { Hero } from '@/components/home/hero.component'
+import { PromotionBanner } from '@/components/promotions/promotion-banner.component'
 import { Journey } from '@/components/home/journey.component'
 import { Procedures } from '@/components/home/procedures.component'
 import { BeforeAfter } from '@/components/home/before-after.component'
@@ -97,6 +98,7 @@ export default function Page() {
 
             <div className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
                 <Hero />
+                <PromotionBanner />
                 <Journey />
                 <Procedures />
                 <BeforeAfter />

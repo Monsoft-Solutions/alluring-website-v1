@@ -4,11 +4,58 @@ import { Slot } from '@radix-ui/react-slot'
 import { ArrowRight } from 'lucide-react'
 import { motion, HTMLMotionProps } from 'framer-motion'
 import { ReactNode, ComponentPropsWithoutRef } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@workspace/ui/lib/utils'
 
+/**
+ * buttonVariants - CVA helper for generating button class names
+ * Used by components like AlertDialog that need button styling
+ */
+export const buttonVariants = cva(
+    'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group disabled:pointer-events-none disabled:opacity-50',
+    {
+        variants: {
+            variant: {
+                default:
+                    'bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 hover:text-gold-200',
+                primary:
+                    'bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 hover:text-gold-200',
+                secondary:
+                    'bg-stone-50 text-stone-900 border border-stone-200 hover:border-gold-400',
+                outline:
+                    'bg-transparent text-stone-900 border border-stone-300 hover:border-stone-900',
+                gold: 'bg-gold-400 text-white border border-gold-400 hover:bg-gold-500',
+                ghost: 'bg-transparent text-stone-500 hover:text-stone-900',
+                destructive:
+                    'bg-red-500 text-white border border-red-500 hover:bg-red-600',
+                link: 'text-stone-900 underline-offset-4 hover:underline',
+            },
+            size: {
+                default: 'px-8 py-4',
+                sm: 'px-5 py-3',
+                md: 'px-8 py-4',
+                lg: 'px-10 py-5',
+                icon: 'h-14 w-14 p-0',
+            },
+        },
+        defaultVariants: {
+            variant: 'default',
+            size: 'default',
+        },
+    }
+)
+
 export interface ButtonProps extends HTMLMotionProps<'button'> {
-    variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gold' | 'default'
-    size?: 'sm' | 'md' | 'lg' | 'icon'
+    variant?:
+        | 'primary'
+        | 'secondary'
+        | 'outline'
+        | 'ghost'
+        | 'gold'
+        | 'default'
+        | 'destructive'
+        | 'link'
+    size?: 'sm' | 'md' | 'lg' | 'icon' | 'default'
     withArrow?: boolean
     children?: ReactNode
     className?: string
@@ -24,29 +71,9 @@ export const Button = ({
     asChild = false,
     ...props
 }: ButtonProps) => {
-    const baseStyles =
-        'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group'
-
-    // Map 'default' variant to 'primary'
+    // Map 'default' variant to 'primary' for internal use
     const effectiveVariant = variant === 'default' ? 'primary' : variant
-
-    const variants = {
-        primary:
-            'bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 hover:text-gold-200',
-        secondary:
-            'bg-stone-50 text-stone-900 border border-stone-200 hover:border-gold-400',
-        outline:
-            'bg-transparent text-stone-900 border border-stone-300 hover:border-stone-900',
-        gold: 'bg-gold-400 text-white border border-gold-400 hover:bg-gold-500',
-        ghost: "bg-transparent text-stone-500 hover:text-stone-900 after:content-[''] after:block after:w-full after:h-[1px] after:bg-stone-900 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300",
-    }
-
-    const sizes = {
-        sm: 'px-5 py-3',
-        md: 'px-8 py-4',
-        lg: 'px-10 py-5',
-        icon: 'h-14 w-14 p-0',
-    }
+    const effectiveSize = size === 'default' ? 'md' : size
 
     const buttonContent = (
         <>
@@ -66,9 +93,10 @@ export const Button = ({
     )
 
     const buttonClassName = cn(
-        baseStyles,
-        variants[effectiveVariant],
-        sizes[size],
+        buttonVariants({ variant: effectiveVariant, size: effectiveSize }),
+        // Add ghost underline effect that CVA can't handle cleanly
+        effectiveVariant === 'ghost' &&
+            "after:content-[''] after:block after:w-full after:h-[1px] after:bg-stone-900 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300",
         className
     )
 

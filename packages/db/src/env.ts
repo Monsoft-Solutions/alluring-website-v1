@@ -3,7 +3,7 @@ import { config } from 'dotenv'
 import z from 'zod'
 
 config({
-    path: '.env.local',
+    path: ['.env.local', '.env'],
 })
 config()
 
