@@ -2,7 +2,7 @@
 
 import { db } from '@workspace/db/client'
 import { promotion } from '@workspace/db/schema/promotion'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 export type PromotionFormData = {
@@ -272,16 +272,9 @@ export async function incrementPromotionViews(
     id: string
 ): Promise<ActionResult> {
     try {
-        await db
-            .update(promotion)
-            .set({
-                views: promotion.views,
-            })
-            .where(eq(promotion.id, id))
-
-        // Use raw SQL for atomic increment
+        // Use parameterized query for atomic increment
         await db.execute(
-            `UPDATE promotion SET views = views + 1 WHERE id = '${id}'`
+            sql`UPDATE promotion SET views = views + 1 WHERE id = ${id}`
         )
 
         return { success: true }
@@ -304,8 +297,9 @@ export async function incrementPromotionClicks(
     id: string
 ): Promise<ActionResult> {
     try {
+        // Use parameterized query for atomic increment
         await db.execute(
-            `UPDATE promotion SET clicks = clicks + 1 WHERE id = '${id}'`
+            sql`UPDATE promotion SET clicks = clicks + 1 WHERE id = ${id}`
         )
 
         return { success: true }
