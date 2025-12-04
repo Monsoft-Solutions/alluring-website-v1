@@ -98,11 +98,9 @@ export default async function FeedbackPage() {
                                                         className='text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm'
                                                     >
                                                         <span className='max-w-[150px] truncate'>
-                                                            {
-                                                                new URL(
-                                                                    report.pageUrl
-                                                                ).pathname
-                                                            }
+                                                            {getPathname(
+                                                                report.pageUrl
+                                                            )}
                                                         </span>
                                                         <ExternalLink className='h-3 w-3 shrink-0' />
                                                     </Link>
@@ -304,4 +302,12 @@ function RatingDisplay({ rating }: { rating: number }) {
               : 'text-red-600'
 
     return <span className={`font-medium ${color}`}>{rating}/5</span>
+}
+
+function getPathname(url: string): string {
+    try {
+        return new URL(url).pathname
+    } catch {
+        return url || ''
+    }
 }
