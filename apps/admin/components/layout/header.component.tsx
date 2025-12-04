@@ -3,7 +3,7 @@
 import { Button } from '@workspace/ui/components/button'
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 
 type HeaderProps = {
     title?: string
@@ -12,13 +12,26 @@ type HeaderProps = {
 export function Header({ title = 'Dashboard' }: HeaderProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
 
     async function handleLogout() {
-        startTransition(async () => {
-            await fetch('/api/auth', { method: 'DELETE' })
-            router.push('/login')
-            router.refresh()
-        })
+        setIsLoggingOut(true)
+        try {
+            const response = await fetch('/api/auth', { method: 'DELETE' })
+
+            if (!response.ok) {
+                throw new Error('Logout failed')
+            }
+
+            startTransition(() => {
+                router.push('/login')
+                router.refresh()
+            })
+        } catch (error) {
+            console.error('Logout error:', error)
+            alert('Failed to logout. Please try again.')
+            setIsLoggingOut(false)
+        }
     }
 
     return (
@@ -29,7 +42,7 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
                 variant='ghost'
                 size='sm'
                 onClick={handleLogout}
-                disabled={isPending}
+                disabled={isPending || isLoggingOut}
                 className='text-muted-foreground hover:text-foreground'
             >
                 <LogOut className='mr-2 h-4 w-4' />
