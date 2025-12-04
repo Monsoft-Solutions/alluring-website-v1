@@ -66,7 +66,12 @@ export default async function EditPromotionPage({
 
     async function handleDelete() {
         'use server'
-        await deletePromotion(id)
+        const result = await deletePromotion(id)
+
+        if (!result.success) {
+            throw new Error(result.error ?? 'Failed to delete promotion')
+        }
+
         redirect('/promotions')
     }
 
