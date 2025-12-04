@@ -20,7 +20,7 @@ if (typeof window === 'undefined') {
 export const env = createEnv({
     server: {
         // Database
-        POSTGRES_URL: z.string().url(),
+        POSTGRES_URL: z.string(),
 
         // Admin authentication (min 4 chars for dev, use longer in production)
         ADMIN_PASSWORD: z.string().min(4),
@@ -28,7 +28,10 @@ export const env = createEnv({
         // Vercel Blob storage for media uploads
         BLOB_READ_WRITE_TOKEN: z.string().min(1),
     },
-    client: {},
+    client: {
+        // Public web app URL for building absolute links
+        NEXT_PUBLIC_WEB_URL: z.url(),
+    },
     shared: {
         NODE_ENV: z
             .enum(['development', 'production', 'test'])
@@ -36,9 +39,8 @@ export const env = createEnv({
     },
     experimental__runtimeEnv: {
         NODE_ENV: process.env.NODE_ENV,
+        NEXT_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_WEB_URL,
     },
-    // Skip validation in CI/build environments if needed
-    skipValidation: !!process.env.SKIP_ENV_VALIDATION,
     onInvalidAccess: (variable: string) => {
         throw new Error(
             `❌ Attempted to access a server-side environment variable on the client: ${variable}`

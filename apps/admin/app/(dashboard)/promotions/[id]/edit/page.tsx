@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ExternalLink, Trash2 } from 'lucide-react'
 
+import { env } from '@/env'
 import { Button } from '@workspace/ui/components/button'
 import {
     AlertDialog,
@@ -84,13 +85,14 @@ export default async function EditPromotionPage({
                 <div className='flex items-center gap-2'>
                     {promotion.status === 'active' && (
                         <Button variant='outline' size='sm' asChild>
-                            <Link
-                                href={`/promotions/${promotion.slug}`}
+                            <a
+                                href={`${env.NEXT_PUBLIC_WEB_URL.replace(/\/+$/, '')}/promotions/${promotion.slug}`}
                                 target='_blank'
+                                rel='noopener noreferrer'
                             >
                                 <ExternalLink className='mr-2 h-4 w-4' />
                                 View Live
-                            </Link>
+                            </a>
                         </Button>
                     )}
 
