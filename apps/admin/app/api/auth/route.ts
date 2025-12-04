@@ -38,9 +38,8 @@ export async function POST(request: Request) {
         }
 
         // Create a simple token (in production, use a proper JWT or session)
-        const token = Buffer.from(
-            `admin:${Date.now()}:${env.ADMIN_PASSWORD}`
-        ).toString('base64')
+        // We use a timestamp-based token to indicate a valid session without exposing secrets
+        const token = Buffer.from(`admin:${Date.now()}`).toString('base64')
 
         const cookieStore = await cookies()
         cookieStore.set(COOKIE_NAME, token, {
