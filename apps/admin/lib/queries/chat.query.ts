@@ -17,10 +17,11 @@ import {
     type ChatMessage,
     type ChatQuickReply,
     type InsertChatQuickReply,
+    type InsertChatMessage,
     type ChatEscalationTrigger,
     type InsertChatEscalationTrigger,
 } from '@workspace/db/schema/chat'
-import { eq, desc, count, sql, and, gte, ne, asc } from 'drizzle-orm'
+import { eq, desc, count, sql, and, asc } from 'drizzle-orm'
 
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
 
@@ -51,6 +52,44 @@ export async function getChatConfig(): Promise<ChatConfig> {
         .returning()
 
     return newConfig!
+}
+
+/**
+ * Save a chat message
+ */
+export async function saveChatMessage(
+    data: InsertChatMessage
+): Promise<ChatMessage> {
+    const [message] = await db.insert(chatMessage).values(data).returning()
+
+    // Update session message count and last message timestamp
+    await db
+        .update(chatSession)
+        .set({
+            messageCount: sql`${chatSession.messageCount} + 1`,
+            lastMessageAt: new Date(),
+        })
+        .where(eq(chatSession.id, data.sessionId))
+
+    return message!
+}
+
+/**
+ * Get recent messages for context (limited for AI)
+ */
+export async function getRecentMessages(
+    sessionId: string,
+    limit: number = 20
+): Promise<ChatMessage[]> {
+    const messages = await db
+        .select()
+        .from(chatMessage)
+        .where(eq(chatMessage.sessionId, sessionId))
+        .orderBy(desc(chatMessage.createdAt))
+        .limit(limit)
+
+    // Reverse to get chronological order
+    return messages.reverse()
 }
 
 /**

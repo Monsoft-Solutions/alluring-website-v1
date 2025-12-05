@@ -10,14 +10,15 @@ import { openai } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 
 import { env } from '@/env'
-import { db } from '@workspace/db/client'
-import { chatConfig, chatSession, chatMessage } from '@workspace/db/schema/chat'
-import { eq, sql } from 'drizzle-orm'
 import {
     sanitizeMessageContent,
     estimateTokenCount,
 } from '@workspace/chat/utils'
-import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
+import {
+    getChatConfig,
+    getRecentMessages,
+    saveChatMessage,
+} from '@/lib/queries/chat.query'
 
 /**
  * AI SDK v5 message format (uses parts instead of content)
@@ -44,58 +45,6 @@ function extractMessageContent(message: AISDKMessage): string {
         return message.content
     }
     return ''
-}
-
-/**
- * Get chat configuration
- */
-async function getChatConfig() {
-    const configs = await db.select().from(chatConfig).limit(1)
-    if (configs.length > 0 && configs[0]) {
-        return configs[0]
-    }
-    return {
-        ...DEFAULT_CHAT_CONFIG,
-        id: 'default',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    }
-}
-
-/**
- * Get recent messages for context
- */
-async function getRecentMessages(sessionId: string, limit: number = 20) {
-    const messages = await db
-        .select()
-        .from(chatMessage)
-        .where(eq(chatMessage.sessionId, sessionId))
-        .orderBy(chatMessage.createdAt)
-        .limit(limit)
-
-    return messages
-}
-
-/**
- * Save a chat message
- */
-async function saveChatMessage(data: {
-    sessionId: string
-    role: string
-    content: string
-    tokenCount?: number
-}) {
-    const [message] = await db.insert(chatMessage).values(data).returning()
-
-    await db
-        .update(chatSession)
-        .set({
-            messageCount: sql`${chatSession.messageCount} + 1`,
-            lastMessageAt: new Date(),
-        })
-        .where(eq(chatSession.id, data.sessionId))
-
-    return message
 }
 
 /**
