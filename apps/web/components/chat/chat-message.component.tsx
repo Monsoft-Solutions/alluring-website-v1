@@ -12,6 +12,8 @@ import { User, Bot } from 'lucide-react'
 
 import { formatMessageTime } from '@workspace/chat/utils'
 
+import { ChatMarkdown } from './chat-markdown.component'
+
 type ChatMessageProps = {
     role: 'user' | 'assistant' | 'system'
     content: string
@@ -76,7 +78,7 @@ export function ChatMessage({
                             : 'rounded-tl-sm bg-stone-100 text-stone-900'
                     )}
                 >
-                    {content}
+                    {isUser ? content : <ChatMarkdown content={content} />}
                     {isStreaming && (
                         <span className='ml-1 inline-block animate-pulse'>
                             ▋
