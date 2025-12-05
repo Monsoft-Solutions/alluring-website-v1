@@ -24,6 +24,33 @@ import {
 } from '@workspace/chat/utils'
 
 /**
+ * AI SDK v5 message format with parts
+ */
+type AISDKMessage = {
+    role: 'user' | 'assistant' | 'system'
+    content?: string
+    parts?: Array<{ type: 'text'; text: string }>
+}
+
+/**
+ * Extract text content from AI SDK message (handles both v4 content and v5 parts format)
+ */
+function extractMessageContent(message: AISDKMessage): string {
+    // Handle v5 parts format
+    if (message.parts && Array.isArray(message.parts)) {
+        return message.parts
+            .filter((part) => part.type === 'text')
+            .map((part) => part.text)
+            .join('')
+    }
+    // Handle v4 content format
+    if (typeof message.content === 'string') {
+        return message.content
+    }
+    return ''
+}
+
+/**
  * POST /api/chat
  *
  * Handles chat messages and streams AI responses
@@ -41,7 +68,7 @@ export async function POST(request: NextRequest) {
         // Parse request body
         const body = await request.json()
         const { messages, sessionId } = body as {
-            messages: AIMessage[]
+            messages: AISDKMessage[]
             sessionId: string
         }
 
@@ -83,7 +110,14 @@ export async function POST(request: NextRequest) {
         }
 
         // Save user message to database
-        const sanitizedContent = sanitizeMessageContent(lastMessage.content)
+        const messageContent = extractMessageContent(lastMessage)
+        if (!messageContent) {
+            return NextResponse.json(
+                { error: 'Message content is required' },
+                { status: 400 }
+            )
+        }
+        const sanitizedContent = sanitizeMessageContent(messageContent)
         await saveChatMessage({
             sessionId,
             role: 'user',

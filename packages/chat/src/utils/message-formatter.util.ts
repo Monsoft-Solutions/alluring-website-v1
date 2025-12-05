@@ -27,6 +27,9 @@ export function formatMessagesForAI(
  * Sanitizes user input for safety
  */
 export function sanitizeMessageContent(content: string): string {
+    if (!content || typeof content !== 'string') {
+        return ''
+    }
     return content
         .trim()
         .slice(0, 2000) // Enforce max length
