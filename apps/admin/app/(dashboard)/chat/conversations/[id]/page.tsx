@@ -1,7 +1,8 @@
 /**
  * Chat Conversation Detail Page
  *
- * Displays full conversation history with contact details.
+ * Displays full conversation history with contact details,
+ * lead scoring, intent classification, and escalation status.
  *
  * @module app/(dashboard)/chat/conversations/[id]/page
  */
@@ -24,11 +25,52 @@ import {
     Bot,
     Clock,
     MapPin,
+    Target,
+    TrendingUp,
+    AlertTriangle,
+    Tag,
 } from 'lucide-react'
 import Link from 'next/link'
 
 import { getChatSessionWithMessages } from '@/lib/queries/chat.query'
 import { formatMessageTime, formatPhoneNumber } from '@workspace/chat/utils'
+import { getGradeColor } from '@workspace/chat/services'
+import { AdminRespondForm } from '@/components/chat/admin-respond-form.component'
+
+/**
+ * Intent labels for display
+ */
+const INTENT_LABELS: Record<string, string> = {
+    consultation_request: 'Consultation Request',
+    pricing_inquiry: 'Pricing Inquiry',
+    procedure_info: 'Procedure Information',
+    post_op_question: 'Post-Op Question',
+    financing_inquiry: 'Financing Inquiry',
+    general_inquiry: 'General Inquiry',
+    complaint: 'Complaint',
+    unknown: 'Unknown',
+}
+
+/**
+ * Procedure labels for display
+ */
+const PROCEDURE_LABELS: Record<string, string> = {
+    bbl: 'BBL',
+    breast_augmentation: 'Breast Augmentation',
+    breast_lift: 'Breast Lift',
+    breast_reduction: 'Breast Reduction',
+    tummy_tuck: 'Tummy Tuck',
+    liposuction: 'Liposuction',
+    mommy_makeover: 'Mommy Makeover',
+    facelift: 'Facelift',
+    rhinoplasty: 'Rhinoplasty',
+    blepharoplasty: 'Blepharoplasty',
+    brow_lift: 'Brow Lift',
+    chin_augmentation: 'Chin Augmentation',
+    lip_augmentation: 'Lip Augmentation',
+    botox: 'Botox',
+    fillers: 'Fillers',
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -76,7 +118,7 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                                 </Badge>
                             </div>
                         </CardHeader>
-                        <CardContent className='max-h-[600px] overflow-y-auto p-4'>
+                        <CardContent className='max-h-[500px] overflow-y-auto p-4'>
                             {messages.length === 0 ? (
                                 <p className='text-muted-foreground py-8 text-center'>
                                     No messages in this conversation
@@ -144,6 +186,16 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                                 </div>
                             )}
                         </CardContent>
+
+                        {/* Admin Respond Form for escalated sessions */}
+                        {session.isEscalated && (
+                            <div className='border-t p-4'>
+                                <p className='text-muted-foreground mb-3 text-xs font-medium uppercase'>
+                                    Send Response
+                                </p>
+                                <AdminRespondForm sessionId={session.id} />
+                            </div>
+                        )}
                     </Card>
                 </div>
 
@@ -191,6 +243,132 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                                     </div>
                                 )}
                             </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Lead Score & Intent Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'>
+                                <TrendingUp className='h-5 w-5' />
+                                Lead Intelligence
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className='space-y-4'>
+                            {/* Lead Grade */}
+                            <div className='flex items-center justify-between'>
+                                <span className='text-sm font-medium'>
+                                    Lead Grade
+                                </span>
+                                {session.leadGrade ? (
+                                    <Badge
+                                        variant='outline'
+                                        className={getGradeColor(
+                                            session.leadGrade as
+                                                | 'A'
+                                                | 'B'
+                                                | 'C'
+                                                | 'D'
+                                        )}
+                                    >
+                                        {session.leadGrade} ({session.leadScore}
+                                        )
+                                    </Badge>
+                                ) : (
+                                    <span className='text-muted-foreground text-sm'>
+                                        Not scored
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Intent */}
+                            <div className='flex items-center justify-between'>
+                                <span className='text-sm font-medium'>
+                                    Intent
+                                </span>
+                                {session.primaryIntent ? (
+                                    <div className='flex items-center gap-1'>
+                                        <Target className='h-4 w-4 text-stone-500' />
+                                        <span className='text-sm'>
+                                            {INTENT_LABELS[
+                                                session.primaryIntent
+                                            ] ?? session.primaryIntent}
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <span className='text-muted-foreground text-sm'>
+                                        Not classified
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Detected Procedures */}
+                            {session.detectedProcedures &&
+                                (session.detectedProcedures as string[])
+                                    .length > 0 && (
+                                    <div className='border-t pt-3'>
+                                        <p className='text-muted-foreground mb-2 text-xs font-medium uppercase'>
+                                            Procedures Mentioned
+                                        </p>
+                                        <div className='flex flex-wrap gap-1'>
+                                            {(
+                                                session.detectedProcedures as string[]
+                                            ).map((proc) => (
+                                                <Badge
+                                                    key={proc}
+                                                    variant='outline'
+                                                    className='text-xs'
+                                                >
+                                                    {PROCEDURE_LABELS[proc] ??
+                                                        proc}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                            {/* Tags */}
+                            {session.tags &&
+                                (session.tags as string[]).length > 0 && (
+                                    <div className='border-t pt-3'>
+                                        <p className='text-muted-foreground mb-2 text-xs font-medium uppercase'>
+                                            Tags
+                                        </p>
+                                        <div className='flex flex-wrap gap-1'>
+                                            {(session.tags as string[]).map(
+                                                (tag) => (
+                                                    <Badge
+                                                        key={tag}
+                                                        variant='secondary'
+                                                        className='text-xs'
+                                                    >
+                                                        <Tag className='mr-1 h-3 w-3' />
+                                                        {tag.replace(/_/g, ' ')}
+                                                    </Badge>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                            {/* Escalation Status */}
+                            {session.isEscalated && (
+                                <div className='border-t pt-3'>
+                                    <div className='flex items-center gap-2 rounded-lg bg-orange-50 p-3'>
+                                        <AlertTriangle className='h-5 w-5 text-orange-500' />
+                                        <div>
+                                            <p className='text-sm font-medium text-orange-800'>
+                                                Escalated
+                                            </p>
+                                            {session.escalationReason && (
+                                                <p className='text-xs text-orange-600'>
+                                                    {session.escalationReason}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
 

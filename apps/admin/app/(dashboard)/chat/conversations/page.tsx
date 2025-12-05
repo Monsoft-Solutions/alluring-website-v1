@@ -2,6 +2,7 @@
  * Chat Conversations List Page
  *
  * Displays all chat conversations with pagination and filtering.
+ * Shows lead grades, intent badges, and escalation status.
  *
  * @module app/(dashboard)/chat/conversations/page
  */
@@ -16,11 +17,48 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { Eye, ArrowLeft, Phone, Mail, Globe } from 'lucide-react'
+import {
+    Eye,
+    ArrowLeft,
+    Phone,
+    Mail,
+    Globe,
+    AlertTriangle,
+    Target,
+} from 'lucide-react'
 import Link from 'next/link'
 
 import { getChatSessions } from '@/lib/queries/chat.query'
 import { formatRelativeTime, formatPhoneNumber } from '@workspace/chat/utils'
+import { getGradeColor } from '@workspace/chat/services'
+
+/**
+ * Intent labels for display
+ */
+const INTENT_LABELS: Record<string, string> = {
+    consultation_request: 'Consultation',
+    pricing_inquiry: 'Pricing',
+    procedure_info: 'Procedure Info',
+    post_op_question: 'Post-Op',
+    financing_inquiry: 'Financing',
+    general_inquiry: 'General',
+    complaint: 'Complaint',
+    unknown: 'Unknown',
+}
+
+/**
+ * Intent badge colors
+ */
+const INTENT_COLORS: Record<string, string> = {
+    consultation_request: 'bg-green-100 text-green-800',
+    pricing_inquiry: 'bg-blue-100 text-blue-800',
+    procedure_info: 'bg-purple-100 text-purple-800',
+    post_op_question: 'bg-orange-100 text-orange-800',
+    financing_inquiry: 'bg-cyan-100 text-cyan-800',
+    general_inquiry: 'bg-stone-100 text-stone-800',
+    complaint: 'bg-red-100 text-red-800',
+    unknown: 'bg-stone-100 text-stone-600',
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -59,9 +97,10 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Contact</TableHead>
+                                <TableHead>Lead</TableHead>
+                                <TableHead>Intent</TableHead>
                                 <TableHead>Messages</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Source</TableHead>
                                 <TableHead>Started</TableHead>
                                 <TableHead className='w-[60px]'></TableHead>
                             </TableRow>
@@ -70,7 +109,7 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                             {sessions.length === 0 ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={6}
+                                        colSpan={7}
                                         className='text-muted-foreground py-8 text-center'
                                     >
                                         No conversations yet
@@ -81,9 +120,14 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                                     <TableRow key={session.id}>
                                         <TableCell>
                                             <div>
-                                                <p className='font-medium'>
-                                                    {session.fullName}
-                                                </p>
+                                                <div className='flex items-center gap-2'>
+                                                    <p className='font-medium'>
+                                                        {session.fullName}
+                                                    </p>
+                                                    {session.isEscalated && (
+                                                        <AlertTriangle className='h-4 w-4 text-orange-500' />
+                                                    )}
+                                                </div>
                                                 <div className='text-muted-foreground flex items-center gap-3 text-sm'>
                                                     <span className='flex items-center gap-1'>
                                                         <Phone className='h-3 w-3' />
@@ -101,6 +145,49 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
+                                            {session.leadGrade ? (
+                                                <Badge
+                                                    variant='outline'
+                                                    className={getGradeColor(
+                                                        session.leadGrade as
+                                                            | 'A'
+                                                            | 'B'
+                                                            | 'C'
+                                                            | 'D'
+                                                    )}
+                                                >
+                                                    {session.leadGrade} (
+                                                    {session.leadScore})
+                                                </Badge>
+                                            ) : (
+                                                <span className='text-muted-foreground text-sm'>
+                                                    —
+                                                </span>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {session.primaryIntent ? (
+                                                <Badge
+                                                    variant='outline'
+                                                    className={
+                                                        INTENT_COLORS[
+                                                            session
+                                                                .primaryIntent
+                                                        ] ?? ''
+                                                    }
+                                                >
+                                                    <Target className='mr-1 h-3 w-3' />
+                                                    {INTENT_LABELS[
+                                                        session.primaryIntent
+                                                    ] ?? session.primaryIntent}
+                                                </Badge>
+                                            ) : (
+                                                <span className='text-muted-foreground text-sm'>
+                                                    —
+                                                </span>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
                                             <span className='font-medium'>
                                                 {session.messageCount}
                                             </span>
@@ -111,30 +198,16 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                                                     session.status === 'active'
                                                         ? 'default'
                                                         : session.status ===
-                                                            'closed'
-                                                          ? 'secondary'
-                                                          : 'outline'
+                                                            'escalated'
+                                                          ? 'destructive'
+                                                          : session.status ===
+                                                              'closed'
+                                                            ? 'secondary'
+                                                            : 'outline'
                                                 }
                                             >
                                                 {session.status}
                                             </Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            {session.pageUrl ? (
-                                                <span
-                                                    className='text-muted-foreground flex items-center gap-1 text-sm'
-                                                    title={session.pageUrl}
-                                                >
-                                                    <Globe className='h-3 w-3' />
-                                                    {getPathname(
-                                                        session.pageUrl
-                                                    )}
-                                                </span>
-                                            ) : (
-                                                <span className='text-muted-foreground text-sm'>
-                                                    —
-                                                </span>
-                                            )}
                                         </TableCell>
                                         <TableCell>
                                             <span className='text-muted-foreground text-sm'>

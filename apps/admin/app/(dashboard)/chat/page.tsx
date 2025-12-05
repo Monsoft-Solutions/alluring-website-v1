@@ -28,6 +28,8 @@ import {
     MessagesSquare,
     Zap,
     ExternalLink,
+    MessageSquarePlus,
+    AlertTriangle,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -57,6 +59,18 @@ export default async function ChatAdminPage() {
                     <Badge variant={config.isEnabled ? 'default' : 'secondary'}>
                         {config.isEnabled ? 'Enabled' : 'Disabled'}
                     </Badge>
+                    <Button asChild variant='outline' size='sm'>
+                        <Link href='/chat/quick-replies'>
+                            <MessageSquarePlus className='mr-2 h-4 w-4' />
+                            Quick Replies
+                        </Link>
+                    </Button>
+                    <Button asChild variant='outline' size='sm'>
+                        <Link href='/chat/escalations'>
+                            <AlertTriangle className='mr-2 h-4 w-4' />
+                            Escalations
+                        </Link>
+                    </Button>
                     <Button asChild variant='outline' size='sm'>
                         <Link href='/chat/test'>
                             <Zap className='mr-2 h-4 w-4' />

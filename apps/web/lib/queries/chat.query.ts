@@ -136,3 +136,58 @@ export async function closeChatSession(sessionId: string): Promise<void> {
         })
         .where(eq(chatSession.id, sessionId))
 }
+
+/**
+ * Update session intent classification and lead scoring
+ */
+export async function updateSessionIntentAndScore(
+    sessionId: string,
+    data: {
+        primaryIntent?: string
+        intentConfidence?: string
+        detectedProcedures?: string[]
+        tags?: string[]
+        leadScore?: number
+        leadGrade?: string
+        scoringSignals?: Record<string, unknown>
+    }
+): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            ...(data.primaryIntent !== undefined && {
+                primaryIntent: data.primaryIntent,
+            }),
+            ...(data.intentConfidence !== undefined && {
+                intentConfidence: data.intentConfidence,
+            }),
+            ...(data.detectedProcedures !== undefined && {
+                detectedProcedures: data.detectedProcedures,
+            }),
+            ...(data.tags !== undefined && { tags: data.tags }),
+            ...(data.leadScore !== undefined && { leadScore: data.leadScore }),
+            ...(data.leadGrade !== undefined && { leadGrade: data.leadGrade }),
+            ...(data.scoringSignals !== undefined && {
+                scoringSignals: data.scoringSignals,
+            }),
+        })
+        .where(eq(chatSession.id, sessionId))
+}
+
+/**
+ * Escalate a chat session to human support
+ */
+export async function escalateChatSession(
+    sessionId: string,
+    reason: string
+): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            isEscalated: true,
+            escalatedAt: new Date(),
+            escalationReason: reason,
+            status: 'escalated',
+        })
+        .where(eq(chatSession.id, sessionId))
+}

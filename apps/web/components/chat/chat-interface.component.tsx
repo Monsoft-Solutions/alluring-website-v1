@@ -3,18 +3,31 @@
  *
  * Main chat UI with streaming message support using AI SDK v5.
  * Supports restoring previous messages for session persistence.
+ * Includes quick reply suggestions for guided conversations.
  *
  * @module components/chat/chat-interface
  */
 'use client'
 
-import { useEffect, useRef, useState, useMemo, type ChangeEvent } from 'react'
+import {
+    useEffect,
+    useRef,
+    useState,
+    useMemo,
+    useCallback,
+    type ChangeEvent,
+} from 'react'
 import { useChat } from '@ai-sdk/react'
 import { TextStreamChatTransport } from 'ai'
 import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle, RotateCcw, Send, Loader2 } from 'lucide-react'
 
 import { ChatMessage } from './chat-message.component'
+import {
+    QuickReplyButtons,
+    getQuickReplyCategory,
+} from './quick-reply-buttons.component'
+import { HandoffButton } from './handoff-button.component'
 import { MAX_MESSAGE_LENGTH } from '@workspace/chat/constants'
 
 type StoredMessage = {
@@ -59,6 +72,7 @@ export function ChatInterface({
 }: ChatInterfaceProps) {
     const messagesEndRef = useRef<HTMLDivElement>(null)
     const [input, setInput] = useState('')
+    const [showQuickReplies, setShowQuickReplies] = useState(true)
 
     // Convert initial messages to AI SDK format with welcome message
     const startingMessages = useMemo(() => {
@@ -87,9 +101,53 @@ export function ChatInterface({
 
     const isLoading = status === 'streaming' || status === 'submitted'
 
+    // Extract text content from message parts
+    const getMessageContent = useCallback(
+        (message: (typeof messages)[0]): string => {
+            if (!message.parts) return ''
+            return message.parts
+                .filter(
+                    (part): part is { type: 'text'; text: string } =>
+                        part.type === 'text'
+                )
+                .map((part) => part.text)
+                .join('')
+        },
+        []
+    )
+
+    // Determine quick reply category based on conversation state
+    const quickReplyCategory = useMemo(() => {
+        // Count user messages (exclude welcome message)
+        const userMessageCount = messages.filter(
+            (m) => m.role === 'user'
+        ).length
+
+        // Get the last assistant message
+        const assistantMessages = messages.filter((m) => m.role === 'assistant')
+        const lastAssistantMessage =
+            assistantMessages.length > 0
+                ? getMessageContent(
+                      assistantMessages[assistantMessages.length - 1]!
+                  )
+                : undefined
+
+        return getQuickReplyCategory(userMessageCount, lastAssistantMessage)
+    }, [messages, getMessageContent])
+
     // Scroll to bottom when new messages arrive
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
+
+    // Hide quick replies after several messages
+    useEffect(() => {
+        const userMessageCount = messages.filter(
+            (m) => m.role === 'user'
+        ).length
+        if (userMessageCount >= 5) {
+            setShowQuickReplies(false)
+        }
     }, [messages])
 
     const handleSubmit = async (e?: React.FormEvent) => {
@@ -101,9 +159,19 @@ export function ChatInterface({
         }
     }
 
+    const handleQuickReplySelect = useCallback(
+        async (message: string) => {
+            if (!isLoading) {
+                await sendMessage({ text: message })
+            }
+        },
+        [isLoading, sendMessage]
+    )
+
     const handleReset = () => {
         setMessages([])
         setInput('')
+        setShowQuickReplies(true)
         onReset?.()
     }
 
@@ -116,18 +184,6 @@ export function ChatInterface({
             e.preventDefault()
             handleSubmit()
         }
-    }
-
-    // Extract text content from message parts
-    const getMessageContent = (message: (typeof messages)[0]): string => {
-        if (!message.parts) return ''
-        return message.parts
-            .filter(
-                (part): part is { type: 'text'; text: string } =>
-                    part.type === 'text'
-            )
-            .map((part) => part.text)
-            .join('')
     }
 
     return (
@@ -147,15 +203,18 @@ export function ChatInterface({
                         </p>
                     </div>
                 </div>
-                {onReset && (
-                    <button
-                        onClick={handleReset}
-                        className='rounded-lg p-2 text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-700'
-                        title='Start new conversation'
-                    >
-                        <RotateCcw className='h-4 w-4' />
-                    </button>
-                )}
+                <div className='flex items-center gap-2'>
+                    <HandoffButton sessionId={sessionId} />
+                    {onReset && (
+                        <button
+                            onClick={handleReset}
+                            className='rounded-lg p-2 text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-700'
+                            title='Start new conversation'
+                        >
+                            <RotateCcw className='h-4 w-4' />
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Messages */}
@@ -215,6 +274,16 @@ export function ChatInterface({
                     <div ref={messagesEndRef} />
                 </div>
             </div>
+
+            {/* Quick Replies */}
+            {showQuickReplies && !isLoading && (
+                <div className='border-t border-stone-100 bg-stone-50/50 px-4 py-3'>
+                    <QuickReplyButtons
+                        category={quickReplyCategory}
+                        onSelect={handleQuickReplySelect}
+                    />
+                </div>
+            )}
 
             {/* Input */}
             <div className='flex items-end gap-2 border-t border-stone-200 bg-white p-4'>

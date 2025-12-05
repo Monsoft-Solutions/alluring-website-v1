@@ -3,6 +3,7 @@
  *
  * Handles chat message streaming using AI SDK with GPT-4.1.
  * Saves messages to database and streams responses in real-time.
+ * Includes intent classification and lead scoring.
  *
  * @module app/api/chat/route
  */
@@ -16,12 +17,19 @@ import {
     getChatSessionById,
     saveChatMessage,
     getRecentMessages,
+    updateSessionIntentAndScore,
 } from '@/lib/queries/chat.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
     sanitizeMessageContent,
     estimateTokenCount,
 } from '@workspace/chat/utils'
+import {
+    classifyIntent,
+    detectIntentKeywords,
+    updateLeadScoreFromMessage,
+    type ScoringSignals,
+} from '@workspace/chat/services'
 
 /**
  * AI SDK v5 message format with parts
@@ -125,6 +133,42 @@ export async function POST(request: NextRequest) {
             tokenCount: estimateTokenCount(sanitizedContent),
         })
 
+        // Update lead score incrementally from user message
+        const currentSignals = (session.scoringSignals as ScoringSignals) ?? {}
+        const updatedScore = updateLeadScoreFromMessage(
+            session.leadScore ?? 0,
+            currentSignals,
+            sanitizedContent,
+            true // isUserMessage
+        )
+
+        // Quick keyword-based intent detection for immediate updates
+        const keywordIntent = detectIntentKeywords(sanitizedContent)
+
+        // Update session with new score and any detected intents
+        await updateSessionIntentAndScore(sessionId, {
+            leadScore: updatedScore.score,
+            leadGrade: updatedScore.grade,
+            scoringSignals: updatedScore.signals,
+            // Only update intent if we detected something and don't have one yet
+            ...(keywordIntent.primaryIntent && !session.primaryIntent
+                ? { primaryIntent: keywordIntent.primaryIntent }
+                : {}),
+            // Merge detected procedures
+            ...(keywordIntent.detectedProcedures &&
+            keywordIntent.detectedProcedures.length > 0
+                ? {
+                      detectedProcedures: [
+                          ...new Set([
+                              ...((session.detectedProcedures as string[]) ??
+                                  []),
+                              ...keywordIntent.detectedProcedures,
+                          ]),
+                      ],
+                  }
+                : {}),
+        })
+
         // Get recent messages from DB for context (to prevent manipulation)
         const dbMessages = await getRecentMessages(sessionId, 20)
         const contextMessages: AIMessage[] = dbMessages.map((msg) => ({
@@ -147,6 +191,21 @@ export async function POST(request: NextRequest) {
                     content: text,
                     tokenCount: estimateTokenCount(text),
                 })
+
+                // Run full AI intent classification after enough messages
+                // (async, doesn't block response)
+                const totalMessages = dbMessages.length + 2 // +2 for user msg and assistant response
+                if (
+                    totalMessages >= 4 &&
+                    !session.primaryIntent &&
+                    env.OPENAI_API_KEY
+                ) {
+                    classifyIntentAsync(
+                        sessionId,
+                        [...dbMessages, { role: 'assistant', content: text }],
+                        env.OPENAI_API_KEY
+                    )
+                }
             },
         })
 
@@ -172,4 +231,40 @@ export async function OPTIONS(): Promise<NextResponse> {
             'Access-Control-Allow-Headers': 'Content-Type',
         },
     })
+}
+
+/**
+ * Run full AI intent classification asynchronously
+ * This doesn't block the chat response
+ */
+async function classifyIntentAsync(
+    sessionId: string,
+    messages: Array<{ role: string; content: string }>,
+    apiKey: string
+): Promise<void> {
+    try {
+        const classificationMessages = messages
+            .filter((m) => m.role === 'user' || m.role === 'assistant')
+            .map((m) => ({
+                role: m.role as 'user' | 'assistant',
+                content: m.content,
+            }))
+
+        const classification = await classifyIntent(
+            classificationMessages,
+            apiKey
+        )
+
+        if (classification.primaryIntent !== 'unknown') {
+            await updateSessionIntentAndScore(sessionId, {
+                primaryIntent: classification.primaryIntent,
+                intentConfidence: classification.intentConfidence.toString(),
+                detectedProcedures: classification.detectedProcedures,
+                tags: classification.tags,
+            })
+        }
+    } catch (error) {
+        console.error('Async intent classification failed:', error)
+        // Non-blocking, just log the error
+    }
 }
