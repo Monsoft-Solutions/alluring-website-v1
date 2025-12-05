@@ -2,12 +2,13 @@
  * Chat Interface Component
  *
  * Main chat UI with streaming message support using AI SDK v5.
+ * Supports restoring previous messages for session persistence.
  *
  * @module components/chat/chat-interface
  */
 'use client'
 
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useRef, useState, useMemo, type ChangeEvent } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { TextStreamChatTransport } from 'ai'
 import { cn } from '@workspace/ui/lib/utils'
@@ -16,12 +17,36 @@ import { MessageCircle, RotateCcw, Send, Loader2 } from 'lucide-react'
 import { ChatMessage } from './chat-message.component'
 import { MAX_MESSAGE_LENGTH } from '@workspace/chat/constants'
 
+type StoredMessage = {
+    id: string
+    role: 'user' | 'assistant'
+    content: string
+    createdAt: string
+}
+
 type ChatInterfaceProps = {
     sessionId: string
     agentName: string
     welcomeMessage: string
     userName: string
+    /** Previously stored messages to restore on session resume */
+    initialMessages?: StoredMessage[]
     onReset?: () => void
+}
+
+/**
+ * Convert stored DB messages to AI SDK message format
+ */
+function convertToAISDKMessages(messages: StoredMessage[]): Array<{
+    id: string
+    role: 'user' | 'assistant'
+    parts: Array<{ type: 'text'; text: string }>
+}> {
+    return messages.map((msg) => ({
+        id: msg.id,
+        role: msg.role,
+        parts: [{ type: 'text' as const, text: msg.content }],
+    }))
 }
 
 export function ChatInterface({
@@ -29,23 +54,35 @@ export function ChatInterface({
     agentName,
     welcomeMessage,
     userName,
+    initialMessages = [],
     onReset,
 }: ChatInterfaceProps) {
     const messagesEndRef = useRef<HTMLDivElement>(null)
     const [input, setInput] = useState('')
+
+    // Convert initial messages to AI SDK format with welcome message
+    const startingMessages = useMemo(() => {
+        const welcome = {
+            id: 'welcome',
+            role: 'assistant' as const,
+            parts: [{ type: 'text' as const, text: welcomeMessage }],
+        }
+
+        // If we have stored messages, add them after welcome
+        if (initialMessages.length > 0) {
+            const converted = convertToAISDKMessages(initialMessages)
+            return [welcome, ...converted]
+        }
+
+        return [welcome]
+    }, [welcomeMessage, initialMessages])
 
     const { messages, sendMessage, status, error, setMessages } = useChat({
         transport: new TextStreamChatTransport({
             api: '/api/chat',
             body: { sessionId },
         }),
-        messages: [
-            {
-                id: 'welcome',
-                role: 'assistant',
-                parts: [{ type: 'text', text: welcomeMessage }],
-            },
-        ],
+        messages: startingMessages,
     })
 
     const isLoading = status === 'streaming' || status === 'submitted'
@@ -124,6 +161,15 @@ export function ChatInterface({
             {/* Messages */}
             <div className='flex-1 overflow-y-auto p-4'>
                 <div className='space-y-4'>
+                    {/* Restored session indicator */}
+                    {initialMessages.length > 0 && (
+                        <div className='flex justify-center'>
+                            <span className='rounded-full bg-stone-100 px-3 py-1 text-xs text-stone-500'>
+                                Conversation restored
+                            </span>
+                        </div>
+                    )}
+
                     {messages.map((message, index) => {
                         const content = getMessageContent(message)
                         if (!content) return null
