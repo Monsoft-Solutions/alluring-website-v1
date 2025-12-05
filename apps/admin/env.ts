@@ -30,6 +30,9 @@ export const env = createEnv({
 
         // Cache revalidation secret for invalidating web app cache
         REVALIDATION_SECRET: z.string().min(32),
+
+        // OpenAI API key for chat testing
+        OPENAI_API_KEY: z.string().min(1).optional(),
     },
     client: {
         // Public web app URL for building absolute links

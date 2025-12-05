@@ -13,6 +13,7 @@ import {
     Menu,
     X,
     Megaphone,
+    Bot,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -49,6 +50,16 @@ const navItems: NavItem[] = [
         title: 'Promotions',
         href: '/promotions',
         icon: Megaphone,
+    },
+    {
+        title: 'Chat',
+        href: '/chat',
+        icon: Bot,
+        children: [
+            { title: 'Dashboard', href: '/chat' },
+            { title: 'Conversations', href: '/chat/conversations' },
+            { title: 'Test Chat', href: '/chat/test' },
+        ],
     },
     {
         title: 'Blog',

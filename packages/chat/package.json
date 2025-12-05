@@ -1,0 +1,25 @@
+{
+    "name": "@workspace/chat",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts",
+        "./types": "./src/types/index.ts",
+        "./constants": "./src/constants/index.ts",
+        "./utils": "./src/utils/index.ts"
+    },
+    "scripts": {
+        "lint": "eslint . --max-warnings 0",
+        "format": "pnpm -w format",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "zod": "^4.1.13"
+    },
+    "devDependencies": {
+        "@workspace/eslint-config": "workspace:*",
+        "@workspace/typescript-config": "workspace:*",
+        "typescript": "^5.9.3"
+    }
+}
