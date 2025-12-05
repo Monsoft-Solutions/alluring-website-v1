@@ -7,6 +7,7 @@ import { InternalPageViewTracker } from '@/components/analytics/internal-page-vi
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
 import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
+import { FloatingChatButton } from '@/components/chat'
 import { FloatingFeedbackButton } from '@/components/feedback'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { Footer } from '@/components/layout/footer.component'
@@ -63,6 +64,13 @@ export default function RootLayout({
     // Check if beta mode is enabled (shows feedback button)
     const isBetaMode = env.NEXT_PUBLIC_BETA_MODE === 'true'
 
+    // Check if chat widget is enabled (default: true, fetches config from API)
+    const isChatEnabled = env.NEXT_PUBLIC_CHAT_ENABLED !== 'false'
+
+    // Check if cookie banner should be enabled (default: true)
+    const isCookieBannerEnabled =
+        env.NEXT_PUBLIC_ENABLE_COOKIE_BANNER !== 'false'
+
     return (
         <html lang='en' className='scroll-smooth'>
             <head>
@@ -103,7 +111,7 @@ export default function RootLayout({
                     {/* Analytics Scripts - Load conditionally based on consent */}
                     <AnalyticsProvider />
                     {/* Cookie Consent Banner */}
-                    <CookieBanner />
+                    {isCookieBannerEnabled && <CookieBanner />}
                     {/* Promotion Announcement Bar */}
                     <AnnouncementBar />
                     {/* Site Header */}
@@ -126,6 +134,8 @@ export default function RootLayout({
                     )}
                     {/* Beta Feedback Button - visible during beta testing */}
                     {isBetaMode && <FloatingFeedbackButton />}
+                    {/* Chat Widget - AI chat assistant */}
+                    {isChatEnabled && <FloatingChatButton />}
                 </Providers>
             </body>
         </html>

@@ -1,0 +1,193 @@
+/**
+ * Chat Database Queries
+ *
+ * @module lib/queries/chat
+ */
+import { db } from '@workspace/db/client'
+import {
+    chatConfig,
+    chatSession,
+    chatMessage,
+    type ChatConfig,
+    type ChatSession,
+    type ChatMessage,
+    type InsertChatSession,
+    type InsertChatMessage,
+} from '@workspace/db/schema/chat'
+import { eq, desc, sql } from 'drizzle-orm'
+
+import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
+
+/**
+ * Get the active chat configuration
+ * Returns the first config or creates default if none exists
+ */
+export async function getChatConfig(): Promise<ChatConfig> {
+    const configs = await db.select().from(chatConfig).limit(1)
+
+    if (configs.length > 0 && configs[0]) {
+        return configs[0]
+    }
+
+    // Create default configuration if none exists
+    const [newConfig] = await db
+        .insert(chatConfig)
+        .values({
+            agentName: DEFAULT_CHAT_CONFIG.agentName,
+            systemPrompt: DEFAULT_CHAT_CONFIG.systemPrompt,
+            welcomeMessage: DEFAULT_CHAT_CONFIG.welcomeMessage,
+            modelId: DEFAULT_CHAT_CONFIG.modelId,
+            temperature: DEFAULT_CHAT_CONFIG.temperature,
+            maxTokens: DEFAULT_CHAT_CONFIG.maxTokens,
+            isEnabled: DEFAULT_CHAT_CONFIG.isEnabled,
+            buttonPosition: DEFAULT_CHAT_CONFIG.buttonPosition,
+            primaryColor: DEFAULT_CHAT_CONFIG.primaryColor,
+        })
+        .returning()
+
+    return newConfig!
+}
+
+/**
+ * Create a new chat session
+ */
+export async function createChatSession(
+    data: InsertChatSession
+): Promise<ChatSession> {
+    const [session] = await db.insert(chatSession).values(data).returning()
+    return session!
+}
+
+/**
+ * Get a chat session by ID
+ */
+export async function getChatSessionById(
+    id: string
+): Promise<ChatSession | null> {
+    const sessions = await db
+        .select()
+        .from(chatSession)
+        .where(eq(chatSession.id, id))
+        .limit(1)
+
+    return sessions[0] ?? null
+}
+
+/**
+ * Save a chat message
+ */
+export async function saveChatMessage(
+    data: InsertChatMessage
+): Promise<ChatMessage> {
+    const [message] = await db.insert(chatMessage).values(data).returning()
+
+    // Update session message count and last message timestamp
+    await db
+        .update(chatSession)
+        .set({
+            messageCount: sql`${chatSession.messageCount} + 1`,
+            lastMessageAt: new Date(),
+        })
+        .where(eq(chatSession.id, data.sessionId))
+
+    return message!
+}
+
+/**
+ * Get messages for a session
+ */
+export async function getSessionMessages(
+    sessionId: string
+): Promise<ChatMessage[]> {
+    return db
+        .select()
+        .from(chatMessage)
+        .where(eq(chatMessage.sessionId, sessionId))
+        .orderBy(chatMessage.createdAt)
+}
+
+/**
+ * Get recent messages for context (limited for AI)
+ */
+export async function getRecentMessages(
+    sessionId: string,
+    limit: number = 20
+): Promise<ChatMessage[]> {
+    const messages = await db
+        .select()
+        .from(chatMessage)
+        .where(eq(chatMessage.sessionId, sessionId))
+        .orderBy(desc(chatMessage.createdAt))
+        .limit(limit)
+
+    // Reverse to get chronological order
+    return messages.reverse()
+}
+
+/**
+ * Close a chat session
+ */
+export async function closeChatSession(sessionId: string): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            status: 'closed',
+            closedAt: new Date(),
+        })
+        .where(eq(chatSession.id, sessionId))
+}
+
+/**
+ * Update session intent classification and lead scoring
+ */
+export async function updateSessionIntentAndScore(
+    sessionId: string,
+    data: {
+        primaryIntent?: string
+        intentConfidence?: string
+        detectedProcedures?: string[]
+        tags?: string[]
+        leadScore?: number
+        leadGrade?: string
+        scoringSignals?: Record<string, unknown>
+    }
+): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            ...(data.primaryIntent !== undefined && {
+                primaryIntent: data.primaryIntent,
+            }),
+            ...(data.intentConfidence !== undefined && {
+                intentConfidence: data.intentConfidence,
+            }),
+            ...(data.detectedProcedures !== undefined && {
+                detectedProcedures: data.detectedProcedures,
+            }),
+            ...(data.tags !== undefined && { tags: data.tags }),
+            ...(data.leadScore !== undefined && { leadScore: data.leadScore }),
+            ...(data.leadGrade !== undefined && { leadGrade: data.leadGrade }),
+            ...(data.scoringSignals !== undefined && {
+                scoringSignals: data.scoringSignals,
+            }),
+        })
+        .where(eq(chatSession.id, sessionId))
+}
+
+/**
+ * Escalate a chat session to human support
+ */
+export async function escalateChatSession(
+    sessionId: string,
+    reason: string
+): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            isEscalated: true,
+            escalatedAt: new Date(),
+            escalationReason: reason,
+            status: 'escalated',
+        })
+        .where(eq(chatSession.id, sessionId))
+}
