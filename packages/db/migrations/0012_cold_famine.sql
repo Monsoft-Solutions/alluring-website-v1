@@ -1,1 +1,1 @@
-ALTER TABLE "promotion" ADD COLUMN "modal_delay_seconds" integer DEFAULT 60;
+-- ALTER TABLE "promotion" ADD COLUMN "modal_delay_seconds" integer DEFAULT 60;

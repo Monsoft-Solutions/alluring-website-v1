@@ -1,5 +1,6 @@
 export * from './analytics'
 export * from './blog'
+export * from './chat'
 export * from './contact'
 export * from './emails'
 export * from './feedback'

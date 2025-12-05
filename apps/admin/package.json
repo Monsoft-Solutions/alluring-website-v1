@@ -13,8 +13,9 @@
         "format": "pnpm -w format"
     },
     "dependencies": {
+        "@ai-sdk/openai": "^2.0.77",
+        "@ai-sdk/react": "^2.0.107",
         "@hookform/resolvers": "^5.2.2",
-        "@vercel/blob": "^1.1.1",
         "@radix-ui/react-slot": "^1.2.4",
         "@t3-oss/env-nextjs": "^0.13.8",
         "@tiptap/extension-code-block-lowlight": "^3.12.1",
@@ -24,9 +25,12 @@
         "@tiptap/pm": "^3.12.1",
         "@tiptap/react": "^3.12.1",
         "@tiptap/starter-kit": "^3.12.1",
+        "@vercel/blob": "^1.1.1",
+        "@workspace/chat": "workspace:*",
         "@workspace/db": "workspace:*",
         "@workspace/shared": "workspace:*",
         "@workspace/ui": "workspace:*",
+        "ai": "^5.0.107",
         "drizzle-orm": "^0.44.7",
         "jiti": "^2.6.1",
         "lowlight": "^3.3.0",

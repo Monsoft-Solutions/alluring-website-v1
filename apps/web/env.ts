@@ -38,6 +38,9 @@ export const env = createEnv({
 
         // Cache revalidation (required for on-demand ISR from admin)
         REVALIDATION_SECRET: z.string().min(32),
+
+        // AI Chat (required for chat agent)
+        OPENAI_API_KEY: z.string().min(1).optional(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)
@@ -70,6 +73,9 @@ export const env = createEnv({
 
         // Beta mode - enables feedback button on all pages
         NEXT_PUBLIC_BETA_MODE: z.enum(['true', 'false']).optional(),
+
+        // Chat widget enable/disable
+        NEXT_PUBLIC_CHAT_ENABLED: z.enum(['true', 'false']).optional(),
     },
     shared: {
         NODE_ENV: z
@@ -97,6 +103,7 @@ export const env = createEnv({
             process.env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON,
         NEXT_PUBLIC_ALLOW_CRAWLING: process.env.NEXT_PUBLIC_ALLOW_CRAWLING,
         NEXT_PUBLIC_BETA_MODE: process.env.NEXT_PUBLIC_BETA_MODE,
+        NEXT_PUBLIC_CHAT_ENABLED: process.env.NEXT_PUBLIC_CHAT_ENABLED,
         NODE_ENV: process.env.NODE_ENV,
     },
 
