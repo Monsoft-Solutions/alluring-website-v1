@@ -5,6 +5,11 @@ import { promotion } from '@workspace/db/schema/promotion'
 import { eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import {
+    revalidateWebAppCache,
+    getAllPromotionCacheTags,
+} from '@/lib/utils/revalidate-web.util'
+
 export type PromotionFormData = {
     title: string
     slug: string
@@ -100,8 +105,12 @@ export async function createPromotion(
             })
             .returning({ id: promotion.id })
 
+        // Revalidate admin dashboard paths
         revalidatePath('/promotions')
         revalidatePath('/')
+
+        // Revalidate web app cache (announcement bar, homepage section, promotions page, modal)
+        await revalidateWebAppCache(getAllPromotionCacheTags())
 
         return { success: true, id: newPromotion?.id }
     } catch (error) {
@@ -137,7 +146,7 @@ export async function updatePromotion(
 
         // Check if slug already exists for another promotion
         const existingPromotion = await db
-            .select({ id: promotion.id })
+            .select({ id: promotion.id, slug: promotion.slug })
             .from(promotion)
             .where(eq(promotion.slug, data.slug))
             .limit(1)
@@ -149,9 +158,9 @@ export async function updatePromotion(
             }
         }
 
-        // Verify promotion exists
+        // Verify promotion exists and get current slug for cache invalidation
         const currentPromotion = await db
-            .select({ id: promotion.id })
+            .select({ id: promotion.id, slug: promotion.slug })
             .from(promotion)
             .where(eq(promotion.id, id))
             .limit(1)
@@ -159,6 +168,8 @@ export async function updatePromotion(
         if (!currentPromotion.length) {
             return { success: false, error: 'Promotion not found' }
         }
+
+        const oldSlug = currentPromotion[0]?.slug
 
         // Update the promotion
         await db
@@ -189,9 +200,20 @@ export async function updatePromotion(
             })
             .where(eq(promotion.id, id))
 
+        // Revalidate admin dashboard paths
         revalidatePath('/promotions')
         revalidatePath(`/promotions/${id}/edit`)
         revalidatePath('/')
+
+        // Revalidate web app cache - include slug-specific tags for detail pages
+        const cacheTags = getAllPromotionCacheTags()
+        if (oldSlug) {
+            cacheTags.push(`promotion-${oldSlug}`)
+        }
+        if (data.slug !== oldSlug) {
+            cacheTags.push(`promotion-${data.slug}`)
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true, id }
     } catch (error) {
@@ -211,10 +233,27 @@ export async function updatePromotion(
  */
 export async function deletePromotion(id: string): Promise<ActionResult> {
     try {
+        // Get the promotion slug before deleting for cache invalidation
+        const currentPromotion = await db
+            .select({ slug: promotion.slug })
+            .from(promotion)
+            .where(eq(promotion.id, id))
+            .limit(1)
+
+        const slug = currentPromotion[0]?.slug
+
         await db.delete(promotion).where(eq(promotion.id, id))
 
+        // Revalidate admin dashboard paths
         revalidatePath('/promotions')
         revalidatePath('/')
+
+        // Revalidate web app cache - include slug-specific tag
+        const cacheTags = getAllPromotionCacheTags()
+        if (slug) {
+            cacheTags.push(`promotion-${slug}`)
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {
@@ -238,7 +277,7 @@ export async function updatePromotionStatus(
 ): Promise<ActionResult> {
     try {
         const currentPromotion = await db
-            .select({ id: promotion.id })
+            .select({ id: promotion.id, slug: promotion.slug })
             .from(promotion)
             .where(eq(promotion.id, id))
             .limit(1)
@@ -247,10 +286,20 @@ export async function updatePromotionStatus(
             return { success: false, error: 'Promotion not found' }
         }
 
+        const slug = currentPromotion[0]?.slug
+
         await db.update(promotion).set({ status }).where(eq(promotion.id, id))
 
+        // Revalidate admin dashboard paths
         revalidatePath('/promotions')
         revalidatePath('/')
+
+        // Revalidate web app cache - status changes affect visibility
+        const cacheTags = getAllPromotionCacheTags()
+        if (slug) {
+            cacheTags.push(`promotion-${slug}`)
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {

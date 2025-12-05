@@ -27,6 +27,9 @@ export const env = createEnv({
 
         // Vercel Blob storage for media uploads
         BLOB_READ_WRITE_TOKEN: z.string().min(1),
+
+        // Cache revalidation secret for invalidating web app cache
+        REVALIDATION_SECRET: z.string().min(32),
     },
     client: {
         // Public web app URL for building absolute links

@@ -35,6 +35,9 @@ export const env = createEnv({
         RESEND_API_KEY: z.string().min(1),
         RESEND_FROM_EMAIL: z.string().email(),
         OWNER_EMAIL: z.string().email(),
+
+        // Cache revalidation (required for on-demand ISR from admin)
+        REVALIDATION_SECRET: z.string().min(32),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)

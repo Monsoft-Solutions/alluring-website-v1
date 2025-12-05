@@ -1,0 +1,22 @@
+{
+    "name": "@workspace/shared",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts",
+        "./cache": "./src/cache/index.ts"
+    },
+    "scripts": {
+        "lint": "eslint . --ext .ts,.tsx",
+        "typecheck": "tsc --noEmit",
+        "build": "tsc --emitDeclarationOnly --declaration --outDir dist",
+        "format": "pnpm -w format"
+    },
+    "devDependencies": {
+        "@types/node": "^24.10.1",
+        "@workspace/eslint-config": "workspace:*",
+        "@workspace/typescript-config": "workspace:*",
+        "typescript": "^5.9.3"
+    }
+}
