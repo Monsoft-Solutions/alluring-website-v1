@@ -9,7 +9,7 @@
  */
 import { type NextRequest, NextResponse } from 'next/server'
 import { openai } from '@ai-sdk/openai'
-import { streamText } from 'ai'
+import { smoothStream, streamText } from 'ai'
 
 import { env } from '@/env'
 import {
@@ -183,6 +183,7 @@ export async function POST(request: NextRequest) {
             messages: contextMessages,
             temperature: config.temperature,
             maxOutputTokens: config.maxTokens,
+            experimental_transform: smoothStream({ chunking: 'word' }),
             onFinish: async ({ text }) => {
                 // Save assistant message to database
                 await saveChatMessage({
