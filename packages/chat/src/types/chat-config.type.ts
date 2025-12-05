@@ -34,9 +34,9 @@ export type ButtonPosition = (typeof BUTTON_POSITIONS)[number]
  * Chat configuration schema for validation
  */
 export const chatConfigSchema = z.object({
-    id: z.string().uuid().optional(),
+    id: z.uuid().optional(),
     agentName: z.string().min(1).max(100),
-    systemPrompt: z.string().min(10).max(10000),
+    systemPrompt: z.string().min(10).max(20000),
     welcomeMessage: z.string().min(1).max(500),
     modelId: z.enum(CHAT_MODELS),
     temperature: z.number().min(0).max(2),

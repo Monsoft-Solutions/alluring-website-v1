@@ -13,12 +13,38 @@ import { env } from '@/env'
 import { db } from '@workspace/db/client'
 import { chatConfig, chatSession, chatMessage } from '@workspace/db/schema/chat'
 import { eq, sql } from 'drizzle-orm'
-import type { AIMessage } from '@workspace/chat/types'
 import {
     sanitizeMessageContent,
     estimateTokenCount,
 } from '@workspace/chat/utils'
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
+
+/**
+ * AI SDK v5 message format (uses parts instead of content)
+ */
+type AISDKMessage = {
+    role: 'user' | 'assistant' | 'system'
+    content?: string
+    parts?: Array<{ type: 'text'; text: string }>
+}
+
+/**
+ * Extract text content from AI SDK message (supports both v4 and v5 formats)
+ */
+function extractMessageContent(message: AISDKMessage): string {
+    // AI SDK v5 format: parts array
+    if (message.parts && Array.isArray(message.parts)) {
+        return message.parts
+            .filter((part) => part.type === 'text')
+            .map((part) => part.text)
+            .join('')
+    }
+    // AI SDK v4 format: direct content string
+    if (typeof message.content === 'string') {
+        return message.content
+    }
+    return ''
+}
 
 /**
  * Get chat configuration
@@ -86,7 +112,7 @@ export async function POST(request: NextRequest) {
 
         const body = await request.json()
         const { messages, sessionId } = body as {
-            messages: AIMessage[]
+            messages: AISDKMessage[]
             sessionId: string
         }
 
@@ -108,8 +134,17 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // Extract message content (supports AI SDK v4 and v5 formats)
+        const messageContent = extractMessageContent(lastMessage)
+        if (!messageContent) {
+            return NextResponse.json(
+                { error: 'Message content is required' },
+                { status: 400 }
+            )
+        }
+
         // Save user message
-        const sanitizedContent = sanitizeMessageContent(lastMessage.content)
+        const sanitizedContent = sanitizeMessageContent(messageContent)
         await saveChatMessage({
             sessionId,
             role: 'user',
@@ -119,8 +154,8 @@ export async function POST(request: NextRequest) {
 
         // Get recent messages for context
         const dbMessages = await getRecentMessages(sessionId, 20)
-        const contextMessages: AIMessage[] = dbMessages.map((msg) => ({
-            role: msg.role as AIMessage['role'],
+        const contextMessages = dbMessages.map((msg) => ({
+            role: msg.role as 'user' | 'assistant' | 'system',
             content: msg.content,
         }))
 
