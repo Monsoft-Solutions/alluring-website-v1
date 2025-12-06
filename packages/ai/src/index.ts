@@ -23,6 +23,7 @@
  */
 
 // Re-export everything from submodules for convenience
+export * from './core'
 export * from './functions'
 export * from './schemas'
 export * from './models'

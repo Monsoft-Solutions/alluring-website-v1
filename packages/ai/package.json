@@ -5,6 +5,7 @@
     "type": "module",
     "exports": {
         ".": "./src/index.ts",
+        "./core": "./src/core/index.ts",
         "./functions": "./src/functions/index.ts",
         "./schemas": "./src/schemas/index.ts",
         "./prompts": "./src/prompts/index.ts",
@@ -18,6 +19,7 @@
     },
     "dependencies": {
         "@ai-sdk/openai": "^2.0.77",
+        "@ai-sdk/provider-utils": "^3.0.18",
         "ai": "^5.0.107",
         "zod": "^4.1.13"
     },

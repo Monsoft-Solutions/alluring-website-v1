@@ -6,9 +6,6 @@
  *
  * @module @workspace/ai/functions/classify-intent
  */
-import { generateObject } from 'ai'
-import { openai } from '@ai-sdk/openai'
-
 import {
     intentClassificationSchema,
     type IntentClassification,
@@ -19,6 +16,7 @@ import {
     getIntentClassificationPrompt,
 } from '../prompts/chat/intent-classification.prompt'
 import { DEFAULT_CLASSIFICATION_MODEL_ID } from '../models/available-models.constant'
+import { coreGenerateObject } from '../core'
 
 /**
  * Options for intent classification
@@ -73,8 +71,8 @@ export async function classifyIntent(
     }
 
     try {
-        const result = await generateObject({
-            model: openai(modelId),
+        const result = await coreGenerateObject({
+            modelId,
             schema: intentClassificationSchema,
             system: INTENT_CLASSIFICATION_SYSTEM_PROMPT,
             prompt: getIntentClassificationPrompt(messages),

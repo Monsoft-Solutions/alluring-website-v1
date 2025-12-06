@@ -7,9 +7,6 @@
  *
  * @module @workspace/ai/functions/analyze-conversation
  */
-import { generateObject } from 'ai'
-import { openai } from '@ai-sdk/openai'
-
 import {
     conversationAnalysisSchema,
     DEFAULT_CONVERSATION_ANALYSIS,
@@ -21,6 +18,7 @@ import {
     getConversationAnalysisPrompt,
 } from '../prompts/chat/conversation-analysis.prompt'
 import { DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID } from '../models/available-models.constant'
+import { coreGenerateObject } from '../core'
 
 /**
  * Options for conversation analysis
@@ -74,8 +72,8 @@ export async function analyzeConversation(
     }
 
     try {
-        const result = await generateObject({
-            model: openai(modelId),
+        const result = await coreGenerateObject({
+            modelId,
             schema: conversationAnalysisSchema,
             system: CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
             prompt: getConversationAnalysisPrompt(messages),

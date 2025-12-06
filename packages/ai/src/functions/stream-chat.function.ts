@@ -6,10 +6,7 @@
  *
  * @module @workspace/ai/functions/stream-chat
  */
-import { streamText, smoothStream } from 'ai'
-import { openai } from '@ai-sdk/openai'
-
-import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { coreStreamText } from '../core'
 
 /**
  * Chat message format
@@ -62,7 +59,7 @@ export type StreamChatOptions = {
  */
 export function streamChat(options: StreamChatOptions) {
     const {
-        modelId = DEFAULT_CHAT_MODEL_ID,
+        modelId,
         systemPrompt,
         messages,
         temperature = 0.7,
@@ -71,18 +68,15 @@ export function streamChat(options: StreamChatOptions) {
         onFinish,
     } = options
 
-    return streamText({
-        model: openai(modelId),
+    return coreStreamText({
+        modelId,
         system: systemPrompt,
         messages,
         temperature,
-        maxOutputTokens: maxTokens,
-        ...(smoothStreaming && {
-            experimental_transform: smoothStream({
-                delayInMs: 20, // optional: defaults to 10ms
-                chunking: 'line', // optional: defaults to 'word'
-            }),
-        }),
+        maxTokens,
+        smoothStreaming: smoothStreaming
+            ? { delayInMs: 20, chunking: 'line' }
+            : false,
         onFinish,
     })
 }

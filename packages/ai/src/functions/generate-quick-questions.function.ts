@@ -6,9 +6,6 @@
  *
  * @module @workspace/ai/functions/generate-quick-questions
  */
-import { generateObject } from 'ai'
-import { openai } from '@ai-sdk/openai'
-
 import {
     quickQuestionsSchema,
     type GenerateQuickQuestionsParams,
@@ -18,6 +15,7 @@ import {
     getQuickQuestionsPrompt,
 } from '../prompts/chat/quick-questions.prompt'
 import { DEFAULT_QUICK_QUESTIONS_MODEL_ID } from '../models/available-models.constant'
+import { coreGenerateObject } from '../core'
 
 /**
  * Options for quick questions generation
@@ -78,8 +76,8 @@ export async function generateQuickQuestions(
             `[AI:QuickQuestions] Calling OpenAI with model ${modelId}...`
         )
 
-        const result = await generateObject({
-            model: openai(modelId),
+        const result = await coreGenerateObject({
+            modelId,
             schema: quickQuestionsSchema,
             system: QUICK_QUESTIONS_SYSTEM_PROMPT,
             prompt: getQuickQuestionsPrompt(params),
