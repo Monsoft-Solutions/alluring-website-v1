@@ -1,0 +1,1 @@
+ALTER TABLE "chat_message" ADD COLUMN "suggested_questions" jsonb;

@@ -20,3 +20,8 @@ export {
     type ChatMessage,
     type StreamChatOptions,
 } from './stream-chat.function'
+
+export {
+    generateQuickQuestions,
+    type GenerateQuickQuestionsOptions,
+} from './generate-quick-questions.function'

@@ -17,3 +17,9 @@ export {
     generateSystemPrompt,
     type SystemPromptParams,
 } from './system-prompt.prompt'
+
+export {
+    QUICK_QUESTIONS_SYSTEM_PROMPT,
+    formatMessagesForQuickQuestions,
+    getQuickQuestionsPrompt,
+} from './quick-questions.prompt'

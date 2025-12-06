@@ -20,3 +20,11 @@ export {
     type IntentClassification,
     type ClassificationMessage,
 } from './intent-classification.schema'
+
+export {
+    quickQuestionsSchema,
+    MAX_QUESTION_LENGTH,
+    type QuickQuestions,
+    type QuickQuestionsMessage,
+    type GenerateQuickQuestionsParams,
+} from './quick-questions.schema'

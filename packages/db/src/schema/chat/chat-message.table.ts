@@ -5,7 +5,14 @@
  *
  * @module packages/db/src/schema/chat/chat-message.table
  */
-import { integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import {
+    integer,
+    jsonb,
+    pgTable,
+    text,
+    timestamp,
+    uuid,
+} from 'drizzle-orm/pg-core'
 
 import { chatSession } from './chat-session.table'
 
@@ -43,6 +50,12 @@ export const chatMessage = pgTable('chat_message', {
      * Token count for the message (for analytics/billing)
      */
     tokenCount: integer('token_count'),
+
+    /**
+     * AI-generated suggested follow-up questions
+     * Only populated for assistant messages after AI generation
+     */
+    suggestedQuestions: jsonb('suggested_questions').$type<string[]>(),
 
     /**
      * Timestamp when the message was created

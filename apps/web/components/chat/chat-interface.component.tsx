@@ -62,6 +62,12 @@ function convertToAISDKMessages(messages: StoredMessage[]): Array<{
     }))
 }
 
+/**
+ * Polling configuration for dynamic questions
+ */
+const QUICK_QUESTIONS_POLL_INTERVAL = 500 // ms
+const QUICK_QUESTIONS_MAX_ATTEMPTS = 6 // 3 seconds max
+
 export function ChatInterface({
     sessionId,
     agentName,
@@ -73,6 +79,13 @@ export function ChatInterface({
     const messagesEndRef = useRef<HTMLDivElement>(null)
     const [input, setInput] = useState('')
     const [showQuickReplies, setShowQuickReplies] = useState(true)
+
+    // Dynamic quick questions state
+    const [dynamicQuestions, setDynamicQuestions] = useState<string[]>([])
+    const [dynamicQuestionsLoading, setDynamicQuestionsLoading] =
+        useState(false)
+    const pollAttemptsRef = useRef(0)
+    const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
     // Convert initial messages to AI SDK format with welcome message
     const startingMessages = useMemo(() => {
@@ -100,6 +113,7 @@ export function ChatInterface({
     })
 
     const isLoading = status === 'streaming' || status === 'submitted'
+    const wasLoadingRef = useRef(false)
 
     // Extract text content from message parts
     const getMessageContent = useCallback(
@@ -135,6 +149,89 @@ export function ChatInterface({
         return getQuickReplyCategory(userMessageCount, lastAssistantMessage)
     }, [messages, getMessageContent])
 
+    /**
+     * Fetch dynamic quick questions from the server
+     */
+    const fetchDynamicQuestions = useCallback(async () => {
+        try {
+            const response = await fetch(
+                `/api/chat/session/${sessionId}/quick-questions`
+            )
+            const data = await response.json()
+
+            if (data.success && data.questions && data.questions.length > 0) {
+                setDynamicQuestions(data.questions)
+                setDynamicQuestionsLoading(false)
+                // Clear polling interval on success
+                if (pollIntervalRef.current) {
+                    clearInterval(pollIntervalRef.current)
+                    pollIntervalRef.current = null
+                }
+                return true
+            }
+            return false
+        } catch (error) {
+            console.error('Failed to fetch dynamic questions:', error)
+            return false
+        }
+    }, [sessionId])
+
+    /**
+     * Start polling for dynamic questions after streaming completes
+     */
+    const startPollingForQuestions = useCallback(() => {
+        // Clear existing interval if any
+        if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current)
+        }
+
+        // Reset state
+        setDynamicQuestions([])
+        setDynamicQuestionsLoading(true)
+        pollAttemptsRef.current = 0
+
+        // Start polling
+        pollIntervalRef.current = setInterval(async () => {
+            pollAttemptsRef.current += 1
+
+            const success = await fetchDynamicQuestions()
+
+            // Stop polling if successful or max attempts reached
+            if (
+                success ||
+                pollAttemptsRef.current >= QUICK_QUESTIONS_MAX_ATTEMPTS
+            ) {
+                if (pollIntervalRef.current) {
+                    clearInterval(pollIntervalRef.current)
+                    pollIntervalRef.current = null
+                }
+                setDynamicQuestionsLoading(false)
+            }
+        }, QUICK_QUESTIONS_POLL_INTERVAL)
+    }, [fetchDynamicQuestions])
+
+    // Detect when streaming completes and start polling for questions
+    useEffect(() => {
+        // Detect transition from loading to not loading (streaming just completed)
+        if (wasLoadingRef.current && !isLoading) {
+            // Check if the last message is from assistant (response completed)
+            const lastMessage = messages[messages.length - 1]
+            if (lastMessage && lastMessage.role === 'assistant') {
+                startPollingForQuestions()
+            }
+        }
+        wasLoadingRef.current = isLoading
+    }, [isLoading, messages, startPollingForQuestions])
+
+    // Cleanup polling on unmount
+    useEffect(() => {
+        return () => {
+            if (pollIntervalRef.current) {
+                clearInterval(pollIntervalRef.current)
+            }
+        }
+    }, [])
+
     // Scroll to bottom when new messages arrive
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -155,6 +252,8 @@ export function ChatInterface({
         if (input.trim() && !isLoading) {
             const message = input.trim()
             setInput('')
+            // Clear dynamic questions when user sends a new message
+            setDynamicQuestions([])
             await sendMessage({ text: message })
         }
     }
@@ -162,6 +261,8 @@ export function ChatInterface({
     const handleQuickReplySelect = useCallback(
         async (message: string) => {
             if (!isLoading) {
+                // Clear dynamic questions when user selects a quick reply
+                setDynamicQuestions([])
                 await sendMessage({ text: message })
             }
         },
@@ -172,6 +273,12 @@ export function ChatInterface({
         setMessages([])
         setInput('')
         setShowQuickReplies(true)
+        setDynamicQuestions([])
+        setDynamicQuestionsLoading(false)
+        if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current)
+            pollIntervalRef.current = null
+        }
         onReset?.()
     }
 
@@ -281,6 +388,8 @@ export function ChatInterface({
                     <QuickReplyButtons
                         category={quickReplyCategory}
                         onSelect={handleQuickReplySelect}
+                        dynamicQuestions={dynamicQuestions}
+                        dynamicQuestionsLoading={dynamicQuestionsLoading}
                     />
                 </div>
             )}

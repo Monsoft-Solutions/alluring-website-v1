@@ -4,6 +4,8 @@
  * Displays contextual quick reply suggestions as pill-style buttons
  * to guide users through common questions.
  *
+ * Supports both AI-generated dynamic questions and static DB-based fallbacks.
+ *
  * @module components/chat/quick-reply-buttons
  */
 'use client'
@@ -27,6 +29,10 @@ type QuickReplyButtonsProps = {
     hidden?: boolean
     /** Additional CSS classes */
     className?: string
+    /** AI-generated dynamic questions (takes precedence over category-based) */
+    dynamicQuestions?: string[]
+    /** Whether dynamic questions are still loading */
+    dynamicQuestionsLoading?: boolean
 }
 
 /**
@@ -82,12 +88,23 @@ export function QuickReplyButtons({
     onSelect,
     hidden = false,
     className,
+    dynamicQuestions,
+    dynamicQuestionsLoading = false,
 }: QuickReplyButtonsProps) {
     const [quickReplies, setQuickReplies] = useState<QuickReply[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    // Fetch quick replies when category changes
+    // Check if we should use dynamic questions
+    const hasDynamicQuestions = dynamicQuestions && dynamicQuestions.length > 0
+
+    // Fetch static quick replies when category changes (as fallback)
     useEffect(() => {
+        // Skip fetching static replies if we have dynamic questions
+        if (hasDynamicQuestions) {
+            setIsLoading(false)
+            return
+        }
+
         async function fetchQuickReplies() {
             setIsLoading(true)
             try {
@@ -106,9 +123,9 @@ export function QuickReplyButtons({
         }
 
         fetchQuickReplies()
-    }, [category])
+    }, [category, hasDynamicQuestions])
 
-    const handleClick = useCallback(
+    const handleStaticClick = useCallback(
         async (reply: QuickReply) => {
             // Track the click asynchronously (fire and forget)
             fetch('/api/chat/quick-replies/track', {
@@ -125,7 +142,44 @@ export function QuickReplyButtons({
         [onSelect]
     )
 
-    if (hidden || isLoading || quickReplies.length === 0) {
+    const handleDynamicClick = useCallback(
+        (question: string) => {
+            onSelect(question)
+        },
+        [onSelect]
+    )
+
+    // Hide if explicitly hidden or still loading dynamic questions
+    if (hidden || dynamicQuestionsLoading) {
+        return null
+    }
+
+    // Render dynamic AI-generated questions if available
+    if (hasDynamicQuestions) {
+        return (
+            <div className={cn('flex flex-wrap gap-2', className)}>
+                {dynamicQuestions.map((question, index) => (
+                    <button
+                        key={`dynamic-${index}`}
+                        type='button'
+                        onClick={() => handleDynamicClick(question)}
+                        className={cn(
+                            'inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium',
+                            'border border-stone-200 bg-white text-stone-700',
+                            'transition-all duration-200',
+                            'hover:border-stone-300 hover:bg-stone-50 hover:text-stone-900',
+                            'active:scale-95'
+                        )}
+                    >
+                        {question}
+                    </button>
+                ))}
+            </div>
+        )
+    }
+
+    // Fallback to static category-based quick replies
+    if (isLoading || quickReplies.length === 0) {
         return null
     }
 
@@ -135,7 +189,7 @@ export function QuickReplyButtons({
                 <button
                     key={reply.id}
                     type='button'
-                    onClick={() => handleClick(reply)}
+                    onClick={() => handleStaticClick(reply)}
                     className={cn(
                         'inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium',
                         'border border-stone-200 bg-white text-stone-700',

@@ -8,7 +8,13 @@
  * @module app/api/chat/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
-import { openai, streamText, smoothStream, classifyIntent } from '@workspace/ai'
+import {
+    openai,
+    streamText,
+    smoothStream,
+    classifyIntent,
+    generateQuickQuestions,
+} from '@workspace/ai'
 import type { ClassificationMessage } from '@workspace/ai/schemas'
 
 import { env } from '@/env'
@@ -18,6 +24,7 @@ import {
     saveChatMessage,
     getRecentMessages,
     updateSessionIntentAndScore,
+    updateMessageSuggestedQuestions,
 } from '@/lib/queries/chat.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
@@ -175,6 +182,10 @@ export async function POST(request: NextRequest) {
             content: msg.content,
         }))
 
+        // Get detected procedures for quick questions context
+        const detectedProcedures =
+            (session.detectedProcedures as string[]) ?? []
+
         // Stream the AI response
         const result = streamText({
             model: openai(config.modelId),
@@ -184,8 +195,8 @@ export async function POST(request: NextRequest) {
             maxOutputTokens: config.maxTokens,
             experimental_transform: smoothStream({ chunking: 'word' }),
             onFinish: async ({ text }) => {
-                // Save assistant message to database
-                await saveChatMessage({
+                // Save assistant message to database and get the message ID
+                const savedMessage = await saveChatMessage({
                     sessionId,
                     role: 'assistant',
                     content: text,
@@ -201,6 +212,14 @@ export async function POST(request: NextRequest) {
                         { role: 'assistant', content: text },
                     ])
                 }
+
+                // Generate contextual quick questions (async, doesn't block response)
+                generateQuickQuestionsAsync(
+                    savedMessage.id,
+                    contextMessages,
+                    text,
+                    detectedProcedures
+                )
             },
         })
 
@@ -256,6 +275,53 @@ async function classifyIntentAsync(
         }
     } catch (error) {
         console.error('Async intent classification failed:', error)
+        // Non-blocking, just log the error
+    }
+}
+
+/**
+ * Generate contextual quick questions asynchronously
+ * This doesn't block the chat response
+ */
+async function generateQuickQuestionsAsync(
+    messageId: string,
+    messages: AIMessage[],
+    lastResponse: string,
+    detectedProcedures: string[]
+): Promise<void> {
+    try {
+        console.log(
+            `[QuickQuestions] Generating for message ${messageId}, ${messages.length} context messages`
+        )
+
+        const questions = await generateQuickQuestions({
+            messages: messages.map((m) => ({
+                role: m.role as 'user' | 'assistant',
+                content: m.content,
+            })),
+            lastResponse,
+            detectedProcedures:
+                detectedProcedures.length > 0 ? detectedProcedures : undefined,
+        })
+
+        console.log(
+            `[QuickQuestions] Generated ${questions.length} questions:`,
+            questions
+        )
+
+        // Only update if we got questions
+        if (questions.length > 0) {
+            await updateMessageSuggestedQuestions(messageId, questions)
+            console.log(
+                `[QuickQuestions] Saved questions to message ${messageId}`
+            )
+        } else {
+            console.log(
+                `[QuickQuestions] No questions generated, skipping save`
+            )
+        }
+    } catch (error) {
+        console.error('[QuickQuestions] Generation failed:', error)
         // Non-blocking, just log the error
     }
 }

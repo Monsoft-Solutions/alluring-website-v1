@@ -14,7 +14,7 @@ import {
     type InsertChatSession,
     type InsertChatMessage,
 } from '@workspace/db/schema/chat'
-import { eq, desc, sql } from 'drizzle-orm'
+import { and, eq, desc, sql } from 'drizzle-orm'
 
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
 
@@ -190,4 +190,64 @@ export async function escalateChatSession(
             status: 'escalated',
         })
         .where(eq(chatSession.id, sessionId))
+}
+
+/**
+ * Update suggested questions for a specific message
+ */
+export async function updateMessageSuggestedQuestions(
+    messageId: string,
+    questions: string[]
+): Promise<void> {
+    await db
+        .update(chatMessage)
+        .set({ suggestedQuestions: questions })
+        .where(eq(chatMessage.id, messageId))
+}
+
+/**
+ * Get suggested questions from the latest assistant message in a session
+ */
+export async function getLatestAssistantMessageQuestions(
+    sessionId: string
+): Promise<string[] | null> {
+    const messages = await db
+        .select({
+            suggestedQuestions: chatMessage.suggestedQuestions,
+            role: chatMessage.role,
+        })
+        .from(chatMessage)
+        .where(
+            and(
+                eq(chatMessage.sessionId, sessionId),
+                eq(chatMessage.role, 'assistant')
+            )
+        )
+        .orderBy(desc(chatMessage.createdAt))
+        .limit(1)
+
+    const latestAssistant = messages[0]
+    if (
+        latestAssistant?.suggestedQuestions &&
+        latestAssistant.suggestedQuestions.length > 0
+    ) {
+        return latestAssistant.suggestedQuestions
+    }
+
+    return null
+}
+
+/**
+ * Get suggested questions for a specific message by ID
+ */
+export async function getMessageSuggestedQuestions(
+    messageId: string
+): Promise<string[] | null> {
+    const messages = await db
+        .select({ suggestedQuestions: chatMessage.suggestedQuestions })
+        .from(chatMessage)
+        .where(eq(chatMessage.id, messageId))
+        .limit(1)
+
+    return messages[0]?.suggestedQuestions ?? null
 }
