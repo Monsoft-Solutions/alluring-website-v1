@@ -14,32 +14,41 @@ import type { QuickQuestionsMessage } from '../../schemas/quick-questions.schema
  * Provides detailed instructions to the LLM for generating
  * contextual follow-up questions for plastic surgery consultations.
  */
-export const QUICK_QUESTIONS_SYSTEM_PROMPT = `You are a helpful assistant for a plastic surgery clinic chat. Your task is to suggest 2-3 SHORT follow-up questions the user might want to ask next.
+export const QUICK_QUESTIONS_SYSTEM_PROMPT = `You are helping generate follow-up questions for a plastic surgery clinic chat. These questions will appear as clickable buttons the user can tap to continue the conversation.
+
+CRITICAL: Questions must be written in FIRST PERSON as if the USER is asking them.
+
+GOAL: Help users overcome hesitations and move toward booking a consultation. Address common barriers like:
+- Cost concerns (financing, payment plans, what's included)
+- Fear/anxiety (pain, safety, anesthesia, recovery)
+- Time concerns (how long surgery takes, recovery time, time off work)
+- Results concerns (realistic expectations, before/after photos, revision policies)
+- Trust concerns (surgeon credentials, clinic reputation, patient reviews)
 
 RULES:
 - Keep questions under 50 characters (shorter is better)
+- Write in FIRST PERSON ("Can I...", "Do you...", "What if I...", "How long will...")
 - Make them conversational and natural
-- Focus on the next logical step in the consultation journey
-- Questions should feel like natural conversation continuations
+- Focus on the next logical step toward booking
 
 QUESTION STRATEGY by context:
-- If PRICING was discussed → suggest scheduling, financing, or comparison questions
-- If a PROCEDURE was discussed → suggest detail, recovery, or pricing questions  
-- If SCHEDULING was discussed → suggest preparation or what-to-expect questions
-- If GENERAL INFO was given → suggest more specific procedure or pricing questions
+- If PRICING discussed → financing options, what's included, consultation cost
+- If PROCEDURE discussed → recovery details, pain management, realistic results
+- If SCHEDULING discussed → preparation, what to expect, cancellation policy
+- If CONCERNS raised → directly address the concern, provide reassurance questions
 
 GOOD EXAMPLES:
-- "What's the recovery time?"
 - "Do you offer financing?"
+- "How long is recovery?"
 - "Can I see before/after photos?"
-- "How do I schedule a consult?"
-- "What's included in the price?"
+- "Is the consultation free?"
+- "What if I'm not happy with results?"
 
-BAD EXAMPLES (too long or formal):
-- "Could you please provide more information about the recovery process?"
-- "I would like to know about financing options available"
+BAD EXAMPLES (wrong perspective or too long):
+- "The user might want to know about financing" (third person)
+- "Could you please provide more information about the recovery process?" (too formal)
 
-Respond with a JSON object containing an array of 2-3 question strings.`
+Generate 2-3 short, user-perspective questions that address barriers and guide toward booking.`
 
 /**
  * Format conversation messages for the prompt
@@ -73,8 +82,8 @@ export function getQuickQuestionsPrompt(params: {
 }): string {
     const { messages, lastResponse, detectedProcedures } = params
 
-    // Get last 4 messages for context (keeps prompt focused)
-    const recentMessages = messages.slice(-4)
+    // Get last 10 messages for richer context
+    const recentMessages = messages.slice(-10)
     const conversationContext = formatMessagesForQuickQuestions(recentMessages)
 
     const proceduresContext =
@@ -82,14 +91,16 @@ export function getQuickQuestionsPrompt(params: {
             ? `\nProcedures discussed: ${detectedProcedures.join(', ')}`
             : ''
 
-    return `Based on this conversation, suggest 2-3 short follow-up questions the user might ask next.
+    return `Based on this conversation, generate 2-3 questions the USER would click to continue chatting.
 
-LAST ASSISTANT RESPONSE:
+Questions must be in FIRST PERSON from the user's perspective.
+
+LATEST ASSISTANT RESPONSE:
 ${lastResponse}
 
-RECENT CONVERSATION:
+CONVERSATION HISTORY (oldest to newest):
 ${conversationContext}
 ${proceduresContext}
 
-Generate 2-3 contextual follow-up questions.`
+What questions would help this user overcome hesitations and move toward booking a consultation?`
 }

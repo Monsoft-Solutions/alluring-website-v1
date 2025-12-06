@@ -4,6 +4,7 @@
     "type": "module",
     "private": true,
     "scripts": {
+        "build": "tsc",
         "lint": "eslint . --max-warnings 0",
         "format": "pnpm -w format"
     },
@@ -49,8 +50,110 @@
     "exports": {
         "./globals.css": "./src/styles/globals.css",
         "./postcss.config": "./postcss.config.mjs",
-        "./lib/*": "./src/lib/*.ts",
-        "./components/*": "./src/components/*.tsx",
-        "./hooks/*": "./src/hooks/*.ts"
+        "./lib/utils": {
+            "types": "./dist/lib/utils.d.ts",
+            "import": "./dist/lib/utils.js",
+            "default": "./dist/lib/utils.js"
+        },
+        "./components/accordion": {
+            "types": "./dist/components/accordion.d.ts",
+            "import": "./dist/components/accordion.js",
+            "default": "./dist/components/accordion.js"
+        },
+        "./components/alert-dialog": {
+            "types": "./dist/components/alert-dialog.d.ts",
+            "import": "./dist/components/alert-dialog.js",
+            "default": "./dist/components/alert-dialog.js"
+        },
+        "./components/avatar": {
+            "types": "./dist/components/avatar.d.ts",
+            "import": "./dist/components/avatar.js",
+            "default": "./dist/components/avatar.js"
+        },
+        "./components/badge": {
+            "types": "./dist/components/badge.d.ts",
+            "import": "./dist/components/badge.js",
+            "default": "./dist/components/badge.js"
+        },
+        "./components/button": {
+            "types": "./dist/components/button.d.ts",
+            "import": "./dist/components/button.js",
+            "default": "./dist/components/button.js"
+        },
+        "./components/card": {
+            "types": "./dist/components/card.d.ts",
+            "import": "./dist/components/card.js",
+            "default": "./dist/components/card.js"
+        },
+        "./components/dialog": {
+            "types": "./dist/components/dialog.d.ts",
+            "import": "./dist/components/dialog.js",
+            "default": "./dist/components/dialog.js"
+        },
+        "./components/dropdown-menu": {
+            "types": "./dist/components/dropdown-menu.d.ts",
+            "import": "./dist/components/dropdown-menu.js",
+            "default": "./dist/components/dropdown-menu.js"
+        },
+        "./components/form": {
+            "types": "./dist/components/form.d.ts",
+            "import": "./dist/components/form.js",
+            "default": "./dist/components/form.js"
+        },
+        "./components/input": {
+            "types": "./dist/components/input.d.ts",
+            "import": "./dist/components/input.js",
+            "default": "./dist/components/input.js"
+        },
+        "./components/label": {
+            "types": "./dist/components/label.d.ts",
+            "import": "./dist/components/label.js",
+            "default": "./dist/components/label.js"
+        },
+        "./components/navigation-menu": {
+            "types": "./dist/components/navigation-menu.d.ts",
+            "import": "./dist/components/navigation-menu.js",
+            "default": "./dist/components/navigation-menu.js"
+        },
+        "./components/select": {
+            "types": "./dist/components/select.d.ts",
+            "import": "./dist/components/select.js",
+            "default": "./dist/components/select.js"
+        },
+        "./components/separator": {
+            "types": "./dist/components/separator.d.ts",
+            "import": "./dist/components/separator.js",
+            "default": "./dist/components/separator.js"
+        },
+        "./components/sheet": {
+            "types": "./dist/components/sheet.d.ts",
+            "import": "./dist/components/sheet.js",
+            "default": "./dist/components/sheet.js"
+        },
+        "./components/skeleton": {
+            "types": "./dist/components/skeleton.d.ts",
+            "import": "./dist/components/skeleton.js",
+            "default": "./dist/components/skeleton.js"
+        },
+        "./components/switch": {
+            "types": "./dist/components/switch.d.ts",
+            "import": "./dist/components/switch.js",
+            "default": "./dist/components/switch.js"
+        },
+        "./components/table": {
+            "types": "./dist/components/table.d.ts",
+            "import": "./dist/components/table.js",
+            "default": "./dist/components/table.js"
+        },
+        "./components/tabs": {
+            "types": "./dist/components/tabs.d.ts",
+            "import": "./dist/components/tabs.js",
+            "default": "./dist/components/tabs.js"
+        },
+        "./components/textarea": {
+            "types": "./dist/components/textarea.d.ts",
+            "import": "./dist/components/textarea.js",
+            "default": "./dist/components/textarea.js"
+        }
     }
 }

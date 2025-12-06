@@ -1,4 +1,6 @@
 import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const postsData = JSON.parse(
     fs.readFileSync('/tmp/all-scraped-posts.json', 'utf-8')
@@ -240,8 +242,13 @@ export const image: Omit<InsertImage, 'id' | 'createdAt' | 'updatedAt'> = {
 }
 
 // Generate all seed files
+// Resolve seed directory relative to repository root
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+// Script is in scripts/, so go up one level to repo root, then into packages/db/src/seed/posts
 const seedDir =
-    '/Users/monsoft_solutions/monsoft/projects/alluring-websites/alluring-website-1/packages/db/src/seed/posts'
+    process.env.SEED_DIR ||
+    path.resolve(__dirname, '..', 'packages', 'db', 'src', 'seed', 'posts')
 
 console.log(`Generating seed files for ${postsData.length} posts...\n`)
 

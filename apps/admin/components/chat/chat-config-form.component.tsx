@@ -116,13 +116,6 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
 
                 // Update form value
                 setValue('agentImageUrl', blob.url, { shouldDirty: true })
-
-                // Close cropper and cleanup
-                setCropperOpen(false)
-                if (selectedImageSrc) {
-                    URL.revokeObjectURL(selectedImageSrc)
-                    setSelectedImageSrc(null)
-                }
             } catch (error) {
                 console.error('Failed to upload avatar:', error)
                 setMessage({
@@ -130,6 +123,12 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
                     text: 'Failed to upload avatar image',
                 })
             } finally {
+                // Always cleanup: close cropper and revoke object URL
+                setCropperOpen(false)
+                if (selectedImageSrc) {
+                    URL.revokeObjectURL(selectedImageSrc)
+                    setSelectedImageSrc(null)
+                }
                 setIsUploadingAvatar(false)
             }
         },

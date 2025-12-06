@@ -15,24 +15,10 @@
 import { useMemo, useCallback, useRef, useEffect } from 'react'
 import { useChat, type UIMessage } from '@ai-sdk/react'
 import { DefaultChatTransport } from '@workspace/ai'
+import type { StoredMessage, AISDKMessage } from '@/lib/chat/types'
 
 /** Re-export UIMessage as Message for backwards compatibility */
 type Message = UIMessage
-
-/** Stored message format from database */
-export type StoredMessage = {
-    id: string
-    role: 'user' | 'assistant'
-    content: string
-    createdAt: string
-}
-
-/** AI SDK v5 message format with parts */
-export type AISDKMessage = {
-    id: string
-    role: 'user' | 'assistant' | 'system'
-    parts: Array<{ type: 'text'; text: string }>
-}
 
 type UseChatMessagesOptions = {
     /** Chat session ID */
