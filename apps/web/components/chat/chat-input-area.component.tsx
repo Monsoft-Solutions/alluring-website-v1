@@ -13,7 +13,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Send, Loader2 } from 'lucide-react'
 import { MAX_MESSAGE_LENGTH } from '@workspace/chat/constants'
 
-import { useAutoResizeTextarea } from '@/hooks/chat'
+import { useAutoResizeTextarea } from '@/hooks/chat/useAutoResizeTextarea.hook'
 
 type ChatInputAreaProps = {
     /** Current input value */

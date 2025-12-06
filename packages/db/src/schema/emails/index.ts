@@ -1,1 +1,6 @@
-export * from './email-log.table'
+export {
+    emailStatusEnum,
+    emailLog,
+    type InsertEmailLog,
+    type SelectEmailLog,
+} from './email-log.table'

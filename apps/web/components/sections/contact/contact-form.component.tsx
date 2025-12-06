@@ -24,15 +24,15 @@ import { useForm } from 'react-hook-form'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { SectionHeader } from '@/components/shared/section-header.component'
+import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
     EmailField,
-    FormFeedback,
     MessageField,
     NameField,
     PhoneField,
     SubjectField,
-    SubmitButton,
-} from '@/components/shared/forms'
+} from '@/components/shared/forms/form-fields.component'
+import { SubmitButton } from '@/components/shared/forms/submit-button.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import {
     CONTACT_SOURCES,

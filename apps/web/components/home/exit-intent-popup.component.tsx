@@ -20,7 +20,11 @@ import { CheckCircle2, Loader2, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { FormFeedback, NameField, PhoneField } from '@/components/shared/forms'
+import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
+import {
+    NameField,
+    PhoneField,
+} from '@/components/shared/forms/form-fields.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import {
     CONTACT_SOURCES,

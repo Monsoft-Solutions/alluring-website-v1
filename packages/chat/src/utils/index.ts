@@ -3,4 +3,13 @@
  *
  * @module @workspace/chat/utils
  */
-export * from './message-formatter.util'
+export {
+    formatMessagesForAI,
+    sanitizeMessageContent,
+    estimateTokenCount,
+    formatMessageTime,
+    formatRelativeTime,
+    truncateMessage,
+    isValidPhoneNumber,
+    formatPhoneNumber,
+} from './message-formatter.util'

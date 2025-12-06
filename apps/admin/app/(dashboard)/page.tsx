@@ -17,12 +17,10 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-import {
-    BugsChart,
-    ContactsChart,
-    EmailsChart,
-    PostsChart,
-} from '@/components/charts'
+import { BugsChart } from '@/components/charts/bugs-chart.component'
+import { ContactsChart } from '@/components/charts/contacts-chart.component'
+import { EmailsChart } from '@/components/charts/emails-chart.component'
+import { PostsChart } from '@/components/charts/posts-chart.component'
 import {
     getDashboardStats,
     getRecentBugReports,

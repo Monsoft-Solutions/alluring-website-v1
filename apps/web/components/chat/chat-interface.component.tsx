@@ -18,7 +18,8 @@ import { ChatInputArea } from './chat-input-area.component'
 import { ChatTypingIndicator } from './chat-typing-indicator.component'
 import { QuickReplyButtons } from './quick-reply-buttons.component'
 
-import { useChatMessages, useChatScroll } from '@/hooks/chat'
+import { useChatMessages } from '@/hooks/chat/useChatMessages.hook'
+import { useChatScroll } from '@/hooks/chat/useChatScroll.hook'
 import type { StoredMessage } from '@/lib/chat/types'
 import { DIMENSIONS, CSS_CLASSES, ARIA_LABELS } from '@/lib/chat/constants'
 
