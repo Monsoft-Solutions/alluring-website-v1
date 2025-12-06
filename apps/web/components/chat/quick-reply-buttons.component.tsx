@@ -1,17 +1,18 @@
 /**
  * Quick Reply Buttons Component
  *
- * Displays contextual quick reply suggestions as pill-style buttons
+ * Displays contextual quick reply suggestions as premium pill-style buttons
  * to guide users through common questions.
  *
- * Supports both AI-generated dynamic questions and static DB-based fallbacks.
+ * Features shimmer loading effect and staggered entrance animations.
  *
  * @module components/chat/quick-reply-buttons
  */
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
+import { Sparkles } from 'lucide-react'
 
 type QuickReply = {
     id: string
@@ -83,7 +84,84 @@ export function getQuickReplyCategory(
     return 'general'
 }
 
-export function QuickReplyButtons({
+/**
+ * Shimmer loading skeleton for quick reply buttons
+ */
+function QuickReplyShimmer() {
+    return (
+        <div className='flex flex-wrap gap-2'>
+            {[1, 2, 3].map((i) => (
+                <div
+                    key={i}
+                    className={cn(
+                        'h-8 rounded-full',
+                        'bg-linear-to-r from-stone-100 via-stone-50 to-stone-100',
+                        'animate-shimmer bg-[length:200%_100%]',
+                        i === 1 && 'w-32',
+                        i === 2 && 'w-40',
+                        i === 3 && 'w-28'
+                    )}
+                    style={{
+                        animationDelay: `${i * 100}ms`,
+                    }}
+                />
+            ))}
+        </div>
+    )
+}
+
+/**
+ * Individual quick reply button with premium styling
+ */
+const QuickReplyButton = memo(function QuickReplyButton({
+    text,
+    onClick,
+    index,
+    isDynamic = false,
+}: {
+    text: string
+    onClick: () => void
+    index: number
+    isDynamic?: boolean
+}) {
+    return (
+        <button
+            type='button'
+            onClick={onClick}
+            className={cn(
+                'group inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-medium',
+                // Base styling
+                'bg-white text-stone-700',
+                'border border-stone-200/80',
+                // Premium shadow
+                'shadow-sm shadow-stone-900/5',
+                // Transitions
+                'transition-all duration-200',
+                // Hover effects
+                'hover:border-gold-300/60 hover:bg-gold-50/50 hover:text-stone-900',
+                'hover:shadow-gold-500/10 hover:shadow-md',
+                // Press feedback
+                'active:scale-[0.97]',
+                // Focus ring
+                'focus:ring-gold-500/30 focus:ring-2 focus:outline-none',
+                // Entrance animation with stagger
+                'animate-in fade-in slide-in-from-bottom-2',
+                'duration-300'
+            )}
+            style={{
+                animationDelay: `${index * 50}ms`,
+                animationFillMode: 'both',
+            }}
+        >
+            {isDynamic && (
+                <Sparkles className='text-gold-500 h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100' />
+            )}
+            {text}
+        </button>
+    )
+})
+
+export const QuickReplyButtons = memo(function QuickReplyButtons({
     category = 'initial',
     onSelect,
     hidden = false,
@@ -149,31 +227,42 @@ export function QuickReplyButtons({
         [onSelect]
     )
 
-    // Hide if explicitly hidden or still loading dynamic questions
-    if (hidden || dynamicQuestionsLoading) {
+    // Hide if explicitly hidden
+    if (hidden) {
         return null
+    }
+
+    // Show shimmer loading state
+    if (dynamicQuestionsLoading) {
+        return (
+            <div className={cn('space-y-2', className)}>
+                <p className='text-xs font-medium text-stone-500'>
+                    Generating suggestions...
+                </p>
+                <QuickReplyShimmer />
+            </div>
+        )
     }
 
     // Render dynamic AI-generated questions if available
     if (hasDynamicQuestions) {
         return (
-            <div className={cn('flex flex-wrap gap-2', className)}>
-                {dynamicQuestions.map((question, index) => (
-                    <button
-                        key={`dynamic-${index}`}
-                        type='button'
-                        onClick={() => handleDynamicClick(question)}
-                        className={cn(
-                            'inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium',
-                            'border border-stone-200 bg-white text-stone-700',
-                            'transition-all duration-200',
-                            'hover:border-stone-300 hover:bg-stone-50 hover:text-stone-900',
-                            'active:scale-95'
-                        )}
-                    >
-                        {question}
-                    </button>
-                ))}
+            <div className={cn('space-y-2', className)}>
+                <p className='flex items-center gap-1.5 text-xs font-medium text-stone-500'>
+                    <Sparkles className='text-gold-500 h-3 w-3' />
+                    Suggested questions
+                </p>
+                <div className='flex flex-wrap gap-2'>
+                    {dynamicQuestions.map((question, index) => (
+                        <QuickReplyButton
+                            key={`dynamic-${index}`}
+                            text={question}
+                            onClick={() => handleDynamicClick(question)}
+                            index={index}
+                            isDynamic
+                        />
+                    ))}
+                </div>
             </div>
         )
     }
@@ -184,23 +273,20 @@ export function QuickReplyButtons({
     }
 
     return (
-        <div className={cn('flex flex-wrap gap-2', className)}>
-            {quickReplies.map((reply) => (
-                <button
-                    key={reply.id}
-                    type='button'
-                    onClick={() => handleStaticClick(reply)}
-                    className={cn(
-                        'inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium',
-                        'border border-stone-200 bg-white text-stone-700',
-                        'transition-all duration-200',
-                        'hover:border-stone-300 hover:bg-stone-50 hover:text-stone-900',
-                        'active:scale-95'
-                    )}
-                >
-                    {reply.label}
-                </button>
-            ))}
+        <div className={cn('space-y-2', className)}>
+            <p className='text-xs font-medium text-stone-500'>
+                Quick questions
+            </p>
+            <div className='flex flex-wrap gap-2'>
+                {quickReplies.map((reply, index) => (
+                    <QuickReplyButton
+                        key={reply.id}
+                        text={reply.label}
+                        onClick={() => handleStaticClick(reply)}
+                        index={index}
+                    />
+                ))}
+            </div>
         </div>
     )
-}
+})

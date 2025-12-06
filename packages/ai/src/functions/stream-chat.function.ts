@@ -78,7 +78,10 @@ export function streamChat(options: StreamChatOptions) {
         temperature,
         maxOutputTokens: maxTokens,
         ...(smoothStreaming && {
-            experimental_transform: smoothStream({ chunking: 'word' }),
+            experimental_transform: smoothStream({
+                delayInMs: 20, // optional: defaults to 10ms
+                chunking: 'line', // optional: defaults to 'word'
+            }),
         }),
         onFinish,
     })
