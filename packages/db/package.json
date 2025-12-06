@@ -3,17 +3,51 @@
     "version": "0.0.0",
     "private": true,
     "type": "module",
+    "types": "./dist/client.d.ts",
     "exports": {
-        "./client": "./src/client.ts",
-        "./schema/analytics": "./src/schema/analytics/index.ts",
-        "./schema/blog": "./src/schema/blog/index.ts",
-        "./schema/chat": "./src/schema/chat/index.ts",
-        "./schema/contact": "./src/schema/contact/index.ts",
-        "./schema/emails": "./src/schema/emails/index.ts",
-        "./schema/feedback": "./src/schema/feedback/index.ts",
-        "./types": "./src/schema/contact/contact-submission.table.ts"
+        "./client": {
+            "types": "./dist/client.d.ts",
+            "import": "./dist/client.js",
+            "default": "./dist/client.js"
+        },
+        "./schema/analytics": {
+            "types": "./dist/schema/analytics/index.d.ts",
+            "import": "./dist/schema/analytics/index.js",
+            "default": "./dist/schema/analytics/index.js"
+        },
+        "./schema/blog": {
+            "types": "./dist/schema/blog/index.d.ts",
+            "import": "./dist/schema/blog/index.js",
+            "default": "./dist/schema/blog/index.js"
+        },
+        "./schema/chat": {
+            "types": "./dist/schema/chat/index.d.ts",
+            "import": "./dist/schema/chat/index.js",
+            "default": "./dist/schema/chat/index.js"
+        },
+        "./schema/contact": {
+            "types": "./dist/schema/contact/index.d.ts",
+            "import": "./dist/schema/contact/index.js",
+            "default": "./dist/schema/contact/index.js"
+        },
+        "./schema/emails": {
+            "types": "./dist/schema/emails/index.d.ts",
+            "import": "./dist/schema/emails/index.js",
+            "default": "./dist/schema/emails/index.js"
+        },
+        "./schema/feedback": {
+            "types": "./dist/schema/feedback/index.d.ts",
+            "import": "./dist/schema/feedback/index.js",
+            "default": "./dist/schema/feedback/index.js"
+        },
+        "./types": {
+            "types": "./dist/schema/contact/contact-submission.table.d.ts",
+            "import": "./dist/schema/contact/contact-submission.table.js",
+            "default": "./dist/schema/contact/contact-submission.table.js"
+        }
     },
     "scripts": {
+        "build": "tsc",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "tsx src/migrate.ts",
         "db:push": "drizzle-kit push",

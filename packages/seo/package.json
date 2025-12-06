@@ -3,17 +3,38 @@
     "version": "0.0.1",
     "private": true,
     "type": "module",
+    "types": "./dist/index.d.ts",
     "exports": {
-        "./config": "./src/config/index.ts",
-        "./utils": "./src/utils/index.ts",
-        "./schemas": "./src/schemas/index.ts",
-        "./types": "./src/types/index.ts",
-        "./react": "./src/react/index.ts"
+        "./config": {
+            "types": "./dist/config/index.d.ts",
+            "import": "./dist/config/index.js",
+            "default": "./dist/config/index.js"
+        },
+        "./utils": {
+            "types": "./dist/utils/index.d.ts",
+            "import": "./dist/utils/index.js",
+            "default": "./dist/utils/index.js"
+        },
+        "./schemas": {
+            "types": "./dist/schemas/index.d.ts",
+            "import": "./dist/schemas/index.js",
+            "default": "./dist/schemas/index.js"
+        },
+        "./types": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/types/index.js",
+            "default": "./dist/types/index.js"
+        },
+        "./react": {
+            "types": "./dist/react/index.d.ts",
+            "import": "./dist/react/index.js",
+            "default": "./dist/react/index.js"
+        }
     },
     "scripts": {
+        "build": "tsc",
         "lint": "eslint . --ext .ts,.tsx",
         "typecheck": "tsc --noEmit",
-        "build": "tsc --emitDeclarationOnly --declaration --outDir dist",
         "format": "pnpm -w format"
     },
     "dependencies": {
