@@ -102,6 +102,9 @@ export function useVoiceInput({
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
     const countdownRef = useRef<NodeJS.Timeout | null>(null)
 
+    // Ref to store disconnect function for stable cleanup
+    const disconnectRef = useRef<(() => void) | null>(null)
+
     /**
      * Clear all timers
      */
@@ -177,6 +180,11 @@ export function useVoiceInput({
             },
         }
     )
+
+    // Keep disconnect ref in sync for stable cleanup
+    useEffect(() => {
+        disconnectRef.current = disconnect
+    }, [disconnect])
 
     // Derived state
     const isRecording = status === 'connected' || status === 'transcribing'
@@ -327,9 +335,9 @@ export function useVoiceInput({
     useEffect(() => {
         return () => {
             clearTimers()
-            disconnect()
+            disconnectRef.current?.()
         }
-    }, [clearTimers, disconnect])
+    }, [clearTimers])
 
     return {
         isRecording,
