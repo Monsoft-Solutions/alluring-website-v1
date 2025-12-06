@@ -78,13 +78,16 @@ export const ChatInputArea = memo(function ChatInputArea({
     const [baseText, setBaseText] = useState('')
     const [partialText, setPartialText] = useState('')
     const [isVoiceAvailable, setIsVoiceAvailable] = useState(false)
+    const [isVoiceSubmitting, setIsVoiceSubmitting] = useState(false)
     const hasCheckedAvailability = useRef(false)
+    const shouldSubmitAfterStop = useRef(false)
 
     // Refs to track current values (avoids stale closure issues)
     const baseTextRef = useRef('')
     const partialTextRef = useRef('')
     const valueRef = useRef(value)
     const onChangeRef = useRef(onChange)
+    const onSubmitRef = useRef(onSubmit)
 
     // Keep refs in sync with state/props
     useEffect(() => {
@@ -102,6 +105,10 @@ export const ChatInputArea = memo(function ChatInputArea({
     useEffect(() => {
         onChangeRef.current = onChange
     }, [onChange])
+
+    useEffect(() => {
+        onSubmitRef.current = onSubmit
+    }, [onSubmit])
 
     // Check voice availability on mount
     useEffect(() => {
@@ -168,6 +175,16 @@ export const ChatInputArea = memo(function ChatInputArea({
             // Reset voice state
             setBaseText('')
             setPartialText('')
+
+            // Handle auto-submit if requested
+            if (shouldSubmitAfterStop.current) {
+                shouldSubmitAfterStop.current = false
+                // Small delay to ensure state updates propagate
+                setTimeout(() => {
+                    onSubmitRef.current()
+                    setIsVoiceSubmitting(false)
+                }, 0)
+            }
         },
     })
 
@@ -182,7 +199,10 @@ export const ChatInputArea = memo(function ChatInputArea({
     }, [displayValue, resize])
 
     const canSubmit =
-        value.trim().length > 0 && !disabled && !isLoading && !isRecording
+        displayValue.trim().length > 0 &&
+        !disabled &&
+        !isLoading &&
+        !isVoiceSubmitting
     const charCount = displayValue.length
     const isNearLimit = charCount > maxLength * 0.9
     const isAtLimit = charCount >= maxLength
@@ -221,11 +241,17 @@ export const ChatInputArea = memo(function ChatInputArea({
      * Handle submit button click
      */
     const handleSubmitClick = useCallback(() => {
-        if (canSubmit) {
+        if (!canSubmit) return
+
+        if (isRecording) {
+            setIsVoiceSubmitting(true)
+            shouldSubmitAfterStop.current = true
+            stopRecording()
+        } else {
             onSubmit()
             reset()
         }
-    }, [canSubmit, onSubmit, reset])
+    }, [canSubmit, onSubmit, reset, isRecording, stopRecording])
 
     /**
      * Handle voice button click
@@ -383,10 +409,12 @@ export const ChatInputArea = memo(function ChatInputArea({
                                       ]
                             )}
                             aria-label={
-                                isLoading ? 'Sending...' : 'Send message'
+                                isLoading || isVoiceSubmitting
+                                    ? 'Sending...'
+                                    : 'Send message'
                             }
                         >
-                            {isLoading ? (
+                            {isLoading || isVoiceSubmitting ? (
                                 <Loader2 className='h-4 w-4 animate-spin' />
                             ) : (
                                 <Send className='h-4 w-4' />
