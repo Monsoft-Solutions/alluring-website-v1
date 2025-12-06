@@ -24,16 +24,16 @@ import { CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
+import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
     CheckboxField,
     EmailField,
     FirstNameField,
-    FormFeedback,
     LastNameField,
     PhoneField,
     SelectField,
-    SubmitButton,
-} from '@/components/shared/forms'
+} from '@/components/shared/forms/form-fields.component'
+import { SubmitButton } from '@/components/shared/forms/submit-button.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import { siteConfig } from '@/lib/data/site-config'
 import {

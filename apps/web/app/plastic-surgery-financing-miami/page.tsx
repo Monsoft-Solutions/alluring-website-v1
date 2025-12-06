@@ -16,12 +16,10 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
-import {
-    FinancingHero,
-    FinancingHowItWorks,
-    FinancingPartners,
-    FinancingProcedures,
-} from '@/components/financing'
+import { FinancingHero } from '@/components/financing/financing-hero.component'
+import { FinancingHowItWorks } from '@/components/financing/financing-how-it-works.component'
+import { FinancingPartners } from '@/components/financing/financing-partners.component'
+import { FinancingProcedures } from '@/components/financing/financing-procedures.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import {
