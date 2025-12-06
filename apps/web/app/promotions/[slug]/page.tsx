@@ -14,7 +14,7 @@ import {
     getRemainingDays,
     isExpiringSoon,
 } from '@/lib/queries/promotion.query'
-import { PromotionViewTracker } from '@/components/promotions'
+import { PromotionViewTracker } from '@/components/promotions/promotion-view-tracker.component'
 import { siteConfig } from '@/lib/data/site-config'
 
 type Params = Promise<{ slug: string }>

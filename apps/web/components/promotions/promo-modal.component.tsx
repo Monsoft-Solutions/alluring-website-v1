@@ -10,7 +10,11 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@workspace/ui/components/button'
 import { Form } from '@workspace/ui/components/form'
 
-import { FormFeedback, NameField, PhoneField } from '@/components/shared/forms'
+import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
+import {
+    NameField,
+    PhoneField,
+} from '@/components/shared/forms/form-fields.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import {
     CONTACT_SOURCES,

@@ -31,7 +31,7 @@ import {
     PageViewsChart,
     TopPagesChart,
     TrafficSourcesChart,
-} from '@/components/charts'
+} from '@/components/charts/analytics-charts.component'
 import {
     getAnalyticsSummary,
     getPageViewsOverTime,

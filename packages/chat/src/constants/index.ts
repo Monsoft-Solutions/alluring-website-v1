@@ -3,4 +3,11 @@
  *
  * @module @workspace/chat/constants
  */
-export * from './default-config.constant'
+export {
+    DEFAULT_SYSTEM_PROMPT,
+    DEFAULT_WELCOME_MESSAGE,
+    DEFAULT_CHAT_CONFIG,
+    MAX_MESSAGE_LENGTH,
+    MAX_CONTEXT_MESSAGES,
+    TYPING_INDICATOR_DELAY,
+} from './default-config.constant'

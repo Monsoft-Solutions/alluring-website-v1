@@ -11,7 +11,7 @@
  */
 'use client'
 
-import { ConsultationForm } from '@/components/shared/forms'
+import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export const LeadForm = () => {

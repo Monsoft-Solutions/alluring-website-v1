@@ -4,10 +4,10 @@ import { z } from 'zod'
 
 import { env } from '@/env'
 import {
-    isValidCacheTag,
     ALLOWED_STATIC_TAGS,
     DYNAMIC_TAG_PREFIXES,
-} from '@/lib/cache'
+    isValidCacheTag,
+} from '@/lib/cache/cache-tags.constant'
 
 /**
  * Request body schema for cache revalidation

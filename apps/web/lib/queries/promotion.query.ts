@@ -4,7 +4,7 @@ import { db } from '@workspace/db/client'
 import { promotion, type Promotion } from '@workspace/db/schema/promotion'
 import { desc, eq, and, or, lte, gte, sql, isNotNull } from 'drizzle-orm'
 
-import { CACHE_TAGS } from '@/lib/cache'
+import { CACHE_TAGS } from '@/lib/cache/cache-tags.constant'
 
 export type PromotionType = 'discount' | 'seasonal' | 'bundle' | 'financing'
 
