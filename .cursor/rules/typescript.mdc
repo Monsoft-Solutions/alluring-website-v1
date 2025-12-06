@@ -89,8 +89,62 @@ Follow the pattern: `<file-name>.<file-type>.ts`
 
 - All type definitions in `types/[domain]/`
 - One type per file for maintainability
-- Use index files for clean imports
+- **Import directly from source files** (avoid barrel files)
 - Group related types by domain/feature
+
+## Barrel Files (index.ts re-exports)
+
+**We avoid barrel files in this codebase.** Always import directly from the source file.
+
+### Why We Avoid Barrel Files
+
+1. **Tree-shaking issues** - Bundlers struggle to eliminate unused code
+2. **Slower dev server** - More modules to resolve on cold start
+3. **Larger bundles** - Unused exports get included
+4. **Circular dependencies** - Easier to create import cycles
+5. **Hidden dependencies** - Harder to trace what's being used
+
+### Exceptions
+
+Barrel files are acceptable **only** in shared packages (`packages/*`) where:
+- They define the **public API** of the package
+- They use **selective exports** (never `export *`)
+- They are **documented** with JSDoc comments
+
+### Bad (Never Do This)
+
+```typescript
+// ❌ In apps/web/components/forms/index.ts
+export * from './input.component'
+export * from './button.component'
+export * from './select.component'
+
+// ❌ Importing from barrel
+import { Input, Button } from '@/components/forms'
+```
+
+### Good (Always Do This)
+
+```typescript
+// ✅ Import directly from source files
+import { Input } from '@/components/forms/input.component'
+import { Button } from '@/components/forms/button.component'
+```
+
+### Package Barrel Files (Acceptable)
+
+```typescript
+// ✅ In packages/chat/src/index.ts - Selective exports only
+export {
+    formatMessagesForAI,
+    sanitizeMessageContent,
+} from './utils/message-formatter.util'
+
+export type {
+    ChatMessage,
+    ChatSession,
+} from './types/chat.type'
+```
 
 ## Documentation
 
@@ -105,6 +159,8 @@ Follow the pattern: `<file-name>.<file-type>.ts`
 - Type information in variable names (TypeScript handles this)
 - Abbreviations unless widely understood (id, url, api are ok)
 - Multiple type declarations in the same file
+- **Barrel files (index.ts)** in app code - import directly from source
+- **`export *`** pattern - always use selective exports
 
 ## Prefer
 
@@ -112,6 +168,8 @@ Follow the pattern: `<file-name>.<file-type>.ts`
 - Consistent terminology across the codebase
 - Single responsibility per file/function
 - Full words over abbreviations
+- **Direct imports** from source files (e.g., `@/components/button.component`)
+- **Selective exports** when barrel files are necessary
 
 @/types/
 @/**/\*.type.ts
