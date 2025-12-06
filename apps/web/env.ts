@@ -42,6 +42,9 @@ export const env = createEnv({
         // AI Chat (required for chat agent)
         OPENAI_API_KEY: z.string().min(1).optional(),
 
+        // ElevenLabs Speech-to-Text (optional - enables voice input in chat)
+        ELEVENLABS_API_KEY: z.string().min(1).optional(),
+
         // Langfuse Observability (optional)
         // These are read directly by Langfuse SDK, but documented here for clarity
         LANGFUSE_SECRET_KEY: z.string().optional(),
