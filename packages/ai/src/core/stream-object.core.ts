@@ -12,6 +12,7 @@ import type { z } from 'zod'
 
 import type { CoreStreamObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
 export type { StreamObjectResult, DeepPartial } from 'ai'
@@ -51,17 +52,14 @@ export function coreStreamObject<TSchema extends z.ZodType>(
         prompt,
     } = options
 
-    // Extension point: Add telemetry/logging here
-
     const result = streamObject({
         model: openai(modelId),
         schema,
         system,
         prompt,
         temperature,
+        experimental_telemetry: telemetryConfig,
     })
-
-    // Extension point: Wrap stream with telemetry if needed
 
     return result
 }

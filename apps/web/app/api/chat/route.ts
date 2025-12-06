@@ -7,11 +7,9 @@
  *
  * @module app/api/chat/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse, after } from 'next/server'
 import {
-    openai,
-    streamText,
-    smoothStream,
+    coreStreamText,
     createUIMessageStream,
     createUIMessageStreamResponse,
     generateQuickQuestions,
@@ -19,6 +17,7 @@ import {
     calculateLeadScoreFromAnalysis,
 } from '@workspace/ai'
 import type { AnalysisMessage } from '@workspace/ai/schemas'
+import { langfuseSpanProcessor } from '@/instrumentation'
 
 import { env } from '@/env'
 import {
@@ -159,13 +158,13 @@ export async function POST(request: NextRequest) {
 
                 let fullText = ''
 
-                const result = streamText({
-                    model: openai(config.modelId),
+                const result = coreStreamText({
+                    modelId: config.modelId,
                     system: config.systemPrompt,
                     messages: contextMessages,
                     temperature: config.temperature,
-                    maxOutputTokens: config.maxTokens,
-                    experimental_transform: smoothStream({ chunking: 'word' }),
+                    maxTokens: config.maxTokens,
+                    smoothStreaming: { chunking: 'word' },
                 })
 
                 // Iterate over the fullStream and convert to UI message chunks
@@ -249,6 +248,9 @@ export async function POST(request: NextRequest) {
                 }
             },
         })
+
+        // Critical for serverless: flush traces before function terminates
+        after(async () => await langfuseSpanProcessor.forceFlush())
 
         // Return the UI message stream response
         return createUIMessageStreamResponse({ stream })

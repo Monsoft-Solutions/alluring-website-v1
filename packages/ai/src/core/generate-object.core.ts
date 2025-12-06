@@ -12,6 +12,7 @@ import type { z } from 'zod'
 
 import type { CoreGenerateObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
 export type { GenerateObjectResult } from 'ai'
@@ -49,19 +50,14 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
         prompt,
     } = options
 
-    // Extension point: Add telemetry/logging here
-    // e.g., startSpan('ai.generateObject', { modelId, temperature })
-
     const result = await generateObject({
         model: openai(modelId),
         schema,
         system,
         prompt,
         temperature,
+        experimental_telemetry: telemetryConfig,
     })
-
-    // Extension point: End telemetry span, log token usage
-    // e.g., endSpan({ tokens: result.usage })
 
     return result
 }

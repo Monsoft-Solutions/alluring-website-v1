@@ -41,6 +41,13 @@ export const env = createEnv({
 
         // AI Chat (required for chat agent)
         OPENAI_API_KEY: z.string().min(1).optional(),
+
+        // Langfuse Observability (optional)
+        // These are read directly by Langfuse SDK, but documented here for clarity
+        LANGFUSE_SECRET_KEY: z.string().optional(),
+        LANGFUSE_PUBLIC_KEY: z.string().optional(),
+        LANGFUSE_BASE_URL: z.string().url().optional(),
+        LANGFUSE_ENABLED: z.enum(['true', 'false']).optional(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)

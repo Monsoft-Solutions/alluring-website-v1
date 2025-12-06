@@ -11,6 +11,7 @@ import { openai } from '@ai-sdk/openai'
 
 import type { CoreGenerateTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
 export type { GenerateTextResult } from 'ai'
@@ -53,12 +54,11 @@ export async function coreGenerateText(options: CoreGenerateTextOptions) {
         maxTokens,
     } = options
 
-    // Extension point: Add telemetry/logging here
-
     const baseConfig = {
         model: openai(modelId),
         system,
         temperature,
+        experimental_telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
     }
 
@@ -67,8 +67,6 @@ export async function coreGenerateText(options: CoreGenerateTextOptions) {
         'prompt' in options
             ? await generateText({ ...baseConfig, prompt: options.prompt })
             : await generateText({ ...baseConfig, messages: options.messages })
-
-    // Extension point: End telemetry span, log token usage
 
     return result
 }

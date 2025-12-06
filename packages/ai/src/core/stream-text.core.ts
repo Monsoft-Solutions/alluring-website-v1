@@ -11,6 +11,7 @@ import { openai } from '@ai-sdk/openai'
 
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
 export type { StreamTextResult } from 'ai'
@@ -50,8 +51,6 @@ export function coreStreamText(options: CoreStreamTextOptions) {
         onFinish,
     } = options
 
-    // Extension point: Add telemetry/logging here
-
     // Build smooth stream transform if enabled
     const experimentalTransform = smoothStreaming
         ? smoothStream(
@@ -69,14 +68,13 @@ export function coreStreamText(options: CoreStreamTextOptions) {
         system,
         messages,
         temperature,
+        experimental_telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
         ...(experimentalTransform && {
             experimental_transform: experimentalTransform,
         }),
         onFinish,
     })
-
-    // Extension point: Wrap stream with telemetry if needed
 
     return result
 }
