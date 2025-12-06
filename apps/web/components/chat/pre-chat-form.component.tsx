@@ -9,6 +9,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { cn } from '@workspace/ui/lib/utils'
@@ -21,6 +22,7 @@ type PreChatFormProps = {
     onSubmit: (data: PreChatFormInput) => Promise<void>
     agentName?: string
     welcomeMessage?: string
+    agentImageUrl?: string | null
 }
 
 /**
@@ -38,6 +40,7 @@ export function PreChatForm({
     onSubmit,
     agentName = 'Alluring Assistant',
     welcomeMessage = "Hello! I'm here to help answer your questions about our procedures. Please share your details to get started.",
+    agentImageUrl,
 }: PreChatFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -82,10 +85,21 @@ export function PreChatForm({
                                 'flex h-12 w-12 items-center justify-center rounded-full',
                                 'from-gold-100 to-gold-50 bg-linear-to-br',
                                 'ring-gold-200/60 ring-2 ring-offset-2 ring-offset-white',
-                                'shadow-gold-500/10 shadow-lg'
+                                'shadow-gold-500/10 shadow-lg',
+                                'overflow-hidden'
                             )}
                         >
-                            <MessageCircle className='text-gold-600 h-5 w-5' />
+                            {agentImageUrl ? (
+                                <Image
+                                    src={agentImageUrl}
+                                    alt={agentName}
+                                    width={48}
+                                    height={48}
+                                    className='h-full w-full object-cover'
+                                />
+                            ) : (
+                                <MessageCircle className='text-gold-600 h-5 w-5' />
+                            )}
                         </div>
 
                         {/* Online indicator */}

@@ -86,6 +86,11 @@ export const chatConfig = pgTable('chat_config', {
      */
     primaryColor: text('primary_color').notNull().default('#1c1917'),
 
+    /**
+     * URL of the agent's avatar image (stored in Vercel Blob)
+     */
+    agentImageUrl: text('agent_image_url'),
+
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
         .defaultNow()

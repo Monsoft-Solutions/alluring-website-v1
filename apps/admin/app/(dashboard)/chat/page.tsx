@@ -185,6 +185,7 @@ export default async function ChatAdminPage() {
                                 | 'top-right'
                                 | 'top-left',
                             primaryColor: config.primaryColor,
+                            agentImageUrl: config.agentImageUrl,
                         }}
                     />
                 </TabsContent>

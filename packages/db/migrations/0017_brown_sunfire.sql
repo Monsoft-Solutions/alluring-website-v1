@@ -1,0 +1,1 @@
+ALTER TABLE "chat_config" ADD COLUMN "agent_image_url" text;

@@ -21,6 +21,7 @@ type ChatConfig = {
     welcomeMessage: string
     buttonPosition: string
     primaryColor: string
+    agentImageUrl: string | null
 }
 
 type FloatingChatButtonProps = {
@@ -164,6 +165,7 @@ export function FloatingChatButton({
                     agentName: config.agentName,
                     welcomeMessage: config.welcomeMessage,
                     primaryColor: config.primaryColor,
+                    agentImageUrl: config.agentImageUrl,
                 }}
             />
 

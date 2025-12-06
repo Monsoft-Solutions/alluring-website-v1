@@ -26,6 +26,7 @@ type ChatInterfaceProps = {
     sessionId: string
     agentName: string
     welcomeMessage: string
+    agentImageUrl?: string | null
     userName: string
     initialMessages?: StoredMessage[]
     onReset?: () => void
@@ -43,6 +44,7 @@ export function ChatInterface({
     sessionId,
     agentName,
     welcomeMessage,
+    agentImageUrl,
     userName,
     initialMessages = [],
     onReset,
@@ -116,6 +118,7 @@ export function ChatInterface({
             {/* Header */}
             <ChatHeader
                 agentName={agentName}
+                agentImageUrl={agentImageUrl}
                 userName={userName}
                 sessionId={sessionId}
                 isTyping={isStreaming}
@@ -155,6 +158,7 @@ export function ChatInterface({
                                 role={message.role as 'user' | 'assistant'}
                                 content={content}
                                 agentName={agentName}
+                                agentImageUrl={agentImageUrl}
                                 isStreaming={
                                     isLoading &&
                                     index === messages.length - 1 &&

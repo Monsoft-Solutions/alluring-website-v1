@@ -9,6 +9,7 @@
 'use client'
 
 import { memo } from 'react'
+import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
 import { User, Sparkles } from 'lucide-react'
 
@@ -23,6 +24,7 @@ type ChatMessageProps = {
     createdAt?: Date
     isStreaming?: boolean
     agentName?: string
+    agentImageUrl?: string | null
 }
 
 /**
@@ -41,6 +43,7 @@ export const ChatMessage = memo(function ChatMessage({
     createdAt,
     isStreaming,
     agentName = 'Assistant',
+    agentImageUrl,
 }: ChatMessageProps) {
     const isUser = role === 'user'
 
@@ -58,6 +61,7 @@ export const ChatMessage = memo(function ChatMessage({
                 className={cn(
                     'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
                     'transition-transform duration-200',
+                    'overflow-hidden',
                     isUser
                         ? [
                               // User: dark gradient
@@ -77,6 +81,14 @@ export const ChatMessage = memo(function ChatMessage({
             >
                 {isUser ? (
                     <User className='h-4 w-4' />
+                ) : agentImageUrl ? (
+                    <Image
+                        src={agentImageUrl}
+                        alt={agentName}
+                        width={32}
+                        height={32}
+                        className='h-full w-full object-cover'
+                    />
                 ) : (
                     <Sparkles className='h-4 w-4' />
                 )}

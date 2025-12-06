@@ -120,6 +120,13 @@
       "when": 1765022153358,
       "tag": "0016_illegal_outlaw_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1765032812476,
+      "tag": "0017_brown_sunfire",
+      "breakpoints": true
     }
   ]
 }

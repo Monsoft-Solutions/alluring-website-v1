@@ -24,6 +24,7 @@ type ChatConfig = {
     agentName: string
     welcomeMessage: string
     primaryColor: string
+    agentImageUrl?: string | null
 }
 
 type StoredMessage = {
@@ -304,6 +305,7 @@ export function ChatWidget({
                             sessionId={session.id}
                             agentName={session.config.agentName}
                             welcomeMessage={session.config.welcomeMessage}
+                            agentImageUrl={session.config.agentImageUrl}
                             userName={session.fullName.split(' ')[0] || 'there'}
                             initialMessages={session.messages}
                             onReset={handleReset}
@@ -313,6 +315,7 @@ export function ChatWidget({
                             onSubmit={handlePreChatSubmit}
                             agentName={initialConfig?.agentName}
                             welcomeMessage={initialConfig?.welcomeMessage}
+                            agentImageUrl={initialConfig?.agentImageUrl}
                         />
                     )}
                 </>

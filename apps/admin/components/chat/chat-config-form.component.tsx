@@ -31,6 +31,7 @@ import {
 } from '@workspace/ui/components/select'
 import { Loader2, Save, RotateCcw } from 'lucide-react'
 
+import { MediaUpload } from '@/components/shared/media-upload.component'
 import {
     chatConfigSchema,
     type ChatConfigInput,
@@ -66,6 +67,7 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
     const isEnabled = watch('isEnabled')
     const modelId = watch('modelId')
     const buttonPosition = watch('buttonPosition')
+    const agentImageUrl = watch('agentImageUrl')
 
     const onSubmit = async (data: ChatConfigInput) => {
         setIsSubmitting(true)
@@ -274,6 +276,26 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
                     <CardTitle>Appearance</CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-4'>
+                    {/* Agent Avatar */}
+                    <div className='space-y-2'>
+                        <Label>Agent Avatar</Label>
+                        <p className='text-muted-foreground text-xs'>
+                            Upload a custom image for the chat agent. Displayed
+                            in the chat header and messages.
+                        </p>
+                        <MediaUpload
+                            value={agentImageUrl}
+                            onChange={(url) =>
+                                setValue('agentImageUrl', url, {
+                                    shouldDirty: true,
+                                })
+                            }
+                            folder='chat-agent'
+                            placeholder='Drop avatar image or click to upload'
+                            maxSize={2 * 1024 * 1024}
+                        />
+                    </div>
+
                     <div className='grid gap-4 sm:grid-cols-2'>
                         {/* Button Position */}
                         <div className='space-y-2'>

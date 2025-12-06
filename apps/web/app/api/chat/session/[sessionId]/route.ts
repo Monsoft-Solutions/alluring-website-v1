@@ -104,6 +104,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
                 agentName: config.agentName,
                 welcomeMessage: config.welcomeMessage,
                 primaryColor: config.primaryColor,
+                agentImageUrl: config.agentImageUrl,
             },
             messages: messages.map((msg) => ({
                 id: msg.id,

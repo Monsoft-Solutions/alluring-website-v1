@@ -9,6 +9,7 @@
 'use client'
 
 import { memo } from 'react'
+import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle, RotateCcw, Sparkles } from 'lucide-react'
 
@@ -17,6 +18,8 @@ import { HandoffButton } from './handoff-button.component'
 type ChatHeaderProps = {
     /** Agent/assistant name */
     agentName: string
+    /** Agent avatar image URL */
+    agentImageUrl?: string | null
     /** User's first name for personalization */
     userName: string
     /** Chat session ID for handoff */
@@ -41,6 +44,7 @@ type ChatHeaderProps = {
  */
 export const ChatHeader = memo(function ChatHeader({
     agentName,
+    agentImageUrl,
     userName,
     sessionId,
     isTyping = false,
@@ -68,10 +72,19 @@ export const ChatHeader = memo(function ChatHeader({
                             'flex h-10 w-10 items-center justify-center rounded-full',
                             'from-gold-100 to-gold-50 bg-linear-to-br',
                             'ring-gold-200/60 ring-2 ring-offset-1 ring-offset-white',
-                            'shadow-gold-500/10 shadow-md'
+                            'shadow-gold-500/10 shadow-md',
+                            'overflow-hidden'
                         )}
                     >
-                        {isTyping ? (
+                        {agentImageUrl ? (
+                            <Image
+                                src={agentImageUrl}
+                                alt={agentName}
+                                width={40}
+                                height={40}
+                                className='h-full w-full object-cover'
+                            />
+                        ) : isTyping ? (
                             <Sparkles className='text-gold-600 h-4 w-4 animate-pulse' />
                         ) : (
                             <MessageCircle className='text-gold-600 h-4 w-4' />

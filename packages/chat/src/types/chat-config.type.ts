@@ -44,6 +44,7 @@ export const chatConfigSchema = z.object({
     isEnabled: z.boolean(),
     buttonPosition: z.enum(BUTTON_POSITIONS),
     primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
+    agentImageUrl: z.string().url().nullable().optional(),
 })
 
 export type ChatConfigInput = z.infer<typeof chatConfigSchema>
@@ -62,6 +63,7 @@ export type ChatConfigResponse = {
     isEnabled: boolean
     buttonPosition: ButtonPosition
     primaryColor: string
+    agentImageUrl: string | null
     createdAt: Date
     updatedAt: Date
 }
