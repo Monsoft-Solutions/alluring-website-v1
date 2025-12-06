@@ -49,6 +49,11 @@ import { getChatSessionWithMessages } from '@/lib/queries/chat.query'
 import { formatMessageTime, formatPhoneNumber } from '@workspace/chat/utils'
 import { getGradeColor } from '@workspace/chat/services'
 import { AdminRespondForm } from '@/components/chat/admin-respond-form.component'
+import type {
+    LeadProfile,
+    PsychographicData,
+    ActionableIntelligence,
+} from '@workspace/ai'
 
 /**
  * Intent labels for display
@@ -204,36 +209,6 @@ const ACTION_LABELS: Record<string, { label: string; description: string }> = {
     },
     nurture: { label: 'Nurture', description: 'Add to nurture sequence' },
     no_action: { label: 'No Action', description: 'No follow-up needed' },
-}
-
-/**
- * Type definitions for JSONB fields
- */
-type LeadProfile = {
-    budgetIndicator?: string
-    timeline?: string
-    decisionStage?: string
-    patientType?: string
-}
-
-type PsychographicData = {
-    motivations?: string[]
-    concerns?: string[]
-    objections?: string[]
-    sentiment?: string
-}
-
-type ContactPreference = {
-    method?: string
-    timeOfDay?: string
-    language?: string
-}
-
-type ActionableIntelligence = {
-    recommendedAction?: string
-    followUpPriority?: string
-    talkingPoints?: string[]
-    contactPreference?: ContactPreference
 }
 
 export const dynamic = 'force-dynamic'
