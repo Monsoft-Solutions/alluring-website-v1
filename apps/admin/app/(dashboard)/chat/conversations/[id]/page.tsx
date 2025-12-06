@@ -29,6 +29,19 @@ import {
     TrendingUp,
     AlertTriangle,
     Tag,
+    Brain,
+    Heart,
+    Lightbulb,
+    MessageSquareText,
+    DollarSign,
+    Timer,
+    Flag,
+    Plane,
+    CheckCircle2,
+    XCircle,
+    AlertCircle,
+    PhoneCall,
+    Send,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -72,6 +85,157 @@ const PROCEDURE_LABELS: Record<string, string> = {
     fillers: 'Fillers',
 }
 
+/**
+ * Budget indicator labels and colors
+ */
+const BUDGET_LABELS: Record<string, { label: string; color: string }> = {
+    low: { label: 'Budget Conscious', color: 'bg-orange-100 text-orange-800' },
+    medium: { label: 'Moderate Budget', color: 'bg-blue-100 text-blue-800' },
+    high: { label: 'High Budget', color: 'bg-green-100 text-green-800' },
+    premium: { label: 'Premium', color: 'bg-purple-100 text-purple-800' },
+    unknown: { label: 'Unknown', color: 'bg-stone-100 text-stone-600' },
+}
+
+/**
+ * Timeline labels
+ */
+const TIMELINE_LABELS: Record<string, string> = {
+    within_week: 'Within a Week',
+    within_month: 'Within a Month',
+    within_3_months: 'Within 3 Months',
+    within_6_months: 'Within 6 Months',
+    within_year: 'Within a Year',
+    flexible: 'Flexible',
+    unknown: 'Unknown',
+}
+
+/**
+ * Decision stage labels and colors
+ */
+const DECISION_STAGE_LABELS: Record<string, { label: string; color: string }> =
+    {
+        researching: {
+            label: 'Researching',
+            color: 'bg-stone-100 text-stone-700',
+        },
+        comparing: {
+            label: 'Comparing Options',
+            color: 'bg-blue-100 text-blue-800',
+        },
+        ready_to_book: {
+            label: 'Ready to Book',
+            color: 'bg-green-100 text-green-800',
+        },
+        post_op: {
+            label: 'Post-Op Patient',
+            color: 'bg-purple-100 text-purple-800',
+        },
+        unknown: { label: 'Unknown', color: 'bg-stone-100 text-stone-600' },
+    }
+
+/**
+ * Patient type labels
+ */
+const PATIENT_TYPE_LABELS: Record<string, string> = {
+    local: 'Local (Miami Area)',
+    travel_domestic: 'Travel - Domestic',
+    travel_international: 'Travel - International',
+    unknown: 'Unknown',
+}
+
+/**
+ * Sentiment labels and colors
+ */
+const SENTIMENT_LABELS: Record<
+    string,
+    { label: string; color: string; icon: typeof CheckCircle2 }
+> = {
+    positive: {
+        label: 'Positive',
+        color: 'text-green-600',
+        icon: CheckCircle2,
+    },
+    neutral: { label: 'Neutral', color: 'text-stone-500', icon: AlertCircle },
+    negative: { label: 'Negative', color: 'text-red-600', icon: XCircle },
+    mixed: { label: 'Mixed', color: 'text-orange-500', icon: AlertCircle },
+}
+
+/**
+ * Follow-up priority labels and colors
+ */
+const PRIORITY_LABELS: Record<string, { label: string; color: string }> = {
+    urgent: {
+        label: 'Urgent',
+        color: 'bg-red-100 text-red-800 border-red-200',
+    },
+    high: {
+        label: 'High',
+        color: 'bg-orange-100 text-orange-800 border-orange-200',
+    },
+    normal: {
+        label: 'Normal',
+        color: 'bg-blue-100 text-blue-800 border-blue-200',
+    },
+    low: {
+        label: 'Low',
+        color: 'bg-stone-100 text-stone-700 border-stone-200',
+    },
+}
+
+/**
+ * Recommended action labels
+ */
+const ACTION_LABELS: Record<string, { label: string; description: string }> = {
+    call_immediately: {
+        label: 'Call Immediately',
+        description: 'Hot lead - call right now',
+    },
+    schedule_callback: {
+        label: 'Schedule Callback',
+        description: 'Set up a call at their preferred time',
+    },
+    send_info: {
+        label: 'Send Information',
+        description: 'Email detailed procedure information',
+    },
+    send_pricing: {
+        label: 'Send Pricing',
+        description: 'Email pricing and financing details',
+    },
+    nurture: { label: 'Nurture', description: 'Add to nurture sequence' },
+    no_action: { label: 'No Action', description: 'No follow-up needed' },
+}
+
+/**
+ * Type definitions for JSONB fields
+ */
+type LeadProfile = {
+    budgetIndicator?: string
+    timeline?: string
+    decisionStage?: string
+    patientType?: string
+}
+
+type PsychographicData = {
+    motivations?: string[]
+    concerns?: string[]
+    objections?: string[]
+    sentiment?: string
+}
+
+type ContactPreference = {
+    method?: string
+    timeOfDay?: string
+    language?: string
+}
+
+type ActionableIntelligence = {
+    recommendedAction?: string
+    followUpPriority?: string
+    talkingPoints?: string[]
+    contactPreference?: ContactPreference
+}
+
 export const dynamic = 'force-dynamic'
 
 type PageProps = {
@@ -99,6 +263,34 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                     </Link>
                 </Button>
             </div>
+
+            {/* Conversation Summary - Prominent display when available */}
+            {session.conversationSummary && (
+                <Card className='border-gold-200 bg-gold-50/50'>
+                    <CardContent className='flex items-start gap-4 p-4'>
+                        <div className='bg-gold-100 flex h-10 w-10 shrink-0 items-center justify-center rounded-full'>
+                            <MessageSquareText className='text-gold-700 h-5 w-5' />
+                        </div>
+                        <div className='flex-1'>
+                            <p className='text-gold-700 mb-1 text-xs font-medium uppercase'>
+                                AI Summary
+                            </p>
+                            <p className='text-sm leading-relaxed text-stone-700'>
+                                {session.conversationSummary}
+                            </p>
+                        </div>
+                        {session.followUpPriority && (
+                            <Badge
+                                className={`shrink-0 ${PRIORITY_LABELS[session.followUpPriority]?.color ?? ''}`}
+                            >
+                                <Flag className='mr-1 h-3 w-3' />
+                                {PRIORITY_LABELS[session.followUpPriority]
+                                    ?.label ?? session.followUpPriority}
+                            </Badge>
+                        )}
+                    </CardContent>
+                </Card>
+            )}
 
             <div className='grid gap-6 lg:grid-cols-3'>
                 {/* Conversation */}
@@ -371,6 +563,355 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                             )}
                         </CardContent>
                     </Card>
+
+                    {/* Lead Profile Card */}
+                    {session.leadProfile && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center gap-2'>
+                                    <User className='h-5 w-5' />
+                                    Lead Profile
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className='space-y-3'>
+                                {(() => {
+                                    const profile =
+                                        session.leadProfile as LeadProfile
+                                    return (
+                                        <>
+                                            {/* Budget */}
+                                            <div className='flex items-center justify-between'>
+                                                <div className='flex items-center gap-2'>
+                                                    <DollarSign className='h-4 w-4 text-stone-400' />
+                                                    <span className='text-sm'>
+                                                        Budget
+                                                    </span>
+                                                </div>
+                                                {profile.budgetIndicator && (
+                                                    <Badge
+                                                        variant='outline'
+                                                        className={
+                                                            BUDGET_LABELS[
+                                                                profile
+                                                                    .budgetIndicator
+                                                            ]?.color ?? ''
+                                                        }
+                                                    >
+                                                        {BUDGET_LABELS[
+                                                            profile
+                                                                .budgetIndicator
+                                                        ]?.label ??
+                                                            profile.budgetIndicator}
+                                                    </Badge>
+                                                )}
+                                            </div>
+
+                                            {/* Timeline */}
+                                            <div className='flex items-center justify-between'>
+                                                <div className='flex items-center gap-2'>
+                                                    <Timer className='h-4 w-4 text-stone-400' />
+                                                    <span className='text-sm'>
+                                                        Timeline
+                                                    </span>
+                                                </div>
+                                                <span className='text-sm text-stone-600'>
+                                                    {TIMELINE_LABELS[
+                                                        profile.timeline ??
+                                                            'unknown'
+                                                    ] ?? profile.timeline}
+                                                </span>
+                                            </div>
+
+                                            {/* Decision Stage */}
+                                            <div className='flex items-center justify-between'>
+                                                <div className='flex items-center gap-2'>
+                                                    <Target className='h-4 w-4 text-stone-400' />
+                                                    <span className='text-sm'>
+                                                        Stage
+                                                    </span>
+                                                </div>
+                                                {profile.decisionStage && (
+                                                    <Badge
+                                                        variant='outline'
+                                                        className={
+                                                            DECISION_STAGE_LABELS[
+                                                                profile
+                                                                    .decisionStage
+                                                            ]?.color ?? ''
+                                                        }
+                                                    >
+                                                        {DECISION_STAGE_LABELS[
+                                                            profile
+                                                                .decisionStage
+                                                        ]?.label ??
+                                                            profile.decisionStage}
+                                                    </Badge>
+                                                )}
+                                            </div>
+
+                                            {/* Patient Type */}
+                                            <div className='flex items-center justify-between'>
+                                                <div className='flex items-center gap-2'>
+                                                    <Plane className='h-4 w-4 text-stone-400' />
+                                                    <span className='text-sm'>
+                                                        Patient Type
+                                                    </span>
+                                                </div>
+                                                <span className='text-sm text-stone-600'>
+                                                    {PATIENT_TYPE_LABELS[
+                                                        profile.patientType ??
+                                                            'unknown'
+                                                    ] ?? profile.patientType}
+                                                </span>
+                                            </div>
+                                        </>
+                                    )
+                                })()}
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    {/* Psychographic Insights Card */}
+                    {session.psychographicData && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center gap-2'>
+                                    <Brain className='h-5 w-5' />
+                                    Psychographic Insights
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className='space-y-4'>
+                                {(() => {
+                                    const psycho =
+                                        session.psychographicData as PsychographicData
+                                    const SentimentIcon = psycho.sentiment
+                                        ? (SENTIMENT_LABELS[psycho.sentiment]
+                                              ?.icon ?? AlertCircle)
+                                        : AlertCircle
+                                    return (
+                                        <>
+                                            {/* Sentiment */}
+                                            {psycho.sentiment && (
+                                                <div className='flex items-center gap-2'>
+                                                    <SentimentIcon
+                                                        className={`h-5 w-5 ${SENTIMENT_LABELS[psycho.sentiment]?.color ?? ''}`}
+                                                    />
+                                                    <span className='text-sm font-medium'>
+                                                        {SENTIMENT_LABELS[
+                                                            psycho.sentiment
+                                                        ]?.label ??
+                                                            psycho.sentiment}{' '}
+                                                        Sentiment
+                                                    </span>
+                                                </div>
+                                            )}
+
+                                            {/* Motivations */}
+                                            {psycho.motivations &&
+                                                psycho.motivations.length >
+                                                    0 && (
+                                                    <div>
+                                                        <p className='mb-2 flex items-center gap-1 text-xs font-medium text-green-700 uppercase'>
+                                                            <Heart className='h-3 w-3' />
+                                                            Motivations
+                                                        </p>
+                                                        <ul className='space-y-1'>
+                                                            {psycho.motivations.map(
+                                                                (item, i) => (
+                                                                    <li
+                                                                        key={i}
+                                                                        className='flex items-start gap-2 text-sm text-stone-600'
+                                                                    >
+                                                                        <span className='mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-green-400' />
+                                                                        {item}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+
+                                            {/* Concerns */}
+                                            {psycho.concerns &&
+                                                psycho.concerns.length > 0 && (
+                                                    <div>
+                                                        <p className='mb-2 flex items-center gap-1 text-xs font-medium text-orange-700 uppercase'>
+                                                            <AlertCircle className='h-3 w-3' />
+                                                            Concerns
+                                                        </p>
+                                                        <ul className='space-y-1'>
+                                                            {psycho.concerns.map(
+                                                                (item, i) => (
+                                                                    <li
+                                                                        key={i}
+                                                                        className='flex items-start gap-2 text-sm text-stone-600'
+                                                                    >
+                                                                        <span className='mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400' />
+                                                                        {item}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+
+                                            {/* Objections */}
+                                            {psycho.objections &&
+                                                psycho.objections.length >
+                                                    0 && (
+                                                    <div>
+                                                        <p className='mb-2 flex items-center gap-1 text-xs font-medium text-red-700 uppercase'>
+                                                            <XCircle className='h-3 w-3' />
+                                                            Objections
+                                                        </p>
+                                                        <ul className='space-y-1'>
+                                                            {psycho.objections.map(
+                                                                (item, i) => (
+                                                                    <li
+                                                                        key={i}
+                                                                        className='flex items-start gap-2 text-sm text-stone-600'
+                                                                    >
+                                                                        <span className='mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-400' />
+                                                                        {item}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                        </>
+                                    )
+                                })()}
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    {/* Actionable Intelligence Card */}
+                    {session.actionableIntelligence && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center gap-2'>
+                                    <Lightbulb className='h-5 w-5' />
+                                    Recommended Actions
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className='space-y-4'>
+                                {(() => {
+                                    const intel =
+                                        session.actionableIntelligence as ActionableIntelligence
+                                    return (
+                                        <>
+                                            {/* Recommended Action */}
+                                            {intel.recommendedAction && (
+                                                <div className='rounded-lg bg-stone-50 p-3'>
+                                                    <div className='flex items-center gap-2'>
+                                                        {intel.recommendedAction ===
+                                                        'call_immediately' ? (
+                                                            <PhoneCall className='h-5 w-5 text-green-600' />
+                                                        ) : (
+                                                            <Send className='h-5 w-5 text-blue-600' />
+                                                        )}
+                                                        <span className='font-medium'>
+                                                            {ACTION_LABELS[
+                                                                intel
+                                                                    .recommendedAction
+                                                            ]?.label ??
+                                                                intel.recommendedAction}
+                                                        </span>
+                                                    </div>
+                                                    <p className='mt-1 text-sm text-stone-500'>
+                                                        {
+                                                            ACTION_LABELS[
+                                                                intel
+                                                                    .recommendedAction
+                                                            ]?.description
+                                                        }
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {/* Contact Preference */}
+                                            {intel.contactPreference && (
+                                                <div className='space-y-1 text-sm'>
+                                                    {intel.contactPreference
+                                                        .method && (
+                                                        <p>
+                                                            <span className='text-stone-500'>
+                                                                Preferred
+                                                                contact:
+                                                            </span>{' '}
+                                                            <span className='font-medium capitalize'>
+                                                                {
+                                                                    intel
+                                                                        .contactPreference
+                                                                        .method
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                    )}
+                                                    {intel.contactPreference
+                                                        .timeOfDay && (
+                                                        <p>
+                                                            <span className='text-stone-500'>
+                                                                Best time:
+                                                            </span>{' '}
+                                                            <span className='font-medium'>
+                                                                {
+                                                                    intel
+                                                                        .contactPreference
+                                                                        .timeOfDay
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                    )}
+                                                    {intel.contactPreference
+                                                        .language && (
+                                                        <p>
+                                                            <span className='text-stone-500'>
+                                                                Language:
+                                                            </span>{' '}
+                                                            <span className='font-medium'>
+                                                                {
+                                                                    intel
+                                                                        .contactPreference
+                                                                        .language
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* Talking Points */}
+                                            {intel.talkingPoints &&
+                                                intel.talkingPoints.length >
+                                                    0 && (
+                                                    <div className='border-t pt-3'>
+                                                        <p className='mb-2 text-xs font-medium text-stone-500 uppercase'>
+                                                            Talking Points for
+                                                            Follow-up
+                                                        </p>
+                                                        <ul className='space-y-2'>
+                                                            {intel.talkingPoints.map(
+                                                                (point, i) => (
+                                                                    <li
+                                                                        key={i}
+                                                                        className='flex items-start gap-2 rounded-md bg-blue-50 p-2 text-sm text-blue-900'
+                                                                    >
+                                                                        <CheckCircle2 className='mt-0.5 h-4 w-4 shrink-0 text-blue-500' />
+                                                                        {point}
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                        </>
+                                    )
+                                })()}
+                            </CardContent>
+                        </Card>
+                    )}
 
                     <Card>
                         <CardHeader>

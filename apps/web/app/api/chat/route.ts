@@ -3,7 +3,7 @@
  *
  * Handles chat message streaming using AI SDK with GPT-4.1.
  * Saves messages to database and streams responses in real-time.
- * Includes intent classification and lead scoring.
+ * Includes comprehensive AI conversation analysis and lead scoring.
  *
  * @module app/api/chat/route
  */
@@ -12,10 +12,11 @@ import {
     openai,
     streamText,
     smoothStream,
-    classifyIntent,
     generateQuickQuestions,
+    analyzeConversation,
+    calculateLeadScoreFromAnalysis,
 } from '@workspace/ai'
-import type { ClassificationMessage } from '@workspace/ai/schemas'
+import type { AnalysisMessage } from '@workspace/ai/schemas'
 
 import { env } from '@/env'
 import {
@@ -23,19 +24,14 @@ import {
     getChatSessionById,
     saveChatMessage,
     getRecentMessages,
-    updateSessionIntentAndScore,
     updateMessageSuggestedQuestions,
+    updateSessionConversationAnalysis,
 } from '@/lib/queries/chat.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
     sanitizeMessageContent,
     estimateTokenCount,
 } from '@workspace/chat/utils'
-import {
-    detectIntentKeywords,
-    updateLeadScoreFromMessage,
-    type ScoringSignals,
-} from '@workspace/chat/services'
 
 /**
  * AI SDK v5 message format with parts
@@ -139,42 +135,6 @@ export async function POST(request: NextRequest) {
             tokenCount: estimateTokenCount(sanitizedContent),
         })
 
-        // Update lead score incrementally from user message
-        const currentSignals = (session.scoringSignals as ScoringSignals) ?? {}
-        const updatedScore = updateLeadScoreFromMessage(
-            session.leadScore ?? 0,
-            currentSignals,
-            sanitizedContent,
-            true // isUserMessage
-        )
-
-        // Quick keyword-based intent detection for immediate updates
-        const keywordIntent = detectIntentKeywords(sanitizedContent)
-
-        // Update session with new score and any detected intents
-        await updateSessionIntentAndScore(sessionId, {
-            leadScore: updatedScore.score,
-            leadGrade: updatedScore.grade,
-            scoringSignals: updatedScore.signals,
-            // Only update intent if we detected something and don't have one yet
-            ...(keywordIntent.primaryIntent && !session.primaryIntent
-                ? { primaryIntent: keywordIntent.primaryIntent }
-                : {}),
-            // Merge detected procedures
-            ...(keywordIntent.detectedProcedures &&
-            keywordIntent.detectedProcedures.length > 0
-                ? {
-                      detectedProcedures: [
-                          ...new Set([
-                              ...((session.detectedProcedures as string[]) ??
-                                  []),
-                              ...keywordIntent.detectedProcedures,
-                          ]),
-                      ],
-                  }
-                : {}),
-        })
-
         // Get recent messages from DB for context (to prevent manipulation)
         const dbMessages = await getRecentMessages(sessionId, 20)
         const contextMessages: AIMessage[] = dbMessages.map((msg) => ({
@@ -203,14 +163,20 @@ export async function POST(request: NextRequest) {
                     tokenCount: estimateTokenCount(text),
                 })
 
-                // Run full AI intent classification after enough messages
+                // Run comprehensive AI conversation analysis after enough messages
                 // (async, doesn't block response)
                 const totalMessages = dbMessages.length + 2 // +2 for user msg and assistant response
-                if (totalMessages >= 4 && !session.primaryIntent) {
-                    classifyIntentAsync(sessionId, [
-                        ...dbMessages,
-                        { role: 'assistant', content: text },
-                    ])
+                if (totalMessages >= 4) {
+                    analyzeConversationAsync(
+                        sessionId,
+                        [...dbMessages, { role: 'assistant', content: text }],
+                        {
+                            hasEmail: !!session.email,
+                            messageCount: totalMessages,
+                            returningVisitor: false, // Could be enhanced with visitor tracking
+                            isEscalated: session.isEscalated,
+                        }
+                    )
                 }
 
                 // Generate contextual quick questions (async, doesn't block response)
@@ -248,33 +214,73 @@ export async function OPTIONS(): Promise<NextResponse> {
 }
 
 /**
- * Run full AI intent classification asynchronously
+ * Run comprehensive AI conversation analysis asynchronously
  * This doesn't block the chat response
+ *
+ * Replaces the keyword-based intent detection with AI-powered analysis
+ * that extracts lead profile, psychographic data, and actionable intelligence.
+ * Works with conversations in any language.
  */
-async function classifyIntentAsync(
+async function analyzeConversationAsync(
     sessionId: string,
-    messages: Array<{ role: string; content: string }>
+    messages: Array<{ role: string; content: string }>,
+    additionalSignals: {
+        hasEmail?: boolean
+        messageCount?: number
+        sessionDurationMinutes?: number
+        returningVisitor?: boolean
+        isEscalated?: boolean
+    }
 ): Promise<void> {
     try {
-        const classificationMessages: ClassificationMessage[] = messages
+        console.log(
+            `[ConversationAnalysis] Analyzing session ${sessionId}, ${messages.length} messages`
+        )
+
+        // Filter to user/assistant messages and format for analysis
+        const analysisMessages: AnalysisMessage[] = messages
             .filter((m) => m.role === 'user' || m.role === 'assistant')
             .map((m) => ({
                 role: m.role as 'user' | 'assistant',
                 content: m.content,
             }))
 
-        const classification = await classifyIntent(classificationMessages)
+        // Run comprehensive AI analysis
+        const analysis = await analyzeConversation(analysisMessages)
 
-        if (classification.primaryIntent !== 'unknown') {
-            await updateSessionIntentAndScore(sessionId, {
-                primaryIntent: classification.primaryIntent,
-                intentConfidence: classification.intentConfidence.toString(),
-                detectedProcedures: classification.detectedProcedures,
-                tags: classification.tags,
-            })
+        if (analysis.primaryIntent !== 'unknown') {
+            // Calculate lead score from analysis
+            const { score, grade } = calculateLeadScoreFromAnalysis(
+                analysis,
+                additionalSignals
+            )
+
+            // Save complete analysis to database
+            await updateSessionConversationAnalysis(
+                sessionId,
+                analysis,
+                score,
+                grade
+            )
+
+            console.log(
+                `[ConversationAnalysis] Session ${sessionId} analyzed:`,
+                {
+                    intent: analysis.primaryIntent,
+                    decisionStage: analysis.leadProfile.decisionStage,
+                    followUpPriority:
+                        analysis.actionableIntelligence.followUpPriority,
+                    score,
+                    grade,
+                }
+            )
+        } else {
+            console.log(
+                `[ConversationAnalysis] Session ${sessionId}: Unknown intent, skipping update`
+            )
         }
     } catch (error) {
-        console.error('Async intent classification failed:', error)
+        console.error('[ConversationAnalysis] Analysis failed:', error)
         // Non-blocking, just log the error
     }
 }

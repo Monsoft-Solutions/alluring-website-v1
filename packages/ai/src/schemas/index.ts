@@ -28,3 +28,46 @@ export {
     type QuickQuestionsMessage,
     type GenerateQuickQuestionsParams,
 } from './quick-questions.schema'
+
+export {
+    // Schemas
+    conversationAnalysisSchema,
+    leadProfileSchema,
+    psychographicDataSchema,
+    actionableIntelligenceSchema,
+    contactPreferenceSchema,
+    // Enum schemas
+    budgetIndicatorSchema,
+    timelineSchema,
+    decisionStageSchema,
+    patientTypeSchema,
+    sentimentSchema,
+    recommendedActionSchema,
+    followUpPrioritySchema,
+    contactMethodSchema,
+    // Constants
+    BUDGET_INDICATORS,
+    TIMELINE_OPTIONS,
+    DECISION_STAGES,
+    PATIENT_TYPES,
+    SENTIMENT_OPTIONS,
+    RECOMMENDED_ACTIONS,
+    FOLLOW_UP_PRIORITIES,
+    CONTACT_METHODS,
+    DEFAULT_CONVERSATION_ANALYSIS,
+    // Types
+    type ConversationAnalysis,
+    type LeadProfile,
+    type PsychographicData,
+    type ActionableIntelligence,
+    type ContactPreference,
+    type BudgetIndicator,
+    type Timeline,
+    type DecisionStage,
+    type PatientType,
+    type Sentiment,
+    type RecommendedAction,
+    type FollowUpPriority,
+    type ContactMethod,
+    type AnalysisMessage,
+} from './conversation-analysis.schema'

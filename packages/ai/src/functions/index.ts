@@ -25,3 +25,9 @@ export {
     generateQuickQuestions,
     type GenerateQuickQuestionsOptions,
 } from './generate-quick-questions.function'
+
+export {
+    analyzeConversation,
+    calculateLeadScoreFromAnalysis,
+    type AnalyzeConversationOptions,
+} from './analyze-conversation.function'

@@ -23,3 +23,9 @@ export {
     formatMessagesForQuickQuestions,
     getQuickQuestionsPrompt,
 } from './quick-questions.prompt'
+
+export {
+    CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
+    formatMessagesForAnalysis,
+    getConversationAnalysisPrompt,
+} from './conversation-analysis.prompt'

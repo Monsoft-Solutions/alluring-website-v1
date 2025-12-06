@@ -17,6 +17,7 @@ import {
 import { and, eq, desc, sql } from 'drizzle-orm'
 
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
+import type { ConversationAnalysis } from '@workspace/ai/schemas'
 
 /**
  * Get the active chat configuration
@@ -170,6 +171,50 @@ export async function updateSessionIntentAndScore(
             ...(data.scoringSignals !== undefined && {
                 scoringSignals: data.scoringSignals,
             }),
+        })
+        .where(eq(chatSession.id, sessionId))
+}
+
+/**
+ * Update session with comprehensive conversation analysis
+ *
+ * Stores AI-extracted intelligence including lead profile,
+ * psychographic data, and actionable intelligence.
+ */
+export async function updateSessionConversationAnalysis(
+    sessionId: string,
+    analysis: ConversationAnalysis,
+    leadScore: number,
+    leadGrade: string
+): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            // Full analysis object
+            conversationAnalysis: analysis,
+
+            // Extracted components for easier querying
+            leadProfile: analysis.leadProfile,
+            psychographicData: analysis.psychographicData,
+            actionableIntelligence: analysis.actionableIntelligence,
+            conversationSummary: analysis.conversationSummary,
+
+            // Indexed fields for filtering
+            decisionStage: analysis.leadProfile.decisionStage,
+            followUpPriority: analysis.actionableIntelligence.followUpPriority,
+
+            // Update existing intent fields for backward compatibility
+            primaryIntent: analysis.primaryIntent,
+            intentConfidence: analysis.intentConfidence.toString(),
+            detectedProcedures: analysis.detectedProcedures,
+            tags: analysis.tags,
+
+            // Update lead scoring
+            leadScore,
+            leadGrade,
+
+            // Mark when analysis was performed
+            analyzedAt: new Date(),
         })
         .where(eq(chatSession.id, sessionId))
 }

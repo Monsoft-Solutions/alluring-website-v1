@@ -81,66 +81,36 @@ export const AVAILABLE_MODELS: AIModel[] = [
         recommended: true,
     },
     {
-        id: 'gpt-4-turbo',
-        name: 'GPT-4 Turbo',
+        id: 'gpt-4.1',
+        name: 'GPT-4.1',
         provider: 'openai',
-        capabilities: [
-            'chat',
-            'function-calling',
-            'vision',
-            'structured-output',
-        ],
+        capabilities: ['chat', 'function-calling', 'structured-output'],
         maxTokens: 128000,
         tier: 'premium',
-        description: 'Previous generation premium model',
+        description: 'Most capable model with vision and advanced reasoning',
+        recommended: true,
     },
     {
-        id: 'gpt-3.5-turbo',
-        name: 'GPT-3.5 Turbo',
+        id: 'gpt-4.1-mini',
+        name: 'GPT-4.1 Mini',
         provider: 'openai',
-        capabilities: ['chat', 'function-calling'],
-        maxTokens: 16385,
-        tier: 'economy',
-        description: 'Legacy model, most economical option',
-    },
-    {
-        id: 'o1',
-        name: 'O1',
-        provider: 'openai',
-        capabilities: ['chat', 'structured-output'],
-        maxTokens: 200000,
-        tier: 'premium',
-        description: 'Advanced reasoning model for complex tasks',
-    },
-    {
-        id: 'o1-mini',
-        name: 'O1 Mini',
-        provider: 'openai',
-        capabilities: ['chat', 'structured-output'],
+        capabilities: ['chat', 'function-calling', 'structured-output'],
         maxTokens: 128000,
         tier: 'standard',
-        description: 'Smaller reasoning model',
-    },
-    {
-        id: 'o3-mini',
-        name: 'O3 Mini',
-        provider: 'openai',
-        capabilities: ['chat', 'structured-output'],
-        maxTokens: 200000,
-        tier: 'standard',
-        description: 'Latest compact reasoning model',
+        description: 'Fast and cost-effective for most tasks',
+        recommended: true,
     },
 ] as const
 
 /**
  * Default model ID for chat operations
  */
-export const DEFAULT_CHAT_MODEL_ID = 'gpt-4o-mini'
+export const DEFAULT_CHAT_MODEL_ID = 'gpt-4.1'
 
 /**
  * Default model ID for intent classification
  */
-export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gpt-4o-mini'
+export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gpt-4.1-mini'
 
 /**
  * Get a model by its ID
