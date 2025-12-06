@@ -92,7 +92,6 @@ export function useVoiceInput({
     onCommittedTranscript,
     onSessionEnd,
     maxDuration = 60,
-    _languageCode = 'en',
 }: UseVoiceInputOptions): UseVoiceInputReturn {
     // State
     const [isConnecting, setIsConnecting] = useState(false)
