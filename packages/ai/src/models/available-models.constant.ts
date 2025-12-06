@@ -124,7 +124,7 @@ export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gpt-4.1-nano'
 
 export const DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID = 'gpt-4.1-mini'
 
-export const DEFAULT_QUICK_QUESTIONS_MODEL_ID = 'gpt-4.1-nano'
+export const DEFAULT_QUICK_QUESTIONS_MODEL_ID = 'gpt-4.1-mini'
 
 export const DEFAULT_DEEP_DIVE_ANALYSIS_MODEL_ID = 'gpt-4.1'
 
