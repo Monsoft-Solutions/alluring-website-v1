@@ -10,7 +10,7 @@
 
 import { useState, useEffect, useRef, type ChangeEvent } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { TextStreamChatTransport } from 'ai'
+import { TextStreamChatTransport } from '@workspace/ai'
 import { cn } from '@workspace/ui/lib/utils'
 import { Button } from '@workspace/ui/components/button'
 import {

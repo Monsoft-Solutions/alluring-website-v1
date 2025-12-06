@@ -8,8 +8,8 @@
  * @module app/api/chat/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
-import { openai } from '@ai-sdk/openai'
-import { smoothStream, streamText } from 'ai'
+import { openai, streamText, smoothStream, classifyIntent } from '@workspace/ai'
+import type { ClassificationMessage } from '@workspace/ai/schemas'
 
 import { env } from '@/env'
 import {
@@ -25,7 +25,6 @@ import {
     estimateTokenCount,
 } from '@workspace/chat/utils'
 import {
-    classifyIntent,
     detectIntentKeywords,
     updateLeadScoreFromMessage,
     type ScoringSignals,
@@ -196,16 +195,11 @@ export async function POST(request: NextRequest) {
                 // Run full AI intent classification after enough messages
                 // (async, doesn't block response)
                 const totalMessages = dbMessages.length + 2 // +2 for user msg and assistant response
-                if (
-                    totalMessages >= 4 &&
-                    !session.primaryIntent &&
-                    env.OPENAI_API_KEY
-                ) {
-                    classifyIntentAsync(
-                        sessionId,
-                        [...dbMessages, { role: 'assistant', content: text }],
-                        env.OPENAI_API_KEY
-                    )
+                if (totalMessages >= 4 && !session.primaryIntent) {
+                    classifyIntentAsync(sessionId, [
+                        ...dbMessages,
+                        { role: 'assistant', content: text },
+                    ])
                 }
             },
         })
@@ -240,21 +234,17 @@ export async function OPTIONS(): Promise<NextResponse> {
  */
 async function classifyIntentAsync(
     sessionId: string,
-    messages: Array<{ role: string; content: string }>,
-    apiKey: string
+    messages: Array<{ role: string; content: string }>
 ): Promise<void> {
     try {
-        const classificationMessages = messages
+        const classificationMessages: ClassificationMessage[] = messages
             .filter((m) => m.role === 'user' || m.role === 'assistant')
             .map((m) => ({
                 role: m.role as 'user' | 'assistant',
                 content: m.content,
             }))
 
-        const classification = await classifyIntent(
-            classificationMessages,
-            apiKey
-        )
+        const classification = await classifyIntent(classificationMessages)
 
         if (classification.primaryIntent !== 'unknown') {
             await updateSessionIntentAndScore(sessionId, {
