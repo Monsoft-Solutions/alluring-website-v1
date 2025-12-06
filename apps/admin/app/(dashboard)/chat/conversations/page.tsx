@@ -22,9 +22,9 @@ import {
     ArrowLeft,
     Phone,
     Mail,
-    Globe,
     AlertTriangle,
     Target,
+    Flag,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -58,6 +58,39 @@ const INTENT_COLORS: Record<string, string> = {
     general_inquiry: 'bg-stone-100 text-stone-800',
     complaint: 'bg-red-100 text-red-800',
     unknown: 'bg-stone-100 text-stone-600',
+}
+
+/**
+ * Follow-up priority labels and colors
+ */
+const PRIORITY_LABELS: Record<string, { label: string; color: string }> = {
+    urgent: {
+        label: 'Urgent',
+        color: 'bg-red-100 text-red-800 border-red-200',
+    },
+    high: {
+        label: 'High',
+        color: 'bg-orange-100 text-orange-800 border-orange-200',
+    },
+    normal: {
+        label: 'Normal',
+        color: 'bg-blue-100 text-blue-800 border-blue-200',
+    },
+    low: {
+        label: 'Low',
+        color: 'bg-stone-100 text-stone-700 border-stone-200',
+    },
+}
+
+/**
+ * Decision stage labels
+ */
+const STAGE_LABELS: Record<string, string> = {
+    researching: 'Researching',
+    comparing: 'Comparing',
+    ready_to_book: 'Ready',
+    post_op: 'Post-Op',
+    unknown: '—',
 }
 
 export const dynamic = 'force-dynamic'
@@ -98,6 +131,8 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                             <TableRow>
                                 <TableHead>Contact</TableHead>
                                 <TableHead>Lead</TableHead>
+                                <TableHead>Priority</TableHead>
+                                <TableHead>Stage</TableHead>
                                 <TableHead>Intent</TableHead>
                                 <TableHead>Messages</TableHead>
                                 <TableHead>Status</TableHead>
@@ -109,7 +144,7 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                             {sessions.length === 0 ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={7}
+                                        colSpan={9}
                                         className='text-muted-foreground py-8 text-center'
                                     >
                                         No conversations yet
@@ -159,6 +194,42 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                                                     {session.leadGrade} (
                                                     {session.leadScore})
                                                 </Badge>
+                                            ) : (
+                                                <span className='text-muted-foreground text-sm'>
+                                                    —
+                                                </span>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {session.followUpPriority ? (
+                                                <Badge
+                                                    variant='outline'
+                                                    className={
+                                                        PRIORITY_LABELS[
+                                                            session
+                                                                .followUpPriority
+                                                        ]?.color ?? ''
+                                                    }
+                                                >
+                                                    <Flag className='mr-1 h-3 w-3' />
+                                                    {PRIORITY_LABELS[
+                                                        session.followUpPriority
+                                                    ]?.label ??
+                                                        session.followUpPriority}
+                                                </Badge>
+                                            ) : (
+                                                <span className='text-muted-foreground text-sm'>
+                                                    —
+                                                </span>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {session.decisionStage ? (
+                                                <span className='text-sm'>
+                                                    {STAGE_LABELS[
+                                                        session.decisionStage
+                                                    ] ?? session.decisionStage}
+                                                </span>
                                             ) : (
                                                 <span className='text-muted-foreground text-sm'>
                                                     —

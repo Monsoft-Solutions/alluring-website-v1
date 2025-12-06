@@ -1,0 +1,36 @@
+{
+    "name": "@workspace/ai",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts",
+        "./core": "./src/core/index.ts",
+        "./functions": "./src/functions/index.ts",
+        "./schemas": "./src/schemas/index.ts",
+        "./prompts": "./src/prompts/index.ts",
+        "./models": "./src/models/index.ts",
+        "./tools": "./src/tools/index.ts",
+        "./telemetry": "./src/telemetry/index.ts"
+    },
+    "scripts": {
+        "lint": "eslint . --max-warnings 0",
+        "format": "pnpm -w format",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@ai-sdk/openai": "^2.0.77",
+        "@ai-sdk/provider-utils": "^3.0.18",
+        "@langfuse/otel": "^4.4.9",
+        "@langfuse/tracing": "^4.4.9",
+        "@opentelemetry/sdk-trace-node": "^2.2.0",
+        "ai": "^5.0.107",
+        "zod": "^4.1.13"
+    },
+    "devDependencies": {
+        "@types/node": "^24.10.1",
+        "@workspace/eslint-config": "workspace:*",
+        "@workspace/typescript-config": "workspace:*",
+        "typescript": "^5.9.3"
+    }
+}

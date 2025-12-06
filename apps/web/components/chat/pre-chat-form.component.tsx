@@ -1,31 +1,46 @@
 /**
  * Pre-Chat Form Component
  *
- * Lead capture form shown before starting a chat conversation.
- * Collects name and phone number.
+ * Premium lead capture form shown before starting a chat conversation.
+ * Collects name and phone number with luxury styling.
  *
  * @module components/chat/pre-chat-form
  */
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { cn } from '@workspace/ui/lib/utils'
-import { Loader2, MessageCircle, Phone, User } from 'lucide-react'
+import { Loader2, MessageCircle, Phone, User, Sparkles } from 'lucide-react'
 
 import { preChatFormSchema, type PreChatFormInput } from '@workspace/chat/types'
+import { CSS_CLASSES } from '@/lib/chat/constants'
 
 type PreChatFormProps = {
     onSubmit: (data: PreChatFormInput) => Promise<void>
     agentName?: string
     welcomeMessage?: string
+    agentImageUrl?: string | null
 }
 
+/**
+ * Premium pre-chat form with luxury design
+ *
+ * Features:
+ * - Glassmorphism header with agent avatar
+ * - Elegant form inputs with icon prefixes
+ * - Gold accent on focus states
+ * - Loading state with animated button
+ * - Smooth entrance animations
+ * - Accessible form with proper labels
+ */
 export function PreChatForm({
     onSubmit,
     agentName = 'Alluring Assistant',
-    welcomeMessage = "Hello! I'm here to help answer your questions. Please share your details to get started.",
+    welcomeMessage = "Hello! I'm here to help answer your questions about our procedures. Please share your details to get started.",
+    agentImageUrl,
 }: PreChatFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -54,92 +69,169 @@ export function PreChatForm({
     return (
         <div className='flex h-full flex-col'>
             {/* Header */}
-            <div className='border-b border-stone-200 bg-stone-50 px-6 py-5'>
+            <header
+                className={cn(
+                    'px-6 py-5',
+                    // Glassmorphism background
+                    'border-b border-stone-200/60 bg-stone-50/80 backdrop-blur-xl',
+                    'shadow-sm shadow-stone-900/5'
+                )}
+            >
                 <div className='flex items-center gap-3'>
-                    <div className='bg-gold-100 flex h-10 w-10 items-center justify-center rounded-full'>
-                        <MessageCircle className='text-gold-700 h-5 w-5' />
+                    {/* Avatar with gold ring */}
+                    <div className='relative'>
+                        <div
+                            className={cn(
+                                'flex h-12 w-12 items-center justify-center rounded-full',
+                                'from-gold-100 to-gold-50 bg-linear-to-br',
+                                'ring-gold-200/60 ring-2 ring-offset-2 ring-offset-white',
+                                'shadow-gold-500/10 shadow-lg',
+                                'overflow-hidden'
+                            )}
+                        >
+                            {agentImageUrl ? (
+                                <Image
+                                    src={agentImageUrl}
+                                    alt={agentName}
+                                    width={48}
+                                    height={48}
+                                    className='h-full w-full object-cover'
+                                />
+                            ) : (
+                                <MessageCircle className='text-gold-600 h-5 w-5' />
+                            )}
+                        </div>
+
+                        {/* Online indicator */}
+                        <span
+                            className={cn(
+                                'absolute -right-0.5 -bottom-0.5',
+                                'h-3.5 w-3.5 rounded-full',
+                                'bg-emerald-500 ring-2 ring-white'
+                            )}
+                        />
                     </div>
+
                     <div>
-                        <h3 className='font-serif text-lg font-semibold text-stone-900'>
+                        <h3 className='font-serif text-lg font-semibold tracking-tight text-stone-900'>
                             {agentName}
                         </h3>
-                        <p className='text-xs text-stone-500'>
-                            Typically replies instantly
+                        <p className='flex items-center gap-1.5 text-xs text-stone-500'>
+                            <span className='inline-block h-1.5 w-1.5 rounded-full bg-emerald-500' />
+                            Online now • Typically replies instantly
                         </p>
                     </div>
                 </div>
-            </div>
+            </header>
 
-            {/* Welcome Message */}
+            {/* Content */}
             <div className='flex-1 overflow-y-auto p-6'>
-                <div className='mb-6 rounded-2xl rounded-tl-sm bg-stone-100 px-4 py-3 text-sm text-stone-700'>
+                {/* Welcome Message Bubble */}
+                <div
+                    className={cn(
+                        'mb-6 rounded-2xl rounded-tl-sm px-4 py-3.5',
+                        'bg-linear-to-br from-stone-100 via-stone-50 to-white',
+                        'text-sm leading-relaxed text-stone-700',
+                        'ring-1 ring-stone-200/50',
+                        'shadow-md shadow-stone-900/5',
+                        CSS_CLASSES.MESSAGE_APPEAR
+                    )}
+                >
                     {welcomeMessage}
                 </div>
 
                 {/* Form */}
                 <form
                     onSubmit={handleSubmit(handleFormSubmit)}
-                    className='space-y-4'
+                    className={cn('space-y-4', CSS_CLASSES.FADE_IN)}
                 >
+                    {/* Section Header */}
+                    <div className='flex items-center gap-2'>
+                        <Sparkles className='text-gold-500 h-4 w-4' />
+                        <span className='text-xs font-medium text-stone-500'>
+                            Start your conversation
+                        </span>
+                    </div>
+
                     {/* Full Name */}
-                    <div>
+                    <div className='space-y-1.5'>
                         <label
                             htmlFor='fullName'
-                            className='mb-1.5 block text-sm font-medium text-stone-700'
+                            className='block text-sm font-medium text-stone-700'
                         >
-                            Full Name *
+                            Full Name <span className='text-red-500'>*</span>
                         </label>
                         <div className='relative'>
-                            <User className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-stone-400' />
+                            <User
+                                className={cn(
+                                    'absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2',
+                                    errors.fullName
+                                        ? 'text-red-400'
+                                        : 'text-stone-400'
+                                )}
+                            />
                             <input
                                 {...register('fullName')}
                                 id='fullName'
                                 type='text'
                                 placeholder='Enter your full name'
+                                autoComplete='name'
                                 className={cn(
-                                    'w-full rounded-lg border bg-white py-2.5 pr-4 pl-10 text-sm',
+                                    'w-full rounded-xl border bg-white py-3 pr-4 pl-11 text-sm',
                                     'placeholder:text-stone-400',
-                                    'focus:ring-2 focus:ring-stone-900/10 focus:outline-none',
+                                    'transition-all duration-200',
+                                    // Focus with gold accent
+                                    'focus:ring-2 focus:outline-none',
                                     errors.fullName
-                                        ? 'border-red-300 focus:ring-red-500/20'
-                                        : 'border-stone-200'
+                                        ? 'border-red-300 focus:border-red-400 focus:ring-red-500/20'
+                                        : 'focus:border-gold-300 focus:ring-gold-500/20 border-stone-200'
                                 )}
                             />
                         </div>
                         {errors.fullName && (
-                            <p className='mt-1 text-xs text-red-500'>
+                            <p className='text-xs text-red-500'>
                                 {errors.fullName.message}
                             </p>
                         )}
                     </div>
 
                     {/* Phone */}
-                    <div>
+                    <div className='space-y-1.5'>
                         <label
                             htmlFor='phone'
-                            className='mb-1.5 block text-sm font-medium text-stone-700'
+                            className='block text-sm font-medium text-stone-700'
                         >
-                            Phone Number *
+                            Phone Number <span className='text-red-500'>*</span>
                         </label>
                         <div className='relative'>
-                            <Phone className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-stone-400' />
+                            <Phone
+                                className={cn(
+                                    'absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2',
+                                    errors.phone
+                                        ? 'text-red-400'
+                                        : 'text-stone-400'
+                                )}
+                            />
                             <input
                                 {...register('phone')}
                                 id='phone'
                                 type='tel'
                                 placeholder='(555) 123-4567'
+                                autoComplete='tel'
                                 className={cn(
-                                    'w-full rounded-lg border bg-white py-2.5 pr-4 pl-10 text-sm',
+                                    'w-full rounded-xl border bg-white py-3 pr-4 pl-11 text-sm',
                                     'placeholder:text-stone-400',
-                                    'focus:ring-2 focus:ring-stone-900/10 focus:outline-none',
+                                    'transition-all duration-200',
+                                    // Focus with gold accent
+                                    'focus:ring-2 focus:outline-none',
                                     errors.phone
-                                        ? 'border-red-300 focus:ring-red-500/20'
-                                        : 'border-stone-200'
+                                        ? 'border-red-300 focus:border-red-400 focus:ring-red-500/20'
+                                        : 'focus:border-gold-300 focus:ring-gold-500/20 border-stone-200'
                                 )}
                             />
                         </div>
                         {errors.phone && (
-                            <p className='mt-1 text-xs text-red-500'>
+                            <p className='text-xs text-red-500'>
                                 {errors.phone.message}
                             </p>
                         )}
@@ -150,9 +242,23 @@ export function PreChatForm({
                         type='submit'
                         disabled={isSubmitting}
                         className={cn(
-                            'flex w-full items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold transition-all duration-200',
-                            'bg-stone-900 text-white hover:bg-stone-800',
-                            'disabled:cursor-not-allowed disabled:opacity-50'
+                            'flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold',
+                            // Premium gradient
+                            'bg-linear-to-br from-stone-800 to-stone-900',
+                            'text-white',
+                            // Shadow
+                            'shadow-lg shadow-stone-900/20',
+                            // Transitions
+                            'transition-all duration-200',
+                            // Hover
+                            'hover:from-stone-700 hover:to-stone-800',
+                            'hover:shadow-xl hover:shadow-stone-900/25',
+                            // Press
+                            'active:scale-[0.98]',
+                            // Focus
+                            'focus:ring-2 focus:ring-stone-900 focus:ring-offset-2 focus:outline-none',
+                            // Disabled
+                            'disabled:cursor-not-allowed disabled:opacity-60'
                         )}
                     >
                         {isSubmitting ? (
@@ -168,11 +274,14 @@ export function PreChatForm({
                         )}
                     </button>
 
+                    {/* Privacy Notice */}
                     <p className='text-center text-xs text-stone-500'>
                         By starting a chat, you agree to our{' '}
                         <a
                             href='/privacy'
-                            className='underline hover:text-stone-700'
+                            className='text-gold-600 underline-offset-2 hover:underline'
+                            target='_blank'
+                            rel='noopener noreferrer'
                         >
                             Privacy Policy
                         </a>

@@ -1,18 +1,22 @@
 /**
  * Chat Message Component
  *
- * Renders individual chat messages with different styling for user vs assistant.
+ * Renders individual chat messages with premium styling for user vs assistant.
+ * Memoized for performance with streaming updates.
  *
  * @module components/chat/chat-message
  */
 'use client'
 
+import { memo } from 'react'
+import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
-import { User, Bot } from 'lucide-react'
+import { User, Sparkles } from 'lucide-react'
 
 import { formatMessageTime } from '@workspace/chat/utils'
 
 import { ChatMarkdown } from './chat-markdown.component'
+import { CSS_CLASSES } from '@/lib/chat/constants'
 
 type ChatMessageProps = {
     role: 'user' | 'assistant' | 'system'
@@ -20,37 +24,73 @@ type ChatMessageProps = {
     createdAt?: Date
     isStreaming?: boolean
     agentName?: string
+    agentImageUrl?: string | null
 }
 
-export function ChatMessage({
+/**
+ * Premium chat message with luxury styling
+ *
+ * Features:
+ * - Gradient backgrounds for depth
+ * - Gold accents for assistant messages
+ * - Smooth entrance animations
+ * - Memoized for streaming performance
+ * - Accessible with proper semantics
+ */
+export const ChatMessage = memo(function ChatMessage({
     role,
     content,
     createdAt,
     isStreaming,
     agentName = 'Assistant',
+    agentImageUrl,
 }: ChatMessageProps) {
     const isUser = role === 'user'
 
     return (
-        <div
+        <article
             className={cn(
                 'flex gap-3',
+                CSS_CLASSES.MESSAGE_APPEAR,
                 isUser ? 'flex-row-reverse' : 'flex-row'
             )}
+            aria-label={`Message from ${isUser ? 'you' : agentName}`}
         >
             {/* Avatar */}
             <div
                 className={cn(
                     'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
+                    'transition-transform duration-200',
+                    'overflow-hidden',
                     isUser
-                        ? 'bg-stone-900 text-white'
-                        : 'bg-gold-100 text-gold-700'
+                        ? [
+                              // User: dark gradient
+                              'bg-linear-to-br from-stone-800 to-stone-900',
+                              'text-white',
+                              'ring-1 ring-stone-700/50',
+                              'shadow-md shadow-stone-900/20',
+                          ]
+                        : [
+                              // Assistant: gold gradient
+                              'from-gold-100 to-gold-50 bg-linear-to-br',
+                              'text-gold-600',
+                              'ring-gold-200/60 ring-1',
+                              'shadow-gold-500/10 shadow-md',
+                          ]
                 )}
             >
                 {isUser ? (
                     <User className='h-4 w-4' />
+                ) : agentImageUrl ? (
+                    <Image
+                        src={agentImageUrl}
+                        alt={agentName}
+                        width={32}
+                        height={32}
+                        className='h-full w-full object-cover'
+                    />
                 ) : (
-                    <Bot className='h-4 w-4' />
+                    <Sparkles className='h-4 w-4' />
                 )}
             </div>
 
@@ -62,30 +102,57 @@ export function ChatMessage({
                 )}
             >
                 {/* Name & Time */}
-                <div className='flex items-center gap-2 text-xs text-stone-500'>
-                    <span className='font-medium'>
+                <div className='flex items-center gap-2 px-1 text-xs text-stone-500'>
+                    <span className='font-medium tracking-tight'>
                         {isUser ? 'You' : agentName}
                     </span>
-                    {createdAt && <span>{formatMessageTime(createdAt)}</span>}
+                    {createdAt && (
+                        <span className='text-stone-400'>
+                            {formatMessageTime(createdAt)}
+                        </span>
+                    )}
                 </div>
 
                 {/* Message Bubble */}
                 <div
                     className={cn(
-                        'rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
+                        'rounded-2xl px-4 py-3 text-sm leading-relaxed',
                         isUser
-                            ? 'rounded-tr-sm bg-stone-900 text-white'
-                            : 'rounded-tl-sm bg-stone-100 text-stone-900'
+                            ? [
+                                  // User bubble: dark gradient
+                                  'rounded-tr-sm',
+                                  'bg-linear-to-br from-stone-800 to-stone-900',
+                                  'text-stone-50',
+                                  'ring-1 ring-stone-700/30',
+                                  'shadow-lg shadow-stone-900/20',
+                              ]
+                            : [
+                                  // Assistant bubble: light gradient with gold hint
+                                  'rounded-tl-sm',
+                                  'bg-linear-to-br from-stone-100 via-stone-50 to-white',
+                                  'text-stone-800',
+                                  'ring-1 ring-stone-200/50',
+                                  'shadow-md shadow-stone-900/5',
+                              ]
                     )}
                 >
                     {isUser ? content : <ChatMarkdown content={content} />}
+
+                    {/* Streaming cursor */}
                     {isStreaming && (
-                        <span className='ml-1 inline-block animate-pulse'>
+                        <span
+                            className={cn(
+                                'ml-1 inline-block',
+                                isUser ? 'text-gold-300' : 'text-gold-500',
+                                'animate-pulse'
+                            )}
+                            aria-hidden='true'
+                        >
                             ▋
                         </span>
                     )}
                 </div>
             </div>
-        </div>
+        </article>
     )
-}
+})

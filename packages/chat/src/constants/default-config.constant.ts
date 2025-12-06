@@ -55,6 +55,7 @@ export const DEFAULT_CHAT_CONFIG: ChatConfigInput = {
     isEnabled: true,
     buttonPosition: 'bottom-right',
     primaryColor: '#1c1917',
+    agentImageUrl: null,
 }
 
 /**

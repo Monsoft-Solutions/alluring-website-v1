@@ -3,7 +3,7 @@
  *
  * Stores user chat sessions with lead information collected
  * from the pre-chat form. Includes intent classification,
- * lead scoring, and human handoff capabilities.
+ * lead scoring, conversation analysis, and human handoff capabilities.
  *
  * @module packages/db/src/schema/chat/chat-session.table
  */
@@ -17,6 +17,88 @@ import {
     timestamp,
     uuid,
 } from 'drizzle-orm/pg-core'
+
+// ============================================
+// AI Conversation Analysis Types
+// These types mirror @workspace/ai/schemas but are defined here
+// to avoid circular dependencies. The actual type safety is
+// enforced at the application layer.
+// ============================================
+
+/**
+ * Lead profile extracted from conversation
+ */
+export type DbLeadProfile = {
+    budgetIndicator: 'low' | 'medium' | 'high' | 'premium' | 'unknown'
+    timeline:
+        | 'within_week'
+        | 'within_month'
+        | 'within_3_months'
+        | 'within_6_months'
+        | 'within_year'
+        | 'flexible'
+        | 'unknown'
+    decisionStage:
+        | 'researching'
+        | 'comparing'
+        | 'ready_to_book'
+        | 'post_op'
+        | 'unknown'
+    patientType:
+        | 'local'
+        | 'travel_domestic'
+        | 'travel_international'
+        | 'unknown'
+}
+
+/**
+ * Psychographic data extracted from conversation
+ */
+export type DbPsychographicData = {
+    motivations: string[]
+    concerns: string[]
+    objections: string[]
+    sentiment: 'positive' | 'neutral' | 'negative' | 'mixed'
+}
+
+/**
+ * Contact preference information
+ */
+export type DbContactPreference = {
+    method?: 'phone' | 'email' | 'text' | 'whatsapp'
+    timeOfDay?: string
+    language?: string
+}
+
+/**
+ * Actionable intelligence for sales team
+ */
+export type DbActionableIntelligence = {
+    recommendedAction:
+        | 'call_immediately'
+        | 'schedule_callback'
+        | 'send_info'
+        | 'send_pricing'
+        | 'nurture'
+        | 'no_action'
+    followUpPriority: 'urgent' | 'high' | 'normal' | 'low'
+    talkingPoints: string[]
+    contactPreference: DbContactPreference
+}
+
+/**
+ * Complete conversation analysis from AI
+ */
+export type DbConversationAnalysis = {
+    primaryIntent: string
+    intentConfidence: number
+    detectedProcedures: string[]
+    tags: string[]
+    leadProfile: DbLeadProfile
+    psychographicData: DbPsychographicData
+    actionableIntelligence: DbActionableIntelligence
+    conversationSummary: string
+}
 
 /**
  * Session status options
@@ -155,6 +237,58 @@ export const chatSession = pgTable('chat_session', {
      * Signals that contributed to the lead score
      */
     scoringSignals: jsonb('scoring_signals').$type<ScoringSignals>(),
+
+    // ============================================
+    // AI Conversation Analysis Fields (Phase 5)
+    // ============================================
+
+    /**
+     * Complete AI-powered conversation analysis
+     * Contains all extracted intelligence in one JSONB field
+     */
+    conversationAnalysis: jsonb(
+        'conversation_analysis'
+    ).$type<DbConversationAnalysis>(),
+
+    /**
+     * Lead profile extracted from conversation
+     * Stored separately for easier querying
+     */
+    leadProfile: jsonb('lead_profile').$type<DbLeadProfile>(),
+
+    /**
+     * Psychographic data (motivations, concerns, objections)
+     */
+    psychographicData: jsonb('psychographic_data').$type<DbPsychographicData>(),
+
+    /**
+     * Actionable intelligence for sales team
+     */
+    actionableIntelligence: jsonb(
+        'actionable_intelligence'
+    ).$type<DbActionableIntelligence>(),
+
+    /**
+     * Human-readable conversation summary
+     */
+    conversationSummary: text('conversation_summary'),
+
+    /**
+     * Decision stage for quick filtering
+     * Values: researching, comparing, ready_to_book, post_op, unknown
+     */
+    decisionStage: text('decision_stage'),
+
+    /**
+     * Follow-up priority for sales queue
+     * Values: urgent, high, normal, low
+     */
+    followUpPriority: text('follow_up_priority'),
+
+    /**
+     * When the conversation was last analyzed
+     */
+    analyzedAt: timestamp('analyzed_at'),
 
     // ============================================
     // Human Handoff Fields (Phase 4)

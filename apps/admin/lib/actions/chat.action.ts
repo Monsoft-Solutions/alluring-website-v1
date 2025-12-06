@@ -47,6 +47,7 @@ export async function updateChatConfig(
                     isEnabled: validated.isEnabled,
                     buttonPosition: validated.buttonPosition,
                     primaryColor: validated.primaryColor,
+                    agentImageUrl: validated.agentImageUrl,
                 })
                 .where(eq(chatConfig.id, existingConfigs[0].id))
         } else {
@@ -61,6 +62,7 @@ export async function updateChatConfig(
                 isEnabled: validated.isEnabled,
                 buttonPosition: validated.buttonPosition,
                 primaryColor: validated.primaryColor,
+                agentImageUrl: validated.agentImageUrl,
             })
         }
 

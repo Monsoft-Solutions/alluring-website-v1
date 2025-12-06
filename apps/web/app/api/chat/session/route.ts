@@ -91,6 +91,7 @@ export async function POST(request: NextRequest) {
                 agentName: config.agentName,
                 welcomeMessage: config.welcomeMessage,
                 primaryColor: config.primaryColor,
+                agentImageUrl: config.agentImageUrl,
             },
         })
     } catch (error) {

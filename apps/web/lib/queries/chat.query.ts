@@ -14,9 +14,10 @@ import {
     type InsertChatSession,
     type InsertChatMessage,
 } from '@workspace/db/schema/chat'
-import { eq, desc, sql } from 'drizzle-orm'
+import { and, eq, desc, sql } from 'drizzle-orm'
 
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
+import type { ConversationAnalysis } from '@workspace/ai/schemas'
 
 /**
  * Get the active chat configuration
@@ -175,6 +176,50 @@ export async function updateSessionIntentAndScore(
 }
 
 /**
+ * Update session with comprehensive conversation analysis
+ *
+ * Stores AI-extracted intelligence including lead profile,
+ * psychographic data, and actionable intelligence.
+ */
+export async function updateSessionConversationAnalysis(
+    sessionId: string,
+    analysis: ConversationAnalysis,
+    leadScore: number,
+    leadGrade: string
+): Promise<void> {
+    await db
+        .update(chatSession)
+        .set({
+            // Full analysis object
+            conversationAnalysis: analysis,
+
+            // Extracted components for easier querying
+            leadProfile: analysis.leadProfile,
+            psychographicData: analysis.psychographicData,
+            actionableIntelligence: analysis.actionableIntelligence,
+            conversationSummary: analysis.conversationSummary,
+
+            // Indexed fields for filtering
+            decisionStage: analysis.leadProfile.decisionStage,
+            followUpPriority: analysis.actionableIntelligence.followUpPriority,
+
+            // Update existing intent fields for backward compatibility
+            primaryIntent: analysis.primaryIntent,
+            intentConfidence: analysis.intentConfidence.toString(),
+            detectedProcedures: analysis.detectedProcedures,
+            tags: analysis.tags,
+
+            // Update lead scoring
+            leadScore,
+            leadGrade,
+
+            // Mark when analysis was performed
+            analyzedAt: new Date(),
+        })
+        .where(eq(chatSession.id, sessionId))
+}
+
+/**
  * Escalate a chat session to human support
  */
 export async function escalateChatSession(
@@ -190,4 +235,64 @@ export async function escalateChatSession(
             status: 'escalated',
         })
         .where(eq(chatSession.id, sessionId))
+}
+
+/**
+ * Update suggested questions for a specific message
+ */
+export async function updateMessageSuggestedQuestions(
+    messageId: string,
+    questions: string[]
+): Promise<void> {
+    await db
+        .update(chatMessage)
+        .set({ suggestedQuestions: questions })
+        .where(eq(chatMessage.id, messageId))
+}
+
+/**
+ * Get suggested questions from the latest assistant message in a session
+ */
+export async function getLatestAssistantMessageQuestions(
+    sessionId: string
+): Promise<string[] | null> {
+    const messages = await db
+        .select({
+            suggestedQuestions: chatMessage.suggestedQuestions,
+            role: chatMessage.role,
+        })
+        .from(chatMessage)
+        .where(
+            and(
+                eq(chatMessage.sessionId, sessionId),
+                eq(chatMessage.role, 'assistant')
+            )
+        )
+        .orderBy(desc(chatMessage.createdAt))
+        .limit(1)
+
+    const latestAssistant = messages[0]
+    if (
+        latestAssistant?.suggestedQuestions &&
+        latestAssistant.suggestedQuestions.length > 0
+    ) {
+        return latestAssistant.suggestedQuestions
+    }
+
+    return null
+}
+
+/**
+ * Get suggested questions for a specific message by ID
+ */
+export async function getMessageSuggestedQuestions(
+    messageId: string
+): Promise<string[] | null> {
+    const messages = await db
+        .select({ suggestedQuestions: chatMessage.suggestedQuestions })
+        .from(chatMessage)
+        .where(eq(chatMessage.id, messageId))
+        .limit(1)
+
+    return messages[0]?.suggestedQuestions ?? null
 }

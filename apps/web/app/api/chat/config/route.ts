@@ -25,6 +25,7 @@ export async function GET() {
             welcomeMessage: config.welcomeMessage,
             buttonPosition: config.buttonPosition,
             primaryColor: config.primaryColor,
+            agentImageUrl: config.agentImageUrl,
         })
     } catch (error) {
         console.error('Failed to get chat config:', error)

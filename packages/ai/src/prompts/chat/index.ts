@@ -1,0 +1,31 @@
+/**
+ * @workspace/ai/prompts/chat
+ *
+ * Chat-related prompt templates.
+ *
+ * @module @workspace/ai/prompts/chat
+ */
+
+export {
+    INTENT_CLASSIFICATION_SYSTEM_PROMPT,
+    formatMessagesForClassification,
+    getIntentClassificationPrompt,
+} from './intent-classification.prompt'
+
+export {
+    DEFAULT_CHAT_SYSTEM_PROMPT,
+    generateSystemPrompt,
+    type SystemPromptParams,
+} from './system-prompt.prompt'
+
+export {
+    QUICK_QUESTIONS_SYSTEM_PROMPT,
+    formatMessagesForQuickQuestions,
+    getQuickQuestionsPrompt,
+} from './quick-questions.prompt'
+
+export {
+    CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
+    formatMessagesForAnalysis,
+    getConversationAnalysisPrompt,
+} from './conversation-analysis.prompt'

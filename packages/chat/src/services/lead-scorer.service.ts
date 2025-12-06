@@ -11,7 +11,7 @@ import type {
     IntentType,
     SessionTag,
     DetectableProcedure,
-} from './intent-classifier.service'
+} from '@workspace/ai/schemas'
 
 /**
  * Scoring signals tracked for lead scoring

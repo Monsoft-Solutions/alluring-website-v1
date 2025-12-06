@@ -8,9 +8,11 @@
  */
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { upload } from '@vercel/blob/client'
+import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import {
     Card,
@@ -29,8 +31,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@workspace/ui/components/select'
-import { Loader2, Save, RotateCcw } from 'lucide-react'
+import { Loader2, Save, RotateCcw, Image as ImageIcon, X } from 'lucide-react'
+import { cn } from '@workspace/ui/lib/utils'
 
+import { ImageCropperDialog } from '@/components/shared/image-cropper-dialog.component'
+import { AgentAvatarPreview } from '@/components/chat/agent-avatar-preview.component'
 import {
     chatConfigSchema,
     type ChatConfigInput,
@@ -51,6 +56,14 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
         text: string
     } | null>(null)
 
+    // Image cropper state
+    const [cropperOpen, setCropperOpen] = useState(false)
+    const [selectedImageSrc, setSelectedImageSrc] = useState<string | null>(
+        null
+    )
+    const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
     const {
         register,
         handleSubmit,
@@ -66,6 +79,80 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
     const isEnabled = watch('isEnabled')
     const modelId = watch('modelId')
     const buttonPosition = watch('buttonPosition')
+    const agentImageUrl = watch('agentImageUrl')
+    const agentName = watch('agentName')
+
+    // Handle file selection - opens cropper
+    const handleFileSelect = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0]
+            if (file) {
+                const objectUrl = URL.createObjectURL(file)
+                setSelectedImageSrc(objectUrl)
+                setCropperOpen(true)
+            }
+            // Reset input so same file can be selected again
+            e.target.value = ''
+        },
+        []
+    )
+
+    // Handle cropped image - upload to Vercel Blob
+    const handleCropComplete = useCallback(
+        async (croppedBlob: Blob) => {
+            setIsUploadingAvatar(true)
+
+            try {
+                // Generate filename
+                const timestamp = Date.now()
+                const randomStr = Math.random().toString(36).substring(2, 8)
+                const pathname = `chat-agent/avatar-${timestamp}-${randomStr}.jpg`
+
+                // Upload to Vercel Blob
+                const blob = await upload(pathname, croppedBlob, {
+                    access: 'public',
+                    handleUploadUrl: '/api/upload',
+                })
+
+                // Update form value
+                setValue('agentImageUrl', blob.url, { shouldDirty: true })
+
+                // Close cropper and cleanup
+                setCropperOpen(false)
+                if (selectedImageSrc) {
+                    URL.revokeObjectURL(selectedImageSrc)
+                    setSelectedImageSrc(null)
+                }
+            } catch (error) {
+                console.error('Failed to upload avatar:', error)
+                setMessage({
+                    type: 'error',
+                    text: 'Failed to upload avatar image',
+                })
+            } finally {
+                setIsUploadingAvatar(false)
+            }
+        },
+        [selectedImageSrc, setValue]
+    )
+
+    // Handle avatar removal
+    const handleRemoveAvatar = useCallback(async () => {
+        if (!agentImageUrl) return
+
+        try {
+            // Delete from blob storage
+            await fetch('/api/upload', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: agentImageUrl }),
+            })
+        } catch {
+            // Ignore delete errors
+        }
+
+        setValue('agentImageUrl', null, { shouldDirty: true })
+    }, [agentImageUrl, setValue])
 
     const onSubmit = async (data: ChatConfigInput) => {
         setIsSubmitting(true)
@@ -274,6 +361,109 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
                     <CardTitle>Appearance</CardTitle>
                 </CardHeader>
                 <CardContent className='space-y-4'>
+                    {/* Agent Avatar */}
+                    <div className='space-y-3'>
+                        <div>
+                            <Label>Agent Avatar</Label>
+                            <p className='text-muted-foreground text-xs'>
+                                Upload and crop a custom image for the chat
+                                agent. Displayed in the chat header and
+                                messages.
+                            </p>
+                        </div>
+
+                        {/* Hidden file input */}
+                        <input
+                            ref={fileInputRef}
+                            type='file'
+                            accept='image/*'
+                            onChange={handleFileSelect}
+                            className='hidden'
+                        />
+
+                        {/* Upload/Preview area */}
+                        {agentImageUrl ? (
+                            <div className='space-y-3'>
+                                {/* Current image with change/remove options */}
+                                <div className='relative inline-block'>
+                                    <div className='relative h-24 w-24 overflow-hidden rounded-full border-2 border-stone-200'>
+                                        <Image
+                                            src={agentImageUrl}
+                                            alt='Agent avatar'
+                                            fill
+                                            className='object-cover'
+                                        />
+                                    </div>
+                                    <Button
+                                        type='button'
+                                        variant='destructive'
+                                        size='icon'
+                                        className='absolute -top-1 -right-1 h-6 w-6'
+                                        onClick={handleRemoveAvatar}
+                                    >
+                                        <X className='h-3 w-3' />
+                                    </Button>
+                                </div>
+                                <div className='flex gap-2'>
+                                    <Button
+                                        type='button'
+                                        variant='outline'
+                                        size='sm'
+                                        onClick={() =>
+                                            fileInputRef.current?.click()
+                                        }
+                                    >
+                                        Change Image
+                                    </Button>
+                                </div>
+
+                                {/* Preview section */}
+                                <AgentAvatarPreview
+                                    imageUrl={agentImageUrl}
+                                    agentName={agentName}
+                                />
+                            </div>
+                        ) : (
+                            <div
+                                role='button'
+                                tabIndex={0}
+                                onClick={() => fileInputRef.current?.click()}
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' &&
+                                    fileInputRef.current?.click()
+                                }
+                                className={cn(
+                                    'flex h-32 cursor-pointer flex-col items-center justify-center rounded-lg',
+                                    'border-2 border-dashed border-stone-300 bg-stone-50',
+                                    'transition-colors hover:border-stone-400 hover:bg-stone-100'
+                                )}
+                            >
+                                <ImageIcon className='mb-2 h-8 w-8 text-stone-400' />
+                                <span className='text-sm text-stone-500'>
+                                    Click to upload avatar image
+                                </span>
+                                <span className='text-xs text-stone-400'>
+                                    Image will be cropped to a circle
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Image Cropper Dialog */}
+                    <ImageCropperDialog
+                        open={cropperOpen}
+                        onOpenChange={(open) => {
+                            setCropperOpen(open)
+                            if (!open && selectedImageSrc) {
+                                URL.revokeObjectURL(selectedImageSrc)
+                                setSelectedImageSrc(null)
+                            }
+                        }}
+                        imageSrc={selectedImageSrc}
+                        onCropComplete={handleCropComplete}
+                        isProcessing={isUploadingAvatar}
+                    />
+
                     <div className='grid gap-4 sm:grid-cols-2'>
                         {/* Button Position */}
                         <div className='space-y-2'>
