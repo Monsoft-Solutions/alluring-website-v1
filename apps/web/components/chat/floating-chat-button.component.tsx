@@ -100,9 +100,7 @@ export function FloatingChatButton({
                     isRight ? 'right-6' : 'left-6',
                     'bottom-6',
                     // Safe area for mobile
-                    'mb-[env(safe-area-inset-bottom)]',
-                    // Z-index
-                    `z-${Z_INDEX.BUTTON}`
+                    'mb-[env(safe-area-inset-bottom)]'
                 )}
                 style={{ zIndex: Z_INDEX.BUTTON }}
                 aria-label={
