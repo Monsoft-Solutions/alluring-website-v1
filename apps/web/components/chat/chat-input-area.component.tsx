@@ -277,49 +277,57 @@ export const ChatInputArea = memo(function ChatInputArea({
                 </div>
             )}
 
-            {/* Input Row */}
-            <div className='flex items-end gap-3'>
-                {/* Input Container */}
-                <div className='relative flex-1'>
-                    <textarea
-                        ref={textareaRef}
-                        value={displayValue}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        placeholder={isRecording ? 'Listening...' : placeholder}
-                        disabled={disabled || isLoading}
-                        readOnly={isRecording}
-                        maxLength={maxLength}
-                        rows={1}
-                        className={cn(
-                            // Base styles
-                            'w-full resize-none rounded-2xl border bg-white px-4 py-3 pr-14 text-sm',
-                            'max-h-[128px] min-h-[44px]',
-                            // Typography
-                            'leading-relaxed text-stone-900 placeholder:text-stone-400',
-                            // Default border
-                            'border-stone-200',
-                            // Recording state - subtle red tint
-                            isRecording && 'border-red-200 bg-red-50/30',
-                            // Focus state with gold accent
-                            'focus:border-gold-300 focus:outline-none',
-                            'focus:ring-gold-500/20 focus:ring-2',
-                            // Premium shadow on focus
-                            'focus:shadow-gold-500/5 focus:shadow-lg',
-                            // Disabled state
-                            'disabled:cursor-not-allowed disabled:bg-stone-50 disabled:opacity-60',
-                            // Read-only during recording
-                            isRecording && 'cursor-default',
-                            // Transition
-                            'transition-all duration-200'
-                        )}
-                        aria-label='Message input'
-                    />
+            {/* Unified Input Container - Stacked Layout */}
+            <div
+                className={cn(
+                    // Container styling
+                    'flex flex-col overflow-hidden rounded-2xl border bg-white',
+                    'transition-all duration-200',
+                    // Default border
+                    'border-stone-200',
+                    // Recording state - subtle red tint
+                    isRecording && 'border-red-300 bg-red-50/20',
+                    // Focus-within state with gold accent
+                    'focus-within:border-gold-300',
+                    'focus-within:ring-gold-500/20 focus-within:ring-2',
+                    'focus-within:shadow-gold-500/5 focus-within:shadow-lg',
+                    // Disabled state
+                    (disabled || isLoading) && 'opacity-60'
+                )}
+            >
+                {/* Textarea - Full Width */}
+                <textarea
+                    ref={textareaRef}
+                    value={displayValue}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    placeholder={isRecording ? 'Listening...' : placeholder}
+                    disabled={disabled || isLoading}
+                    readOnly={isRecording}
+                    maxLength={maxLength}
+                    rows={1}
+                    className={cn(
+                        // Base styles - no border, transparent
+                        'w-full resize-none border-0 bg-transparent px-4 pt-3 pb-2 text-sm',
+                        'max-h-[128px] min-h-[44px]',
+                        // Typography
+                        'leading-relaxed text-stone-900 placeholder:text-stone-400',
+                        // Remove focus ring (container handles it)
+                        'focus:ring-0 focus:outline-none',
+                        // Disabled state
+                        'disabled:cursor-not-allowed',
+                        // Read-only during recording
+                        isRecording && 'cursor-default'
+                    )}
+                    aria-label='Message input'
+                />
 
-                    {/* Character Counter */}
+                {/* Bottom Toolbar */}
+                <div className='flex items-center justify-between px-3 pb-2'>
+                    {/* Character Counter - Left */}
                     <span
                         className={cn(
-                            'absolute right-3 bottom-3 text-xs font-medium transition-colors',
+                            'text-xs font-medium transition-colors',
                             isAtLimit
                                 ? 'text-red-500'
                                 : isNearLimit
@@ -329,63 +337,63 @@ export const ChatInputArea = memo(function ChatInputArea({
                     >
                         {charCount}/{maxLength}
                     </span>
-                </div>
 
-                {/* Voice Input Button - only shown when available */}
-                {isVoiceAvailable && (
-                    <VoiceInputButton
-                        isRecording={isRecording}
-                        isConnecting={isConnecting}
-                        isDisabled={disabled || isLoading}
-                        remainingTime={remainingTime}
-                        onClick={handleVoiceClick}
-                    />
-                )}
+                    {/* Action Buttons - Right */}
+                    <div className='flex items-center gap-1'>
+                        {/* Voice Input Button */}
+                        {isVoiceAvailable && (
+                            <VoiceInputButton
+                                isRecording={isRecording}
+                                isConnecting={isConnecting}
+                                isDisabled={disabled || isLoading}
+                                remainingTime={remainingTime}
+                                onClick={handleVoiceClick}
+                            />
+                        )}
 
-                {/* Send Button */}
-                <button
-                    type='button'
-                    onClick={handleSubmitClick}
-                    disabled={!canSubmit}
-                    className={cn(
-                        // Base styles
-                        'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl',
-                        // Touch target minimum
-                        'min-h-[44px] min-w-[44px]',
-                        // Transitions
-                        'transition-all duration-200',
-                        // Active state
-                        canSubmit
-                            ? [
-                                  // Gradient background
-                                  'bg-linear-to-br from-stone-800 to-stone-900',
-                                  'text-white',
-                                  // Hover effects
-                                  'hover:from-stone-700 hover:to-stone-800',
-                                  'hover:shadow-lg hover:shadow-stone-900/20',
-                                  // Press feedback
-                                  'active:scale-95',
-                                  // Focus ring
-                                  'focus:ring-2 focus:ring-stone-900 focus:ring-offset-2 focus:outline-none',
-                              ]
-                            : [
-                                  // Disabled state
-                                  'cursor-not-allowed bg-stone-100 text-stone-400',
-                              ]
-                    )}
-                    aria-label={isLoading ? 'Sending...' : 'Send message'}
-                >
-                    {isLoading ? (
-                        <Loader2 className='h-5 w-5 animate-spin' />
-                    ) : (
-                        <Send
+                        {/* Send Button */}
+                        <button
+                            type='button'
+                            onClick={handleSubmitClick}
+                            disabled={!canSubmit}
                             className={cn(
-                                'h-5 w-5 transition-transform duration-200',
-                                canSubmit && 'group-hover:translate-x-0.5'
+                                // Base - compact size for inline
+                                'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
+                                // Touch target with padding
+                                'min-h-[36px] min-w-[36px]',
+                                // Transitions
+                                'transition-all duration-200',
+                                // Active state
+                                canSubmit
+                                    ? [
+                                          // Gradient background
+                                          'bg-linear-to-br from-stone-800 to-stone-900',
+                                          'text-white',
+                                          // Hover effects
+                                          'hover:from-stone-700 hover:to-stone-800',
+                                          'hover:shadow-md hover:shadow-stone-900/20',
+                                          // Press feedback
+                                          'active:scale-95',
+                                          // Focus ring
+                                          'focus:ring-2 focus:ring-stone-900 focus:ring-offset-1 focus:outline-none',
+                                      ]
+                                    : [
+                                          // Disabled state - transparent
+                                          'cursor-not-allowed bg-stone-100 text-stone-400',
+                                      ]
                             )}
-                        />
-                    )}
-                </button>
+                            aria-label={
+                                isLoading ? 'Sending...' : 'Send message'
+                            }
+                        >
+                            {isLoading ? (
+                                <Loader2 className='h-4 w-4 animate-spin' />
+                            ) : (
+                                <Send className='h-4 w-4' />
+                            )}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     )

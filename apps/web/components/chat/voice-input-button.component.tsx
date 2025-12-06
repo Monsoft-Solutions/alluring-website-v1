@@ -61,28 +61,28 @@ export const VoiceInputButton = memo(function VoiceInputButton({
             onClick={onClick}
             disabled={isButtonDisabled}
             className={cn(
-                // Base
-                'relative flex shrink-0 items-center justify-center rounded-xl',
-                'h-11 min-h-[44px] w-11 min-w-[44px]',
+                // Base - compact size for inline toolbar
+                'relative flex shrink-0 items-center justify-center rounded-lg',
+                'h-9 min-h-[36px] w-9 min-w-[36px]',
                 'transition-all duration-200',
-                // Recording state
+                // Recording state - keep prominent styling
                 isRecording
                     ? [
                           'bg-red-500 text-white',
-                          'shadow-lg shadow-red-500/30',
+                          'shadow-md shadow-red-500/30',
                           'animate-pulse',
                           'hover:bg-red-600 hover:shadow-red-600/40',
                       ]
                     : [
-                          'bg-stone-100 text-stone-600',
-                          'hover:bg-stone-200 hover:text-stone-700',
-                          'hover:shadow-md hover:shadow-stone-200/50',
+                          // Idle state - transparent with subtle hover
+                          'bg-transparent text-stone-500',
+                          'hover:bg-stone-100 hover:text-stone-700',
                       ],
                 // Disabled
                 isButtonDisabled &&
-                    'cursor-not-allowed opacity-60 hover:bg-stone-100 hover:shadow-none',
+                    'cursor-not-allowed opacity-60 hover:bg-transparent',
                 // Focus
-                'focus:ring-2 focus:ring-offset-2 focus:outline-none',
+                'focus:ring-2 focus:ring-offset-1 focus:outline-none',
                 isRecording ? 'focus:ring-red-500' : 'focus:ring-stone-400',
                 // Press feedback
                 'active:scale-95'
@@ -90,11 +90,11 @@ export const VoiceInputButton = memo(function VoiceInputButton({
             aria-label={getAriaLabel()}
         >
             {isConnecting ? (
-                <Loader2 className='h-5 w-5 animate-spin' />
+                <Loader2 className='h-4 w-4 animate-spin' />
             ) : isRecording ? (
-                <MicOff className='h-5 w-5' />
+                <MicOff className='h-4 w-4' />
             ) : (
-                <Mic className='h-5 w-5' />
+                <Mic className='h-4 w-4' />
             )}
 
             {/* Countdown Badge */}
@@ -102,9 +102,9 @@ export const VoiceInputButton = memo(function VoiceInputButton({
                 <span
                     className={cn(
                         'absolute -top-1 -right-1',
-                        'flex h-5 min-w-[20px] items-center justify-center',
+                        'flex h-4 min-w-[16px] items-center justify-center',
                         'rounded-full bg-red-600 px-1',
-                        'text-[10px] font-bold text-white shadow-sm',
+                        'text-[9px] font-bold text-white shadow-sm',
                         remainingTime <= 5 && 'animate-ping-slow'
                     )}
                     aria-hidden='true'
