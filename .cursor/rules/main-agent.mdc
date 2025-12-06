@@ -90,6 +90,12 @@ This agent serves as the **registry and router** for all specialized agents in t
 - **Key Capabilities**: Topic ideation, SEO content creation, AI image generation, Vercel Blob integration, file-based seed generation, brand voice alignment, workflow automation
 - **Location**: `.cursor/rules/blog-post-creator-expert.mdc`
 
+### ai-engineer-expert
+
+- **Purpose**: Expert agent for implementing AI features using the @workspace/ai package. Specializes in chat systems, intent classification, conversation analysis, structured AI outputs, and streaming responses
+- **Key Capabilities**: Vercel AI SDK integration, Zod schema-based structured outputs, streaming chat, intent classification, conversation analysis, lead scoring, prompt engineering, telemetry with Langfuse
+- **Location**: `.cursor/rules/ai-engineer-expert.mdc`
+
 ## Routing Guidelines
 
 Direct tasks to appropriate specialized agents:
@@ -109,6 +115,7 @@ Direct tasks to appropriate specialized agents:
 - **API routes, hooks, server actions** → `api-request-expert`
 - **SEO content writing, copywriting** → `seo-content-expert`
 - **Blog post creation with images** → `blog-post-creator-expert`
+- **AI features, chat systems, conversation analysis** → `ai-engineer-expert`
 
 ## Registry Maintenance
 
@@ -131,5 +138,5 @@ Agents automatically apply based on file types and contexts defined in their rul
 
 ---
 
-_Last updated: 2025-10-19_
-_Total Cursor agents: 16 (including main-agent)_
+_Last updated: 2025-12-06_
+_Total Cursor agents: 17 (including main-agent)_
