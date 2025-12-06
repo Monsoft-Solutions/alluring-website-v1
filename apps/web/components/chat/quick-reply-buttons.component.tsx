@@ -22,7 +22,7 @@ type QuickReply = {
 }
 
 type QuickReplyButtonsProps = {
-    /** Current category to display (initial, procedures, pricing, etc.) */
+    /** Current category - only 'initial' fetches from DB, others rely on dynamic questions */
     category?: string
     /** Callback when a quick reply is clicked */
     onSelect: (message: string) => void
@@ -37,51 +37,13 @@ type QuickReplyButtonsProps = {
 }
 
 /**
- * Determines the appropriate quick reply category based on conversation state
+ * Determines if this is the initial conversation state
+ *
+ * @deprecated Other categories (procedures, pricing, etc.) are no longer used.
+ * After the initial state, AI-generated questions take over exclusively.
  */
-export function getQuickReplyCategory(
-    messageCount: number,
-    lastAssistantMessage?: string
-): string {
-    // At the start of conversation
-    if (messageCount === 0) {
-        return 'initial'
-    }
-
-    // Check if the last assistant message mentions specific topics
-    if (lastAssistantMessage) {
-        const lowerMessage = lastAssistantMessage.toLowerCase()
-
-        if (
-            lowerMessage.includes('procedure') ||
-            lowerMessage.includes('bbl') ||
-            lowerMessage.includes('augmentation') ||
-            lowerMessage.includes('tummy tuck') ||
-            lowerMessage.includes('liposuction')
-        ) {
-            return 'procedures'
-        }
-
-        if (
-            lowerMessage.includes('price') ||
-            lowerMessage.includes('cost') ||
-            lowerMessage.includes('financing') ||
-            lowerMessage.includes('payment')
-        ) {
-            return 'pricing'
-        }
-
-        if (
-            lowerMessage.includes('consultation') ||
-            lowerMessage.includes('schedule') ||
-            lowerMessage.includes('appointment')
-        ) {
-            return 'scheduling'
-        }
-    }
-
-    // Default to general for mid-conversation
-    return 'general'
+export function getQuickReplyCategory(messageCount: number): string {
+    return messageCount === 0 ? 'initial' : 'dynamic'
 }
 
 /**
@@ -175,10 +137,13 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
     // Check if we should use dynamic questions
     const hasDynamicQuestions = dynamicQuestions && dynamicQuestions.length > 0
 
-    // Fetch static quick replies when category changes (as fallback)
+    // Only fetch static quick replies for 'initial' category
+    // After the first message, AI-generated questions take over exclusively
+    const isInitialCategory = category === 'initial'
+
     useEffect(() => {
-        // Skip fetching static replies if we have dynamic questions
-        if (hasDynamicQuestions) {
+        // Skip fetching if we have dynamic questions or if not initial category
+        if (hasDynamicQuestions || !isInitialCategory) {
             setIsLoading(false)
             return
         }
@@ -187,7 +152,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
             setIsLoading(true)
             try {
                 const response = await fetch(
-                    `/api/chat/quick-replies?category=${category}`
+                    `/api/chat/quick-replies?category=initial`
                 )
                 const data = await response.json()
                 if (data.success) {
@@ -201,7 +166,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
         }
 
         fetchQuickReplies()
-    }, [category, hasDynamicQuestions])
+    }, [isInitialCategory, hasDynamicQuestions])
 
     const handleStaticClick = useCallback(
         async (reply: QuickReply) => {
@@ -267,7 +232,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
         )
     }
 
-    // Fallback to static category-based quick replies
+    // Show initial quick replies from DB (only for initial state)
     if (isLoading || quickReplies.length === 0) {
         return null
     }

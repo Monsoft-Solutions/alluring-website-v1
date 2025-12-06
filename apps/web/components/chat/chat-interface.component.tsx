@@ -16,10 +16,7 @@ import { ChatHeader } from './chat-header.component'
 import { ChatMessage } from './chat-message.component'
 import { ChatInputArea } from './chat-input-area.component'
 import { ChatTypingIndicator } from './chat-typing-indicator.component'
-import {
-    QuickReplyButtons,
-    getQuickReplyCategory,
-} from './quick-reply-buttons.component'
+import { QuickReplyButtons } from './quick-reply-buttons.component'
 
 import { useChatMessages, useChatScroll, useQuickQuestions } from '@/hooks/chat'
 import type { StoredMessage } from '@/lib/chat/types'
@@ -69,7 +66,6 @@ export function ChatInterface({
         clearMessages,
         getMessageContent,
         userMessageCount,
-        lastAssistantMessage,
         lastMessageIsAssistant,
         streamingJustCompleted,
     } = useChatMessages({
@@ -96,11 +92,9 @@ export function ChatInterface({
         clearQuestions,
     } = useQuickQuestions({ sessionId })
 
-    // Determine quick reply category
-    const quickReplyCategory = getQuickReplyCategory(
-        userMessageCount,
-        lastAssistantMessage
-    )
+    // Determine quick reply category: only 'initial' fetches from DB,
+    // after the first message, AI-generated questions take over
+    const quickReplyCategory = userMessageCount === 0 ? 'initial' : 'dynamic'
 
     // Start fetching questions when streaming completes
     useEffect(() => {
