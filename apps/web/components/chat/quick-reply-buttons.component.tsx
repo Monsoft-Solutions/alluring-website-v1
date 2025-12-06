@@ -51,14 +51,14 @@ export function getQuickReplyCategory(messageCount: number): string {
  */
 function QuickReplyShimmer() {
     return (
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-wrap justify-end gap-2'>
             {[1, 2, 3].map((i) => (
                 <div
                     key={i}
                     className={cn(
                         'h-8 rounded-full',
                         'bg-linear-to-r from-stone-100 via-stone-50 to-stone-100',
-                        'animate-shimmer bg-[length:200%_100%]',
+                        'animate-shimmer bg-size-[200%_100%]',
                         i === 1 && 'w-32',
                         i === 2 && 'w-40',
                         i === 3 && 'w-28'
@@ -201,7 +201,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
     if (dynamicQuestionsLoading) {
         return (
             <div className={cn('space-y-2', className)}>
-                <p className='text-xs font-medium text-stone-500'>
+                <p className='text-right text-xs font-medium text-stone-500'>
                     Generating suggestions...
                 </p>
                 <QuickReplyShimmer />
@@ -213,11 +213,11 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
     if (hasDynamicQuestions) {
         return (
             <div className={cn('space-y-2', className)}>
-                <p className='flex items-center gap-1.5 text-xs font-medium text-stone-500'>
+                <p className='flex items-center justify-end gap-1.5 text-xs font-medium text-stone-500'>
                     <Sparkles className='text-gold-500 h-3 w-3' />
                     Suggested questions
                 </p>
-                <div className='flex flex-wrap gap-2'>
+                <div className='flex flex-wrap justify-end gap-2'>
                     {dynamicQuestions.map((question, index) => (
                         <QuickReplyButton
                             key={`dynamic-${index}`}
@@ -239,10 +239,10 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
 
     return (
         <div className={cn('space-y-2', className)}>
-            <p className='text-xs font-medium text-stone-500'>
+            <p className='text-right text-xs font-medium text-stone-500'>
                 Quick questions
             </p>
-            <div className='flex flex-wrap gap-2'>
+            <div className='flex flex-wrap justify-end gap-2'>
                 {quickReplies.map((reply, index) => (
                     <QuickReplyButton
                         key={reply.id}

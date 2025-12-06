@@ -80,10 +80,10 @@ export function ChatInterface({
     // after the first message, AI-generated questions come from the stream
     const quickReplyCategory = userMessageCount === 0 ? 'initial' : 'dynamic'
 
-    // Auto-scroll on new messages
+    // Auto-scroll on new messages or quick questions
     useEffect(() => {
         forceScrollToBottom()
-    }, [messages.length, forceScrollToBottom])
+    }, [messages.length, streamedQuickQuestions.length, forceScrollToBottom])
 
     // Handlers
     const handleSubmit = useCallback(async () => {
@@ -183,6 +183,17 @@ export function ChatInterface({
                         </div>
                     )}
 
+                    {/* Quick Replies - rendered as message-style bubbles */}
+                    {!isLoading &&
+                        (userMessageCount === 0 ||
+                            streamedQuickQuestions.length > 0) && (
+                            <QuickReplyButtons
+                                category={quickReplyCategory}
+                                onSelect={handleQuickReplySelect}
+                                dynamicQuestions={streamedQuickQuestions}
+                            />
+                        )}
+
                     <div ref={messagesEndRef} />
                 </div>
             </div>
@@ -192,7 +203,7 @@ export function ChatInterface({
                 <button
                     onClick={() => scrollToBottom('smooth')}
                     className={cn(
-                        'absolute bottom-32 left-1/2 z-10 -translate-x-1/2',
+                        'absolute bottom-28 left-1/2 z-10 -translate-x-1/2',
                         'flex h-9 w-9 items-center justify-center rounded-full',
                         'border border-stone-200/60 bg-white/90 backdrop-blur-sm',
                         'text-stone-500 shadow-lg shadow-stone-900/10',
@@ -206,24 +217,6 @@ export function ChatInterface({
                     <ArrowDown className='h-4 w-4' />
                 </button>
             )}
-
-            {/* Quick Replies - show initial questions or streamed dynamic questions */}
-            {!isLoading &&
-                (userMessageCount === 0 ||
-                    streamedQuickQuestions.length > 0) && (
-                    <div
-                        className={cn(
-                            'border-t border-stone-100/60 px-4 py-3',
-                            'bg-linear-to-t from-stone-50/80 to-transparent'
-                        )}
-                    >
-                        <QuickReplyButtons
-                            category={quickReplyCategory}
-                            onSelect={handleQuickReplySelect}
-                            dynamicQuestions={streamedQuickQuestions}
-                        />
-                    </div>
-                )}
 
             {/* Input Area */}
             <ChatInputArea
