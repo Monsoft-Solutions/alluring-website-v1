@@ -85,7 +85,7 @@ export const AVAILABLE_MODELS: AIModel[] = [
         name: 'GPT-4.1',
         provider: 'openai',
         capabilities: ['chat', 'function-calling', 'structured-output'],
-        maxTokens: 128000,
+        maxTokens: 1047576,
         tier: 'premium',
         description: 'Most capable model with vision and advanced reasoning',
         recommended: true,
@@ -95,9 +95,19 @@ export const AVAILABLE_MODELS: AIModel[] = [
         name: 'GPT-4.1 Mini',
         provider: 'openai',
         capabilities: ['chat', 'function-calling', 'structured-output'],
-        maxTokens: 128000,
+        maxTokens: 1047576,
         tier: 'standard',
         description: 'Fast and cost-effective for most tasks',
+        recommended: true,
+    },
+    {
+        id: 'gpt-4.1-nano',
+        name: 'GPT-4.1 Nano',
+        provider: 'openai',
+        capabilities: ['chat', 'function-calling', 'structured-output'],
+        maxTokens: 1047576,
+        tier: 'standard',
+        description: 'Nano model for fast and cost-effective tasks',
         recommended: true,
     },
 ] as const
@@ -110,7 +120,13 @@ export const DEFAULT_CHAT_MODEL_ID = 'gpt-4.1'
 /**
  * Default model ID for intent classification
  */
-export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gpt-4.1-mini'
+export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gpt-4.1-nano'
+
+export const DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID = 'gpt-4.1-mini'
+
+export const DEFAULT_QUICK_QUESTIONS_MODEL_ID = 'gpt-4.1-nano'
+
+export const DEFAULT_DEEP_DIVE_ANALYSIS_MODEL_ID = 'gpt-4.1'
 
 /**
  * Get a model by its ID

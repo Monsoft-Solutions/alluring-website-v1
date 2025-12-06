@@ -17,7 +17,7 @@ import {
     QUICK_QUESTIONS_SYSTEM_PROMPT,
     getQuickQuestionsPrompt,
 } from '../prompts/chat/quick-questions.prompt'
-import { DEFAULT_CLASSIFICATION_MODEL_ID } from '../models/available-models.constant'
+import { DEFAULT_QUICK_QUESTIONS_MODEL_ID } from '../models/available-models.constant'
 
 /**
  * Options for quick questions generation
@@ -61,7 +61,7 @@ export async function generateQuickQuestions(
     params: GenerateQuickQuestionsParams,
     options: GenerateQuickQuestionsOptions = {}
 ): Promise<string[]> {
-    const { modelId = DEFAULT_CLASSIFICATION_MODEL_ID, temperature = 0.7 } =
+    const { modelId = DEFAULT_QUICK_QUESTIONS_MODEL_ID, temperature = 0.7 } =
         options
 
     // Need at least 1 message to generate meaningful questions

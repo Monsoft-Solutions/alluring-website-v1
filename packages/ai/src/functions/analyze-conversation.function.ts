@@ -20,7 +20,10 @@ import {
     CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
     getConversationAnalysisPrompt,
 } from '../prompts/chat/conversation-analysis.prompt'
-import { DEFAULT_CLASSIFICATION_MODEL_ID } from '../models/available-models.constant'
+import {
+    DEFAULT_CLASSIFICATION_MODEL_ID,
+    DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID,
+} from '../models/available-models.constant'
 
 /**
  * Options for conversation analysis
@@ -63,7 +66,7 @@ export async function analyzeConversation(
     options: AnalyzeConversationOptions = {}
 ): Promise<ConversationAnalysis> {
     const {
-        modelId = DEFAULT_CLASSIFICATION_MODEL_ID,
+        modelId = DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID,
         temperature = 0.3,
         minMessages = 2,
     } = options
