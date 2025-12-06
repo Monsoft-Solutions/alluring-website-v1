@@ -20,10 +20,7 @@ import {
     CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
     getConversationAnalysisPrompt,
 } from '../prompts/chat/conversation-analysis.prompt'
-import {
-    DEFAULT_CLASSIFICATION_MODEL_ID,
-    DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID,
-} from '../models/available-models.constant'
+import { DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID } from '../models/available-models.constant'
 
 /**
  * Options for conversation analysis
