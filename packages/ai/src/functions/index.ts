@@ -17,8 +17,12 @@ export {
     smoothStream,
     openai,
     TextStreamChatTransport,
+    DefaultChatTransport,
+    createUIMessageStream,
+    createUIMessageStreamResponse,
     type ChatMessage,
     type StreamChatOptions,
+    type UIMessageStreamWriter,
 } from './stream-chat.function'
 
 export {

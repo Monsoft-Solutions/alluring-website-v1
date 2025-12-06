@@ -18,14 +18,9 @@ import { ChatInputArea } from './chat-input-area.component'
 import { ChatTypingIndicator } from './chat-typing-indicator.component'
 import { QuickReplyButtons } from './quick-reply-buttons.component'
 
-import { useChatMessages, useChatScroll, useQuickQuestions } from '@/hooks/chat'
+import { useChatMessages, useChatScroll } from '@/hooks/chat'
 import type { StoredMessage } from '@/lib/chat/types'
-import {
-    DIMENSIONS,
-    MESSAGES,
-    CSS_CLASSES,
-    ARIA_LABELS,
-} from '@/lib/chat/constants'
+import { DIMENSIONS, CSS_CLASSES, ARIA_LABELS } from '@/lib/chat/constants'
 
 type ChatInterfaceProps = {
     sessionId: string
@@ -40,9 +35,8 @@ type ChatInterfaceProps = {
  * Premium chat interface with world-class UX
  *
  * Architecture:
- * - useChatMessages: Message state and streaming
+ * - useChatMessages: Message state, streaming, and quick questions from stream
  * - useChatScroll: Auto-scroll and scroll button
- * - useQuickQuestions: Dynamic question fetching
  * - Composed sub-components for header, input, messages
  */
 export function ChatInterface({
@@ -54,9 +48,8 @@ export function ChatInterface({
     onReset,
 }: ChatInterfaceProps) {
     const [input, setInput] = useState('')
-    const [showQuickReplies, setShowQuickReplies] = useState(true)
 
-    // Chat messages with streaming support
+    // Chat messages with streaming support and quick questions from stream
     const {
         messages,
         isLoading,
@@ -66,8 +59,7 @@ export function ChatInterface({
         clearMessages,
         getMessageContent,
         userMessageCount,
-        lastMessageIsAssistant,
-        streamingJustCompleted,
+        streamedQuickQuestions,
     } = useChatMessages({
         sessionId,
         welcomeMessage,
@@ -84,62 +76,36 @@ export function ChatInterface({
         forceScrollToBottom,
     } = useChatScroll({ bottomThreshold: DIMENSIONS.SCROLL_BOTTOM_THRESHOLD })
 
-    // Dynamic quick questions
-    const {
-        questions: dynamicQuestions,
-        isLoading: dynamicQuestionsLoading,
-        startFetching: startFetchingQuestions,
-        clearQuestions,
-    } = useQuickQuestions({ sessionId })
-
     // Determine quick reply category: only 'initial' fetches from DB,
-    // after the first message, AI-generated questions take over
+    // after the first message, AI-generated questions come from the stream
     const quickReplyCategory = userMessageCount === 0 ? 'initial' : 'dynamic'
-
-    // Start fetching questions when streaming completes
-    useEffect(() => {
-        if (streamingJustCompleted && lastMessageIsAssistant) {
-            startFetchingQuestions()
-        }
-    }, [streamingJustCompleted, lastMessageIsAssistant, startFetchingQuestions])
 
     // Auto-scroll on new messages
     useEffect(() => {
         forceScrollToBottom()
     }, [messages.length, forceScrollToBottom])
 
-    // Hide quick replies after threshold
-    useEffect(() => {
-        if (userMessageCount >= MESSAGES.HIDE_QUICK_REPLIES_AFTER) {
-            setShowQuickReplies(false)
-        }
-    }, [userMessageCount])
-
     // Handlers
     const handleSubmit = useCallback(async () => {
         if (!input.trim() || isLoading) return
         const message = input.trim()
         setInput('')
-        clearQuestions()
         await sendMessage(message)
-    }, [input, isLoading, sendMessage, clearQuestions])
+    }, [input, isLoading, sendMessage])
 
     const handleQuickReplySelect = useCallback(
         async (message: string) => {
             if (isLoading) return
-            clearQuestions()
             await sendMessage(message)
         },
-        [isLoading, sendMessage, clearQuestions]
+        [isLoading, sendMessage]
     )
 
     const handleReset = useCallback(() => {
         clearMessages()
         setInput('')
-        setShowQuickReplies(true)
-        clearQuestions()
         onReset?.()
-    }, [clearMessages, clearQuestions, onReset])
+    }, [clearMessages, onReset])
 
     // Determine if typing indicator should show
     const showTypingIndicator =
@@ -241,22 +207,23 @@ export function ChatInterface({
                 </button>
             )}
 
-            {/* Quick Replies */}
-            {showQuickReplies && !isLoading && (
-                <div
-                    className={cn(
-                        'border-t border-stone-100/60 px-4 py-3',
-                        'bg-linear-to-t from-stone-50/80 to-transparent'
-                    )}
-                >
-                    <QuickReplyButtons
-                        category={quickReplyCategory}
-                        onSelect={handleQuickReplySelect}
-                        dynamicQuestions={dynamicQuestions}
-                        dynamicQuestionsLoading={dynamicQuestionsLoading}
-                    />
-                </div>
-            )}
+            {/* Quick Replies - show initial questions or streamed dynamic questions */}
+            {!isLoading &&
+                (userMessageCount === 0 ||
+                    streamedQuickQuestions.length > 0) && (
+                    <div
+                        className={cn(
+                            'border-t border-stone-100/60 px-4 py-3',
+                            'bg-linear-to-t from-stone-50/80 to-transparent'
+                        )}
+                    >
+                        <QuickReplyButtons
+                            category={quickReplyCategory}
+                            onSelect={handleQuickReplySelect}
+                            dynamicQuestions={streamedQuickQuestions}
+                        />
+                    </div>
+                )}
 
             {/* Input Area */}
             <ChatInputArea

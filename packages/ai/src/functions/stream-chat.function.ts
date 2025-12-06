@@ -88,5 +88,13 @@ export function streamChat(options: StreamChatOptions) {
 }
 
 // Re-export AI SDK functions and types for convenience
-export { streamText, smoothStream, TextStreamChatTransport } from 'ai'
+export {
+    streamText,
+    smoothStream,
+    TextStreamChatTransport,
+    DefaultChatTransport,
+    createUIMessageStream,
+    createUIMessageStreamResponse,
+} from 'ai'
+export type { UIMessageStreamWriter } from 'ai'
 export { openai } from '@ai-sdk/openai'

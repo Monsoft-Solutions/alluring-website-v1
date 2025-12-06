@@ -14,7 +14,7 @@
 
 import { useMemo, useCallback, useRef, useEffect } from 'react'
 import { useChat, type UIMessage } from '@ai-sdk/react'
-import { TextStreamChatTransport } from '@workspace/ai'
+import { DefaultChatTransport } from '@workspace/ai'
 
 /** Re-export UIMessage as Message for backwards compatibility */
 type Message = UIMessage
@@ -68,6 +68,8 @@ type UseChatMessagesReturn = {
     lastMessageIsAssistant: boolean
     /** Whether streaming just completed (for triggering side effects) */
     streamingJustCompleted: boolean
+    /** AI-generated quick questions from the stream */
+    streamedQuickQuestions: string[]
 }
 
 /**
@@ -128,7 +130,7 @@ export function useChatMessages(
         return [welcome]
     }, [welcomeMessage, initialMessages])
 
-    // Use AI SDK's useChat hook
+    // Use AI SDK's useChat hook with DefaultChatTransport for UIMessageStream support
     const {
         messages,
         sendMessage: sdkSendMessage,
@@ -136,7 +138,7 @@ export function useChatMessages(
         error,
         setMessages,
     } = useChat({
-        transport: new TextStreamChatTransport({
+        transport: new DefaultChatTransport({
             api: '/api/chat',
             body: { sessionId },
         }),
@@ -207,6 +209,34 @@ export function useChatMessages(
         return lastMessage?.role === 'assistant'
     }, [messages])
 
+    /**
+     * Extract quick questions from the latest assistant message's data parts
+     */
+    const streamedQuickQuestions = useMemo(() => {
+        // Find the last assistant message
+        const assistantMessages = messages.filter((m) => m.role === 'assistant')
+        const lastAssistant = assistantMessages[assistantMessages.length - 1]
+
+        if (!lastAssistant?.parts) return []
+
+        // Look for data-quick-questions part
+        // Use type assertion since UIMessage parts can include custom data types
+        for (const part of lastAssistant.parts as Array<{
+            type: string
+            data?: { questions?: string[] }
+        }>) {
+            if (
+                part.type === 'data-quick-questions' &&
+                part.data &&
+                Array.isArray(part.data.questions)
+            ) {
+                return part.data.questions
+            }
+        }
+
+        return []
+    }, [messages])
+
     return {
         messages,
         isLoading,
@@ -220,5 +250,6 @@ export function useChatMessages(
         lastAssistantMessage,
         lastMessageIsAssistant,
         streamingJustCompleted: streamingJustCompletedRef.current,
+        streamedQuickQuestions,
     }
 }

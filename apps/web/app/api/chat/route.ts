@@ -12,6 +12,8 @@ import {
     openai,
     streamText,
     smoothStream,
+    createUIMessageStream,
+    createUIMessageStreamResponse,
     generateQuickQuestions,
     analyzeConversation,
     calculateLeadScoreFromAnalysis,
@@ -146,51 +148,110 @@ export async function POST(request: NextRequest) {
         const detectedProcedures =
             (session.detectedProcedures as string[]) ?? []
 
-        // Stream the AI response
-        const result = streamText({
-            model: openai(config.modelId),
-            system: config.systemPrompt,
-            messages: contextMessages,
-            temperature: config.temperature,
-            maxOutputTokens: config.maxTokens,
-            experimental_transform: smoothStream({ chunking: 'word' }),
-            onFinish: async ({ text }) => {
-                // Save assistant message to database and get the message ID
+        // Create a UI message stream that includes both text and quick questions data
+        const stream = createUIMessageStream({
+            execute: async ({ writer }) => {
+                const messageId = `msg-${Date.now()}`
+
+                // Start the message
+                writer.write({ type: 'start' })
+                writer.write({ type: 'text-start', id: messageId })
+
+                let fullText = ''
+
+                const result = streamText({
+                    model: openai(config.modelId),
+                    system: config.systemPrompt,
+                    messages: contextMessages,
+                    temperature: config.temperature,
+                    maxOutputTokens: config.maxTokens,
+                    experimental_transform: smoothStream({ chunking: 'word' }),
+                })
+
+                // Iterate over the fullStream and convert to UI message chunks
+                for await (const part of result.fullStream) {
+                    if (part.type === 'text-delta') {
+                        fullText += part.text
+                        writer.write({
+                            type: 'text-delta',
+                            id: messageId,
+                            delta: part.text,
+                        })
+                    }
+                }
+
+                // End the text stream
+                writer.write({ type: 'text-end', id: messageId })
+
+                // Save assistant message to database
                 const savedMessage = await saveChatMessage({
                     sessionId,
                     role: 'assistant',
-                    content: text,
-                    tokenCount: estimateTokenCount(text),
+                    content: fullText,
+                    tokenCount: estimateTokenCount(fullText),
                 })
 
+                // Generate quick questions and stream them to client
+                try {
+                    const questions = await generateQuickQuestions({
+                        messages: contextMessages.map((m) => ({
+                            role: m.role as 'user' | 'assistant',
+                            content: m.content,
+                        })),
+                        lastResponse: fullText,
+                        detectedProcedures:
+                            detectedProcedures.length > 0
+                                ? detectedProcedures
+                                : undefined,
+                    })
+
+                    if (questions.length > 0) {
+                        // Send questions through the UI message stream as custom data
+                        writer.write({
+                            type: 'data-quick-questions',
+                            data: { questions },
+                        })
+
+                        // Also save to DB for session restoration
+                        await updateMessageSuggestedQuestions(
+                            savedMessage.id,
+                            questions
+                        )
+
+                        console.log(
+                            `[QuickQuestions] Streamed ${questions.length} questions`
+                        )
+                    }
+                } catch (error) {
+                    console.error('[QuickQuestions] Generation failed:', error)
+                }
+
+                // Finish the message
+                writer.write({ type: 'finish' })
+
                 // Run comprehensive AI conversation analysis after enough messages
-                // (async, doesn't block response)
+                // (async, doesn't block the stream close)
                 const totalMessages = dbMessages.length + 2 // +2 for user msg and assistant response
                 if (totalMessages >= 4) {
                     analyzeConversationAsync(
                         sessionId,
-                        [...dbMessages, { role: 'assistant', content: text }],
+                        [
+                            ...dbMessages,
+                            { role: 'assistant', content: fullText },
+                        ],
                         {
                             hasEmail: !!session.email,
                             messageCount: totalMessages,
-                            returningVisitor: false, // Could be enhanced with visitor tracking
+                            returningVisitor: false,
                             isEscalated: session.isEscalated,
                         }
                     )
                 }
-
-                // Generate contextual quick questions (async, doesn't block response)
-                generateQuickQuestionsAsync(
-                    savedMessage.id,
-                    contextMessages,
-                    text,
-                    detectedProcedures
-                )
             },
         })
 
-        // Return streaming response
-        return result.toTextStreamResponse()
+        // Return the UI message stream response
+        return createUIMessageStreamResponse({ stream })
     } catch (error) {
         console.error('Chat API error:', error)
         return NextResponse.json(
@@ -281,53 +342,6 @@ async function analyzeConversationAsync(
         }
     } catch (error) {
         console.error('[ConversationAnalysis] Analysis failed:', error)
-        // Non-blocking, just log the error
-    }
-}
-
-/**
- * Generate contextual quick questions asynchronously
- * This doesn't block the chat response
- */
-async function generateQuickQuestionsAsync(
-    messageId: string,
-    messages: AIMessage[],
-    lastResponse: string,
-    detectedProcedures: string[]
-): Promise<void> {
-    try {
-        console.log(
-            `[QuickQuestions] Generating for message ${messageId}, ${messages.length} context messages`
-        )
-
-        const questions = await generateQuickQuestions({
-            messages: messages.map((m) => ({
-                role: m.role as 'user' | 'assistant',
-                content: m.content,
-            })),
-            lastResponse,
-            detectedProcedures:
-                detectedProcedures.length > 0 ? detectedProcedures : undefined,
-        })
-
-        console.log(
-            `[QuickQuestions] Generated ${questions.length} questions:`,
-            questions
-        )
-
-        // Only update if we got questions
-        if (questions.length > 0) {
-            await updateMessageSuggestedQuestions(messageId, questions)
-            console.log(
-                `[QuickQuestions] Saved questions to message ${messageId}`
-            )
-        } else {
-            console.log(
-                `[QuickQuestions] No questions generated, skipping save`
-            )
-        }
-    } catch (error) {
-        console.error('[QuickQuestions] Generation failed:', error)
         // Non-blocking, just log the error
     }
 }
