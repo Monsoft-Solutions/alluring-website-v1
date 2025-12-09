@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
@@ -72,6 +72,39 @@ export function BeforeAfterFormDialog({
         isFeatured: initialData?.isFeatured ?? false,
         displayOrder: initialData?.displayOrder ?? 0,
     })
+
+    // Sync form data when initialData or open changes
+    useEffect(() => {
+        if (open) {
+            if (initialData) {
+                // Edit mode: populate form with existing data
+                setFormData({
+                    beforeMediaId: initialData.beforeMediaId ?? '',
+                    afterMediaId: initialData.afterMediaId ?? '',
+                    procedureType: initialData.procedureType ?? '',
+                    procedureSlug: initialData.procedureSlug ?? null,
+                    patientInfo: initialData.patientInfo ?? '',
+                    timeframe: initialData.timeframe ?? '',
+                    isFeatured: initialData.isFeatured ?? false,
+                    displayOrder: initialData.displayOrder ?? 0,
+                })
+            } else {
+                // Create mode: reset form to defaults
+                setFormData({
+                    beforeMediaId: '',
+                    afterMediaId: '',
+                    procedureType: '',
+                    procedureSlug: null,
+                    patientInfo: '',
+                    timeframe: '',
+                    isFeatured: false,
+                    displayOrder: 0,
+                })
+            }
+            // Clear any previous errors when opening dialog
+            setError(null)
+        }
+    }, [open, initialData])
 
     const handleChange = (
         field: keyof BeforeAfterPairFormData,

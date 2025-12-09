@@ -5,7 +5,7 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import { and, asc, count, desc, eq, ilike, inArray, sql } from 'drizzle-orm'
+import { and, asc, count, desc, eq, ilike, sql } from 'drizzle-orm'
 
 // ============================================================================
 // Gallery Media Queries
@@ -337,6 +337,7 @@ export type BeforeAfterPairListItem = {
     afterMediaTitle: string
     procedureType: string | null
     procedureSlug: string | null
+    patientInfo: string | null
     timeframe: string | null
     isFeatured: boolean
     displayOrder: number
@@ -375,6 +376,7 @@ export async function getBeforeAfterPairs(): Promise<
             afterMediaTitle: afterMedia.title,
             procedureType: beforeAfterPair.procedureType,
             procedureSlug: beforeAfterPair.procedureSlug,
+            patientInfo: beforeAfterPair.patientInfo,
             timeframe: beforeAfterPair.timeframe,
             isFeatured: beforeAfterPair.isFeatured,
             displayOrder: beforeAfterPair.displayOrder,

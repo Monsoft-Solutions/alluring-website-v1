@@ -270,7 +270,7 @@ export function BeforeAfterPageClient({
                               afterMediaId: editingPair.afterMediaId,
                               procedureType: editingPair.procedureType,
                               procedureSlug: editingPair.procedureSlug,
-                              patientInfo: null,
+                              patientInfo: editingPair.patientInfo,
                               timeframe: editingPair.timeframe,
                               isFeatured: editingPair.isFeatured,
                               displayOrder: editingPair.displayOrder,
