@@ -18,6 +18,10 @@ import {
     getActiveTagSlugs,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
+import {
+    getAllGalleryGroupSlugs,
+    getAllGalleryMediaSlugs,
+} from '@/lib/queries/gallery/gallery-detail.query'
 import { procedures } from '@/lib/data/procedures.data'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
@@ -137,6 +141,51 @@ async function createDynamicRoutes(): Promise<SitemapRoute[]> {
                 lastModified: now,
                 changeFrequency: 'monthly' as const,
                 priority: 0.8,
+            }))
+        },
+    })
+
+    // Gallery main listing page
+    dynamicRoutes.push({
+        path: '/gallery',
+        getEntries: async () => {
+            return [
+                {
+                    url: '/gallery',
+                    lastModified: new Date().toISOString(),
+                    changeFrequency: 'weekly',
+                    priority: 0.9,
+                },
+            ]
+        },
+    })
+
+    // Gallery group pages
+    dynamicRoutes.push({
+        path: '/gallery/groups',
+        getEntries: async () => {
+            const groupSlugs = await getAllGalleryGroupSlugs()
+            const now = new Date().toISOString()
+            return groupSlugs.map((slug) => ({
+                url: `/gallery/${slug}`,
+                lastModified: now,
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
+            }))
+        },
+    })
+
+    // Gallery media detail pages
+    dynamicRoutes.push({
+        path: '/gallery/media',
+        getEntries: async () => {
+            const mediaSlugs = await getAllGalleryMediaSlugs()
+            const now = new Date().toISOString()
+            return mediaSlugs.map((slug) => ({
+                url: `/gallery/media/${slug}`,
+                lastModified: now,
+                changeFrequency: 'monthly' as const,
+                priority: 0.6,
             }))
         },
     })
