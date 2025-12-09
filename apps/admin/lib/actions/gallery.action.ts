@@ -8,7 +8,7 @@ import {
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
 import { del } from '@vercel/blob'
-import { and, eq, inArray, sql } from 'drizzle-orm'
+import { eq, inArray, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 import { env } from '@/env'
@@ -60,6 +60,7 @@ export type BeforeAfterPairFormData = {
     beforeMediaId: string
     afterMediaId: string
     procedureType?: string | null
+    procedureSlug?: string | null
     patientInfo?: string | null
     timeframe?: string | null
     isFeatured?: boolean
@@ -633,6 +634,7 @@ export async function createBeforeAfterPair(
                 beforeMediaId: data.beforeMediaId,
                 afterMediaId: data.afterMediaId,
                 procedureType: data.procedureType ?? null,
+                procedureSlug: data.procedureSlug ?? null,
                 patientInfo: data.patientInfo ?? null,
                 timeframe: data.timeframe ?? null,
                 isFeatured: data.isFeatured ?? false,
@@ -726,6 +728,7 @@ export async function updateBeforeAfterPair(
                 beforeMediaId: data.beforeMediaId,
                 afterMediaId: data.afterMediaId,
                 procedureType: data.procedureType ?? null,
+                procedureSlug: data.procedureSlug ?? null,
                 patientInfo: data.patientInfo ?? null,
                 timeframe: data.timeframe ?? null,
                 isFeatured: data.isFeatured ?? false,

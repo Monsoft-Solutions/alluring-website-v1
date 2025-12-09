@@ -336,6 +336,7 @@ export type BeforeAfterPairListItem = {
     afterMediaUrl: string
     afterMediaTitle: string
     procedureType: string | null
+    procedureSlug: string | null
     timeframe: string | null
     isFeatured: boolean
     displayOrder: number
@@ -373,6 +374,7 @@ export async function getBeforeAfterPairs(): Promise<
             afterMediaUrl: afterMedia.url,
             afterMediaTitle: afterMedia.title,
             procedureType: beforeAfterPair.procedureType,
+            procedureSlug: beforeAfterPair.procedureSlug,
             timeframe: beforeAfterPair.timeframe,
             isFeatured: beforeAfterPair.isFeatured,
             displayOrder: beforeAfterPair.displayOrder,

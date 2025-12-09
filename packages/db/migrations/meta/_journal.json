@@ -141,6 +141,13 @@
       "when": 1765282802509,
       "tag": "0019_purple_matthew_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1765320384179,
+      "tag": "0020_chilly_roland_deschain",
+      "breakpoints": true
     }
   ]
 }

@@ -54,6 +54,25 @@ const PROCEDURE_TYPES = [
 type ProcedureType = (typeof PROCEDURE_TYPES)[number]
 
 /**
+ * Valid procedure page slugs
+ * Maps to procedure pages in apps/web/lib/data/procedures/
+ */
+const PROCEDURE_SLUGS = [
+    'brazilian-butt-lift-bbl-miami',
+    'breast-augmentation-miami',
+    'breast-lift-miami',
+    'breast-reduction-miami',
+    'tummy-tuck-miami',
+    'liposuction-miami',
+    'mommy-makeover-miami',
+    'facelift-miami',
+    'blepharoplasty-miami',
+    'rhinoplasty-miami',
+] as const
+
+type ProcedureSlug = (typeof PROCEDURE_SLUGS)[number]
+
+/**
  * Before/after pair definition for seeding
  * Pairs are defined by matching slug patterns
  */
@@ -61,6 +80,7 @@ type BeforeAfterPairSeedData = {
     beforeSlug: string // Slug of the "before" image
     afterSlug: string // Slug of the "after" image
     procedureType: ProcedureType
+    procedureSlug?: ProcedureSlug // Links to procedure page for display on procedure pages
     patientInfo?: string
     timeframe?: string
     isFeatured?: boolean
@@ -76,6 +96,7 @@ type BeforeAfterPairSeedData = {
  *   beforeSlug: 'bbl-patient-001-before',
  *   afterSlug: 'bbl-patient-001-after',
  *   procedureType: 'BBL (Brazilian Butt Lift)',
+ *   procedureSlug: 'brazilian-butt-lift-bbl-miami', // Links to procedure page
  *   patientInfo: 'Female, 32, 5\'4"',
  *   timeframe: '3 months post-op',
  *   isFeatured: true,
@@ -127,6 +148,12 @@ export async function run({ db }: RunProps) {
         PROCEDURE_TYPES.forEach((type) => {
             console.log(`   - ${type}`)
         })
+        console.log(
+            '\n📋 Available procedure slugs (for linking to procedure pages):'
+        )
+        PROCEDURE_SLUGS.forEach((slug) => {
+            console.log(`   - ${slug}`)
+        })
         return
     }
 
@@ -161,6 +188,7 @@ export async function run({ db }: RunProps) {
                 beforeMediaId,
                 afterMediaId,
                 procedureType: pair.procedureType,
+                procedureSlug: pair.procedureSlug ?? null,
                 patientInfo: pair.patientInfo ?? null,
                 timeframe: pair.timeframe ?? null,
                 isFeatured: pair.isFeatured ?? false,

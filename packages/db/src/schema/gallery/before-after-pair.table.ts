@@ -22,6 +22,7 @@ export const beforeAfterPair = pgTable(
             .notNull()
             .references(() => galleryMedia.id, { onDelete: 'cascade' }),
         procedureType: varchar('procedure_type', { length: 100 }),
+        procedureSlug: varchar('procedure_slug', { length: 100 }), // Links to procedure page slug
         patientInfo: text('patient_info'), // Anonymized notes
         timeframe: varchar('timeframe', { length: 100 }), // e.g., "3 months post-op"
         isFeatured: boolean('is_featured').default(false).notNull(),
@@ -36,6 +37,9 @@ export const beforeAfterPair = pgTable(
         {
             procedureTypeIdx: index('before_after_pair_procedure_type_idx').on(
                 table.procedureType
+            ),
+            procedureSlugIdx: index('before_after_pair_procedure_slug_idx').on(
+                table.procedureSlug
             ),
             isFeaturedIdx: index('before_after_pair_is_featured_idx').on(
                 table.isFeatured

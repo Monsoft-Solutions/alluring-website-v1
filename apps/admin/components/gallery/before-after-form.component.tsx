@@ -31,6 +31,10 @@ import {
     updateBeforeAfterPair,
     type BeforeAfterPairFormData,
 } from '@/lib/actions/gallery.action'
+import {
+    PROCEDURE_OPTIONS,
+    getProcedureSlugByName,
+} from '@/lib/constants/procedure.constant'
 
 type MediaOption = {
     id: string
@@ -47,19 +51,6 @@ type BeforeAfterFormDialogProps = {
     mode: 'create' | 'edit'
 }
 
-const PROCEDURE_TYPES = [
-    'BBL (Brazilian Butt Lift)',
-    'Breast Augmentation',
-    'Breast Lift',
-    'Breast Reduction',
-    'Tummy Tuck',
-    'Liposuction',
-    'Mommy Makeover',
-    'Facelift',
-    'Rhinoplasty',
-    'Other',
-]
-
 export function BeforeAfterFormDialog({
     open,
     onOpenChange,
@@ -75,6 +66,7 @@ export function BeforeAfterFormDialog({
         beforeMediaId: initialData?.beforeMediaId ?? '',
         afterMediaId: initialData?.afterMediaId ?? '',
         procedureType: initialData?.procedureType ?? '',
+        procedureSlug: initialData?.procedureSlug ?? null,
         patientInfo: initialData?.patientInfo ?? '',
         timeframe: initialData?.timeframe ?? '',
         isFeatured: initialData?.isFeatured ?? false,
@@ -102,6 +94,7 @@ export function BeforeAfterFormDialog({
                             beforeMediaId: '',
                             afterMediaId: '',
                             procedureType: '',
+                            procedureSlug: null,
                             patientInfo: '',
                             timeframe: '',
                             isFeatured: false,
@@ -241,24 +234,38 @@ export function BeforeAfterFormDialog({
 
                     {/* Procedure Type */}
                     <div className='space-y-2'>
-                        <Label>Procedure Type</Label>
+                        <Label>Procedure</Label>
                         <Select
                             value={formData.procedureType ?? ''}
-                            onValueChange={(value) =>
-                                handleChange('procedureType', value)
-                            }
+                            onValueChange={(value) => {
+                                // Set both the display name and the slug
+                                const slug = getProcedureSlugByName(value)
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    procedureType: value,
+                                    procedureSlug: slug,
+                                }))
+                                setError(null)
+                            }}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder='Select procedure type' />
+                                <SelectValue placeholder='Select procedure' />
                             </SelectTrigger>
                             <SelectContent>
-                                {PROCEDURE_TYPES.map((type) => (
-                                    <SelectItem key={type} value={type}>
-                                        {type}
+                                {PROCEDURE_OPTIONS.map((option) => (
+                                    <SelectItem
+                                        key={option.name}
+                                        value={option.name}
+                                    >
+                                        {option.name}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
+                        <p className='text-muted-foreground text-xs'>
+                            This links the before/after pair to the procedure
+                            page
+                        </p>
                     </div>
 
                     {/* Timeframe */}
