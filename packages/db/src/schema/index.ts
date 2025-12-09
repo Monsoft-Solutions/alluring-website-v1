@@ -122,3 +122,25 @@ export {
     type Promotion,
     type InsertPromotion,
 } from './promotion'
+
+// Gallery schema
+export {
+    galleryMediaType,
+    galleryMediaStatus,
+    galleryMedia,
+    galleryGroup,
+    galleryMediaGroup,
+    beforeAfterPair,
+    galleryMediaRelations,
+    galleryGroupRelations,
+    galleryMediaGroupRelations,
+    beforeAfterPairRelations,
+    type GalleryMedia,
+    type InsertGalleryMedia,
+    type GalleryGroup,
+    type InsertGalleryGroup,
+    type GalleryMediaGroup,
+    type InsertGalleryMediaGroup,
+    type BeforeAfterPair,
+    type InsertBeforeAfterPair,
+} from './gallery'
