@@ -1,10 +1,14 @@
 import { unstable_cache } from 'next/cache'
 
 import { db } from '@workspace/db/client'
+import { CACHE_TAGS } from '@workspace/shared/cache'
 import { beforeAfterPair, galleryMedia } from '@workspace/db/schema/gallery'
-import { and, asc, eq } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 
 import type { BeforeAfterPairCard } from '@/lib/types/gallery/before-after.type'
+
+/** Cache revalidation time in seconds (1 hour fallback) */
+const CACHE_TTL = 3600
 
 /**
  * Internal function to fetch featured before/after pairs
@@ -107,8 +111,8 @@ export const getFeaturedBeforeAfterPairs = (
         () => fetchFeaturedBeforeAfterPairs(limit),
         [`before-after-featured-${limit}`],
         {
-            tags: ['before-after-pairs'],
-            revalidate: 60,
+            tags: [CACHE_TAGS.BEFORE_AFTER_PAIRS],
+            revalidate: CACHE_TTL,
         }
     )()
 }
@@ -207,8 +211,8 @@ export const getAllBeforeAfterPairs = (): Promise<BeforeAfterPairCard[]> => {
         () => fetchAllBeforeAfterPairs(),
         ['before-after-all'],
         {
-            tags: ['before-after-pairs'],
-            revalidate: 60,
+            tags: [CACHE_TAGS.BEFORE_AFTER_PAIRS],
+            revalidate: CACHE_TTL,
         }
     )()
 }
@@ -317,8 +321,8 @@ export const getBeforeAfterPairsByProcedure = (
         () => fetchBeforeAfterPairsByProcedure(procedureSlug, limit),
         [`before-after-procedure-${procedureSlug}-${limit}`],
         {
-            tags: ['before-after-pairs', `procedure-${procedureSlug}`],
-            revalidate: 60,
+            tags: [CACHE_TAGS.BEFORE_AFTER_PAIRS, `procedure-${procedureSlug}`],
+            revalidate: CACHE_TTL,
         }
     )()
 }

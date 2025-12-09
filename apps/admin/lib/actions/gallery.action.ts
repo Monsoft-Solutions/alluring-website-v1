@@ -12,6 +12,11 @@ import { eq, inArray, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 import { env } from '@/env'
+import {
+    revalidateWebAppCache,
+    getAllGalleryTags,
+    CACHE_TAGS,
+} from '@/lib/utils/revalidate-web.util'
 
 // ============================================================================
 // Types
@@ -142,6 +147,9 @@ export async function createGalleryMedia(
         revalidatePath('/gallery')
         revalidatePath('/gallery/media')
 
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
+
         return { success: true, id: newMedia?.id }
     } catch (error) {
         console.error('Error creating gallery media:', error)
@@ -182,11 +190,12 @@ export async function updateGalleryMedia(
             }
         }
 
-        // Get current media to check status change
+        // Get current media to check status change and get old slug for cache invalidation
         const currentMedia = await db
             .select({
                 status: galleryMedia.status,
                 url: galleryMedia.url,
+                slug: galleryMedia.slug,
             })
             .from(galleryMedia)
             .where(eq(galleryMedia.id, id))
@@ -195,6 +204,8 @@ export async function updateGalleryMedia(
         if (!currentMedia.length) {
             return { success: false, error: 'Media not found' }
         }
+
+        const oldSlug = currentMedia[0]?.slug
 
         // Determine if we need to update publishedAt
         const wasPublished = currentMedia[0]?.status === 'published'
@@ -253,6 +264,16 @@ export async function updateGalleryMedia(
         revalidatePath('/gallery/media')
         revalidatePath(`/gallery/media/${id}/edit`)
 
+        // Revalidate web app cache - include slug-specific tags
+        const cacheTags = getAllGalleryTags()
+        if (oldSlug) {
+            cacheTags.push(CACHE_TAGS.galleryMediaBySlug(oldSlug))
+        }
+        if (data.slug !== oldSlug) {
+            cacheTags.push(CACHE_TAGS.galleryMediaBySlug(data.slug))
+        }
+        await revalidateWebAppCache(cacheTags)
+
         return { success: true, id }
     } catch (error) {
         console.error('Error updating gallery media:', error)
@@ -268,9 +289,9 @@ export async function updateGalleryMedia(
 
 export async function deleteGalleryMedia(id: string): Promise<ActionResult> {
     try {
-        // Get the media to retrieve the URL for blob deletion
+        // Get the media to retrieve the URL for blob deletion and slug for cache invalidation
         const [media] = await db
-            .select({ url: galleryMedia.url })
+            .select({ url: galleryMedia.url, slug: galleryMedia.slug })
             .from(galleryMedia)
             .where(eq(galleryMedia.id, id))
             .limit(1)
@@ -278,6 +299,8 @@ export async function deleteGalleryMedia(id: string): Promise<ActionResult> {
         if (!media) {
             return { success: false, error: 'Media not found' }
         }
+
+        const slug = media.slug
 
         // Delete the media record (cascade will handle junction table)
         await db.delete(galleryMedia).where(eq(galleryMedia.id, id))
@@ -293,6 +316,13 @@ export async function deleteGalleryMedia(id: string): Promise<ActionResult> {
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/media')
+
+        // Revalidate web app cache - include slug-specific tag
+        const cacheTags = getAllGalleryTags()
+        if (slug) {
+            cacheTags.push(CACHE_TAGS.galleryMediaBySlug(slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {
@@ -313,7 +343,7 @@ export async function updateMediaStatus(
 ): Promise<ActionResult> {
     try {
         const currentMedia = await db
-            .select({ status: galleryMedia.status })
+            .select({ status: galleryMedia.status, slug: galleryMedia.slug })
             .from(galleryMedia)
             .where(eq(galleryMedia.id, id))
             .limit(1)
@@ -321,6 +351,8 @@ export async function updateMediaStatus(
         if (!currentMedia.length) {
             return { success: false, error: 'Media not found' }
         }
+
+        const slug = currentMedia[0]?.slug
 
         const wasPublished = currentMedia[0]?.status === 'published'
         const isNowPublished = status === 'published'
@@ -337,6 +369,13 @@ export async function updateMediaStatus(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/media')
+
+        // Revalidate web app cache - status changes affect visibility
+        const cacheTags = getAllGalleryTags()
+        if (slug) {
+            cacheTags.push(CACHE_TAGS.galleryMediaBySlug(slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {
@@ -356,6 +395,13 @@ export async function toggleMediaFeatured(
     isFeatured: boolean
 ): Promise<ActionResult> {
     try {
+        // Get slug for cache invalidation
+        const [media] = await db
+            .select({ slug: galleryMedia.slug })
+            .from(galleryMedia)
+            .where(eq(galleryMedia.id, id))
+            .limit(1)
+
         await db
             .update(galleryMedia)
             .set({ isFeatured })
@@ -363,6 +409,13 @@ export async function toggleMediaFeatured(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/media')
+
+        // Revalidate web app cache
+        const cacheTags = getAllGalleryTags()
+        if (media?.slug) {
+            cacheTags.push(CACHE_TAGS.galleryMediaBySlug(media.slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {
@@ -392,6 +445,9 @@ export async function reorderMedia(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/media')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
 
         return { success: true }
     } catch (error) {
@@ -459,6 +515,9 @@ export async function createGalleryGroup(
         revalidatePath('/gallery')
         revalidatePath('/gallery/groups')
 
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
+
         return { success: true, id: newGroup?.id }
     } catch (error) {
         console.error('Error creating gallery group:', error)
@@ -499,6 +558,15 @@ export async function updateGalleryGroup(
             }
         }
 
+        // Get current slug for cache invalidation
+        const currentGroup = await db
+            .select({ slug: galleryGroup.slug })
+            .from(galleryGroup)
+            .where(eq(galleryGroup.id, id))
+            .limit(1)
+
+        const oldSlug = currentGroup[0]?.slug
+
         // Update the group
         await db
             .update(galleryGroup)
@@ -515,6 +583,16 @@ export async function updateGalleryGroup(
         revalidatePath('/gallery')
         revalidatePath('/gallery/groups')
 
+        // Revalidate web app cache - include slug-specific tags
+        const cacheTags = getAllGalleryTags()
+        if (oldSlug) {
+            cacheTags.push(CACHE_TAGS.galleryGroupBySlug(oldSlug))
+        }
+        if (data.slug !== oldSlug) {
+            cacheTags.push(CACHE_TAGS.galleryGroupBySlug(data.slug))
+        }
+        await revalidateWebAppCache(cacheTags)
+
         return { success: true, id }
     } catch (error) {
         console.error('Error updating gallery group:', error)
@@ -530,11 +608,27 @@ export async function updateGalleryGroup(
 
 export async function deleteGalleryGroup(id: string): Promise<ActionResult> {
     try {
+        // Get slug for cache invalidation before deletion
+        const [group] = await db
+            .select({ slug: galleryGroup.slug })
+            .from(galleryGroup)
+            .where(eq(galleryGroup.id, id))
+            .limit(1)
+
+        const slug = group?.slug
+
         // Delete the group (cascade will handle junction table)
         await db.delete(galleryGroup).where(eq(galleryGroup.id, id))
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/groups')
+
+        // Revalidate web app cache - include slug-specific tag
+        const cacheTags = getAllGalleryTags()
+        if (slug) {
+            cacheTags.push(CACHE_TAGS.galleryGroupBySlug(slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {
@@ -554,6 +648,13 @@ export async function toggleGroupVisibility(
     isVisible: boolean
 ): Promise<ActionResult> {
     try {
+        // Get slug for cache invalidation
+        const [group] = await db
+            .select({ slug: galleryGroup.slug })
+            .from(galleryGroup)
+            .where(eq(galleryGroup.id, id))
+            .limit(1)
+
         await db
             .update(galleryGroup)
             .set({ isVisible })
@@ -561,6 +662,13 @@ export async function toggleGroupVisibility(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/groups')
+
+        // Revalidate web app cache - visibility changes affect public pages
+        const cacheTags = getAllGalleryTags()
+        if (group?.slug) {
+            cacheTags.push(CACHE_TAGS.galleryGroupBySlug(group.slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         return { success: true }
     } catch (error) {
@@ -590,6 +698,9 @@ export async function reorderGroups(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/groups')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
 
         return { success: true }
     } catch (error) {
@@ -658,6 +769,9 @@ export async function createBeforeAfterPair(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/before-after')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
 
         return { success: true, id: newPair?.id }
     } catch (error) {
@@ -748,6 +862,9 @@ export async function updateBeforeAfterPair(
         revalidatePath('/gallery')
         revalidatePath('/gallery/before-after')
 
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
+
         return { success: true, id }
     } catch (error) {
         console.error('Error updating before/after pair:', error)
@@ -797,6 +914,9 @@ export async function deleteBeforeAfterPair(id: string): Promise<ActionResult> {
         revalidatePath('/gallery')
         revalidatePath('/gallery/before-after')
 
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
+
         return { success: true }
     } catch (error) {
         console.error('Error deleting before/after pair:', error)
@@ -822,6 +942,9 @@ export async function togglePairFeatured(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/before-after')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
 
         return { success: true }
     } catch (error) {
@@ -851,6 +974,9 @@ export async function reorderPairs(
 
         revalidatePath('/gallery')
         revalidatePath('/gallery/before-after')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache(getAllGalleryTags())
 
         return { success: true }
     } catch (error) {

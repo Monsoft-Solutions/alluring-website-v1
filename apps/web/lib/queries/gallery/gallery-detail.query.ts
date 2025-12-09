@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache'
 
 import { db } from '@workspace/db/client'
+import { CACHE_TAGS } from '@workspace/shared/cache'
 import {
     galleryGroup,
     galleryMedia,
@@ -13,6 +14,9 @@ import type {
     GalleryMediaCard,
 } from '@/lib/types/gallery/gallery-group.type'
 import type { GalleryMediaDetail } from '@/lib/types/gallery/gallery-media.type'
+
+/** Cache revalidation time in seconds (1 hour fallback) */
+const CACHE_TTL = 3600
 
 /**
  * Internal function to fetch gallery group by slug with its media
@@ -110,8 +114,11 @@ export const getGalleryGroupBySlug = (
         () => fetchGalleryGroupBySlug(slug),
         [`gallery-group-${slug}`],
         {
-            tags: ['gallery-groups', `gallery-group-${slug}`],
-            revalidate: 60,
+            tags: [
+                CACHE_TAGS.GALLERY_GROUPS,
+                CACHE_TAGS.galleryGroupBySlug(slug),
+            ],
+            revalidate: CACHE_TTL,
         }
     )()
 }
@@ -254,8 +261,11 @@ export const getGalleryMediaBySlug = (
         () => fetchGalleryMediaBySlug(slug),
         [`gallery-media-${slug}`],
         {
-            tags: ['gallery-media', `gallery-media-${slug}`],
-            revalidate: 60,
+            tags: [
+                CACHE_TAGS.GALLERY_MEDIA,
+                CACHE_TAGS.galleryMediaBySlug(slug),
+            ],
+            revalidate: CACHE_TTL,
         }
     )()
 }

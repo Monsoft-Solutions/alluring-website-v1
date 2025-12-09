@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache'
 
 import { db } from '@workspace/db/client'
+import { CACHE_TAGS } from '@workspace/shared/cache'
 import {
     galleryGroup,
     galleryMedia,
@@ -12,6 +13,9 @@ import type {
     GalleryGroupCard,
     GalleryMediaCard,
 } from '@/lib/types/gallery/gallery-group.type'
+
+/** Cache revalidation time in seconds (1 hour fallback) */
+const CACHE_TTL = 3600
 
 /**
  * Internal function to fetch visible gallery groups from database
@@ -66,8 +70,8 @@ export const getVisibleGalleryGroups = (): Promise<GalleryGroupCard[]> => {
         () => fetchVisibleGalleryGroups(),
         ['gallery-groups-list'],
         {
-            tags: ['gallery-groups'],
-            revalidate: 60,
+            tags: [CACHE_TAGS.GALLERY_GROUPS],
+            revalidate: CACHE_TTL,
         }
     )()
 }
@@ -217,8 +221,8 @@ export const getPublishedGalleryMedia = (options: {
         () => fetchPublishedGalleryMedia(options),
         [cacheKey],
         {
-            tags: ['gallery-media'],
-            revalidate: 60,
+            tags: [CACHE_TAGS.GALLERY_MEDIA],
+            revalidate: CACHE_TTL,
         }
     )()
 }
