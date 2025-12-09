@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2 } from 'lucide-react'
+import { ImageIcon, Loader2 } from 'lucide-react'
+import Image from 'next/image'
 
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
@@ -17,6 +18,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@workspace/ui/components/dialog'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@workspace/ui/components/select'
 
 import {
     createGalleryGroup,
@@ -24,11 +32,19 @@ import {
     type GalleryGroupFormData,
 } from '@/lib/actions/gallery.action'
 
+type MediaOption = {
+    id: string
+    title: string
+    url: string
+    type: 'image' | 'video'
+}
+
 type GroupFormDialogProps = {
     open: boolean
     onOpenChange: (open: boolean) => void
     initialData?: GalleryGroupFormData & { id: string }
     mode: 'create' | 'edit'
+    mediaOptions?: MediaOption[]
 }
 
 export function GroupFormDialog({
@@ -36,6 +52,7 @@ export function GroupFormDialog({
     onOpenChange,
     initialData,
     mode,
+    mediaOptions = [],
 }: GroupFormDialogProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
@@ -49,6 +66,20 @@ export function GroupFormDialog({
         displayOrder: initialData?.displayOrder ?? 0,
         isVisible: initialData?.isVisible ?? true,
     })
+
+    useEffect(() => {
+        if (open) {
+            setFormData({
+                name: initialData?.name ?? '',
+                slug: initialData?.slug ?? '',
+                description: initialData?.description ?? '',
+                coverImageId: initialData?.coverImageId ?? null,
+                displayOrder: initialData?.displayOrder ?? 0,
+                isVisible: initialData?.isVisible ?? true,
+            })
+            setError(null)
+        }
+    }, [open, initialData])
 
     const handleChange = (
         field: keyof GalleryGroupFormData,
@@ -164,6 +195,66 @@ export function GroupFormDialog({
                             placeholder='Brief description of this group'
                             rows={3}
                         />
+                    </div>
+
+                    {/* Cover Image Selection */}
+                    <div className='space-y-2'>
+                        <Label>Cover Image (Thumbnail)</Label>
+                        <Select
+                            value={formData.coverImageId ?? 'none'}
+                            onValueChange={(value) =>
+                                handleChange(
+                                    'coverImageId',
+                                    value === 'none' ? null : value
+                                )
+                            }
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder='Select a cover image' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='none'>
+                                    No cover image
+                                </SelectItem>
+                                {mediaOptions
+                                    .filter((m) => m.type === 'image')
+                                    .map((media) => (
+                                        <SelectItem
+                                            key={media.id}
+                                            value={media.id}
+                                        >
+                                            {media.title}
+                                        </SelectItem>
+                                    ))}
+                            </SelectContent>
+                        </Select>
+                        {/* Cover Image Preview */}
+                        {formData.coverImageId && (
+                            <div className='relative aspect-video w-full overflow-hidden rounded-lg border bg-stone-100'>
+                                {(() => {
+                                    const selectedImage = mediaOptions.find(
+                                        (m) => m.id === formData.coverImageId
+                                    )
+                                    return selectedImage ? (
+                                        <Image
+                                            src={selectedImage.url}
+                                            alt={selectedImage.title}
+                                            fill
+                                            className='object-cover'
+                                            sizes='400px'
+                                        />
+                                    ) : (
+                                        <div className='flex h-full items-center justify-center'>
+                                            <ImageIcon className='text-muted-foreground h-8 w-8' />
+                                        </div>
+                                    )
+                                })()}
+                            </div>
+                        )}
+                        <p className='text-muted-foreground text-xs'>
+                            This image will be displayed as the group thumbnail
+                            in the gallery.
+                        </p>
                     </div>
 
                     <div className='space-y-2'>

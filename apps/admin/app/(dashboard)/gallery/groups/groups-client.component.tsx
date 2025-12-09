@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
@@ -35,17 +35,38 @@ import {
     deleteGalleryGroup,
     toggleGroupVisibility,
 } from '@/lib/actions/gallery.action'
-import type { GalleryGroupListItem } from '@/lib/queries/gallery.query'
+import type {
+    GalleryGroupListItem,
+    GalleryMediaOption,
+} from '@/lib/queries/gallery.query'
 
 type GroupsPageClientProps = {
     groups: GalleryGroupListItem[]
+    mediaOptions: GalleryMediaOption[]
 }
 
-export function GroupsPageClient({ groups }: GroupsPageClientProps) {
+export function GroupsPageClient({
+    groups,
+    mediaOptions,
+}: GroupsPageClientProps) {
     const router = useRouter()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [editingGroup, setEditingGroup] =
         useState<GalleryGroupListItem | null>(null)
+
+    const initialFormData = useMemo(() => {
+        return editingGroup
+            ? {
+                  id: editingGroup.id,
+                  name: editingGroup.name,
+                  slug: editingGroup.slug,
+                  description: editingGroup.description,
+                  coverImageId: editingGroup.coverImageId,
+                  displayOrder: editingGroup.displayOrder,
+                  isVisible: editingGroup.isVisible,
+              }
+            : undefined
+    }, [editingGroup])
 
     const handleCreate = () => {
         setEditingGroup(null)
@@ -261,20 +282,9 @@ export function GroupsPageClient({ groups }: GroupsPageClientProps) {
             <GroupFormDialog
                 open={dialogOpen}
                 onOpenChange={setDialogOpen}
-                initialData={
-                    editingGroup
-                        ? {
-                              id: editingGroup.id,
-                              name: editingGroup.name,
-                              slug: editingGroup.slug,
-                              description: editingGroup.description,
-                              coverImageId: null,
-                              displayOrder: editingGroup.displayOrder,
-                              isVisible: editingGroup.isVisible,
-                          }
-                        : undefined
-                }
+                initialData={initialFormData}
                 mode={editingGroup ? 'edit' : 'create'}
+                mediaOptions={mediaOptions}
             />
         </div>
     )
