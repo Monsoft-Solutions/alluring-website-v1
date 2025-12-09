@@ -351,30 +351,33 @@ export function robotsToText(robots: MetadataRoute.Robots): string {
 
     rulesArray.forEach((rule) => {
         // Handle userAgent as string or array
-        const userAgents = Array.isArray(rule.userAgent)
-            ? rule.userAgent
-            : [rule.userAgent]
+        const userAgents = (
+            Array.isArray(rule.userAgent) ? rule.userAgent : [rule.userAgent]
+        ).filter((ua): ua is string => Boolean(ua))
+
         userAgents.forEach((ua) => {
-            if (ua) lines.push(`User-agent: ${ua}`)
+            lines.push(`User-agent: ${ua}`)
         })
 
         // Handle allow paths
         if (rule.allow) {
-            const allowPaths = Array.isArray(rule.allow)
-                ? rule.allow
-                : [rule.allow]
+            const allowPaths = (
+                Array.isArray(rule.allow) ? rule.allow : [rule.allow]
+            ).filter((path): path is string => Boolean(path))
+
             allowPaths.forEach((path) => {
-                if (path) lines.push(`Allow: ${path}`)
+                lines.push(`Allow: ${path}`)
             })
         }
 
         // Handle disallow paths
         if (rule.disallow) {
-            const disallowPaths = Array.isArray(rule.disallow)
-                ? rule.disallow
-                : [rule.disallow]
+            const disallowPaths = (
+                Array.isArray(rule.disallow) ? rule.disallow : [rule.disallow]
+            ).filter((path): path is string => Boolean(path))
+
             disallowPaths.forEach((path) => {
-                if (path) lines.push(`Disallow: ${path}`)
+                lines.push(`Disallow: ${path}`)
             })
         }
 
