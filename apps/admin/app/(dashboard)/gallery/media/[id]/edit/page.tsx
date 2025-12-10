@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ChevronLeft, Trash2 } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 
 import { MediaForm } from '@/components/gallery/media-form.component'
 import { DeleteMediaButton } from './delete-button.component'
 import {
-    getGalleryGroupsForSelect,
+    getGalleryGroupsWithSlug,
     getGalleryMediaById,
 } from '@/lib/queries/gallery.query'
 
@@ -22,7 +22,7 @@ export default async function EditMediaPage({ params }: PageProps) {
 
     const [media, groups] = await Promise.all([
         getGalleryMediaById(id),
-        getGalleryGroupsForSelect(),
+        getGalleryGroupsWithSlug(),
     ])
 
     if (!media) {
@@ -76,6 +76,7 @@ export default async function EditMediaPage({ params }: PageProps) {
                     displayOrder: media.displayOrder,
                     status: media.status,
                     groupIds: media.groupIds,
+                    aiAnalysis: media.aiAnalysis,
                 }}
                 mode='edit'
             />

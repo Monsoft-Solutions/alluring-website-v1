@@ -5,6 +5,7 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
+import type { GalleryMediaAIAnalysis } from '@workspace/ai'
 import { and, asc, count, desc, eq, ilike, sql } from 'drizzle-orm'
 
 // ============================================================================
@@ -193,6 +194,7 @@ export type GalleryMediaDetail = {
     createdAt: Date
     updatedAt: Date
     publishedAt: Date | null
+    aiAnalysis: GalleryMediaAIAnalysis | null
     groupIds: string[]
 }
 
@@ -317,6 +319,58 @@ export async function getGalleryGroupsForSelect(): Promise<
         .select({
             id: galleryGroup.id,
             name: galleryGroup.name,
+        })
+        .from(galleryGroup)
+        .where(eq(galleryGroup.isVisible, true))
+        .orderBy(asc(galleryGroup.displayOrder))
+}
+
+/**
+ * Gallery group data with slug for media form
+ */
+export type GalleryGroupWithSlug = {
+    id: string
+    name: string
+    slug: string
+}
+
+/**
+ * Get gallery groups with slug for media form
+ */
+export async function getGalleryGroupsWithSlug(): Promise<
+    GalleryGroupWithSlug[]
+> {
+    return db
+        .select({
+            id: galleryGroup.id,
+            name: galleryGroup.name,
+            slug: galleryGroup.slug,
+        })
+        .from(galleryGroup)
+        .where(eq(galleryGroup.isVisible, true))
+        .orderBy(asc(galleryGroup.displayOrder))
+}
+
+/**
+ * Gallery group data for AI suggestion
+ */
+export type GalleryGroupForAI = {
+    id: string
+    name: string
+    slug: string
+    description: string | null
+}
+
+/**
+ * Get gallery groups with full details for AI group suggestion
+ */
+export async function getGalleryGroupsForAI(): Promise<GalleryGroupForAI[]> {
+    return db
+        .select({
+            id: galleryGroup.id,
+            name: galleryGroup.name,
+            slug: galleryGroup.slug,
+            description: galleryGroup.description,
         })
         .from(galleryGroup)
         .where(eq(galleryGroup.isVisible, true))

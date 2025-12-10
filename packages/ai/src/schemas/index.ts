@@ -71,3 +71,38 @@ export {
     type ContactMethod,
     type AnalysisMessage,
 } from './conversation-analysis.schema'
+
+export {
+    // Schemas
+    imageAnalysisSchema,
+    seoContentSchema,
+    visitorContentSchema,
+    beforeAfterTypeSchema,
+    bodyAreaSchema,
+    imageQualitySchema,
+    galleryProcedureSlugSchema,
+    // Constants
+    BEFORE_AFTER_TYPES,
+    BODY_AREAS,
+    IMAGE_QUALITY_LEVELS,
+    GALLERY_PROCEDURE_SLUGS,
+    // Types
+    type ImageAnalysis,
+    type GalleryMediaAIAnalysis,
+    type SEOContent,
+    type VisitorContent,
+    type BeforeAfterType,
+    type BodyArea,
+    type ImageQuality,
+    type GalleryProcedureSlug,
+} from './image-analysis.schema'
+
+export {
+    // Schemas
+    groupSuggestionSchema,
+    groupSuggestionItemSchema,
+    // Types
+    type GroupSuggestion,
+    type GroupSuggestionItem,
+    type AvailableGroup,
+} from './group-suggestion.schema'

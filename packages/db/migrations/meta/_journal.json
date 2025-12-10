@@ -148,6 +148,13 @@
       "when": 1765320384179,
       "tag": "0020_chilly_roland_deschain",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1765326628385,
+      "tag": "0021_even_manta",
+      "breakpoints": true
     }
   ]
 }

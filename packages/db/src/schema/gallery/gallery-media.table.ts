@@ -2,6 +2,7 @@ import {
     boolean,
     index,
     integer,
+    jsonb,
     pgEnum,
     pgTable,
     text,
@@ -9,6 +10,8 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
+
+import type { GalleryMediaAIAnalysis } from './gallery-media-ai-analysis.type'
 
 export const galleryMediaType = pgEnum('gallery_media_type', ['image', 'video'])
 
@@ -49,6 +52,12 @@ export const galleryMedia = pgTable(
             .notNull()
             .$onUpdate(() => new Date()),
         publishedAt: timestamp('published_at'),
+
+        /**
+         * AI Analysis data from image analysis
+         * Contains structured output from GPT-4o vision analysis
+         */
+        aiAnalysis: jsonb('ai_analysis').$type<GalleryMediaAIAnalysis>(),
     },
     (table) => [
         {

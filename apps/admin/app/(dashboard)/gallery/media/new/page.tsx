@@ -4,12 +4,12 @@ import { ChevronLeft } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 
 import { MediaForm } from '@/components/gallery/media-form.component'
-import { getGalleryGroupsForSelect } from '@/lib/queries/gallery.query'
+import { getGalleryGroupsWithSlug } from '@/lib/queries/gallery.query'
 
 export const dynamic = 'force-dynamic'
 
 export default async function NewMediaPage() {
-    const groups = await getGalleryGroupsForSelect()
+    const groups = await getGalleryGroupsWithSlug()
 
     return (
         <div className='space-y-6'>

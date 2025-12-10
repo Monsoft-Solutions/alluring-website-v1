@@ -59,12 +59,21 @@ export {
     generateQuickQuestions,
     analyzeConversation,
     calculateLeadScoreFromAnalysis,
+    // Gallery image analysis functions
+    analyzeGalleryImage,
+    generateGallerySEOContent,
+    generateGalleryVisitorContent,
+    suggestGalleryGroups,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
     type UIMessageStreamWriter,
     type GenerateQuickQuestionsOptions,
     type AnalyzeConversationOptions,
+    type AnalyzeImageOptions,
+    type GenerateSEOContentOptions,
+    type GenerateVisitorContentOptions,
+    type SuggestGroupsOptions,
 } from './functions'
 
 // Schemas for structured outputs
@@ -122,6 +131,32 @@ export {
     type FollowUpPriority,
     type ContactMethod,
     type AnalysisMessage,
+    // Image analysis schemas
+    imageAnalysisSchema,
+    seoContentSchema,
+    visitorContentSchema,
+    beforeAfterTypeSchema,
+    bodyAreaSchema,
+    imageQualitySchema,
+    galleryProcedureSlugSchema,
+    BEFORE_AFTER_TYPES,
+    BODY_AREAS,
+    IMAGE_QUALITY_LEVELS,
+    GALLERY_PROCEDURE_SLUGS,
+    type ImageAnalysis,
+    type GalleryMediaAIAnalysis,
+    type SEOContent,
+    type VisitorContent,
+    type BeforeAfterType,
+    type BodyArea,
+    type ImageQuality,
+    type GalleryProcedureSlug,
+    // Group suggestion schemas
+    groupSuggestionSchema,
+    groupSuggestionItemSchema,
+    type GroupSuggestion,
+    type GroupSuggestionItem,
+    type AvailableGroup,
 } from './schemas'
 
 // Model definitions
@@ -156,6 +191,15 @@ export {
     formatMessagesForAnalysis,
     getConversationAnalysisPrompt,
     type SystemPromptParams,
+    // Gallery prompts
+    IMAGE_ANALYSIS_SYSTEM_PROMPT,
+    getImageAnalysisPrompt,
+    SEO_CONTENT_SYSTEM_PROMPT,
+    getSEOContentPrompt,
+    VISITOR_CONTENT_SYSTEM_PROMPT,
+    getVisitorContentPrompt,
+    GROUP_SUGGESTION_SYSTEM_PROMPT,
+    getGroupSuggestionPrompt,
 } from './prompts'
 
 // Telemetry configuration

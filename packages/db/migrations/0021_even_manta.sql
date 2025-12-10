@@ -1,0 +1,1 @@
+ALTER TABLE "gallery_media" ADD COLUMN "ai_analysis" jsonb;

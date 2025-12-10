@@ -35,3 +35,24 @@ export {
     calculateLeadScoreFromAnalysis,
     type AnalyzeConversationOptions,
 } from './analyze-conversation.function'
+
+// Gallery Image Analysis
+export {
+    analyzeGalleryImage,
+    type AnalyzeImageOptions,
+} from './analyze-image.function'
+
+export {
+    generateGallerySEOContent,
+    type GenerateSEOContentOptions,
+} from './generate-seo-content.function'
+
+export {
+    generateGalleryVisitorContent,
+    type GenerateVisitorContentOptions,
+} from './generate-visitor-content.function'
+
+export {
+    suggestGalleryGroups,
+    type SuggestGroupsOptions,
+} from './suggest-groups.function'
