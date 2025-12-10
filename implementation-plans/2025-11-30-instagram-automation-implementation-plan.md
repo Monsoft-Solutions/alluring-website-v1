@@ -547,7 +547,7 @@ export class TranscriptionService {
 
     async translateToEnglish(text: string): Promise<string> {
         const response = await this.openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+            model: 'gpt-4.1-mini',
             messages: [
                 {
                     role: 'system',
@@ -635,7 +635,7 @@ export class ImageAnalyzerService {
         caption?: string
     ): Promise<ImageAnalysis> {
         const response = await this.openai.chat.completions.create({
-            model: 'gpt-4o',
+            model: 'gpt-4.1',
             messages: [
                 {
                     role: 'system',
@@ -737,7 +737,7 @@ export class SEOContentService {
         post: InstagramPostWithMedia
     ): Promise<SEOContent> {
         const response = await this.openai.chat.completions.create({
-            model: 'gpt-4o',
+            model: 'gpt-4.1',
             messages: [
                 {
                     role: 'system',

@@ -21,7 +21,7 @@ import { coreGenerateObject } from '../core'
  * Options for quick questions generation
  */
 export type GenerateQuickQuestionsOptions = {
-    /** Model ID to use (defaults to gpt-4o-mini for speed) */
+    /** Model ID to use (defaults to gpt-4.1-mini for speed) */
     modelId?: string
     /** Temperature for generation (defaults to 0.7 for variety) */
     temperature?: number

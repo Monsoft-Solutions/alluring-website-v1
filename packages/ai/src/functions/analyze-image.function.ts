@@ -24,7 +24,7 @@ const DEFAULT_VISION_MODEL_ID = 'gpt-4.1'
 export type AnalyzeImageOptions = {
     /** The URL of the image to analyze */
     imageUrl: string
-    /** Model ID to use (defaults to gpt-4o for vision) */
+    /** Model ID to use (defaults to gpt-4.1 for vision) */
     modelId?: string
     /** Temperature for generation (defaults to 0.3 for consistent results) */
     temperature?: number

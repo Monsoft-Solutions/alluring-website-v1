@@ -26,7 +26,7 @@ export type CoreAISDKMessage = AISDKCoreMessage
  * Base options shared by all core AI functions
  */
 export type CoreBaseOptions = {
-    /** Model ID to use (e.g., 'gpt-4o', 'gpt-4o-mini') */
+    /** Model ID to use (e.g., 'gpt-4.1', 'gpt-4.1-mini') */
     modelId?: string
     /** Temperature for generation (0-2, lower = more deterministic) */
     temperature?: number

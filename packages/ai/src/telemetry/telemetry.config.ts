@@ -18,7 +18,7 @@
  * import { telemetryConfig } from '@workspace/ai/telemetry'
  *
  * const result = await generateText({
- *   model: openai('gpt-4o'),
+ *   model: openai('gpt-4.1'),
  *   prompt: 'Hello',
  *   experimental_telemetry: telemetryConfig,
  * })

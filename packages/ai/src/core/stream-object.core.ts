@@ -33,7 +33,7 @@ export type { FlexibleSchema, InferSchema } from '@ai-sdk/provider-utils'
  *   schema: myZodSchema,
  *   system: 'You are a helpful assistant',
  *   prompt: 'Generate a user profile',
- *   modelId: 'gpt-4o-mini',
+ *   modelId: 'gpt-4.1-mini',
  * })
  *
  * for await (const partialObject of partialObjectStream) {

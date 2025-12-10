@@ -56,7 +56,7 @@ export type AIModel = {
  */
 export const AVAILABLE_MODELS: AIModel[] = [
     {
-        id: 'gpt-4o',
+        id: 'gpt-4.1',
         name: 'GPT-4o',
         provider: 'openai',
         capabilities: [
@@ -71,31 +71,11 @@ export const AVAILABLE_MODELS: AIModel[] = [
         recommended: true,
     },
     {
-        id: 'gpt-4o-mini',
+        id: 'gpt-4.1-mini',
         name: 'GPT-4o Mini',
         provider: 'openai',
         capabilities: ['chat', 'function-calling', 'structured-output'],
         maxTokens: 128000,
-        tier: 'standard',
-        description: 'Fast and cost-effective for most tasks',
-        recommended: true,
-    },
-    {
-        id: 'gpt-4.1',
-        name: 'GPT-4.1',
-        provider: 'openai',
-        capabilities: ['chat', 'function-calling', 'structured-output'],
-        maxTokens: 1047576,
-        tier: 'premium',
-        description: 'Most capable model with vision and advanced reasoning',
-        recommended: true,
-    },
-    {
-        id: 'gpt-4.1-mini',
-        name: 'GPT-4.1 Mini',
-        provider: 'openai',
-        capabilities: ['chat', 'function-calling', 'structured-output'],
-        maxTokens: 1047576,
         tier: 'standard',
         description: 'Fast and cost-effective for most tasks',
         recommended: true,

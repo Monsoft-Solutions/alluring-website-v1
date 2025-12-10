@@ -37,7 +37,7 @@ export type { FlexibleSchema, InferSchema } from '@ai-sdk/provider-utils'
  *   schema: myZodSchema,
  *   system: 'You are a helpful assistant',
  *   prompt: 'Extract the user info from: John Doe, 30 years old',
- *   modelId: 'gpt-4o-mini',
+ *   modelId: 'gpt-4.1-mini',
  *   temperature: 0.3,
  * })
  *
@@ -54,7 +54,7 @@ export type { FlexibleSchema, InferSchema } from '@ai-sdk/provider-utils'
  *       ]
  *     }
  *   ],
- *   modelId: 'gpt-4o',
+ *   modelId: 'gpt-4.1',
  * })
  * ```
  */
