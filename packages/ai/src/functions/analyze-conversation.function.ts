@@ -12,7 +12,7 @@ import {
     DEFAULT_CONVERSATION_ANALYSIS,
     type ConversationAnalysis,
     type AnalysisMessage,
-} from '../schemas/conversation-analysis.schema'
+} from '@workspace/shared/schemas/chat'
 import {
     CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
     getConversationAnalysisPrompt,

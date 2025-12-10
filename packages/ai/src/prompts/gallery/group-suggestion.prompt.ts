@@ -6,9 +6,10 @@
  *
  * @module @workspace/ai/prompts/gallery/group-suggestion
  */
-import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
-
-import type { AvailableGroup } from '../../schemas/group-suggestion.schema'
+import type {
+    GalleryMediaAIAnalysis,
+    AvailableGroup,
+} from '@workspace/shared/schemas/gallery'
 
 /**
  * System prompt for group suggestion

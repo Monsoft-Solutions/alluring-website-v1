@@ -11,7 +11,7 @@ import type {
     IntentType,
     SessionTag,
     DetectableProcedure,
-} from '@workspace/ai/schemas'
+} from '@workspace/shared/schemas/chat'
 
 /**
  * Scoring signals tracked for lead scoring

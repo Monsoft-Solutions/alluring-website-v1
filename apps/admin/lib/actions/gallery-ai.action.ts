@@ -2,15 +2,17 @@
 
 import { db } from '@workspace/db/client'
 import { galleryMedia } from '@workspace/db/schema/gallery'
-import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+import type {
+    GalleryMediaAIAnalysis,
+    SEOContent,
+    VisitorContent,
+    GroupSuggestion,
+} from '@workspace/shared/schemas/gallery'
 import {
     analyzeGalleryImage,
     generateGallerySEOContent,
     generateGalleryVisitorContent,
     suggestGalleryGroups,
-    type SEOContent,
-    type VisitorContent,
-    type GroupSuggestion,
 } from '@workspace/ai'
 import { eq } from 'drizzle-orm'
 

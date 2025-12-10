@@ -45,11 +45,21 @@ import {
 import { AVAILABLE_MODELS, DEFAULT_CHAT_MODEL_ID } from '@workspace/ai/models'
 // Import prompts
 import { generateSystemPrompt } from '@workspace/ai/prompts'
-// Import schemas for structured outputs
+// Import AI-specific schemas (quick questions, image analysis)
 import {
+    imageAnalysisSchema,
+    quickQuestionsSchema,
+} from '@workspace/ai/schemas'
+// Import shared types from @workspace/shared (single source of truth)
+import {
+    type ConversationAnalysis,
     type IntentClassification,
     intentClassificationSchema,
-} from '@workspace/ai/schemas'
+} from '@workspace/shared/schemas/chat'
+import {
+    type SEOContent,
+    type VisitorContent,
+} from '@workspace/shared/schemas/gallery'
 ```
 
 ## Architecture
@@ -66,10 +76,9 @@ packages/ai/src/
 │   ├── classify-intent.function.ts
 │   ├── generate-quick-questions.function.ts
 │   └── stream-chat.function.ts
-├── schemas/                 # Zod schemas for structured outputs
-│   ├── conversation-analysis.schema.ts
-│   ├── intent-classification.schema.ts
-│   └── quick-questions.schema.ts
+├── schemas/                 # AI-specific Zod schemas only
+│   ├── quick-questions.schema.ts  # AI-specific
+│   └── image-analysis.schema.ts   # AI-specific (composes shared schemas)
 ├── models/                  # Model definitions and helpers
 │   └── available-models.constant.ts
 ├── prompts/                 # Prompt templates
@@ -80,6 +89,17 @@ packages/ai/src/
 │       └── quick-questions.prompt.ts
 └── telemetry/               # Observability configuration
     └── telemetry.config.ts
+
+# Shared types are in @workspace/shared
+packages/shared/src/schemas/
+├── chat/                    # Chat-related shared types
+│   ├── intent-classification.schema.ts
+│   └── conversation-analysis.schema.ts
+└── gallery/                 # Gallery-related shared types
+    ├── gallery-media-ai-analysis.schema.ts
+    ├── gallery-procedure.schema.ts
+    ├── gallery-content.schema.ts
+    └── gallery-group-suggestion.schema.ts
 ```
 
 ### Export Paths
@@ -285,52 +305,62 @@ console.log(questions)
 
 ## Schemas Reference
 
-### Intent Classification Schema
+> **Important**: Shared types are now in `@workspace/shared`. Only AI-specific schemas remain in this package.
+
+### AI-Specific Schemas (in this package)
 
 ```typescript
 import {
-    DETECTABLE_PROCEDURES,
-    INTENT_TYPES,
-    type IntentClassification,
-    SESSION_TAGS,
-    intentClassificationSchema,
+    type ImageAnalysis,
+    // Quick questions - AI-specific
+    MAX_QUESTION_LENGTH,
+    type QuickQuestions,
+    // Image analysis - AI-specific (composes shared schemas)
+    imageAnalysisSchema,
+    quickQuestionsSchema,
 } from '@workspace/ai/schemas'
-
-// Available intent types
-INTENT_TYPES // ['consultation_request', 'pricing_inquiry', 'procedure_info', ...]
-
-// Detectable procedures
-DETECTABLE_PROCEDURES // ['bbl', 'breast_augmentation', 'tummy_tuck', ...]
-
-// Session tags
-SESSION_TAGS // ['hot_lead', 'price_sensitive', 'ready_to_book', ...]
 ```
 
-### Conversation Analysis Schema
+### Shared Chat Types (from @workspace/shared)
 
 ```typescript
 import {
+    // Conversation Analysis
     type ActionableIntelligence,
     BUDGET_INDICATORS,
     type ConversationAnalysis,
     DECISION_STAGES,
+    // Intent Classification
+    DETECTABLE_PROCEDURES,
     FOLLOW_UP_PRIORITIES,
+    INTENT_TYPES,
+    type IntentClassification,
     type LeadProfile,
     type PsychographicData,
     RECOMMENDED_ACTIONS,
+    SESSION_TAGS,
     TIMELINE_OPTIONS,
     conversationAnalysisSchema,
-} from '@workspace/ai/schemas'
+    intentClassificationSchema,
+} from '@workspace/shared/schemas/chat'
 ```
 
-### Quick Questions Schema
+### Shared Gallery Types (from @workspace/shared)
 
 ```typescript
 import {
-    MAX_QUESTION_LENGTH,
-    type QuickQuestions,
-    quickQuestionsSchema,
-} from '@workspace/ai/schemas'
+    type AvailableGroup,
+    // Gallery AI Analysis
+    type GalleryMediaAIAnalysis,
+    type GroupSuggestion,
+    type SEOContent,
+    type VisitorContent,
+    // Group Suggestions
+    groupSuggestionSchema,
+    // SEO/Visitor Content
+    seoContentSchema,
+    visitorContentSchema,
+} from '@workspace/shared/schemas/gallery'
 ```
 
 ## Model Configuration
@@ -480,7 +510,7 @@ import {
     analyzeConversation,
     calculateLeadScoreFromAnalysis,
 } from '@workspace/ai'
-import type { AnalysisMessage } from '@workspace/ai/schemas'
+import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 
 async function analyzeConversationAsync(
     sessionId: string,
@@ -585,33 +615,44 @@ import { telemetryConfig } from '@workspace/ai/telemetry'
 
 ## TypeScript Types
 
-All types are exported and fully typed:
+AI-specific types and function options are exported from this package:
 
 ```typescript
 import type {
     // Model types
     AIModel,
-    ActionableIntelligence,
-    AnalyzeConversationOptions,
     // Function option types
+    AnalyzeConversationOptions,
     ClassifyIntentOptions,
-    ConversationAnalysis,
+    // Core types
     CoreBaseOptions,
     CoreGenerateObjectOptions,
-    // Core types
     CoreMessage,
     CoreStreamTextOptions,
     GenerateObjectResult,
-    // Schema types
-    IntentClassification,
-    LeadProfile,
+    ImageAnalysis,
     ModelCapability,
     ModelProvider,
     ModelTier,
-    PsychographicData,
+    // AI-specific schema types
+    QuickQuestions,
     StreamChatOptions,
     StreamTextResult,
 } from '@workspace/ai'
+// Shared types - import from @workspace/shared
+import type {
+    ActionableIntelligence,
+    ConversationAnalysis,
+    // Gallery types
+    GalleryMediaAIAnalysis,
+    GroupSuggestion,
+    // Chat types
+    IntentClassification,
+    LeadProfile,
+    PsychographicData,
+    SEOContent,
+    VisitorContent,
+} from '@workspace/shared/schemas/chat'
 ```
 
 ## Related Documentation

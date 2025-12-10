@@ -10,7 +10,7 @@ import {
     intentClassificationSchema,
     type IntentClassification,
     type ClassificationMessage,
-} from '../schemas/intent-classification.schema'
+} from '@workspace/shared/schemas/chat'
 import {
     INTENT_CLASSIFICATION_SYSTEM_PROMPT,
     getIntentClassificationPrompt,

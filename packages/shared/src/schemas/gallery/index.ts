@@ -19,3 +19,31 @@ export {
     type PatientDescription,
     type GalleryMediaAIAnalysis,
 } from './gallery-media-ai-analysis.schema'
+
+export {
+    // Const arrays
+    GALLERY_PROCEDURE_SLUGS,
+    // Zod schemas
+    galleryProcedureSlugSchema,
+    // Types
+    type GalleryProcedureSlug,
+} from './gallery-procedure.schema'
+
+export {
+    // Zod schemas
+    seoContentSchema,
+    visitorContentSchema,
+    // Types
+    type SEOContent,
+    type VisitorContent,
+} from './gallery-content.schema'
+
+export {
+    // Zod schemas
+    groupSuggestionItemSchema,
+    groupSuggestionSchema,
+    // Types
+    type GroupSuggestionItem,
+    type GroupSuggestion,
+    type AvailableGroup,
+} from './gallery-group-suggestion.schema'

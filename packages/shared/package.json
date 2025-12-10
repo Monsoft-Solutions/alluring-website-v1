@@ -19,6 +19,11 @@
             "types": "./dist/schemas/gallery/index.d.ts",
             "import": "./dist/schemas/gallery/index.js",
             "default": "./dist/schemas/gallery/index.js"
+        },
+        "./schemas/chat": {
+            "types": "./dist/schemas/chat/index.d.ts",
+            "import": "./dist/schemas/chat/index.js",
+            "default": "./dist/schemas/chat/index.js"
         }
     },
     "scripts": {

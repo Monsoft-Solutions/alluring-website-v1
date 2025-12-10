@@ -1,10 +1,10 @@
 /**
- * Group Suggestion Schema
+ * Gallery Group Suggestion Schema
  *
  * Zod schema for validating AI group suggestion responses.
- * Used with AI SDK's generateObject() for type-safe structured output.
+ * Single source of truth used across @workspace/ai and apps.
  *
- * @module @workspace/ai/schemas/group-suggestion
+ * @module @workspace/shared/schemas/gallery/gallery-group-suggestion
  */
 import { z } from 'zod'
 
@@ -52,13 +52,9 @@ export const groupSuggestionSchema = z.object({
 })
 
 /**
- * TypeScript type for a single group suggestion
+ * TypeScript types inferred from schemas
  */
 export type GroupSuggestionItem = z.infer<typeof groupSuggestionItemSchema>
-
-/**
- * TypeScript type for the complete group suggestion response
- */
 export type GroupSuggestion = z.infer<typeof groupSuggestionSchema>
 
 /**

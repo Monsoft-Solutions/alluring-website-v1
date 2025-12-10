@@ -7,20 +7,20 @@
  * @module @workspace/chat/services/intent-classifier
  */
 
-// Re-export types from @workspace/ai for backward compatibility
+// Re-export types from @workspace/shared for backward compatibility
 export type {
     IntentType,
     DetectableProcedure,
     SessionTag,
     IntentClassification,
     ClassificationMessage,
-} from '@workspace/ai/schemas'
+} from '@workspace/shared/schemas/chat'
 
 export {
     INTENT_TYPES,
     DETECTABLE_PROCEDURES,
     SESSION_TAGS,
-} from '@workspace/ai/schemas'
+} from '@workspace/shared/schemas/chat'
 
 /**
  * Quick keyword-based intent detection for real-time use

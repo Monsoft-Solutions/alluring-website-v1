@@ -17,7 +17,7 @@ import {
 import { and, eq, desc, sql } from 'drizzle-orm'
 
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
-import type { ConversationAnalysis } from '@workspace/ai/schemas'
+import type { ConversationAnalysis } from '@workspace/shared/schemas/chat'
 
 /**
  * Get the active chat configuration

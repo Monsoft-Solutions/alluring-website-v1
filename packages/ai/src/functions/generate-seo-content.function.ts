@@ -6,12 +6,11 @@
  *
  * @module @workspace/ai/functions/generate-seo-content
  */
-import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
-
 import {
+    type GalleryMediaAIAnalysis,
     seoContentSchema,
     type SEOContent,
-} from '../schemas/image-analysis.schema'
+} from '@workspace/shared/schemas/gallery'
 import {
     SEO_CONTENT_SYSTEM_PROMPT,
     getSEOContentPrompt,

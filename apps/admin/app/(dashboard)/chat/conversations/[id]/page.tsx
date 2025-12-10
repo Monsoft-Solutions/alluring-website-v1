@@ -53,7 +53,7 @@ import type {
     LeadProfile,
     PsychographicData,
     ActionableIntelligence,
-} from '@workspace/ai'
+} from '@workspace/shared/schemas/chat'
 
 /**
  * Intent labels for display

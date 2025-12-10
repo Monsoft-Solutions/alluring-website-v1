@@ -371,6 +371,9 @@ importers:
       '@workspace/ai':
         specifier: workspace:*
         version: link:../ai
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../shared
       zod:
         specifier: ^4.1.13
         version: 4.1.13

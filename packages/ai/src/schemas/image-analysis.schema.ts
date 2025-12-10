@@ -4,6 +4,9 @@
  * Zod schema for validating AI vision analysis responses for gallery images.
  * Used with AI SDK's generateObject() for type-safe structured output.
  *
+ * This schema composes shared types from @workspace/shared/schemas/gallery
+ * with AI-specific fields.
+ *
  * @module @workspace/ai/schemas/image-analysis
  */
 import { z } from 'zod'
@@ -13,36 +16,18 @@ import {
     bodyAreaSchema,
     imageQualitySchema,
     patientDescriptionSchema,
+    galleryProcedureSlugSchema,
 } from '@workspace/shared/schemas/gallery'
-
-/**
- * Procedure slugs that can be detected in images
- * These map to the actual page slugs used in the web app
- */
-export const GALLERY_PROCEDURE_SLUGS = [
-    'brazilian-butt-lift-bbl-miami',
-    'breast-augmentation-miami',
-    'breast-lift-miami',
-    'breast-reduction-miami',
-    'tummy-tuck-miami',
-    'liposuction-miami',
-    'mommy-makeover-miami',
-    'facelift-miami',
-    'blepharoplasty-miami',
-    'rhinoplasty-miami',
-] as const
-export type GalleryProcedureSlug = (typeof GALLERY_PROCEDURE_SLUGS)[number]
-
-/**
- * Zod schema for procedure slug
- */
-export const galleryProcedureSlugSchema = z.enum(GALLERY_PROCEDURE_SLUGS)
 
 /**
  * Zod schema for gallery image analysis result
  *
  * This schema is used with AI SDK's generateObject() to ensure
  * type-safe structured output from GPT-4o vision analysis.
+ *
+ * Note: This is an AI-specific schema that composes shared schemas.
+ * It includes AI-specific fields like procedureConfidence that are
+ * not part of the persisted GalleryMediaAIAnalysis.
  */
 export const imageAnalysisSchema = z.object({
     description: z
@@ -118,55 +103,3 @@ export const imageAnalysisSchema = z.object({
  * TypeScript type inferred from the schema
  */
 export type ImageAnalysis = z.infer<typeof imageAnalysisSchema>
-
-/**
- * SEO content generation result schema
- */
-export const seoContentSchema = z.object({
-    seoTitle: z
-        .string()
-        .max(60)
-        .describe(
-            'SEO-optimized title for search engines, max 60 characters, includes relevant keywords'
-        ),
-
-    seoDescription: z
-        .string()
-        .max(160)
-        .describe(
-            'SEO meta description, max 160 characters, compelling and keyword-rich'
-        ),
-
-    slug: z
-        .string()
-        .describe(
-            'URL-friendly slug derived from the content, lowercase with hyphens'
-        ),
-})
-
-export type SEOContent = z.infer<typeof seoContentSchema>
-
-/**
- * Visitor content generation result schema
- */
-export const visitorContentSchema = z.object({
-    title: z
-        .string()
-        .describe(
-            'Engaging, descriptive title for gallery visitors that captures attention'
-        ),
-
-    description: z
-        .string()
-        .describe(
-            'Story-focused, benefits-oriented description that resonates with potential patients'
-        ),
-
-    alt: z
-        .string()
-        .describe(
-            'Accessible alt text describing the image for screen readers, clear and descriptive'
-        ),
-})
-
-export type VisitorContent = z.infer<typeof visitorContentSchema>

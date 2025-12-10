@@ -7,7 +7,7 @@
  *
  * @module @workspace/ai/prompts/chat/conversation-analysis
  */
-import type { AnalysisMessage } from '../../schemas/conversation-analysis.schema'
+import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 
 /**
  * System prompt for comprehensive conversation analysis
