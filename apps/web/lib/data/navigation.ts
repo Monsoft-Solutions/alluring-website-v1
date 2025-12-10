@@ -23,6 +23,7 @@ export const mainNavigation: NavigationItem[] = [
         external: false,
     },
     { label: 'Blog', href: '/blog', external: false },
+    { label: 'Gallery', href: '/gallery', external: false },
     { label: 'Contact', href: '/contact-us', external: false },
 ]
 
