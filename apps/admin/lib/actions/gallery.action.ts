@@ -754,11 +754,12 @@ export async function createBeforeAfterPair(
             .returning({ id: beforeAfterPair.id })
 
         // Mark media as before/after
+        // Note: The relationship is already captured in before_after_pair table
+        // We just need to flag the media items as being part of a before/after pair
         await db
             .update(galleryMedia)
             .set({
                 isBeforeAfter: true,
-                beforeAfterId: newPair?.id,
             })
             .where(
                 inArray(galleryMedia.id, [
@@ -830,7 +831,6 @@ export async function updateBeforeAfterPair(
                 .update(galleryMedia)
                 .set({
                     isBeforeAfter: false,
-                    beforeAfterId: null,
                 })
                 .where(inArray(galleryMedia.id, mediaToUnmark))
         }
@@ -851,11 +851,11 @@ export async function updateBeforeAfterPair(
             .where(eq(beforeAfterPair.id, id))
 
         // Mark new media as before/after
+        // Note: The relationship is captured in before_after_pair table
         await db
             .update(galleryMedia)
             .set({
                 isBeforeAfter: true,
-                beforeAfterId: id,
             })
             .where(inArray(galleryMedia.id, newMediaIds))
 
@@ -902,7 +902,6 @@ export async function deleteBeforeAfterPair(id: string): Promise<ActionResult> {
                     .update(galleryMedia)
                     .set({
                         isBeforeAfter: false,
-                        beforeAfterId: null,
                     })
                     .where(inArray(galleryMedia.id, mediaIds))
             }
