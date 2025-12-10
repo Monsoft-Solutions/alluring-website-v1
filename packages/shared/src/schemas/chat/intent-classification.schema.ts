@@ -60,6 +60,9 @@ export const SESSION_TAGS = [
     'urgent',
     'research_phase',
     'post_op_concern',
+    'travel_domestic',
+    'travel_international',
+    'unknown',
 ] as const
 
 // ============================================
