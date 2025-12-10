@@ -34,6 +34,9 @@ export const env = createEnv({
         // OpenAI API key for chat testing
         OPENAI_API_KEY: z.string().min(1).optional(),
 
+        // ScrapeSocial API key for Instagram scraping (optional - can be stored in DB)
+        SCRAPE_SOCIAL_API_KEY: z.string().optional(),
+
         // Langfuse Observability (optional)
         // These are read directly by Langfuse SDK, but documented here for clarity
         LANGFUSE_SECRET_KEY: z.string().optional(),

@@ -45,6 +45,11 @@
             "import": "./dist/schema/gallery/index.js",
             "default": "./dist/schema/gallery/index.js"
         },
+        "./schema/social-media": {
+            "types": "./dist/schema/social-media/index.d.ts",
+            "import": "./dist/schema/social-media/index.js",
+            "default": "./dist/schema/social-media/index.js"
+        },
         "./types": {
             "types": "./dist/schema/contact/contact-submission.table.d.ts",
             "import": "./dist/schema/contact/contact-submission.table.js",

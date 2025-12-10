@@ -1,0 +1,181 @@
+import { Button } from '@workspace/ui/components/button'
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@workspace/ui/components/card'
+import { Badge } from '@workspace/ui/components/badge'
+import { ArrowLeft, Settings, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
+import {
+    getInstagramPosts,
+    getInstagramSettings,
+} from '@/lib/queries/social-media.query'
+import { InstagramPostsGrid } from '@/components/social-media/instagram-posts-grid.component'
+import { SyncButton } from '@/components/social-media/sync-button.component'
+
+export const dynamic = 'force-dynamic'
+
+export default async function InstagramPostsPage() {
+    const [settings, postsData] = await Promise.all([
+        getInstagramSettings(),
+        getInstagramPosts({ page: 1, pageSize: 50 }),
+    ])
+
+    const isConfigured = settings?.handle && settings?.isEnabled
+    const hasApiKey = !!settings?.apiKey
+
+    return (
+        <div className='space-y-6'>
+            {/* Header */}
+            <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-4'>
+                    <Button variant='ghost' size='icon' asChild>
+                        <Link href='/social-media'>
+                            <ArrowLeft className='h-4 w-4' />
+                        </Link>
+                    </Button>
+                    <div>
+                        <h1 className='text-2xl font-semibold'>
+                            Instagram Posts
+                        </h1>
+                        <p className='text-muted-foreground'>
+                            Manage and sync content from your Instagram profile
+                        </p>
+                    </div>
+                </div>
+                <div className='flex items-center gap-2'>
+                    <Button variant='outline' asChild>
+                        <Link href='/social-media/settings'>
+                            <Settings className='mr-2 h-4 w-4' />
+                            Settings
+                        </Link>
+                    </Button>
+                    <SyncButton disabled={!isConfigured || !hasApiKey} />
+                </div>
+            </div>
+
+            {/* Configuration Warning */}
+            {!isConfigured && (
+                <Card className='border-yellow-200 bg-yellow-50'>
+                    <CardContent className='flex items-center gap-4 pt-6'>
+                        <AlertCircle className='h-5 w-5 text-yellow-600' />
+                        <div className='flex-1'>
+                            <p className='font-medium text-yellow-800'>
+                                Instagram not configured
+                            </p>
+                            <p className='text-sm text-yellow-700'>
+                                Please configure your Instagram handle in
+                                settings to start syncing posts.
+                            </p>
+                        </div>
+                        <Button asChild variant='outline' size='sm'>
+                            <Link href='/social-media/settings'>
+                                Configure Now
+                            </Link>
+                        </Button>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* API Key Warning */}
+            {isConfigured && !hasApiKey && (
+                <Card className='border-yellow-200 bg-yellow-50'>
+                    <CardContent className='flex items-center gap-4 pt-6'>
+                        <AlertCircle className='h-5 w-5 text-yellow-600' />
+                        <div className='flex-1'>
+                            <p className='font-medium text-yellow-800'>
+                                API key not configured
+                            </p>
+                            <p className='text-sm text-yellow-700'>
+                                Add your ScrapeSocial API key in settings or set
+                                the SCRAPE_SOCIAL_API_KEY environment variable.
+                            </p>
+                        </div>
+                        <Button asChild variant='outline' size='sm'>
+                            <Link href='/social-media/settings'>
+                                Add API Key
+                            </Link>
+                        </Button>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* Stats Bar */}
+            {isConfigured && (
+                <Card>
+                    <CardHeader className='pb-3'>
+                        <div className='flex items-center justify-between'>
+                            <CardTitle className='text-base font-medium'>
+                                @{settings.handle}
+                            </CardTitle>
+                            <div className='flex items-center gap-2'>
+                                <Badge
+                                    variant={
+                                        settings.isEnabled
+                                            ? 'default'
+                                            : 'secondary'
+                                    }
+                                >
+                                    {settings.isEnabled ? 'Active' : 'Disabled'}
+                                </Badge>
+                                {settings.lastSyncAt && (
+                                    <span className='text-muted-foreground text-sm'>
+                                        Last sync:{' '}
+                                        {new Date(
+                                            settings.lastSyncAt
+                                        ).toLocaleDateString()}{' '}
+                                        at{' '}
+                                        {new Date(
+                                            settings.lastSyncAt
+                                        ).toLocaleTimeString()}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className='pt-0'>
+                        <div className='flex gap-6 text-sm'>
+                            <div>
+                                <span className='font-semibold'>
+                                    {postsData.total}
+                                </span>{' '}
+                                <span className='text-muted-foreground'>
+                                    total posts
+                                </span>
+                            </div>
+                            <div>
+                                <span className='font-semibold'>
+                                    {
+                                        postsData.posts.filter(
+                                            (p) => p.isPublished
+                                        ).length
+                                    }
+                                </span>{' '}
+                                <span className='text-muted-foreground'>
+                                    published
+                                </span>
+                            </div>
+                            <div>
+                                <span className='font-semibold'>
+                                    {
+                                        postsData.posts.filter(
+                                            (p) => p.isFeatured
+                                        ).length
+                                    }
+                                </span>{' '}
+                                <span className='text-muted-foreground'>
+                                    featured
+                                </span>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* Posts Grid */}
+            <InstagramPostsGrid posts={postsData.posts} />
+        </div>
+    )
+}

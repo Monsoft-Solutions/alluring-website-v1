@@ -1,0 +1,307 @@
+/**
+ * Social Media Queries
+ *
+ * Database queries for social media management in admin panel.
+ *
+ * @module lib/queries/social-media
+ */
+import { db } from '@workspace/db/client'
+import {
+    socialMediaSettings,
+    instagramPost,
+    instagramPostMedia,
+    galleryMedia,
+} from '@workspace/db/schema'
+import { and, count, desc, eq } from 'drizzle-orm'
+
+// ============================================================================
+// Types
+// ============================================================================
+
+export type InstagramPostListItem = {
+    id: string
+    instagramId: string
+    code: string
+    mediaType: 'image' | 'video' | 'carousel'
+    caption: string | null
+    permalink: string
+    takenAt: Date
+    likeCount: number
+    commentCount: number
+    playCount: number | null
+    isPublished: boolean
+    isFeatured: boolean
+    createdAt: Date
+    media: {
+        id: string
+        url: string
+        thumbnailUrl: string | null
+        type: 'image' | 'video'
+    }
+    carouselCount?: number
+}
+
+export type InstagramPostWithMedia = InstagramPostListItem & {
+    carouselMedia: Array<{
+        id: string
+        url: string
+        type: 'image' | 'video'
+        displayOrder: number
+    }>
+}
+
+export type SocialMediaStats = {
+    totalPosts: number
+    publishedPosts: number
+    featuredPosts: number
+    lastSyncAt: Date | null
+}
+
+// ============================================================================
+// Settings Queries
+// ============================================================================
+
+/**
+ * Get Instagram settings
+ */
+export async function getInstagramSettings() {
+    const settings = await db
+        .select()
+        .from(socialMediaSettings)
+        .where(eq(socialMediaSettings.platform, 'instagram'))
+        .limit(1)
+
+    return settings[0] ?? null
+}
+
+// ============================================================================
+// Instagram Post Queries
+// ============================================================================
+
+/**
+ * Get Instagram posts with pagination
+ */
+export async function getInstagramPosts(options: {
+    page?: number
+    pageSize?: number
+    publishedOnly?: boolean
+    featuredOnly?: boolean
+}): Promise<{ posts: InstagramPostListItem[]; total: number }> {
+    const {
+        page = 1,
+        pageSize = 20,
+        publishedOnly = false,
+        featuredOnly = false,
+    } = options
+    const offset = (page - 1) * pageSize
+
+    // Build conditions
+    const conditions = []
+    if (publishedOnly) {
+        conditions.push(eq(instagramPost.isPublished, true))
+    }
+    if (featuredOnly) {
+        conditions.push(eq(instagramPost.isFeatured, true))
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
+    // Get posts with media
+    const posts = await db
+        .select({
+            id: instagramPost.id,
+            instagramId: instagramPost.instagramId,
+            code: instagramPost.code,
+            mediaType: instagramPost.mediaType,
+            caption: instagramPost.caption,
+            permalink: instagramPost.permalink,
+            takenAt: instagramPost.takenAt,
+            likeCount: instagramPost.likeCount,
+            commentCount: instagramPost.commentCount,
+            playCount: instagramPost.playCount,
+            isPublished: instagramPost.isPublished,
+            isFeatured: instagramPost.isFeatured,
+            createdAt: instagramPost.createdAt,
+            mediaId: instagramPost.mediaId,
+            mediaUrl: galleryMedia.url,
+            mediaThumbnailUrl: galleryMedia.thumbnailUrl,
+            mediaTypeGallery: galleryMedia.type,
+        })
+        .from(instagramPost)
+        .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
+        .where(whereClause)
+        .orderBy(desc(instagramPost.takenAt))
+        .limit(pageSize)
+        .offset(offset)
+
+    // Get total count
+    const [countResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(whereClause)
+
+    // Get carousel counts for carousel posts
+    const carouselPostIds = posts
+        .filter((p) => p.mediaType === 'carousel')
+        .map((p) => p.id)
+
+    let carouselCounts: Record<string, number> = {}
+    if (carouselPostIds.length > 0) {
+        const counts = await db
+            .select({
+                postId: instagramPostMedia.postId,
+                count: count(),
+            })
+            .from(instagramPostMedia)
+            .groupBy(instagramPostMedia.postId)
+
+        carouselCounts = counts.reduce(
+            (acc, item) => {
+                acc[item.postId] = item.count
+                return acc
+            },
+            {} as Record<string, number>
+        )
+    }
+
+    return {
+        posts: posts.map((p) => ({
+            id: p.id,
+            instagramId: p.instagramId,
+            code: p.code,
+            mediaType: p.mediaType,
+            caption: p.caption,
+            permalink: p.permalink,
+            takenAt: p.takenAt,
+            likeCount: p.likeCount ?? 0,
+            commentCount: p.commentCount ?? 0,
+            playCount: p.playCount,
+            isPublished: p.isPublished,
+            isFeatured: p.isFeatured,
+            createdAt: p.createdAt,
+            media: {
+                id: p.mediaId,
+                url: p.mediaUrl,
+                thumbnailUrl: p.mediaThumbnailUrl,
+                type: p.mediaTypeGallery,
+            },
+            carouselCount: carouselCounts[p.id],
+        })),
+        total: countResult?.count ?? 0,
+    }
+}
+
+/**
+ * Get single Instagram post with all media
+ */
+export async function getInstagramPostById(
+    id: string
+): Promise<InstagramPostWithMedia | null> {
+    const posts = await db
+        .select({
+            id: instagramPost.id,
+            instagramId: instagramPost.instagramId,
+            code: instagramPost.code,
+            mediaType: instagramPost.mediaType,
+            caption: instagramPost.caption,
+            permalink: instagramPost.permalink,
+            takenAt: instagramPost.takenAt,
+            likeCount: instagramPost.likeCount,
+            commentCount: instagramPost.commentCount,
+            playCount: instagramPost.playCount,
+            isPublished: instagramPost.isPublished,
+            isFeatured: instagramPost.isFeatured,
+            createdAt: instagramPost.createdAt,
+            mediaId: instagramPost.mediaId,
+            mediaUrl: galleryMedia.url,
+            mediaThumbnailUrl: galleryMedia.thumbnailUrl,
+            mediaTypeGallery: galleryMedia.type,
+        })
+        .from(instagramPost)
+        .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
+        .where(eq(instagramPost.id, id))
+        .limit(1)
+
+    if (posts.length === 0) return null
+
+    const post = posts[0]!
+
+    // Get carousel media if it's a carousel
+    let carouselMedia: InstagramPostWithMedia['carouselMedia'] = []
+    if (post.mediaType === 'carousel') {
+        const carouselItems = await db
+            .select({
+                mediaId: instagramPostMedia.mediaId,
+                displayOrder: instagramPostMedia.displayOrder,
+                url: galleryMedia.url,
+                type: galleryMedia.type,
+            })
+            .from(instagramPostMedia)
+            .innerJoin(
+                galleryMedia,
+                eq(instagramPostMedia.mediaId, galleryMedia.id)
+            )
+            .where(eq(instagramPostMedia.postId, id))
+            .orderBy(instagramPostMedia.displayOrder)
+
+        carouselMedia = carouselItems.map((item) => ({
+            id: item.mediaId,
+            url: item.url,
+            type: item.type,
+            displayOrder: item.displayOrder,
+        }))
+    }
+
+    return {
+        id: post.id,
+        instagramId: post.instagramId,
+        code: post.code,
+        mediaType: post.mediaType,
+        caption: post.caption,
+        permalink: post.permalink,
+        takenAt: post.takenAt,
+        likeCount: post.likeCount ?? 0,
+        commentCount: post.commentCount ?? 0,
+        playCount: post.playCount,
+        isPublished: post.isPublished,
+        isFeatured: post.isFeatured,
+        createdAt: post.createdAt,
+        media: {
+            id: post.mediaId,
+            url: post.mediaUrl,
+            thumbnailUrl: post.mediaThumbnailUrl,
+            type: post.mediaTypeGallery,
+        },
+        carouselMedia,
+    }
+}
+
+/**
+ * Get social media dashboard stats
+ */
+export async function getSocialMediaStats(): Promise<SocialMediaStats> {
+    // Get post counts
+    const [totalResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+
+    const [publishedResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(eq(instagramPost.isPublished, true))
+
+    const [featuredResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(eq(instagramPost.isFeatured, true))
+
+    // Get last sync time
+    const settings = await getInstagramSettings()
+
+    return {
+        totalPosts: totalResult?.count ?? 0,
+        publishedPosts: publishedResult?.count ?? 0,
+        featuredPosts: featuredResult?.count ?? 0,
+        lastSyncAt: settings?.lastSyncAt ?? null,
+    }
+}

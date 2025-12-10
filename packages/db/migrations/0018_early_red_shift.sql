@@ -77,3 +77,4 @@ CREATE INDEX "gallery_media_created_at_idx" ON "gallery_media" USING btree ("cre
 CREATE INDEX "gallery_media_published_at_idx" ON "gallery_media" USING btree ("published_at");--> statement-breakpoint
 CREATE INDEX "gallery_media_status_published_at_idx" ON "gallery_media" USING btree ("status","published_at");--> statement-breakpoint
 CREATE INDEX "gallery_media_group_display_order_idx" ON "gallery_media_group" USING btree ("display_order");
+
