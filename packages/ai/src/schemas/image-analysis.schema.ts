@@ -33,6 +33,12 @@ export const IMAGE_QUALITY_LEVELS = ['high', 'medium', 'low'] as const
 export type ImageQuality = (typeof IMAGE_QUALITY_LEVELS)[number]
 
 /**
+ * Patient gender options for image analysis
+ */
+export const PATIENT_GENDERS = ['male', 'female', 'unknown'] as const
+export type PatientGender = (typeof PATIENT_GENDERS)[number]
+
+/**
  * Procedure slugs that can be detected in images
  * These map to the actual page slugs used in the web app
  */
@@ -69,6 +75,50 @@ export const imageQualitySchema = z.enum(IMAGE_QUALITY_LEVELS)
  * Zod schema for procedure slug
  */
 export const galleryProcedureSlugSchema = z.enum(GALLERY_PROCEDURE_SLUGS)
+
+/**
+ * Zod schema for patient gender
+ */
+export const patientGenderSchema = z.enum(PATIENT_GENDERS)
+
+/**
+ * Zod schema for patient description
+ * Contains observable characteristics of the patient in the image
+ */
+export const patientDescriptionSchema = z.object({
+    gender: patientGenderSchema.describe(
+        'Apparent gender of the patient based on visual observation'
+    ),
+    estimatedAgeRange: z
+        .string()
+        .optional()
+        .describe(
+            'Estimated age range in decades (e.g., "25-35", "35-45", "45-55")'
+        ),
+    bodyType: z
+        .string()
+        .optional()
+        .describe(
+            'General body type observation (e.g., "athletic", "average", "curvy", "slim")'
+        ),
+    skinTone: z
+        .string()
+        .optional()
+        .describe(
+            'General skin tone for clinical context (e.g., "fair", "medium", "olive", "dark")'
+        ),
+    additionalDetails: z
+        .string()
+        .optional()
+        .describe(
+            'Other relevant observable patient characteristics useful for categorization'
+        ),
+})
+
+/**
+ * TypeScript type for patient description
+ */
+export type PatientDescription = z.infer<typeof patientDescriptionSchema>
 
 /**
  * Zod schema for gallery image analysis result
@@ -131,6 +181,19 @@ export const imageAnalysisSchema = z.object({
         .describe(
             'Any visible surgical or clinical details described professionally (e.g., incision placement, symmetry, volume enhancement)'
         ),
+
+    patientDescription: patientDescriptionSchema
+        .optional()
+        .describe(
+            'Observable patient characteristics including gender, estimated age range, body type, and skin tone'
+        ),
+
+    imageText: z
+        .string()
+        .optional()
+        .describe(
+            'Any visible text in the image such as labels, dates, watermarks, annotations, or "before"/"after" markers'
+        ),
 })
 
 /**
@@ -166,6 +229,10 @@ export type GalleryMediaAIAnalysis = {
     suggestedTags?: string[]
     /** Any visible surgical or clinical details described professionally */
     clinicalDetails?: string
+    /** Observable patient characteristics */
+    patientDescription?: PatientDescription
+    /** Any visible text in the image (OCR) */
+    imageText?: string
 }
 
 /**

@@ -81,11 +81,14 @@ export {
     bodyAreaSchema,
     imageQualitySchema,
     galleryProcedureSlugSchema,
+    patientGenderSchema,
+    patientDescriptionSchema,
     // Constants
     BEFORE_AFTER_TYPES,
     BODY_AREAS,
     IMAGE_QUALITY_LEVELS,
     GALLERY_PROCEDURE_SLUGS,
+    PATIENT_GENDERS,
     // Types
     type ImageAnalysis,
     type GalleryMediaAIAnalysis,
@@ -95,6 +98,8 @@ export {
     type BodyArea,
     type ImageQuality,
     type GalleryProcedureSlug,
+    type PatientGender,
+    type PatientDescription,
 } from './image-analysis.schema'
 
 export {

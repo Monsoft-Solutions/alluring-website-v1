@@ -23,6 +23,32 @@ export type BodyArea = 'face' | 'breast' | 'body' | 'combined' | 'other'
 export type ImageQuality = 'high' | 'medium' | 'low'
 
 /**
+ * Patient gender detected by AI
+ */
+export type PatientGender = 'male' | 'female' | 'unknown'
+
+/**
+ * Patient description data extracted from image analysis
+ * Contains observable characteristics useful for categorization
+ */
+export type PatientDescription = {
+    /** Apparent gender of the patient */
+    gender: PatientGender
+
+    /** Estimated age range (e.g., "25-35", "35-45") */
+    estimatedAgeRange?: string
+
+    /** General body type observation */
+    bodyType?: string
+
+    /** General skin tone for clinical context */
+    skinTone?: string
+
+    /** Other relevant observable characteristics */
+    additionalDetails?: string
+}
+
+/**
  * AI Analysis data structure for gallery media
  *
  * This type represents the structured output from AI vision analysis
@@ -62,4 +88,10 @@ export type GalleryMediaAIAnalysis = {
 
     /** Any visible surgical or clinical details described professionally */
     clinicalDetails?: string
+
+    /** Observable patient characteristics */
+    patientDescription?: PatientDescription
+
+    /** Any visible text in the image (OCR) */
+    imageText?: string
 }

@@ -13,6 +13,8 @@ export type {
     BeforeAfterType,
     BodyArea,
     ImageQuality,
+    PatientGender,
+    PatientDescription,
 } from './gallery-media-ai-analysis.type'
 
 // Gallery Group

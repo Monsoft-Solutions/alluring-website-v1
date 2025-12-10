@@ -82,6 +82,41 @@ If visible, describe clinical aspects professionally:
 - Volume or contour changes
 - Healing stage if apparent
 
+### 8. PATIENT DESCRIPTION
+Extract observable patient characteristics for categorization purposes:
+
+**Gender** (required):
+- "male": Patient appears male
+- "female": Patient appears female
+- "unknown": Cannot determine from the image
+
+**Estimated Age Range** (optional):
+- Use decade ranges: "20-30", "30-40", "40-50", "50-60", "60+"
+- Base on visible skin quality, body characteristics
+- Only provide if reasonably confident
+
+**Body Type** (optional):
+- Use descriptive terms: "slim", "athletic", "average", "curvy", "plus-size"
+- Focus on factual observation, not judgment
+
+**Skin Tone** (optional):
+- Use clinical descriptors: "fair", "light", "medium", "olive", "tan", "dark"
+- Useful for matching patient results to prospective patients
+
+**Additional Details** (optional):
+- Any other relevant observable characteristics
+- Height indicators (if full body visible)
+- Notable features relevant to the procedure shown
+
+### 9. IMAGE TEXT (OCR)
+Extract any visible text in the image:
+- "Before" / "After" labels or markers
+- Date stamps or timestamps
+- Clinic names or watermarks
+- Measurement annotations
+- Any other text overlays or labels
+- If no text is visible, omit this field
+
 ## IMPORTANT NOTES
 - Always maintain patient privacy and dignity in descriptions
 - Use professional medical terminology appropriately
