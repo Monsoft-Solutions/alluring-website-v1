@@ -118,7 +118,7 @@ const result = await coreGenerateObject({
     schema: userSchema,
     system: 'You are a helpful assistant that extracts user information',
     prompt: 'Extract info from: John Doe is 30 years old and loves hiking and photography',
-    modelId: 'gpt-4o-mini', // Optional, defaults to DEFAULT_CHAT_MODEL_ID
+    modelId: 'gpt-4.1-mini', // Optional, defaults to DEFAULT_CHAT_MODEL_ID
     temperature: 0.3, // Optional, defaults to 0.7
 })
 

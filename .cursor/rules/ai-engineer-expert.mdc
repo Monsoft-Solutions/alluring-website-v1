@@ -107,7 +107,7 @@ const result = await coreGenerateObject({
     schema: analysisSchema,
     system: 'You are an expert content analyzer',
     prompt: `Analyze: ${content}`,
-    modelId: 'gpt-4o-mini',
+    modelId: 'gpt-4.1-mini',
     temperature: 0.3,
 })
 
@@ -277,7 +277,7 @@ export {
 | Chat responses    | `gpt-4.1`         | Best quality for user-facing content     |
 | Classification    | `gpt-4.1-nano`    | Fast and cost-effective for simple tasks |
 | Analysis          | `gpt-4.1-mini`    | Good balance of quality and speed        |
-| Complex reasoning | `gpt-4o`          | Most capable for complex tasks           |
+| Complex reasoning | `gpt-4.1`         | Most capable for complex tasks           |
 
 ```typescript
 import {

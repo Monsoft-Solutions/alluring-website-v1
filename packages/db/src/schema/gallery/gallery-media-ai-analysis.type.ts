@@ -59,7 +59,7 @@ export type GalleryMediaAIAnalysis = {
     /** ISO timestamp when the analysis was performed */
     analyzedAt: string
 
-    /** Model ID used for the analysis (e.g., 'gpt-4o') */
+    /** Model ID used for the analysis (e.g., 'gpt-4.1') */
     modelId: string
 
     /** Detailed description of the image content */

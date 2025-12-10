@@ -55,7 +55,7 @@ export const galleryMedia = pgTable(
 
         /**
          * AI Analysis data from image analysis
-         * Contains structured output from GPT-4o vision analysis
+         * Contains structured output from AI vision analysis
          */
         aiAnalysis: jsonb('ai_analysis').$type<GalleryMediaAIAnalysis>(),
     },
