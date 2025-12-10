@@ -9,7 +9,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Pencil, Trash2, MoreHorizontal } from 'lucide-react'
+import { toast } from 'sonner'
+import { Pencil, Trash2, MoreHorizontal, Loader2 } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -56,20 +57,37 @@ export function QuickReplyActions({ reply }: QuickReplyActionsProps) {
 
     const handleToggle = async () => {
         setIsLoading(true)
-        await toggleQuickReplyAction(reply.id, !reply.isActive)
-        router.refresh()
-        setIsLoading(false)
+        try {
+            await toggleQuickReplyAction(reply.id, !reply.isActive)
+            toast.success(
+                reply.isActive
+                    ? 'Quick reply deactivated'
+                    : 'Quick reply activated'
+            )
+            router.refresh()
+        } catch {
+            toast.error('Failed to update quick reply')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleDelete = async () => {
         setIsLoading(true)
-        await deleteQuickReplyAction(reply.id)
-        setIsDeleteOpen(false)
-        router.refresh()
-        setIsLoading(false)
+        try {
+            await deleteQuickReplyAction(reply.id)
+            toast.success('Quick reply deleted')
+            setIsDeleteOpen(false)
+            router.refresh()
+        } catch {
+            toast.error('Failed to delete quick reply')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleEditSuccess = () => {
+        toast.success('Quick reply updated')
         setIsEditOpen(false)
         router.refresh()
     }
@@ -79,7 +97,11 @@ export function QuickReplyActions({ reply }: QuickReplyActionsProps) {
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant='ghost' size='sm' disabled={isLoading}>
-                        <MoreHorizontal className='h-4 w-4' />
+                        {isLoading ? (
+                            <Loader2 className='h-4 w-4 animate-spin' />
+                        ) : (
+                            <MoreHorizontal className='h-4 w-4' />
+                        )}
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>

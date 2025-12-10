@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
@@ -27,6 +28,7 @@ import {
     Star,
     StarOff,
     ArrowRight,
+    Loader2,
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -53,6 +55,7 @@ export function BeforeAfterPageClient({
     const [dialogOpen, setDialogOpen] = useState(false)
     const [editingPair, setEditingPair] =
         useState<BeforeAfterPairListItem | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleCreate = () => {
         setEditingPair(null)
@@ -65,14 +68,31 @@ export function BeforeAfterPageClient({
     }
 
     const handleToggleFeatured = async (id: string, isFeatured: boolean) => {
-        await togglePairFeatured(id, !isFeatured)
-        router.refresh()
+        setIsLoading(true)
+        try {
+            await togglePairFeatured(id, !isFeatured)
+            toast.success(
+                isFeatured ? 'Removed from featured' : 'Added to featured'
+            )
+            router.refresh()
+        } catch {
+            toast.error('Failed to update featured status')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleDelete = async (id: string) => {
-        if (confirm('Are you sure you want to delete this comparison?')) {
+        if (!confirm('Are you sure you want to delete this comparison?')) return
+        setIsLoading(true)
+        try {
             await deleteBeforeAfterPair(id)
+            toast.success('Comparison deleted')
             router.refresh()
+        } catch {
+            toast.error('Failed to delete comparison')
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -202,8 +222,13 @@ export function BeforeAfterPageClient({
                                                     <Button
                                                         variant='ghost'
                                                         size='sm'
+                                                        disabled={isLoading}
                                                     >
-                                                        <MoreHorizontal className='h-4 w-4' />
+                                                        {isLoading ? (
+                                                            <Loader2 className='h-4 w-4 animate-spin' />
+                                                        ) : (
+                                                            <MoreHorizontal className='h-4 w-4' />
+                                                        )}
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align='end'>

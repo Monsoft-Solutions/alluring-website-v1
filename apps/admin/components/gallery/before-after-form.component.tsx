@@ -2,6 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -120,6 +121,7 @@ export function BeforeAfterFormDialog({
                 if (mode === 'create') {
                     const result = await createBeforeAfterPair(formData)
                     if (result.success) {
+                        toast.success('Before & after pair created')
                         onOpenChange(false)
                         router.refresh()
                         // Reset form
@@ -142,6 +144,7 @@ export function BeforeAfterFormDialog({
                         formData
                     )
                     if (result.success) {
+                        toast.success('Before & after pair updated')
                         onOpenChange(false)
                         router.refresh()
                     } else {

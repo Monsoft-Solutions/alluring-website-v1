@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
@@ -27,6 +28,7 @@ import {
     Eye,
     EyeOff,
     ImageIcon,
+    Loader2,
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -53,6 +55,7 @@ export function GroupsPageClient({
     const [dialogOpen, setDialogOpen] = useState(false)
     const [editingGroup, setEditingGroup] =
         useState<GalleryGroupListItem | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const initialFormData = useMemo(() => {
         return editingGroup
@@ -79,14 +82,29 @@ export function GroupsPageClient({
     }
 
     const handleToggleVisibility = async (id: string, isVisible: boolean) => {
-        await toggleGroupVisibility(id, !isVisible)
-        router.refresh()
+        setIsLoading(true)
+        try {
+            await toggleGroupVisibility(id, !isVisible)
+            toast.success(isVisible ? 'Group hidden' : 'Group visible')
+            router.refresh()
+        } catch {
+            toast.error('Failed to update visibility')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleDelete = async (id: string) => {
-        if (confirm('Are you sure you want to delete this group?')) {
+        if (!confirm('Are you sure you want to delete this group?')) return
+        setIsLoading(true)
+        try {
             await deleteGalleryGroup(id)
+            toast.success('Group deleted')
             router.refresh()
+        } catch {
+            toast.error('Failed to delete group')
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -223,8 +241,13 @@ export function GroupsPageClient({
                                                     <Button
                                                         variant='ghost'
                                                         size='sm'
+                                                        disabled={isLoading}
                                                     >
-                                                        <MoreHorizontal className='h-4 w-4' />
+                                                        {isLoading ? (
+                                                            <Loader2 className='h-4 w-4 animate-spin' />
+                                                        ) : (
+                                                            <MoreHorizontal className='h-4 w-4' />
+                                                        )}
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align='end'>

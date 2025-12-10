@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Trash2, Loader2 } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -31,10 +32,17 @@ export function DeleteMediaButton({ id, title }: DeleteMediaButtonProps) {
 
     const handleDelete = async () => {
         startTransition(async () => {
-            const result = await deleteGalleryMedia(id)
-            if (result.success) {
-                router.push('/gallery/media')
-                router.refresh()
+            try {
+                const result = await deleteGalleryMedia(id)
+                if (result.success) {
+                    toast.success('Media deleted')
+                    router.push('/gallery/media')
+                    router.refresh()
+                } else {
+                    toast.error(result.error ?? 'Failed to delete media')
+                }
+            } catch {
+                toast.error('Failed to delete media')
             }
         })
     }

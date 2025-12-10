@@ -2,6 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { ImageIcon, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -109,6 +110,7 @@ export function GroupFormDialog({
                 if (mode === 'create') {
                     const result = await createGalleryGroup(formData)
                     if (result.success) {
+                        toast.success('Gallery group created')
                         onOpenChange(false)
                         router.refresh()
                         // Reset form
@@ -129,6 +131,7 @@ export function GroupFormDialog({
                         formData
                     )
                     if (result.success) {
+                        toast.success('Gallery group updated')
                         onOpenChange(false)
                         router.refresh()
                     } else {

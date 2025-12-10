@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 
+import { Toaster } from '@workspace/ui/components/sonner'
 import '@workspace/ui/globals.css'
 
 const inter = Inter({
@@ -34,6 +35,7 @@ export default function RootLayout({
         <html lang='en' className={inter.variable}>
             <body className='bg-background min-h-screen font-sans antialiased'>
                 {children}
+                <Toaster />
             </body>
         </html>
     )
