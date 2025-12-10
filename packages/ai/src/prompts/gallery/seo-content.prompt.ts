@@ -6,7 +6,7 @@
  *
  * @module @workspace/ai/prompts/gallery/seo-content
  */
-import type { GalleryMediaAIAnalysis } from '../../schemas/image-analysis.schema'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 /**
  * System prompt for SEO content generation

@@ -11,7 +11,7 @@ import {
     varchar,
 } from 'drizzle-orm/pg-core'
 
-import type { GalleryMediaAIAnalysis } from './gallery-media-ai-analysis.type'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 export const galleryMediaType = pgEnum('gallery_media_type', ['image', 'video'])
 

@@ -6,12 +6,13 @@
  *
  * @module @workspace/ai/functions/suggest-groups
  */
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
 import {
     groupSuggestionSchema,
     type GroupSuggestion,
     type AvailableGroup,
 } from '../schemas/group-suggestion.schema'
-import type { GalleryMediaAIAnalysis } from '../schemas/image-analysis.schema'
 import {
     GROUP_SUGGESTION_SYSTEM_PROMPT,
     getGroupSuggestionPrompt,

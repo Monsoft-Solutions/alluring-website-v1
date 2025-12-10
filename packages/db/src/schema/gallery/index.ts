@@ -7,16 +7,6 @@ export {
     type InsertGalleryMedia,
 } from './gallery-media.table'
 
-// Gallery Media AI Analysis Types
-export type {
-    GalleryMediaAIAnalysis,
-    BeforeAfterType,
-    BodyArea,
-    ImageQuality,
-    PatientGender,
-    PatientDescription,
-} from './gallery-media-ai-analysis.type'
-
 // Gallery Group
 export {
     galleryGroup,

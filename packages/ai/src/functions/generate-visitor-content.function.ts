@@ -6,10 +6,11 @@
  *
  * @module @workspace/ai/functions/generate-visitor-content
  */
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
 import {
     visitorContentSchema,
     type VisitorContent,
-    type GalleryMediaAIAnalysis,
 } from '../schemas/image-analysis.schema'
 import {
     VISITOR_CONTENT_SYSTEM_PROMPT,

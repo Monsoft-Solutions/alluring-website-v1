@@ -38,7 +38,7 @@ import {
     SelectValue,
 } from '@workspace/ui/components/select'
 
-import type { GalleryMediaAIAnalysis } from '@workspace/ai'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 import { MediaUpload } from '../shared/media-upload.component'
 import {

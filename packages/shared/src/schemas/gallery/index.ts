@@ -1,20 +1,3 @@
-/**
- * @workspace/shared
- *
- * Shared types, constants, and utilities used across apps in the workspace.
- */
-
-export {
-    CACHE_TAGS,
-    ALLOWED_STATIC_TAGS,
-    DYNAMIC_TAG_PREFIXES,
-    isValidCacheTag,
-    getAllPromotionTags,
-    type StaticCacheTag,
-    type DynamicTagPrefix,
-} from './cache'
-
-// Gallery schemas
 export {
     // Const arrays
     BEFORE_AFTER_TYPES,
@@ -35,4 +18,4 @@ export {
     type PatientGender,
     type PatientDescription,
     type GalleryMediaAIAnalysis,
-} from './schemas/gallery'
+} from './gallery-media-ai-analysis.schema'

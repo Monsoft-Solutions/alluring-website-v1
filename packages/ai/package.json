@@ -53,6 +53,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
+        "@workspace/shared": "workspace:*",
         "@ai-sdk/openai": "^2.0.77",
         "@ai-sdk/provider-utils": "^3.0.18",
         "@langfuse/otel": "^4.4.9",

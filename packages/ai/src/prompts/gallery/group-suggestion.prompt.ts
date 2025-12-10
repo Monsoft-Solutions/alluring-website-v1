@@ -6,7 +6,8 @@
  *
  * @module @workspace/ai/prompts/gallery/group-suggestion
  */
-import type { GalleryMediaAIAnalysis } from '../../schemas/image-analysis.schema'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
 import type { AvailableGroup } from '../../schemas/group-suggestion.schema'
 
 /**

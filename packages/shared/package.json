@@ -14,6 +14,11 @@
             "types": "./dist/cache/index.d.ts",
             "import": "./dist/cache/index.js",
             "default": "./dist/cache/index.js"
+        },
+        "./schemas/gallery": {
+            "types": "./dist/schemas/gallery/index.d.ts",
+            "import": "./dist/schemas/gallery/index.js",
+            "default": "./dist/schemas/gallery/index.js"
         }
     },
     "scripts": {
@@ -21,6 +26,9 @@
         "lint": "eslint . --ext .ts,.tsx",
         "typecheck": "tsc --noEmit",
         "format": "pnpm -w format"
+    },
+    "dependencies": {
+        "zod": "^4.1.13"
     },
     "devDependencies": {
         "@types/node": "^24.10.1",

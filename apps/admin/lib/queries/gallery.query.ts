@@ -5,7 +5,7 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import type { GalleryMediaAIAnalysis } from '@workspace/ai'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import { and, asc, count, desc, eq, ilike, sql } from 'drizzle-orm'
 
 // ============================================================================

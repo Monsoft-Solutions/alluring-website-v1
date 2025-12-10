@@ -8,35 +8,12 @@
  */
 import { z } from 'zod'
 
-/**
- * Before/after image type options
- */
-export const BEFORE_AFTER_TYPES = ['before', 'after', 'side_by_side'] as const
-export type BeforeAfterType = (typeof BEFORE_AFTER_TYPES)[number]
-
-/**
- * Body area categories for plastic surgery images
- */
-export const BODY_AREAS = [
-    'face',
-    'breast',
-    'body',
-    'combined',
-    'other',
-] as const
-export type BodyArea = (typeof BODY_AREAS)[number]
-
-/**
- * Image quality assessment levels
- */
-export const IMAGE_QUALITY_LEVELS = ['high', 'medium', 'low'] as const
-export type ImageQuality = (typeof IMAGE_QUALITY_LEVELS)[number]
-
-/**
- * Patient gender options for image analysis
- */
-export const PATIENT_GENDERS = ['male', 'female', 'unknown'] as const
-export type PatientGender = (typeof PATIENT_GENDERS)[number]
+import {
+    beforeAfterTypeSchema,
+    bodyAreaSchema,
+    imageQualitySchema,
+    patientDescriptionSchema,
+} from '@workspace/shared/schemas/gallery'
 
 /**
  * Procedure slugs that can be detected in images
@@ -57,68 +34,9 @@ export const GALLERY_PROCEDURE_SLUGS = [
 export type GalleryProcedureSlug = (typeof GALLERY_PROCEDURE_SLUGS)[number]
 
 /**
- * Zod schema for before/after type
- */
-export const beforeAfterTypeSchema = z.enum(BEFORE_AFTER_TYPES)
-
-/**
- * Zod schema for body area
- */
-export const bodyAreaSchema = z.enum(BODY_AREAS)
-
-/**
- * Zod schema for image quality
- */
-export const imageQualitySchema = z.enum(IMAGE_QUALITY_LEVELS)
-
-/**
  * Zod schema for procedure slug
  */
 export const galleryProcedureSlugSchema = z.enum(GALLERY_PROCEDURE_SLUGS)
-
-/**
- * Zod schema for patient gender
- */
-export const patientGenderSchema = z.enum(PATIENT_GENDERS)
-
-/**
- * Zod schema for patient description
- * Contains observable characteristics of the patient in the image
- */
-export const patientDescriptionSchema = z.object({
-    gender: patientGenderSchema.describe(
-        'Apparent gender of the patient based on visual observation'
-    ),
-    estimatedAgeRange: z
-        .string()
-        .optional()
-        .describe(
-            'Estimated age range in decades (e.g., "25-35", "35-45", "45-55")'
-        ),
-    bodyType: z
-        .string()
-        .optional()
-        .describe(
-            'General body type observation (e.g., "athletic", "average", "curvy", "slim")'
-        ),
-    skinTone: z
-        .string()
-        .optional()
-        .describe(
-            'General skin tone for clinical context (e.g., "fair", "medium", "olive", "dark")'
-        ),
-    additionalDetails: z
-        .string()
-        .optional()
-        .describe(
-            'Other relevant observable patient characteristics useful for categorization'
-        ),
-})
-
-/**
- * TypeScript type for patient description
- */
-export type PatientDescription = z.infer<typeof patientDescriptionSchema>
 
 /**
  * Zod schema for gallery image analysis result
@@ -200,40 +118,6 @@ export const imageAnalysisSchema = z.object({
  * TypeScript type inferred from the schema
  */
 export type ImageAnalysis = z.infer<typeof imageAnalysisSchema>
-
-/**
- * Full AI analysis result with metadata
- * This type is flexible enough to be stored in and retrieved from the database.
- * Uses string types for enums to support DB storage and retrieval.
- */
-export type GalleryMediaAIAnalysis = {
-    /** ISO timestamp when the analysis was performed */
-    analyzedAt: string
-    /** Model ID used for the analysis */
-    modelId: string
-    /** Detailed description of the image content */
-    description: string
-    /** Whether this appears to be a before/after comparison image */
-    isBeforeAfter: boolean
-    /** Type of before/after image if detected */
-    beforeAfterType?: BeforeAfterType
-    /** Detected procedure slug (matches PROCEDURE_OPTIONS) */
-    detectedProcedure?: string
-    /** Confidence score for procedure detection (0-1) */
-    procedureConfidence?: number
-    /** Body area shown in the image */
-    bodyArea: BodyArea
-    /** Assessment of image quality for web display */
-    imageQuality: ImageQuality
-    /** Suggested tags for categorization */
-    suggestedTags?: string[]
-    /** Any visible surgical or clinical details described professionally */
-    clinicalDetails?: string
-    /** Observable patient characteristics */
-    patientDescription?: PatientDescription
-    /** Any visible text in the image (OCR) */
-    imageText?: string
-}
 
 /**
  * SEO content generation result schema

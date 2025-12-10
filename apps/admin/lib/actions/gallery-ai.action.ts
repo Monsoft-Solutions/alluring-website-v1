@@ -2,12 +2,12 @@
 
 import { db } from '@workspace/db/client'
 import { galleryMedia } from '@workspace/db/schema/gallery'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import {
     analyzeGalleryImage,
     generateGallerySEOContent,
     generateGalleryVisitorContent,
     suggestGalleryGroups,
-    type GalleryMediaAIAnalysis,
     type SEOContent,
     type VisitorContent,
     type GroupSuggestion,

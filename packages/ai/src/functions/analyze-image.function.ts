@@ -6,10 +6,9 @@
  *
  * @module @workspace/ai/functions/analyze-image
  */
-import {
-    imageAnalysisSchema,
-    type GalleryMediaAIAnalysis,
-} from '../schemas/image-analysis.schema'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
+import { imageAnalysisSchema } from '../schemas/image-analysis.schema'
 import { IMAGE_ANALYSIS_SYSTEM_PROMPT } from '../prompts/gallery/image-analysis.prompt'
 import { coreGenerateObject } from '../core'
 
