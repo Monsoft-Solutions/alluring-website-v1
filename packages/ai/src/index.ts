@@ -64,6 +64,8 @@ export {
     generateGallerySEOContent,
     generateGalleryVisitorContent,
     suggestGalleryGroups,
+    // Text improvement
+    streamImproveText,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
@@ -74,6 +76,8 @@ export {
     type GenerateSEOContentOptions,
     type GenerateVisitorContentOptions,
     type SuggestGroupsOptions,
+    type StreamImproveTextOptions,
+    type TextOperation,
 } from './functions'
 
 // AI-specific schemas for structured outputs
@@ -131,6 +135,9 @@ export {
     getVisitorContentPrompt,
     GROUP_SUGGESTION_SYSTEM_PROMPT,
     getGroupSuggestionPrompt,
+    // Text improvement prompts
+    TEXT_IMPROVEMENT_SYSTEM_PROMPT,
+    getTextImprovementPrompt,
 } from './prompts'
 
 // Telemetry configuration

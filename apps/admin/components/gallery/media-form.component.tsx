@@ -41,6 +41,7 @@ import {
 import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 import { MediaUpload } from '../shared/media-upload.component'
+import { AITextInput, AITextarea } from '../shared/ai-text-field'
 import {
     createGalleryMedia,
     updateGalleryMedia,
@@ -503,12 +504,11 @@ export function MediaForm({ groups, initialData, mode }: MediaFormProps) {
                     <CardContent className='space-y-4'>
                         <div className='space-y-2'>
                             <Label htmlFor='title'>Title</Label>
-                            <Input
+                            <AITextInput
                                 id='title'
                                 value={formData.title}
-                                onChange={(e) =>
-                                    handleTitleChange(e.target.value)
-                                }
+                                onChange={handleTitleChange}
+                                name='title'
                                 placeholder='Enter media title'
                             />
                         </div>
@@ -532,12 +532,11 @@ export function MediaForm({ groups, initialData, mode }: MediaFormProps) {
 
                         <div className='space-y-2'>
                             <Label htmlFor='description'>Description</Label>
-                            <Textarea
+                            <AITextarea
                                 id='description'
                                 value={formData.description ?? ''}
-                                onChange={(e) =>
-                                    handleChange('description', e.target.value)
-                                }
+                                onChange={(v) => handleChange('description', v)}
+                                name='description'
                                 placeholder='Detailed description of this media'
                                 rows={4}
                             />
@@ -545,12 +544,11 @@ export function MediaForm({ groups, initialData, mode }: MediaFormProps) {
 
                         <div className='space-y-2'>
                             <Label htmlFor='alt'>Alt Text</Label>
-                            <Input
+                            <AITextInput
                                 id='alt'
                                 value={formData.alt ?? ''}
-                                onChange={(e) =>
-                                    handleChange('alt', e.target.value)
-                                }
+                                onChange={(v) => handleChange('alt', v)}
+                                name='alt'
                                 placeholder='Accessible description for screen readers'
                             />
                             <p className='text-muted-foreground text-xs'>
@@ -593,12 +591,11 @@ export function MediaForm({ groups, initialData, mode }: MediaFormProps) {
                     <CardContent className='space-y-4'>
                         <div className='space-y-2'>
                             <Label htmlFor='seoTitle'>SEO Title</Label>
-                            <Input
+                            <AITextInput
                                 id='seoTitle'
                                 value={formData.seoTitle ?? ''}
-                                onChange={(e) =>
-                                    handleChange('seoTitle', e.target.value)
-                                }
+                                onChange={(v) => handleChange('seoTitle', v)}
+                                name='seoTitle'
                                 placeholder='Page title for search results'
                                 maxLength={60}
                             />
@@ -611,15 +608,13 @@ export function MediaForm({ groups, initialData, mode }: MediaFormProps) {
                             <Label htmlFor='seoDescription'>
                                 SEO Description
                             </Label>
-                            <Textarea
+                            <AITextarea
                                 id='seoDescription'
                                 value={formData.seoDescription ?? ''}
-                                onChange={(e) =>
-                                    handleChange(
-                                        'seoDescription',
-                                        e.target.value
-                                    )
+                                onChange={(v) =>
+                                    handleChange('seoDescription', v)
                                 }
+                                name='seoDescription'
                                 placeholder='Brief description for search results'
                                 rows={3}
                                 maxLength={160}
