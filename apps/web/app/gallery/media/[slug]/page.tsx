@@ -148,7 +148,11 @@ export default async function GalleryMediaPage({ params }: PageProps) {
                 }}
             />
 
-            <ContainerLayout as='article' size='xl' className='py-8 lg:py-12'>
+            <ContainerLayout
+                as='article'
+                size='xl'
+                className='pt-20 pb-12 lg:pt-24 lg:pb-16'
+            >
                 {/* Breadcrumbs */}
                 <div className='mb-8'>
                     <Breadcrumbs

@@ -132,7 +132,7 @@ export default async function GalleryGroupPage({ params }: PageProps) {
             />
 
             {/* Header Section */}
-            <SectionContainer variant='default' className='pt-8 pb-0 md:pt-12'>
+            <SectionContainer variant='default' className='pt-20 pb-0 md:pt-24'>
                 <ContentWrapper>
                     {/* Breadcrumbs */}
                     <div className='mb-8'>
