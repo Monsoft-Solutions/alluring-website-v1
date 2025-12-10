@@ -61,32 +61,28 @@ export const galleryMedia = pgTable(
         aiAnalysis: jsonb('ai_analysis').$type<GalleryMediaAIAnalysis>(),
     },
     (table) => [
-        {
-            // Performance Indexes
-            typeIdx: index('gallery_media_type_idx').on(table.type),
-            statusIdx: index('gallery_media_status_idx').on(table.status),
-            isFeaturedIdx: index('gallery_media_is_featured_idx').on(
-                table.isFeatured
-            ),
-            isBeforeAfterIdx: index('gallery_media_is_before_after_idx').on(
-                table.isBeforeAfter
-            ),
-            beforeAfterIdIdx: index('gallery_media_before_after_id_idx').on(
-                table.beforeAfterId
-            ),
-            displayOrderIdx: index('gallery_media_display_order_idx').on(
-                table.displayOrder
-            ),
-            createdAtIdx: index('gallery_media_created_at_idx').on(
-                table.createdAt
-            ),
-            publishedAtIdx: index('gallery_media_published_at_idx').on(
-                table.publishedAt
-            ),
-            statusPublishedAtIdx: index(
-                'gallery_media_status_published_at_idx'
-            ).on(table.status, table.publishedAt),
-        },
+        // Performance Indexes - Keep useful single-column indexes
+        index('gallery_media_type_idx').on(table.type),
+        index('gallery_media_status_idx').on(table.status),
+        index('gallery_media_before_after_id_idx').on(table.beforeAfterId),
+        index('gallery_media_created_at_idx').on(table.createdAt),
+        index('gallery_media_status_published_at_idx').on(
+            table.status,
+            table.publishedAt
+        ),
+        // Optimized composite indexes for common query patterns
+        // Main public listing: status + sort columns
+        index('gallery_media_published_listing_idx').on(
+            table.status,
+            table.displayOrder,
+            table.publishedAt
+        ),
+        // Featured queries: covers WHERE status + is_featured + ORDER BY
+        index('gallery_media_status_featured_idx').on(
+            table.status,
+            table.isFeatured,
+            table.displayOrder
+        ),
         // Self-referential foreign key for before/after media linking
         foreignKey({
             columns: [table.beforeAfterId],

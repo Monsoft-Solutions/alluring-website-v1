@@ -15,12 +15,9 @@ export const galleryMediaGroup = pgTable(
         displayOrder: integer('display_order').default(0).notNull(),
     },
     (table) => [
-        {
-            pk: primaryKey({ columns: [table.mediaId, table.groupId] }),
-            displayOrderIdx: index('gallery_media_group_display_order_idx').on(
-                table.displayOrder
-            ),
-        },
+        primaryKey({ columns: [table.mediaId, table.groupId] }),
+        // Critical for filtering media by group (WHERE group_id = X queries)
+        index('gallery_media_group_group_id_idx').on(table.groupId),
     ]
 )
 

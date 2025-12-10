@@ -34,20 +34,18 @@ export const beforeAfterPair = pgTable(
             .$onUpdate(() => new Date()),
     },
     (table) => [
-        {
-            procedureTypeIdx: index('before_after_pair_procedure_type_idx').on(
-                table.procedureType
-            ),
-            procedureSlugIdx: index('before_after_pair_procedure_slug_idx').on(
-                table.procedureSlug
-            ),
-            isFeaturedIdx: index('before_after_pair_is_featured_idx').on(
-                table.isFeatured
-            ),
-            displayOrderIdx: index('before_after_pair_display_order_idx').on(
-                table.displayOrder
-            ),
-        },
+        // Keep procedure type for category filtering
+        index('before_after_pair_procedure_type_idx').on(table.procedureType),
+        // Composite for procedure page queries (WHERE procedure_slug = X ORDER BY display_order)
+        index('before_after_pair_procedure_listing_idx').on(
+            table.procedureSlug,
+            table.displayOrder
+        ),
+        // Composite for featured pairs (WHERE is_featured = true ORDER BY display_order)
+        index('before_after_pair_featured_listing_idx').on(
+            table.isFeatured,
+            table.displayOrder
+        ),
     ]
 )
 

@@ -30,14 +30,11 @@ export const galleryGroup = pgTable(
             .$onUpdate(() => new Date()),
     },
     (table) => [
-        {
-            isVisibleIdx: index('gallery_group_is_visible_idx').on(
-                table.isVisible
-            ),
-            displayOrderIdx: index('gallery_group_display_order_idx').on(
-                table.displayOrder
-            ),
-        },
+        // Composite index for visible groups listing (WHERE is_visible = true ORDER BY display_order)
+        index('gallery_group_visible_display_idx').on(
+            table.isVisible,
+            table.displayOrder
+        ),
     ]
 )
 

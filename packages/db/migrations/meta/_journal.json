@@ -162,6 +162,13 @@
       "when": 1765366211083,
       "tag": "0022_lame_jean_grey",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1765366774933,
+      "tag": "0023_magical_carnage",
+      "breakpoints": true
     }
   ]
 }
