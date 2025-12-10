@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
-import { Loader2, Save, User } from 'lucide-react'
+import { toast } from 'sonner'
+import { Loader2, Save } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
@@ -94,6 +95,7 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                 if (mode === 'create') {
                     const result = await createAuthor(formData)
                     if (result.success && result.id) {
+                        toast.success('Author created')
                         router.push('/blog/authors')
                         router.refresh()
                     } else {
@@ -102,6 +104,7 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                 } else if (initialData?.id) {
                     const result = await updateAuthor(initialData.id, formData)
                     if (result.success) {
+                        toast.success('Author updated')
                         router.push('/blog/authors')
                         router.refresh()
                     } else {

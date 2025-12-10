@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
 import {
     Loader2,
     Save,
@@ -67,24 +68,6 @@ const PROMOTION_TYPES = [
     },
 ] as const
 
-const LINK_TYPES = [
-    {
-        value: 'contact',
-        label: 'Contact Form',
-        description: 'Link to consultation',
-    },
-    {
-        value: 'procedure',
-        label: 'Procedure Page',
-        description: 'Link to a procedure',
-    },
-    {
-        value: 'custom_url',
-        label: 'Custom URL',
-        description: 'External or custom link',
-    },
-] as const
-
 const STATUS_OPTIONS = [
     { value: 'draft', label: 'Draft' },
     { value: 'scheduled', label: 'Scheduled' },
@@ -145,6 +128,16 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
         }
     }
 
+    const getSuccessMessage = (
+        isCreate: boolean,
+        status?: PromotionFormData['status']
+    ) => {
+        if (isCreate) return 'Promotion created'
+        if (status === 'active') return 'Promotion activated'
+        if (status === 'scheduled') return 'Promotion scheduled'
+        return 'Promotion saved'
+    }
+
     const handleSave = async (status?: PromotionFormData['status']) => {
         const dataToSave = {
             ...formData,
@@ -156,6 +149,7 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
                 if (mode === 'create') {
                     const result = await createPromotion(dataToSave)
                     if (result.success && result.id) {
+                        toast.success(getSuccessMessage(true, status))
                         router.push(`/promotions/${result.id}/edit`)
                         router.refresh()
                     } else {
@@ -167,6 +161,7 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
                         dataToSave
                     )
                     if (result.success) {
+                        toast.success(getSuccessMessage(false, status))
                         router.refresh()
                     } else {
                         setError(result.error ?? 'Failed to update promotion')
