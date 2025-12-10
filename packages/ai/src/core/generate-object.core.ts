@@ -24,11 +24,15 @@ export type { FlexibleSchema, InferSchema } from '@ai-sdk/provider-utils'
  * Wraps the AI SDK generateObject function with consistent configuration
  * and a centralized extension point for telemetry.
  *
- * @param options - Generation options including schema, prompts, and model config
+ * Supports both prompt-based and messages-based generation.
+ * Messages format enables multimodal content including images for vision capabilities.
+ *
+ * @param options - Generation options including schema, prompts/messages, and model config
  * @returns The generated object matching the schema type
  *
  * @example
  * ```typescript
+ * // Using prompt (text-only)
  * const result = await coreGenerateObject({
  *   schema: myZodSchema,
  *   system: 'You are a helpful assistant',
@@ -36,7 +40,22 @@ export type { FlexibleSchema, InferSchema } from '@ai-sdk/provider-utils'
  *   modelId: 'gpt-4o-mini',
  *   temperature: 0.3,
  * })
- * console.log(result.object) // Typed object matching schema
+ *
+ * // Using messages (multimodal with images)
+ * const result = await coreGenerateObject({
+ *   schema: imageAnalysisSchema,
+ *   system: 'Analyze this image',
+ *   messages: [
+ *     {
+ *       role: 'user',
+ *       content: [
+ *         { type: 'text', text: 'Analyze this image' },
+ *         { type: 'image', image: 'https://example.com/image.jpg' }
+ *       ]
+ *     }
+ *   ],
+ *   modelId: 'gpt-4o',
+ * })
  * ```
  */
 export async function coreGenerateObject<TSchema extends z.ZodType>(
@@ -47,14 +66,18 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
         temperature = 0.7,
         schema,
         system,
-        prompt,
     } = options
+
+    // Check if using prompt or messages format
+    const isPromptFormat = 'prompt' in options
 
     const result = await generateObject({
         model: openai(modelId),
         schema,
         system,
-        prompt,
+        ...(isPromptFormat
+            ? { prompt: options.prompt }
+            : { messages: options.messages }),
         temperature,
         experimental_telemetry: telemetryConfig,
     })

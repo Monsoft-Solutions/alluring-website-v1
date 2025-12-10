@@ -50,7 +50,11 @@ export { coreStreamText, type StreamTextResult } from './stream-text.core'
 export type {
     CoreBaseOptions,
     CoreMessage,
+    CoreMessageContentPart,
+    CoreAISDKMessage,
     CoreGenerateObjectOptions,
+    CoreGenerateObjectPromptOptions,
+    CoreGenerateObjectMessagesOptions,
     CoreGenerateTextOptions,
     CoreGenerateTextPromptOptions,
     CoreGenerateTextMessagesOptions,

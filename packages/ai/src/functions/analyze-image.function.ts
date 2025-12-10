@@ -6,15 +6,12 @@
  *
  * @module @workspace/ai/functions/analyze-image
  */
-import { generateObject } from 'ai'
-import { openai } from '@ai-sdk/openai'
-
 import {
     imageAnalysisSchema,
     type GalleryMediaAIAnalysis,
 } from '../schemas/image-analysis.schema'
 import { IMAGE_ANALYSIS_SYSTEM_PROMPT } from '../prompts/gallery/image-analysis.prompt'
-import { telemetryConfig } from '../telemetry'
+import { coreGenerateObject } from '../core'
 
 /**
  * Default model for vision analysis
@@ -61,8 +58,8 @@ export async function analyzeGalleryImage(
         temperature = 0.3,
     } = options
 
-    const result = await generateObject({
-        model: openai(modelId),
+    const result = await coreGenerateObject({
+        modelId,
         schema: imageAnalysisSchema,
         system: IMAGE_ANALYSIS_SYSTEM_PROMPT,
         messages: [
@@ -81,7 +78,6 @@ export async function analyzeGalleryImage(
             },
         ],
         temperature,
-        experimental_telemetry: telemetryConfig,
     })
 
     // Add metadata to the analysis result

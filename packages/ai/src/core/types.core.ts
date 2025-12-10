@@ -6,6 +6,21 @@
  * @module @workspace/ai/core/types
  */
 import type { z } from 'zod'
+import type { ModelMessage as AISDKCoreMessage } from 'ai'
+
+/**
+ * Message content part for multimodal content (text or image)
+ */
+export type CoreMessageContentPart =
+    | { type: 'text'; text: string }
+    | { type: 'image'; image: string }
+
+/**
+ * AI SDK message format supporting multimodal content
+ * Compatible with generateObject messages parameter
+ * Uses the AI SDK's CoreMessage type which supports both string and array content
+ */
+export type CoreAISDKMessage = AISDKCoreMessage
 
 /**
  * Base options shared by all core AI functions
@@ -26,9 +41,9 @@ export type CoreMessage = {
 }
 
 /**
- * Options for generateObject core function
+ * Options for generateObject core function with prompt
  */
-export type CoreGenerateObjectOptions<TSchema extends z.ZodType> =
+export type CoreGenerateObjectPromptOptions<TSchema extends z.ZodType> =
     CoreBaseOptions & {
         /** Zod schema for structured output */
         schema: TSchema
@@ -37,6 +52,27 @@ export type CoreGenerateObjectOptions<TSchema extends z.ZodType> =
         /** User prompt for the AI */
         prompt: string
     }
+
+/**
+ * Options for generateObject core function with messages
+ * Supports multimodal content including images for vision capabilities
+ */
+export type CoreGenerateObjectMessagesOptions<TSchema extends z.ZodType> =
+    CoreBaseOptions & {
+        /** Zod schema for structured output */
+        schema: TSchema
+        /** System prompt for the AI */
+        system?: string
+        /** Messages for multimodal generation (supports images) */
+        messages: CoreAISDKMessage[]
+    }
+
+/**
+ * Options for generateObject core function (either prompt or messages)
+ */
+export type CoreGenerateObjectOptions<TSchema extends z.ZodType> =
+    | CoreGenerateObjectPromptOptions<TSchema>
+    | CoreGenerateObjectMessagesOptions<TSchema>
 
 /**
  * Options for generateText core function with prompt
