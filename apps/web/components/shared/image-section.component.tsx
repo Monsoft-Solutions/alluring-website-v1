@@ -21,12 +21,14 @@
  * />
  * ```
  */
+import { ImageObjectSchema } from '@workspace/seo/react'
 import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { siteConfig } from '@/lib/data/site-config'
 import type { ImageSectionProps } from '@/lib/types/sections/image-section.type'
 
 import { ContentWrapper } from './content-wrapper.component'
@@ -56,11 +58,28 @@ export function ImageSection({
     reverseMobile = false,
     imageContainerClassName,
     contentContainerClassName,
+    includeSchema = true,
 }: ImageSectionProps) {
     const isBadgeString = typeof badge === 'string'
 
+    const defaultAuthor = {
+        '@type': 'Organization' as const,
+        name: siteConfig.business.name,
+    }
+
     return (
         <SectionContainer variant={variant} id={id} className={className}>
+            {includeSchema && (
+                <ImageObjectSchema
+                    url={image.src}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
+                    author={defaultAuthor}
+                    copyrightHolder={siteConfig.business.name}
+                    name={image.alt || siteConfig.business.name}
+                />
+            )}
             <ContentWrapper>
                 <div
                     className={cn(

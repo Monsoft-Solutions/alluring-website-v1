@@ -1,13 +1,17 @@
 'use client'
 
+import { ImageObjectSchema } from '@workspace/seo/react'
 import { Procedure } from '@/lib/types/procedure.type'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { siteConfig } from '@/lib/data/site-config'
+
 interface ProcedureCardProps {
     procedure: Procedure
     index: number
+    includeSchema?: boolean
 }
 
 /**
@@ -35,9 +39,18 @@ const getCategoryDisplayName = (
  * - Prominent inline CTA
  * - Minimal, clean animations
  */
-export function ProcedureCard({ procedure }: ProcedureCardProps) {
+export function ProcedureCard({
+    procedure,
+    includeSchema = true,
+}: ProcedureCardProps) {
     const categoryDisplay = getCategoryDisplayName(procedure.category)
     const imageSrc = procedure.image || '/images/placeholder.jpg'
+
+    const defaultAuthor = {
+        '@type': 'Organization' as const,
+        name: siteConfig.business.name,
+    }
+
     const description =
         procedure.shortDescription || procedure.description || ''
 
@@ -47,6 +60,15 @@ export function ProcedureCard({ procedure }: ProcedureCardProps) {
             className='group relative block aspect-3/4 w-full overflow-hidden'
             aria-label={`View ${procedure.title}`}
         >
+            {includeSchema && (
+                <ImageObjectSchema
+                    url={imageSrc}
+                    alt={procedure.title}
+                    author={defaultAuthor}
+                    copyrightHolder={siteConfig.business.name}
+                    name={procedure.title || siteConfig.business.name}
+                />
+            )}
             {/* Background Image */}
             <div className='absolute inset-0'>
                 <Image

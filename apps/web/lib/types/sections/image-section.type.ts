@@ -147,4 +147,10 @@ export interface ImageSectionProps {
      * Custom content container classes
      */
     readonly contentContainerClassName?: string
+
+    /**
+     * Whether to include ImageObject schema
+     * @default false
+     */
+    readonly includeSchema?: boolean
 }
