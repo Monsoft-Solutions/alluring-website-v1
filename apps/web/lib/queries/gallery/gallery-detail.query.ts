@@ -7,7 +7,7 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import { and, asc, desc, eq, ne, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, ne, sql, inArray } from 'drizzle-orm'
 
 import type {
     GalleryGroupDetail,
@@ -203,7 +203,7 @@ async function fetchGalleryMediaBySlug(
             )
             .where(
                 and(
-                    sql`${galleryMediaGroup.groupId} IN ${groupIds}`,
+                    inArray(galleryMediaGroup.groupId, groupIds),
                     eq(galleryMedia.status, 'published'),
                     ne(galleryMedia.id, media.id)
                 )
