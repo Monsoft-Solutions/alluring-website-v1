@@ -72,6 +72,39 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
         setIsDragging(false)
     }, [])
 
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent) => {
+            const step = 5
+            let newPosition = sliderPosition
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                case 'ArrowDown':
+                    e.preventDefault()
+                    newPosition = Math.max(0, sliderPosition - step)
+                    break
+                case 'ArrowRight':
+                case 'ArrowUp':
+                    e.preventDefault()
+                    newPosition = Math.min(100, sliderPosition + step)
+                    break
+                case 'Home':
+                    e.preventDefault()
+                    newPosition = 0
+                    break
+                case 'End':
+                    e.preventDefault()
+                    newPosition = 100
+                    break
+                default:
+                    return
+            }
+
+            setSliderPosition(newPosition)
+        },
+        [sliderPosition]
+    )
+
     return (
         <div className={cn('flex flex-col', className)}>
             {/* Slider Container */}
@@ -85,6 +118,7 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
+                onKeyDown={handleKeyDown}
                 role='slider'
                 aria-label='Before and after comparison slider'
                 aria-valuenow={Math.round(sliderPosition)}
