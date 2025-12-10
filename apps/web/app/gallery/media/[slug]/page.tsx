@@ -5,7 +5,6 @@ import { cache } from 'react'
 
 import { MediaDetailView } from '@/components/gallery/media-detail-view.component'
 import { RelatedMedia } from '@/components/gallery/related-media.component'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { siteConfig } from '@/lib/data/site-config'
 import {
@@ -151,28 +150,8 @@ export default async function GalleryMediaPage({ params }: PageProps) {
             <ContainerLayout
                 as='article'
                 size='xl'
-                className='pt-20 pb-12 lg:pt-24 lg:pb-16'
+                className='pt-24 pb-12 lg:pt-32 lg:pb-16'
             >
-                {/* Breadcrumbs */}
-                <div className='mb-8'>
-                    <Breadcrumbs
-                        items={[
-                            { label: 'Home', href: '/' },
-                            { label: 'Gallery', href: '/gallery' },
-                            ...(media.groups.length > 0
-                                ? [
-                                      {
-                                          label: media.groups[0]!.name,
-                                          href: `/gallery/${media.groups[0]!.slug}`,
-                                      },
-                                  ]
-                                : []),
-                            { label: media.title },
-                        ]}
-                        showBackground={true}
-                    />
-                </div>
-
                 {/* Media Detail */}
                 <MediaDetailView media={media} />
 

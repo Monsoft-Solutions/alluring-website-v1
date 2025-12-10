@@ -5,7 +5,6 @@ import { cache } from 'react'
 import { Award, Shield, Users, Building2 } from 'lucide-react'
 
 import { GalleryMediaGrid } from '@/components/gallery/gallery-media-grid.component'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
@@ -132,20 +131,8 @@ export default async function GalleryGroupPage({ params }: PageProps) {
             />
 
             {/* Header Section */}
-            <SectionContainer variant='default' className='pt-20 pb-0 md:pt-24'>
+            <SectionContainer variant='default' className='pt-24 pb-0 md:pt-32'>
                 <ContentWrapper>
-                    {/* Breadcrumbs */}
-                    <div className='mb-8'>
-                        <Breadcrumbs
-                            items={[
-                                { label: 'Home', href: '/' },
-                                { label: 'Gallery', href: '/gallery' },
-                                { label: group.name },
-                            ]}
-                            showBackground={true}
-                        />
-                    </div>
-
                     {/* Group Header */}
                     <div className='mb-12 max-w-3xl md:mb-16'>
                         <div className='mb-4 flex items-center gap-3'>
