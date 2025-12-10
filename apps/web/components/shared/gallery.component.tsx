@@ -30,12 +30,14 @@
  */
 'use client'
 
+import { ImageObjectSchema } from '@workspace/seo/react'
 import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
 import { useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 
+import { siteConfig } from '@/lib/data/site-config'
 import type { GalleryImage } from '@/lib/types/shared/gallery-image.type'
 
 /**
@@ -73,6 +75,12 @@ export type GalleryProps = {
      * @default true
      */
     readonly showCaptions?: boolean
+
+    /**
+     * Whether to include ImageObject schema for each image
+     * @default false
+     */
+    readonly includeSchema?: boolean
 }
 
 /**
@@ -87,8 +95,14 @@ export function Gallery({
     aspectRatio = 'video',
     className,
     showCaptions = true,
+    includeSchema = false,
 }: GalleryProps) {
     const [lightboxIndex, setLightboxIndex] = useState(-1)
+
+    const defaultAuthor = {
+        '@type': 'Organization' as const,
+        name: siteConfig.business.name,
+    }
 
     // Handle empty images array
     if (!images || images.length === 0) {
@@ -135,6 +149,20 @@ export function Gallery({
 
     return (
         <>
+            {includeSchema &&
+                images.map((image, index) => (
+                    <ImageObjectSchema
+                        key={`schema-${index}`}
+                        url={image.url}
+                        alt={image.alt}
+                        caption={image.caption}
+                        width={image.width}
+                        height={image.height}
+                        author={defaultAuthor}
+                        copyrightHolder={siteConfig.business.name}
+                        name={image.alt || siteConfig.business.name}
+                    />
+                ))}
             {/* Gallery Grid */}
             <div className={cn(gridClasses, className)}>
                 {images.map((image, index) => (

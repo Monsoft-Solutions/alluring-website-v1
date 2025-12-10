@@ -96,6 +96,12 @@ This agent serves as the **registry and router** for all specialized agents in t
 - **Key Capabilities**: Vercel AI SDK integration, Zod schema-based structured outputs, streaming chat, intent classification, conversation analysis, lead scoring, prompt engineering, telemetry with Langfuse
 - **Location**: `.cursor/rules/ai-engineer-expert.mdc`
 
+### shared-types-architecture
+
+- **Purpose**: Guide for creating and consuming shared types across packages to ensure DRY and single source of truth
+- **Key Capabilities**: Zod schema-based type definitions, cross-package type sharing, subpath exports, schema composition, type inference from schemas
+- **Location**: `.cursor/rules/shared-types-architecture.mdc`
+
 ## Routing Guidelines
 
 Direct tasks to appropriate specialized agents:
@@ -116,6 +122,7 @@ Direct tasks to appropriate specialized agents:
 - **SEO content writing, copywriting** → `seo-content-expert`
 - **Blog post creation with images** → `blog-post-creator-expert`
 - **AI features, chat systems, conversation analysis** → `ai-engineer-expert`
+- **Shared types, cross-package schemas, DRY types** → `shared-types-architecture`
 
 ## Registry Maintenance
 
@@ -138,5 +145,5 @@ Agents automatically apply based on file types and contexts defined in their rul
 
 ---
 
-_Last updated: 2025-12-06_
-_Total Cursor agents: 17 (including main-agent)_
+_Last updated: 2025-12-10_
+_Total Cursor agents: 18 (including main-agent)_

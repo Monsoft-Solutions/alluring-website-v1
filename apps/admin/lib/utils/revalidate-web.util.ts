@@ -1,5 +1,9 @@
 import { env } from '@/env'
-import { CACHE_TAGS, getAllPromotionTags } from '@workspace/shared/cache'
+import {
+    CACHE_TAGS,
+    getAllPromotionTags,
+    getAllGalleryTags,
+} from '@workspace/shared/cache'
 
 /**
  * Response from the web app's revalidation API
@@ -80,9 +84,9 @@ export async function revalidateWebAppCache(tags: string[]): Promise<void> {
 
 /**
  * Re-exported from @workspace/shared/cache for convenience.
- * Use this when any promotion is created, updated, or deleted.
+ * Use these when any promotion or gallery content is created, updated, or deleted.
  */
-export { CACHE_TAGS, getAllPromotionTags }
+export { CACHE_TAGS, getAllPromotionTags, getAllGalleryTags }
 
 /**
  * Alias for getAllPromotionTags for backwards compatibility.

@@ -13,6 +13,7 @@
         "@radix-ui/react-accordion": "^1.2.12",
         "@radix-ui/react-alert-dialog": "^1.1.15",
         "@radix-ui/react-avatar": "^1.1.11",
+        "@radix-ui/react-checkbox": "^1.3.3",
         "@radix-ui/react-dialog": "^1.1.15",
         "@radix-ui/react-dropdown-menu": "^2.1.16",
         "@radix-ui/react-label": "^2.1.8",
@@ -30,6 +31,7 @@
         "react": "^19.2.1",
         "react-dom": "^19.2.1",
         "react-hook-form": "^7.66.1",
+        "sonner": "^2.0.7",
         "tailwind-merge": "^3.4.0",
         "tw-animate-css": "^1.4.0",
         "zod": "^4.1.13"
@@ -84,6 +86,11 @@
             "types": "./dist/components/card.d.ts",
             "import": "./dist/components/card.js",
             "default": "./dist/components/card.js"
+        },
+        "./components/checkbox": {
+            "types": "./dist/components/checkbox.d.ts",
+            "import": "./dist/components/checkbox.js",
+            "default": "./dist/components/checkbox.js"
         },
         "./components/dialog": {
             "types": "./dist/components/dialog.d.ts",
@@ -154,6 +161,11 @@
             "types": "./dist/components/textarea.d.ts",
             "import": "./dist/components/textarea.js",
             "default": "./dist/components/textarea.js"
+        },
+        "./components/sonner": {
+            "types": "./dist/components/sonner.d.ts",
+            "import": "./dist/components/sonner.js",
+            "default": "./dist/components/sonner.js"
         }
     }
 }

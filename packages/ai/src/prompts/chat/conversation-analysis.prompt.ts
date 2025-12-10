@@ -7,7 +7,7 @@
  *
  * @module @workspace/ai/prompts/chat/conversation-analysis
  */
-import type { AnalysisMessage } from '../../schemas/conversation-analysis.schema'
+import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 
 /**
  * System prompt for comprehensive conversation analysis
@@ -44,7 +44,22 @@ Identify the main reason for the conversation:
 Detect any procedures mentioned (use exact slugs):
 bbl, breast_augmentation, breast_lift, breast_reduction, tummy_tuck, liposuction, mommy_makeover, facelift, rhinoplasty, blepharoplasty, brow_lift, chin_augmentation, lip_augmentation, botox, fillers
 
-### 3. LEAD PROFILE
+### 3. TAGS
+Use ONLY these exact tag values where applicable (do not create new tags):
+- hot_lead: High interest, likely to convert
+- price_sensitive: Very focused on cost
+- ready_to_book: Explicitly wants to schedule
+- returning_visitor: Mentions previous consultation/visit
+- multiple_procedures: Interested in more than one procedure
+- financing_needed: Needs payment plan
+- urgent: Time-sensitive request
+- research_phase: Just gathering information
+- post_op_concern: Has concerns about recovery
+- travel_domestic: Traveling from elsewhere in US
+- travel_international: Coming from another country
+- unknown: Cannot determine tags
+
+### 4. LEAD PROFILE
 
 **Budget Indicator** - Infer from conversation signals:
 - low: Mentions tight budget, looking for cheapest option, very price-focused
@@ -75,7 +90,7 @@ bbl, breast_augmentation, breast_lift, breast_reduction, tummy_tuck, liposuction
 - travel_international: Coming from another country
 - unknown: Location not mentioned
 
-### 4. PSYCHOGRAPHIC DATA
+### 5. PSYCHOGRAPHIC DATA
 
 **Motivations** - Why they want the procedure:
 Extract 1-5 specific motivations (e.g., "regain confidence after weight loss", "look younger for career", "fix asymmetry that bothers them")
@@ -92,7 +107,7 @@ Extract 1-5 barriers (e.g., "needs to discuss with partner", "waiting for tax re
 - negative: Worried, skeptical, frustrated
 - mixed: Combination of emotions
 
-### 5. ACTIONABLE INTELLIGENCE
+### 6. ACTIONABLE INTELLIGENCE
 
 **Recommended Action** - Best next step:
 - call_immediately: Hot lead, call right away
@@ -116,7 +131,7 @@ Provide 1-5 specific talking points based on the conversation (e.g., "Address co
 - timeOfDay: When they prefer to be contacted
 - language: Preferred language for communication
 
-### 6. CONVERSATION SUMMARY
+### 7. CONVERSATION SUMMARY
 
 Write a 2-3 sentence summary that a sales rep can quickly scan to understand:
 - Who is this person?

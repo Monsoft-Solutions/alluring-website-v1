@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useState, useTransition, useEffect } from 'react'
+import { toast } from 'sonner'
 import {
     Plus,
     Pencil,
@@ -294,6 +294,11 @@ function CategoryDialog({
                         : await updateCategory(category!.id, formData)
 
                 if (result.success) {
+                    toast.success(
+                        mode === 'create'
+                            ? 'Category created'
+                            : 'Category updated'
+                    )
                     setOpen(false)
                     onSuccess()
                 } else {
@@ -467,8 +472,8 @@ function DeleteCategoryButton({
 
     const handleDelete = () => {
         if (category.postCount > 0) {
-            alert(
-                `Cannot delete category "${category.name}" because it has ${category.postCount} posts`
+            toast.error(
+                `Cannot delete "${category.name}" - used by ${category.postCount} posts`
             )
             return
         }
@@ -480,9 +485,10 @@ function DeleteCategoryButton({
         startTransition(async () => {
             const result = await deleteCategory(category.id)
             if (result.success) {
+                toast.success('Category deleted')
                 onSuccess()
             } else {
-                alert(result.error ?? 'Failed to delete category')
+                toast.error(result.error ?? 'Failed to delete category')
             }
         })
     }

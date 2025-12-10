@@ -31,7 +31,7 @@ export type { GenerateTextResult } from 'ai'
  * const result = await coreGenerateText({
  *   system: 'You are a helpful assistant',
  *   prompt: 'Write a haiku about coding',
- *   modelId: 'gpt-4o-mini',
+ *   modelId: 'gpt-4.1-mini',
  * })
  * console.log(result.text)
  *

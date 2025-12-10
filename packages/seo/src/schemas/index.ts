@@ -8,6 +8,7 @@ export { buildFAQJsonLd } from './faq.schema'
 export { buildProductJsonLd } from './product.schema'
 export { buildReviewJsonLd } from './review.schema'
 export { buildLocalBusinessJsonLd } from './local-business.schema'
+export { buildImageObjectJsonLd } from './image-object.schema'
 
 // Schema types
 export type { ArticleSchemaProps } from '../types/schema/article.type'
@@ -34,3 +35,4 @@ export type {
 export type { OrganizationSchemaProps } from '../types/schema/organization.type'
 export type { WebSiteSchemaProps } from '../types/schema/website.type'
 export type { WebPageSchemaProps } from '../types/schema/webpage.type'
+export type { ImageObjectSchemaProps } from '../types/schema/image-object.type'

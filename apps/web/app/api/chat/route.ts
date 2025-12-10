@@ -16,7 +16,7 @@ import {
     analyzeConversation,
     calculateLeadScoreFromAnalysis,
 } from '@workspace/ai'
-import type { AnalysisMessage } from '@workspace/ai/schemas'
+import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 import { langfuseSpanProcessor } from '@/instrumentation'
 
 import { env } from '@/env'

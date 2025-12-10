@@ -1,0 +1,208 @@
+---
+description: Guide for creating and consuming shared types across packages. Use when types/schemas are needed in multiple packages (ai, db, apps) to ensure DRY and single source of truth.
+---
+
+# Shared Types Architecture
+
+Apply when creating types, Zod schemas, or const arrays that need to be shared across multiple packages (`@workspace/ai`, `@workspace/db`, `apps/*`). Ensures DRY principle with a single source of truth.
+
+## Decision Flow
+
+**Put in `@workspace/shared`** when:
+
+- Type is used in 2+ packages (e.g., both `@workspace/ai` and `@workspace/db`)
+- Type represents shared domain concepts (e.g., `GalleryMediaAIAnalysis` used in DB schema and AI functions)
+- Const arrays define allowed values used for validation across packages
+
+**Keep local** when:
+
+- Type is specific to one package's internal implementation
+- Type is only used within a single app or package
+
+## Principles
+
+- **Zod schemas as source of truth**: Define schemas with Zod, infer TypeScript types from them using `z.infer<typeof schema>`
+- **No re-exports**: Consumers import directly from `@workspace/shared`, never re-export from consuming packages
+- **Const arrays with Zod enums**: Use `as const` arrays with `z.enum()` for type-safe allowed values
+- **Subpath exports**: Organize by domain (e.g., `@workspace/shared/schemas/gallery`)
+- **Schema composition**: Package-specific schemas can import and compose shared schemas
+
+## Directory Structure
+
+```
+packages/shared/src/
+├── schemas/
+│   ├── gallery/
+│   │   ├── gallery-media-ai-analysis.schema.ts  # Const arrays + Zod + types
+│   │   └── index.ts                              # Selective exports
+│   └── index.ts                                  # Domain re-exports
+└── index.ts                                      # Main entry (optional exports)
+```
+
+## Patterns
+
+### Creating Shared Schemas
+
+```typescript
+// packages/shared/src/schemas/gallery/gallery-media-ai-analysis.schema.ts
+import { z } from 'zod'
+
+// 1. Const arrays for validation
+export const BEFORE_AFTER_TYPES = ['before', 'after', 'side_by_side'] as const
+export const BODY_AREAS = [
+    'face',
+    'breast',
+    'body',
+    'combined',
+    'other',
+] as const
+
+// 2. Zod schemas from const arrays
+export const beforeAfterTypeSchema = z.enum(BEFORE_AFTER_TYPES)
+export const bodyAreaSchema = z.enum(BODY_AREAS)
+
+// 3. Complex Zod schemas
+export const galleryMediaAIAnalysisSchema = z.object({
+    analyzedAt: z.string(),
+    modelId: z.string(),
+    bodyArea: bodyAreaSchema,
+    beforeAfterType: beforeAfterTypeSchema.optional(),
+})
+
+// 4. Types inferred from schemas (NEVER define types manually)
+export type BeforeAfterType = z.infer<typeof beforeAfterTypeSchema>
+export type BodyArea = z.infer<typeof bodyAreaSchema>
+export type GalleryMediaAIAnalysis = z.infer<
+    typeof galleryMediaAIAnalysisSchema
+>
+```
+
+### Index File Exports (Selective, No `export *`)
+
+```typescript
+// packages/shared/src/schemas/gallery/index.ts
+export {
+    // Const arrays
+    BEFORE_AFTER_TYPES,
+    BODY_AREAS,
+    // Zod schemas
+    beforeAfterTypeSchema,
+    bodyAreaSchema,
+    galleryMediaAIAnalysisSchema,
+    // Types
+    type BeforeAfterType,
+    type BodyArea,
+    type GalleryMediaAIAnalysis,
+} from './gallery-media-ai-analysis.schema'
+```
+
+### Package.json Subpath Export
+
+```json
+{
+    "exports": {
+        "./schemas/gallery": {
+            "types": "./dist/schemas/gallery/index.d.ts",
+            "import": "./dist/schemas/gallery/index.js",
+            "default": "./dist/schemas/gallery/index.js"
+        }
+    }
+}
+```
+
+### Consuming in Other Packages
+
+```typescript
+// packages/db/src/schema/gallery/gallery-media.table.ts
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
+export const galleryMedia = pgTable('gallery_media', {
+    aiAnalysis: jsonb().$type<GalleryMediaAIAnalysis>(),
+})
+```
+
+```typescript
+// packages/ai/src/functions/analyze-image.function.ts
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
+export async function analyzeImage(
+    url: string
+): Promise<GalleryMediaAIAnalysis> {
+    // ...
+}
+```
+
+```typescript
+// apps/admin/lib/queries/gallery.query.ts
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
+export type GalleryMediaDetail = {
+    aiAnalysis: GalleryMediaAIAnalysis | null
+}
+```
+
+### Package-Specific Schemas Composing Shared Schemas
+
+```typescript
+// packages/ai/src/schemas/image-analysis.schema.ts
+import {
+    beforeAfterTypeSchema,
+    bodyAreaSchema,
+    patientDescriptionSchema,
+} from '@workspace/shared/schemas/gallery'
+import { z } from 'zod'
+
+// AI-specific schema that composes shared schemas
+export const imageAnalysisSchema = z.object({
+    description: z.string(),
+    bodyArea: bodyAreaSchema, // Reuse shared schema
+    beforeAfterType: beforeAfterTypeSchema.optional(),
+    patientDescription: patientDescriptionSchema.optional(),
+    // AI-specific fields
+    procedureConfidence: z.number().min(0).max(1).optional(),
+})
+
+export type ImageAnalysis = z.infer<typeof imageAnalysisSchema>
+```
+
+## Avoid
+
+```typescript
+// ❌ Defining types manually instead of inferring from Zod
+export type BeforeAfterType = 'before' | 'after' | 'side_by_side'
+
+// ❌ Duplicating types across packages
+// packages/ai/src/types/gallery.type.ts
+export type GalleryMediaAIAnalysis = { ... }
+// packages/db/src/types/gallery.type.ts
+export type GalleryMediaAIAnalysis = { ... }  // Duplicate!
+
+// ❌ Re-exporting from consuming packages
+// packages/ai/src/index.ts
+export type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
+
+// ❌ Using `export *` in index files
+export * from './gallery-media-ai-analysis.schema'
+
+// ❌ Importing from consuming package instead of shared
+import type { GalleryMediaAIAnalysis } from '@workspace/ai'  // Wrong!
+```
+
+## Checklist for New Shared Types
+
+1. [ ] Create schema file in `packages/shared/src/schemas/{domain}/`
+2. [ ] Define const arrays with `as const`
+3. [ ] Create Zod schemas using `z.enum()` for const arrays
+4. [ ] Infer types from schemas using `z.infer<typeof schema>`
+5. [ ] Export selectively from domain `index.ts`
+6. [ ] Add subpath export to `packages/shared/package.json`
+7. [ ] Add `@workspace/shared` to consuming package's dependencies
+8. [ ] Run `pnpm install` and `pnpm typecheck`
+
+## References
+
+@packages/shared/src/schemas/gallery/gallery-media-ai-analysis.schema.ts
+@packages/shared/src/schemas/gallery/index.ts
+@packages/shared/package.json
+@packages/ai/src/schemas/image-analysis.schema.ts
+@apps/admin/lib/queries/gallery.query.ts

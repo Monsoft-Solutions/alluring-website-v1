@@ -40,6 +40,11 @@
             "import": "./dist/schema/feedback/index.js",
             "default": "./dist/schema/feedback/index.js"
         },
+        "./schema/gallery": {
+            "types": "./dist/schema/gallery/index.d.ts",
+            "import": "./dist/schema/gallery/index.js",
+            "default": "./dist/schema/gallery/index.js"
+        },
         "./types": {
             "types": "./dist/schema/contact/contact-submission.table.d.ts",
             "import": "./dist/schema/contact/contact-submission.table.js",
@@ -57,6 +62,7 @@
         "format": "pnpm -w format"
     },
     "dependencies": {
+        "@workspace/shared": "workspace:*",
         "@t3-oss/env-core": "^0.13.8",
         "drizzle-orm": "^0.44.7",
         "glob": "^13.0.0",

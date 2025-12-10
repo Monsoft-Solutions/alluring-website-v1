@@ -127,6 +127,48 @@
       "when": 1765032812476,
       "tag": "0017_brown_sunfire",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1765281964121,
+      "tag": "0018_early_red_shift",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1765282802509,
+      "tag": "0019_purple_matthew_murdock",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1765320384179,
+      "tag": "0020_chilly_roland_deschain",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1765326628385,
+      "tag": "0021_even_manta",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1765366211083,
+      "tag": "0022_lame_jean_grey",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1765366774933,
+      "tag": "0023_magical_carnage",
+      "breakpoints": true
     }
   ]
 }

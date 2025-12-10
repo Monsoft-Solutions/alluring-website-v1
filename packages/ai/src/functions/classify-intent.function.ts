@@ -10,7 +10,7 @@ import {
     intentClassificationSchema,
     type IntentClassification,
     type ClassificationMessage,
-} from '../schemas/intent-classification.schema'
+} from '@workspace/shared/schemas/chat'
 import {
     INTENT_CLASSIFICATION_SYSTEM_PROMPT,
     getIntentClassificationPrompt,
@@ -22,7 +22,7 @@ import { coreGenerateObject } from '../core'
  * Options for intent classification
  */
 export type ClassifyIntentOptions = {
-    /** Model ID to use (defaults to gpt-4o-mini) */
+    /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
     /** Temperature for generation (defaults to 0.3 for consistent results) */
     temperature?: number

@@ -5,6 +5,7 @@ import {
     BarChart3,
     FileText,
     Home,
+    ImageIcon,
     Mail,
     MessageSquare,
     ChevronLeft,
@@ -50,6 +51,17 @@ const navItems: NavItem[] = [
         title: 'Promotions',
         href: '/promotions',
         icon: Megaphone,
+    },
+    {
+        title: 'Gallery',
+        href: '/gallery',
+        icon: ImageIcon,
+        children: [
+            { title: 'Dashboard', href: '/gallery' },
+            { title: 'Media Library', href: '/gallery/media' },
+            { title: 'Groups', href: '/gallery/groups' },
+            { title: 'Before & After', href: '/gallery/before-after' },
+        ],
     },
     {
         title: 'Chat',

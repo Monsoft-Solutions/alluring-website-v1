@@ -6,7 +6,7 @@
  *
  * @module @workspace/ai/prompts/chat/intent-classification
  */
-import type { ClassificationMessage } from '../../schemas/intent-classification.schema'
+import type { ClassificationMessage } from '@workspace/shared/schemas/chat'
 
 /**
  * System prompt for intent classification

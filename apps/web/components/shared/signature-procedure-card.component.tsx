@@ -1,5 +1,6 @@
 'use client'
 
+import { ImageObjectSchema } from '@workspace/seo/react'
 import { Procedure } from '@/lib/types/procedure.type'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion'
@@ -7,10 +8,13 @@ import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { siteConfig } from '@/lib/data/site-config'
+
 interface SignatureProcedureCardProps {
     procedure: Procedure
     index: number
     containerRef?: React.RefObject<HTMLDivElement>
+    includeSchema?: boolean
 }
 
 /**
@@ -33,8 +37,14 @@ export function SignatureProcedureCard({
     procedure,
     index,
     containerRef,
+    includeSchema = true,
 }: SignatureProcedureCardProps) {
     const cardRef = useRef<HTMLDivElement>(null)
+
+    const defaultAuthor = {
+        '@type': 'Organization' as const,
+        name: siteConfig.business.name,
+    }
 
     // Track the card's horizontal position within the scroll container
     // Only if containerRef is provided (for parallax effect)
@@ -79,6 +89,15 @@ export function SignatureProcedureCard({
             </Link>
 
             {/* Image Wrapper with Parallax & Zoom Effect */}
+            {includeSchema && (
+                <ImageObjectSchema
+                    url={imageSrc}
+                    alt={procedure.title}
+                    author={defaultAuthor}
+                    copyrightHolder={siteConfig.business.name}
+                    name={procedure.title || siteConfig.business.name}
+                />
+            )}
             <div className='absolute inset-0 h-full w-full overflow-hidden bg-stone-800'>
                 <motion.div
                     style={{ x, scale: 1.25 }}

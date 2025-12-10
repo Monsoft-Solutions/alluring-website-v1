@@ -6,9 +6,12 @@
  *
  * SSR-compatible: Uses CSS transitions and transforms.
  */
+import { ImageObjectSchema } from '@workspace/seo/react'
 import { ArrowRight, Calendar, Clock, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { siteConfig } from '@/lib/data/site-config'
 
 import { cn } from '@workspace/ui/lib/utils'
 
@@ -17,9 +20,19 @@ import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 type PostCardProps = {
     post: BlogPostCard
     className?: string
+    includeSchema?: boolean
 }
 
-export function PostCard({ post, className }: PostCardProps) {
+export function PostCard({
+    post,
+    className,
+    includeSchema = true,
+}: PostCardProps) {
+    const defaultAuthor = {
+        '@type': 'Organization' as const,
+        name: siteConfig.business.name,
+    }
+
     const publishedDate = post.publishedAt
         ? new Date(post.publishedAt).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -52,6 +65,18 @@ export function PostCard({ post, className }: PostCardProps) {
             {/* Image Container */}
             {post.featuredImage && (
                 <div className='relative aspect-[16/10] w-full overflow-hidden bg-stone-100'>
+                    {includeSchema && (
+                        <ImageObjectSchema
+                            url={post.featuredImage.url}
+                            alt={post.featuredImage.alt}
+                            author={defaultAuthor}
+                            copyrightHolder={siteConfig.business.name}
+                            name={
+                                post.featuredImage.alt ||
+                                siteConfig.business.name
+                            }
+                        />
+                    )}
                     <Image
                         src={post.featuredImage.url}
                         alt={post.featuredImage.alt}

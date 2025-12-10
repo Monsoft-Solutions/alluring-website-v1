@@ -1,0 +1,5 @@
+ALTER TABLE "before_after_pair" ADD CONSTRAINT "before_after_pair_before_media_id_gallery_media_id_fk" FOREIGN KEY ("before_media_id") REFERENCES "public"."gallery_media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "before_after_pair" ADD CONSTRAINT "before_after_pair_after_media_id_gallery_media_id_fk" FOREIGN KEY ("after_media_id") REFERENCES "public"."gallery_media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gallery_group" ADD CONSTRAINT "gallery_group_cover_image_id_gallery_media_id_fk" FOREIGN KEY ("cover_image_id") REFERENCES "public"."gallery_media"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gallery_media_group" ADD CONSTRAINT "gallery_media_group_media_id_gallery_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."gallery_media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gallery_media_group" ADD CONSTRAINT "gallery_media_group_group_id_gallery_group_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."gallery_group"("id") ON DELETE cascade ON UPDATE no action;

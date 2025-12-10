@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
 import { Loader2, Save, Eye, Send } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -99,6 +100,16 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         handleChange('readingTime', calculateReadingTime(content))
     }
 
+    const getSuccessMessage = (
+        isCreate: boolean,
+        status?: 'draft' | 'readyToPublish' | 'published'
+    ) => {
+        if (isCreate) return 'Post created'
+        if (status === 'published') return 'Post published'
+        if (status === 'readyToPublish') return 'Post marked ready to publish'
+        return 'Post saved'
+    }
+
     const handleSave = async (
         status?: 'draft' | 'readyToPublish' | 'published'
     ) => {
@@ -112,6 +123,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                 if (mode === 'create') {
                     const result = await createBlogPost(dataToSave)
                     if (result.success && result.id) {
+                        toast.success(getSuccessMessage(true, status))
                         router.push(`/blog/posts/${result.id}/edit`)
                         router.refresh()
                     } else {
@@ -123,6 +135,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                         dataToSave
                     )
                     if (result.success) {
+                        toast.success(getSuccessMessage(false, status))
                         router.refresh()
                     } else {
                         setError(result.error ?? 'Failed to update post')

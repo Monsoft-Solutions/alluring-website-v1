@@ -1,0 +1,1 @@
+ALTER TABLE "before_after_pair" ADD COLUMN "procedure_slug" varchar(100);

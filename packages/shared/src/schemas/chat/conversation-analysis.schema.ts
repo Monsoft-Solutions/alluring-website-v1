@@ -3,9 +3,9 @@
  *
  * Comprehensive Zod schema for AI-powered conversation analysis.
  * Extracts lead profile, psychographic data, and actionable intelligence.
- * Used with AI SDK's generateObject() for type-safe structured output.
+ * Single source of truth used across @workspace/ai, @workspace/chat, and apps.
  *
- * @module @workspace/ai/schemas/conversation-analysis
+ * @module @workspace/shared/schemas/chat/conversation-analysis
  */
 import { z } from 'zod'
 
@@ -13,13 +13,10 @@ import {
     intentTypeSchema,
     detectableProcedureSchema,
     sessionTagSchema,
-    INTENT_TYPES,
-    DETECTABLE_PROCEDURES,
-    SESSION_TAGS,
 } from './intent-classification.schema'
 
 // ============================================
-// Lead Profile Enums
+// Lead Profile Const Arrays & Enums
 // ============================================
 
 /**
@@ -32,8 +29,6 @@ export const BUDGET_INDICATORS = [
     'premium',
     'unknown',
 ] as const
-
-export type BudgetIndicator = (typeof BUDGET_INDICATORS)[number]
 
 /**
  * Timeline for procedure
@@ -48,8 +43,6 @@ export const TIMELINE_OPTIONS = [
     'unknown',
 ] as const
 
-export type Timeline = (typeof TIMELINE_OPTIONS)[number]
-
 /**
  * Decision stage in buying journey
  */
@@ -61,8 +54,6 @@ export const DECISION_STAGES = [
     'unknown',
 ] as const
 
-export type DecisionStage = (typeof DECISION_STAGES)[number]
-
 /**
  * Patient type (local vs travel)
  */
@@ -73,10 +64,8 @@ export const PATIENT_TYPES = [
     'unknown',
 ] as const
 
-export type PatientType = (typeof PATIENT_TYPES)[number]
-
 // ============================================
-// Psychographic Enums
+// Psychographic Const Arrays
 // ============================================
 
 /**
@@ -89,10 +78,8 @@ export const SENTIMENT_OPTIONS = [
     'mixed',
 ] as const
 
-export type Sentiment = (typeof SENTIMENT_OPTIONS)[number]
-
 // ============================================
-// Actionable Intelligence Enums
+// Actionable Intelligence Const Arrays
 // ============================================
 
 /**
@@ -107,21 +94,15 @@ export const RECOMMENDED_ACTIONS = [
     'no_action',
 ] as const
 
-export type RecommendedAction = (typeof RECOMMENDED_ACTIONS)[number]
-
 /**
  * Follow-up priority levels
  */
 export const FOLLOW_UP_PRIORITIES = ['urgent', 'high', 'normal', 'low'] as const
 
-export type FollowUpPriority = (typeof FOLLOW_UP_PRIORITIES)[number]
-
 /**
  * Contact method preferences
  */
 export const CONTACT_METHODS = ['phone', 'email', 'text', 'whatsapp'] as const
-
-export type ContactMethod = (typeof CONTACT_METHODS)[number]
 
 // ============================================
 // Zod Schemas
@@ -154,8 +135,6 @@ export const leadProfileSchema = z.object({
     ),
 })
 
-export type LeadProfile = z.infer<typeof leadProfileSchema>
-
 /**
  * Contact preference information
  */
@@ -174,8 +153,6 @@ export const contactPreferenceSchema = z.object({
         .optional()
         .describe('Preferred language for communication if mentioned'),
 })
-
-export type ContactPreference = z.infer<typeof contactPreferenceSchema>
 
 /**
  * Psychographic data extracted from conversation
@@ -201,8 +178,6 @@ export const psychographicDataSchema = z.object({
     ),
 })
 
-export type PsychographicData = z.infer<typeof psychographicDataSchema>
-
 /**
  * Actionable intelligence for sales team
  */
@@ -223,10 +198,6 @@ export const actionableIntelligenceSchema = z.object({
     ),
 })
 
-export type ActionableIntelligence = z.infer<
-    typeof actionableIntelligenceSchema
->
-
 /**
  * Complete conversation analysis schema
  *
@@ -234,7 +205,7 @@ export type ActionableIntelligence = z.infer<
  * lead analysis for sales team actionability.
  */
 export const conversationAnalysisSchema = z.object({
-    // Intent classification (same as before)
+    // Intent classification
     primaryIntent: intentTypeSchema.describe(
         'The primary intent detected from the conversation'
     ),
@@ -273,6 +244,24 @@ export const conversationAnalysisSchema = z.object({
         ),
 })
 
+// ============================================
+// Types inferred from schemas
+// ============================================
+
+export type BudgetIndicator = z.infer<typeof budgetIndicatorSchema>
+export type Timeline = z.infer<typeof timelineSchema>
+export type DecisionStage = z.infer<typeof decisionStageSchema>
+export type PatientType = z.infer<typeof patientTypeSchema>
+export type Sentiment = z.infer<typeof sentimentSchema>
+export type RecommendedAction = z.infer<typeof recommendedActionSchema>
+export type FollowUpPriority = z.infer<typeof followUpPrioritySchema>
+export type ContactMethod = z.infer<typeof contactMethodSchema>
+export type LeadProfile = z.infer<typeof leadProfileSchema>
+export type ContactPreference = z.infer<typeof contactPreferenceSchema>
+export type PsychographicData = z.infer<typeof psychographicDataSchema>
+export type ActionableIntelligence = z.infer<
+    typeof actionableIntelligenceSchema
+>
 export type ConversationAnalysis = z.infer<typeof conversationAnalysisSchema>
 
 /**
@@ -311,13 +300,3 @@ export const DEFAULT_CONVERSATION_ANALYSIS: ConversationAnalysis = {
     },
     conversationSummary: 'Insufficient conversation data for analysis.',
 }
-
-// Re-export intent classification types for convenience
-export {
-    INTENT_TYPES,
-    DETECTABLE_PROCEDURES,
-    SESSION_TAGS,
-    type IntentType,
-    type DetectableProcedure,
-    type SessionTag,
-} from './intent-classification.schema'

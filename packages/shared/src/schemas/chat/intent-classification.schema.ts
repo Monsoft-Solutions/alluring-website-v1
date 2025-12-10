@@ -2,11 +2,15 @@
  * Intent Classification Schema
  *
  * Zod schema for validating AI intent classification responses.
- * Used with AI SDK's generateObject() for type-safe structured output.
+ * Single source of truth for intent types used across @workspace/ai, @workspace/chat, and apps.
  *
- * @module @workspace/ai/schemas/intent-classification
+ * @module @workspace/shared/schemas/chat/intent-classification
  */
 import { z } from 'zod'
+
+// ============================================
+// Const Arrays
+// ============================================
 
 /**
  * Available intent types for classification
@@ -21,8 +25,6 @@ export const INTENT_TYPES = [
     'complaint',
     'unknown',
 ] as const
-
-export type IntentType = (typeof INTENT_TYPES)[number]
 
 /**
  * Procedures that can be detected in conversations
@@ -45,8 +47,6 @@ export const DETECTABLE_PROCEDURES = [
     'fillers',
 ] as const
 
-export type DetectableProcedure = (typeof DETECTABLE_PROCEDURES)[number]
-
 /**
  * Tags that can be applied to sessions
  */
@@ -60,9 +60,14 @@ export const SESSION_TAGS = [
     'urgent',
     'research_phase',
     'post_op_concern',
+    'travel_domestic',
+    'travel_international',
+    'unknown',
 ] as const
 
-export type SessionTag = (typeof SESSION_TAGS)[number]
+// ============================================
+// Zod Schemas
+// ============================================
 
 /**
  * Zod schema for intent type enum
@@ -102,9 +107,13 @@ export const intentClassificationSchema = z.object({
         .describe('Relevant tags based on conversation context'),
 })
 
-/**
- * TypeScript type inferred from the schema
- */
+// ============================================
+// Types inferred from schemas
+// ============================================
+
+export type IntentType = z.infer<typeof intentTypeSchema>
+export type DetectableProcedure = z.infer<typeof detectableProcedureSchema>
+export type SessionTag = z.infer<typeof sessionTagSchema>
 export type IntentClassification = z.infer<typeof intentClassificationSchema>
 
 /**

@@ -1,0 +1,1 @@
+ALTER TABLE "gallery_media" ADD CONSTRAINT "gallery_media_before_after_id_fkey" FOREIGN KEY ("before_after_id") REFERENCES "public"."gallery_media"("id") ON DELETE set null ON UPDATE no action;

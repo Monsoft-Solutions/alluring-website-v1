@@ -9,6 +9,7 @@ import {
 import { ContainerLayout } from '@/components/container-layout.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
+import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
@@ -174,6 +175,12 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
             {procedure.benefits && (
                 <ProcedureBenefits benefits={procedure.benefits} />
             )}
+
+            {/* Before & After Results Section */}
+            <ProcedureBeforeAfterSection
+                procedureSlug={params.slug}
+                procedureTitle={procedure.title}
+            />
 
             {/* Process Section */}
             {procedure.process && (

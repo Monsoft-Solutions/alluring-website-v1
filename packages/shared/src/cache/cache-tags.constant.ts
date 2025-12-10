@@ -34,6 +34,14 @@ export const CACHE_TAGS = {
     /** Tag for all blog post queries */
     BLOG_POSTS: 'blog-posts',
 
+    // Gallery tags
+    /** Tag for all gallery group queries */
+    GALLERY_GROUPS: 'gallery-groups',
+    /** Tag for all gallery media queries */
+    GALLERY_MEDIA: 'gallery-media',
+    /** Tag for all before/after pair queries */
+    BEFORE_AFTER_PAIRS: 'before-after-pairs',
+
     /**
      * Generate a tag for a specific promotion by slug
      * @param slug - The promotion slug
@@ -47,6 +55,20 @@ export const CACHE_TAGS = {
      * @returns A unique tag for the specific blog post
      */
     blogPostBySlug: (slug: string) => `blog-post-${slug}` as const,
+
+    /**
+     * Generate a tag for a specific gallery group by slug
+     * @param slug - The gallery group slug
+     * @returns A unique tag for the specific gallery group
+     */
+    galleryGroupBySlug: (slug: string) => `gallery-group-${slug}` as const,
+
+    /**
+     * Generate a tag for a specific gallery media by slug
+     * @param slug - The gallery media slug
+     * @returns A unique tag for the specific gallery media
+     */
+    galleryMediaBySlug: (slug: string) => `gallery-media-${slug}` as const,
 } as const
 
 /**
@@ -58,12 +80,20 @@ export const ALLOWED_STATIC_TAGS = [
     CACHE_TAGS.PROMOTION_FEATURED,
     CACHE_TAGS.PROMOTION_MODAL,
     CACHE_TAGS.BLOG_POSTS,
+    CACHE_TAGS.GALLERY_GROUPS,
+    CACHE_TAGS.GALLERY_MEDIA,
+    CACHE_TAGS.BEFORE_AFTER_PAIRS,
 ] as const
 
 /**
  * Prefixes for dynamic tags that include identifiers (e.g., slugs)
  */
-export const DYNAMIC_TAG_PREFIXES = ['promotion-', 'blog-post-'] as const
+export const DYNAMIC_TAG_PREFIXES = [
+    'promotion-',
+    'blog-post-',
+    'gallery-group-',
+    'gallery-media-',
+] as const
 
 /**
  * Type representing all valid static cache tags
@@ -118,5 +148,19 @@ export function getAllPromotionTags(): string[] {
         CACHE_TAGS.PROMOTIONS,
         CACHE_TAGS.PROMOTION_FEATURED,
         CACHE_TAGS.PROMOTION_MODAL,
+    ]
+}
+
+/**
+ * Get all gallery-related tags for bulk revalidation.
+ * Use this when any gallery content is created, updated, or deleted.
+ *
+ * @returns Array of all gallery cache tags
+ */
+export function getAllGalleryTags(): string[] {
+    return [
+        CACHE_TAGS.GALLERY_GROUPS,
+        CACHE_TAGS.GALLERY_MEDIA,
+        CACHE_TAGS.BEFORE_AFTER_PAIRS,
     ]
 }

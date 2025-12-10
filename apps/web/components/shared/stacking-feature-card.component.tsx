@@ -21,8 +21,11 @@
  * />
  * ```
  */
+import { ImageObjectSchema } from '@workspace/seo/react'
 import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
+
+import { siteConfig } from '@/lib/data/site-config'
 
 export type StackingFeatureCardProps = {
     /** Feature title */
@@ -35,6 +38,8 @@ export type StackingFeatureCardProps = {
     imageAlt: string
     /** Additional CSS classes */
     className?: string
+    /** Whether to include ImageObject schema */
+    includeSchema?: boolean
 }
 
 export function StackingFeatureCard({
@@ -43,7 +48,13 @@ export function StackingFeatureCard({
     imageSrc,
     imageAlt,
     className,
+    includeSchema = true,
 }: StackingFeatureCardProps) {
+    const defaultAuthor = {
+        '@type': 'Organization' as const,
+        name: siteConfig.business.name,
+    }
+
     return (
         <div
             className={cn(
@@ -52,7 +63,7 @@ export function StackingFeatureCard({
                 'transition-all duration-500',
                 // Gradient overlay effect
                 'before:absolute before:inset-0 before:z-10 before:rounded-2xl',
-                'before:from-primary/10 before:bg-gradient-to-br before:via-transparent before:to-transparent',
+                'before:from-primary/10 before:bg-linear-to-br before:via-transparent before:to-transparent',
                 'before:opacity-0 before:transition-opacity before:duration-500',
                 'hover:before:opacity-100',
                 // Border glow effect
@@ -63,6 +74,15 @@ export function StackingFeatureCard({
                 className
             )}
         >
+            {includeSchema && (
+                <ImageObjectSchema
+                    url={imageSrc}
+                    alt={imageAlt}
+                    author={defaultAuthor}
+                    copyrightHolder={siteConfig.business.name}
+                    name={imageAlt || siteConfig.business.name}
+                />
+            )}
             {/* Image Section - Top Half */}
             <div className='bg-muted/30 relative h-64 w-full overflow-hidden md:h-80'>
                 <Image

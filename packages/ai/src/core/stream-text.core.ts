@@ -30,7 +30,7 @@ export type { StreamTextResult } from 'ai'
  * const result = coreStreamText({
  *   system: 'You are a helpful assistant',
  *   messages: [{ role: 'user', content: 'Hello!' }],
- *   modelId: 'gpt-4o',
+ *   modelId: 'gpt-4.1',
  *   smoothStreaming: true,
  *   onFinish: async ({ text }) => {
  *     await saveMessage(text)

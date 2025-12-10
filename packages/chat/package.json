@@ -39,6 +39,7 @@
     },
     "dependencies": {
         "@workspace/ai": "workspace:*",
+        "@workspace/shared": "workspace:*",
         "zod": "^4.1.13"
     },
     "devDependencies": {

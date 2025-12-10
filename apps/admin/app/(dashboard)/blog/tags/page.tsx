@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition, useEffect } from 'react'
+import { toast } from 'sonner'
 import { Plus, Pencil, Trash2, Loader2, Save, X, Tag } from 'lucide-react'
 
 import { Badge } from '@workspace/ui/components/badge'
@@ -267,6 +268,9 @@ function TagDialog({ mode, tag, onSuccess, trigger }: TagDialogProps) {
                         : await updateTag(tag!.id, formData)
 
                 if (result.success) {
+                    toast.success(
+                        mode === 'create' ? 'Tag created' : 'Tag updated'
+                    )
                     setOpen(false)
                     onSuccess()
                 } else {
@@ -423,8 +427,8 @@ function DeleteTagButton({
 
     const handleDelete = () => {
         if (tag.usageCount > 0) {
-            alert(
-                `Cannot delete tag "${tag.name}" because it is used by ${tag.usageCount} posts`
+            toast.error(
+                `Cannot delete "${tag.name}" - used by ${tag.usageCount} posts`
             )
             return
         }
@@ -436,9 +440,10 @@ function DeleteTagButton({
         startTransition(async () => {
             const result = await deleteTag(tag.id)
             if (result.success) {
+                toast.success('Tag deleted')
                 onSuccess()
             } else {
-                alert(result.error ?? 'Failed to delete tag')
+                toast.error(result.error ?? 'Failed to delete tag')
             }
         })
     }
