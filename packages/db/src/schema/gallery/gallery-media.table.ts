@@ -1,5 +1,6 @@
 import {
     boolean,
+    foreignKey,
     index,
     integer,
     jsonb,
@@ -86,6 +87,12 @@ export const galleryMedia = pgTable(
                 'gallery_media_status_published_at_idx'
             ).on(table.status, table.publishedAt),
         },
+        // Self-referential foreign key for before/after media linking
+        foreignKey({
+            columns: [table.beforeAfterId],
+            foreignColumns: [table.id],
+            name: 'gallery_media_before_after_id_fkey',
+        }).onDelete('set null'),
     ]
 )
 
