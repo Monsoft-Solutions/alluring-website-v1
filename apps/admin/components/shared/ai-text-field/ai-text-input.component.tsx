@@ -108,7 +108,7 @@ export function AITextInput({
                             type='button'
                             variant='ghost'
                             size='sm'
-                            className='absolute top-1/2 right-1 h-7 w-7 -translate-y-1/2 p-0'
+                            className='absolute top-1/2 right-1 -translate-y-1/2 p-0'
                             disabled={disabled || !value?.trim()}
                             aria-label='Improve text with AI'
                         >
