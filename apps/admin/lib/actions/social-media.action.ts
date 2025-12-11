@@ -482,8 +482,18 @@ async function processIndividualPost(
 
             // If no row returned, post already existed (conflict occurred)
             if (!insertedPost) {
-                // Note: gallery_media was created but transaction will commit
-                // This is acceptable since media upload is idempotent
+                // Delete the orphaned primaryGalleryMedia record
+                try {
+                    await tx
+                        .delete(galleryMedia)
+                        .where(eq(galleryMedia.id, primaryGalleryMedia!.id))
+                } catch (deleteError) {
+                    // Log but don't fail - continue with skipped status
+                    console.error(
+                        `Failed to delete orphaned gallery_media for post ${post.code}:`,
+                        deleteError
+                    )
+                }
                 return { status: 'skipped' as const, code: post.code }
             }
 
