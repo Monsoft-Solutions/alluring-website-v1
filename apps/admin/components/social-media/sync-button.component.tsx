@@ -36,7 +36,7 @@ export function SyncButton({ disabled }: SyncButtonProps) {
 
     const handleSync = () => {
         startTransition(async () => {
-            const result = await syncInstagramPosts()
+            const result = await syncInstagramPosts({ resetCursor: true })
             setSyncResult(result)
             setShowResults(true)
             router.refresh()
