@@ -56,3 +56,9 @@ export {
     suggestGalleryGroups,
     type SuggestGroupsOptions,
 } from './suggest-groups.function'
+
+// Text Improvement
+export {
+    streamImproveText,
+    type StreamImproveTextOptions,
+} from './stream-improve-text.function'

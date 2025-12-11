@@ -1,18 +1,19 @@
-'use client'
-
 import { Slot } from '@radix-ui/react-slot'
 import { ArrowRight } from 'lucide-react'
-import { motion, HTMLMotionProps } from 'framer-motion'
-import { ReactNode, ComponentPropsWithoutRef } from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+import {
+    ReactNode,
+    ComponentPropsWithoutRef,
+    ButtonHTMLAttributes,
+} from 'react'
+import { cva } from 'class-variance-authority'
 import { cn } from '@workspace/ui/lib/utils'
 
 /**
  * buttonVariants - CVA helper for generating button class names
  * Used by components like AlertDialog that need button styling
  */
-export const buttonVariants = cva(
-    'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group disabled:pointer-events-none disabled:opacity-50',
+const buttonVariants = cva(
+    'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group disabled:pointer-events-none disabled:opacity-50 w-auto active:scale-[0.98]',
     {
         variants: {
             variant: {
@@ -45,7 +46,7 @@ export const buttonVariants = cva(
     }
 )
 
-export interface ButtonProps extends HTMLMotionProps<'button'> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?:
         | 'primary'
         | 'secondary'
@@ -62,7 +63,7 @@ export interface ButtonProps extends HTMLMotionProps<'button'> {
     asChild?: boolean
 }
 
-export const Button = ({
+const Button = ({
     children,
     variant = 'primary',
     size = 'md',
@@ -115,14 +116,10 @@ export const Button = ({
     }
 
     return (
-        <motion.button
-            type='button'
-            whileHover={{ scale: 1.0 }}
-            whileTap={{ scale: 0.98 }}
-            className={buttonClassName}
-            {...props}
-        >
+        <button type='button' className={buttonClassName} {...props}>
             {buttonContent}
-        </motion.button>
+        </button>
     )
 }
+
+export { Button, buttonVariants }

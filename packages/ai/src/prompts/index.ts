@@ -39,3 +39,9 @@ export {
     GROUP_SUGGESTION_SYSTEM_PROMPT,
     getGroupSuggestionPrompt,
 } from './gallery'
+
+export {
+    // Text Improvement
+    TEXT_IMPROVEMENT_SYSTEM_PROMPT,
+    getTextImprovementPrompt,
+} from './text'
