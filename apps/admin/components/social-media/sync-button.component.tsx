@@ -106,14 +106,6 @@ export function SyncButton({ disabled }: SyncButtonProps) {
                                 </div>
                             </div>
 
-                            {/* More available */}
-                            {syncResult.hasMore && (
-                                <p className='text-muted-foreground text-sm'>
-                                    More posts are available. Click Sync again
-                                    to fetch more.
-                                </p>
-                            )}
-
                             {/* Errors */}
                             {syncResult.errors.length > 0 && (
                                 <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
