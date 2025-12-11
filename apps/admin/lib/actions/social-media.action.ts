@@ -14,7 +14,7 @@ import {
     instagramPostMedia,
     galleryMedia,
 } from '@workspace/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, inArray } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 import {
@@ -251,6 +251,30 @@ export async function updateInstagramSettings(
 // ============================================================================
 // Sync Actions
 // ============================================================================
+
+/**
+ * Get existing Instagram post IDs from the database
+ *
+ * Performs a bulk query to find which Instagram IDs already exist in the database.
+ * Used to pre-filter posts before downloading media, avoiding unnecessary network operations.
+ *
+ * @param instagramIds - Array of Instagram post IDs to check
+ * @returns Set of Instagram IDs that already exist in the database
+ */
+async function getExistingInstagramIds(
+    instagramIds: string[]
+): Promise<Set<string>> {
+    if (instagramIds.length === 0) {
+        return new Set()
+    }
+
+    const existing = await db
+        .select({ instagramId: instagramPost.instagramId })
+        .from(instagramPost)
+        .where(inArray(instagramPost.instagramId, instagramIds))
+
+    return new Set(existing.map((row) => row.instagramId))
+}
 
 /**
  * Generate a unique slug for gallery media
@@ -667,14 +691,32 @@ export async function syncInstagramPosts(
 
         const parsedPosts = parseInstagramPosts(apiResponse)
 
-        // Process posts in parallel with concurrency limit
-        const batchResult = await processPostsBatch(
-            parsedPosts,
-            settings.handle
+        // Pre-filter: Check which posts already exist in the database
+        // This avoids expensive media downloads for posts we already have
+        const allInstagramIds = parsedPosts.map((p) => p.instagramId)
+        const existingIds = await getExistingInstagramIds(allInstagramIds)
+
+        // Filter out posts that already exist - only process new ones
+        const newPosts = parsedPosts.filter(
+            (p) => !existingIds.has(p.instagramId)
         )
+        const preFilteredSkippedCount = parsedPosts.length - newPosts.length
+
+        // Process only new posts in parallel with concurrency limit
+        // This skips all media downloads for existing posts
+        const batchResult =
+            newPosts.length > 0
+                ? await processPostsBatch(newPosts, settings.handle)
+                : {
+                      newPostsCount: 0,
+                      skippedCount: 0,
+                      errorCount: 0,
+                      errors: [],
+                  }
 
         result.newPostsCount = batchResult.newPostsCount
-        result.skippedCount = batchResult.skippedCount
+        // Include pre-filtered skipped posts in the total skipped count
+        result.skippedCount = preFilteredSkippedCount + batchResult.skippedCount
         result.errorCount = batchResult.errorCount
         result.errors = batchResult.errors
 
