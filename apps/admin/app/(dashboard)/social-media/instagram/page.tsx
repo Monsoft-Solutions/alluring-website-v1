@@ -23,7 +23,7 @@ export default async function InstagramPostsPage() {
         }),
     ])
 
-    const isConfigured = settings?.handle && settings?.isEnabled
+    const isConfigured = !!(settings?.handle && settings?.isEnabled)
     const hasApiKey = !!settings?.apiKey
 
     return (
@@ -32,8 +32,8 @@ export default async function InstagramPostsPage() {
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-4'>
                     <Button variant='ghost' size='icon' asChild>
-                        <Link href='/social-media'>
-                            <ArrowLeft className='h-4 w-4' />
+                        <Link href='/social-media' aria-label='Back'>
+                            <ArrowLeft className='h-4 w-4' aria-hidden='true' />
                         </Link>
                     </Button>
                     <div>
