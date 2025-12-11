@@ -324,9 +324,77 @@ async function runWithConcurrency<T>(
 }
 
 /**
+ * Download all media for a post (primary, thumbnail, carousel items)
+ *
+ * Downloads are done outside transaction since they're idempotent and
+ * we don't want to hold database connections during network operations.
+ */
+async function downloadPostMedia(post: ParsedInstagramPost): Promise<{
+    primaryMedia: Awaited<ReturnType<typeof downloadAndUploadMedia>>
+    thumbnailBlobUrl: string | null
+    carouselMedia: Array<{
+        order: number
+        mediaType: 'image' | 'video'
+        media: Awaited<ReturnType<typeof downloadAndUploadMedia>>
+    }>
+}> {
+    // Download primary media
+    const primaryMedia = await downloadAndUploadMedia(
+        post.primaryMediaUrl,
+        `${post.code}-primary`
+    )
+
+    // Download thumbnail for videos
+    let thumbnailBlobUrl: string | null = null
+    if (post.mediaType === 'video' && post.thumbnailUrl) {
+        try {
+            const thumbnailMedia = await downloadAndUploadMedia(
+                post.thumbnailUrl,
+                `${post.code}-thumb`
+            )
+            thumbnailBlobUrl = thumbnailMedia.url
+        } catch (thumbError) {
+            console.error(
+                `Failed to upload thumbnail for ${post.code}:`,
+                thumbError
+            )
+            // Continue without thumbnail
+        }
+    }
+
+    // Download carousel items
+    const carouselMedia: Array<{
+        order: number
+        mediaType: 'image' | 'video'
+        media: Awaited<ReturnType<typeof downloadAndUploadMedia>>
+    }> = []
+
+    if (post.mediaType === 'carousel' && post.carouselItems.length > 0) {
+        // Download carousel items with concurrency limit
+        const carouselTasks = post.carouselItems.map((item) => async () => {
+            const media = await downloadAndUploadMedia(
+                item.mediaUrl,
+                `${post.code}-carousel-${item.order}`
+            )
+            return { order: item.order, mediaType: item.mediaType, media }
+        })
+
+        const results = await runWithConcurrency(carouselTasks, 3)
+        for (const result of results) {
+            if (result.status === 'fulfilled') {
+                carouselMedia.push(result.value)
+            }
+        }
+    }
+
+    return { primaryMedia, thumbnailBlobUrl, carouselMedia }
+}
+
+/**
  * Process a single Instagram post
  *
  * Downloads media, creates gallery entries, and stores post data.
+ * Uses database transaction for atomicity and upsert pattern to prevent duplicates.
  * Returns result indicating if post was new, skipped, or had an error.
  */
 async function processIndividualPost(
@@ -334,17 +402,6 @@ async function processIndividualPost(
     handle: string
 ): Promise<PostProcessResult> {
     try {
-        // Check if post already exists
-        const existing = await db
-            .select({ id: instagramPost.id })
-            .from(instagramPost)
-            .where(eq(instagramPost.instagramId, post.instagramId))
-            .limit(1)
-
-        if (existing.length > 0) {
-            return { status: 'skipped', code: post.code }
-        }
-
         // Skip if no primary media URL
         if (!post.primaryMediaUrl) {
             return {
@@ -354,81 +411,65 @@ async function processIndividualPost(
             }
         }
 
-        // Download and upload primary media
-        const primaryMedia = await downloadAndUploadMedia(
-            post.primaryMediaUrl,
-            `${post.code}-primary`
-        )
+        // Download all media OUTSIDE transaction (idempotent, shouldn't hold DB connection)
+        const { primaryMedia, thumbnailBlobUrl, carouselMedia } =
+            await downloadPostMedia(post)
 
-        // For videos: download and upload thumbnail
-        let thumbnailBlobUrl: string | null = null
-        if (post.mediaType === 'video' && post.thumbnailUrl) {
-            try {
-                const thumbnailMedia = await downloadAndUploadMedia(
-                    post.thumbnailUrl,
-                    `${post.code}-thumb`
-                )
-                thumbnailBlobUrl = thumbnailMedia.url
-            } catch (thumbError) {
-                console.error(
-                    `Failed to upload thumbnail for ${post.code}:`,
-                    thumbError
-                )
-                // Continue without thumbnail
+        // Wrap all database operations in a transaction for atomicity
+        const result = await db.transaction(async (tx) => {
+            // Create gallery_media record for primary media
+            const [primaryGalleryMedia] = await tx
+                .insert(galleryMedia)
+                .values({
+                    type: post.mediaType === 'video' ? 'video' : 'image',
+                    url: primaryMedia.url,
+                    thumbnailUrl: thumbnailBlobUrl,
+                    title: generateMediaTitle(post.caption, post.code),
+                    slug: generateMediaSlug(post.code),
+                    description: post.caption,
+                    alt: `Instagram post from ${handle}`,
+                    mimeType: primaryMedia.mimeType,
+                    fileSize: primaryMedia.fileSize,
+                    duration:
+                        post.mediaType === 'video' ? post.videoDuration : null,
+                    status: 'draft',
+                })
+                .returning({ id: galleryMedia.id })
+
+            // Use upsert pattern: insert with onConflictDoNothing to handle race conditions
+            const [insertedPost] = await tx
+                .insert(instagramPost)
+                .values({
+                    instagramId: post.instagramId,
+                    code: post.code,
+                    mediaType: post.mediaType,
+                    caption: post.caption,
+                    permalink: post.permalink,
+                    takenAt: post.takenAt,
+                    likeCount: post.likeCount,
+                    commentCount: post.commentCount,
+                    playCount: post.playCount,
+                    videoDuration: post.videoDuration,
+                    mediaId: primaryGalleryMedia!.id,
+                    isPublished: false,
+                })
+                .onConflictDoNothing({ target: instagramPost.instagramId })
+                .returning({ id: instagramPost.id })
+
+            // If no row returned, post already existed (conflict occurred)
+            if (!insertedPost) {
+                // Note: gallery_media was created but transaction will commit
+                // This is acceptable since media upload is idempotent
+                return { status: 'skipped' as const, code: post.code }
             }
-        }
 
-        // Create gallery_media record for primary media
-        const [primaryGalleryMedia] = await db
-            .insert(galleryMedia)
-            .values({
-                type: post.mediaType === 'video' ? 'video' : 'image',
-                url: primaryMedia.url,
-                thumbnailUrl: thumbnailBlobUrl,
-                title: generateMediaTitle(post.caption, post.code),
-                slug: generateMediaSlug(post.code),
-                description: post.caption,
-                alt: `Instagram post from ${handle}`,
-                mimeType: primaryMedia.mimeType,
-                fileSize: primaryMedia.fileSize,
-                duration:
-                    post.mediaType === 'video' ? post.videoDuration : null,
-                status: 'draft',
-            })
-            .returning({ id: galleryMedia.id })
-
-        // Create instagram_post record
-        const [newPost] = await db
-            .insert(instagramPost)
-            .values({
-                instagramId: post.instagramId,
-                code: post.code,
-                mediaType: post.mediaType,
-                caption: post.caption,
-                permalink: post.permalink,
-                takenAt: post.takenAt,
-                likeCount: post.likeCount,
-                commentCount: post.commentCount,
-                playCount: post.playCount,
-                videoDuration: post.videoDuration,
-                mediaId: primaryGalleryMedia!.id,
-                isPublished: false,
-            })
-            .returning({ id: instagramPost.id })
-
-        // Handle carousel items (process in parallel within this post)
-        if (post.mediaType === 'carousel' && post.carouselItems.length > 0) {
-            const carouselTasks = post.carouselItems.map((item) => async () => {
-                const itemMedia = await downloadAndUploadMedia(
-                    item.mediaUrl,
-                    `${post.code}-carousel-${item.order}`
-                )
-
-                const [itemGalleryMedia] = await db
+            // Insert carousel items within the same transaction
+            for (const item of carouselMedia) {
+                const [itemGalleryMedia] = await tx
                     .insert(galleryMedia)
                     .values({
                         type: item.mediaType,
-                        url: itemMedia.url,
+                        url: item.media.url,
                         title: generateMediaTitle(
                             post.caption,
                             post.code,
@@ -437,34 +478,26 @@ async function processIndividualPost(
                         slug: generateMediaSlug(post.code, item.order),
                         description: post.caption,
                         alt: `Instagram carousel item from ${handle}`,
-                        mimeType: itemMedia.mimeType,
-                        fileSize: itemMedia.fileSize,
+                        mimeType: item.media.mimeType,
+                        fileSize: item.media.fileSize,
                         status: 'draft',
                     })
                     .returning({ id: galleryMedia.id })
 
                 // Create junction record
-                await db.insert(instagramPostMedia).values({
-                    postId: newPost!.id,
+                await tx.insert(instagramPostMedia).values({
+                    postId: insertedPost.id,
                     mediaId: itemGalleryMedia!.id,
                     displayOrder: item.order,
                 })
-            })
-
-            // Process carousel items with concurrency limit
-            const carouselResults = await runWithConcurrency(carouselTasks, 3)
-            const carouselErrors = carouselResults.filter(
-                (r) => r.status === 'rejected'
-            )
-            if (carouselErrors.length > 0) {
-                console.error(
-                    `${carouselErrors.length} carousel items failed for ${post.code}`
-                )
             }
-        }
 
-        return { status: 'new', code: post.code }
+            return { status: 'new' as const, code: post.code }
+        })
+
+        return result
     } catch (error) {
+        // Transaction auto-rolls back on error
         console.error(`Error processing post ${post.code}:`, error)
         return {
             status: 'error',

@@ -33,6 +33,20 @@ import {
 } from '@/lib/actions/social-media.action'
 
 // ============================================================================
+// Constants
+// ============================================================================
+
+/**
+ * Delay between API batch calls to prevent rate limiting (1.5 seconds)
+ */
+const BATCH_DELAY_MS = 1500
+
+/**
+ * Helper function to sleep for a given duration
+ */
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// ============================================================================
 // Types
 // ============================================================================
 
@@ -211,6 +225,9 @@ export function SyncAllButton({
 
             // Wait for next batch if we started one
             if (nextFetchPromise) {
+                // Rate limiting: add delay between batches to prevent API throttling
+                await sleep(BATCH_DELAY_MS)
+
                 try {
                     pendingResult = await nextFetchPromise
                 } catch (error) {

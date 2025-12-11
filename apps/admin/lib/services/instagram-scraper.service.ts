@@ -11,6 +11,101 @@ import { head, put } from '@vercel/blob'
 import { env } from '@/env'
 
 // ============================================================================
+// Constants
+// ============================================================================
+
+/**
+ * Timeout for media download requests (30 seconds)
+ */
+const FETCH_TIMEOUT_MS = 30_000
+
+/**
+ * Maximum number of retry attempts for transient failures
+ */
+const MAX_RETRIES = 3
+
+/**
+ * Delay between retry attempts (2 seconds)
+ */
+const RETRY_DELAY_MS = 2000
+
+/**
+ * Timeout for URL validation HEAD requests (5 seconds)
+ */
+const VALIDATION_TIMEOUT_MS = 5000
+
+// ============================================================================
+// Retry & Timeout Utilities
+// ============================================================================
+
+/**
+ * Execute an async function with retry logic for transient failures
+ *
+ * @param fn - Async function to execute
+ * @param retries - Maximum number of retry attempts
+ * @returns Result of the function
+ */
+async function withRetry<T>(
+    fn: () => Promise<T>,
+    retries = MAX_RETRIES
+): Promise<T> {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+            return await fn()
+        } catch (error) {
+            if (attempt === retries) throw error
+            console.warn(
+                `Attempt ${attempt + 1}/${retries + 1} failed, retrying in ${RETRY_DELAY_MS}ms...`,
+                error instanceof Error ? error.message : error
+            )
+            await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS))
+        }
+    }
+    throw new Error('Unreachable')
+}
+
+/**
+ * Fetch with timeout using AbortController
+ *
+ * @param url - URL to fetch
+ * @param options - Fetch options
+ * @param timeoutMs - Timeout in milliseconds
+ * @returns Fetch response
+ */
+async function fetchWithTimeout(
+    url: string,
+    options: RequestInit,
+    timeoutMs = FETCH_TIMEOUT_MS
+): Promise<Response> {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), timeoutMs)
+    try {
+        return await fetch(url, { ...options, signal: controller.signal })
+    } finally {
+        clearTimeout(timeout)
+    }
+}
+
+/**
+ * Validate that a media URL is accessible (not expired)
+ *
+ * @param url - Media URL to validate
+ * @returns True if URL is valid and accessible
+ */
+async function validateMediaUrl(url: string): Promise<boolean> {
+    try {
+        const response = await fetchWithTimeout(
+            url,
+            { method: 'HEAD' },
+            VALIDATION_TIMEOUT_MS
+        )
+        return response.ok
+    } catch {
+        return false
+    }
+}
+
+// ============================================================================
 // Types
 // ============================================================================
 
@@ -377,6 +472,7 @@ export function parseInstagramPosts(
  *
  * Checks if media already exists in Vercel Blob before downloading/uploading.
  * Uses consistent pathnames (no random suffix) to enable existence checks.
+ * Includes retry logic for transient failures and timeout protection.
  */
 export async function downloadAndUploadMedia(
     sourceUrl: string,
@@ -400,36 +496,48 @@ export async function downloadAndUploadMedia(
         }
     }
 
-    // Download the media
-    const response = await fetch(sourceUrl, {
-        headers: {
-            'User-Agent':
-                'Mozilla/5.0 (compatible; InstagramMediaUploader/1.0)',
-        },
-    })
-
-    if (!response.ok) {
+    // Validate URL is accessible before attempting full download
+    const isValid = await validateMediaUrl(sourceUrl)
+    if (!isValid) {
         throw new Error(
-            `Failed to download media: ${response.status} ${response.statusText}`
+            `Media URL expired or invalid: ${sourceUrl.substring(0, 80)}...`
         )
     }
 
-    const contentType = response.headers.get('content-type') ?? getMimeType(ext)
-    const blob = await response.blob()
+    // Download and upload with retry logic for transient failures
+    return withRetry(async () => {
+        // Download the media with timeout protection
+        const response = await fetchWithTimeout(sourceUrl, {
+            headers: {
+                'User-Agent':
+                    'Mozilla/5.0 (compatible; InstagramMediaUploader/1.0)',
+            },
+        })
 
-    // Upload to Vercel Blob with addRandomSuffix: false for consistent paths
-    const uploadedBlob = await put(fullFilename, blob, {
-        access: 'public',
-        token: blobToken,
-        contentType,
-        addRandomSuffix: false,
+        if (!response.ok) {
+            throw new Error(
+                `Failed to download media: ${response.status} ${response.statusText}`
+            )
+        }
+
+        const contentType =
+            response.headers.get('content-type') ?? getMimeType(ext)
+        const blob = await response.blob()
+
+        // Upload to Vercel Blob with addRandomSuffix: false for consistent paths
+        const uploadedBlob = await put(fullFilename, blob, {
+            access: 'public',
+            token: blobToken,
+            contentType,
+            addRandomSuffix: false,
+        })
+
+        return {
+            url: uploadedBlob.url,
+            mimeType: contentType,
+            fileSize: blob.size,
+        }
     })
-
-    return {
-        url: uploadedBlob.url,
-        mimeType: contentType,
-        fileSize: blob.size,
-    }
 }
 
 /**
