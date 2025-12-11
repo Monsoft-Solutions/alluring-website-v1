@@ -144,3 +144,20 @@ export {
     type BeforeAfterPair,
     type InsertBeforeAfterPair,
 } from './gallery'
+
+// Social Media schema
+export {
+    socialMediaPlatform,
+    socialMediaSettings,
+    instagramMediaType,
+    instagramPost,
+    instagramPostMedia,
+    instagramPostRelations,
+    instagramPostMediaRelations,
+    type SocialMediaSettings,
+    type InsertSocialMediaSettings,
+    type InstagramPost,
+    type InsertInstagramPost,
+    type InstagramPostMedia,
+    type InsertInstagramPostMedia,
+} from './social-media'

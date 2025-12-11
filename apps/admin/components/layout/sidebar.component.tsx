@@ -6,6 +6,7 @@ import {
     FileText,
     Home,
     ImageIcon,
+    Instagram,
     Mail,
     MessageSquare,
     ChevronLeft,
@@ -61,6 +62,16 @@ const navItems: NavItem[] = [
             { title: 'Media Library', href: '/gallery/media' },
             { title: 'Groups', href: '/gallery/groups' },
             { title: 'Before & After', href: '/gallery/before-after' },
+        ],
+    },
+    {
+        title: 'Social Media',
+        href: '/social-media',
+        icon: Instagram,
+        children: [
+            { title: 'Dashboard', href: '/social-media' },
+            { title: 'Instagram Posts', href: '/social-media/instagram' },
+            { title: 'Settings', href: '/social-media/settings' },
         ],
     },
     {

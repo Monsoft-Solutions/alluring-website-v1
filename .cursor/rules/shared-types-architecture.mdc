@@ -206,3 +206,4 @@ import type { GalleryMediaAIAnalysis } from '@workspace/ai'  // Wrong!
 @packages/shared/package.json
 @packages/ai/src/schemas/image-analysis.schema.ts
 @apps/admin/lib/queries/gallery.query.ts
+
