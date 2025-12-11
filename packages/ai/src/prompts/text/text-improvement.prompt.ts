@@ -8,25 +8,7 @@
  * @module @workspace/ai/prompts/text/text-improvement
  */
 
-/**
- * Text operation types
- * 7 general operations + 5 industry-specific operations
- */
-export type TextOperation =
-    // General operations
-    | 'improve'
-    | 'shorter'
-    | 'longer'
-    | 'fix-grammar'
-    | 'professional'
-    | 'casual'
-    | 'custom'
-    // Industry-specific operations (plastic surgery)
-    | 'seo-optimize'
-    | 'benefit-focused'
-    | 'empathetic'
-    | 'luxury-tone'
-    | 'add-cta'
+import type { TextOperation } from '@workspace/shared/schemas/text'
 
 /**
  * System prompt for text improvement

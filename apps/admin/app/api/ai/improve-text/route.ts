@@ -7,7 +7,11 @@
  * @module app/api/ai/improve-text/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
-import { streamImproveText, type TextOperation } from '@workspace/ai'
+import { streamImproveText } from '@workspace/ai'
+import {
+    type TextOperation,
+    TEXT_OPERATIONS,
+} from '@workspace/shared/schemas/text'
 
 import { env } from '@/env'
 
@@ -20,26 +24,6 @@ type ImproveTextRequest = {
     fieldName: string
     customInstruction?: string
 }
-
-/**
- * Valid operations for validation
- */
-const VALID_OPERATIONS: TextOperation[] = [
-    // General operations
-    'improve',
-    'shorter',
-    'longer',
-    'fix-grammar',
-    'professional',
-    'casual',
-    'custom',
-    // Industry-specific operations
-    'seo-optimize',
-    'benefit-focused',
-    'empathetic',
-    'luxury-tone',
-    'add-cta',
-]
 
 /**
  * POST /api/ai/improve-text
@@ -68,10 +52,10 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        if (!operation || !VALID_OPERATIONS.includes(operation)) {
+        if (!operation || !TEXT_OPERATIONS.includes(operation)) {
             return NextResponse.json(
                 {
-                    error: `Invalid operation. Must be one of: ${VALID_OPERATIONS.join(', ')}`,
+                    error: `Invalid operation. Must be one of: ${TEXT_OPERATIONS.join(', ')}`,
                 },
                 { status: 400 }
             )

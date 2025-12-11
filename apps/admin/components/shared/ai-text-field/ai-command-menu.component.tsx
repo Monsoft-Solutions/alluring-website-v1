@@ -47,7 +47,7 @@ import {
     type TextOperation,
     type OperationConfig,
     getOperationsByGroup,
-} from './ai-text-field.type'
+} from '@workspace/shared/schemas/text'
 
 /**
  * Icon mapping for operations

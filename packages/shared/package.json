@@ -24,6 +24,11 @@
             "types": "./dist/schemas/chat/index.d.ts",
             "import": "./dist/schemas/chat/index.js",
             "default": "./dist/schemas/chat/index.js"
+        },
+        "./schemas/text": {
+            "types": "./dist/schemas/text/index.d.ts",
+            "import": "./dist/schemas/text/index.js",
+            "default": "./dist/schemas/text/index.js"
         }
     },
     "scripts": {

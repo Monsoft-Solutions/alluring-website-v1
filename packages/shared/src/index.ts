@@ -36,3 +36,15 @@ export {
     type PatientDescription,
     type GalleryMediaAIAnalysis,
 } from './schemas/gallery'
+
+// Text improvement schemas
+export {
+    // Const arrays
+    OPERATIONS,
+    TEXT_OPERATIONS,
+    // Helper functions
+    getOperationsByGroup,
+    // Types
+    type TextOperation,
+    type OperationConfig,
+} from './schemas/text'

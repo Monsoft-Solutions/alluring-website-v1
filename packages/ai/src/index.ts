@@ -77,7 +77,6 @@ export {
     type GenerateVisitorContentOptions,
     type SuggestGroupsOptions,
     type StreamImproveTextOptions,
-    type TextOperation,
 } from './functions'
 
 // AI-specific schemas for structured outputs
