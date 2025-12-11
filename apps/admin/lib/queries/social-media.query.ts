@@ -212,6 +212,7 @@ export async function getInstagramPosts(options: {
                 count: count(),
             })
             .from(instagramPostMedia)
+            .where(inArray(instagramPostMedia.postId, carouselPostIds))
             .groupBy(instagramPostMedia.postId)
 
         carouselCounts = counts.reduce(
