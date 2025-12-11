@@ -11,10 +11,7 @@ export { AITextarea } from './ai-text-area.component'
 export { AICommandMenu } from './ai-command-menu.component'
 export { useAITextImprovement } from './use-ai-text-improvement.hook'
 export {
-    type TextOperation,
     type AITextInputProps,
     type AITextareaProps,
     type AITextImprovementState,
-    OPERATIONS,
-    getOperationsByGroup,
 } from './ai-text-field.type'

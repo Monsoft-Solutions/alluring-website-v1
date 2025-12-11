@@ -53,18 +53,21 @@ export function AITextarea({
         fieldName: name,
     })
 
+    // Destructure specific properties to optimize callback dependencies
+    const { isStreaming, openMenu } = ai
+
     // Keyboard shortcut handler
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent) => {
             // Cmd+K or Ctrl+K to open menu
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault()
-                if (!disabled && !ai.isStreaming) {
-                    ai.openMenu()
+                if (!disabled && !isStreaming) {
+                    openMenu()
                 }
             }
         },
-        [disabled, ai]
+        [disabled, isStreaming, openMenu]
     )
 
     // Focus textarea when streaming completes

@@ -61,5 +61,4 @@ export {
 export {
     streamImproveText,
     type StreamImproveTextOptions,
-    type TextOperation,
 } from './stream-improve-text.function'

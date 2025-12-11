@@ -6,15 +6,13 @@
  *
  * @module @workspace/ai/functions/stream-improve-text
  */
+import type { TextOperation } from '@workspace/shared/schemas/text'
+
 import { coreStreamText } from '../core'
 import {
     TEXT_IMPROVEMENT_SYSTEM_PROMPT,
     getTextImprovementPrompt,
-    type TextOperation,
 } from '../prompts/text'
-
-// Re-export the type for consumers
-export type { TextOperation } from '../prompts/text'
 
 /**
  * Default model for text improvement
