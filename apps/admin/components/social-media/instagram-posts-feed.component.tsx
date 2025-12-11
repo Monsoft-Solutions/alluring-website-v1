@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowDownUp, Loader2, RefreshCcw } from 'lucide-react'
+import { ArrowDown, ArrowUp, Loader2, RefreshCcw } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -23,6 +23,7 @@ import {
     InstagramPostsGrid,
     type ProfileInfo,
 } from './instagram-posts-grid.component'
+import { PostCounterBadge } from './post-counter-badge.component'
 
 type InstagramPostsFeedProps = {
     initialPosts: InstagramPostListItem[]
@@ -213,26 +214,27 @@ export function InstagramPostsFeed({
 
     return (
         <div className='space-y-4'>
-            <div className='flex flex-wrap items-center justify-between gap-3'>
-                <div className='flex flex-wrap items-center gap-3'>
+            <div className='flex flex-wrap items-center justify-between gap-3 sm:gap-4'>
+                <div className='flex items-center gap-2'>
                     <Select
                         value={sortBy}
                         onValueChange={(value: InstagramPostSortBy) =>
                             setSortBy(value)
                         }
+                        disabled={isLoading}
                     >
-                        <SelectTrigger className='w-[220px]'>
-                            <SelectValue placeholder='Sort by' />
+                        <SelectTrigger className='h-9 w-[140px] font-medium shadow-sm transition-all hover:shadow-md'>
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value='date'>
-                                Sort by {sortLabels.date}
+                            <SelectItem value='date' className='font-medium'>
+                                {sortLabels.date}
                             </SelectItem>
-                            <SelectItem value='likes'>
-                                Sort by {sortLabels.likes}
+                            <SelectItem value='likes' className='font-medium'>
+                                {sortLabels.likes}
                             </SelectItem>
-                            <SelectItem value='views'>
-                                Sort by {sortLabels.views}
+                            <SelectItem value='views' className='font-medium'>
+                                {sortLabels.views}
                             </SelectItem>
                         </SelectContent>
                     </Select>
@@ -240,33 +242,38 @@ export function InstagramPostsFeed({
                     <Button
                         variant='outline'
                         size='icon'
-                        aria-label='Toggle sort direction'
+                        className='h-9 w-9 shadow-sm transition-all hover:scale-105 hover:shadow-md'
                         onClick={toggleSortDirection}
+                        disabled={isLoading}
+                        aria-label={`Sort direction: ${sortDirection === 'desc' ? 'Descending' : 'Ascending'}`}
                     >
-                        <ArrowDownUp className='h-4 w-4' />
-                        <span className='sr-only'>Toggle sort direction</span>
+                        {sortDirection === 'desc' ? (
+                            <ArrowDown className='h-4 w-4' />
+                        ) : (
+                            <ArrowUp className='h-4 w-4' />
+                        )}
                     </Button>
+
+                    <div className='border-border bg-border mx-1 h-6 w-px' />
 
                     <Button
                         variant='ghost'
                         size='sm'
-                        className='gap-2'
+                        className='hover:bg-accent h-9 gap-2 transition-all'
                         onClick={handleRefresh}
                         disabled={isLoading}
                     >
                         <RefreshCcw className='h-4 w-4' />
-                        Refresh
+                        <span className='hidden sm:inline'>Refresh</span>
+                        <span className='sr-only sm:hidden'>Refresh posts</span>
                     </Button>
                 </div>
 
-                <div className='text-muted-foreground flex items-center gap-3 text-sm'>
-                    <div>
-                        {posts.length} / {totalCount} loaded
-                    </div>
-                    {(isLoading || isLoadingMore) && (
-                        <Loader2 className='h-4 w-4 animate-spin' />
-                    )}
-                </div>
+                <PostCounterBadge
+                    current={posts.length}
+                    total={totalCount}
+                    isLoading={isLoading || isLoadingMore}
+                />
             </div>
 
             {error && (
