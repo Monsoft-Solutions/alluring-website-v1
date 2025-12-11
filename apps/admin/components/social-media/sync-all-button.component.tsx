@@ -44,6 +44,7 @@ type CumulativeStats = {
     totalErrors: number
     batchesCompleted: number
     allErrors: string[]
+    totalPostsOnInstagram: number | null // Total posts from profile API
 }
 
 type SyncAllButtonProps = {
@@ -74,6 +75,7 @@ export function SyncAllButton({
         totalErrors: 0,
         batchesCompleted: 0,
         allErrors: [],
+        totalPostsOnInstagram: null,
     })
     const [currentBatchResult, setCurrentBatchResult] =
         useState<SyncResult | null>(null)
@@ -92,13 +94,39 @@ export function SyncAllButton({
             totalErrors: 0,
             batchesCompleted: 0,
             allErrors: [],
+            totalPostsOnInstagram: null,
         })
         setCurrentBatchResult(null)
         cancelledRef.current = false
     }, [])
 
     /**
-     * Start the sync all process
+     * Update stats from a batch result
+     */
+    const updateStatsFromResult = useCallback(
+        (result: SyncResult, isFirstBatch: boolean) => {
+            setCurrentBatchResult(result)
+            setStats((prev) => ({
+                totalNewPosts: prev.totalNewPosts + result.newPostsCount,
+                totalSkipped: prev.totalSkipped + result.skippedCount,
+                totalErrors: prev.totalErrors + result.errorCount,
+                batchesCompleted: prev.batchesCompleted + 1,
+                allErrors: [...prev.allErrors, ...result.errors],
+                // Capture total posts count from first batch
+                totalPostsOnInstagram:
+                    isFirstBatch && result.totalPostsCount
+                        ? result.totalPostsCount
+                        : prev.totalPostsOnInstagram,
+            }))
+        },
+        []
+    )
+
+    /**
+     * Start the sync all process with pipeline pattern
+     *
+     * Uses a producer-consumer pattern to overlap batch fetching with UI updates.
+     * Fetches the next batch while processing/updating stats from current batch.
      */
     const startSyncAll = useCallback(async () => {
         resetState()
@@ -116,54 +144,81 @@ export function SyncAllButton({
             return
         }
 
-        // Now sync in a loop until done
+        // Pipeline pattern: overlap fetch with processing
         let hasMore = true
         let isFirstBatch = true
+        let pendingResult: SyncResult | null = null
+        let nextFetchPromise: Promise<SyncResult> | null = null
 
-        while (hasMore && !cancelledRef.current) {
-            try {
-                // On first batch, we pass resetCursor: true to ensure we start fresh
-                const result = await syncInstagramPosts(
-                    isFirstBatch ? { resetCursor: true } : undefined
-                )
-                isFirstBatch = false
+        // Start first batch
+        try {
+            pendingResult = await syncInstagramPosts({ resetCursor: true })
+        } catch (error) {
+            console.error('First batch error:', error)
+            setSyncState('error')
+            setStats((prev) => ({
+                ...prev,
+                allErrors: [
+                    error instanceof Error
+                        ? error.message
+                        : 'Unknown error occurred',
+                ],
+            }))
+            return
+        }
 
-                setCurrentBatchResult(result)
+        while (pendingResult && !cancelledRef.current) {
+            const currentResult = pendingResult
 
-                if (!result.success && result.errors.length > 0) {
-                    // Batch failed entirely
-                    setSyncState('error')
-                    setStats((prev) => ({
-                        ...prev,
-                        batchesCompleted: prev.batchesCompleted + 1,
-                        allErrors: [...prev.allErrors, ...result.errors],
-                    }))
-                    return
-                }
+            // Start fetching next batch in parallel if there's more
+            if (currentResult.hasMore && !cancelledRef.current) {
+                nextFetchPromise = syncInstagramPosts().catch((error) => {
+                    console.error('Next batch fetch error:', error)
+                    return {
+                        success: false,
+                        newPostsCount: 0,
+                        skippedCount: 0,
+                        errorCount: 1,
+                        errors: [
+                            error instanceof Error
+                                ? error.message
+                                : 'Unknown error',
+                        ],
+                        nextCursor: null,
+                        hasMore: false,
+                    } as SyncResult
+                })
+            } else {
+                nextFetchPromise = null
+            }
 
-                // Update cumulative stats
-                setStats((prev) => ({
-                    totalNewPosts: prev.totalNewPosts + result.newPostsCount,
-                    totalSkipped: prev.totalSkipped + result.skippedCount,
-                    totalErrors: prev.totalErrors + result.errorCount,
-                    batchesCompleted: prev.batchesCompleted + 1,
-                    allErrors: [...prev.allErrors, ...result.errors],
-                }))
-
-                hasMore = result.hasMore
-            } catch (error) {
-                console.error('Sync batch error:', error)
+            // Process current batch result (UI updates happen synchronously)
+            if (!currentResult.success && currentResult.errors.length > 0) {
+                // Batch failed entirely
                 setSyncState('error')
                 setStats((prev) => ({
                     ...prev,
-                    allErrors: [
-                        ...prev.allErrors,
-                        error instanceof Error
-                            ? error.message
-                            : 'Unknown error occurred',
-                    ],
+                    batchesCompleted: prev.batchesCompleted + 1,
+                    allErrors: [...prev.allErrors, ...currentResult.errors],
                 }))
                 return
+            }
+
+            // Update cumulative stats
+            updateStatsFromResult(currentResult, isFirstBatch)
+            isFirstBatch = false
+            hasMore = currentResult.hasMore
+
+            // Wait for next batch if we started one
+            if (nextFetchPromise) {
+                try {
+                    pendingResult = await nextFetchPromise
+                } catch (error) {
+                    // Error already handled in the catch above
+                    pendingResult = null
+                }
+            } else {
+                pendingResult = null
             }
         }
 
@@ -175,7 +230,7 @@ export function SyncAllButton({
         }
 
         router.refresh()
-    }, [resetState, router])
+    }, [resetState, router, updateStatsFromResult])
 
     /**
      * Cancel the sync process
@@ -208,61 +263,101 @@ export function SyncAllButton({
     // Render Helpers
     // ========================================================================
 
-    const renderSyncingContent = () => (
-        <div className='space-y-6'>
-            {/* Progress indicator */}
-            <div className='space-y-2'>
-                <div className='flex items-center justify-between text-sm'>
-                    <span className='text-muted-foreground'>
-                        Batch {stats.batchesCompleted + 1}
-                    </span>
-                    <Loader2 className='h-4 w-4 animate-spin' />
+    const renderSyncingContent = () => {
+        // Calculate progress percentage
+        const processedPosts = stats.totalNewPosts + stats.totalSkipped
+        const totalPosts = stats.totalPostsOnInstagram
+        const progressPercentage =
+            totalPosts && totalPosts > 0
+                ? Math.min(Math.round((processedPosts / totalPosts) * 100), 100)
+                : 0
+
+        return (
+            <div className='space-y-6'>
+                {/* Progress indicator with percentage */}
+                <div className='space-y-2'>
+                    <div className='flex items-center justify-between text-sm'>
+                        <span className='text-muted-foreground'>
+                            {totalPosts ? (
+                                <>
+                                    {processedPosts} of {totalPosts} posts
+                                </>
+                            ) : (
+                                <>Batch {stats.batchesCompleted + 1}</>
+                            )}
+                        </span>
+                        <div className='flex items-center gap-2'>
+                            {totalPosts && (
+                                <span className='text-primary font-medium'>
+                                    {progressPercentage}%
+                                </span>
+                            )}
+                            <Loader2 className='h-4 w-4 animate-spin' />
+                        </div>
+                    </div>
+                    {/* Progress bar */}
+                    <div className='h-2 w-full overflow-hidden rounded-full bg-gray-200'>
+                        {totalPosts ? (
+                            <div
+                                className='bg-primary h-full rounded-full transition-all duration-300 ease-out'
+                                style={{ width: `${progressPercentage}%` }}
+                            />
+                        ) : (
+                            <div className='bg-primary h-full w-1/3 animate-pulse rounded-full' />
+                        )}
+                    </div>
                 </div>
-                {/* Animated loading bar */}
-                <div className='h-2 w-full overflow-hidden rounded-full bg-gray-200'>
-                    <div className='bg-primary h-full w-1/3 animate-pulse rounded-full' />
+
+                {/* Stats grid */}
+                <div className='grid grid-cols-3 gap-4'>
+                    <div className='rounded-lg border p-3 text-center'>
+                        <p className='text-2xl font-bold text-green-600'>
+                            {stats.totalNewPosts}
+                        </p>
+                        <p className='text-muted-foreground text-sm'>
+                            New Posts
+                        </p>
+                    </div>
+                    <div className='rounded-lg border p-3 text-center'>
+                        <p className='text-2xl font-bold text-gray-600'>
+                            {stats.totalSkipped}
+                        </p>
+                        <p className='text-muted-foreground text-sm'>Skipped</p>
+                    </div>
+                    <div className='rounded-lg border p-3 text-center'>
+                        <p className='text-2xl font-bold text-red-600'>
+                            {stats.totalErrors}
+                        </p>
+                        <p className='text-muted-foreground text-sm'>Errors</p>
+                    </div>
+                </div>
+
+                {/* Detailed breakdown */}
+                {totalPosts && (
+                    <div className='text-muted-foreground bg-muted/50 rounded-lg border p-3 text-center text-sm'>
+                        {stats.totalNewPosts} new | {stats.totalSkipped} skipped
+                        | {totalPosts} total on Instagram
+                    </div>
+                )}
+
+                {/* Current batch info */}
+                {currentBatchResult && !totalPosts && (
+                    <p className='text-muted-foreground text-center text-sm'>
+                        Last batch: {currentBatchResult.newPostsCount} new,{' '}
+                        {currentBatchResult.skippedCount} skipped
+                    </p>
+                )}
+
+                {/* Cancel button */}
+                <div className='flex justify-center'>
+                    <Button variant='outline' onClick={handleCancel}>
+                        <XCircle className='mr-2 h-4 w-4' />
+                        Cancel
+                    </Button>
                 </div>
             </div>
-
-            {/* Stats grid */}
-            <div className='grid grid-cols-3 gap-4'>
-                <div className='rounded-lg border p-3 text-center'>
-                    <p className='text-2xl font-bold text-green-600'>
-                        {stats.totalNewPosts}
-                    </p>
-                    <p className='text-muted-foreground text-sm'>New Posts</p>
-                </div>
-                <div className='rounded-lg border p-3 text-center'>
-                    <p className='text-2xl font-bold text-gray-600'>
-                        {stats.totalSkipped}
-                    </p>
-                    <p className='text-muted-foreground text-sm'>Skipped</p>
-                </div>
-                <div className='rounded-lg border p-3 text-center'>
-                    <p className='text-2xl font-bold text-red-600'>
-                        {stats.totalErrors}
-                    </p>
-                    <p className='text-muted-foreground text-sm'>Errors</p>
-                </div>
-            </div>
-
-            {/* Current batch info */}
-            {currentBatchResult && (
-                <p className='text-muted-foreground text-center text-sm'>
-                    Last batch: {currentBatchResult.newPostsCount} new,{' '}
-                    {currentBatchResult.skippedCount} skipped
-                </p>
-            )}
-
-            {/* Cancel button */}
-            <div className='flex justify-center'>
-                <Button variant='outline' onClick={handleCancel}>
-                    <XCircle className='mr-2 h-4 w-4' />
-                    Cancel
-                </Button>
-            </div>
-        </div>
-    )
+        )
+    }
 
     const renderCompleteContent = () => (
         <div className='space-y-6'>
@@ -295,10 +390,17 @@ export function SyncAllButton({
                 </div>
             </div>
 
-            {/* Summary */}
-            <p className='text-muted-foreground text-center text-sm'>
-                Completed {stats.batchesCompleted} batches
-            </p>
+            {/* Summary with total posts */}
+            {stats.totalPostsOnInstagram ? (
+                <div className='text-muted-foreground bg-muted/50 rounded-lg border p-3 text-center text-sm'>
+                    Synced {stats.totalNewPosts + stats.totalSkipped} of{' '}
+                    {stats.totalPostsOnInstagram} posts from Instagram
+                </div>
+            ) : (
+                <p className='text-muted-foreground text-center text-sm'>
+                    Completed {stats.batchesCompleted} batches
+                </p>
+            )}
 
             {/* Errors list if any */}
             {stats.allErrors.length > 0 && (
@@ -361,6 +463,14 @@ export function SyncAllButton({
                 </div>
             )}
 
+            {/* Progress summary if available */}
+            {stats.totalPostsOnInstagram && stats.batchesCompleted > 0 && (
+                <div className='text-muted-foreground bg-muted/50 rounded-lg border p-3 text-center text-sm'>
+                    Synced {stats.totalNewPosts + stats.totalSkipped} of{' '}
+                    {stats.totalPostsOnInstagram} posts before error
+                </div>
+            )}
+
             {/* Error message */}
             <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
                 <p className='text-sm font-medium text-red-700'>
@@ -414,11 +524,23 @@ export function SyncAllButton({
                 </div>
             </div>
 
-            {/* Message */}
-            <p className='text-muted-foreground text-center text-sm'>
-                Sync was cancelled after {stats.batchesCompleted} batches. You
-                can resume later - progress is saved.
-            </p>
+            {/* Message with progress info */}
+            {stats.totalPostsOnInstagram ? (
+                <div className='space-y-2'>
+                    <div className='text-muted-foreground bg-muted/50 rounded-lg border p-3 text-center text-sm'>
+                        Synced {stats.totalNewPosts + stats.totalSkipped} of{' '}
+                        {stats.totalPostsOnInstagram} posts before cancellation
+                    </div>
+                    <p className='text-muted-foreground text-center text-sm'>
+                        You can resume later - progress is saved.
+                    </p>
+                </div>
+            ) : (
+                <p className='text-muted-foreground text-center text-sm'>
+                    Sync was cancelled after {stats.batchesCompleted} batches.
+                    You can resume later - progress is saved.
+                </p>
+            )}
 
             {/* Close button */}
             <div className='flex justify-end'>

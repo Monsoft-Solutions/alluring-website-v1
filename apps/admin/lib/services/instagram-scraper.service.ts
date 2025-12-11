@@ -6,7 +6,7 @@
  *
  * @module apps/admin/lib/services/instagram-scraper.service
  */
-import { put } from '@vercel/blob'
+import { head, put } from '@vercel/blob'
 
 import { env } from '@/env'
 
@@ -109,6 +109,7 @@ export type SyncResult = {
     errors: string[]
     nextCursor: string | null
     hasMore: boolean
+    totalPostsCount?: number // Total posts on profile from API
 }
 
 // ============================================================================
@@ -177,6 +178,57 @@ function getExtension(url: string, mimeType?: string): string {
     }
 
     return 'jpg' // Default to jpg for images
+}
+
+/**
+ * Get mime type from file extension
+ */
+function getMimeType(ext: string): string {
+    switch (ext) {
+        case 'mp4':
+            return 'video/mp4'
+        case 'webm':
+            return 'video/webm'
+        case 'png':
+            return 'image/png'
+        case 'webp':
+            return 'image/webp'
+        case 'jpg':
+        case 'jpeg':
+        default:
+            return 'image/jpeg'
+    }
+}
+
+/**
+ * Check if media already exists in Vercel Blob
+ *
+ * @param pathname - The blob pathname to check
+ * @returns The existing URL if found, null otherwise
+ */
+export async function checkMediaExists(
+    pathname: string
+): Promise<string | null> {
+    const blobToken = env.BLOB_READ_WRITE_TOKEN
+    if (!blobToken) {
+        return null
+    }
+
+    try {
+        const metadata = await head(pathname, { token: blobToken })
+        return metadata.url
+    } catch (error) {
+        // BlobNotFoundError means file doesn't exist - this is expected
+        if (
+            error instanceof Error &&
+            error.message.includes('blob_not_found')
+        ) {
+            return null
+        }
+        // For other errors, log and return null to continue with upload
+        console.warn(`Error checking blob existence for ${pathname}:`, error)
+        return null
+    }
 }
 
 // ============================================================================
@@ -322,6 +374,9 @@ export function parseInstagramPosts(
 
 /**
  * Download media from URL and upload to Vercel Blob
+ *
+ * Checks if media already exists in Vercel Blob before downloading/uploading.
+ * Uses consistent pathnames (no random suffix) to enable existence checks.
  */
 export async function downloadAndUploadMedia(
     sourceUrl: string,
@@ -330,6 +385,19 @@ export async function downloadAndUploadMedia(
     const blobToken = env.BLOB_READ_WRITE_TOKEN
     if (!blobToken) {
         throw new Error('BLOB_READ_WRITE_TOKEN not configured')
+    }
+
+    // Determine extension from source URL first (before downloading)
+    const ext = getExtension(sourceUrl)
+    const fullFilename = `instagram/${filename}.${ext}`
+
+    // Check if media already exists in Vercel Blob
+    const existingUrl = await checkMediaExists(fullFilename)
+    if (existingUrl) {
+        return {
+            url: existingUrl,
+            mimeType: getMimeType(ext),
+        }
     }
 
     // Download the media
@@ -346,18 +414,15 @@ export async function downloadAndUploadMedia(
         )
     }
 
-    const contentType = response.headers.get('content-type') ?? 'image/jpeg'
+    const contentType = response.headers.get('content-type') ?? getMimeType(ext)
     const blob = await response.blob()
 
-    // Get proper extension
-    const ext = getExtension(sourceUrl, contentType)
-    const fullFilename = `instagram/${filename}.${ext}`
-
-    // Upload to Vercel Blob
+    // Upload to Vercel Blob with addRandomSuffix: false for consistent paths
     const uploadedBlob = await put(fullFilename, blob, {
         access: 'public',
         token: blobToken,
         contentType,
+        addRandomSuffix: false,
     })
 
     return {
