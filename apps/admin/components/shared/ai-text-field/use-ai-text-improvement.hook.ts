@@ -11,10 +11,9 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { toast } from 'sonner'
 
-import type {
-    TextOperation,
-    AITextImprovementState,
-} from './ai-text-field.type'
+import type { TextOperation } from '@workspace/shared/schemas/text'
+
+import type { AITextImprovementState } from './ai-text-field.type'
 
 type UseAITextImprovementOptions = {
     /** Current field value */
@@ -115,8 +114,11 @@ export function useAITextImprovement(
                 return
             }
 
-            // Store current value for undo
-            setPreviousValue(value)
+            // Capture current value immediately to avoid stale closure
+            const currentValue = value
+
+            // Store current value for undo (state tracking)
+            setPreviousValue(currentValue)
 
             // Reset state
             setError(null)
@@ -134,7 +136,7 @@ export function useAITextImprovement(
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        text: value,
+                        text: currentValue,
                         operation,
                         fieldName,
                         customInstruction,
@@ -171,10 +173,8 @@ export function useAITextImprovement(
             } catch (err) {
                 // Handle abort
                 if (err instanceof Error && err.name === 'AbortError') {
-                    // User cancelled - restore previous value
-                    if (previousValue !== null) {
-                        onChange(previousValue)
-                    }
+                    // User cancelled - restore using captured value
+                    onChange(currentValue)
                     return
                 }
 
@@ -184,18 +184,16 @@ export function useAITextImprovement(
                 setError(message)
                 toast.error(message)
 
-                // Restore previous value on error
-                if (previousValue !== null) {
-                    onChange(previousValue)
-                    setPreviousValue(null)
-                }
+                // Restore using captured value on error
+                onChange(currentValue)
+                setPreviousValue(null)
             } finally {
                 setIsStreaming(false)
                 setStreamingText('')
                 abortControllerRef.current = null
             }
         },
-        [value, fieldName, onChange, closeMenu, previousValue]
+        [value, fieldName, onChange, closeMenu]
     )
 
     return {
