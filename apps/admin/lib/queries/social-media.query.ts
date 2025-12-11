@@ -12,7 +12,7 @@ import {
     instagramPostMedia,
     galleryMedia,
 } from '@workspace/db/schema'
-import { and, count, desc, eq } from 'drizzle-orm'
+import { and, count, desc, eq, inArray } from 'drizzle-orm'
 
 // ============================================================================
 // Types
@@ -39,6 +39,12 @@ export type InstagramPostListItem = {
         type: 'image' | 'video'
     }
     carouselCount?: number
+    carouselMedia?: Array<{
+        id: string
+        url: string
+        type: 'image' | 'video'
+        displayOrder: number
+    }>
 }
 
 export type InstagramPostWithMedia = InstagramPostListItem & {
@@ -146,6 +152,15 @@ export async function getInstagramPosts(options: {
         .map((p) => p.id)
 
     let carouselCounts: Record<string, number> = {}
+    let carouselMediaMap: Record<
+        string,
+        Array<{
+            id: string
+            url: string
+            type: 'image' | 'video'
+            displayOrder: number
+        }>
+    > = {}
     if (carouselPostIds.length > 0) {
         const counts = await db
             .select({
@@ -161,6 +176,48 @@ export async function getInstagramPosts(options: {
                 return acc
             },
             {} as Record<string, number>
+        )
+
+        const carouselItems = await db
+            .select({
+                postId: instagramPostMedia.postId,
+                mediaId: instagramPostMedia.mediaId,
+                displayOrder: instagramPostMedia.displayOrder,
+                url: galleryMedia.url,
+                type: galleryMedia.type,
+            })
+            .from(instagramPostMedia)
+            .innerJoin(
+                galleryMedia,
+                eq(instagramPostMedia.mediaId, galleryMedia.id)
+            )
+            .where(inArray(instagramPostMedia.postId, carouselPostIds))
+            .orderBy(instagramPostMedia.postId, instagramPostMedia.displayOrder)
+
+        carouselMediaMap = carouselItems.reduce(
+            (acc, item) => {
+                if (!acc[item.postId]) {
+                    acc[item.postId] = []
+                }
+
+                acc[item.postId]?.push({
+                    id: item.mediaId,
+                    url: item.url,
+                    type: item.type,
+                    displayOrder: item.displayOrder,
+                })
+
+                return acc
+            },
+            {} as Record<
+                string,
+                Array<{
+                    id: string
+                    url: string
+                    type: 'image' | 'video'
+                    displayOrder: number
+                }>
+            >
         )
     }
 
@@ -186,6 +243,10 @@ export async function getInstagramPosts(options: {
                 type: p.mediaTypeGallery,
             },
             carouselCount: carouselCounts[p.id],
+            carouselMedia:
+                carouselMediaMap[p.id]?.sort(
+                    (a, b) => a.displayOrder - b.displayOrder
+                ) ?? undefined,
         })),
         total: countResult?.count ?? 0,
     }

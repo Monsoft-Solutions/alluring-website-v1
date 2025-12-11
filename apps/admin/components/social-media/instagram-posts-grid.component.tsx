@@ -3,47 +3,38 @@
 /**
  * Instagram Posts Grid Component
  *
- * Grid display of Instagram posts with actions.
+ * Instagram-style grid display with detail modal.
  *
  * @module components/social-media/instagram-posts-grid
  */
-import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import Image from 'next/image'
-import { Card, CardContent } from '@workspace/ui/components/card'
-import { Button } from '@workspace/ui/components/button'
-import { Badge } from '@workspace/ui/components/badge'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@workspace/ui/components/dropdown-menu'
 import {
     Heart,
     MessageCircle,
     Play,
-    ExternalLink,
-    MoreVertical,
-    Eye,
-    EyeOff,
-    Star,
-    StarOff,
     Layers,
-    Video,
-    Image as ImageIcon,
+    Grid,
+    Clapperboard,
+    UserSquare2,
+    Pin,
 } from 'lucide-react'
 
 import type { InstagramPostListItem } from '@/lib/queries/social-media.query'
-import {
-    toggleInstagramPostPublished,
-    toggleInstagramPostFeatured,
-} from '@/lib/actions/social-media.action'
+import { InstagramPostDialog } from './instagram-post-dialog.component'
+
+type ProfileInfo = {
+    handle: string | null
+    profilePictureUrl: string | null
+    fullName: string | null
+}
 
 type InstagramPostsGridProps = {
     posts: InstagramPostListItem[]
+    profile?: ProfileInfo | null
 }
+
+type Tab = 'posts' | 'reels' | 'tagged'
 
 function formatNumber(num: number): string {
     if (num >= 1000000) {
@@ -55,163 +46,70 @@ function formatNumber(num: number): string {
     return num.toString()
 }
 
-function PostCard({ post }: { post: InstagramPostListItem }) {
-    const router = useRouter()
-    const [isPending, startTransition] = useTransition()
+type PostThumbnailProps = {
+    post: InstagramPostListItem
+    onClick: () => void
+}
 
-    const handleTogglePublished = () => {
-        startTransition(async () => {
-            await toggleInstagramPostPublished(post.id, !post.isPublished)
-            router.refresh()
-        })
-    }
-
-    const handleToggleFeatured = () => {
-        startTransition(async () => {
-            await toggleInstagramPostFeatured(post.id, !post.isFeatured)
-            router.refresh()
-        })
-    }
-
-    const mediaTypeIcon = {
-        image: <ImageIcon className='h-3 w-3' />,
-        video: <Video className='h-3 w-3' />,
-        carousel: <Layers className='h-3 w-3' />,
-    }
+function PostThumbnail({ post, onClick }: PostThumbnailProps) {
+    const isVideo = post.mediaType === 'video'
+    const isCarousel = post.mediaType === 'carousel'
 
     return (
-        <Card className='group overflow-hidden'>
-            {/* Image */}
-            <div className='relative aspect-square'>
-                <Image
-                    src={post.media.thumbnailUrl ?? post.media.url}
-                    alt={post.caption?.substring(0, 100) ?? 'Instagram post'}
-                    fill
-                    className='object-cover transition-transform group-hover:scale-105'
-                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                />
+        <button
+            onClick={onClick}
+            className='group relative aspect-square w-full cursor-pointer overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-white'
+        >
+            <Image
+                src={post.media.thumbnailUrl ?? post.media.url}
+                alt={post.caption?.substring(0, 100) ?? 'Instagram post'}
+                fill
+                className='object-cover'
+                sizes='(max-width: 768px) 33vw, (max-width: 1200px) 25vw, 20vw'
+            />
 
-                {/* Overlay on hover */}
-                <div className='absolute inset-0 flex items-center justify-center gap-4 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100'>
-                    <div className='flex items-center gap-1 text-white'>
-                        <Heart className='h-5 w-5' />
-                        <span className='font-semibold'>
-                            {formatNumber(post.likeCount)}
-                        </span>
-                    </div>
-                    <div className='flex items-center gap-1 text-white'>
-                        <MessageCircle className='h-5 w-5' />
-                        <span className='font-semibold'>
-                            {formatNumber(post.commentCount)}
-                        </span>
-                    </div>
-                    {post.playCount && (
-                        <div className='flex items-center gap-1 text-white'>
-                            <Play className='h-5 w-5' />
-                            <span className='font-semibold'>
-                                {formatNumber(post.playCount)}
-                            </span>
-                        </div>
-                    )}
+            {/* Hover overlay with stats */}
+            <div className='absolute inset-0 flex items-center justify-center gap-6 bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+                <div className='flex items-center gap-1.5 text-white'>
+                    <Heart className='h-5 w-5 fill-white' />
+                    <span className='text-sm font-bold'>
+                        {formatNumber(post.likeCount)}
+                    </span>
                 </div>
-
-                {/* Media type badge */}
-                <div className='absolute top-2 left-2'>
-                    <Badge
-                        variant='secondary'
-                        className='gap-1 bg-black/50 text-white backdrop-blur-sm'
-                    >
-                        {mediaTypeIcon[post.mediaType]}
-                        {post.mediaType === 'carousel' &&
-                            post.carouselCount &&
-                            ` ${post.carouselCount}`}
-                    </Badge>
-                </div>
-
-                {/* Status badges */}
-                <div className='absolute top-2 right-2 flex flex-col gap-1'>
-                    {post.isPublished && (
-                        <Badge className='bg-green-500'>Published</Badge>
-                    )}
-                    {post.isFeatured && (
-                        <Badge className='bg-yellow-500'>Featured</Badge>
-                    )}
-                </div>
-
-                {/* Actions dropdown */}
-                <div className='absolute right-2 bottom-2'>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant='secondary'
-                                size='icon'
-                                className='h-8 w-8 bg-black/50 text-white backdrop-blur-sm hover:bg-black/70'
-                                disabled={isPending}
-                            >
-                                <MoreVertical className='h-4 w-4' />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align='end'>
-                            <DropdownMenuItem onClick={handleTogglePublished}>
-                                {post.isPublished ? (
-                                    <>
-                                        <EyeOff className='mr-2 h-4 w-4' />
-                                        Unpublish
-                                    </>
-                                ) : (
-                                    <>
-                                        <Eye className='mr-2 h-4 w-4' />
-                                        Publish
-                                    </>
-                                )}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={handleToggleFeatured}>
-                                {post.isFeatured ? (
-                                    <>
-                                        <StarOff className='mr-2 h-4 w-4' />
-                                        Unfeature
-                                    </>
-                                ) : (
-                                    <>
-                                        <Star className='mr-2 h-4 w-4' />
-                                        Feature
-                                    </>
-                                )}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem asChild>
-                                <a
-                                    href={post.permalink}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <ExternalLink className='mr-2 h-4 w-4' />
-                                    View on Instagram
-                                </a>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                <div className='flex items-center gap-1.5 text-white'>
+                    <MessageCircle className='h-5 w-5 fill-white' />
+                    <span className='text-sm font-bold'>
+                        {formatNumber(post.commentCount)}
+                    </span>
                 </div>
             </div>
 
-            {/* Caption preview */}
-            <CardContent className='p-3'>
-                <p className='text-muted-foreground line-clamp-2 text-sm'>
-                    {post.caption ?? 'No caption'}
-                </p>
-                <p className='text-muted-foreground mt-2 text-xs'>
-                    {new Date(post.takenAt).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                    })}
-                </p>
-            </CardContent>
-        </Card>
+            {/* Media type indicator - top right */}
+            {(isVideo || isCarousel) && (
+                <div className='absolute top-2 right-2 text-white drop-shadow-lg'>
+                    {isVideo && <Play className='h-5 w-5 fill-white' />}
+                    {isCarousel && <Layers className='h-5 w-5' />}
+                </div>
+            )}
+
+            {/* Pinned indicator - top left */}
+            {post.isFeatured && (
+                <div className='absolute top-2 left-2 text-white drop-shadow-lg'>
+                    <Pin className='h-4 w-4 fill-white' />
+                </div>
+            )}
+        </button>
     )
 }
 
-export function InstagramPostsGrid({ posts }: InstagramPostsGridProps) {
+export function InstagramPostsGrid({
+    posts,
+    profile,
+}: InstagramPostsGridProps) {
+    const [activeTab, setActiveTab] = useState<Tab>('posts')
+    const [selectedPost, setSelectedPost] =
+        useState<InstagramPostListItem | null>(null)
+
     if (posts.length === 0) {
         return (
             <div className='py-12 text-center'>
@@ -224,10 +122,64 @@ export function InstagramPostsGrid({ posts }: InstagramPostsGridProps) {
     }
 
     return (
-        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-            {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-            ))}
+        <div className='space-y-0'>
+            {/* Tabs */}
+            <div className='flex justify-center border-t'>
+                <div className='flex gap-12'>
+                    <button
+                        onClick={() => setActiveTab('posts')}
+                        className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                            activeTab === 'posts'
+                                ? 'border-foreground text-foreground'
+                                : 'text-muted-foreground hover:text-foreground border-transparent'
+                        }`}
+                    >
+                        <Grid className='h-3 w-3' />
+                        Posts
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('reels')}
+                        className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                            activeTab === 'reels'
+                                ? 'border-foreground text-foreground'
+                                : 'text-muted-foreground hover:text-foreground border-transparent'
+                        }`}
+                    >
+                        <Clapperboard className='h-3 w-3' />
+                        Reels
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('tagged')}
+                        className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                            activeTab === 'tagged'
+                                ? 'border-foreground text-foreground'
+                                : 'text-muted-foreground hover:text-foreground border-transparent'
+                        }`}
+                    >
+                        <UserSquare2 className='h-3 w-3' />
+                        Tagged
+                    </button>
+                </div>
+            </div>
+
+            {/* Grid */}
+            <div className='grid grid-cols-3 gap-0.5'>
+                {posts.map((post) => (
+                    <PostThumbnail
+                        key={post.id}
+                        post={post}
+                        onClick={() => setSelectedPost(post)}
+                    />
+                ))}
+            </div>
+
+            {/* Detail Modal */}
+            <InstagramPostDialog
+                post={selectedPost}
+                profile={profile}
+                isOpen={!!selectedPost}
+                onClose={() => setSelectedPost(null)}
+            />
         </div>
     )
 }

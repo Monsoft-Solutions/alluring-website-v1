@@ -1,11 +1,5 @@
 import { Button } from '@workspace/ui/components/button'
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@workspace/ui/components/card'
-import { Badge } from '@workspace/ui/components/badge'
+import { Card, CardContent } from '@workspace/ui/components/card'
 import { ArrowLeft, Settings, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import {
@@ -14,6 +8,7 @@ import {
 } from '@/lib/queries/social-media.query'
 import { InstagramPostsGrid } from '@/components/social-media/instagram-posts-grid.component'
 import { SyncButton } from '@/components/social-media/sync-button.component'
+import { InstagramProfileHeader } from '@/components/social-media/instagram-profile-header.component'
 
 export const dynamic = 'force-dynamic'
 
@@ -102,80 +97,24 @@ export default async function InstagramPostsPage() {
                 </Card>
             )}
 
-            {/* Stats Bar */}
-            {isConfigured && (
-                <Card>
-                    <CardHeader className='pb-3'>
-                        <div className='flex items-center justify-between'>
-                            <CardTitle className='text-base font-medium'>
-                                @{settings.handle}
-                            </CardTitle>
-                            <div className='flex items-center gap-2'>
-                                <Badge
-                                    variant={
-                                        settings.isEnabled
-                                            ? 'default'
-                                            : 'secondary'
-                                    }
-                                >
-                                    {settings.isEnabled ? 'Active' : 'Disabled'}
-                                </Badge>
-                                {settings.lastSyncAt && (
-                                    <span className='text-muted-foreground text-sm'>
-                                        Last sync:{' '}
-                                        {new Date(
-                                            settings.lastSyncAt
-                                        ).toLocaleDateString()}{' '}
-                                        at{' '}
-                                        {new Date(
-                                            settings.lastSyncAt
-                                        ).toLocaleTimeString()}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className='pt-0'>
-                        <div className='flex gap-6 text-sm'>
-                            <div>
-                                <span className='font-semibold'>
-                                    {postsData.total}
-                                </span>{' '}
-                                <span className='text-muted-foreground'>
-                                    total posts
-                                </span>
-                            </div>
-                            <div>
-                                <span className='font-semibold'>
-                                    {
-                                        postsData.posts.filter(
-                                            (p) => p.isPublished
-                                        ).length
-                                    }
-                                </span>{' '}
-                                <span className='text-muted-foreground'>
-                                    published
-                                </span>
-                            </div>
-                            <div>
-                                <span className='font-semibold'>
-                                    {
-                                        postsData.posts.filter(
-                                            (p) => p.isFeatured
-                                        ).length
-                                    }
-                                </span>{' '}
-                                <span className='text-muted-foreground'>
-                                    featured
-                                </span>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+            {/* Profile Header */}
+            {isConfigured && settings && (
+                <InstagramProfileHeader profile={settings} />
             )}
 
             {/* Posts Grid */}
-            <InstagramPostsGrid posts={postsData.posts} />
+            <InstagramPostsGrid
+                posts={postsData.posts}
+                profile={
+                    settings
+                        ? {
+                              handle: settings.handle,
+                              profilePictureUrl: settings.profilePictureUrl,
+                              fullName: settings.fullName,
+                          }
+                        : null
+                }
+            />
         </div>
     )
 }
