@@ -6,7 +6,7 @@ import {
     getInstagramPosts,
     getInstagramSettings,
 } from '@/lib/queries/social-media.query'
-import { InstagramPostsGrid } from '@/components/social-media/instagram-posts-grid.component'
+import { InstagramPostsFeed } from '@/components/social-media/instagram-posts-feed.component'
 import { SyncButton } from '@/components/social-media/sync-button.component'
 import { InstagramProfileHeader } from '@/components/social-media/instagram-profile-header.component'
 
@@ -15,7 +15,12 @@ export const dynamic = 'force-dynamic'
 export default async function InstagramPostsPage() {
     const [settings, postsData] = await Promise.all([
         getInstagramSettings(),
-        getInstagramPosts({ page: 1, pageSize: 50 }),
+        getInstagramPosts({
+            page: 1,
+            pageSize: 20,
+            sortBy: 'date',
+            sortDirection: 'desc',
+        }),
     ])
 
     const isConfigured = settings?.handle && settings?.isEnabled
@@ -103,8 +108,9 @@ export default async function InstagramPostsPage() {
             )}
 
             {/* Posts Grid */}
-            <InstagramPostsGrid
-                posts={postsData.posts}
+            <InstagramPostsFeed
+                initialPosts={postsData.posts}
+                total={postsData.total}
                 profile={
                     settings
                         ? {
@@ -114,6 +120,8 @@ export default async function InstagramPostsPage() {
                           }
                         : null
                 }
+                defaultSortBy='date'
+                defaultSortDirection='desc'
             />
         </div>
     )

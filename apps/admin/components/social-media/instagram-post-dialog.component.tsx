@@ -145,7 +145,7 @@ export function InstagramPostDialog({
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent
                 size='xl'
-                className='max-h-[95vh] gap-0 overflow-hidden p-0'
+                className='max-h-[95vh] max-w-7xl gap-0 overflow-hidden p-0'
                 showCloseButton={true}
             >
                 <DialogTitle className='sr-only'>

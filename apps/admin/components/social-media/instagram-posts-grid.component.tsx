@@ -16,14 +16,19 @@ import {
     Layers,
     Grid,
     Clapperboard,
-    UserSquare2,
+    ImageIcon,
     Pin,
 } from 'lucide-react'
 
-import type { InstagramPostListItem } from '@/lib/queries/social-media.query'
+import { Skeleton } from '@workspace/ui/components/skeleton'
+
+import type {
+    InstagramMediaTypeFilter,
+    InstagramPostListItem,
+} from '@/lib/queries/social-media.query'
 import { InstagramPostDialog } from './instagram-post-dialog.component'
 
-type ProfileInfo = {
+export type ProfileInfo = {
     handle: string | null
     profilePictureUrl: string | null
     fullName: string | null
@@ -32,9 +37,12 @@ type ProfileInfo = {
 type InstagramPostsGridProps = {
     posts: InstagramPostListItem[]
     profile?: ProfileInfo | null
+    mediaType: InstagramMediaTypeFilter
+    onMediaTypeChange: (mediaType: InstagramMediaTypeFilter) => void
+    isLoading?: boolean
+    isLoadingMore?: boolean
+    loadingPlaceholders?: number
 }
-
-type Tab = 'posts' | 'reels' | 'tagged'
 
 function formatNumber(num: number): string {
     if (num >= 1000000) {
@@ -105,12 +113,16 @@ function PostThumbnail({ post, onClick }: PostThumbnailProps) {
 export function InstagramPostsGrid({
     posts,
     profile,
+    mediaType,
+    onMediaTypeChange,
+    isLoading = false,
+    isLoadingMore = false,
+    loadingPlaceholders = 6,
 }: InstagramPostsGridProps) {
-    const [activeTab, setActiveTab] = useState<Tab>('posts')
     const [selectedPost, setSelectedPost] =
         useState<InstagramPostListItem | null>(null)
 
-    if (posts.length === 0) {
+    if (posts.length === 0 && !isLoading) {
         return (
             <div className='py-12 text-center'>
                 <p className='text-muted-foreground'>
@@ -127,20 +139,31 @@ export function InstagramPostsGrid({
             <div className='flex justify-center border-t'>
                 <div className='flex gap-12'>
                     <button
-                        onClick={() => setActiveTab('posts')}
+                        onClick={() => onMediaTypeChange('all')}
                         className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
-                            activeTab === 'posts'
+                            mediaType === 'all'
                                 ? 'border-foreground text-foreground'
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
                         <Grid className='h-3 w-3' />
-                        Posts
+                        All
                     </button>
                     <button
-                        onClick={() => setActiveTab('reels')}
+                        onClick={() => onMediaTypeChange('image')}
                         className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
-                            activeTab === 'reels'
+                            mediaType === 'image'
+                                ? 'border-foreground text-foreground'
+                                : 'text-muted-foreground hover:text-foreground border-transparent'
+                        }`}
+                    >
+                        <ImageIcon className='h-3 w-3' />
+                        Images
+                    </button>
+                    <button
+                        onClick={() => onMediaTypeChange('video')}
+                        className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                            mediaType === 'video'
                                 ? 'border-foreground text-foreground'
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
@@ -149,15 +172,15 @@ export function InstagramPostsGrid({
                         Reels
                     </button>
                     <button
-                        onClick={() => setActiveTab('tagged')}
+                        onClick={() => onMediaTypeChange('carousel')}
                         className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
-                            activeTab === 'tagged'
+                            mediaType === 'carousel'
                                 ? 'border-foreground text-foreground'
                                 : 'text-muted-foreground hover:text-foreground border-transparent'
                         }`}
                     >
-                        <UserSquare2 className='h-3 w-3' />
-                        Tagged
+                        <Layers className='h-3 w-3' />
+                        Carousel
                     </button>
                 </div>
             </div>
@@ -171,6 +194,18 @@ export function InstagramPostsGrid({
                         onClick={() => setSelectedPost(post)}
                     />
                 ))}
+
+                {(isLoading || isLoadingMore) &&
+                    Array.from({ length: loadingPlaceholders }).map(
+                        (_, index) => (
+                            <div
+                                key={`loading-${index}`}
+                                className='aspect-square w-full'
+                            >
+                                <Skeleton className='h-full w-full rounded-none' />
+                            </div>
+                        )
+                    )}
             </div>
 
             {/* Detail Modal */}

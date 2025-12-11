@@ -12,7 +12,7 @@ import {
     instagramPostMedia,
     galleryMedia,
 } from '@workspace/db/schema'
-import { and, count, desc, eq, inArray } from 'drizzle-orm'
+import { and, asc, count, desc, eq, inArray } from 'drizzle-orm'
 
 // ============================================================================
 // Types
@@ -46,6 +46,12 @@ export type InstagramPostListItem = {
         displayOrder: number
     }>
 }
+
+export type InstagramPostSortBy = 'date' | 'likes' | 'views'
+
+export type InstagramPostSortDirection = 'asc' | 'desc'
+
+export type InstagramMediaTypeFilter = 'all' | 'image' | 'video' | 'carousel'
 
 export type InstagramPostWithMedia = InstagramPostListItem & {
     carouselMedia: Array<{
@@ -92,12 +98,18 @@ export async function getInstagramPosts(options: {
     pageSize?: number
     publishedOnly?: boolean
     featuredOnly?: boolean
+    sortBy?: InstagramPostSortBy
+    sortDirection?: InstagramPostSortDirection
+    mediaType?: InstagramMediaTypeFilter
 }): Promise<{ posts: InstagramPostListItem[]; total: number }> {
     const {
         page = 1,
         pageSize = 20,
         publishedOnly = false,
         featuredOnly = false,
+        sortBy = 'date',
+        sortDirection = 'desc',
+        mediaType = 'all',
     } = options
     const offset = (page - 1) * pageSize
 
@@ -109,8 +121,40 @@ export async function getInstagramPosts(options: {
     if (featuredOnly) {
         conditions.push(eq(instagramPost.isFeatured, true))
     }
+    if (mediaType && mediaType !== 'all') {
+        conditions.push(eq(instagramPost.mediaType, mediaType))
+    }
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
+    const orderByClause =
+        sortBy === 'likes'
+            ? sortDirection === 'asc'
+                ? [
+                      asc(instagramPost.likeCount),
+                      desc(instagramPost.takenAt),
+                      desc(instagramPost.id),
+                  ]
+                : [
+                      desc(instagramPost.likeCount),
+                      desc(instagramPost.takenAt),
+                      desc(instagramPost.id),
+                  ]
+            : sortBy === 'views'
+              ? sortDirection === 'asc'
+                  ? [
+                        asc(instagramPost.playCount),
+                        desc(instagramPost.takenAt),
+                        desc(instagramPost.id),
+                    ]
+                  : [
+                        desc(instagramPost.playCount),
+                        desc(instagramPost.takenAt),
+                        desc(instagramPost.id),
+                    ]
+              : sortDirection === 'asc'
+                ? [asc(instagramPost.takenAt), desc(instagramPost.id)]
+                : [desc(instagramPost.takenAt), desc(instagramPost.id)]
 
     // Get posts with media
     const posts = await db
@@ -136,7 +180,7 @@ export async function getInstagramPosts(options: {
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
         .where(whereClause)
-        .orderBy(desc(instagramPost.takenAt))
+        .orderBy(...orderByClause)
         .limit(pageSize)
         .offset(offset)
 
