@@ -11,6 +11,82 @@ import { put } from '@vercel/blob'
 import { env } from '@/env'
 
 // ============================================================================
+// Constants
+// ============================================================================
+
+/**
+ * Timeout for ScrapeSocial API calls (30 seconds)
+ */
+const API_TIMEOUT_MS = 30_000
+
+/**
+ * Timeout for media download requests (30 seconds)
+ */
+const MEDIA_TIMEOUT_MS = 30_000
+
+/**
+ * Maximum number of retry attempts for transient failures
+ */
+const MAX_RETRIES = 3
+
+/**
+ * Delay between retry attempts (2 seconds)
+ */
+const RETRY_DELAY_MS = 2000
+
+// ============================================================================
+// Retry & Timeout Utilities
+// ============================================================================
+
+/**
+ * Execute an async function with retry logic for transient failures
+ *
+ * @param fn - Async function to execute
+ * @param retries - Maximum number of retry attempts
+ * @returns Result of the function
+ */
+async function withRetry<T>(
+    fn: () => Promise<T>,
+    retries = MAX_RETRIES
+): Promise<T> {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+            return await fn()
+        } catch (error) {
+            if (attempt === retries) throw error
+            console.warn(
+                `Attempt ${attempt + 1}/${retries + 1} failed, retrying in ${RETRY_DELAY_MS}ms...`,
+                error instanceof Error ? error.message : error
+            )
+            await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS))
+        }
+    }
+    throw new Error('Unreachable')
+}
+
+/**
+ * Fetch with timeout using AbortController
+ *
+ * @param url - URL to fetch
+ * @param options - Fetch options
+ * @param timeoutMs - Timeout in milliseconds
+ * @returns Fetch response
+ */
+async function fetchWithTimeout(
+    url: string,
+    options: RequestInit,
+    timeoutMs: number
+): Promise<Response> {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), timeoutMs)
+    try {
+        return await fetch(url, { ...options, signal: controller.signal })
+    } finally {
+        clearTimeout(timeout)
+    }
+}
+
+// ============================================================================
 // Types
 // ============================================================================
 
@@ -123,27 +199,33 @@ export async function fetchInstagramProfile(
         trim: 'true',
     })
 
-    const response = await fetch(`${baseUrl}?${params.toString()}`, {
-        headers: {
-            'x-api-key': apiKey,
-        },
+    return withRetry(async () => {
+        const response = await fetchWithTimeout(
+            `${baseUrl}?${params.toString()}`,
+            {
+                headers: {
+                    'x-api-key': apiKey,
+                },
+            },
+            API_TIMEOUT_MS
+        )
+
+        if (!response.ok) {
+            throw new Error(
+                `ScrapeSocial Profile API error: ${response.status} ${response.statusText}`
+            )
+        }
+
+        const data = (await response.json()) as InstagramProfileApiResponse
+
+        if (!data.success) {
+            throw new Error(
+                'ScrapeSocial Profile API returned unsuccessful response'
+            )
+        }
+
+        return data
     })
-
-    if (!response.ok) {
-        throw new Error(
-            `ScrapeSocial Profile API error: ${response.status} ${response.statusText}`
-        )
-    }
-
-    const data = (await response.json()) as InstagramProfileApiResponse
-
-    if (!data.success) {
-        throw new Error(
-            'ScrapeSocial Profile API returned unsuccessful response'
-        )
-    }
-
-    return data
 }
 
 /**
@@ -190,6 +272,24 @@ export function parseInstagramProfile(
 }
 
 /**
+ * Get file extension from content-type header
+ *
+ * @param contentType - MIME type from response header
+ * @returns File extension (e.g., 'jpg', 'png', 'webp')
+ */
+function getFileExtensionFromContentType(contentType: string): string {
+    const mimeToExt: Record<string, string> = {
+        'image/jpeg': 'jpg',
+        'image/jpg': 'jpg',
+        'image/png': 'png',
+        'image/webp': 'webp',
+        'image/gif': 'gif',
+    }
+
+    return mimeToExt[contentType.toLowerCase()] ?? 'jpg'
+}
+
+/**
  * Download Instagram profile picture and upload to Vercel Blob
  *
  * @param profilePicUrl - Instagram profile picture URL (HD version)
@@ -205,37 +305,47 @@ export async function uploadProfilePicture(
         throw new Error('BLOB_READ_WRITE_TOKEN not configured')
     }
 
-    // Download the profile picture
-    const response = await fetch(profilePicUrl, {
-        headers: {
-            'User-Agent':
-                'Mozilla/5.0 (compatible; InstagramProfileUploader/1.0)',
-        },
-    })
-
-    if (!response.ok) {
-        throw new Error(
-            `Failed to download profile picture: ${response.status} ${response.statusText}`
+    // Download and upload with retry logic for transient failures
+    return withRetry(async () => {
+        // Download the profile picture with timeout protection
+        const response = await fetchWithTimeout(
+            profilePicUrl,
+            {
+                headers: {
+                    'User-Agent':
+                        'Mozilla/5.0 (compatible; InstagramProfileUploader/1.0)',
+                },
+            },
+            MEDIA_TIMEOUT_MS
         )
-    }
 
-    const contentType = response.headers.get('content-type') ?? 'image/jpeg'
-    const blob = await response.blob()
+        if (!response.ok) {
+            throw new Error(
+                `Failed to download profile picture: ${response.status} ${response.statusText}`
+            )
+        }
 
-    // Generate filename with timestamp to avoid conflicts
-    const timestamp = Date.now()
-    const filename = `instagram/profile-${handle}-${timestamp}.jpg`
+        const contentType = response.headers.get('content-type') ?? 'image/jpeg'
+        const blob = await response.blob()
 
-    // Upload to Vercel Blob
-    const uploadedBlob = await put(filename, blob, {
-        access: 'public',
-        token: blobToken,
-        contentType,
+        // Determine file extension from content-type
+        const extension = getFileExtensionFromContentType(contentType)
+
+        // Generate filename with timestamp to avoid conflicts
+        const timestamp = Date.now()
+        const filename = `instagram/profile-${handle}-${timestamp}.${extension}`
+
+        // Upload to Vercel Blob
+        const uploadedBlob = await put(filename, blob, {
+            access: 'public',
+            token: blobToken,
+            contentType,
+        })
+
+        return {
+            url: uploadedBlob.url,
+            mimeType: contentType,
+            fileSize: blob.size,
+        }
     })
-
-    return {
-        url: uploadedBlob.url,
-        mimeType: contentType,
-        fileSize: blob.size,
-    }
 }

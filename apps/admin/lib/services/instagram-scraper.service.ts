@@ -15,6 +15,11 @@ import { env } from '@/env'
 // ============================================================================
 
 /**
+ * Timeout for ScrapeSocial API calls (30 seconds)
+ */
+const API_TIMEOUT_MS = 30_000
+
+/**
  * Timeout for media download requests (30 seconds)
  */
 const FETCH_TIMEOUT_MS = 30_000
@@ -348,25 +353,31 @@ export async function fetchInstagramPosts(
         params.set('next_max_id', cursor)
     }
 
-    const response = await fetch(`${baseUrl}?${params.toString()}`, {
-        headers: {
-            'x-api-key': apiKey,
-        },
-    })
-
-    if (!response.ok) {
-        throw new Error(
-            `ScrapeSocial API error: ${response.status} ${response.statusText}`
+    return withRetry(async () => {
+        const response = await fetchWithTimeout(
+            `${baseUrl}?${params.toString()}`,
+            {
+                headers: {
+                    'x-api-key': apiKey,
+                },
+            },
+            API_TIMEOUT_MS
         )
-    }
 
-    const data = (await response.json()) as InstagramApiResponse
+        if (!response.ok) {
+            throw new Error(
+                `ScrapeSocial API error: ${response.status} ${response.statusText}`
+            )
+        }
 
-    if (!data.success) {
-        throw new Error('ScrapeSocial API returned unsuccessful response')
-    }
+        const data = (await response.json()) as InstagramApiResponse
 
-    return data
+        if (!data.success) {
+            throw new Error('ScrapeSocial API returned unsuccessful response')
+        }
+
+        return data
+    })
 }
 
 /**
