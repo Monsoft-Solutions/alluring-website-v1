@@ -30,20 +30,33 @@ import {
     Layers,
     ArrowRight,
     Loader2,
+    ImageIcon,
+    Grid,
+    Edit,
 } from 'lucide-react'
 import { toast } from 'sonner'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@workspace/ui/components/select'
 
 import type {
     InstagramAnalysisStatusFilter,
+    InstagramMediaTypeFilter,
     InstagramPostListItem,
 } from '@/lib/queries/social-media.query'
 import type { GalleryGroupWithSlug } from '@/lib/queries/gallery.query'
 import {
     analyzeInstagramPosts,
     applyAnalysisResults,
+    updateMediaAnalysis,
     type BulkAnalysisResult,
     type DetectedPair,
 } from '@/lib/actions/instagram-analysis.action'
+import Link from 'next/link'
 
 type AnalyzePageClientProps = {
     initialPosts: InstagramPostListItem[]
@@ -83,6 +96,7 @@ export function AnalyzePageClient({
     const [page, setPage] = useState(1)
     const [analysisStatus, setAnalysisStatus] =
         useState<InstagramAnalysisStatusFilter>('pending')
+    const [mediaType, setMediaType] = useState<InstagramMediaTypeFilter>('all')
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingMore, setIsLoadingMore] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -91,7 +105,7 @@ export function AnalyzePageClient({
     const loadMoreRef = useRef<HTMLDivElement | null>(null)
     const hasHydrated = useRef(false)
     const isFetchingRef = useRef(false)
-    const prevFilterRef = useRef(analysisStatus)
+    const prevFilterRef = useRef({ analysisStatus, mediaType })
     const handleLoadMoreRef = useRef<() => void>(() => {})
 
     // Simple hasMore check
@@ -141,6 +155,7 @@ export function AnalyzePageClient({
                     sortBy: 'date',
                     sortDirection: 'desc',
                     analysisStatus,
+                    mediaType,
                 })
 
                 const response = await fetch(
@@ -171,7 +186,7 @@ export function AnalyzePageClient({
                 isFetchingRef.current = false
             }
         },
-        [mergePosts, analysisStatus]
+        [mergePosts, analysisStatus, mediaType]
     )
 
     // Update the handleLoadMore ref whenever dependencies change
@@ -194,11 +209,15 @@ export function AnalyzePageClient({
             return
         }
 
-        if (prevFilterRef.current !== analysisStatus) {
-            prevFilterRef.current = analysisStatus
+        const prev = prevFilterRef.current
+        if (
+            prev.analysisStatus !== analysisStatus ||
+            prev.mediaType !== mediaType
+        ) {
+            prevFilterRef.current = { analysisStatus, mediaType }
             void fetchPage(1, { replace: true })
         }
-    }, [analysisStatus, fetchPage])
+    }, [analysisStatus, mediaType, fetchPage])
 
     // IntersectionObserver for infinite scroll
     useEffect(() => {
@@ -438,7 +457,11 @@ export function AnalyzePageClient({
                         <CardContent>
                             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
                                 {analysisResult.detectedPairs.map((pair) => (
-                                    <PairCard key={pair.id} pair={pair} />
+                                    <PairCard
+                                        key={pair.id}
+                                        pair={pair}
+                                        galleryGroups={galleryGroups}
+                                    />
                                 ))}
                             </div>
                         </CardContent>
@@ -456,41 +479,18 @@ export function AnalyzePageClient({
                             </CardTitle>
                             <CardDescription>
                                 These images were detected as before/after but
-                                couldn&apos;t be matched
+                                couldn&apos;t be matched. Assign to a gallery
+                                group.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className='grid gap-4 md:grid-cols-4 lg:grid-cols-6'>
                                 {analysisResult.unpairedMedia.map((media) => (
-                                    <div
+                                    <UnpairedMediaCard
                                         key={media.mediaId}
-                                        className='space-y-2'
-                                    >
-                                        <div className='relative aspect-square overflow-hidden rounded-lg border'>
-                                            <Image
-                                                src={media.mediaUrl}
-                                                alt='Unpaired media'
-                                                fill
-                                                className='object-cover'
-                                                sizes='150px'
-                                            />
-                                            <Badge
-                                                className='absolute top-1 left-1'
-                                                variant={
-                                                    media.beforeAfterType ===
-                                                    'before'
-                                                        ? 'secondary'
-                                                        : 'default'
-                                                }
-                                            >
-                                                {media.beforeAfterType}
-                                            </Badge>
-                                        </div>
-                                        <p className='text-muted-foreground truncate text-xs'>
-                                            {media.procedureSlug ||
-                                                'Unknown procedure'}
-                                        </p>
-                                    </div>
+                                        media={media}
+                                        galleryGroups={galleryGroups}
+                                    />
                                 ))}
                             </div>
                         </CardContent>
@@ -506,37 +506,18 @@ export function AnalyzePageClient({
                                 {analysisResult.nonBAMedia.length})
                             </CardTitle>
                             <CardDescription>
-                                These will be assigned to gallery groups based
-                                on detected procedure
+                                Assign to gallery groups based on detected
+                                procedure
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className='grid gap-4 md:grid-cols-4 lg:grid-cols-6'>
                                 {analysisResult.nonBAMedia.map((media) => (
-                                    <div
+                                    <NonBAMediaCard
                                         key={media.mediaId}
-                                        className='space-y-2'
-                                    >
-                                        <div className='relative aspect-square overflow-hidden rounded-lg border'>
-                                            <Image
-                                                src={media.mediaUrl}
-                                                alt='Non-BA media'
-                                                fill
-                                                className='object-cover'
-                                                sizes='150px'
-                                            />
-                                            <Badge
-                                                className='absolute top-1 left-1'
-                                                variant='outline'
-                                            >
-                                                {media.contentType}
-                                            </Badge>
-                                        </div>
-                                        <p className='text-muted-foreground truncate text-xs'>
-                                            {media.procedureSlug ||
-                                                'No procedure'}
-                                        </p>
-                                    </div>
+                                        media={media}
+                                        galleryGroups={galleryGroups}
+                                    />
                                 ))}
                             </div>
                         </CardContent>
@@ -605,7 +586,9 @@ export function AnalyzePageClient({
                 <CardContent>
                     <div className='flex gap-3'>
                         <Button asChild variant='outline'>
-                            <a href='/gallery/before-after'>View B&A Pairs</a>
+                            <Link href='/gallery/before-after'>
+                                View B&A Pairs
+                            </Link>
                         </Button>
                         <Button
                             onClick={() => {
@@ -666,6 +649,49 @@ export function AnalyzePageClient({
                             </TabsTrigger>
                         </TabsList>
                     </Tabs>
+                </CardContent>
+            </Card>
+
+            {/* Media Type Filter Tabs */}
+            <Card>
+                <CardContent className='pt-6'>
+                    <div className='flex justify-center border-t'>
+                        <div className='flex gap-12'>
+                            <button
+                                onClick={() => setMediaType('all')}
+                                className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                                    mediaType === 'all'
+                                        ? 'border-foreground text-foreground'
+                                        : 'text-muted-foreground hover:text-foreground border-transparent'
+                                }`}
+                            >
+                                <Grid className='h-3 w-3' />
+                                All
+                            </button>
+                            <button
+                                onClick={() => setMediaType('image')}
+                                className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                                    mediaType === 'image'
+                                        ? 'border-foreground text-foreground'
+                                        : 'text-muted-foreground hover:text-foreground border-transparent'
+                                }`}
+                            >
+                                <ImageIcon className='h-3 w-3' />
+                                Images
+                            </button>
+                            <button
+                                onClick={() => setMediaType('carousel')}
+                                className={`flex h-12 items-center gap-2 border-t text-xs font-semibold tracking-widest uppercase transition-colors ${
+                                    mediaType === 'carousel'
+                                        ? 'border-foreground text-foreground'
+                                        : 'text-muted-foreground hover:text-foreground border-transparent'
+                                }`}
+                            >
+                                <Layers className='h-3 w-3' />
+                                Carousel
+                            </button>
+                        </div>
+                    </div>
                 </CardContent>
             </Card>
 
@@ -786,6 +812,152 @@ export function AnalyzePageClient({
 }
 
 // Sub-components
+function UnpairedMediaCard({
+    media,
+    galleryGroups,
+}: {
+    media: BulkAnalysisResult['unpairedMedia'][number]
+    galleryGroups: GalleryGroupWithSlug[]
+}) {
+    const [selectedGroupId, setSelectedGroupId] = useState<string>('')
+    const router = useRouter()
+
+    const handleGroupChange = async (groupId: string) => {
+        const actualGroupIds = groupId === '__none__' ? null : [groupId]
+        setSelectedGroupId(groupId)
+        const result = await updateMediaAnalysis({
+            mediaId: media.mediaId,
+            groupIds: actualGroupIds,
+            procedureSlug: media.procedureSlug,
+            beforeAfterType: media.beforeAfterType,
+            isBeforeAfter: false, // Mark as not B&A since unpaired
+        })
+
+        if (result.success) {
+            toast.success('Assigned to group')
+            router.refresh()
+        } else {
+            toast.error(result.error || 'Failed to update')
+        }
+    }
+
+    // Find group by procedure slug
+    const defaultGroup = galleryGroups.find(
+        (g) => g.slug === media.procedureSlug
+    )
+
+    return (
+        <div className='space-y-2'>
+            <div className='relative aspect-square overflow-hidden rounded-lg border'>
+                <Image
+                    src={media.mediaUrl}
+                    alt='Unpaired media'
+                    fill
+                    className='object-cover'
+                    sizes='150px'
+                />
+                <Badge
+                    className='absolute top-1 left-1'
+                    variant={
+                        media.beforeAfterType === 'before'
+                            ? 'secondary'
+                            : 'default'
+                    }
+                >
+                    {media.beforeAfterType}
+                </Badge>
+            </div>
+            <Select
+                value={selectedGroupId || defaultGroup?.id || '__none__'}
+                onValueChange={handleGroupChange}
+            >
+                <SelectTrigger className='h-7 text-xs'>
+                    <SelectValue placeholder='Assign to group' />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value='__none__'>None</SelectItem>
+                    {galleryGroups.map((group) => (
+                        <SelectItem key={group.id} value={group.id}>
+                            {group.name}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
+    )
+}
+
+function NonBAMediaCard({
+    media,
+    galleryGroups,
+}: {
+    media: BulkAnalysisResult['nonBAMedia'][number]
+    galleryGroups: GalleryGroupWithSlug[]
+}) {
+    const [selectedGroupId, setSelectedGroupId] = useState<string>('')
+    const router = useRouter()
+
+    const handleGroupChange = async (groupId: string) => {
+        const actualGroupIds = groupId === '__none__' ? null : [groupId]
+        setSelectedGroupId(groupId)
+        const result = await updateMediaAnalysis({
+            mediaId: media.mediaId,
+            groupIds: actualGroupIds,
+            procedureSlug: media.procedureSlug,
+        })
+
+        if (result.success) {
+            toast.success('Group assignment updated')
+            router.refresh()
+        } else {
+            toast.error(result.error || 'Failed to update')
+        }
+    }
+
+    // Find group by procedure slug
+    const defaultGroup = galleryGroups.find(
+        (g) => g.slug === media.procedureSlug
+    )
+
+    return (
+        <div className='space-y-2'>
+            <div className='relative aspect-square overflow-hidden rounded-lg border'>
+                <Image
+                    src={media.mediaUrl}
+                    alt='Non-BA media'
+                    fill
+                    className='object-cover'
+                    sizes='150px'
+                />
+                <Badge className='absolute top-1 left-1' variant='outline'>
+                    {media.contentType}
+                </Badge>
+                {media.isSideBySide && (
+                    <Badge className='absolute top-1 right-1' variant='default'>
+                        Side-by-Side
+                    </Badge>
+                )}
+            </div>
+            <Select
+                value={selectedGroupId || defaultGroup?.id || '__none__'}
+                onValueChange={handleGroupChange}
+            >
+                <SelectTrigger className='h-7 text-xs'>
+                    <SelectValue placeholder='Select group' />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value='__none__'>None</SelectItem>
+                    {galleryGroups.map((group) => (
+                        <SelectItem key={group.id} value={group.id}>
+                            {group.name}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
+    )
+}
+
 function PostSelectCard({
     post,
     isSelected,
@@ -798,9 +970,9 @@ function PostSelectCard({
     const isCarousel = post.mediaType === 'carousel'
 
     return (
-        <button
+        <div
             onClick={onToggle}
-            className={`group relative aspect-square w-full overflow-hidden rounded-lg border-2 transition-colors ${
+            className={`group relative aspect-square w-full cursor-pointer overflow-hidden rounded-lg border-2 transition-colors ${
                 isSelected
                     ? 'border-primary ring-primary ring-2 ring-offset-2'
                     : 'hover:border-muted-foreground/30 border-transparent'
@@ -839,11 +1011,39 @@ function PostSelectCard({
                     <Layers className='h-5 w-5' />
                 </div>
             )}
-        </button>
+        </div>
     )
 }
 
-function PairCard({ pair }: { pair: DetectedPair }) {
+function PairCard({
+    pair,
+    galleryGroups,
+}: {
+    pair: DetectedPair
+    galleryGroups: GalleryGroupWithSlug[]
+}) {
+    const [isEditing, setIsEditing] = useState(false)
+    const [procedureSlug, setProcedureSlug] = useState(
+        pair.procedureSlug || '__none__'
+    )
+    const router = useRouter()
+
+    const handleSaveProcedure = async () => {
+        const actualSlug = procedureSlug === '__none__' ? null : procedureSlug
+        const result = await updateMediaAnalysis({
+            mediaId: pair.beforeMediaId,
+            procedureSlug: actualSlug,
+        })
+
+        if (result.success) {
+            toast.success('Procedure updated')
+            setIsEditing(false)
+            router.refresh()
+        } else {
+            toast.error(result.error || 'Failed to update')
+        }
+    }
+
     const isSideBySide = pair.type === 'side_by_side'
 
     return (
@@ -852,9 +1052,19 @@ function PairCard({ pair }: { pair: DetectedPair }) {
                 <Badge variant={isSideBySide ? 'default' : 'secondary'}>
                     {isSideBySide ? 'Side-by-Side' : 'Matched Pair'}
                 </Badge>
-                <span className='text-muted-foreground text-xs'>
-                    {Math.round(pair.confidence * 100)}% confidence
-                </span>
+                <div className='flex items-center gap-2'>
+                    <span className='text-muted-foreground text-xs'>
+                        {Math.round(pair.confidence * 100)}% confidence
+                    </span>
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        className='h-6 w-6'
+                        onClick={() => setIsEditing(!isEditing)}
+                    >
+                        <Edit className='h-3 w-3' />
+                    </Button>
+                </div>
             </div>
 
             <div className='flex items-center gap-2'>
@@ -894,10 +1104,38 @@ function PairCard({ pair }: { pair: DetectedPair }) {
                 )}
             </div>
 
-            {pair.procedureSlug && (
-                <p className='text-muted-foreground truncate text-xs'>
-                    {pair.procedureSlug}
-                </p>
+            {isEditing ? (
+                <div className='space-y-2'>
+                    <Select
+                        value={procedureSlug}
+                        onValueChange={setProcedureSlug}
+                    >
+                        <SelectTrigger className='h-8 text-xs'>
+                            <SelectValue placeholder='Select procedure' />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value='__none__'>None</SelectItem>
+                            {galleryGroups.map((group) => (
+                                <SelectItem key={group.id} value={group.slug}>
+                                    {group.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Button
+                        size='sm'
+                        className='w-full'
+                        onClick={handleSaveProcedure}
+                    >
+                        Save
+                    </Button>
+                </div>
+            ) : (
+                pair.procedureSlug && (
+                    <p className='text-muted-foreground truncate text-xs'>
+                        {pair.procedureSlug}
+                    </p>
+                )
             )}
         </div>
     )

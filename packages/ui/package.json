@@ -184,6 +184,11 @@
             "types": "./dist/components/progress.d.ts",
             "import": "./dist/components/progress.js",
             "default": "./dist/components/progress.js"
+        },
+        "./components/multi-select": {
+            "types": "./dist/components/multi-select.d.ts",
+            "import": "./dist/components/multi-select.js",
+            "default": "./dist/components/multi-select.js"
         }
     }
 }

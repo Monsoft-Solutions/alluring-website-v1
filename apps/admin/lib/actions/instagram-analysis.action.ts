@@ -95,6 +95,7 @@ export type BulkAnalysisResult = {
         contentType: string
         procedureSlug: string | null
         postId: string
+        isSideBySide?: boolean
     }>
     stats: {
         totalPosts: number
@@ -394,7 +395,6 @@ export async function analyzeInstagramPosts(
         }
 
         // Collect all images to analyze
-        const sideBySidePairs: DetectedPair[] = []
         const beforeImages: Array<{
             mediaId: string
             mediaUrl: string
@@ -449,7 +449,7 @@ export async function analyzeInstagramPosts(
                     imagesToAnalyze.push({
                         mediaId: item.mediaId,
                         url: item.url,
-                        isPrimary: false,
+                        isPrimary: item.displayOrder === 0,
                     })
                 }
             }
@@ -478,29 +478,30 @@ export async function analyzeInstagramPosts(
                     }
 
                     // Save analysis to gallery_media
+                    // Mark side-by-side as NOT isBeforeAfter (they're composite images)
+                    const isSideBySide =
+                        analysis.beforeAfterType === 'side_by_side'
                     await db
                         .update(galleryMedia)
                         .set({
                             aiAnalysis: analysis,
-                            isBeforeAfter: analysis.isBeforeAfter,
+                            isBeforeAfter:
+                                analysis.isBeforeAfter && !isSideBySide,
                         })
                         .where(eq(galleryMedia.id, img.mediaId))
 
                     // Categorize based on analysis
                     if (analysis.isBeforeAfter) {
                         if (analysis.beforeAfterType === 'side_by_side') {
-                            // Side-by-side image - create pair with same image
-                            sideBySidePairs.push({
-                                id: generatePairId(),
-                                type: 'side_by_side',
-                                beforeMediaId: img.mediaId,
-                                beforeMediaUrl: img.url,
-                                afterMediaId: img.mediaId,
-                                afterMediaUrl: img.url,
+                            // Side-by-side image - treat as non-BA content, assign to group
+                            nonBAMedia.push({
+                                mediaId: img.mediaId,
+                                mediaUrl: img.url,
+                                contentType: analysis.contentType,
                                 procedureSlug:
                                     analysis.detectedProcedure ?? null,
-                                bodyArea: analysis.bodyArea,
-                                confidence: analysis.procedureConfidence ?? 0.8,
+                                postId: post.id,
+                                isSideBySide: true,
                             })
                         } else if (analysis.beforeAfterType === 'before') {
                             beforeImages.push({
@@ -556,12 +557,13 @@ export async function analyzeInstagramPosts(
 
             result.analyzedPosts.push(postResult)
 
-            // Update post analysis status
+            // Update post analysis status and save primary media analysis
             await db
                 .update(instagramPost)
                 .set({
                     analysisStatus: 'analyzed',
                     analyzedAt: new Date(),
+                    aiAnalysis: postResult.primaryMedia.analysis,
                 })
                 .where(eq(instagramPost.id, post.id))
         }
@@ -569,8 +571,8 @@ export async function analyzeInstagramPosts(
         // Pair before/after images
         const pairingResult = pairBeforeAfterImages(beforeImages, afterImages)
 
-        // Combine all pairs
-        result.detectedPairs = [...sideBySidePairs, ...pairingResult.pairs]
+        // Combine pairs (no longer including side-by-side)
+        result.detectedPairs = pairingResult.pairs
 
         result.unpairedMedia = [
             ...pairingResult.unpairedBefore,
@@ -579,8 +581,9 @@ export async function analyzeInstagramPosts(
 
         result.nonBAMedia = nonBAMedia
 
-        // Update stats
-        result.stats.sideBySideCount = sideBySidePairs.length
+        // Update stats - count side-by-side from nonBAMedia
+        const sideBySideCount = nonBAMedia.filter((m) => m.isSideBySide).length
+        result.stats.sideBySideCount = sideBySideCount
         result.stats.pairedCount = pairingResult.pairs.length
         result.stats.unpairedCount = result.unpairedMedia.length
 
@@ -693,6 +696,13 @@ export async function applyAnalysisResults(
                     displayOrder: 0,
                 })
             }
+
+            // Ensure side-by-side images are marked as NOT isBeforeAfter
+            // (they're composite images, not individual before/after shots)
+            await db
+                .update(galleryMedia)
+                .set({ isBeforeAfter: false })
+                .where(eq(galleryMedia.id, assignment.mediaId))
         }
 
         // Update post statuses to 'applied'
@@ -749,6 +759,104 @@ export async function updateAnalysisStatus(
                 error instanceof Error
                     ? error.message
                     : 'Failed to update status',
+        }
+    }
+}
+
+/**
+ * Input for updating media analysis
+ */
+export type UpdateAnalysisInput = {
+    mediaId: string
+    groupIds?: string[] | null
+    procedureSlug?: string | null
+    beforeAfterType?: 'before' | 'after' | 'side_by_side' | null
+    bodyArea?: 'face' | 'breast' | 'body' | 'combined' | 'other'
+    isBeforeAfter?: boolean
+}
+
+/**
+ * Update media analysis result
+ *
+ * Allows editing AI-generated analysis for individual media items.
+ * Updates gallery_media aiAnalysis JSONB field and related flags.
+ */
+export async function updateMediaAnalysis(
+    input: UpdateAnalysisInput
+): Promise<ActionResult> {
+    try {
+        // Get current media
+        const [media] = await db
+            .select()
+            .from(galleryMedia)
+            .where(eq(galleryMedia.id, input.mediaId))
+            .limit(1)
+
+        if (!media) {
+            return { success: false, error: 'Media not found' }
+        }
+
+        // Merge updates into existing AI analysis
+        const currentAnalysis =
+            media.aiAnalysis as GalleryMediaAIAnalysis | null
+        const updatedAnalysis: GalleryMediaAIAnalysis | null = currentAnalysis
+            ? {
+                  ...currentAnalysis,
+                  ...(input.procedureSlug !== undefined &&
+                      input.procedureSlug !== null && {
+                          detectedProcedure: input.procedureSlug,
+                      }),
+                  ...(input.beforeAfterType !== undefined &&
+                      input.beforeAfterType !== null && {
+                          beforeAfterType: input.beforeAfterType,
+                      }),
+                  ...(input.bodyArea !== undefined && {
+                      bodyArea: input.bodyArea,
+                  }),
+              }
+            : null
+
+        // Update gallery_media
+        await db
+            .update(galleryMedia)
+            .set({
+                aiAnalysis: updatedAnalysis,
+                ...(input.isBeforeAfter !== undefined && {
+                    isBeforeAfter: input.isBeforeAfter,
+                }),
+            })
+            .where(eq(galleryMedia.id, input.mediaId))
+
+        // Handle group assignments (multiple groups)
+        if (input.groupIds !== undefined) {
+            // Remove all existing group assignments
+            await db
+                .delete(galleryMediaGroup)
+                .where(eq(galleryMediaGroup.mediaId, input.mediaId))
+
+            // Add new group assignments
+            if (input.groupIds && input.groupIds.length > 0) {
+                const newAssignments = input.groupIds.map((groupId, index) => ({
+                    mediaId: input.mediaId,
+                    groupId: groupId,
+                    displayOrder: index,
+                }))
+                await db.insert(galleryMediaGroup).values(newAssignments)
+            }
+        }
+
+        revalidatePath('/social-media/instagram')
+        revalidatePath('/gallery')
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error updating media analysis:', error)
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to update analysis',
         }
     }
 }

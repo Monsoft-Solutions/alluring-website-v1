@@ -27,7 +27,7 @@ export default async function InstagramAnalyzePage() {
             sortBy: 'date',
             sortDirection: 'desc',
             analysisStatus: 'pending', // Default to pending status
-            mediaType: 'carousel',
+            mediaType: 'all', // Default to all media types
         }),
         getAnalysisStatusCounts(),
         getGalleryGroupsWithSlug(),

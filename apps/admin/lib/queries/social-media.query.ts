@@ -12,6 +12,7 @@ import {
     instagramPostMedia,
     galleryMedia,
 } from '@workspace/db/schema'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import { and, asc, count, desc, eq, inArray } from 'drizzle-orm'
 
 // ============================================================================
@@ -44,6 +45,7 @@ export type InstagramPostListItem = {
         url: string
         thumbnailUrl: string | null
         type: 'image' | 'video'
+        aiAnalysis?: GalleryMediaAIAnalysis | null
     }
     carouselCount?: number
     carouselMedia?: Array<{
@@ -51,6 +53,7 @@ export type InstagramPostListItem = {
         url: string
         type: 'image' | 'video'
         displayOrder: number
+        aiAnalysis?: GalleryMediaAIAnalysis | null
     }>
 }
 
@@ -73,6 +76,7 @@ export type InstagramPostWithMedia = InstagramPostListItem & {
         url: string
         type: 'image' | 'video'
         displayOrder: number
+        aiAnalysis?: GalleryMediaAIAnalysis | null
     }>
 }
 
@@ -196,6 +200,7 @@ export async function getInstagramPosts(options: {
             mediaUrl: galleryMedia.url,
             mediaThumbnailUrl: galleryMedia.thumbnailUrl,
             mediaTypeGallery: galleryMedia.type,
+            mediaAiAnalysis: galleryMedia.aiAnalysis,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -223,6 +228,7 @@ export async function getInstagramPosts(options: {
             url: string
             type: 'image' | 'video'
             displayOrder: number
+            aiAnalysis?: GalleryMediaAIAnalysis | null
         }>
     > = {}
     if (carouselPostIds.length > 0) {
@@ -250,6 +256,7 @@ export async function getInstagramPosts(options: {
                 displayOrder: instagramPostMedia.displayOrder,
                 url: galleryMedia.url,
                 type: galleryMedia.type,
+                aiAnalysis: galleryMedia.aiAnalysis,
             })
             .from(instagramPostMedia)
             .innerJoin(
@@ -270,6 +277,7 @@ export async function getInstagramPosts(options: {
                     url: item.url,
                     type: item.type,
                     displayOrder: item.displayOrder,
+                    aiAnalysis: item.aiAnalysis,
                 })
 
                 return acc
@@ -281,6 +289,7 @@ export async function getInstagramPosts(options: {
                     url: string
                     type: 'image' | 'video'
                     displayOrder: number
+                    aiAnalysis?: GalleryMediaAIAnalysis | null
                 }>
             >
         )
@@ -307,6 +316,7 @@ export async function getInstagramPosts(options: {
                 url: p.mediaUrl,
                 thumbnailUrl: p.mediaThumbnailUrl,
                 type: p.mediaTypeGallery,
+                aiAnalysis: p.mediaAiAnalysis,
             },
             carouselCount: carouselCounts[p.id],
             carouselMedia:
@@ -344,6 +354,7 @@ export async function getInstagramPostById(
             mediaUrl: galleryMedia.url,
             mediaThumbnailUrl: galleryMedia.thumbnailUrl,
             mediaTypeGallery: galleryMedia.type,
+            mediaAiAnalysis: galleryMedia.aiAnalysis,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -363,6 +374,7 @@ export async function getInstagramPostById(
                 displayOrder: instagramPostMedia.displayOrder,
                 url: galleryMedia.url,
                 type: galleryMedia.type,
+                aiAnalysis: galleryMedia.aiAnalysis,
             })
             .from(instagramPostMedia)
             .innerJoin(
@@ -377,6 +389,7 @@ export async function getInstagramPostById(
             url: item.url,
             type: item.type,
             displayOrder: item.displayOrder,
+            aiAnalysis: item.aiAnalysis,
         }))
     }
 
@@ -400,6 +413,7 @@ export async function getInstagramPostById(
             url: post.mediaUrl,
             thumbnailUrl: post.mediaThumbnailUrl,
             type: post.mediaTypeGallery,
+            aiAnalysis: post.mediaAiAnalysis,
         },
         carouselMedia,
     }
