@@ -14,13 +14,12 @@ import {
     getInstagramPosts,
     getAnalysisStatusCounts,
 } from '@/lib/queries/social-media.query'
-import { getGalleryGroupsForAI } from '@/lib/queries/gallery.query'
 import { AnalyzePageClient } from './analyze-page-client.component'
 
 export const dynamic = 'force-dynamic'
 
 export default async function InstagramAnalyzePage() {
-    const [postsData, statusCounts, galleryGroups] = await Promise.all([
+    const [postsData, statusCounts] = await Promise.all([
         getInstagramPosts({
             page: 1,
             pageSize: 24, // Initial page size for better UX
@@ -30,7 +29,6 @@ export default async function InstagramAnalyzePage() {
             mediaType: 'all', // Default to all media types
         }),
         getAnalysisStatusCounts(),
-        getGalleryGroupsForAI(),
     ])
 
     // Filter to only show images and carousels (skip videos)
@@ -92,7 +90,6 @@ export default async function InstagramAnalyzePage() {
                 initialPosts={analyzablePosts}
                 initialTotal={postsData.total}
                 statusCounts={statusCounts}
-                galleryGroups={galleryGroups}
             />
         </div>
     )

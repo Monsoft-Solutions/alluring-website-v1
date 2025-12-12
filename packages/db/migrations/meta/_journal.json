@@ -190,6 +190,13 @@
       "when": 1765533009044,
       "tag": "0026_conscious_marvex",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1765558689077,
+      "tag": "0027_thick_praxagora",
+      "breakpoints": true
     }
   ]
 }

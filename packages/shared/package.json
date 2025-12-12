@@ -29,6 +29,11 @@
             "types": "./dist/schemas/text/index.d.ts",
             "import": "./dist/schemas/text/index.js",
             "default": "./dist/schemas/text/index.js"
+        },
+        "./schemas/analysis": {
+            "types": "./dist/schemas/analysis/index.d.ts",
+            "import": "./dist/schemas/analysis/index.js",
+            "default": "./dist/schemas/analysis/index.js"
         }
     },
     "scripts": {

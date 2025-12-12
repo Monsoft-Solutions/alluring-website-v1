@@ -21,9 +21,13 @@ import type {
     GalleryMediaAIAnalysis,
     AvailableGroup,
 } from '@workspace/shared/schemas/gallery'
-import { analyzeGalleryImage, suggestGalleryGroups } from '@workspace/ai'
+import { analyzeGalleryImage } from '@workspace/ai'
 import { eq, inArray, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
+import { createAnalysis, updateAnalysisResult } from './media-analysis.action'
+import { generateAnalysisName } from '../utils/analysis.util'
+import { pairBeforeAfterImages } from '../utils/pairing-algorithm.util'
+import { convertGroupSuggestions } from '../utils/group-suggestion.util'
 
 // ============================================================================
 // Types
@@ -151,228 +155,7 @@ export type ApplyAnalysisInput = {
 // ============================================================================
 // Helper Functions
 // ============================================================================
-
-/**
- * Generate unique ID for detected pairs
- */
-function generatePairId(): string {
-    return `pair-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
-}
-
-/**
- * Calculate similarity score between two patient descriptions
- */
-function calculatePatientSimilarity(
-    a: GalleryMediaAIAnalysis['patientDescription'],
-    b: GalleryMediaAIAnalysis['patientDescription']
-): number {
-    if (!a || !b) return 0.5 // Default if no patient info
-
-    let score = 0
-    let factors = 0
-
-    // Gender match (most important)
-    if (a.gender === b.gender) {
-        score += 0.4
-    }
-    factors += 0.4
-
-    // Body type match
-    if (a.bodyType && b.bodyType && a.bodyType === b.bodyType) {
-        score += 0.2
-    }
-    factors += 0.2
-
-    // Skin tone match
-    if (a.skinTone && b.skinTone && a.skinTone === b.skinTone) {
-        score += 0.2
-    }
-    factors += 0.2
-
-    // Age range match
-    if (
-        a.estimatedAgeRange &&
-        b.estimatedAgeRange &&
-        a.estimatedAgeRange === b.estimatedAgeRange
-    ) {
-        score += 0.2
-    }
-    factors += 0.2
-
-    return score / factors
-}
-
-/**
- * Convert AI group suggestions to AISuggestedGroup format
- */
-async function convertGroupSuggestions(
-    analysis: GalleryMediaAIAnalysis,
-    availableGroups: AvailableGroup[]
-): Promise<AISuggestedGroup[]> {
-    try {
-        const suggestion = await suggestGalleryGroups({
-            aiAnalysis: analysis,
-            availableGroups,
-        })
-
-        if (
-            !suggestion.suggestedGroups ||
-            suggestion.suggestedGroups.length === 0
-        ) {
-            return []
-        }
-
-        // Map slug suggestions to group IDs with full details
-        const suggestedGroups: AISuggestedGroup[] = []
-        for (const item of suggestion.suggestedGroups) {
-            const group = availableGroups.find((g) => g.slug === item.slug)
-            if (group) {
-                suggestedGroups.push({
-                    groupId: group.id,
-                    slug: group.slug,
-                    name: group.name,
-                    confidence: item.confidence,
-                    reason: item.reason,
-                })
-            }
-        }
-
-        return suggestedGroups
-    } catch (error) {
-        console.error('Error getting group suggestions:', error)
-        return []
-    }
-}
-
-/**
- * Pair before/after images based on procedure, body area, and patient similarity
- */
-function pairBeforeAfterImages(
-    beforeImages: Array<{
-        mediaId: string
-        mediaUrl: string
-        analysis: GalleryMediaAIAnalysis
-        postId: string
-        postCode: string
-        aiSuggestedGroups: AISuggestedGroup[]
-    }>,
-    afterImages: Array<{
-        mediaId: string
-        mediaUrl: string
-        analysis: GalleryMediaAIAnalysis
-        postId: string
-        postCode: string
-        aiSuggestedGroups: AISuggestedGroup[]
-    }>
-): {
-    pairs: DetectedPair[]
-    unpairedBefore: UnpairedMedia[]
-    unpairedAfter: UnpairedMedia[]
-} {
-    const pairs: DetectedPair[] = []
-    const usedBeforeIds = new Set<string>()
-    const usedAfterIds = new Set<string>()
-
-    // Group images by procedure + bodyArea
-    const beforeByKey = new Map<string, (typeof beforeImages)[number][]>()
-    const afterByKey = new Map<string, (typeof afterImages)[number][]>()
-
-    for (const img of beforeImages) {
-        const key = `${img.analysis.detectedProcedure || 'unknown'}-${img.analysis.bodyArea}`
-        if (!beforeByKey.has(key)) beforeByKey.set(key, [])
-        beforeByKey.get(key)!.push(img)
-    }
-
-    for (const img of afterImages) {
-        const key = `${img.analysis.detectedProcedure || 'unknown'}-${img.analysis.bodyArea}`
-        if (!afterByKey.has(key)) afterByKey.set(key, [])
-        afterByKey.get(key)!.push(img)
-    }
-
-    // Match within each procedure+bodyArea group
-    for (const [key, befores] of beforeByKey) {
-        const afters = afterByKey.get(key) || []
-
-        for (const before of befores) {
-            if (usedBeforeIds.has(before.mediaId)) continue
-
-            let bestMatch: (typeof afterImages)[number] | null = null
-            let bestScore = 0
-
-            for (const after of afters) {
-                if (usedAfterIds.has(after.mediaId)) continue
-
-                const similarity = calculatePatientSimilarity(
-                    before.analysis.patientDescription,
-                    after.analysis.patientDescription
-                )
-
-                if (similarity > bestScore) {
-                    bestScore = similarity
-                    bestMatch = after
-                }
-            }
-
-            // Require minimum similarity threshold
-            if (bestMatch && bestScore >= 0.5) {
-                // Use AI suggestions from before image (primary)
-                const aiSuggestedGroups = before.aiSuggestedGroups
-                const aiPrimaryGroup =
-                    aiSuggestedGroups.length > 0 && aiSuggestedGroups[0]
-                        ? aiSuggestedGroups[0].slug
-                        : null
-
-                pairs.push({
-                    id: generatePairId(),
-                    type: 'paired',
-                    beforeMediaId: before.mediaId,
-                    beforeMediaUrl: before.mediaUrl,
-                    afterMediaId: bestMatch.mediaId,
-                    afterMediaUrl: bestMatch.mediaUrl,
-                    procedureSlug: before.analysis.detectedProcedure ?? null,
-                    bodyArea: before.analysis.bodyArea,
-                    confidence: bestScore,
-                    aiSuggestedGroups,
-                    aiPrimaryGroup,
-                })
-
-                usedBeforeIds.add(before.mediaId)
-                usedAfterIds.add(bestMatch.mediaId)
-            }
-        }
-    }
-
-    // Collect unpaired images
-    const unpairedBefore: UnpairedMedia[] = beforeImages
-        .filter((img) => !usedBeforeIds.has(img.mediaId))
-        .map((img) => ({
-            mediaId: img.mediaId,
-            mediaUrl: img.mediaUrl,
-            beforeAfterType: 'before' as const,
-            procedureSlug: img.analysis.detectedProcedure ?? null,
-            bodyArea: img.analysis.bodyArea,
-            postId: img.postId,
-            postCode: img.postCode,
-            aiSuggestedGroups: img.aiSuggestedGroups,
-            aiAnalysis: img.analysis,
-        }))
-
-    const unpairedAfter: UnpairedMedia[] = afterImages
-        .filter((img) => !usedAfterIds.has(img.mediaId))
-        .map((img) => ({
-            mediaId: img.mediaId,
-            mediaUrl: img.mediaUrl,
-            beforeAfterType: 'after' as const,
-            procedureSlug: img.analysis.detectedProcedure ?? null,
-            bodyArea: img.analysis.bodyArea,
-            postId: img.postId,
-            postCode: img.postCode,
-            aiSuggestedGroups: img.aiSuggestedGroups,
-            aiAnalysis: img.analysis,
-        }))
-
-    return { pairs, unpairedBefore, unpairedAfter }
-}
+// (Extracted to pairing-algorithm.util.ts and group-suggestion.util.ts)
 
 // ============================================================================
 // Main Analysis Action
@@ -382,16 +165,17 @@ function pairBeforeAfterImages(
  * Analyze Instagram posts using AI vision
  *
  * This function:
- * 1. Fetches posts with all media (primary + carousel)
- * 2. Analyzes each image using GPT-4o vision
- * 3. Detects B&A pairs and content types
- * 4. Updates post analysis status
- * 5. Returns structured results for review
+ * 1. Creates an analysis record in the database
+ * 2. Fetches posts with all media (primary + carousel)
+ * 3. Analyzes each image using GPT-4o vision
+ * 4. Detects B&A pairs and content types
+ * 5. Updates post analysis status and analysis record
+ * 6. Returns structured results with analysis ID for viewing
  */
 export async function analyzeInstagramPosts(
     postIds: string[]
-): Promise<BulkAnalysisResult> {
-    const result: BulkAnalysisResult = {
+): Promise<BulkAnalysisResult & { analysisId?: string }> {
+    const analysisResult: BulkAnalysisResult & { analysisId?: string } = {
         success: false,
         analyzedPosts: [],
         detectedPairs: [],
@@ -408,9 +192,48 @@ export async function analyzeInstagramPosts(
         },
     }
 
+    // Create analysis record
+    let analysisId: string | undefined
+    try {
+        const analysisName = generateAnalysisName('instagram', 'bulk')
+        const createAnalysisResult = await createAnalysis({
+            name: analysisName,
+            type: 'bulk',
+            source: 'instagram',
+            status: 'analyzing',
+        })
+
+        if (!createAnalysisResult.success || !createAnalysisResult.data) {
+            return {
+                ...analysisResult,
+                error: 'Failed to create analysis record',
+            }
+        }
+
+        analysisId = createAnalysisResult.data.id
+        analysisResult.analysisId = analysisId
+    } catch (error) {
+        console.error('Error creating analysis record:', error)
+        return {
+            ...analysisResult,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to create analysis',
+        }
+    }
+
     try {
         if (postIds.length === 0) {
-            return { ...result, error: 'No posts selected for analysis' }
+            await updateAnalysisResult({
+                id: analysisId,
+                status: 'failed',
+                errorMessage: 'No posts selected for analysis',
+            })
+            return {
+                ...analysisResult,
+                error: 'No posts selected for analysis',
+            }
         }
 
         // Fetch gallery groups for AI suggestions
@@ -544,7 +367,7 @@ export async function analyzeInstagramPosts(
                 }
             }
 
-            result.stats.totalMedia += imagesToAnalyze.length
+            analysisResult.stats.totalMedia += imagesToAnalyze.length
 
             // Analyze each image
             for (const img of imagesToAnalyze) {
@@ -553,7 +376,7 @@ export async function analyzeInstagramPosts(
                         imageUrl: img.url,
                     })
 
-                    result.stats.analyzedMedia++
+                    analysisResult.stats.analyzedMedia++
 
                     const mediaResult: MediaAnalysisResult = {
                         mediaId: img.mediaId,
@@ -637,7 +460,7 @@ export async function analyzeInstagramPosts(
                         `Error analyzing media ${img.mediaId}:`,
                         error
                     )
-                    result.stats.failedMedia++
+                    analysisResult.stats.failedMedia++
 
                     const errorResult: MediaAnalysisResult = {
                         mediaId: img.mediaId,
@@ -657,7 +480,7 @@ export async function analyzeInstagramPosts(
                 }
             }
 
-            result.analyzedPosts.push(postResult)
+            analysisResult.analyzedPosts.push(postResult)
 
             // Update post analysis status and save primary media analysis
             await db
@@ -674,30 +497,53 @@ export async function analyzeInstagramPosts(
         const pairingResult = pairBeforeAfterImages(beforeImages, afterImages)
 
         // Combine pairs (no longer including side-by-side)
-        result.detectedPairs = pairingResult.pairs
+        analysisResult.detectedPairs = pairingResult.pairs
 
-        result.unpairedMedia = [
+        analysisResult.unpairedMedia = [
             ...pairingResult.unpairedBefore,
             ...pairingResult.unpairedAfter,
         ]
 
-        result.nonBAMedia = nonBAMedia
+        analysisResult.nonBAMedia = nonBAMedia
 
         // Update stats - count side-by-side from nonBAMedia
         const sideBySideCount = nonBAMedia.filter((m) => m.isSideBySide).length
-        result.stats.sideBySideCount = sideBySideCount
-        result.stats.pairedCount = pairingResult.pairs.length
-        result.stats.unpairedCount = result.unpairedMedia.length
+        analysisResult.stats.sideBySideCount = sideBySideCount
+        analysisResult.stats.pairedCount = pairingResult.pairs.length
+        analysisResult.stats.unpairedCount = analysisResult.unpairedMedia.length
 
-        result.success = true
+        analysisResult.success = true
+
+        // Update analysis record with results
+        if (analysisId) {
+            await updateAnalysisResult({
+                id: analysisId,
+                status: 'completed',
+                resultData: analysisResult,
+            })
+        }
 
         revalidatePath('/social-media/instagram')
+        revalidatePath('/analysis')
 
-        return result
+        return analysisResult
     } catch (error) {
         console.error('Error in bulk analysis:', error)
+
+        // Update analysis record as failed
+        if (analysisId) {
+            await updateAnalysisResult({
+                id: analysisId,
+                status: 'failed',
+                errorMessage:
+                    error instanceof Error
+                        ? error.message
+                        : 'Failed to analyze posts',
+            })
+        }
+
         return {
-            ...result,
+            ...analysisResult,
             error:
                 error instanceof Error
                     ? error.message

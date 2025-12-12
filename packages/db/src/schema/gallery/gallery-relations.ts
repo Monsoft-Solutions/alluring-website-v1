@@ -4,6 +4,9 @@ import { beforeAfterPair } from './before-after-pair.table'
 import { galleryGroup } from './gallery-group.table'
 import { galleryMedia } from './gallery-media.table'
 import { galleryMediaGroup } from './gallery-media-group.table'
+import { mediaAnalysis } from './media-analysis.table'
+import { mediaAnalysisItem } from './media-analysis-item.table'
+import { instagramPost } from '../social-media/instagram-post.table'
 
 // Gallery Media relations
 export const galleryMediaRelations = relations(
@@ -60,6 +63,30 @@ export const beforeAfterPairRelations = relations(
             fields: [beforeAfterPair.afterMediaId],
             references: [galleryMedia.id],
             relationName: 'afterMedia',
+        }),
+    })
+)
+
+// Media Analysis relations
+export const mediaAnalysisRelations = relations(mediaAnalysis, ({ many }) => ({
+    items: many(mediaAnalysisItem),
+}))
+
+// Media Analysis Item relations
+export const mediaAnalysisItemRelations = relations(
+    mediaAnalysisItem,
+    ({ one }) => ({
+        analysis: one(mediaAnalysis, {
+            fields: [mediaAnalysisItem.analysisId],
+            references: [mediaAnalysis.id],
+        }),
+        galleryMedia: one(galleryMedia, {
+            fields: [mediaAnalysisItem.galleryMediaId],
+            references: [galleryMedia.id],
+        }),
+        instagramPost: one(instagramPost, {
+            fields: [mediaAnalysisItem.instagramPostId],
+            references: [instagramPost.id],
         }),
     })
 )
