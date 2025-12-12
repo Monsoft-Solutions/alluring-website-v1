@@ -32,7 +32,7 @@ Determine if this image is part of a before/after comparison:
 - "before": Pre-operative image showing original state
 - "after": Post-operative image showing results
 - "side_by_side": Single image with both before and after shown together
-- If the image doesn't appear to be before/after related, set isBeforeAfter to false
+- If the image doesn't appear to be before/after related, set isBeforeAfter to false and omit beforeAfterType
 
 Visual cues for before/after:
 - Side-by-side comparisons in a single frame
@@ -40,7 +40,24 @@ Visual cues for before/after:
 - Visible surgical markers or post-op indicators (compression garments, healing)
 - Patient positioning typical of clinical photography
 
-### 3. PROCEDURE DETECTION
+### 3. CONTENT TYPE CLASSIFICATION
+Classify the type of content shown in the image:
+
+- **before_after**: Before/after comparison images (includes side-by-side, before images, after images)
+- **tips**: Educational content with tips, advice, or how-to information
+- **promotion**: Promotional content with offers, discounts, or marketing messages
+- **informative**: General informational content about procedures or the clinic
+- **results**: Procedure results shown without explicit before/after context
+- **other**: Content that doesn't fit the above categories
+
+Set this based on:
+- If isBeforeAfter is true → use "before_after"
+- Look for promotional text, discount mentions → use "promotion"
+- Educational or advisory content → use "tips"
+- General procedure information → use "informative"
+- Standalone result photos → use "results"
+
+### 4. PROCEDURE DETECTION
 Identify the most likely procedure based on visual cues. Use ONLY these exact procedure slugs:
 - brazilian-butt-lift-bbl-miami: BBL results (enhanced buttocks, body contouring)
 - breast-augmentation-miami: Breast implant results (increased volume/size)
@@ -55,7 +72,7 @@ Identify the most likely procedure based on visual cues. Use ONLY these exact pr
 
 Set procedureConfidence based on how certain you are (0.0 to 1.0).
 
-### 4. BODY AREA
+### 5. BODY AREA
 Categorize the primary body area shown:
 - face: Facial procedures (facelift, rhinoplasty, blepharoplasty)
 - breast: Breast procedures (augmentation, lift, reduction)
@@ -63,26 +80,26 @@ Categorize the primary body area shown:
 - combined: Multiple areas visible (mommy makeover, full body shots)
 - other: Cannot determine or doesn't fit categories
 
-### 5. IMAGE QUALITY
+### 6. IMAGE QUALITY
 Assess the image quality for web display:
 - high: Professional photography, good lighting, clear focus, appropriate framing
 - medium: Acceptable quality, minor issues but usable
 - low: Poor quality, blurry, bad lighting, not ideal for gallery
 
-### 6. SUGGESTED TAGS
+### 7. SUGGESTED TAGS
 Suggest relevant tags for categorization (up to 5):
 - Procedure-related tags (e.g., "buttock enhancement", "breast surgery")
 - Body area tags (e.g., "torso", "profile view")
 - Descriptive tags (e.g., "before after comparison", "surgical results")
 
-### 7. CLINICAL DETAILS (Optional)
+### 8. CLINICAL DETAILS (Optional)
 If visible, describe clinical aspects professionally:
 - Incision placement (if visible and healed)
 - Symmetry assessment
 - Volume or contour changes
 - Healing stage if apparent
 
-### 8. PATIENT DESCRIPTION
+### 9. PATIENT DESCRIPTION
 Extract observable patient characteristics for categorization purposes:
 
 **Gender** (required):
@@ -108,7 +125,7 @@ Extract observable patient characteristics for categorization purposes:
 - Height indicators (if full body visible)
 - Notable features relevant to the procedure shown
 
-### 9. IMAGE TEXT (OCR)
+### 10. IMAGE TEXT (OCR)
 Extract any visible text in the image:
 - "Before" / "After" labels or markers
 - Date stamps or timestamps
@@ -122,6 +139,7 @@ Extract any visible text in the image:
 - Use professional medical terminology appropriately
 - Do not make specific medical claims or guarantees
 - If you cannot determine something with confidence, omit it or mark low confidence
+- Never output empty strings. If a field is unknown or not applicable, omit the field entirely (do not use "" as a value).
 - Focus on factual observations, not subjective judgments about aesthetics`
 
 /**

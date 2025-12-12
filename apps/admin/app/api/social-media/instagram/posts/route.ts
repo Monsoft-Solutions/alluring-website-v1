@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 
 import {
     getInstagramPosts,
+    type InstagramAnalysisStatusFilter,
     type InstagramMediaTypeFilter,
     type InstagramPostSortBy,
     type InstagramPostSortDirection,
@@ -41,6 +42,20 @@ function parseMediaType(value: string | null): InstagramMediaTypeFilter {
     return 'all'
 }
 
+function parseAnalysisStatus(
+    value: string | null
+): InstagramAnalysisStatusFilter {
+    if (
+        value === 'pending' ||
+        value === 'analyzed' ||
+        value === 'reviewed' ||
+        value === 'applied'
+    ) {
+        return value
+    }
+    return 'all'
+}
+
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
 
@@ -56,6 +71,9 @@ export async function GET(request: Request) {
     const sortBy = parseSortBy(searchParams.get('sortBy'))
     const sortDirection = parseSortDirection(searchParams.get('sortDirection'))
     const mediaType = parseMediaType(searchParams.get('mediaType'))
+    const analysisStatus = parseAnalysisStatus(
+        searchParams.get('analysisStatus')
+    )
 
     try {
         const data = await getInstagramPosts({
@@ -64,6 +82,7 @@ export async function GET(request: Request) {
             sortBy,
             sortDirection,
             mediaType,
+            analysisStatus,
         })
 
         return NextResponse.json({
@@ -73,6 +92,7 @@ export async function GET(request: Request) {
             sortBy,
             sortDirection,
             mediaType,
+            analysisStatus,
         })
     } catch (error) {
         console.error('Error fetching Instagram posts:', error)

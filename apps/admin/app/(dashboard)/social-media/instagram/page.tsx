@@ -5,15 +5,17 @@ import Link from 'next/link'
 import {
     getInstagramPosts,
     getInstagramSettings,
+    getAnalysisStatusCounts,
 } from '@/lib/queries/social-media.query'
 import { InstagramPostsFeed } from '@/components/social-media/instagram-posts-feed.component'
 import { SyncButton } from '@/components/social-media/sync-button.component'
 import { InstagramProfileHeader } from '@/components/social-media/instagram-profile-header.component'
+import { BulkAnalyzeButton } from '@/components/social-media/bulk-analyze-button.component'
 
 export const dynamic = 'force-dynamic'
 
 export default async function InstagramPostsPage() {
-    const [settings, postsData] = await Promise.all([
+    const [settings, postsData, analysisStatusCounts] = await Promise.all([
         getInstagramSettings(),
         getInstagramPosts({
             page: 1,
@@ -21,6 +23,7 @@ export default async function InstagramPostsPage() {
             sortBy: 'date',
             sortDirection: 'desc',
         }),
+        getAnalysisStatusCounts(),
     ])
 
     const isConfigured = !!(settings?.handle && settings?.isEnabled)
@@ -52,6 +55,10 @@ export default async function InstagramPostsPage() {
                             Settings
                         </Link>
                     </Button>
+                    <BulkAnalyzeButton
+                        disabled={!isConfigured || postsData.total === 0}
+                        pendingCount={analysisStatusCounts.pending}
+                    />
                     <SyncButton disabled={!isConfigured || !hasApiKey} />
                 </div>
             </div>

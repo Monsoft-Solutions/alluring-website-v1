@@ -71,6 +71,7 @@ const navItems: NavItem[] = [
         children: [
             { title: 'Dashboard', href: '/social-media' },
             { title: 'Instagram Posts', href: '/social-media/instagram' },
+            { title: 'Bulk Analysis', href: '/social-media/instagram/analyze' },
             { title: 'Settings', href: '/social-media/settings' },
         ],
     },

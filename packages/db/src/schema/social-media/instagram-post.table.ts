@@ -11,6 +11,7 @@ import {
     foreignKey,
     index,
     integer,
+    jsonb,
     pgEnum,
     pgTable,
     text,
@@ -18,6 +19,7 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 import { galleryMedia } from '../gallery/gallery-media.table'
 
@@ -28,6 +30,16 @@ export const instagramMediaType = pgEnum('instagram_media_type', [
     'image',
     'video',
     'carousel',
+])
+
+/**
+ * Instagram post analysis status
+ */
+export const instagramAnalysisStatus = pgEnum('instagram_analysis_status', [
+    'pending',
+    'analyzed',
+    'reviewed',
+    'applied',
 ])
 
 /**
@@ -113,6 +125,23 @@ export const instagramPost = pgTable(
          */
         isFeatured: boolean('is_featured').default(false).notNull(),
 
+        /**
+         * AI analysis status for bulk processing
+         */
+        analysisStatus: instagramAnalysisStatus('analysis_status')
+            .default('pending')
+            .notNull(),
+
+        /**
+         * AI analysis results (same schema as gallery_media.ai_analysis)
+         */
+        aiAnalysis: jsonb('ai_analysis').$type<GalleryMediaAIAnalysis>(),
+
+        /**
+         * When the post was last analyzed
+         */
+        analyzedAt: timestamp('analyzed_at'),
+
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at')
             .defaultNow()
@@ -134,6 +163,8 @@ export const instagramPost = pgTable(
             table.isFeatured,
             table.takenAt
         ),
+        // Index for analysis status
+        index('instagram_post_analysis_status_idx').on(table.analysisStatus),
         // Foreign key to gallery_media for primary media
         foreignKey({
             columns: [table.mediaId],

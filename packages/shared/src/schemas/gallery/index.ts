@@ -4,11 +4,13 @@ export {
     BODY_AREAS,
     IMAGE_QUALITY_LEVELS,
     PATIENT_GENDERS,
+    CONTENT_TYPES,
     // Zod schemas
     beforeAfterTypeSchema,
     bodyAreaSchema,
     imageQualitySchema,
     patientGenderSchema,
+    contentTypeSchema,
     patientDescriptionSchema,
     galleryMediaAIAnalysisSchema,
     // Types
@@ -16,6 +18,7 @@ export {
     type BodyArea,
     type ImageQuality,
     type PatientGender,
+    type ContentType,
     type PatientDescription,
     type GalleryMediaAIAnalysis,
 } from './gallery-media-ai-analysis.schema'
