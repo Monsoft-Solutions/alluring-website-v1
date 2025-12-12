@@ -14,7 +14,7 @@ import {
     getInstagramPosts,
     getAnalysisStatusCounts,
 } from '@/lib/queries/social-media.query'
-import { getGalleryGroupsWithSlug } from '@/lib/queries/gallery.query'
+import { getGalleryGroupsForAI } from '@/lib/queries/gallery.query'
 import { AnalyzePageClient } from './analyze-page-client.component'
 
 export const dynamic = 'force-dynamic'
@@ -30,7 +30,7 @@ export default async function InstagramAnalyzePage() {
             mediaType: 'all', // Default to all media types
         }),
         getAnalysisStatusCounts(),
-        getGalleryGroupsWithSlug(),
+        getGalleryGroupsForAI(),
     ])
 
     // Filter to only show images and carousels (skip videos)

@@ -17,8 +17,11 @@ import {
     beforeAfterPair,
     galleryGroup,
 } from '@workspace/db/schema'
-import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
-import { analyzeGalleryImage } from '@workspace/ai'
+import type {
+    GalleryMediaAIAnalysis,
+    AvailableGroup,
+} from '@workspace/shared/schemas/gallery'
+import { analyzeGalleryImage, suggestGalleryGroups } from '@workspace/ai'
 import { eq, inArray, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
@@ -53,6 +56,17 @@ export type PostAnalysisResult = {
 }
 
 /**
+ * AI-suggested group for media assignment
+ */
+export type AISuggestedGroup = {
+    groupId: string
+    slug: string
+    name: string
+    confidence: number
+    reason: string
+}
+
+/**
  * Detected B&A pair from analysis
  */
 export type DetectedPair = {
@@ -65,6 +79,8 @@ export type DetectedPair = {
     procedureSlug: string | null
     bodyArea: string
     confidence: number
+    aiSuggestedGroups: AISuggestedGroup[]
+    aiPrimaryGroup: string | null
 }
 
 /**
@@ -78,6 +94,8 @@ export type UnpairedMedia = {
     bodyArea: string
     postId: string
     postCode: string
+    aiSuggestedGroups: AISuggestedGroup[]
+    aiAnalysis: GalleryMediaAIAnalysis | null
 }
 
 /**
@@ -96,6 +114,8 @@ export type BulkAnalysisResult = {
         procedureSlug: string | null
         postId: string
         isSideBySide?: boolean
+        aiSuggestedGroups: AISuggestedGroup[]
+        aiAnalysis: GalleryMediaAIAnalysis | null
     }>
     stats: {
         totalPosts: number
@@ -183,6 +203,48 @@ function calculatePatientSimilarity(
 }
 
 /**
+ * Convert AI group suggestions to AISuggestedGroup format
+ */
+async function convertGroupSuggestions(
+    analysis: GalleryMediaAIAnalysis,
+    availableGroups: AvailableGroup[]
+): Promise<AISuggestedGroup[]> {
+    try {
+        const suggestion = await suggestGalleryGroups({
+            aiAnalysis: analysis,
+            availableGroups,
+        })
+
+        if (
+            !suggestion.suggestedGroups ||
+            suggestion.suggestedGroups.length === 0
+        ) {
+            return []
+        }
+
+        // Map slug suggestions to group IDs with full details
+        const suggestedGroups: AISuggestedGroup[] = []
+        for (const item of suggestion.suggestedGroups) {
+            const group = availableGroups.find((g) => g.slug === item.slug)
+            if (group) {
+                suggestedGroups.push({
+                    groupId: group.id,
+                    slug: group.slug,
+                    name: group.name,
+                    confidence: item.confidence,
+                    reason: item.reason,
+                })
+            }
+        }
+
+        return suggestedGroups
+    } catch (error) {
+        console.error('Error getting group suggestions:', error)
+        return []
+    }
+}
+
+/**
  * Pair before/after images based on procedure, body area, and patient similarity
  */
 function pairBeforeAfterImages(
@@ -192,6 +254,7 @@ function pairBeforeAfterImages(
         analysis: GalleryMediaAIAnalysis
         postId: string
         postCode: string
+        aiSuggestedGroups: AISuggestedGroup[]
     }>,
     afterImages: Array<{
         mediaId: string
@@ -199,6 +262,7 @@ function pairBeforeAfterImages(
         analysis: GalleryMediaAIAnalysis
         postId: string
         postCode: string
+        aiSuggestedGroups: AISuggestedGroup[]
     }>
 ): {
     pairs: DetectedPair[]
@@ -251,6 +315,13 @@ function pairBeforeAfterImages(
 
             // Require minimum similarity threshold
             if (bestMatch && bestScore >= 0.5) {
+                // Use AI suggestions from before image (primary)
+                const aiSuggestedGroups = before.aiSuggestedGroups
+                const aiPrimaryGroup =
+                    aiSuggestedGroups.length > 0 && aiSuggestedGroups[0]
+                        ? aiSuggestedGroups[0].slug
+                        : null
+
                 pairs.push({
                     id: generatePairId(),
                     type: 'paired',
@@ -261,6 +332,8 @@ function pairBeforeAfterImages(
                     procedureSlug: before.analysis.detectedProcedure ?? null,
                     bodyArea: before.analysis.bodyArea,
                     confidence: bestScore,
+                    aiSuggestedGroups,
+                    aiPrimaryGroup,
                 })
 
                 usedBeforeIds.add(before.mediaId)
@@ -280,6 +353,8 @@ function pairBeforeAfterImages(
             bodyArea: img.analysis.bodyArea,
             postId: img.postId,
             postCode: img.postCode,
+            aiSuggestedGroups: img.aiSuggestedGroups,
+            aiAnalysis: img.analysis,
         }))
 
     const unpairedAfter: UnpairedMedia[] = afterImages
@@ -292,6 +367,8 @@ function pairBeforeAfterImages(
             bodyArea: img.analysis.bodyArea,
             postId: img.postId,
             postCode: img.postCode,
+            aiSuggestedGroups: img.aiSuggestedGroups,
+            aiAnalysis: img.analysis,
         }))
 
     return { pairs, unpairedBefore, unpairedAfter }
@@ -335,6 +412,17 @@ export async function analyzeInstagramPosts(
         if (postIds.length === 0) {
             return { ...result, error: 'No posts selected for analysis' }
         }
+
+        // Fetch gallery groups for AI suggestions
+        const availableGroups = await db
+            .select({
+                id: galleryGroup.id,
+                name: galleryGroup.name,
+                slug: galleryGroup.slug,
+                description: galleryGroup.description,
+            })
+            .from(galleryGroup)
+            .where(eq(galleryGroup.isVisible, true))
 
         // Fetch posts with media
         const posts = await db
@@ -401,6 +489,7 @@ export async function analyzeInstagramPosts(
             analysis: GalleryMediaAIAnalysis
             postId: string
             postCode: string
+            aiSuggestedGroups: AISuggestedGroup[]
         }> = []
         const afterImages: Array<{
             mediaId: string
@@ -408,6 +497,7 @@ export async function analyzeInstagramPosts(
             analysis: GalleryMediaAIAnalysis
             postId: string
             postCode: string
+            aiSuggestedGroups: AISuggestedGroup[]
         }> = []
         const nonBAMedia: BulkAnalysisResult['nonBAMedia'] = []
 
@@ -490,6 +580,12 @@ export async function analyzeInstagramPosts(
                         })
                         .where(eq(galleryMedia.id, img.mediaId))
 
+                    // Get AI group suggestions for this media
+                    const aiSuggestedGroups = await convertGroupSuggestions(
+                        analysis,
+                        availableGroups
+                    )
+
                     // Categorize based on analysis
                     if (analysis.isBeforeAfter) {
                         if (analysis.beforeAfterType === 'side_by_side') {
@@ -502,6 +598,8 @@ export async function analyzeInstagramPosts(
                                     analysis.detectedProcedure ?? null,
                                 postId: post.id,
                                 isSideBySide: true,
+                                aiSuggestedGroups,
+                                aiAnalysis: analysis,
                             })
                         } else if (analysis.beforeAfterType === 'before') {
                             beforeImages.push({
@@ -510,6 +608,7 @@ export async function analyzeInstagramPosts(
                                 analysis,
                                 postId: post.id,
                                 postCode: post.code,
+                                aiSuggestedGroups,
                             })
                         } else if (analysis.beforeAfterType === 'after') {
                             afterImages.push({
@@ -518,6 +617,7 @@ export async function analyzeInstagramPosts(
                                 analysis,
                                 postId: post.id,
                                 postCode: post.code,
+                                aiSuggestedGroups,
                             })
                         }
                     } else {
@@ -528,6 +628,8 @@ export async function analyzeInstagramPosts(
                             contentType: analysis.contentType,
                             procedureSlug: analysis.detectedProcedure ?? null,
                             postId: post.id,
+                            aiSuggestedGroups,
+                            aiAnalysis: analysis,
                         })
                     }
                 } catch (error) {

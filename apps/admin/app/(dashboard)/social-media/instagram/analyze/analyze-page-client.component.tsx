@@ -23,6 +23,7 @@ import {
 import { Badge } from '@workspace/ui/components/badge'
 import { Progress } from '@workspace/ui/components/progress'
 import { Tabs, TabsList, TabsTrigger } from '@workspace/ui/components/tabs'
+import { MultiSelect } from '@workspace/ui/components/multi-select'
 import {
     Sparkles,
     Check,
@@ -32,27 +33,18 @@ import {
     Loader2,
     ImageIcon,
     Grid,
-    Edit,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@workspace/ui/components/select'
 
 import type {
     InstagramAnalysisStatusFilter,
     InstagramMediaTypeFilter,
     InstagramPostListItem,
 } from '@/lib/queries/social-media.query'
-import type { GalleryGroupWithSlug } from '@/lib/queries/gallery.query'
+import type { GalleryGroupForAI } from '@/lib/queries/gallery.query'
 import {
     analyzeInstagramPosts,
     applyAnalysisResults,
-    updateMediaAnalysis,
     type BulkAnalysisResult,
     type DetectedPair,
 } from '@/lib/actions/instagram-analysis.action'
@@ -67,7 +59,7 @@ type AnalyzePageClientProps = {
         reviewed: number
         applied: number
     }
-    galleryGroups: GalleryGroupWithSlug[]
+    galleryGroups: GalleryGroupForAI[]
 }
 
 type AnalysisStep = 'select' | 'analyzing' | 'review' | 'applying' | 'complete'
@@ -100,6 +92,22 @@ export function AnalyzePageClient({
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingMore, setIsLoadingMore] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    // Group assignment state for all media types
+    const [pairGroupAssignments, setPairGroupAssignments] = useState<
+        Map<string, string[]>
+    >(new Map())
+    const [unpairedGroupAssignments, setUnpairedGroupAssignments] = useState<
+        Map<string, string[]>
+    >(new Map())
+    const [nonBAGroupAssignments, setNonBAGroupAssignments] = useState<
+        Map<string, string[]>
+    >(new Map())
+
+    // Track which non-BA items are selected for applying
+    const [selectedNonBAMediaIds, setSelectedNonBAMediaIds] = useState<
+        Set<string>
+    >(new Set())
 
     // Refs for stable callbacks and preventing infinite loops
     const loadMoreRef = useRef<HTMLDivElement | null>(null)
@@ -283,6 +291,41 @@ export function AnalyzePageClient({
 
                 if (result.success) {
                     setAnalysisResult(result)
+
+                    // Initialize group assignments from AI suggestions
+                    const pairAssignments = new Map<string, string[]>()
+                    result.detectedPairs.forEach((pair) => {
+                        const groupIds = pair.aiSuggestedGroups.map(
+                            (g) => g.groupId
+                        )
+                        pairAssignments.set(pair.id, groupIds)
+                    })
+                    setPairGroupAssignments(pairAssignments)
+
+                    const unpairedAssignments = new Map<string, string[]>()
+                    result.unpairedMedia.forEach((media) => {
+                        const groupIds = media.aiSuggestedGroups.map(
+                            (g) => g.groupId
+                        )
+                        unpairedAssignments.set(media.mediaId, groupIds)
+                    })
+                    setUnpairedGroupAssignments(unpairedAssignments)
+
+                    const nonBAAssignments = new Map<string, string[]>()
+                    result.nonBAMedia.forEach((media) => {
+                        const groupIds = media.aiSuggestedGroups.map(
+                            (g) => g.groupId
+                        )
+                        nonBAAssignments.set(media.mediaId, groupIds)
+                    })
+                    setNonBAGroupAssignments(nonBAAssignments)
+
+                    // Select all non-BA media by default
+                    const nonBAMediaIds = result.nonBAMedia.map(
+                        (m) => m.mediaId
+                    )
+                    setSelectedNonBAMediaIds(new Set(nonBAMediaIds))
+
                     setStep('review')
                     toast.success(
                         `Analyzed ${result.stats.analyzedMedia} images from ${result.stats.totalPosts} posts`
@@ -307,7 +350,7 @@ export function AnalyzePageClient({
 
         startTransition(async () => {
             try {
-                // Build pairs to create
+                // Build pairs to create with group assignments
                 const pairs = analysisResult.detectedPairs.map((pair) => ({
                     beforeMediaId: pair.beforeMediaId,
                     afterMediaId: pair.afterMediaId,
@@ -315,25 +358,52 @@ export function AnalyzePageClient({
                     isSideBySide: pair.type === 'side_by_side',
                 }))
 
-                // Build group assignments for non-BA media
+                // Build group assignments for ALL media types
                 const groupAssignments: Array<{
                     mediaId: string
                     groupId: string
                 }> = []
 
-                for (const media of analysisResult.nonBAMedia) {
-                    if (media.procedureSlug) {
-                        const group = galleryGroups.find(
-                            (g) => g.slug === media.procedureSlug
-                        )
-                        if (group) {
+                // Add pair group assignments
+                pairGroupAssignments.forEach((groupIds, pairId) => {
+                    const pair = analysisResult.detectedPairs.find(
+                        (p) => p.id === pairId
+                    )
+                    if (pair && groupIds.length > 0) {
+                        groupIds.forEach((groupId) => {
+                            // Assign to both before and after media
                             groupAssignments.push({
-                                mediaId: media.mediaId,
-                                groupId: group.id,
+                                mediaId: pair.beforeMediaId,
+                                groupId,
                             })
-                        }
+                            if (pair.type !== 'side_by_side') {
+                                groupAssignments.push({
+                                    mediaId: pair.afterMediaId,
+                                    groupId,
+                                })
+                            }
+                        })
                     }
-                }
+                })
+
+                // Add unpaired group assignments
+                unpairedGroupAssignments.forEach((groupIds, mediaId) => {
+                    if (groupIds.length > 0) {
+                        groupIds.forEach((groupId) => {
+                            groupAssignments.push({ mediaId, groupId })
+                        })
+                    }
+                })
+
+                // Add non-BA group assignments (only for selected items)
+                selectedNonBAMediaIds.forEach((mediaId) => {
+                    const groupIds = nonBAGroupAssignments.get(mediaId)
+                    if (groupIds && groupIds.length > 0) {
+                        groupIds.forEach((groupId) => {
+                            groupAssignments.push({ mediaId, groupId })
+                        })
+                    }
+                })
 
                 const result = await applyAnalysisResults({
                     pairs,
@@ -343,8 +413,11 @@ export function AnalyzePageClient({
 
                 if (result.success) {
                     setStep('complete')
+                    const totalMedia =
+                        analysisResult.unpairedMedia.length +
+                        selectedNonBAMediaIds.size
                     toast.success(
-                        `Created ${pairs.length} B&A pairs and assigned ${groupAssignments.length} media items to groups`
+                        `Created ${pairs.length} B&A pairs and assigned ${totalMedia} media items to groups`
                     )
                 } else {
                     toast.error(result.error || 'Failed to apply results')
@@ -461,6 +534,22 @@ export function AnalyzePageClient({
                                         key={pair.id}
                                         pair={pair}
                                         galleryGroups={galleryGroups}
+                                        selectedGroupIds={
+                                            pairGroupAssignments.get(pair.id) ||
+                                            []
+                                        }
+                                        onGroupIdsChange={(
+                                            pairId,
+                                            groupIds
+                                        ) => {
+                                            const newAssignments = new Map(
+                                                pairGroupAssignments
+                                            )
+                                            newAssignments.set(pairId, groupIds)
+                                            setPairGroupAssignments(
+                                                newAssignments
+                                            )
+                                        }}
                                     />
                                 ))}
                             </div>
@@ -490,6 +579,26 @@ export function AnalyzePageClient({
                                         key={media.mediaId}
                                         media={media}
                                         galleryGroups={galleryGroups}
+                                        selectedGroupIds={
+                                            unpairedGroupAssignments.get(
+                                                media.mediaId
+                                            ) || []
+                                        }
+                                        onGroupIdsChange={(
+                                            mediaId,
+                                            groupIds
+                                        ) => {
+                                            const newAssignments = new Map(
+                                                unpairedGroupAssignments
+                                            )
+                                            newAssignments.set(
+                                                mediaId,
+                                                groupIds
+                                            )
+                                            setUnpairedGroupAssignments(
+                                                newAssignments
+                                            )
+                                        }}
                                     />
                                 ))}
                             </div>
@@ -501,14 +610,47 @@ export function AnalyzePageClient({
                 {analysisResult.nonBAMedia.length > 0 && (
                     <Card>
                         <CardHeader>
-                            <CardTitle>
-                                Non-Before/After Content (
-                                {analysisResult.nonBAMedia.length})
-                            </CardTitle>
-                            <CardDescription>
-                                Assign to gallery groups based on detected
-                                procedure
-                            </CardDescription>
+                            <div className='flex items-center justify-between'>
+                                <div>
+                                    <CardTitle>
+                                        Non-Before/After Content (
+                                        {analysisResult.nonBAMedia.length})
+                                    </CardTitle>
+                                    <CardDescription>
+                                        Assign to gallery groups based on
+                                        detected procedure
+                                    </CardDescription>
+                                </div>
+                                <div className='flex items-center gap-2'>
+                                    <Button
+                                        variant='outline'
+                                        size='sm'
+                                        onClick={() => {
+                                            const allIds =
+                                                analysisResult.nonBAMedia.map(
+                                                    (m) => m.mediaId
+                                                )
+                                            setSelectedNonBAMediaIds(
+                                                new Set(allIds)
+                                            )
+                                        }}
+                                    >
+                                        Select All
+                                    </Button>
+                                    <Button
+                                        variant='ghost'
+                                        size='sm'
+                                        onClick={() =>
+                                            setSelectedNonBAMediaIds(new Set())
+                                        }
+                                    >
+                                        Deselect All
+                                    </Button>
+                                    <Badge variant='outline'>
+                                        {selectedNonBAMediaIds.size} selected
+                                    </Badge>
+                                </div>
+                            </div>
                         </CardHeader>
                         <CardContent>
                             <div className='grid gap-4 md:grid-cols-4 lg:grid-cols-6'>
@@ -517,6 +659,45 @@ export function AnalyzePageClient({
                                         key={media.mediaId}
                                         media={media}
                                         galleryGroups={galleryGroups}
+                                        selectedGroupIds={
+                                            nonBAGroupAssignments.get(
+                                                media.mediaId
+                                            ) || []
+                                        }
+                                        onGroupIdsChange={(
+                                            mediaId,
+                                            groupIds
+                                        ) => {
+                                            const newAssignments = new Map(
+                                                nonBAGroupAssignments
+                                            )
+                                            newAssignments.set(
+                                                mediaId,
+                                                groupIds
+                                            )
+                                            setNonBAGroupAssignments(
+                                                newAssignments
+                                            )
+                                        }}
+                                        isSelected={selectedNonBAMediaIds.has(
+                                            media.mediaId
+                                        )}
+                                        onSelectedChange={(
+                                            mediaId,
+                                            selected
+                                        ) => {
+                                            const newSelected = new Set(
+                                                selectedNonBAMediaIds
+                                            )
+                                            if (selected) {
+                                                newSelected.add(mediaId)
+                                            } else {
+                                                newSelected.delete(mediaId)
+                                            }
+                                            setSelectedNonBAMediaIds(
+                                                newSelected
+                                            )
+                                        }}
                                     />
                                 ))}
                             </div>
@@ -539,7 +720,9 @@ export function AnalyzePageClient({
                         onClick={handleApplyResults}
                         disabled={
                             isPending ||
-                            analysisResult.detectedPairs.length === 0
+                            (analysisResult.detectedPairs.length === 0 &&
+                                analysisResult.unpairedMedia.length === 0 &&
+                                selectedNonBAMediaIds.size === 0)
                         }
                     >
                         {isPending ? (
@@ -547,7 +730,10 @@ export function AnalyzePageClient({
                         ) : (
                             <Check className='mr-2 h-4 w-4' />
                         )}
-                        Apply {analysisResult.detectedPairs.length} Pairs
+                        Apply {analysisResult.detectedPairs.length} Pairs,{' '}
+                        {analysisResult.unpairedMedia.length +
+                            selectedNonBAMediaIds.size}{' '}
+                        Media
                     </Button>
                 </div>
             </div>
@@ -815,36 +1001,23 @@ export function AnalyzePageClient({
 function UnpairedMediaCard({
     media,
     galleryGroups,
+    selectedGroupIds,
+    onGroupIdsChange,
 }: {
     media: BulkAnalysisResult['unpairedMedia'][number]
-    galleryGroups: GalleryGroupWithSlug[]
+    galleryGroups: GalleryGroupForAI[]
+    selectedGroupIds: string[]
+    onGroupIdsChange: (mediaId: string, groupIds: string[]) => void
 }) {
-    const [selectedGroupId, setSelectedGroupId] = useState<string>('')
-    const router = useRouter()
+    // Get AI primary suggestion (highest confidence)
+    const aiPrimarySuggestion =
+        media.aiSuggestedGroups.length > 0 ? media.aiSuggestedGroups[0] : null
 
-    const handleGroupChange = async (groupId: string) => {
-        const actualGroupIds = groupId === '__none__' ? null : [groupId]
-        setSelectedGroupId(groupId)
-        const result = await updateMediaAnalysis({
-            mediaId: media.mediaId,
-            groupIds: actualGroupIds,
-            procedureSlug: media.procedureSlug,
-            beforeAfterType: media.beforeAfterType,
-            isBeforeAfter: false, // Mark as not B&A since unpaired
-        })
-
-        if (result.success) {
-            toast.success('Assigned to group')
-            router.refresh()
-        } else {
-            toast.error(result.error || 'Failed to update')
-        }
-    }
-
-    // Find group by procedure slug
-    const defaultGroup = galleryGroups.find(
-        (g) => g.slug === media.procedureSlug
-    )
+    // Convert groups to MultiSelect options
+    const groupOptions = galleryGroups.map((group) => ({
+        value: group.id,
+        label: group.name,
+    }))
 
     return (
         <div className='space-y-2'>
@@ -867,22 +1040,27 @@ function UnpairedMediaCard({
                     {media.beforeAfterType}
                 </Badge>
             </div>
-            <Select
-                value={selectedGroupId || defaultGroup?.id || '__none__'}
-                onValueChange={handleGroupChange}
-            >
-                <SelectTrigger className='h-7 text-xs'>
-                    <SelectValue placeholder='Assign to group' />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value='__none__'>None</SelectItem>
-                    {galleryGroups.map((group) => (
-                        <SelectItem key={group.id} value={group.id}>
-                            {group.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
+
+            {/* AI Suggestion */}
+            {aiPrimarySuggestion && (
+                <p className='text-muted-foreground text-xs'>
+                    AI: {aiPrimarySuggestion.name} (
+                    {Math.round(aiPrimarySuggestion.confidence * 100)}%)
+                </p>
+            )}
+
+            {/* Group Assignment */}
+            <MultiSelect
+                options={groupOptions}
+                defaultValue={selectedGroupIds}
+                onValueChange={(groupIds: string[]) =>
+                    onGroupIdsChange(media.mediaId, groupIds)
+                }
+                placeholder='Select groups'
+                className='h-7 text-xs'
+                maxCount={2}
+                searchable={true}
+            />
         </div>
     )
 }
@@ -890,34 +1068,27 @@ function UnpairedMediaCard({
 function NonBAMediaCard({
     media,
     galleryGroups,
+    selectedGroupIds,
+    onGroupIdsChange,
+    isSelected,
+    onSelectedChange,
 }: {
     media: BulkAnalysisResult['nonBAMedia'][number]
-    galleryGroups: GalleryGroupWithSlug[]
+    galleryGroups: GalleryGroupForAI[]
+    selectedGroupIds: string[]
+    onGroupIdsChange: (mediaId: string, groupIds: string[]) => void
+    isSelected: boolean
+    onSelectedChange: (mediaId: string, selected: boolean) => void
 }) {
-    const [selectedGroupId, setSelectedGroupId] = useState<string>('')
-    const router = useRouter()
+    // Get AI primary suggestion (highest confidence)
+    const aiPrimarySuggestion =
+        media.aiSuggestedGroups.length > 0 ? media.aiSuggestedGroups[0] : null
 
-    const handleGroupChange = async (groupId: string) => {
-        const actualGroupIds = groupId === '__none__' ? null : [groupId]
-        setSelectedGroupId(groupId)
-        const result = await updateMediaAnalysis({
-            mediaId: media.mediaId,
-            groupIds: actualGroupIds,
-            procedureSlug: media.procedureSlug,
-        })
-
-        if (result.success) {
-            toast.success('Group assignment updated')
-            router.refresh()
-        } else {
-            toast.error(result.error || 'Failed to update')
-        }
-    }
-
-    // Find group by procedure slug
-    const defaultGroup = galleryGroups.find(
-        (g) => g.slug === media.procedureSlug
-    )
+    // Convert groups to MultiSelect options
+    const groupOptions = galleryGroups.map((group) => ({
+        value: group.id,
+        label: group.name,
+    }))
 
     return (
         <div className='space-y-2'>
@@ -929,31 +1100,49 @@ function NonBAMediaCard({
                     className='object-cover'
                     sizes='150px'
                 />
-                <Badge className='absolute top-1 left-1' variant='outline'>
+                {/* Selection checkbox */}
+                <div className='absolute top-1 left-1'>
+                    <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={(checked) =>
+                            onSelectedChange(media.mediaId, checked === true)
+                        }
+                        className='bg-white'
+                    />
+                </div>
+                <Badge className='absolute top-1 right-1' variant='outline'>
                     {media.contentType}
                 </Badge>
                 {media.isSideBySide && (
-                    <Badge className='absolute top-1 right-1' variant='default'>
+                    <Badge
+                        className='absolute right-1 bottom-1'
+                        variant='default'
+                    >
                         Side-by-Side
                     </Badge>
                 )}
             </div>
-            <Select
-                value={selectedGroupId || defaultGroup?.id || '__none__'}
-                onValueChange={handleGroupChange}
-            >
-                <SelectTrigger className='h-7 text-xs'>
-                    <SelectValue placeholder='Select group' />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value='__none__'>None</SelectItem>
-                    {galleryGroups.map((group) => (
-                        <SelectItem key={group.id} value={group.id}>
-                            {group.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
+
+            {/* AI Suggestion */}
+            {aiPrimarySuggestion && (
+                <p className='text-muted-foreground text-xs'>
+                    AI: {aiPrimarySuggestion.name} (
+                    {Math.round(aiPrimarySuggestion.confidence * 100)}%)
+                </p>
+            )}
+
+            {/* Group Assignment */}
+            <MultiSelect
+                options={groupOptions}
+                defaultValue={selectedGroupIds}
+                onValueChange={(groupIds: string[]) =>
+                    onGroupIdsChange(media.mediaId, groupIds)
+                }
+                placeholder='Select groups'
+                className='h-7 text-xs'
+                maxCount={2}
+                searchable={true}
+            />
         </div>
     )
 }
@@ -1018,33 +1207,30 @@ function PostSelectCard({
 function PairCard({
     pair,
     galleryGroups,
+    selectedGroupIds,
+    onGroupIdsChange,
 }: {
     pair: DetectedPair
-    galleryGroups: GalleryGroupWithSlug[]
+    galleryGroups: GalleryGroupForAI[]
+    selectedGroupIds: string[]
+    onGroupIdsChange: (pairId: string, groupIds: string[]) => void
 }) {
-    const [isEditing, setIsEditing] = useState(false)
-    const [procedureSlug, setProcedureSlug] = useState(
-        pair.procedureSlug || '__none__'
-    )
-    const router = useRouter()
-
-    const handleSaveProcedure = async () => {
-        const actualSlug = procedureSlug === '__none__' ? null : procedureSlug
-        const result = await updateMediaAnalysis({
-            mediaId: pair.beforeMediaId,
-            procedureSlug: actualSlug,
-        })
-
-        if (result.success) {
-            toast.success('Procedure updated')
-            setIsEditing(false)
-            router.refresh()
-        } else {
-            toast.error(result.error || 'Failed to update')
-        }
-    }
-
     const isSideBySide = pair.type === 'side_by_side'
+
+    // Get AI primary suggestion (highest confidence)
+    const aiPrimarySuggestion =
+        pair.aiSuggestedGroups.length > 0 ? pair.aiSuggestedGroups[0] : null
+
+    // Check if user has AI-suggested procedure selected
+    const isUsingAISuggestion =
+        aiPrimarySuggestion &&
+        selectedGroupIds.includes(aiPrimarySuggestion.groupId)
+
+    // Convert groups to MultiSelect options
+    const groupOptions = galleryGroups.map((group) => ({
+        value: group.id,
+        label: group.name,
+    }))
 
     return (
         <div className='space-y-3 rounded-lg border p-3'>
@@ -1052,19 +1238,9 @@ function PairCard({
                 <Badge variant={isSideBySide ? 'default' : 'secondary'}>
                     {isSideBySide ? 'Side-by-Side' : 'Matched Pair'}
                 </Badge>
-                <div className='flex items-center gap-2'>
-                    <span className='text-muted-foreground text-xs'>
-                        {Math.round(pair.confidence * 100)}% confidence
-                    </span>
-                    <Button
-                        variant='ghost'
-                        size='icon'
-                        className='h-6 w-6'
-                        onClick={() => setIsEditing(!isEditing)}
-                    >
-                        <Edit className='h-3 w-3' />
-                    </Button>
-                </div>
+                <span className='text-muted-foreground text-xs'>
+                    {Math.round(pair.confidence * 100)}% match
+                </span>
             </div>
 
             <div className='flex items-center gap-2'>
@@ -1104,39 +1280,51 @@ function PairCard({
                 )}
             </div>
 
-            {isEditing ? (
-                <div className='space-y-2'>
-                    <Select
-                        value={procedureSlug}
-                        onValueChange={setProcedureSlug}
-                    >
-                        <SelectTrigger className='h-8 text-xs'>
-                            <SelectValue placeholder='Select procedure' />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value='__none__'>None</SelectItem>
-                            {galleryGroups.map((group) => (
-                                <SelectItem key={group.id} value={group.slug}>
-                                    {group.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <Button
-                        size='sm'
-                        className='w-full'
-                        onClick={handleSaveProcedure}
-                    >
-                        Save
-                    </Button>
-                </div>
-            ) : (
-                pair.procedureSlug && (
-                    <p className='text-muted-foreground truncate text-xs'>
-                        {pair.procedureSlug}
+            {/* AI Suggestions */}
+            {pair.aiSuggestedGroups.length > 0 && (
+                <div className='space-y-1'>
+                    <p className='text-muted-foreground text-xs font-medium'>
+                        AI suggests:
                     </p>
-                )
+                    <div className='flex flex-wrap gap-1'>
+                        {pair.aiSuggestedGroups
+                            .slice(0, 2)
+                            .map((suggestion) => (
+                                <Badge
+                                    key={suggestion.groupId}
+                                    variant='outline'
+                                    className='text-xs'
+                                >
+                                    {suggestion.name} (
+                                    {Math.round(suggestion.confidence * 100)}%)
+                                </Badge>
+                            ))}
+                    </div>
+                </div>
             )}
+
+            {/* Group Assignment */}
+            <div className='space-y-1'>
+                <div className='flex items-center gap-2'>
+                    <p className='text-xs font-medium'>Groups:</p>
+                    {isUsingAISuggestion && (
+                        <Badge variant='secondary' className='text-xs'>
+                            ✨ AI suggested
+                        </Badge>
+                    )}
+                </div>
+                <MultiSelect
+                    options={groupOptions}
+                    defaultValue={selectedGroupIds}
+                    onValueChange={(groupIds: string[]) =>
+                        onGroupIdsChange(pair.id, groupIds)
+                    }
+                    placeholder='Select groups'
+                    className='h-8 text-xs'
+                    maxCount={2}
+                    searchable={true}
+                />
+            </div>
         </div>
     )
 }
