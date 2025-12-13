@@ -129,7 +129,7 @@ export function PairCard({
                 </div>
                 <MultiSelect
                     options={groupOptions}
-                    defaultValue={selectedGroupIds}
+                    value={selectedGroupIds}
                     onValueChange={(groupIds: string[]) =>
                         onGroupIdsChange(pair.id, groupIds)
                     }
