@@ -14,7 +14,7 @@ import {
     mediaAnalysisItem,
     type MediaAnalysis,
 } from '@workspace/db/schema'
-import { desc, eq, and, inArray, count } from 'drizzle-orm'
+import { desc, eq, and, inArray, count, type SQL } from 'drizzle-orm'
 import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
 
 // ============================================================================
@@ -90,7 +90,7 @@ export async function listAnalyses(
     const { page = 1, pageSize = 20 } = pagination
 
     // Build where conditions
-    const conditions = []
+    const conditions: SQL[] = []
     if (filters.status) {
         conditions.push(eq(mediaAnalysis.status, filters.status))
     }
