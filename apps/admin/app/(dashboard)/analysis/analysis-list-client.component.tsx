@@ -9,7 +9,13 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Clock, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import {
+    Clock,
+    CheckCircle2,
+    AlertCircle,
+    Loader2,
+    type LucideIcon,
+} from 'lucide-react'
 import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -233,7 +239,10 @@ function StatusBadge({
 }: {
     status: 'pending' | 'analyzing' | 'completed' | 'applied' | 'failed'
 }) {
-    const variants: Record<typeof status, { variant: any; icon: any }> = {
+    const variants: Record<
+        typeof status,
+        { variant: 'secondary' | 'default' | 'destructive'; icon: LucideIcon }
+    > = {
         pending: { variant: 'secondary', icon: Clock },
         analyzing: { variant: 'default', icon: Loader2 },
         completed: { variant: 'default', icon: CheckCircle2 },
