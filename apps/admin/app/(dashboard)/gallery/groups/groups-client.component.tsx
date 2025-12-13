@@ -77,8 +77,7 @@ export function GroupsPageClient({
     }
 
     const handleEdit = (group: GalleryGroupListItem) => {
-        setEditingGroup(group)
-        setDialogOpen(true)
+        router.push(`/gallery/groups/${group.id}/edit`)
     }
 
     const handleToggleVisibility = async (id: string, isVisible: boolean) => {
