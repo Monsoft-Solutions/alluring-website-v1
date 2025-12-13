@@ -121,6 +121,9 @@ interface MultiSelectProps
      */
     onValueChange: (value: string[]) => void
 
+    /** The controlled selected values. When provided, component operates in controlled mode. */
+    value?: string[]
+
     /** The default selected values when the component mounts. */
     defaultValue?: string[]
 
@@ -307,6 +310,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             options,
             onValueChange,
             variant,
+            value,
             defaultValue = [],
             placeholder = 'Select options',
             animation = 0,
@@ -337,9 +341,13 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         const [isAnimating, setIsAnimating] = React.useState(false)
         const [searchValue, setSearchValue] = React.useState('')
 
+        // Determine if component is controlled or uncontrolled
+        const isControlled = value !== undefined
+        const effectiveSelectedValues = isControlled ? value : selectedValues
+
         const [politeMessage, setPoliteMessage] = React.useState('')
         const [assertiveMessage, setAssertiveMessage] = React.useState('')
-        const prevSelectedCount = React.useRef(selectedValues.length)
+        const prevSelectedCount = React.useRef(effectiveSelectedValues.length)
         const prevIsOpen = React.useRef(isPopoverOpen)
         const prevSearchValue = React.useRef(searchValue)
 
@@ -383,11 +391,13 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         )
 
         const resetToDefault = React.useCallback(() => {
-            setSelectedValues(defaultValue)
+            if (!isControlled) {
+                setSelectedValues(defaultValue)
+            }
             setIsPopoverOpen(false)
             setSearchValue('')
             onValueChange(defaultValue)
-        }, [defaultValue, onValueChange])
+        }, [defaultValue, onValueChange, isControlled])
 
         const buttonRef = React.useRef<HTMLButtonElement>(null)
 
@@ -395,13 +405,17 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             ref,
             () => ({
                 reset: resetToDefault,
-                getSelectedValues: () => selectedValues,
+                getSelectedValues: () => effectiveSelectedValues,
                 setSelectedValues: (values: string[]) => {
-                    setSelectedValues(values)
+                    if (!isControlled) {
+                        setSelectedValues(values)
+                    }
                     onValueChange(values)
                 },
                 clear: () => {
-                    setSelectedValues([])
+                    if (!isControlled) {
+                        setSelectedValues([])
+                    }
                     onValueChange([])
                 },
                 focus: () => {
@@ -424,7 +438,12 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     }
                 },
             }),
-            [resetToDefault, selectedValues, onValueChange]
+            [
+                resetToDefault,
+                effectiveSelectedValues,
+                onValueChange,
+                isControlled,
+            ]
         )
 
         const [screenSize, setScreenSize] = React.useState<
@@ -644,10 +663,16 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             if (disabled) return
             const option = getOptionByValue(optionValue)
             if (option?.disabled) return
-            const newSelectedValues = selectedValues.includes(optionValue)
-                ? selectedValues.filter((value) => value !== optionValue)
-                : [...selectedValues, optionValue]
-            setSelectedValues(newSelectedValues)
+            const newSelectedValues = effectiveSelectedValues.includes(
+                optionValue
+            )
+                ? effectiveSelectedValues.filter(
+                      (value) => value !== optionValue
+                  )
+                : [...effectiveSelectedValues, optionValue]
+            if (!isControlled) {
+                setSelectedValues(newSelectedValues)
+            }
             onValueChange(newSelectedValues)
             if (closeOnSelect) {
                 setIsPopoverOpen(false)
@@ -656,7 +681,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 
         const handleClear = () => {
             if (disabled) return
-            setSelectedValues([])
+            if (!isControlled) {
+                setSelectedValues([])
+            }
             onValueChange([])
         }
 
@@ -667,11 +694,13 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 
         const clearExtraOptions = () => {
             if (disabled) return
-            const newSelectedValues = selectedValues.slice(
+            const newSelectedValues = effectiveSelectedValues.slice(
                 0,
                 responsiveSettings.maxCount
             )
-            setSelectedValues(newSelectedValues)
+            if (!isControlled) {
+                setSelectedValues(newSelectedValues)
+            }
             onValueChange(newSelectedValues)
         }
 
@@ -680,11 +709,13 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             const allOptions = getAllOptions().filter(
                 (option) => !option.disabled
             )
-            if (selectedValues.length === allOptions.length) {
+            if (effectiveSelectedValues.length === allOptions.length) {
                 handleClear()
             } else {
                 const allValues = allOptions.map((option) => option.value)
-                setSelectedValues(allValues)
+                if (!isControlled) {
+                    setSelectedValues(allValues)
+                }
                 onValueChange(allValues)
             }
 
@@ -694,7 +725,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         }
 
         React.useEffect(() => {
-            if (!resetOnDefaultValueChange) return
+            if (isControlled || !resetOnDefaultValueChange) return
             const prevDefaultValue = prevDefaultValueRef.current
             if (!arraysEqual(prevDefaultValue, defaultValue)) {
                 if (!arraysEqual(selectedValues, defaultValue)) {
@@ -707,6 +738,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             selectedValues,
             arraysEqual,
             resetOnDefaultValueChange,
+            isControlled,
         ])
 
         const getWidthConstraints = () => {
@@ -729,7 +761,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         }, [isPopoverOpen])
 
         React.useEffect(() => {
-            const selectedCount = selectedValues.length
+            const selectedCount = effectiveSelectedValues.length
             const allOptions = getAllOptions()
             const totalOptions = allOptions.filter(
                 (opt) => !opt.disabled
@@ -737,7 +769,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             if (selectedCount !== prevSelectedCount.current) {
                 const diff = selectedCount - prevSelectedCount.current
                 if (diff > 0) {
-                    const addedItems = selectedValues.slice(-diff)
+                    const addedItems = effectiveSelectedValues.slice(-diff)
                     const addedLabels = addedItems
                         .map(
                             (value) =>
@@ -798,7 +830,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 prevSearchValue.current = searchValue
             }
         }, [
-            selectedValues,
+            effectiveSelectedValues,
             isPopoverOpen,
             searchValue,
             announce,
@@ -830,11 +862,13 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         className='sr-only'
                         aria-live='polite'
                     >
-                        {selectedValues.length === 0
+                        {effectiveSelectedValues.length === 0
                             ? 'No options selected'
-                            : `${selectedValues.length} option${
-                                  selectedValues.length === 1 ? '' : 's'
-                              } selected: ${selectedValues
+                            : `${effectiveSelectedValues.length} option${
+                                  effectiveSelectedValues.length === 1
+                                      ? ''
+                                      : 's'
+                              } selected: ${effectiveSelectedValues
                                   .map(
                                       (value) => getOptionByValue(value)?.label
                                   )
@@ -854,7 +888,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 isPopoverOpen ? listboxId : undefined
                             }
                             aria-describedby={`${triggerDescriptionId} ${selectedCountId}`}
-                            aria-label={`Multi-select: ${selectedValues.length} of ${
+                            aria-label={`Multi-select: ${effectiveSelectedValues.length} of ${
                                 getAllOptions().length
                             } options selected. ${placeholder}`}
                             className={cn(
@@ -871,7 +905,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 maxWidth: `min(${widthConstraints.maxWidth}, 100%)`,
                             }}
                         >
-                            {selectedValues.length > 0 ? (
+                            {effectiveSelectedValues.length > 0 ? (
                                 <div className='flex w-full items-center justify-between'>
                                     <div
                                         className={cn(
@@ -890,7 +924,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 : {}
                                         }
                                     >
-                                        {selectedValues
+                                        {effectiveSelectedValues
                                             .slice(
                                                 0,
                                                 responsiveSettings.maxCount
@@ -1014,7 +1048,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 )
                                             })
                                             .filter(Boolean)}
-                                        {selectedValues.length >
+                                        {effectiveSelectedValues.length >
                                             responsiveSettings.maxCount && (
                                             <Badge
                                                 className={cn(
@@ -1038,7 +1072,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                 }}
                                             >
                                                 {`+ ${
-                                                    selectedValues.length -
+                                                    effectiveSelectedValues.length -
                                                     responsiveSettings.maxCount
                                                 } more`}
                                                 <XCircle
@@ -1073,7 +1107,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                                     handleClear()
                                                 }
                                             }}
-                                            aria-label={`Clear all ${selectedValues.length} selected options`}
+                                            aria-label={`Clear all ${effectiveSelectedValues.length} selected options`}
                                             className='text-muted-foreground hover:text-foreground focus:ring-ring mx-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm focus:ring-2 focus:ring-offset-1 focus:outline-none'
                                         >
                                             <XIcon className='h-4 w-4' />
@@ -1159,7 +1193,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                             onSelect={toggleAll}
                                             role='option'
                                             aria-selected={
-                                                selectedValues.length ===
+                                                effectiveSelectedValues.length ===
                                                 getAllOptions().filter(
                                                     (opt) => !opt.disabled
                                                 ).length
@@ -1172,7 +1206,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                             <div
                                                 className={cn(
                                                     'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
-                                                    selectedValues.length ===
+                                                    effectiveSelectedValues.length ===
                                                         getAllOptions().filter(
                                                             (opt) =>
                                                                 !opt.disabled
@@ -1202,7 +1236,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                         >
                                             {group.options.map((option) => {
                                                 const isSelected =
-                                                    selectedValues.includes(
+                                                    effectiveSelectedValues.includes(
                                                         option.value
                                                     )
                                                 return (
@@ -1263,7 +1297,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                     <CommandGroup>
                                         {filteredOptions.map((option) => {
                                             const isSelected =
-                                                selectedValues.includes(
+                                                effectiveSelectedValues.includes(
                                                     option.value
                                                 )
                                             return (
@@ -1317,7 +1351,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 <CommandSeparator />
                                 <CommandGroup>
                                     <div className='flex items-center justify-between'>
-                                        {selectedValues.length > 0 && (
+                                        {effectiveSelectedValues.length > 0 && (
                                             <>
                                                 <CommandItem
                                                     onSelect={handleClear}
@@ -1344,7 +1378,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             </CommandList>
                         </Command>
                     </PopoverContent>
-                    {animation > 0 && selectedValues.length > 0 && (
+                    {animation > 0 && effectiveSelectedValues.length > 0 && (
                         <WandSparkles
                             className={cn(
                                 'text-foreground bg-background my-2 h-3 w-3 cursor-pointer',

@@ -93,7 +93,7 @@ export function NonBAMediaCard({
             {/* Group Assignment */}
             <MultiSelect
                 options={groupOptions}
-                defaultValue={selectedGroupIds}
+                value={selectedGroupIds}
                 onValueChange={(groupIds: string[]) =>
                     onGroupIdsChange(media.mediaId, groupIds)
                 }
