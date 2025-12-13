@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { env } from '@/env'
+import { signToken } from '@/lib/utils/crypto.util'
 
 const COOKIE_NAME = 'admin-auth'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7 // 7 days
@@ -37,9 +38,17 @@ export async function POST(request: Request) {
             )
         }
 
-        // Create a simple token (in production, use a proper JWT or session)
-        // We use a timestamp-based token to indicate a valid session without exposing secrets
-        const token = Buffer.from(`admin:${Date.now()}`).toString('base64')
+        // Create a cryptographically signed token with HMAC-SHA256
+        // Token includes expiry timestamp and is verified on every request
+        const now = Date.now()
+        const token = await signToken(
+            JSON.stringify({
+                prefix: 'admin',
+                issuedAt: now,
+                expiresAt: now + COOKIE_MAX_AGE * 1000,
+            }),
+            env.AUTH_SECRET
+        )
 
         const cookieStore = await cookies()
         cookieStore.set(COOKIE_NAME, token, {
@@ -51,7 +60,8 @@ export async function POST(request: Request) {
         })
 
         return NextResponse.json({ success: true })
-    } catch {
+    } catch (error) {
+        console.error('❌ Auth error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

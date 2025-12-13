@@ -25,6 +25,9 @@ export const env = createEnv({
         // Admin authentication (min 4 chars for dev, use longer in production)
         ADMIN_PASSWORD: z.string().min(4),
 
+        // Auth signing secret (minimum 32 chars for HMAC-SHA256)
+        AUTH_SECRET: z.string().min(32),
+
         // Vercel Blob storage for media uploads
         BLOB_READ_WRITE_TOKEN: z.string().min(1),
 
