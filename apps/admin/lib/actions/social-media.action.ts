@@ -801,22 +801,13 @@ async function fetchAndFilterPosts(
  * @param nextMaxId - Next cursor for pagination (optional)
  */
 async function updateSyncCursor(nextMaxId: string | null): Promise<void> {
-    if (nextMaxId) {
-        await db
-            .update(socialMediaSettings)
-            .set({
-                lastSyncAt: new Date(),
-                lastSyncCursor: nextMaxId,
-            })
-            .where(eq(socialMediaSettings.platform, 'instagram'))
-    } else {
-        await db
-            .update(socialMediaSettings)
-            .set({
-                lastSyncAt: new Date(),
-            })
-            .where(eq(socialMediaSettings.platform, 'instagram'))
-    }
+    await db
+        .update(socialMediaSettings)
+        .set({
+            lastSyncAt: new Date(),
+            lastSyncCursor: nextMaxId,
+        })
+        .where(eq(socialMediaSettings.platform, 'instagram'))
 }
 
 /**
