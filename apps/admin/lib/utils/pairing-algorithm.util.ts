@@ -18,7 +18,7 @@ import type {
  * @returns A unique pair identifier
  */
 export function generatePairId(): string {
-    return `pair-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+    return `pair-${crypto.randomUUID()}`
 }
 
 /**
