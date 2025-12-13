@@ -98,9 +98,42 @@ export function AnalysisResultClient({
                     }
                 })
 
-                // Extract post IDs from the analysis result
+                // Build mediaId -> postId lookup map from analyzedPosts
+                const mediaIdToPostId = new Map<string, string>()
+                for (const post of analysis.resultData.analyzedPosts) {
+                    // Type assertion for post structure
+                    const typedPost = post as {
+                        postId: string
+                        primaryMedia: { mediaId: string }
+                        carouselMedia: Array<{ mediaId: string }>
+                    }
+                    // Add primary media
+                    mediaIdToPostId.set(
+                        typedPost.primaryMedia.mediaId,
+                        typedPost.postId
+                    )
+                    // Add carousel media
+                    for (const carouselMedia of typedPost.carouselMedia) {
+                        mediaIdToPostId.set(
+                            carouselMedia.mediaId,
+                            typedPost.postId
+                        )
+                    }
+                }
+
+                // Extract post IDs from detectedPairs using the lookup map
+                const pairedPostIds = new Set<string>()
+                for (const pair of analysis.resultData.detectedPairs) {
+                    const beforePostId = mediaIdToPostId.get(pair.beforeMediaId)
+                    const afterPostId = mediaIdToPostId.get(pair.afterMediaId)
+                    if (beforePostId) pairedPostIds.add(beforePostId)
+                    if (afterPostId) pairedPostIds.add(afterPostId)
+                }
+
+                // Combine all post IDs (unpaired, nonBA, and detected pairs)
                 const postIds = Array.from(
                     new Set([
+                        ...pairedPostIds,
                         ...analysis.resultData.unpairedMedia.map(
                             (m) => m.postId
                         ),
