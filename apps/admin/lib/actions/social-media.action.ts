@@ -80,11 +80,7 @@ type PostProcessResult = {
  * Get or create Instagram settings
  */
 export async function getInstagramSettings() {
-    try {
-        await requireAuth()
-    } catch {
-        return null
-    }
+    await requireAuth()
 
     const settings = await db
         .select()
