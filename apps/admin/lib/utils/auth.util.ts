@@ -10,6 +10,17 @@ const COOKIE_NAME = 'admin-auth'
 const COOKIE_PREFIX = 'admin:'
 
 /**
+ * Custom error thrown when authentication fails.
+ * Used for type-safe error handling in server actions.
+ */
+export class UnauthorizedError extends Error {
+    constructor(message = 'Unauthorized') {
+        super(message)
+        this.name = 'UnauthorizedError'
+    }
+}
+
+/**
  * Checks if the current request has a valid admin authentication cookie.
  *
  * @returns true if authenticated, false otherwise
@@ -35,11 +46,11 @@ export async function isAuthenticated(): Promise<boolean> {
  * Requires authentication for server actions.
  * Throws an error if the user is not authenticated.
  *
- * @throws {Error} with message "Unauthorized" if not authenticated
+ * @throws {UnauthorizedError} if not authenticated
  */
 export async function requireAuth(): Promise<void> {
     const authenticated = await isAuthenticated()
     if (!authenticated) {
-        throw new Error('Unauthorized')
+        throw new UnauthorizedError()
     }
 }

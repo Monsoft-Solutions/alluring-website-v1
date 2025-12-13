@@ -17,7 +17,7 @@ import {
 import { eq, inArray } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import {
     fetchInstagramPosts,
     parseInstagramPosts,
@@ -179,7 +179,7 @@ export async function syncInstagramProfile(): Promise<ProfileSyncResult> {
             profileData,
         }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -245,7 +245,7 @@ export async function updateInstagramSettings(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -345,10 +345,7 @@ async function downloadPostMedia(post: ParsedInstagramPost): Promise<{
             )
             thumbnailBlobUrl = thumbnailMedia.url
         } catch (thumbError) {
-            if (
-                thumbError instanceof Error &&
-                thumbError.message === 'Unauthorized'
-            ) {
+            if (thumbError instanceof UnauthorizedError) {
                 throw thumbError
             }
 
@@ -920,10 +917,7 @@ export async function syncInstagramPosts(
 
         return syncResult
     } catch (syncError) {
-        if (
-            syncError instanceof Error &&
-            syncError.message === 'Unauthorized'
-        ) {
+        if (syncError instanceof UnauthorizedError) {
             return {
                 ...syncResult,
                 errors: ['Unauthorized'],
@@ -961,7 +955,7 @@ export async function resetInstagramSyncCursor(): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -995,7 +989,7 @@ export async function toggleInstagramPostPublished(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -1029,7 +1023,7 @@ export async function toggleInstagramPostFeatured(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
