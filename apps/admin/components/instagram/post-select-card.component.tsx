@@ -64,7 +64,9 @@ export function PostSelectCard({
                         ? 'secondary'
                         : post.analysisStatus === 'analyzed'
                           ? 'default'
-                          : 'outline'
+                          : post.analysisStatus === 'reviewed'
+                            ? 'success'
+                            : 'default' // applied
                 }
             >
                 {post.analysisStatus}
