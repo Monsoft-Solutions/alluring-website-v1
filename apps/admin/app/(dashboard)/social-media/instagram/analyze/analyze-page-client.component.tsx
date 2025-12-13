@@ -233,9 +233,11 @@ export function AnalyzePageClient({
         setAnalysisProgress(0)
 
         startTransition(async () => {
+            let progressInterval: ReturnType<typeof setInterval> | undefined
+
             try {
                 // Simulate progress
-                const progressInterval = setInterval(() => {
+                progressInterval = setInterval(() => {
                     setAnalysisProgress((prev) => Math.min(prev + 5, 90))
                 }, 500)
 
@@ -243,7 +245,6 @@ export function AnalyzePageClient({
                     Array.from(selectedPostIds)
                 )
 
-                clearInterval(progressInterval)
                 setAnalysisProgress(100)
 
                 if (result.success && result.analysisId) {
@@ -260,6 +261,10 @@ export function AnalyzePageClient({
                 console.error('Analysis error:', error)
                 toast.error('An unexpected error occurred')
                 setStep('select')
+            } finally {
+                if (progressInterval) {
+                    clearInterval(progressInterval)
+                }
             }
         })
     }
