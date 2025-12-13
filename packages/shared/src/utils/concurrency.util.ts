@@ -67,12 +67,12 @@ export async function runWithConcurrency<T>(
                 if (idx > -1) executing.splice(idx, 1)
             })
 
-        executing.push(promise)
-
         // If we've reached the concurrency limit, wait for one to finish
         if (executing.length >= limit) {
             await Promise.race(executing)
         }
+
+        executing.push(promise)
     }
 
     // Wait for all remaining tasks to complete
