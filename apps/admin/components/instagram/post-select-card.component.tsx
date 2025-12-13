@@ -28,13 +28,15 @@ export function PostSelectCard({
     const isCarousel = post.mediaType === 'carousel'
 
     return (
-        <div
+        <button
+            type='button'
             onClick={onToggle}
-            className={`group relative aspect-square w-full cursor-pointer overflow-hidden rounded-lg border-2 transition-colors ${
+            className={`group focus-visible:ring-ring relative aspect-square w-full cursor-pointer overflow-hidden rounded-lg border-2 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${
                 isSelected
                     ? 'border-primary ring-primary ring-2 ring-offset-2'
                     : 'hover:border-muted-foreground/30 border-transparent'
             }`}
+            aria-pressed={isSelected}
         >
             <Image
                 src={post.media.thumbnailUrl ?? post.media.url}
@@ -46,7 +48,12 @@ export function PostSelectCard({
 
             {/* Checkbox */}
             <div className='absolute top-2 left-2'>
-                <Checkbox checked={isSelected} className='bg-white' />
+                <Checkbox
+                    checked={isSelected}
+                    className='pointer-events-none bg-white'
+                    tabIndex={-1}
+                    aria-hidden
+                />
             </div>
 
             {/* Status badge */}
@@ -69,6 +76,6 @@ export function PostSelectCard({
                     <Layers className='h-5 w-5' />
                 </div>
             )}
-        </div>
+        </button>
     )
 }
