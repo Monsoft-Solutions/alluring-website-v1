@@ -825,21 +825,6 @@ export async function syncInstagramPosts(
 ): Promise<SyncResult> {
     const { resetCursor = false } = options ?? {}
 
-    // Check authentication first
-    try {
-        await requireAuth()
-    } catch {
-        return {
-            success: false,
-            newPostsCount: 0,
-            skippedCount: 0,
-            errorCount: 0,
-            errors: ['Unauthorized'],
-            nextCursor: null,
-            hasMore: false,
-        }
-    }
-
     const syncResult: SyncResult = {
         success: false,
         newPostsCount: 0,
@@ -851,6 +836,8 @@ export async function syncInstagramPosts(
     }
 
     try {
+        await requireAuth()
+
         // Validate settings and API key
         const validation = await validateSyncSettings()
         if (!validation.valid || !validation.settings || !validation.apiKey) {
