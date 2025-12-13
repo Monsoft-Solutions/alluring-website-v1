@@ -35,6 +35,9 @@ export async function runWithConcurrency<T>(
     tasks: Array<() => Promise<T>>,
     limit: number
 ): Promise<Array<PromiseSettledResult<T>>> {
+    // Normalize limit to at least 1 to prevent hangs
+    limit = Math.max(1, Math.floor(limit))
+
     const results: Array<PromiseSettledResult<T>> = []
     const executing: Array<Promise<void>> = []
 
@@ -42,20 +45,29 @@ export async function runWithConcurrency<T>(
         const task = tasks[i]!
         const resultIndex = i
 
-        const promise = task()
+        // Wrap task invocation in try/catch to handle synchronous exceptions
+        let taskPromise: Promise<T>
+        try {
+            taskPromise = Promise.resolve(task())
+        } catch (error) {
+            results[resultIndex] = { status: 'rejected', reason: error }
+            continue
+        }
+
+        const promise = taskPromise
             .then((value) => {
                 results[resultIndex] = { status: 'fulfilled', value }
             })
             .catch((reason) => {
                 results[resultIndex] = { status: 'rejected', reason }
             })
-            .then(() => {
+            .finally(() => {
                 // Remove from executing array when done
-                const idx = executing.indexOf(promise as Promise<void>)
+                const idx = executing.indexOf(promise)
                 if (idx > -1) executing.splice(idx, 1)
             })
 
-        executing.push(promise as Promise<void>)
+        executing.push(promise)
 
         // If we've reached the concurrency limit, wait for one to finish
         if (executing.length >= limit) {

@@ -2,12 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { galleryMediaGroup } from '@workspace/db/schema'
 import { eq } from 'drizzle-orm'
 import { db } from '@workspace/db/client'
+import { z } from 'zod'
 
 type Params = {
     params: Promise<{
         mediaId: string
     }>
 }
+
+const paramsSchema = z.object({
+    mediaId: z.string().uuid(),
+})
 
 /**
  * GET /api/gallery/media/[mediaId]/groups
@@ -19,7 +24,17 @@ export async function GET(
     { params }: Params
 ): Promise<NextResponse> {
     try {
-        const { mediaId } = await params
+        const rawParams = await params
+        const result = paramsSchema.safeParse(rawParams)
+
+        if (!result.success) {
+            return NextResponse.json(
+                { error: 'Invalid mediaId: must be a valid UUID' },
+                { status: 400 }
+            )
+        }
+
+        const { mediaId } = result.data
 
         // Fetch group assignments for this media
         const assignments = await db
