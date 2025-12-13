@@ -376,7 +376,7 @@ async function downloadPostMedia(post: ParsedInstagramPost): Promise<{
 
         const carouselDownloadResults = await runWithConcurrency(
             carouselTasks,
-            3
+            SYNC_CONCURRENCY_LIMIT
         )
         for (const carouselDownloadResult of carouselDownloadResults) {
             if (carouselDownloadResult.status === 'fulfilled') {
