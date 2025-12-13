@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server'
 import { db } from '@workspace/db/client'
 import { contactSubmission } from '@workspace/db/schema/contact'
 import { desc } from 'drizzle-orm'
+import { isAuthenticated } from '@/lib/utils/auth.util'
 
 export async function GET() {
     try {
+        const authenticated = await isAuthenticated()
+        if (!authenticated) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         const contacts = await db
             .select({
                 id: contactSubmission.id,

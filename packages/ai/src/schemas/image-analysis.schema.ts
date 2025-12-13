@@ -14,6 +14,7 @@ import { z } from 'zod'
 import {
     beforeAfterTypeSchema,
     bodyAreaSchema,
+    contentTypeSchema,
     imageQualitySchema,
     patientDescriptionSchema,
     galleryProcedureSlugSchema,
@@ -47,6 +48,10 @@ export const imageAnalysisSchema = z.object({
         .describe(
             'If isBeforeAfter is true, the type of before/after image: "before" (pre-op), "after" (post-op), or "side_by_side" (comparison)'
         ),
+
+    contentType: contentTypeSchema.describe(
+        'The type of content: before_after (B&A comparison or stage), tips (educational), promotion (offers/discounts), informative (general info), results (procedure results without B&A context), other'
+    ),
 
     detectedProcedure: galleryProcedureSlugSchema
         .optional()

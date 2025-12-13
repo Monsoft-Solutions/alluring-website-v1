@@ -37,7 +37,8 @@
                 "NEXT_PUBLIC_WEB_URL",
                 "NEXT_PUBLIC_ALLOW_CRAWLING",
                 "NEXT_PUBLIC_BETA_MODE",
-                "NEXT_PUBLIC_CHAT_ENABLED"
+                "NEXT_PUBLIC_CHAT_ENABLED",
+                "AUTH_SECRET"
             ]
         },
         "lint": {

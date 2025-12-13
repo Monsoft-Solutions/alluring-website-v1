@@ -18,6 +18,7 @@ import {
     getRecentMessages,
     saveChatMessage,
 } from '@/lib/queries/chat.query'
+import { isAuthenticated } from '@/lib/utils/auth.util'
 
 /**
  * AI SDK v5 message format (uses parts instead of content)
@@ -51,6 +52,11 @@ function extractMessageContent(message: AISDKMessage): string {
  */
 export async function POST(request: NextRequest) {
     try {
+        const authenticated = await isAuthenticated()
+        if (!authenticated) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         if (!env.OPENAI_API_KEY) {
             return NextResponse.json(
                 { error: 'OpenAI API key not configured' },

@@ -28,10 +28,30 @@ export {
     type InsertBeforeAfterPair,
 } from './before-after-pair.table'
 
+// Media Analysis
+export {
+    mediaAnalysisType,
+    mediaAnalysisSource,
+    mediaAnalysisStatus,
+    mediaAnalysis,
+    type MediaAnalysis,
+    type InsertMediaAnalysis,
+} from './media-analysis.table'
+
+// Media Analysis Item
+export {
+    mediaAnalysisItemType,
+    mediaAnalysisItem,
+    type MediaAnalysisItem,
+    type InsertMediaAnalysisItem,
+} from './media-analysis-item.table'
+
 // Relations
 export {
     galleryMediaRelations,
     galleryGroupRelations,
     galleryMediaGroupRelations,
     beforeAfterPairRelations,
+    mediaAnalysisRelations,
+    mediaAnalysisItemRelations,
 } from './gallery-relations'

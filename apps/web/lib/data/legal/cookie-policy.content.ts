@@ -330,7 +330,7 @@ This website is built using an open-source template developed by **Adriano Flech
 **Template Information:**
 - **Developer:** Adriano Flechilla
 - **Organization:** Monsoft Solutions, LLC
-- **Template Repository:** https://github.com/Monsoft-Solutions/website-template-v2
+- **Template Repository:** https://github.com/Monsoft-Solutions/alluring-website-v1
 - **License:** MIT License (see repository for full terms)
 
 If you use or extend this template, please acknowledge the original creator as specified in the template's license terms.

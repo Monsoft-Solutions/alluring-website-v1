@@ -17,6 +17,7 @@ import {
 import { eq, inArray } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import {
     fetchInstagramPosts,
     parseInstagramPosts,
@@ -31,6 +32,8 @@ import {
     uploadProfilePicture,
     type InstagramProfileData,
 } from '@/lib/services/instagram-profile.service'
+import { runWithConcurrency } from '@workspace/shared'
+import { SYNC_CONCURRENCY_LIMIT } from '../constants/analysis.constant'
 
 // Re-export SyncResult type for use in components
 export type { SyncResult } from '@/lib/services/instagram-scraper.service'
@@ -69,11 +72,6 @@ type PostProcessResult = {
     error?: string
 }
 
-/**
- * Concurrency limit for parallel post processing
- */
-const CONCURRENT_LIMIT = 5
-
 // ============================================================================
 // Settings Actions
 // ============================================================================
@@ -82,6 +80,8 @@ const CONCURRENT_LIMIT = 5
  * Get or create Instagram settings
  */
 export async function getInstagramSettings() {
+    await requireAuth()
+
     const settings = await db
         .select()
         .from(socialMediaSettings)
@@ -99,6 +99,8 @@ export async function getInstagramSettings() {
  */
 export async function syncInstagramProfile(): Promise<ProfileSyncResult> {
     try {
+        await requireAuth()
+
         // Get settings
         const settings = await getInstagramSettings()
 
@@ -177,6 +179,10 @@ export async function syncInstagramProfile(): Promise<ProfileSyncResult> {
             profileData,
         }
     } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error syncing Instagram profile:', error)
         return {
             success: false,
@@ -195,6 +201,8 @@ export async function updateInstagramSettings(
     data: InstagramSettingsInput
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const existing = await db
             .select()
             .from(socialMediaSettings)
@@ -237,6 +245,10 @@ export async function updateInstagramSettings(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating Instagram settings:', error)
         return {
             success: false,
@@ -303,51 +315,6 @@ function generateMediaTitle(
 }
 
 /**
- * Simple concurrency limiter for parallel processing
- *
- * @param tasks - Array of async functions to execute
- * @param limit - Maximum number of concurrent tasks
- * @returns Array of results in the same order as input tasks
- */
-async function runWithConcurrency<T>(
-    tasks: Array<() => Promise<T>>,
-    limit: number
-): Promise<Array<PromiseSettledResult<T>>> {
-    const results: Array<PromiseSettledResult<T>> = []
-    const executing: Array<Promise<void>> = []
-
-    for (let i = 0; i < tasks.length; i++) {
-        const task = tasks[i]!
-        const resultIndex = i
-
-        const promise = task()
-            .then((value) => {
-                results[resultIndex] = { status: 'fulfilled', value }
-            })
-            .catch((reason) => {
-                results[resultIndex] = { status: 'rejected', reason }
-            })
-            .then(() => {
-                // Remove from executing array when done
-                const idx = executing.indexOf(promise as Promise<void>)
-                if (idx > -1) executing.splice(idx, 1)
-            })
-
-        executing.push(promise as Promise<void>)
-
-        // If we've reached the concurrency limit, wait for one to finish
-        if (executing.length >= limit) {
-            await Promise.race(executing)
-        }
-    }
-
-    // Wait for all remaining tasks to complete
-    await Promise.all(executing)
-
-    return results
-}
-
-/**
  * Download all media for a post (primary, thumbnail, carousel items)
  *
  * Downloads are done outside transaction since they're idempotent and
@@ -378,6 +345,10 @@ async function downloadPostMedia(post: ParsedInstagramPost): Promise<{
             )
             thumbnailBlobUrl = thumbnailMedia.url
         } catch (thumbError) {
+            if (thumbError instanceof UnauthorizedError) {
+                throw thumbError
+            }
+
             console.error(
                 `Failed to upload thumbnail for ${post.code}:`,
                 thumbError
@@ -403,15 +374,150 @@ async function downloadPostMedia(post: ParsedInstagramPost): Promise<{
             return { order: item.order, mediaType: item.mediaType, media }
         })
 
-        const results = await runWithConcurrency(carouselTasks, 3)
-        for (const result of results) {
-            if (result.status === 'fulfilled') {
-                carouselMedia.push(result.value)
+        const carouselDownloadResults = await runWithConcurrency(
+            carouselTasks,
+            SYNC_CONCURRENCY_LIMIT
+        )
+        for (const carouselDownloadResult of carouselDownloadResults) {
+            if (carouselDownloadResult.status === 'fulfilled') {
+                carouselMedia.push(carouselDownloadResult.value)
             }
         }
     }
 
     return { primaryMedia, thumbnailBlobUrl, carouselMedia }
+}
+
+/**
+ * Create primary gallery media record
+ *
+ * Inserts primary media into gallery_media table with metadata.
+ *
+ * @param post - Parsed Instagram post data
+ * @param primaryMedia - Uploaded media info (URL, mimeType, fileSize)
+ * @param thumbnailBlobUrl - Thumbnail URL for videos (optional)
+ * @param handle - Instagram handle for alt text
+ * @param tx - Database transaction
+ * @returns Gallery media ID
+ */
+async function createPrimaryGalleryMedia(
+    post: ParsedInstagramPost,
+    primaryMedia: Awaited<ReturnType<typeof downloadAndUploadMedia>>,
+    thumbnailBlobUrl: string | null,
+    handle: string,
+    tx: Parameters<Parameters<typeof db.transaction>[0]>[0]
+): Promise<string> {
+    const [primaryGalleryMedia] = await tx
+        .insert(galleryMedia)
+        .values({
+            type: post.mediaType === 'video' ? 'video' : 'image',
+            url: primaryMedia.url,
+            thumbnailUrl: thumbnailBlobUrl,
+            title: generateMediaTitle(post.caption, post.code),
+            slug: generateMediaSlug(post.code),
+            description: post.caption,
+            alt: `Instagram post from ${handle}`,
+            mimeType: primaryMedia.mimeType,
+            fileSize: primaryMedia.fileSize,
+            duration: post.mediaType === 'video' ? post.videoDuration : null,
+            status: 'draft',
+        })
+        .returning({ id: galleryMedia.id })
+
+    return primaryGalleryMedia!.id
+}
+
+/**
+ * Insert post with upsert pattern
+ *
+ * Attempts to insert post, handling conflicts gracefully.
+ * Returns whether post was newly inserted or already existed.
+ *
+ * @param post - Parsed Instagram post data
+ * @param primaryMediaId - Gallery media ID for primary media
+ * @param tx - Database transaction
+ * @returns Insert result with post ID if successful
+ */
+async function insertPostWithUpsert(
+    post: ParsedInstagramPost,
+    primaryMediaId: string,
+    tx: Parameters<Parameters<typeof db.transaction>[0]>[0]
+): Promise<{ inserted: boolean; postId?: string }> {
+    const [insertedPost] = await tx
+        .insert(instagramPost)
+        .values({
+            instagramId: post.instagramId,
+            code: post.code,
+            mediaType: post.mediaType,
+            caption: post.caption,
+            permalink: post.permalink,
+            takenAt: post.takenAt,
+            likeCount: post.likeCount,
+            commentCount: post.commentCount,
+            playCount: post.playCount,
+            videoDuration: post.videoDuration,
+            mediaId: primaryMediaId,
+            isPublished: false,
+        })
+        .onConflictDoNothing({ target: instagramPost.instagramId })
+        .returning({ id: instagramPost.id })
+
+    if (!insertedPost) {
+        return { inserted: false }
+    }
+
+    return { inserted: true, postId: insertedPost.id }
+}
+
+/**
+ * Process carousel items for a post
+ *
+ * Creates gallery_media records and junction table entries for carousel items.
+ *
+ * @param postId - Instagram post ID
+ * @param post - Parsed Instagram post data
+ * @param carouselMedia - Downloaded carousel media items
+ * @param handle - Instagram handle for alt text
+ * @param tx - Database transaction
+ */
+async function processCarouselItems(
+    postId: string,
+    post: ParsedInstagramPost,
+    carouselMedia: Array<{
+        order: number
+        mediaType: 'image' | 'video'
+        media: Awaited<ReturnType<typeof downloadAndUploadMedia>>
+    }>,
+    handle: string,
+    tx: Parameters<Parameters<typeof db.transaction>[0]>[0]
+): Promise<void> {
+    for (const carouselItem of carouselMedia) {
+        const [itemGalleryMedia] = await tx
+            .insert(galleryMedia)
+            .values({
+                type: carouselItem.mediaType,
+                url: carouselItem.media.url,
+                title: generateMediaTitle(
+                    post.caption,
+                    post.code,
+                    carouselItem.order
+                ),
+                slug: generateMediaSlug(post.code, carouselItem.order),
+                description: post.caption,
+                alt: `Instagram carousel item from ${handle}`,
+                mimeType: carouselItem.media.mimeType,
+                fileSize: carouselItem.media.fileSize,
+                status: 'draft',
+            })
+            .returning({ id: galleryMedia.id })
+
+        // Create junction record
+        await tx.insert(instagramPostMedia).values({
+            postId: postId,
+            mediaId: itemGalleryMedia!.id,
+            displayOrder: carouselItem.order,
+        })
+    }
 }
 
 /**
@@ -440,53 +546,30 @@ async function processIndividualPost(
             await downloadPostMedia(post)
 
         // Wrap all database operations in a transaction for atomicity
-        const result = await db.transaction(async (tx) => {
+        const processResult = await db.transaction(async (tx) => {
             // Create gallery_media record for primary media
-            const [primaryGalleryMedia] = await tx
-                .insert(galleryMedia)
-                .values({
-                    type: post.mediaType === 'video' ? 'video' : 'image',
-                    url: primaryMedia.url,
-                    thumbnailUrl: thumbnailBlobUrl,
-                    title: generateMediaTitle(post.caption, post.code),
-                    slug: generateMediaSlug(post.code),
-                    description: post.caption,
-                    alt: `Instagram post from ${handle}`,
-                    mimeType: primaryMedia.mimeType,
-                    fileSize: primaryMedia.fileSize,
-                    duration:
-                        post.mediaType === 'video' ? post.videoDuration : null,
-                    status: 'draft',
-                })
-                .returning({ id: galleryMedia.id })
+            const primaryMediaId = await createPrimaryGalleryMedia(
+                post,
+                primaryMedia,
+                thumbnailBlobUrl,
+                handle,
+                tx
+            )
 
             // Use upsert pattern: insert with onConflictDoNothing to handle race conditions
-            const [insertedPost] = await tx
-                .insert(instagramPost)
-                .values({
-                    instagramId: post.instagramId,
-                    code: post.code,
-                    mediaType: post.mediaType,
-                    caption: post.caption,
-                    permalink: post.permalink,
-                    takenAt: post.takenAt,
-                    likeCount: post.likeCount,
-                    commentCount: post.commentCount,
-                    playCount: post.playCount,
-                    videoDuration: post.videoDuration,
-                    mediaId: primaryGalleryMedia!.id,
-                    isPublished: false,
-                })
-                .onConflictDoNothing({ target: instagramPost.instagramId })
-                .returning({ id: instagramPost.id })
+            const upsertResult = await insertPostWithUpsert(
+                post,
+                primaryMediaId,
+                tx
+            )
 
             // If no row returned, post already existed (conflict occurred)
-            if (!insertedPost) {
+            if (!upsertResult.inserted) {
                 // Delete the orphaned primaryGalleryMedia record
                 try {
                     await tx
                         .delete(galleryMedia)
-                        .where(eq(galleryMedia.id, primaryGalleryMedia!.id))
+                        .where(eq(galleryMedia.id, primaryMediaId))
                 } catch (deleteError) {
                     // Log but don't fail - continue with skipped status
                     console.error(
@@ -498,45 +581,28 @@ async function processIndividualPost(
             }
 
             // Insert carousel items within the same transaction
-            for (const item of carouselMedia) {
-                const [itemGalleryMedia] = await tx
-                    .insert(galleryMedia)
-                    .values({
-                        type: item.mediaType,
-                        url: item.media.url,
-                        title: generateMediaTitle(
-                            post.caption,
-                            post.code,
-                            item.order
-                        ),
-                        slug: generateMediaSlug(post.code, item.order),
-                        description: post.caption,
-                        alt: `Instagram carousel item from ${handle}`,
-                        mimeType: item.media.mimeType,
-                        fileSize: item.media.fileSize,
-                        status: 'draft',
-                    })
-                    .returning({ id: galleryMedia.id })
-
-                // Create junction record
-                await tx.insert(instagramPostMedia).values({
-                    postId: insertedPost.id,
-                    mediaId: itemGalleryMedia!.id,
-                    displayOrder: item.order,
-                })
-            }
+            await processCarouselItems(
+                upsertResult.postId!,
+                post,
+                carouselMedia,
+                handle,
+                tx
+            )
 
             return { status: 'new' as const, code: post.code }
         })
 
-        return result
-    } catch (error) {
+        return processResult
+    } catch (processError) {
         // Transaction auto-rolls back on error
-        console.error(`Error processing post ${post.code}:`, error)
+        console.error(`Error processing post ${post.code}:`, processError)
         return {
             status: 'error',
             code: post.code,
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error:
+                processError instanceof Error
+                    ? processError.message
+                    : 'Unknown error',
         }
     }
 }
@@ -559,16 +625,19 @@ async function processPostsBatch(
 }> {
     const tasks = posts.map((post) => () => processIndividualPost(post, handle))
 
-    const results = await runWithConcurrency(tasks, CONCURRENT_LIMIT)
+    const postProcessResults = await runWithConcurrency(
+        tasks,
+        SYNC_CONCURRENCY_LIMIT
+    )
 
     let newPostsCount = 0
     let skippedCount = 0
     let errorCount = 0
     const errors: string[] = []
 
-    for (const result of results) {
-        if (result.status === 'fulfilled') {
-            const postResult = result.value
+    for (const postProcessResult of postProcessResults) {
+        if (postProcessResult.status === 'fulfilled') {
+            const postResult = postProcessResult.value
             switch (postResult.status) {
                 case 'new':
                     newPostsCount++
@@ -588,14 +657,150 @@ async function processPostsBatch(
         } else {
             // Promise rejected - unexpected error
             errorCount++
-            const error = result.reason
+            const rejectionError = postProcessResult.reason
             errors.push(
-                `Unexpected error: ${error instanceof Error ? error.message : 'Unknown error'}`
+                `Unexpected error: ${rejectionError instanceof Error ? rejectionError.message : 'Unknown error'}`
             )
         }
     }
 
     return { newPostsCount, skippedCount, errorCount, errors }
+}
+
+/**
+ * Validate sync settings and API key
+ *
+ * Checks that Instagram settings are properly configured.
+ *
+ * @returns Validation result with settings and API key if valid
+ */
+async function validateSyncSettings(): Promise<{
+    valid: boolean
+    settings?: Awaited<ReturnType<typeof getInstagramSettings>>
+    apiKey?: string
+    errors?: string[]
+}> {
+    // Get settings
+    const settings = await getInstagramSettings()
+
+    if (!settings) {
+        return {
+            valid: false,
+            errors: ['Instagram settings not configured'],
+        }
+    }
+
+    if (!settings.handle) {
+        return {
+            valid: false,
+            errors: ['Instagram handle not configured'],
+        }
+    }
+
+    if (!settings.isEnabled) {
+        return {
+            valid: false,
+            errors: ['Instagram integration is disabled'],
+        }
+    }
+
+    const apiKey = getApiKey(settings.apiKey)
+    if (!apiKey) {
+        return {
+            valid: false,
+            errors: ['API key not configured'],
+        }
+    }
+
+    return {
+        valid: true,
+        settings,
+        apiKey,
+    }
+}
+
+/**
+ * Ensure profile data is fetched
+ *
+ * Syncs profile if postsCount is missing, which is needed for progress tracking.
+ *
+ * @param settings - Current Instagram settings
+ * @returns Updated settings with profile data
+ */
+async function ensureProfileData(
+    settings: NonNullable<Awaited<ReturnType<typeof getInstagramSettings>>>
+): Promise<NonNullable<Awaited<ReturnType<typeof getInstagramSettings>>>> {
+    if (!settings.postsCount) {
+        const profileResult = await syncInstagramProfile()
+        if (profileResult.success) {
+            // Refetch settings to get updated postsCount
+            const updatedSettings = await getInstagramSettings()
+            if (updatedSettings) {
+                return updatedSettings
+            }
+        }
+        // Continue even if profile sync fails - don't block post sync
+    }
+    return settings
+}
+
+/**
+ * Fetch and filter Instagram posts
+ *
+ * Fetches posts from API, parses them, and filters out existing posts.
+ *
+ * @param handle - Instagram handle
+ * @param apiKey - API key for Instagram service
+ * @param cursor - Optional cursor for pagination
+ * @returns Filtered posts and pagination info
+ */
+async function fetchAndFilterPosts(
+    handle: string,
+    apiKey: string,
+    cursor?: string
+): Promise<{
+    newPosts: ParsedInstagramPost[]
+    preFilteredSkippedCount: number
+    nextCursor: string | null
+    hasMore: boolean
+}> {
+    // Fetch posts from API
+    const apiResponse = await fetchInstagramPosts(handle, apiKey, cursor)
+
+    const parsedPosts = parseInstagramPosts(apiResponse)
+
+    // Pre-filter: Check which posts already exist in the database
+    // This avoids expensive media downloads for posts we already have
+    const allInstagramIds = parsedPosts.map((p) => p.instagramId)
+    const existingIds = await getExistingInstagramIds(allInstagramIds)
+
+    // Filter out posts that already exist - only process new ones
+    const newPosts = parsedPosts.filter((p) => !existingIds.has(p.instagramId))
+    const preFilteredSkippedCount = parsedPosts.length - newPosts.length
+
+    return {
+        newPosts,
+        preFilteredSkippedCount,
+        nextCursor: apiResponse.next_max_id ?? null,
+        hasMore: apiResponse.more_available,
+    }
+}
+
+/**
+ * Update sync cursor in database
+ *
+ * Saves sync timestamp and optional pagination cursor.
+ *
+ * @param nextMaxId - Next cursor for pagination (optional)
+ */
+async function updateSyncCursor(nextMaxId: string | null): Promise<void> {
+    await db
+        .update(socialMediaSettings)
+        .set({
+            lastSyncAt: new Date(),
+            lastSyncCursor: nextMaxId,
+        })
+        .where(eq(socialMediaSettings.platform, 'instagram'))
 }
 
 /**
@@ -620,7 +825,7 @@ export async function syncInstagramPosts(
 ): Promise<SyncResult> {
     const { resetCursor = false } = options ?? {}
 
-    const result: SyncResult = {
+    const syncResult: SyncResult = {
         success: false,
         newPostsCount: 0,
         skippedCount: 0,
@@ -631,86 +836,42 @@ export async function syncInstagramPosts(
     }
 
     try {
-        // Get settings
-        let settings = await getInstagramSettings()
+        await requireAuth()
 
-        if (!settings) {
+        // Validate settings and API key
+        const validation = await validateSyncSettings()
+        if (!validation.valid || !validation.settings || !validation.apiKey) {
             return {
-                ...result,
-                errors: ['Instagram settings not configured'],
+                ...syncResult,
+                errors: validation.errors ?? ['Validation failed'],
             }
         }
 
-        if (!settings.handle) {
-            return {
-                ...result,
-                errors: ['Instagram handle not configured'],
-            }
-        }
-
-        if (!settings.isEnabled) {
-            return {
-                ...result,
-                errors: ['Instagram integration is disabled'],
-            }
-        }
-
-        const apiKey = getApiKey(settings.apiKey)
-        if (!apiKey) {
-            return {
-                ...result,
-                errors: ['API key not configured'],
-            }
-        }
+        let settings = validation.settings
+        const apiKey = validation.apiKey
 
         // Ensure profile is fetched (needed for posts count and progress tracking)
-        if (!settings.postsCount) {
-            const profileResult = await syncInstagramProfile()
-            if (profileResult.success) {
-                // Refetch settings to get updated postsCount
-                const updatedSettings = await getInstagramSettings()
-                if (updatedSettings) {
-                    settings = updatedSettings
-                }
-            }
-            // Continue even if profile sync fails - don't block post sync
-        }
+        settings = await ensureProfileData(settings)
 
         // Verify settings still exists (TypeScript safety after potential reassignment)
         if (!settings || !settings.handle) {
             return {
-                ...result,
+                ...syncResult,
                 errors: ['Settings became invalid during profile sync'],
             }
         }
 
         // Include total posts count in result
-        result.totalPostsCount = settings.postsCount ?? undefined
+        syncResult.totalPostsCount = settings.postsCount ?? undefined
 
         // Determine cursor: use null if resetCursor is true, otherwise use stored cursor
         const cursor = resetCursor
             ? undefined
             : (settings.lastSyncCursor ?? undefined)
 
-        // Fetch posts from API
-        const apiResponse = await fetchInstagramPosts(
-            settings.handle,
-            apiKey,
-            cursor
-        )
-
-        const parsedPosts = parseInstagramPosts(apiResponse)
-
-        // Pre-filter: Check which posts already exist in the database
-        // This avoids expensive media downloads for posts we already have
-        const allInstagramIds = parsedPosts.map((p) => p.instagramId)
-        const existingIds = await getExistingInstagramIds(allInstagramIds)
-
-        // Filter out posts that already exist - only process new ones
-        const newPosts = parsedPosts.filter(
-            (p) => !existingIds.has(p.instagramId)
-        )
-        const preFilteredSkippedCount = parsedPosts.length - newPosts.length
+        // Fetch and filter posts
+        const { newPosts, preFilteredSkippedCount, nextCursor, hasMore } =
+            await fetchAndFilterPosts(settings.handle, apiKey, cursor)
 
         // Process only new posts in parallel with concurrency limit
         // This skips all media downloads for existing posts
@@ -724,45 +885,38 @@ export async function syncInstagramPosts(
                       errors: [],
                   }
 
-        result.newPostsCount = batchResult.newPostsCount
+        syncResult.newPostsCount = batchResult.newPostsCount
         // Include pre-filtered skipped posts in the total skipped count
-        result.skippedCount = preFilteredSkippedCount + batchResult.skippedCount
-        result.errorCount = batchResult.errorCount
-        result.errors = batchResult.errors
+        syncResult.skippedCount =
+            preFilteredSkippedCount + batchResult.skippedCount
+        syncResult.errorCount = batchResult.errorCount
+        syncResult.errors = batchResult.errors
 
         // Update sync cursor
-        if (apiResponse.next_max_id) {
-            await db
-                .update(socialMediaSettings)
-                .set({
-                    lastSyncAt: new Date(),
-                    lastSyncCursor: apiResponse.next_max_id,
-                })
-                .where(eq(socialMediaSettings.platform, 'instagram'))
-        } else {
-            await db
-                .update(socialMediaSettings)
-                .set({
-                    lastSyncAt: new Date(),
-                })
-                .where(eq(socialMediaSettings.platform, 'instagram'))
-        }
+        await updateSyncCursor(nextCursor)
 
-        result.success = true
-        result.nextCursor = apiResponse.next_max_id ?? null
-        result.hasMore = apiResponse.more_available
+        syncResult.success = true
+        syncResult.nextCursor = nextCursor
+        syncResult.hasMore = hasMore
 
         revalidatePath('/social-media')
         revalidatePath('/social-media/instagram')
 
-        return result
-    } catch (error) {
-        console.error('Error syncing Instagram posts:', error)
+        return syncResult
+    } catch (syncError) {
+        if (syncError instanceof UnauthorizedError) {
+            return {
+                ...syncResult,
+                errors: ['Unauthorized'],
+            }
+        }
+
+        console.error('Error syncing Instagram posts:', syncError)
         return {
-            ...result,
+            ...syncResult,
             errors: [
-                error instanceof Error
-                    ? error.message
+                syncError instanceof Error
+                    ? syncError.message
                     : 'Unknown error during sync',
             ],
         }
@@ -774,6 +928,8 @@ export async function syncInstagramPosts(
  */
 export async function resetInstagramSyncCursor(): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(socialMediaSettings)
             .set({
@@ -786,6 +942,10 @@ export async function resetInstagramSyncCursor(): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error resetting sync cursor:', error)
         return {
             success: false,
@@ -805,6 +965,8 @@ export async function toggleInstagramPostPublished(
     isPublished: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(instagramPost)
             .set({ isPublished })
@@ -814,6 +976,10 @@ export async function toggleInstagramPostPublished(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling post published status:', error)
         return {
             success: false,
@@ -833,6 +999,8 @@ export async function toggleInstagramPostFeatured(
     isFeatured: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(instagramPost)
             .set({ isFeatured })
@@ -842,6 +1010,10 @@ export async function toggleInstagramPostFeatured(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling post featured status:', error)
         return {
             success: false,

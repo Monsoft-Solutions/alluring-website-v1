@@ -325,7 +325,7 @@ This website is built using an open-source template developed by **Adriano Flech
 **Template Information:**
 - **Developer:** Adriano Flechilla
 - **Organization:** Monsoft Solutions, LLC
-- **Template Repository:** https://github.com/Monsoft-Solutions/website-template-v2
+- **Template Repository:** https://github.com/Monsoft-Solutions/alluring-website-v1
 - **License:** MIT License
 
 ### 20.1 Template Usage Terms
@@ -344,7 +344,7 @@ The template is provided under the MIT License:
 - Must include original copyright notice
 - No warranty or liability
 
-Full license terms: https://github.com/Monsoft-Solutions/website-template-v2/blob/master/LICENSE
+Full license terms: https://github.com/Monsoft-Solutions/alluring-website-v1/blob/master/LICENSE
 
 ### 20.3 Attribution Requirements
 

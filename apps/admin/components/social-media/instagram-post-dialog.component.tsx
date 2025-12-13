@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useMemo, useState, useTransition } from 'react'
+import { useMemo, useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
@@ -12,6 +12,13 @@ import {
     DialogTitle,
 } from '@workspace/ui/components/dialog'
 import {
+    Tabs,
+    TabsList,
+    TabsTrigger,
+    TabsContent,
+} from '@workspace/ui/components/tabs'
+import { Badge } from '@workspace/ui/components/badge'
+import {
     ChevronLeft,
     ChevronRight,
     Eye,
@@ -19,13 +26,16 @@ import {
     Star,
     StarOff,
     ExternalLink,
+    Sparkles,
 } from 'lucide-react'
 
 import type { InstagramPostListItem } from '@/lib/queries/social-media.query'
+import type { GalleryGroupWithSlug } from '@/lib/queries/gallery.query'
 import {
     toggleInstagramPostPublished,
     toggleInstagramPostFeatured,
 } from '@/lib/actions/social-media.action'
+import { AnalysisEditForm } from './analysis-edit-form.component'
 
 type ProfileInfo = {
     handle: string | null
@@ -38,6 +48,7 @@ type InstagramPostDialogProps = {
     profile?: ProfileInfo | null
     isOpen: boolean
     onClose: () => void
+    galleryGroups?: GalleryGroupWithSlug[]
 }
 
 function formatNumber(num: number): string {
@@ -86,10 +97,28 @@ export function InstagramPostDialog({
     profile,
     isOpen,
     onClose,
+    galleryGroups = [],
 }: InstagramPostDialogProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [activeTab, setActiveTab] = useState('details')
+    const [groups, setGroups] = useState<GalleryGroupWithSlug[]>(galleryGroups)
+    const [currentMediaGroupIds, setCurrentMediaGroupIds] = useState<string[]>(
+        []
+    )
+
+    // Fetch gallery groups if not provided
+    useEffect(() => {
+        if (isOpen && groups.length === 0) {
+            fetch('/api/gallery/groups')
+                .then((res) => res.json())
+                .then((data) => setGroups(data.groups || []))
+                .catch((err) =>
+                    console.error('Failed to fetch gallery groups:', err)
+                )
+        }
+    }, [isOpen, groups.length])
 
     const mediaItems = useMemo(() => {
         if (!post) return []
@@ -104,6 +133,33 @@ export function InstagramPostDialog({
 
         return [post.media]
     }, [post])
+
+    const boundedIndex =
+        mediaItems.length > 0
+            ? Math.min(currentImageIndex, mediaItems.length - 1)
+            : 0
+
+    // Fetch current media's group assignments when Analysis tab is active
+    useEffect(() => {
+        if (
+            isOpen &&
+            activeTab === 'analysis' &&
+            post &&
+            mediaItems.length > 0
+        ) {
+            const mediaId = mediaItems[boundedIndex]?.id
+            if (mediaId) {
+                fetch(`/api/gallery/media/${mediaId}/groups`)
+                    .then((res) => res.json())
+                    .then((data) =>
+                        setCurrentMediaGroupIds(data.groupIds || [])
+                    )
+                    .catch((err) =>
+                        console.error('Failed to fetch media groups:', err)
+                    )
+            }
+        }
+    }, [isOpen, activeTab, post, boundedIndex, mediaItems])
 
     if (!post) return null
 
@@ -134,15 +190,14 @@ export function InstagramPostDialog({
     }
 
     const isCarousel = mediaItems.length > 1
-
-    const boundedIndex =
-        mediaItems.length > 0
-            ? Math.min(currentImageIndex, mediaItems.length - 1)
-            : 0
     const currentMedia = mediaItems[boundedIndex] ?? post.media
 
     return (
-        <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+        <Dialog
+            key={post.id}
+            open={isOpen}
+            onOpenChange={(open) => !open && onClose()}
+        >
             <DialogContent
                 size='xl'
                 className='max-h-[95vh] max-w-7xl gap-0 overflow-hidden p-0'
@@ -221,128 +276,233 @@ export function InstagramPostDialog({
                     <div className='bg-background flex h-full w-full flex-col overflow-hidden'>
                         {/* Header with profile info */}
                         {profile && (
-                            <div className='flex items-center gap-3 border-b px-4 py-4'>
-                                {profile.profilePictureUrl ? (
-                                    <div className='relative h-8 w-8 overflow-hidden rounded-full border'>
-                                        <Image
-                                            src={profile.profilePictureUrl}
-                                            alt={profile.handle || 'Profile'}
-                                            fill
-                                            className='object-cover'
-                                        />
+                            <div className='flex items-center justify-between gap-3 border-b px-4 py-4'>
+                                <div className='flex items-center gap-3'>
+                                    {profile.profilePictureUrl ? (
+                                        <div className='relative h-8 w-8 overflow-hidden rounded-full border'>
+                                            <Image
+                                                src={profile.profilePictureUrl}
+                                                alt={
+                                                    profile.handle || 'Profile'
+                                                }
+                                                fill
+                                                className='object-cover'
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className='bg-muted h-8 w-8 rounded-full' />
+                                    )}
+                                    <div className='flex flex-col'>
+                                        <span className='text-sm font-semibold'>
+                                            {profile.handle}
+                                        </span>
                                     </div>
-                                ) : (
-                                    <div className='bg-muted h-8 w-8 rounded-full' />
-                                )}
-                                <div className='flex flex-col'>
-                                    <span className='text-sm font-semibold'>
-                                        {profile.handle}
-                                    </span>
                                 </div>
+                                {post.analysisStatus !== 'pending' && (
+                                    <Badge
+                                        variant='secondary'
+                                        className='gap-1'
+                                    >
+                                        <Sparkles className='h-3 w-3' />
+                                        {post.analysisStatus}
+                                    </Badge>
+                                )}
                             </div>
                         )}
 
-                        {/* Caption - scrollable */}
-                        <div className='flex-1 overflow-auto p-4'>
-                            {post.caption ? (
-                                <p className='text-sm leading-relaxed whitespace-pre-wrap'>
-                                    {formatCaptionWithHashtags(post.caption)}
-                                </p>
-                            ) : (
-                                <p className='text-muted-foreground text-sm'>
-                                    No caption
-                                </p>
-                            )}
-                        </div>
+                        {/* Tabs for Details and Analysis */}
+                        <Tabs
+                            value={activeTab}
+                            onValueChange={setActiveTab}
+                            className='flex h-full flex-col'
+                        >
+                            <TabsList className='w-full justify-start rounded-none border-b px-4'>
+                                <TabsTrigger value='details'>
+                                    Details
+                                </TabsTrigger>
+                                {post.analysisStatus !== 'pending' && (
+                                    <TabsTrigger value='analysis'>
+                                        <Sparkles className='mr-1.5 h-3 w-3' />
+                                        Analysis
+                                    </TabsTrigger>
+                                )}
+                            </TabsList>
 
-                        {/* Stats: Likes, plays, timestamp */}
-                        <div className='border-t px-4 py-3'>
-                            <div className='mb-2 flex items-center justify-between'>
-                                <div className='flex gap-4'>
-                                    <p className='text-sm font-semibold'>
-                                        {formatNumber(post.likeCount)} likes
-                                    </p>
-                                    <p className='text-sm font-semibold'>
-                                        {formatNumber(post.commentCount)}{' '}
-                                        comments
+                            {/* Details Tab */}
+                            <TabsContent
+                                value='details'
+                                className='m-0 flex h-full flex-col overflow-hidden'
+                            >
+                                {/* Caption - scrollable */}
+                                <div className='flex-1 overflow-auto p-4'>
+                                    {post.caption ? (
+                                        <p className='text-sm leading-relaxed whitespace-pre-wrap'>
+                                            {formatCaptionWithHashtags(
+                                                post.caption
+                                            )}
+                                        </p>
+                                    ) : (
+                                        <p className='text-muted-foreground text-sm'>
+                                            No caption
+                                        </p>
+                                    )}
+                                </div>
+
+                                {/* Stats: Likes, plays, timestamp */}
+                                <div className='border-t px-4 py-3'>
+                                    <div className='mb-2 flex items-center justify-between'>
+                                        <div className='flex gap-4'>
+                                            <p className='text-sm font-semibold'>
+                                                {formatNumber(post.likeCount)}{' '}
+                                                likes
+                                            </p>
+                                            <p className='text-sm font-semibold'>
+                                                {formatNumber(
+                                                    post.commentCount
+                                                )}{' '}
+                                                comments
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {post.playCount !== null && (
+                                        <p className='text-muted-foreground text-xs'>
+                                            {formatNumber(post.playCount)} plays
+                                        </p>
+                                    )}
+                                    <p className='text-muted-foreground mt-1 text-xs uppercase'>
+                                        {formatRelativeTime(
+                                            new Date(post.takenAt)
+                                        )}
                                     </p>
                                 </div>
-                            </div>
 
-                            {post.playCount !== null && (
-                                <p className='text-muted-foreground text-xs'>
-                                    {formatNumber(post.playCount)} plays
-                                </p>
+                                {/* Admin actions */}
+                                <div className='flex flex-col gap-2 border-t px-4 py-4'>
+                                    <div className='grid grid-cols-2 gap-2'>
+                                        <Button
+                                            variant={
+                                                post.isPublished
+                                                    ? 'outline'
+                                                    : 'default'
+                                            }
+                                            size='sm'
+                                            onClick={handleTogglePublished}
+                                            disabled={isPending}
+                                            className='w-full'
+                                        >
+                                            {post.isPublished ? (
+                                                <>
+                                                    <EyeOff className='mr-1.5 h-4 w-4' />
+                                                    Unpublish
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Eye className='mr-1.5 h-4 w-4' />
+                                                    Publish
+                                                </>
+                                            )}
+                                        </Button>
+                                        <Button
+                                            variant={
+                                                post.isFeatured
+                                                    ? 'outline'
+                                                    : 'secondary'
+                                            }
+                                            size='sm'
+                                            onClick={handleToggleFeatured}
+                                            disabled={isPending}
+                                            className='w-full'
+                                        >
+                                            {post.isFeatured ? (
+                                                <>
+                                                    <StarOff className='mr-1.5 h-4 w-4' />
+                                                    Unfeature
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Star className='mr-1.5 h-4 w-4' />
+                                                    Feature
+                                                </>
+                                            )}
+                                        </Button>
+                                    </div>
+                                    <Button
+                                        variant='outline'
+                                        size='sm'
+                                        asChild
+                                        className='w-full'
+                                    >
+                                        <a
+                                            href={post.permalink}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                        >
+                                            <ExternalLink className='mr-1.5 h-4 w-4' />
+                                            View on Instagram
+                                        </a>
+                                    </Button>
+                                </div>
+                            </TabsContent>
+
+                            {/* Analysis Tab */}
+                            {post.analysisStatus !== 'pending' && (
+                                <TabsContent
+                                    value='analysis'
+                                    className='m-0 flex-1 overflow-auto p-4'
+                                >
+                                    <div className='space-y-4'>
+                                        <div>
+                                            <h3 className='mb-2 font-semibold'>
+                                                AI Analysis Results
+                                            </h3>
+                                            {currentMedia.type === 'image' && (
+                                                <AnalysisEditForm
+                                                    key={currentMedia.id}
+                                                    mediaId={currentMedia.id}
+                                                    currentAnalysis={
+                                                        currentMedia.aiAnalysis ??
+                                                        null
+                                                    }
+                                                    currentGroupIds={
+                                                        currentMediaGroupIds
+                                                    }
+                                                    galleryGroups={groups}
+                                                    onSave={() => {
+                                                        router.refresh()
+                                                        // Re-fetch group IDs after save
+                                                        fetch(
+                                                            `/api/gallery/media/${currentMedia.id}/groups`
+                                                        )
+                                                            .then((res) =>
+                                                                res.json()
+                                                            )
+                                                            .then((data) =>
+                                                                setCurrentMediaGroupIds(
+                                                                    data.groupIds ||
+                                                                        []
+                                                                )
+                                                            )
+                                                            .catch((err) =>
+                                                                console.error(
+                                                                    'Failed to fetch updated groups:',
+                                                                    err
+                                                                )
+                                                            )
+                                                    }}
+                                                />
+                                            )}
+                                            {currentMedia.type === 'video' && (
+                                                <p className='text-muted-foreground text-sm'>
+                                                    Analysis is only available
+                                                    for images.
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </TabsContent>
                             )}
-                            <p className='text-muted-foreground mt-1 text-xs uppercase'>
-                                {formatRelativeTime(new Date(post.takenAt))}
-                            </p>
-                        </div>
-
-                        {/* Admin actions */}
-                        <div className='flex flex-col gap-2 border-t px-4 py-4'>
-                            <div className='grid grid-cols-2 gap-2'>
-                                <Button
-                                    variant={
-                                        post.isPublished ? 'outline' : 'default'
-                                    }
-                                    size='sm'
-                                    onClick={handleTogglePublished}
-                                    disabled={isPending}
-                                    className='w-full'
-                                >
-                                    {post.isPublished ? (
-                                        <>
-                                            <EyeOff className='mr-1.5 h-4 w-4' />
-                                            Unpublish
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Eye className='mr-1.5 h-4 w-4' />
-                                            Publish
-                                        </>
-                                    )}
-                                </Button>
-                                <Button
-                                    variant={
-                                        post.isFeatured
-                                            ? 'outline'
-                                            : 'secondary'
-                                    }
-                                    size='sm'
-                                    onClick={handleToggleFeatured}
-                                    disabled={isPending}
-                                    className='w-full'
-                                >
-                                    {post.isFeatured ? (
-                                        <>
-                                            <StarOff className='mr-1.5 h-4 w-4' />
-                                            Unfeature
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Star className='mr-1.5 h-4 w-4' />
-                                            Feature
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                asChild
-                                className='w-full'
-                            >
-                                <a
-                                    href={post.permalink}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <ExternalLink className='mr-1.5 h-4 w-4' />
-                                    View on Instagram
-                                </a>
-                            </Button>
-                        </div>
+                        </Tabs>
                     </div>
                 </div>
             </DialogContent>

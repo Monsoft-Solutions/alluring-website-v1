@@ -22,7 +22,7 @@ import { coreGenerateObject } from '../core'
  * Default model for group suggestion
  * Uses a cost-effective model since this is text-only
  */
-const DEFAULT_SUGGESTION_MODEL_ID = 'gpt-4.1'
+const DEFAULT_SUGGESTION_MODEL_ID = 'gpt-4.1-mini'
 
 /**
  * Options for group suggestion

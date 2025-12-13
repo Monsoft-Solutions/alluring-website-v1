@@ -9,6 +9,7 @@ export {
 // Instagram Post
 export {
     instagramMediaType,
+    instagramAnalysisStatus,
     instagramPost,
     type InstagramPost,
     type InsertInstagramPost,

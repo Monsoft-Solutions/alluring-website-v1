@@ -12,11 +12,18 @@ import {
     instagramPostMedia,
     galleryMedia,
 } from '@workspace/db/schema'
+import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import { and, asc, count, desc, eq, inArray } from 'drizzle-orm'
 
 // ============================================================================
 // Types
 // ============================================================================
+
+export type InstagramAnalysisStatus =
+    | 'pending'
+    | 'analyzed'
+    | 'reviewed'
+    | 'applied'
 
 export type InstagramPostListItem = {
     id: string
@@ -31,12 +38,14 @@ export type InstagramPostListItem = {
     playCount: number | null
     isPublished: boolean
     isFeatured: boolean
+    analysisStatus: InstagramAnalysisStatus
     createdAt: Date
     media: {
         id: string
         url: string
         thumbnailUrl: string | null
         type: 'image' | 'video'
+        aiAnalysis?: GalleryMediaAIAnalysis | null
     }
     carouselCount?: number
     carouselMedia?: Array<{
@@ -44,6 +53,7 @@ export type InstagramPostListItem = {
         url: string
         type: 'image' | 'video'
         displayOrder: number
+        aiAnalysis?: GalleryMediaAIAnalysis | null
     }>
 }
 
@@ -53,12 +63,20 @@ export type InstagramPostSortDirection = 'asc' | 'desc'
 
 export type InstagramMediaTypeFilter = 'all' | 'image' | 'video' | 'carousel'
 
+export type InstagramAnalysisStatusFilter =
+    | 'all'
+    | 'pending'
+    | 'analyzed'
+    | 'reviewed'
+    | 'applied'
+
 export type InstagramPostWithMedia = InstagramPostListItem & {
     carouselMedia: Array<{
         id: string
         url: string
         type: 'image' | 'video'
         displayOrder: number
+        aiAnalysis?: GalleryMediaAIAnalysis | null
     }>
 }
 
@@ -101,6 +119,7 @@ export async function getInstagramPosts(options: {
     sortBy?: InstagramPostSortBy
     sortDirection?: InstagramPostSortDirection
     mediaType?: InstagramMediaTypeFilter
+    analysisStatus?: InstagramAnalysisStatusFilter
 }): Promise<{ posts: InstagramPostListItem[]; total: number }> {
     const {
         page = 1,
@@ -110,6 +129,7 @@ export async function getInstagramPosts(options: {
         sortBy = 'date',
         sortDirection = 'desc',
         mediaType = 'all',
+        analysisStatus = 'all',
     } = options
     const offset = (page - 1) * pageSize
 
@@ -123,6 +143,9 @@ export async function getInstagramPosts(options: {
     }
     if (mediaType && mediaType !== 'all') {
         conditions.push(eq(instagramPost.mediaType, mediaType))
+    }
+    if (analysisStatus && analysisStatus !== 'all') {
+        conditions.push(eq(instagramPost.analysisStatus, analysisStatus))
     }
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined
@@ -171,11 +194,13 @@ export async function getInstagramPosts(options: {
             playCount: instagramPost.playCount,
             isPublished: instagramPost.isPublished,
             isFeatured: instagramPost.isFeatured,
+            analysisStatus: instagramPost.analysisStatus,
             createdAt: instagramPost.createdAt,
             mediaId: instagramPost.mediaId,
             mediaUrl: galleryMedia.url,
             mediaThumbnailUrl: galleryMedia.thumbnailUrl,
             mediaTypeGallery: galleryMedia.type,
+            mediaAiAnalysis: galleryMedia.aiAnalysis,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -203,6 +228,7 @@ export async function getInstagramPosts(options: {
             url: string
             type: 'image' | 'video'
             displayOrder: number
+            aiAnalysis?: GalleryMediaAIAnalysis | null
         }>
     > = {}
     if (carouselPostIds.length > 0) {
@@ -230,6 +256,7 @@ export async function getInstagramPosts(options: {
                 displayOrder: instagramPostMedia.displayOrder,
                 url: galleryMedia.url,
                 type: galleryMedia.type,
+                aiAnalysis: galleryMedia.aiAnalysis,
             })
             .from(instagramPostMedia)
             .innerJoin(
@@ -250,6 +277,7 @@ export async function getInstagramPosts(options: {
                     url: item.url,
                     type: item.type,
                     displayOrder: item.displayOrder,
+                    aiAnalysis: item.aiAnalysis,
                 })
 
                 return acc
@@ -261,6 +289,7 @@ export async function getInstagramPosts(options: {
                     url: string
                     type: 'image' | 'video'
                     displayOrder: number
+                    aiAnalysis?: GalleryMediaAIAnalysis | null
                 }>
             >
         )
@@ -280,12 +309,14 @@ export async function getInstagramPosts(options: {
             playCount: p.playCount,
             isPublished: p.isPublished,
             isFeatured: p.isFeatured,
+            analysisStatus: p.analysisStatus,
             createdAt: p.createdAt,
             media: {
                 id: p.mediaId,
                 url: p.mediaUrl,
                 thumbnailUrl: p.mediaThumbnailUrl,
                 type: p.mediaTypeGallery,
+                aiAnalysis: p.mediaAiAnalysis,
             },
             carouselCount: carouselCounts[p.id],
             carouselMedia:
@@ -317,11 +348,13 @@ export async function getInstagramPostById(
             playCount: instagramPost.playCount,
             isPublished: instagramPost.isPublished,
             isFeatured: instagramPost.isFeatured,
+            analysisStatus: instagramPost.analysisStatus,
             createdAt: instagramPost.createdAt,
             mediaId: instagramPost.mediaId,
             mediaUrl: galleryMedia.url,
             mediaThumbnailUrl: galleryMedia.thumbnailUrl,
             mediaTypeGallery: galleryMedia.type,
+            mediaAiAnalysis: galleryMedia.aiAnalysis,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -341,6 +374,7 @@ export async function getInstagramPostById(
                 displayOrder: instagramPostMedia.displayOrder,
                 url: galleryMedia.url,
                 type: galleryMedia.type,
+                aiAnalysis: galleryMedia.aiAnalysis,
             })
             .from(instagramPostMedia)
             .innerJoin(
@@ -355,6 +389,7 @@ export async function getInstagramPostById(
             url: item.url,
             type: item.type,
             displayOrder: item.displayOrder,
+            aiAnalysis: item.aiAnalysis,
         }))
     }
 
@@ -371,14 +406,68 @@ export async function getInstagramPostById(
         playCount: post.playCount,
         isPublished: post.isPublished,
         isFeatured: post.isFeatured,
+        analysisStatus: post.analysisStatus,
         createdAt: post.createdAt,
         media: {
             id: post.mediaId,
             url: post.mediaUrl,
             thumbnailUrl: post.mediaThumbnailUrl,
             type: post.mediaTypeGallery,
+            aiAnalysis: post.mediaAiAnalysis,
         },
         carouselMedia,
+    }
+}
+
+/**
+ * Get posts available for bulk analysis (pending status, images/carousels only)
+ */
+export async function getPostsForAnalysis(options: {
+    page?: number
+    pageSize?: number
+}): Promise<{ posts: InstagramPostListItem[]; total: number }> {
+    return getInstagramPosts({
+        ...options,
+        analysisStatus: 'pending',
+        // Note: We filter videos in the analysis action, not here
+        // This allows users to see all pending posts
+    })
+}
+
+/**
+ * Get analysis status counts for dashboard
+ */
+export async function getAnalysisStatusCounts(): Promise<{
+    pending: number
+    analyzed: number
+    reviewed: number
+    applied: number
+}> {
+    const [pendingResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(eq(instagramPost.analysisStatus, 'pending'))
+
+    const [analyzedResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(eq(instagramPost.analysisStatus, 'analyzed'))
+
+    const [reviewedResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(eq(instagramPost.analysisStatus, 'reviewed'))
+
+    const [appliedResult] = await db
+        .select({ count: count() })
+        .from(instagramPost)
+        .where(eq(instagramPost.analysisStatus, 'applied'))
+
+    return {
+        pending: pendingResult?.count ?? 0,
+        analyzed: analyzedResult?.count ?? 0,
+        reviewed: reviewedResult?.count ?? 0,
+        applied: appliedResult?.count ?? 0,
     }
 }
 

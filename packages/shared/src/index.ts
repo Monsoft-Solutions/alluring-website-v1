@@ -14,6 +14,9 @@ export {
     type DynamicTagPrefix,
 } from './cache'
 
+// Utilities
+export { runWithConcurrency } from './utils'
+
 // Gallery schemas
 export {
     // Const arrays

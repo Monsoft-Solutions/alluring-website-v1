@@ -5,6 +5,8 @@ import { blogPost, images } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import { requireAuth } from '@/lib/utils/auth.util'
+
 export type BlogPostFormData = {
     title: string
     slug: string
@@ -29,6 +31,8 @@ export async function createBlogPost(
     data: BlogPostFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.title?.trim()) {
             return { success: false, error: 'Title is required' }
@@ -97,6 +101,11 @@ export async function createBlogPost(
         return { success: true, id: newPost?.id }
     } catch (error) {
         console.error('Error creating blog post:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -112,6 +121,8 @@ export async function updateBlogPost(
     data: BlogPostFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.title?.trim()) {
             return { success: false, error: 'Title is required' }
@@ -214,6 +225,11 @@ export async function updateBlogPost(
         return { success: true, id }
     } catch (error) {
         console.error('Error updating blog post:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -226,6 +242,8 @@ export async function updateBlogPost(
 
 export async function deleteBlogPost(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Fetch the post to get featuredImageId before deletion
         const [existingPost] = await db
             .select({ featuredImageId: blogPost.featuredImageId })
@@ -249,6 +267,11 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
         return { success: true }
     } catch (error) {
         console.error('Error deleting blog post:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -264,6 +287,8 @@ export async function updateBlogPostStatus(
     status: 'draft' | 'readyToPublish' | 'published'
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const currentPost = await db
             .select({ status: blogPost.status })
             .from(blogPost)
@@ -293,6 +318,11 @@ export async function updateBlogPostStatus(
         return { success: true }
     } catch (error) {
         console.error('Error updating post status:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:

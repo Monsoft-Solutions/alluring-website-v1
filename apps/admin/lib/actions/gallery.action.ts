@@ -17,6 +17,7 @@ import {
     getAllGalleryTags,
     CACHE_TAGS,
 } from '@/lib/utils/revalidate-web.util'
+import { requireAuth } from '@/lib/utils/auth.util'
 
 // ============================================================================
 // Types
@@ -80,6 +81,8 @@ export async function createGalleryMedia(
     data: GalleryMediaFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.title?.trim()) {
             return { success: false, error: 'Title is required' }
@@ -152,6 +155,10 @@ export async function createGalleryMedia(
 
         return { success: true, id: newMedia?.id }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error creating gallery media:', error)
         return {
             success: false,
@@ -168,6 +175,8 @@ export async function updateGalleryMedia(
     data: GalleryMediaFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.title?.trim()) {
             return { success: false, error: 'Title is required' }
@@ -276,6 +285,10 @@ export async function updateGalleryMedia(
 
         return { success: true, id }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating gallery media:', error)
         return {
             success: false,
@@ -289,6 +302,8 @@ export async function updateGalleryMedia(
 
 export async function deleteGalleryMedia(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get the media to retrieve the URL for blob deletion and slug for cache invalidation
         const [media] = await db
             .select({ url: galleryMedia.url, slug: galleryMedia.slug })
@@ -326,6 +341,10 @@ export async function deleteGalleryMedia(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error deleting gallery media:', error)
         return {
             success: false,
@@ -342,6 +361,8 @@ export async function updateMediaStatus(
     status: 'draft' | 'published' | 'archived'
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const currentMedia = await db
             .select({ status: galleryMedia.status, slug: galleryMedia.slug })
             .from(galleryMedia)
@@ -379,6 +400,10 @@ export async function updateMediaStatus(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating media status:', error)
         return {
             success: false,
@@ -395,6 +420,8 @@ export async function toggleMediaFeatured(
     isFeatured: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get slug for cache invalidation
         const [media] = await db
             .select({ slug: galleryMedia.slug })
@@ -419,6 +446,10 @@ export async function toggleMediaFeatured(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling featured status:', error)
         return {
             success: false,
@@ -434,6 +465,8 @@ export async function reorderMedia(
     mediaOrders: { id: string; displayOrder: number }[]
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db.transaction(async (tx) => {
             for (const { id, displayOrder } of mediaOrders) {
                 await tx
@@ -451,6 +484,10 @@ export async function reorderMedia(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error reordering media:', error)
         return {
             success: false,
@@ -470,6 +507,8 @@ export async function createGalleryGroup(
     data: GalleryGroupFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.name?.trim()) {
             return { success: false, error: 'Name is required' }
@@ -520,6 +559,10 @@ export async function createGalleryGroup(
 
         return { success: true, id: newGroup?.id }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error creating gallery group:', error)
         return {
             success: false,
@@ -536,6 +579,8 @@ export async function updateGalleryGroup(
     data: GalleryGroupFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.name?.trim()) {
             return { success: false, error: 'Name is required' }
@@ -595,6 +640,10 @@ export async function updateGalleryGroup(
 
         return { success: true, id }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating gallery group:', error)
         return {
             success: false,
@@ -608,6 +657,8 @@ export async function updateGalleryGroup(
 
 export async function deleteGalleryGroup(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get slug for cache invalidation before deletion
         const [group] = await db
             .select({ slug: galleryGroup.slug })
@@ -632,6 +683,10 @@ export async function deleteGalleryGroup(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error deleting gallery group:', error)
         return {
             success: false,
@@ -648,6 +703,8 @@ export async function toggleGroupVisibility(
     isVisible: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get slug for cache invalidation
         const [group] = await db
             .select({ slug: galleryGroup.slug })
@@ -672,6 +729,10 @@ export async function toggleGroupVisibility(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling group visibility:', error)
         return {
             success: false,
@@ -687,6 +748,8 @@ export async function reorderGroups(
     groupOrders: { id: string; displayOrder: number }[]
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db.transaction(async (tx) => {
             for (const { id, displayOrder } of groupOrders) {
                 await tx
@@ -704,6 +767,10 @@ export async function reorderGroups(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error reordering groups:', error)
         return {
             success: false,
@@ -723,6 +790,8 @@ export async function createBeforeAfterPair(
     data: BeforeAfterPairFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.beforeMediaId?.trim()) {
             return { success: false, error: 'Before image is required' }
@@ -776,6 +845,10 @@ export async function createBeforeAfterPair(
 
         return { success: true, id: newPair?.id }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error creating before/after pair:', error)
         return {
             success: false,
@@ -792,6 +865,8 @@ export async function updateBeforeAfterPair(
     data: BeforeAfterPairFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.beforeMediaId?.trim()) {
             return { success: false, error: 'Before image is required' }
@@ -867,6 +942,10 @@ export async function updateBeforeAfterPair(
 
         return { success: true, id }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating before/after pair:', error)
         return {
             success: false,
@@ -880,6 +959,8 @@ export async function updateBeforeAfterPair(
 
 export async function deleteBeforeAfterPair(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get the pair to clear media associations
         const pair = await db
             .select({
@@ -918,6 +999,10 @@ export async function deleteBeforeAfterPair(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error deleting before/after pair:', error)
         return {
             success: false,
@@ -934,6 +1019,8 @@ export async function togglePairFeatured(
     isFeatured: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(beforeAfterPair)
             .set({ isFeatured })
@@ -947,6 +1034,10 @@ export async function togglePairFeatured(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling pair featured status:', error)
         return {
             success: false,
@@ -962,6 +1053,8 @@ export async function reorderPairs(
     pairOrders: { id: string; displayOrder: number }[]
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db.transaction(async (tx) => {
             for (const { id, displayOrder } of pairOrders) {
                 await tx
@@ -979,6 +1072,10 @@ export async function reorderPairs(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error reordering pairs:', error)
         return {
             success: false,

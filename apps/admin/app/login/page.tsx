@@ -101,7 +101,7 @@ function LoginForm() {
 
             <Button
                 type='submit'
-                className='w-full'
+                className='w-full rounded bg-stone-900 px-4 py-2 text-white disabled:opacity-50'
                 disabled={isPending || !password}
             >
                 {isPending ? (
