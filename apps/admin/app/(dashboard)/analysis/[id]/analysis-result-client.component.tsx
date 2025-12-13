@@ -41,6 +41,8 @@ export function AnalysisResultClient({
         nonBAGroupAssignments: Map<string, string[]>
         selectedNonBAMediaIds: Set<string>
     }) => {
+        if (!analysis.resultData) return
+
         startTransition(async () => {
             try {
                 // Build pairs to create with group assignments
@@ -206,7 +208,7 @@ export function AnalysisResultClient({
     return (
         <>
             <AnalysisResult
-                analysisResult={analysis.resultData}
+                analysisResult={analysis.resultData!}
                 galleryGroups={galleryGroups}
                 onApply={handleApply}
                 isApplying={isPending}

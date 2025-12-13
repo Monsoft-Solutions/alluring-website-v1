@@ -61,7 +61,7 @@ export type AnalysisListItem = {
  * Analysis detail for the result page
  */
 export type AnalysisDetail = MediaAnalysis & {
-    resultData: BulkAnalysisResult
+    resultData: BulkAnalysisResult | null
     status: 'pending' | 'analyzing' | 'completed' | 'applied' | 'failed'
 }
 
@@ -160,16 +160,11 @@ export async function getAnalysisById(
         return null
     }
 
-    // Cast to AnalysisDetail which includes all possible status values
     return {
         ...analysis,
-        status: analysis.status as
-            | 'pending'
-            | 'analyzing'
-            | 'completed'
-            | 'applied'
-            | 'failed',
-    } as AnalysisDetail
+        resultData: analysis.resultData,
+        status: analysis.status,
+    }
 }
 
 /**
