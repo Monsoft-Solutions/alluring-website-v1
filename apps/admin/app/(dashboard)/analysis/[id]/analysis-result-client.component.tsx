@@ -41,12 +41,13 @@ export function AnalysisResultClient({
         nonBAGroupAssignments: Map<string, string[]>
         selectedNonBAMediaIds: Set<string>
     }) => {
-        if (!analysis.resultData) return
+        const resultData = analysis.resultData
+        if (!resultData) return
 
         startTransition(async () => {
             try {
                 // Build pairs to create with group assignments
-                const pairs = analysis.resultData.detectedPairs.map((pair) => ({
+                const pairs = resultData.detectedPairs.map((pair) => ({
                     beforeMediaId: pair.beforeMediaId,
                     afterMediaId: pair.afterMediaId,
                     procedureSlug: pair.procedureSlug,
@@ -61,7 +62,7 @@ export function AnalysisResultClient({
 
                 // Add pair group assignments
                 data.pairGroupAssignments.forEach((groupIds, pairId) => {
-                    const pair = analysis.resultData.detectedPairs.find(
+                    const pair = resultData.detectedPairs.find(
                         (p) => p.id === pairId
                     )
                     if (pair && groupIds.length > 0) {
@@ -102,7 +103,7 @@ export function AnalysisResultClient({
 
                 // Build mediaId -> postId lookup map from analyzedPosts
                 const mediaIdToPostId = new Map<string, string>()
-                for (const post of analysis.resultData.analyzedPosts) {
+                for (const post of resultData.analyzedPosts) {
                     // Type assertion for post structure
                     const typedPost = post as {
                         postId: string
@@ -125,7 +126,7 @@ export function AnalysisResultClient({
 
                 // Extract post IDs from detectedPairs using the lookup map
                 const pairedPostIds = new Set<string>()
-                for (const pair of analysis.resultData.detectedPairs) {
+                for (const pair of resultData.detectedPairs) {
                     const beforePostId = mediaIdToPostId.get(pair.beforeMediaId)
                     const afterPostId = mediaIdToPostId.get(pair.afterMediaId)
                     if (beforePostId) pairedPostIds.add(beforePostId)
@@ -136,10 +137,8 @@ export function AnalysisResultClient({
                 const postIds = Array.from(
                     new Set([
                         ...pairedPostIds,
-                        ...analysis.resultData.unpairedMedia.map(
-                            (m) => m.postId
-                        ),
-                        ...analysis.resultData.nonBAMedia.map((m) => m.postId),
+                        ...resultData.unpairedMedia.map((m) => m.postId),
+                        ...resultData.nonBAMedia.map((m) => m.postId),
                     ])
                 )
 
@@ -154,7 +153,7 @@ export function AnalysisResultClient({
                     await updateAnalysisStatus(analysis.id, 'applied')
 
                     const totalMedia =
-                        analysis.resultData.unpairedMedia.length +
+                        resultData.unpairedMedia.length +
                         data.selectedNonBAMediaIds.size
                     toast.success(
                         `Created ${pairs.length} B&A pairs and assigned ${totalMedia} media items to groups`
