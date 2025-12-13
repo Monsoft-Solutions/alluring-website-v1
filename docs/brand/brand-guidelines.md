@@ -436,7 +436,7 @@ PostgreSQL + Drizzle ORM + TypeScript.
 
 ### Internal
 
-- Template: github.com/Monsoft-Solutions/website-template-v2
+- Template: github.com/Monsoft-Solutions/alluring-website-v1
 - Documentation: `/docs` folder
 - AI Agents: `.cursor/rules` folder
 
