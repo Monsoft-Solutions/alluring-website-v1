@@ -20,6 +20,20 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl)
     }
 
+    // Validate cookie format (must be base64 encoded 'admin:timestamp')
+    try {
+        const decoded = Buffer.from(authCookie.value, 'base64').toString()
+        if (!decoded.startsWith('admin:')) {
+            const loginUrl = new URL('/login', request.url)
+            loginUrl.searchParams.set('redirect', pathname)
+            return NextResponse.redirect(loginUrl)
+        }
+    } catch {
+        const loginUrl = new URL('/login', request.url)
+        loginUrl.searchParams.set('redirect', pathname)
+        return NextResponse.redirect(loginUrl)
+    }
+
     return NextResponse.next()
 }
 

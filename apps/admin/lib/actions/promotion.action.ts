@@ -9,6 +9,7 @@ import {
     revalidateWebAppCache,
     getAllPromotionCacheTags,
 } from '@/lib/utils/revalidate-web.util'
+import { requireAuth } from '@/lib/utils/auth.util'
 
 export type PromotionFormData = {
     title: string
@@ -48,6 +49,8 @@ export async function createPromotion(
     data: PromotionFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.title?.trim()) {
             return { success: false, error: 'Title is required' }
@@ -115,6 +118,11 @@ export async function createPromotion(
         return { success: true, id: newPromotion?.id }
     } catch (error) {
         console.error('Error creating promotion:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -133,6 +141,8 @@ export async function updatePromotion(
     data: PromotionFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.title?.trim()) {
             return { success: false, error: 'Title is required' }
@@ -218,6 +228,11 @@ export async function updatePromotion(
         return { success: true, id }
     } catch (error) {
         console.error('Error updating promotion:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -233,6 +248,8 @@ export async function updatePromotion(
  */
 export async function deletePromotion(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get the promotion slug before deleting for cache invalidation
         const currentPromotion = await db
             .select({ slug: promotion.slug })
@@ -258,6 +275,11 @@ export async function deletePromotion(id: string): Promise<ActionResult> {
         return { success: true }
     } catch (error) {
         console.error('Error deleting promotion:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -276,6 +298,8 @@ export async function updatePromotionStatus(
     status: 'draft' | 'scheduled' | 'active' | 'paused' | 'expired'
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const currentPromotion = await db
             .select({ id: promotion.id, slug: promotion.slug })
             .from(promotion)
@@ -304,6 +328,11 @@ export async function updatePromotionStatus(
         return { success: true }
     } catch (error) {
         console.error('Error updating promotion status:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -321,6 +350,8 @@ export async function incrementPromotionViews(
     id: string
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Use parameterized query for atomic increment
         await db.execute(
             sql`UPDATE promotion SET views = views + 1 WHERE id = ${id}`
@@ -329,6 +360,11 @@ export async function incrementPromotionViews(
         return { success: true }
     } catch (error) {
         console.error('Error incrementing promotion views:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -346,6 +382,8 @@ export async function incrementPromotionClicks(
     id: string
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Use parameterized query for atomic increment
         await db.execute(
             sql`UPDATE promotion SET clicks = clicks + 1 WHERE id = ${id}`
@@ -354,6 +392,11 @@ export async function incrementPromotionClicks(
         return { success: true }
     } catch (error) {
         console.error('Error incrementing promotion clicks:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:

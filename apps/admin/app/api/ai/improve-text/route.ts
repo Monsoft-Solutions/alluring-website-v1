@@ -14,6 +14,7 @@ import {
 } from '@workspace/shared/schemas/text'
 
 import { env } from '@/env'
+import { isAuthenticated } from '@/lib/utils/auth.util'
 
 /**
  * Request body schema for text improvement
@@ -32,6 +33,12 @@ type ImproveTextRequest = {
  */
 export async function POST(request: NextRequest) {
     try {
+        // Check authentication
+        const authenticated = await isAuthenticated()
+        if (!authenticated) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         // Check for OpenAI API key
         if (!env.OPENAI_API_KEY) {
             return NextResponse.json(

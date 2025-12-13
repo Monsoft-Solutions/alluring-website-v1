@@ -7,6 +7,7 @@ import {
     type InstagramPostSortBy,
     type InstagramPostSortDirection,
 } from '@/lib/queries/social-media.query'
+import { isAuthenticated } from '@/lib/utils/auth.util'
 
 const DEFAULT_PAGE = 1
 const DEFAULT_PAGE_SIZE = 20
@@ -57,6 +58,11 @@ function parseAnalysisStatus(
 }
 
 export async function GET(request: Request) {
+    const authenticated = await isAuthenticated()
+    if (!authenticated) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const { searchParams } = new URL(request.url)
 
     const page = parseNumberParam(searchParams.get('page'), {

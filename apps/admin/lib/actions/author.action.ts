@@ -5,6 +5,8 @@ import { author } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import { requireAuth } from '@/lib/utils/auth.util'
+
 export type AuthorFormData = {
     name: string
     email: string
@@ -30,6 +32,8 @@ export async function createAuthor(
     data: AuthorFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.name?.trim()) {
             return { success: false, error: 'Name is required' }
@@ -58,6 +62,10 @@ export async function createAuthor(
     } catch (error) {
         console.error('Error creating author:', error)
 
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         // Handle PostgreSQL unique constraint violation
         if (
             error instanceof Error &&
@@ -85,6 +93,8 @@ export async function updateAuthor(
     data: AuthorFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate required fields
         if (!data.name?.trim()) {
             return { success: false, error: 'Name is required' }
@@ -127,6 +137,11 @@ export async function updateAuthor(
         return { success: true, id }
     } catch (error) {
         console.error('Error updating author:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -139,6 +154,8 @@ export async function updateAuthor(
 
 export async function deleteAuthor(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db.delete(author).where(eq(author.id, id))
 
         revalidatePath('/blog/authors')
@@ -146,6 +163,11 @@ export async function deleteAuthor(id: string): Promise<ActionResult> {
         return { success: true }
     } catch (error) {
         console.error('Error deleting author:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -158,6 +180,8 @@ export async function deleteAuthor(id: string): Promise<ActionResult> {
 
 export async function toggleAuthorStatus(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const currentAuthor = await db
             .select({ isActive: author.isActive })
             .from(author)
@@ -178,6 +202,11 @@ export async function toggleAuthorStatus(id: string): Promise<ActionResult> {
         return { success: true }
     } catch (error) {
         console.error('Error toggling author status:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:

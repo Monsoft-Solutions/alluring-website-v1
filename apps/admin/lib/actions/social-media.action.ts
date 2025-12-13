@@ -17,6 +17,7 @@ import {
 import { eq, inArray } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import { requireAuth } from '@/lib/utils/auth.util'
 import {
     fetchInstagramPosts,
     parseInstagramPosts,
@@ -79,6 +80,12 @@ type PostProcessResult = {
  * Get or create Instagram settings
  */
 export async function getInstagramSettings() {
+    try {
+        await requireAuth()
+    } catch {
+        return null
+    }
+
     const settings = await db
         .select()
         .from(socialMediaSettings)
@@ -96,6 +103,8 @@ export async function getInstagramSettings() {
  */
 export async function syncInstagramProfile(): Promise<ProfileSyncResult> {
     try {
+        await requireAuth()
+
         // Get settings
         const settings = await getInstagramSettings()
 
@@ -174,6 +183,10 @@ export async function syncInstagramProfile(): Promise<ProfileSyncResult> {
             profileData,
         }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error syncing Instagram profile:', error)
         return {
             success: false,
@@ -192,6 +205,8 @@ export async function updateInstagramSettings(
     data: InstagramSettingsInput
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const existing = await db
             .select()
             .from(socialMediaSettings)
@@ -234,6 +249,10 @@ export async function updateInstagramSettings(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating Instagram settings:', error)
         return {
             success: false,
@@ -330,6 +349,13 @@ async function downloadPostMedia(post: ParsedInstagramPost): Promise<{
             )
             thumbnailBlobUrl = thumbnailMedia.url
         } catch (thumbError) {
+            if (
+                thumbError instanceof Error &&
+                thumbError.message === 'Unauthorized'
+            ) {
+                throw thumbError
+            }
+
             console.error(
                 `Failed to upload thumbnail for ${post.code}:`,
                 thumbError
@@ -815,6 +841,21 @@ export async function syncInstagramPosts(
 ): Promise<SyncResult> {
     const { resetCursor = false } = options ?? {}
 
+    // Check authentication first
+    try {
+        await requireAuth()
+    } catch {
+        return {
+            success: false,
+            newPostsCount: 0,
+            skippedCount: 0,
+            errorCount: 0,
+            errors: ['Unauthorized'],
+            nextCursor: null,
+            hasMore: false,
+        }
+    }
+
     const syncResult: SyncResult = {
         success: false,
         newPostsCount: 0,
@@ -892,6 +933,16 @@ export async function syncInstagramPosts(
 
         return syncResult
     } catch (syncError) {
+        if (
+            syncError instanceof Error &&
+            syncError.message === 'Unauthorized'
+        ) {
+            return {
+                ...syncResult,
+                errors: ['Unauthorized'],
+            }
+        }
+
         console.error('Error syncing Instagram posts:', syncError)
         return {
             ...syncResult,
@@ -909,6 +960,8 @@ export async function syncInstagramPosts(
  */
 export async function resetInstagramSyncCursor(): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(socialMediaSettings)
             .set({
@@ -921,6 +974,10 @@ export async function resetInstagramSyncCursor(): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error resetting sync cursor:', error)
         return {
             success: false,
@@ -940,6 +997,8 @@ export async function toggleInstagramPostPublished(
     isPublished: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(instagramPost)
             .set({ isPublished })
@@ -949,6 +1008,10 @@ export async function toggleInstagramPostPublished(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling post published status:', error)
         return {
             success: false,
@@ -968,6 +1031,8 @@ export async function toggleInstagramPostFeatured(
     isFeatured: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(instagramPost)
             .set({ isFeatured })
@@ -977,6 +1042,10 @@ export async function toggleInstagramPostFeatured(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error toggling post featured status:', error)
         return {
             success: false,

@@ -9,6 +9,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { db } from '@workspace/db/client'
 import { chatMessage, chatSession } from '@workspace/db/schema/chat'
 import { eq, sql } from 'drizzle-orm'
+import { isAuthenticated } from '@/lib/utils/auth.util'
 
 /**
  * POST /api/chat/respond
@@ -17,6 +18,11 @@ import { eq, sql } from 'drizzle-orm'
  */
 export async function POST(request: NextRequest) {
     try {
+        const authenticated = await isAuthenticated()
+        if (!authenticated) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         const body = await request.json()
         const { sessionId, message, adminName } = body as {
             sessionId: string

@@ -17,6 +17,7 @@ import {
     beforeAfterPair,
     galleryGroup,
 } from '@workspace/db/schema'
+import { requireAuth } from '@/lib/utils/auth.util'
 import type {
     GalleryMediaAIAnalysis,
     AvailableGroup,
@@ -601,6 +602,13 @@ async function initializeAnalysisRecord(
             analysisId: createAnalysisResult.data.id,
         }
     } catch (analysisError) {
+        if (
+            analysisError instanceof Error &&
+            analysisError.message === 'Unauthorized'
+        ) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error creating analysis record:', analysisError)
         return {
             success: false,
@@ -823,6 +831,29 @@ async function finalizeAnalysisRecord(
 export async function analyzeInstagramPosts(
     postIds: string[]
 ): Promise<BulkAnalysisResult & { analysisId?: string }> {
+    // Check authentication first
+    try {
+        await requireAuth()
+    } catch {
+        return {
+            success: false,
+            analyzedPosts: [],
+            detectedPairs: [],
+            unpairedMedia: [],
+            nonBAMedia: [],
+            stats: {
+                totalPosts: 0,
+                totalMedia: 0,
+                analyzedMedia: 0,
+                failedMedia: 0,
+                sideBySideCount: 0,
+                pairedCount: 0,
+                unpairedCount: 0,
+            },
+            error: 'Unauthorized',
+        }
+    }
+
     const analysisResult: BulkAnalysisResult & { analysisId?: string } = {
         success: false,
         analyzedPosts: [],
@@ -893,6 +924,16 @@ export async function analyzeInstagramPosts(
 
         return analysisResult
     } catch (analysisError) {
+        if (
+            analysisError instanceof Error &&
+            analysisError.message === 'Unauthorized'
+        ) {
+            return {
+                ...analysisResult,
+                error: 'Unauthorized',
+            }
+        }
+
         console.error('Error in bulk analysis:', analysisError)
 
         // Update analysis record as failed
@@ -1039,6 +1080,8 @@ export async function applyAnalysisResults(
     input: ApplyAnalysisInput
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get all visible gallery groups to map procedure slugs to group IDs
         const groups = await db
             .select({
@@ -1071,6 +1114,13 @@ export async function applyAnalysisResults(
 
         return { success: true }
     } catch (applyError) {
+        if (
+            applyError instanceof Error &&
+            applyError.message === 'Unauthorized'
+        ) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error applying analysis results:', applyError)
         return {
             success: false,
@@ -1090,6 +1140,8 @@ export async function updateAnalysisStatus(
     status: 'pending' | 'analyzed' | 'reviewed' | 'applied'
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         if (postIds.length === 0) {
             return { success: false, error: 'No posts specified' }
         }
@@ -1103,6 +1155,10 @@ export async function updateAnalysisStatus(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating analysis status:', error)
         return {
             success: false,
@@ -1136,6 +1192,8 @@ export async function updateMediaAnalysis(
     input: UpdateAnalysisInput
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Get current media
         const [media] = await db
             .select()
@@ -1201,6 +1259,10 @@ export async function updateMediaAnalysis(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating media analysis:', error)
         return {
             success: false,

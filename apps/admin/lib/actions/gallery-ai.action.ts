@@ -17,6 +17,7 @@ import {
 import { eq } from 'drizzle-orm'
 
 import { getGalleryGroupsForAI } from '@/lib/queries/gallery.query'
+import { requireAuth } from '@/lib/utils/auth.util'
 
 // ============================================================================
 // Types
@@ -69,6 +70,8 @@ export async function analyzeGalleryMediaImage(
     mediaId?: string
 ): Promise<AnalyzeResult> {
     try {
+        await requireAuth()
+
         // Validate input
         if (!imageUrl?.trim()) {
             return { success: false, error: 'Image URL is required' }
@@ -95,6 +98,10 @@ export async function analyzeGalleryMediaImage(
 
         return { success: true, analysis }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error analyzing gallery image:', error)
         return {
             success: false,
@@ -138,6 +145,10 @@ export async function saveGalleryMediaAnalysis(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error saving gallery analysis:', error)
         return {
             success: false,
@@ -168,6 +179,8 @@ export async function generateGalleryMediaSEOContent(
     currentTitle?: string
 ): Promise<SEOContentResult> {
     try {
+        await requireAuth()
+
         if (!mediaId?.trim()) {
             return { success: false, error: 'Media ID is required' }
         }
@@ -201,6 +214,10 @@ export async function generateGalleryMediaSEOContent(
 
         return { success: true, content }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error generating SEO content:', error)
         return {
             success: false,
@@ -227,6 +244,8 @@ export async function generateSEOContentFromAnalysis(
     currentTitle?: string
 ): Promise<SEOContentResult> {
     try {
+        await requireAuth()
+
         const content = await generateGallerySEOContent({
             aiAnalysis: analysis,
             currentTitle,
@@ -234,6 +253,10 @@ export async function generateSEOContentFromAnalysis(
 
         return { success: true, content }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error generating SEO content:', error)
         return {
             success: false,
@@ -260,6 +283,8 @@ export async function generateGalleryMediaVisitorContent(
     currentTitle?: string
 ): Promise<VisitorContentResult> {
     try {
+        await requireAuth()
+
         if (!mediaId?.trim()) {
             return { success: false, error: 'Media ID is required' }
         }
@@ -293,6 +318,10 @@ export async function generateGalleryMediaVisitorContent(
 
         return { success: true, content }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error generating visitor content:', error)
         return {
             success: false,
@@ -319,6 +348,8 @@ export async function generateVisitorContentFromAnalysis(
     currentTitle?: string
 ): Promise<VisitorContentResult> {
     try {
+        await requireAuth()
+
         const content = await generateGalleryVisitorContent({
             aiAnalysis: analysis,
             currentTitle,
@@ -326,6 +357,10 @@ export async function generateVisitorContentFromAnalysis(
 
         return { success: true, content }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error generating visitor content:', error)
         return {
             success: false,
@@ -354,6 +389,8 @@ export async function suggestGroupsForMedia(
     mediaId: string
 ): Promise<GroupSuggestionResult> {
     try {
+        await requireAuth()
+
         if (!mediaId?.trim()) {
             return { success: false, error: 'Media ID is required' }
         }
@@ -406,6 +443,10 @@ export async function suggestGroupsForMedia(
             suggestedGroupIds,
         }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error suggesting groups:', error)
         return {
             success: false,
@@ -430,6 +471,8 @@ export async function suggestGroupsFromAnalysis(
     analysis: GalleryMediaAIAnalysis
 ): Promise<GroupSuggestionResult> {
     try {
+        await requireAuth()
+
         // Get all available groups with details
         const groups = await getGalleryGroupsForAI()
 
@@ -458,6 +501,10 @@ export async function suggestGroupsFromAnalysis(
             suggestedGroupIds,
         }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error suggesting groups:', error)
         return {
             success: false,

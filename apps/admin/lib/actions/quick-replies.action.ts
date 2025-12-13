@@ -16,6 +16,7 @@ import {
     deleteQuickReply,
 } from '@/lib/queries/chat.query'
 import { QUICK_REPLY_CATEGORIES } from '@workspace/db/schema/chat'
+import { requireAuth } from '@/lib/utils/auth.util'
 
 /**
  * Quick reply form schema
@@ -42,6 +43,8 @@ export async function createQuickReplyAction(
     data: QuickReplyFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const validated = quickReplySchema.parse(data)
 
         await createQuickReply({
@@ -57,6 +60,9 @@ export async function createQuickReplyAction(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
         if (error instanceof z.ZodError) {
             return { success: false, error: error.issues[0]?.message }
         }
@@ -73,6 +79,8 @@ export async function updateQuickReplyAction(
     data: Partial<QuickReplyFormData>
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const validated = quickReplySchema.partial().parse(data)
 
         await updateQuickReply(id, validated)
@@ -82,6 +90,9 @@ export async function updateQuickReplyAction(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
         if (error instanceof z.ZodError) {
             return { success: false, error: error.issues[0]?.message }
         }
@@ -97,6 +108,8 @@ export async function deleteQuickReplyAction(
     id: string
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const success = await deleteQuickReply(id)
 
         if (!success) {
@@ -108,6 +121,9 @@ export async function deleteQuickReplyAction(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
         console.error('Failed to delete quick reply:', error)
         return { success: false, error: 'Failed to delete quick reply' }
     }
@@ -121,6 +137,8 @@ export async function toggleQuickReplyAction(
     isActive: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await updateQuickReply(id, { isActive })
 
         revalidatePath('/chat')
@@ -128,6 +146,9 @@ export async function toggleQuickReplyAction(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
         console.error('Failed to toggle quick reply:', error)
         return { success: false, error: 'Failed to toggle quick reply' }
     }

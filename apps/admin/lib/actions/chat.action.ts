@@ -14,6 +14,7 @@ import { revalidatePath } from 'next/cache'
 
 import { chatConfigSchema, type ChatConfigInput } from '@workspace/chat/types'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
+import { requireAuth } from '@/lib/utils/auth.util'
 
 type ActionResult = {
     success: boolean
@@ -27,6 +28,8 @@ export async function updateChatConfig(
     data: ChatConfigInput
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Validate input
         const validated = chatConfigSchema.parse(data)
 
@@ -75,6 +78,11 @@ export async function updateChatConfig(
         return { success: true }
     } catch (error) {
         console.error('Error updating chat config:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -92,6 +100,8 @@ export async function toggleChatEnabled(
     isEnabled: boolean
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const existingConfigs = await db.select().from(chatConfig).limit(1)
 
         if (existingConfigs.length > 0 && existingConfigs[0]) {
@@ -107,6 +117,11 @@ export async function toggleChatEnabled(
         return { success: true }
     } catch (error) {
         console.error('Error toggling chat:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error: 'Failed to toggle chat status',
@@ -121,6 +136,8 @@ export async function deleteChatSessionAction(
     sessionId: string
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db.delete(chatSession).where(eq(chatSession.id, sessionId))
 
         revalidatePath('/chat/conversations')
@@ -128,6 +145,11 @@ export async function deleteChatSessionAction(
         return { success: true }
     } catch (error) {
         console.error('Error deleting session:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error: 'Failed to delete session',
@@ -144,6 +166,8 @@ export async function createTestSession(): Promise<{
     error?: string
 }> {
     try {
+        await requireAuth()
+
         const [session] = await db
             .insert(chatSession)
             .values({
@@ -160,6 +184,11 @@ export async function createTestSession(): Promise<{
         }
     } catch (error) {
         console.error('Error creating test session:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error: 'Failed to create test session',

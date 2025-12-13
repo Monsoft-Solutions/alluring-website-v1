@@ -62,6 +62,15 @@ type ErrorResponse = {
 export async function POST(
     request: NextRequest
 ): Promise<NextResponse<UploadResponse | ErrorResponse | unknown>> {
+    // Check authentication
+    const authenticated = await isAuthenticated()
+    if (!authenticated) {
+        return NextResponse.json(
+            { success: false, error: 'Unauthorized' },
+            { status: 401 }
+        )
+    }
+
     const contentType = request.headers.get('content-type') || ''
 
     // Handle client-side upload token request (JSON body)

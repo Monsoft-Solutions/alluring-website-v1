@@ -5,6 +5,8 @@ import { blogTag } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import { requireAuth } from '@/lib/utils/auth.util'
+
 export type TagFormData = {
     name: string
     slug: string
@@ -21,6 +23,8 @@ type ActionResult = {
 
 export async function createTag(data: TagFormData): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         if (!data.name?.trim()) {
             return { success: false, error: 'Name is required' }
         }
@@ -57,6 +61,11 @@ export async function createTag(data: TagFormData): Promise<ActionResult> {
         return { success: true, id: newTag?.id }
     } catch (error) {
         console.error('Error creating tag:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -70,6 +79,8 @@ export async function updateTag(
     data: TagFormData
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         if (!data.name?.trim()) {
             return { success: false, error: 'Name is required' }
         }
@@ -106,6 +117,11 @@ export async function updateTag(
         return { success: true, id }
     } catch (error) {
         console.error('Error updating tag:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:
@@ -116,6 +132,8 @@ export async function updateTag(
 
 export async function deleteTag(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db.delete(blogTag).where(eq(blogTag.id, id))
 
         revalidatePath('/blog/tags')
@@ -123,6 +141,11 @@ export async function deleteTag(id: string): Promise<ActionResult> {
         return { success: true }
     } catch (error) {
         console.error('Error deleting tag:', error)
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         return {
             success: false,
             error:

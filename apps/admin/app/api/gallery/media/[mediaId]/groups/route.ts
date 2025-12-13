@@ -3,6 +3,7 @@ import { galleryMediaGroup } from '@workspace/db/schema'
 import { eq } from 'drizzle-orm'
 import { db } from '@workspace/db/client'
 import { z } from 'zod'
+import { isAuthenticated } from '@/lib/utils/auth.util'
 
 type Params = {
     params: Promise<{
@@ -24,6 +25,11 @@ export async function GET(
     { params }: Params
 ): Promise<NextResponse> {
     try {
+        const authenticated = await isAuthenticated()
+        if (!authenticated) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         const rawParams = await params
         const result = paramsSchema.safeParse(rawParams)
 

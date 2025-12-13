@@ -17,6 +17,7 @@ import {
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
+import { requireAuth } from '@/lib/utils/auth.util'
 
 // ============================================================================
 // Types
@@ -77,6 +78,8 @@ export async function createAnalysis(
     input: CreateAnalysisInput
 ): Promise<ActionResult<{ id: string }>> {
     try {
+        await requireAuth()
+
         const [createdAnalysis] = await db
             .insert(mediaAnalysis)
             .values({
@@ -100,6 +103,10 @@ export async function createAnalysis(
 
         return { success: true, data: { id: createdAnalysis.id } }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error creating analysis:', error)
         return {
             success: false,
@@ -118,6 +125,8 @@ export async function updateAnalysisResult(
     input: UpdateAnalysisResultInput
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         const updateData: Partial<InsertMediaAnalysis> = {
             status: input.status,
             completedAt: new Date(),
@@ -146,6 +155,10 @@ export async function updateAnalysisResult(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating analysis result:', error)
         return {
             success: false,
@@ -165,6 +178,8 @@ export async function updateAnalysisStatus(
     status: 'pending' | 'analyzing' | 'completed' | 'applied' | 'failed'
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(mediaAnalysis)
             .set({
@@ -178,6 +193,10 @@ export async function updateAnalysisStatus(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating analysis status:', error)
         return {
             success: false,
@@ -197,6 +216,8 @@ export async function updateAnalysisName(
     name: string
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         if (!name.trim()) {
             return { success: false, error: 'Name cannot be empty' }
         }
@@ -211,6 +232,10 @@ export async function updateAnalysisName(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating analysis name:', error)
         return {
             success: false,
@@ -229,6 +254,8 @@ export async function createAnalysisItems(
     items: InsertMediaAnalysisItem[]
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         if (items.length === 0) {
             return { success: true }
         }
@@ -237,6 +264,10 @@ export async function createAnalysisItems(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error creating analysis items:', error)
         return {
             success: false,
@@ -256,6 +287,8 @@ export async function updateAnalysisResultData(
     resultData: BulkAnalysisResult
 ): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         await db
             .update(mediaAnalysis)
             .set({
@@ -270,6 +303,10 @@ export async function updateAnalysisResultData(
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error updating analysis result data:', error)
         return {
             success: false,
@@ -286,6 +323,8 @@ export async function updateAnalysisResultData(
  */
 export async function deleteAnalysis(id: string): Promise<ActionResult> {
     try {
+        await requireAuth()
+
         // Delete analysis (cascade will delete items)
         await db.delete(mediaAnalysis).where(eq(mediaAnalysis.id, id))
 
@@ -293,6 +332,10 @@ export async function deleteAnalysis(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return { success: false, error: 'Unauthorized' }
+        }
+
         console.error('Error deleting analysis:', error)
         return {
             success: false,
