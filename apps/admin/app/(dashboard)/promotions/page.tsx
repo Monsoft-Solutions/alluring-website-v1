@@ -80,6 +80,24 @@ function isValidType(value: string | undefined): value is PromotionType {
     return VALID_TYPES.includes(value as PromotionType)
 }
 
+function SortIcon({
+    column,
+    currentSortBy,
+    currentSortOrder,
+}: {
+    column: PromotionSortBy
+    currentSortBy: PromotionSortBy
+    currentSortOrder: PromotionSortOrder
+}) {
+    if (currentSortBy !== column)
+        return <span className='ml-1 inline-block w-3' />
+    return currentSortOrder === 'asc' ? (
+        <ArrowUp className='ml-1 inline h-3 w-3' />
+    ) : (
+        <ArrowDown className='ml-1 inline h-3 w-3' />
+    )
+}
+
 export default async function PromotionsPage({
     searchParams,
 }: {
@@ -127,15 +145,6 @@ export default async function PromotionsPage({
         const statusParam = filterStatus ? `&status=${filterStatus}` : ''
         const typeParam = filterType ? `&type=${filterType}` : ''
         return `/promotions?sortBy=${sortBy}&sortOrder=${sortOrder}${statusParam}${typeParam}`
-    }
-
-    const SortIcon = ({ column }: { column: PromotionSortBy }) => {
-        if (sortBy !== column) return <span className='ml-1 inline-block w-3' />
-        return sortOrder === 'asc' ? (
-            <ArrowUp className='ml-1 inline h-3 w-3' />
-        ) : (
-            <ArrowDown className='ml-1 inline h-3 w-3' />
-        )
     }
 
     return (
@@ -216,7 +225,11 @@ export default async function PromotionsPage({
                                     >
                                         <Calendar className='mr-1 h-3 w-3' />
                                         Dates
-                                        <SortIcon column='startsAt' />
+                                        <SortIcon
+                                            column='startsAt'
+                                            currentSortBy={sortBy}
+                                            currentSortOrder={sortOrder}
+                                        />
                                     </Link>
                                 </TableHead>
                                 <TableHead className='text-right'>
@@ -225,7 +238,11 @@ export default async function PromotionsPage({
                                         className='hover:text-foreground inline-flex items-center'
                                     >
                                         Stats
-                                        <SortIcon column='views' />
+                                        <SortIcon
+                                            column='views'
+                                            currentSortBy={sortBy}
+                                            currentSortOrder={sortOrder}
+                                        />
                                     </Link>
                                 </TableHead>
                                 <TableHead>
@@ -234,7 +251,11 @@ export default async function PromotionsPage({
                                         className='hover:text-foreground inline-flex items-center'
                                     >
                                         Priority
-                                        <SortIcon column='priority' />
+                                        <SortIcon
+                                            column='priority'
+                                            currentSortBy={sortBy}
+                                            currentSortOrder={sortOrder}
+                                        />
                                     </Link>
                                 </TableHead>
                                 <TableHead className='w-[100px]'>

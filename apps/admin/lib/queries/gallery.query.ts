@@ -6,7 +6,7 @@ import {
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
 import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
-import { and, asc, count, desc, eq, ilike, sql } from 'drizzle-orm'
+import { and, asc, count, desc, eq, ilike, notInArray, sql } from 'drizzle-orm'
 
 // ============================================================================
 // Gallery Media Queries
@@ -39,11 +39,13 @@ export type GalleryMediaTypeFilter = 'all' | 'image' | 'video'
 export type GetGalleryMediaOptions = {
     page?: number
     pageSize?: number
-    sortBy?: GalleryMediaSortBy
+    sortBy?: GalleryMediaSortBy | 'qualityScore'
     sortOrder?: GalleryMediaSortOrder
     status?: GalleryMediaStatusFilter
     type?: GalleryMediaTypeFilter
     groupId?: string
+    hasGroup?: boolean | null
+    excludeMediaIds?: string[]
     search?: string
 }
 
@@ -58,6 +60,8 @@ export async function getGalleryMedia(
         status = 'all',
         type = 'all',
         groupId,
+        hasGroup,
+        excludeMediaIds,
         search,
     } = options
     const offset = (page - 1) * pageSize
@@ -77,17 +81,23 @@ export async function getGalleryMedia(
         conditions.push(ilike(galleryMedia.title, `%${search}%`))
     }
 
+    if (excludeMediaIds && excludeMediaIds.length > 0) {
+        conditions.push(notInArray(galleryMedia.id, excludeMediaIds))
+    }
+
     // Determine sort column and direction
     const sortColumn =
         sortBy === 'title'
             ? galleryMedia.title
             : sortBy === 'displayOrder'
               ? galleryMedia.displayOrder
-              : galleryMedia.createdAt
+              : sortBy === 'qualityScore'
+                ? sql<number>`COALESCE((${galleryMedia.aiAnalysis}->>'qualityScore')::numeric, 0)`
+                : galleryMedia.createdAt
 
     const orderDirection = sortOrder === 'asc' ? asc : desc
 
-    // If filtering by group, join with junction table
+    // If filtering by specific group (takes precedence over hasGroup)
     if (groupId) {
         const [media, totalResult] = await Promise.all([
             db
@@ -134,7 +144,24 @@ export async function getGalleryMedia(
         }
     }
 
+    // Handle hasGroup filter (requires subquery)
+    if (hasGroup !== null && hasGroup !== undefined) {
+        if (hasGroup) {
+            // Media that has at least one group
+            conditions.push(
+                sql`EXISTS (SELECT 1 FROM ${galleryMediaGroup} WHERE ${galleryMediaGroup.mediaId} = ${galleryMedia.id})`
+            )
+        } else {
+            // Media that has no groups
+            conditions.push(
+                sql`NOT EXISTS (SELECT 1 FROM ${galleryMediaGroup} WHERE ${galleryMediaGroup.mediaId} = ${galleryMedia.id})`
+            )
+        }
+    }
+
     // Regular query without group filter
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
     const [media, totalResult] = await Promise.all([
         db
             .select({
@@ -152,14 +179,11 @@ export async function getGalleryMedia(
                 publishedAt: galleryMedia.publishedAt,
             })
             .from(galleryMedia)
-            .where(conditions.length > 0 ? and(...conditions) : undefined)
+            .where(whereClause)
             .orderBy(orderDirection(sortColumn))
             .limit(pageSize)
             .offset(offset),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(conditions.length > 0 ? and(...conditions) : undefined),
+        db.select({ count: count() }).from(galleryMedia).where(whereClause),
     ])
 
     return {
@@ -239,6 +263,67 @@ export async function getGalleryMediaForSelect(): Promise<
         .from(galleryMedia)
         .where(eq(galleryMedia.status, 'published'))
         .orderBy(desc(galleryMedia.createdAt))
+}
+
+/**
+ * Get media items that belong to a specific group
+ * Used in group edit page to display current group media
+ */
+export async function getMediaByGroupId(
+    groupId: string,
+    options?: {
+        sortBy?: 'displayOrder' | 'createdAt'
+        sortOrder?: 'asc' | 'desc'
+    }
+): Promise<GalleryMediaListItem[]> {
+    const { sortBy = 'displayOrder', sortOrder = 'asc' } = options ?? {}
+
+    const sortColumn =
+        sortBy === 'createdAt'
+            ? galleryMedia.createdAt
+            : galleryMediaGroup.displayOrder
+    const orderDirection = sortOrder === 'asc' ? asc : desc
+
+    const media = await db
+        .select({
+            id: galleryMedia.id,
+            type: galleryMedia.type,
+            url: galleryMedia.url,
+            thumbnailUrl: galleryMedia.thumbnailUrl,
+            title: galleryMedia.title,
+            slug: galleryMedia.slug,
+            status: galleryMedia.status,
+            isFeatured: galleryMedia.isFeatured,
+            isBeforeAfter: galleryMedia.isBeforeAfter,
+            displayOrder: galleryMedia.displayOrder,
+            createdAt: galleryMedia.createdAt,
+            publishedAt: galleryMedia.publishedAt,
+        })
+        .from(galleryMedia)
+        .innerJoin(
+            galleryMediaGroup,
+            eq(galleryMedia.id, galleryMediaGroup.mediaId)
+        )
+        .where(eq(galleryMediaGroup.groupId, groupId))
+        .orderBy(orderDirection(sortColumn))
+
+    return media
+}
+
+/**
+ * @deprecated Use GetGalleryMediaOptions instead - both functions are now unified
+ */
+export type GetGalleryMediaForSelectionOptions = GetGalleryMediaOptions
+
+/**
+ * @deprecated Use getGalleryMedia() instead - now supports all filtering options
+ * Get gallery media for selection dialog with advanced filtering
+ * Supports filtering by group status, excluding specific media, and searching
+ */
+export async function getGalleryMediaForSelection(
+    options: GetGalleryMediaForSelectionOptions
+): Promise<{ media: GalleryMediaListItem[]; total: number }> {
+    return getGalleryMedia(options)
 }
 
 // ============================================================================
