@@ -57,6 +57,7 @@ export type GalleryGroupFormData = {
     name: string
     slug: string
     description?: string | null
+    procedureSlug?: string | null
     coverImageId?: string | null
     displayOrder?: number
     isVisible?: boolean
@@ -545,6 +546,7 @@ export async function createGalleryGroup(
                 name: data.name,
                 slug: data.slug,
                 description: data.description ?? null,
+                procedureSlug: data.procedureSlug ?? null,
                 coverImageId: data.coverImageId ?? null,
                 displayOrder: data.displayOrder ?? nextOrder,
                 isVisible: data.isVisible ?? true,
@@ -619,6 +621,7 @@ export async function updateGalleryGroup(
                 name: data.name,
                 slug: data.slug,
                 description: data.description ?? null,
+                procedureSlug: data.procedureSlug ?? null,
                 coverImageId: data.coverImageId ?? null,
                 displayOrder: data.displayOrder,
                 isVisible: data.isVisible,

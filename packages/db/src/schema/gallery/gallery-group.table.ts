@@ -18,6 +18,7 @@ export const galleryGroup = pgTable(
         name: varchar('name', { length: 255 }).notNull(),
         slug: varchar('slug', { length: 255 }).notNull().unique(),
         description: text('description'),
+        procedureSlug: varchar('procedure_slug', { length: 255 }),
         coverImageId: uuid('cover_image_id').references(() => galleryMedia.id, {
             onDelete: 'set null',
         }),
@@ -35,6 +36,8 @@ export const galleryGroup = pgTable(
             table.isVisible,
             table.displayOrder
         ),
+        // Index for procedure-specific gallery queries
+        index('gallery_group_procedure_slug_idx').on(table.procedureSlug),
     ]
 )
 

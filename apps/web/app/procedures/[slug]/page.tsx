@@ -19,6 +19,7 @@ import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.co
 import { ProcedureProcess } from '@/components/procedures/procedure-process.component'
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
+import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
 import { env } from '@/env'
 
 interface ProcedurePageProps {
@@ -178,6 +179,12 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
 
             {/* Before & After Results Section */}
             <ProcedureBeforeAfterSection
+                procedureSlug={params.slug}
+                procedureTitle={procedure.title}
+            />
+
+            {/* Gallery Section */}
+            <ProcedureGallerySection
                 procedureSlug={params.slug}
                 procedureTitle={procedure.title}
             />

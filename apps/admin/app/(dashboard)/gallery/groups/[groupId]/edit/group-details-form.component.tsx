@@ -30,6 +30,7 @@ import type {
     GalleryGroupDetail,
     GalleryMediaListItem,
 } from '@/lib/queries/gallery.query'
+import { PROCEDURE_OPTIONS } from '@/lib/constants/procedure.constant'
 
 type GroupDetailsFormProps = {
     group: GalleryGroupDetail
@@ -40,6 +41,7 @@ type FormData = {
     name: string
     slug: string
     description: string
+    procedureSlug: string | null
     coverImageId: string | null
     displayOrder: number
     isVisible: boolean
@@ -54,6 +56,7 @@ export function GroupDetailsForm({ group, groupMedia }: GroupDetailsFormProps) {
         name: group.name,
         slug: group.slug,
         description: group.description ?? '',
+        procedureSlug: group.procedureSlug,
         coverImageId: group.coverImageId,
         displayOrder: group.displayOrder,
         isVisible: group.isVisible,
@@ -90,6 +93,7 @@ export function GroupDetailsForm({ group, groupMedia }: GroupDetailsFormProps) {
                     name: formData.name,
                     slug: formData.slug,
                     description: formData.description || null,
+                    procedureSlug: formData.procedureSlug,
                     coverImageId: formData.coverImageId,
                     displayOrder: formData.displayOrder,
                     isVisible: formData.isVisible,
@@ -159,6 +163,40 @@ export function GroupDetailsForm({ group, groupMedia }: GroupDetailsFormProps) {
                             placeholder='Brief description of this group'
                             rows={3}
                         />
+                    </div>
+
+                    <div className='space-y-2'>
+                        <Label htmlFor='procedureSlug'>
+                            Link to Procedure (Optional)
+                        </Label>
+                        <Select
+                            value={formData.procedureSlug ?? 'none'}
+                            onValueChange={(value) =>
+                                handleChange(
+                                    'procedureSlug',
+                                    value === 'none' ? null : value
+                                )
+                            }
+                        >
+                            <SelectTrigger id='procedureSlug'>
+                                <SelectValue placeholder='Select a procedure' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='none'>
+                                    None - General Gallery
+                                </SelectItem>
+                                {PROCEDURE_OPTIONS.filter(
+                                    (p) => p.slug !== null
+                                ).map((procedure) => (
+                                    <SelectItem
+                                        key={procedure.slug}
+                                        value={procedure.slug as string}
+                                    >
+                                        {procedure.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className='grid gap-4 md:grid-cols-2'>
