@@ -129,7 +129,7 @@ export default async function GalleryMediaPage({
     // Fetch groups for filter dropdown
     const groups = await getGalleryGroupsForSelect()
 
-    let { media, total } = await getGalleryMedia({
+    const { media: initialMedia, total } = await getGalleryMedia({
         page: requestedPage,
         pageSize,
         sortBy,
@@ -143,6 +143,7 @@ export default async function GalleryMediaPage({
     const totalPages = Math.ceil(total / pageSize)
     const page = Math.min(requestedPage, Math.max(1, totalPages))
 
+    let media = initialMedia
     if (page !== requestedPage && media.length === 0 && totalPages > 0) {
         const refetch = await getGalleryMedia({
             page,
