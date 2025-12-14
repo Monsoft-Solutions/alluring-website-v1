@@ -99,24 +99,31 @@ export async function ProcedureGallerySection({
 
                 {/* Gallery Grid */}
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                    {media.map((item) => (
-                        <div
-                            key={item.id}
-                            className='group relative aspect-square overflow-hidden rounded-lg bg-stone-100'
-                        >
-                            <Image
-                                src={item.thumbnailUrl ?? item.url}
-                                alt={item.alt}
-                                fill
-                                className='object-cover transition-transform duration-300 group-hover:scale-105'
-                                sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
-                                placeholder={
-                                    item.blurDataUrl ? 'blur' : 'empty'
-                                }
-                                blurDataURL={item.blurDataUrl ?? undefined}
-                            />
-                        </div>
-                    ))}
+                    {media.map((item, idx) => {
+                        const altText =
+                            item.alt?.trim() ||
+                            item.title?.trim() ||
+                            `${procedureTitle ?? 'Patient'} gallery image ${idx + 1}`
+
+                        return (
+                            <div
+                                key={item.id}
+                                className='group relative aspect-square overflow-hidden rounded-lg bg-stone-100'
+                            >
+                                <Image
+                                    src={item.thumbnailUrl ?? item.url}
+                                    alt={altText}
+                                    fill
+                                    className='object-cover transition-transform duration-300 group-hover:scale-105'
+                                    sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                                    placeholder={
+                                        item.blurDataUrl ? 'blur' : 'empty'
+                                    }
+                                    blurDataURL={item.blurDataUrl ?? undefined}
+                                />
+                            </div>
+                        )
+                    })}
                 </div>
 
                 {/* CTA */}
