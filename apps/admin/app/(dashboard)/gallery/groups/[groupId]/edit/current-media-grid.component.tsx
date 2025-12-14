@@ -1,47 +1,78 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import { ExternalLink, Trash2 } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { CheckSquare, Square } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
-import { Badge } from '@workspace/ui/components/badge'
 
-import { removeMediaFromGroup } from '@/lib/actions/gallery-bulk.action'
 import type { GalleryMediaListItem } from '@/lib/queries/gallery.query'
+import { SelectableCurrentMediaCard } from './selectable-current-media-card.component'
+import { BulkActionToolbar } from './bulk-action-toolbar.component'
 
 type CurrentMediaGridProps = {
     groupId: string
     groupMedia: GalleryMediaListItem[]
-    onMediaRemoved: (mediaId: string) => void
 }
 
 export function CurrentMediaGrid({
     groupId,
     groupMedia,
-    onMediaRemoved,
 }: CurrentMediaGridProps) {
     const router = useRouter()
-    const [isPending, startTransition] = useTransition()
+    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+    const mediaCountRef = useRef(groupMedia.length)
 
-    const handleRemoveMedia = async (mediaId: string) => {
-        if (!confirm('Remove this media from the group?')) return
+    // Clear selection when bulk operations complete (media count changes)
+    // Using queueMicrotask to avoid synchronous setState in effect
+    useEffect(() => {
+        if (mediaCountRef.current !== groupMedia.length) {
+            mediaCountRef.current = groupMedia.length
+            queueMicrotask(() => {
+                setSelectedIds(new Set())
+            })
+        }
+    }, [groupMedia.length])
 
-        startTransition(async () => {
-            const result = await removeMediaFromGroup(groupId, [mediaId])
-
-            if (result.success) {
-                toast.success('Media removed from group')
-                onMediaRemoved(mediaId)
-                router.refresh()
-            } else {
-                toast.error(result.error || 'Failed to remove media')
+    // Handle ESC key to clear selection
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && selectedIds.size > 0) {
+                setSelectedIds(new Set())
             }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [selectedIds.size])
+
+    const handleToggle = useCallback((mediaId: string) => {
+        setSelectedIds((prev) => {
+            const newSet = new Set(prev)
+            if (newSet.has(mediaId)) {
+                newSet.delete(mediaId)
+            } else {
+                newSet.add(mediaId)
+            }
+            return newSet
         })
+    }, [])
+
+    const handleSelectAll = () => {
+        if (selectedIds.size === groupMedia.length) {
+            setSelectedIds(new Set())
+        } else {
+            setSelectedIds(new Set(groupMedia.map((m) => m.id)))
+        }
     }
+
+    const handleClearSelection = useCallback(() => {
+        setSelectedIds(new Set())
+    }, [])
+
+    const handleActionComplete = useCallback(() => {
+        router.refresh()
+    }, [router])
 
     if (groupMedia.length === 0) {
         return (
@@ -52,62 +83,70 @@ export function CurrentMediaGrid({
         )
     }
 
+    const allSelected = selectedIds.size === groupMedia.length
+
     return (
-        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-            {groupMedia.map((media) => (
-                <div
-                    key={media.id}
-                    className='group relative overflow-hidden rounded-lg border bg-white'
-                >
-                    <div className='relative aspect-square'>
-                        <Image
-                            src={media.thumbnailUrl || media.url}
-                            alt={media.title}
-                            fill
-                            className='object-cover'
-                            sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'
-                        />
-                    </div>
-                    <div className='p-3'>
-                        <div className='mb-2 flex items-start justify-between gap-2'>
-                            <p className='line-clamp-2 text-sm font-medium'>
-                                {media.title}
-                            </p>
-                            <Badge
-                                variant={
-                                    media.status === 'published'
-                                        ? 'default'
-                                        : 'secondary'
-                                }
-                                className='shrink-0'
-                            >
-                                {media.status}
-                            </Badge>
-                        </div>
-                        <div className='flex gap-2'>
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                className='flex-1'
-                                asChild
-                            >
-                                <Link href={`/gallery/media/${media.id}/edit`}>
-                                    <ExternalLink className='mr-1 h-3 w-3' />
-                                    Edit
-                                </Link>
-                            </Button>
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                onClick={() => handleRemoveMedia(media.id)}
-                                disabled={isPending}
-                            >
-                                <Trash2 className='h-3 w-3' />
-                            </Button>
-                        </div>
-                    </div>
+        <div className='space-y-4'>
+            {/* Header with selection controls */}
+            <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
+                    <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={handleSelectAll}
+                    >
+                        {allSelected ? (
+                            <>
+                                <CheckSquare className='mr-1.5 h-4 w-4' />
+                                Deselect All
+                            </>
+                        ) : (
+                            <>
+                                <Square className='mr-1.5 h-4 w-4' />
+                                Select All
+                            </>
+                        )}
+                    </Button>
+                    {selectedIds.size > 0 && (
+                        <p className='text-muted-foreground text-sm'>
+                            {selectedIds.size} of {groupMedia.length} selected
+                        </p>
+                    )}
                 </div>
-            ))}
+
+                {selectedIds.size > 0 && (
+                    <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={handleClearSelection}
+                    >
+                        Clear Selection
+                    </Button>
+                )}
+            </div>
+
+            {/* Grid */}
+            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                {groupMedia.map((media) => (
+                    <SelectableCurrentMediaCard
+                        key={media.id}
+                        media={media}
+                        isSelected={selectedIds.has(media.id)}
+                        onToggle={handleToggle}
+                    />
+                ))}
+            </div>
+
+            {/* Bulk action toolbar (sticky at bottom) */}
+            <BulkActionToolbar
+                groupId={groupId}
+                selectedIds={Array.from(selectedIds)}
+                onClearSelection={handleClearSelection}
+                onActionComplete={handleActionComplete}
+            />
+
+            {/* Bottom padding to prevent toolbar overlap */}
+            {selectedIds.size > 0 && <div className='h-24' />}
         </div>
     )
 }

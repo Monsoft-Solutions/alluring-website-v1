@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, ImagePlus } from 'lucide-react'
 import Link from 'next/link'
@@ -45,16 +45,17 @@ export function GroupEditClient({
     const [groupMedia, setGroupMedia] = useState(initialGroupMedia)
     const [isMediaDialogOpen, setIsMediaDialogOpen] = useState(false)
 
+    // Sync local state when initial data changes (after router.refresh)
+    useEffect(() => {
+        setGroupMedia(initialGroupMedia)
+    }, [initialGroupMedia])
+
     const handleMediaSelected = useCallback(
         async (mediaIds: string[]) => {
             router.refresh()
         },
         [router]
     )
-
-    const handleMediaRemoved = (mediaId: string) => {
-        setGroupMedia((prev) => prev.filter((m) => m.id !== mediaId))
-    }
 
     return (
         <div className='space-y-6'>
@@ -103,7 +104,6 @@ export function GroupEditClient({
                             <CurrentMediaGrid
                                 groupId={group.id}
                                 groupMedia={groupMedia}
-                                onMediaRemoved={handleMediaRemoved}
                             />
                         </TabsContent>
 

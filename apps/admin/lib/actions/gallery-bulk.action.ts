@@ -1,10 +1,9 @@
 'use server'
 
-import { put } from '@vercel/blob'
+import { del, put } from '@vercel/blob'
 import { db } from '@workspace/db/client'
 import { galleryMedia, galleryMediaGroup } from '@workspace/db/schema/gallery'
 import { and, eq, inArray, sql } from 'drizzle-orm'
-import { revalidatePath } from 'next/cache'
 
 import { env } from '@/env'
 import {
@@ -14,9 +13,13 @@ import {
 } from '@/lib/actions/gallery-ai.action'
 import { requireAuth } from '@/lib/utils/auth.util'
 import {
-    getAllGalleryTags,
-    revalidateWebAppCache,
-} from '@/lib/utils/revalidate-web.util'
+    revalidateGalleryPaths,
+    revalidateGalleryCacheWithSlugs,
+    revalidateGalleryCache,
+    handleActionError,
+    validateMediaIds,
+    validateGroupId,
+} from '@/lib/utils/gallery-action.util'
 import { ensureUniqueSlug } from '@/lib/utils/slug.util'
 
 // ============================================================================
@@ -39,6 +42,34 @@ type BulkUploadResponse = {
     success: boolean
     error?: string
     results?: BulkUploadResult[]
+}
+
+type BulkAnalyzeItem = {
+    mediaId: string
+    success: boolean
+    error?: string
+}
+
+type BulkAnalyzeResult = {
+    success: boolean
+    error?: string
+    results?: BulkAnalyzeItem[]
+    processedCount?: number
+    failedCount?: number
+}
+
+type BulkRefreshItem = {
+    mediaId: string
+    success: boolean
+    error?: string
+}
+
+type BulkRefreshResult = {
+    success: boolean
+    error?: string
+    results?: BulkRefreshItem[]
+    processedCount?: number
+    failedCount?: number
 }
 
 // ============================================================================
@@ -81,9 +112,8 @@ export async function bulkUploadAndAssignToGroup(
         await requireAuth()
 
         // Validate groupId
-        if (!groupId?.trim()) {
-            return { success: false, error: 'Group ID is required' }
-        }
+        const groupValidation = validateGroupId(groupId)
+        if (groupValidation) return groupValidation
 
         // Extract files from FormData
         const files: File[] = []
@@ -293,28 +323,18 @@ export async function bulkUploadAndAssignToGroup(
         }
 
         // Revalidate cache
-        revalidatePath('/gallery')
-        revalidatePath('/gallery/media')
-        revalidatePath('/gallery/groups')
-        await revalidateWebAppCache(getAllGalleryTags())
+        await revalidateGalleryCache()
 
         return {
             success: true,
             results,
         }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return { success: false, error: 'Unauthorized' }
-        }
-
-        console.error('Error in bulk upload:', error)
-        return {
-            success: false,
-            error:
-                error instanceof Error
-                    ? error.message
-                    : 'Failed to upload files',
-        }
+        return handleActionError<BulkUploadResponse>(
+            error,
+            'Failed to upload files',
+            'Error in bulk upload:'
+        )
     }
 }
 
@@ -339,13 +359,11 @@ export async function addMediaToGroup(
     try {
         await requireAuth()
 
-        if (!groupId?.trim()) {
-            return { success: false, error: 'Group ID is required' }
-        }
+        const groupValidation = validateGroupId(groupId)
+        if (groupValidation) return groupValidation
 
-        if (!mediaIds || mediaIds.length === 0) {
-            return { success: false, error: 'No media IDs provided' }
-        }
+        const mediaValidation = validateMediaIds(mediaIds, 1000)
+        if (mediaValidation) return mediaValidation
 
         // Get max display order for this group
         const maxOrderResult = await db
@@ -368,25 +386,15 @@ export async function addMediaToGroup(
 
         await db.insert(galleryMediaGroup).values(values).onConflictDoNothing() // Skip if already in group
 
-        revalidatePath('/gallery')
-        revalidatePath('/gallery/media')
-        revalidatePath('/gallery/groups')
-        await revalidateWebAppCache(getAllGalleryTags())
+        await revalidateGalleryCache()
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return { success: false, error: 'Unauthorized' }
-        }
-
-        console.error('Error adding media to group:', error)
-        return {
-            success: false,
-            error:
-                error instanceof Error
-                    ? error.message
-                    : 'Failed to add media to group',
-        }
+        return handleActionError(
+            error,
+            'Failed to add media to group',
+            'Error adding media to group:'
+        )
     }
 }
 
@@ -404,13 +412,11 @@ export async function removeMediaFromGroup(
     try {
         await requireAuth()
 
-        if (!groupId?.trim()) {
-            return { success: false, error: 'Group ID is required' }
-        }
+        const groupValidation = validateGroupId(groupId)
+        if (groupValidation) return groupValidation
 
-        if (!mediaIds || mediaIds.length === 0) {
-            return { success: false, error: 'No media IDs provided' }
-        }
+        const mediaValidation = validateMediaIds(mediaIds, 1000)
+        if (mediaValidation) return mediaValidation
 
         // Delete records from junction table
         await db
@@ -422,25 +428,15 @@ export async function removeMediaFromGroup(
                 )
             )
 
-        revalidatePath('/gallery')
-        revalidatePath('/gallery/media')
-        revalidatePath('/gallery/groups')
-        await revalidateWebAppCache(getAllGalleryTags())
+        await revalidateGalleryCache()
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return { success: false, error: 'Unauthorized' }
-        }
-
-        console.error('Error removing media from group:', error)
-        return {
-            success: false,
-            error:
-                error instanceof Error
-                    ? error.message
-                    : 'Failed to remove media from group',
-        }
+        return handleActionError(
+            error,
+            'Failed to remove media from group',
+            'Error removing media from group:'
+        )
     }
 }
 
@@ -460,9 +456,8 @@ export async function reorderGroupMedia(
     try {
         await requireAuth()
 
-        if (!groupId?.trim()) {
-            return { success: false, error: 'Group ID is required' }
-        }
+        const groupValidation = validateGroupId(groupId)
+        if (groupValidation) return groupValidation
 
         if (!mediaOrders || mediaOrders.length === 0) {
             return { success: false, error: 'No media orders provided' }
@@ -483,24 +478,678 @@ export async function reorderGroupMedia(
             }
         })
 
-        revalidatePath('/gallery')
-        revalidatePath('/gallery/media')
-        revalidatePath('/gallery/groups')
-        await revalidateWebAppCache(getAllGalleryTags())
+        await revalidateGalleryCache()
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return { success: false, error: 'Unauthorized' }
+        return handleActionError(
+            error,
+            'Failed to reorder media',
+            'Error reordering group media:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk Update Media Status Action
+// ============================================================================
+
+/**
+ * Update status for multiple media items at once
+ *
+ * @param mediaIds - Array of media IDs to update
+ * @param status - New status to apply
+ * @returns ActionResult
+ */
+export async function bulkUpdateMediaStatus(
+    mediaIds: string[],
+    status: 'draft' | 'published' | 'archived'
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const validation = validateMediaIds(mediaIds, 100)
+        if (validation) return validation
+
+        // Get current status of all media for publishedAt logic and slug for cache
+        const currentMedia = await db
+            .select({
+                id: galleryMedia.id,
+                status: galleryMedia.status,
+                slug: galleryMedia.slug,
+            })
+            .from(galleryMedia)
+            .where(inArray(galleryMedia.id, mediaIds))
+
+        if (currentMedia.length === 0) {
+            return { success: false, error: 'No media found' }
         }
 
-        console.error('Error reordering group media:', error)
-        return {
-            success: false,
-            error:
-                error instanceof Error
-                    ? error.message
-                    : 'Failed to reorder media',
+        // Determine which items need publishedAt updated
+        const now = new Date()
+        await db.transaction(async (tx) => {
+            for (const media of currentMedia) {
+                const wasPublished = media.status === 'published'
+                const isNowPublished = status === 'published'
+
+                await tx
+                    .update(galleryMedia)
+                    .set({
+                        status,
+                        ...(!wasPublished && isNowPublished
+                            ? { publishedAt: now }
+                            : {}),
+                    })
+                    .where(eq(galleryMedia.id, media.id))
+            }
+        })
+
+        revalidateGalleryPaths()
+        await revalidateGalleryCacheWithSlugs(currentMedia.map((m) => m.slug))
+
+        return { success: true }
+    } catch (error) {
+        return handleActionError(
+            error,
+            'Failed to update status',
+            'Error updating media status:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk Delete Media Action
+// ============================================================================
+
+/**
+ * Permanently delete multiple media items
+ * Removes from groups, deletes from database, and attempts blob deletion
+ *
+ * @param mediaIds - Array of media IDs to delete
+ * @returns ActionResult
+ */
+export async function bulkDeleteMedia(
+    mediaIds: string[]
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const validation = validateMediaIds(mediaIds, 100)
+        if (validation) return validation
+
+        // Get media URLs and slugs for blob deletion and cache invalidation
+        const mediaToDelete = await db
+            .select({
+                id: galleryMedia.id,
+                url: galleryMedia.url,
+                slug: galleryMedia.slug,
+            })
+            .from(galleryMedia)
+            .where(inArray(galleryMedia.id, mediaIds))
+
+        if (mediaToDelete.length === 0) {
+            return { success: false, error: 'No media found' }
         }
+
+        // Delete the media records (cascade will handle junction table)
+        await db.delete(galleryMedia).where(inArray(galleryMedia.id, mediaIds))
+
+        // Try to delete from blob storage (fire and forget for failures)
+        const blobDeletions = mediaToDelete.map(async (media) => {
+            if (media.url?.includes('blob.vercel-storage.com')) {
+                try {
+                    await del(media.url, { token: env.BLOB_READ_WRITE_TOKEN })
+                } catch (error) {
+                    console.error(
+                        'Failed to delete blob for media:',
+                        media.id,
+                        error
+                    )
+                }
+            }
+        })
+
+        // Don't wait for blob deletions
+        Promise.all(blobDeletions).catch(() => {
+            // Ignore errors
+        })
+
+        revalidateGalleryPaths()
+        await revalidateGalleryCacheWithSlugs(mediaToDelete.map((m) => m.slug))
+
+        return { success: true }
+    } catch (error) {
+        return handleActionError(
+            error,
+            'Failed to delete media',
+            'Error deleting media:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk AI Analysis Action
+// ============================================================================
+
+/**
+ * Analyze multiple media items with AI
+ * Updates aiAnalysis field and auto-sets isBeforeAfter if detected
+ *
+ * @param mediaIds - Array of media IDs to analyze
+ * @returns BulkAnalyzeResult with per-item results
+ */
+export async function bulkAnalyzeMedia(
+    mediaIds: string[]
+): Promise<BulkAnalyzeResult> {
+    try {
+        await requireAuth()
+
+        const validation = validateMediaIds(mediaIds, 50)
+        if (validation) return validation as BulkAnalyzeResult
+
+        // Get media URLs
+        const mediaItems = await db
+            .select({
+                id: galleryMedia.id,
+                url: galleryMedia.url,
+                type: galleryMedia.type,
+            })
+            .from(galleryMedia)
+            .where(inArray(galleryMedia.id, mediaIds))
+
+        if (mediaItems.length === 0) {
+            return { success: false, error: 'No media found' }
+        }
+
+        // Only analyze images
+        const imagesToAnalyze = mediaItems.filter((m) => m.type === 'image')
+
+        if (imagesToAnalyze.length === 0) {
+            return {
+                success: false,
+                error: 'No images found to analyze (videos not supported)',
+            }
+        }
+
+        const results: BulkAnalyzeItem[] = []
+        let processedCount = 0
+        let failedCount = 0
+
+        // Process in batches with concurrency limit
+        for (
+            let i = 0;
+            i < imagesToAnalyze.length;
+            i += MAX_CONCURRENT_ANALYSIS
+        ) {
+            const batch = imagesToAnalyze.slice(i, i + MAX_CONCURRENT_ANALYSIS)
+
+            const batchResults = await Promise.all(
+                batch.map(async (media) => {
+                    try {
+                        const analysisResult = await analyzeGalleryMediaImage(
+                            media.url,
+                            media.id
+                        )
+
+                        if (analysisResult.success) {
+                            processedCount++
+                            return {
+                                mediaId: media.id,
+                                success: true,
+                            }
+                        } else {
+                            failedCount++
+                            return {
+                                mediaId: media.id,
+                                success: false,
+                                error:
+                                    analysisResult.error || 'Analysis failed',
+                            }
+                        }
+                    } catch (error) {
+                        failedCount++
+                        return {
+                            mediaId: media.id,
+                            success: false,
+                            error:
+                                error instanceof Error
+                                    ? error.message
+                                    : 'Analysis failed',
+                        }
+                    }
+                })
+            )
+
+            results.push(...batchResults)
+        }
+
+        revalidateGalleryPaths()
+
+        return {
+            success: true,
+            results,
+            processedCount,
+            failedCount,
+        }
+    } catch (error) {
+        return handleActionError<BulkAnalyzeResult>(
+            error,
+            'Failed to analyze media',
+            'Error analyzing media:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk Refresh Content Action
+// ============================================================================
+
+/**
+ * Regenerate SEO and visitor content for multiple media items
+ * Requires existing AI analysis
+ *
+ * @param mediaIds - Array of media IDs to refresh content for
+ * @returns BulkRefreshResult with per-item results
+ */
+export async function bulkRefreshContent(
+    mediaIds: string[]
+): Promise<BulkRefreshResult> {
+    try {
+        await requireAuth()
+
+        const validation = validateMediaIds(mediaIds, 100)
+        if (validation) return validation as BulkRefreshResult
+
+        // Get media with AI analysis
+        const mediaItems = await db
+            .select({
+                id: galleryMedia.id,
+                title: galleryMedia.title,
+                slug: galleryMedia.slug,
+                aiAnalysis: galleryMedia.aiAnalysis,
+            })
+            .from(galleryMedia)
+            .where(inArray(galleryMedia.id, mediaIds))
+
+        if (mediaItems.length === 0) {
+            return { success: false, error: 'No media found' }
+        }
+
+        // Filter items with AI analysis
+        const itemsWithAnalysis = mediaItems.filter((m) => m.aiAnalysis)
+
+        if (itemsWithAnalysis.length === 0) {
+            return {
+                success: false,
+                error: 'No media with AI analysis found. Please analyze images first.',
+            }
+        }
+
+        const results: BulkRefreshItem[] = []
+        let processedCount = 0
+        let failedCount = 0
+
+        // Process in batches to avoid overwhelming the AI API
+        for (
+            let i = 0;
+            i < itemsWithAnalysis.length;
+            i += MAX_CONCURRENT_ANALYSIS
+        ) {
+            const batch = itemsWithAnalysis.slice(
+                i,
+                i + MAX_CONCURRENT_ANALYSIS
+            )
+
+            const batchResults = await Promise.all(
+                batch.map(async (media) => {
+                    try {
+                        // Generate new SEO and visitor content
+                        const [seoResult, visitorResult] = await Promise.all([
+                            generateSEOContentFromAnalysis(
+                                media.aiAnalysis!,
+                                media.title
+                            ),
+                            generateVisitorContentFromAnalysis(
+                                media.aiAnalysis!,
+                                media.title
+                            ),
+                        ])
+
+                        if (
+                            seoResult.success &&
+                            seoResult.content &&
+                            visitorResult.success &&
+                            visitorResult.content
+                        ) {
+                            // Ensure slug uniqueness
+                            const uniqueSlug = await ensureUniqueSlug(
+                                seoResult.content.slug,
+                                media.id
+                            )
+
+                            // Update media
+                            await db
+                                .update(galleryMedia)
+                                .set({
+                                    title: visitorResult.content.title,
+                                    description:
+                                        visitorResult.content.description,
+                                    alt: visitorResult.content.alt,
+                                    seoTitle: seoResult.content.seoTitle,
+                                    seoDescription:
+                                        seoResult.content.seoDescription,
+                                    slug: uniqueSlug,
+                                })
+                                .where(eq(galleryMedia.id, media.id))
+
+                            processedCount++
+                            return {
+                                mediaId: media.id,
+                                success: true,
+                            }
+                        } else {
+                            failedCount++
+                            return {
+                                mediaId: media.id,
+                                success: false,
+                                error: 'Failed to generate content',
+                            }
+                        }
+                    } catch (error) {
+                        failedCount++
+                        return {
+                            mediaId: media.id,
+                            success: false,
+                            error:
+                                error instanceof Error
+                                    ? error.message
+                                    : 'Content generation failed',
+                        }
+                    }
+                })
+            )
+
+            results.push(...batchResults)
+        }
+
+        revalidateGalleryPaths()
+        await revalidateGalleryCacheWithSlugs(mediaItems.map((m) => m.slug))
+
+        return {
+            success: true,
+            results,
+            processedCount,
+            failedCount,
+        }
+    } catch (error) {
+        return handleActionError<BulkRefreshResult>(
+            error,
+            'Failed to refresh content',
+            'Error refreshing content:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk Generate SEO Content Action
+// ============================================================================
+
+/**
+ * Generate only SEO content for multiple media items
+ * Requires existing AI analysis
+ *
+ * @param mediaIds - Array of media IDs to generate SEO content for
+ * @returns BulkRefreshResult with per-item results
+ */
+export async function bulkGenerateSEOContent(
+    mediaIds: string[]
+): Promise<BulkRefreshResult> {
+    try {
+        await requireAuth()
+
+        const validation = validateMediaIds(mediaIds, 100)
+        if (validation) return validation as BulkRefreshResult
+
+        // Get media with AI analysis
+        const mediaItems = await db
+            .select({
+                id: galleryMedia.id,
+                title: galleryMedia.title,
+                slug: galleryMedia.slug,
+                aiAnalysis: galleryMedia.aiAnalysis,
+            })
+            .from(galleryMedia)
+            .where(inArray(galleryMedia.id, mediaIds))
+
+        if (mediaItems.length === 0) {
+            return { success: false, error: 'No media found' }
+        }
+
+        // Filter items with AI analysis
+        const itemsWithAnalysis = mediaItems.filter((m) => m.aiAnalysis)
+
+        if (itemsWithAnalysis.length === 0) {
+            return {
+                success: false,
+                error: 'No media with AI analysis found. Please analyze images first.',
+            }
+        }
+
+        const results: BulkRefreshItem[] = []
+        let processedCount = 0
+        let failedCount = 0
+
+        // Process in batches to avoid overwhelming the AI API
+        for (
+            let i = 0;
+            i < itemsWithAnalysis.length;
+            i += MAX_CONCURRENT_ANALYSIS
+        ) {
+            const batch = itemsWithAnalysis.slice(
+                i,
+                i + MAX_CONCURRENT_ANALYSIS
+            )
+
+            const batchResults = await Promise.all(
+                batch.map(async (media) => {
+                    try {
+                        // Generate SEO content only
+                        const seoResult = await generateSEOContentFromAnalysis(
+                            media.aiAnalysis!,
+                            media.title
+                        )
+
+                        if (seoResult.success && seoResult.content) {
+                            // Ensure slug uniqueness
+                            const uniqueSlug = await ensureUniqueSlug(
+                                seoResult.content.slug,
+                                media.id
+                            )
+
+                            // Update only SEO fields
+                            await db
+                                .update(galleryMedia)
+                                .set({
+                                    seoTitle: seoResult.content.seoTitle,
+                                    seoDescription:
+                                        seoResult.content.seoDescription,
+                                    slug: uniqueSlug,
+                                })
+                                .where(eq(galleryMedia.id, media.id))
+
+                            processedCount++
+                            return {
+                                mediaId: media.id,
+                                success: true,
+                            }
+                        } else {
+                            failedCount++
+                            return {
+                                mediaId: media.id,
+                                success: false,
+                                error: 'Failed to generate SEO content',
+                            }
+                        }
+                    } catch (error) {
+                        failedCount++
+                        return {
+                            mediaId: media.id,
+                            success: false,
+                            error:
+                                error instanceof Error
+                                    ? error.message
+                                    : 'SEO content generation failed',
+                        }
+                    }
+                })
+            )
+
+            results.push(...batchResults)
+        }
+
+        revalidateGalleryPaths()
+        await revalidateGalleryCacheWithSlugs(mediaItems.map((m) => m.slug))
+
+        return {
+            success: true,
+            results,
+            processedCount,
+            failedCount,
+        }
+    } catch (error) {
+        return handleActionError<BulkRefreshResult>(
+            error,
+            'Failed to generate SEO content',
+            'Error generating SEO content:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk Generate Visitor Content Action
+// ============================================================================
+
+/**
+ * Generate only visitor-facing content for multiple media items
+ * Requires existing AI analysis
+ *
+ * @param mediaIds - Array of media IDs to generate visitor content for
+ * @returns BulkRefreshResult with per-item results
+ */
+export async function bulkGenerateVisitorContent(
+    mediaIds: string[]
+): Promise<BulkRefreshResult> {
+    try {
+        await requireAuth()
+
+        const validation = validateMediaIds(mediaIds, 100)
+        if (validation) return validation as BulkRefreshResult
+
+        // Get media with AI analysis
+        const mediaItems = await db
+            .select({
+                id: galleryMedia.id,
+                title: galleryMedia.title,
+                aiAnalysis: galleryMedia.aiAnalysis,
+            })
+            .from(galleryMedia)
+            .where(inArray(galleryMedia.id, mediaIds))
+
+        if (mediaItems.length === 0) {
+            return { success: false, error: 'No media found' }
+        }
+
+        // Filter items with AI analysis
+        const itemsWithAnalysis = mediaItems.filter((m) => m.aiAnalysis)
+
+        if (itemsWithAnalysis.length === 0) {
+            return {
+                success: false,
+                error: 'No media with AI analysis found. Please analyze images first.',
+            }
+        }
+
+        const results: BulkRefreshItem[] = []
+        let processedCount = 0
+        let failedCount = 0
+
+        // Process in batches to avoid overwhelming the AI API
+        for (
+            let i = 0;
+            i < itemsWithAnalysis.length;
+            i += MAX_CONCURRENT_ANALYSIS
+        ) {
+            const batch = itemsWithAnalysis.slice(
+                i,
+                i + MAX_CONCURRENT_ANALYSIS
+            )
+
+            const batchResults = await Promise.all(
+                batch.map(async (media) => {
+                    try {
+                        // Generate visitor content only
+                        const visitorResult =
+                            await generateVisitorContentFromAnalysis(
+                                media.aiAnalysis!,
+                                media.title
+                            )
+
+                        if (visitorResult.success && visitorResult.content) {
+                            // Update only visitor-facing fields
+                            await db
+                                .update(galleryMedia)
+                                .set({
+                                    title: visitorResult.content.title,
+                                    description:
+                                        visitorResult.content.description,
+                                    alt: visitorResult.content.alt,
+                                })
+                                .where(eq(galleryMedia.id, media.id))
+
+                            processedCount++
+                            return {
+                                mediaId: media.id,
+                                success: true,
+                            }
+                        } else {
+                            failedCount++
+                            return {
+                                mediaId: media.id,
+                                success: false,
+                                error: 'Failed to generate visitor content',
+                            }
+                        }
+                    } catch (error) {
+                        failedCount++
+                        return {
+                            mediaId: media.id,
+                            success: false,
+                            error:
+                                error instanceof Error
+                                    ? error.message
+                                    : 'Visitor content generation failed',
+                        }
+                    }
+                })
+            )
+
+            results.push(...batchResults)
+        }
+
+        revalidateGalleryPaths()
+        await revalidateGalleryCache()
+
+        return {
+            success: true,
+            results,
+            processedCount,
+            failedCount,
+        }
+    } catch (error) {
+        return handleActionError<BulkRefreshResult>(
+            error,
+            'Failed to generate visitor content',
+            'Error generating visitor content:'
+        )
     }
 }
