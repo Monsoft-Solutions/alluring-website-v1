@@ -28,7 +28,7 @@ async function fetchGalleryMediaByProcedure(
 ): Promise<ProcedureGalleryData> {
     // First, get the first visible gallery group for this procedure
     const [firstGroup] = await db
-        .select({ slug: galleryGroup.slug })
+        .select({ id: galleryGroup.id, slug: galleryGroup.slug })
         .from(galleryGroup)
         .where(
             and(
@@ -44,7 +44,7 @@ async function fetchGalleryMediaByProcedure(
         return { media: [], groupSlug: null }
     }
 
-    // Fetch media from all procedure groups
+    // Fetch media from the first visible group
     const media = await db
         .select({
             id: galleryMedia.id,
@@ -67,8 +67,7 @@ async function fetchGalleryMediaByProcedure(
         .innerJoin(galleryGroup, eq(galleryMediaGroup.groupId, galleryGroup.id))
         .where(
             and(
-                eq(galleryGroup.procedureSlug, procedureSlug),
-                eq(galleryGroup.isVisible, true),
+                eq(galleryGroup.id, firstGroup.id),
                 eq(galleryMedia.status, 'published')
             )
         )
@@ -96,9 +95,8 @@ async function fetchGalleryMediaByProcedure(
 /**
  * Get gallery media for a specific procedure with caching
  *
- * Fetches published media from visible gallery groups linked to a procedure.
- * Returns a flat list of images (not grouped) along with the first group's slug
- * for linking purposes.
+ * Fetches published media from the first visible gallery group linked to a procedure.
+ * Returns a flat list of images along with the group's slug for linking purposes.
  *
  * @param procedureSlug - The procedure slug to filter by
  * @param limit - Maximum number of images to return (default: 6)
