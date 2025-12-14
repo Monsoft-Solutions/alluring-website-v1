@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import {
-    getGalleryMediaForSelection,
-    type GalleryMediaSortBy,
-    type GalleryMediaSortOrder,
-    type GalleryMediaStatusFilter,
-    type GalleryMediaTypeFilter,
-} from '@/lib/queries/gallery.query'
+import { galleryMediaSelectionParamsSchema } from '@/lib/schemas/gallery-media-selection-params.schema'
+import { getGalleryMediaForSelection } from '@/lib/queries/gallery.query'
 import { requireAuth } from '@/lib/utils/auth.util'
 
 export const runtime = 'nodejs'
@@ -21,28 +16,35 @@ export async function GET(request: NextRequest) {
 
         const searchParams = request.nextUrl.searchParams
 
-        const page = parseInt(searchParams.get('page') || '1', 10)
-        const pageSize = parseInt(searchParams.get('pageSize') || '24', 10)
-        const sortBy = (searchParams.get('sortBy') ||
-            'createdAt') as GalleryMediaSortBy
-        const sortOrder = (searchParams.get('sortOrder') ||
-            'desc') as GalleryMediaSortOrder
-        const status = (searchParams.get('status') ||
-            'all') as GalleryMediaStatusFilter
-        const type = (searchParams.get('type') ||
-            'all') as GalleryMediaTypeFilter
-        const search = searchParams.get('search') || undefined
+        // Convert URLSearchParams to plain object for Zod validation
+        const rawParams = Object.fromEntries(searchParams.entries())
 
-        // Parse hasGroup
-        const hasGroupParam = searchParams.get('hasGroup')
-        const hasGroup =
-            hasGroupParam === null ? null : hasGroupParam === 'true'
+        // Validate and parse query parameters with Zod
+        const validationResult =
+            galleryMediaSelectionParamsSchema.safeParse(rawParams)
 
-        // Parse excludeMediaIds
-        const excludeMediaIdsParam = searchParams.get('excludeMediaIds')
-        const excludeMediaIds = excludeMediaIdsParam
-            ? excludeMediaIdsParam.split(',').filter(Boolean)
-            : []
+        if (!validationResult.success) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'Invalid query parameters',
+                    details: validationResult.error.format(),
+                },
+                { status: 400 }
+            )
+        }
+
+        const {
+            page,
+            pageSize,
+            sortBy,
+            sortOrder,
+            status,
+            type,
+            hasGroup,
+            excludeMediaIds,
+            search,
+        } = validationResult.data
 
         const result = await getGalleryMediaForSelection({
             page,
