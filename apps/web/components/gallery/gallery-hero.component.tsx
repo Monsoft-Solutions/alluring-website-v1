@@ -54,7 +54,7 @@ export function GalleryHero() {
                 <div className='h-[85vh] w-full shrink-0 md:hidden' />
 
                 {/* Desktop Spacer */}
-                <div className='hidden h-[35vh] w-full shrink-0 md:block' />
+                <div className='hidden h-[60vh] w-full shrink-0 md:block' />
 
                 {/* Card Container */}
                 <div className='pointer-events-none container mx-auto px-6 pb-24 md:px-12 lg:pb-32'>

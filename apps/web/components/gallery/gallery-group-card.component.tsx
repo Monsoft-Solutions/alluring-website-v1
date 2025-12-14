@@ -42,8 +42,14 @@ export function GalleryGroupCard({ group, className }: GalleryGroupCardProps) {
                         blurDataURL={group.coverImage.blurDataUrl ?? undefined}
                     />
                 ) : (
-                    <div className='flex h-full w-full items-center justify-center bg-stone-200'>
-                        <Images className='h-12 w-12 text-stone-400' />
+                    <div className='relative h-full w-full bg-gradient-to-br from-stone-800 via-stone-700 to-stone-900'>
+                        {/* Decorative gold accent orbs */}
+                        <div className='absolute inset-0 overflow-hidden'>
+                            <div className='bg-gold-500/20 absolute -top-12 -right-12 h-48 w-48 rounded-full blur-3xl' />
+                            <div className='bg-gold-600/10 absolute -bottom-12 -left-12 h-64 w-64 rounded-full blur-3xl' />
+                        </div>
+                        {/* Subtle pattern overlay */}
+                        <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.05),transparent)]' />
                     </div>
                 )}
 

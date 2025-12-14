@@ -335,6 +335,7 @@ export type GalleryGroupListItem = {
     name: string
     slug: string
     description: string | null
+    procedureSlug: string | null
     coverImageId: string | null
     coverImageUrl: string | null
     displayOrder: number
@@ -350,6 +351,7 @@ export async function getGalleryGroups(): Promise<GalleryGroupListItem[]> {
             name: galleryGroup.name,
             slug: galleryGroup.slug,
             description: galleryGroup.description,
+            procedureSlug: galleryGroup.procedureSlug,
             coverImageId: galleryGroup.coverImageId,
             coverImageUrl: galleryMedia.url,
             displayOrder: galleryGroup.displayOrder,
@@ -373,6 +375,7 @@ export type GalleryGroupDetail = {
     name: string
     slug: string
     description: string | null
+    procedureSlug: string | null
     coverImageId: string | null
     displayOrder: number
     isVisible: boolean
