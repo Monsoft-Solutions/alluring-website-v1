@@ -5,10 +5,8 @@ import { baseGalleryMediaParamsSchema } from './gallery-media-base-params.schema
 /**
  * Schema for validating gallery media query parameters
  * Used in /api/gallery/media route
- * Extends base schema with groupId filter
+ * Now just re-exports base schema since all filters are unified
  */
-export const galleryMediaParamsSchema = baseGalleryMediaParamsSchema.extend({
-    groupId: z.string().optional(),
-})
+export const galleryMediaParamsSchema = baseGalleryMediaParamsSchema
 
 export type GalleryMediaParams = z.infer<typeof galleryMediaParamsSchema>

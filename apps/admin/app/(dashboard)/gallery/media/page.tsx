@@ -42,6 +42,7 @@ type SearchParams = Promise<{
     status?: string
     type?: string
     groupId?: string
+    hasGroup?: string
     search?: string
 }>
 
@@ -126,6 +127,14 @@ export default async function GalleryMediaPage({
         : 'all'
     const groupId = params.groupId
 
+    // Parse hasGroup parameter
+    const hasGroup =
+        params.hasGroup === 'true'
+            ? true
+            : params.hasGroup === 'false'
+              ? false
+              : null
+
     // Fetch groups for filter dropdown
     const groups = await getGalleryGroupsForSelect()
 
@@ -137,6 +146,7 @@ export default async function GalleryMediaPage({
         status,
         type,
         groupId,
+        hasGroup,
         search: params.search,
     })
 
@@ -152,6 +162,8 @@ export default async function GalleryMediaPage({
             sortOrder,
             status,
             type,
+            groupId,
+            hasGroup,
             search: params.search,
         })
         media = refetch.media
@@ -166,6 +178,7 @@ export default async function GalleryMediaPage({
         if (status !== 'all') params.set('status', status)
         if (type !== 'all') params.set('type', type)
         if (groupId) params.set('groupId', groupId)
+        if (hasGroup !== null) params.set('hasGroup', String(hasGroup))
         return `/gallery/media?${params.toString()}`
     }
 
@@ -180,6 +193,7 @@ export default async function GalleryMediaPage({
         if (newStatus && newStatus !== 'all') params.set('status', newStatus)
         if (newType && newType !== 'all') params.set('type', newType)
         if (newGroupId) params.set('groupId', newGroupId)
+        if (hasGroup !== null) params.set('hasGroup', String(hasGroup))
         return `/gallery/media?${params.toString()}`
     }
 
@@ -191,6 +205,7 @@ export default async function GalleryMediaPage({
         if (status !== 'all') params.set('status', status)
         if (type !== 'all') params.set('type', type)
         if (groupId) params.set('groupId', groupId)
+        if (hasGroup !== null) params.set('hasGroup', String(hasGroup))
         return `/gallery/media?${params.toString()}`
     }
 
@@ -293,6 +308,7 @@ export default async function GalleryMediaPage({
                 <GroupFilterSelect
                     groups={groups}
                     selectedGroupId={groupId}
+                    hasGroup={hasGroup}
                     currentStatus={status}
                     currentType={type}
                     sortBy={sortBy}
@@ -311,6 +327,7 @@ export default async function GalleryMediaPage({
                     status,
                     type,
                     groupId,
+                    hasGroup,
                 }}
                 tableView={
                     <>

@@ -43,6 +43,7 @@ type MediaLibraryClientProps = {
         status: GalleryMediaStatusFilter
         type: GalleryMediaTypeFilter
         groupId?: string
+        hasGroup?: boolean | null
     }
     tableView: React.ReactNode
 }
@@ -86,6 +87,7 @@ export function MediaLibraryClient({
         currentFilters.status,
         currentFilters.type,
         currentFilters.groupId,
+        currentFilters.hasGroup,
     ])
 
     // Clear selection when media count changes (after bulk operations)
@@ -134,6 +136,13 @@ export function MediaLibraryClient({
                 params.append('groupId', currentFilters.groupId)
             }
 
+            if (
+                currentFilters.hasGroup !== null &&
+                currentFilters.hasGroup !== undefined
+            ) {
+                params.append('hasGroup', String(currentFilters.hasGroup))
+            }
+
             const response = await fetch(
                 `/api/gallery/media?${params.toString()}`,
                 {
@@ -174,6 +183,7 @@ export function MediaLibraryClient({
         currentFilters.status,
         currentFilters.type,
         currentFilters.groupId,
+        currentFilters.hasGroup,
     ])
 
     const handleToggle = useCallback((mediaId: string) => {

@@ -39,11 +39,13 @@ export type GalleryMediaTypeFilter = 'all' | 'image' | 'video'
 export type GetGalleryMediaOptions = {
     page?: number
     pageSize?: number
-    sortBy?: GalleryMediaSortBy
+    sortBy?: GalleryMediaSortBy | 'qualityScore'
     sortOrder?: GalleryMediaSortOrder
     status?: GalleryMediaStatusFilter
     type?: GalleryMediaTypeFilter
     groupId?: string
+    hasGroup?: boolean | null
+    excludeMediaIds?: string[]
     search?: string
 }
 
@@ -58,6 +60,8 @@ export async function getGalleryMedia(
         status = 'all',
         type = 'all',
         groupId,
+        hasGroup,
+        excludeMediaIds,
         search,
     } = options
     const offset = (page - 1) * pageSize
@@ -77,17 +81,23 @@ export async function getGalleryMedia(
         conditions.push(ilike(galleryMedia.title, `%${search}%`))
     }
 
+    if (excludeMediaIds && excludeMediaIds.length > 0) {
+        conditions.push(notInArray(galleryMedia.id, excludeMediaIds))
+    }
+
     // Determine sort column and direction
     const sortColumn =
         sortBy === 'title'
             ? galleryMedia.title
             : sortBy === 'displayOrder'
               ? galleryMedia.displayOrder
-              : galleryMedia.createdAt
+              : sortBy === 'qualityScore'
+                ? sql<number>`COALESCE((${galleryMedia.aiAnalysis}->>'qualityScore')::numeric, 0)`
+                : galleryMedia.createdAt
 
     const orderDirection = sortOrder === 'asc' ? asc : desc
 
-    // If filtering by group, join with junction table
+    // If filtering by specific group (takes precedence over hasGroup)
     if (groupId) {
         const [media, totalResult] = await Promise.all([
             db
@@ -134,7 +144,24 @@ export async function getGalleryMedia(
         }
     }
 
+    // Handle hasGroup filter (requires subquery)
+    if (hasGroup !== null && hasGroup !== undefined) {
+        if (hasGroup) {
+            // Media that has at least one group
+            conditions.push(
+                sql`EXISTS (SELECT 1 FROM ${galleryMediaGroup} WHERE ${galleryMediaGroup.mediaId} = ${galleryMedia.id})`
+            )
+        } else {
+            // Media that has no groups
+            conditions.push(
+                sql`NOT EXISTS (SELECT 1 FROM ${galleryMediaGroup} WHERE ${galleryMediaGroup.mediaId} = ${galleryMedia.id})`
+            )
+        }
+    }
+
     // Regular query without group filter
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
     const [media, totalResult] = await Promise.all([
         db
             .select({
@@ -152,14 +179,11 @@ export async function getGalleryMedia(
                 publishedAt: galleryMedia.publishedAt,
             })
             .from(galleryMedia)
-            .where(conditions.length > 0 ? and(...conditions) : undefined)
+            .where(whereClause)
             .orderBy(orderDirection(sortColumn))
             .limit(pageSize)
             .offset(offset),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(conditions.length > 0 ? and(...conditions) : undefined),
+        db.select({ count: count() }).from(galleryMedia).where(whereClause),
     ])
 
     return {
@@ -286,114 +310,20 @@ export async function getMediaByGroupId(
     return media
 }
 
-export type GetGalleryMediaForSelectionOptions = {
-    page: number
-    pageSize: number
-    sortBy?: GalleryMediaSortBy | 'qualityScore'
-    sortOrder?: GalleryMediaSortOrder
-    status?: GalleryMediaStatusFilter
-    type?: GalleryMediaTypeFilter
-    hasGroup?: boolean | null
-    excludeMediaIds?: string[]
-    search?: string
-}
+/**
+ * @deprecated Use GetGalleryMediaOptions instead - both functions are now unified
+ */
+export type GetGalleryMediaForSelectionOptions = GetGalleryMediaOptions
 
 /**
+ * @deprecated Use getGalleryMedia() instead - now supports all filtering options
  * Get gallery media for selection dialog with advanced filtering
  * Supports filtering by group status, excluding specific media, and searching
  */
 export async function getGalleryMediaForSelection(
     options: GetGalleryMediaForSelectionOptions
 ): Promise<{ media: GalleryMediaListItem[]; total: number }> {
-    const {
-        page,
-        pageSize,
-        sortBy = 'createdAt',
-        sortOrder = 'desc',
-        status = 'all',
-        type = 'all',
-        hasGroup,
-        excludeMediaIds,
-        search,
-    } = options
-    const offset = (page - 1) * pageSize
-
-    // Build conditions
-    const conditions = []
-
-    if (status !== 'all') {
-        conditions.push(eq(galleryMedia.status, status))
-    }
-
-    if (type !== 'all') {
-        conditions.push(eq(galleryMedia.type, type))
-    }
-
-    if (search) {
-        conditions.push(ilike(galleryMedia.title, `%${search}%`))
-    }
-
-    if (excludeMediaIds && excludeMediaIds.length > 0) {
-        conditions.push(notInArray(galleryMedia.id, excludeMediaIds))
-    }
-
-    // Determine sort column and direction
-    const sortColumn =
-        sortBy === 'title'
-            ? galleryMedia.title
-            : sortBy === 'displayOrder'
-              ? galleryMedia.displayOrder
-              : sortBy === 'qualityScore'
-                ? sql<number>`COALESCE((${galleryMedia.aiAnalysis}->>'qualityScore')::numeric, 0)`
-                : galleryMedia.createdAt
-
-    const orderDirection = sortOrder === 'asc' ? asc : desc
-
-    // Handle hasGroup filter (requires subquery)
-    if (hasGroup !== null && hasGroup !== undefined) {
-        if (hasGroup) {
-            // Media that has at least one group
-            conditions.push(
-                sql`EXISTS (SELECT 1 FROM ${galleryMediaGroup} WHERE ${galleryMediaGroup.mediaId} = ${galleryMedia.id})`
-            )
-        } else {
-            // Media that has no groups
-            conditions.push(
-                sql`NOT EXISTS (SELECT 1 FROM ${galleryMediaGroup} WHERE ${galleryMediaGroup.mediaId} = ${galleryMedia.id})`
-            )
-        }
-    }
-
-    const whereClause = conditions.length > 0 ? and(...conditions) : undefined
-
-    const [media, totalResult] = await Promise.all([
-        db
-            .select({
-                id: galleryMedia.id,
-                type: galleryMedia.type,
-                url: galleryMedia.url,
-                thumbnailUrl: galleryMedia.thumbnailUrl,
-                title: galleryMedia.title,
-                slug: galleryMedia.slug,
-                status: galleryMedia.status,
-                isFeatured: galleryMedia.isFeatured,
-                isBeforeAfter: galleryMedia.isBeforeAfter,
-                displayOrder: galleryMedia.displayOrder,
-                createdAt: galleryMedia.createdAt,
-                publishedAt: galleryMedia.publishedAt,
-            })
-            .from(galleryMedia)
-            .where(whereClause)
-            .orderBy(orderDirection(sortColumn))
-            .limit(pageSize)
-            .offset(offset),
-        db.select({ count: count() }).from(galleryMedia).where(whereClause),
-    ])
-
-    return {
-        media,
-        total: totalResult[0]?.count ?? 0,
-    }
+    return getGalleryMedia(options)
 }
 
 // ============================================================================

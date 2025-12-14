@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { galleryMediaSelectionParamsSchema } from '@/lib/schemas/gallery-media-selection-params.schema'
-import { getGalleryMediaForSelection } from '@/lib/queries/gallery.query'
+import { getGalleryMedia } from '@/lib/queries/gallery.query'
 import { requireAuth } from '@/lib/utils/auth.util'
 
 export const runtime = 'nodejs'
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
             search,
         } = validationResult.data
 
-        const result = await getGalleryMediaForSelection({
+        const result = await getGalleryMedia({
             page,
             pageSize,
             sortBy,
