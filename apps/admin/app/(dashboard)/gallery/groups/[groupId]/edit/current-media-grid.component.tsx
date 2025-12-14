@@ -7,8 +7,8 @@ import { CheckSquare, Square } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 
 import type { GalleryMediaListItem } from '@/lib/queries/gallery.query'
-import { SelectableCurrentMediaCard } from './selectable-current-media-card.component'
-import { BulkActionToolbar } from './bulk-action-toolbar.component'
+import { SelectableMediaCard } from '@/components/shared/selectable-media-card.component'
+import { BulkActionToolbar } from '@/components/shared/gallery/bulk-action-toolbar.component'
 
 type CurrentMediaGridProps = {
     groupId: string
@@ -128,7 +128,7 @@ export function CurrentMediaGrid({
             {/* Grid */}
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {groupMedia.map((media) => (
-                    <SelectableCurrentMediaCard
+                    <SelectableMediaCard
                         key={media.id}
                         media={media}
                         isSelected={selectedIds.has(media.id)}

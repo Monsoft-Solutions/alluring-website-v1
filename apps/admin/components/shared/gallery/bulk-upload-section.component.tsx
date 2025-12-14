@@ -8,10 +8,13 @@ import Image from 'next/image'
 
 import { Button } from '@workspace/ui/components/button'
 
-import { bulkUploadAndAssignToGroup } from '@/lib/actions/gallery-bulk.action'
+import {
+    bulkUploadAndAssignToGroup,
+    bulkUploadMedia,
+} from '@/lib/actions/gallery-bulk.action'
 
 type BulkUploadSectionProps = {
-    groupId: string
+    groupId?: string
 }
 
 type FileWithPreview = {
@@ -71,7 +74,10 @@ export function BulkUploadSection({ groupId }: BulkUploadSectionProps) {
                 formData.append(`file-${index}`, f.file)
             })
 
-            const result = await bulkUploadAndAssignToGroup(groupId, formData)
+            // Use appropriate upload function based on whether groupId is provided
+            const result = groupId
+                ? await bulkUploadAndAssignToGroup(groupId, formData)
+                : await bulkUploadMedia(formData)
 
             if (result.success && result.results) {
                 const successCount = result.results.filter(

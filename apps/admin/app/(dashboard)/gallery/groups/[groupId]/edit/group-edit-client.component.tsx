@@ -20,9 +20,9 @@ import {
 } from '@workspace/ui/components/tabs'
 
 import { MediaSelectionDialog } from '@/components/shared/media-selection-dialog.component'
+import { BulkUploadSection } from '@/components/shared/gallery/bulk-upload-section.component'
 import { GroupDetailsForm } from './group-details-form.component'
 import { CurrentMediaGrid } from './current-media-grid.component'
-import { BulkUploadSection } from './bulk-upload-section.component'
 
 import type {
     GalleryGroupDetail,

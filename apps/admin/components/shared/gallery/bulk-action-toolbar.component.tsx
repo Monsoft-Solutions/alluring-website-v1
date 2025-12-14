@@ -37,7 +37,7 @@ import {
 } from '@/lib/actions/gallery-bulk.action'
 
 type BulkActionToolbarProps = {
-    groupId: string
+    groupId?: string
     selectedIds: string[]
     onClearSelection: () => void
     onActionComplete: () => void
@@ -111,6 +111,8 @@ export function BulkActionToolbar({
     }
 
     const handleRemoveFromGroup = () => {
+        if (!groupId) return
+
         startTransition(async () => {
             const result = await removeMediaFromGroup(groupId, selectedIds)
 
@@ -287,16 +289,18 @@ export function BulkActionToolbar({
                             <div className='h-6 w-px bg-gray-300' />
 
                             {/* Destructive actions */}
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                onClick={() => setConfirmAction('remove')}
-                                disabled={isPending}
-                                title='Remove from this group'
-                            >
-                                <X className='mr-1.5 h-4 w-4' />
-                                Remove
-                            </Button>
+                            {groupId && (
+                                <Button
+                                    variant='outline'
+                                    size='sm'
+                                    onClick={() => setConfirmAction('remove')}
+                                    disabled={isPending}
+                                    title='Remove from this group'
+                                >
+                                    <X className='mr-1.5 h-4 w-4' />
+                                    Remove
+                                </Button>
+                            )}
                             <Button
                                 variant='destructive'
                                 size='sm'
@@ -313,33 +317,37 @@ export function BulkActionToolbar({
             </div>
 
             {/* Confirmation dialogs */}
-            <AlertDialog
-                open={confirmAction === 'remove'}
-                onOpenChange={(open) => !open && setConfirmAction(null)}
-            >
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Remove from group?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Remove {selectedIds.length} item
-                            {selectedIds.length > 1 ? 's' : ''} from this group?
-                            The media will not be deleted, only the association
-                            with this group will be removed.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={() => {
-                                setConfirmAction(null)
-                                handleRemoveFromGroup()
-                            }}
-                        >
-                            Remove
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            {groupId && (
+                <AlertDialog
+                    open={confirmAction === 'remove'}
+                    onOpenChange={(open) => !open && setConfirmAction(null)}
+                >
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
+                                Remove from group?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Remove {selectedIds.length} item
+                                {selectedIds.length > 1 ? 's' : ''} from this
+                                group? The media will not be deleted, only the
+                                association with this group will be removed.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                                onClick={() => {
+                                    setConfirmAction(null)
+                                    handleRemoveFromGroup()
+                                }}
+                            >
+                                Remove
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            )}
 
             <AlertDialog
                 open={confirmAction === 'delete'}
