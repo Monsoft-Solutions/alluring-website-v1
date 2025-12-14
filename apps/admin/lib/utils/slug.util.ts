@@ -8,7 +8,7 @@
 
 import { db } from '@workspace/db/client'
 import { galleryMedia } from '@workspace/db/schema/gallery'
-import { and, like, ne } from 'drizzle-orm'
+import { and, eq, like, ne, or } from 'drizzle-orm'
 
 /**
  * Ensures a gallery media slug is unique by appending a counter if necessary
@@ -45,11 +45,17 @@ export async function ensureUniqueSlug(
     // Sanitize the base slug
     const sanitizedSlug = baseSlug.toLowerCase().trim()
 
-    // Build the WHERE clause
-    const whereConditions = [like(galleryMedia.slug, `${sanitizedSlug}%`)]
-    if (excludeMediaId) {
-        whereConditions.push(ne(galleryMedia.id, excludeMediaId))
-    }
+    // Build the WHERE clause:
+    // Match exact slug OR numbered variant (slug-N), AND exclude current media if updating
+    const slugMatchCondition = or(
+        eq(galleryMedia.slug, sanitizedSlug),
+        like(galleryMedia.slug, `${sanitizedSlug}-%`)
+    )
+
+    const whereConditions = [
+        slugMatchCondition,
+        ...(excludeMediaId ? [ne(galleryMedia.id, excludeMediaId)] : []),
+    ]
 
     // Query for existing slugs that match the pattern
     const existingSlugs = await db
