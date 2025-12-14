@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Upload, Loader2, X } from 'lucide-react'
@@ -26,6 +26,17 @@ export function BulkUploadSection({ groupId }: BulkUploadSectionProps) {
     const router = useRouter()
     const [selectedFiles, setSelectedFiles] = useState<FileWithPreview[]>([])
     const [isUploading, setIsUploading] = useState(false)
+
+    // Cleanup object URLs on unmount to prevent memory leaks
+    useEffect(() => {
+        // Capture current files for cleanup
+        const filesToCleanup = selectedFiles
+
+        return () => {
+            // Revoke all object URLs on unmount
+            filesToCleanup.forEach((f) => URL.revokeObjectURL(f.preview))
+        }
+    }, [selectedFiles])
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || [])
