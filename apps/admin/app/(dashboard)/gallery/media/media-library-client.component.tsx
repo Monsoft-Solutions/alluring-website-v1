@@ -27,7 +27,7 @@ import type {
     GalleryMediaStatusFilter,
     GalleryMediaTypeFilter,
 } from '@/lib/queries/gallery.query'
-import { SelectableMediaCard } from '@/components/shared/selectable-media-card.component'
+import { SelectableMediaGrid } from '@/components/shared/selectable-media-grid.component'
 import { BulkActionToolbar } from '@/components/shared/gallery/bulk-action-toolbar.component'
 import { BulkUploadSection } from '@/components/shared/gallery/bulk-upload-section.component'
 
@@ -59,6 +59,35 @@ export function MediaLibraryClient({
     const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false)
     const mediaCountRef = useRef(total)
 
+    // State for infinite scroll in grid view
+    const [loadedMedia, setLoadedMedia] =
+        useState<GalleryMediaListItem[]>(media)
+    const [currentPage, setCurrentPage] = useState(currentFilters.page)
+    const [totalCount, setTotalCount] = useState(total)
+    const [isLoadingMore, setIsLoadingMore] = useState(false)
+    const [loadError, setLoadError] = useState<string | null>(null)
+    const isFetchingRef = useRef(false)
+
+    const hasMore = loadedMedia.length < totalCount
+
+    // Reset loaded media when filters change (via URL navigation)
+    useEffect(() => {
+        setLoadedMedia(media)
+        setCurrentPage(currentFilters.page)
+        setTotalCount(total)
+        setSelectedIds(new Set())
+        setLoadError(null)
+    }, [
+        media,
+        total,
+        currentFilters.page,
+        currentFilters.sortBy,
+        currentFilters.sortOrder,
+        currentFilters.status,
+        currentFilters.type,
+        currentFilters.groupId,
+    ])
+
     // Clear selection when media count changes (after bulk operations)
     useEffect(() => {
         if (mediaCountRef.current !== total) {
@@ -81,6 +110,72 @@ export function MediaLibraryClient({
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [selectedIds.size])
 
+    const handleLoadMore = useCallback(async () => {
+        if (isFetchingRef.current || isLoadingMore || !hasMore) {
+            return
+        }
+
+        isFetchingRef.current = true
+        setIsLoadingMore(true)
+        setLoadError(null)
+
+        try {
+            const nextPage = currentPage + 1
+            const params = new URLSearchParams({
+                page: String(nextPage),
+                pageSize: '20',
+                sortBy: currentFilters.sortBy,
+                sortOrder: currentFilters.sortOrder,
+                status: currentFilters.status,
+                type: currentFilters.type,
+            })
+
+            if (currentFilters.groupId) {
+                params.append('groupId', currentFilters.groupId)
+            }
+
+            const response = await fetch(
+                `/api/gallery/media?${params.toString()}`,
+                {
+                    method: 'GET',
+                    cache: 'no-store',
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error('Failed to load more media')
+            }
+
+            const data = await response.json()
+
+            setLoadedMedia((prev) => {
+                // Deduplicate in case of race conditions
+                const seen = new Set(prev.map((m) => m.id))
+                const newMedia = data.media.filter(
+                    (m: GalleryMediaListItem) => !seen.has(m.id)
+                )
+                return [...prev, ...newMedia]
+            })
+            setCurrentPage(nextPage)
+            setTotalCount(data.total)
+        } catch (error) {
+            console.error('Error loading more media:', error)
+            setLoadError('Failed to load more media. Please try again.')
+        } finally {
+            setIsLoadingMore(false)
+            isFetchingRef.current = false
+        }
+    }, [
+        isLoadingMore,
+        hasMore,
+        currentPage,
+        currentFilters.sortBy,
+        currentFilters.sortOrder,
+        currentFilters.status,
+        currentFilters.type,
+        currentFilters.groupId,
+    ])
+
     const handleToggle = useCallback((mediaId: string) => {
         setSelectedIds((prev) => {
             const newSet = new Set(prev)
@@ -94,10 +189,10 @@ export function MediaLibraryClient({
     }, [])
 
     const handleSelectAll = () => {
-        if (selectedIds.size === media.length) {
+        if (selectedIds.size === loadedMedia.length) {
             setSelectedIds(new Set())
         } else {
-            setSelectedIds(new Set(media.map((m) => m.id)))
+            setSelectedIds(new Set(loadedMedia.map((m) => m.id)))
         }
     }
 
@@ -109,7 +204,8 @@ export function MediaLibraryClient({
         router.refresh()
     }, [router])
 
-    const allSelected = selectedIds.size === media.length && media.length > 0
+    const allSelected =
+        selectedIds.size === loadedMedia.length && loadedMedia.length > 0
 
     return (
         <div className='space-y-4'>
@@ -137,7 +233,7 @@ export function MediaLibraryClient({
                     </Button>
                 </div>
 
-                {viewMode === 'grid' && media.length > 0 && (
+                {viewMode === 'grid' && loadedMedia.length > 0 && (
                     <div className='flex items-center gap-2'>
                         <Button
                             variant='outline'
@@ -158,7 +254,8 @@ export function MediaLibraryClient({
                         </Button>
                         {selectedIds.size > 0 && (
                             <p className='text-muted-foreground text-sm'>
-                                {selectedIds.size} of {media.length} selected
+                                {selectedIds.size} of {loadedMedia.length}{' '}
+                                selected
                             </p>
                         )}
                     </div>
@@ -191,24 +288,16 @@ export function MediaLibraryClient({
             {viewMode === 'table' ? (
                 tableView
             ) : (
-                <>
-                    {media.length === 0 ? (
-                        <div className='text-muted-foreground py-12 text-center'>
-                            No media found matching your filters
-                        </div>
-                    ) : (
-                        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                            {media.map((item) => (
-                                <SelectableMediaCard
-                                    key={item.id}
-                                    media={item}
-                                    isSelected={selectedIds.has(item.id)}
-                                    onToggle={handleToggle}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </>
+                <SelectableMediaGrid
+                    media={loadedMedia}
+                    selectedIds={selectedIds}
+                    onToggleSelection={handleToggle}
+                    isLoading={false}
+                    isLoadingMore={isLoadingMore}
+                    hasMore={hasMore}
+                    onLoadMore={handleLoadMore}
+                    error={loadError}
+                />
             )}
 
             {/* Bulk action toolbar (sticky at bottom) */}

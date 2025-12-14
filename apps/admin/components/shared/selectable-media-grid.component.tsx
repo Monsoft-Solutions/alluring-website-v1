@@ -30,6 +30,14 @@ export function SelectableMediaGrid({
     error,
 }: SelectableMediaGridProps) {
     const loadMoreRef = useRef<HTMLDivElement>(null)
+    const hasMoreRef = useRef(hasMore)
+    const isLoadingMoreRef = useRef(isLoadingMore)
+
+    // Keep refs in sync with props
+    useEffect(() => {
+        hasMoreRef.current = hasMore
+        isLoadingMoreRef.current = isLoadingMore
+    }, [hasMore, isLoadingMore])
 
     // IntersectionObserver for infinite scroll
     useEffect(() => {
@@ -40,6 +48,10 @@ export function SelectableMediaGrid({
             (entries) => {
                 const [entry] = entries
                 if (entry?.isIntersecting) {
+                    // Check if we should load more before calling onLoadMore
+                    if (!hasMoreRef.current || isLoadingMoreRef.current) {
+                        return
+                    }
                     onLoadMore()
                 }
             },
