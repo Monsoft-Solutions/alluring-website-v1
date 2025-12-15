@@ -7,18 +7,18 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/privacy',
     title: 'Privacy Policy',
     description:
-        'Our privacy policy explains how we collect, use, and protect your personal information when you visit our website.',
+        'Privacy policy for Alluring Plastic Surgery explaining how we collect, use, and protect your personal information. Learn about HIPAA compliance, photo privacy, and your data rights.',
     openGraph: {
-        title: 'Privacy Policy',
+        title: 'Privacy Policy - Alluring Plastic Surgery',
         description:
-            'Learn how we handle your personal data and protect your privacy.',
+            'Learn how Alluring Plastic Surgery handles your personal data, protects patient privacy, and complies with HIPAA and Florida privacy laws.',
         type: 'website',
     },
     twitter: {
         card: 'summary',
-        title: 'Privacy Policy',
+        title: 'Privacy Policy - Alluring Plastic Surgery',
         description:
-            'Learn how we handle your personal data and protect your privacy.',
+            'Learn how we handle your personal data and protect your privacy at our Miami plastic surgery practice.',
     },
     robots: {
         index: true,
@@ -29,21 +29,23 @@ export const metadata = toNextMetadata(seoConfig, {
 /**
  * Privacy Policy Page
  *
- * Displays the website's privacy policy including:
- * - Data collection practices
+ * Displays Alluring Plastic Surgery's privacy policy including:
+ * - Data collection practices (contact forms, consultations, chat)
+ * - HIPAA and protected health information distinctions
+ * - Before and after photo privacy and consent
  * - Analytics and cookie usage
- * - Third-party services
- * - User rights (GDPR/CCPA)
+ * - Third-party services and financing partners
+ * - User rights (GDPR/CCPA/Florida laws)
+ * - Children's privacy for cosmetic surgery
+ * - Data security and breach notification
  * - Contact information
- *
- * Built with open-source template by Adriano Flechilla / Monsoft Solutions, LLC
  */
 export default function PrivacyPolicyPage() {
     return (
         <LegalPageLayout
             title='Privacy Policy'
             content={privacyPolicyContent}
-            lastUpdated='October 19, 2025'
+            lastUpdated='December 14, 2025'
         />
     )
 }

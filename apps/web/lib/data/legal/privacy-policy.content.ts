@@ -1,19 +1,24 @@
 /**
  * Privacy Policy Content
- * Last Updated: October 19, 2025
+ * Last Updated: December 14, 2025
  *
  * This content explains how the website collects, uses, and protects user data.
+ * Tailored for Alluring Plastic Surgery, a medical practice in Miami, FL.
  */
 
 export const privacyPolicyContent = `
 # Privacy Policy
 
-**Effective Date:** October 19, 2025
-**Last Updated:** October 19, 2025
+**Effective Date:** December 14, 2025
+**Last Updated:** December 14, 2025
 
 ## 1. Introduction
 
-This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you visit and interact with our website. We are committed to protecting your privacy and being transparent about our data practices.
+This Privacy Policy explains how Alluring Plastic Surgery, LLC ("we," "us," or "our") collects, uses, discloses, and protects your personal information when you visit and interact with our website at www.alluringplasticsurgery.com.
+
+We are committed to protecting your privacy and being transparent about our data practices. As a medical practice, we understand the sensitivity of personal and health-related information and take extra care to safeguard it.
+
+**Important Distinction:** This Privacy Policy applies to information collected through our **website only**. If you become a patient of Alluring Plastic Surgery, your medical records and protected health information (PHI) are governed by HIPAA and our separate Notice of Privacy Practices, which you will receive during your first visit.
 
 By using this website, you agree to the collection and use of information in accordance with this policy.
 
@@ -25,10 +30,40 @@ By using this website, you agree to the collection and use of information in acc
 - Name (required)
 - Email address (required)
 - Phone number (optional)
-- Subject (optional)
+- Subject or procedure of interest (optional)
 - Message content (required)
 
-This information is collected when you voluntarily submit our contact form and is stored in our database for communication purposes.
+**Consultation Request Forms:**
+- Name (required)
+- Email address (required)
+- Phone number (required)
+- Procedure(s) of interest (optional)
+- Preferred consultation date/time (optional)
+- How you heard about us (optional)
+- Brief description of your goals (optional)
+
+**Important:** Information submitted through our website contact forms and consultation requests is **NOT** considered protected health information (PHI) under HIPAA. Please do not include detailed medical history, diagnoses, or sensitive health conditions in website forms. Such information should only be shared during your in-person consultation or through our secure patient portal.
+
+**Chat Widget Conversations:**
+- Name (if provided)
+- Email address (if provided)
+- Phone number (if provided)
+- Chat message content
+- Timestamp of conversations
+
+**Callback Request Forms:**
+- Name (required)
+- Phone number (required)
+- Preferred callback time (optional)
+
+**SMS/Text Message Consent:**
+When you provide your phone number and opt-in to text messages, we may send:
+- Appointment reminders and confirmations
+- Consultation follow-up messages
+- Pre-operative and post-operative instructions
+- Promotional offers (with separate consent)
+
+You can opt-out of SMS messages at any time by replying "STOP" to any message.
 
 ### 2.2 Analytics and Usage Data
 
@@ -51,7 +86,7 @@ We use third-party analytics services to understand how visitors use our website
   - Event tracking and conversions
   - Custom analytics implementations
 
-- **Facebook Pixel:**
+- **Facebook/Meta Pixel:**
   - Page views and conversion tracking
   - Audience building for marketing purposes
 
@@ -61,29 +96,135 @@ We use cookies and browser local storage to:
 - Remember your cookie consent preferences
 - Enable analytics functionality (with your consent)
 - Improve website performance and user experience
+- Remember chat conversation history (temporary)
 
 For detailed information about cookies, see our [Cookie Policy](/cookies).
 
 ### 2.4 Blog and Content Engagement
 
-When you read blog content, we may track:
+When you read our educational blog content, we may track:
 - Page views and reading time
 - Scroll depth (how far you read)
 - Article engagement metrics
+- Social sharing activity
 
-This data is anonymized and used to improve our content.
+This data is anonymized and used to improve our educational content.
 
-## 3. How We Use Your Information
+## 3. HIPAA and Protected Health Information
 
-### 3.1 Contact Form Data
+### 3.1 Important Distinction
 
-We use contact form submissions to:
+As a medical practice, we want to be clear about the difference between:
+
+**Website Data (Covered by this Privacy Policy):**
+- Contact form submissions
+- Consultation requests
+- Chat conversations
+- Website browsing behavior
+- Email communications
+
+**Patient Medical Records (Covered by HIPAA):**
+- Medical history and diagnoses
+- Treatment plans and surgical records
+- Before and after clinical photographs
+- Lab results and imaging
+- Prescription information
+- Insurance and billing records
+
+### 3.2 When HIPAA Applies
+
+HIPAA (Health Insurance Portability and Accountability Act) protections apply when:
+- You become an established patient at our practice
+- You provide medical information during an in-person or telehealth consultation
+- Your information is stored in our electronic health records (EHR) system
+- You use our secure patient portal for communications
+
+### 3.3 Notice of Privacy Practices
+
+When you become a patient, you will receive our **Notice of Privacy Practices (NPP)**, which explains:
+- How we use and disclose your protected health information
+- Your rights regarding your medical records
+- How to request access, amendments, or restrictions
+- How to file a complaint about privacy violations
+- Contact information for our Privacy Officer
+
+### 3.4 Website Forms Are NOT HIPAA-Compliant
+
+Our website contact forms, chat widget, and consultation request forms are **NOT** HIPAA-compliant secure channels. Please:
+- Do NOT submit detailed medical histories through website forms
+- Do NOT include diagnoses, medications, or sensitive health conditions
+- Use our secure patient portal or call our office for medical discussions
+- Wait until your in-person consultation to discuss medical details
+
+## 4. Before and After Photo Privacy
+
+### 4.1 Patient Photo Consent
+
+Before and after photographs displayed on our website, social media, or marketing materials are obtained with **explicit written consent** from each patient. Our photo release process includes:
+
+- A detailed Photo/Video Release Authorization form
+- Explanation of how photos may be used (website, social media, print materials, presentations)
+- Option to limit usage scope (e.g., website only, no social media)
+- Right to revoke consent at any time
+
+### 4.2 Photo De-identification
+
+We take steps to protect patient privacy in photographs:
+- Face photos are only used with explicit consent
+- Body photos may be cropped to exclude identifying features when requested
+- No patient names are associated with photos on public platforms
+- Identifying marks (tattoos, birthmarks) may be obscured upon request
+
+### 4.3 Requesting Photo Removal
+
+If you are a current or former patient whose photos appear on our website or marketing materials, you have the right to:
+- Request removal of your photos at any time
+- Limit the scope of how your photos are used
+- Revoke your photo release consent
+
+To request photo removal, contact us at:
+- **Email:** info@alluringplasticsurgery.com
+- **Phone:** +1 (786) 305-8649
+- **Subject Line:** "Photo Removal Request"
+
+We will process removal requests within 30 days.
+
+### 4.4 Third-Party Photo Usage
+
+Photos may be shared with:
+- Third-party review platforms (RealSelf, Yelp, Google) if you submit your own photos
+- Social media platforms (Instagram, Facebook, TikTok) where we have an official presence
+- Medical conferences or publications (with additional consent for educational use)
+
+We do NOT sell patient photos or share them with unaffiliated third parties for their marketing purposes.
+
+## 5. How We Use Your Information
+
+### 5.1 Contact and Consultation Data
+
+We use contact form and consultation request submissions to:
 - Respond to your inquiries and requests
-- Provide customer support
-- Communicate about our services
+- Schedule consultations and appointments
+- Provide information about procedures and pricing
+- Send appointment reminders via email, phone, or SMS
+- Follow up after consultations
 - Maintain records of our communications
+- Improve our customer service
 
-### 3.2 Analytics Data
+### 5.2 Marketing Communications
+
+With your consent, we may use your contact information to:
+- Send newsletters with educational content and updates
+- Inform you of special promotions or financing offers
+- Share new procedure announcements
+- Invite you to events or webinars
+
+You can opt-out of marketing communications at any time by:
+- Clicking "unsubscribe" in any marketing email
+- Replying "STOP" to SMS messages
+- Contacting us directly to update your preferences
+
+### 5.3 Analytics Data
 
 We use analytics data to:
 - Understand website usage patterns
@@ -91,22 +232,23 @@ We use analytics data to:
 - Identify and fix technical issues
 - Optimize content and features
 - Measure marketing effectiveness
+- Make informed decisions about website improvements
 
-### 3.3 Legal Basis for Processing (GDPR)
+### 5.4 Legal Basis for Processing (GDPR)
 
 For users in the European Economic Area (EEA), we process your data based on:
-- **Consent:** For analytics cookies and tracking (you can withdraw consent anytime)
-- **Legitimate Interest:** For essential website functionality and security
-- **Contract Performance:** When responding to your contact form submissions
+- **Consent:** For analytics cookies, marketing communications, and tracking (you can withdraw consent anytime)
+- **Legitimate Interest:** For essential website functionality, security, and fraud prevention
+- **Contract Performance:** When responding to your consultation requests and inquiries
 
-## 4. Third-Party Services
+## 6. Third-Party Services
 
-### 4.1 Service Providers
+### 6.1 Service Providers
 
 We share data with the following third-party services:
 
 **Resend (Email Service):**
-- Purpose: Sending email notifications for contact form submissions
+- Purpose: Sending email notifications for contact form submissions and appointment reminders
 - Data Shared: Name, email, phone, message content
 - Privacy Policy: [resend.com/legal/privacy-policy](https://resend.com/legal/privacy-policy)
 
@@ -117,27 +259,47 @@ We share data with the following third-party services:
 
 **Google (Analytics & Tag Manager):**
 - Purpose: Website analytics and performance tracking
-- Data Shared: Usage data, device information, IP address
+- Data Shared: Usage data, device information, IP address (anonymized)
 - Privacy Policy: [policies.google.com/privacy](https://policies.google.com/privacy)
 
 **Microsoft Clarity:**
 - Purpose: User behavior analytics and session recordings
-- Data Shared: Session data, interactions, heatmaps
+- Data Shared: Session data, interactions, heatmaps (no personal identifying information)
 - Privacy Policy: [privacy.microsoft.com/privacystatement](https://privacy.microsoft.com/en-us/privacystatement)
 
 **Meta/Facebook:**
-- Purpose: Conversion tracking and audience building
-- Data Shared: Page views, events, potentially PII for conversions
+- Purpose: Conversion tracking and audience building for advertising
+- Data Shared: Page views, events, potentially hashed contact information for custom audiences
 - Privacy Policy: [facebook.com/privacy/policy](https://www.facebook.com/privacy/policy)
 
-### 4.2 Data Transfer
+**Twilio/SMS Provider:**
+- Purpose: Sending SMS appointment reminders and notifications
+- Data Shared: Phone number, message content
+- Privacy Policy: [twilio.com/legal/privacy](https://www.twilio.com/legal/privacy)
 
-Some of our service providers are located outside your country. By using our website, you consent to the transfer of your data to these providers, which may include transfers to the United States and other countries.
+### 6.2 Financing Partners
 
-## 5. Data Retention
+If you apply for financing through our website, you may be redirected to third-party financing providers:
+- Cherry
+- CareCredit
+- United Credit
 
-**Contact Form Submissions:**
-We retain contact form data indefinitely unless you request deletion. This allows us to maintain a history of communications and provide better service.
+These financing applications are subject to each provider's own privacy policy. We do not receive or store your financial information (credit scores, bank accounts, SSN) from these providers.
+
+### 6.3 Data Transfer
+
+Some of our service providers are located outside your country. By using our website, you consent to the transfer of your data to these providers, which may include transfers to the United States and other countries with different data protection laws.
+
+## 7. Data Retention
+
+**Contact Form and Consultation Submissions:**
+We retain contact form and consultation request data for up to 7 years to:
+- Maintain records of communications
+- Provide context for returning visitors
+- Comply with legal and regulatory requirements
+- Improve our services based on historical data
+
+You may request deletion at any time (see Section 9).
 
 **Analytics Data:**
 Analytics data is retained according to each service provider's retention policy:
@@ -145,123 +307,213 @@ Analytics data is retained according to each service provider's retention policy
 - Microsoft Clarity: Per Microsoft's retention policy
 - Facebook Pixel: Per Meta's retention policy
 
-**Email Logs:**
-We maintain logs of email communications indefinitely for record-keeping and troubleshooting purposes.
+**Email and SMS Logs:**
+We maintain logs of email and SMS communications for 7 years for record-keeping, troubleshooting, and compliance purposes.
 
-## 6. Your Rights
+**Chat Conversations:**
+Chat transcripts are retained for 2 years unless you request earlier deletion.
+
+## 8. Your Rights
 
 Depending on your location, you may have the following rights:
 
-### 6.1 Access and Portability
+### 8.1 Access and Portability
 You have the right to request:
 - Confirmation of what personal data we hold about you
 - A copy of your personal data in a machine-readable format
 
-### 6.2 Rectification
+### 8.2 Rectification
 You have the right to correct inaccurate or incomplete personal data.
 
-### 6.3 Deletion (Right to be Forgotten)
-You have the right to request deletion of your personal data, subject to legal obligations.
+### 8.3 Deletion (Right to be Forgotten)
+You have the right to request deletion of your personal data, subject to:
+- Legal and regulatory retention requirements
+- Ongoing business relationships
+- Legitimate interests (fraud prevention, legal claims)
 
-### 6.4 Restriction and Objection
+### 8.4 Restriction and Objection
 You have the right to:
 - Restrict how we process your data
 - Object to processing based on legitimate interests
 - Opt-out of marketing communications
 
-### 6.5 Withdraw Consent
+### 8.5 Withdraw Consent
 You can withdraw consent for analytics cookies at any time by:
 - Clicking "Essential Only" in our cookie banner
 - Clearing your browser's local storage
 - Adjusting your browser's cookie settings
 
-### 6.6 Lodge a Complaint
+### 8.6 Lodge a Complaint
 You have the right to lodge a complaint with your local data protection authority.
 
-## 7. How to Exercise Your Rights
+## 9. How to Exercise Your Rights
 
-To exercise any of your rights, please contact us at:
+To exercise any of your privacy rights, please contact us at:
 
-**Email:** [Contact information from your site config]
+**Email:** info@alluringplasticsurgery.com
+**Phone:** +1 (786) 305-8649
+**Mail:** Alluring Plastic Surgery, LLC
+8435 SW 24th St, Miami, FL 33155
+
 **Subject Line:** "Privacy Rights Request"
 
 Please include:
 - Your full name
-- The email address you used to contact us (if applicable)
-- A description of your request
+- The email address or phone number you used to contact us
+- A description of your request (access, deletion, correction, etc.)
 - Any relevant dates or details
 
-We will respond to your request within 30 days.
+We will verify your identity and respond to your request within 30 days. For complex requests, we may extend this period by an additional 30 days with notice.
 
-## 8. Data Security
+## 10. Data Security
 
 We implement appropriate technical and organizational measures to protect your personal data, including:
-- Secure database storage (PostgreSQL with access controls)
+- Secure database storage with access controls
 - Encrypted data transmission (HTTPS/TLS)
-- Input validation and sanitization
+- Input validation and sanitization to prevent attacks
 - Server-side environment variable protection
 - Regular security updates and monitoring
+- Employee training on data protection
+- Access limited to authorized personnel only
 
-However, no method of transmission over the internet or electronic storage is 100% secure. While we strive to protect your data, we cannot guarantee absolute security.
+However, no method of transmission over the internet or electronic storage is 100% secure. While we strive to protect your data, we cannot guarantee absolute security. In the event of a data breach affecting your personal information, we will notify you as required by applicable law.
 
-## 9. Children's Privacy
+## 11. Children's Privacy
 
-Our website is not intended for children under 13 years of age. We do not knowingly collect personal information from children. If you believe we have collected data from a child, please contact us immediately.
+### 11.1 Website Not Intended for Children
 
-## 10. Do Not Track Signals
+Our website is not intended for children under 18 years of age. We do not knowingly collect personal information from individuals under 18 through our website.
 
-Some browsers support "Do Not Track" (DNT) signals. Our website does not currently respond to DNT signals, but you can control tracking through our cookie consent banner.
+### 11.2 Cosmetic Surgery Age Requirements
 
-## 11. California Privacy Rights (CCPA)
+In accordance with Florida law and medical ethics:
+- Most elective cosmetic procedures require patients to be 18 years or older
+- Certain procedures may be performed on patients 16-17 with parental/guardian consent
+- Rhinoplasty and otoplasty (ear surgery) may be considered for younger patients with parental consent and medical necessity
 
-If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA):
+### 11.3 Parental Consent
 
-- **Right to Know:** What personal information we collect and how it's used
-- **Right to Delete:** Request deletion of your personal information
-- **Right to Opt-Out:** Opt-out of the "sale" of personal information (we do not sell data)
-- **Right to Non-Discrimination:** Equal service regardless of privacy choices
+If a minor patient is seeking a consultation:
+- A parent or legal guardian must accompany them and provide consent
+- The parent/guardian's contact information will be collected
+- Any marketing communications will be directed to the parent/guardian
 
-To exercise these rights, contact us using the information in Section 7.
+If you believe we have collected data from a child under 18 without proper parental consent, please contact us immediately.
 
-## 12. International Users (GDPR)
+## 12. Do Not Track Signals
+
+Some browsers support "Do Not Track" (DNT) signals. Our website does not currently respond to DNT signals due to the lack of industry standardization. However, you can control tracking through:
+- Our cookie consent banner
+- Browser privacy settings
+- Opting out of individual analytics services
+
+## 13. California Privacy Rights (CCPA/CPRA)
+
+If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA):
+
+### 13.1 Right to Know
+You may request disclosure of:
+- Categories of personal information collected
+- Sources of personal information
+- Business purposes for collecting information
+- Categories of third parties with whom information is shared
+- Specific pieces of personal information collected about you
+
+### 13.2 Right to Delete
+You may request deletion of your personal information, subject to certain exceptions.
+
+### 13.3 Right to Correct
+You may request correction of inaccurate personal information.
+
+### 13.4 Right to Opt-Out
+You may opt-out of:
+- Sale of personal information (we do NOT sell personal data)
+- Sharing of personal information for cross-context behavioral advertising
+- Automated decision-making and profiling
+
+### 13.5 Right to Limit Use of Sensitive Personal Information
+We do not collect sensitive personal information (as defined by CCPA) through our website.
+
+### 13.6 Right to Non-Discrimination
+We will not discriminate against you for exercising your privacy rights.
+
+To exercise these rights, contact us using the information in Section 9 or call our toll-free number: +1 (786) 305-8649.
+
+## 14. International Users (GDPR)
 
 If you are located in the European Economic Area (EEA), United Kingdom, or Switzerland, you have rights under the General Data Protection Regulation (GDPR):
 
-- **Data Controller:** Monsoft Solutions, LLC
-- **Legal Basis:** Consent, legitimate interest, contract performance
-- **Data Protection Officer:** Adriano Flechilla (if applicable)
-- **EU Representative:** [If applicable, provide details]
+- **Data Controller:** Alluring Plastic Surgery, LLC
+- **Legal Basis:** Consent (analytics, marketing), legitimate interest (website security, business operations), contract performance (responding to inquiries)
+- **Data Protection Contact:** info@alluringplasticsurgery.com
 
-## 13. Changes to This Policy
+### 14.1 International Data Transfers
 
-We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated "Last Updated" date. Significant changes will be communicated through:
+If you are accessing our website from outside the United States, please be aware that your information will be transferred to and processed in the United States. By using our website, you consent to this transfer.
+
+We rely on the following mechanisms for international data transfers:
+- Standard Contractual Clauses (SCCs) with service providers
+- Privacy Shield certifications (where applicable)
+- Consent for data transfers
+
+### 14.2 EU/UK Representative
+
+If required by GDPR, information about our EU/UK representative will be provided upon request.
+
+## 15. Florida Privacy Laws
+
+### 15.1 Florida Information Protection Act (FIPA)
+
+As a Florida-based business, we comply with the Florida Information Protection Act (FIPA), which requires:
+- Reasonable measures to protect personal information
+- Notification of data breaches within 30 days
+- Proper disposal of customer records containing personal information
+
+### 15.2 Breach Notification
+
+In the event of a data breach affecting your personal information, we will:
+- Investigate the breach and assess the scope
+- Notify affected individuals as required by law (within 30 days for Florida residents)
+- Notify the Florida Department of Legal Affairs if more than 500 residents are affected
+- Take steps to mitigate harm and prevent future breaches
+
+### 15.3 Florida Consumer Data Privacy
+
+Florida's consumer privacy laws continue to evolve. We monitor and comply with all applicable state privacy regulations.
+
+## 16. Changes to This Policy
+
+We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors.
+
+Changes will be posted on this page with an updated "Last Updated" date. Significant changes will be communicated through:
 - A prominent notice on our website
 - Email notification (if we have your contact information)
+- Banner or pop-up notification for material changes
 
-Your continued use of the website after changes constitutes acceptance of the updated policy.
+Your continued use of the website after changes constitutes acceptance of the updated policy. We encourage you to review this page periodically.
 
-## 14. Contact Information
+## 17. Contact Information
 
 If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
 
-**Monsoft Solutions, LLC**
-Developed and maintained by: Adriano Flechilla
+**Alluring Plastic Surgery, LLC**
+8435 SW 24th St
+Miami, FL 33155
 
-**Email:** keel@monsoftsolutions.com
-**Website:** https://www.monsoftsolutions.com/
+**Phone:** +1 (786) 305-8649
+**Email:** info@alluringplasticsurgery.com
+**Website:** https://www.alluringplasticsurgery.com/
 
----
+**Business Hours:**
+Monday - Friday: 9:00 AM - 5:00 PM
+Saturday: 9:00 AM - 3:00 PM
+Sunday: Closed
 
-## 15. Open Source Acknowledgment
-
-This website is built using an open-source template developed by **Adriano Flechilla** as part of **Monsoft Solutions, LLC**.
-
-**Template Repository:** https://github.com/Monsoft-Solutions/alluring-website-v1
-**License:** MIT License (see repository for full terms)
-
-If you use or extend this template, please acknowledge the original creator as specified in the template's license terms.
+For privacy-related requests, please use the subject line "Privacy Inquiry" or "Privacy Rights Request" to ensure prompt handling.
 
 ---
 
-**© 2025 Monsoft Solutions, LLC. All rights reserved.**
+**© 2025 Alluring Plastic Surgery, LLC. All rights reserved.**
+
+**Last Updated:** December 14, 2025
 `
