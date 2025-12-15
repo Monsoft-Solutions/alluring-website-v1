@@ -7,9 +7,6 @@
  *
  * Designed for maximum conversions with prominent promotional imagery.
  */
-'use client'
-
-import { motion } from 'framer-motion'
 import { Award, Clock, ShieldCheck, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 
@@ -38,7 +35,7 @@ export function SpecialsHero({
     return (
         <section
             id={id}
-            className='relative min-h-screen w-full overflow-hidden bg-stone-900'
+            className='relative min-h-screen w-full overflow-hidden bg-stone-900 pt-32 lg:pt-40'
         >
             {/* Background Gradient for right side */}
             <div className='pointer-events-none absolute inset-0'>
@@ -50,15 +47,10 @@ export function SpecialsHero({
             {/* 50/50 Split Layout */}
             <div className='relative z-10 flex min-h-screen flex-col lg:flex-row'>
                 {/* Left Column - Full Height Promotion Image */}
-                <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className='relative h-[50vh] w-full lg:h-screen lg:w-1/2'
-                >
+                <div className='animate-fade-in-up relative h-[50vh] w-full p-6 lg:h-auto lg:w-1/2 lg:p-12'>
                     {/* Promotion Image */}
                     {featuredPromotion?.imageUrl ? (
-                        <div className='relative h-full w-full'>
+                        <div className='relative h-full w-full overflow-hidden rounded-2xl shadow-2xl'>
                             <Image
                                 src={featuredPromotion.imageUrl}
                                 alt={
@@ -76,26 +68,16 @@ export function SpecialsHero({
 
                             {/* Discount Badge - Top Right */}
                             {discount && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.5, delay: 0.4 }}
-                                    className='bg-gold-500 absolute top-6 right-6 z-20 px-5 py-3 shadow-2xl lg:top-8 lg:right-8'
-                                >
+                                <div className='bg-gold-500 animate-fade-in absolute top-6 right-6 z-20 px-5 py-3 shadow-2xl delay-300 lg:top-8 lg:right-8'>
                                     <span className='font-serif text-2xl font-bold text-stone-900 lg:text-3xl'>
                                         {discount}
                                     </span>
-                                </motion.div>
+                                </div>
                             )}
 
                             {/* Urgency Timer - Bottom */}
                             {expiringSoon && daysRemaining !== null && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: 0.6 }}
-                                    className='absolute right-6 bottom-6 left-6 z-20 lg:right-auto lg:bottom-8 lg:left-8'
-                                >
+                                <div className='animate-fade-in absolute right-6 bottom-6 left-6 z-20 delay-500 lg:right-auto lg:bottom-8 lg:left-8'>
                                     <div className='inline-flex items-center gap-3 rounded-full bg-red-500/90 px-5 py-3 backdrop-blur-sm'>
                                         <Clock className='h-5 w-5 text-white' />
                                         <span className='text-base font-bold text-white'>
@@ -106,43 +88,13 @@ export function SpecialsHero({
                                                   : `ONLY ${daysRemaining} DAYS LEFT!`}
                                         </span>
                                     </div>
-                                </motion.div>
+                                </div>
                             )}
-
-                            {/* Promotion Title Overlay - Bottom Left */}
-                            <div className='absolute right-6 bottom-6 left-6 z-10 lg:right-auto lg:bottom-8 lg:left-8 lg:max-w-md'>
-                                {!expiringSoon && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{
-                                            duration: 0.6,
-                                            delay: 0.5,
-                                        }}
-                                    >
-                                        <span className='text-gold-400 mb-2 block text-xs font-bold tracking-[0.2em] uppercase'>
-                                            Featured Offer
-                                        </span>
-                                        <h2 className='font-serif text-2xl text-white drop-shadow-lg lg:text-3xl'>
-                                            {featuredPromotion.title}
-                                        </h2>
-                                        {featuredPromotion.excerpt && (
-                                            <p className='mt-2 line-clamp-2 text-sm text-stone-300'>
-                                                {featuredPromotion.excerpt}
-                                            </p>
-                                        )}
-                                    </motion.div>
-                                )}
-                            </div>
                         </div>
                     ) : (
                         // Fallback when no promotion image
-                        <div className='flex h-full w-full flex-col items-center justify-center bg-linear-to-br from-stone-800 to-stone-900 px-8 text-center'>
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6 }}
-                            >
+                        <div className='flex h-full w-full flex-col items-center justify-center rounded-2xl bg-linear-to-br from-stone-800 to-stone-900 px-8 text-center shadow-2xl'>
+                            <div className='animate-fade-in'>
                                 <div className='mb-6 inline-flex items-center gap-2'>
                                     <span className='bg-gold-400 h-px w-8' />
                                     <span className='text-gold-400 text-sm font-bold tracking-[0.2em] uppercase'>
@@ -160,50 +112,17 @@ export function SpecialsHero({
                                     Exclusive savings on transformative
                                     procedures with board-certified surgeons.
                                 </p>
-                            </motion.div>
+                            </div>
                         </div>
                     )}
-                </motion.div>
+                </div>
 
                 {/* Right Column - Form */}
-                <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-                    className='flex w-full flex-col justify-center px-6 py-12 md:px-12 lg:w-1/2 lg:py-16'
-                >
+                <div className='animate-fade-in-up flex w-full flex-col justify-center px-6 py-12 delay-200 md:px-12 lg:w-1/2 lg:py-16'>
                     <div className='mx-auto w-full max-w-lg'>
-                        {/* Header - Only show on right side when image exists */}
-                        {featuredPromotion?.imageUrl && (
-                            <div className='mb-8 text-center lg:text-left'>
-                                <div className='mb-4 inline-flex items-center gap-2'>
-                                    <span className='bg-gold-400 h-px w-8' />
-                                    <span className='text-gold-400 text-sm font-bold tracking-[0.2em] uppercase'>
-                                        Limited Time Offers
-                                    </span>
-                                </div>
-                                <h1 className='mb-3 font-serif text-3xl leading-tight text-white md:text-4xl'>
-                                    Miami Plastic Surgery{' '}
-                                    <span className='text-gold-400 italic'>
-                                        Specials
-                                    </span>
-                                </h1>
-                                <p className='text-base font-light text-stone-300'>
-                                    Exclusive savings on transformative
-                                    procedures. Board-certified surgeons, luxury
-                                    results, and flexible financing.
-                                </p>
-                            </div>
-                        )}
-
                         {/* More Offers Indicator */}
                         {totalPromotions > 1 && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.6, delay: 0.5 }}
-                                className='mb-6 flex items-center justify-center gap-2 text-stone-400 lg:justify-start'
-                            >
+                            <div className='animate-fade-in mb-6 flex items-center justify-center gap-2 text-stone-400 delay-500 lg:justify-start'>
                                 <Sparkles className='text-gold-400 h-5 w-5' />
                                 <span className='text-sm font-medium'>
                                     +{totalPromotions - 1} more exclusive{' '}
@@ -212,7 +131,7 @@ export function SpecialsHero({
                                         : 'offers'}{' '}
                                     available below
                                 </span>
-                            </motion.div>
+                            </div>
                         )}
 
                         {/* Form Container */}
@@ -253,7 +172,7 @@ export function SpecialsHero({
                             </div>
                         </div>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </section>
     )
