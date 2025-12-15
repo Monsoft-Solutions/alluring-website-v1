@@ -9,14 +9,14 @@ export const metadata = toNextMetadata(seoConfig, {
     description:
         'Our cookie policy explains what cookies we use, why we use them, and how you can control them.',
     openGraph: {
-        title: 'Cookie Policy',
+        title: 'Cookie Policy | Alluring Plastic Surgery',
         description:
             'Learn about the cookies we use and how to manage your cookie preferences.',
         type: 'website',
     },
     twitter: {
         card: 'summary',
-        title: 'Cookie Policy',
+        title: 'Cookie Policy | Alluring Plastic Surgery',
         description:
             'Learn about the cookies we use and how to manage your cookie preferences.',
     },

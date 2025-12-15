@@ -27,7 +27,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/thank-you',
-    title: `Thank You | ${siteConfig.business.name}`,
+    title: 'Thank You',
     description:
         "Thank you for contacting us! We've received your information and will be in touch shortly to schedule your consultation.",
     robots: {

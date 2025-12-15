@@ -12,7 +12,7 @@ const pageUrl = `${siteUrl}/procedures`
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/procedures',
-    title: 'Procedures | Transform Your Look with Confidence',
+    title: 'Cosmetic Surgery Procedures Miami',
     description: `Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. Expert surgeons, natural results, and personalized care.`,
     keywords: [
         'plastic surgery miami',
@@ -30,7 +30,7 @@ export const metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: `Cosmetic Surgery Procedures | ${siteConfig.business.name} Miami`,
+        title: `Cosmetic Surgery Procedures Miami | ${siteConfig.business.name}`,
         description:
             'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery. Board-certified surgeons in Miami.',
         siteName: siteConfig.business.name,
@@ -47,7 +47,7 @@ export const metadata = toNextMetadata(seoConfig, {
     // Twitter Card tags
     twitter: {
         card: 'summary_large_image',
-        title: `Cosmetic Surgery Procedures | ${siteConfig.business.name} Miami`,
+        title: `Cosmetic Surgery Procedures Miami | ${siteConfig.business.name}`,
         description:
             'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery.',
         images: [`${siteUrl}/og-image.jpg`],

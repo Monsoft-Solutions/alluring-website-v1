@@ -34,10 +34,10 @@ export async function generateMetadata({
     }
 
     return {
-        title: `${promotion.title} | ${siteConfig.business.name}`,
+        title: promotion.title,
         description: promotion.excerpt ?? promotion.description.slice(0, 160),
         openGraph: {
-            title: promotion.title,
+            title: `${promotion.title} | ${siteConfig.business.name}`,
             description:
                 promotion.excerpt ?? promotion.description.slice(0, 160),
             type: 'article',

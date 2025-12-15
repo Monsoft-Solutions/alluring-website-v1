@@ -20,6 +20,7 @@ import { ProcedureProcess } from '@/components/procedures/procedure-process.comp
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
+import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import { env } from '@/env'
 
 interface ProcedurePageProps {
@@ -52,8 +53,11 @@ export async function generateMetadata(
         ? `${siteUrl}${procedure.image}`
         : `${siteUrl}/og-image.jpg`
 
+    // Generate SEO-optimized title with Miami location
+    const pageTitle = generateProcedureTitle(procedure.title)
+
     return {
-        title: procedure.title,
+        title: pageTitle,
         description: procedure.description,
         keywords: procedure.keywords,
 
@@ -66,7 +70,7 @@ export async function generateMetadata(
         openGraph: {
             type: 'website',
             url: pageUrl,
-            title: procedure.title,
+            title: `${pageTitle} | ${siteConfig.business.name}`,
             description: procedure.shortDescription || procedure.description,
             siteName: siteConfig.business.name,
             locale: 'en_US',
@@ -83,7 +87,7 @@ export async function generateMetadata(
         // Twitter Card tags
         twitter: {
             card: 'summary_large_image',
-            title: procedure.title,
+            title: `${pageTitle} | ${siteConfig.business.name}`,
             description: procedure.shortDescription || procedure.description,
             images: [ogImage],
         },

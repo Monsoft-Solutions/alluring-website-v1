@@ -10,9 +10,11 @@ import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 /**
  * Blog page SEO metadata
+ * Note: Title is set directly in the page component as "Plastic Surgery Blog Miami"
+ * The global template will append "| Alluring Plastic Surgery"
  */
 export const blogSeoData = {
-    title: `Plastic Surgery Blog | Expert Insights & Patient Education | ${siteConfig.business.name}`,
+    title: 'Plastic Surgery Blog Miami',
     description: `Expert articles on plastic surgery procedures, recovery tips, and patient education from Miami's trusted board-certified surgeons. BBL, breast augmentation, tummy tuck & more.`,
     keywords: [
         'plastic surgery blog miami',

@@ -7,7 +7,7 @@ import { getActivePromotions } from '@/lib/queries/promotion.query'
 import { siteConfig } from '@/lib/data/site-config'
 
 export const metadata: Metadata = {
-    title: `Special Offers & Promotions | ${siteConfig.business.name}`,
+    title: 'Special Offers & Promotions',
     description:
         'Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.',
     openGraph: {

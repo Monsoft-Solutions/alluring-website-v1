@@ -9,14 +9,14 @@ export const metadata = toNextMetadata(seoConfig, {
     description:
         'Terms of service for Alluring Plastic Surgery including medical disclaimers, patient rights, consultation policies, and website usage guidelines for our Miami plastic surgery practice.',
     openGraph: {
-        title: 'Terms of Service - Alluring Plastic Surgery',
+        title: 'Terms of Service | Alluring Plastic Surgery',
         description:
             'Terms and conditions for using our website, booking consultations, and understanding medical information disclaimers at Alluring Plastic Surgery.',
         type: 'website',
     },
     twitter: {
         card: 'summary',
-        title: 'Terms of Service - Alluring Plastic Surgery',
+        title: 'Terms of Service | Alluring Plastic Surgery',
         description:
             'Terms and conditions for using our website and understanding medical information disclaimers.',
     },

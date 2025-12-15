@@ -92,7 +92,7 @@ export function toNextMetadata(
     let metadataBase: URL
     try {
         metadataBase = new URL(siteUrl)
-    } catch (error) {
+    } catch {
         throw new Error(
             `Invalid siteUrl in SEO config: "${siteUrl}". Please provide a valid URL.`
         )
@@ -110,6 +110,8 @@ export function toNextMetadata(
     const merged: Metadata = {
         ...base,
         ...overrides,
+        // Handle title merging - support both string and template object
+        title: overrides?.title ?? title,
         openGraph: {
             ...(base.openGraph ?? {}),
             ...(overrides?.openGraph ?? {}),

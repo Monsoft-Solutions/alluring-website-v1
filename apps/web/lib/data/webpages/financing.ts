@@ -243,9 +243,11 @@ export const financingPageData: FinancingPageData = {
 
 /**
  * SEO metadata for financing page
+ * Note: Title is set directly in the page component as "Plastic Surgery Financing Miami"
+ * The global template will append "| Alluring Plastic Surgery"
  */
 export const financingSeoData: FinancingSeoData = {
-    title: `Plastic Surgery Financing Miami | 0% APR Plans | ${siteConfig.business.name}`,
+    title: 'Plastic Surgery Financing Miami',
     description: `Affordable plastic surgery financing in Miami. Get approved in seconds with 0% APR options. Finance BBL, breast augmentation, tummy tuck & more. Call ${siteConfig.contact.phoneDisplay}.`,
     keywords: [
         'plastic surgery financing miami',

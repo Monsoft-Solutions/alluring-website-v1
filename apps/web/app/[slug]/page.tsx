@@ -78,7 +78,7 @@ function generateSurgeonMetadata(
         ? surgeon.images.featured
         : `${siteUrl}${surgeon.images.featured}`
 
-    const pageTitle = `${surgeon.name} | ${siteConfig.business.name}`
+    const pageTitle = `${surgeon.name}`
     const pageDescription = surgeon.shortBio
 
     return {
@@ -94,7 +94,7 @@ function generateSurgeonMetadata(
         openGraph: {
             type: 'profile',
             url: pageUrl,
-            title: pageTitle,
+            title: `${pageTitle} | ${siteConfig.business.name}`,
             description: pageDescription,
             siteName: siteConfig.business.name,
             locale: 'en_US',
@@ -111,7 +111,7 @@ function generateSurgeonMetadata(
         // Twitter Card tags
         twitter: {
             card: 'summary_large_image',
-            title: pageTitle,
+            title: `${pageTitle} | ${siteConfig.business.name}`,
             description: pageDescription,
             images: [ogImage],
         },

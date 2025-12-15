@@ -48,14 +48,14 @@ const pageUrl = `${siteUrl}/plastic-surgery-financing-miami`
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: financingSeoData.canonical,
-    title: financingSeoData.title,
+    title: 'Plastic Surgery Financing Miami',
     description: financingSeoData.description,
     keywords: financingSeoData.keywords as unknown as string[],
 
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: 'Plastic Surgery Financing Miami | 0% APR Payment Plans',
+        title: 'Plastic Surgery Financing Miami | Alluring Plastic Surgery',
         description:
             'Make your dream results affordable with flexible financing options. Get approved in seconds with 0% APR plans available. Finance BBL, breast augmentation, tummy tuck & more.',
         siteName: siteConfig.business.name,
@@ -71,7 +71,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Plastic Surgery Financing Miami | Affordable Payment Plans',
+        title: 'Plastic Surgery Financing Miami | Alluring Plastic Surgery',
         description:
             'Flexible financing for cosmetic surgery. 0% APR options, instant approval. Cherry, CareCredit, United Credit accepted.',
         images: [`${siteUrl}/images/hero-beautiful-latin-woman.jpg`],
