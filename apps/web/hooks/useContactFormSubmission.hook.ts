@@ -9,6 +9,7 @@
  * @module hooks/useContactFormSubmission
  */
 import { useCallback, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { useUTMTracking } from '@/lib/analytics/utm-tracking.context'
@@ -44,6 +45,8 @@ export type UseContactFormSubmissionOptions = {
     readonly enableAnalytics?: boolean
     /** Custom form name for analytics (defaults to source) */
     readonly analyticsFormName?: string
+    /** Optional path to redirect to on successful submission (e.g., '/thank-you') */
+    readonly redirectOnSuccess?: string
 }
 
 /**
@@ -102,11 +105,13 @@ export function useContactFormSubmission(
         onError,
         enableAnalytics = false,
         analyticsFormName,
+        redirectOnSuccess,
     } = options
 
     const [state, setState] = useState<SubmissionState>(INITIAL_STATE)
     const { track, trackFormSubmit } = useAnalyticsEvent()
     const { utmData } = useUTMTracking()
+    const router = useRouter()
 
     const formName = analyticsFormName ?? source
 
@@ -190,7 +195,14 @@ export function useContactFormSubmission(
                         trackFormSubmit(formName, { status: 'success' })
                     }
 
+                    // Call success callback first
                     onSuccess?.()
+
+                    // Redirect if specified
+                    if (redirectOnSuccess) {
+                        router.push(redirectOnSuccess)
+                    }
+
                     return true
                 }
 
@@ -282,6 +294,8 @@ export function useContactFormSubmission(
             onSuccess,
             onError,
             utmData,
+            redirectOnSuccess,
+            router,
         ]
     )
 

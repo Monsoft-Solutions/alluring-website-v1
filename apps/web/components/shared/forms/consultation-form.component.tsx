@@ -62,6 +62,8 @@ export type ConsultationFormProps = {
     readonly enableAnalytics?: boolean
     /** Additional class names for the form container */
     readonly className?: string
+    /** Optional path to redirect to on successful submission (e.g., '/thank-you') */
+    readonly redirectOnSuccess?: string
 }
 
 /**
@@ -88,6 +90,7 @@ export function ConsultationForm({
     onSuccess,
     enableAnalytics = false,
     className,
+    redirectOnSuccess,
 }: ConsultationFormProps) {
     const form = useForm<ConsultationFormInput>({
         resolver: zodResolver(consultationFormSchema),
@@ -107,6 +110,7 @@ export function ConsultationForm({
             source,
             enableAnalytics,
             analyticsFormName: analyticsFormName ?? source,
+            redirectOnSuccess,
             onSuccess: () => {
                 form.reset()
                 onSuccess?.()

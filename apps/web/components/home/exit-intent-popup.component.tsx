@@ -54,12 +54,10 @@ export const ExitIntentPopup = () => {
     const { submit, state, isSubmitting, isSuccess, isError } =
         useContactFormSubmission({
             source: CONTACT_SOURCES.EXIT_INTENT,
+            redirectOnSuccess: '/thank-you',
             onSuccess: () => {
                 form.reset()
-                // Auto-close after success
-                setTimeout(() => {
-                    handleClose()
-                }, 3000)
+                handleClose()
             },
         })
 

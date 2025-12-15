@@ -117,6 +117,7 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                                 source={CONTACT_SOURCES.CONTACT_HERO}
                                 analyticsFormName='contact_hero_form'
                                 enableAnalytics
+                                redirectOnSuccess='/thank-you'
                             />
                         </div>
                     </motion.div>
