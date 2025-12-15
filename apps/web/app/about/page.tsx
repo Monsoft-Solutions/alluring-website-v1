@@ -1,59 +1,60 @@
 /**
  * About Page
  *
- * Comprehensive About page showcasing company story, mission, vision, values,
- * and team. Includes SEO optimization and structured data.
+ * Comprehensive About page showcasing Alluring Plastic Surgery's philosophy,
+ * world-class surgeons, accreditations, and patient testimonials.
+ * Includes SEO optimization and structured data.
  */
+import { Metadata } from 'next'
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
-import { AboutHeroSection } from '@/components/sections/about/about-hero-section.component'
-import { MissionSection } from '@/components/sections/about/mission-section.component'
-import { StackingFeaturesSection } from '@/components/sections/home/stacking-features-section.component'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
+import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullbleed.component'
+import { PhilosophySection } from '@/components/sections/about/philosophy-section.component'
+import { SurgeonsGridSection } from '@/components/sections/about/surgeons-grid.component'
+import { AccreditationSection } from '@/components/sections/about/accreditation-section.component'
+import { Testimonials } from '@/components/home/testimonials.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { ContentWrapper } from '@/components/shared/content-wrapper.component'
-import {
-    aboutCTAData,
-    aboutHeroData,
-    missionData,
-    ourStoryData,
-} from '@/lib/data/webpages/about'
+import { aboutCTAData } from '@/lib/data/webpages/about.data'
+import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { env } from '@/env'
+
+const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
 /**
  * About Page Metadata
  *
  * Implements SEO best practices for the About page including:
- * - Unique, descriptive title targeting business owners
+ * - Unique, descriptive title targeting plastic surgery keywords
  * - Compelling meta description with primary keywords
  * - Open Graph tags for social sharing
  * - Twitter Card configuration
  * - Canonical URL
  */
-export const metadata = toNextMetadata(seoConfig, {
+export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Canonical URL for about page
     canonical: '/about',
 
-    // Page-specific metadata optimized for business owners
-    title: 'About Us - Professional Website Solutions for Your Business',
+    // Page-specific metadata optimized for plastic surgery
+    title: 'About Alluring Plastic Surgery | Board-Certified Surgeons in Miami',
     description:
-        'Learn how we help business owners launch modern, professional websites in days. Built with Next.js, includes SEO, analytics, blog system, and everything your business needs to succeed online.',
+        'Meet the board-certified surgeons at Alluring Plastic Surgery in Miami. AAAASF-accredited facility with 5,000+ successful procedures. Experience luxury plastic surgery made affordable with world-class expertise and personalized care.',
 
     // Open Graph tags for social sharing
     openGraph: {
-        title: 'Professional Website Development for Business Owners',
+        title: 'About Alluring Plastic Surgery | Expert Cosmetic Surgeons in Miami',
         description:
-            'Fast, modern websites for businesses. Built with Next.js 15, includes blog, analytics, SEO optimization, and business-ready features. Launch in days, not months.',
-        url: `${seoConfig.siteUrl}/about`,
+            'Board-certified plastic surgeons in Miami specializing in BBL, breast augmentation, tummy tuck, and facial procedures. AAAASF-accredited facility with 15+ years experience and 4.9-star patient reviews.',
+        url: `${siteUrl}/about`,
         type: 'website',
-        siteName: seoConfig.siteName,
+        siteName: siteConfig.business.name,
         images: [
             {
-                url: `${seoConfig.siteUrl}/og-about.jpg`,
+                url: `${siteUrl}/og-about.jpg`,
                 width: 1200,
                 height: 630,
-                alt: 'Modern professional website solutions for businesses',
+                alt: 'Alluring Plastic Surgery - Board-Certified Surgeons in Miami',
             },
         ],
     },
@@ -61,66 +62,47 @@ export const metadata = toNextMetadata(seoConfig, {
     // Twitter Card configuration
     twitter: {
         card: 'summary_large_image',
-        title: 'Professional Website Solutions for Your Business',
+        title: 'About Alluring Plastic Surgery | Board-Certified Surgeons',
         description:
-            'Launch your business website in days with modern technology, built-in SEO, analytics, and everything you need to succeed online.',
-        images: [`${seoConfig.siteUrl}/og-about.jpg`],
+            'Meet our world-class surgical team in Miami. AAAASF-accredited facility, 5,000+ successful procedures, luxury results made affordable.',
+        images: [`${siteUrl}/og-about.jpg`],
     },
 })
 
 export default function AboutPage() {
     return (
         <>
-            {/* SEO Schema */}
+            {/* SEO Schema - WebPage */}
             <WebPageSchema
                 name={metadata.title as string}
-                url={`${seoConfig.siteUrl}/about`}
+                url={`${siteUrl}/about`}
                 description={metadata.description as string}
             />
 
+            {/* SEO Schema - Organization */}
             <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
+                name={siteConfig.business.name}
+                url={siteUrl}
+                logo={siteConfig.brand.logo}
+                sameAs={siteConfig.social.map((s) => s.url)}
             />
 
             {/* Main Content */}
-            <main>
-                {/* Breadcrumbs Navigation */}
-                <div className='pt-8 pb-4'>
-                    <ContentWrapper>
-                        <Breadcrumbs
-                            items={[
-                                { label: 'Home', href: '/' },
-                                { label: 'About' },
-                            ]}
-                        />
-                    </ContentWrapper>
-                </div>
+            <main className='bg-stone-50'>
+                {/* Hero Section - Full-bleed with Glassmorphism Card */}
+                <AboutHeroFullbleed />
 
-                {/* About Hero Section */}
-                <AboutHeroSection id='about-hero' {...aboutHeroData} />
+                {/* Philosophy Section - Three Pillars */}
+                <PhilosophySection />
 
-                {/* Mission/Vision/Values Section */}
-                <MissionSection id='mission-values' {...missionData} />
+                {/* Surgeons Grid - All 3 Surgeons */}
+                <SurgeonsGridSection />
 
-                {/* Our Story - Stacking Scroll Effect */}
-                <StackingFeaturesSection
-                    id='our-story'
-                    title='Our Story'
-                    description='How we built a template that works for everyone'
-                    features={ourStoryData.map((feature) => {
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        const { icon, ...rest } = feature
-                        return rest
-                    })}
-                    variant='muted'
-                    animationIntensity='subtle'
-                    stackingVariant='compact'
-                />
+                {/* Accreditation & Safety */}
+                <AccreditationSection />
+
+                {/* Testimonials Section */}
+                <Testimonials />
 
                 {/* Final CTA Section */}
                 <CTASection

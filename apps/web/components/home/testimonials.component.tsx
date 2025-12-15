@@ -1,9 +1,6 @@
-'use client'
-
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Star, Quote } from 'lucide-react'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 export const Testimonials = () => {
@@ -21,8 +18,8 @@ export const Testimonials = () => {
                             &quot;I wish I had <br /> done this sooner.&quot;
                         </h2>
                         <p className='mb-8 max-w-md text-lg leading-relaxed text-stone-500'>
-                            See why hundreds of patients rate Alluring Plastic
-                            Surgery 5 stars on Google and RealSelf.
+                            See why our patients consistently rate Alluring
+                            Plastic Surgery 5 stars.
                         </p>
                         <div className='flex items-center gap-4'>
                             <div className='flex -space-x-2'>
@@ -33,7 +30,7 @@ export const Testimonials = () => {
                                     >
                                         <Image
                                             src={`https://i.pravatar.cc/100?img=${i + 10}`}
-                                            alt='User'
+                                            alt='Satisfied patient'
                                             fill
                                             className='object-cover'
                                             sizes='40px'
@@ -42,19 +39,16 @@ export const Testimonials = () => {
                                 ))}
                             </div>
                             <span className='border-b border-stone-300 pb-1 text-sm font-bold tracking-widest text-stone-900 uppercase'>
-                                Read 500+ Reviews
+                                Read Patient Reviews
                             </span>
                         </div>
                     </div>
 
                     <div className='relative'>
-                        <div className='absolute inset-0 z-10 bg-gradient-to-r from-white via-transparent to-transparent lg:hidden'></div>
+                        <div className='absolute inset-0 z-10 bg-linear-to-r from-white via-transparent to-transparent lg:hidden'></div>
                         <div className='scrollbar-hide flex snap-x gap-6 overflow-x-auto pb-8'>
                             {/* Card 1 */}
-                            <motion.div
-                                className='min-w-[300px] snap-center border border-stone-100 bg-stone-50 p-8 md:min-w-[350px] md:p-10'
-                                whileHover={{ y: -5 }}
-                            >
+                            <div className='min-w-[300px] snap-center border border-stone-100 bg-stone-50 p-8 transition-transform duration-300 hover:-translate-y-1 md:min-w-[350px] md:p-10'>
                                 <div className='text-gold-400 mb-6 flex gap-1'>
                                     {[...Array(5)].map((_, i) => (
                                         <Star
@@ -78,13 +72,10 @@ export const Testimonials = () => {
                                         Mommy Makeover
                                     </span>
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Card 2 */}
-                            <motion.div
-                                className='min-w-[300px] snap-center border border-stone-100 bg-stone-50 p-8 md:min-w-[350px] md:p-10'
-                                whileHover={{ y: -5 }}
-                            >
+                            <div className='min-w-[300px] snap-center border border-stone-100 bg-stone-50 p-8 transition-transform duration-300 hover:-translate-y-1 md:min-w-[350px] md:p-10'>
                                 <div className='text-gold-400 mb-6 flex gap-1'>
                                     {[...Array(5)].map((_, i) => (
                                         <Star
@@ -107,7 +98,7 @@ export const Testimonials = () => {
                                         BBL Patient
                                     </span>
                                 </div>
-                            </motion.div>
+                            </div>
                         </div>
                     </div>
                 </div>
