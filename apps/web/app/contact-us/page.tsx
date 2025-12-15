@@ -15,6 +15,7 @@ import { SurgeonPreview } from '@/components/sections/contact/surgeon-preview.co
 import { ContactTestimonial } from '@/components/sections/contact/contact-testimonial.component'
 import { ContactAlternative } from '@/components/sections/contact/contact-alternative.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import {
     faqCategoriesContact,
     faqDataContact,
@@ -125,6 +126,9 @@ export default function ContactPage() {
                 {/* Section 7: Alternative Contact Methods */}
                 <ContactAlternative id='location' />
             </main>
+
+            {/* Mobile Call Button - Always visible on contact page for conversion optimization */}
+            <MobileCallButton position='bottom-right' style='icon-only' />
         </>
     )
 }

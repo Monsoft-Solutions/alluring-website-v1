@@ -22,7 +22,6 @@ import { SpecialsPromotionsGrid } from '@/components/sections/specials/specials-
 import { SpecialsUrgencyStrip } from '@/components/sections/specials/specials-urgency-strip.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
@@ -217,8 +216,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 />
             </main>
 
-            {/* Mobile Sticky CTA */}
-            <MobileCallButton />
+            {/* Mobile Sticky CTA - Removed: handled by root layout */}
         </>
     )
 }

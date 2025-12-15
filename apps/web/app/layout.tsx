@@ -57,9 +57,9 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    // Check if mobile call button should be enabled (default: true)
+    // Check if mobile call button should be enabled (default: false)
     const isMobileCallButtonEnabled =
-        env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON !== 'false'
+        env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON === 'true'
 
     // Check if beta mode is enabled (shows feedback button)
     const isBetaMode = env.NEXT_PUBLIC_BETA_MODE === 'true'
