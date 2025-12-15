@@ -17,6 +17,7 @@ import { CTASection } from '@/components/shared/cta-section.component'
 import { aboutCTAData } from '@/lib/data/webpages/about.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
+import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
 
@@ -32,18 +33,20 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
  * - Twitter Card configuration
  * - Canonical URL
  */
+const pageTitle = generatePageTitle('Board Certified Plastic Surgeons Miami')
+
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Canonical URL for about page
     canonical: '/about',
 
     // Page-specific metadata optimized for plastic surgery
-    title: 'About Alluring Plastic Surgery | Board-Certified Surgeons in Miami',
+    title: pageTitle,
     description:
         'Meet the board-certified surgeons at Alluring Plastic Surgery in Miami. AAAASF-accredited facility with 5,000+ successful procedures. Experience luxury plastic surgery made affordable with world-class expertise and personalized care.',
 
     // Open Graph tags for social sharing
     openGraph: {
-        title: 'About Alluring Plastic Surgery | Expert Cosmetic Surgeons in Miami',
+        title: pageTitle,
         description:
             'Board-certified plastic surgeons in Miami specializing in BBL, breast augmentation, tummy tuck, and facial procedures. AAAASF-accredited facility with 15+ years experience and 4.9-star patient reviews.',
         url: `${siteUrl}/about`,
@@ -62,7 +65,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Twitter Card configuration
     twitter: {
         card: 'summary_large_image',
-        title: 'About Alluring Plastic Surgery | Board-Certified Surgeons',
+        title: pageTitle,
         description:
             'Meet our world-class surgical team in Miami. AAAASF-accredited facility, 5,000+ successful procedures, luxury results made affordable.',
         images: [`${siteUrl}/og-about.jpg`],

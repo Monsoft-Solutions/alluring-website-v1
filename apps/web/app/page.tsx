@@ -22,13 +22,11 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
 /**
  * Homepage Metadata
+ * Uses default title from layout.tsx (no template suffix applied to root page)
+ * SEO-optimized for plastic surgery + Miami + credentials + value proposition
  */
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/',
-    title: {
-        default: siteConfig.business.name,
-        template: `%s | ${siteConfig.business.name}`,
-    },
     description: siteConfig.business.description,
 
     // Open Graph tags for social sharing

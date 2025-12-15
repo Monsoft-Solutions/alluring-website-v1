@@ -37,7 +37,7 @@ export async function generateMetadata({
     }
 
     return toNextMetadata(seoConfig, {
-        title: `${tag.name} Articles | Alluring Plastic Surgery Blog`,
+        title: `${tag.name} Articles`,
         description: `Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`,
         canonical: `/blog/tags/${tag.slug}`,
     })

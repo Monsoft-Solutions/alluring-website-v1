@@ -17,7 +17,7 @@ const pageUrl = `${siteUrl}/gallery`
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/gallery',
-    title: 'Gallery | Before & After Results',
+    title: 'Before & After Photos Miami',
     description: `View real before and after photos from ${siteConfig.business.name} in Miami. Explore authentic transformations showcasing the artistry of our board-certified surgeons.`,
     keywords: [
         'plastic surgery before after photos',
@@ -32,7 +32,7 @@ export const metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: `Gallery | ${siteConfig.business.name} Miami`,
+        title: `Before & After Photos Miami | ${siteConfig.business.name}`,
         description:
             'Explore our gallery of real patient transformations. Before and after photos showcasing the exceptional results achieved by our board-certified surgeons.',
         siteName: siteConfig.business.name,
@@ -47,7 +47,7 @@ export const metadata = toNextMetadata(seoConfig, {
     },
     twitter: {
         card: 'summary_large_image',
-        title: `Gallery | ${siteConfig.business.name} Miami`,
+        title: `Before & After Photos Miami | ${siteConfig.business.name}`,
         description:
             'Explore our gallery of real patient transformations and before/after results.',
         images: [`${siteUrl}/og-image.jpg`],

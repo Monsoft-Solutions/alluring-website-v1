@@ -17,7 +17,7 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 export const metadata: Metadata = toNextMetadata(seoConfig, {
-    title: 'Blog Tags | Alluring Plastic Surgery',
+    title: 'Blog Tags',
     description:
         'Browse our plastic surgery blog posts by tag. Discover content on specific procedures and topics.',
     canonical: '/blog/tags',

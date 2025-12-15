@@ -45,7 +45,7 @@ export async function generateMetadata({
     const pageUrl = `${siteUrl}/gallery/${group.slug}`
 
     return toNextMetadata(seoConfig, {
-        title: `${group.name} Gallery | Before & After Photos`,
+        title: `${group.name} Before & After Photos Miami`,
         description:
             group.description ??
             `View our ${group.name} gallery featuring real before and after photos from ${siteConfig.business.name} in Miami.`,

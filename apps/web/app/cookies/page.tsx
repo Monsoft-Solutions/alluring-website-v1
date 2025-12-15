@@ -3,20 +3,22 @@ import { cookiePolicyContent } from '@/lib/data/legal/cookie-policy.content'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
+const pageTitle = 'Cookie Policy'
+
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/cookies',
-    title: 'Cookie Policy',
+    title: pageTitle,
     description:
         'Our cookie policy explains what cookies we use, why we use them, and how you can control them.',
     openGraph: {
-        title: 'Cookie Policy',
+        title: pageTitle,
         description:
             'Learn about the cookies we use and how to manage your cookie preferences.',
         type: 'website',
     },
     twitter: {
         card: 'summary',
-        title: 'Cookie Policy',
+        title: pageTitle,
         description:
             'Learn about the cookies we use and how to manage your cookie preferences.',
     },

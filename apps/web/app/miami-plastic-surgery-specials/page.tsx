@@ -45,12 +45,12 @@ import {
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/miami-plastic-surgery-specials',
-    title: `Plastic Surgery Specials & Deals Miami | ${siteConfig.business.name}`,
+    title: 'Plastic Surgery Specials Miami',
     description:
         'Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction & more. Board-certified surgeons, luxury results at promotional pricing.',
 
     openGraph: {
-        title: `Plastic Surgery Specials & Deals | ${siteConfig.business.name} Miami`,
+        title: `Plastic Surgery Specials Miami | ${siteConfig.business.name}`,
         description:
             'Exclusive savings on transformative procedures. BBL, breast augmentation, tummy tuck & more at special promotional pricing. Board-certified surgeons in Miami.',
         url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
@@ -68,7 +68,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: `Plastic Surgery Specials & Deals | ${siteConfig.business.name} Miami`,
+        title: `Plastic Surgery Specials Miami | ${siteConfig.business.name}`,
         description:
             'Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck & more.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],

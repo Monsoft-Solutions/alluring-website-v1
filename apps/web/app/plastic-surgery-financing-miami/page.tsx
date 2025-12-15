@@ -36,6 +36,7 @@ import {
     financingSeoData,
 } from '@/lib/data/webpages/financing'
 import { seoConfig } from '@/lib/seo-config'
+import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 const siteUrl = siteConfig.seo.siteUrl
@@ -46,16 +47,18 @@ const pageUrl = `${siteUrl}/plastic-surgery-financing-miami`
  *
  * SEO-optimized metadata targeting financing-related searches.
  */
+const pageTitle = generatePageTitle('Plastic Surgery Financing Miami')
+
 export const metadata = toNextMetadata(seoConfig, {
     canonical: financingSeoData.canonical,
-    title: financingSeoData.title,
+    title: pageTitle,
     description: financingSeoData.description,
     keywords: financingSeoData.keywords as unknown as string[],
 
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: 'Plastic Surgery Financing Miami | 0% APR Payment Plans',
+        title: pageTitle,
         description:
             'Make your dream results affordable with flexible financing options. Get approved in seconds with 0% APR plans available. Finance BBL, breast augmentation, tummy tuck & more.',
         siteName: siteConfig.business.name,
@@ -71,7 +74,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Plastic Surgery Financing Miami | Affordable Payment Plans',
+        title: pageTitle,
         description:
             'Flexible financing for cosmetic surgery. 0% APR options, instant approval. Cherry, CareCredit, United Credit accepted.',
         images: [`${siteUrl}/images/hero-beautiful-latin-woman.jpg`],

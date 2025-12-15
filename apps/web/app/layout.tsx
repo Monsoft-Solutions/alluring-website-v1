@@ -21,7 +21,18 @@ import { env } from '@/env'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
-export const metadata = toNextMetadata(seoConfig)
+/**
+ * Global metadata with title template for consistent branding
+ * All child pages will automatically have "| Alluring" appended
+ * Homepage uses custom default title with no suffix for maximum SEO impact
+ */
+export const metadata = toNextMetadata(seoConfig, {
+    title: {
+        default:
+            'Board Certified Plastic Surgeon Miami | Luxury Made Affordable',
+        template: '%s | Alluring',
+    },
+})
 
 const fontLato = Lato({
     subsets: ['latin'],
