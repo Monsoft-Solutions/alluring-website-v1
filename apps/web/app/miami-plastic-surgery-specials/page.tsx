@@ -171,28 +171,28 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 {/* Section 4: Testimonials - Social proof and emotional connection */}
                 <SpecialsTestimonials id='testimonials' />
 
-                {/* Section 4: Gallery Carousel - Visual proof of results */}
+                {/* Section 5: Gallery Carousel - Visual proof of results */}
                 <SpecialsGalleryCarousel
                     id='gallery-results'
                     images={galleryImages}
                 />
 
-                {/* Section 5: How It Works - Make the process feel easy */}
+                {/* Section 6: How It Works - Make the process feel easy */}
                 <SpecialsHowItWorks id='how-it-works' />
 
-                {/* Section 6: All Promotions Grid - Additional offers */}
+                {/* Section 7: All Promotions Grid - Additional offers */}
                 <SpecialsPromotionsGrid
                     id='all-specials'
                     promotions={promotions}
                 />
 
-                {/* Section 7: Urgency Strip - Gentle reminder */}
+                {/* Section 8: Urgency Strip - Gentle reminder */}
                 <SpecialsUrgencyStrip
                     id='urgency'
                     daysRemaining={urgencyDaysRemaining}
                 />
 
-                {/* Section 8: FAQ - Handle remaining questions */}
+                {/* Section 9: FAQ - Handle remaining questions */}
                 <FAQComponent
                     id='faq'
                     faqs={specialsFaqData}
@@ -212,7 +212,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     }}
                 />
 
-                {/* Section 9: Final CTA - Last chance to convert */}
+                {/* Section 10: Final CTA - Last chance to convert */}
                 <CTASection
                     id='final-cta'
                     variant='luxury'
