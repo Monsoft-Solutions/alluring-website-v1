@@ -50,14 +50,21 @@ export function MediaDetailView({ media, className }: MediaDetailViewProps) {
                 {media.type === 'image' ? (
                     <button
                         onClick={() => setIsLightboxOpen(true)}
-                        className='group focus:ring-gold-500 relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-xl bg-stone-100 focus:ring-2 focus:ring-offset-2 focus:outline-none'
+                        className='group focus:ring-gold-500 relative w-full cursor-zoom-in overflow-hidden rounded-xl bg-stone-100 focus:ring-2 focus:ring-offset-2 focus:outline-none'
                         aria-label='Open image in fullscreen'
+                        style={{
+                            aspectRatio:
+                                media.width && media.height
+                                    ? `${media.width} / ${media.height}`
+                                    : '3 / 4',
+                            minHeight: '400px',
+                        }}
                     >
                         <Image
                             src={media.url}
                             alt={media.alt}
                             fill
-                            className='object-cover transition-transform duration-500 group-hover:scale-[1.02]'
+                            className='object-contain transition-transform duration-500 group-hover:scale-[1.02]'
                             sizes='(max-width: 1024px) 100vw, 66vw'
                             placeholder={media.blurDataUrl ? 'blur' : 'empty'}
                             blurDataURL={media.blurDataUrl ?? undefined}
@@ -107,6 +114,11 @@ export function MediaDetailView({ media, className }: MediaDetailViewProps) {
                             height: media.height ?? undefined,
                         },
                     ]}
+                    carousel={{ finite: true }}
+                    render={{
+                        buttonPrev: () => null,
+                        buttonNext: () => null,
+                    }}
                     styles={{
                         container: {
                             backgroundColor: 'rgba(0, 0, 0, 0.95)',

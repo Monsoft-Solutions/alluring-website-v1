@@ -90,7 +90,7 @@ export function GalleryHero() {
                                 {/* Title */}
                                 <h1 className='mb-8 font-serif text-5xl leading-[1.05] font-medium text-white drop-shadow-lg md:text-6xl lg:text-7xl'>
                                     <span className='text-white'>
-                                        Transformations
+                                        Real Results
                                     </span>
                                     <br />
                                     <span className='font-light text-stone-200 italic'>
@@ -111,7 +111,7 @@ export function GalleryHero() {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.6, duration: 0.8 }}
-                                    className='mb-10 flex flex-col gap-4 sm:flex-row'
+                                    className='mb-10'
                                 >
                                     <Button
                                         asChild
@@ -120,18 +120,8 @@ export function GalleryHero() {
                                         withArrow
                                         className='w-full sm:w-auto'
                                     >
-                                        <Link href='#gallery-showcase'>
-                                            View Before &amp; After
-                                        </Link>
-                                    </Button>
-                                    <Button
-                                        asChild
-                                        variant='outline'
-                                        size='lg'
-                                        className='w-full border-white text-white hover:border-white hover:bg-white hover:text-stone-900 sm:w-auto'
-                                    >
                                         <Link href='/contact-us'>
-                                            Book Consultation
+                                            Request Consultation
                                         </Link>
                                     </Button>
                                 </motion.div>

@@ -3,9 +3,13 @@
 import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
+import Captions from 'yet-another-react-lightbox/plugins/captions'
 import 'yet-another-react-lightbox/styles.css'
+import 'yet-another-react-lightbox/plugins/captions.css'
+import { ExternalLink } from 'lucide-react'
 
 import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 
@@ -28,6 +32,7 @@ export function GalleryMediaGrid({
     linkToDetail = true,
 }: GalleryMediaGridProps) {
     const [lightboxIndex, setLightboxIndex] = useState(-1)
+    const router = useRouter()
 
     if (media.length === 0) {
         return (
@@ -46,11 +51,21 @@ export function GalleryMediaGrid({
         width: item.width ?? undefined,
         height: item.height ?? undefined,
         title: item.title,
+        description: item.title,
     }))
 
     const handleMediaClick = (index: number) => {
         if (enableLightbox && !linkToDetail) {
             setLightboxIndex(index)
+        }
+    }
+
+    const handleViewDetails = () => {
+        if (lightboxIndex >= 0 && lightboxIndex < media.length) {
+            const currentMedia = media[lightboxIndex]
+            if (currentMedia) {
+                router.push(`/gallery/media/${currentMedia.slug}`)
+            }
         }
     }
 
@@ -80,6 +95,7 @@ export function GalleryMediaGrid({
                     close={() => setLightboxIndex(-1)}
                     index={lightboxIndex}
                     slides={lightboxSlides}
+                    plugins={[Captions]}
                     carousel={{
                         finite: false,
                     }}
@@ -87,6 +103,20 @@ export function GalleryMediaGrid({
                         container: {
                             backgroundColor: 'rgba(0, 0, 0, 0.95)',
                         },
+                    }}
+                    toolbar={{
+                        buttons: [
+                            <button
+                                key='view-details'
+                                type='button'
+                                aria-label='View details page'
+                                className='yarl__button'
+                                onClick={handleViewDetails}
+                            >
+                                <ExternalLink className='h-5 w-5' />
+                            </button>,
+                            'close',
+                        ],
                     }}
                 />
             )}

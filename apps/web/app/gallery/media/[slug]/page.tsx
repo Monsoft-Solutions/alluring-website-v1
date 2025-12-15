@@ -150,7 +150,7 @@ export default async function GalleryMediaPage({ params }: PageProps) {
             <ContainerLayout
                 as='article'
                 size='xl'
-                className='pt-24 pb-12 lg:pt-32 lg:pb-16'
+                className='pt-32 pb-12 lg:pt-40 lg:pb-16'
             >
                 {/* Media Detail */}
                 <MediaDetailView media={media} />

@@ -164,7 +164,10 @@ export default async function GalleryGroupPage({ params }: PageProps) {
             {/* Gallery Grid */}
             <SectionContainer variant='default' className='pt-0'>
                 <ContentWrapper>
-                    <GalleryMediaGrid media={group.media} linkToDetail={true} />
+                    <GalleryMediaGrid
+                        media={group.media}
+                        linkToDetail={false}
+                    />
                 </ContentWrapper>
             </SectionContainer>
 

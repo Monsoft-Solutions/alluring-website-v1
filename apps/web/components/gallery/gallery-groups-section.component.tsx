@@ -22,7 +22,10 @@ export function GalleryGroupsSection({
     groups,
     className,
 }: GalleryGroupsSectionProps) {
-    if (groups.length === 0) {
+    // Filter groups to only show those with images
+    const groupsWithImages = groups.filter((group) => group.mediaCount > 0)
+
+    if (groupsWithImages.length === 0) {
         return null
     }
 
@@ -44,7 +47,7 @@ export function GalleryGroupsSection({
 
                 {/* Groups Grid */}
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8'>
-                    {groups.map((group) => (
+                    {groupsWithImages.map((group) => (
                         <GalleryGroupCard key={group.id} group={group} />
                     ))}
                 </div>
