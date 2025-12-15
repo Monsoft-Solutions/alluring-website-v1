@@ -11,7 +11,7 @@
  * - Business hours and immediate contact option
  */
 
-import { CheckCircle2, Phone, Clock, Award, ShieldCheck } from 'lucide-react'
+import { Phone, Clock, Award, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 
@@ -109,9 +109,9 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                             <br />
                             We&apos;re available{' '}
                             {
-                                siteConfig.contact.businessHours[0]?.days
-                            } from {siteConfig.contact.businessHours[0]?.open}{' '}
-                            to {siteConfig.contact.businessHours[0]?.close}
+                                siteConfig.contact.businessHours?.[0]?.days
+                            } from {siteConfig.contact.businessHours?.[0]?.open}{' '}
+                            to {siteConfig.contact.businessHours?.[0]?.close}
                         </p>
                         <Button
                             asChild
