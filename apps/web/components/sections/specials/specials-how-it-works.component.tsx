@@ -28,9 +28,9 @@ const STEPS = [
     {
         step: 2,
         icon: Calendar,
-        title: 'Meet Our Surgeons',
+        title: 'Virtual Consultation',
         description:
-            'During your complimentary consultation, a board-certified surgeon will assess your goals and create a personalized treatment plan.',
+            'Meet with one of our specialists virtually, where they guide you through the process and tailor a personalized treatment plan to your unique goals.',
     },
     {
         step: 3,
