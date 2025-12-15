@@ -19,9 +19,9 @@ import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle, X, Sparkles } from 'lucide-react'
 
 import { ChatWidget } from './chat-widget.component'
-import { Z_INDEX, ARIA_LABELS, PROACTIVE } from '@/lib/chat/constants'
+import { Z_INDEX, ARIA_LABELS } from '@/lib/chat/constants'
 import { useProactiveChat } from '@/hooks/chat/useProactiveChat.hook'
-import { trackEvent } from '@/lib/analytics/analytics.client'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 type ChatConfig = {
     isEnabled: boolean
@@ -59,6 +59,9 @@ export function FloatingChatButton({
     // Proactive engagement hooks (no expansion, just tooltip)
     const { showTooltip, dismissTooltip } = useProactiveChat()
 
+    // Analytics hook
+    const { trackClick, track } = useAnalyticsEvent()
+
     /**
      * Handle button click with analytics tracking
      */
@@ -68,16 +71,16 @@ export function FloatingChatButton({
         setIsOpen((prev) => {
             const willOpen = !prev
 
-            // Track chat opened event
+            // Track chat button click
             if (willOpen) {
-                trackEvent('chat_opened', {
-                    event_category: 'engagement',
-                    source: wasTooltipVisible ? 'tooltip' : 'button',
+                trackClick('chat_button', {
+                    button_position: config?.buttonPosition ?? 'bottom-right',
+                    source: wasTooltipVisible ? 'tooltip' : 'direct',
                 })
 
                 // Track specific event if opened from tooltip
                 if (wasTooltipVisible) {
-                    trackEvent('chat_opened_from_tooltip', {
+                    track('chat_opened_from_tooltip', {
                         event_category: 'conversion',
                     })
                 }
@@ -85,7 +88,7 @@ export function FloatingChatButton({
 
             return willOpen
         })
-    }, [showTooltip])
+    }, [showTooltip, config?.buttonPosition, trackClick, track])
 
     // Fetch chat configuration on mount
     useEffect(() => {

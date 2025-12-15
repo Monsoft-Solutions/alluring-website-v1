@@ -17,6 +17,7 @@ import { Loader2, MessageCircle, Phone, User, Sparkles } from 'lucide-react'
 
 import { preChatFormSchema, type PreChatFormInput } from '@workspace/chat/types'
 import { CSS_CLASSES } from '@/lib/chat/constants'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 type PreChatFormProps = {
     onSubmit: (data: PreChatFormInput) => Promise<void>
@@ -44,6 +45,9 @@ export function PreChatForm({
 }: PreChatFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false)
 
+    // Analytics hook
+    const { trackFormSubmit } = useAnalyticsEvent()
+
     const {
         register,
         handleSubmit,
@@ -61,6 +65,11 @@ export function PreChatForm({
         setIsSubmitting(true)
         try {
             await onSubmit(data)
+
+            // Track successful form submission
+            trackFormSubmit('chat_pre_chat_form', {
+                has_email: !!data.email,
+            })
         } finally {
             setIsSubmitting(false)
         }
