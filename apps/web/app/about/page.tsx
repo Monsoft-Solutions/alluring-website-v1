@@ -37,7 +37,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/about',
 
     // Page-specific metadata optimized for plastic surgery
-    title: 'Board-Certified Plastic Surgeons in Miami',
+    title: 'Board Certified Plastic Surgeons Miami',
     description:
         'Meet the board-certified surgeons at Alluring Plastic Surgery in Miami. AAAASF-accredited facility with 5,000+ successful procedures. Experience luxury plastic surgery made affordable with world-class expertise and personalized care.',
 

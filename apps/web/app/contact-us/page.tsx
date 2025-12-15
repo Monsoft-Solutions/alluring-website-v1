@@ -35,12 +35,12 @@ import { toNextMetadata } from '@/lib/seo/metadata'
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',
-    title: 'Schedule Your Consultation',
+    title: 'Free Plastic Surgery Consultation Miami',
     description:
         'Request your private consultation with our board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey. Complimentary, confidential, no obligation.',
 
     openGraph: {
-        title: `Schedule Your Consultation | Alluring Plastic Surgery`,
+        title: `Free Plastic Surgery Consultation Miami | Alluring Miami`,
         description:
             'Request your private consultation with board-certified plastic surgeons in Miami. BBL, Mommy Makeover, Breast Augmentation & more. Luxury results, personalized care.',
         url: `${seoConfig.siteUrl}/contact-us`,
@@ -58,7 +58,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: `Schedule Your Consultation | Alluring Plastic Surgery`,
+        title: `Free Plastic Surgery Consultation Miami | Alluring Miami`,
         description:
             'Request your private consultation with board-certified plastic surgeons in Miami. Luxury results, personalized care.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],

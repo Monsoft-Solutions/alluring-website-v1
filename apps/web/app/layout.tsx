@@ -18,18 +18,19 @@ import { Providers } from '@/components/providers'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { WebVitals } from '@/components/web-vitals.component'
 import { env } from '@/env'
-import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 /**
  * Global metadata with title template for consistent branding
- * All child pages will automatically have "| Alluring Plastic Surgery" appended
+ * All child pages will automatically have "| Alluring" appended
+ * Homepage uses custom default title with no suffix for maximum SEO impact
  */
 export const metadata = toNextMetadata(seoConfig, {
     title: {
-        default: 'Plastic Surgeon in Miami | Alluring Plastic Surgery',
-        template: `%s | ${siteConfig.business.name}`,
+        default:
+            'Board Certified Plastic Surgeon Miami | Luxury Made Affordable',
+        template: '%s | Alluring',
     },
 })
 

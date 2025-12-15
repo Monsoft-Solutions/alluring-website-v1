@@ -22,12 +22,11 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
 /**
  * Homepage Metadata
- * Note: Template not applying to root page, so including full title
- * SEO-optimized for plastic surgery + Miami + credentials (under 70 chars)
+ * Uses default title from layout.tsx (no template suffix applied to root page)
+ * SEO-optimized for plastic surgery + Miami + credentials + value proposition
  */
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/',
-    title: `Board Certified Plastic Surgeon Miami | ${siteConfig.business.name}`,
     description: siteConfig.business.description,
 
     // Open Graph tags for social sharing
