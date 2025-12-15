@@ -7,18 +7,18 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/terms',
     title: 'Terms of Service',
     description:
-        'Our terms of service outline the rules and guidelines for using our website and services.',
+        'Terms of service for Alluring Plastic Surgery including medical disclaimers, patient rights, consultation policies, and website usage guidelines for our Miami plastic surgery practice.',
     openGraph: {
-        title: 'Terms of Service',
+        title: 'Terms of Service - Alluring Plastic Surgery',
         description:
-            'Read our terms and conditions for using this website and its services.',
+            'Terms and conditions for using our website, booking consultations, and understanding medical information disclaimers at Alluring Plastic Surgery.',
         type: 'website',
     },
     twitter: {
         card: 'summary',
-        title: 'Terms of Service',
+        title: 'Terms of Service - Alluring Plastic Surgery',
         description:
-            'Read our terms and conditions for using this website and its services.',
+            'Terms and conditions for using our website and understanding medical information disclaimers.',
     },
     robots: {
         index: true,
@@ -29,21 +29,24 @@ export const metadata = toNextMetadata(seoConfig, {
 /**
  * Terms of Service Page
  *
- * Displays the website's terms of service including:
+ * Displays Alluring Plastic Surgery's terms of service including:
+ * - Medical information disclaimers
+ * - Doctor-patient relationship terms
+ * - Consultation and appointment policies
+ * - Before and after photo disclaimers
+ * - Patient testimonial guidelines
+ * - Website usage policies
+ * - Privacy and HIPAA compliance
  * - Acceptable use policy
  * - Intellectual property rights
- * - User responsibilities
  * - Disclaimers and limitations of liability
- * - Open source acknowledgment
- *
- * Built with open-source template by Adriano Flechilla / Monsoft Solutions, LLC
  */
 export default function TermsOfServicePage() {
     return (
         <LegalPageLayout
             title='Terms of Service'
             content={termsOfServiceContent}
-            lastUpdated='October 19, 2025'
+            lastUpdated='December 14, 2025'
         />
     )
 }
