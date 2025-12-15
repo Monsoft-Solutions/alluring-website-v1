@@ -4,14 +4,16 @@ import { Sparkles } from 'lucide-react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { PromotionCard } from '@/components/promotions/promotion-card.component'
 import { getActivePromotions } from '@/lib/queries/promotion.query'
-import { siteConfig } from '@/lib/data/site-config'
+import Link from 'next/link'
+
+const pageTitle = 'Special Offers & Promotions'
 
 export const metadata: Metadata = {
-    title: 'Special Offers & Promotions',
+    title: pageTitle,
     description:
         'Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.',
     openGraph: {
-        title: `Special Offers & Promotions | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             'Discover our current special offers and promotions on cosmetic surgery procedures.',
         type: 'website',
@@ -82,12 +84,12 @@ export default async function PromotionsPage() {
                         available options and how we can help you achieve your
                         aesthetic goals.
                     </p>
-                    <a
+                    <Link
                         href='/contact-us'
                         className='bg-gold-500 hover:bg-gold-600 inline-flex items-center rounded-lg px-8 py-4 font-bold tracking-wide text-white uppercase shadow-lg transition-all'
                     >
                         Book Consultation
-                    </a>
+                    </Link>
                 </div>
             </div>
         </ContainerLayout>

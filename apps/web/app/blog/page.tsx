@@ -29,6 +29,7 @@ import {
 } from '@/lib/data/webpages/blog'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { seoConfig } from '@/lib/seo-config'
+import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 const siteUrl = siteConfig.seo.siteUrl
@@ -39,8 +40,10 @@ const pageUrl = `${siteUrl}/blog`
  *
  * SEO-optimized metadata for the blog landing page.
  */
+const pageTitle = generatePageTitle('Plastic Surgery Blog Miami')
+
 export const metadata: Metadata = toNextMetadata(seoConfig, {
-    title: 'Plastic Surgery Blog Miami',
+    title: pageTitle,
     description: blogSeoData.description,
     keywords: blogSeoData.keywords,
     canonical: blogSeoData.canonical,
@@ -48,7 +51,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: `Plastic Surgery Blog Miami | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             "Expert articles on plastic surgery procedures, recovery tips, and patient education from Miami's trusted board-certified surgeons.",
         siteName: siteConfig.business.name,
@@ -64,7 +67,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: `Plastic Surgery Blog Miami | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             'Expert articles on plastic surgery procedures, recovery tips, and patient education.',
         images: [`${siteUrl}/og-image.jpg`],
