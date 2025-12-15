@@ -289,12 +289,13 @@ export function getPromotionLink(promo: Promotion): string {
         case 'procedure':
             return promo.procedureSlug
                 ? `/procedures/${promo.procedureSlug}`
-                : '/contact-us'
+                : '/miami-plastic-surgery-specials'
         case 'custom_url':
-            return promo.customUrl ?? '/contact-us'
+            return promo.customUrl ?? '/miami-plastic-surgery-specials'
         case 'contact':
-        default:
             return '/contact-us'
+        default:
+            return '/miami-plastic-surgery-specials'
     }
 }
 
