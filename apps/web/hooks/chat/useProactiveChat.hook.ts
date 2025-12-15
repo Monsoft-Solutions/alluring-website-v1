@@ -11,7 +11,7 @@
  */
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { PROACTIVE } from '@/lib/chat/constants'
 import { trackEvent } from '@/lib/analytics/analytics.client'
 
@@ -37,26 +37,28 @@ type ProactiveChatState = {
  */
 export function useProactiveChat(): ProactiveChatState {
     const [showTooltip, setShowTooltip] = useState(false)
-    const [tooltipDismissed, setTooltipDismissed] = useState(false)
-
-    /**
-     * Check if tooltip was previously dismissed this session
-     */
-    useEffect(() => {
-        const dismissed = sessionStorage.getItem(
-            PROACTIVE.TOOLTIP_DISMISSED_KEY
-        )
-        if (dismissed === 'true') {
-            setTooltipDismissed(true)
+    const [tooltipDismissed, setTooltipDismissed] = useState(() => {
+        // Check if tooltip was previously dismissed this session
+        if (typeof window !== 'undefined') {
+            return (
+                sessionStorage.getItem(PROACTIVE.TOOLTIP_DISMISSED_KEY) ===
+                'true'
+            )
         }
-    }, [])
+        return false
+    })
+    const tooltipTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const tooltipShownRef = useRef(false)
 
     /**
      * Scroll-based tooltip trigger
      * Shows tooltip when user scrolls past SCROLL_THRESHOLD
      */
     useEffect(() => {
-        if (tooltipDismissed) return
+        if (tooltipDismissed) {
+            tooltipShownRef.current = false
+            return
+        }
 
         let scrollTimeout: NodeJS.Timeout | null = null
 
@@ -80,8 +82,9 @@ export function useProactiveChat(): ProactiveChatState {
                 // Show tooltip if past threshold
                 if (
                     scrollPercentage >= PROACTIVE.SCROLL_THRESHOLD &&
-                    !showTooltip
+                    !tooltipShownRef.current
                 ) {
+                    tooltipShownRef.current = true
                     setShowTooltip(true)
 
                     // Track tooltip shown event
@@ -91,8 +94,13 @@ export function useProactiveChat(): ProactiveChatState {
                         scroll_percentage: Math.round(scrollPercentage * 100),
                     })
 
+                    // Clear any existing tooltip timeout
+                    if (tooltipTimeoutRef.current) {
+                        clearTimeout(tooltipTimeoutRef.current)
+                    }
+
                     // Auto-hide after TOOLTIP_AUTO_HIDE_MS
-                    setTimeout(() => {
+                    tooltipTimeoutRef.current = setTimeout(() => {
                         setShowTooltip(false)
                     }, PROACTIVE.TOOLTIP_AUTO_HIDE_MS)
                 }
@@ -106,8 +114,11 @@ export function useProactiveChat(): ProactiveChatState {
             if (scrollTimeout) {
                 clearTimeout(scrollTimeout)
             }
+            if (tooltipTimeoutRef.current) {
+                clearTimeout(tooltipTimeoutRef.current)
+            }
         }
-    }, [tooltipDismissed, showTooltip])
+    }, [tooltipDismissed])
 
     /**
      * Manually show tooltip
