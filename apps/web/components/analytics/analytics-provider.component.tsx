@@ -1,9 +1,8 @@
 /**
  * Analytics Provider Component
  *
- * Conditionally loads analytics scripts based on:
- * 1. Environment configuration (analytics services enabled)
- * 2. User consent (only loads when consent is granted)
+ * Conditionally loads analytics scripts based on environment configuration.
+ * Scripts load automatically when their respective environment variables are set.
  *
  * Centralizes all analytics service integrations in a single component.
  *
@@ -15,18 +14,14 @@
  *
  * @example
  * ```tsx
- * // In your root layout, inside Providers
- * <Providers>
- *   <AnalyticsProvider />
- *   {/* ... rest of app ... *\/}
- * </Providers>
+ * // In your root layout
+ * <AnalyticsProvider />
  * ```
  */
 
 'use client'
 
 import { getAnalyticsConfig } from '@/lib/analytics/config'
-import { useConsent } from '@/lib/analytics/consent.context'
 
 import { Clarity } from './clarity.component'
 import { FacebookPixel } from './facebook-pixel.component'
@@ -35,13 +30,6 @@ import { GoogleTagManager } from './google-tag-manager.component'
 
 export function AnalyticsProvider() {
     const analyticsConfig = getAnalyticsConfig()
-    const { consentState } = useConsent()
-
-    // Don't load analytics scripts until user has granted consent
-    // This ensures GDPR/privacy compliance
-    if (consentState !== 'granted') {
-        return null
-    }
 
     return (
         <>

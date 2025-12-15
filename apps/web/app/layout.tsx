@@ -108,7 +108,7 @@ export default function RootLayout({
                     url={seoConfig.siteUrl}
                 />
                 <Providers>
-                    {/* Analytics Scripts - Load conditionally based on consent */}
+                    {/* Analytics Scripts - Load automatically when configured */}
                     <AnalyticsProvider />
                     {/* Cookie Consent Banner */}
                     {isCookieBannerEnabled && <CookieBanner />}
