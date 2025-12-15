@@ -3,20 +3,22 @@ import { termsOfServiceContent } from '@/lib/data/legal/terms-of-service.content
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
+const pageTitle = 'Terms of Service'
+
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/terms',
-    title: 'Terms of Service',
+    title: pageTitle,
     description:
         'Terms of service for Alluring Plastic Surgery including medical disclaimers, patient rights, consultation policies, and website usage guidelines for our Miami plastic surgery practice.',
     openGraph: {
-        title: 'Terms of Service | Alluring Plastic Surgery',
+        title: pageTitle,
         description:
             'Terms and conditions for using our website, booking consultations, and understanding medical information disclaimers at Alluring Plastic Surgery.',
         type: 'website',
     },
     twitter: {
         card: 'summary',
-        title: 'Terms of Service | Alluring Plastic Surgery',
+        title: pageTitle,
         description:
             'Terms and conditions for using our website and understanding medical information disclaimers.',
     },

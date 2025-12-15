@@ -70,7 +70,7 @@ export async function generateMetadata(
         openGraph: {
             type: 'website',
             url: pageUrl,
-            title: `${pageTitle} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description: procedure.shortDescription || procedure.description,
             siteName: siteConfig.business.name,
             locale: 'en_US',
@@ -87,7 +87,7 @@ export async function generateMetadata(
         // Twitter Card tags
         twitter: {
             card: 'summary_large_image',
-            title: `${pageTitle} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description: procedure.shortDescription || procedure.description,
             images: [ogImage],
         },

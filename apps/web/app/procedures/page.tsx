@@ -3,6 +3,7 @@ import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
 import { procedures } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
+import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { ProceduresPageContent } from '@/components/procedures/procedures-page-content.component'
 import { env } from '@/env'
@@ -10,9 +11,11 @@ import { env } from '@/env'
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/procedures`
 
+const pageTitle = generatePageTitle('Plastic Surgery Procedures Miami')
+
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/procedures',
-    title: 'Plastic Surgery Procedures Miami',
+    title: pageTitle,
     description: `Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. Expert surgeons, natural results, and personalized care.`,
     keywords: [
         'plastic surgery miami',
@@ -30,7 +33,7 @@ export const metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: `Plastic Surgery Procedures Miami | Alluring Miami`,
+        title: pageTitle,
         description:
             'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery. Board-certified surgeons in Miami.',
         siteName: siteConfig.business.name,
@@ -47,7 +50,7 @@ export const metadata = toNextMetadata(seoConfig, {
     // Twitter Card tags
     twitter: {
         card: 'summary_large_image',
-        title: `Plastic Surgery Procedures Miami | Alluring Miami`,
+        title: pageTitle,
         description:
             'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery.',
         images: [`${siteUrl}/og-image.jpg`],
