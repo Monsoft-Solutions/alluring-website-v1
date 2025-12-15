@@ -1,6 +1,5 @@
 import {
     getFeaturedPromotion,
-    getPromotionLink,
     formatDiscount,
 } from '@/lib/queries/promotion.query'
 import { AnnouncementBarClient } from './announcement-bar-client.component'
@@ -21,7 +20,7 @@ export async function AnnouncementBar() {
         return null
     }
 
-    const link = getPromotionLink(promotion)
+    const link = '/miami-plastic-surgery-specials'
     const discount = formatDiscount(promotion)
 
     return (

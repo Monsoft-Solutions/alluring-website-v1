@@ -4,11 +4,7 @@ import { Sparkles, Clock, ArrowRight } from 'lucide-react'
 import { type Promotion } from '@workspace/db/schema/promotion'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
-import {
-    getPromotionLink,
-    formatDiscount,
-    getRemainingDays,
-} from '@/lib/queries/promotion.query'
+import { formatDiscount, getRemainingDays } from '@/lib/queries/promotion.query'
 
 type PromoSectionProps = {
     promotion: Promotion
@@ -28,7 +24,7 @@ type PromoSectionProps = {
  * - Prominent CTA button
  */
 export function PromoSection({ promotion }: PromoSectionProps) {
-    const link = getPromotionLink(promotion)
+    const link = '/miami-plastic-surgery-specials'
     const discount = formatDiscount(promotion)
     const daysRemaining = getRemainingDays(promotion)
 
