@@ -104,6 +104,22 @@ export const Z_INDEX = {
 } as const
 
 /**
+ * Proactive engagement configuration
+ */
+export const PROACTIVE = {
+    /** Time before button expands (5 seconds) */
+    EXPAND_DELAY_MS: 5000,
+    /** Scroll depth threshold for tooltip (50%) */
+    SCROLL_THRESHOLD: 0.5,
+    /** Auto-hide tooltip after 10 seconds */
+    TOOLTIP_AUTO_HIDE_MS: 10000,
+    /** Session storage key for dismissed tooltip */
+    TOOLTIP_DISMISSED_KEY: 'chat_tooltip_dismissed',
+    /** Tooltip teaser message */
+    TOOLTIP_MESSAGE: 'Have questions about our procedures?',
+} as const
+
+/**
  * Accessibility labels
  */
 export const ARIA_LABELS = {
@@ -114,4 +130,5 @@ export const ARIA_LABELS = {
     NEW_CONVERSATION: 'Start new conversation',
     TALK_TO_TEAM: 'Talk to team member',
     TYPING: (name: string) => `${name} is typing`,
+    DISMISS_TOOLTIP: 'Dismiss tooltip',
 } as const

@@ -45,17 +45,20 @@ const nextConfig = {
             // Influencer marketing redirects
             {
                 source: '/melany',
-                destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=melany',
+                destination:
+                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=melany',
                 permanent: true,
             },
             {
                 source: '/yele',
-                destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=yele',
+                destination:
+                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=yele',
                 permanent: true,
             },
             {
                 source: '/lorena-gonzalez',
-                destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=lorena-gonzalez',
+                destination:
+                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=lorena-gonzalez',
                 permanent: true,
             },
             {
