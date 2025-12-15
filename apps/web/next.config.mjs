@@ -58,6 +58,11 @@ const nextConfig = {
                 destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=lorena-gonzalez',
                 permanent: true,
             },
+            {
+                source: '/cosmetic-procedures-in-miami',
+                destination: '/procedures',
+                permanent: true,
+            },
         ]
     },
 }
