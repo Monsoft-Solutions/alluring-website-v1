@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { X, Sparkles, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+
 type AnnouncementBarClientProps = {
     promotionId: string
     title: string
@@ -31,6 +33,9 @@ export function AnnouncementBarClient({
 }: AnnouncementBarClientProps) {
     const [isDismissed, setIsDismissed] = useState(true) // Start hidden to prevent flash
     const [isLoaded, setIsLoaded] = useState(false)
+
+    // Analytics hook
+    const { trackCTA } = useAnalyticsEvent()
 
     // Check localStorage on mount
     useEffect(() => {
@@ -88,6 +93,14 @@ export function AnnouncementBarClient({
                     {/* Full-width clickable link area */}
                     <Link
                         href={link}
+                        onClick={() => {
+                            trackCTA('promotion_banner', {
+                                promotion_id: promotionId,
+                                promotion_title: title,
+                                promotion_discount: discount ?? undefined,
+                                promotion_link: link,
+                            })
+                        }}
                         className='group absolute inset-0 flex items-center justify-center pr-12'
                     >
                         <div className='flex items-center gap-2 md:gap-3'>
