@@ -1,4 +1,4 @@
-import { ArticleSchema } from '@workspace/seo/react'
+import { ArticleSchema, BreadcrumbSchema } from '@workspace/seo/react'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -82,17 +82,6 @@ export default async function BlogPostPage({ params }: PageProps) {
         <ContainerLayout as='article' size='lg' className='py-16 lg:py-20'>
             {/* Track blog post view */}
             <BlogViewTracker postId={post.id} />
-
-            <div className='mb-16'>
-                <Breadcrumbs
-                    items={[
-                        { label: 'Home', href: '/' },
-                        { label: 'Blog', href: '/blog' },
-                        { label: post.title },
-                    ]}
-                    showBackground={true}
-                />
-            </div>
 
             {/* Two column layout: content + TOC */}
             <div className='grid grid-cols-1 gap-12 lg:grid-cols-[1fr_250px]'>
@@ -206,6 +195,14 @@ export default async function BlogPostPage({ params }: PageProps) {
                                 seoConfig.organization?.url ??
                                 seoConfig.siteUrl,
                         }}
+                    />
+
+                    <BreadcrumbSchema
+                        items={[
+                            { name: 'Home', item: '/' },
+                            { name: 'Blog', item: '/blog' },
+                            { name: post.title, item: `/blog/${post.slug}` },
+                        ]}
                     />
 
                     {(post.categories.length > 0 || post.tags.length > 0) && (
