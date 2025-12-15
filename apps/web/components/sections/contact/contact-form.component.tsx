@@ -65,6 +65,7 @@ export function ContactForm({
             source: CONTACT_SOURCES.CONTACT_PAGE,
             enableAnalytics: true,
             analyticsFormName: 'contact_form',
+            redirectOnSuccess: '/thank-you',
             onSuccess: () => form.reset(),
         })
 

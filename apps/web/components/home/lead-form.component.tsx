@@ -31,6 +31,7 @@ export const LeadForm = () => {
                         source={CONTACT_SOURCES.LEAD_FORM}
                         analyticsFormName='lead_form'
                         enableAnalytics
+                        redirectOnSuccess='/thank-you'
                     />
                 </div>
             </div>

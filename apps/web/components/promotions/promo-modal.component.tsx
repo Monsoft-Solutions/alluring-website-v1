@@ -77,12 +77,10 @@ export function PromoModal({ promotion }: PromoModalProps) {
     const { submit, state, isSubmitting, isSuccess, isError } =
         useContactFormSubmission({
             source: CONTACT_SOURCES.PROMO_MODAL,
+            redirectOnSuccess: '/thank-you',
             onSuccess: () => {
                 form.reset()
-                // Auto-close after success
-                setTimeout(() => {
-                    handleClose()
-                }, 3000)
+                handleClose()
             },
         })
 

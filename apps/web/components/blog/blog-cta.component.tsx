@@ -165,6 +165,7 @@ export function BlogCTA({
     const { submit, state, isSubmitting, isSuccess, isError } =
         useContactFormSubmission({
             source: CONTACT_SOURCES.BLOG_LEAD,
+            redirectOnSuccess: '/thank-you',
             onSuccess: () => form.reset(),
         })
 
