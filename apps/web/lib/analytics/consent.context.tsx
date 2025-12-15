@@ -25,7 +25,6 @@ import {
     ESSENTIAL_CONSENT_CONFIG,
     clearConsentState,
     getStoredConsentState,
-    initializeConsent,
     storeConsentState,
     updateConsent,
 } from './consent.util'
@@ -94,8 +93,8 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
 
     // Initialize consent on mount (client-side only)
     useEffect(() => {
-        // Initialize default consent before scripts load
-        initializeConsent()
+        // Note: Consent defaults are now set in GoogleAnalytics component
+        // before gtag config, so we don't call initializeConsent() here.
 
         // Check for stored consent preference
         const stored = getStoredConsentState()
