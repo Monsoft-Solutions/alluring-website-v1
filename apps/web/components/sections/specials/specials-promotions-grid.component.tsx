@@ -93,14 +93,15 @@ export function SpecialsPromotionsGrid({
                         <span className='font-semibold text-stone-700'>
                             Not sure which offer is right for you?
                         </span>{' '}
-                        Our team will help you find the best option during your
-                        complimentary consultation.
+                        Our team will help you find the perfect option during
+                        your free consultation — no pressure, just honest
+                        guidance.
                     </p>
                     <a
                         href='#specials-form'
                         className='text-gold-600 hover:text-gold-700 mt-4 inline-flex items-center gap-2 font-medium transition-colors'
                     >
-                        Request a Consultation
+                        Get My Personalized Quote
                         <span aria-hidden='true'>↑</span>
                     </a>
                 </div>

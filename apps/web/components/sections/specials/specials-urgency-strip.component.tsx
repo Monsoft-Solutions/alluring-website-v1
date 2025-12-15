@@ -92,7 +92,7 @@ export function SpecialsUrgencyStrip({
                         href='#specials-form'
                         className='group flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/30'
                     >
-                        Claim Your Offer Now
+                        Start My Transformation
                         <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-1' />
                     </a>
                 </div>

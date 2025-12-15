@@ -1,8 +1,9 @@
 /**
  * SpecialsHowItWorks Component
  *
- * Explains the 4-step process to claim promotional offers.
- * Features numbered steps with icons and descriptions.
+ * Explains the 3-step process to claim promotional offers.
+ * Simplified from 4 steps to reduce cognitive load and make
+ * the process feel easier and more approachable.
  *
  * Features:
  * - Elegant card design with hover animations
@@ -12,7 +13,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Calendar, Phone, Star, Tag } from 'lucide-react'
+import { Send, UserCheck, Sparkles } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
@@ -20,31 +21,24 @@ import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 const STEPS = [
     {
         step: 1,
-        icon: Phone,
-        title: 'Request Consultation',
+        icon: Send,
+        title: 'Book Your Free Consultation',
         description:
-            'Fill out the form above or call us directly. Mention the special offer you are interested in when scheduling your visit.',
+            'Fill out the form or call us. Takes 30 seconds. We will reach out within 24 hours to schedule your visit.',
     },
     {
         step: 2,
-        icon: Calendar,
-        title: 'Virtual Consultation',
+        icon: UserCheck,
+        title: 'Get Your Personalized Quote',
         description:
-            'Meet with one of our specialists virtually, where they guide you through the process and tailor a personalized treatment plan to your unique goals.',
+            'Meet with a specialist (in-person or virtual). Your promotional price is locked in — even if the offer expires later.',
     },
     {
         step: 3,
-        icon: Tag,
-        title: 'Lock In Your Savings',
-        description:
-            'Confirm your procedure date and your promotional pricing is guaranteed—even if the public offer expires before your surgery.',
-    },
-    {
-        step: 4,
-        icon: Star,
+        icon: Sparkles,
         title: 'Start Your Transformation',
         description:
-            'Experience luxury care from our expert team. World-class results at exclusive promotional pricing are now yours.',
+            'Schedule at your convenience. Luxury care, board-certified expertise, and the results you deserve.',
     },
 ]
 
@@ -85,17 +79,19 @@ export function SpecialsHowItWorks({
                         Simple Process
                     </div>
                     <h2 className='mb-6 font-serif text-3xl text-stone-900 md:text-4xl lg:text-5xl'>
-                        How to Claim Your Special
+                        3 Easy Steps to Your{' '}
+                        <span className='text-gold-600 italic'>
+                            Transformation
+                        </span>
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
-                        Securing your promotional pricing is easy. Follow these
-                        four simple steps to lock in exclusive savings on your
-                        procedure.
+                        Claiming your special offer is simple. No pressure, no
+                        complicated process — just three easy steps.
                     </p>
                 </motion.div>
 
                 {/* Steps Grid */}
-                <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-4'>
+                <div className='grid gap-6 md:grid-cols-3'>
                     {STEPS.map((step, index) => (
                         <motion.div
                             key={step.title}

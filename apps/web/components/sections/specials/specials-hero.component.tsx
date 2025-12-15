@@ -7,7 +7,14 @@
  *
  * Designed for maximum conversions with prominent promotional imagery.
  */
-import { Award, ShieldCheck, Sparkles, Clock } from 'lucide-react'
+import {
+    Award,
+    ShieldCheck,
+    Sparkles,
+    Clock,
+    CreditCard,
+    Quote,
+} from 'lucide-react'
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
@@ -111,9 +118,34 @@ export function SpecialsHero({
                 {/* Right Column - Form */}
                 <div className='animate-fade-in-up flex w-full flex-col justify-center px-6 py-8 delay-200 md:px-12 lg:w-1/2 lg:py-16'>
                     <div className='mx-auto w-full max-w-2xl'>
+                        {/* Emotional Headline */}
+                        <div className='mb-6 text-center lg:text-left'>
+                            <h1 className='mb-3 font-serif text-3xl leading-tight text-white md:text-4xl'>
+                                Your Transformation,{' '}
+                                <span className='text-gold-400 italic'>
+                                    On Your Terms
+                                </span>
+                            </h1>
+                            <p className='text-lg leading-relaxed text-stone-300'>
+                                Exclusive savings on the procedures you&apos;ve
+                                been dreaming about. Lock in promotional pricing
+                                with a free, no-obligation consultation.
+                            </p>
+                        </div>
+
+                        {/* Financing Callout */}
+                        <div className='mb-6 flex items-center justify-center gap-2 lg:justify-start'>
+                            <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-4 py-2'>
+                                <CreditCard className='text-gold-400 h-4 w-4' />
+                                <span className='text-gold-300 text-sm font-medium'>
+                                    Starting at $27/week — 0% APR available
+                                </span>
+                            </div>
+                        </div>
+
                         {/* More Offers Indicator */}
                         {totalPromotions > 1 && (
-                            <div className='animate-fade-in mb-8 flex items-center justify-center gap-2 text-stone-400 delay-500 lg:justify-start'>
+                            <div className='animate-fade-in mb-4 flex items-center justify-center gap-2 text-stone-400 delay-500 lg:justify-start'>
                                 <Sparkles className='text-gold-400 h-5 w-5 animate-pulse' />
                                 <span className='text-sm font-medium'>
                                     +{totalPromotions - 1} more exclusive{' '}
@@ -131,37 +163,62 @@ export function SpecialsHero({
                             className='rounded-xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl md:p-8'
                         >
                             <ConsultationForm
-                                title='Claim Your Special Offer'
-                                subtitle='Free Consultation • No Obligation • Limited Time'
+                                title='Start Your Transformation'
+                                subtitle='Free Consultation • No Pressure • Pricing Locked In'
                                 source={CONTACT_SOURCES.SPECIALS_PAGE}
                                 analyticsFormName='specials_hero_form'
                                 enableAnalytics
                                 redirectOnSuccess='/thank-you'
+                                showPreferredContactTime={false}
                             />
                         </div>
 
-                        {/* Trust Indicators */}
-                        <div className='mt-8 flex flex-wrap justify-center gap-6 lg:justify-start'>
-                            <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                <ShieldCheck className='text-gold-400 h-5 w-5' />
-                                <span className='text-sm font-medium'>
-                                    {siteConfig.trustStats?.accreditation ??
-                                        'AAAASF'}{' '}
-                                    Accredited
-                                </span>
+                        {/* Trust Cluster */}
+                        <div className='mt-8 space-y-6'>
+                            {/* Testimonial Quote */}
+                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
+                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
+                                <div>
+                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
+                                        &ldquo;The team made me feel so
+                                        comfortable from day one. Best decision
+                                        I ever made for myself.&rdquo;
+                                    </p>
+                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
+                                        — Maria R., BBL Patient
+                                    </p>
+                                </div>
                             </div>
-                            <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                <Award className='text-gold-400 h-5 w-5' />
-                                <span className='text-sm font-medium'>
-                                    Board-Certified
-                                </span>
+
+                            {/* Trust Indicators */}
+                            <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
+                                <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
+                                    <ShieldCheck className='text-gold-400 h-5 w-5' />
+                                    <span className='text-sm font-medium'>
+                                        {siteConfig.trustStats?.accreditation ??
+                                            'AAAASF'}{' '}
+                                        Accredited
+                                    </span>
+                                </div>
+                                <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
+                                    <Award className='text-gold-400 h-5 w-5' />
+                                    <span className='text-sm font-medium'>
+                                        Board-Certified
+                                    </span>
+                                </div>
+                                <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
+                                    <Clock className='text-gold-400 h-5 w-5' />
+                                    <span className='text-sm font-medium'>
+                                        24hr Response
+                                    </span>
+                                </div>
                             </div>
-                            <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                <Clock className='text-gold-400 h-5 w-5' />
-                                <span className='text-sm font-medium'>
-                                    24hr Response
-                                </span>
-                            </div>
+
+                            {/* Risk Reversal Message */}
+                            <p className='text-center text-sm text-stone-500 lg:text-left'>
+                                ✓ Free consultation • ✓ No obligation • ✓ Your
+                                pricing is locked in
+                            </p>
                         </div>
                     </div>
                 </div>
