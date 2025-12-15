@@ -224,24 +224,11 @@ function GalleryImageCard({ image }: { readonly image: SpecialsGalleryImage }) {
                 src={image.url}
                 alt={image.alt}
                 fill
-                className='object-cover transition-transform duration-500 group-hover:scale-105'
+                className='object-cover object-center transition-transform duration-500 group-hover:scale-105'
                 sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
                 placeholder={image.blurDataUrl ? 'blur' : 'empty'}
                 blurDataURL={image.blurDataUrl ?? undefined}
             />
-
-            {/* Gradient Overlay */}
-            <div className='absolute inset-0 bg-linear-to-t from-stone-900/80 via-stone-900/20 to-transparent' />
-
-            {/* Procedure Name */}
-            <div className='absolute right-4 bottom-4 left-4'>
-                <span className='text-gold-400 mb-1 block text-xs font-medium tracking-wider uppercase'>
-                    Gallery
-                </span>
-                <h3 className='font-serif text-lg text-white md:text-xl'>
-                    {image.procedureName}
-                </h3>
-            </div>
 
             {/* Hover Effect */}
             <div className='bg-gold-500/0 group-hover:bg-gold-500/10 absolute inset-0 transition-colors duration-300' />
