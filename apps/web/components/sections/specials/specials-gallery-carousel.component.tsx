@@ -15,7 +15,6 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import Autoplay from 'embla-carousel-autoplay'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
@@ -32,6 +31,8 @@ import type { SpecialsGalleryImage } from '@/lib/types/gallery/specials-gallery.
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
+import Lightbox from 'yet-another-react-lightbox'
+import 'yet-another-react-lightbox/styles.css'
 
 type SpecialsGalleryCarouselProps = {
     readonly id?: string
@@ -53,6 +54,16 @@ export function SpecialsGalleryCarousel({
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0)
+    const [lightboxOpen, setLightboxOpen] = useState(false)
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+
+    // Convert images to lightbox slides format
+    const lightboxSlides = images.map((image) => ({
+        src: image.url,
+        alt: image.alt,
+        width: image.width ?? undefined,
+        height: image.height ?? undefined,
+    }))
 
     // Update current slide index - hooks must be called before any early returns
     useEffect(() => {
@@ -139,12 +150,18 @@ export function SpecialsGalleryCarousel({
                         className='w-full'
                     >
                         <CarouselContent className='-ml-4 md:-ml-6'>
-                            {images.map((image) => (
+                            {images.map((image, index) => (
                                 <CarouselItem
                                     key={image.id}
                                     className='pl-4 md:basis-1/2 md:pl-6 lg:basis-1/3'
                                 >
-                                    <GalleryImageCard image={image} />
+                                    <GalleryImageCard
+                                        image={image}
+                                        onClick={() => {
+                                            setSelectedImageIndex(index)
+                                            setLightboxOpen(true)
+                                        }}
+                                    />
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
@@ -193,16 +210,21 @@ export function SpecialsGalleryCarousel({
                     </div>
                 </div>
 
-                {/* CTA */}
-                <div className='mt-12 text-center'>
-                    <Link
-                        href='/gallery'
-                        className='text-gold-600 hover:text-gold-700 inline-flex items-center gap-2 font-medium transition-colors'
-                    >
-                        View Full Gallery
-                        <ArrowRight className='h-4 w-4' />
-                    </Link>
-                </div>
+                {/* Image Lightbox */}
+                <Lightbox
+                    open={lightboxOpen}
+                    close={() => setLightboxOpen(false)}
+                    index={selectedImageIndex}
+                    slides={lightboxSlides}
+                    carousel={{
+                        finite: false,
+                    }}
+                    styles={{
+                        container: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                        },
+                    }}
+                />
             </ContentWrapper>
         </SectionContainer>
     )
@@ -211,13 +233,20 @@ export function SpecialsGalleryCarousel({
 /**
  * Gallery Image Card
  *
- * Individual image card with procedure name overlay and link.
+ * Individual image card that opens lightbox on click.
  */
-function GalleryImageCard({ image }: { readonly image: SpecialsGalleryImage }) {
+function GalleryImageCard({
+    image,
+    onClick,
+}: {
+    readonly image: SpecialsGalleryImage
+    readonly onClick: () => void
+}) {
     return (
-        <Link
-            href={`/procedures/${image.procedureSlug}`}
-            className='group relative block aspect-3/4 overflow-hidden rounded-lg bg-stone-200'
+        <button
+            type='button'
+            onClick={onClick}
+            className='group relative block aspect-3/4 w-full cursor-pointer overflow-hidden rounded-lg bg-stone-200 transition-transform hover:scale-[1.02]'
         >
             {/* Image */}
             <Image
@@ -232,6 +261,6 @@ function GalleryImageCard({ image }: { readonly image: SpecialsGalleryImage }) {
 
             {/* Hover Effect */}
             <div className='bg-gold-500/0 group-hover:bg-gold-500/10 absolute inset-0 transition-colors duration-300' />
-        </Link>
+        </button>
     )
 }
