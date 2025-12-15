@@ -1,6 +1,6 @@
 'use client'
 
-import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from 'lucide-react'
+import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
@@ -54,7 +54,6 @@ export const Footer = () => {
                                         <Facebook className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
                                     </Link>
                                 ))}
-                            <Youtube className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
                         </div>
                     </div>
 
@@ -101,13 +100,21 @@ export const Footer = () => {
                         <ul className='space-y-4 text-base text-stone-400'>
                             <li>
                                 <Link
+                                    href='/about'
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    About Us
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
                                     href='/plastic-surgery-financing-miami'
                                     className='cursor-pointer transition-colors hover:text-white'
                                 >
                                     Financing Options
                                 </Link>
                             </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
+                            <li className='text-stone-400'>
                                 Out-of-Town Guests
                             </li>
                             <li>
@@ -118,9 +125,7 @@ export const Footer = () => {
                                     Before & After Gallery
                                 </Link>
                             </li>
-                            <li className='cursor-pointer transition-colors hover:text-white'>
-                                Patient Reviews
-                            </li>
+                            <li className='text-stone-400'>Patient Reviews</li>
                             <li>
                                 <Link
                                     href='/blog'
