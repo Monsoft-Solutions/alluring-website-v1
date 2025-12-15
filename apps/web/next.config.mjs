@@ -42,6 +42,22 @@ const nextConfig = {
                 destination: '/:slug',
                 permanent: true, // 301 permanent redirect for SEO
             },
+            // Influencer marketing redirects
+            {
+                source: '/melany',
+                destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=melany',
+                permanent: true,
+            },
+            {
+                source: '/yele',
+                destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=yele',
+                permanent: true,
+            },
+            {
+                source: '/lorena-gonzalez',
+                destination: '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=lorena-gonzalez',
+                permanent: true,
+            },
         ]
     },
 }
