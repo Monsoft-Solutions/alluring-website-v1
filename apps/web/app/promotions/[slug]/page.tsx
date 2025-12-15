@@ -33,11 +33,13 @@ export async function generateMetadata({
         }
     }
 
+    const pageTitle = promotion.title
+
     return {
-        title: promotion.title,
+        title: pageTitle,
         description: promotion.excerpt ?? promotion.description.slice(0, 160),
         openGraph: {
-            title: `${promotion.title} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description:
                 promotion.excerpt ?? promotion.description.slice(0, 160),
             type: 'article',

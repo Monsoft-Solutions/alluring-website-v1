@@ -25,6 +25,7 @@ import { CTASection } from '@/components/shared/cta-section.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
+import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import {
@@ -43,14 +44,16 @@ import {
  * - Twitter Card configuration
  * - Canonical URL
  */
+const pageTitle = generatePageTitle('Plastic Surgery Specials Miami')
+
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/miami-plastic-surgery-specials',
-    title: 'Plastic Surgery Specials Miami',
+    title: pageTitle,
     description:
         'Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction & more. Board-certified surgeons, luxury results at promotional pricing.',
 
     openGraph: {
-        title: `Plastic Surgery Specials Miami | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             'Exclusive savings on transformative procedures. BBL, breast augmentation, tummy tuck & more at special promotional pricing. Board-certified surgeons in Miami.',
         url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
@@ -68,7 +71,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: `Plastic Surgery Specials Miami | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             'Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck & more.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],

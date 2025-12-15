@@ -43,9 +43,10 @@ export async function generateMetadata({
     }
 
     const pageUrl = `${siteUrl}/gallery/${group.slug}`
+    const pageTitle = `${group.name} Gallery | Before & After Photos Miami`
 
     return toNextMetadata(seoConfig, {
-        title: `${group.name} Before & After Photos Miami`,
+        title: pageTitle,
         description:
             group.description ??
             `View our ${group.name} gallery featuring real before and after photos from ${siteConfig.business.name} in Miami.`,
@@ -53,7 +54,7 @@ export async function generateMetadata({
         openGraph: {
             type: 'website',
             url: pageUrl,
-            title: `${group.name} Gallery | ${siteConfig.business.name}`,
+            title: pageTitle,
             description:
                 group.description ??
                 `Explore our ${group.name} photo gallery showcasing exceptional results from our board-certified surgeons.`,
@@ -68,7 +69,7 @@ export async function generateMetadata({
         },
         twitter: {
             card: 'summary_large_image',
-            title: `${group.name} Gallery | ${siteConfig.business.name}`,
+            title: pageTitle,
             description:
                 group.description ??
                 `Explore our ${group.name} photo gallery showcasing exceptional results.`,

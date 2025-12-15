@@ -9,15 +9,18 @@ import { siteConfig } from '@/lib/data/site-config'
 import { getFeaturedBeforeAfterPairs } from '@/lib/queries/gallery/before-after.query'
 import { getVisibleGalleryGroups } from '@/lib/queries/gallery/gallery-list.query'
 import { seoConfig } from '@/lib/seo-config'
+import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/gallery`
 
+const pageTitle = generatePageTitle('Before & After Photos Miami')
+
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/gallery',
-    title: 'Before & After Photos Miami',
+    title: pageTitle,
     description: `View real before and after photos from ${siteConfig.business.name} in Miami. Explore authentic transformations showcasing the artistry of our board-certified surgeons.`,
     keywords: [
         'plastic surgery before after photos',
@@ -32,7 +35,7 @@ export const metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: pageUrl,
-        title: `Before & After Photos Miami | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             'Explore our gallery of real patient transformations. Before and after photos showcasing the exceptional results achieved by our board-certified surgeons.',
         siteName: siteConfig.business.name,
@@ -47,7 +50,7 @@ export const metadata = toNextMetadata(seoConfig, {
     },
     twitter: {
         card: 'summary_large_image',
-        title: `Before & After Photos Miami | ${siteConfig.business.name}`,
+        title: pageTitle,
         description:
             'Explore our gallery of real patient transformations and before/after results.',
         images: [`${siteUrl}/og-image.jpg`],

@@ -41,20 +41,20 @@ export async function generateMetadata({
     }
 
     const pageUrl = `${siteUrl}/gallery/media/${media.slug}`
-    const title = media.seoTitle ?? `${media.title} | Gallery`
+    const pageTitle = media.seoTitle ?? `${media.title} | Gallery`
     const description =
         media.seoDescription ??
         media.description ??
         `View ${media.title} from our ${media.groups.length > 0 ? media.groups[0]?.name : 'photo'} gallery at ${siteConfig.business.name} Miami.`
 
     return toNextMetadata(seoConfig, {
-        title,
+        title: pageTitle,
         description,
         canonical: `/gallery/media/${media.slug}`,
         openGraph: {
             type: 'article',
             url: pageUrl,
-            title: `${media.title} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description,
             images: [
                 {
@@ -67,7 +67,7 @@ export async function generateMetadata({
         },
         twitter: {
             card: 'summary_large_image',
-            title: `${media.title} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description,
             images: [media.url],
         },
