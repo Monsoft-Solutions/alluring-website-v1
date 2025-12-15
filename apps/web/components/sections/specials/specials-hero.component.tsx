@@ -145,6 +145,7 @@ export function SpecialsHero({
                                 source={CONTACT_SOURCES.SPECIALS_PAGE}
                                 analyticsFormName='specials_hero_form'
                                 enableAnalytics
+                                redirectOnSuccess='/thank-you'
                             />
                         </div>
 
