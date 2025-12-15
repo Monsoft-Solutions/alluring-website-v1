@@ -10,6 +10,7 @@
  * - lead-form: Home page lead form (phone required)
  * - footer: Footer contact form
  * - general: Default behavior
+ * - specials-page: Specials landing page consultation form
  */
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
@@ -26,6 +27,7 @@ export const CONTACT_SOURCES = {
     FOOTER: 'footer',
     GENERAL: 'general',
     PROMO_MODAL: 'promo-modal',
+    SPECIALS_PAGE: 'specials-page',
 } as const
 
 export type ContactSource =
