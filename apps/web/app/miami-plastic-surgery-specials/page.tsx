@@ -15,11 +15,14 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
+import { SpecialsFearBusters } from '@/components/sections/specials/specials-fear-busters.component'
 import { SpecialsGalleryCarousel } from '@/components/sections/specials/specials-gallery-carousel.component'
 import { SpecialsHero } from '@/components/sections/specials/specials-hero.component'
 import { SpecialsHowItWorks } from '@/components/sections/specials/specials-how-it-works.component'
 import { SpecialsPromotionsGrid } from '@/components/sections/specials/specials-promotions-grid.component'
+import { SpecialsTestimonials } from '@/components/sections/specials/specials-testimonials.component'
 import { SpecialsUrgencyStrip } from '@/components/sections/specials/specials-urgency-strip.component'
+import { SpecialsWeeklyPayments } from '@/components/sections/specials/specials-weekly-payments.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
@@ -150,7 +153,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 }))}
             />
 
-            {/* Main Content */}
+            {/* Main Content - Conversion-Optimized Flow */}
             <main className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
                 {/* Section 1: Hero with Promotions + Form */}
                 <SpecialsHero
@@ -159,28 +162,37 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     totalPromotions={promotions.length}
                 />
 
-                {/* Section 2: Gallery Carousel */}
+                {/* Section 2: Fear Busters - Address objections immediately */}
+                <SpecialsFearBusters id='fear-busters' />
+
+                {/* Section 3: Weekly Payments - Reinforce affordability */}
+                <SpecialsWeeklyPayments id='weekly-payments' />
+
+                {/* Section 4: Testimonials - Social proof and emotional connection */}
+                <SpecialsTestimonials id='testimonials' />
+
+                {/* Section 5: Gallery Carousel - Visual proof of results */}
                 <SpecialsGalleryCarousel
                     id='gallery-results'
                     images={galleryImages}
                 />
 
-                {/* Section 3: How It Works */}
+                {/* Section 6: How It Works - Make the process feel easy */}
                 <SpecialsHowItWorks id='how-it-works' />
 
-                {/* Section 4: All Promotions Grid */}
+                {/* Section 7: All Promotions Grid - Additional offers */}
                 <SpecialsPromotionsGrid
                     id='all-specials'
                     promotions={promotions}
                 />
 
-                {/* Section 5: Urgency Strip */}
+                {/* Section 8: Urgency Strip - Gentle reminder */}
                 <SpecialsUrgencyStrip
                     id='urgency'
                     daysRemaining={urgencyDaysRemaining}
                 />
 
-                {/* Section 6: FAQ */}
+                {/* Section 9: FAQ - Handle remaining questions */}
                 <FAQComponent
                     id='faq'
                     faqs={specialsFaqData}
@@ -189,9 +201,9 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     variant='muted'
                     includeSchema={false}
                     ctaConfig={{
-                        title: 'Ready to claim your special offer?',
+                        title: 'Ready to start your transformation?',
                         description:
-                            'Our patient concierge is ready to help you get started.',
+                            'Our patient concierge is ready to answer your questions — no pressure, just honest answers.',
                         buttonText: 'Call Now',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,
@@ -200,21 +212,21 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     }}
                 />
 
-                {/* Section 7: Final CTA */}
+                {/* Section 10: Final CTA - Last chance to convert */}
                 <CTASection
                     id='final-cta'
                     variant='luxury'
-                    heading='Ready for Your Transformation?'
-                    description='Take advantage of our exclusive specials and start your journey to the body you deserve. Board-certified surgeons, luxury care, and promotional pricing await.'
+                    heading='Your Transformation Starts Today'
+                    description="You've researched, you've wondered, you've dreamed. Now it's your time. Board-certified surgeons, luxury care, and exclusive savings are waiting for you."
                     primaryButton={{
-                        text: 'Book Consultation',
+                        text: 'Yes, I Want My Free Consultation',
                         href: '#specials-form',
                     }}
                     secondaryButton={{
-                        text: 'Call Now',
+                        text: 'Call to Discuss Options',
                         href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
                     }}
-                    eyebrow='Limited Time Offers'
+                    eyebrow='Take the First Step'
                     size='lg'
                 />
             </main>

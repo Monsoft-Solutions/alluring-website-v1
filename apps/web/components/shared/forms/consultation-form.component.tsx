@@ -64,6 +64,8 @@ export type ConsultationFormProps = {
     readonly className?: string
     /** Optional path to redirect to on successful submission (e.g., '/thank-you') */
     readonly redirectOnSuccess?: string
+    /** Whether to show the preferred contact time field (default: true) */
+    readonly showPreferredContactTime?: boolean
 }
 
 /**
@@ -91,6 +93,7 @@ export function ConsultationForm({
     enableAnalytics = false,
     className,
     redirectOnSuccess,
+    showPreferredContactTime = true,
 }: ConsultationFormProps) {
     const form = useForm<ConsultationFormInput>({
         resolver: zodResolver(consultationFormSchema),
@@ -221,15 +224,17 @@ export function ConsultationForm({
                             options={PROCEDURE_OPTIONS}
                         />
 
-                        {/* Preferred Contact Time */}
-                        <SelectField
-                            control={form.control}
-                            name='preferredContactTime'
-                            label='Preferred Time of Contact'
-                            disabled={isSubmitting}
-                            variant='dark'
-                            options={PREFERRED_CONTACT_TIME_OPTIONS}
-                        />
+                        {/* Preferred Contact Time - Optional based on prop */}
+                        {showPreferredContactTime && (
+                            <SelectField
+                                control={form.control}
+                                name='preferredContactTime'
+                                label='Preferred Time of Contact'
+                                disabled={isSubmitting}
+                                variant='dark'
+                                options={PREFERRED_CONTACT_TIME_OPTIONS}
+                            />
+                        )}
 
                         {/* Consent Checkbox */}
                         <CheckboxField
@@ -279,13 +284,14 @@ export function ConsultationForm({
                                 showSendIcon
                                 showSparkles
                             >
-                                Request My Consultation
+                                Yes, I Want My Free Consultation
                             </SubmitButton>
                         </div>
 
                         {/* Privacy Note */}
                         <p className='text-center text-xs text-stone-500'>
-                            Your information is private and secure.
+                            Your information is private and secure. We respond
+                            within 24 hours.
                         </p>
                     </form>
                 </Form>
