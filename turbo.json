@@ -38,7 +38,8 @@
                 "NEXT_PUBLIC_ALLOW_CRAWLING",
                 "NEXT_PUBLIC_BETA_MODE",
                 "NEXT_PUBLIC_CHAT_ENABLED",
-                "AUTH_SECRET"
+                "AUTH_SECRET",
+                "NEXUITE_CRM_API_URL"
             ]
         },
         "lint": {

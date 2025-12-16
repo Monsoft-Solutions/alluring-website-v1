@@ -51,6 +51,9 @@ export const env = createEnv({
         LANGFUSE_PUBLIC_KEY: z.string().optional(),
         LANGFUSE_BASE_URL: z.string().url().optional(),
         LANGFUSE_ENABLED: z.enum(['true', 'false']).optional(),
+
+        // CRM Integration (optional - enables lead sync to CRM)
+        NEXUITE_CRM_API_URL: z.url(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)
