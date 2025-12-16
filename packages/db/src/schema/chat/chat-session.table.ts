@@ -157,9 +157,10 @@ export const chatSession = pgTable('chat_session', {
 
     /**
      * Lead information from pre-chat form
+     * Nullable for anonymous sessions (collected later via upgrade)
      */
-    fullName: text('full_name').notNull(),
-    phone: text('phone').notNull(),
+    fullName: text('full_name'),
+    phone: text('phone'),
     email: text('email'),
 
     /**
@@ -176,6 +177,12 @@ export const chatSession = pgTable('chat_session', {
      * Whether this is an admin test session
      */
     isTestSession: boolean('is_test_session').notNull().default(false),
+
+    /**
+     * Whether this is an anonymous session (started without pre-chat form)
+     * Anonymous sessions can be upgraded when user provides contact info
+     */
+    isAnonymous: boolean('is_anonymous').notNull().default(false),
 
     /**
      * Metadata for analytics

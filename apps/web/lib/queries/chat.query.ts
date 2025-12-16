@@ -296,3 +296,83 @@ export async function getMessageSuggestedQuestions(
 
     return messages[0]?.suggestedQuestions ?? null
 }
+
+// ============================================
+// Anonymous Session Functions
+// ============================================
+
+/**
+ * Input for creating an anonymous chat session
+ */
+export type CreateAnonymousSessionInput = {
+    pageUrl?: string
+    referrer?: string
+    ipAddress?: string
+    userAgent?: string
+    utmSource?: string
+    utmMedium?: string
+    utmCampaign?: string
+}
+
+/**
+ * Create an anonymous chat session (without pre-chat form)
+ *
+ * Anonymous sessions don't require name/phone upfront.
+ * They can be upgraded later when the user provides contact info.
+ */
+export async function createAnonymousChatSession(
+    data: CreateAnonymousSessionInput
+): Promise<ChatSession> {
+    const [session] = await db
+        .insert(chatSession)
+        .values({
+            isAnonymous: true,
+            pageUrl: data.pageUrl,
+            referrer: data.referrer,
+            ipAddress: data.ipAddress,
+            userAgent: data.userAgent,
+            utmSource: data.utmSource,
+            utmMedium: data.utmMedium,
+            utmCampaign: data.utmCampaign,
+        })
+        .returning()
+
+    return session!
+}
+
+/**
+ * Input for upgrading an anonymous session
+ */
+export type UpgradeSessionInput = {
+    fullName: string
+    phone: string
+    email?: string | null
+}
+
+/**
+ * Upgrade an anonymous session with contact information
+ *
+ * Converts an anonymous session to a lead by adding contact info.
+ */
+export async function upgradeChatSession(
+    sessionId: string,
+    data: UpgradeSessionInput
+): Promise<ChatSession | null> {
+    const [updated] = await db
+        .update(chatSession)
+        .set({
+            fullName: data.fullName,
+            phone: data.phone,
+            email: data.email,
+            isAnonymous: false,
+        })
+        .where(
+            and(
+                eq(chatSession.id, sessionId),
+                eq(chatSession.isAnonymous, true)
+            )
+        )
+        .returning()
+
+    return updated ?? null
+}

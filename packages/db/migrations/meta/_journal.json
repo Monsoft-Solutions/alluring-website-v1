@@ -204,6 +204,13 @@
       "when": 1765747324285,
       "tag": "0028_pale_zaran",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1765905618237,
+      "tag": "0029_fancy_ghost_rider",
+      "breakpoints": true
     }
   ]
 }
