@@ -3,6 +3,14 @@
  *
  * Generates dynamic robots.txt with environment-aware rules and sitemap references.
  * This file exports a function that returns MetadataRoute.Robots for Next.js.
+ *
+ * Sitemap Structure:
+ * - /sitemap.xml (index pointing to child sitemaps)
+ * - /sitemap/pages.xml
+ * - /sitemap/blog.xml
+ * - /sitemap/procedures.xml
+ * - /sitemap/gallery.xml
+ * - /sitemap/promotions.xml
  */
 import {
     type RobotsGeneratorConfig,
@@ -10,7 +18,7 @@ import {
     detectEnvironment,
     generateRobots,
 } from '@workspace/seo/utils/robots-generator.util'
-import type MetadataRoute from 'next'
+import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
@@ -24,16 +32,35 @@ function getBaseUrl(): string {
 }
 
 /**
+ * All sitemap URLs for the site
+ * Includes the main sitemap index and all child sitemaps
+ */
+const SITEMAP_URLS = [
+    '/sitemap.xml', // Main sitemap index
+    '/sitemap/pages.xml', // Static pages and surgeon profiles
+    '/sitemap/blog.xml', // Blog posts, categories, and tags
+    '/sitemap/procedures.xml', // Procedure listings and details
+    '/sitemap/gallery.xml', // Gallery groups and media
+    '/sitemap/promotions.xml', // Special offers and promotions
+] as const
+
+/**
  * Get additional disallowed paths specific to this application
  */
 function getAppSpecificDisallows(): string[] {
     return [
-        // Add app-specific paths to block
-        '/search?*',
-        '/dashboard/*',
-        '/user/*',
-        '/temp/*',
-        '/downloads/*',
+        // Search with query parameters
+        '/search',
+        // Protected areas
+        '/dashboard/',
+        '/user/',
+        // Temporary and download paths
+        '/temp/',
+        '/downloads/',
+        // Prevent crawling of filtered/sorted pages (duplicate content)
+        '/*?sort=*',
+        '/*?filter=*',
+        '/*?page=*',
     ]
 }
 
@@ -60,8 +87,7 @@ export default function robots(): MetadataRoute.Robots {
     const config: RobotsGeneratorConfig = {
         environment,
         baseUrl,
-        sitemapUrl: '/sitemap.xml',
-        crawlDelay: environment === 'production' ? 1 : undefined,
+        sitemaps: [...SITEMAP_URLS],
         customRules:
             environment === 'production'
                 ? createCommonRobotsRules()
@@ -81,7 +107,7 @@ export default function robots(): MetadataRoute.Robots {
                     userAgent: '*',
                     disallow:
                         environment === 'production'
-                            ? ['/api/*', '/admin/*']
+                            ? ['/api/', '/admin/']
                             : ['/'],
                 },
             ],

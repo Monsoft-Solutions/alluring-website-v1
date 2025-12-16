@@ -3,8 +3,15 @@
  *
  * Provides utilities for generating robots.txt files with environment-aware rules,
  * sitemap references, and proper crawling directives.
+ *
+ * Best Practices Applied:
+ * - No deprecated Host directive (removed in modern implementations)
+ * - No Crawl-delay (not widely supported, can hurt crawl rate)
+ * - Support for multiple sitemaps (sitemap index + children)
+ * - Precise pattern matching (*.json$ instead of *.json)
+ * - Social media bots allowed for Open Graph previews
  */
-import MetadataRoute from 'next'
+import type { MetadataRoute } from 'next'
 
 import { env } from '../env'
 
@@ -25,10 +32,10 @@ export type RobotsGeneratorConfig = {
     environment: RobotsEnvironment
     /** Base URL for the site */
     baseUrl: string
-    /** Custom sitemap URL (optional, defaults to /sitemap.xml) */
+    /** Array of sitemap URLs (supports multiple sitemaps) */
+    sitemaps?: string[]
+    /** @deprecated Use sitemaps array instead. Single sitemap URL for backwards compatibility */
     sitemapUrl?: string
-    /** Crawl delay in seconds (optional) */
-    crawlDelay?: number
     /** Custom user agents and their rules */
     customRules?: RobotsRule[]
     /** Additional disallowed paths for all environments */
@@ -40,13 +47,11 @@ export type RobotsGeneratorConfig = {
  */
 export type RobotsRule = {
     /** User agent pattern */
-    userAgent: string
+    userAgent: string | string[]
     /** Allowed paths */
     allow?: string[]
     /** Disallowed paths */
     disallow?: string[]
-    /** Crawl delay for this user agent */
-    crawlDelay?: number
 }
 
 /**
@@ -56,7 +61,6 @@ type LocalRule = {
     userAgent: string | string[]
     allow?: string | string[]
     disallow?: string | string[]
-    crawlDelay?: number
 }
 
 /**
@@ -69,7 +73,8 @@ type LocalRule = {
  * ```typescript
  * const robots = generateRobots({
  *   environment: 'production',
- *   baseUrl: 'https://example.com'
+ *   baseUrl: 'https://example.com',
+ *   sitemaps: ['/sitemap.xml', '/sitemap/blog.xml', '/sitemap/pages.xml']
  * })
  * ```
  */
@@ -79,18 +84,21 @@ export function generateRobots(
     const {
         environment,
         baseUrl,
-        sitemapUrl,
-        crawlDelay,
+        sitemaps = [],
+        sitemapUrl, // Deprecated, for backwards compatibility
         customRules = [],
         additionalDisallows = [],
     } = config
 
+    const normalizedBaseUrl = baseUrl.replace(/\/$/, '')
+
     // Base disallowed paths for all environments
+    // Using *.json$ for precise matching (only files ending in .json)
     const baseDisallows = [
-        '/api/*',
-        '/admin/*',
-        '/private/*',
-        '*.json',
+        '/api/',
+        '/admin/',
+        '/private/',
+        '/*.json$',
         ...additionalDisallows,
     ]
 
@@ -101,18 +109,16 @@ export function generateRobots(
         // Production: Allow most crawling with some restrictions
         rules.push({
             userAgent: '*',
-            allow: ['/', '/_next/static/*', '/_next/image/*'],
+            allow: ['/', '/_next/static/', '/_next/image/'],
             disallow: baseDisallows,
-            crawlDelay: crawlDelay,
         })
 
-        // Add custom rules for production
+        // Add custom rules for production (without duplicating base disallows)
         customRules.forEach((rule) => {
             rules.push({
                 userAgent: rule.userAgent,
                 allow: rule.allow,
-                disallow: [...(rule.disallow || []), ...baseDisallows],
-                crawlDelay: rule.crawlDelay || crawlDelay,
+                disallow: rule.disallow,
             })
         })
     } else {
@@ -123,17 +129,41 @@ export function generateRobots(
         })
     }
 
-    // Generate sitemap URL
-    const finalSitemapUrl = sitemapUrl
-        ? sitemapUrl.startsWith('http')
-            ? sitemapUrl
-            : `${baseUrl.replace(/\/$/, '')}${sitemapUrl.startsWith('/') ? sitemapUrl : '/' + sitemapUrl}`
-        : `${baseUrl.replace(/\/$/, '')}/sitemap.xml`
+    // Build sitemap URLs array
+    const sitemapUrls: string[] = []
 
+    if (environment === 'production') {
+        // Add sitemaps from the new array format
+        if (sitemaps.length > 0) {
+            sitemaps.forEach((sitemap) => {
+                const url = sitemap.startsWith('http')
+                    ? sitemap
+                    : `${normalizedBaseUrl}${sitemap.startsWith('/') ? sitemap : '/' + sitemap}`
+                sitemapUrls.push(url)
+            })
+        } else if (sitemapUrl) {
+            // Fallback to deprecated single sitemap URL
+            const url = sitemapUrl.startsWith('http')
+                ? sitemapUrl
+                : `${normalizedBaseUrl}${sitemapUrl.startsWith('/') ? sitemapUrl : '/' + sitemapUrl}`
+            sitemapUrls.push(url)
+        } else {
+            // Default to /sitemap.xml if nothing specified
+            sitemapUrls.push(`${normalizedBaseUrl}/sitemap.xml`)
+        }
+    }
+
+    // Return single sitemap as string, multiple as array
+    // Note: Next.js MetadataRoute.Robots supports both string and string[] for sitemap
     return {
         rules: rules as MetadataRoute.Robots['rules'],
-        sitemap: environment === 'production' ? finalSitemapUrl : undefined,
-        host: environment === 'production' ? baseUrl : undefined,
+        sitemap:
+            sitemapUrls.length === 1
+                ? sitemapUrls[0]
+                : sitemapUrls.length > 1
+                  ? sitemapUrls
+                  : undefined,
+        // Note: Host directive is deprecated and removed
     }
 }
 
@@ -142,6 +172,7 @@ export function generateRobots(
  *
  * @param environment - Target environment
  * @param baseUrl - Base URL for the site
+ * @param sitemaps - Optional array of sitemap URLs
  * @returns MetadataRoute.Robots object
  *
  * @example
@@ -151,21 +182,35 @@ export function generateRobots(
  *
  * // Development robots (blocks all)
  * const devRobots = generateRobotsForEnvironment('development', 'http://localhost:3000')
+ *
+ * // With multiple sitemaps
+ * const robotsWithSitemaps = generateRobotsForEnvironment(
+ *   'production',
+ *   'https://example.com',
+ *   ['/sitemap.xml', '/sitemap/blog.xml']
+ * )
  * ```
  */
 export function generateRobotsForEnvironment(
     environment: RobotsEnvironment,
-    baseUrl: string
+    baseUrl: string,
+    sitemaps?: string[]
 ): MetadataRoute.Robots {
     return generateRobots({
         environment,
         baseUrl,
-        crawlDelay: environment === 'production' ? 1 : undefined,
+        sitemaps,
     })
 }
 
 /**
  * Create custom robots rules for specific use cases
+ *
+ * These rules are optimized for:
+ * - Maximum visibility to major search engines (Google, Bing)
+ * - Blocking aggressive SEO crawlers that waste bandwidth
+ * - Allowing social media bots for Open Graph previews
+ * - AI crawlers blocked to protect content
  *
  * @returns Array of common custom robots rules
  *
@@ -181,39 +226,34 @@ export function generateRobotsForEnvironment(
  */
 export function createCommonRobotsRules(): RobotsRule[] {
     return [
-        // Google-specific rules
+        // Block aggressive SEO crawlers (waste bandwidth, provide little value)
         {
-            userAgent: 'Googlebot',
-            allow: ['/', '/_next/static/*', '/_next/image/*'],
-            disallow: ['/search', '/admin'],
-            crawlDelay: 1,
-        },
-        // Bing-specific rules
-        {
-            userAgent: 'Bingbot',
-            allow: ['/', '/_next/static/*', '/_next/image/*'],
-            disallow: ['/search', '/admin'],
-            crawlDelay: 2,
-        },
-        // Block aggressive crawlers
-        {
-            userAgent: 'AhrefsBot',
+            userAgent: ['AhrefsBot', 'MJ12bot', 'SemrushBot', 'DotBot'],
             disallow: ['/'],
         },
+        // Block AI training crawlers (protect content)
         {
-            userAgent: 'MJ12bot',
+            userAgent: [
+                'GPTBot',
+                'ChatGPT-User',
+                'CCBot',
+                'anthropic-ai',
+                'Claude-Web',
+                'Google-Extended',
+            ],
             disallow: ['/'],
         },
-        // Social media crawlers - allow but with restrictions
+        // Social media crawlers - allow for Open Graph previews
         {
-            userAgent: 'facebookexternalhit',
-            allow: ['/', '/_next/static/*', '/_next/image/*'],
-            disallow: ['/admin', '/api'],
-        },
-        {
-            userAgent: 'Twitterbot',
-            allow: ['/', '/_next/static/*', '/_next/image/*'],
-            disallow: ['/admin', '/api'],
+            userAgent: [
+                'facebookexternalhit',
+                'Twitterbot',
+                'LinkedInBot',
+                'Pinterest',
+                'Slackbot',
+            ],
+            allow: ['/', '/_next/static/', '/_next/image/'],
+            disallow: ['/admin/', '/api/'],
         },
     ]
 }
@@ -228,7 +268,8 @@ export function createCommonRobotsRules(): RobotsRule[] {
  * ```typescript
  * const config: RobotsGeneratorConfig = {
  *   environment: 'production',
- *   baseUrl: 'https://example.com'
+ *   baseUrl: 'https://example.com',
+ *   sitemaps: ['/sitemap.xml']
  * }
  *
  * const issues = validateRobotsConfig(config)
@@ -247,15 +288,30 @@ export function validateRobotsConfig(config: RobotsGeneratorConfig): string[] {
         issues.push(`Invalid baseUrl format: ${config.baseUrl}`)
     }
 
-    // Validate sitemap URL if provided
+    // Validate sitemaps array
+    if (config.sitemaps) {
+        config.sitemaps.forEach((sitemap, index) => {
+            try {
+                if (sitemap.startsWith('/')) {
+                    new URL(sitemap, config.baseUrl)
+                } else {
+                    new URL(sitemap)
+                }
+            } catch {
+                issues.push(`Invalid sitemap URL at index ${index}: ${sitemap}`)
+            }
+        })
+    }
+
+    // Validate deprecated sitemap URL if provided
     if (config.sitemapUrl) {
+        issues.push(
+            'sitemapUrl is deprecated, use sitemaps array instead for multiple sitemaps support'
+        )
         try {
-            // Check if it's a relative or absolute URL
             if (config.sitemapUrl.startsWith('/')) {
-                // Relative URL - validate with base URL
                 new URL(config.sitemapUrl, config.baseUrl)
             } else {
-                // Absolute URL
                 new URL(config.sitemapUrl)
             }
         } catch {
@@ -263,24 +319,17 @@ export function validateRobotsConfig(config: RobotsGeneratorConfig): string[] {
         }
     }
 
-    // Validate crawl delay
-    if (config.crawlDelay !== undefined && config.crawlDelay < 0) {
-        issues.push(
-            `Crawl delay must be non-negative, got: ${config.crawlDelay}`
-        )
-    }
-
     // Validate custom rules
     if (config.customRules) {
         config.customRules.forEach((rule, index) => {
-            if (!rule.userAgent || rule.userAgent.trim() === '') {
+            const userAgents = Array.isArray(rule.userAgent)
+                ? rule.userAgent
+                : [rule.userAgent]
+            if (
+                userAgents.length === 0 ||
+                userAgents.some((ua) => !ua || ua.trim() === '')
+            ) {
                 issues.push(`Custom rule ${index}: userAgent is required`)
-            }
-
-            if (rule.crawlDelay !== undefined && rule.crawlDelay < 0) {
-                issues.push(
-                    `Custom rule ${index}: crawlDelay must be non-negative`
-                )
             }
         })
     }
@@ -349,7 +398,7 @@ export function robotsToText(robots: MetadataRoute.Robots): string {
         ? robots.rules
         : [robots.rules]
 
-    rulesArray.forEach((rule: RobotsRule) => {
+    rulesArray.forEach((rule) => {
         // Handle userAgent as string or array
         const userAgents = (
             Array.isArray(rule.userAgent) ? rule.userAgent : [rule.userAgent]
@@ -381,22 +430,23 @@ export function robotsToText(robots: MetadataRoute.Robots): string {
             })
         }
 
-        if (rule.crawlDelay) {
-            lines.push(`Crawl-delay: ${rule.crawlDelay}`)
-        }
+        // Note: Crawl-delay is intentionally not included (not widely supported)
 
         lines.push('') // Empty line between rules
     })
 
-    // Add sitemap
+    // Add sitemaps - handle both string and array formats
     if (robots.sitemap) {
-        lines.push(`Sitemap: ${robots.sitemap}`)
+        const sitemaps = Array.isArray(robots.sitemap)
+            ? robots.sitemap
+            : [robots.sitemap]
+
+        sitemaps.forEach((sitemap: string) => {
+            lines.push(`Sitemap: ${sitemap}`)
+        })
     }
 
-    // Add host
-    if (robots.host) {
-        lines.push(`Host: ${robots.host}`)
-    }
+    // Note: Host directive is intentionally not included (deprecated)
 
     return lines.join('\n')
 }
