@@ -34,6 +34,7 @@ import {
     sendContactEmails,
     sendContactNotification,
 } from '@/lib/services/email.service'
+import { syncLeadToCRM } from '@/lib/services/crm.service'
 
 /**
  * Extract client IP address from request headers
@@ -319,6 +320,13 @@ export async function POST(
         }
 
         console.log(formatConsoleLog(validatedData, true))
+
+        // Sync to CRM (non-blocking - failures logged but don't affect response)
+        try {
+            await syncLeadToCRM(insertData)
+        } catch (crmError) {
+            console.error('CRM sync failed:', crmError)
+        }
 
         // Send emails based on whether user provided a real email (not form source)
         let emailResult = { confirmationSent: false, errors: [] as string[] }
