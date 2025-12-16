@@ -151,7 +151,7 @@ export type TrustStats = {
     certified: string
     /** Star rating (e.g., "4.9" or "5.0") */
     rating: string
-    /** Accreditation body (e.g., "AAAASF") */
+    /** Accreditation/certification (e.g., "Double Board-Certified") */
     accreditation?: string
 }
 

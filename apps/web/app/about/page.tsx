@@ -27,28 +27,29 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
  * About Page Metadata
  *
  * Implements SEO best practices for the About page including:
- * - Unique, descriptive title targeting plastic surgery keywords
- * - Compelling meta description with primary keywords
+ * - Experience-focused title with trust signals
+ * - Compelling meta description with key differentiators
  * - Open Graph tags for social sharing
  * - Twitter Card configuration
  * - Canonical URL
  */
-const pageTitle = generatePageTitle('Board Certified Plastic Surgeons Miami')
+const pageTitle =
+    'Meet Our Surgeons | 15+ Years Experience | Miami Plastic Surgery'
 
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Canonical URL for about page
     canonical: '/about',
 
-    // Page-specific metadata optimized for plastic surgery
+    // Page-specific metadata optimized for trust and CTR
     title: pageTitle,
     description:
-        'Meet the board-certified surgeons at Alluring Plastic Surgery in Miami. AAAASF-accredited facility with 5,000+ successful procedures. Experience luxury plastic surgery made affordable with world-class expertise and personalized care.',
+        "Miami's trusted plastic surgery team. 5,000+ successful procedures. Double Board-Certified surgeons. 4.9-star reviews. Luxury care, affordable pricing.",
 
     // Open Graph tags for social sharing
     openGraph: {
         title: pageTitle,
         description:
-            'Board-certified plastic surgeons in Miami specializing in BBL, breast augmentation, tummy tuck, and facial procedures. AAAASF-accredited facility with 15+ years experience and 4.9-star patient reviews.',
+            "Miami's trusted plastic surgery team. 5,000+ successful procedures. Double Board-Certified surgeons. 4.9-star reviews. Luxury care, affordable pricing.",
         url: `${siteUrl}/about`,
         type: 'website',
         siteName: siteConfig.business.name,
@@ -67,7 +68,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Meet our world-class surgical team in Miami. AAAASF-accredited facility, 5,000+ successful procedures, luxury results made affordable.',
+            "Miami's trusted plastic surgery team. 5,000+ procedures. Double Board-Certified surgeons. 4.9-star reviews. Luxury care, affordable pricing.",
         images: [`${siteUrl}/og-about.jpg`],
     },
 })

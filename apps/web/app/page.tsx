@@ -22,19 +22,22 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
 /**
  * Homepage Metadata
- * Uses default title from layout.tsx (no template suffix applied to root page)
  * SEO-optimized for plastic surgery + Miami + credentials + value proposition
+ * CTR-optimized with trust signals and clear value proposition
  */
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/',
-    description: siteConfig.business.description,
+    title: 'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+    description:
+        "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Free consultation.",
 
     // Open Graph tags for social sharing
     openGraph: {
         type: 'website',
         url: siteUrl,
-        title: `${siteConfig.business.name} | ${siteConfig.business.tagline}`,
-        description: siteConfig.seo.siteDescription,
+        title: 'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+        description:
+            "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Free consultation.",
         siteName: siteConfig.business.name,
         locale: 'en_US',
         images: [
@@ -42,7 +45,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
                 url: `${siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: `${siteConfig.business.name} - Luxury Plastic Surgery in Miami`,
+                alt: `${siteConfig.business.name} - Board-Certified Plastic Surgery in Miami`,
             },
         ],
     },
@@ -50,8 +53,9 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Twitter Card tags
     twitter: {
         card: 'summary_large_image',
-        title: `${siteConfig.business.name} | ${siteConfig.business.tagline}`,
-        description: siteConfig.seo.siteDescription,
+        title: 'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+        description:
+            "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons.",
         images: [`${siteUrl}/og-image.jpg`],
     },
 

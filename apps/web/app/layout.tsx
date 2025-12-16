@@ -29,8 +29,8 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 export const metadata = toNextMetadata(seoConfig, {
     title: {
         default:
-            'Board Certified Plastic Surgeon Miami | Luxury Made Affordable',
-        template: '%s | Alluring',
+            'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+        template: '%s | Alluring Plastic Surgery',
     },
 })
 

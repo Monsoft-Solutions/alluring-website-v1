@@ -182,7 +182,7 @@ export const siteConfig: SiteConfig = {
         years: '15+',
         certified: '100%',
         rating: '4.9',
-        accreditation: 'AAAASF',
+        accreditation: 'Double Board-Certified',
     },
 }
 

@@ -35,6 +35,15 @@ export async function generateStaticParams() {
     }))
 }
 
+/**
+ * Generate CTR-optimized meta description for procedure pages
+ * Includes trust signals, financing mention, and clear CTA
+ */
+function generateProcedureDescription(procedureTitle: string): string {
+    const trustStats = siteConfig.trustStats
+    return `Get exceptional ${procedureTitle.toLowerCase()} results with Miami's top surgeons. ${trustStats?.patients ?? '5,000+'} procedures. Financing available. See real before & afters. Book free consultation.`
+}
+
 export async function generateMetadata(
     props: ProcedurePageProps
 ): Promise<Metadata> {
@@ -53,12 +62,15 @@ export async function generateMetadata(
         ? `${siteUrl}${procedure.image}`
         : `${siteUrl}/og-image.jpg`
 
-    // Generate SEO-optimized title with Miami location
+    // Generate SEO-optimized title with Miami location, year, and trust signal
     const pageTitle = generateProcedureTitle(procedure.title)
+
+    // Generate CTR-optimized description
+    const metaDescription = generateProcedureDescription(procedure.title)
 
     return {
         title: pageTitle,
-        description: procedure.description,
+        description: metaDescription,
         keywords: procedure.keywords,
 
         // Canonical URL
@@ -71,7 +83,7 @@ export async function generateMetadata(
             type: 'website',
             url: pageUrl,
             title: pageTitle,
-            description: procedure.shortDescription || procedure.description,
+            description: metaDescription,
             siteName: siteConfig.business.name,
             locale: 'en_US',
             images: [
@@ -79,7 +91,7 @@ export async function generateMetadata(
                     url: ogImage,
                     width: 1200,
                     height: 630,
-                    alt: `${procedure.title} - ${siteConfig.business.name}`,
+                    alt: `${procedure.title} Miami - ${siteConfig.business.name}`,
                 },
             ],
         },
@@ -88,7 +100,7 @@ export async function generateMetadata(
         twitter: {
             card: 'summary_large_image',
             title: pageTitle,
-            description: procedure.shortDescription || procedure.description,
+            description: metaDescription,
             images: [ogImage],
         },
 

@@ -51,30 +51,34 @@ export function generatePageTitle(
 }
 
 /**
- * Generate a procedure page title optimized for local SEO
+ * Generate a procedure page title optimized for local SEO and CTR
  *
- * Appends "Miami" to procedure titles for local search optimization.
- * This targets searches like "BBL Miami", "Breast Augmentation Miami", etc.
+ * Appends "Miami 2025 | Board-Certified Surgeons" to procedure titles for:
+ * - Local search optimization (Miami)
+ * - Freshness signals (2025)
+ * - Trust signals (Board-Certified)
  *
  * @param procedureName - The name of the procedure
- * @returns Optimized procedure title with location
+ * @returns Optimized procedure title with location, year, and trust signal
  *
  * @example
  * generateProcedureTitle('Brazilian Butt Lift (BBL)')
- * // Returns: "Brazilian Butt Lift (BBL) Miami"
+ * // Returns: "Brazilian Butt Lift (BBL) Miami 2025 | Board-Certified Surgeons"
  *
  * @example
  * generateProcedureTitle('Breast Augmentation')
- * // Returns: "Breast Augmentation Miami"
+ * // Returns: "Breast Augmentation Miami 2025 | Board-Certified Surgeons"
  */
 export function generateProcedureTitle(procedureName: string): string {
+    const currentYear = new Date().getFullYear()
+
     // Check if procedure name already contains "Miami"
     if (procedureName.toLowerCase().includes('miami')) {
-        return procedureName
+        return `${procedureName} ${currentYear} | Board-Certified Surgeons`
     }
 
-    // Append Miami for local SEO
-    return `${procedureName} Miami`
+    // Append Miami, year, and trust signal for SEO + CTR
+    return `${procedureName} Miami ${currentYear} | Board-Certified Surgeons`
 }
 
 /**

@@ -2,7 +2,7 @@
  * Accreditation Section Component
  *
  * Dark background section showcasing trust badges, certifications, and safety credentials.
- * Emphasizes AAAASF accreditation and board certifications.
+ * Emphasizes Double Board-Certified surgeons and safety credentials.
  */
 
 import { ShieldCheck, Award, Star, Users, Heart, Plane } from 'lucide-react'
@@ -14,15 +14,15 @@ import { siteConfig } from '@/lib/data/site-config'
 const accreditationBadges = [
     {
         icon: ShieldCheck,
-        title: 'AAAASF Accredited',
+        title: 'Double Board-Certified',
         description:
-            'Our facility meets the rigorous safety standards of the American Association for Accreditation of Ambulatory Surgery Facilities.',
+            'Every surgeon on our team is Double Board-Certified with specialized training in cosmetic and reconstructive surgery.',
     },
     {
         icon: Award,
-        title: 'Board Certified Surgeons',
+        title: 'State-of-the-Art Facility',
         description:
-            'Every surgeon on our team is board-certified with specialized training in cosmetic and reconstructive surgery.',
+            'Our modern surgical facility meets the highest safety standards with hospital-grade protocols and advanced equipment.',
     },
     {
         icon: Users,

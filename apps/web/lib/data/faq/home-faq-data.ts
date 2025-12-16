@@ -33,7 +33,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'Where is the surgery performed?',
-            answer: 'All procedures are performed in our state-of-the-art, AAAASF-accredited surgical facility located right here in Miami. We prioritize privacy, safety, and comfort.',
+            answer: 'All procedures are performed in our state-of-the-art surgical facility located right here in Miami by Double Board-Certified surgeons. We prioritize privacy, safety, and comfort.',
         },
     ],
     recovery: [

@@ -32,23 +32,24 @@ import { toNextMetadata } from '@/lib/seo/metadata'
  * Contact Page Metadata
  *
  * SEO-optimized metadata for the contact page including:
- * - Compelling title and description
+ * - Action-oriented title with clear value proposition
+ * - Compelling description with urgency and trust signals
  * - Open Graph tags for social sharing
  * - Twitter Card configuration
  * - Canonical URL
  */
-const pageTitle = generatePageTitle('Free Plastic Surgery Consultation Miami')
+const pageTitle = 'Free Consultation | Miami Plastic Surgery | Book Today'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',
     title: pageTitle,
     description:
-        'Request your private consultation with our board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey. Complimentary, confidential, no obligation.',
+        'Schedule your free, private consultation with board-certified plastic surgeons. Discuss goals, see options, get pricing. No obligation. Same-week appointments.',
 
     openGraph: {
         title: pageTitle,
         description:
-            'Request your private consultation with board-certified plastic surgeons in Miami. BBL, Mommy Makeover, Breast Augmentation & more. Luxury results, personalized care.',
+            'Schedule your free, private consultation with board-certified plastic surgeons. Discuss goals, see options, get pricing. No obligation. Same-week appointments.',
         url: `${seoConfig.siteUrl}/contact-us`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -66,7 +67,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Request your private consultation with board-certified plastic surgeons in Miami. Luxury results, personalized care.',
+            'Schedule your free consultation with board-certified plastic surgeons. Discuss goals, see options, get pricing. No obligation.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })

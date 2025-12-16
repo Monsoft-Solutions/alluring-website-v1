@@ -39,26 +39,37 @@ import {
 } from '@/lib/queries/promotion.query'
 
 /**
+ * Generate dynamic month/year for specials page title
+ * Ensures freshness signals in search results
+ */
+function getCurrentMonthYear(): string {
+    const now = new Date()
+    const month = now.toLocaleString('en-US', { month: 'long' })
+    const year = now.getFullYear()
+    return `${month} ${year}`
+}
+
+/**
  * Specials Page Metadata
  *
  * SEO-optimized metadata including:
- * - Compelling title and description with keywords
- * - Open Graph tags for social sharing
- * - Twitter Card configuration
- * - Canonical URL
+ * - Dynamic month/year for freshness signals
+ * - Urgency elements for CTR
+ * - Trust signals and clear value proposition
  */
-const pageTitle = generatePageTitle('Plastic Surgery Specials Miami')
+const monthYear = getCurrentMonthYear()
+const pageTitle = `Miami Plastic Surgery Specials ${monthYear} | Limited Time Offers`
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/miami-plastic-surgery-specials',
     title: pageTitle,
     description:
-        'Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction & more. Board-certified surgeons, luxury results at promotional pricing.',
+        'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
 
     openGraph: {
         title: pageTitle,
         description:
-            'Exclusive savings on transformative procedures. BBL, breast augmentation, tummy tuck & more at special promotional pricing. Board-certified surgeons in Miami.',
+            'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
         url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -76,7 +87,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck & more.',
+            'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Board-certified surgeons. Offers end soon.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })

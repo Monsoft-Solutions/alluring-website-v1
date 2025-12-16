@@ -26,8 +26,8 @@ const FEAR_BUSTERS = [
     {
         icon: ShieldCheck,
         question: 'Is it safe?',
-        answer: 'Board-certified surgeons. AAAASF-accredited facility. 5,000+ procedures performed with exceptional safety record.',
-        highlight: 'AAAASF Accredited',
+        answer: 'Double Board-Certified surgeons. State-of-the-art facility. 5,000+ procedures performed with exceptional safety record.',
+        highlight: 'Double Board-Certified',
     },
     {
         icon: Sparkles,

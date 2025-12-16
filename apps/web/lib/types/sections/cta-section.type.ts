@@ -46,7 +46,7 @@ export interface CTAStats {
     readonly rating: string
 
     /**
-     * Accreditation body (e.g., "AAAASF")
+     * Accreditation/certification (e.g., "Double Board-Certified")
      */
     readonly accreditation?: string
 }

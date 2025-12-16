@@ -7,7 +7,7 @@
  * Features:
  * - Animated success icon
  * - Confirmation message about Beauty Specialist callback
- * - Trust badges (AAAASF Accredited, Board-Certified)
+ * - Trust badges (Double Board-Certified)
  * - Business hours and immediate contact option
  */
 
@@ -82,7 +82,7 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                             <ShieldCheck className='text-gold-400 h-5 w-5' />
                             <span className='text-sm font-medium'>
                                 {siteConfig.trustStats?.accreditation ??
-                                    'AAAASF'}{' '}
+                                    'Double Board-Certified'}{' '}
                                 Accredited
                             </span>
                         </div>

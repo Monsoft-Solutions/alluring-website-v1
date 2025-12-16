@@ -46,13 +46,16 @@ const pageUrl = `${siteUrl}/plastic-surgery-financing-miami`
  * Page Metadata
  *
  * SEO-optimized metadata targeting financing-related searches.
+ * CTR-optimized with 0% APR and instant approval messaging.
  */
-const pageTitle = generatePageTitle('Plastic Surgery Financing Miami')
+const pageTitle =
+    'Plastic Surgery Financing Miami | 0% APR | Approved in Minutes'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: financingSeoData.canonical,
     title: pageTitle,
-    description: financingSeoData.description,
+    description:
+        'Make your dream transformation affordable. 0% APR financing for BBL, breast surgery, tummy tuck & more. Cherry, CareCredit, United Credit. Apply in 60 seconds.',
     keywords: financingSeoData.keywords as unknown as string[],
 
     openGraph: {
@@ -60,7 +63,7 @@ export const metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            'Make your dream results affordable with flexible financing options. Get approved in seconds with 0% APR plans available. Finance BBL, breast augmentation, tummy tuck & more.',
+            'Make your dream transformation affordable. 0% APR financing for BBL, breast surgery, tummy tuck & more. Cherry, CareCredit, United Credit. Apply in 60 seconds.',
         siteName: siteConfig.business.name,
         images: [
             {
@@ -76,7 +79,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Flexible financing for cosmetic surgery. 0% APR options, instant approval. Cherry, CareCredit, United Credit accepted.',
+            '0% APR financing for cosmetic surgery. Instant approval. Cherry, CareCredit, United Credit accepted. Apply in 60 seconds.',
         images: [`${siteUrl}/images/hero-beautiful-latin-woman.jpg`],
     },
 

@@ -33,7 +33,7 @@ const STATS = [
     },
     {
         icon: ShieldCheck,
-        value: siteConfig.trustStats?.accreditation ?? 'AAAASF',
+        value: siteConfig.trustStats?.accreditation ?? 'Double Board-Certified',
         label: 'Accredited Facility',
     },
 ]

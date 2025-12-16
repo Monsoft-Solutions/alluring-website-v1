@@ -277,7 +277,7 @@ export default async function PromotionDetailPage({
                                     </li>
                                     <li className='flex items-start gap-2'>
                                         <span className='text-gold-500'>✓</span>
-                                        AAAASF Accredited Facility
+                                        Double Board-Certified Surgeons
                                     </li>
                                     <li className='flex items-start gap-2'>
                                         <span className='text-gold-500'>✓</span>

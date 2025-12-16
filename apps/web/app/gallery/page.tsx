@@ -16,12 +16,13 @@ import { env } from '@/env'
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/gallery`
 
-const pageTitle = generatePageTitle('Before & After Photos Miami')
+const pageTitle = 'Plastic Surgery Before & After Photos | 500+ Real Results'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/gallery',
     title: pageTitle,
-    description: `View real before and after photos from ${siteConfig.business.name} in Miami. Explore authentic transformations showcasing the artistry of our board-certified surgeons.`,
+    description:
+        "See real patient transformations from Miami's top plastic surgeons. BBL, breast, tummy tuck & facial results. Unretouched photos. Start your journey today.",
     keywords: [
         'plastic surgery before after photos',
         'cosmetic surgery results Miami',
@@ -37,7 +38,7 @@ export const metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            'Explore our gallery of real patient transformations. Before and after photos showcasing the exceptional results achieved by our board-certified surgeons.',
+            "See real patient transformations from Miami's top plastic surgeons. BBL, breast, tummy tuck & facial results. Unretouched photos. Start your journey today.",
         siteName: siteConfig.business.name,
         images: [
             {
@@ -52,7 +53,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Explore our gallery of real patient transformations and before/after results.',
+            "See real patient transformations from Miami's top plastic surgeons. BBL, breast, tummy tuck & facial results. Unretouched photos.",
         images: [`${siteUrl}/og-image.jpg`],
     },
     robots: {

@@ -196,7 +196,7 @@ export function SpecialsHero({
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
                                         {siteConfig.trustStats?.accreditation ??
-                                            'AAAASF'}{' '}
+                                            'Double Board-Certified'}{' '}
                                         Accredited
                                     </span>
                                 </div>

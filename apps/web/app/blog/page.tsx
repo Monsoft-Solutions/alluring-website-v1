@@ -39,12 +39,14 @@ const pageUrl = `${siteUrl}/blog`
  * Page Metadata
  *
  * SEO-optimized metadata for the blog landing page.
+ * CTR-optimized with content type indicators and freshness signal.
  */
-const pageTitle = generatePageTitle('Plastic Surgery Blog Miami')
+const pageTitle = 'Plastic Surgery Blog | Expert Tips & Recovery Guides | Miami'
 
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     title: pageTitle,
-    description: blogSeoData.description,
+    description:
+        "Expert insights from Miami's board-certified plastic surgeons. Recovery tips, procedure guides, patient stories & the latest in cosmetic surgery. Updated weekly.",
     keywords: blogSeoData.keywords,
     canonical: blogSeoData.canonical,
 
@@ -53,7 +55,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            "Expert articles on plastic surgery procedures, recovery tips, and patient education from Miami's trusted board-certified surgeons.",
+            "Expert insights from Miami's board-certified plastic surgeons. Recovery tips, procedure guides, patient stories & the latest in cosmetic surgery. Updated weekly.",
         siteName: siteConfig.business.name,
         images: [
             {
@@ -69,7 +71,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Expert articles on plastic surgery procedures, recovery tips, and patient education.',
+            "Expert insights from Miami's board-certified plastic surgeons. Recovery tips, procedure guides & patient stories. Updated weekly.",
         images: [`${siteUrl}/og-image.jpg`],
     },
 

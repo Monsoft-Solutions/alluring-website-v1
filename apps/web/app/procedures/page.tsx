@@ -11,12 +11,13 @@ import { env } from '@/env'
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/procedures`
 
-const pageTitle = generatePageTitle('Plastic Surgery Procedures Miami')
+const pageTitle = 'Cosmetic Surgery Procedures Miami | BBL, Breast, Body & Face'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/procedures',
     title: pageTitle,
-    description: `Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. Expert surgeons, natural results, and personalized care.`,
+    description:
+        'Explore 15+ cosmetic procedures from board-certified Miami surgeons. BBL, breast augmentation, tummy tuck, liposuction & facial surgery. See before/afters.',
     keywords: [
         'plastic surgery miami',
         'cosmetic surgery miami',
@@ -35,7 +36,7 @@ export const metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery. Board-certified surgeons in Miami.',
+            'Explore 15+ cosmetic procedures from board-certified Miami surgeons. BBL, breast augmentation, tummy tuck, liposuction & facial surgery. See before/afters.',
         siteName: siteConfig.business.name,
         images: [
             {
@@ -52,7 +53,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Explore our full range of cosmetic procedures: breast augmentation, BBL, tummy tuck, liposuction, mommy makeover, and facial surgery.',
+            'Explore 15+ cosmetic procedures from board-certified Miami surgeons. BBL, breast augmentation, tummy tuck, liposuction & facial surgery.',
         images: [`${siteUrl}/og-image.jpg`],
     },
 

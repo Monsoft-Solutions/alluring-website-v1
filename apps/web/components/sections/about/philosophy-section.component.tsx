@@ -17,7 +17,7 @@ const philosophyPillars = [
         icon: Shield,
         title: 'Safety First',
         description:
-            'Hospital-grade protocols in an AAAASF-accredited facility. From anesthesia to infection control, we prioritize your health above aesthetics. Board-certified surgeons who never compromise on safety standards.',
+            'Hospital-grade protocols in our state-of-the-art facility. From anesthesia to infection control, we prioritize your health above aesthetics. Double Board-Certified surgeons who never compromise on safety standards.',
     },
     {
         num: '02',

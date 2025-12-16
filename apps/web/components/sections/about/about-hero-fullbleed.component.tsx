@@ -71,9 +71,9 @@ export function AboutHeroFullbleed() {
                             <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-600'>
                                 Alluring Plastic Surgery combines world-class
                                 surgical expertise with a luxury concierge
-                                experience. Board-certified surgeons, AAAASF
-                                accredited facility, and a promise that defines
-                                us:{' '}
+                                experience. Double Board-Certified surgeons,
+                                state-of-the-art facility, and a promise that
+                                defines us:{' '}
                                 <strong className='font-bold text-stone-900'>
                                     Luxury Surgeries Made Affordable
                                 </strong>
@@ -86,10 +86,10 @@ export function AboutHeroFullbleed() {
                                     <ShieldCheck className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            AAAASF
+                                            Double
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            Accredited
+                                            Board-Certified
                                         </div>
                                     </div>
                                 </div>
