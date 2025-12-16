@@ -59,7 +59,38 @@ Use ONLY these exact tag values where applicable (do not create new tags):
 - travel_international: Coming from another country
 - unknown: Cannot determine tags
 
-### 4. LEAD PROFILE
+### 4. EXTRACTED CONTACT INFORMATION
+
+Extract any actual contact details the user provides in the conversation:
+
+**Full Name** - If they introduce themselves or provide their name:
+- Look for patterns like "I'm [name]", "My name is [name]", "This is [name]", "Call me [name]"
+- Extract the full name as provided (e.g., "John Smith", "Maria Garcia")
+
+**Phone Number** - If they provide a phone number:
+- Extract ONLY the digits, remove all formatting (parentheses, dashes, spaces, etc.)
+- Examples: "(555) 123-4567" → "5551234567", "555-123-4567" → "5551234567"
+- Include country code if provided: "+1 555 123 4567" → "15551234567"
+
+**Email** - If they provide an email address:
+- Extract exactly as provided
+
+**Location** - Where they live or are located:
+- Look for mentions of city, state, country
+- Examples: "I'm in New York", "I live in Orlando, FL", "I'm from Colombia", "Miami area"
+
+**Preferred Contact Method** - How they want to be contacted:
+- Look for explicit preferences: "call me", "text me", "email me", "WhatsApp is best"
+- Values: phone, email, text, whatsapp
+- Only set if they explicitly state a preference
+
+**Preferred Contact Time** - When they prefer to be contacted:
+- Look for time preferences: "call me in the morning", "after 6pm", "weekends only", "during business hours"
+- Extract as natural language string
+
+IMPORTANT: Only extract information that is EXPLICITLY provided. Do not infer or make assumptions. If information is not mentioned, leave it empty.
+
+### 5. LEAD PROFILE
 
 **Budget Indicator** - Infer from conversation signals:
 - low: Mentions tight budget, looking for cheapest option, very price-focused
@@ -90,7 +121,7 @@ Use ONLY these exact tag values where applicable (do not create new tags):
 - travel_international: Coming from another country
 - unknown: Location not mentioned
 
-### 5. PSYCHOGRAPHIC DATA
+### 6. PSYCHOGRAPHIC DATA
 
 **Motivations** - Why they want the procedure:
 Extract 1-5 specific motivations (e.g., "regain confidence after weight loss", "look younger for career", "fix asymmetry that bothers them")
@@ -107,7 +138,7 @@ Extract 1-5 barriers (e.g., "needs to discuss with partner", "waiting for tax re
 - negative: Worried, skeptical, frustrated
 - mixed: Combination of emotions
 
-### 6. ACTIONABLE INTELLIGENCE
+### 7. ACTIONABLE INTELLIGENCE
 
 **Recommended Action** - Best next step:
 - call_immediately: Hot lead, call right away
@@ -131,7 +162,7 @@ Provide 1-5 specific talking points based on the conversation (e.g., "Address co
 - timeOfDay: When they prefer to be contacted
 - language: Preferred language for communication
 
-### 7. CONVERSATION SUMMARY
+### 8. CONVERSATION SUMMARY
 
 Write a 2-3 sentence summary that a sales rep can quickly scan to understand:
 - Who is this person?

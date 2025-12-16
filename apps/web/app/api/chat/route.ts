@@ -27,6 +27,7 @@ import {
     getRecentMessages,
     updateMessageSuggestedQuestions,
     updateSessionConversationAnalysis,
+    upgradeChatSession,
 } from '@/lib/queries/chat.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
@@ -335,8 +336,43 @@ async function analyzeConversationAsync(
                         analysis.actionableIntelligence.followUpPriority,
                     score,
                     grade,
+                    extractedContact: analysis.extractedContact,
                 }
             )
+
+            // Auto-upgrade session if contact information was extracted
+            const { extractedContact } = analysis
+            if (
+                extractedContact.phone &&
+                extractedContact.fullName &&
+                extractedContact.phone.length >= 10
+            ) {
+                try {
+                    // Get current session to check if it's still anonymous
+                    const currentSession = await getChatSessionById(sessionId)
+                    if (currentSession?.isAnonymous) {
+                        await upgradeChatSession(sessionId, {
+                            fullName: extractedContact.fullName,
+                            phone: extractedContact.phone,
+                            email: extractedContact.email || null,
+                        })
+                        console.log(
+                            `[ConversationAnalysis] Auto-upgraded session ${sessionId} with extracted contact info:`,
+                            {
+                                fullName: extractedContact.fullName,
+                                phone: extractedContact.phone,
+                                email: extractedContact.email,
+                            }
+                        )
+                    }
+                } catch (upgradeError) {
+                    console.error(
+                        `[ConversationAnalysis] Failed to auto-upgrade session ${sessionId}:`,
+                        upgradeError
+                    )
+                    // Non-blocking, continue even if upgrade fails
+                }
+            }
         } else {
             console.log(
                 `[ConversationAnalysis] Session ${sessionId}: Unknown intent, skipping update`

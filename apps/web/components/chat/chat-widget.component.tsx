@@ -2,49 +2,25 @@
  * Chat Widget Component
  *
  * Container component that manages the chat flow:
- * 1. Checks for existing session in cookies (Crisp-style persistence)
- * 2. Pre-chat form for lead capture (if no session)
- * 3. Chat interface with restored message history
+ * 1. Creates or restores anonymous session from cookie
+ * 2. Shows chat interface immediately (no pre-chat form)
+ * 3. Restores message history when session exists
  *
  * @module components/chat/chat-widget
  */
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import { X, Loader2, MessageCircle } from 'lucide-react'
 
-import { PreChatForm } from './pre-chat-form.component'
 import { ChatInterface } from './chat-interface.component'
-import { useChatSession } from '@/hooks/useChatSession.hook'
+import { useUnifiedChat } from '@/hooks/chat/useUnifiedChat.hook'
 import { Z_INDEX, CSS_CLASSES } from '@/lib/chat/constants'
-import type { PreChatFormInput } from '@workspace/chat/types'
-
-type ChatConfig = {
-    agentName: string
-    welcomeMessage: string
-    primaryColor: string
-    agentImageUrl?: string | null
-}
-
-type StoredMessage = {
-    id: string
-    role: 'user' | 'assistant'
-    content: string
-    createdAt: string
-}
-
-type SessionData = {
-    id: string
-    fullName: string
-    config: ChatConfig
-    messages?: StoredMessage[]
-}
 
 type ChatWidgetProps = {
     isOpen: boolean
     onClose: () => void
-    initialConfig?: Partial<ChatConfig>
 }
 
 /**
@@ -84,147 +60,41 @@ function LoadingSkeleton() {
  * Premium chat widget with luxury design
  *
  * Features:
- * - Glassmorphism container with rounded corners
+ * - Anonymous sessions (no pre-chat form required)
+ * - Automatic session restoration via cookie
  * - Smooth entrance/exit animations
  * - Loading skeleton for session restore
- * - Error state with retry option
  * - Mobile-first responsive design
  * - Safe area support
  */
-export function ChatWidget({
-    isOpen,
-    onClose,
-    initialConfig,
-}: ChatWidgetProps) {
-    const [session, setSession] = useState<SessionData | null>(null)
-    const [isRestoringSession, setIsRestoringSession] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
-    const { getStoredSession, saveSession, clearSession, renewSession } =
-        useChatSession()
+export function ChatWidget({ isOpen, onClose }: ChatWidgetProps) {
+    const {
+        session,
+        messages,
+        isInitializing,
+        isReady,
+        error,
+        initializeSession,
+        resetSession,
+    } = useUnifiedChat({
+        pageUrl:
+            typeof window !== 'undefined' ? window.location.href : undefined,
+        referrer:
+            typeof document !== 'undefined' ? document.referrer : undefined,
+    })
 
     /**
-     * Attempt to restore session from cookie on mount
+     * Initialize session when widget opens
      */
     useEffect(() => {
-        async function restoreSession() {
-            const stored = getStoredSession()
-
-            if (!stored) {
-                setIsRestoringSession(false)
-                return
-            }
-
-            try {
-                // Validate session with server and get messages
-                const response = await fetch(
-                    `/api/chat/session/${stored.sessionId}`
-                )
-
-                if (!response.ok) {
-                    // Session invalid/expired, clear cookie
-                    clearSession()
-                    setIsRestoringSession(false)
-                    return
-                }
-
-                const data = await response.json()
-
-                if (data.success) {
-                    // Renew cookie expiry on successful restore
-                    renewSession()
-
-                    // Set session with restored messages
-                    setSession({
-                        id: data.session.id,
-                        fullName: data.session.fullName,
-                        config: data.config,
-                        messages: data.messages,
-                    })
-                } else {
-                    // Invalid session, clear cookie
-                    clearSession()
-                }
-            } catch (err) {
-                console.error('Failed to restore session:', err)
-                clearSession()
-            } finally {
-                setIsRestoringSession(false)
-            }
+        if (isOpen && !session) {
+            initializeSession()
         }
-
-        if (isOpen) {
-            restoreSession()
-        }
-    }, [isOpen, getStoredSession, clearSession, renewSession])
-
-    const handlePreChatSubmit = useCallback(
-        async (data: PreChatFormInput) => {
-            setError(null)
-
-            try {
-                const response = await fetch('/api/chat/session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        ...data,
-                        pageUrl: window.location.href,
-                        referrer: document.referrer,
-                        // Get UTM params from URL
-                        utmSource:
-                            new URLSearchParams(window.location.search).get(
-                                'utm_source'
-                            ) ?? undefined,
-                        utmMedium:
-                            new URLSearchParams(window.location.search).get(
-                                'utm_medium'
-                            ) ?? undefined,
-                        utmCampaign:
-                            new URLSearchParams(window.location.search).get(
-                                'utm_campaign'
-                            ) ?? undefined,
-                    }),
-                })
-
-                const result = await response.json()
-
-                if (!response.ok || !result.success) {
-                    throw new Error(result.error || 'Failed to start chat')
-                }
-
-                // Save session to cookie for persistence
-                saveSession({
-                    sessionId: result.session.id,
-                    fullName: result.session.fullName,
-                })
-
-                setSession({
-                    id: result.session.id,
-                    fullName: result.session.fullName,
-                    config: result.config,
-                    messages: [], // New session, no messages yet
-                })
-            } catch (err) {
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : 'Failed to start chat. Please try again.'
-                )
-            }
-        },
-        [saveSession]
-    )
-
-    const handleReset = useCallback(() => {
-        // Clear cookie and session
-        clearSession()
-        setSession(null)
-        setError(null)
-    }, [clearSession])
+    }, [isOpen, session, initializeSession])
 
     const handleClose = useCallback(() => {
         onClose()
-        // Don't clear session on close - that's the whole point!
+        // Don't clear session on close - persist for next visit!
     }, [onClose])
 
     if (!isOpen) return null
@@ -281,11 +151,11 @@ export function ChatWidget({
                 <X className='h-4 w-4' />
             </button>
 
-            {/* Loading state while restoring session */}
-            {isRestoringSession && <LoadingSkeleton />}
+            {/* Loading state while initializing session */}
+            {isInitializing && <LoadingSkeleton />}
 
             {/* Error message */}
-            {!isRestoringSession && error && (
+            {!isInitializing && error && (
                 <div
                     className={cn(
                         'mx-4 mt-4 rounded-xl p-4',
@@ -294,31 +164,26 @@ export function ChatWidget({
                     )}
                 >
                     {error}
+                    <button
+                        onClick={() => initializeSession()}
+                        className='mt-2 text-xs underline hover:no-underline'
+                    >
+                        Try again
+                    </button>
                 </div>
             )}
 
-            {/* Content */}
-            {!isRestoringSession && (
-                <>
-                    {session ? (
-                        <ChatInterface
-                            sessionId={session.id}
-                            agentName={session.config.agentName}
-                            welcomeMessage={session.config.welcomeMessage}
-                            agentImageUrl={session.config.agentImageUrl}
-                            userName={session.fullName.split(' ')[0] || 'there'}
-                            initialMessages={session.messages}
-                            onReset={handleReset}
-                        />
-                    ) : (
-                        <PreChatForm
-                            onSubmit={handlePreChatSubmit}
-                            agentName={initialConfig?.agentName}
-                            welcomeMessage={initialConfig?.welcomeMessage}
-                            agentImageUrl={initialConfig?.agentImageUrl}
-                        />
-                    )}
-                </>
+            {/* Chat Interface */}
+            {!isInitializing && isReady && session && (
+                <ChatInterface
+                    sessionId={session.id}
+                    agentName={session.config.agentName}
+                    welcomeMessage={session.config.welcomeMessage}
+                    agentImageUrl={session.config.agentImageUrl}
+                    userName={session.fullName?.split(' ')[0] || 'there'}
+                    initialMessages={messages}
+                    onReset={resetSession}
+                />
             )}
         </div>
     )

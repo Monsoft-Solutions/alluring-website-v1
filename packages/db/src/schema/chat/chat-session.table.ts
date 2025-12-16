@@ -62,6 +62,18 @@ export type DbPsychographicData = {
 }
 
 /**
+ * Extracted contact information from conversation
+ */
+export type DbExtractedContact = {
+    fullName?: string
+    phone?: string
+    email?: string
+    location?: string
+    preferredContactMethod?: 'phone' | 'email' | 'text' | 'whatsapp'
+    preferredContactTime?: string
+}
+
+/**
  * Contact preference information
  */
 export type DbContactPreference = {
@@ -94,6 +106,7 @@ export type DbConversationAnalysis = {
     intentConfidence: number
     detectedProcedures: string[]
     tags: string[]
+    extractedContact: DbExtractedContact
     leadProfile: DbLeadProfile
     psychographicData: DbPsychographicData
     actionableIntelligence: DbActionableIntelligence

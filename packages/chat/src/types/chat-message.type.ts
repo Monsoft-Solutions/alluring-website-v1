@@ -17,7 +17,7 @@ export type MessageRole = (typeof MESSAGE_ROLES)[number]
  */
 export const chatMessageSchema = z.object({
     role: z.enum(MESSAGE_ROLES),
-    content: z.string().min(1).max(20000),
+    content: z.string().min(1).max(50000),
 })
 
 export type ChatMessageInput = z.infer<typeof chatMessageSchema>

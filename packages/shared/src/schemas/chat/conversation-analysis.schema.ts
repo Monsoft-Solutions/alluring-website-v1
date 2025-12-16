@@ -118,6 +118,41 @@ export const followUpPrioritySchema = z.enum(FOLLOW_UP_PRIORITIES)
 export const contactMethodSchema = z.enum(CONTACT_METHODS)
 
 /**
+ * Extracted contact information schema
+ * Captures actual contact details provided by the user in conversation
+ */
+export const extractedContactSchema = z.object({
+    fullName: z
+        .string()
+        .optional()
+        .describe('Full name if provided (e.g., "John Smith", "Maria Garcia")'),
+    phone: z
+        .string()
+        .optional()
+        .describe(
+            'Phone number if provided - extract digits only, no formatting (e.g., "5551234567")'
+        ),
+    email: z.string().optional().describe('Email address if provided'),
+    location: z
+        .string()
+        .optional()
+        .describe(
+            'Where they live/are located if mentioned (e.g., "New York", "Orlando, FL", "Colombia")'
+        ),
+    preferredContactMethod: contactMethodSchema
+        .optional()
+        .describe(
+            'How they explicitly want to be contacted (phone, email, text, whatsapp)'
+        ),
+    preferredContactTime: z
+        .string()
+        .optional()
+        .describe(
+            'When they prefer to be contacted if specified (e.g., "mornings", "after 6pm", "weekends")'
+        ),
+})
+
+/**
  * Lead profile extracted from conversation
  */
 export const leadProfileSchema = z.object({
@@ -221,6 +256,11 @@ export const conversationAnalysisSchema = z.object({
         .array(sessionTagSchema)
         .describe('Relevant tags based on conversation context'),
 
+    // Extracted contact information
+    extractedContact: extractedContactSchema.describe(
+        'Actual contact information provided by user in conversation'
+    ),
+
     // Lead profile
     leadProfile: leadProfileSchema.describe(
         'Profile information about the lead'
@@ -256,6 +296,7 @@ export type Sentiment = z.infer<typeof sentimentSchema>
 export type RecommendedAction = z.infer<typeof recommendedActionSchema>
 export type FollowUpPriority = z.infer<typeof followUpPrioritySchema>
 export type ContactMethod = z.infer<typeof contactMethodSchema>
+export type ExtractedContact = z.infer<typeof extractedContactSchema>
 export type LeadProfile = z.infer<typeof leadProfileSchema>
 export type ContactPreference = z.infer<typeof contactPreferenceSchema>
 export type PsychographicData = z.infer<typeof psychographicDataSchema>
@@ -280,6 +321,7 @@ export const DEFAULT_CONVERSATION_ANALYSIS: ConversationAnalysis = {
     intentConfidence: 0,
     detectedProcedures: [],
     tags: [],
+    extractedContact: {},
     leadProfile: {
         budgetIndicator: 'unknown',
         timeline: 'unknown',

@@ -2,8 +2,8 @@
  * Chat Section Component
  *
  * Embeddable chat section that can be added to any page.
- * Creates an anonymous session on first interaction and handles
- * deferred lead capture.
+ * Creates an anonymous session on first interaction with
+ * AI-driven conversational lead capture.
  *
  * @module components/chat/chat-section
  */
@@ -15,8 +15,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle, Sparkles, Loader2 } from 'lucide-react'
 
 import { ChatInterface } from './chat-interface.component'
-import { LeadCaptureModal } from './lead-capture-modal.component'
-import { useEmbeddedChat } from '@/hooks/chat/useEmbeddedChat.hook'
+import { useUnifiedChat } from '@/hooks/chat/useUnifiedChat.hook'
 
 type ChatSectionProps = {
     /** Section ID for navigation */
@@ -36,7 +35,7 @@ type ChatSectionProps = {
  *
  * Features:
  * - Anonymous session creation on first interaction
- * - Deferred lead capture after engagement
+ * - AI-driven conversational lead capture
  * - Premium card styling with glassmorphism
  * - Mobile-responsive with max-height constraints
  * - Reuses ChatInterface for messaging
@@ -52,16 +51,17 @@ export function ChatSection({
 
     const {
         session,
-        isCreatingSession,
+        messages,
+        isInitializing,
         isReady,
         error,
-        showLeadCapture,
-        isUpgraded,
         initializeSession,
-        trackUserMessage,
-        dismissLeadCapture,
-        upgradeSession,
-    } = useEmbeddedChat()
+    } = useUnifiedChat({
+        pageUrl:
+            typeof window !== 'undefined' ? window.location.href : undefined,
+        referrer:
+            typeof document !== 'undefined' ? document.referrer : undefined,
+    })
 
     /**
      * Initialize session when user starts typing or clicks
@@ -72,26 +72,6 @@ export function ChatSection({
             await initializeSession()
         }
     }, [isInitialized, session, initializeSession])
-
-    /**
-     * Handle message sent from ChatInterface
-     */
-    const handleMessageSent = useCallback(
-        (message: string) => {
-            trackUserMessage(message)
-        },
-        [trackUserMessage]
-    )
-
-    /**
-     * Handle lead capture submission
-     */
-    const handleLeadCapture = useCallback(
-        async (data: { fullName: string; phone: string; email?: string }) => {
-            return upgradeSession(data)
-        },
-        [upgradeSession]
-    )
 
     // Auto-initialize on mount for better UX
     useEffect(() => {
@@ -148,7 +128,7 @@ export function ChatSection({
                     )}
                 >
                     {/* Loading State */}
-                    {(isCreatingSession || (!isReady && isInitialized)) && (
+                    {(isInitializing || (!isReady && isInitialized)) && (
                         <div className='flex h-full flex-col items-center justify-center gap-4 p-8'>
                             <div
                                 className={cn(
@@ -271,14 +251,14 @@ export function ChatSection({
                                     agentImageUrl={config.agentImageUrl}
                                     userName={userName}
                                     showHeader={false}
-                                    onMessageSent={handleMessageSent}
+                                    initialMessages={messages}
                                 />
                             </div>
                         </>
                     )}
 
                     {/* Initial State - Before Session */}
-                    {!isInitialized && !session && !isCreatingSession && (
+                    {!isInitialized && !session && !isInitializing && (
                         <button
                             onClick={handleInitialize}
                             className='flex h-full w-full flex-col items-center justify-center gap-4 p-8 transition-colors hover:bg-stone-50'
@@ -305,13 +285,6 @@ export function ChatSection({
                     )}
                 </div>
             </div>
-
-            {/* Lead Capture Modal */}
-            <LeadCaptureModal
-                isOpen={showLeadCapture}
-                onClose={dismissLeadCapture}
-                onSubmit={handleLeadCapture}
-            />
         </section>
     )
 }

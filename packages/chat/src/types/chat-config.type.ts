@@ -30,7 +30,7 @@ export type ButtonPosition = (typeof BUTTON_POSITIONS)[number]
 export const chatConfigSchema = z.object({
     id: z.uuid().optional(),
     agentName: z.string().min(1).max(100),
-    systemPrompt: z.string().min(10).max(20000),
+    systemPrompt: z.string().min(10).max(50000),
     welcomeMessage: z.string().min(1).max(500),
     modelId: z.enum(CHAT_MODELS),
     temperature: z.number().min(0).max(2),
