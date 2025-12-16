@@ -1,5 +1,5 @@
 /**
- * SpecialsFearBusters Component
+ * FearBusters Component
  *
  * A section that directly addresses the 4 main psychological barriers
  * preventing potential patients from taking action:
@@ -9,6 +9,7 @@
  * 4. Commitment anxiety
  *
  * Designed to reduce friction and build confidence at the decision point.
+ * Used on both specials and contact pages.
  */
 import { CreditCard, ShieldCheck, Sparkles, Heart } from 'lucide-react'
 
@@ -42,13 +43,16 @@ const FEAR_BUSTERS = [
     },
 ] as const
 
-export type SpecialsFearBustersProps = {
+export type FearBustersProps = {
     readonly id?: string
+    /** Anchor link for the form CTA (default: #contact-form) */
+    readonly formAnchor?: string
 }
 
-export function SpecialsFearBusters({
+export function FearBusters({
     id = 'fear-busters',
-}: SpecialsFearBustersProps) {
+    formAnchor = '#contact-form',
+}: FearBustersProps) {
     return (
         <SectionContainer
             id={id}
@@ -122,7 +126,7 @@ export function SpecialsFearBusters({
                         pressure, zero sales pitch.
                     </p>
                     <a
-                        href='#specials-form'
+                        href={formAnchor}
                         className='text-gold-600 hover:text-gold-700 mt-3 inline-flex items-center gap-2 font-medium transition-colors'
                     >
                         Get your questions answered

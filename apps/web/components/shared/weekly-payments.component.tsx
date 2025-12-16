@@ -1,5 +1,5 @@
 /**
- * SpecialsWeeklyPayments Component
+ * WeeklyPayments Component
  *
  * Displays weekly payment options for popular procedures to break
  * the affordability barrier. Shows that luxury surgery can fit into
@@ -7,6 +7,8 @@
  *
  * Key conversion strategy: Reframe the cost from a large lump sum
  * to a manageable weekly amount comparable to everyday expenses.
+ *
+ * Used on both specials and contact pages.
  */
 import { CreditCard, Check } from 'lucide-react'
 
@@ -51,13 +53,16 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     },
 ]
 
-export type SpecialsWeeklyPaymentsProps = {
+export type WeeklyPaymentsProps = {
     readonly id?: string
+    /** Anchor link for the form CTA (default: #contact-form) */
+    readonly formAnchor?: string
 }
 
-export function SpecialsWeeklyPayments({
+export function WeeklyPayments({
     id = 'weekly-payments',
-}: SpecialsWeeklyPaymentsProps) {
+    formAnchor = '#contact-form',
+}: WeeklyPaymentsProps) {
     return (
         <SectionContainer
             id={id}
@@ -158,7 +163,7 @@ export function SpecialsWeeklyPayments({
                 {/* CTA */}
                 <div className='mt-10 text-center'>
                     <a
-                        href='#specials-form'
+                        href={formAnchor}
                         className='bg-gold-500 hover:bg-gold-600 inline-flex items-center gap-2 rounded-lg px-8 py-4 font-semibold text-white shadow-lg transition-colors'
                     >
                         Get My Personalized Quote

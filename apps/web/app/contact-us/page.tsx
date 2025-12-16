@@ -9,18 +9,21 @@
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContactHeroForm } from '@/components/sections/contact/contact-hero-form.component'
-import { ConsultationBenefits } from '@/components/sections/contact/consultation-benefits.component'
 import { ContactStatsStrip } from '@/components/sections/contact/contact-stats-strip.component'
 import { SurgeonPreview } from '@/components/sections/contact/surgeon-preview.component'
-import { ContactTestimonial } from '@/components/sections/contact/contact-testimonial.component'
 import { ContactAlternative } from '@/components/sections/contact/contact-alternative.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { FearBusters } from '@/components/shared/fear-busters.component'
+import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
+import { Testimonials } from '@/components/shared/testimonials.component'
+import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import {
     faqCategoriesContact,
     faqDataContact,
 } from '@/lib/data/faq/contact-faq-data'
 import { siteConfig } from '@/lib/data/site-config'
+import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -68,7 +71,10 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default function ContactPage() {
+export default async function ContactPage() {
+    // Fetch gallery images for visual proof section
+    const galleryImages = await getSpecialsFeaturedGalleryImages()
+
     return (
         <>
             {/* SEO Schema */}
@@ -87,24 +93,33 @@ export default function ContactPage() {
                 )}
             />
 
-            {/* Main Content */}
+            {/* Main Content - Conversion-Optimized Flow */}
             <main className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
                 {/* Section 1: Hero Contact Form */}
                 <ContactHeroForm id='contact-form' />
 
-                {/* Section 2: Consultation Benefits */}
-                <ConsultationBenefits id='what-to-expect' />
+                {/* Section 2: Fear Busters - Address objections immediately */}
+                <FearBusters id='fear-busters' formAnchor='#contact-form' />
 
-                {/* Section 3: Stats Strip */}
+                {/* Section 3: Weekly Payments - Reinforce affordability */}
+                <WeeklyPayments
+                    id='weekly-payments'
+                    formAnchor='#contact-form'
+                />
+
+                {/* Section 4: Testimonials - Social proof and emotional connection */}
+                <Testimonials id='testimonials' formAnchor='#contact-form' />
+
+                {/* Section 5: Gallery Carousel - Visual proof of results */}
+                <GalleryCarousel id='gallery-results' images={galleryImages} />
+
+                {/* Section 6: Stats Strip */}
                 <ContactStatsStrip id='stats' />
 
-                {/* Section 4: Surgeon Preview */}
+                {/* Section 7: Surgeon Preview */}
                 <SurgeonPreview id='surgeons' />
 
-                {/* Section 5: Featured Testimonial */}
-                <ContactTestimonial id='testimonial' />
-
-                {/* Section 6: Categorized FAQ */}
+                {/* Section 8: Categorized FAQ */}
                 <CategorizedFAQ
                     id='faq'
                     categories={faqCategoriesContact}
@@ -126,7 +141,7 @@ export default function ContactPage() {
                     }}
                 />
 
-                {/* Section 7: Alternative Contact Methods */}
+                {/* Section 9: Alternative Contact Methods */}
                 <ContactAlternative id='location' />
             </main>
 

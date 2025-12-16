@@ -1,5 +1,5 @@
 /**
- * SpecialsGalleryCarousel Component
+ * GalleryCarousel Component
  *
  * An auto-scrolling carousel showcasing gallery images from main procedures.
  * Uses shadcn/ui Carousel with Embla and autoplay plugin.
@@ -9,7 +9,9 @@
  * - Pauses on hover/touch
  * - Responsive: 1 slide mobile, 2 tablet, 3 desktop
  * - Seamless infinite loop
- * - Procedure name overlay on each image
+ * - Lightbox for full-size viewing
+ *
+ * Used on both specials and contact pages.
  */
 'use client'
 
@@ -27,30 +29,30 @@ import {
 } from '@workspace/ui/components/carousel'
 import { Button } from '@workspace/ui/components/button'
 
-import type { SpecialsGalleryImage } from '@/lib/types/gallery/specials-gallery.type'
+import type { GalleryImage } from '@/lib/types/gallery/gallery.type'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 
-type SpecialsGalleryCarouselProps = {
+export type GalleryCarouselProps = {
     readonly id?: string
-    readonly images: SpecialsGalleryImage[]
+    readonly images: GalleryImage[]
     readonly className?: string
 }
 
 /**
- * Gallery Carousel for Specials Page
+ * Gallery Carousel Component
  *
  * Displays an auto-scrolling carousel of gallery images from main procedures
  * to showcase real patient results and build trust.
  */
-export function SpecialsGalleryCarousel({
+export function GalleryCarousel({
     id = 'gallery-results',
     images,
     className,
-}: SpecialsGalleryCarouselProps) {
+}: GalleryCarouselProps) {
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0)
@@ -239,7 +241,7 @@ function GalleryImageCard({
     image,
     onClick,
 }: {
-    readonly image: SpecialsGalleryImage
+    readonly image: GalleryImage
     readonly onClick: () => void
 }) {
     return (

@@ -9,7 +9,7 @@ import {
 } from '@workspace/db/schema/gallery'
 import { and, asc, desc, eq, inArray } from 'drizzle-orm'
 
-import type { SpecialsGalleryImage } from '@/lib/types/gallery/specials-gallery.type'
+import type { GalleryImage } from '@/lib/types/gallery/gallery.type'
 
 /** Cache revalidation time in seconds (1 hour fallback) */
 const CACHE_TTL = 3600
@@ -34,9 +34,7 @@ const IMAGES_PER_PROCEDURE = 3
  * For each main procedure, fetches up to 3 images from its gallery group.
  * Featured images are prioritized, then ordered by displayOrder.
  */
-async function fetchSpecialsFeaturedGalleryImages(): Promise<
-    SpecialsGalleryImage[]
-> {
+async function fetchSpecialsFeaturedGalleryImages(): Promise<GalleryImage[]> {
     const procedureSlugs = SPECIALS_PROCEDURES.map((p) => p.slug)
 
     // Get all visible gallery groups for main procedures
@@ -113,8 +111,8 @@ async function fetchSpecialsFeaturedGalleryImages(): Promise<
         }
     }
 
-    // Flatten and transform to SpecialsGalleryImage
-    const result: SpecialsGalleryImage[] = []
+    // Flatten and transform to GalleryImage
+    const result: GalleryImage[] = []
 
     for (const procedure of SPECIALS_PROCEDURES) {
         const media = mediaByProcedure.get(procedure.slug) ?? []
@@ -143,9 +141,7 @@ async function fetchSpecialsFeaturedGalleryImages(): Promise<
  *
  * @returns Array of gallery images with procedure context
  */
-export const getSpecialsFeaturedGalleryImages = (): Promise<
-    SpecialsGalleryImage[]
-> => {
+export const getSpecialsFeaturedGalleryImages = (): Promise<GalleryImage[]> => {
     return unstable_cache(
         () => fetchSpecialsFeaturedGalleryImages(),
         ['specials-featured-gallery-images'],

@@ -15,16 +15,16 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
-import { SpecialsFearBusters } from '@/components/sections/specials/specials-fear-busters.component'
-import { SpecialsGalleryCarousel } from '@/components/sections/specials/specials-gallery-carousel.component'
 import { SpecialsHero } from '@/components/sections/specials/specials-hero.component'
 import { SpecialsHowItWorks } from '@/components/sections/specials/specials-how-it-works.component'
 import { SpecialsPromotionsGrid } from '@/components/sections/specials/specials-promotions-grid.component'
-import { SpecialsTestimonials } from '@/components/sections/specials/specials-testimonials.component'
 import { SpecialsUrgencyStrip } from '@/components/sections/specials/specials-urgency-strip.component'
-import { SpecialsWeeklyPayments } from '@/components/sections/specials/specials-weekly-payments.component'
-import { FAQComponent } from '@/components/shared/faq.component'
 import { CTASection } from '@/components/shared/cta-section.component'
+import { FAQComponent } from '@/components/shared/faq.component'
+import { FearBusters } from '@/components/shared/fear-busters.component'
+import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
+import { Testimonials } from '@/components/shared/testimonials.component'
+import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
@@ -163,19 +163,19 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 />
 
                 {/* Section 2: Fear Busters - Address objections immediately */}
-                <SpecialsFearBusters id='fear-busters' />
+                <FearBusters id='fear-busters' formAnchor='#specials-form' />
 
                 {/* Section 3: Weekly Payments - Reinforce affordability */}
-                <SpecialsWeeklyPayments id='weekly-payments' />
+                <WeeklyPayments
+                    id='weekly-payments'
+                    formAnchor='#specials-form'
+                />
 
                 {/* Section 4: Testimonials - Social proof and emotional connection */}
-                <SpecialsTestimonials id='testimonials' />
+                <Testimonials id='testimonials' formAnchor='#specials-form' />
 
                 {/* Section 5: Gallery Carousel - Visual proof of results */}
-                <SpecialsGalleryCarousel
-                    id='gallery-results'
-                    images={galleryImages}
-                />
+                <GalleryCarousel id='gallery-results' images={galleryImages} />
 
                 {/* Section 6: How It Works - Make the process feel easy */}
                 <SpecialsHowItWorks id='how-it-works' />

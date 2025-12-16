@@ -1,5 +1,5 @@
 /**
- * SpecialsTestimonials Component
+ * Testimonials Component
  *
  * A social proof section featuring transformation narratives from real patients.
  * Uses the transformation arc pattern from the content strategy:
@@ -8,13 +8,23 @@
  * 3. After (the transformation)
  *
  * Designed to create emotional connection and show "people like me did this".
+ * Used on both specials and contact pages.
  */
 import { Quote, Star } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 
-const TESTIMONIALS = [
+export type Testimonial = {
+    id: string
+    quote: string
+    name: string
+    procedure: string
+    timeframe: string
+    rating: number
+}
+
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
     {
         id: 'testimonial-1',
         quote: 'For years, I avoided the beach and hid my body in loose clothes. After my mommy makeover at Alluring, I finally feel like myself again. The confidence boost has affected every part of my life.',
@@ -39,15 +49,21 @@ const TESTIMONIALS = [
         timeframe: '1 year post-op',
         rating: 5,
     },
-] as const
+]
 
-export type SpecialsTestimonialsProps = {
+export type TestimonialsProps = {
     readonly id?: string
+    /** Anchor link for the form CTA (default: #contact-form) */
+    readonly formAnchor?: string
+    /** Optional custom testimonials array */
+    readonly testimonials?: Testimonial[]
 }
 
-export function SpecialsTestimonials({
+export function Testimonials({
     id = 'testimonials',
-}: SpecialsTestimonialsProps) {
+    formAnchor = '#contact-form',
+    testimonials = DEFAULT_TESTIMONIALS,
+}: TestimonialsProps) {
     return (
         <SectionContainer
             id={id}
@@ -84,7 +100,7 @@ export function SpecialsTestimonials({
 
                 {/* Testimonials Grid */}
                 <div className='grid gap-8 md:grid-cols-3'>
-                    {TESTIMONIALS.map((testimonial) => (
+                    {testimonials.map((testimonial) => (
                         <div
                             key={testimonial.id}
                             className='group relative flex flex-col rounded-xl border border-stone-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg md:p-8'
@@ -133,7 +149,7 @@ export function SpecialsTestimonials({
                         Ready to write your own transformation story?
                     </p>
                     <a
-                        href='#specials-form'
+                        href={formAnchor}
                         className='bg-gold-500 hover:bg-gold-600 inline-flex items-center gap-2 rounded-lg px-6 py-3 font-semibold text-white shadow-lg transition-colors'
                     >
                         Start My Transformation
