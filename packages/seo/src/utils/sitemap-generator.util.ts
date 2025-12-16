@@ -129,6 +129,8 @@ export function convertToNextjsSitemap(
                   ),
               }
             : undefined,
+        // Include images if present (Next.js 14+ supports this)
+        images: entry.images?.map((img) => img.url),
     }))
 }
 
@@ -289,6 +291,19 @@ export function validateSitemapEntries(entries: SitemapEntry[]): string[] {
                 } catch {
                     errors.push(
                         `Entry ${index}: Invalid alternate URL: ${alt.href}`
+                    )
+                }
+            }
+        }
+
+        // Validate images
+        if (entry.images) {
+            for (const [imgIndex, img] of entry.images.entries()) {
+                try {
+                    new URL(img.url)
+                } catch {
+                    errors.push(
+                        `Entry ${index}, Image ${imgIndex}: Invalid image URL: ${img.url}`
                     )
                 }
             }

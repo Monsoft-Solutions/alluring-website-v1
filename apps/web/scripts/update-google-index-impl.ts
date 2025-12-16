@@ -3,6 +3,7 @@
  * This file is dynamically imported after environment variables are loaded
  */
 
+import { parseString } from 'xml2js'
 import { GoogleIndexingClient } from '@monsoft/google-indexing'
 
 import sitemap from '@/app/sitemap'
@@ -37,26 +38,111 @@ function getPrivateKey() {
 }
 
 /**
+ * Parse XML sitemap and extract URLs
+ */
+async function parseSitemapXml(xmlContent: string): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        parseString(xmlContent, (err, result) => {
+            if (err) {
+                reject(err)
+                return
+            }
+
+            try {
+                const urls: string[] = []
+
+                // Handle sitemap index format (contains sitemaps)
+                if (result.sitemapindex?.sitemap) {
+                    for (const sitemap of result.sitemapindex.sitemap) {
+                        if (sitemap.loc?.[0]) {
+                            urls.push(sitemap.loc[0])
+                        }
+                    }
+                }
+
+                // Handle regular sitemap format (contains URLs)
+                if (result.urlset?.url) {
+                    for (const url of result.urlset.url) {
+                        if (url.loc?.[0]) {
+                            urls.push(url.loc[0])
+                        }
+                    }
+                }
+
+                resolve(urls)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    })
+}
+
+/**
+ * Fetch and parse a sitemap from URL
+ */
+async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
+    console.log(`   📄 Fetching: ${sitemapUrl}`)
+    const response = await fetch(sitemapUrl)
+
+    if (!response.ok) {
+        throw new Error(
+            `Failed to fetch sitemap: ${response.status} ${response.statusText}`
+        )
+    }
+
+    const xmlContent = await response.text()
+    return parseSitemapXml(xmlContent)
+}
+
+/**
  * Main execution function
  */
 export async function main() {
     try {
         console.log('🚀 Starting Google indexing update...')
 
-        // Get URLs from the dynamic sitemap
-        console.log('📋 Fetching URLs from dynamic sitemap...')
+        // Get child sitemap URLs from the sitemap index
+        console.log('📋 Fetching sitemap index...')
         const sitemapData = await sitemap()
-        const urls = sitemapData.map((item) => item.url)
+        const childSitemapUrls = sitemapData.map(
+            (item: { url: string }): string => item.url.trim()
+        )
 
-        if (urls.length === 0) {
-            console.error('❌ No URLs found in sitemap!')
+        if (childSitemapUrls.length === 0) {
+            console.error('❌ No child sitemaps found in sitemap index!')
             process.exit(1)
         }
 
-        console.log(`✅ Found ${urls.length} URLs in sitemap:`)
-        urls.forEach((url) => console.log(`   - ${url}`))
+        console.log(
+            `✅ Found ${childSitemapUrls.length} child sitemaps to process\n`
+        )
+
+        // Fetch and parse each child sitemap to extract all page URLs
+        console.log('📥 Fetching URLs from child sitemaps...')
+        const allUrls: string[] = []
+
+        for (const childSitemapUrl of childSitemapUrls) {
+            try {
+                const urls = await fetchSitemapUrls(childSitemapUrl)
+                console.log(`      ✅ Found ${urls.length} URLs`)
+                allUrls.push(...urls)
+            } catch (error) {
+                console.error(
+                    `      ❌ Failed to fetch ${childSitemapUrl}:`,
+                    error instanceof Error ? error.message : String(error)
+                )
+            }
+        }
+
+        if (allUrls.length === 0) {
+            console.error('\n❌ No URLs found in any child sitemap!')
+            process.exit(1)
+        }
+
+        console.log(`\n✅ Total URLs collected: ${allUrls.length}`)
 
         // Initialize Google Indexing client
+        console.log('\n🔐 Initializing Google Indexing API client...')
         const client = new GoogleIndexingClient({
             clientEmail: getClientEmail(),
             privateKey: getPrivateKey(),
@@ -64,9 +150,10 @@ export async function main() {
         })
 
         await client.initialize()
+        console.log('✅ Client initialized')
 
         // Create indexable URLs - ensure URLs are absolute
-        const indexableUrls = urls.map((url) => {
+        const indexableUrls = allUrls.map((url) => {
             // Ensure URL is absolute
             const absoluteUrl =
                 url.startsWith('http://') || url.startsWith('https://')

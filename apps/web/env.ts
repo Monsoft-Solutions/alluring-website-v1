@@ -51,6 +51,10 @@ export const env = createEnv({
         LANGFUSE_PUBLIC_KEY: z.string().optional(),
         LANGFUSE_BASE_URL: z.string().url().optional(),
         LANGFUSE_ENABLED: z.enum(['true', 'false']).optional(),
+
+        // Google Indexing API (optional - required for google:index script)
+        GOOGLE_CLIENT_EMAIL: z.string().email().optional(),
+        GOOGLE_PRIVATE_KEY: z.string().optional(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)

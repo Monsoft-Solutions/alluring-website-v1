@@ -2,29 +2,46 @@
  * Blog Sitemap Query
  *
  * Fetches data needed for sitemap generation:
- * - All published blog post slugs
+ * - All published blog post slugs with featured images
  * - All active category slugs
  * - All active tag slugs
  */
 import { db } from '@workspace/db/client'
-import { blogCategory, blogPost, blogTag } from '@workspace/db/schema/blog'
+import {
+    blogCategory,
+    blogPost,
+    blogTag,
+    images,
+} from '@workspace/db/schema/blog'
 import { and, eq, isNotNull } from 'drizzle-orm'
 import { cache } from 'react'
 
 /**
- * Get all published blog post slugs with their last modified dates
+ * Blog post sitemap entry with optional featured image
+ */
+export type BlogPostSitemapEntry = {
+    slug: string
+    updatedAt: Date
+    publishedAt: Date
+    featuredImageUrl: string | null
+    featuredImageTitle: string | null
+}
+
+/**
+ * Get all published blog post slugs with their last modified dates and featured images
  */
 export const getPublishedPostSlugs = cache(
-    async (): Promise<
-        Array<{ slug: string; updatedAt: Date; publishedAt: Date }>
-    > => {
+    async (): Promise<BlogPostSitemapEntry[]> => {
         const rows = await db
             .select({
                 slug: blogPost.slug,
                 updatedAt: blogPost.updatedAt,
                 publishedAt: blogPost.publishedAt,
+                featuredImageUrl: images.url,
+                featuredImageTitle: images.title,
             })
             .from(blogPost)
+            .leftJoin(images, eq(images.id, blogPost.featuredImageId))
             .where(
                 and(
                     eq(blogPost.status, 'published'),
@@ -37,6 +54,8 @@ export const getPublishedPostSlugs = cache(
             // Use updatedAt if available, otherwise fallback to publishedAt
             updatedAt: r.updatedAt ?? r.publishedAt!,
             publishedAt: r.publishedAt!,
+            featuredImageUrl: r.featuredImageUrl,
+            featuredImageTitle: r.featuredImageTitle,
         }))
     }
 )

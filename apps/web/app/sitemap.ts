@@ -1,288 +1,44 @@
 /**
- * Sitemap Route Handler
+ * Sitemap Index
  *
- * Generates dynamic sitemap.xml for the website including static and dynamic routes.
- * This file exports a function that returns MetadataRoute.Sitemap for Next.js.
+ * Returns a sitemap index that references child sitemaps organized by content type.
+ * This enables better organization and tracking in Google Search Console.
+ *
+ * Child sitemaps:
+ * - /sitemap/pages.xml - Static pages and surgeon profiles
+ * - /sitemap/blog.xml - Blog posts, categories, and tags
+ * - /sitemap/procedures.xml - Procedure listings and details
+ * - /sitemap/gallery.xml - Gallery groups and media
+ * - /sitemap/promotions.xml - Special offers and promotions
  */
-import {
-    type SitemapConfig,
-    convertToNextjsSitemap,
-    generateSitemapEntries,
-} from '@workspace/seo/utils/sitemap-generator.util'
-import type { SitemapRoute } from '@workspace/seo/types/sitemap/sitemap-route.type'
 import type { MetadataRoute } from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
-import {
-    getActiveCategorySlugs,
-    getActiveTagSlugs,
-    getPublishedPostSlugs,
-} from '@/lib/queries/blog/sitemap.query'
-import {
-    getAllGalleryGroupSlugs,
-    getAllGalleryMediaSlugs,
-} from '@/lib/queries/gallery/gallery-detail.query'
-import { procedures } from '@/lib/data/procedures.data'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
 /**
  * Get the base URL for the site
- * Uses site config which automatically reads from NEXT_PUBLIC_SITE_URL env var
  */
 function getBaseUrl(): string {
     return seoDefaults.siteUrl
 }
 
 /**
- * Create dynamic route configurations
+ * Sitemap index entries for child sitemaps
  */
-async function createDynamicRoutes(): Promise<SitemapRoute[]> {
-    const dynamicRoutes: SitemapRoute[] = []
-
-    // Blog main listing page
-    dynamicRoutes.push({
-        path: '/blog',
-        getEntries: async () => {
-            return [
-                {
-                    url: '/blog',
-                    lastModified: new Date().toISOString(),
-                    changeFrequency: 'daily',
-                    priority: 0.9,
-                },
-            ]
-        },
-    })
-
-    // Blog post detail pages (root-level URLs to match WordPress structure)
-    dynamicRoutes.push({
-        path: '/posts',
-        getEntries: async () => {
-            const posts = await getPublishedPostSlugs()
-            return posts.map((post) => ({
-                url: `/${post.slug}`,
-                lastModified: post.updatedAt.toISOString(),
-                changeFrequency: 'weekly' as const,
-                priority: 0.7,
-            }))
-        },
-    })
-
-    // Blog categories listing and detail pages
-    dynamicRoutes.push({
-        path: '/blog/categories',
-        getEntries: async () => {
-            const categories = await getActiveCategorySlugs()
-            const now = new Date().toISOString()
-
-            return [
-                {
-                    url: '/blog/categories',
-                    lastModified: now,
-                    changeFrequency: 'weekly',
-                    priority: 0.8,
-                },
-                ...categories.map((slug) => ({
-                    url: `/blog/categories/${slug}`,
-                    lastModified: now,
-                    changeFrequency: 'weekly' as const,
-                    priority: 0.7,
-                })),
-            ]
-        },
-    })
-
-    // Blog tags listing and detail pages
-    dynamicRoutes.push({
-        path: '/blog/tags',
-        getEntries: async () => {
-            const tags = await getActiveTagSlugs()
-            const now = new Date().toISOString()
-
-            return [
-                {
-                    url: '/blog/tags',
-                    lastModified: now,
-                    changeFrequency: 'weekly',
-                    priority: 0.8,
-                },
-                ...tags.map((slug) => ({
-                    url: `/blog/tags/${slug}`,
-                    lastModified: now,
-                    changeFrequency: 'weekly' as const,
-                    priority: 0.6,
-                })),
-            ]
-        },
-    })
-
-    // Procedures main listing page
-    dynamicRoutes.push({
-        path: '/procedures',
-        getEntries: async () => {
-            return [
-                {
-                    url: '/procedures',
-                    lastModified: new Date().toISOString(),
-                    changeFrequency: 'monthly',
-                    priority: 0.9,
-                },
-            ]
-        },
-    })
-
-    // Procedure detail pages
-    dynamicRoutes.push({
-        path: '/procedures/detail',
-        getEntries: async () => {
-            const now = new Date().toISOString()
-            return procedures.map((procedure) => ({
-                url: `/procedures/${procedure.slug}`,
-                lastModified: now,
-                changeFrequency: 'monthly' as const,
-                priority: 0.8,
-            }))
-        },
-    })
-
-    // Gallery main listing page
-    dynamicRoutes.push({
-        path: '/gallery',
-        getEntries: async () => {
-            return [
-                {
-                    url: '/gallery',
-                    lastModified: new Date().toISOString(),
-                    changeFrequency: 'weekly',
-                    priority: 0.9,
-                },
-            ]
-        },
-    })
-
-    // Gallery group pages
-    dynamicRoutes.push({
-        path: '/gallery/groups',
-        getEntries: async () => {
-            const groupSlugs = await getAllGalleryGroupSlugs()
-            const now = new Date().toISOString()
-            return groupSlugs.map((slug) => ({
-                url: `/gallery/${slug}`,
-                lastModified: now,
-                changeFrequency: 'weekly' as const,
-                priority: 0.8,
-            }))
-        },
-    })
-
-    // Gallery media detail pages
-    dynamicRoutes.push({
-        path: '/gallery/media',
-        getEntries: async () => {
-            const mediaSlugs = await getAllGalleryMediaSlugs()
-            const now = new Date().toISOString()
-            return mediaSlugs.map((slug) => ({
-                url: `/gallery/media/${slug}`,
-                lastModified: now,
-                changeFrequency: 'monthly' as const,
-                priority: 0.6,
-            }))
-        },
-    })
-
-    return dynamicRoutes
-}
+const SITEMAP_CHILDREN = [
+    { name: 'pages', description: 'Static pages and surgeon profiles' },
+    { name: 'blog', description: 'Blog posts, categories, and tags' },
+    { name: 'procedures', description: 'Procedure listings and details' },
+    { name: 'gallery', description: 'Gallery groups and media' },
+    { name: 'promotions', description: 'Special offers and promotions' },
+] as const
 
 /**
- * Create static route configurations
+ * Main sitemap index generation function
+ * This is called by Next.js to generate the sitemap.xml as an index
  */
-function createAppStaticRoutes(): SitemapRoute[] {
-    return [
-        {
-            path: '/',
-            getEntries: () => [
-                {
-                    url: '/',
-                    changeFrequency: 'daily',
-                    priority: 1.0,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-        {
-            path: '/about',
-            getEntries: () => [
-                {
-                    url: '/about',
-                    changeFrequency: 'monthly',
-                    priority: 0.8,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-        {
-            path: '/plastic-surgery-financing-miami',
-            getEntries: () => [
-                {
-                    url: '/plastic-surgery-financing-miami',
-                    changeFrequency: 'monthly',
-                    priority: 0.9,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-        {
-            path: '/contact-us',
-            getEntries: () => [
-                {
-                    url: '/contact-us',
-                    changeFrequency: 'monthly',
-                    priority: 0.7,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-        {
-            path: '/privacy',
-            getEntries: () => [
-                {
-                    url: '/privacy',
-                    changeFrequency: 'yearly',
-                    priority: 0.3,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-        {
-            path: '/terms',
-            getEntries: () => [
-                {
-                    url: '/terms',
-                    changeFrequency: 'yearly',
-                    priority: 0.3,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-        {
-            path: '/cookies',
-            getEntries: () => [
-                {
-                    url: '/cookies',
-                    changeFrequency: 'yearly',
-                    priority: 0.3,
-                    lastModified: new Date().toISOString(),
-                },
-            ],
-        },
-    ]
-}
-
-/**
- * Main sitemap generation function
- * This is called by Next.js to generate the sitemap.xml
- */
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
     // Return empty sitemap if crawling is not allowed
     if (!isCrawlingAllowed()) {
         return []
@@ -290,36 +46,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const baseUrl = getBaseUrl()
 
-    const config: SitemapConfig = {
-        baseUrl,
-        defaultChangeFrequency: 'weekly',
-        defaultPriority: 0.5,
-        maxUrlsPerSitemap: 50000,
-    }
-
-    try {
-        // Combine static and dynamic routes
-        const staticRoutes = createAppStaticRoutes()
-        const dynamicRoutes = await createDynamicRoutes()
-        const allRoutes = [...staticRoutes, ...dynamicRoutes]
-
-        // Generate sitemap entries
-        const entries = await generateSitemapEntries(allRoutes, config)
-
-        // Convert to Next.js format and return
-        return convertToNextjsSitemap(entries)
-    } catch (error) {
-        console.error('Error generating sitemap:', error)
-
-        // Fallback to basic static routes only
-        const fallbackRoutes = createAppStaticRoutes()
-        const fallbackEntries = await generateSitemapEntries(
-            fallbackRoutes,
-            config
-        )
-        return convertToNextjsSitemap(fallbackEntries)
-    }
+    // Generate sitemap index entries pointing to child sitemaps
+    return SITEMAP_CHILDREN.map((child) => ({
+        url: `${baseUrl}/sitemap/${child.name}.xml`,
+        lastModified: new Date(),
+    }))
 }
-
-// Export the sitemap function as the default export
-// This is required by Next.js for sitemap.ts files

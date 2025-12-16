@@ -1,0 +1,161 @@
+/**
+ * Gallery Sitemap
+ *
+ * Generates sitemap XML for gallery content including:
+ * - Main gallery listing page
+ * - Gallery group pages with cover images
+ * - Individual gallery media pages with images
+ */
+import { NextResponse } from 'next/server'
+
+import { seoDefaults } from '@/lib/data/site-config'
+import {
+    getGalleryGroupsForSitemap,
+    getGalleryMediaForSitemap,
+} from '@/lib/queries/gallery/sitemap.query'
+import { isCrawlingAllowed } from '@/lib/utils/crawling'
+
+type SitemapEntry = {
+    url: string
+    lastModified: string
+    changeFrequency: string
+    priority: number
+    images?: Array<{ url: string; title?: string }>
+}
+
+/**
+ * Generate XML sitemap string with image support
+ */
+function generateSitemapXml(entries: SitemapEntry[]): string {
+    const urls = entries
+        .map((entry) => {
+            const imageXml = entry.images?.length
+                ? entry.images
+                      .map(
+                          (img) => `
+    <image:image>
+      <image:loc>${escapeXml(img.url)}</image:loc>${
+          img.title
+              ? `
+      <image:title>${escapeXml(img.title)}</image:title>`
+              : ''
+      }
+    </image:image>`
+                      )
+                      .join('')
+                : ''
+
+            return `
+  <url>
+    <loc>${escapeXml(entry.url)}</loc>
+    <lastmod>${entry.lastModified}</lastmod>
+    <changefreq>${entry.changeFrequency}</changefreq>
+    <priority>${entry.priority}</priority>${imageXml}
+  </url>`
+        })
+        .join('')
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urls}
+</urlset>`
+}
+
+/**
+ * Escape special XML characters
+ */
+function escapeXml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
+}
+
+/**
+ * GET handler for gallery sitemap
+ */
+export async function GET(): Promise<NextResponse> {
+    // Return empty sitemap if crawling is not allowed
+    if (!isCrawlingAllowed()) {
+        return new NextResponse(
+            `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+</urlset>`,
+            {
+                headers: {
+                    'Content-Type': 'application/xml',
+                    'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+                },
+            }
+        )
+    }
+
+    const baseUrl = seoDefaults.siteUrl
+    const entries: SitemapEntry[] = []
+    const today = new Date().toISOString().slice(0, 10)
+
+    try {
+        // Gallery main listing page
+        entries.push({
+            url: `${baseUrl}/gallery`,
+            lastModified: today,
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        })
+
+        // Gallery groups
+        const groups = await getGalleryGroupsForSitemap()
+        for (const group of groups) {
+            const entry: SitemapEntry = {
+                url: `${baseUrl}/gallery/${group.slug}`,
+                lastModified: group.updatedAt.toISOString().slice(0, 10),
+                changeFrequency: 'weekly',
+                priority: 0.8,
+            }
+
+            // Add cover image if available
+            if (group.coverImageUrl) {
+                entry.images = [
+                    {
+                        url: group.coverImageUrl,
+                        title: group.name,
+                    },
+                ]
+            }
+
+            entries.push(entry)
+        }
+
+        // Gallery media detail pages
+        const media = await getGalleryMediaForSitemap()
+        for (const item of media) {
+            entries.push({
+                url: `${baseUrl}/gallery/media/${item.slug}`,
+                lastModified: item.updatedAt.toISOString().slice(0, 10),
+                changeFrequency: 'monthly',
+                priority: 0.6,
+                images: [
+                    {
+                        url: item.url,
+                        title: item.title,
+                    },
+                ],
+            })
+        }
+    } catch (error) {
+        console.error('Error generating gallery sitemap:', error)
+    }
+
+    const xml = generateSitemapXml(entries)
+
+    return new NextResponse(xml, {
+        headers: {
+            'Content-Type': 'application/xml',
+            'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        },
+    })
+}
