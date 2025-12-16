@@ -10,7 +10,7 @@ import {
     detectEnvironment,
     generateRobots,
 } from '@workspace/seo/utils/robots-generator.util'
-import type { MetadataRoute } from 'next'
+import type MetadataRoute from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'

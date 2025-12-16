@@ -4,7 +4,7 @@
  * Provides utilities for generating robots.txt files with environment-aware rules,
  * sitemap references, and proper crawling directives.
  */
-import type { MetadataRoute } from 'next'
+import MetadataRoute from 'next'
 
 import { env } from '../env'
 
@@ -349,7 +349,7 @@ export function robotsToText(robots: MetadataRoute.Robots): string {
         ? robots.rules
         : [robots.rules]
 
-    rulesArray.forEach((rule) => {
+    rulesArray.forEach((rule: RobotsRule) => {
         // Handle userAgent as string or array
         const userAgents = (
             Array.isArray(rule.userAgent) ? rule.userAgent : [rule.userAgent]

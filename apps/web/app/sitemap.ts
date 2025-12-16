@@ -11,7 +11,7 @@
  * - /sitemap/gallery.xml - Gallery groups and media
  * - /sitemap/promotions.xml - Special offers and promotions
  */
-import type { MetadataRoute } from 'next'
+import type MetadataRoute from 'next'
 
 import { seoDefaults } from '@/lib/data/site-config'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
