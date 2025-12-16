@@ -32,7 +32,7 @@
 | **Industry**       | Elective cosmetic procedures                      |
 | **Purchase Cycle** | High-consideration, research-heavy                |
 | **Sales Model**    | Consultation-first (every page drives to booking) |
-| **Accreditation**  | AAAASF certified facility                         |
+| **Accreditation**  | Double Board-Certified surgeons                   |
 
 **Core Value Proposition:**
 World-class aesthetic procedures combining high-end results with flexible financing and personalized care. Where luxury meets affordability.
@@ -202,7 +202,7 @@ Patients evaluate trust in this order:
    - Real patient narratives
 
 4. FACILITY CREDIBILITY
-   - Accreditation (AAAASF)
+   - Double Board-Certified surgeons
    - Hospital privileges
    - Safety protocols
 
@@ -403,7 +403,7 @@ Establish the clinic as a trusted authority:
 
 ```
 ✅ DO:
-- Highlight accreditations (AAAASF, hospital privileges)
+- Highlight credentials (Double Board-Certified, hospital privileges)
 - Feature media appearances and publications
 - Include industry awards and recognition
 - Link to professional associations
@@ -813,7 +813,7 @@ very first consultation."
 
 **Facility Credentials:**
 
-- AAAASF accreditation (explain what this means)
+- Double Board-Certified surgeons (explain what this means)
 - State licensing
 - Equipment certifications
 - Safety protocols
@@ -835,7 +835,7 @@ Position the value equation explicitly:
 LUXURY EXPERIENCE          +          ACCESSIBLE INVESTMENT
 ─────────────────                     ────────────────────
 Board-certified surgeons              Flexible financing options
-AAAASF-accredited facility            Multiple payment plans
+Double Board-Certified surgeons       Multiple payment plans
 Personalized patient care             No hidden fees
 Premium post-op support               CareCredit, Cherry, United Credit
 ```
@@ -1214,7 +1214,7 @@ Brazilian Butt Lift. Your own body fat, expertly sculpted,
 beautifully transferred.
 
 [TRUST ELEMENTS]:
-✓ 5,000+ Procedures | ✓ Board-Certified Surgeons | ✓ AAAASF Accredited
+✓ 5,000+ Procedures | ✓ Double Board-Certified Surgeons | ✓ Financing Available
 
 [CTA PRIMARY]: Book Your Consultation
 [CTA SECONDARY]: Call (786) 305-8649
@@ -1485,7 +1485,7 @@ cleared around 6-8 weeks.
 ```
 [Header]: Phone number visible
 [Hero Area]: 1-2 trust stats (patients served, rating)
-[Hero Area]: Accreditation badge (AAAASF)
+[Hero Area]: Credential badge (Double Board-Certified)
 ```
 
 #### Procedure Pages
@@ -1673,7 +1673,7 @@ From `site-config.ts`:
 - Years experience: 15+
 - Board certified: 100%
 - Patient rating: 4.9
-- Accreditation: AAAASF
+- Accreditation: Double Board-Certified
 
 ### Contact Information
 
@@ -1713,7 +1713,7 @@ Never use in content:
 - "Premium results with financing options"
 - "Your investment, your terms"
 - "Board-certified expertise"
-- "AAAASF-accredited facility"
+- "Double Board-Certified surgeons"
 - "Personalized care"
 - "Natural-looking results"
 
