@@ -1,0 +1,374 @@
+---
+description: Automatically updates page-metadata.ts when static pages are modified or added for accurate sitemap generation
+---
+
+# Page Metadata Auto-Update Agent
+
+Automatically detects page modifications and updates `lastModified` dates in `page-metadata.ts` without manual intervention. Ensures accurate sitemap generation and optimal SEO.
+
+## Purpose
+
+This agent **automatically updates** the `page-metadata.ts` file when:
+
+- Static pages are modified or created
+- Surgeon profile data is updated
+- Procedure content is changed
+- Any tracked page receives content updates
+
+The updates ensure:
+
+- Google knows when pages actually changed (better crawl efficiency)
+- Sitemaps reflect accurate update timestamps
+- SEO performance improves through proper change signaling
+- No manual date tracking required
+
+## When to Activate
+
+This agent activates automatically when it detects:
+
+- Edits to any `page.tsx` file in `apps/web/app/`
+- Changes to surgeon data in `lib/data/surgeons/`
+- Modifications to procedure data in `lib/data/procedures/`
+- Creation of new static pages
+- Content updates to static marketing pages
+
+**Action:** Immediately update `page-metadata.ts` with today's date
+
+## File Path to URL Mapping
+
+### Static Pages
+
+| File Path                                      | URL in page-metadata.ts            |
+| ---------------------------------------------- | ---------------------------------- |
+| `app/page.tsx`                                 | `/`                                |
+| `app/about/page.tsx`                           | `/about`                           |
+| `app/contact-us/page.tsx`                      | `/contact-us`                      |
+| `app/plastic-surgery-financing-miami/page.tsx` | `/plastic-surgery-financing-miami` |
+| `app/miami-plastic-surgery-specials/page.tsx`  | `/miami-plastic-surgery-specials`  |
+| `app/thank-you/page.tsx`                       | `/thank-you`                       |
+| `app/privacy/page.tsx`                         | `/privacy`                         |
+| `app/terms/page.tsx`                           | `/terms`                           |
+| `app/cookies/page.tsx`                         | `/cookies`                         |
+
+### Surgeon Pages
+
+| File/Data Source                                        | URL in page-metadata.ts |
+| ------------------------------------------------------- | ----------------------- |
+| `lib/data/surgeons/surgeons-data.ts` (dr-karlinsky)     | `/dr-karlinsky`         |
+| `lib/data/surgeons/surgeons-data.ts` (dr-andrew-lofman) | `/dr-andrew-lofman`     |
+| `lib/data/surgeons/surgeons-data.ts` (dr-rita-shats)    | `/dr-rita-shats`        |
+
+### Procedure Pages
+
+Procedure pages are currently tracked with a constant date in `app/sitemap/procedures.xml/route.ts`. If individual procedure data files are edited significantly:
+
+| File Pattern                    | Suggestion                                                  |
+| ------------------------------- | ----------------------------------------------------------- |
+| `lib/data/procedures/*.data.ts` | Consider adding to `page-metadata.ts` for granular tracking |
+
+## Automatic Update Process
+
+### How to Perform Updates
+
+When a tracked page is modified, **automatically execute these steps:**
+
+**Step 1: Calculate Today's Date**
+
+```typescript
+// Get today's date in W3C Datetime format (date-only)
+// Format: YYYY-MM-DD (defaults to midnight UTC per Google standards)
+const today = new Date().toISOString().slice(0, 10)
+// Example: '2025-12-17'
+```
+
+**Step 2: Identify the URL Path**
+
+Map the edited file to its URL path:
+
+- `app/about/page.tsx` → `/about`
+- `app/page.tsx` → `/`
+- `lib/data/surgeons/surgeons-data.ts` (dr-karlinsky entry) → `/dr-karlinsky`
+
+**Step 3: Read Current page-metadata.ts**
+
+Use the `Read` tool to get the current file contents.
+
+**Step 4: Update the Date Using StrReplace**
+
+Use `StrReplace` tool to update the specific date entry:
+
+```typescript
+// old_string (find the line for the specific URL)
+'/about': '2025-12-16',
+
+// new_string (replace with today's date)
+'/about': '2025-12-17',
+```
+
+**Step 5: Confirm to User**
+
+Report: "✅ Updated `/about` lastModified date to 2025-12-17 in page-metadata.ts"
+
+## Action Workflows
+
+### Workflow 1: Existing Page Updated
+
+**Trigger:** User edits `app/about/page.tsx`
+
+**Actions:**
+
+1. Calculate today's date: `2025-12-17`
+2. Read `apps/web/lib/data/page-metadata.ts`
+3. Find the line: `'/about': '2025-12-16',`
+4. Replace with: `'/about': '2025-12-17',`
+5. Confirm: "✅ Updated `/about` lastModified to 2025-12-17"
+
+### Workflow 2: New Page Added
+
+**Trigger:** User creates `app/new-service/page.tsx`
+
+**Actions:**
+
+1. Calculate today's date: `2025-12-17`
+2. Read `apps/web/lib/data/page-metadata.ts`
+3. Check if `/new-service` exists in the file
+4. If not found, add new entry before the closing brace:
+    ```typescript
+    '/miami-plastic-surgery-specials': '2025-12-16',
+    '/new-service': '2025-12-17', // ← Add this
+    '/thank-you': '2025-12-01',
+    ```
+5. Confirm: "✅ Added `/new-service` to page-metadata.ts with date 2025-12-17"
+6. Remind: "Also add this page to the appropriate sitemap route handler"
+
+### Workflow 3: Surgeon Data Modified
+
+**Trigger:** User edits `lib/data/surgeons/surgeons-data.ts`
+
+**Actions:**
+
+1. Calculate today's date: `2025-12-17`
+2. Determine which surgeon(s) were modified
+3. Update all surgeon dates (safest approach) or specific surgeon if identifiable:
+    ```typescript
+    '/dr-karlinsky': '2025-12-17',
+    '/dr-andrew-lofman': '2025-12-17',
+    '/dr-rita-shats': '2025-12-17',
+    ```
+4. Confirm: "✅ Updated surgeon page dates to 2025-12-17"
+
+### Workflow 4: Multiple Pages in Session
+
+**Trigger:** User modifies multiple pages in one session
+
+**Actions:**
+
+1. Track all modified page paths
+2. Update all corresponding dates to today
+3. Batch the updates efficiently
+4. Confirm: "✅ Updated lastModified dates for: /about, /contact-us, /financing"
+
+## Detection & Execution Logic
+
+### Step-by-Step Detection
+
+1. **Detect file being edited:**
+    - Check if path matches `apps/web/app/**/page.tsx`
+    - Check if path matches `apps/web/lib/data/surgeons/*.ts`
+    - Check if path matches `apps/web/lib/data/procedures/*.data.ts`
+
+2. **Map file path to URL:**
+    - `app/about/page.tsx` → `/about`
+    - `app/page.tsx` → `/`
+    - `app/contact-us/page.tsx` → `/contact-us`
+    - For dynamic routes `app/[slug]/page.tsx`, check context (surgeon vs blog)
+
+3. **Determine action:**
+    - If URL exists in `pageLastModified` → **update existing date**
+    - If URL missing from `pageLastModified` → **ask to add new entry**
+    - If blog/gallery/promotion → **skip (uses database timestamps)**
+
+4. **Execute update:**
+    - Read `apps/web/lib/data/page-metadata.ts`
+    - Use `StrReplace` tool to update the date
+    - Confirm completion to user
+
+### Complete Example Workflow
+
+**Scenario:** User edits `apps/web/app/about/page.tsx`
+
+```typescript
+// Step 1: Detect edit
+// Detected: apps/web/app/about/page.tsx modified
+
+// Step 2: Map to URL
+const urlPath = '/about' // Extracted from file path
+
+// Step 3: Get today's date
+const today = new Date().toISOString().slice(0, 10) // '2025-12-17'
+
+// Step 4: Read page-metadata.ts
+// Found: '/about': '2025-12-16',
+
+// Step 5: Execute StrReplace
+StrReplace({
+    path: 'apps/web/lib/data/page-metadata.ts',
+    old_string: "'/about': '2025-12-16',",
+    new_string: "'/about': '2025-12-17',",
+})
+
+// Step 6: Confirm to user
+// "✅ Updated `/about` lastModified date to 2025-12-17"
+```
+
+## Special Cases & Edge Handling
+
+### Case 1: Minor Typo Fixes
+
+**Decision Rule:**
+
+- If changes are trivial (typos, punctuation), **ask user** if they want to update the date
+- If user confirms or changes are substantive, proceed with update
+
+**Example:**
+"I noticed a minor typo fix to `/about`. Should I update its lastModified date? (yes/no)"
+
+### Case 2: Procedure Pages
+
+**Current State:** Procedures use `PROCEDURES_LAST_MODIFIED` constant in `sitemap/procedures.xml/route.ts`
+
+**Actions when procedure files are edited:**
+
+1. Inform user: "Procedure pages currently use a shared constant date"
+2. Offer options:
+    - **Option A:** Add individual procedure URL to `page-metadata.ts` for granular tracking
+    - **Option B:** Update `PROCEDURES_LAST_MODIFIED` constant in `sitemap/procedures.xml/route.ts`
+3. Execute user's choice
+
+### Case 3: Blog Posts & Dynamic Pages
+
+**Do NOT update these** - they use database `updatedAt` timestamps automatically:
+
+- Blog posts (`/blog/[slug]`)
+- Gallery items (`/gallery/[slug]`, `/gallery/media/[slug]`)
+- Promotions (`/promotions/[slug]`)
+
+**Action:** If detected, inform user: "This is a dynamic page with automatic database timestamps. No manual update needed."
+
+### Case 4: Page Not in Mapping Table
+
+**If URL not recognized:**
+
+1. Check if it's a static page that should be tracked
+2. If yes, ask user: "Should I add `/new-page` to page-metadata.ts?"
+3. If confirmed, add the entry with today's date
+4. If no, skip update
+
+## Page Coverage
+
+### Currently Tracked Pages ✅
+
+- Main pages (home, about, contact, financing, specials, thank-you)
+- Surgeon profiles (3 surgeons)
+- Legal pages (privacy, terms, cookies)
+
+### Not Tracked (Database-Driven) ❌
+
+These use database `updatedAt` timestamps automatically:
+
+- Blog posts (`/blog/[slug]`)
+- Blog categories (`/blog/categories/[slug]`)
+- Blog tags (`/blog/tags/[slug]`)
+- Gallery groups (`/gallery/[slug]`)
+- Gallery media (`/gallery/media/[slug]`)
+- Promotions (`/promotions/[slug]`)
+
+### Should Consider Tracking 🤔
+
+- Individual procedure pages (currently use constant date)
+- Main procedure listing page (`/procedures`)
+
+## Quick Reference
+
+**File to update:** `apps/web/lib/data/page-metadata.ts`
+
+**Date format:** W3C Datetime encoding (date-only recommended)
+
+- ✅ `2025-12-17` (date-only, defaults to midnight UTC)
+- ✅ `2025-12-17T18:00:15+00:00` (full datetime with timezone)
+- ❌ `2025-12-17T18:00:15` (time without timezone = error)
+
+**Get today's date:**
+
+```typescript
+new Date().toISOString().slice(0, 10) // Returns 'YYYY-MM-DD'
+```
+
+**Update pattern with StrReplace:**
+
+```typescript
+// old_string (find this)
+'/page-url': '2025-12-16',
+
+// new_string (replace with today)
+'/page-url': '2025-12-17',
+```
+
+**Add new entry pattern:**
+
+```typescript
+// Find the appropriate section and add:
+'/new-page-url': '2025-12-17',
+```
+
+## Benefits of Accurate lastmod Dates
+
+1. **SEO Performance**: Google prioritizes crawling pages that have actually changed
+2. **Crawl Efficiency**: Reduces wasted crawl budget on unchanged pages
+3. **Index Freshness**: Updated pages get re-indexed faster
+4. **Search Console**: Better insights into crawl behavior and issues
+5. **User Trust**: Accurate dates show content is maintained and current
+
+## Post-Update Verification
+
+After automatically updating page-metadata.ts, optionally suggest to the user:
+
+"✅ Updated successfully. You can verify the changes by:
+
+1. Checking the updated sitemap: `/sitemap/pages.xml`
+2. Running: `pnpm validate:sitemap` (if available)
+3. Submitting to Google: `pnpm google:index` (optional)"
+
+## Implementation Guidelines
+
+### When to Update Automatically (No Ask Required)
+
+- Substantive content changes to tracked pages
+- New tracked pages being added
+- Surgeon data modifications
+- Marketing page updates
+
+### When to Ask First
+
+- Minor typo/formatting fixes (ask if update needed)
+- Unrecognized pages (ask if should be tracked)
+- Procedure pages (ask which update method to use)
+
+### Always Confirm After Action
+
+Provide clear feedback:
+
+- ✅ "Updated `/about` lastModified to 2025-12-17"
+- ✅ "Added `/new-service` to page-metadata.ts with date 2025-12-17"
+- ⏭️ "Skipped update for dynamic blog post (uses database timestamp)"
+
+## References
+
+- `@apps/web/lib/data/page-metadata.ts` - The file to automatically update
+- `@apps/web/app/sitemap/pages.xml/route.ts` - Consumes these dates for sitemap
+- `@apps/web/lib/data/surgeons/surgeons-data.ts` - Surgeon data source
+- `@apps/web/app/[slug]/page.tsx` - Dynamic route for surgeons and blog posts
+
+---
+
+**Key Principle**: Automatically update dates when content actually changes. Accurate dates build trust with search engines and users alike.
