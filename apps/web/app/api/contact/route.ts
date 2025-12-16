@@ -15,7 +15,7 @@
  *
  * @module app/api/contact/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse, after } from 'next/server'
 import { ZodError } from 'zod'
 
 import { db } from '@workspace/db/client'
@@ -155,7 +155,7 @@ function validateBySource(data: ContactFormData): {
  */
 function getSuccessMessage(
     source?: string,
-    confirmationSent?: boolean
+    hasUserProvidedEmail?: boolean
 ): string {
     switch (source) {
         case CONTACT_SOURCES.BLOG_LEAD:
@@ -165,12 +165,81 @@ function getSuccessMessage(
 
         case CONTACT_SOURCES.CONTACT_PAGE:
         case CONTACT_SOURCES.CONTACT_HERO:
-            return confirmationSent
+            return hasUserProvidedEmail
                 ? "Thank you for contacting us! We've sent you a confirmation email and will get back to you soon."
                 : "Thank you for contacting us! We'll get back to you soon."
 
         default:
             return "Thank you for contacting us! We'll get back to you soon."
+    }
+}
+
+/**
+ * Process lead in background (post-response)
+ *
+ * Handles CRM sync and email sending after the HTTP response is sent.
+ * Both operations run asynchronously without blocking the user's response.
+ *
+ * @param insertData - Contact submission data from database
+ * @param validatedData - Validated form data
+ * @param submissionId - Database ID of the contact submission
+ * @param hasUserProvidedEmail - Whether user provided a real email address
+ * @param source - Form source identifier
+ * @param fullName - User's full name
+ */
+async function processLeadInBackground(
+    insertData: InsertContactSubmission,
+    validatedData: ContactFormData,
+    submissionId: string,
+    hasUserProvidedEmail: boolean,
+    source: string,
+    fullName: string
+): Promise<void> {
+    // Sync to CRM
+    try {
+        await syncLeadToCRM(insertData)
+    } catch (crmError) {
+        console.error('CRM sync failed:', crmError)
+    }
+
+    // Send emails based on whether user provided a real email
+    if (hasUserProvidedEmail) {
+        // User provided email - send both notification and confirmation
+        try {
+            const emailResult = await sendContactEmails(
+                validatedData,
+                submissionId
+            )
+
+            if (emailResult.errors.length > 0) {
+                console.error('Email sending errors:', emailResult.errors)
+            }
+        } catch (emailError) {
+            console.error('Failed to send contact emails:', emailError)
+        }
+    } else {
+        // No email provided - send notification only (lead capture style)
+        try {
+            const sourceLabel =
+                source === CONTACT_SOURCES.BLOG_LEAD
+                    ? 'Blog'
+                    : source === CONTACT_SOURCES.EXIT_INTENT
+                      ? 'Exit Intent Popup'
+                      : 'Lead Form'
+
+            await sendContactNotification(
+                {
+                    name: fullName,
+                    email: '',
+                    phone: validatedData.phone,
+                    subject: `${sourceLabel} Lead: ${fullName} - Callback Requested`,
+                    message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${fullName}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
+                },
+                submissionId
+            )
+        } catch (emailError) {
+            console.error('Failed to send lead notification email:', emailError)
+        }
     }
 }
 
@@ -321,53 +390,20 @@ export async function POST(
 
         console.log(formatConsoleLog(validatedData, true))
 
-        // Sync to CRM (non-blocking - failures logged but don't affect response)
-        try {
-            await syncLeadToCRM(insertData)
-        } catch (crmError) {
-            console.error('CRM sync failed:', crmError)
-        }
-
-        // Send emails based on whether user provided a real email (not form source)
-        let emailResult = { confirmationSent: false, errors: [] as string[] }
-
-        if (hasUserProvidedEmail) {
-            // User provided email - send both notification and confirmation
-            emailResult = await sendContactEmails(validatedData, submission.id)
-
-            if (emailResult.errors.length > 0) {
-                console.error('Email sending errors:', emailResult.errors)
-            }
-        } else {
-            // No email provided - send notification only (lead capture style)
-            try {
-                const sourceLabel =
-                    source === CONTACT_SOURCES.BLOG_LEAD
-                        ? 'Blog'
-                        : source === CONTACT_SOURCES.EXIT_INTENT
-                          ? 'Exit Intent Popup'
-                          : 'Lead Form'
-
-                await sendContactNotification(
-                    {
-                        name: fullName,
-                        email: '',
-                        phone: validatedData.phone,
-                        subject: `${sourceLabel} Lead: ${fullName} - Callback Requested`,
-                        message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${fullName}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
-                    },
-                    submission.id
-                )
-            } catch (emailError) {
-                console.error(
-                    'Failed to send lead notification email:',
-                    emailError
-                )
-            }
-        }
+        // Process lead in background: CRM sync + email sending (post-response)
+        after(async () => {
+            await processLeadInBackground(
+                insertData,
+                validatedData,
+                submission.id,
+                hasUserProvidedEmail,
+                source,
+                fullName
+            )
+        })
 
         // Return success response with source-appropriate message
-        const message = getSuccessMessage(source, emailResult.confirmationSent)
+        const message = getSuccessMessage(source, hasUserProvidedEmail)
 
         return NextResponse.json<ContactFormResponse>(
             {
