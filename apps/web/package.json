@@ -10,13 +10,15 @@
         "lint": "next lint",
         "lint:fix": "next lint --fix",
         "typecheck": "tsc --noEmit",
-        "format": "pnpm -w format"
+        "format": "pnpm -w format",
+        "google:index": "node scripts/update-google-index.cjs"
     },
     "dependencies": {
         "@ai-sdk/react": "^2.0.107",
         "@elevenlabs/react": "^0.12.1",
         "@hookform/resolvers": "^5.2.2",
         "@langfuse/otel": "^4.4.9",
+        "@monsoft/google-indexing": "^0.4.0",
         "@opentelemetry/sdk-trace-node": "^2.2.0",
         "@radix-ui/react-slot": "^1.2.4",
         "@react-email/components": "^1.0.1",
@@ -61,6 +63,7 @@
         "@types/react-dom": "^19.2.3",
         "@workspace/eslint-config": "workspace:^",
         "@workspace/typescript-config": "workspace:*",
+        "tsx": "^4.20.6",
         "typescript": "^5.9.3"
     }
 }
