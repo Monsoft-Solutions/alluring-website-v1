@@ -38,33 +38,33 @@ This agent activates automatically when it detects:
 
 ### Static Pages
 
-| File Path                                      | URL in page-metadata.ts            |
-| ---------------------------------------------- | ---------------------------------- |
-| `app/page.tsx`                                 | `/`                                |
-| `app/about/page.tsx`                           | `/about`                           |
-| `app/contact-us/page.tsx`                      | `/contact-us`                      |
-| `app/plastic-surgery-financing-miami/page.tsx` | `/plastic-surgery-financing-miami` |
-| `app/miami-plastic-surgery-specials/page.tsx`  | `/miami-plastic-surgery-specials`  |
-| `app/thank-you/page.tsx`                       | `/thank-you`                       |
-| `app/privacy/page.tsx`                         | `/privacy`                         |
-| `app/terms/page.tsx`                           | `/terms`                           |
-| `app/cookies/page.tsx`                         | `/cookies`                         |
+| File Path                                               | URL in page-metadata.ts            |
+| ------------------------------------------------------- | ---------------------------------- |
+| `apps/web/app/page.tsx`                                 | `/`                                |
+| `apps/web/app/about/page.tsx`                           | `/about`                           |
+| `apps/web/app/contact-us/page.tsx`                      | `/contact-us`                      |
+| `apps/web/app/plastic-surgery-financing-miami/page.tsx` | `/plastic-surgery-financing-miami` |
+| `apps/web/app/miami-plastic-surgery-specials/page.tsx`  | `/miami-plastic-surgery-specials`  |
+| `apps/web/app/thank-you/page.tsx`                       | `/thank-you`                       |
+| `apps/web/app/privacy/page.tsx`                         | `/privacy`                         |
+| `apps/web/app/terms/page.tsx`                           | `/terms`                           |
+| `apps/web/app/cookies/page.tsx`                         | `/cookies`                         |
 
 ### Surgeon Pages
 
-| File/Data Source                                        | URL in page-metadata.ts |
-| ------------------------------------------------------- | ----------------------- |
-| `lib/data/surgeons/surgeons-data.ts` (dr-karlinsky)     | `/dr-karlinsky`         |
-| `lib/data/surgeons/surgeons-data.ts` (dr-andrew-lofman) | `/dr-andrew-lofman`     |
-| `lib/data/surgeons/surgeons-data.ts` (dr-rita-shats)    | `/dr-rita-shats`        |
+| File/Data Source                                                 | URL in page-metadata.ts |
+| ---------------------------------------------------------------- | ----------------------- |
+| `apps/web/lib/data/surgeons/surgeons-data.ts` (dr-karlinsky)     | `/dr-karlinsky`         |
+| `apps/web/lib/data/surgeons/surgeons-data.ts` (dr-andrew-lofman) | `/dr-andrew-lofman`     |
+| `apps/web/lib/data/surgeons/surgeons-data.ts` (dr-rita-shats)    | `/dr-rita-shats`        |
 
 ### Procedure Pages
 
-Procedure pages are currently tracked with a constant date in `app/sitemap/procedures.xml/route.ts`. If individual procedure data files are edited significantly:
+Procedure pages are currently tracked with a constant date in `apps/web/app/sitemap/procedures.xml/route.ts`. If individual procedure data files are edited significantly:
 
-| File Pattern                    | Suggestion                                                  |
-| ------------------------------- | ----------------------------------------------------------- |
-| `lib/data/procedures/*.data.ts` | Consider adding to `page-metadata.ts` for granular tracking |
+| File Pattern                             | Suggestion                                                  |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| `apps/web/lib/data/procedures/*.data.ts` | Consider adding to `page-metadata.ts` for granular tracking |
 
 ## Automatic Update Process
 
