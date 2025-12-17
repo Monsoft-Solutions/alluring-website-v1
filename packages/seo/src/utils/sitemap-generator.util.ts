@@ -6,7 +6,10 @@
  */
 import type { MetadataRoute } from 'next'
 
-import type { SitemapEntry } from '../types/sitemap/sitemap-entry.type'
+import type {
+    SitemapEntry,
+    SitemapImage,
+} from '../types/sitemap/sitemap-entry.type'
 import type { SitemapRoute } from '../types/sitemap/sitemap-route.type'
 
 /**
@@ -129,6 +132,8 @@ export function convertToNextjsSitemap(
                   ),
               }
             : undefined,
+        // Include images if present (Next.js 14+ supports this)
+        images: entry.images?.map((img) => img.url),
     }))
 }
 
@@ -293,7 +298,106 @@ export function validateSitemapEntries(entries: SitemapEntry[]): string[] {
                 }
             }
         }
+
+        // Validate images
+        if (entry.images) {
+            for (const [imgIndex, img] of entry.images.entries()) {
+                try {
+                    new URL(img.url)
+                } catch {
+                    errors.push(
+                        `Entry ${index}, Image ${imgIndex}: Invalid image URL: ${img.url}`
+                    )
+                }
+            }
+        }
     }
 
     return errors
+}
+
+/**
+ * Escape special XML characters to prevent malformed XML
+ *
+ * @param str - String to escape
+ * @returns XML-safe string
+ *
+ * @example
+ * ```typescript
+ * escapeXml('Price: $10 & up') // 'Price: $10 &amp; up'
+ * escapeXml('<tag>') // '&lt;tag&gt;'
+ * ```
+ */
+export function escapeXml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
+}
+
+/**
+ * Generate XML sitemap string with image support
+ *
+ * Converts sitemap entries to a complete XML string following the
+ * sitemap protocol and image sitemap extension.
+ *
+ * @param entries - Array of sitemap entries
+ * @returns Complete XML sitemap string
+ *
+ * @example
+ * ```typescript
+ * const entries: SitemapEntry[] = [{
+ *   url: 'https://example.com/page',
+ *   lastModified: '2024-01-15',
+ *   changeFrequency: 'weekly',
+ *   priority: 0.8,
+ *   images: [{ url: 'https://example.com/image.jpg', title: 'Example' }]
+ * }]
+ *
+ * const xml = generateSitemapXml(entries)
+ * ```
+ *
+ * @see https://www.sitemaps.org/protocol.html
+ * @see https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps
+ */
+export function generateSitemapXml(entries: SitemapEntry[]): string {
+    const urls = entries
+        .map((entry) => {
+            const imageXml = entry.images?.length
+                ? entry.images
+                      .map(
+                          (img: SitemapImage) => `
+    <image:image>
+      <image:loc>${escapeXml(img.url)}</image:loc>${
+          img.title
+              ? `
+      <image:title>${escapeXml(img.title)}</image:title>`
+              : ''
+      }
+    </image:image>`
+                      )
+                      .join('')
+                : ''
+
+            return `
+  <url>
+    <loc>${escapeXml(entry.url)}</loc>${
+        entry.lastModified
+            ? `
+    <lastmod>${escapeXml(entry.lastModified)}</lastmod>`
+            : ''
+    }
+    <changefreq>${escapeXml(entry.changeFrequency || 'weekly')}</changefreq>
+    <priority>${entry.priority !== undefined ? entry.priority : 0.5}</priority>${imageXml}
+  </url>`
+        })
+        .join('')
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urls}
+</urlset>`
 }

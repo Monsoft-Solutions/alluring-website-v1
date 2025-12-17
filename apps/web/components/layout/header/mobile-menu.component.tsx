@@ -14,6 +14,7 @@ import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
 import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 type MobileMenuProps = {
     isOpen: boolean
@@ -23,6 +24,8 @@ type MobileMenuProps = {
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     const [isProceduresMobileOpen, setIsProceduresMobileOpen] = useState(false)
     const [isSurgeonsMobileOpen, setIsSurgeonsMobileOpen] = useState(false)
+
+    const { track } = useAnalyticsEvent()
 
     // Generate links dynamically
     const procedureLinks = procedures.map((procedure) => ({
@@ -34,6 +37,44 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         label: surgeon.name,
         href: `/${surgeon.slug}`,
     }))
+
+    const handleSectionExpand = (sectionName: string, willOpen: boolean) => {
+        if (willOpen) {
+            track('nav_section_expand', {
+                section_name: sectionName,
+                nav_type: 'mobile',
+            })
+        }
+    }
+
+    const handleNavClick = (
+        linkText: string,
+        linkUrl: string,
+        linkCategory: string
+    ) => {
+        track('nav_click', {
+            link_text: linkText,
+            link_url: linkUrl,
+            nav_type: 'mobile',
+            link_category: linkCategory,
+        })
+        onClose()
+    }
+
+    const handlePhoneClick = () => {
+        track('nav_phone_click', {
+            phone_number: contactInfo.phoneDisplay,
+            nav_type: 'mobile',
+        })
+    }
+
+    const handleCTAClick = () => {
+        track('nav_cta_click', {
+            cta_text: 'Request Consultation',
+            nav_type: 'mobile',
+        })
+        onClose()
+    }
 
     if (!isOpen) return null
 
@@ -65,11 +106,11 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {/* Procedures Section */}
                         <div className='animate-fade-in-up w-full'>
                             <button
-                                onClick={() =>
-                                    setIsProceduresMobileOpen(
-                                        !isProceduresMobileOpen
-                                    )
-                                }
+                                onClick={() => {
+                                    const willOpen = !isProceduresMobileOpen
+                                    handleSectionExpand('Procedures', willOpen)
+                                    setIsProceduresMobileOpen(willOpen)
+                                }}
                                 className='group flex w-full items-center justify-between py-4 text-left'
                             >
                                 <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
@@ -88,7 +129,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                         <div>
                                             <Link
                                                 href='/procedures'
-                                                onClick={onClose}
+                                                onClick={() =>
+                                                    handleNavClick(
+                                                        'View All Procedures',
+                                                        '/procedures',
+                                                        'procedures'
+                                                    )
+                                                }
                                                 className='text-gold-600 hover:text-gold-700 flex items-center gap-2 text-sm font-bold tracking-widest uppercase transition-colors'
                                             >
                                                 View All Procedures
@@ -103,7 +150,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                                 <div key={link.href}>
                                                     <Link
                                                         href={link.href}
-                                                        onClick={onClose}
+                                                        onClick={() =>
+                                                            handleNavClick(
+                                                                link.label,
+                                                                link.href,
+                                                                'procedures'
+                                                            )
+                                                        }
                                                         className='block py-1 text-lg text-stone-600 transition-colors hover:text-stone-900'
                                                     >
                                                         {link.label}
@@ -119,11 +172,11 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {/* Surgeons Section */}
                         <div className='animate-fade-in-up animate-delay-100 w-full'>
                             <button
-                                onClick={() =>
-                                    setIsSurgeonsMobileOpen(
-                                        !isSurgeonsMobileOpen
-                                    )
-                                }
+                                onClick={() => {
+                                    const willOpen = !isSurgeonsMobileOpen
+                                    handleSectionExpand('Surgeons', willOpen)
+                                    setIsSurgeonsMobileOpen(willOpen)
+                                }}
                                 className='group flex w-full items-center justify-between py-4 text-left'
                             >
                                 <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
@@ -143,7 +196,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                             <div key={link.href}>
                                                 <Link
                                                     href={link.href}
-                                                    onClick={onClose}
+                                                    onClick={() =>
+                                                        handleNavClick(
+                                                            link.label,
+                                                            link.href,
+                                                            'surgeons'
+                                                        )
+                                                    }
                                                     className='block py-1 text-lg text-stone-600 transition-colors hover:text-stone-900'
                                                 >
                                                     {link.label}
@@ -159,7 +218,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <div className='animate-fade-in-up animate-delay-200 w-full'>
                             <Link
                                 href='/plastic-surgery-financing-miami'
-                                onClick={onClose}
+                                onClick={() =>
+                                    handleNavClick(
+                                        'Financing',
+                                        '/plastic-surgery-financing-miami',
+                                        'financing'
+                                    )
+                                }
                                 className='group flex w-full items-center py-4 text-left'
                             >
                                 <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
@@ -172,7 +237,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <div className='animate-fade-in-up animate-delay-300 w-full'>
                             <Link
                                 href='/blog'
-                                onClick={onClose}
+                                onClick={() =>
+                                    handleNavClick('Blog', '/blog', 'blog')
+                                }
                                 className='group flex w-full items-center py-4 text-left'
                             >
                                 <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
@@ -185,7 +252,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <div className='animate-fade-in-up animate-delay-400 w-full'>
                             <Link
                                 href='/gallery'
-                                onClick={onClose}
+                                onClick={() =>
+                                    handleNavClick(
+                                        'Gallery',
+                                        '/gallery',
+                                        'gallery'
+                                    )
+                                }
                                 className='group flex w-full items-center py-4 text-left'
                             >
                                 <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
@@ -198,7 +271,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <div className='animate-fade-in-up animate-delay-500 w-full'>
                             <Link
                                 href='/about'
-                                onClick={onClose}
+                                onClick={() =>
+                                    handleNavClick('About', '/about', 'about')
+                                }
                                 className='group flex w-full items-center py-4 text-left'
                             >
                                 <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
@@ -218,6 +293,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             </span>
                             <Link
                                 href={getPhoneLink()}
+                                onClick={handlePhoneClick}
                                 className='transition-colors hover:text-stone-900'
                             >
                                 {contactInfo.phoneDisplay}
@@ -228,7 +304,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             className='h-14 w-full text-lg'
                             asChild
                         >
-                            <Link href='/contact-us' onClick={onClose}>
+                            <Link href='/contact-us' onClick={handleCTAClick}>
                                 Request Consultation
                             </Link>
                         </Button>

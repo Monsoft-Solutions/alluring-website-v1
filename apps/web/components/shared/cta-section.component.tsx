@@ -13,6 +13,7 @@ import { siteConfig } from '@/lib/data/site-config'
 
 import { ContentWrapper } from './content-wrapper.component'
 import { SectionContainer } from './section-container.component'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 const containerStyles = 'flex items-center relative overflow-hidden'
 
@@ -63,6 +64,29 @@ function LuxuryCTASection({
     stats,
 }: CTASectionProps) {
     const containerRef = useRef<HTMLDivElement>(null)
+    const { track } = useAnalyticsEvent()
+
+    const handlePrimaryClick = () => {
+        track('cta_click', {
+            cta_name: id,
+            cta_text: primaryButton.text,
+            cta_variant: 'luxury',
+            cta_position: 'primary',
+            section_id: id,
+        })
+    }
+
+    const handleSecondaryClick = () => {
+        if (secondaryButton) {
+            track('cta_click', {
+                cta_name: id,
+                cta_text: secondaryButton.text,
+                cta_variant: 'luxury',
+                cta_position: 'secondary',
+                section_id: id,
+            })
+        }
+    }
 
     // Use stats from props if provided, otherwise fall back to siteConfig
     // Default values as fallback if neither is provided
@@ -204,7 +228,10 @@ function LuxuryCTASection({
                                 <Button
                                     size='lg'
                                     variant='default'
-                                    onClick={primaryButton.onClick}
+                                    onClick={() => {
+                                        handlePrimaryClick()
+                                        primaryButton.onClick?.()
+                                    }}
                                     className='bg-gold-500 hover:bg-gold-600 min-w-[200px] border-none px-8 py-6 text-base font-bold tracking-wide text-white uppercase shadow-lg shadow-amber-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30'
                                 >
                                     {primaryButton.icon &&
@@ -226,6 +253,7 @@ function LuxuryCTASection({
                                 >
                                     <Link
                                         href={primaryButton.href}
+                                        onClick={handlePrimaryClick}
                                         {...(primaryButton.external && {
                                             target: '_blank',
                                             rel: 'noopener noreferrer',
@@ -251,7 +279,10 @@ function LuxuryCTASection({
                                         <Button
                                             size='lg'
                                             variant='outline'
-                                            onClick={secondaryButton.onClick}
+                                            onClick={() => {
+                                                handleSecondaryClick()
+                                                secondaryButton.onClick?.()
+                                            }}
                                             className='hover:border-gold-500/50 min-w-[160px] border-white/20 bg-white/5 px-8 py-6 text-base font-bold tracking-wide text-white uppercase backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
                                         >
                                             {secondaryButton.icon &&
@@ -273,6 +304,7 @@ function LuxuryCTASection({
                                         >
                                             <Link
                                                 href={secondaryButton.href}
+                                                onClick={handleSecondaryClick}
                                                 {...(secondaryButton.external && {
                                                     target: '_blank',
                                                     rel: 'noopener noreferrer',
@@ -376,6 +408,29 @@ function DefaultCTASection({
 }: CTASectionProps) {
     const isPrimaryVariant = variant === 'primary'
     const containerRef = useRef<HTMLDivElement>(null)
+    const { track } = useAnalyticsEvent()
+
+    const handlePrimaryClick = () => {
+        track('cta_click', {
+            cta_name: id,
+            cta_text: primaryButton.text,
+            cta_variant: variant,
+            cta_position: 'primary',
+            section_id: id,
+        })
+    }
+
+    const handleSecondaryClick = () => {
+        if (secondaryButton) {
+            track('cta_click', {
+                cta_name: id,
+                cta_text: secondaryButton.text,
+                cta_variant: variant,
+                cta_position: 'secondary',
+                section_id: id,
+            })
+        }
+    }
 
     // Only use scroll-based animations when we have a background image
     const { scrollYProgress } = useScroll({
@@ -488,7 +543,10 @@ function DefaultCTASection({
                                         ? 'default' // Use default (gold) on dark bg
                                         : primaryButton.variant || 'primary'
                                 }
-                                onClick={primaryButton.onClick}
+                                onClick={() => {
+                                    handlePrimaryClick()
+                                    primaryButton.onClick?.()
+                                }}
                                 className={cn(
                                     'min-w-[140px] font-bold tracking-wide uppercase',
                                     (isPrimaryVariant || backgroundImage) &&
@@ -520,6 +578,7 @@ function DefaultCTASection({
                             >
                                 <Link
                                     href={primaryButton.href}
+                                    onClick={handlePrimaryClick}
                                     {...(primaryButton.external && {
                                         target: '_blank',
                                         rel: 'noopener noreferrer',
@@ -550,7 +609,10 @@ function DefaultCTASection({
                                                 : secondaryButton.variant ||
                                                   'outline'
                                         }
-                                        onClick={secondaryButton.onClick}
+                                        onClick={() => {
+                                            handleSecondaryClick()
+                                            secondaryButton.onClick?.()
+                                        }}
                                         className={cn(
                                             'min-w-[140px] font-bold tracking-wide uppercase',
                                             (isPrimaryVariant ||
@@ -587,6 +649,7 @@ function DefaultCTASection({
                                     >
                                         <Link
                                             href={secondaryButton.href}
+                                            onClick={handleSecondaryClick}
                                             {...(secondaryButton.external && {
                                                 target: '_blank',
                                                 rel: 'noopener noreferrer',

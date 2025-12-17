@@ -38,7 +38,7 @@ export const Header = () => {
                         : 'bg-transparent py-6'
                 }`}
             >
-                <div className='container mx-auto flex items-center justify-between px-6 md:px-12'>
+                <div className='mx-auto flex items-center justify-between px-6 md:px-8 lg:px-10 xl:px-12'>
                     {/* Logo */}
                     <Link
                         href='/'

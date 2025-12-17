@@ -16,6 +16,8 @@ export {
     generateSitemapIndex,
     createStaticRoutes,
     validateSitemapEntries,
+    generateSitemapXml,
+    escapeXml,
     type SitemapConfig,
 } from './sitemap-generator.util'
 

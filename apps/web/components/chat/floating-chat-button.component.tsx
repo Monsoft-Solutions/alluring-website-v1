@@ -60,7 +60,7 @@ export function FloatingChatButton({
     const { showTooltip, dismissTooltip } = useProactiveChat()
 
     // Analytics hook
-    const { trackClick, track } = useAnalyticsEvent()
+    const { track } = useAnalyticsEvent()
 
     /**
      * Handle button click with analytics tracking
@@ -73,9 +73,10 @@ export function FloatingChatButton({
 
             // Track chat button click
             if (willOpen) {
-                trackClick('chat_button', {
+                track('floating_chat_open', {
                     button_position: config?.buttonPosition ?? 'bottom-right',
                     source: wasTooltipVisible ? 'tooltip' : 'direct',
+                    element_type: 'floating_button',
                 })
 
                 // Track specific event if opened from tooltip
@@ -84,11 +85,29 @@ export function FloatingChatButton({
                         event_category: 'conversion',
                     })
                 }
+            } else {
+                track('floating_chat_close', {
+                    button_position: config?.buttonPosition ?? 'bottom-right',
+                    element_type: 'floating_button',
+                    close_method: 'button_click',
+                })
             }
 
             return willOpen
         })
-    }, [showTooltip, config?.buttonPosition, trackClick, track])
+    }, [showTooltip, config?.buttonPosition, track])
+
+    /**
+     * Handle chat close from within widget
+     */
+    const handleChatClose = useCallback(() => {
+        track('floating_chat_close', {
+            button_position: config?.buttonPosition ?? 'bottom-right',
+            element_type: 'floating_button',
+            close_method: 'widget_close',
+        })
+        setIsOpen(false)
+    }, [config?.buttonPosition, track])
 
     // Fetch chat configuration on mount
     useEffect(() => {
@@ -266,7 +285,7 @@ export function FloatingChatButton({
             )}
 
             {/* Chat Widget */}
-            <ChatWidget isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            <ChatWidget isOpen={isOpen} onClose={handleChatClose} />
 
             {/* Mobile Backdrop */}
             {isOpen && (
@@ -278,7 +297,15 @@ export function FloatingChatButton({
                         'animate-in fade-in duration-200'
                     )}
                     style={{ zIndex: Z_INDEX.BACKDROP }}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                        track('floating_chat_close', {
+                            button_position:
+                                config?.buttonPosition ?? 'bottom-right',
+                            element_type: 'floating_button',
+                            close_method: 'backdrop_click',
+                        })
+                        setIsOpen(false)
+                    }}
                     aria-hidden='true'
                 />
             )}

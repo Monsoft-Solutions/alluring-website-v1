@@ -6,8 +6,44 @@ import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const Footer = () => {
+    const { track } = useAnalyticsEvent()
+
+    const handleFooterLinkClick = (
+        linkText: string,
+        linkUrl: string,
+        category: string
+    ) => {
+        track('footer_link_click', {
+            link_text: linkText,
+            link_url: linkUrl,
+            link_category: category,
+        })
+    }
+
+    const handleSocialClick = (platform: string, linkUrl: string) => {
+        track('social_click', {
+            platform: platform,
+            link_url: linkUrl,
+        })
+    }
+
+    const handlePhoneClick = () => {
+        track('phone_click', {
+            element_type: 'footer',
+            phone_number: siteConfig.contact.phoneDisplay,
+        })
+    }
+
+    const handleEmailClick = () => {
+        track('email_click', {
+            element_type: 'footer',
+            email_address: siteConfig.contact.email,
+        })
+    }
+
     return (
         <footer className='border-t border-stone-900 bg-stone-950 pt-24 pb-12 text-white'>
             <div className='container mx-auto px-6 md:px-12'>
@@ -34,6 +70,12 @@ export const Footer = () => {
                                     <Link
                                         key={social.platform}
                                         href={social.url}
+                                        onClick={() =>
+                                            handleSocialClick(
+                                                social.platform,
+                                                social.url
+                                            )
+                                        }
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         aria-label={social.label}
@@ -47,6 +89,12 @@ export const Footer = () => {
                                     <Link
                                         key={social.platform}
                                         href={social.url}
+                                        onClick={() =>
+                                            handleSocialClick(
+                                                social.platform,
+                                                social.url
+                                            )
+                                        }
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         aria-label={social.label}
@@ -66,6 +114,13 @@ export const Footer = () => {
                                 <li key={procedure.slug}>
                                     <Link
                                         href={`/procedures/${procedure.slug}`}
+                                        onClick={() =>
+                                            handleFooterLinkClick(
+                                                procedure.title,
+                                                `/procedures/${procedure.slug}`,
+                                                'procedures'
+                                            )
+                                        }
                                         className='cursor-pointer transition-colors hover:text-white'
                                     >
                                         {procedure.title}
@@ -84,6 +139,13 @@ export const Footer = () => {
                                 <li key={surgeon.id}>
                                     <Link
                                         href={`/${surgeon.slug}`}
+                                        onClick={() =>
+                                            handleFooterLinkClick(
+                                                surgeon.name,
+                                                `/${surgeon.slug}`,
+                                                'surgeons'
+                                            )
+                                        }
                                         className='cursor-pointer transition-colors hover:text-white'
                                     >
                                         {surgeon.name}
@@ -101,6 +163,13 @@ export const Footer = () => {
                             <li>
                                 <Link
                                     href='/about'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'About Us',
+                                            '/about',
+                                            'patients'
+                                        )
+                                    }
                                     className='cursor-pointer transition-colors hover:text-white'
                                 >
                                     About Us
@@ -109,6 +178,13 @@ export const Footer = () => {
                             <li>
                                 <Link
                                     href='/plastic-surgery-financing-miami'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Financing Options',
+                                            '/plastic-surgery-financing-miami',
+                                            'patients'
+                                        )
+                                    }
                                     className='cursor-pointer transition-colors hover:text-white'
                                 >
                                     Financing Options
@@ -120,6 +196,13 @@ export const Footer = () => {
                             <li>
                                 <Link
                                     href='/gallery'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Before & After Gallery',
+                                            '/gallery',
+                                            'patients'
+                                        )
+                                    }
                                     className='cursor-pointer transition-colors hover:text-white'
                                 >
                                     Before & After Gallery
@@ -129,6 +212,13 @@ export const Footer = () => {
                             <li>
                                 <Link
                                     href='/blog'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Blog & Education',
+                                            '/blog',
+                                            'patients'
+                                        )
+                                    }
                                     className='cursor-pointer transition-colors hover:text-white'
                                 >
                                     Blog & Education
@@ -154,6 +244,7 @@ export const Footer = () => {
                             </div>
                             <Link
                                 href={`tel:${siteConfig.contact.phone.replace(/[^0-9]/g, '')}`}
+                                onClick={handlePhoneClick}
                                 className='flex cursor-pointer items-center transition-colors hover:text-white'
                             >
                                 <Phone className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
@@ -161,6 +252,7 @@ export const Footer = () => {
                             </Link>
                             <Link
                                 href={`mailto:${siteConfig.contact.email}`}
+                                onClick={handleEmailClick}
                                 className='flex cursor-pointer items-center transition-colors hover:text-white'
                             >
                                 <Mail className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
@@ -178,18 +270,39 @@ export const Footer = () => {
                     <div className='mt-4 flex space-x-8 md:mt-0'>
                         <Link
                             href='/privacy'
+                            onClick={() =>
+                                handleFooterLinkClick(
+                                    'Privacy Policy',
+                                    '/privacy',
+                                    'legal'
+                                )
+                            }
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Privacy Policy
                         </Link>
                         <Link
                             href='/terms'
+                            onClick={() =>
+                                handleFooterLinkClick(
+                                    'Terms of Service',
+                                    '/terms',
+                                    'legal'
+                                )
+                            }
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Terms of Service
                         </Link>
                         <Link
                             href='/sitemap'
+                            onClick={() =>
+                                handleFooterLinkClick(
+                                    'Sitemap',
+                                    '/sitemap',
+                                    'legal'
+                                )
+                            }
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Sitemap

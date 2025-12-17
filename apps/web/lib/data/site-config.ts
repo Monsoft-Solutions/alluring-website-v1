@@ -35,7 +35,7 @@ function getSiteUrl(): string {
         }
     }
 
-    return 'https://alluringplasticsurgery.com' // Fallback for local development
+    return 'https://www.alluringplasticsurgery.com' // Fallback for local development
 }
 
 /**
