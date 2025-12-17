@@ -44,6 +44,7 @@ import type { FaqItem, FaqCtaConfig } from '@/lib/types/shared/faq.type'
 import { ContentWrapper } from './content-wrapper.component'
 import { SectionContainer } from './section-container.component'
 import { SectionHeader } from './section-header.component'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 /**
  * FAQ Component Props
@@ -117,6 +118,27 @@ export function FAQComponent({
     ctaConfig,
 }: FAQProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(0)
+    const { track } = useAnalyticsEvent()
+
+    const handleToggle = (index: number, question: string) => {
+        const willOpen = openIndex !== index
+
+        if (willOpen) {
+            track('faq_expand', {
+                question_text: question,
+                question_index: index,
+                section_id: id,
+            })
+        } else {
+            track('faq_collapse', {
+                question_text: question,
+                question_index: index,
+                section_id: id,
+            })
+        }
+
+        setOpenIndex(willOpen ? index : null)
+    }
 
     // Handle empty FAQs array
     if (!faqs || faqs.length === 0) {
@@ -158,9 +180,7 @@ export function FAQComponent({
                             >
                                 <button
                                     onClick={() =>
-                                        setOpenIndex(
-                                            openIndex === index ? null : index
-                                        )
+                                        handleToggle(index, faq.question)
                                     }
                                     className='flex w-full items-center justify-between p-6 text-left focus:outline-none md:p-8'
                                 >

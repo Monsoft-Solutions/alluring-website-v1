@@ -7,6 +7,7 @@ import Link from 'next/link'
 
 import type { MobileCallButtonProps } from '@/lib/types/mobile-call-button/mobile-call-button-props.type'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 /**
  * Mobile Call Button Component
@@ -33,6 +34,16 @@ export function MobileCallButton({
 }: MobileCallButtonProps) {
     const phoneLink = getPhoneLink()
     const phoneDisplay = siteConfig.contact.phoneDisplay
+    const { track } = useAnalyticsEvent()
+
+    const handlePhoneClick = () => {
+        track('phone_click', {
+            element_type: 'mobile_call_button',
+            style: style,
+            is_banner: isBanner,
+            phone_number: phoneDisplay,
+        })
+    }
 
     // Banner mode forces center position and ignores left/right positioning
     const effectivePosition = isBanner ? 'bottom-center' : position
@@ -79,6 +90,7 @@ export function MobileCallButton({
             >
                 <Link
                     href={phoneLink}
+                    onClick={handlePhoneClick}
                     className={cn(
                         // Full width container
                         'block w-full',
@@ -113,6 +125,7 @@ export function MobileCallButton({
     return (
         <Link
             href={phoneLink}
+            onClick={handlePhoneClick}
             className={cn(
                 // Base styles - fixed positioning
                 'fixed z-50',

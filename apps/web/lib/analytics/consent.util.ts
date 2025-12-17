@@ -53,7 +53,12 @@ export const ESSENTIAL_CONSENT_CONFIG: ConsentConfig = {
 
 /**
  * Initialize default consent state
- * Must be called before GA4 scripts load
+ *
+ * NOTE: Default consent is now set inline in the GoogleAnalytics component
+ * BEFORE gtag('config') runs. This function is kept for backwards compatibility
+ * but is essentially a no-op since consent is already initialized.
+ *
+ * @deprecated Default consent is now set inline in GoogleAnalytics component
  *
  * @example
  * ```ts
@@ -62,13 +67,25 @@ export const ESSENTIAL_CONSENT_CONFIG: ConsentConfig = {
  */
 export function initializeConsent(): void {
     if (typeof window === 'undefined') return
-    if (!window.gtag) return
+
+    // Early return if gtag not available yet
+    // This is safe because consent is initialized inline in GoogleAnalytics component
+    if (!window.gtag) {
+        if (env.NODE_ENV === 'development') {
+            console.log(
+                'Analytics: gtag not yet available (consent already set inline)'
+            )
+        }
+        return
+    }
 
     try {
+        // This is a no-op if consent was already set inline
+        // But we call it anyway for safety in case GA script loads late
         window.gtag('consent', 'default', DEFAULT_CONSENT_CONFIG)
 
         if (env.NODE_ENV === 'development') {
-            console.log('Analytics: Consent mode initialized (default: denied)')
+            console.log('Analytics: Consent mode re-initialized (safety check)')
         }
     } catch (error) {
         if (env.NODE_ENV === 'development') {

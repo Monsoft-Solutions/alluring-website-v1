@@ -40,7 +40,8 @@
                 "NEXT_PUBLIC_CHAT_ENABLED",
                 "AUTH_SECRET",
                 "GOOGLE_CLIENT_EMAIL",
-                "GOOGLE_PRIVATE_KEY"
+                "GOOGLE_PRIVATE_KEY",
+                "NEXUITE_CRM_API_URL"
             ]
         },
         "lint": {

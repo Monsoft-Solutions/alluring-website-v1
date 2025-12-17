@@ -31,10 +31,12 @@ import {
     type LeadCaptureInput,
     leadCaptureSchema,
 } from '@/lib/types/forms/contact-form.type'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const ExitIntentPopup = () => {
     const [isVisible, setIsVisible] = useState(false)
     const [hasTriggered, setHasTriggered] = useState(false)
+    const { track } = useAnalyticsEvent()
 
     const form = useForm<LeadCaptureInput>({
         resolver: zodResolver(leadCaptureSchema),
@@ -45,6 +47,9 @@ export const ExitIntentPopup = () => {
     })
 
     const handleClose = () => {
+        track('exit_intent_dismissed', {
+            method: 'close_button',
+        })
         setIsVisible(false)
         if (typeof window !== 'undefined') {
             sessionStorage.setItem('alluring_popup_seen', 'true')
@@ -74,6 +79,9 @@ export const ExitIntentPopup = () => {
         const handleExitIntent = (e: MouseEvent) => {
             // Desktop: Trigger when mouse leaves top of viewport
             if (e.clientY <= 0 && window.innerWidth >= 1024 && !hasTriggered) {
+                track('exit_intent_shown', {
+                    trigger_type: 'desktop_mouse_leave',
+                })
                 setIsVisible(true)
                 setHasTriggered(true)
             }
@@ -88,6 +96,9 @@ export const ExitIntentPopup = () => {
                 const scrollPercent = (scrollTop + winHeight) / docHeight
 
                 if (scrollPercent > 0.7) {
+                    track('exit_intent_shown', {
+                        trigger_type: 'mobile_scroll',
+                    })
                     setIsVisible(true)
                     setHasTriggered(true)
                 }
@@ -101,7 +112,7 @@ export const ExitIntentPopup = () => {
             document.removeEventListener('mouseleave', handleExitIntent)
             window.removeEventListener('scroll', handleScroll)
         }
-    }, [hasTriggered])
+    }, [hasTriggered, track])
 
     const onSubmit = async (data: LeadCaptureInput) => {
         await submit(data)
