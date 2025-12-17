@@ -90,6 +90,12 @@ This agent serves as the **registry and router** for all specialized agents in t
 - **Key Capabilities**: Topic ideation, SEO content creation, AI image generation, Vercel Blob integration, file-based seed generation, brand voice alignment, workflow automation
 - **Location**: `.cursor/rules/blog-post-creator-expert.mdc`
 
+### page-metadata-updater
+
+- **Purpose**: Automatically detects page modifications and reminds developers to update lastModified dates in page-metadata.ts for accurate sitemap generation
+- **Key Capabilities**: File path to URL mapping, automatic detection of page edits, update reminders with today's date, missing page detection, SEO best practices enforcement
+- **Location**: `.cursor/rules/page-metadata-updater.mdc`
+
 ### ai-engineer-expert
 
 - **Purpose**: Expert agent for implementing AI features using the @workspace/ai package. Specializes in chat systems, intent classification, conversation analysis, structured AI outputs, and streaming responses
@@ -121,6 +127,7 @@ Direct tasks to appropriate specialized agents:
 - **API routes, hooks, server actions** → `api-request-expert`
 - **SEO content writing, copywriting** → `seo-content-expert`
 - **Blog post creation with images** → `blog-post-creator-expert`
+- **Page metadata updates, sitemap maintenance** → `page-metadata-updater`
 - **AI features, chat systems, conversation analysis** → `ai-engineer-expert`
 - **Shared types, cross-package schemas, DRY types** → `shared-types-architecture`
 
@@ -145,5 +152,5 @@ Agents automatically apply based on file types and contexts defined in their rul
 
 ---
 
-_Last updated: 2025-12-10_
-_Total Cursor agents: 18 (including main-agent)_
+_Last updated: 2025-12-16_
+_Total Cursor agents: 19 (including main-agent)_
