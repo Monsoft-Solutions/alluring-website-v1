@@ -25,7 +25,6 @@ import {
     ESSENTIAL_CONSENT_CONFIG,
     clearConsentState,
     getStoredConsentState,
-    initializeConsent,
     storeConsentState,
     updateConsent,
 } from './consent.util'
@@ -92,18 +91,17 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
     const [hasConsented, setHasConsented] = useState(false)
     const [isInitialized, setIsInitialized] = useState(false)
 
-    // Initialize consent on mount (client-side only)
+    // Initialize consent state on mount (client-side only)
+    // Note: Default consent is now set inline in GoogleAnalytics component
     useEffect(() => {
-        // Initialize default consent before scripts load
-        initializeConsent()
-
         // Check for stored consent preference
         const stored = getStoredConsentState()
         if (stored) {
             setConsentState(stored)
             setHasConsented(true)
 
-            // Apply stored consent
+            // Apply stored consent to gtag if available
+            // This handles cases where user already consented on previous visit
             if (stored === 'granted') {
                 updateConsent(ACCEPTED_CONSENT_CONFIG)
             } else {
@@ -113,6 +111,10 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
 
         // Mark as initialized
         setIsInitialized(true)
+
+        if (env.NODE_ENV === 'development') {
+            console.log('Analytics: ConsentProvider initialized')
+        }
     }, [])
 
     /**

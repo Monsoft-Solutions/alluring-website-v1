@@ -130,7 +130,10 @@ export async function syncLeadToCRM(
 
         // Map contact form fields to CRM payload
         const payload: CRMLeadPayload = {
-            name: leadData.firstName || leadData.name || '',
+            name:
+                leadData.firstName ||
+                leadData.name ||
+                `Anonymous - ${leadData.phone ?? leadData.email}`,
             last: leadData.lastName ?? undefined,
             email: leadData.email,
             phone: leadData.phone ?? undefined,
