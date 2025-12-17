@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { siteConfig } from '@/lib/data/site-config'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 interface ProcedureCardProps {
     procedure: Procedure
@@ -45,6 +46,7 @@ export function ProcedureCard({
 }: ProcedureCardProps) {
     const categoryDisplay = getCategoryDisplayName(procedure.category)
     const imageSrc = procedure.image || '/images/placeholder.jpg'
+    const { track } = useAnalyticsEvent()
 
     const defaultAuthor = {
         '@type': 'Organization' as const,
@@ -54,9 +56,19 @@ export function ProcedureCard({
     const description =
         procedure.shortDescription || procedure.description || ''
 
+    const handleClick = () => {
+        track('content_click', {
+            content_type: 'procedure',
+            procedure_title: procedure.title,
+            procedure_slug: procedure.slug,
+            procedure_category: procedure.category || 'uncategorized',
+        })
+    }
+
     return (
         <Link
             href={`/procedures/${procedure.slug}`}
+            onClick={handleClick}
             className='group relative block aspect-3/4 w-full overflow-hidden'
             aria-label={`View ${procedure.title}`}
         >

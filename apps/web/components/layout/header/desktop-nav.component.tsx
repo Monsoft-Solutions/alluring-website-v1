@@ -13,11 +13,15 @@ import { procedures } from '@/lib/data/procedures.data'
 import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
 import { NavDropdown } from './nav-dropdown.component'
 import { NavLink } from './header.type'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import { TrackedLink } from '@/components/analytics/tracked-link.component'
 
 export function DesktopNav() {
     const [isSurgeonsDropdownOpen, setIsSurgeonsDropdownOpen] = useState(false)
     const [isProceduresDropdownOpen, setIsProceduresDropdownOpen] =
         useState(false)
+
+    const { track } = useAnalyticsEvent()
 
     // Generate surgeon links dynamically
     const surgeonLinks: NavLink[] = surgeons.map((surgeon) => ({
@@ -37,6 +41,42 @@ export function DesktopNav() {
         })),
     ]
 
+    const handleProceduresToggle = () => {
+        const willOpen = !isProceduresDropdownOpen
+        if (willOpen) {
+            track('nav_dropdown_open', {
+                dropdown_name: 'Procedures',
+                nav_type: 'desktop',
+            })
+        }
+        setIsProceduresDropdownOpen(willOpen)
+    }
+
+    const handleSurgeonsToggle = () => {
+        const willOpen = !isSurgeonsDropdownOpen
+        if (willOpen) {
+            track('nav_dropdown_open', {
+                dropdown_name: 'Surgeons',
+                nav_type: 'desktop',
+            })
+        }
+        setIsSurgeonsDropdownOpen(willOpen)
+    }
+
+    const handlePhoneClick = () => {
+        track('nav_phone_click', {
+            phone_number: contactInfo.phoneDisplay,
+            nav_type: 'desktop',
+        })
+    }
+
+    const handleCTAClick = () => {
+        track('nav_cta_click', {
+            cta_text: 'Request Consult',
+            nav_type: 'desktop',
+        })
+    }
+
     return (
         <>
             {/* Desktop Nav */}
@@ -46,9 +86,7 @@ export function DesktopNav() {
                     label='Procedures'
                     links={procedureLinks}
                     isOpen={isProceduresDropdownOpen}
-                    onToggle={() =>
-                        setIsProceduresDropdownOpen(!isProceduresDropdownOpen)
-                    }
+                    onToggle={handleProceduresToggle}
                     onClose={() => setIsProceduresDropdownOpen(false)}
                 />
 
@@ -57,59 +95,80 @@ export function DesktopNav() {
                     label='Surgeons'
                     links={surgeonLinks}
                     isOpen={isSurgeonsDropdownOpen}
-                    onToggle={() =>
-                        setIsSurgeonsDropdownOpen(!isSurgeonsDropdownOpen)
-                    }
+                    onToggle={handleSurgeonsToggle}
                     onClose={() => setIsSurgeonsDropdownOpen(false)}
                 />
 
                 {/* Financing Link */}
-                <Link
+                <TrackedLink
                     href='/plastic-surgery-financing-miami'
+                    eventName='nav_click'
+                    eventParams={{
+                        nav_type: 'desktop',
+                        link_category: 'financing',
+                    }}
                     className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
                 >
                     Financing
                     <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
-                </Link>
+                </TrackedLink>
 
                 {/* Blog Link */}
-                <Link
+                <TrackedLink
                     href='/blog'
+                    eventName='nav_click'
+                    eventParams={{
+                        nav_type: 'desktop',
+                        link_category: 'blog',
+                    }}
                     className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
                 >
                     Blog
                     <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
-                </Link>
+                </TrackedLink>
 
                 {/* Gallery Link */}
-                <Link
+                <TrackedLink
                     href='/gallery'
+                    eventName='nav_click'
+                    eventParams={{
+                        nav_type: 'desktop',
+                        link_category: 'gallery',
+                    }}
                     className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
                 >
                     Gallery
                     <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
-                </Link>
+                </TrackedLink>
 
                 {/* About Link */}
-                <Link
+                <TrackedLink
                     href='/about'
+                    eventName='nav_click'
+                    eventParams={{
+                        nav_type: 'desktop',
+                        link_category: 'about',
+                    }}
                     className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
                 >
                     About
                     <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
-                </Link>
+                </TrackedLink>
             </nav>
 
             {/* CTA Right */}
             <div className='hidden items-center space-x-8 lg:flex'>
                 <Link
                     href={getPhoneLink()}
+                    onClick={handlePhoneClick}
                     className='hover:text-gold-500 flex items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors'
                 >
                     {contactInfo.phoneDisplay}
                 </Link>
                 <Button size='sm' variant='primary' asChild>
-                    <Link href='/contact-us'>Request Consult</Link>
+                    <Link href='/contact-us' onClick={handleCTAClick}>
+                        Request Consult
+                    </Link>
                 </Button>
             </div>
         </>
