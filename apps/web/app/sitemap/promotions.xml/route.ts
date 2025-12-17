@@ -11,14 +11,10 @@ import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import { getPromotionsForSitemap } from '@/lib/queries/promotion/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
-
-type SitemapEntry = {
-    url: string
-    lastModified: string
-    changeFrequency: string
-    priority: number
-    images?: Array<{ url: string; title?: string }>
-}
+import type {
+    SitemapEntry,
+    SitemapImage,
+} from '@workspace/seo/types/sitemap/sitemap-entry.type'
 
 /**
  * Generate XML sitemap string with image support
@@ -29,7 +25,7 @@ function generateSitemapXml(entries: SitemapEntry[]): string {
             const imageXml = entry.images?.length
                 ? entry.images
                       .map(
-                          (img) => `
+                          (img: SitemapImage) => `
     <image:image>
       <image:loc>${escapeXml(img.url)}</image:loc>${
           img.title
