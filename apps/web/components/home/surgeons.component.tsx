@@ -5,6 +5,7 @@ import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import { Button } from '@workspace/ui/components/button'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const Surgeons = () => {
     return (
@@ -70,14 +71,17 @@ export const Surgeons = () => {
                         </div>
 
                         <div className='flex flex-wrap gap-4'>
-                            <Button variant='gold' size='md'>
-                                Meet The Team
+                            <Button variant='gold' size='md' asChild>
+                                <Link href='/about'>Meet The Team</Link>
                             </Button>
                             <Button
                                 variant='outline'
                                 className='border-stone-700 text-white hover:border-white hover:text-white'
+                                asChild
                             >
-                                Verify Credentials
+                                <Link href='/about#credentials'>
+                                    Verify Credentials
+                                </Link>
                             </Button>
                         </div>
                     </div>

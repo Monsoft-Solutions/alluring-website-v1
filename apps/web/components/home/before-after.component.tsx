@@ -4,6 +4,7 @@ import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 
 // TODO: Add a link to the full gallery
 const GalleryCard = ({
@@ -93,13 +94,15 @@ export const BeforeAfter = () => {
                 </div>
 
                 <div className='mt-16 text-center'>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className='inline-block border border-stone-200 px-8 py-4 text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors hover:bg-stone-900 hover:text-white'
-                    >
-                        View Full Gallery
-                    </motion.button>
+                    <Link href='/gallery'>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className='inline-block border border-stone-200 px-8 py-4 text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors hover:bg-stone-900 hover:text-white'
+                        >
+                            View Full Gallery
+                        </motion.button>
+                    </Link>
                 </div>
             </ContentWrapper>
         </SectionContainer>

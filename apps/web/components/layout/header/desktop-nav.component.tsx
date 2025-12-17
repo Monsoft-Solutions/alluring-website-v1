@@ -80,7 +80,7 @@ export function DesktopNav() {
     return (
         <>
             {/* Desktop Nav */}
-            <nav className='hidden items-center space-x-10 lg:flex'>
+            <nav className='hidden items-center space-x-6 lg:flex xl:space-x-10'>
                 {/* Procedures Dropdown */}
                 <NavDropdown
                     label='Procedures'
@@ -157,11 +157,11 @@ export function DesktopNav() {
             </nav>
 
             {/* CTA Right */}
-            <div className='hidden items-center space-x-8 lg:flex'>
+            <div className='hidden items-center space-x-4 lg:flex xl:space-x-8'>
                 <Link
                     href={getPhoneLink()}
                     onClick={handlePhoneClick}
-                    className='hover:text-gold-500 flex items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors'
+                    className='hover:text-gold-500 hidden items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors 2xl:flex'
                 >
                     {contactInfo.phoneDisplay}
                 </Link>

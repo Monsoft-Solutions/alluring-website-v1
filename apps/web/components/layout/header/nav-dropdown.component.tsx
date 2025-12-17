@@ -60,20 +60,22 @@ export function NavDropdown({
                 <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
             </button>
             {isOpen && (
-                <div className='animate-fade-in absolute top-full -left-4 mt-2 min-w-[260px] rounded-md border border-stone-200 bg-white shadow-lg'>
-                    <div className='max-h-[80vh] overflow-y-auto py-2'>
-                        {links.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                onClick={() =>
-                                    handleLinkClick(link.label, link.href)
-                                }
-                                className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
+                <div className='absolute top-full -left-4 pt-2'>
+                    <div className='animate-fade-in min-w-[260px] rounded-md border border-stone-200 bg-white shadow-lg'>
+                        <div className='max-h-[80vh] overflow-y-auto py-2'>
+                            {links.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    onClick={() =>
+                                        handleLinkClick(link.label, link.href)
+                                    }
+                                    className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
