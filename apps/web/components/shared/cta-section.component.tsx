@@ -228,9 +228,9 @@ function LuxuryCTASection({
                                 <Button
                                     size='lg'
                                     variant='default'
-                                    onClick={(e) => {
+                                    onClick={() => {
                                         handlePrimaryClick()
-                                        primaryButton.onClick?.(e)
+                                        primaryButton.onClick?.()
                                     }}
                                     className='bg-gold-500 hover:bg-gold-600 min-w-[200px] border-none px-8 py-6 text-base font-bold tracking-wide text-white uppercase shadow-lg shadow-amber-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30'
                                 >
@@ -279,9 +279,9 @@ function LuxuryCTASection({
                                         <Button
                                             size='lg'
                                             variant='outline'
-                                            onClick={(e) => {
+                                            onClick={() => {
                                                 handleSecondaryClick()
-                                                secondaryButton.onClick?.(e)
+                                                secondaryButton.onClick?.()
                                             }}
                                             className='hover:border-gold-500/50 min-w-[160px] border-white/20 bg-white/5 px-8 py-6 text-base font-bold tracking-wide text-white uppercase backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
                                         >
@@ -543,9 +543,9 @@ function DefaultCTASection({
                                         ? 'default' // Use default (gold) on dark bg
                                         : primaryButton.variant || 'primary'
                                 }
-                                onClick={(e) => {
+                                onClick={() => {
                                     handlePrimaryClick()
-                                    primaryButton.onClick?.(e)
+                                    primaryButton.onClick?.()
                                 }}
                                 className={cn(
                                     'min-w-[140px] font-bold tracking-wide uppercase',
@@ -609,9 +609,9 @@ function DefaultCTASection({
                                                 : secondaryButton.variant ||
                                                   'outline'
                                         }
-                                        onClick={(e) => {
+                                        onClick={() => {
                                             handleSecondaryClick()
-                                            secondaryButton.onClick?.(e)
+                                            secondaryButton.onClick?.()
                                         }}
                                         className={cn(
                                             'min-w-[140px] font-bold tracking-wide uppercase',

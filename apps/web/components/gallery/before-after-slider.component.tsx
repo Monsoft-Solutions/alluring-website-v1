@@ -44,8 +44,8 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
             if (!hasTrackedInteraction.current) {
                 hasTrackedInteraction.current = true
                 track('gallery_slider_interact', {
-                    procedure_type: pair.procedureType,
-                    timeframe: pair.timeframe,
+                    procedure_type: pair.procedureType ?? undefined,
+                    timeframe: pair.timeframe ?? undefined,
                     interaction_type: 'drag',
                 })
             }
@@ -74,8 +74,8 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
             if (!hasTrackedInteraction.current) {
                 hasTrackedInteraction.current = true
                 track('gallery_slider_interact', {
-                    procedure_type: pair.procedureType,
-                    timeframe: pair.timeframe,
+                    procedure_type: pair.procedureType ?? undefined,
+                    timeframe: pair.timeframe ?? undefined,
                     interaction_type: 'drag',
                 })
             }

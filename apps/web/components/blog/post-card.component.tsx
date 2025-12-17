@@ -54,7 +54,6 @@ export function PostCard({
             post_title: post.title,
             post_slug: post.slug,
             post_author: post.author?.name,
-            post_category: post.categories?.[0],
         })
     }
 
