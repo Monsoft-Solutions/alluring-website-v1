@@ -6,7 +6,6 @@ import {
     primaryKey,
     text,
     timestamp,
-    uniqueIndex,
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'

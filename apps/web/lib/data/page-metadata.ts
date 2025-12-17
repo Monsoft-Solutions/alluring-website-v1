@@ -20,15 +20,18 @@ export const pageLastModified: Record<string, string> = {
     '/miami-plastic-surgery-specials': '2025-12-16',
     '/thank-you': '2025-12-01',
 
+    // Gallery pages
+    '/gallery': '2025-12-17',
+
     // Surgeon pages
     '/dr-karlinsky': '2025-12-16',
     '/dr-andrew-lofman': '2025-12-16',
     '/dr-rita-shats': '2025-12-16',
 
     // Legal pages (rarely change)
-    '/privacy': '2025-12-01',
-    '/terms': '2025-12-01',
-    '/cookies': '2025-12-01',
+    '/privacy': '2025-12-16',
+    '/terms': '2025-12-16',
+    '/cookies': '2025-12-16',
 } as const
 
 /**

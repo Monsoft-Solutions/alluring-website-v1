@@ -141,10 +141,15 @@ export async function GET(): Promise<NextResponse> {
 
         // Category detail pages
         const categories = await getActiveCategorySlugs()
-        for (const slug of categories) {
+        for (const category of categories) {
+            const lastModified =
+                category.updatedAt?.toISOString().slice(0, 10) ??
+                category.createdAt?.toISOString().slice(0, 10) ??
+                today
+
             entries.push({
-                url: `${baseUrl}/blog/categories/${slug}`,
-                lastModified: today,
+                url: `${baseUrl}/blog/categories/${category.slug}`,
+                lastModified,
                 changeFrequency: 'weekly',
                 priority: 0.7,
             })
@@ -160,10 +165,10 @@ export async function GET(): Promise<NextResponse> {
 
         // Tag detail pages
         const tags = await getActiveTagSlugs()
-        for (const slug of tags) {
+        for (const tag of tags) {
             entries.push({
-                url: `${baseUrl}/blog/tags/${slug}`,
-                lastModified: today,
+                url: `${baseUrl}/blog/tags/${tag.slug}`,
+                lastModified: tag.createdAt.toISOString().slice(0, 10),
                 changeFrequency: 'weekly',
                 priority: 0.6,
             })

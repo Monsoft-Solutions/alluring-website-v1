@@ -8,6 +8,7 @@
  */
 import { NextResponse } from 'next/server'
 
+import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import {
     getGalleryGroupsForSitemap,
@@ -102,7 +103,7 @@ export async function GET(): Promise<NextResponse> {
         // Gallery main listing page
         entries.push({
             url: `${baseUrl}/gallery`,
-            lastModified: today,
+            lastModified: pageLastModified['/gallery'] ?? today,
             changeFrequency: 'weekly',
             priority: 0.9,
         })

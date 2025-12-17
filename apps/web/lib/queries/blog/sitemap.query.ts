@@ -28,6 +28,23 @@ export type BlogPostSitemapEntry = {
 }
 
 /**
+ * Blog category sitemap entry with timestamps
+ */
+export type BlogCategorySitemapEntry = {
+    slug: string
+    updatedAt: Date | null
+    createdAt: Date | null
+}
+
+/**
+ * Blog tag sitemap entry with timestamp
+ */
+export type BlogTagSitemapEntry = {
+    slug: string
+    createdAt: Date
+}
+
+/**
  * Get all published blog post slugs with their last modified dates and featured images
  */
 export const getPublishedPostSlugs = cache(
@@ -61,25 +78,43 @@ export const getPublishedPostSlugs = cache(
 )
 
 /**
- * Get all active category slugs
+ * Get all active category slugs with timestamps
  */
-export const getActiveCategorySlugs = cache(async (): Promise<string[]> => {
-    const rows = await db
-        .select({ slug: blogCategory.slug })
-        .from(blogCategory)
-        .where(eq(blogCategory.isActive, true))
+export const getActiveCategorySlugs = cache(
+    async (): Promise<BlogCategorySitemapEntry[]> => {
+        const rows = await db
+            .select({
+                slug: blogCategory.slug,
+                updatedAt: blogCategory.updatedAt,
+                createdAt: blogCategory.createdAt,
+            })
+            .from(blogCategory)
+            .where(eq(blogCategory.isActive, true))
 
-    return rows.map((r) => r.slug)
-})
+        return rows.map((r) => ({
+            slug: r.slug,
+            updatedAt: r.updatedAt,
+            createdAt: r.createdAt,
+        }))
+    }
+)
 
 /**
- * Get all active tag slugs
+ * Get all active tag slugs with timestamp
  */
-export const getActiveTagSlugs = cache(async (): Promise<string[]> => {
-    const rows = await db
-        .select({ slug: blogTag.slug })
-        .from(blogTag)
-        .where(eq(blogTag.isActive, true))
+export const getActiveTagSlugs = cache(
+    async (): Promise<BlogTagSitemapEntry[]> => {
+        const rows = await db
+            .select({
+                slug: blogTag.slug,
+                createdAt: blogTag.createdAt,
+            })
+            .from(blogTag)
+            .where(eq(blogTag.isActive, true))
 
-    return rows.map((r) => r.slug)
-})
+        return rows.map((r) => ({
+            slug: r.slug,
+            createdAt: r.createdAt,
+        }))
+    }
+)
