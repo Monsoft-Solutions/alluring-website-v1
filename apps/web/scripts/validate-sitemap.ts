@@ -18,6 +18,7 @@ const SITEMAP_ENDPOINTS = [
     '/sitemap/blog.xml',
     '/sitemap/procedures.xml',
     '/sitemap/gallery.xml',
+    '/sitemap/promotions.xml',
 ]
 
 type ValidationResult = {

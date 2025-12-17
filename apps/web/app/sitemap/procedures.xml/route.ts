@@ -99,39 +99,55 @@ export async function GET(): Promise<NextResponse> {
     const baseUrl = seoDefaults.siteUrl
     const entries: SitemapEntry[] = []
 
-    // Procedures main listing page
-    entries.push({
-        url: `${baseUrl}/procedures`,
-        lastModified: PROCEDURES_LAST_MODIFIED,
-        changeFrequency: 'monthly',
-        priority: 0.9,
-    })
-
-    // Individual procedure pages
-    for (const procedure of procedures) {
-        const entry: SitemapEntry = {
-            url: `${baseUrl}/procedures/${procedure.slug}`,
+    try {
+        // Procedures main listing page
+        entries.push({
+            url: `${baseUrl}/procedures`,
             lastModified: PROCEDURES_LAST_MODIFIED,
             changeFrequency: 'monthly',
-            priority: 0.8,
+            priority: 0.9,
+        })
+
+        // Individual procedure pages
+        for (const procedure of procedures) {
+            const entry: SitemapEntry = {
+                url: `${baseUrl}/procedures/${procedure.slug}`,
+                lastModified: PROCEDURES_LAST_MODIFIED,
+                changeFrequency: 'monthly',
+                priority: 0.8,
+            }
+
+            // Add procedure image if available
+            if (procedure.image) {
+                // Handle both relative and absolute URLs
+                const imageUrl = procedure.image.startsWith('http')
+                    ? procedure.image
+                    : `${baseUrl}${procedure.image}`
+
+                entry.images = [
+                    {
+                        url: imageUrl,
+                        title: procedure.title,
+                    },
+                ]
+            }
+
+            entries.push(entry)
         }
-
-        // Add procedure image if available
-        if (procedure.image) {
-            // Handle both relative and absolute URLs
-            const imageUrl = procedure.image.startsWith('http')
-                ? procedure.image
-                : `${baseUrl}${procedure.image}`
-
-            entry.images = [
-                {
-                    url: imageUrl,
-                    title: procedure.title,
+    } catch (error) {
+        console.error('Error generating procedures sitemap:', error)
+        return new NextResponse(
+            `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+</urlset>`,
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/xml',
                 },
-            ]
-        }
-
-        entries.push(entry)
+            }
+        )
     }
 
     const xml = generateSitemapXml(entries)

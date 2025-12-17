@@ -120,49 +120,65 @@ export async function GET(): Promise<NextResponse> {
     const baseUrl = seoDefaults.siteUrl
     const today = new Date().toISOString().slice(0, 10)
 
-    // Generate static page entries with accurate lastModified dates
-    const staticEntries: SitemapEntry[] = STATIC_PAGES.map((page) => ({
-        url: `${baseUrl}${page.path === '/' ? '' : page.path}`,
-        lastModified: pageLastModified[page.path] ?? today,
-        changeFrequency: page.changeFrequency,
-        priority: page.priority,
-    }))
+    try {
+        // Generate static page entries with accurate lastModified dates
+        const staticEntries: SitemapEntry[] = STATIC_PAGES.map((page) => ({
+            url: `${baseUrl}${page.path === '/' ? '' : page.path}`,
+            lastModified: pageLastModified[page.path] ?? today,
+            changeFrequency: page.changeFrequency,
+            priority: page.priority,
+        }))
 
-    // Generate surgeon page entries with images
-    const surgeonEntries: SitemapEntry[] = surgeons.map((surgeon) => {
-        const entry: SitemapEntry = {
-            url: `${baseUrl}/${surgeon.slug}`,
-            lastModified: pageLastModified[`/${surgeon.slug}`] ?? today,
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        }
+        // Generate surgeon page entries with images
+        const surgeonEntries: SitemapEntry[] = surgeons.map((surgeon) => {
+            const entry: SitemapEntry = {
+                url: `${baseUrl}/${surgeon.slug}`,
+                lastModified: pageLastModified[`/${surgeon.slug}`] ?? today,
+                changeFrequency: 'monthly',
+                priority: 0.8,
+            }
 
-        // Add surgeon image if available
-        if (surgeon.images.featured) {
-            const imageUrl = surgeon.images.featured.startsWith('http')
-                ? surgeon.images.featured
-                : `${baseUrl}${surgeon.images.featured}`
+            // Add surgeon image if available
+            if (surgeon.images.featured) {
+                const imageUrl = surgeon.images.featured.startsWith('http')
+                    ? surgeon.images.featured
+                    : `${baseUrl}${surgeon.images.featured}`
 
-            entry.images = [
-                {
-                    url: imageUrl,
-                    title: surgeon.name,
+                entry.images = [
+                    {
+                        url: imageUrl,
+                        title: surgeon.name,
+                    },
+                ]
+            }
+
+            return entry
+        })
+
+        // Combine all entries
+        const entries = [...staticEntries, ...surgeonEntries]
+
+        const xml = generateSitemapXml(entries)
+
+        return new NextResponse(xml, {
+            headers: {
+                'Content-Type': 'application/xml',
+                'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+            },
+        })
+    } catch (error) {
+        console.error('Error generating pages sitemap:', error)
+        return new NextResponse(
+            `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+</urlset>`,
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/xml',
                 },
-            ]
-        }
-
-        return entry
-    })
-
-    // Combine all entries
-    const entries = [...staticEntries, ...surgeonEntries]
-
-    const xml = generateSitemapXml(entries)
-
-    return new NextResponse(xml, {
-        headers: {
-            'Content-Type': 'application/xml',
-            'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-        },
-    })
+            }
+        )
+    }
 }
