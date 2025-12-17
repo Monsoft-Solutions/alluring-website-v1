@@ -16,10 +16,10 @@ export const revalidate = 10800
 import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import {
+    getAllGroupsRecentMediaDates,
     getGalleryGroupsForSitemap,
     getGalleryMediaForSitemap,
     getMostRecentMediaDate,
-    getMostRecentMediaDateForGroup,
 } from '@/lib/queries/gallery/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
@@ -67,13 +67,14 @@ export async function GET(): Promise<NextResponse> {
 
         // Gallery groups
         const groups = await getGalleryGroupsForSitemap()
+        const groupMediaDates = await getAllGroupsRecentMediaDates()
+
         for (const group of groups) {
-            const groupMediaDate = await getMostRecentMediaDateForGroup(
-                group.slug
-            )
+            const groupMediaDate = groupMediaDates.get(group.slug)
             const lastModified =
                 groupMediaDate?.toISOString().slice(0, 10) ??
-                group.updatedAt.toISOString().slice(0, 10)
+                group.updatedAt?.toISOString().slice(0, 10) ??
+                today
 
             const entry: SitemapEntry = {
                 url: `${baseUrl}/gallery/${group.slug}`,

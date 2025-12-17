@@ -11,7 +11,7 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import { and, desc, eq } from 'drizzle-orm'
+import { and, desc, eq, max } from 'drizzle-orm'
 import { cache } from 'react'
 
 /**
@@ -104,32 +104,40 @@ export const getMostRecentMediaDate = cache(async (): Promise<Date | null> => {
 })
 
 /**
- * Get most recent media date for a specific gallery group
- * Returns the updatedAt date of the most recent published media in the group
+ * Get most recent media dates for all visible gallery groups in a single query
+ * Returns a Map of groupSlug -> mostRecentMediaDate
+ * Used for efficient batch fetching to avoid N+1 queries in sitemap generation
  */
-export const getMostRecentMediaDateForGroup = cache(
-    async (groupSlug: string): Promise<Date | null> => {
-        const result = await db
-            .select({ updatedAt: galleryMedia.updatedAt })
-            .from(galleryMedia)
+export const getAllGroupsRecentMediaDates = cache(
+    async (): Promise<Map<string, Date>> => {
+        const rows = await db
+            .select({
+                groupSlug: galleryGroup.slug,
+                mostRecentDate: max(galleryMedia.updatedAt),
+            })
+            .from(galleryGroup)
             .innerJoin(
                 galleryMediaGroup,
-                eq(galleryMediaGroup.mediaId, galleryMedia.id)
+                eq(galleryMediaGroup.groupId, galleryGroup.id)
             )
             .innerJoin(
-                galleryGroup,
-                eq(galleryGroup.id, galleryMediaGroup.groupId)
+                galleryMedia,
+                eq(galleryMedia.id, galleryMediaGroup.mediaId)
             )
             .where(
                 and(
-                    eq(galleryMedia.status, 'published'),
-                    eq(galleryGroup.slug, groupSlug),
-                    eq(galleryGroup.isVisible, true)
+                    eq(galleryGroup.isVisible, true),
+                    eq(galleryMedia.status, 'published')
                 )
             )
-            .orderBy(desc(galleryMedia.updatedAt))
-            .limit(1)
+            .groupBy(galleryGroup.slug)
 
-        return result[0]?.updatedAt ?? null
+        const resultMap = new Map<string, Date>()
+        for (const row of rows) {
+            if (row.mostRecentDate) {
+                resultMap.set(row.groupSlug, row.mostRecentDate)
+            }
+        }
+        return resultMap
     }
 )
