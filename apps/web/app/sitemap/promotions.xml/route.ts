@@ -7,6 +7,7 @@
  */
 import { NextResponse } from 'next/server'
 
+import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import { getPromotionsForSitemap } from '@/lib/queries/promotion/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
@@ -98,7 +99,7 @@ export async function GET(): Promise<NextResponse> {
         // Promotions main listing page
         entries.push({
             url: `${baseUrl}/promotions`,
-            lastModified: today,
+            lastModified: pageLastModified['/promotions'] ?? today,
             changeFrequency: 'weekly',
             priority: 0.9,
         })

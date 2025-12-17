@@ -23,6 +23,13 @@ export const pageLastModified: Record<string, string> = {
     // Gallery pages
     '/gallery': '2025-12-17',
 
+    // Listing pages
+    '/procedures': '2025-12-17',
+    '/blog': '2025-12-17',
+    '/blog/categories': '2025-12-17',
+    '/blog/tags': '2025-12-17',
+    '/promotions': '2025-12-17',
+
     // Surgeon pages
     '/dr-karlinsky': '2025-12-16',
     '/dr-andrew-lofman': '2025-12-16',

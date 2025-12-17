@@ -8,6 +8,7 @@
  */
 import { NextResponse } from 'next/server'
 
+import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import {
     getActiveCategorySlugs,
@@ -103,7 +104,7 @@ export async function GET(): Promise<NextResponse> {
         // Blog main listing page
         entries.push({
             url: `${baseUrl}/blog`,
-            lastModified: today,
+            lastModified: pageLastModified['/blog'] ?? today,
             changeFrequency: 'daily',
             priority: 0.9,
         })
@@ -134,7 +135,7 @@ export async function GET(): Promise<NextResponse> {
         // Categories listing page
         entries.push({
             url: `${baseUrl}/blog/categories`,
-            lastModified: today,
+            lastModified: pageLastModified['/blog/categories'] ?? today,
             changeFrequency: 'weekly',
             priority: 0.8,
         })
@@ -158,7 +159,7 @@ export async function GET(): Promise<NextResponse> {
         // Tags listing page
         entries.push({
             url: `${baseUrl}/blog/tags`,
-            lastModified: today,
+            lastModified: pageLastModified['/blog/tags'] ?? today,
             changeFrequency: 'weekly',
             priority: 0.8,
         })

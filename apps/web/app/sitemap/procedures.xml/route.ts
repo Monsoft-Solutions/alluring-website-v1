@@ -7,6 +7,7 @@
  */
 import { NextResponse } from 'next/server'
 
+import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import { procedures } from '@/lib/data/procedures.data'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
@@ -103,7 +104,8 @@ export async function GET(): Promise<NextResponse> {
         // Procedures main listing page
         entries.push({
             url: `${baseUrl}/procedures`,
-            lastModified: PROCEDURES_LAST_MODIFIED,
+            lastModified:
+                pageLastModified['/procedures'] ?? PROCEDURES_LAST_MODIFIED,
             changeFrequency: 'monthly',
             priority: 0.9,
         })
