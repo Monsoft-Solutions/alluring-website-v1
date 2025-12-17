@@ -35,6 +35,8 @@ type ChatInterfaceProps = {
     showHeader?: boolean
     /** Callback when a user message is sent (for tracking) */
     onMessageSent?: (message: string) => void
+    /** Callback when a message is received (user or assistant) - for context sync */
+    onMessageReceived?: (message: StoredMessage) => void
 }
 
 /**
@@ -55,6 +57,7 @@ export function ChatInterface({
     onReset,
     showHeader = true,
     onMessageSent,
+    onMessageReceived,
 }: ChatInterfaceProps) {
     const [input, setInput] = useState('')
 
@@ -93,6 +96,32 @@ export function ChatInterface({
     useEffect(() => {
         forceScrollToBottom()
     }, [messages.length, streamedQuickQuestions.length, forceScrollToBottom])
+
+    // Notify context when new messages are added (for cross-component sync)
+    useEffect(() => {
+        if (!onMessageReceived) return
+
+        // Get the last message and notify context if it's new
+        const lastMessage = messages[messages.length - 1]
+        if (
+            lastMessage &&
+            lastMessage.id !== 'welcome' &&
+            (lastMessage.role === 'user' || lastMessage.role === 'assistant')
+        ) {
+            // Only notify for finalized messages (not mid-stream)
+            if (!isStreaming || lastMessage.role === 'user') {
+                const content = getMessageContent(lastMessage)
+                if (content) {
+                    onMessageReceived({
+                        id: lastMessage.id,
+                        role: lastMessage.role as 'user' | 'assistant',
+                        content,
+                        createdAt: new Date().toISOString(),
+                    })
+                }
+            }
+        }
+    }, [messages, isStreaming, getMessageContent, onMessageReceived])
 
     // Handlers
     const handleSubmit = useCallback(async () => {

@@ -76,12 +76,8 @@ export function ChatWidget({ isOpen, onClose }: ChatWidgetProps) {
         error,
         initializeSession,
         resetSession,
-    } = useUnifiedChat({
-        pageUrl:
-            typeof window !== 'undefined' ? window.location.href : undefined,
-        referrer:
-            typeof document !== 'undefined' ? document.referrer : undefined,
-    })
+        addMessage,
+    } = useUnifiedChat()
 
     /**
      * Initialize session when widget opens
@@ -183,6 +179,7 @@ export function ChatWidget({ isOpen, onClose }: ChatWidgetProps) {
                     userName={session.fullName?.split(' ')[0] || 'there'}
                     initialMessages={messages}
                     onReset={resetSession}
+                    onMessageReceived={addMessage}
                 />
             )}
         </div>

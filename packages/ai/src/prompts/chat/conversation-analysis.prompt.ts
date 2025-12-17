@@ -173,7 +173,7 @@ Write a 2-3 sentence summary that a sales rep can quickly scan to understand:
 
 1. Be specific and actionable - vague analysis is not helpful
 2. Extract actual quotes or paraphrases when relevant
-3. If information isn't available, use "unknown" or empty arrays
+3. If information isn't available, use "unknown" or empty arrays. iF the field is optional and you don't have enough information to fill it, don't include the field.
 4. Consider cultural context when analyzing sentiment
 5. Prioritize signals that indicate readiness to book
 6. Look for both explicit and implicit signals

@@ -9,7 +9,7 @@
  */
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle, Sparkles, Loader2 } from 'lucide-react'
@@ -47,8 +47,6 @@ export function ChatSection({
     welcomeMessage,
     className,
 }: ChatSectionProps) {
-    const [isInitialized, setIsInitialized] = useState(false)
-
     const {
         session,
         messages,
@@ -56,34 +54,23 @@ export function ChatSection({
         isReady,
         error,
         initializeSession,
-    } = useUnifiedChat({
-        pageUrl:
-            typeof window !== 'undefined' ? window.location.href : undefined,
-        referrer:
-            typeof document !== 'undefined' ? document.referrer : undefined,
-    })
+        addMessage,
+    } = useUnifiedChat()
 
     /**
-     * Initialize session when user starts typing or clicks
+     * Initialize session on mount if not already initialized
+     * Context handles auto-initialization, but we ensure it happens for embedded chat
      */
-    const handleInitialize = useCallback(async () => {
-        if (!isInitialized && !session) {
-            setIsInitialized(true)
-            await initializeSession()
-        }
-    }, [isInitialized, session, initializeSession])
-
-    // Auto-initialize on mount for better UX
     useEffect(() => {
-        // Small delay to let the page render first
-        const timer = setTimeout(() => {
-            if (!isInitialized && !session) {
-                handleInitialize()
-            }
-        }, 500)
+        if (!session && !isInitializing) {
+            // Small delay to let the page render first
+            const timer = setTimeout(() => {
+                initializeSession()
+            }, 500)
 
-        return () => clearTimeout(timer)
-    }, [isInitialized, session, handleInitialize])
+            return () => clearTimeout(timer)
+        }
+    }, [session, isInitializing, initializeSession])
 
     const config = session?.config
     const userName = session?.fullName?.split(' ')[0] || 'there'
@@ -128,7 +115,7 @@ export function ChatSection({
                     )}
                 >
                     {/* Loading State */}
-                    {(isInitializing || (!isReady && isInitialized)) && (
+                    {isInitializing && (
                         <div className='flex h-full flex-col items-center justify-center gap-4 p-8'>
                             <div
                                 className={cn(
@@ -172,7 +159,7 @@ export function ChatSection({
                                 <p className='text-xs text-red-500'>{error}</p>
                             </div>
                             <button
-                                onClick={handleInitialize}
+                                onClick={() => initializeSession()}
                                 className={cn(
                                     'rounded-lg px-4 py-2 text-sm font-medium',
                                     'bg-stone-900 text-white',
@@ -252,15 +239,16 @@ export function ChatSection({
                                     userName={userName}
                                     showHeader={false}
                                     initialMessages={messages}
+                                    onMessageReceived={addMessage}
                                 />
                             </div>
                         </>
                     )}
 
                     {/* Initial State - Before Session */}
-                    {!isInitialized && !session && !isInitializing && (
+                    {!session && !isInitializing && (
                         <button
-                            onClick={handleInitialize}
+                            onClick={() => initializeSession()}
                             className='flex h-full w-full flex-col items-center justify-center gap-4 p-8 transition-colors hover:bg-stone-50'
                         >
                             <div
