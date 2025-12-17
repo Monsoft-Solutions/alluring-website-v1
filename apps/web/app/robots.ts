@@ -88,10 +88,7 @@ export default function robots(): MetadataRoute.Robots {
         environment,
         baseUrl,
         sitemaps: [...SITEMAP_URLS],
-        customRules:
-            environment === 'production'
-                ? createCommonRobotsRules()
-                : undefined,
+        customRules: createCommonRobotsRules(),
         additionalDisallows: getAppSpecificDisallows(),
     }
 

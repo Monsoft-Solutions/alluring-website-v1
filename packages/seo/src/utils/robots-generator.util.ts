@@ -82,7 +82,6 @@ export function generateRobots(
     config: RobotsGeneratorConfig
 ): MetadataRoute.Robots {
     const {
-        environment,
         baseUrl,
         sitemaps = [],
         sitemapUrl, // Deprecated, for backwards compatibility
@@ -105,52 +104,42 @@ export function generateRobots(
     // Environment-specific rules - use LocalRule[] for array operations
     const rules: LocalRule[] = []
 
-    if (environment === 'production') {
-        // Production: Allow most crawling with some restrictions
-        rules.push({
-            userAgent: '*',
-            allow: ['/', '/_next/static/', '/_next/image/'],
-            disallow: baseDisallows,
-        })
+    // Production: Allow most crawling with some restrictions
+    rules.push({
+        userAgent: '*',
+        allow: ['/', '/_next/static/', '/_next/image/'],
+        disallow: baseDisallows,
+    })
 
-        // Add custom rules for production (without duplicating base disallows)
-        customRules.forEach((rule) => {
-            rules.push({
-                userAgent: rule.userAgent,
-                allow: rule.allow,
-                disallow: rule.disallow,
-            })
-        })
-    } else {
-        // Non-production: Block all crawling
+    // Add custom rules for production (without duplicating base disallows)
+    customRules.forEach((rule) => {
         rules.push({
-            userAgent: '*',
-            disallow: '/',
+            userAgent: rule.userAgent,
+            allow: rule.allow,
+            disallow: rule.disallow,
         })
-    }
+    })
 
     // Build sitemap URLs array
     const sitemapUrls: string[] = []
 
-    if (environment === 'production') {
-        // Add sitemaps from the new array format
-        if (sitemaps.length > 0) {
-            sitemaps.forEach((sitemap) => {
-                const url = sitemap.startsWith('http')
-                    ? sitemap
-                    : `${normalizedBaseUrl}${sitemap.startsWith('/') ? sitemap : '/' + sitemap}`
-                sitemapUrls.push(url)
-            })
-        } else if (sitemapUrl) {
-            // Fallback to deprecated single sitemap URL
-            const url = sitemapUrl.startsWith('http')
-                ? sitemapUrl
-                : `${normalizedBaseUrl}${sitemapUrl.startsWith('/') ? sitemapUrl : '/' + sitemapUrl}`
+    // Add sitemaps from the new array format
+    if (sitemaps.length > 0) {
+        sitemaps.forEach((sitemap) => {
+            const url = sitemap.startsWith('http')
+                ? sitemap
+                : `${normalizedBaseUrl}${sitemap.startsWith('/') ? sitemap : '/' + sitemap}`
             sitemapUrls.push(url)
-        } else {
-            // Default to /sitemap.xml if nothing specified
-            sitemapUrls.push(`${normalizedBaseUrl}/sitemap.xml`)
-        }
+        })
+    } else if (sitemapUrl) {
+        // Fallback to deprecated single sitemap URL
+        const url = sitemapUrl.startsWith('http')
+            ? sitemapUrl
+            : `${normalizedBaseUrl}${sitemapUrl.startsWith('/') ? sitemapUrl : '/' + sitemapUrl}`
+        sitemapUrls.push(url)
+    } else {
+        // Default to /sitemap.xml if nothing specified
+        sitemapUrls.push(`${normalizedBaseUrl}/sitemap.xml`)
     }
 
     // Return single sitemap as string, multiple as array
@@ -241,7 +230,8 @@ export function createCommonRobotsRules(): RobotsRule[] {
                 'Claude-Web',
                 'Google-Extended',
             ],
-            disallow: ['/'],
+            allow: ['/', '/_next/static/', '/_next/image/'],
+            disallow: ['/admin/', '/api/'],
         },
         // Social media crawlers - allow for Open Graph previews
         {
