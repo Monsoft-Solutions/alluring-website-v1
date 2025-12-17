@@ -5,8 +5,27 @@ import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 import { ArrowRight, ShieldCheck, Star } from 'lucide-react'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const Hero = () => {
+    const { track } = useAnalyticsEvent()
+
+    const handlePrimaryCTAClick = () => {
+        track('cta_click', {
+            cta_name: 'hero_primary',
+            cta_text: 'Start Consultation',
+            page_section: 'hero',
+        })
+    }
+
+    const handlePhoneClick = () => {
+        track('phone_click', {
+            cta_name: 'hero_secondary',
+            phone_number: siteConfig.contact.phoneDisplay,
+            page_section: 'hero',
+        })
+    }
+
     return (
         <section className='relative w-full'>
             {/* Sticky Video Background */}
@@ -97,6 +116,7 @@ export const Hero = () => {
                                 <Button size='md' asChild>
                                     <Link
                                         href='/contact-us'
+                                        onClick={handlePrimaryCTAClick}
                                         aria-label='Start your consultation - Navigate to contact page'
                                         className='group'
                                     >
@@ -109,6 +129,7 @@ export const Hero = () => {
                                 <Button size='md' variant='outline' asChild>
                                     <a
                                         href={getPhoneLink()}
+                                        onClick={handlePhoneClick}
                                         aria-label={`Call us at ${siteConfig.contact.phoneDisplay}`}
                                     >
                                         Call (786) 305-8649

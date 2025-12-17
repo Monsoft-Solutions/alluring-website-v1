@@ -10,6 +10,7 @@
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { NavDropdownProps } from './header.type'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export function NavDropdown({
     label,
@@ -18,6 +19,18 @@ export function NavDropdown({
     onToggle,
     onClose,
 }: NavDropdownProps) {
+    const { track } = useAnalyticsEvent()
+
+    const handleLinkClick = (linkLabel: string, linkHref: string) => {
+        track('nav_click', {
+            link_text: linkLabel,
+            link_url: linkHref,
+            nav_type: 'desktop',
+            link_category: label.toLowerCase(),
+        })
+        onClose()
+    }
+
     return (
         <div
             className='group relative'
@@ -53,7 +66,9 @@ export function NavDropdown({
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                onClick={onClose}
+                                onClick={() =>
+                                    handleLinkClick(link.label, link.href)
+                                }
                                 className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
                             >
                                 {link.label}

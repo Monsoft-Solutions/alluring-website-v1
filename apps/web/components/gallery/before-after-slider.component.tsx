@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useCallback, useRef, useState } from 'react'
 
 import type { BeforeAfterPairCard } from '@/lib/types/gallery/before-after.type'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 type BeforeAfterSliderProps = {
     readonly pair: BeforeAfterPairCard
@@ -21,6 +22,8 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
     const [sliderPosition, setSliderPosition] = useState(50)
     const [isDragging, setIsDragging] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
+    const { track } = useAnalyticsEvent()
+    const hasTrackedInteraction = useRef(false)
 
     const updateSliderPosition = useCallback((clientX: number) => {
         if (!containerRef.current) return
@@ -36,8 +39,18 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
             e.preventDefault()
             setIsDragging(true)
             updateSliderPosition(e.clientX)
+
+            // Track interaction once per slider
+            if (!hasTrackedInteraction.current) {
+                hasTrackedInteraction.current = true
+                track('gallery_slider_interact', {
+                    procedure_type: pair.procedureType ?? undefined,
+                    timeframe: pair.timeframe ?? undefined,
+                    interaction_type: 'drag',
+                })
+            }
         },
-        [updateSliderPosition]
+        [updateSliderPosition, pair.procedureType, pair.timeframe, track]
     )
 
     const handleMouseMove = useCallback(
@@ -56,8 +69,18 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
         (e: React.TouchEvent) => {
             setIsDragging(true)
             updateSliderPosition(e.touches[0]!.clientX)
+
+            // Track interaction once per slider
+            if (!hasTrackedInteraction.current) {
+                hasTrackedInteraction.current = true
+                track('gallery_slider_interact', {
+                    procedure_type: pair.procedureType ?? undefined,
+                    timeframe: pair.timeframe ?? undefined,
+                    interaction_type: 'drag',
+                })
+            }
         },
-        [updateSliderPosition]
+        [updateSliderPosition, pair.procedureType, pair.timeframe, track]
     )
 
     const handleTouchMove = useCallback(

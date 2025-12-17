@@ -6,6 +6,8 @@
  *
  * SSR-compatible: Uses CSS transitions and transforms.
  */
+'use client'
+
 import { ImageObjectSchema } from '@workspace/seo/react'
 import { ArrowRight, Calendar, Clock, User } from 'lucide-react'
 import Image from 'next/image'
@@ -16,6 +18,7 @@ import { siteConfig } from '@/lib/data/site-config'
 import { cn } from '@workspace/ui/lib/utils'
 
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 type PostCardProps = {
     post: BlogPostCard
@@ -28,6 +31,8 @@ export function PostCard({
     className,
     includeSchema = true,
 }: PostCardProps) {
+    const { track } = useAnalyticsEvent()
+
     const defaultAuthor = {
         '@type': 'Organization' as const,
         name: siteConfig.business.name,
@@ -43,6 +48,15 @@ export function PostCard({
 
     const titleId = `post-title-${post.id}`
 
+    const handleClick = () => {
+        track('content_click', {
+            content_type: 'blog_post',
+            post_title: post.title,
+            post_slug: post.slug,
+            post_author: post.author?.name,
+        })
+    }
+
     return (
         <article
             className={cn(
@@ -56,6 +70,7 @@ export function PostCard({
             {/* Clickable overlay */}
             <Link
                 href={`/${post.slug}`}
+                onClick={handleClick}
                 aria-labelledby={titleId}
                 className='focus:ring-gold-500/50 absolute inset-0 z-10 focus:ring-2 focus:ring-offset-2 focus:outline-none'
             >
