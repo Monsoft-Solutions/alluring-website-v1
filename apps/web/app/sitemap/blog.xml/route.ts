@@ -24,65 +24,8 @@ import {
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
-
-type SitemapEntry = {
-    url: string
-    lastModified: string
-    changeFrequency: string
-    priority: number
-    images?: Array<{ url: string; title?: string }>
-}
-
-/**
- * Generate XML sitemap string with image support
- */
-function generateSitemapXml(entries: SitemapEntry[]): string {
-    const urls = entries
-        .map((entry) => {
-            const imageXml = entry.images?.length
-                ? entry.images
-                      .map(
-                          (img) => `
-    <image:image>
-      <image:loc>${escapeXml(img.url)}</image:loc>${
-          img.title
-              ? `
-      <image:title>${escapeXml(img.title)}</image:title>`
-              : ''
-      }
-    </image:image>`
-                      )
-                      .join('')
-                : ''
-
-            return `
-  <url>
-    <loc>${escapeXml(entry.url)}</loc>
-    <lastmod>${entry.lastModified}</lastmod>
-    <changefreq>${entry.changeFrequency}</changefreq>
-    <priority>${entry.priority}</priority>${imageXml}
-  </url>`
-        })
-        .join('')
-
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls}
-</urlset>`
-}
-
-/**
- * Escape special XML characters
- */
-function escapeXml(str: string): string {
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;')
-}
+import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
+import { generateSitemapXml } from '@workspace/seo/utils'
 
 /**
  * GET handler for blog sitemap

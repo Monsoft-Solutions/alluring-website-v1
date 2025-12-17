@@ -11,61 +11,8 @@ import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import { getPromotionsForSitemap } from '@/lib/queries/promotion/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
-import type {
-    SitemapEntry,
-    SitemapImage,
-} from '@workspace/seo/types/sitemap/sitemap-entry.type'
-
-/**
- * Generate XML sitemap string with image support
- */
-function generateSitemapXml(entries: SitemapEntry[]): string {
-    const urls = entries
-        .map((entry) => {
-            const imageXml = entry.images?.length
-                ? entry.images
-                      .map(
-                          (img: SitemapImage) => `
-    <image:image>
-      <image:loc>${escapeXml(img.url)}</image:loc>${
-          img.title
-              ? `
-      <image:title>${escapeXml(img.title)}</image:title>`
-              : ''
-      }
-    </image:image>`
-                      )
-                      .join('')
-                : ''
-
-            return `
-  <url>
-    <loc>${escapeXml(entry.url)}</loc>
-    <lastmod>${entry.lastModified}</lastmod>
-    <changefreq>${entry.changeFrequency}</changefreq>
-    <priority>${entry.priority}</priority>${imageXml}
-  </url>`
-        })
-        .join('')
-
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls}
-</urlset>`
-}
-
-/**
- * Escape special XML characters
- */
-function escapeXml(str: string): string {
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;')
-}
+import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
+import { generateSitemapXml } from '@workspace/seo/utils'
 
 /**
  * GET handler for promotions sitemap
