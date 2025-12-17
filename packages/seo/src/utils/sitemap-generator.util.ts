@@ -383,10 +383,14 @@ export function generateSitemapXml(entries: SitemapEntry[]): string {
 
             return `
   <url>
-    <loc>${escapeXml(entry.url)}</loc>
-    <lastmod>${entry.lastModified}</lastmod>
-    <changefreq>${entry.changeFrequency}</changefreq>
-    <priority>${entry.priority}</priority>${imageXml}
+    <loc>${escapeXml(entry.url)}</loc>${
+        entry.lastModified
+            ? `
+    <lastmod>${escapeXml(entry.lastModified)}</lastmod>`
+            : ''
+    }
+    <changefreq>${escapeXml(entry.changeFrequency || 'weekly')}</changefreq>
+    <priority>${entry.priority !== undefined ? entry.priority : 0.5}</priority>${imageXml}
   </url>`
         })
         .join('')
