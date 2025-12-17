@@ -10,10 +10,12 @@ import { db } from '@workspace/db/client'
 import {
     blogCategory,
     blogPost,
+    blogPostCategory,
+    blogPostTag,
     blogTag,
     images,
 } from '@workspace/db/schema/blog'
-import { and, eq, isNotNull } from 'drizzle-orm'
+import { and, desc, eq, isNotNull } from 'drizzle-orm'
 import { cache } from 'react'
 
 /**
@@ -116,5 +118,83 @@ export const getActiveTagSlugs = cache(
             slug: r.slug,
             createdAt: r.createdAt,
         }))
+    }
+)
+
+/**
+ * Get the most recent blog post date (for blog listing page lastmod)
+ * Returns the publishedAt date of the most recently published post
+ */
+export const getMostRecentPostDate = cache(async (): Promise<Date | null> => {
+    const result = await db
+        .select({ publishedAt: blogPost.publishedAt })
+        .from(blogPost)
+        .where(
+            and(
+                eq(blogPost.status, 'published'),
+                isNotNull(blogPost.publishedAt)
+            )
+        )
+        .orderBy(desc(blogPost.publishedAt))
+        .limit(1)
+
+    return result[0]?.publishedAt ?? null
+})
+
+/**
+ * Get most recent post date for a specific category
+ * Returns the publishedAt date of the most recent post in the category
+ */
+export const getMostRecentPostDateForCategory = cache(
+    async (categorySlug: string): Promise<Date | null> => {
+        const result = await db
+            .select({ publishedAt: blogPost.publishedAt })
+            .from(blogPost)
+            .innerJoin(
+                blogPostCategory,
+                eq(blogPostCategory.blogPostId, blogPost.id)
+            )
+            .innerJoin(
+                blogCategory,
+                eq(blogCategory.id, blogPostCategory.categoryId)
+            )
+            .where(
+                and(
+                    eq(blogPost.status, 'published'),
+                    isNotNull(blogPost.publishedAt),
+                    eq(blogCategory.slug, categorySlug),
+                    eq(blogCategory.isActive, true)
+                )
+            )
+            .orderBy(desc(blogPost.publishedAt))
+            .limit(1)
+
+        return result[0]?.publishedAt ?? null
+    }
+)
+
+/**
+ * Get most recent post date for a specific tag
+ * Returns the publishedAt date of the most recent post with the tag
+ */
+export const getMostRecentPostDateForTag = cache(
+    async (tagSlug: string): Promise<Date | null> => {
+        const result = await db
+            .select({ publishedAt: blogPost.publishedAt })
+            .from(blogPost)
+            .innerJoin(blogPostTag, eq(blogPostTag.blogPostId, blogPost.id))
+            .innerJoin(blogTag, eq(blogTag.id, blogPostTag.tagId))
+            .where(
+                and(
+                    eq(blogPost.status, 'published'),
+                    isNotNull(blogPost.publishedAt),
+                    eq(blogTag.slug, tagSlug),
+                    eq(blogTag.isActive, true)
+                )
+            )
+            .orderBy(desc(blogPost.publishedAt))
+            .limit(1)
+
+        return result[0]?.publishedAt ?? null
     }
 )

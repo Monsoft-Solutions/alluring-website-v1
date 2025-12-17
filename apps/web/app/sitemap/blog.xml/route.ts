@@ -5,14 +5,22 @@
  * - Blog posts with featured images (for image SEO)
  * - Category pages
  * - Tag pages
+ *
+ * Revalidates every 3 hours to balance freshness with performance
  */
 import { NextResponse } from 'next/server'
+
+// Revalidate every 3 hours (10800 seconds)
+export const revalidate = 10800
 
 import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import {
     getActiveCategorySlugs,
     getActiveTagSlugs,
+    getMostRecentPostDate,
+    getMostRecentPostDateForCategory,
+    getMostRecentPostDateForTag,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
@@ -101,10 +109,17 @@ export async function GET(): Promise<NextResponse> {
     const today = new Date().toISOString().slice(0, 10)
 
     try {
+        // Get most recent post date for listing pages
+        const mostRecentPostDate = await getMostRecentPostDate()
+        const mostRecentPostDateStr = mostRecentPostDate
+            ?.toISOString()
+            .slice(0, 10)
+
         // Blog main listing page
         entries.push({
             url: `${baseUrl}/blog`,
-            lastModified: pageLastModified['/blog'] ?? today,
+            lastModified:
+                mostRecentPostDateStr ?? pageLastModified['/blog'] ?? today,
             changeFrequency: 'daily',
             priority: 0.9,
         })
@@ -135,7 +150,10 @@ export async function GET(): Promise<NextResponse> {
         // Categories listing page
         entries.push({
             url: `${baseUrl}/blog/categories`,
-            lastModified: pageLastModified['/blog/categories'] ?? today,
+            lastModified:
+                mostRecentPostDateStr ??
+                pageLastModified['/blog/categories'] ??
+                today,
             changeFrequency: 'weekly',
             priority: 0.8,
         })
@@ -143,7 +161,11 @@ export async function GET(): Promise<NextResponse> {
         // Category detail pages
         const categories = await getActiveCategorySlugs()
         for (const category of categories) {
+            const categoryPostDate = await getMostRecentPostDateForCategory(
+                category.slug
+            )
             const lastModified =
+                categoryPostDate?.toISOString().slice(0, 10) ??
                 category.updatedAt?.toISOString().slice(0, 10) ??
                 category.createdAt?.toISOString().slice(0, 10) ??
                 today
@@ -159,7 +181,10 @@ export async function GET(): Promise<NextResponse> {
         // Tags listing page
         entries.push({
             url: `${baseUrl}/blog/tags`,
-            lastModified: pageLastModified['/blog/tags'] ?? today,
+            lastModified:
+                mostRecentPostDateStr ??
+                pageLastModified['/blog/tags'] ??
+                today,
             changeFrequency: 'weekly',
             priority: 0.8,
         })
@@ -167,9 +192,14 @@ export async function GET(): Promise<NextResponse> {
         // Tag detail pages
         const tags = await getActiveTagSlugs()
         for (const tag of tags) {
+            const tagPostDate = await getMostRecentPostDateForTag(tag.slug)
+            const lastModified =
+                tagPostDate?.toISOString().slice(0, 10) ??
+                tag.createdAt.toISOString().slice(0, 10)
+
             entries.push({
                 url: `${baseUrl}/blog/tags/${tag.slug}`,
-                lastModified: tag.createdAt.toISOString().slice(0, 10),
+                lastModified,
                 changeFrequency: 'weekly',
                 priority: 0.6,
             })
