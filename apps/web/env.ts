@@ -26,7 +26,7 @@ if (typeof window === 'undefined') {
 export const env = createEnv({
     server: {
         // Database & Storage (required for runtime)
-        POSTGRES_URL: z.string().url(),
+        POSTGRES_URL: z.url(),
         BLOG_API_KEY: z.string().min(1),
         BLOB_READ_WRITE_TOKEN: z.string().min(1).optional(),
         VERCEL_URL: z.string().optional(),
@@ -49,9 +49,12 @@ export const env = createEnv({
         // These are read directly by Langfuse SDK, but documented here for clarity
         LANGFUSE_SECRET_KEY: z.string().optional(),
         LANGFUSE_PUBLIC_KEY: z.string().optional(),
-        LANGFUSE_BASE_URL: z.string().url().optional(),
+        LANGFUSE_BASE_URL: z.url().optional(),
         LANGFUSE_ENABLED: z.enum(['true', 'false']).optional(),
 
+        // Google Indexing API (optional - required for google:index script)
+        GOOGLE_CLIENT_EMAIL: z.email().optional(),
+        GOOGLE_PRIVATE_KEY: z.string().optional(),
         // CRM Integration (optional - enables lead sync to CRM)
         NEXUITE_CRM_API_URL: z.url(),
     },
