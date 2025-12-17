@@ -5,14 +5,21 @@
  * - Main gallery listing page
  * - Gallery group pages with cover images
  * - Individual gallery media pages with images
+ *
+ * Revalidates every 3 hours to balance freshness with performance
  */
 import { NextResponse } from 'next/server'
+
+// Revalidate every 3 hours (10800 seconds)
+export const revalidate = 10800
 
 import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import {
     getGalleryGroupsForSitemap,
     getGalleryMediaForSitemap,
+    getMostRecentMediaDate,
+    getMostRecentMediaDateForGroup,
 } from '@/lib/queries/gallery/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
@@ -100,10 +107,17 @@ export async function GET(): Promise<NextResponse> {
     const today = new Date().toISOString().slice(0, 10)
 
     try {
+        // Get most recent media date for listing page
+        const mostRecentMediaDate = await getMostRecentMediaDate()
+        const mostRecentMediaDateStr = mostRecentMediaDate
+            ?.toISOString()
+            .slice(0, 10)
+
         // Gallery main listing page
         entries.push({
             url: `${baseUrl}/gallery`,
-            lastModified: pageLastModified['/gallery'] ?? today,
+            lastModified:
+                mostRecentMediaDateStr ?? pageLastModified['/gallery'] ?? today,
             changeFrequency: 'weekly',
             priority: 0.9,
         })
@@ -111,9 +125,16 @@ export async function GET(): Promise<NextResponse> {
         // Gallery groups
         const groups = await getGalleryGroupsForSitemap()
         for (const group of groups) {
+            const groupMediaDate = await getMostRecentMediaDateForGroup(
+                group.slug
+            )
+            const lastModified =
+                groupMediaDate?.toISOString().slice(0, 10) ??
+                group.updatedAt.toISOString().slice(0, 10)
+
             const entry: SitemapEntry = {
                 url: `${baseUrl}/gallery/${group.slug}`,
-                lastModified: group.updatedAt.toISOString().slice(0, 10),
+                lastModified,
                 changeFrequency: 'weekly',
                 priority: 0.8,
             }

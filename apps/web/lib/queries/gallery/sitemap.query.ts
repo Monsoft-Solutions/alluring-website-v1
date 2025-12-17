@@ -6,8 +6,12 @@
  * - All visible gallery groups with cover image URLs and updatedAt
  */
 import { db } from '@workspace/db/client'
-import { galleryGroup, galleryMedia } from '@workspace/db/schema/gallery'
-import { eq } from 'drizzle-orm'
+import {
+    galleryGroup,
+    galleryMedia,
+    galleryMediaGroup,
+} from '@workspace/db/schema/gallery'
+import { and, desc, eq } from 'drizzle-orm'
 import { cache } from 'react'
 
 /**
@@ -81,5 +85,51 @@ export const getGalleryGroupsForSitemap = cache(
             coverImageUrl: r.coverImageUrl,
             updatedAt: r.updatedAt,
         }))
+    }
+)
+
+/**
+ * Get the most recent published gallery media date (for gallery listing page lastmod)
+ * Returns the updatedAt date of the most recently updated published media
+ */
+export const getMostRecentMediaDate = cache(async (): Promise<Date | null> => {
+    const result = await db
+        .select({ updatedAt: galleryMedia.updatedAt })
+        .from(galleryMedia)
+        .where(eq(galleryMedia.status, 'published'))
+        .orderBy(desc(galleryMedia.updatedAt))
+        .limit(1)
+
+    return result[0]?.updatedAt ?? null
+})
+
+/**
+ * Get most recent media date for a specific gallery group
+ * Returns the updatedAt date of the most recent published media in the group
+ */
+export const getMostRecentMediaDateForGroup = cache(
+    async (groupSlug: string): Promise<Date | null> => {
+        const result = await db
+            .select({ updatedAt: galleryMedia.updatedAt })
+            .from(galleryMedia)
+            .innerJoin(
+                galleryMediaGroup,
+                eq(galleryMediaGroup.mediaId, galleryMedia.id)
+            )
+            .innerJoin(
+                galleryGroup,
+                eq(galleryGroup.id, galleryMediaGroup.groupId)
+            )
+            .where(
+                and(
+                    eq(galleryMedia.status, 'published'),
+                    eq(galleryGroup.slug, groupSlug),
+                    eq(galleryGroup.isVisible, true)
+                )
+            )
+            .orderBy(desc(galleryMedia.updatedAt))
+            .limit(1)
+
+        return result[0]?.updatedAt ?? null
     }
 )
