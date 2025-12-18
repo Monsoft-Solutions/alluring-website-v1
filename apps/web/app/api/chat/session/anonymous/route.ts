@@ -4,6 +4,10 @@
  * Creates a chat session without requiring pre-chat form data.
  * Used for embedded chat sections where users can start chatting immediately.
  *
+ * When a contactSubmissionId is provided (thank-you page flow), the session
+ * is linked to the contact submission via foreign key, enabling full contact
+ * data access for AI personalization.
+ *
  * @module app/api/chat/session/anonymous/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
@@ -12,14 +16,7 @@ import {
     getChatConfig,
     createAnonymousChatSession,
 } from '@/lib/queries/chat.query'
-
-/**
- * Lead context from form submission (thank-you page)
- */
-type LeadContextInput = {
-    firstName?: string
-    procedure?: string
-}
+import { getContactSubmissionById } from '@/lib/queries/contact.query'
 
 /**
  * Request body for anonymous session creation
@@ -30,8 +27,8 @@ type AnonymousSessionRequest = {
     utmSource?: string
     utmMedium?: string
     utmCampaign?: string
-    /** Lead context for thank-you page sessions */
-    leadContext?: LeadContextInput
+    /** Contact submission ID from form submission (thank-you page) */
+    contactSubmissionId?: string
 }
 
 /**
@@ -58,6 +55,9 @@ function getClientIP(request: NextRequest): string | undefined {
  *
  * Creates an anonymous chat session without lead information.
  * The session can be upgraded later when the user provides contact info.
+ *
+ * If contactSubmissionId is provided, the session is linked to the
+ * contact submission and scoring signals are populated from contact data.
  */
 export async function POST(request: NextRequest) {
     try {
@@ -78,6 +78,57 @@ export async function POST(request: NextRequest) {
         const clientIP = getClientIP(request)
         const userAgent = request.headers.get('user-agent') ?? undefined
 
+        // If contactSubmissionId provided, fetch contact data for context
+        let scoringSignals:
+            | {
+                  leadFirstName?: string
+                  fromFormSubmission?: boolean
+                  leadProcedure?: string
+              }
+            | undefined
+        let detectedProcedures: string[] | undefined
+
+        if (body.contactSubmissionId) {
+            try {
+                const contactData = await getContactSubmissionById(
+                    body.contactSubmissionId
+                )
+
+                if (contactData) {
+                    // Build scoring signals from contact data
+                    scoringSignals = {
+                        leadFirstName:
+                            contactData.firstName ||
+                            contactData.name.split(' ')[0],
+                        fromFormSubmission: true,
+                        leadProcedure: contactData.procedure ?? undefined,
+                    }
+
+                    // Store procedure as detected procedure for AI context
+                    if (contactData.procedure) {
+                        detectedProcedures = [contactData.procedure]
+                    }
+
+                    console.log(
+                        `[AnonymousSession] Linked to contact submission ${body.contactSubmissionId}`,
+                        {
+                            firstName: scoringSignals.leadFirstName,
+                            procedure: contactData.procedure,
+                        }
+                    )
+                } else {
+                    console.warn(
+                        `[AnonymousSession] Contact submission ${body.contactSubmissionId} not found`
+                    )
+                }
+            } catch (error) {
+                console.error(
+                    '[AnonymousSession] Failed to fetch contact submission:',
+                    error
+                )
+            }
+        }
+
         // Create anonymous session in database
         const session = await createAnonymousChatSession({
             pageUrl: body.pageUrl,
@@ -87,8 +138,11 @@ export async function POST(request: NextRequest) {
             utmSource: body.utmSource,
             utmMedium: body.utmMedium,
             utmCampaign: body.utmCampaign,
-            // Store lead context for thank-you page sessions
-            leadContext: body.leadContext,
+            // Store scoring signals and detected procedures from contact data
+            scoringSignals,
+            detectedProcedures,
+            // Store foreign key reference to contact submission
+            contactSubmissionId: body.contactSubmissionId,
         })
 
         // Return session info with config

@@ -61,52 +61,6 @@ function getClientIP(request: NextRequest): string | undefined {
 }
 
 /**
- * Redacts sensitive fields from contact form data for safe logging
- */
-function redactPII(data: ContactFormData): Record<string, unknown> {
-    return {
-        name: '[REDACTED]',
-        firstName: data.firstName ? '[REDACTED]' : 'Not provided',
-        lastName: data.lastName ? '[REDACTED]' : 'Not provided',
-        email: data.email ? '[REDACTED]' : 'Not provided',
-        phone: data.phone ? '[REDACTED]' : 'Not provided',
-        subject: data.subject || 'Not provided',
-        message: data.message ? '[REDACTED]' : 'Not provided',
-        procedure: data.procedure || 'Not specified',
-        preferredContactTime: data.preferredContactTime || 'Not specified',
-        consentGiven: data.consentGiven ?? false,
-        source: data.source || 'Not specified',
-    }
-}
-
-/**
- * Formats contact form data for console logging
- */
-function formatConsoleLog(
-    data: ContactFormData | Record<string, unknown>,
-    redact: boolean = false
-): string {
-    const displayData = redact ? redactPII(data as ContactFormData) : data
-
-    return `
-=== New Contact Form Submission ===
-Name: ${displayData.name}
-First Name: ${displayData.firstName || 'Not provided'}
-Last Name: ${displayData.lastName || 'Not provided'}
-Email: ${displayData.email || 'Not provided'}
-Phone: ${displayData.phone || 'Not provided'}
-Subject: ${displayData.subject || 'Not provided'}
-Message: ${displayData.message || 'Not provided'}
-Procedure: ${displayData.procedure || 'Not specified'}
-Preferred Contact Time: ${displayData.preferredContactTime || 'Not specified'}
-Consent Given: ${displayData.consentGiven ?? 'Not specified'}
-Source: ${displayData.source || 'Not specified'}
-Submitted at: ${new Date().toISOString()}
-===================================
-    `.trim()
-}
-
-/**
  * Validates data based on the form source
  * Different forms have different required fields
  */
@@ -388,8 +342,6 @@ export async function POST(
             throw new Error('Failed to create contact submission')
         }
 
-        console.log(formatConsoleLog(validatedData, true))
-
         // Process lead in background: CRM sync + email sending (post-response)
         after(async () => {
             await processLeadInBackground(
@@ -409,6 +361,7 @@ export async function POST(
             {
                 success: true,
                 message,
+                submissionId: submission.id,
             },
             { status: 200 }
         )

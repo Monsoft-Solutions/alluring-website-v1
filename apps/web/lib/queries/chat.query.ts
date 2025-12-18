@@ -302,11 +302,12 @@ export async function getMessageSuggestedQuestions(
 // ============================================
 
 /**
- * Lead context for thank-you page sessions
+ * Scoring signals for lead scoring
  */
-export type LeadContextInput = {
-    firstName?: string
-    procedure?: string
+export type ScoringSignalsInput = {
+    leadFirstName?: string
+    fromFormSubmission?: boolean
+    leadProcedure?: string
 }
 
 /**
@@ -320,8 +321,12 @@ export type CreateAnonymousSessionInput = {
     utmSource?: string
     utmMedium?: string
     utmCampaign?: string
-    /** Lead context from form submission (thank-you page) */
-    leadContext?: LeadContextInput
+    /** Scoring signals from contact data (thank-you page) */
+    scoringSignals?: ScoringSignalsInput
+    /** Detected procedures from contact data */
+    detectedProcedures?: string[]
+    /** Contact submission ID for foreign key link (thank-you page) */
+    contactSubmissionId?: string
 }
 
 /**
@@ -330,26 +335,13 @@ export type CreateAnonymousSessionInput = {
  * Anonymous sessions don't require name/phone upfront.
  * They can be upgraded later when the user provides contact info.
  *
- * If leadContext is provided (thank-you page), stores:
- * - procedure in detectedProcedures for AI prompt enhancement
- * - firstName in scoringSignals.leadFirstName for personalization
+ * If contactSubmissionId is provided (thank-you page), the session
+ * is linked to the contact submission via foreign key for full
+ * contact data access in AI personalization.
  */
 export async function createAnonymousChatSession(
     data: CreateAnonymousSessionInput
 ): Promise<ChatSession> {
-    // Build scoring signals with lead context if provided
-    const scoringSignals = data.leadContext
-        ? {
-              leadFirstName: data.leadContext.firstName,
-              fromFormSubmission: true,
-          }
-        : undefined
-
-    // Store procedure as detected procedure for AI context
-    const detectedProcedures = data.leadContext?.procedure
-        ? [data.leadContext.procedure]
-        : undefined
-
     const [session] = await db
         .insert(chatSession)
         .values({
@@ -361,9 +353,11 @@ export async function createAnonymousChatSession(
             utmSource: data.utmSource,
             utmMedium: data.utmMedium,
             utmCampaign: data.utmCampaign,
-            // Store lead context for AI prompt enhancement
-            scoringSignals,
-            detectedProcedures,
+            // Store scoring signals and detected procedures
+            scoringSignals: data.scoringSignals,
+            detectedProcedures: data.detectedProcedures,
+            // Store foreign key reference to contact submission
+            contactSubmissionId: data.contactSubmissionId,
         })
         .returning()
 

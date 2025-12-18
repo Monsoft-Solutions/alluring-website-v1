@@ -30,6 +30,7 @@ import {
     updateSessionConversationAnalysis,
     upgradeChatSession,
 } from '@/lib/queries/chat.query'
+import { getContactSubmissionById } from '@/lib/queries/contact.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
     sanitizeMessageContent,
@@ -149,20 +150,46 @@ export async function POST(request: NextRequest) {
         const detectedProcedures =
             (session.detectedProcedures as string[]) ?? []
 
-        // Check if this is a session from form submission (thank-you page)
-        // and build an enhanced system prompt with lead qualification context
-        const scoringSignals = session.scoringSignals as {
-            leadFirstName?: string
-            fromFormSubmission?: boolean
-        } | null
-
+        // Check if this session is linked to a contact submission (thank-you page)
+        // and build an enhanced system prompt with full lead context
         let systemPrompt = config.systemPrompt
-        if (scoringSignals?.fromFormSubmission) {
-            // Build lead-qualified prompt with context
-            systemPrompt = buildLeadQualificationPrompt(config.systemPrompt, {
-                firstName: scoringSignals.leadFirstName ?? '',
-                procedure: detectedProcedures[0],
-            })
+
+        if (session.contactSubmissionId) {
+            // Fetch full contact data from database for AI personalization
+            const contactData = await getContactSubmissionById(
+                session.contactSubmissionId
+            )
+
+            if (contactData) {
+                // Build lead-qualified prompt with FULL contact context
+                systemPrompt = buildLeadQualificationPrompt(
+                    config.systemPrompt,
+                    {
+                        firstName:
+                            contactData.firstName ||
+                            contactData.name.split(' ')[0] ||
+                            '',
+                        lastName: contactData.lastName ?? undefined,
+                        email: contactData.email,
+                        phone: contactData.phone ?? undefined,
+                        procedure: contactData.procedure ?? undefined,
+                        preferredContactTime:
+                            contactData.preferredContactTime ?? undefined,
+                        source: contactData.source ?? undefined,
+                    }
+                )
+
+                console.log(
+                    `[Chat] Using lead-qualified prompt for session ${session.id}`,
+                    {
+                        contactSubmissionId: session.contactSubmissionId,
+                        firstName:
+                            contactData.firstName ||
+                            contactData.name.split(' ')[0],
+                        procedure: contactData.procedure,
+                    }
+                )
+            }
         }
 
         // Create a UI message stream that includes both text and quick questions data

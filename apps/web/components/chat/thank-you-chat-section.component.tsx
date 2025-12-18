@@ -2,33 +2,21 @@
  * Thank You Chat Section Component
  *
  * Specialized chat section for the thank-you page after form submission.
- * Reads lead context from sessionStorage, auto-upgrades the session with
- * contact info, and uses a personalized welcome message.
+ * Reads contactId from URL parameter and links the chat session to the
+ * contact submission for full data access and AI personalization.
  *
  * @module components/chat/thank-you-chat-section
  */
 'use client'
 
-import { useEffect, useMemo, useCallback, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle, Sparkles, Loader2 } from 'lucide-react'
-import { generateThankYouWelcomeMessage } from '@workspace/ai'
 
 import { ChatInterface } from './chat-interface.component'
 import { useUnifiedChat } from '@/hooks/chat/useUnifiedChat.hook'
-
-/**
- * Lead context stored in sessionStorage after form submission
- */
-type LeadContext = {
-    firstName: string
-    lastName?: string
-    email?: string
-    phone?: string
-    procedure?: string
-    submittedAt?: string
-}
 
 type ThankYouChatSectionProps = {
     /** Section ID for navigation */
@@ -41,57 +29,14 @@ type ThankYouChatSectionProps = {
     className?: string
 }
 
-// Module-level cache to prevent double-read during React initialization
-let cachedLeadContext: LeadContext | null | undefined = undefined
-
 /**
- * Read and clear lead context from sessionStorage
- * Called as a lazy initializer for useState
- *
- * Uses module-level cache to prevent React's double-call behavior
- * from clearing sessionStorage on first call and returning null on second call
- *
- * @returns Lead context if available, null otherwise
- */
-function getAndClearLeadContext(): LeadContext | null {
-    // Return cached value if already read (prevents double-read issue)
-    if (cachedLeadContext !== undefined) {
-        return cachedLeadContext
-    }
-
-    if (typeof window === 'undefined') {
-        cachedLeadContext = null
-        return null
-    }
-
-    try {
-        const stored = sessionStorage.getItem('lead_context')
-        if (stored) {
-            sessionStorage.removeItem('lead_context')
-            const parsed = JSON.parse(stored) as LeadContext
-
-            // Cache the result before returning
-            cachedLeadContext = parsed
-            return parsed
-        }
-    } catch {
-        // Ignore sessionStorage errors
-    }
-
-    // Cache null result
-    cachedLeadContext = null
-    return null
-}
-
-/**
- * Thank You page chat section with lead context integration
+ * Thank You page chat section with contact submission integration
  *
  * Features:
- * - Reads lead context from sessionStorage (set by form submission)
- * - Auto-upgrades session with contact information
- * - Personalized welcome message using lead's name and procedure
+ * - Reads contactId from URL parameter (?contactId=xxx)
+ * - Links chat session to contact submission via foreign key
+ * - Enables full contact data access for AI personalization
  * - Premium card styling matching the ChatSection design
- * - Passes lead context to session for AI prompt enhancement
  */
 export function ThankYouChatSection({
     id,
@@ -106,114 +51,32 @@ export function ThankYouChatSection({
         isReady,
         error,
         initializeSession,
-        updateContactInfo,
         addMessage,
     } = useUnifiedChat()
 
-    // Lead context from sessionStorage - read once using lazy initializer (React 19 compliant)
-    const [leadContext] = useState<LeadContext | null>(getAndClearLeadContext)
-    const hasUpgradedRef = useRef(false)
+    // Read contactId from URL search params
+    const searchParams = useSearchParams()
+    const contactId = searchParams.get('contactId')
     const hasInitializedRef = useRef(false)
 
-    // Derive welcome message from lead context (memoized, not stored in state)
-    const welcomeMessage = useMemo(() => {
-        if (leadContext) {
-            return generateThankYouWelcomeMessage(leadContext)
-        }
-        return ''
-    }, [leadContext])
-
     /**
-     * Initialize session with lead context
-     */
-    const initializeWithLeadContext = useCallback(async () => {
-        if (hasInitializedRef.current) return
-        hasInitializedRef.current = true
-
-        const context = leadContext
-
-        // Build the request body with lead context
-        const leadContextData = context
-            ? {
-                  leadContext: {
-                      firstName: context.firstName,
-                      procedure: context.procedure,
-                  },
-              }
-            : {}
-
-        // Make direct API call with lead context instead of using the hook
-        // This allows us to pass lead context to the anonymous session endpoint
-        try {
-            const response = await fetch('/api/chat/session/anonymous', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    pageUrl:
-                        typeof window !== 'undefined'
-                            ? window.location.href
-                            : undefined,
-                    referrer:
-                        typeof document !== 'undefined'
-                            ? document.referrer
-                            : undefined,
-                    ...leadContextData,
-                }),
-            })
-
-            if (response.ok) {
-                // Now initialize through the hook to set up the context properly
-                await initializeSession()
-            }
-        } catch {
-            // Fall back to regular initialization
-            await initializeSession()
-        }
-    }, [leadContext, initializeSession])
-
-    /**
-     * Initialize session on mount
+     * Initialize session on mount with contactId if available
      */
     useEffect(() => {
         if (!session && !isInitializing && !hasInitializedRef.current) {
+            hasInitializedRef.current = true
             const timer = setTimeout(() => {
-                initializeWithLeadContext()
+                initializeSession(
+                    contactId ? { contactSubmissionId: contactId } : undefined
+                )
             }, 300)
 
             return () => clearTimeout(timer)
         }
-    }, [session, isInitializing, initializeWithLeadContext])
-
-    /**
-     * Auto-upgrade session with contact info once session is ready
-     */
-    useEffect(() => {
-        if (
-            isReady &&
-            session?.isAnonymous &&
-            leadContext &&
-            !hasUpgradedRef.current
-        ) {
-            hasUpgradedRef.current = true
-
-            // Upgrade the session with contact info
-            const fullName = [leadContext.firstName, leadContext.lastName]
-                .filter(Boolean)
-                .join(' ')
-
-            if (fullName && leadContext.phone) {
-                updateContactInfo({
-                    fullName,
-                    phone: leadContext.phone,
-                    email: leadContext.email,
-                })
-            }
-        }
-    }, [isReady, session?.isAnonymous, leadContext, updateContactInfo])
+    }, [session, isInitializing, initializeSession, contactId])
 
     const config = session?.config
-    const userName =
-        leadContext?.firstName || session?.fullName?.split(' ')[0] || 'there'
+    const userName = session?.fullName?.split(' ')[0] || 'there'
 
     return (
         <section
@@ -297,7 +160,13 @@ export function ThankYouChatSection({
                                 <p className='text-xs text-red-500'>{error}</p>
                             </div>
                             <button
-                                onClick={() => initializeSession()}
+                                onClick={() =>
+                                    initializeSession(
+                                        contactId
+                                            ? { contactSubmissionId: contactId }
+                                            : undefined
+                                    )
+                                }
                                 className={cn(
                                     'rounded-lg px-4 py-2 text-sm font-medium',
                                     'bg-stone-900 text-white',
@@ -370,9 +239,7 @@ export function ThankYouChatSection({
                                 <ChatInterface
                                     sessionId={session.id}
                                     agentName={config.agentName}
-                                    welcomeMessage={
-                                        welcomeMessage || config.welcomeMessage
-                                    }
+                                    welcomeMessage={config.welcomeMessage}
                                     agentImageUrl={config.agentImageUrl}
                                     userName={userName}
                                     showHeader={false}
@@ -386,7 +253,13 @@ export function ThankYouChatSection({
                     {/* Initial State - Before Session */}
                     {!session && !isInitializing && (
                         <button
-                            onClick={() => initializeWithLeadContext()}
+                            onClick={() =>
+                                initializeSession(
+                                    contactId
+                                        ? { contactSubmissionId: contactId }
+                                        : undefined
+                                )
+                            }
                             className='flex h-full w-full flex-col items-center justify-center gap-4 p-8 transition-colors hover:bg-stone-50'
                         >
                             <div
@@ -401,9 +274,7 @@ export function ThankYouChatSection({
                             </div>
                             <div className='space-y-2 text-center'>
                                 <p className='font-serif text-lg font-semibold text-stone-900'>
-                                    {leadContext?.firstName
-                                        ? `Hi ${leadContext.firstName}! Click to Chat`
-                                        : 'Click to Start Chatting'}
+                                    Click to Start Chatting
                                 </p>
                                 <p className='text-sm text-stone-500'>
                                     Ask any questions while you wait for our

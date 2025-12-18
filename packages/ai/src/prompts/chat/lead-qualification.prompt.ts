@@ -16,6 +16,8 @@ export type LeadContext = {
     email?: string
     phone?: string
     procedure?: string
+    preferredContactTime?: string
+    source?: string
     submittedAt?: string
 }
 
@@ -77,15 +79,42 @@ export function buildLeadQualificationPrompt(
 ): string {
     const contextParts: string[] = []
 
-    // Add lead information
+    // Add lead information - full name
     if (leadContext.firstName) {
-        contextParts.push(`- Visitor's name: ${leadContext.firstName}`)
+        const fullName = leadContext.lastName
+            ? `${leadContext.firstName} ${leadContext.lastName}`
+            : leadContext.firstName
+        contextParts.push(`- Visitor's name: ${fullName}`)
     }
 
+    // Procedure of interest
     if (leadContext.procedure) {
         contextParts.push(
             `- Procedure of interest: ${formatProcedureName(leadContext.procedure)}`
         )
+    }
+
+    // Preferred contact time
+    if (leadContext.preferredContactTime) {
+        const timeMap: Record<string, string> = {
+            morning: 'morning (9am - 12pm)',
+            afternoon: 'afternoon (12pm - 5pm)',
+            evening: 'evening (5pm - 7pm)',
+        }
+        const formattedTime =
+            timeMap[leadContext.preferredContactTime] ||
+            leadContext.preferredContactTime
+        contextParts.push(`- Preferred callback time: ${formattedTime}`)
+    }
+
+    // Email indicator (for personalization, not the actual email)
+    if (leadContext.email && !leadContext.email.includes('@capture')) {
+        contextParts.push('- Has provided email for follow-up')
+    }
+
+    // Phone indicator
+    if (leadContext.phone) {
+        contextParts.push('- Has provided phone number for callback')
     }
 
     const leadInfoSection =

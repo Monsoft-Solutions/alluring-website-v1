@@ -200,36 +200,13 @@ export function useContactFormSubmission(
 
                     // Redirect if specified
                     if (redirectOnSuccess) {
-                        // Store lead context in sessionStorage for thank-you page chat
-                        // This allows the chat to personalize the conversation
-                        try {
-                            const leadContext = {
-                                firstName:
-                                    (data as Record<string, unknown>)
-                                        .firstName ?? '',
-                                lastName:
-                                    (data as Record<string, unknown>)
-                                        .lastName ?? '',
-                                email:
-                                    (data as Record<string, unknown>).email ??
-                                    '',
-                                phone:
-                                    (data as Record<string, unknown>).phone ??
-                                    '',
-                                procedure:
-                                    (data as Record<string, unknown>)
-                                        .procedure ?? '',
-                                submittedAt: new Date().toISOString(),
-                            }
-                            sessionStorage.setItem(
-                                'lead_context',
-                                JSON.stringify(leadContext)
-                            )
-                        } catch {
-                            // Ignore sessionStorage errors (e.g., private browsing)
-                        }
+                        // Build URL with contactId parameter for thank-you page chat
+                        // This allows the chat to be linked to the contact submission via FK
+                        const redirectUrl = result.submissionId
+                            ? `${redirectOnSuccess}?contactId=${result.submissionId}`
+                            : redirectOnSuccess
 
-                        router.push(redirectOnSuccess)
+                        router.push(redirectUrl)
                     }
 
                     return true

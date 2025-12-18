@@ -58,6 +58,14 @@ export type ContactInfo = {
 }
 
 /**
+ * Options for initializing a chat session
+ */
+export type InitializeSessionOptions = {
+    /** Contact submission ID from form submission (thank-you page) */
+    contactSubmissionId?: string
+}
+
+/**
  * Chat context value
  */
 type ChatContextValue = {
@@ -72,7 +80,9 @@ type ChatContextValue = {
     /** Error message if any */
     error: string | null
     /** Initialize session (creates or restores) */
-    initializeSession: () => Promise<string | null>
+    initializeSession: (
+        options?: InitializeSessionOptions
+    ) => Promise<string | null>
     /** Add a message to the shared state */
     addMessage: (message: StoredMessage) => void
     /** Update session with contact information */
@@ -120,114 +130,121 @@ export function ChatContextProvider({ children }: ChatContextProviderProps) {
 
     /**
      * Initialize session: restore existing or create new anonymous session
+     *
+     * @param options - Optional configuration including contactSubmissionId for thank-you page
      */
-    const initializeSession = useCallback(async (): Promise<string | null> => {
-        // Don't re-initialize if already have a session
-        if (session) {
-            return session.id
-        }
+    const initializeSession = useCallback(
+        async (options?: InitializeSessionOptions): Promise<string | null> => {
+            // Don't re-initialize if already have a session
+            if (session) {
+                return session.id
+            }
 
-        setIsInitializing(true)
-        setError(null)
+            setIsInitializing(true)
+            setError(null)
 
-        try {
-            // Try to restore existing session from cookie
-            const stored = getStoredSession()
+            try {
+                // Try to restore existing session from cookie
+                const stored = getStoredSession()
 
-            if (stored) {
-                // Validate session with server and get messages
-                const response = await fetch(
-                    `/api/chat/session/${stored.sessionId}`
-                )
+                if (stored) {
+                    // Validate session with server and get messages
+                    const response = await fetch(
+                        `/api/chat/session/${stored.sessionId}`
+                    )
 
-                if (response.ok) {
-                    const data = await response.json()
+                    if (response.ok) {
+                        const data = await response.json()
 
-                    if (data.success) {
-                        // Renew cookie expiry on successful restore
-                        renewSession()
+                        if (data.success) {
+                            // Renew cookie expiry on successful restore
+                            renewSession()
 
-                        // Set session with restored messages
-                        setSession({
-                            id: data.session.id,
-                            isAnonymous: data.session.isAnonymous,
-                            fullName: data.session.fullName,
-                            config: data.config,
-                        })
-                        setMessages(data.messages || [])
+                            // Set session with restored messages
+                            setSession({
+                                id: data.session.id,
+                                isAnonymous: data.session.isAnonymous,
+                                fullName: data.session.fullName,
+                                config: data.config,
+                            })
+                            setMessages(data.messages || [])
 
-                        return data.session.id
+                            return data.session.id
+                        }
                     }
+
+                    // If restore failed, clear invalid cookie
+                    clearSession()
                 }
 
-                // If restore failed, clear invalid cookie
-                clearSession()
+                // No valid session - create new anonymous session
+                const response = await fetch('/api/chat/session/anonymous', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pageUrl:
+                            typeof window !== 'undefined'
+                                ? window.location.href
+                                : undefined,
+                        referrer:
+                            typeof document !== 'undefined'
+                                ? document.referrer
+                                : undefined,
+                        utmSource:
+                            typeof window !== 'undefined'
+                                ? new URLSearchParams(
+                                      window.location.search
+                                  ).get('utm_source')
+                                : undefined,
+                        utmMedium:
+                            typeof window !== 'undefined'
+                                ? new URLSearchParams(
+                                      window.location.search
+                                  ).get('utm_medium')
+                                : undefined,
+                        utmCampaign:
+                            typeof window !== 'undefined'
+                                ? new URLSearchParams(
+                                      window.location.search
+                                  ).get('utm_campaign')
+                                : undefined,
+                        // Pass contact submission ID for thank-you page sessions
+                        contactSubmissionId: options?.contactSubmissionId,
+                    }),
+                })
+
+                const result = await response.json()
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || 'Failed to create session')
+                }
+
+                const newSession: SessionData = {
+                    id: result.session.id,
+                    isAnonymous: true,
+                    config: result.config,
+                }
+
+                // Save session ID to cookie
+                saveSession(newSession.id)
+
+                setSession(newSession)
+                setMessages([])
+
+                return newSession.id
+            } catch (err) {
+                const errorMessage =
+                    err instanceof Error
+                        ? err.message
+                        : 'Failed to start chat. Please try again.'
+                setError(errorMessage)
+                return null
+            } finally {
+                setIsInitializing(false)
             }
-
-            // No valid session - create new anonymous session
-            const response = await fetch('/api/chat/session/anonymous', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    pageUrl:
-                        typeof window !== 'undefined'
-                            ? window.location.href
-                            : undefined,
-                    referrer:
-                        typeof document !== 'undefined'
-                            ? document.referrer
-                            : undefined,
-                    utmSource:
-                        typeof window !== 'undefined'
-                            ? new URLSearchParams(window.location.search).get(
-                                  'utm_source'
-                              )
-                            : undefined,
-                    utmMedium:
-                        typeof window !== 'undefined'
-                            ? new URLSearchParams(window.location.search).get(
-                                  'utm_medium'
-                              )
-                            : undefined,
-                    utmCampaign:
-                        typeof window !== 'undefined'
-                            ? new URLSearchParams(window.location.search).get(
-                                  'utm_campaign'
-                              )
-                            : undefined,
-                }),
-            })
-
-            const result = await response.json()
-
-            if (!response.ok || !result.success) {
-                throw new Error(result.error || 'Failed to create session')
-            }
-
-            const newSession: SessionData = {
-                id: result.session.id,
-                isAnonymous: true,
-                config: result.config,
-            }
-
-            // Save session ID to cookie
-            saveSession(newSession.id)
-
-            setSession(newSession)
-            setMessages([])
-
-            return newSession.id
-        } catch (err) {
-            const errorMessage =
-                err instanceof Error
-                    ? err.message
-                    : 'Failed to start chat. Please try again.'
-            setError(errorMessage)
-            return null
-        } finally {
-            setIsInitializing(false)
-        }
-    }, [session, getStoredSession, saveSession, clearSession, renewSession])
+        },
+        [session, getStoredSession, saveSession, clearSession, renewSession]
+    )
 
     /**
      * Add a message to the shared state

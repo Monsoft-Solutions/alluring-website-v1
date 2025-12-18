@@ -12,6 +12,7 @@
  * - No-indexed to prevent search engine indexing
  */
 
+import { Suspense } from 'react'
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ThankYouHero } from '@/components/sections/thank-you/thank-you-hero.component'
@@ -63,7 +64,9 @@ export default function ThankYouPage() {
                 <ThankYouHero id='thank-you-hero' />
 
                 {/* Section 2: Chat Section - Engage while waiting */}
-                <ThankYouChatSection id='chat' />
+                <Suspense fallback={<div className='py-16 md:py-24' />}>
+                    <ThankYouChatSection id='chat' />
+                </Suspense>
 
                 {/* Section 3: Explore More */}
                 <ExploreSection id='explore' />

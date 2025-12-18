@@ -18,6 +18,8 @@ import {
     uuid,
 } from 'drizzle-orm/pg-core'
 
+import { contactSubmission } from '../contact/contact-submission.table'
+
 // ============================================
 // AI Conversation Analysis Types
 // These types mirror @workspace/ai/schemas but are defined here
@@ -200,6 +202,15 @@ export const chatSession = pgTable('chat_session', {
      * Anonymous sessions can be upgraded when user provides contact info
      */
     isAnonymous: boolean('is_anonymous').notNull().default(false),
+
+    /**
+     * Link to contact submission (if chat started from thank-you page)
+     * Provides direct access to all contact form data for AI personalization
+     */
+    contactSubmissionId: uuid('contact_submission_id').references(
+        () => contactSubmission.id,
+        { onDelete: 'set null' }
+    ),
 
     /**
      * Metadata for analytics
