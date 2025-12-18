@@ -129,6 +129,7 @@ export {
     LEAD_QUALIFICATION_CONTEXT_PROMPT,
     buildLeadQualificationPrompt,
     generateThankYouWelcomeMessage,
+    generateDynamicWelcomeMessage,
     type LeadContext,
     // Gallery prompts
     IMAGE_ANALYSIS_SYSTEM_PROMPT,

@@ -27,6 +27,7 @@ export {
     LEAD_QUALIFICATION_CONTEXT_PROMPT,
     buildLeadQualificationPrompt,
     generateThankYouWelcomeMessage,
+    generateDynamicWelcomeMessage,
     type LeadContext,
 } from './chat'
 

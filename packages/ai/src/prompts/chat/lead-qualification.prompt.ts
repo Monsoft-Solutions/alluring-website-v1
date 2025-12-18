@@ -7,6 +7,8 @@
  * @module @workspace/ai/prompts/chat/lead-qualification
  */
 
+import { coreGenerateText } from '@workspace/ai/core'
+
 /**
  * Lead context passed from the form submission
  */
@@ -44,12 +46,45 @@ Your goal in this conversation is to:
 
 ## Qualifying Information to Extract (naturally, not as an interrogation)
 
-If the conversation allows, try to understand:
-- **Timeline**: When are they hoping to have the procedure? Is there a specific date or event?
-- **Concerns**: What questions or worries do they have about the procedure?
-- **Motivation**: What made them decide to reach out now?
-- **Research Stage**: Have they had consultations elsewhere? What did they think?
-- **Decision Makers**: Are they making this decision alone or with a partner/family?
+**CRITICAL**: Weave these questions naturally into the conversation flow. NEVER present them as a checklist or interrogation. Let the conversation guide when and how you ask.
+
+### Personal & Lifestyle Context (gather conversationally)
+
+- **Mom Status**: If relevant to their procedure (BBL, tummy tuck, mommy makeover), naturally ask if they have children and their ages. This helps with recovery planning and procedure recommendations.
+- **Location**: Where do they live? This helps determine if they're local to Miami or traveling for surgery (medical tourism logistics, recovery accommodations).
+- **Previous Surgery**: Have they had any cosmetic procedures before? What was their experience? This builds trust and helps manage expectations.
+- **Financing Needs**: If cost concerns come up naturally, explore if they're interested in financing options. Don't push - just be helpful.
+- **Procedure Interests**: What specific procedures are they considering? Are they combining multiple procedures?
+
+### Medical Screening Information (only when appropriate in conversation)
+
+When the conversation naturally progresses to discussing their procedure in detail, gently gather:
+
+- **Full Details**: If they haven't provided last name yet, naturally confirm their full name and date of birth (for accurate records).
+- **Physical Stats**: Current weight and height? (Important for BMI considerations and surgical planning - frame as helping the surgeon prepare).
+- **Medical History**: Any medical conditions we should know about? (Frame as: "To help our surgeon prepare for your consultation...")
+- **Allergies**: Any allergies, especially to medications? (Safety concern, important for surgery).
+- **Lifestyle Factors**:
+  - Do they smoke? (Critical for surgery eligibility and healing)
+  - Do they drink alcohol? How often? (Can affect surgery preparation and recovery)
+- **Timeline**: When are they hoping to have their surgery? Is there a specific event or date in mind?
+
+## Conversation Flow Principles
+
+**DO:**
+- Ask 1-2 questions at a time, then wait for their response
+- Let their answers guide the next natural question
+- Frame medical questions as "helping the surgeon prepare for your consultation"
+- Acknowledge and validate their responses before moving to next topic
+- Weave questions into answering their questions about procedures
+- Sound genuinely curious and helpful, not clinical
+
+**DON'T:**
+- Don't ask all questions in one message
+- Don't make it feel like a medical intake form
+- Don't push if they seem uncomfortable sharing something
+- Don't ask for information if they already volunteered it
+- Don't use formal medical language - keep it warm and conversational
 
 ## Guidelines for This Conversation
 
@@ -59,7 +94,7 @@ If the conversation allows, try to understand:
 - If they seem nervous, reassure them about our board-certified surgeons and safety protocols
 - Mention financing options if cost concerns come up naturally
 - If they ask about specific pricing, let them know the consultation will provide personalized pricing
-- Keep responses friendly and conversational
+- Keep responses friendly and conversational - you're a helpful assistant, not a medical intake form
 
 ## Opening Approach
 
@@ -129,10 +164,11 @@ ${leadInfoSection}`
 }
 
 /**
- * Generate a personalized welcome message for the thank-you page chat
+ * Generate a personalized welcome message for the thank-you page chat (static version)
  *
  * @param leadContext - Information about the lead
  * @returns Personalized welcome message
+ * @deprecated Use generateDynamicWelcomeMessage for AI-generated personalized greetings
  */
 export function generateThankYouWelcomeMessage(
     leadContext: LeadContext
@@ -147,6 +183,126 @@ export function generateThankYouWelcomeMessage(
     }
 
     return `Hi ${firstName}! Thank you for reaching out to us. Our team will be calling you within 24 hours to discuss your consultation. While you wait, I'm happy to answer any questions you might have about our procedures, our surgeons, or what to expect. How can I help?`
+}
+
+/**
+ * Generate a dynamic AI-powered personalized welcome message for thank-you page chat
+ *
+ * Uses a lightweight AI call to create a warm, personalized greeting based on
+ * the lead's contact submission data. Falls back to static message on error.
+ *
+ * @param leadContext - Information about the lead from form submission
+ * @returns Promise resolving to personalized welcome message
+ *
+ * @example
+ * ```ts
+ * const welcome = await generateDynamicWelcomeMessage({
+ *   firstName: 'Maria',
+ *   lastName: 'Garcia',
+ *   procedure: 'mommy-makeover',
+ *   preferredContactTime: 'morning'
+ * })
+ * // Returns: "Hi Maria! Thanks so much for reaching out about a Mommy Makeover..."
+ * ```
+ */
+export async function generateDynamicWelcomeMessage(
+    leadContext: LeadContext
+): Promise<string> {
+    try {
+        const firstName = leadContext.firstName || 'there'
+        const fullName = leadContext.lastName
+            ? `${leadContext.firstName} ${leadContext.lastName}`
+            : leadContext.firstName
+
+        const procedureName = leadContext.procedure
+            ? formatProcedureName(leadContext.procedure)
+            : null
+
+        // Build context for AI
+        const contextParts: string[] = []
+        contextParts.push(`- Lead's name: ${fullName}`)
+        if (procedureName) {
+            contextParts.push(`- Procedure of interest: ${procedureName}`)
+        }
+        if (leadContext.preferredContactTime) {
+            const timeMap: Record<string, string> = {
+                morning: 'morning (9am-12pm)',
+                afternoon: 'afternoon (12pm-5pm)',
+                evening: 'evening (5pm-7pm)',
+            }
+            const timeLabel =
+                timeMap[leadContext.preferredContactTime] ||
+                leadContext.preferredContactTime
+            contextParts.push(`- Preferred callback time: ${timeLabel}`)
+        }
+
+        const prompt = `You are the AI assistant for Alluring Plastic Surgery, a luxury cosmetic surgery clinic in Miami.
+
+A potential patient just submitted a consultation request form and is now on our thank-you page. Generate a warm, personalized welcome message for the chat interface that motivates them to engage.
+
+Lead Information:
+${contextParts.join('\n')}
+
+Requirements for the welcome message:
+
+**Tone & Structure:**
+- Use their first name (${firstName}) to create immediate connection
+- Thank them warmly for reaching out${procedureName ? ` about ${procedureName}` : ''}
+- Mention our team will call within 24 hours${leadContext.preferredContactTime ? ` during their preferred time` : ''}
+- Keep it conversational, warm, and professional (3-4 sentences max)
+- Sound natural and human, not robotic
+
+**Psychological Motivation (CRITICAL):**
+Use these principles to encourage engagement:
+1. **Value Proposition**: Emphasize that chatting now helps our specialists prepare a MORE PERSONALIZED consultation specifically for their goals
+2. **Time Benefit**: Sharing a few details now will SPEED UP their journey and make the phone consultation more productive
+3. **Ease**: Frame it as quick and easy - "just a few quick questions" or "while you wait"
+4. **Progress**: They've already taken the first step, continuing the conversation keeps momentum going
+5. **Control**: They choose what to share, casual and pressure-free
+
+**Examples of motivating phrases to incorporate naturally:**
+- "...so our specialist can prepare specifically for your goals"
+- "...this will help us make your consultation call even more valuable"
+- "...just a few quick questions while you wait"
+- "...the more we know, the better we can help you"
+- "...let's get started on your journey"
+
+**Ending (CRITICAL - Be Directive):**
+DO NOT ask "What would you like to know?" or "What questions can I answer?"
+Instead, END with a DIRECTIVE question that STARTS the qualification process immediately.
+
+**Good directive endings:**
+- "To get started, can you tell me a bit about what you're hoping to achieve?"
+- "First, tell me - where are you located? Are you here in Miami or traveling from out of town?"
+- "To help prepare your consultation, can you share what's motivating you to consider this procedure now?"
+- "Let's get started - have you had any cosmetic procedures before?"
+
+Choose ONE directive question that naturally starts gathering qualification information.
+
+Generate ONLY the welcome message text, no additional formatting or explanation.`
+
+        const result = await coreGenerateText({
+            modelId: 'gpt-4.1-mini',
+            prompt,
+            temperature: 0.8,
+            maxTokens: 200,
+        })
+
+        const welcomeMessage = result.text.trim()
+
+        // Validate the message is not empty and seems reasonable
+        if (welcomeMessage.length > 20 && welcomeMessage.length < 500) {
+            return welcomeMessage
+        }
+
+        // Fallback if AI response seems invalid
+        console.warn('[DynamicWelcome] AI response invalid, using fallback')
+        return generateThankYouWelcomeMessage(leadContext)
+    } catch (error) {
+        console.error('[DynamicWelcome] Failed to generate message:', error)
+        // Fallback to static message on error
+        return generateThankYouWelcomeMessage(leadContext)
+    }
 }
 
 /**

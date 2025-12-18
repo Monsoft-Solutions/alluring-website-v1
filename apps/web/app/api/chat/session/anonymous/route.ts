@@ -6,7 +6,8 @@
  *
  * When a contactSubmissionId is provided (thank-you page flow), the session
  * is linked to the contact submission via foreign key, enabling full contact
- * data access for AI personalization.
+ * data access for AI personalization. The welcome message is dynamically
+ * generated using AI for a personalized greeting.
  *
  * @module app/api/chat/session/anonymous/route
  */
@@ -17,6 +18,7 @@ import {
     createAnonymousChatSession,
 } from '@/lib/queries/chat.query'
 import { getContactSubmissionById } from '@/lib/queries/contact.query'
+import { generateDynamicWelcomeMessage } from '@workspace/ai'
 
 /**
  * Request body for anonymous session creation
@@ -87,6 +89,7 @@ export async function POST(request: NextRequest) {
               }
             | undefined
         let detectedProcedures: string[] | undefined
+        let dynamicWelcomeMessage: string | undefined
 
         if (body.contactSubmissionId) {
             try {
@@ -109,11 +112,41 @@ export async function POST(request: NextRequest) {
                         detectedProcedures = [contactData.procedure]
                     }
 
+                    // Generate dynamic AI-powered welcome message
+                    try {
+                        dynamicWelcomeMessage =
+                            await generateDynamicWelcomeMessage({
+                                firstName:
+                                    contactData.firstName ||
+                                    contactData.name.split(' ')[0] ||
+                                    '',
+                                lastName: contactData.lastName ?? undefined,
+                                email: contactData.email,
+                                phone: contactData.phone ?? undefined,
+                                procedure: contactData.procedure ?? undefined,
+                                preferredContactTime:
+                                    contactData.preferredContactTime ??
+                                    undefined,
+                                source: contactData.source ?? undefined,
+                            })
+
+                        console.log(
+                            `[AnonymousSession] Generated dynamic welcome message for ${scoringSignals.leadFirstName}`
+                        )
+                    } catch (welcomeError) {
+                        console.error(
+                            '[AnonymousSession] Failed to generate dynamic welcome message:',
+                            welcomeError
+                        )
+                        // Will fall back to static message below
+                    }
+
                     console.log(
                         `[AnonymousSession] Linked to contact submission ${body.contactSubmissionId}`,
                         {
                             firstName: scoringSignals.leadFirstName,
                             procedure: contactData.procedure,
+                            hasDynamicWelcome: !!dynamicWelcomeMessage,
                         }
                     )
                 } else {
@@ -146,6 +179,7 @@ export async function POST(request: NextRequest) {
         })
 
         // Return session info with config
+        // Use dynamic welcome message for thank-you page, fall back to static config
         return NextResponse.json({
             success: true,
             session: {
@@ -154,7 +188,7 @@ export async function POST(request: NextRequest) {
             },
             config: {
                 agentName: config.agentName,
-                welcomeMessage: config.welcomeMessage,
+                welcomeMessage: dynamicWelcomeMessage || config.welcomeMessage,
                 primaryColor: config.primaryColor,
                 agentImageUrl: config.agentImageUrl,
             },
