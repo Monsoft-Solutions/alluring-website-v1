@@ -8,7 +8,16 @@ import { z } from 'zod'
 /**
  * Available AI models for chat
  */
-export const CHAT_MODELS = ['gpt-4.1', 'gpt-4.1-mini', 'gpt-4-turbo'] as const
+export const CHAT_MODELS = [
+    // Anthropic (default)
+    'claude-sonnet-4-5',
+    // Google
+    'gemini-3-flash-preview',
+    // OpenAI
+    'gpt-4.1',
+    'gpt-4.1-mini',
+    'gpt-4.1-nano',
+] as const
 
 export type ChatModel = (typeof CHAT_MODELS)[number]
 

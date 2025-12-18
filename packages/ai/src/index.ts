@@ -105,11 +105,15 @@ export {
     getRecommendedModels,
     getModelsByTier,
     isValidModelId,
+    getModelProvider,
     type AIModel,
     type ModelCapability,
     type ModelProvider,
     type ModelTier,
 } from './models'
+
+// Provider utilities
+export { getModelInstance } from './providers'
 
 // Prompt templates
 export {

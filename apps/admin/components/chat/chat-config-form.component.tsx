@@ -39,9 +39,9 @@ import { AgentAvatarPreview } from '@/components/chat/agent-avatar-preview.compo
 import {
     chatConfigSchema,
     type ChatConfigInput,
-    CHAT_MODELS,
     BUTTON_POSITIONS,
 } from '@workspace/chat/types'
+import { AVAILABLE_MODELS } from '@workspace/ai/models'
 import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
 import { updateChatConfig } from '@/lib/actions/chat.action'
 
@@ -303,14 +303,104 @@ export function ChatConfigForm({ initialData }: ChatConfigFormProps) {
                                 <SelectTrigger>
                                     <SelectValue placeholder='Select model' />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    {CHAT_MODELS.map((model) => (
-                                        <SelectItem key={model} value={model}>
-                                            {model}
+                                <SelectContent className='max-h-[400px]'>
+                                    {/* Anthropic Models */}
+                                    <div className='px-2 py-1.5 text-xs font-semibold text-stone-500'>
+                                        Anthropic (Claude)
+                                    </div>
+                                    {AVAILABLE_MODELS.filter(
+                                        (m) => m.provider === 'anthropic'
+                                    ).map((model) => (
+                                        <SelectItem
+                                            key={model.id}
+                                            value={model.id}
+                                        >
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    {model.name}
+                                                    {model.recommended && (
+                                                        <span className='ml-2 text-xs text-green-600'>
+                                                            ★ Recommended
+                                                        </span>
+                                                    )}
+                                                </span>
+                                                <span className='text-xs text-stone-500'>
+                                                    {model.description} •{' '}
+                                                    {(
+                                                        model.maxTokens / 1000
+                                                    ).toLocaleString()}
+                                                    K tokens
+                                                </span>
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+
+                                    {/* Google Models */}
+                                    <div className='mt-2 px-2 py-1.5 text-xs font-semibold text-stone-500'>
+                                        Google (Gemini)
+                                    </div>
+                                    {AVAILABLE_MODELS.filter(
+                                        (m) => m.provider === 'google'
+                                    ).map((model) => (
+                                        <SelectItem
+                                            key={model.id}
+                                            value={model.id}
+                                        >
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    {model.name}
+                                                    {model.recommended && (
+                                                        <span className='ml-2 text-xs text-green-600'>
+                                                            ★ Recommended
+                                                        </span>
+                                                    )}
+                                                </span>
+                                                <span className='text-xs text-stone-500'>
+                                                    {model.description} •{' '}
+                                                    {(
+                                                        model.maxTokens / 1000
+                                                    ).toLocaleString()}
+                                                    K tokens
+                                                </span>
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+
+                                    {/* OpenAI Models */}
+                                    <div className='mt-2 px-2 py-1.5 text-xs font-semibold text-stone-500'>
+                                        OpenAI (GPT)
+                                    </div>
+                                    {AVAILABLE_MODELS.filter(
+                                        (m) => m.provider === 'openai'
+                                    ).map((model) => (
+                                        <SelectItem
+                                            key={model.id}
+                                            value={model.id}
+                                        >
+                                            <div className='flex flex-col'>
+                                                <span className='font-medium'>
+                                                    {model.name}
+                                                    {model.recommended && (
+                                                        <span className='ml-2 text-xs text-green-600'>
+                                                            ★ Recommended
+                                                        </span>
+                                                    )}
+                                                </span>
+                                                <span className='text-xs text-stone-500'>
+                                                    {model.description} •{' '}
+                                                    {(
+                                                        model.maxTokens / 1000
+                                                    ).toLocaleString()}
+                                                    K tokens
+                                                </span>
+                                            </div>
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
+                            <p className='text-xs text-stone-500'>
+                                Current: {modelId}
+                            </p>
                         </div>
 
                         {/* Temperature */}

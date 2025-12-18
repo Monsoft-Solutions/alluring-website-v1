@@ -17,6 +17,7 @@ export {
     getRecommendedModels,
     getModelsByTier,
     isValidModelId,
+    getModelProvider,
     type AIModel,
     type ModelCapability,
     type ModelProvider,

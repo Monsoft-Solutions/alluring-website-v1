@@ -24,7 +24,7 @@ export type ModelTier = 'standard' | 'premium' | 'economy'
 /**
  * Model provider
  */
-export type ModelProvider = 'openai' | 'anthropic'
+export type ModelProvider = 'openai' | 'anthropic' | 'google'
 
 /**
  * Model definition with metadata
@@ -55,6 +55,41 @@ export type AIModel = {
  * Models are sorted by recommendation and tier.
  */
 export const AVAILABLE_MODELS: AIModel[] = [
+    // Anthropic Models (Default)
+    {
+        id: 'claude-sonnet-4-5',
+        name: 'Claude Sonnet 4.5',
+        provider: 'anthropic',
+        capabilities: [
+            'chat',
+            'function-calling',
+            'vision',
+            'structured-output',
+        ],
+        maxTokens: 200000,
+        tier: 'premium',
+        description:
+            'Best-in-class coding and reasoning model with 30+ hour autonomous operation',
+        recommended: true,
+    },
+    // Google Models
+    {
+        id: 'gemini-3-flash-preview',
+        name: 'Gemini 3 Flash',
+        provider: 'google',
+        capabilities: [
+            'chat',
+            'function-calling',
+            'vision',
+            'structured-output',
+        ],
+        maxTokens: 1048576,
+        tier: 'standard',
+        description:
+            'Lightning-fast reasoning at search speed with cost-effective performance',
+        recommended: true,
+    },
+    // OpenAI Models
     {
         id: 'gpt-4.1',
         name: 'GPT-4o',
@@ -95,16 +130,16 @@ export const AVAILABLE_MODELS: AIModel[] = [
 /**
  * Default model ID for chat operations
  */
-export const DEFAULT_CHAT_MODEL_ID = 'gpt-4.1'
+export const DEFAULT_CHAT_MODEL_ID = 'claude-sonnet-4-5'
 
 /**
  * Default model ID for intent classification
  */
-export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gpt-4.1-nano'
+export const DEFAULT_CLASSIFICATION_MODEL_ID = 'gemini-3-flash-preview'
 
-export const DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID = 'gpt-4.1-mini'
+export const DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID = 'gemini-3-flash-preview'
 
-export const DEFAULT_QUICK_QUESTIONS_MODEL_ID = 'gpt-4.1-mini'
+export const DEFAULT_QUICK_QUESTIONS_MODEL_ID = 'gemini-3-flash-preview'
 
 export const DEFAULT_DEEP_DIVE_ANALYSIS_MODEL_ID = 'gpt-4.1'
 
@@ -145,4 +180,14 @@ export function getModelsByTier(tier: ModelTier): AIModel[] {
  */
 export function isValidModelId(modelId: string): boolean {
     return AVAILABLE_MODELS.some((model) => model.id === modelId)
+}
+
+/**
+ * Get the provider for a model ID
+ *
+ * @param modelId - The model ID to look up
+ * @returns The provider or undefined if model not found
+ */
+export function getModelProvider(modelId: string): ModelProvider | undefined {
+    return getModelById(modelId)?.provider
 }

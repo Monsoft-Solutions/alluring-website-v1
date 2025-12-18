@@ -71,14 +71,6 @@ function extractMessageContent(message: AISDKMessage): string {
  */
 export async function POST(request: NextRequest) {
     try {
-        // Validate OpenAI API key
-        if (!env.OPENAI_API_KEY) {
-            return NextResponse.json(
-                { error: 'Chat is not configured' },
-                { status: 503 }
-            )
-        }
-
         // Parse request body
         const body = await request.json()
         const { messages, sessionId } = body as {
@@ -105,6 +97,27 @@ export async function POST(request: NextRequest) {
 
         // Get chat configuration
         const config = await getChatConfig()
+
+        // Validate API key based on selected model provider
+        const modelId = config.modelId
+        let hasRequiredKey = false
+
+        if (modelId.startsWith('claude-')) {
+            hasRequiredKey = !!env.ANTHROPIC_API_KEY
+        } else if (modelId.startsWith('gemini-')) {
+            hasRequiredKey = !!env.GOOGLE_GENERATIVE_AI_API_KEY
+        } else if (modelId.startsWith('gpt-')) {
+            hasRequiredKey = !!env.OPENAI_API_KEY
+        }
+
+        if (!hasRequiredKey) {
+            return NextResponse.json(
+                {
+                    error: `Chat is not configured: Missing API key for ${modelId}`,
+                },
+                { status: 503 }
+            )
+        }
 
         // Check if chat is enabled
         if (!config.isEnabled) {

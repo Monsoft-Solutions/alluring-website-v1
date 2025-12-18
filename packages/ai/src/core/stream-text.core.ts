@@ -7,10 +7,10 @@
  * @module @workspace/ai/core/stream-text
  */
 import { streamText, smoothStream } from 'ai'
-import { openai } from '@ai-sdk/openai'
 
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { getModelInstance } from '../providers'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -64,7 +64,7 @@ export function coreStreamText(options: CoreStreamTextOptions) {
         : undefined
 
     const result = streamText({
-        model: openai(modelId),
+        model: getModelInstance(modelId),
         system,
         messages,
         temperature,

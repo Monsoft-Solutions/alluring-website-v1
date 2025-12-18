@@ -39,8 +39,10 @@ export const env = createEnv({
         // Cache revalidation (required for on-demand ISR from admin)
         REVALIDATION_SECRET: z.string().min(32),
 
-        // AI Chat (required for chat agent)
+        // AI Chat (at least one provider required for chat agent)
         OPENAI_API_KEY: z.string().min(1).optional(),
+        ANTHROPIC_API_KEY: z.string().min(1).optional(),
+        GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1).optional(),
 
         // ElevenLabs Speech-to-Text (optional - enables voice input in chat)
         ELEVENLABS_API_KEY: z.string().min(1).optional(),

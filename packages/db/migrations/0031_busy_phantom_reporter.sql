@@ -1,0 +1,1 @@
+ALTER TABLE "chat_config" ALTER COLUMN "model_id" SET DEFAULT 'claude-sonnet-4-5';

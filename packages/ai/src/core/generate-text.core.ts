@@ -7,10 +7,10 @@
  * @module @workspace/ai/core/generate-text
  */
 import { generateText } from 'ai'
-import { openai } from '@ai-sdk/openai'
 
 import type { CoreGenerateTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { getModelInstance } from '../providers'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -55,7 +55,7 @@ export async function coreGenerateText(options: CoreGenerateTextOptions) {
     } = options
 
     const baseConfig = {
-        model: openai(modelId),
+        model: getModelInstance(modelId),
         system,
         temperature,
         experimental_telemetry: telemetryConfig,

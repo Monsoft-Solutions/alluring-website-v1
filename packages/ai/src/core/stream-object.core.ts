@@ -7,11 +7,11 @@
  * @module @workspace/ai/core/stream-object
  */
 import { streamObject } from 'ai'
-import { openai } from '@ai-sdk/openai'
 import type { z } from 'zod'
 
 import type { CoreStreamObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { getModelInstance } from '../providers'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -53,7 +53,7 @@ export function coreStreamObject<TSchema extends z.ZodType>(
     } = options
 
     const result = streamObject({
-        model: openai(modelId),
+        model: getModelInstance(modelId),
         schema,
         system,
         prompt,
