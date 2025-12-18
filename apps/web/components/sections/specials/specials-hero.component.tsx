@@ -7,6 +7,9 @@
  *
  * Designed for maximum conversions with prominent promotional imagery.
  */
+'use client'
+
+import { useEffect } from 'react'
 import {
     Award,
     ShieldCheck,
@@ -37,6 +40,11 @@ export function SpecialsHero({
 }: SpecialsHeroProps) {
     const daysRemaining = featuredPromotion?.daysRemaining ?? null
     const expiringSoon = featuredPromotion?.expiringSoon ?? false
+
+    // Ensure page starts at the top on mount
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     return (
         <section
