@@ -91,7 +91,7 @@ export const AVAILABLE_MODELS: AIModel[] = [
     },
     {
         id: 'gemini-3-pro-preview',
-        name: 'Gemini 3 Flash',
+        name: 'Gemini 3 Pro',
         provider: 'google',
         capabilities: [
             'chat',
@@ -100,9 +100,9 @@ export const AVAILABLE_MODELS: AIModel[] = [
             'structured-output',
         ],
         maxTokens: 1048576,
-        tier: 'standard',
+        tier: 'premium',
         description:
-            'Lightning-fast reasoning at search speed with cost-effective performance',
+            'Advanced reasoning and multimodal capabilities for complex tasks',
         recommended: true,
     },
     // OpenAI Models

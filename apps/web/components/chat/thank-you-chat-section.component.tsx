@@ -11,11 +11,14 @@
 
 import { useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
-import { MessageCircle, Sparkles, Loader2 } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
 import { ChatInterface } from './chat-interface.component'
+import { ChatCardLoadingState } from './chat-card-loading-state.component'
+import { ChatCardErrorState } from './chat-card-error-state.component'
+import { ChatCardHeader } from './chat-card-header.component'
+import { ChatCardInitialState } from './chat-card-initial-state.component'
 import { useUnifiedChat } from '@/hooks/chat/useUnifiedChat.hook'
 
 type ThankYouChatSectionProps = {
@@ -116,123 +119,30 @@ export function ThankYouChatSection({
                     )}
                 >
                     {/* Loading State */}
-                    {isInitializing && (
-                        <div className='flex h-full flex-col items-center justify-center gap-4 p-8'>
-                            <div
-                                className={cn(
-                                    'flex h-16 w-16 items-center justify-center rounded-full',
-                                    'from-gold-100 to-gold-50 bg-linear-to-br',
-                                    'ring-gold-200/60 ring-2',
-                                    'shadow-gold-500/10 shadow-lg',
-                                    'animate-pulse'
-                                )}
-                            >
-                                <MessageCircle className='text-gold-600 h-7 w-7' />
-                            </div>
-                            <div className='space-y-2 text-center'>
-                                <p className='font-serif text-sm font-medium text-stone-700'>
-                                    Preparing your assistant
-                                </p>
-                                <p className='text-xs text-stone-500'>
-                                    Just a moment...
-                                </p>
-                            </div>
-                            <Loader2 className='text-gold-500 h-5 w-5 animate-spin' />
-                        </div>
-                    )}
+                    {isInitializing && <ChatCardLoadingState />}
 
                     {/* Error State */}
                     {error && !isReady && (
-                        <div className='flex h-full flex-col items-center justify-center gap-4 p-8'>
-                            <div
-                                className={cn(
-                                    'flex h-16 w-16 items-center justify-center rounded-full',
-                                    'bg-red-50',
-                                    'ring-2 ring-red-100'
-                                )}
-                            >
-                                <MessageCircle className='h-7 w-7 text-red-400' />
-                            </div>
-                            <div className='space-y-2 text-center'>
-                                <p className='font-serif text-sm font-medium text-red-700'>
-                                    Unable to start chat
-                                </p>
-                                <p className='text-xs text-red-500'>{error}</p>
-                            </div>
-                            <button
-                                onClick={() =>
-                                    initializeSession(
-                                        contactId
-                                            ? { contactSubmissionId: contactId }
-                                            : undefined
-                                    )
-                                }
-                                className={cn(
-                                    'rounded-lg px-4 py-2 text-sm font-medium',
-                                    'bg-stone-900 text-white',
-                                    'hover:bg-stone-800',
-                                    'transition-colors'
-                                )}
-                            >
-                                Try Again
-                            </button>
-                        </div>
+                        <ChatCardErrorState
+                            error={error}
+                            onRetry={() =>
+                                initializeSession(
+                                    contactId
+                                        ? { contactSubmissionId: contactId }
+                                        : undefined
+                                )
+                            }
+                        />
                     )}
 
                     {/* Chat Interface */}
                     {isReady && session && config && (
                         <>
-                            {/* Custom Header */}
-                            <header
-                                className={cn(
-                                    'flex items-center gap-3 px-4 py-3',
-                                    'border-b border-stone-200/60 bg-stone-50/80 backdrop-blur-xl',
-                                    'shadow-sm shadow-stone-900/5'
-                                )}
-                            >
-                                {/* Avatar */}
-                                <div className='relative'>
-                                    <div
-                                        className={cn(
-                                            'flex h-10 w-10 items-center justify-center rounded-full',
-                                            'from-gold-100 to-gold-50 bg-linear-to-br',
-                                            'ring-gold-200/60 ring-2 ring-offset-1 ring-offset-white',
-                                            'shadow-gold-500/10 shadow-md',
-                                            'overflow-hidden'
-                                        )}
-                                    >
-                                        {config.agentImageUrl ? (
-                                            <Image
-                                                src={config.agentImageUrl}
-                                                alt={config.agentName}
-                                                width={40}
-                                                height={40}
-                                                className='h-full w-full object-cover'
-                                            />
-                                        ) : (
-                                            <MessageCircle className='text-gold-600 h-4 w-4' />
-                                        )}
-                                    </div>
-                                    {/* Online indicator */}
-                                    <span
-                                        className={cn(
-                                            'absolute -right-0.5 -bottom-0.5',
-                                            'h-3 w-3 rounded-full border-2 border-white',
-                                            'bg-emerald-500'
-                                        )}
-                                    />
-                                </div>
-
-                                {/* Info */}
-                                <div>
-                                    <h3 className='font-serif text-sm font-semibold tracking-tight text-stone-900'>
-                                        {config.agentName}
-                                    </h3>
-                                    <p className='text-xs text-stone-500'>
-                                        Online • Here to help while you wait
-                                    </p>
-                                </div>
-                            </header>
+                            <ChatCardHeader
+                                agentName={config.agentName}
+                                agentImageUrl={config.agentImageUrl}
+                                subtitle='Online • Here to help while you wait'
+                            />
 
                             {/* Chat Interface without its own header */}
                             <div className='h-[calc(100%-56px)]'>
@@ -252,36 +162,16 @@ export function ThankYouChatSection({
 
                     {/* Initial State - Before Session */}
                     {!session && !isInitializing && (
-                        <button
-                            onClick={() =>
+                        <ChatCardInitialState
+                            onStart={() =>
                                 initializeSession(
                                     contactId
                                         ? { contactSubmissionId: contactId }
                                         : undefined
                                 )
                             }
-                            className='flex h-full w-full flex-col items-center justify-center gap-4 p-8 transition-colors hover:bg-stone-50'
-                        >
-                            <div
-                                className={cn(
-                                    'flex h-20 w-20 items-center justify-center rounded-full',
-                                    'from-gold-100 to-gold-50 bg-linear-to-br',
-                                    'ring-gold-200/60 ring-2',
-                                    'shadow-gold-500/10 shadow-lg'
-                                )}
-                            >
-                                <MessageCircle className='text-gold-600 h-9 w-9' />
-                            </div>
-                            <div className='space-y-2 text-center'>
-                                <p className='font-serif text-lg font-semibold text-stone-900'>
-                                    Click to Start Chatting
-                                </p>
-                                <p className='text-sm text-stone-500'>
-                                    Ask any questions while you wait for our
-                                    call
-                                </p>
-                            </div>
-                        </button>
+                            subtitle='Ask any questions while you wait for our call'
+                        />
                     )}
                 </div>
             </div>

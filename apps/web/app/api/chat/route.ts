@@ -13,11 +13,8 @@ import {
     createUIMessageStream,
     createUIMessageStreamResponse,
     generateQuickQuestions,
-    analyzeConversation,
-    calculateLeadScoreFromAnalysis,
     buildLeadQualificationPrompt,
 } from '@workspace/ai'
-import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 import { langfuseSpanProcessor } from '@/instrumentation'
 
 import { env } from '@/env'
@@ -27,9 +24,8 @@ import {
     saveChatMessage,
     getRecentMessages,
     updateMessageSuggestedQuestions,
-    updateSessionConversationAnalysis,
-    upgradeChatSession,
 } from '@/lib/queries/chat.query'
+import { analyzeConversationAsync } from '@/lib/services/conversation-analysis.service'
 import { getContactSubmissionById } from '@/lib/queries/contact.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
@@ -312,8 +308,11 @@ export async function POST(request: NextRequest) {
         return createUIMessageStreamResponse({ stream })
     } catch (error) {
         console.error('Chat API error:', error)
+        const errorType = error instanceof Error ? error.name : 'UnknownError'
         return NextResponse.json(
-            { error: 'An error occurred processing your message' },
+            {
+                error: `Failed to process chat message: ${errorType}`,
+            },
             { status: 500 }
         )
     }
@@ -330,111 +329,4 @@ export async function OPTIONS(): Promise<NextResponse> {
             'Access-Control-Allow-Headers': 'Content-Type',
         },
     })
-}
-
-/**
- * Run comprehensive AI conversation analysis asynchronously
- * This doesn't block the chat response
- *
- * Replaces the keyword-based intent detection with AI-powered analysis
- * that extracts lead profile, psychographic data, and actionable intelligence.
- * Works with conversations in any language.
- */
-async function analyzeConversationAsync(
-    sessionId: string,
-    messages: Array<{ role: string; content: string }>,
-    additionalSignals: {
-        hasEmail?: boolean
-        messageCount?: number
-        sessionDurationMinutes?: number
-        returningVisitor?: boolean
-        isEscalated?: boolean
-    }
-): Promise<void> {
-    try {
-        console.log(
-            `[ConversationAnalysis] Analyzing session ${sessionId}, ${messages.length} messages`
-        )
-
-        // Filter to user/assistant messages and format for analysis
-        const analysisMessages: AnalysisMessage[] = messages
-            .filter((m) => m.role === 'user' || m.role === 'assistant')
-            .map((m) => ({
-                role: m.role as 'user' | 'assistant',
-                content: m.content,
-            }))
-
-        // Run comprehensive AI analysis
-        const analysis = await analyzeConversation(analysisMessages)
-
-        if (analysis.primaryIntent !== 'unknown') {
-            // Calculate lead score from analysis
-            const { score, grade } = calculateLeadScoreFromAnalysis(
-                analysis,
-                additionalSignals
-            )
-
-            // Save complete analysis to database
-            await updateSessionConversationAnalysis(
-                sessionId,
-                analysis,
-                score,
-                grade
-            )
-
-            console.log(
-                `[ConversationAnalysis] Session ${sessionId} analyzed:`,
-                {
-                    intent: analysis.primaryIntent,
-                    decisionStage: analysis.leadProfile.decisionStage,
-                    followUpPriority:
-                        analysis.actionableIntelligence.followUpPriority,
-                    score,
-                    grade,
-                    extractedContact: analysis.extractedContact,
-                }
-            )
-
-            // Auto-upgrade session if contact information was extracted
-            const { extractedContact } = analysis
-            if (
-                extractedContact.phone &&
-                extractedContact.fullName &&
-                extractedContact.phone.length >= 10
-            ) {
-                try {
-                    // Get current session to check if it's still anonymous
-                    const currentSession = await getChatSessionById(sessionId)
-                    if (currentSession?.isAnonymous) {
-                        await upgradeChatSession(sessionId, {
-                            fullName: extractedContact.fullName,
-                            phone: extractedContact.phone,
-                            email: extractedContact.email || null,
-                        })
-                        console.log(
-                            `[ConversationAnalysis] Auto-upgraded session ${sessionId} with extracted contact info:`,
-                            {
-                                fullName: extractedContact.fullName,
-                                phone: extractedContact.phone,
-                                email: extractedContact.email,
-                            }
-                        )
-                    }
-                } catch (upgradeError) {
-                    console.error(
-                        `[ConversationAnalysis] Failed to auto-upgrade session ${sessionId}:`,
-                        upgradeError
-                    )
-                    // Non-blocking, continue even if upgrade fails
-                }
-            }
-        } else {
-            console.log(
-                `[ConversationAnalysis] Session ${sessionId}: Unknown intent, skipping update`
-            )
-        }
-    } catch (error) {
-        console.error('[ConversationAnalysis] Analysis failed:', error)
-        // Non-blocking, just log the error
-    }
 }
