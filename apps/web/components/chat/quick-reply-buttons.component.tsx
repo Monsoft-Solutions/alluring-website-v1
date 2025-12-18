@@ -91,7 +91,7 @@ const QuickReplyButton = memo(function QuickReplyButton({
             type='button'
             onClick={onClick}
             className={cn(
-                'group inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-medium',
+                'group inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-medium',
                 // Base styling
                 'bg-white text-stone-700',
                 'border border-stone-200/80',
@@ -201,7 +201,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
     if (dynamicQuestionsLoading) {
         return (
             <div className={cn('space-y-2', className)}>
-                <p className='text-right text-xs font-medium text-stone-500'>
+                <p className='text-right text-sm font-medium text-stone-500'>
                     Generating suggestions...
                 </p>
                 <QuickReplyShimmer />
@@ -213,7 +213,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
     if (hasDynamicQuestions) {
         return (
             <div className={cn('space-y-2', className)}>
-                <p className='flex items-center justify-end gap-1.5 text-xs font-medium text-stone-500'>
+                <p className='flex items-center justify-end gap-1.5 text-sm font-medium text-stone-500'>
                     <Sparkles className='text-gold-500 h-3 w-3' />
                     Suggested questions
                 </p>
@@ -239,7 +239,7 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
 
     return (
         <div className={cn('space-y-2', className)}>
-            <p className='text-right text-xs font-medium text-stone-500'>
+            <p className='text-right text-sm font-medium text-stone-500'>
                 Quick questions
             </p>
             <div className='flex flex-wrap justify-end gap-2'>

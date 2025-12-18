@@ -82,13 +82,13 @@ export function ChatSection({
         <section
             id={id}
             className={cn(
-                'w-full py-16 md:py-24',
+                'flex min-h-[90dvh] w-full flex-col justify-center py-12',
                 'bg-linear-to-b from-stone-100 to-stone-50',
                 className
             )}
             aria-label='Chat with our AI assistant'
         >
-            <div className='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>
+            <div className='mx-auto max-w-6xl px-4 sm:px-6 lg:px-8'>
                 {/* Section Header */}
                 <div className='mb-8 text-center'>
                     <div className='bg-gold-100 mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5'>
@@ -114,7 +114,7 @@ export function ChatSection({
                         'ring-1 ring-stone-200/60',
                         'shadow-xl shadow-stone-900/10',
                         // Fixed height for desktop, responsive for mobile
-                        'h-[500px] max-h-[70vh]'
+                        'h-[60vh] w-full max-w-5xl'
                     )}
                 >
                     {/* Loading State */}

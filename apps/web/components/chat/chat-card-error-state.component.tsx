@@ -35,15 +35,15 @@ export function ChatCardErrorState({
                 <MessageCircle className='h-7 w-7 text-red-400' />
             </div>
             <div className='space-y-2 text-center'>
-                <p className='font-serif text-sm font-medium text-red-700'>
+                <p className='font-serif text-base font-medium text-red-700'>
                     Unable to start chat
                 </p>
-                <p className='text-xs text-red-500'>{error}</p>
+                <p className='text-sm text-red-500'>{error}</p>
             </div>
             <button
                 onClick={onRetry}
                 className={cn(
-                    'rounded-lg px-4 py-2 text-sm font-medium',
+                    'rounded-lg px-4 py-2 text-base font-medium',
                     'bg-stone-900 text-white',
                     'hover:bg-stone-800',
                     'transition-colors'

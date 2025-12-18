@@ -70,10 +70,10 @@ export function ChatCardHeader({
 
             {/* Info */}
             <div>
-                <h3 className='font-serif text-sm font-semibold tracking-tight text-stone-900'>
+                <h3 className='font-serif text-base font-semibold tracking-tight text-stone-900'>
                     {agentName}
                 </h3>
-                <p className='text-xs text-stone-500'>{subtitle}</p>
+                <p className='text-sm text-stone-500'>{subtitle}</p>
             </div>
         </header>
     )

@@ -42,7 +42,7 @@ export function ChatCardInitialState({
                 <p className='font-serif text-lg font-semibold text-stone-900'>
                     Click to Start Chatting
                 </p>
-                <p className='text-sm text-stone-500'>{subtitle}</p>
+                <p className='text-base text-stone-500'>{subtitle}</p>
             </div>
         </button>
     )

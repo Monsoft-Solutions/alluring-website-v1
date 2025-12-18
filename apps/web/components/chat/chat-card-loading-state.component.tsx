@@ -27,10 +27,10 @@ export function ChatCardLoadingState() {
                 <MessageCircle className='text-gold-600 h-7 w-7' />
             </div>
             <div className='space-y-2 text-center'>
-                <p className='font-serif text-sm font-medium text-stone-700'>
+                <p className='font-serif text-base font-medium text-stone-700'>
                     Preparing your assistant
                 </p>
-                <p className='text-xs text-stone-500'>Just a moment...</p>
+                <p className='text-sm text-stone-500'>Just a moment...</p>
             </div>
             <Loader2 className='text-gold-500 h-5 w-5 animate-spin' />
         </div>

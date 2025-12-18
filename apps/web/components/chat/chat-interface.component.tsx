@@ -217,7 +217,7 @@ export function ChatInterface({
                     {error && (
                         <div
                             className={cn(
-                                'rounded-xl p-4 text-sm',
+                                'rounded-xl p-4 text-base',
                                 'bg-red-50 text-red-600',
                                 'ring-1 ring-red-100',
                                 CSS_CLASSES.MESSAGE_APPEAR
