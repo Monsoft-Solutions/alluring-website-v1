@@ -27,7 +27,7 @@ export const LeadForm = () => {
                 <div className='mx-auto max-w-4xl rounded-sm border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-lg md:p-16'>
                     <ConsultationForm
                         title='Request Your Consultation'
-                        subtitle='Tell us a bit about your goals. Our concierge will reach out to discuss availability.'
+                        subtitle='Tell us a bit about your goals. Hablamos Español.'
                         source={CONTACT_SOURCES.LEAD_FORM}
                         analyticsFormName='lead_form'
                         enableAnalytics

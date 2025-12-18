@@ -19,6 +19,7 @@ import {
     MapPin,
     Phone,
     Mail,
+    Languages,
     Clock,
     ExternalLink,
     Instagram,
@@ -169,6 +170,22 @@ export function ContactAlternative({
                                     </p>
                                 </div>
                             </a>
+
+                            {/* Language */}
+                            <div className='flex items-center gap-4 border border-white/10 bg-white/5 p-5'>
+                                <div className='bg-gold-500/20 flex h-12 w-12 items-center justify-center'>
+                                    <Languages className='text-gold-400 h-5 w-5' />
+                                </div>
+                                <div>
+                                    <p className='text-xs font-bold tracking-widest text-stone-500 uppercase'>
+                                        Language Support
+                                    </p>
+                                    <p className='font-medium text-white'>
+                                        Hablamos Español — Se habla español en
+                                        toda la oficina
+                                    </p>
+                                </div>
+                            </div>
 
                             {/* Hours */}
                             <div className='border border-white/10 bg-white/5 p-5'>

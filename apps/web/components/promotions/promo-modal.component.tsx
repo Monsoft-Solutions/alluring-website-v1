@@ -4,7 +4,15 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CheckCircle2, Loader2, Sparkles, X, Clock, Gift } from 'lucide-react'
+import {
+    CheckCircle2,
+    Loader2,
+    Sparkles,
+    X,
+    Clock,
+    Gift,
+    Languages,
+} from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@workspace/ui/components/button'
@@ -258,6 +266,13 @@ export function PromoModal({ promotion }: PromoModalProps) {
                                                 We&apos;ll contact you to
                                                 schedule your consultation.
                                             </p>
+
+                                            <div className='bg-gold-500/5 mb-4 flex items-center gap-2 rounded-lg border border-white/5 px-3 py-2'>
+                                                <Languages className='text-gold-400 h-4 w-4' />
+                                                <span className='text-xs font-medium text-stone-300'>
+                                                    Hablamos Español
+                                                </span>
+                                            </div>
 
                                             <NameField
                                                 control={form.control}

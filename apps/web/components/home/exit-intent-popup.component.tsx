@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@workspace/ui/components/button'
 import { Form } from '@workspace/ui/components/form'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CheckCircle2, Loader2, Sparkles, X } from 'lucide-react'
+import { CheckCircle2, Languages, Loader2, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -171,6 +171,15 @@ export const ExitIntentPopup = () => {
                                 consultation and a personalized quote sent to
                                 your phone.
                             </p>
+
+                            {/* Spanish Language Indicator */}
+                            <div className='mb-6 flex items-center gap-2 border-y border-white/5 py-3'>
+                                <Languages className='text-gold-400 h-4 w-4' />
+                                <span className='text-xs font-medium text-stone-300'>
+                                    Hablamos Español — Personalized Care in Your
+                                    Language
+                                </span>
+                            </div>
 
                             {isSuccess ? (
                                 <div className='flex items-center gap-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-400'>

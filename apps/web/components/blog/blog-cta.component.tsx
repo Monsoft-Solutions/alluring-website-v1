@@ -27,6 +27,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import {
     ArrowRight,
     CheckCircle2,
+    Languages,
     Mail,
     MessageCircle,
     Phone,
@@ -388,9 +389,17 @@ export function BlogCTA({
                                 </SubmitButton>
 
                                 {/* Trust badge */}
-                                <div className='flex items-center justify-center gap-2 text-sm text-stone-400'>
-                                    <CheckCircle2 className='text-gold-400 h-4 w-4' />
-                                    <span>{footerCTAConfig.trustBadge}</span>
+                                <div className='flex flex-wrap items-center justify-center gap-6 text-sm text-stone-400'>
+                                    <div className='flex items-center gap-2'>
+                                        <CheckCircle2 className='text-gold-400 h-4 w-4' />
+                                        <span>
+                                            {footerCTAConfig.trustBadge}
+                                        </span>
+                                    </div>
+                                    <div className='flex items-center gap-2'>
+                                        <Languages className='text-gold-400 h-4 w-4' />
+                                        <span>Hablamos Español</span>
+                                    </div>
                                 </div>
                             </form>
                         </Form>

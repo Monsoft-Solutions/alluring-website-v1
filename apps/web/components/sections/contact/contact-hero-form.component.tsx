@@ -15,7 +15,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Award, Clock, CreditCard, Quote, ShieldCheck } from 'lucide-react'
+import {
+    Award,
+    Clock,
+    CreditCard,
+    Languages,
+    Quote,
+    ShieldCheck,
+} from 'lucide-react'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
 import { siteConfig } from '@/lib/data/site-config'
@@ -91,6 +98,12 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                         {/* Trust Indicators */}
                         <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                             <div className='flex items-center gap-2 text-stone-400'>
+                                <Languages className='text-gold-400 h-5 w-5' />
+                                <span className='text-sm font-medium'>
+                                    Hablamos Español
+                                </span>
+                            </div>
+                            <div className='flex items-center gap-2 text-stone-400'>
                                 <ShieldCheck className='text-gold-400 h-5 w-5' />
                                 <span className='text-sm font-medium'>
                                     {siteConfig.trustStats?.accreditation ??
@@ -128,7 +141,7 @@ export function ContactHeroForm({ id = 'contact-hero' }: ContactHeroFormProps) {
                         <div className='rounded-xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl md:p-10'>
                             <ConsultationForm
                                 title='Start My Transformation'
-                                subtitle='Free • Confidential • Zero Pressure'
+                                subtitle='Free • Confidential • Hablamos Español'
                                 source={CONTACT_SOURCES.CONTACT_HERO}
                                 analyticsFormName='contact_hero_form'
                                 enableAnalytics

@@ -10,7 +10,7 @@
  *
  * Used on both specials and contact pages.
  */
-import { CreditCard, Check } from 'lucide-react'
+import { CreditCard, Check, Languages } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
@@ -138,6 +138,10 @@ export function WeeklyPayments({
 
                 {/* Financing Benefits */}
                 <div className='mt-12 flex flex-wrap items-center justify-center gap-6 text-stone-300'>
+                    <div className='flex items-center gap-2'>
+                        <Languages className='text-gold-400 h-5 w-5' />
+                        <span>Hablamos Español</span>
+                    </div>
                     <div className='flex items-center gap-2'>
                         <Check className='text-gold-400 h-5 w-5' />
                         <span>0% APR Available</span>
