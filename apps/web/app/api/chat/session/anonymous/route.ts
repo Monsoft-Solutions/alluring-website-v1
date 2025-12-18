@@ -14,6 +14,14 @@ import {
 } from '@/lib/queries/chat.query'
 
 /**
+ * Lead context from form submission (thank-you page)
+ */
+type LeadContextInput = {
+    firstName?: string
+    procedure?: string
+}
+
+/**
  * Request body for anonymous session creation
  */
 type AnonymousSessionRequest = {
@@ -22,6 +30,8 @@ type AnonymousSessionRequest = {
     utmSource?: string
     utmMedium?: string
     utmCampaign?: string
+    /** Lead context for thank-you page sessions */
+    leadContext?: LeadContextInput
 }
 
 /**
@@ -77,6 +87,8 @@ export async function POST(request: NextRequest) {
             utmSource: body.utmSource,
             utmMedium: body.utmMedium,
             utmCampaign: body.utmCampaign,
+            // Store lead context for thank-you page sessions
+            leadContext: body.leadContext,
         })
 
         // Return session info with config

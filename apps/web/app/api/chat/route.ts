@@ -15,6 +15,7 @@ import {
     generateQuickQuestions,
     analyzeConversation,
     calculateLeadScoreFromAnalysis,
+    buildLeadQualificationPrompt,
 } from '@workspace/ai'
 import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 import { langfuseSpanProcessor } from '@/instrumentation'
@@ -148,6 +149,22 @@ export async function POST(request: NextRequest) {
         const detectedProcedures =
             (session.detectedProcedures as string[]) ?? []
 
+        // Check if this is a session from form submission (thank-you page)
+        // and build an enhanced system prompt with lead qualification context
+        const scoringSignals = session.scoringSignals as {
+            leadFirstName?: string
+            fromFormSubmission?: boolean
+        } | null
+
+        let systemPrompt = config.systemPrompt
+        if (scoringSignals?.fromFormSubmission) {
+            // Build lead-qualified prompt with context
+            systemPrompt = buildLeadQualificationPrompt(config.systemPrompt, {
+                firstName: scoringSignals.leadFirstName ?? '',
+                procedure: detectedProcedures[0],
+            })
+        }
+
         // Create a UI message stream that includes both text and quick questions data
         const stream = createUIMessageStream({
             execute: async ({ writer }) => {
@@ -161,7 +178,7 @@ export async function POST(request: NextRequest) {
 
                 const result = coreStreamText({
                     modelId: config.modelId,
-                    system: config.systemPrompt,
+                    system: systemPrompt,
                     messages: contextMessages,
                     temperature: config.temperature,
                     maxTokens: config.maxTokens,

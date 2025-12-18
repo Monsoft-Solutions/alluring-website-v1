@@ -25,7 +25,7 @@ import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { Testimonials } from '@/components/shared/testimonials.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
-import { ChatSection } from '@/components/chat/chat-section.component'
+import { ChatSectionWrapper } from '@/components/chat/chat-section-wrapper.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
@@ -190,7 +190,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 <GalleryCarousel id='gallery-results' images={galleryImages} />
 
                 {/* Section 5.5: AI Chat - Engage and answer questions */}
-                <ChatSection
+                <ChatSectionWrapper
                     id='chat-assistant'
                     title='Have Questions About Our Specials?'
                     description='Get instant answers about procedures, pricing, financing options, and more. Our AI assistant is available 24/7 to help you.'

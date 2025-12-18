@@ -29,3 +29,10 @@ export {
     formatMessagesForAnalysis,
     getConversationAnalysisPrompt,
 } from './conversation-analysis.prompt'
+
+export {
+    LEAD_QUALIFICATION_CONTEXT_PROMPT,
+    buildLeadQualificationPrompt,
+    generateThankYouWelcomeMessage,
+    type LeadContext,
+} from './lead-qualification.prompt'

@@ -150,34 +150,6 @@ export default function RootLayout({
                         {/* Chat Widget - AI chat assistant */}
                         {isChatEnabled && <FloatingChatButton />}
                     </ChatContextProvider>
-                    {/* Analytics Scripts - Load automatically when configured */}
-                    <AnalyticsProvider />
-                    {/* Cookie Consent Banner */}
-                    {isCookieBannerEnabled && <CookieBanner />}
-                    {/* Promotion Announcement Bar */}
-                    <AnnouncementBar />
-                    {/* Site Header */}
-                    <Header />
-                    {/* Main Content */}
-                    <main id='main-content'>{children}</main>
-                    {/* Site Footer */}
-                    <Footer />
-                    {/* Exit Intent Popup - Only on homepage */}
-                    <ExitIntentPopup />
-                    {/* Promotion Modal - Timed popup with lead capture */}
-                    <PromoModalWrapper />
-                    {/* Mobile Call Button - visible on mobile devices only */}
-                    {isMobileCallButtonEnabled && (
-                        <MobileCallButton
-                            position='bottom-left'
-                            style='icon-only'
-                            isBanner={false}
-                        />
-                    )}
-                    {/* Beta Feedback Button - visible during beta testing */}
-                    {isBetaMode && <FloatingFeedbackButton />}
-                    {/* Chat Widget - AI chat assistant */}
-                    {isChatEnabled && <FloatingChatButton />}
                 </Providers>
             </body>
         </html>

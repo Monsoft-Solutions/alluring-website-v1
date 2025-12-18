@@ -23,6 +23,11 @@ export {
     CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
     formatMessagesForAnalysis,
     getConversationAnalysisPrompt,
+    // Lead Qualification
+    LEAD_QUALIFICATION_CONTEXT_PROMPT,
+    buildLeadQualificationPrompt,
+    generateThankYouWelcomeMessage,
+    type LeadContext,
 } from './chat'
 
 export {

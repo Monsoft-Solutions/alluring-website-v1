@@ -7,6 +7,7 @@
  * Features:
  * - Success confirmation with expected callback timeline
  * - Trust indicators and immediate contact options
+ * - AI chat section for immediate engagement and lead qualification
  * - Links to key site sections
  * - No-indexed to prevent search engine indexing
  */
@@ -14,6 +15,7 @@
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ThankYouHero } from '@/components/sections/thank-you/thank-you-hero.component'
+import { ThankYouChatSection } from '@/components/chat/thank-you-chat-section.component'
 import { ExploreSection } from '@/components/sections/thank-you/explore-section.component'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
@@ -60,7 +62,10 @@ export default function ThankYouPage() {
                 {/* Section 1: Thank You Hero */}
                 <ThankYouHero id='thank-you-hero' />
 
-                {/* Section 2: Explore More */}
+                {/* Section 2: Chat Section - Engage while waiting */}
+                <ThankYouChatSection id='chat' />
+
+                {/* Section 3: Explore More */}
                 <ExploreSection id='explore' />
             </main>
         </>

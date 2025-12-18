@@ -125,6 +125,11 @@ export {
     formatMessagesForAnalysis,
     getConversationAnalysisPrompt,
     type SystemPromptParams,
+    // Lead qualification prompts
+    LEAD_QUALIFICATION_CONTEXT_PROMPT,
+    buildLeadQualificationPrompt,
+    generateThankYouWelcomeMessage,
+    type LeadContext,
     // Gallery prompts
     IMAGE_ANALYSIS_SYSTEM_PROMPT,
     getImageAnalysisPrompt,

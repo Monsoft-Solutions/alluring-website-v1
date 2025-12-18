@@ -160,6 +160,10 @@ export type ScoringSignals = {
     sessionDuration?: number
     returningVisitor?: boolean
     exitIntent?: boolean
+    /** Lead's first name from form submission (thank-you page) */
+    leadFirstName?: string
+    /** Whether session was created from form submission */
+    fromFormSubmission?: boolean
 }
 
 /**
