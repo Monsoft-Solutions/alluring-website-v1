@@ -5,9 +5,9 @@
  * Used for embedded chat sections where users can start chatting immediately.
  *
  * When a contactSubmissionId is provided (thank-you page flow), the session
- * is linked to the contact submission via foreign key, enabling full contact
- * data access for AI personalization. The welcome message is dynamically
- * generated using AI for a personalized greeting.
+ * is linked to the contact submission via foreign key. The first assistant
+ * message is generated using the lead qualification prompt and saved to the
+ * database as part of the conversation history.
  *
  * @module app/api/chat/session/anonymous/route
  */
@@ -16,9 +16,11 @@ import { type NextRequest, NextResponse } from 'next/server'
 import {
     getChatConfig,
     createAnonymousChatSession,
+    saveChatMessage,
 } from '@/lib/queries/chat.query'
 import { getContactSubmissionById } from '@/lib/queries/contact.query'
-import { generateDynamicWelcomeMessage } from '@workspace/ai'
+import { coreGenerateText, buildLeadQualificationPrompt } from '@workspace/ai'
+import { estimateTokenCount } from '@workspace/chat/utils'
 
 /**
  * Request body for anonymous session creation
@@ -89,7 +91,6 @@ export async function POST(request: NextRequest) {
               }
             | undefined
         let detectedProcedures: string[] | undefined
-        let dynamicWelcomeMessage: string | undefined
 
         if (body.contactSubmissionId) {
             try {
@@ -112,41 +113,11 @@ export async function POST(request: NextRequest) {
                         detectedProcedures = [contactData.procedure]
                     }
 
-                    // Generate dynamic AI-powered welcome message
-                    try {
-                        dynamicWelcomeMessage =
-                            await generateDynamicWelcomeMessage({
-                                firstName:
-                                    contactData.firstName ||
-                                    contactData.name.split(' ')[0] ||
-                                    '',
-                                lastName: contactData.lastName ?? undefined,
-                                email: contactData.email,
-                                phone: contactData.phone ?? undefined,
-                                procedure: contactData.procedure ?? undefined,
-                                preferredContactTime:
-                                    contactData.preferredContactTime ??
-                                    undefined,
-                                source: contactData.source ?? undefined,
-                            })
-
-                        console.log(
-                            `[AnonymousSession] Generated dynamic welcome message for ${scoringSignals.leadFirstName}`
-                        )
-                    } catch (welcomeError) {
-                        console.error(
-                            '[AnonymousSession] Failed to generate dynamic welcome message:',
-                            welcomeError
-                        )
-                        // Will fall back to static message below
-                    }
-
                     console.log(
                         `[AnonymousSession] Linked to contact submission ${body.contactSubmissionId}`,
                         {
                             firstName: scoringSignals.leadFirstName,
                             procedure: contactData.procedure,
-                            hasDynamicWelcome: !!dynamicWelcomeMessage,
                         }
                     )
                 } else {
@@ -178,8 +149,77 @@ export async function POST(request: NextRequest) {
             contactSubmissionId: body.contactSubmissionId,
         })
 
-        // Return session info with config
-        // Use dynamic welcome message for thank-you page, fall back to static config
+        // Generate and save first assistant message for lead qualification sessions
+        if (body.contactSubmissionId && scoringSignals) {
+            try {
+                const contactData = await getContactSubmissionById(
+                    body.contactSubmissionId
+                )
+
+                if (contactData) {
+                    // Build lead qualification prompt with context
+                    const systemPrompt = buildLeadQualificationPrompt({
+                        firstName:
+                            contactData.firstName ||
+                            contactData.name.split(' ')[0] ||
+                            '',
+                        lastName: contactData.lastName ?? undefined,
+                        email: contactData.email,
+                        phone: contactData.phone ?? undefined,
+                        procedure: contactData.procedure ?? undefined,
+                        preferredContactTime:
+                            contactData.preferredContactTime ?? undefined,
+                        source: contactData.source ?? undefined,
+                    })
+
+                    // Generate first message using lead qualification prompt
+                    const result = await coreGenerateText({
+                        modelId: config.modelId,
+                        system: systemPrompt,
+                        prompt: 'Generate your opening message for this lead.',
+                        temperature: 0.8,
+                        maxTokens: 200,
+                    })
+
+                    const welcomeMessage = result.text.trim()
+
+                    // Save assistant message to database
+                    await saveChatMessage({
+                        sessionId: session.id,
+                        role: 'assistant',
+                        content: welcomeMessage,
+                        tokenCount: estimateTokenCount(welcomeMessage),
+                    })
+
+                    console.log(
+                        `[AnonymousSession] Generated and saved welcome message for ${scoringSignals.leadFirstName}`
+                    )
+
+                    // Return with generated welcome message
+                    return NextResponse.json({
+                        success: true,
+                        session: {
+                            id: session.id,
+                            isAnonymous: true,
+                        },
+                        config: {
+                            agentName: 'Candy',
+                            welcomeMessage,
+                            primaryColor: config.primaryColor,
+                            agentImageUrl: config.agentImageUrl,
+                        },
+                    })
+                }
+            } catch (welcomeError) {
+                console.error(
+                    '[AnonymousSession] Failed to generate welcome message:',
+                    welcomeError
+                )
+                // Will fall back to static message below
+            }
+        }
+
+        // Return session info with config (fallback for non-lead or error cases)
         return NextResponse.json({
             success: true,
             session: {
@@ -187,8 +227,8 @@ export async function POST(request: NextRequest) {
                 isAnonymous: true,
             },
             config: {
-                agentName: config.agentName,
-                welcomeMessage: dynamicWelcomeMessage || config.welcomeMessage,
+                agentName: 'Candy',
+                welcomeMessage: config.welcomeMessage,
                 primaryColor: config.primaryColor,
                 agentImageUrl: config.agentImageUrl,
             },

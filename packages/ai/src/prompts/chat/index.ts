@@ -31,9 +31,7 @@ export {
 } from './conversation-analysis.prompt'
 
 export {
-    LEAD_QUALIFICATION_CONTEXT_PROMPT,
+    LEAD_QUALIFICATION_SYSTEM_PROMPT,
     buildLeadQualificationPrompt,
-    generateThankYouWelcomeMessage,
-    generateDynamicWelcomeMessage,
     type LeadContext,
 } from './lead-qualification.prompt'

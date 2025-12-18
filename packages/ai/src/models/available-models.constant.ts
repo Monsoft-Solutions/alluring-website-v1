@@ -89,6 +89,22 @@ export const AVAILABLE_MODELS: AIModel[] = [
             'Lightning-fast reasoning at search speed with cost-effective performance',
         recommended: true,
     },
+    {
+        id: 'gemini-3-pro-preview',
+        name: 'Gemini 3 Flash',
+        provider: 'google',
+        capabilities: [
+            'chat',
+            'function-calling',
+            'vision',
+            'structured-output',
+        ],
+        maxTokens: 1048576,
+        tier: 'standard',
+        description:
+            'Lightning-fast reasoning at search speed with cost-effective performance',
+        recommended: true,
+    },
     // OpenAI Models
     {
         id: 'gpt-4.1',

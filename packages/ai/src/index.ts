@@ -130,10 +130,8 @@ export {
     getConversationAnalysisPrompt,
     type SystemPromptParams,
     // Lead qualification prompts
-    LEAD_QUALIFICATION_CONTEXT_PROMPT,
+    LEAD_QUALIFICATION_SYSTEM_PROMPT,
     buildLeadQualificationPrompt,
-    generateThankYouWelcomeMessage,
-    generateDynamicWelcomeMessage,
     type LeadContext,
     // Gallery prompts
     IMAGE_ANALYSIS_SYSTEM_PROMPT,

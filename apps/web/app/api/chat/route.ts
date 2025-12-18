@@ -175,22 +175,20 @@ export async function POST(request: NextRequest) {
 
             if (contactData) {
                 // Build lead-qualified prompt with FULL contact context
-                systemPrompt = buildLeadQualificationPrompt(
-                    config.systemPrompt,
-                    {
-                        firstName:
-                            contactData.firstName ||
-                            contactData.name.split(' ')[0] ||
-                            '',
-                        lastName: contactData.lastName ?? undefined,
-                        email: contactData.email,
-                        phone: contactData.phone ?? undefined,
-                        procedure: contactData.procedure ?? undefined,
-                        preferredContactTime:
-                            contactData.preferredContactTime ?? undefined,
-                        source: contactData.source ?? undefined,
-                    }
-                )
+                // Uses standalone prompt (no longer needs base system prompt)
+                systemPrompt = buildLeadQualificationPrompt({
+                    firstName:
+                        contactData.firstName ||
+                        contactData.name.split(' ')[0] ||
+                        '',
+                    lastName: contactData.lastName ?? undefined,
+                    email: contactData.email,
+                    phone: contactData.phone ?? undefined,
+                    procedure: contactData.procedure ?? undefined,
+                    preferredContactTime:
+                        contactData.preferredContactTime ?? undefined,
+                    source: contactData.source ?? undefined,
+                })
 
                 console.log(
                     `[Chat] Using lead-qualified prompt for session ${session.id}`,
