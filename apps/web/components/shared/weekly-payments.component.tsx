@@ -1,12 +1,12 @@
 /**
  * WeeklyPayments Component
  *
- * Displays weekly payment options for popular procedures to break
- * the affordability barrier. Shows that luxury surgery can fit into
- * any budget with payments as low as $27/week.
+ * Displays weekly payment options for popular procedures, emphasizing
+ * that premium results come with flexible financing options.
  *
- * Key conversion strategy: Reframe the cost from a large lump sum
- * to a manageable weekly amount comparable to everyday expenses.
+ * Key conversion strategy: Position financing as "smart investment"
+ * rather than "cheap/discount" - maintaining luxury brand positioning
+ * while showing accessibility.
  *
  * Used on both specials and contact pages.
  */
@@ -86,18 +86,18 @@ export function WeeklyPayments({
                     <div className='mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2'>
                         <CreditCard className='text-gold-400 h-4 w-4' />
                         <span className='text-gold-400 text-sm font-medium'>
-                            Flexible Financing
+                            Smart Financing Options
                         </span>
                     </div>
 
                     <h2 className='mb-4 font-serif text-3xl text-white md:text-4xl'>
-                        Your Dream Body for Less Than{' '}
-                        <span className='text-gold-400 italic'>$5 a Day</span>
+                        Your Investment,{' '}
+                        <span className='text-gold-400 italic'>Your Terms</span>
                     </h2>
 
                     <p className='text-lg leading-relaxed text-stone-300'>
-                        Skip the coffee, invest in yourself. With our flexible
-                        financing, your transformation fits your budget.
+                        Same board-certified surgeons. Same luxury experience.
+                        Flexible financing that works for your life.
                     </p>
                 </div>
 
@@ -128,9 +128,9 @@ export function WeeklyPayments({
                                 <span className='text-stone-400'>/week</span>
                             </div>
 
-                            {/* Starting Text */}
+                            {/* Credit Notice */}
                             <p className='mt-2 text-sm text-stone-500'>
-                                Starting weekly payment
+                                With approved credit
                             </p>
                         </div>
                     ))}
@@ -166,7 +166,7 @@ export function WeeklyPayments({
                         href={formAnchor}
                         className='bg-gold-500 hover:bg-gold-600 inline-flex items-center gap-2 rounded-lg px-8 py-4 font-semibold text-white shadow-lg transition-colors'
                     >
-                        Get My Personalized Quote
+                        See Your Custom Plan
                         <span aria-hidden='true'>↑</span>
                     </a>
                 </div>

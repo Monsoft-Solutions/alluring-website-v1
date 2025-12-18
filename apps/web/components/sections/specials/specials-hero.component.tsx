@@ -164,7 +164,7 @@ export function SpecialsHero({
                         >
                             <ConsultationForm
                                 title='Start Your Transformation'
-                                subtitle='Free Consultation • No Pressure • Pricing Locked In'
+                                subtitle='Free Consultation • No Pressure • Hablamos Español'
                                 source={CONTACT_SOURCES.SPECIALS_PAGE}
                                 analyticsFormName='specials_hero_form'
                                 enableAnalytics
