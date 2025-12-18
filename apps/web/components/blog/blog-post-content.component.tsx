@@ -8,7 +8,6 @@ import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
-import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
 import { seoConfig } from '@/lib/seo-config'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
@@ -53,20 +52,9 @@ export function BlogPostContent({
     )
 
     return (
-        <ContainerLayout as='article' size='lg' className='py-16 lg:py-20'>
+        <ContainerLayout as='article' size='lg' className='py-52'>
             {/* Track blog post view */}
             <BlogViewTracker postId={post.id} />
-
-            <div className='mb-16'>
-                <Breadcrumbs
-                    items={[
-                        { label: 'Home', href: '/' },
-                        { label: 'Blog', href: '/blog' },
-                        { label: post.title },
-                    ]}
-                    showBackground={true}
-                />
-            </div>
 
             {/* Two column layout: content + TOC */}
             <div className='grid grid-cols-1 gap-12 lg:grid-cols-[1fr_250px]'>
