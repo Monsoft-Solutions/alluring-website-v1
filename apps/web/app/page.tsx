@@ -123,6 +123,7 @@ export default async function Page() {
                     description='We believe transparency is the ultimate luxury. Here are the answers to the most common questions our patients ask.'
                     variant='default'
                     showBackgroundDecoration={true}
+                    includeSchema={false}
                     ctaConfig={{
                         title: 'Still have questions?',
                         description:

@@ -247,6 +247,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     faqs={procedure.faqs}
                     title='Common Questions About Your Procedure'
                     variant='muted'
+                    includeSchema={false}
                 />
             )}
 

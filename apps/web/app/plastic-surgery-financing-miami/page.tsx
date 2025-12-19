@@ -157,6 +157,7 @@ export default function FinancingPage() {
                     description={financingFaqConfig.description}
                     faqs={financingFaqData}
                     variant='muted'
+                    includeSchema={false}
                 />
 
                 {/* Final CTA Section - Luxury variant */}
