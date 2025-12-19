@@ -46,17 +46,17 @@ export function LanguageSwitcher({
 
         // Poll for language changes (e.g., from Google Translate widget)
         const pollInterval = setInterval(() => {
-            const detectedLang = getCurrentLanguage()
-            if (detectedLang !== currentLang) {
-                setCurrentLang(detectedLang)
-            }
+            setCurrentLang((prev) => {
+                const detected = getCurrentLanguage()
+                return detected !== prev ? detected : prev
+            })
         }, 1000)
 
         return () => {
             clearTimeout(initTimeout)
             clearInterval(pollInterval)
         }
-    }, [currentLang])
+    }, [])
 
     const handleLanguageChange = () => {
         // Toggle to the opposite language
