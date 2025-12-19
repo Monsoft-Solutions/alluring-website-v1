@@ -15,6 +15,7 @@ import { NavDropdown } from './nav-dropdown.component'
 import { NavLink } from './header.type'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { TrackedLink } from '@/components/analytics/tracked-link.component'
+import { LanguageSwitcher } from './language-switcher.component'
 
 export function DesktopNav() {
     const [isSurgeonsDropdownOpen, setIsSurgeonsDropdownOpen] = useState(false)
@@ -169,6 +170,11 @@ export function DesktopNav() {
                     <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
             </nav>
+
+            {/* Language Switcher - Desktop */}
+            <div className='hidden lg:flex'>
+                <LanguageSwitcher mode='horizontal' />
+            </div>
 
             {/* CTA Right */}
             <div className='hidden items-center space-x-4 lg:flex xl:space-x-8'>
