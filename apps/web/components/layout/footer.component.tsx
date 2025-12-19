@@ -295,6 +295,19 @@ export const Footer = () => {
                             Terms of Service
                         </Link>
                         <Link
+                            href='/cookies'
+                            onClick={() =>
+                                handleFooterLinkClick(
+                                    'Cookie Policy',
+                                    '/cookies',
+                                    'legal'
+                                )
+                            }
+                            className='cursor-pointer transition-colors hover:text-white'
+                        >
+                            Cookie Policy
+                        </Link>
+                        <Link
                             href='/sitemap'
                             onClick={() =>
                                 handleFooterLinkClick(

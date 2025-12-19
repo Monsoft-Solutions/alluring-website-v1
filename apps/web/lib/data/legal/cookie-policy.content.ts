@@ -1,15 +1,16 @@
 /**
  * Cookie Policy Content
- * Last Updated: October 19, 2025
+ * Last Updated: December 14, 2025
  *
  * This content explains what cookies are used, why, and how users can control them.
+ * Tailored for Alluring Plastic Surgery, a medical practice in Miami, FL.
  */
 
 export const cookiePolicyContent = `
 # Cookie Policy
 
-**Effective Date:** October 19, 2025
-**Last Updated:** October 19, 2025
+**Effective Date:** December 14, 2025
+**Last Updated:** December 14, 2025
 
 ## 1. Introduction
 
@@ -282,7 +283,9 @@ Some of our third-party cookie providers (Google, Microsoft, Meta) are based in 
 
 ## 10. Children's Privacy
 
-Our website and cookies are not intended for children under 13 years of age. We do not knowingly collect data from children through cookies.
+Our website and cookies are not intended for children under 18 years of age. We do not knowingly collect data from children through cookies.
+
+As a medical practice specializing in cosmetic procedures, our services are designed for adults. In accordance with Florida law and medical ethics, most elective cosmetic procedures require patients to be 18 years or older.
 
 If you believe a child has accepted cookies on our website, please contact us, and we will assist with removing the data.
 
@@ -315,29 +318,24 @@ To exercise these rights, see our [Privacy Policy](/privacy) for contact informa
 
 If you have questions, concerns, or requests regarding cookies or this Cookie Policy, please contact us:
 
-**Monsoft Solutions, LLC**
-Developed and maintained by: Adriano Flechilla
+**Alluring Plastic Surgery**
+8435 SW 24th St
+Miami, FL 33155
 
-**Email:** keel@monsoftsolutions.com
-**Website:** https://www.monsoftsolutions.com/
+**Phone:** +1 (786) 305-8649
+**Email:** info@alluringplasticsurgery.com
+**Website:** https://www.alluringplasticsurgery.com/
 
----
+**Business Hours:**
+Monday - Friday: 9:00 AM - 5:00 PM
+Saturday: 9:00 AM - 3:00 PM
+Sunday: Closed
 
-## 14. Open Source Acknowledgment
-
-This website is built using an open-source template developed by **Adriano Flechilla** as part of **Monsoft Solutions, LLC**.
-
-**Template Information:**
-- **Developer:** Adriano Flechilla
-- **Organization:** Monsoft Solutions, LLC
-- **Template Repository:** https://github.com/Monsoft-Solutions/alluring-website-v1
-- **License:** MIT License (see repository for full terms)
-
-If you use or extend this template, please acknowledge the original creator as specified in the template's license terms.
+For cookie-related requests, please use the subject line "Cookie Policy Inquiry" to ensure prompt handling.
 
 ---
 
-## 15. Summary
+## 14. Summary
 
 **What We Use:**
 - ✅ Essential cookies (localStorage for consent preferences)
@@ -358,7 +356,7 @@ If you use or extend this template, please acknowledge the original creator as s
 
 ---
 
-**© 2025 Monsoft Solutions, LLC. All rights reserved.**
+**© 2025 Alluring Plastic Surgery. All rights reserved.**
 
-**Last Updated:** October 19, 2025
+**Last Updated:** December 14, 2025
 `
