@@ -281,6 +281,21 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                 </span>
                             </Link>
                         </div>
+
+                        {/* FAQ Link */}
+                        <div className='animate-fade-in-up animate-delay-600 w-full'>
+                            <Link
+                                href='/faq'
+                                onClick={() =>
+                                    handleNavClick('FAQ', '/faq', 'faq')
+                                }
+                                className='group flex w-full items-center py-4 text-left'
+                            >
+                                <span className='font-serif text-3xl text-stone-900 transition-colors group-hover:text-stone-600 md:text-4xl'>
+                                    FAQ
+                                </span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
 

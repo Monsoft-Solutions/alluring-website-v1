@@ -224,6 +224,21 @@ export const Footer = () => {
                                     Blog & Education
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href='/faq'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'FAQ',
+                                            '/faq',
+                                            'patients'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    FAQ
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 

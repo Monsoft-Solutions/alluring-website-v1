@@ -16,6 +16,7 @@ export const pageLastModified: Record<string, string> = {
     '/': '2025-12-18',
     '/about': '2025-12-16',
     '/contact-us': '2025-12-18',
+    '/faq': '2025-12-18',
     '/plastic-surgery-financing-miami': '2025-12-16',
     '/miami-plastic-surgery-specials': '2025-12-18',
     '/thank-you': '2025-12-01',
