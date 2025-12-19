@@ -17,6 +17,7 @@ import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.c
 import { Providers } from '@/components/providers'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { WebVitals } from '@/components/web-vitals.component'
+import { GoogleTranslateInit } from '@/components/google-translate-init.component'
 import { env } from '@/env'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -83,7 +84,7 @@ export default function RootLayout({
         env.NEXT_PUBLIC_ENABLE_COOKIE_BANNER !== 'false'
 
     return (
-        <html lang='en' className='scroll-smooth'>
+        <html lang='en' className='scroll-smooth' suppressHydrationWarning>
             <head>
                 {/* Resource hints for external domains */}
                 <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
@@ -99,7 +100,10 @@ export default function RootLayout({
             </head>
             <body
                 className={`${fontLato.variable} ${fontMono.variable} ${fontGeist.variable} ${fontPlayfair.variable} font-sans antialiased`}
+                suppressHydrationWarning
             >
+                {/* Google Translate - Client-side only to avoid hydration errors */}
+                <GoogleTranslateInit />
                 <WebVitals />
                 <InternalPageViewTracker />
                 <PageViewTracker />

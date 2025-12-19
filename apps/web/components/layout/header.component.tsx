@@ -13,6 +13,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { DesktopNav } from './header/desktop-nav.component'
 import { MobileMenu } from './header/mobile-menu.component'
+import { LanguageSwitcher } from './header/language-switcher.component'
 
 export const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
@@ -57,14 +58,19 @@ export const Header = () => {
                     {/* Desktop Navigation */}
                     <DesktopNav />
 
-                    {/* Mobile Toggle */}
-                    <button
-                        className='relative z-50 p-2 text-stone-900 lg:hidden'
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        aria-label='Toggle mobile menu'
-                    >
-                        <Menu className='h-6 w-6' />
-                    </button>
+                    {/* Mobile: Language Switcher and Menu Toggle */}
+                    <div className='flex items-center gap-4 lg:hidden'>
+                        <LanguageSwitcher mode='horizontal' />
+                        <button
+                            className='relative z-50 p-2 text-stone-900'
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
+                            aria-label='Toggle mobile menu'
+                        >
+                            <Menu className='h-6 w-6' />
+                        </button>
+                    </div>
                 </div>
             </header>
 
