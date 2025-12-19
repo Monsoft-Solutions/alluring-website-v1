@@ -151,7 +151,7 @@ export default async function EscalationsPage() {
                                             <CardDescription className='flex items-center gap-2'>
                                                 <Phone className='h-3 w-3' />
                                                 {formatPhoneNumber(
-                                                    session.phone
+                                                    session.phone ?? ''
                                                 )}
                                             </CardDescription>
                                         </div>

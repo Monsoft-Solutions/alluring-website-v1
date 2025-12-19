@@ -36,6 +36,7 @@ import Link from 'next/link'
 import { getChatConfig, getChatAnalytics } from '@/lib/queries/chat.query'
 import { ChatConfigForm } from '@/components/chat/chat-config-form.component'
 import { formatRelativeTime } from '@workspace/chat/utils'
+import type { ChatModel, ButtonPosition } from '@workspace/chat/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -170,18 +171,12 @@ export default async function ChatAdminPage() {
                             agentName: config.agentName,
                             systemPrompt: config.systemPrompt,
                             welcomeMessage: config.welcomeMessage,
-                            modelId: config.modelId as
-                                | 'gpt-4.1'
-                                | 'gpt-4.1-mini'
-                                | 'gpt-4-turbo',
+                            modelId: config.modelId as ChatModel,
                             temperature: config.temperature,
                             maxTokens: config.maxTokens,
                             isEnabled: config.isEnabled,
-                            buttonPosition: config.buttonPosition as
-                                | 'bottom-right'
-                                | 'bottom-left'
-                                | 'top-right'
-                                | 'top-left',
+                            buttonPosition:
+                                config.buttonPosition as ButtonPosition,
                             primaryColor: config.primaryColor,
                             agentImageUrl: config.agentImageUrl,
                         }}

@@ -285,16 +285,7 @@ export function FloatingChatButton({
             )}
 
             {/* Chat Widget */}
-            <ChatWidget
-                isOpen={isOpen}
-                onClose={handleChatClose}
-                initialConfig={{
-                    agentName: config.agentName,
-                    welcomeMessage: config.welcomeMessage,
-                    primaryColor: config.primaryColor,
-                    agentImageUrl: config.agentImageUrl,
-                }}
-            />
+            <ChatWidget isOpen={isOpen} onClose={handleChatClose} />
 
             {/* Mobile Backdrop */}
             {isOpen && (

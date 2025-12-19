@@ -18,6 +18,8 @@ import {
     uuid,
 } from 'drizzle-orm/pg-core'
 
+import { contactSubmission } from '../contact/contact-submission.table'
+
 // ============================================
 // AI Conversation Analysis Types
 // These types mirror @workspace/ai/schemas but are defined here
@@ -62,6 +64,18 @@ export type DbPsychographicData = {
 }
 
 /**
+ * Extracted contact information from conversation
+ */
+export type DbExtractedContact = {
+    fullName?: string
+    phone?: string
+    email?: string
+    location?: string
+    preferredContactMethod?: 'phone' | 'email' | 'text' | 'whatsapp'
+    preferredContactTime?: string
+}
+
+/**
  * Contact preference information
  */
 export type DbContactPreference = {
@@ -94,6 +108,7 @@ export type DbConversationAnalysis = {
     intentConfidence: number
     detectedProcedures: string[]
     tags: string[]
+    extractedContact: DbExtractedContact
     leadProfile: DbLeadProfile
     psychographicData: DbPsychographicData
     actionableIntelligence: DbActionableIntelligence
@@ -147,6 +162,10 @@ export type ScoringSignals = {
     sessionDuration?: number
     returningVisitor?: boolean
     exitIntent?: boolean
+    /** Lead's first name from form submission (thank-you page) */
+    leadFirstName?: string
+    /** Whether session was created from form submission */
+    fromFormSubmission?: boolean
 }
 
 /**
@@ -157,9 +176,10 @@ export const chatSession = pgTable('chat_session', {
 
     /**
      * Lead information from pre-chat form
+     * Nullable for anonymous sessions (collected later via upgrade)
      */
-    fullName: text('full_name').notNull(),
-    phone: text('phone').notNull(),
+    fullName: text('full_name'),
+    phone: text('phone'),
     email: text('email'),
 
     /**
@@ -176,6 +196,21 @@ export const chatSession = pgTable('chat_session', {
      * Whether this is an admin test session
      */
     isTestSession: boolean('is_test_session').notNull().default(false),
+
+    /**
+     * Whether this is an anonymous session (started without pre-chat form)
+     * Anonymous sessions can be upgraded when user provides contact info
+     */
+    isAnonymous: boolean('is_anonymous').notNull().default(false),
+
+    /**
+     * Link to contact submission (if chat started from thank-you page)
+     * Provides direct access to all contact form data for AI personalization
+     */
+    contactSubmissionId: uuid('contact_submission_id').references(
+        () => contactSubmission.id,
+        { onDelete: 'set null' }
+    ),
 
     /**
      * Metadata for analytics

@@ -17,6 +17,7 @@ import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.c
 import { Providers } from '@/components/providers'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { WebVitals } from '@/components/web-vitals.component'
+import { ChatContextProvider } from '@/contexts/chat.context'
 import { env } from '@/env'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -119,34 +120,36 @@ export default function RootLayout({
                     url={seoConfig.siteUrl}
                 />
                 <Providers>
-                    {/* Analytics Scripts - Load automatically when configured */}
-                    <AnalyticsProvider />
-                    {/* Cookie Consent Banner */}
-                    {isCookieBannerEnabled && <CookieBanner />}
-                    {/* Promotion Announcement Bar */}
-                    <AnnouncementBar />
-                    {/* Site Header */}
-                    <Header />
-                    {/* Main Content */}
-                    <main id='main-content'>{children}</main>
-                    {/* Site Footer */}
-                    <Footer />
-                    {/* Exit Intent Popup - Only on homepage */}
-                    <ExitIntentPopup />
-                    {/* Promotion Modal - Timed popup with lead capture */}
-                    <PromoModalWrapper />
-                    {/* Mobile Call Button - visible on mobile devices only */}
-                    {isMobileCallButtonEnabled && (
-                        <MobileCallButton
-                            position='bottom-left'
-                            style='icon-only'
-                            isBanner={false}
-                        />
-                    )}
-                    {/* Beta Feedback Button - visible during beta testing */}
-                    {isBetaMode && <FloatingFeedbackButton />}
-                    {/* Chat Widget - AI chat assistant */}
-                    {isChatEnabled && <FloatingChatButton />}
+                    <ChatContextProvider>
+                        {/* Analytics Scripts - Load automatically when configured */}
+                        <AnalyticsProvider />
+                        {/* Cookie Consent Banner */}
+                        {isCookieBannerEnabled && <CookieBanner />}
+                        {/* Promotion Announcement Bar */}
+                        <AnnouncementBar />
+                        {/* Site Header */}
+                        <Header />
+                        {/* Main Content */}
+                        <main id='main-content'>{children}</main>
+                        {/* Site Footer */}
+                        <Footer />
+                        {/* Exit Intent Popup - Only on homepage */}
+                        <ExitIntentPopup />
+                        {/* Promotion Modal - Timed popup with lead capture */}
+                        <PromoModalWrapper />
+                        {/* Mobile Call Button - visible on mobile devices only */}
+                        {isMobileCallButtonEnabled && (
+                            <MobileCallButton
+                                position='bottom-right'
+                                style='icon-only'
+                                isBanner={false}
+                            />
+                        )}
+                        {/* Beta Feedback Button - visible during beta testing */}
+                        {isBetaMode && <FloatingFeedbackButton />}
+                        {/* Chat Widget - AI chat assistant */}
+                        {isChatEnabled && <FloatingChatButton />}
+                    </ChatContextProvider>
                 </Providers>
             </body>
         </html>

@@ -102,7 +102,7 @@ export const ChatMessage = memo(function ChatMessage({
                 )}
             >
                 {/* Name & Time */}
-                <div className='flex items-center gap-2 px-1 text-xs text-stone-500'>
+                <div className='flex items-center gap-2 px-1 text-sm text-stone-500'>
                     <span className='font-medium tracking-tight'>
                         {isUser ? 'You' : agentName}
                     </span>
@@ -116,7 +116,7 @@ export const ChatMessage = memo(function ChatMessage({
                 {/* Message Bubble */}
                 <div
                     className={cn(
-                        'rounded-2xl px-4 py-3 text-sm leading-relaxed',
+                        'rounded-2xl px-5 py-4 text-base leading-relaxed',
                         isUser
                             ? [
                                   // User bubble: dark gradient

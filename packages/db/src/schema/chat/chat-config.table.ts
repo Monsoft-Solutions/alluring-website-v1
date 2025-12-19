@@ -19,7 +19,16 @@ import {
 /**
  * Available AI models for chat
  */
-export const CHAT_MODELS = ['gpt-4.1', 'gpt-4.1-mini', 'gpt-4-turbo'] as const
+export const CHAT_MODELS = [
+    // Anthropic (default)
+    'claude-sonnet-4-5',
+    // Google
+    'gemini-3-flash-preview',
+    // OpenAI
+    'gpt-4.1',
+    'gpt-4.1-mini',
+    'gpt-4.1-nano',
+] as const
 
 export type ChatModel = (typeof CHAT_MODELS)[number]
 
@@ -52,7 +61,7 @@ export const chatConfig = pgTable('chat_config', {
     /**
      * AI model to use for responses
      */
-    modelId: text('model_id').notNull().default('gpt-4.1'),
+    modelId: text('model_id').notNull().default('claude-sonnet-4-5'),
 
     /**
      * Temperature setting for response creativity (0-2)

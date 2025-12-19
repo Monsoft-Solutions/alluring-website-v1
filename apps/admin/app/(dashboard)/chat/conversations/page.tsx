@@ -167,7 +167,7 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
                                                     <span className='flex items-center gap-1'>
                                                         <Phone className='h-3 w-3' />
                                                         {formatPhoneNumber(
-                                                            session.phone
+                                                            session.phone ?? ''
                                                         )}
                                                     </span>
                                                     {session.email && (
@@ -340,12 +340,4 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
             )}
         </div>
     )
-}
-
-function getPathname(url: string): string {
-    try {
-        return new URL(url).pathname
-    } catch {
-        return url || '/'
-    }
 }

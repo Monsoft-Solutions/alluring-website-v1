@@ -53,7 +53,7 @@ export function ChatInput({
                     maxLength={MAX_MESSAGE_LENGTH}
                     rows={1}
                     className={cn(
-                        'w-full resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 pr-12 text-sm',
+                        'w-full resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 pr-12 text-base',
                         'placeholder:text-stone-400',
                         'focus:border-stone-300 focus:bg-white focus:ring-2 focus:ring-stone-900/5 focus:outline-none',
                         'disabled:cursor-not-allowed disabled:opacity-50',

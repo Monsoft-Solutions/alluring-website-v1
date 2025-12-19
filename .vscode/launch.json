@@ -1,0 +1,54 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Next.js: debug server-side",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "pnpm --filter web dev",
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "NODE_OPTIONS": "--inspect"
+        },
+        "skipFiles": ["<node_internals>/**"],
+        "resolveSourceMapLocations": [
+          "${workspaceFolder}/**",
+          "!**/node_modules/**"
+        ],
+        "sourceMaps": true,
+        "outFiles": ["${workspaceFolder}/apps/web/.next/**/*.js"]
+      },
+      {
+        "name": "Next.js: debug client-side",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3100",
+        "webRoot": "${workspaceFolder}/apps/web",
+        "sourceMapPathOverrides": {
+          "webpack://_N_E/*": "${workspaceFolder}/apps/web/*"
+        }
+      },
+      {
+        "name": "Next.js: debug full stack",
+        "type": "node-terminal",
+        "request": "launch",
+        "command": "pnpm --filter web dev",
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "NODE_OPTIONS": "--inspect"
+        },
+        "skipFiles": ["<node_internals>/**"],
+        "resolveSourceMapLocations": [
+          "${workspaceFolder}/**",
+          "!**/node_modules/**"
+        ],
+        "sourceMaps": true,
+        "outFiles": ["${workspaceFolder}/apps/web/.next/**/*.js"],
+        "serverReadyAction": {
+          "pattern": "- Local:.+(https?://.+)",
+          "uriFormat": "%s",
+          "action": "debugWithChrome"
+        }
+      }
+    ]
+  }

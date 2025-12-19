@@ -22,10 +22,10 @@ const SESSION_EXPIRY_DAYS = 180
 
 /**
  * Session data stored in cookie
+ * Now only stores sessionId to support anonymous sessions
  */
 type StoredSessionData = {
     sessionId: string
-    fullName: string
     createdAt: string
 }
 
@@ -80,7 +80,7 @@ function deleteCookie(name: string): void {
  * }
  *
  * // Save new session
- * saveSession({ sessionId: 'abc', fullName: 'John Doe' })
+ * saveSession('abc')
  *
  * // Clear session (logout/reset)
  * clearSession()
@@ -99,7 +99,7 @@ export function useChatSession() {
             const data = JSON.parse(decoded) as StoredSessionData
 
             // Validate required fields
-            if (!data.sessionId || !data.fullName) {
+            if (!data.sessionId) {
                 return null
             }
 
@@ -114,19 +114,15 @@ export function useChatSession() {
     /**
      * Save session data to cookie (with 6-month expiry)
      */
-    const saveSession = useCallback(
-        (data: { sessionId: string; fullName: string }): void => {
-            const sessionData: StoredSessionData = {
-                sessionId: data.sessionId,
-                fullName: data.fullName,
-                createdAt: new Date().toISOString(),
-            }
+    const saveSession = useCallback((sessionId: string): void => {
+        const sessionData: StoredSessionData = {
+            sessionId,
+            createdAt: new Date().toISOString(),
+        }
 
-            const encoded = encodeURIComponent(JSON.stringify(sessionData))
-            setCookie(CHAT_SESSION_COOKIE, encoded, SESSION_EXPIRY_DAYS)
-        },
-        []
-    )
+        const encoded = encodeURIComponent(JSON.stringify(sessionData))
+        setCookie(CHAT_SESSION_COOKIE, encoded, SESSION_EXPIRY_DAYS)
+    }, [])
 
     /**
      * Renew session cookie expiry (call on each visit to extend 6-month window)

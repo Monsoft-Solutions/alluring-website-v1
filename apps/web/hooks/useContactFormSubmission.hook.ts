@@ -212,7 +212,13 @@ export function useContactFormSubmission(
 
                     // Redirect if specified
                     if (redirectOnSuccess) {
-                        router.push(redirectOnSuccess)
+                        // Build URL with contactId parameter for thank-you page chat
+                        // This allows the chat to be linked to the contact submission via FK
+                        const redirectUrl = result.submissionId
+                            ? `${redirectOnSuccess}?contactId=${result.submissionId}`
+                            : redirectOnSuccess
+
+                        router.push(redirectUrl)
                     }
 
                     return true

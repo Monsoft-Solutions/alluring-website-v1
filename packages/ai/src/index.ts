@@ -105,11 +105,15 @@ export {
     getRecommendedModels,
     getModelsByTier,
     isValidModelId,
+    getModelProvider,
     type AIModel,
     type ModelCapability,
     type ModelProvider,
     type ModelTier,
 } from './models'
+
+// Provider utilities
+export { getModelInstance } from './providers'
 
 // Prompt templates
 export {
@@ -125,6 +129,10 @@ export {
     formatMessagesForAnalysis,
     getConversationAnalysisPrompt,
     type SystemPromptParams,
+    // Lead qualification prompts
+    LEAD_QUALIFICATION_SYSTEM_PROMPT,
+    buildLeadQualificationPrompt,
+    type LeadContext,
     // Gallery prompts
     IMAGE_ANALYSIS_SYSTEM_PROMPT,
     getImageAnalysisPrompt,

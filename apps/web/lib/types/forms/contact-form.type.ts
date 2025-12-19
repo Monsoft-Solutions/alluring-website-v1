@@ -391,6 +391,8 @@ export interface ContactFormResponse {
     readonly success: boolean
     readonly message: string
     readonly error?: string
+    /** Submission ID for linking chat sessions (thank-you page) */
+    readonly submissionId?: string
 }
 
 /**

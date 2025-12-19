@@ -8,7 +8,16 @@ import { z } from 'zod'
 /**
  * Available AI models for chat
  */
-export const CHAT_MODELS = ['gpt-4.1', 'gpt-4.1-mini', 'gpt-4-turbo'] as const
+export const CHAT_MODELS = [
+    // Anthropic (default)
+    'claude-sonnet-4-5',
+    // Google
+    'gemini-3-flash-preview',
+    // OpenAI
+    'gpt-4.1',
+    'gpt-4.1-mini',
+    'gpt-4.1-nano',
+] as const
 
 export type ChatModel = (typeof CHAT_MODELS)[number]
 
@@ -30,7 +39,7 @@ export type ButtonPosition = (typeof BUTTON_POSITIONS)[number]
 export const chatConfigSchema = z.object({
     id: z.uuid().optional(),
     agentName: z.string().min(1).max(100),
-    systemPrompt: z.string().min(10).max(20000),
+    systemPrompt: z.string().min(10).max(50000),
     welcomeMessage: z.string().min(1).max(500),
     modelId: z.enum(CHAT_MODELS),
     temperature: z.number().min(0).max(2),

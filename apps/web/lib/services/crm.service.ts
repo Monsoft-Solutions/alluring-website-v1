@@ -117,7 +117,6 @@ export async function syncLeadToCRM(
 ): Promise<CRMSyncResult> {
     // Skip if CRM URL not configured
     if (!env.NEXUITE_CRM_API_URL) {
-        console.log('CRM sync skipped: NEXUITE_CRM_API_URL not configured')
         return {
             success: false,
             error: 'CRM URL not configured',
@@ -152,31 +151,16 @@ export async function syncLeadToCRM(
         })
 
         if (!response.ok) {
-            const errorText = await response.text()
-            console.error('CRM sync failed:', {
-                status: response.status,
-                statusText: response.statusText,
-                error: errorText,
-            })
-
             return {
                 success: false,
                 error: `HTTP ${response.status}: ${response.statusText}`,
             }
         }
 
-        // Log success
-        console.log('Lead synced to CRM successfully:', {
-            name: payload.name,
-            email: payload.email,
-        })
-
         return {
             success: true,
         }
     } catch (error) {
-        console.error('CRM sync error:', error)
-
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Unknown error',

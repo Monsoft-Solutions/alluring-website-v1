@@ -34,8 +34,10 @@ export const env = createEnv({
         // Cache revalidation secret for invalidating web app cache
         REVALIDATION_SECRET: z.string().min(32),
 
-        // OpenAI API key for chat testing
+        // AI Provider API Keys for chat testing (at least one required)
         OPENAI_API_KEY: z.string().min(1).optional(),
+        ANTHROPIC_API_KEY: z.string().min(1).optional(),
+        GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1).optional(),
 
         // ScrapeSocial API key for Instagram scraping (optional - can be stored in DB)
         SCRAPE_SOCIAL_API_KEY: z.string().optional(),

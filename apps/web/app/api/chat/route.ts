@@ -13,10 +13,8 @@ import {
     createUIMessageStream,
     createUIMessageStreamResponse,
     generateQuickQuestions,
-    analyzeConversation,
-    calculateLeadScoreFromAnalysis,
+    buildLeadQualificationPrompt,
 } from '@workspace/ai'
-import type { AnalysisMessage } from '@workspace/shared/schemas/chat'
 import { langfuseSpanProcessor } from '@/instrumentation'
 
 import { env } from '@/env'
@@ -26,8 +24,9 @@ import {
     saveChatMessage,
     getRecentMessages,
     updateMessageSuggestedQuestions,
-    updateSessionConversationAnalysis,
 } from '@/lib/queries/chat.query'
+import { analyzeConversationAsync } from '@/lib/services/conversation-analysis.service'
+import { getContactSubmissionById } from '@/lib/queries/contact.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
     sanitizeMessageContent,
@@ -68,14 +67,6 @@ function extractMessageContent(message: AISDKMessage): string {
  */
 export async function POST(request: NextRequest) {
     try {
-        // Validate OpenAI API key
-        if (!env.OPENAI_API_KEY) {
-            return NextResponse.json(
-                { error: 'Chat is not configured' },
-                { status: 503 }
-            )
-        }
-
         // Parse request body
         const body = await request.json()
         const { messages, sessionId } = body as {
@@ -102,6 +93,27 @@ export async function POST(request: NextRequest) {
 
         // Get chat configuration
         const config = await getChatConfig()
+
+        // Validate API key based on selected model provider
+        const modelId = config.modelId
+        let hasRequiredKey = false
+
+        if (modelId.startsWith('claude-')) {
+            hasRequiredKey = !!env.ANTHROPIC_API_KEY
+        } else if (modelId.startsWith('gemini-')) {
+            hasRequiredKey = !!env.GOOGLE_GENERATIVE_AI_API_KEY
+        } else if (modelId.startsWith('gpt-')) {
+            hasRequiredKey = !!env.OPENAI_API_KEY
+        }
+
+        if (!hasRequiredKey) {
+            return NextResponse.json(
+                {
+                    error: `Chat is not configured: Missing API key for ${modelId}`,
+                },
+                { status: 503 }
+            )
+        }
 
         // Check if chat is enabled
         if (!config.isEnabled) {
@@ -147,6 +159,46 @@ export async function POST(request: NextRequest) {
         const detectedProcedures =
             (session.detectedProcedures as string[]) ?? []
 
+        // Check if this session is linked to a contact submission (thank-you page)
+        // and build an enhanced system prompt with full lead context
+        let systemPrompt = config.systemPrompt
+
+        if (session.contactSubmissionId) {
+            // Fetch full contact data from database for AI personalization
+            const contactData = await getContactSubmissionById(
+                session.contactSubmissionId
+            )
+
+            if (contactData) {
+                // Build lead-qualified prompt with FULL contact context
+                // Uses standalone prompt (no longer needs base system prompt)
+                systemPrompt = buildLeadQualificationPrompt({
+                    firstName:
+                        contactData.firstName ||
+                        contactData.name.split(' ')[0] ||
+                        '',
+                    lastName: contactData.lastName ?? undefined,
+                    email: contactData.email,
+                    phone: contactData.phone ?? undefined,
+                    procedure: contactData.procedure ?? undefined,
+                    preferredContactTime:
+                        contactData.preferredContactTime ?? undefined,
+                    source: contactData.source ?? undefined,
+                })
+
+                console.log(
+                    `[Chat] Using lead-qualified prompt for session ${session.id}`,
+                    {
+                        contactSubmissionId: session.contactSubmissionId,
+                        firstName:
+                            contactData.firstName ||
+                            contactData.name.split(' ')[0],
+                        procedure: contactData.procedure,
+                    }
+                )
+            }
+        }
+
         // Create a UI message stream that includes both text and quick questions data
         const stream = createUIMessageStream({
             execute: async ({ writer }) => {
@@ -160,7 +212,7 @@ export async function POST(request: NextRequest) {
 
                 const result = coreStreamText({
                     modelId: config.modelId,
-                    system: config.systemPrompt,
+                    system: systemPrompt,
                     messages: contextMessages,
                     temperature: config.temperature,
                     maxTokens: config.maxTokens,
@@ -256,8 +308,11 @@ export async function POST(request: NextRequest) {
         return createUIMessageStreamResponse({ stream })
     } catch (error) {
         console.error('Chat API error:', error)
+        const errorType = error instanceof Error ? error.name : 'UnknownError'
         return NextResponse.json(
-            { error: 'An error occurred processing your message' },
+            {
+                error: `Failed to process chat message: ${errorType}`,
+            },
             { status: 500 }
         )
     }
@@ -274,76 +329,4 @@ export async function OPTIONS(): Promise<NextResponse> {
             'Access-Control-Allow-Headers': 'Content-Type',
         },
     })
-}
-
-/**
- * Run comprehensive AI conversation analysis asynchronously
- * This doesn't block the chat response
- *
- * Replaces the keyword-based intent detection with AI-powered analysis
- * that extracts lead profile, psychographic data, and actionable intelligence.
- * Works with conversations in any language.
- */
-async function analyzeConversationAsync(
-    sessionId: string,
-    messages: Array<{ role: string; content: string }>,
-    additionalSignals: {
-        hasEmail?: boolean
-        messageCount?: number
-        sessionDurationMinutes?: number
-        returningVisitor?: boolean
-        isEscalated?: boolean
-    }
-): Promise<void> {
-    try {
-        console.log(
-            `[ConversationAnalysis] Analyzing session ${sessionId}, ${messages.length} messages`
-        )
-
-        // Filter to user/assistant messages and format for analysis
-        const analysisMessages: AnalysisMessage[] = messages
-            .filter((m) => m.role === 'user' || m.role === 'assistant')
-            .map((m) => ({
-                role: m.role as 'user' | 'assistant',
-                content: m.content,
-            }))
-
-        // Run comprehensive AI analysis
-        const analysis = await analyzeConversation(analysisMessages)
-
-        if (analysis.primaryIntent !== 'unknown') {
-            // Calculate lead score from analysis
-            const { score, grade } = calculateLeadScoreFromAnalysis(
-                analysis,
-                additionalSignals
-            )
-
-            // Save complete analysis to database
-            await updateSessionConversationAnalysis(
-                sessionId,
-                analysis,
-                score,
-                grade
-            )
-
-            console.log(
-                `[ConversationAnalysis] Session ${sessionId} analyzed:`,
-                {
-                    intent: analysis.primaryIntent,
-                    decisionStage: analysis.leadProfile.decisionStage,
-                    followUpPriority:
-                        analysis.actionableIntelligence.followUpPriority,
-                    score,
-                    grade,
-                }
-            )
-        } else {
-            console.log(
-                `[ConversationAnalysis] Session ${sessionId}: Unknown intent, skipping update`
-            )
-        }
-    } catch (error) {
-        console.error('[ConversationAnalysis] Analysis failed:', error)
-        // Non-blocking, just log the error
-    }
 }

@@ -136,7 +136,7 @@ importers:
         version: 0.554.0(react@19.2.1)
       next:
         specifier: ^16.0.7
-        version: 16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: ^19.2.1
         version: 19.2.1
@@ -266,7 +266,7 @@ importers:
         version: 0.554.0(react@19.2.1)
       next:
         specifier: ^16.0.7
-        version: 16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       next-mdx-remote:
         specifier: ^5.0.0
         version: 5.0.0(@types/react@19.2.7)(react@19.2.1)
@@ -343,6 +343,12 @@ importers:
 
   packages/ai:
     dependencies:
+      '@ai-sdk/anthropic':
+        specifier: ^2.0.56
+        version: 2.0.56(zod@4.1.13)
+      '@ai-sdk/google':
+        specifier: ^2.0.49
+        version: 2.0.49(zod@4.1.13)
       '@ai-sdk/openai':
         specifier: ^2.0.77
         version: 2.0.77(zod@4.1.13)
@@ -520,7 +526,7 @@ importers:
         version: link:../typescript-config
       next:
         specifier: ^16.0.7
-        version: 16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -678,8 +684,20 @@ importers:
 
 packages:
 
+  '@ai-sdk/anthropic@2.0.56':
+    resolution: {integrity: sha512-XHJKu0Yvfu9SPzRfsAFESa+9T7f2YJY6TxykKMfRsAwpeWAiX/Gbx5J5uM15AzYC3Rw8tVP3oH+j7jEivENirQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
   '@ai-sdk/gateway@2.0.18':
     resolution: {integrity: sha512-sDQcW+6ck2m0pTIHW6BPHD7S125WD3qNkx/B8sEzJp/hurocmJ5Cni0ybExg6sQMGo+fr/GWOwpHF1cmCdg5rQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/google@2.0.49':
+    resolution: {integrity: sha512-efwKk4mOV0SpumUaQskeYABk37FJPmEYwoDJQEjyLRmGSjtHRe9P5Cwof5ffLvaFav2IaJpBGEz98pyTs7oNWA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -692,6 +710,12 @@ packages:
 
   '@ai-sdk/provider-utils@3.0.18':
     resolution: {integrity: sha512-ypv1xXMsgGcNKUP+hglKqtdDuMg68nWHucPPAhIENrbFAI+xCHiqPVN8Zllxyv1TNZwGWUghPxJXU+Mqps0YRQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@3.0.19':
+    resolution: {integrity: sha512-W41Wc9/jbUVXVwCN/7bWa4IKe8MtxO3EyA0Hfhx6grnmiYlCvpI8neSYWFE0zScXJkgA/YK3BRybzgyiXuu6JA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -5998,11 +6022,23 @@ packages:
 
 snapshots:
 
+  '@ai-sdk/anthropic@2.0.56(zod@4.1.13)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.19(zod@4.1.13)
+      zod: 4.1.13
+
   '@ai-sdk/gateway@2.0.18(zod@4.1.13)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
       '@ai-sdk/provider-utils': 3.0.18(zod@4.1.13)
       '@vercel/oidc': 3.0.5
+      zod: 4.1.13
+
+  '@ai-sdk/google@2.0.49(zod@4.1.13)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.19(zod@4.1.13)
       zod: 4.1.13
 
   '@ai-sdk/openai@2.0.77(zod@4.1.13)':
@@ -6012,6 +6048,13 @@ snapshots:
       zod: 4.1.13
 
   '@ai-sdk/provider-utils@3.0.18(zod@4.1.13)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@standard-schema/spec': 1.0.0
+      eventsource-parser: 3.0.6
+      zod: 4.1.13
+
+  '@ai-sdk/provider-utils@3.0.19(zod@4.1.13)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
       '@standard-schema/spec': 1.0.0
@@ -10376,7 +10419,7 @@ snapshots:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  next@16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  next@16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@next/env': 16.0.7
       '@swc/helpers': 0.5.15
@@ -10384,7 +10427,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
-      styled-jsx: 5.1.6(react@19.2.1)
+      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.0.7
       '@next/swc-darwin-x64': 16.0.7
@@ -11415,10 +11458,12 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.7
 
-  styled-jsx@5.1.6(react@19.2.1):
+  styled-jsx@5.1.6(@babel/core@7.28.5)(react@19.2.1):
     dependencies:
       client-only: 0.0.1
       react: 19.2.1
+    optionalDependencies:
+      '@babel/core': 7.28.5
 
   supports-color@5.5.0:
     dependencies:

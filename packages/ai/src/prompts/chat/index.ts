@@ -29,3 +29,9 @@ export {
     formatMessagesForAnalysis,
     getConversationAnalysisPrompt,
 } from './conversation-analysis.prompt'
+
+export {
+    LEAD_QUALIFICATION_SYSTEM_PROMPT,
+    buildLeadQualificationPrompt,
+    type LeadContext,
+} from './lead-qualification.prompt'

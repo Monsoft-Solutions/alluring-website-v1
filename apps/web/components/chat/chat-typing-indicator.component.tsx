@@ -71,7 +71,7 @@ export const ChatTypingIndicator = memo(function ChatTypingIndicator({
                     <span
                         key={i}
                         className={cn(
-                            'h-2 w-2 rounded-full',
+                            'h-2.5 w-2.5 rounded-full',
                             // Gold gradient dots
                             'from-gold-400 to-gold-500 bg-linear-to-br',
                             // Bounce animation with stagger

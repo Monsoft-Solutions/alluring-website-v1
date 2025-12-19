@@ -79,8 +79,13 @@ export function useChatScroll(
      */
     const scrollToBottom = useCallback(
         (behavior: 'smooth' | 'auto' = smoothScroll ? 'smooth' : 'auto') => {
-            if (messagesEndRef.current) {
-                messagesEndRef.current.scrollIntoView({ behavior })
+            if (scrollContainerRef.current) {
+                const { scrollHeight, clientHeight } =
+                    scrollContainerRef.current
+                scrollContainerRef.current.scrollTo({
+                    top: scrollHeight - clientHeight,
+                    behavior,
+                })
             }
         },
         [smoothScroll]

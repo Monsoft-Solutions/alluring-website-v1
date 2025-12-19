@@ -31,6 +31,12 @@ type ChatInterfaceProps = {
     userName: string
     initialMessages?: StoredMessage[]
     onReset?: () => void
+    /** Whether to show the chat header (default: true) */
+    showHeader?: boolean
+    /** Callback when a user message is sent (for tracking) */
+    onMessageSent?: (message: string) => void
+    /** Callback when a message is received (user or assistant) - for context sync */
+    onMessageReceived?: (message: StoredMessage) => void
 }
 
 /**
@@ -49,6 +55,9 @@ export function ChatInterface({
     userName,
     initialMessages = [],
     onReset,
+    showHeader = true,
+    onMessageSent,
+    onMessageReceived,
 }: ChatInterfaceProps) {
     const [input, setInput] = useState('')
 
@@ -88,20 +97,48 @@ export function ChatInterface({
         forceScrollToBottom()
     }, [messages.length, streamedQuickQuestions.length, forceScrollToBottom])
 
+    // Notify context when new messages are added (for cross-component sync)
+    useEffect(() => {
+        if (!onMessageReceived) return
+
+        // Get the last message and notify context if it's new
+        const lastMessage = messages[messages.length - 1]
+        if (
+            lastMessage &&
+            lastMessage.id !== 'welcome' &&
+            (lastMessage.role === 'user' || lastMessage.role === 'assistant')
+        ) {
+            // Only notify for finalized messages (not mid-stream)
+            if (!isStreaming || lastMessage.role === 'user') {
+                const content = getMessageContent(lastMessage)
+                if (content) {
+                    onMessageReceived({
+                        id: lastMessage.id,
+                        role: lastMessage.role as 'user' | 'assistant',
+                        content,
+                        createdAt: new Date().toISOString(),
+                    })
+                }
+            }
+        }
+    }, [messages, isStreaming, getMessageContent, onMessageReceived])
+
     // Handlers
     const handleSubmit = useCallback(async () => {
         if (!input.trim() || isLoading) return
         const message = input.trim()
         setInput('')
         await sendMessage(message)
-    }, [input, isLoading, sendMessage])
+        onMessageSent?.(message)
+    }, [input, isLoading, sendMessage, onMessageSent])
 
     const handleQuickReplySelect = useCallback(
         async (message: string) => {
             if (isLoading) return
             await sendMessage(message)
+            onMessageSent?.(message)
         },
-        [isLoading, sendMessage]
+        [isLoading, sendMessage, onMessageSent]
     )
 
     const handleReset = useCallback(() => {
@@ -116,15 +153,17 @@ export function ChatInterface({
 
     return (
         <div className='relative flex h-full flex-col overflow-hidden'>
-            {/* Header */}
-            <ChatHeader
-                agentName={agentName}
-                agentImageUrl={agentImageUrl}
-                userName={userName}
-                sessionId={sessionId}
-                isTyping={isStreaming}
-                onReset={onReset ? handleReset : undefined}
-            />
+            {/* Header (optional for embedded use) */}
+            {showHeader && (
+                <ChatHeader
+                    agentName={agentName}
+                    agentImageUrl={agentImageUrl}
+                    userName={userName}
+                    sessionId={sessionId}
+                    isTyping={isStreaming}
+                    onReset={onReset ? handleReset : undefined}
+                />
+            )}
 
             {/* Messages Area */}
             <div
@@ -178,7 +217,7 @@ export function ChatInterface({
                     {error && (
                         <div
                             className={cn(
-                                'rounded-xl p-4 text-sm',
+                                'rounded-xl p-4 text-base',
                                 'bg-red-50 text-red-600',
                                 'ring-1 ring-red-100',
                                 CSS_CLASSES.MESSAGE_APPEAR

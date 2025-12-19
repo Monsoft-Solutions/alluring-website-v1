@@ -296,3 +296,107 @@ export async function getMessageSuggestedQuestions(
 
     return messages[0]?.suggestedQuestions ?? null
 }
+
+// ============================================
+// Anonymous Session Functions
+// ============================================
+
+/**
+ * Scoring signals for lead scoring
+ */
+export type ScoringSignalsInput = {
+    leadFirstName?: string
+    fromFormSubmission?: boolean
+    leadProcedure?: string
+}
+
+/**
+ * Input for creating an anonymous chat session
+ */
+export type CreateAnonymousSessionInput = {
+    pageUrl?: string
+    referrer?: string
+    ipAddress?: string
+    userAgent?: string
+    utmSource?: string
+    utmMedium?: string
+    utmCampaign?: string
+    /** Scoring signals from contact data (thank-you page) */
+    scoringSignals?: ScoringSignalsInput
+    /** Detected procedures from contact data */
+    detectedProcedures?: string[]
+    /** Contact submission ID for foreign key link (thank-you page) */
+    contactSubmissionId?: string
+}
+
+/**
+ * Create an anonymous chat session (without pre-chat form)
+ *
+ * Anonymous sessions don't require name/phone upfront.
+ * They can be upgraded later when the user provides contact info.
+ *
+ * If contactSubmissionId is provided (thank-you page), the session
+ * is linked to the contact submission via foreign key for full
+ * contact data access in AI personalization.
+ */
+export async function createAnonymousChatSession(
+    data: CreateAnonymousSessionInput
+): Promise<ChatSession> {
+    const [session] = await db
+        .insert(chatSession)
+        .values({
+            isAnonymous: true,
+            pageUrl: data.pageUrl,
+            referrer: data.referrer,
+            ipAddress: data.ipAddress,
+            userAgent: data.userAgent,
+            utmSource: data.utmSource,
+            utmMedium: data.utmMedium,
+            utmCampaign: data.utmCampaign,
+            // Store scoring signals and detected procedures
+            scoringSignals: data.scoringSignals,
+            detectedProcedures: data.detectedProcedures,
+            // Store foreign key reference to contact submission
+            contactSubmissionId: data.contactSubmissionId,
+        })
+        .returning()
+
+    return session!
+}
+
+/**
+ * Input for upgrading an anonymous session
+ */
+export type UpgradeSessionInput = {
+    fullName: string
+    phone: string
+    email?: string | null
+}
+
+/**
+ * Upgrade an anonymous session with contact information
+ *
+ * Converts an anonymous session to a lead by adding contact info.
+ */
+export async function upgradeChatSession(
+    sessionId: string,
+    data: UpgradeSessionInput
+): Promise<ChatSession | null> {
+    const [updated] = await db
+        .update(chatSession)
+        .set({
+            fullName: data.fullName,
+            phone: data.phone,
+            email: data.email,
+            isAnonymous: false,
+        })
+        .where(
+            and(
+                eq(chatSession.id, sessionId),
+                eq(chatSession.isAnonymous, true)
+            )
+        )
+        .returning()
+
+    return updated ?? null
+}

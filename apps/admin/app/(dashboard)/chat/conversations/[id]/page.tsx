@@ -327,7 +327,7 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                                                 <div className='flex items-center gap-2 text-xs text-stone-500'>
                                                     <span className='font-medium'>
                                                         {message.role === 'user'
-                                                            ? session.fullName.split(
+                                                            ? session.fullName?.split(
                                                                   ' '
                                                               )[0]
                                                             : 'Assistant'}
@@ -394,7 +394,7 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                                         href={`tel:${session.phone}`}
                                         className='hover:underline'
                                     >
-                                        {formatPhoneNumber(session.phone)}
+                                        {formatPhoneNumber(session.phone ?? '')}
                                     </a>
                                 </div>
 
