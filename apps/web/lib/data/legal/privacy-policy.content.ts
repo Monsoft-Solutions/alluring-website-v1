@@ -14,7 +14,7 @@ export const privacyPolicyContent = `
 
 ## 1. Introduction
 
-This Privacy Policy explains how Alluring Plastic Surgery, LLC ("we," "us," or "our") collects, uses, discloses, and protects your personal information when you visit and interact with our website at www.alluringplasticsurgery.com.
+This Privacy Policy explains how Alluring Plastic Surgery ("we," "us," or "our") collects, uses, discloses, and protects your personal information when you visit and interact with our website at www.alluringplasticsurgery.com.
 
 We are committed to protecting your privacy and being transparent about our data practices. As a medical practice, we understand the sensitivity of personal and health-related information and take extra care to safeguard it.
 
@@ -352,7 +352,7 @@ To exercise any of your privacy rights, please contact us at:
 
 **Email:** info@alluringplasticsurgery.com
 **Phone:** +1 (786) 305-8649
-**Mail:** Alluring Plastic Surgery, LLC
+**Mail:** Alluring Plastic Surgery
 8435 SW 24th St, Miami, FL 33155
 
 **Subject Line:** "Privacy Rights Request"
@@ -443,7 +443,7 @@ To exercise these rights, contact us using the information in Section 9 or call 
 
 If you are located in the European Economic Area (EEA), United Kingdom, or Switzerland, you have rights under the General Data Protection Regulation (GDPR):
 
-- **Data Controller:** Alluring Plastic Surgery, LLC
+- **Data Controller:** Alluring Plastic Surgery
 - **Legal Basis:** Consent (analytics, marketing), legitimate interest (website security, business operations), contract performance (responding to inquiries)
 - **Data Protection Contact:** info@alluringplasticsurgery.com
 
@@ -496,7 +496,7 @@ Your continued use of the website after changes constitutes acceptance of the up
 
 If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
 
-**Alluring Plastic Surgery, LLC**
+**Alluring Plastic Surgery**
 8435 SW 24th St
 Miami, FL 33155
 
@@ -513,7 +513,7 @@ For privacy-related requests, please use the subject line "Privacy Inquiry" or "
 
 ---
 
-**© 2025 Alluring Plastic Surgery, LLC. All rights reserved.**
+**© 2025 Alluring Plastic Surgery. All rights reserved.**
 
 **Last Updated:** December 14, 2025
 `

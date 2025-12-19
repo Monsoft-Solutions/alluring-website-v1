@@ -84,7 +84,7 @@ Your use of this website, including:
 - Viewing before and after photos
 - Reading testimonials or reviews
 
-Does NOT establish a doctor-patient relationship with Alluring Plastic Surgery, LLC or any of our surgeons.
+Does NOT establish a doctor-patient relationship with Alluring Plastic Surgery or any of our surgeons.
 
 ### 4.2 When a Relationship Begins
 
@@ -241,9 +241,9 @@ Do not use contact forms to:
 
 ### 9.1 Content Ownership
 
-All blog content, articles, images, graphics, logos, before and after photos, videos, and other materials on this website are owned by or licensed to Alluring Plastic Surgery, LLC and are protected by copyright, trademark, and other intellectual property laws.
+All blog content, articles, images, graphics, logos, before and after photos, videos, and other materials on this website are owned by or licensed to Alluring Plastic Surgery and are protected by copyright, trademark, and other intellectual property laws.
 
-**Copyright:** © 2025 Alluring Plastic Surgery, LLC
+**Copyright:** © 2025 Alluring Plastic Surgery
 
 ### 9.2 Permitted Use of Content
 
@@ -309,7 +309,7 @@ Your use of this website is also governed by our [Privacy Policy](/privacy), whi
 
 ### 11.2 HIPAA Compliance for Patients
 
-Once you become a patient of Alluring Plastic Surgery, LLC:
+Once you become a patient of Alluring Plastic Surgery:
 - Your protected health information (PHI) is subject to HIPAA privacy regulations
 - You will receive a separate Notice of Privacy Practices explaining your HIPAA rights
 - We maintain strict confidentiality of your medical records and treatment information
@@ -374,7 +374,7 @@ To the fullest extent permitted by law:
 
 ### 13.1 No Liability for Damages
 
-Alluring Plastic Surgery, LLC shall not be liable for any:
+Alluring Plastic Surgery shall not be liable for any:
 - Indirect, incidental, special, consequential, or punitive damages
 - Loss of profits, revenue, data, or business opportunities
 - Damages resulting from use or inability to use the website
@@ -397,7 +397,7 @@ This limitation of liability applies to website use only. Medical malpractice cl
 
 ## 14. Indemnification
 
-You agree to indemnify, defend, and hold harmless Alluring Plastic Surgery, LLC, its officers, directors, employees, surgeons, contractors, and agents from any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising from:
+You agree to indemnify, defend, and hold harmless Alluring Plastic Surgery, its officers, directors, employees, surgeons, contractors, and agents from any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising from:
 - Your use of the website
 - Your violation of these Terms
 - Your violation of any rights of another person or entity
@@ -410,7 +410,7 @@ You agree to indemnify, defend, and hold harmless Alluring Plastic Surgery, LLC,
 If you believe content on our website infringes your copyright, please send a DMCA notice to:
 
 **DMCA Agent:**
-Alluring Plastic Surgery, LLC
+Alluring Plastic Surgery
 Legal Department
 **Email:** info@alluringplasticsurgery.com
 **Address:** 8435 SW 24th St, Miami, FL 33155
@@ -493,7 +493,7 @@ If any provision of these Terms is found to be invalid, illegal, or unenforceabl
 
 ## 20. Entire Agreement
 
-These Terms, together with our Privacy Policy and Cookie Policy, constitute the entire agreement between you and Alluring Plastic Surgery, LLC regarding use of the website.
+These Terms, together with our Privacy Policy and Cookie Policy, constitute the entire agreement between you and Alluring Plastic Surgery regarding use of the website.
 
 For medical services, separate informed consent documents and service agreements will govern the doctor-patient relationship.
 
@@ -509,7 +509,7 @@ You may not assign or transfer your rights or obligations under these Terms with
 
 For questions, concerns, or notices regarding these Terms of Service, please contact us:
 
-**Alluring Plastic Surgery, LLC**
+**Alluring Plastic Surgery**
 8435 SW 24th St
 Miami, FL 33155
 
@@ -519,7 +519,7 @@ Miami, FL 33155
 
 ---
 
-**© 2025 Alluring Plastic Surgery, LLC. All rights reserved.**
+**© 2025 Alluring Plastic Surgery. All rights reserved.**
 
 **Last Updated:** December 14, 2025
 `

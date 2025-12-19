@@ -155,6 +155,20 @@ export function DesktopNav() {
                     About
                     <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
+
+                {/* FAQ Link */}
+                <TrackedLink
+                    href='/faq'
+                    eventName='nav_click'
+                    eventParams={{
+                        nav_type: 'desktop',
+                        link_category: 'faq',
+                    }}
+                    className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                >
+                    FAQ
+                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                </TrackedLink>
             </nav>
 
             {/* Language Switcher - Desktop */}

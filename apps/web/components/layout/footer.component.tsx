@@ -224,6 +224,21 @@ export const Footer = () => {
                                     Blog & Education
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href='/faq'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'FAQ',
+                                            '/faq',
+                                            'patients'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    FAQ
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
@@ -293,6 +308,19 @@ export const Footer = () => {
                             className='cursor-pointer transition-colors hover:text-white'
                         >
                             Terms of Service
+                        </Link>
+                        <Link
+                            href='/cookies'
+                            onClick={() =>
+                                handleFooterLinkClick(
+                                    'Cookie Policy',
+                                    '/cookies',
+                                    'legal'
+                                )
+                            }
+                            className='cursor-pointer transition-colors hover:text-white'
+                        >
+                            Cookie Policy
                         </Link>
                         <Link
                             href='/sitemap'

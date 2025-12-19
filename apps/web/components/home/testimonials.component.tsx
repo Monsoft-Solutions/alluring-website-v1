@@ -23,13 +23,17 @@ export const Testimonials = () => {
                         </p>
                         <div className='flex items-center gap-4'>
                             <div className='flex -space-x-2'>
-                                {[1, 2, 3].map((i) => (
+                                {[
+                                    'sarah-johnson',
+                                    'emily-rodriguez',
+                                    'lisa-thompson',
+                                ].map((name) => (
                                     <div
-                                        key={i}
+                                        key={name}
                                         className='relative h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-stone-200'
                                     >
                                         <Image
-                                            src={`https://i.pravatar.cc/100?img=${i + 10}`}
+                                            src={`/images/testimonials/${name}.jpg`}
                                             alt='Satisfied patient'
                                             fill
                                             className='object-cover'

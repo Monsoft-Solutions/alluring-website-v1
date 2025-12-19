@@ -24,6 +24,7 @@ const STATIC_PAGES: Array<{
     { path: '/', changeFrequency: 'daily', priority: 1.0 },
     { path: '/about', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/contact-us', changeFrequency: 'monthly', priority: 0.7 },
+    { path: '/faq', changeFrequency: 'monthly', priority: 0.7 },
     {
         path: '/plastic-surgery-financing-miami',
         changeFrequency: 'monthly',
