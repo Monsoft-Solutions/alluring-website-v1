@@ -23,7 +23,10 @@ import {
     NameField,
     PhoneField,
 } from '@/components/shared/forms/form-fields.component'
-import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import {
+    FORM_SUBMITTED_KEY,
+    useContactFormSubmission,
+} from '@/hooks/useContactFormSubmission.hook'
 import {
     CONTACT_SOURCES,
     type LeadCaptureInput,
@@ -63,7 +66,17 @@ const STORAGE_KEY_PREFIX = 'promo_modal_seen_'
  */
 export function PromoModal({ promotion }: PromoModalProps) {
     const [isVisible, setIsVisible] = useState(false)
-    const [hasTriggered, setHasTriggered] = useState(false)
+
+    const storageKey = `${STORAGE_KEY_PREFIX}${promotion.id}`
+
+    // Initialize hasTriggered by checking sessionStorage
+    // This prevents showing modal if user has seen it or submitted any form
+    const [hasTriggered, setHasTriggered] = useState(() => {
+        if (typeof window === 'undefined') return false
+        const hasSeen = sessionStorage.getItem(storageKey)
+        const hasSubmittedForm = sessionStorage.getItem(FORM_SUBMITTED_KEY)
+        return Boolean(hasSeen || hasSubmittedForm)
+    })
 
     const form = useForm<LeadCaptureInput>({
         resolver: zodResolver(leadCaptureSchema),
@@ -72,8 +85,6 @@ export function PromoModal({ promotion }: PromoModalProps) {
             phone: '',
         },
     })
-
-    const storageKey = `${STORAGE_KEY_PREFIX}${promotion.id}`
 
     const handleClose = () => {
         setIsVisible(false)
@@ -93,14 +104,8 @@ export function PromoModal({ promotion }: PromoModalProps) {
         })
 
     useEffect(() => {
-        // Check if already seen in this session
-        if (typeof window !== 'undefined') {
-            const hasSeen = sessionStorage.getItem(storageKey)
-            if (hasSeen) {
-                setHasTriggered(true)
-                return
-            }
-        }
+        // Don't set timer if already triggered
+        if (hasTriggered) return
 
         // Set timer based on promotion's modalDelaySeconds
         const delayMs = (promotion.modalDelaySeconds ?? 60) * 1000
@@ -113,7 +118,7 @@ export function PromoModal({ promotion }: PromoModalProps) {
         }, delayMs)
 
         return () => clearTimeout(timer)
-    }, [hasTriggered, promotion.modalDelaySeconds, storageKey])
+    }, [hasTriggered, promotion.modalDelaySeconds])
 
     const onSubmit = async (data: LeadCaptureInput) => {
         await submit(data)

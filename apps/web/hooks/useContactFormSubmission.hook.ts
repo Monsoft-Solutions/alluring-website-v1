@@ -19,6 +19,12 @@ import {
 } from '@/lib/types/forms/contact-form.type'
 
 /**
+ * SessionStorage key to track if user has submitted any form
+ * Used to prevent showing additional lead capture popups/modals
+ */
+export const FORM_SUBMITTED_KEY = 'alluring_form_submitted'
+
+/**
  * Submission state for the form
  */
 export type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error'
@@ -189,6 +195,12 @@ export function useContactFormSubmission(
                         status: 'success',
                         message: result.message,
                     })
+
+                    // Mark that user has submitted a form this session
+                    // This prevents additional lead capture popups/modals from showing
+                    if (typeof window !== 'undefined') {
+                        sessionStorage.setItem(FORM_SUBMITTED_KEY, 'true')
+                    }
 
                     // Track successful submission
                     if (enableAnalytics) {

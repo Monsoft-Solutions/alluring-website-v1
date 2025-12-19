@@ -25,7 +25,10 @@ import {
     NameField,
     PhoneField,
 } from '@/components/shared/forms/form-fields.component'
-import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import {
+    FORM_SUBMITTED_KEY,
+    useContactFormSubmission,
+} from '@/hooks/useContactFormSubmission.hook'
 import {
     CONTACT_SOURCES,
     type LeadCaptureInput,
@@ -35,7 +38,16 @@ import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const ExitIntentPopup = () => {
     const [isVisible, setIsVisible] = useState(false)
-    const [hasTriggered, setHasTriggered] = useState(false)
+
+    // Initialize hasTriggered by checking sessionStorage
+    // This prevents showing popup if user has seen it or submitted any form
+    const [hasTriggered, setHasTriggered] = useState(() => {
+        if (typeof window === 'undefined') return false
+        const hasSeen = sessionStorage.getItem('alluring_popup_seen')
+        const hasSubmittedForm = sessionStorage.getItem(FORM_SUBMITTED_KEY)
+        return Boolean(hasSeen || hasSubmittedForm)
+    })
+
     const { track } = useAnalyticsEvent()
 
     const form = useForm<LeadCaptureInput>({
@@ -67,14 +79,8 @@ export const ExitIntentPopup = () => {
         })
 
     useEffect(() => {
-        // Check if previously dismissed in this session
-        if (typeof window !== 'undefined') {
-            const hasSeen = sessionStorage.getItem('alluring_popup_seen')
-            if (hasSeen) {
-                setHasTriggered(true)
-                return
-            }
-        }
+        // Don't attach listeners if already triggered
+        if (hasTriggered) return
 
         const handleExitIntent = (e: MouseEvent) => {
             // Desktop: Trigger when mouse leaves top of viewport
