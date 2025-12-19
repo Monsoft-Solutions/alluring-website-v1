@@ -207,6 +207,60 @@
         background: #d4af37;
         color: #ffffff;
     }
+
+    /* Hide Google Translate Default UI */
+    /* Keep only the functionality, hide all Google branding and default widget */
+
+    /* Hide the default Google Translate widget */
+    #google_translate_element {
+        display: none !important;
+    }
+
+    /* Hide Google Translate banner frame */
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+
+    /* Hide Google Translate toolbar */
+    .goog-te-ftab {
+        display: none !important;
+    }
+
+    /* Hide the "Translated" message at top of page */
+    .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+    }
+
+    /* Adjust body positioning when Google Translate is active */
+    body {
+        top: 0 !important;
+        position: static !important;
+    }
+
+    /* Hide Google Translate select dropdown (we use custom UI) */
+    .goog-te-combo {
+        display: none !important;
+    }
+
+    /* Hide Google Translate gadget */
+    .goog-te-gadget {
+        display: none !important;
+    }
+
+    /* Hide Google balloon for translation feedback */
+    .goog-te-balloon-frame {
+        display: none !important;
+    }
+
+    /* Remove padding added by Google Translate */
+    body > .skiptranslate {
+        display: none !important;
+    }
+
+    /* Fix iframe positioning issues */
+    iframe.goog-te-banner-frame {
+        display: none !important;
+    }
 }
 
 @layer utilities {
@@ -407,60 +461,5 @@
         -webkit-backdrop-filter: blur(12px);
         background: hsl(var(--background) / 0.1);
         border: 1px solid hsl(var(--border) / 0.2);
-    }
-}
-
-/* Hide Google Translate Default UI */
-/* Keep only the functionality, hide all Google branding and default widget */
-@layer base {
-    /* Hide the default Google Translate widget */
-    #google_translate_element {
-        display: none !important;
-    }
-
-    /* Hide Google Translate banner frame */
-    .goog-te-banner-frame {
-        display: none !important;
-    }
-
-    /* Hide Google Translate toolbar */
-    .goog-te-ftab {
-        display: none !important;
-    }
-
-    /* Hide the "Translated" message at top of page */
-    .goog-te-banner-frame.skiptranslate {
-        display: none !important;
-    }
-
-    /* Adjust body positioning when Google Translate is active */
-    body {
-        top: 0 !important;
-        position: static !important;
-    }
-
-    /* Hide Google Translate select dropdown (we use custom UI) */
-    .goog-te-combo {
-        display: none !important;
-    }
-
-    /* Hide Google Translate gadget */
-    .goog-te-gadget {
-        display: none !important;
-    }
-
-    /* Hide Google balloon for translation feedback */
-    .goog-te-balloon-frame {
-        display: none !important;
-    }
-
-    /* Remove padding added by Google Translate */
-    body > .skiptranslate {
-        display: none !important;
-    }
-
-    /* Fix iframe positioning issues */
-    iframe.goog-te-banner-frame {
-        display: none !important;
     }
 }
