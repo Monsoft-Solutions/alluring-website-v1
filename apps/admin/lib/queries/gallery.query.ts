@@ -583,7 +583,16 @@ export type GalleryStats = {
 
 export const getGalleryStats = cache(async (): Promise<GalleryStats> => {
     // Optimized: Single query instead of 8 concurrent queries
-    const [stats] = await db.execute(sql`
+    const result = await db.execute<{
+        total_media: number
+        total_images: number
+        total_videos: number
+        published_media: number
+        draft_media: number
+        featured_media: number
+        total_groups: number
+        total_before_after_pairs: number
+    }>(sql`
         SELECT
             COUNT(*)::int AS total_media,
             COUNT(*) FILTER (WHERE type = 'image')::int AS total_images,
@@ -596,15 +605,17 @@ export const getGalleryStats = cache(async (): Promise<GalleryStats> => {
         FROM gallery_media
     `)
 
+    const stats = result[0]
+
     return {
-        totalMedia: stats.total_media ?? 0,
-        totalImages: stats.total_images ?? 0,
-        totalVideos: stats.total_videos ?? 0,
-        totalGroups: stats.total_groups ?? 0,
-        totalBeforeAfterPairs: stats.total_before_after_pairs ?? 0,
-        publishedMedia: stats.published_media ?? 0,
-        draftMedia: stats.draft_media ?? 0,
-        featuredMedia: stats.featured_media ?? 0,
+        totalMedia: stats?.total_media ?? 0,
+        totalImages: stats?.total_images ?? 0,
+        totalVideos: stats?.total_videos ?? 0,
+        totalGroups: stats?.total_groups ?? 0,
+        totalBeforeAfterPairs: stats?.total_before_after_pairs ?? 0,
+        publishedMedia: stats?.published_media ?? 0,
+        draftMedia: stats?.draft_media ?? 0,
+        featuredMedia: stats?.featured_media ?? 0,
     }
 })
 
