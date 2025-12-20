@@ -12,10 +12,16 @@ import {
 import { Mail, Phone, Eye, Download } from 'lucide-react'
 import Link from 'next/link'
 
-import { getContacts, type ContactListItem } from '@/lib/queries/contacts.query'
+import { getContacts } from '@/lib/queries/contacts.query'
+import type { ContactListItem } from '@/lib/types/contacts.type'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
+
+export const metadata = {
+    title: 'Contact Submissions | Admin',
+    description: 'View and manage contact form submissions',
+}
 
 type SearchParams = Promise<{ page?: string }>
 

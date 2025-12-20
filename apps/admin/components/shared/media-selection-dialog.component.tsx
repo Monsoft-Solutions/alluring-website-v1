@@ -24,7 +24,7 @@ import type {
     GalleryMediaSortOrder,
     GalleryMediaStatusFilter,
     GalleryMediaTypeFilter,
-} from '@/lib/queries/gallery.query'
+} from '@/lib/types/gallery-media.type'
 
 type MediaSelectionDialogProps = {
     open: boolean

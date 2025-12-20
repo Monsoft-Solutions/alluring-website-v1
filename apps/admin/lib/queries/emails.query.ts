@@ -3,25 +3,12 @@ import { contactSubmission } from '@workspace/db/schema/contact'
 import { emailLog } from '@workspace/db/schema/emails'
 import { count, desc, eq, and, gte, lte, sql } from 'drizzle-orm'
 
-export type EmailLogListItem = {
-    id: string
-    to: string
-    from: string
-    subject: string
-    status: 'sent' | 'failed' | 'pending'
-    resendEmailId: string | null
-    error: string | null
-    sentAt: Date
-    contactSubmissionId: string | null
-    contactName: string | null
-    contactEmail: string | null
-}
-
-export type EmailFilters = {
-    status?: 'sent' | 'failed' | 'pending' | 'all'
-    startDate?: Date
-    endDate?: Date
-}
+import type {
+    EmailLogListItem,
+    EmailFilters,
+    EmailStats,
+    EmailLogById,
+} from '@/lib/types/emails.type'
 
 export async function getEmailLogs(
     page = 1,
@@ -80,36 +67,26 @@ export async function getEmailLogs(
     }
 }
 
-export type EmailStats = {
-    total: number
-    sent: number
-    failed: number
-    pending: number
-    successRate: number
-}
-
 export async function getEmailStats(): Promise<EmailStats> {
-    const [totalResult, sentResult, failedResult, pendingResult] =
-        await Promise.all([
-            db.select({ count: count() }).from(emailLog),
-            db
-                .select({ count: count() })
-                .from(emailLog)
-                .where(eq(emailLog.status, 'sent')),
-            db
-                .select({ count: count() })
-                .from(emailLog)
-                .where(eq(emailLog.status, 'failed')),
-            db
-                .select({ count: count() })
-                .from(emailLog)
-                .where(eq(emailLog.status, 'pending')),
-        ])
+    const result = await db.execute<{
+        total: number
+        sent: number
+        failed: number
+        pending: number
+    }>(sql`
+        SELECT
+            COUNT(*)::int AS total,
+            COUNT(*) FILTER (WHERE status = 'sent')::int AS sent,
+            COUNT(*) FILTER (WHERE status = 'failed')::int AS failed,
+            COUNT(*) FILTER (WHERE status = 'pending')::int AS pending
+        FROM email_log
+    `)
 
-    const total = totalResult[0]?.count ?? 0
-    const sent = sentResult[0]?.count ?? 0
-    const failed = failedResult[0]?.count ?? 0
-    const pending = pendingResult[0]?.count ?? 0
+    const stats = result[0]
+    const total = stats?.total ?? 0
+    const sent = stats?.sent ?? 0
+    const failed = stats?.failed ?? 0
+    const pending = stats?.pending ?? 0
 
     return {
         total,
@@ -118,11 +95,6 @@ export async function getEmailStats(): Promise<EmailStats> {
         pending,
         successRate: total > 0 ? Math.round((sent / total) * 100) : 0,
     }
-}
-
-export type EmailLogById = EmailLogListItem & {
-    contactPhone: string | null
-    contactMessage: string | null
 }
 
 export async function getEmailLogById(

@@ -23,6 +23,11 @@ import { getBugReports, getBetaFeedback } from '@/lib/queries/feedback.query'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
+export const metadata = {
+    title: 'Feedback | Admin',
+    description: 'View bug reports and beta feedback submissions',
+}
+
 export default async function FeedbackPage() {
     const [bugReportsData, betaFeedbackData] = await Promise.all([
         getBugReports(1, 20),

@@ -13,7 +13,7 @@ import { Checkbox } from '@workspace/ui/components/checkbox'
 import { MultiSelect } from '@workspace/ui/components/multi-select'
 
 import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
-import type { GalleryGroupForAI } from '@/lib/queries/gallery.query'
+import type { GalleryGroupForAI } from '@/lib/types/gallery-group.type'
 
 type NonBAMediaCardProps = {
     media: BulkAnalysisResult['nonBAMedia'][number]

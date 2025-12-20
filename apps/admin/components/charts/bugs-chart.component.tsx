@@ -2,7 +2,7 @@
 
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 
-import type { SeverityCount } from '@/lib/queries/stats.query'
+import type { SeverityCount } from '@/lib/types/severity-count.type'
 
 type BugsChartProps = {
     data: SeverityCount[]

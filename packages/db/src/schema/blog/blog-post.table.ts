@@ -48,39 +48,31 @@ export const blogPost = pgTable(
             .$onUpdate(() => new Date()),
     },
     (table) => [
-        {
-            // Foreign Keys
-            authorFk: foreignKey({
-                columns: [table.authorId],
-                foreignColumns: [author.id],
-                name: 'blog_post_author_id_fk',
-            }).onDelete('set null'),
-            featuredImageFk: foreignKey({
-                columns: [table.featuredImageId],
-                foreignColumns: [images.id],
-                name: 'blog_post_featured_image_id_fk',
-            }).onDelete('set null'),
+        // Foreign Keys
+        foreignKey({
+            columns: [table.authorId],
+            foreignColumns: [author.id],
+            name: 'blog_post_author_id_fk',
+        }).onDelete('set null'),
+        foreignKey({
+            columns: [table.featuredImageId],
+            foreignColumns: [images.id],
+            name: 'blog_post_featured_image_id_fk',
+        }).onDelete('set null'),
 
-            // Performance Indexes
-            statusIdx: index('blog_post_status_idx').on(table.status),
-            authorIdx: index('blog_post_author_id_idx').on(table.authorId),
-            createdAtIdx: index('blog_post_created_at_idx').on(table.createdAt),
-            publishedAtIdx: index('blog_post_published_at_idx').on(
-                table.publishedAt
-            ),
-            scheduledAtIdx: index('blog_post_scheduled_at_idx').on(
-                table.scheduledAt
-            ),
-            statusPublishedAtIdx: index('blog_post_status_published_at_idx').on(
-                table.status,
-                table.publishedAt
-            ),
-            isFeaturedIdx: index('blog_post_is_featured_idx').on(
-                table.isFeatured
-            ),
-            viewsIdx: index('blog_post_views_idx').on(table.views),
-            likesIdx: index('blog_post_likes_idx').on(table.likes),
-        },
+        // Performance Indexes
+        index('blog_post_status_idx').on(table.status),
+        index('blog_post_author_id_idx').on(table.authorId),
+        index('blog_post_created_at_idx').on(table.createdAt),
+        index('blog_post_published_at_idx').on(table.publishedAt),
+        index('blog_post_scheduled_at_idx').on(table.scheduledAt),
+        index('blog_post_status_published_at_idx').on(
+            table.status,
+            table.publishedAt
+        ),
+        index('blog_post_is_featured_idx').on(table.isFeatured),
+        index('blog_post_views_idx').on(table.views),
+        index('blog_post_likes_idx').on(table.likes),
     ]
 )
 

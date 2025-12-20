@@ -27,8 +27,8 @@ import { CurrentMediaGrid } from './current-media-grid.component'
 import type {
     GalleryGroupDetail,
     GalleryGroupListItem,
-    GalleryMediaListItem,
-} from '@/lib/queries/gallery.query'
+} from '@/lib/types/gallery-group.type'
+import type { GalleryMediaListItem } from '@/lib/types/gallery-media.type'
 
 type GroupEditClientProps = {
     group: GalleryGroupDetail

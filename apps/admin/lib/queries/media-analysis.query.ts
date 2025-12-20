@@ -17,64 +17,13 @@ import {
 import { desc, eq, and, inArray, count, type SQL } from 'drizzle-orm'
 import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
 
-// ============================================================================
-// Types
-// ============================================================================
-
-/**
- * Filter options for listing analyses
- */
-export type AnalysisListFilters = {
-    status?: 'pending' | 'analyzing' | 'completed' | 'applied' | 'failed'
-    source?: 'instagram' | 'gallery'
-    type?: 'bulk' | 'single'
-}
-
-/**
- * Pagination options
- */
-export type PaginationOptions = {
-    page?: number
-    pageSize?: number
-}
-
-/**
- * Analysis list item for the list page
- */
-export type AnalysisListItem = {
-    id: string
-    name: string
-    type: 'bulk' | 'single'
-    source: 'instagram' | 'gallery'
-    status: 'pending' | 'analyzing' | 'completed' | 'applied' | 'failed'
-    totalMedia: number
-    analyzedMedia: number
-    detectedPairs: number
-    unpairedMedia: number
-    nonBAMedia: number
-    startedAt: Date
-    completedAt: Date | null
-    appliedAt: Date | null
-}
-
-/**
- * Analysis detail for the result page
- */
-export type AnalysisDetail = MediaAnalysis & {
-    resultData: BulkAnalysisResult | null
-    status: 'pending' | 'analyzing' | 'completed' | 'applied' | 'failed'
-}
-
-/**
- * List result with pagination info
- */
-export type AnalysisListResult = {
-    analyses: AnalysisListItem[]
-    total: number
-    page: number
-    pageSize: number
-    totalPages: number
-}
+import type {
+    AnalysisListFilters,
+    PaginationOptions,
+    AnalysisListItem,
+    AnalysisDetail,
+    AnalysisListResult,
+} from '@/lib/types/media-analysis.type'
 
 // ============================================================================
 // Queries

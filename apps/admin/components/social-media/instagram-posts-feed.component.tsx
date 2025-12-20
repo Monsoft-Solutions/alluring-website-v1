@@ -13,12 +13,12 @@ import {
 } from '@workspace/ui/components/select'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 
-import {
-    type InstagramMediaTypeFilter,
-    type InstagramPostListItem,
-    type InstagramPostSortBy,
-    type InstagramPostSortDirection,
-} from '@/lib/queries/social-media.query'
+import type {
+    InstagramMediaTypeFilter,
+    InstagramPostListItem,
+    InstagramPostSortBy,
+    InstagramPostSortDirection,
+} from '@/lib/types/social-media.type'
 import {
     InstagramPostsGrid,
     type ProfileInfo,

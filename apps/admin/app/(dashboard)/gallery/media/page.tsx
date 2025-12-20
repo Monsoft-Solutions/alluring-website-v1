@@ -25,11 +25,13 @@ import Link from 'next/link'
 import {
     getGalleryMedia,
     getGalleryGroupsForSelect,
-    type GalleryMediaSortBy,
-    type GalleryMediaSortOrder,
-    type GalleryMediaStatusFilter,
-    type GalleryMediaTypeFilter,
 } from '@/lib/queries/gallery.query'
+import type {
+    GalleryMediaSortBy,
+    GalleryMediaSortOrder,
+    GalleryMediaStatusFilter,
+    GalleryMediaTypeFilter,
+} from '@/lib/types/gallery-media.type'
 import { MediaLibraryClient } from './media-library-client.component'
 import { GroupFilterSelect } from './group-filter-select.component'
 

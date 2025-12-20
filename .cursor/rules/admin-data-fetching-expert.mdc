@@ -1,0 +1,410 @@
+---
+description: Expert agent for admin app data fetching, API routes, TanStack Query hooks, and database query optimization. Use when building dashboard components, API endpoints, or optimizing data loading in the admin app.
+globs: apps/admin/*,apps/admin/**
+alwaysApply: false
+---
+
+# Admin Data Fetching Expert
+
+Apply when creating or modifying data fetching logic, API routes, query hooks, or dashboard components in the admin app.
+
+## Architecture Overview
+
+The admin app uses an API-first architecture:
+
+```
+Client Component → useQuery Hook → API Route → Query Function → Database
+```
+
+Each dashboard card/section fetches its own data independently, enabling parallel loading and granular refresh.
+
+## Core Principles
+
+- **API routes for all client data fetching** - Never call query functions directly from client components
+- **TanStack Query for client state** - All client-side data fetching uses `@tanstack/react-query`
+- **React `cache()` for server deduplication** - Wrap query functions with `cache()` from React
+- **Independent components** - Each card/section fetches its own data via dedicated hooks
+- **Type safety end-to-end** - Types flow from query → API → hook → component
+
+## API Route Patterns
+
+### Standard API Route Structure
+
+```typescript
+// apps/admin/app/api/admin/[domain]/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+
+import { getDataFunction } from '@/lib/queries/domain.query'
+import { requireAuth } from '@/lib/utils/auth.util'
+
+export const runtime = 'nodejs'
+
+const querySchema = z.object({
+    limit: z.coerce.number().int().min(1).max(100).default(10),
+    days: z.coerce.number().int().min(1).max(365).default(30),
+})
+
+export async function GET(request: NextRequest) {
+    try {
+        await requireAuth()
+
+        const searchParams = request.nextUrl.searchParams
+        const rawParams = Object.fromEntries(searchParams.entries())
+
+        const validationResult = querySchema.safeParse(rawParams)
+
+        if (!validationResult.success) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'Invalid query parameters',
+                    details: validationResult.error.format(),
+                },
+                { status: 400 }
+            )
+        }
+
+        const { limit, days } = validationResult.data
+        const data = await getDataFunction(days, limit)
+
+        return NextResponse.json(data)
+    } catch (error) {
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return NextResponse.json(
+                { success: false, error: 'Unauthorized' },
+                { status: 401 }
+            )
+        }
+
+        console.error('Error fetching data:', error)
+        return NextResponse.json(
+            { success: false, error: 'Failed to fetch data' },
+            { status: 500 }
+        )
+    }
+}
+```
+
+### Avoid
+
+- Exposing query functions directly to client components
+- Missing `requireAuth()` on protected routes
+- Returning raw database errors to clients
+
+## Query Function Patterns
+
+### Wrap with React cache()
+
+```typescript
+// apps/admin/lib/queries/domain.query.ts
+import { db } from '@workspace/db/client'
+import { count, desc, sql } from 'drizzle-orm'
+import { cache } from 'react'
+
+export const getDataByStatus = cache(async (): Promise<StatusCount[]> => {
+    const results = await db
+        .select({
+            status: table.status,
+            count: count(),
+        })
+        .from(table)
+        .groupBy(table.status)
+
+    return results
+})
+```
+
+### Date Handling in Raw SQL
+
+Always convert Date objects to ISO strings for raw SQL queries:
+
+```typescript
+// CORRECT: Convert to ISO string
+const sevenDaysAgo = new Date()
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+const sevenDaysAgoStr = sevenDaysAgo.toISOString()
+
+const result = await db.execute(sql`
+    SELECT COUNT(*) FROM contacts WHERE created_at >= ${sevenDaysAgoStr}
+`)
+
+// WRONG: Passing Date object directly causes TypeError
+const result = await db.execute(sql`
+    SELECT COUNT(*) FROM contacts WHERE created_at >= ${sevenDaysAgo}
+`)
+```
+
+### Optimized Single Query vs Multiple
+
+Prefer single queries with subqueries for dashboard stats:
+
+```typescript
+// GOOD: Single round-trip to database
+const result = await db.execute<StatsRow>(sql`
+    SELECT
+        (SELECT COUNT(*)::int FROM blog_post) AS total_posts,
+        (SELECT COUNT(*)::int FROM contacts) AS total_contacts,
+        (SELECT COUNT(*)::int FROM emails) AS total_emails
+`)
+
+// AVOID: Multiple round-trips
+const [posts, contacts, emails] = await Promise.all([
+    db.select({ count: count() }).from(blogPost),
+    db.select({ count: count() }).from(contacts),
+    db.select({ count: count() }).from(emails),
+])
+```
+
+## TanStack Query Hook Patterns
+
+### Hook Structure
+
+```typescript
+// apps/admin/hooks/use-domain.hook.ts
+import { useQuery } from '@tanstack/react-query'
+
+import type { DomainData } from '@/lib/queries/domain.query'
+import { buildUrl, fetchApi } from '@/lib/utils/api-client.util'
+
+// Centralized query keys for cache invalidation
+export const domainKeys = {
+    all: ['admin', 'domain'] as const,
+    list: (params: { limit: number }) =>
+        [...domainKeys.all, 'list', params] as const,
+    detail: (id: string) => [...domainKeys.all, 'detail', id] as const,
+} as const
+
+export function useDomainList(limit = 10) {
+    return useQuery({
+        queryKey: domainKeys.list({ limit }),
+        queryFn: () =>
+            fetchApi<DomainData[]>(buildUrl('/api/admin/domain', { limit })),
+        staleTime: 30_000, // 30 seconds for frequently changing data
+    })
+}
+
+export function useDomainChart(days = 30) {
+    return useQuery({
+        queryKey: ['admin', 'domain', 'chart', days],
+        queryFn: () =>
+            fetchApi<ChartData[]>(
+                buildUrl('/api/admin/domain/chart', { days })
+            ),
+        staleTime: 60_000, // 1 minute for chart data
+    })
+}
+```
+
+### staleTime Guidelines
+
+| Data Type       | staleTime | Rationale                 |
+| --------------- | --------- | ------------------------- |
+| Stats/counts    | 30s       | Changes with user actions |
+| Chart data      | 60s       | Aggregated, less volatile |
+| Config/settings | 5min      | Rarely changes            |
+| User lists      | 30s       | May change frequently     |
+
+## Card Component Patterns
+
+### Independent Data-Fetching Card
+
+```typescript
+// apps/admin/components/dashboard/domain-chart-card.component.tsx
+'use client'
+
+import dynamicImport from 'next/dynamic'
+import { AlertCircle, RefreshCw, TrendingUp } from 'lucide-react'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@workspace/ui/components/card'
+import { Skeleton } from '@workspace/ui/components/skeleton'
+import { Button } from '@workspace/ui/components/button'
+
+import { useDomainChart } from '@/hooks/use-domain.hook'
+
+// Lazy load chart for better performance
+const DomainChart = dynamicImport(
+    () => import('@/components/charts/domain-chart.component').then(
+        (mod) => mod.DomainChart
+    ),
+    { loading: () => <Skeleton className='h-[200px] w-full' /> }
+)
+
+export function DomainChartCard() {
+    const { data, isLoading, error, refetch } = useDomainChart(30)
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className='flex items-center gap-2 text-lg'>
+                    <TrendingUp className='h-5 w-5' />
+                    Domain Trends
+                </CardTitle>
+                <CardDescription>Last 30 days</CardDescription>
+            </CardHeader>
+            <CardContent>
+                {isLoading ? (
+                    <Skeleton className='h-[200px] w-full' />
+                ) : error ? (
+                    <div className='flex h-[200px] flex-col items-center justify-center gap-3'>
+                        <AlertCircle className='h-5 w-5 text-red-500' />
+                        <p className='text-muted-foreground text-sm'>
+                            Failed to load chart
+                        </p>
+                        <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => refetch()}
+                        >
+                            <RefreshCw className='mr-2 h-4 w-4' />
+                            Retry
+                        </Button>
+                    </div>
+                ) : data && data.length > 0 ? (
+                    <DomainChart data={data} />
+                ) : (
+                    <div className='flex h-[200px] items-center justify-center'>
+                        <p className='text-muted-foreground text-sm'>
+                            No data yet
+                        </p>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+    )
+}
+```
+
+### Page Composition
+
+```typescript
+// apps/admin/app/(dashboard)/domain/page.tsx
+import { DomainStatsGrid } from '@/components/domain/stats-grid.component'
+import { DomainChartCard } from '@/components/domain/chart-card.component'
+import { RecentActivityCard } from '@/components/domain/recent-activity-card.component'
+
+export const metadata = {
+    title: 'Domain | Admin',
+    description: 'Domain dashboard',
+}
+
+// Simple layout - no server data fetching
+// Each component fetches its own data
+export default function DomainPage() {
+    return (
+        <div className='space-y-8'>
+            <DomainStatsGrid />
+            <div className='grid gap-6 lg:grid-cols-2'>
+                <DomainChartCard />
+                <RecentActivityCard />
+            </div>
+        </div>
+    )
+}
+```
+
+## API Client Utility
+
+Use the typed fetch wrapper:
+
+```typescript
+import { buildUrl, fetchApi } from '@/lib/utils/api-client.util'
+
+// Simple GET
+const stats = await fetchApi<DashboardStats>('/api/admin/stats')
+
+// GET with params
+const data = await fetchApi<ChartData[]>(
+    buildUrl('/api/admin/analytics/pageviews', { days: 30, limit: 10 })
+)
+```
+
+## File Organization
+
+```
+apps/admin/
+├── app/api/admin/
+│   ├── stats/route.ts           # Dashboard stats
+│   ├── domain/
+│   │   ├── route.ts             # List endpoint
+│   │   └── chart/route.ts       # Chart data
+│   └── analytics/
+│       ├── summary/route.ts
+│       └── pageviews/route.ts
+├── components/
+│   ├── dashboard/               # Dashboard cards
+│   │   ├── stats-grid.component.tsx
+│   │   └── chart-card.component.tsx
+│   └── domain/                  # Domain-specific cards
+├── hooks/
+│   ├── use-dashboard.hook.ts    # Dashboard hooks
+│   └── use-domain.hook.ts       # Domain hooks
+└── lib/
+    ├── queries/                 # Database query functions
+    │   ├── stats.query.ts
+    │   └── domain.query.ts
+    └── utils/
+        └── api-client.util.ts   # Typed fetch wrapper
+```
+
+## Common Mistakes
+
+### Date Serialization in Raw SQL
+
+```typescript
+// WRONG: TypeError - Date is not string
+const result = await db.execute(sql`
+    WHERE created_at >= ${new Date()}
+`)
+
+// CORRECT: Convert to ISO string
+const dateStr = new Date().toISOString()
+const result = await db.execute(sql`
+    WHERE created_at >= ${dateStr}
+`)
+```
+
+### Missing Query Keys
+
+```typescript
+// WRONG: Static key doesn't reflect params
+useQuery({
+    queryKey: ['data'],
+    queryFn: () => fetchData(limit),
+})
+
+// CORRECT: Include params in key
+useQuery({
+    queryKey: ['data', limit],
+    queryFn: () => fetchData(limit),
+})
+```
+
+### Server Components Fetching Client Data
+
+```typescript
+// WRONG: Using useQuery in server component
+export default async function Page() {
+    const { data } = useDashboardStats() // Error!
+}
+
+// CORRECT: Client component with 'use client'
+;('use client')
+export function StatsGrid() {
+    const { data } = useDashboardStats()
+}
+```
+
+## References
+
+@apps/admin/hooks/use-dashboard.hook.ts
+@apps/admin/hooks/use-analytics.hook.ts
+@apps/admin/lib/utils/api-client.util.ts
+@apps/admin/app/api/admin/stats/route.ts
+@apps/admin/components/dashboard/stats-grid.component.tsx
+@apps/admin/components/providers/query-provider.component.tsx

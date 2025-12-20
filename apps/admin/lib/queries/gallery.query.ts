@@ -9,46 +9,33 @@ import {
 import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import { and, asc, count, desc, eq, ilike, notInArray, sql } from 'drizzle-orm'
 
+import type {
+    GalleryMediaListItem,
+    GalleryMediaSortBy,
+    GalleryMediaSortOrder,
+    GalleryMediaStatusFilter,
+    GalleryMediaTypeFilter,
+    GetGalleryMediaOptions,
+    GalleryMediaDetail,
+    GalleryMediaOption,
+    RecentMediaItem,
+} from '@/lib/types/gallery-media.type'
+import type {
+    GalleryGroupListItem,
+    GalleryGroupDetail,
+    GalleryGroupOption,
+    GalleryGroupWithSlug,
+    GalleryGroupForAI,
+} from '@/lib/types/gallery-group.type'
+import type {
+    BeforeAfterPairListItem,
+    BeforeAfterPairDetail,
+} from '@/lib/types/before-after.type'
+import type { GalleryStats } from '@/lib/types/gallery-stats.type'
+
 // ============================================================================
 // Gallery Media Queries
 // ============================================================================
-
-export type GalleryMediaListItem = {
-    id: string
-    type: 'image' | 'video'
-    url: string
-    thumbnailUrl: string | null
-    title: string
-    slug: string
-    status: 'draft' | 'published' | 'archived'
-    isFeatured: boolean
-    isBeforeAfter: boolean
-    displayOrder: number
-    createdAt: Date
-    publishedAt: Date | null
-}
-
-export type GalleryMediaSortBy = 'createdAt' | 'title' | 'displayOrder'
-export type GalleryMediaSortOrder = 'asc' | 'desc'
-export type GalleryMediaStatusFilter =
-    | 'all'
-    | 'draft'
-    | 'published'
-    | 'archived'
-export type GalleryMediaTypeFilter = 'all' | 'image' | 'video'
-
-export type GetGalleryMediaOptions = {
-    page?: number
-    pageSize?: number
-    sortBy?: GalleryMediaSortBy | 'qualityScore'
-    sortOrder?: GalleryMediaSortOrder
-    status?: GalleryMediaStatusFilter
-    type?: GalleryMediaTypeFilter
-    groupId?: string
-    hasGroup?: boolean | null
-    excludeMediaIds?: string[]
-    search?: string
-}
 
 export async function getGalleryMedia(
     options: GetGalleryMediaOptions = {}
@@ -193,36 +180,6 @@ export async function getGalleryMedia(
     }
 }
 
-export type GalleryMediaDetail = {
-    id: string
-    type: 'image' | 'video'
-    url: string
-    thumbnailUrl: string | null
-    title: string
-    description: string | null
-    alt: string | null
-    seoTitle: string | null
-    seoDescription: string | null
-    slug: string
-    width: number | null
-    height: number | null
-    duration: number | null
-    fileSize: number | null
-    mimeType: string | null
-    originalFilename: string | null
-    blurDataUrl: string | null
-    isFeatured: boolean
-    isBeforeAfter: boolean
-    beforeAfterId: string | null
-    displayOrder: number
-    status: 'draft' | 'published' | 'archived'
-    createdAt: Date
-    updatedAt: Date
-    publishedAt: Date | null
-    aiAnalysis: GalleryMediaAIAnalysis | null
-    groupIds: string[]
-}
-
 export async function getGalleryMediaById(
     id: string
 ): Promise<GalleryMediaDetail | null> {
@@ -242,13 +199,6 @@ export async function getGalleryMediaById(
         ...mediaResult[0],
         groupIds: groupsResult.map((g) => g.groupId),
     }
-}
-
-export type GalleryMediaOption = {
-    id: string
-    title: string
-    url: string
-    type: 'image' | 'video'
 }
 
 export async function getGalleryMediaForSelect(): Promise<
@@ -312,17 +262,12 @@ export async function getMediaByGroupId(
 }
 
 /**
- * @deprecated Use GetGalleryMediaOptions instead - both functions are now unified
- */
-export type GetGalleryMediaForSelectionOptions = GetGalleryMediaOptions
-
-/**
  * @deprecated Use getGalleryMedia() instead - now supports all filtering options
  * Get gallery media for selection dialog with advanced filtering
  * Supports filtering by group status, excluding specific media, and searching
  */
 export async function getGalleryMediaForSelection(
-    options: GetGalleryMediaForSelectionOptions
+    options: GetGalleryMediaOptions
 ): Promise<{ media: GalleryMediaListItem[]; total: number }> {
     return getGalleryMedia(options)
 }
@@ -330,20 +275,6 @@ export async function getGalleryMediaForSelection(
 // ============================================================================
 // Gallery Group Queries
 // ============================================================================
-
-export type GalleryGroupListItem = {
-    id: string
-    name: string
-    slug: string
-    description: string | null
-    procedureSlug: string | null
-    coverImageId: string | null
-    coverImageUrl: string | null
-    displayOrder: number
-    isVisible: boolean
-    mediaCount: number
-    createdAt: Date
-}
 
 export const getGalleryGroups = cache(
     async (): Promise<GalleryGroupListItem[]> => {
@@ -376,19 +307,6 @@ export const getGalleryGroups = cache(
     }
 )
 
-export type GalleryGroupDetail = {
-    id: string
-    name: string
-    slug: string
-    description: string | null
-    procedureSlug: string | null
-    coverImageId: string | null
-    displayOrder: number
-    isVisible: boolean
-    createdAt: Date
-    updatedAt: Date
-}
-
 export async function getGalleryGroupById(
     id: string
 ): Promise<GalleryGroupDetail | null> {
@@ -399,11 +317,6 @@ export async function getGalleryGroupById(
         .limit(1)
 
     return result[0] ?? null
-}
-
-export type GalleryGroupOption = {
-    id: string
-    name: string
 }
 
 export async function getGalleryGroupsForSelect(): Promise<
@@ -417,15 +330,6 @@ export async function getGalleryGroupsForSelect(): Promise<
         .from(galleryGroup)
         .where(eq(galleryGroup.isVisible, true))
         .orderBy(asc(galleryGroup.displayOrder))
-}
-
-/**
- * Gallery group data with slug for media form
- */
-export type GalleryGroupWithSlug = {
-    id: string
-    name: string
-    slug: string
 }
 
 /**
@@ -443,16 +347,6 @@ export async function getGalleryGroupsWithSlug(): Promise<
         .from(galleryGroup)
         .where(eq(galleryGroup.isVisible, true))
         .orderBy(asc(galleryGroup.displayOrder))
-}
-
-/**
- * Gallery group data for AI suggestion
- */
-export type GalleryGroupForAI = {
-    id: string
-    name: string
-    slug: string
-    description: string | null
 }
 
 /**
@@ -474,23 +368,6 @@ export async function getGalleryGroupsForAI(): Promise<GalleryGroupForAI[]> {
 // ============================================================================
 // Before/After Pair Queries
 // ============================================================================
-
-export type BeforeAfterPairListItem = {
-    id: string
-    beforeMediaId: string
-    beforeMediaUrl: string
-    beforeMediaTitle: string
-    afterMediaId: string
-    afterMediaUrl: string
-    afterMediaTitle: string
-    procedureType: string | null
-    procedureSlug: string | null
-    patientInfo: string | null
-    timeframe: string | null
-    isFeatured: boolean
-    displayOrder: number
-    createdAt: Date
-}
 
 export async function getBeforeAfterPairs(): Promise<
     BeforeAfterPairListItem[]
@@ -541,19 +418,6 @@ export async function getBeforeAfterPairs(): Promise<
     return pairs
 }
 
-export type BeforeAfterPairDetail = {
-    id: string
-    beforeMediaId: string
-    afterMediaId: string
-    procedureType: string | null
-    patientInfo: string | null
-    timeframe: string | null
-    isFeatured: boolean
-    displayOrder: number
-    createdAt: Date
-    updatedAt: Date
-}
-
 export async function getBeforeAfterPairById(
     id: string
 ): Promise<BeforeAfterPairDetail | null> {
@@ -569,17 +433,6 @@ export async function getBeforeAfterPairById(
 // ============================================================================
 // Gallery Statistics Queries
 // ============================================================================
-
-export type GalleryStats = {
-    totalMedia: number
-    totalImages: number
-    totalVideos: number
-    totalGroups: number
-    totalBeforeAfterPairs: number
-    publishedMedia: number
-    draftMedia: number
-    featuredMedia: number
-}
 
 export const getGalleryStats = cache(async (): Promise<GalleryStats> => {
     // Optimized: Single query instead of 8 concurrent queries
@@ -618,14 +471,6 @@ export const getGalleryStats = cache(async (): Promise<GalleryStats> => {
         featuredMedia: stats?.featured_media ?? 0,
     }
 })
-
-export type RecentMediaItem = {
-    id: string
-    type: 'image' | 'video'
-    url: string
-    title: string
-    createdAt: Date
-}
 
 export async function getRecentMedia(limit = 8): Promise<RecentMediaItem[]> {
     return db
