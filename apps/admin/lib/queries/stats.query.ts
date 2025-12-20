@@ -47,6 +47,8 @@ export const getDashboardStats = cache(async (): Promise<DashboardStats> => {
     // Calculate date for "recent" contacts (last 7 days)
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+    // Convert to ISO string for SQL compatibility
+    const sevenDaysAgoStr = sevenDaysAgo.toISOString()
 
     // Optimized: Single query instead of 10 concurrent queries
     const result = await db.execute<DashboardStatsRow>(sql`
@@ -55,7 +57,7 @@ export const getDashboardStats = cache(async (): Promise<DashboardStats> => {
             (SELECT COUNT(*)::int FROM blog_post WHERE status = 'published') AS published_posts,
             (SELECT COUNT(*)::int FROM blog_post WHERE status = 'draft') AS draft_posts,
             (SELECT COUNT(*)::int FROM contact_submission) AS total_contacts,
-            (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${sevenDaysAgo}) AS recent_contacts,
+            (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${sevenDaysAgoStr}) AS recent_contacts,
             (SELECT COUNT(*)::int FROM bug_report) AS total_bug_reports,
             (SELECT COUNT(*)::int FROM beta_feedback) AS total_beta_feedback,
             (SELECT COUNT(*)::int FROM email_log) AS total_emails,
