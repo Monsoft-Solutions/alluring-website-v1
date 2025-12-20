@@ -1,6 +1,6 @@
 'use client'
 
-import { Procedure } from '@/lib/types/procedure.type'
+import type { Procedure } from '@/lib/types/procedure.type'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ProcedureCard } from './procedure-card.component'
 

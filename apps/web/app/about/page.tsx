@@ -5,7 +5,7 @@
  * world-class surgeons, accreditations, and patient testimonials.
  * Includes SEO optimization and structured data.
  */
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullbleed.component'
@@ -17,7 +17,6 @@ import { CTASection } from '@/components/shared/cta-section.component'
 import { aboutCTAData } from '@/lib/data/webpages/about.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
-import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
 

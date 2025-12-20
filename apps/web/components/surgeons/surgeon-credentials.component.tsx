@@ -2,7 +2,7 @@
 
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
-import { Surgeon } from '@/lib/types/surgeon.type'
+import type { Surgeon } from '@/lib/types/surgeon.type'
 import { Award, GraduationCap, Check } from 'lucide-react'
 import { motion } from 'framer-motion'
 

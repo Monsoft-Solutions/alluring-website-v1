@@ -226,7 +226,7 @@ export async function POST(
         }
 
         // Increment views asynchronously - don't await to return quickly
-        Promise.resolve().then(async () => {
+        void Promise.resolve().then(async () => {
             try {
                 await db
                     .update(promotion)
@@ -257,7 +257,7 @@ export async function POST(
 /**
  * OPTIONS handler for CORS preflight requests
  */
-export async function OPTIONS(): Promise<NextResponse> {
+export function OPTIONS(): NextResponse {
     return new NextResponse(null, {
         status: 204,
         headers: {

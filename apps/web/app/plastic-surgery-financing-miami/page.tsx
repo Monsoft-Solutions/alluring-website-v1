@@ -36,7 +36,6 @@ import {
     financingSeoData,
 } from '@/lib/data/webpages/financing'
 import { seoConfig } from '@/lib/seo-config'
-import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 const siteUrl = siteConfig.seo.siteUrl

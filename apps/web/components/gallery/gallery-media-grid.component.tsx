@@ -81,7 +81,6 @@ export function GalleryMediaGrid({
                     <MediaGridItem
                         key={item.id}
                         item={item}
-                        index={index}
                         linkToDetail={linkToDetail}
                         onClick={() => handleMediaClick(index)}
                     />
@@ -126,17 +125,11 @@ export function GalleryMediaGrid({
 
 type MediaGridItemProps = {
     readonly item: GalleryMediaCard
-    readonly index: number
     readonly linkToDetail: boolean
     readonly onClick: () => void
 }
 
-function MediaGridItem({
-    item,
-    index,
-    linkToDetail,
-    onClick,
-}: MediaGridItemProps) {
+function MediaGridItem({ item, linkToDetail, onClick }: MediaGridItemProps) {
     const content = (
         <div
             className={cn(

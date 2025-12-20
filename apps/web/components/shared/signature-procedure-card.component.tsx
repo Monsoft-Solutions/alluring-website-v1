@@ -1,7 +1,7 @@
 'use client'
 
 import { ImageObjectSchema } from '@workspace/seo/react'
-import { Procedure } from '@/lib/types/procedure.type'
+import type { Procedure } from '@/lib/types/procedure.type'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'

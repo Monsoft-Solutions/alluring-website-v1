@@ -1,4 +1,4 @@
-import { Surgeon } from '@/lib/types/surgeon.type'
+import type { Surgeon } from '@/lib/types/surgeon.type'
 
 export const surgeons: Surgeon[] = [
     {

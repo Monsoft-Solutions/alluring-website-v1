@@ -1,6 +1,6 @@
 'use client'
 
-import { Procedure } from '@/lib/types/procedure.type'
+import type { Procedure } from '@/lib/types/procedure.type'
 import { useState, useRef, useEffect } from 'react'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SignatureProcedureCard } from '@/components/shared/signature-procedure-card.component'

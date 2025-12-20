@@ -192,7 +192,7 @@ export function useQuickQuestions(
         attemptCountRef.current = 0
 
         // Start polling
-        pollForQuestions()
+        void pollForQuestions()
     }, [cancel, pollForQuestions])
 
     // Cleanup on unmount

@@ -169,9 +169,9 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
     }, [isInitialCategory, hasDynamicQuestions])
 
     const handleStaticClick = useCallback(
-        async (reply: QuickReply) => {
+        (reply: QuickReply) => {
             // Track the click asynchronously (fire and forget)
-            fetch('/api/chat/quick-replies/track', {
+            void fetch('/api/chat/quick-replies/track', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ quickReplyId: reply.id }),

@@ -78,7 +78,7 @@ export function useInfiniteBlogPosts({
 
             observer.current = new IntersectionObserver((entries) => {
                 if (entries[0]?.isIntersecting && hasMore) {
-                    loadMore()
+                    void loadMore()
                 }
             })
 

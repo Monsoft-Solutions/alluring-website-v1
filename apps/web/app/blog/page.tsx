@@ -29,7 +29,6 @@ import {
 } from '@/lib/data/webpages/blog'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { seoConfig } from '@/lib/seo-config'
-import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 const siteUrl = siteConfig.seo.siteUrl

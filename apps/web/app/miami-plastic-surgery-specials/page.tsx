@@ -28,7 +28,6 @@ import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
-import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import {

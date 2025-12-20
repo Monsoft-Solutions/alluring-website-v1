@@ -45,10 +45,7 @@ const sanitizeSchema = {
  * Headings have IDs (via rehypeSlug) for navigation, but are not rendered as links.
  * Content is sanitized using rehype-sanitize to prevent XSS attacks.
  */
-export async function PostMarkdown({
-    content,
-    className = '',
-}: PostMarkdownProps) {
+export function PostMarkdown({ content, className = '' }: PostMarkdownProps) {
     const normalizedContent = content?.trim()
 
     if (!normalizedContent) {

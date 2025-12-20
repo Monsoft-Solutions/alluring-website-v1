@@ -13,7 +13,7 @@
  * - Surgeons and procedures sections for trust and exploration
  * - Testimonials for social proof
  */
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import {
     BreadcrumbSchema,
     FAQSchema,

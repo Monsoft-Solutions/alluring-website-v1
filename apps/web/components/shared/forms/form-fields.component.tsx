@@ -79,7 +79,7 @@ function getInputStyles(variant: FormFieldVariant) {
 /**
  * Get label styles based on variant
  */
-function getLabelStyles(variant: FormFieldVariant, _required?: boolean) {
+function getLabelStyles(variant: FormFieldVariant) {
     const base =
         variant === 'dark'
             ? 'text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
@@ -102,7 +102,7 @@ export function NameField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -175,7 +175,7 @@ export function EmailField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -254,7 +254,7 @@ export function PhoneField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -334,7 +334,7 @@ export function SubjectField<TFieldValues extends FieldValues>({
     className,
 }: SubjectFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -416,7 +416,7 @@ export function MessageField<TFieldValues extends FieldValues>({
     className,
     rows = 4,
 }: MessageFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         const textareaStyles = cn(
@@ -516,7 +516,7 @@ export function SelectField<TFieldValues extends FieldValues>({
     className,
     options,
 }: SelectFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         const selectStyles = cn(
@@ -614,7 +614,7 @@ export function FirstNameField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -687,7 +687,7 @@ export function LastNameField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (

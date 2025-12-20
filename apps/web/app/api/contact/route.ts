@@ -476,7 +476,7 @@ export async function POST(
  *
  * @returns Response with CORS headers
  */
-export async function OPTIONS(): Promise<NextResponse> {
+export function OPTIONS(): NextResponse {
     return new NextResponse(null, {
         status: 204,
         headers: {

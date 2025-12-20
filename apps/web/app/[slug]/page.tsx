@@ -35,7 +35,7 @@ const getCachedPostBySlug = cache(async (slug: string) =>
  * Generate static params for surgeon pages
  * Blog posts are fetched dynamically from the database
  */
-export async function generateStaticParams() {
+export function generateStaticParams() {
     return surgeons.map((surgeon) => ({
         slug: surgeon.slug,
     }))

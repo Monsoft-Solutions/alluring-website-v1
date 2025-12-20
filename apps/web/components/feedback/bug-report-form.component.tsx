@@ -34,7 +34,6 @@ import {
     bugReportDefaultValues,
     type BugReportFormInput,
     bugReportFormSchema,
-    type BugReportFormWithScreenshot,
     detectDeviceInfo,
 } from '@/lib/types/forms/bug-report.type'
 import { detectUserEnvironment } from '@/lib/utils/user-agent.util'

@@ -154,7 +154,7 @@ export function ChatWidget({
         }
 
         if (isOpen) {
-            restoreSession()
+            void restoreSession()
         }
     }, [isOpen, getStoredSession, clearSession, renewSession])
 

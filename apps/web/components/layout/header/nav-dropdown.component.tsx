@@ -9,7 +9,7 @@
 
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
-import { NavDropdownProps } from './header.type'
+import type { NavDropdownProps } from './header.type'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export function NavDropdown({
