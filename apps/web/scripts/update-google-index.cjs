@@ -5,6 +5,8 @@
  * This is necessary because ESM imports are hoisted and execute before top-level code
  */
 
+/* eslint-env node */
+/* eslint-disable no-restricted-properties, no-undef */
 const path = require('path')
 const dotenv = require('dotenv')
 

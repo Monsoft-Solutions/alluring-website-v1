@@ -77,11 +77,11 @@ export async function POST(request: NextRequest) {
         }
 
         // Parse request body
-        const body = await request.json()
-        const { messages, sessionId } = body as {
+        const body = (await request.json()) as {
             messages: AISDKMessage[]
             sessionId: string
         }
+        const { messages, sessionId } = body
 
         // Validate required fields
         if (!sessionId || !messages || messages.length === 0) {

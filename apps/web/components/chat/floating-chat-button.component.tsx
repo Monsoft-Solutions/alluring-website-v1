@@ -115,7 +115,7 @@ export function FloatingChatButton({
             try {
                 const response = await fetch('/api/chat/config')
                 if (response.ok) {
-                    const data: ChatConfig = await response.json()
+                    const data = (await response.json()) as ChatConfig
                     setConfig(data)
                 }
             } catch (error) {

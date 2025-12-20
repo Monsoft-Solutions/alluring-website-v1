@@ -128,9 +128,17 @@ export function ChatWidget({
                     return
                 }
 
-                const data = await response.json()
+                const data = (await response.json()) as {
+                    success: boolean
+                    session?: {
+                        id: string
+                        fullName: string
+                    }
+                    config?: ChatConfig
+                    messages?: StoredMessage[]
+                }
 
-                if (data.success) {
+                if (data.success && data.session && data.config) {
                     // Renew cookie expiry on successful restore
                     renewSession()
 
@@ -139,7 +147,7 @@ export function ChatWidget({
                         id: data.session.id,
                         fullName: data.session.fullName,
                         config: data.config,
-                        messages: data.messages,
+                        messages: data.messages ?? [],
                     })
                 } else {
                     // Invalid session, clear cookie
@@ -186,10 +194,22 @@ export function ChatWidget({
                     }),
                 })
 
-                const result = await response.json()
+                const result = (await response.json()) as {
+                    success: boolean
+                    error?: string
+                    session?: {
+                        id: string
+                        fullName: string
+                    }
+                    config?: ChatConfig
+                }
 
                 if (!response.ok || !result.success) {
                     throw new Error(result.error || 'Failed to start chat')
+                }
+
+                if (!result.session || !result.config) {
+                    throw new Error('Invalid session response')
                 }
 
                 // Save session to cookie for persistence

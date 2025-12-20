@@ -880,7 +880,7 @@ export function RatingField<TFieldValues extends FieldValues>({
     ratingLabels,
     showLabels = true,
 }: RatingFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     const ratings = Array.from({ length: max - min + 1 }, (_, i) => min + i)
 
@@ -1020,7 +1020,7 @@ export function RadioGroupField<TFieldValues extends FieldValues>({
     otherPlaceholder = 'Please specify...',
     direction = 'vertical',
 }: RadioGroupFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     const getRadioStyles = (isSelected: boolean) => {
         if (variant === 'dark') {
@@ -1235,7 +1235,7 @@ export function YesNoField<TFieldValues extends FieldValues>({
     yesLabel = 'Yes',
     noLabel = 'No',
 }: YesNoFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     const getButtonStyles = (isSelected: boolean) => {
         if (variant === 'dark') {

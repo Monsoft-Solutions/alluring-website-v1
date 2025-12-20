@@ -55,6 +55,16 @@ type ErrorResponse = {
     error: string
 }
 
+type BlobGenerateTokenResponse = {
+    type: 'blob.generate-client-token'
+    clientToken: string
+}
+
+type BlobUploadCompletedResponse = {
+    type: 'blob.upload-completed'
+    response: 'ok'
+}
+
 /**
  * POST /api/upload
  * Handle file uploads using Vercel Blob's handleUpload for client uploads
@@ -62,7 +72,14 @@ type ErrorResponse = {
  */
 export async function POST(
     request: NextRequest
-): Promise<NextResponse<UploadResponse | ErrorResponse>> {
+): Promise<
+    NextResponse<
+        | UploadResponse
+        | ErrorResponse
+        | BlobGenerateTokenResponse
+        | BlobUploadCompletedResponse
+    >
+> {
     // Check authentication
     const authenticated = await isAuthenticated()
     if (!authenticated) {
@@ -79,10 +96,10 @@ export async function POST(
         try {
             const body = (await request.json()) as HandleUploadBody
 
-            const jsonResponse = await handleUpload({
+            const jsonResponse = (await handleUpload({
                 body,
                 request,
-                onBeforeGenerateToken: (pathname) => {
+                onBeforeGenerateToken: async (pathname) => {
                     // Validate file type from pathname
                     const extension = pathname.split('.').pop()?.toLowerCase()
                     const mimeMap: Record<string, string> = {
@@ -111,10 +128,10 @@ export async function POST(
                         }),
                     }
                 },
-                onUploadCompleted: ({ blob }) => {
+                onUploadCompleted: async ({ blob }) => {
                     console.log('Upload completed:', blob.url)
                 },
-            })
+            })) as BlobGenerateTokenResponse | BlobUploadCompletedResponse
 
             return NextResponse.json(jsonResponse)
         } catch (error) {

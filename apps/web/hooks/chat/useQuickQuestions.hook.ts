@@ -131,7 +131,10 @@ export function useQuickQuestions(
                 return false
             }
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                success: boolean
+                questions?: string[]
+            }
 
             if (
                 data.success &&

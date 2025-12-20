@@ -204,8 +204,8 @@ export function useVoiceInput({
                 throw new Error(`Token fetch failed: ${response.status}`)
             }
 
-            const data = await response.json()
-            return data.token
+            const data = (await response.json()) as { token?: string }
+            return data.token ?? null
         } catch (err) {
             console.error('[VoiceInput] Token fetch error:', err)
             return null

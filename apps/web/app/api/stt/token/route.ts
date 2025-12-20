@@ -6,7 +6,7 @@
  *
  * @module app/api/stt/token/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { env } from '@/env'
 
@@ -66,7 +66,7 @@ export async function POST() {
             )
         }
 
-        const data = await response.json()
+        const data = (await response.json()) as { token?: string }
 
         console.log(
             '[STT Token] Token generated successfully, length:',

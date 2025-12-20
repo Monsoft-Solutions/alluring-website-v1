@@ -37,7 +37,7 @@ type DbTransaction = PgTransaction<
 async function postHandler(request: NextRequest) {
     try {
         // Parse request body
-        const body = await request.json()
+        const body = (await request.json()) as unknown
 
         // Validate against schema
         const validationResult = createResourceSchema.safeParse(body)

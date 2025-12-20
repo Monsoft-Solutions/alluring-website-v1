@@ -20,11 +20,11 @@ import {
  */
 export async function POST(request: NextRequest) {
     try {
-        const body = await request.json()
-        const { sessionId, reason } = body as {
+        const body = (await request.json()) as {
             sessionId: string
             reason?: string
         }
+        const { sessionId, reason } = body
 
         if (!sessionId) {
             return NextResponse.json(

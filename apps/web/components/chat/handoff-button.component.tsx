@@ -45,7 +45,9 @@ export function HandoffButton({
                 }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                success: boolean
+            }
 
             if (data.success) {
                 setIsEscalated(true)

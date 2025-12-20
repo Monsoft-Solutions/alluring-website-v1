@@ -6,7 +6,6 @@ import type { Promotion } from '@workspace/db/schema/promotion'
 import { Button } from '@workspace/ui/components/button'
 
 import {
-    getPromotionLink,
     formatDiscount,
     getRemainingDays,
     isExpiringSoon,

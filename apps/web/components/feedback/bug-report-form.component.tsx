@@ -115,7 +115,7 @@ export function BugReportForm({ isOpen, onClose }: BugReportFormProps) {
                     setScreenshot(null)
                 }, 2000)
             } else {
-                const error = await response.json()
+                const error = (await response.json()) as unknown
                 console.error('Bug report submission failed:', error)
             }
         } catch (error) {

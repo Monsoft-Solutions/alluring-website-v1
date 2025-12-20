@@ -38,22 +38,40 @@ function getPrivateKey() {
 }
 
 /**
+ * Types for XML sitemap structure
+ */
+type SitemapIndex = {
+    sitemapindex?: {
+        sitemap?: Array<{ loc?: string[] }>
+    }
+}
+
+type UrlSet = {
+    urlset?: {
+        url?: Array<{ loc?: string[] }>
+    }
+}
+
+type ParsedSitemap = SitemapIndex & UrlSet
+
+/**
  * Parse XML sitemap and extract URLs
  */
 async function parseSitemapXml(xmlContent: string): Promise<string[]> {
     return new Promise((resolve, reject) => {
         parseString(xmlContent, (err, result) => {
             if (err) {
-                reject(err)
+                reject(new Error(String(err)))
                 return
             }
 
             try {
                 const urls: string[] = []
+                const parsed = result as ParsedSitemap
 
                 // Handle sitemap index format (contains sitemaps)
-                if (result.sitemapindex?.sitemap) {
-                    for (const sitemap of result.sitemapindex.sitemap) {
+                if (parsed.sitemapindex?.sitemap) {
+                    for (const sitemap of parsed.sitemapindex.sitemap) {
                         if (sitemap.loc?.[0]) {
                             urls.push(sitemap.loc[0])
                         }
@@ -61,8 +79,8 @@ async function parseSitemapXml(xmlContent: string): Promise<string[]> {
                 }
 
                 // Handle regular sitemap format (contains URLs)
-                if (result.urlset?.url) {
-                    for (const url of result.urlset.url) {
+                if (parsed.urlset?.url) {
+                    for (const url of parsed.urlset.url) {
                         if (url.loc?.[0]) {
                             urls.push(url.loc[0])
                         }
@@ -71,7 +89,9 @@ async function parseSitemapXml(xmlContent: string): Promise<string[]> {
 
                 resolve(urls)
             } catch (error) {
-                reject(error)
+                reject(
+                    error instanceof Error ? error : new Error(String(error))
+                )
             }
         })
     })
@@ -103,7 +123,7 @@ export async function main() {
 
         // Get child sitemap URLs from the sitemap index
         console.log('📋 Fetching sitemap index...')
-        const sitemapData = await sitemap()
+        const sitemapData = sitemap()
         const childSitemapUrls = sitemapData.map(
             (item: { url: string }): string => item.url.trim()
         )

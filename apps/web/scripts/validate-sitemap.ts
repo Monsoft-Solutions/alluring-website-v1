@@ -29,6 +29,32 @@ type ValidationResult = {
 }
 
 /**
+ * Types for XML sitemap structure
+ */
+type SitemapIndexEntry = {
+    loc?: string[]
+}
+
+type UrlEntry = {
+    loc?: string[]
+    priority?: string[]
+    lastmod?: string[]
+    changefreq?: string[]
+    ['image:image']?: Array<{
+        ['image:loc']?: string[]
+    }>
+}
+
+type ParsedSitemapXml = {
+    sitemapindex?: {
+        sitemap?: SitemapIndexEntry[]
+    }
+    urlset?: {
+        url?: UrlEntry[]
+    }
+}
+
+/**
  * Fetch and validate a sitemap endpoint
  */
 async function validateSitemap(
@@ -64,7 +90,7 @@ async function validateSitemap(
         }
 
         // Parse XML
-        const parsed = await parseStringPromise(xml)
+        const parsed = (await parseStringPromise(xml)) as ParsedSitemapXml
 
         // Validate structure
         if (!parsed.urlset && !parsed.sitemapindex) {
