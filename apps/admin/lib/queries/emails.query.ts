@@ -89,27 +89,25 @@ export type EmailStats = {
 }
 
 export async function getEmailStats(): Promise<EmailStats> {
-    const [totalResult, sentResult, failedResult, pendingResult] =
-        await Promise.all([
-            db.select({ count: count() }).from(emailLog),
-            db
-                .select({ count: count() })
-                .from(emailLog)
-                .where(eq(emailLog.status, 'sent')),
-            db
-                .select({ count: count() })
-                .from(emailLog)
-                .where(eq(emailLog.status, 'failed')),
-            db
-                .select({ count: count() })
-                .from(emailLog)
-                .where(eq(emailLog.status, 'pending')),
-        ])
+    const result = await db.execute<{
+        total: number
+        sent: number
+        failed: number
+        pending: number
+    }>(sql`
+        SELECT
+            COUNT(*)::int AS total,
+            COUNT(*) FILTER (WHERE status = 'sent')::int AS sent,
+            COUNT(*) FILTER (WHERE status = 'failed')::int AS failed,
+            COUNT(*) FILTER (WHERE status = 'pending')::int AS pending
+        FROM email_log
+    `)
 
-    const total = totalResult[0]?.count ?? 0
-    const sent = sentResult[0]?.count ?? 0
-    const failed = failedResult[0]?.count ?? 0
-    const pending = pendingResult[0]?.count ?? 0
+    const stats = result[0]
+    const total = stats?.total ?? 0
+    const sent = stats?.sent ?? 0
+    const failed = stats?.failed ?? 0
+    const pending = stats?.pending ?? 0
 
     return {
         total,
