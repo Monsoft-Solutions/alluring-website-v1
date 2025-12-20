@@ -1,3 +1,5 @@
+import dynamicImport from 'next/dynamic'
+import { Suspense } from 'react'
 import {
     Card,
     CardContent,
@@ -8,7 +10,6 @@ import {
 import {
     FileText,
     Mail,
-    MessageSquare,
     Bug,
     Clock,
     Send,
@@ -16,11 +17,8 @@ import {
     BarChart3,
 } from 'lucide-react'
 import Link from 'next/link'
+import { Skeleton } from '@workspace/ui/components/skeleton'
 
-import { BugsChart } from '@/components/charts/bugs-chart.component'
-import { ContactsChart } from '@/components/charts/contacts-chart.component'
-import { EmailsChart } from '@/components/charts/emails-chart.component'
-import { PostsChart } from '@/components/charts/posts-chart.component'
 import {
     getDashboardStats,
     getRecentBugReports,
@@ -31,260 +29,368 @@ import {
     getEmailsByStatus,
 } from '@/lib/queries/stats.query'
 
-export const dynamic = 'force-dynamic'
+// Lazy load chart components for better performance
+const BugsChart = dynamicImport(
+    () =>
+        import('@/components/charts/bugs-chart.component').then(
+            (mod) => mod.BugsChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+const ContactsChart = dynamicImport(
+    () =>
+        import('@/components/charts/contacts-chart.component').then(
+            (mod) => mod.ContactsChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+const EmailsChart = dynamicImport(
+    () =>
+        import('@/components/charts/emails-chart.component').then(
+            (mod) => mod.EmailsChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+const PostsChart = dynamicImport(
+    () =>
+        import('@/components/charts/posts-chart.component').then(
+            (mod) => mod.PostsChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+export const dynamic = 'force-dynamic' // Route segment config
 export const maxDuration = 30
 
-const DEFAULT_STATS = {
-    blogPosts: { total: 0, published: 0, draft: 0 },
-    contacts: { total: 0, recent: 0 },
-    feedback: { bugReports: 0, betaFeedback: 0 },
-    emails: { total: 0, sent: 0, failed: 0, successRate: 0 },
+export const metadata = {
+    title: 'Dashboard | Admin',
+    description:
+        'Admin dashboard overview with stats, charts, and recent activity',
 }
 
-export default async function DashboardPage() {
-    let stats = DEFAULT_STATS
-    let recentContacts: Awaited<ReturnType<typeof getRecentContacts>> = []
-    let recentBugReports: Awaited<ReturnType<typeof getRecentBugReports>> = []
-    let contactsOverTime: Awaited<ReturnType<typeof getContactsOverTime>> = []
-    let bugsBySeverity: Awaited<ReturnType<typeof getBugsBySeverity>> = []
-    let topPosts: Awaited<ReturnType<typeof getTopPostsByViews>> = []
-    let emailsByStatus: Awaited<ReturnType<typeof getEmailsByStatus>> = []
+// Skeleton components for streaming
+function StatsGridSkeleton() {
+    return (
+        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+            {Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i}>
+                    <CardHeader className='flex flex-row items-center justify-between pb-2'>
+                        <Skeleton className='h-4 w-24' />
+                        <Skeleton className='h-4 w-4' />
+                    </CardHeader>
+                    <CardContent>
+                        <Skeleton className='h-8 w-16' />
+                        <Skeleton className='mt-1 h-3 w-32' />
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    )
+}
 
-    try {
-        ;[
-            stats,
-            recentContacts,
-            recentBugReports,
-            contactsOverTime,
-            bugsBySeverity,
-            topPosts,
-            emailsByStatus,
-        ] = await Promise.all([
-            getDashboardStats(),
-            getRecentContacts(5),
-            getRecentBugReports(5),
-            getContactsOverTime(30),
-            getBugsBySeverity(),
-            getTopPostsByViews(5),
-            getEmailsByStatus(),
-        ])
-    } catch (error) {
-        console.error('Failed to fetch dashboard data:', error)
-    }
+function ChartsRowSkeleton() {
+    return (
+        <div className='grid gap-6 lg:grid-cols-2'>
+            {Array.from({ length: 2 }).map((_, i) => (
+                <Card key={i}>
+                    <CardHeader>
+                        <Skeleton className='h-5 w-40' />
+                        <Skeleton className='h-4 w-48' />
+                    </CardHeader>
+                    <CardContent>
+                        <Skeleton className='h-[280px] w-full' />
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    )
+}
+
+function RecentActivitySkeleton() {
+    return (
+        <div className='grid gap-6 lg:grid-cols-2'>
+            {Array.from({ length: 2 }).map((_, i) => (
+                <Card key={i}>
+                    <CardHeader>
+                        <Skeleton className='h-5 w-32' />
+                    </CardHeader>
+                    <CardContent>
+                        <div className='space-y-4'>
+                            {Array.from({ length: 5 }).map((_, j) => (
+                                <Skeleton key={j} className='h-20 w-full' />
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    )
+}
+
+// Async components for streaming
+async function StatsGrid() {
+    const stats = await getDashboardStats()
 
     return (
+        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+            <StatsCard
+                title='Total Posts'
+                value={stats.blogPosts.total}
+                description={`${stats.blogPosts.published} published, ${stats.blogPosts.draft} drafts`}
+                icon={FileText}
+                href='/blog/posts'
+            />
+            <StatsCard
+                title='Contact Submissions'
+                value={stats.contacts.total}
+                description='All time submissions'
+                icon={Mail}
+                href='/contacts'
+            />
+            <StatsCard
+                title='Emails Sent'
+                value={stats.emails.total}
+                description={`${stats.emails.successRate}% delivery rate`}
+                icon={Send}
+                href='/emails'
+            />
+            <StatsCard
+                title='Bug Reports'
+                value={stats.feedback.bugReports}
+                description={`${stats.feedback.betaFeedback} beta feedback`}
+                icon={Bug}
+                href='/feedback'
+            />
+        </div>
+    )
+}
+
+async function ChartsRowOne() {
+    const [contactsOverTime, topPosts] = await Promise.all([
+        getContactsOverTime(30),
+        getTopPostsByViews(5),
+    ])
+
+    return (
+        <div className='grid gap-6 lg:grid-cols-2'>
+            <Card>
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <TrendingUp className='h-5 w-5' />
+                        Contacts Over Time
+                    </CardTitle>
+                    <CardDescription>
+                        Last 30 days of contact submissions
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <ContactsChart data={contactsOverTime} />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <BarChart3 className='h-5 w-5' />
+                        Top Posts by Views
+                    </CardTitle>
+                    <CardDescription>
+                        Most viewed published posts
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <PostsChart data={topPosts} />
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
+async function ChartsRowTwo() {
+    const [bugsBySeverity, emailsByStatus] = await Promise.all([
+        getBugsBySeverity(),
+        getEmailsByStatus(),
+    ])
+
+    return (
+        <div className='grid gap-6 lg:grid-cols-2'>
+            <Card>
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <Bug className='h-5 w-5' />
+                        Bugs by Severity
+                    </CardTitle>
+                    <CardDescription>
+                        Distribution of bug report severity
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <BugsChart data={bugsBySeverity} />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <Send className='h-5 w-5' />
+                        Email Delivery
+                    </CardTitle>
+                    <CardDescription>
+                        Email delivery success rate
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <EmailsChart data={emailsByStatus} />
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
+async function RecentActivity() {
+    const [recentContacts, recentBugReports] = await Promise.all([
+        getRecentContacts(5),
+        getRecentBugReports(5),
+    ])
+
+    return (
+        <div className='grid gap-6 lg:grid-cols-2'>
+            <Card>
+                <CardHeader className='flex flex-row items-center justify-between'>
+                    <CardTitle className='text-lg font-medium'>
+                        Recent Contacts
+                    </CardTitle>
+                    <Link
+                        href='/contacts'
+                        className='text-muted-foreground hover:text-foreground text-sm'
+                    >
+                        View all
+                    </Link>
+                </CardHeader>
+                <CardContent>
+                    {recentContacts.length === 0 ? (
+                        <p className='text-muted-foreground py-8 text-center text-sm'>
+                            No contacts yet
+                        </p>
+                    ) : (
+                        <div className='space-y-4'>
+                            {recentContacts.map((contact) => (
+                                <div
+                                    key={contact.id}
+                                    className='flex items-start justify-between gap-4 rounded-lg border p-3'
+                                >
+                                    <div className='min-w-0 flex-1'>
+                                        <p className='truncate font-medium'>
+                                            {contact.name}
+                                        </p>
+                                        <p className='text-muted-foreground truncate text-sm'>
+                                            {contact.email}
+                                        </p>
+                                        {contact.subject && (
+                                            <p className='text-muted-foreground mt-1 truncate text-sm'>
+                                                {contact.subject}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className='text-muted-foreground flex shrink-0 items-center gap-1 text-xs'>
+                                        <Clock className='h-3 w-3' />
+                                        {contact.createdAt
+                                            ? formatRelativeTime(
+                                                  contact.createdAt
+                                              )
+                                            : 'N/A'}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader className='flex flex-row items-center justify-between'>
+                    <CardTitle className='text-lg font-medium'>
+                        Recent Bug Reports
+                    </CardTitle>
+                    <Link
+                        href='/feedback'
+                        className='text-muted-foreground hover:text-foreground text-sm'
+                    >
+                        View all
+                    </Link>
+                </CardHeader>
+                <CardContent>
+                    {recentBugReports.length === 0 ? (
+                        <p className='text-muted-foreground py-8 text-center text-sm'>
+                            No bug reports yet
+                        </p>
+                    ) : (
+                        <div className='space-y-4'>
+                            {recentBugReports.map((report) => (
+                                <div
+                                    key={report.id}
+                                    className='flex items-start justify-between gap-4 rounded-lg border p-3'
+                                >
+                                    <div className='min-w-0 flex-1'>
+                                        <p className='line-clamp-1 font-medium'>
+                                            {report.description}
+                                        </p>
+                                        <p className='text-muted-foreground truncate text-sm'>
+                                            {report.pageUrl}
+                                        </p>
+                                        <div className='mt-1 flex items-center gap-2'>
+                                            <SeverityBadge
+                                                severity={report.severity}
+                                            />
+                                            <StatusBadge
+                                                status={report.status}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='text-muted-foreground flex shrink-0 items-center gap-1 text-xs'>
+                                        <Clock className='h-3 w-3' />
+                                        {formatRelativeTime(report.createdAt)}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
+// Main page component with streaming
+export default function DashboardPage() {
+    return (
         <div className='space-y-8'>
-            {/* Stats Grid */}
-            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-                <StatsCard
-                    title='Total Posts'
-                    value={stats.blogPosts.total}
-                    description={`${stats.blogPosts.published} published, ${stats.blogPosts.draft} drafts`}
-                    icon={FileText}
-                    href='/blog/posts'
-                />
-                <StatsCard
-                    title='Contact Submissions'
-                    value={stats.contacts.total}
-                    description='All time submissions'
-                    icon={Mail}
-                    href='/contacts'
-                />
-                <StatsCard
-                    title='Emails Sent'
-                    value={stats.emails.total}
-                    description={`${stats.emails.successRate}% delivery rate`}
-                    icon={Send}
-                    href='/emails'
-                />
-                <StatsCard
-                    title='Bug Reports'
-                    value={stats.feedback.bugReports}
-                    description={`${stats.feedback.betaFeedback} beta feedback`}
-                    icon={Bug}
-                    href='/feedback'
-                />
-            </div>
+            <Suspense fallback={<StatsGridSkeleton />}>
+                <StatsGrid />
+            </Suspense>
 
-            {/* Charts Row */}
-            <div className='grid gap-6 lg:grid-cols-2'>
-                {/* Contacts Over Time */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className='flex items-center gap-2 text-lg'>
-                            <TrendingUp className='h-5 w-5' />
-                            Contacts Over Time
-                        </CardTitle>
-                        <CardDescription>
-                            Last 30 days of contact submissions
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ContactsChart data={contactsOverTime} />
-                    </CardContent>
-                </Card>
+            <Suspense fallback={<ChartsRowSkeleton />}>
+                <ChartsRowOne />
+            </Suspense>
 
-                {/* Top Posts by Views */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className='flex items-center gap-2 text-lg'>
-                            <BarChart3 className='h-5 w-5' />
-                            Top Posts by Views
-                        </CardTitle>
-                        <CardDescription>
-                            Most viewed published posts
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <PostsChart data={topPosts} />
-                    </CardContent>
-                </Card>
-            </div>
+            <Suspense fallback={<ChartsRowSkeleton />}>
+                <ChartsRowTwo />
+            </Suspense>
 
-            {/* Second Charts Row */}
-            <div className='grid gap-6 lg:grid-cols-2'>
-                {/* Bug Reports by Severity */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className='flex items-center gap-2 text-lg'>
-                            <Bug className='h-5 w-5' />
-                            Bugs by Severity
-                        </CardTitle>
-                        <CardDescription>
-                            Distribution of bug report severity
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <BugsChart data={bugsBySeverity} />
-                    </CardContent>
-                </Card>
-
-                {/* Email Delivery Status */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className='flex items-center gap-2 text-lg'>
-                            <Send className='h-5 w-5' />
-                            Email Delivery
-                        </CardTitle>
-                        <CardDescription>
-                            Email delivery success rate
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <EmailsChart data={emailsByStatus} />
-                    </CardContent>
-                </Card>
-            </div>
-
-            {/* Recent Activity */}
-            <div className='grid gap-6 lg:grid-cols-2'>
-                {/* Recent Contacts */}
-                <Card>
-                    <CardHeader className='flex flex-row items-center justify-between'>
-                        <CardTitle className='text-lg font-medium'>
-                            Recent Contacts
-                        </CardTitle>
-                        <Link
-                            href='/contacts'
-                            className='text-muted-foreground hover:text-foreground text-sm'
-                        >
-                            View all
-                        </Link>
-                    </CardHeader>
-                    <CardContent>
-                        {recentContacts.length === 0 ? (
-                            <p className='text-muted-foreground py-8 text-center text-sm'>
-                                No contacts yet
-                            </p>
-                        ) : (
-                            <div className='space-y-4'>
-                                {recentContacts.map((contact) => (
-                                    <div
-                                        key={contact.id}
-                                        className='flex items-start justify-between gap-4 rounded-lg border p-3'
-                                    >
-                                        <div className='min-w-0 flex-1'>
-                                            <p className='truncate font-medium'>
-                                                {contact.name}
-                                            </p>
-                                            <p className='text-muted-foreground truncate text-sm'>
-                                                {contact.email}
-                                            </p>
-                                            {contact.subject && (
-                                                <p className='text-muted-foreground mt-1 truncate text-sm'>
-                                                    {contact.subject}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className='text-muted-foreground flex shrink-0 items-center gap-1 text-xs'>
-                                            <Clock className='h-3 w-3' />
-                                            {contact.createdAt
-                                                ? formatRelativeTime(
-                                                      contact.createdAt
-                                                  )
-                                                : 'N/A'}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
-
-                {/* Recent Bug Reports */}
-                <Card>
-                    <CardHeader className='flex flex-row items-center justify-between'>
-                        <CardTitle className='text-lg font-medium'>
-                            Recent Bug Reports
-                        </CardTitle>
-                        <Link
-                            href='/feedback'
-                            className='text-muted-foreground hover:text-foreground text-sm'
-                        >
-                            View all
-                        </Link>
-                    </CardHeader>
-                    <CardContent>
-                        {recentBugReports.length === 0 ? (
-                            <p className='text-muted-foreground py-8 text-center text-sm'>
-                                No bug reports yet
-                            </p>
-                        ) : (
-                            <div className='space-y-4'>
-                                {recentBugReports.map((report) => (
-                                    <div
-                                        key={report.id}
-                                        className='flex items-start justify-between gap-4 rounded-lg border p-3'
-                                    >
-                                        <div className='min-w-0 flex-1'>
-                                            <p className='line-clamp-1 font-medium'>
-                                                {report.description}
-                                            </p>
-                                            <p className='text-muted-foreground truncate text-sm'>
-                                                {report.pageUrl}
-                                            </p>
-                                            <div className='mt-1 flex items-center gap-2'>
-                                                <SeverityBadge
-                                                    severity={report.severity}
-                                                />
-                                                <StatusBadge
-                                                    status={report.status}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className='text-muted-foreground flex shrink-0 items-center gap-1 text-xs'>
-                                            <Clock className='h-3 w-3' />
-                                            {formatRelativeTime(
-                                                report.createdAt
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
-            </div>
+            <Suspense fallback={<RecentActivitySkeleton />}>
+                <RecentActivity />
+            </Suspense>
         </div>
     )
 }

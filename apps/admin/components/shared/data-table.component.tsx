@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useDeferredValue } from 'react'
 import type { ReactNode, KeyboardEvent } from 'react'
 import {
     Search,
@@ -72,14 +72,17 @@ export function DataTable<T>({
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(defaultPageSize)
 
+    // Defer search query to avoid blocking UI on fast typing
+    const deferredSearchQuery = useDeferredValue(searchQuery)
+
     // Get searchable columns
     const searchableColumns = columns.filter((col) => col.searchable !== false)
 
-    // Filter data by search query
+    // Filter data by search query (using deferred value)
     const filteredData = useMemo(() => {
-        if (!searchQuery.trim()) return data
+        if (!deferredSearchQuery.trim()) return data
 
-        const query = searchQuery.toLowerCase()
+        const query = deferredSearchQuery.toLowerCase()
         return data.filter((item) => {
             return searchableColumns.some((col) => {
                 const value = getNestedValue(item, col.key as string)
@@ -87,7 +90,7 @@ export function DataTable<T>({
                 return String(value).toLowerCase().includes(query)
             })
         })
-    }, [data, searchQuery, searchableColumns])
+    }, [data, deferredSearchQuery, searchableColumns])
 
     // Sort data
     const sortedData = useMemo(() => {

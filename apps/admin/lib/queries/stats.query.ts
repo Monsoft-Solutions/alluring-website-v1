@@ -199,7 +199,7 @@ export type PostStatusCount = {
     count: number
 }
 
-export async function getPostsByStatus(): Promise<PostStatusCount[]> {
+export const getPostsByStatus = cache(async (): Promise<PostStatusCount[]> => {
     const results = await db
         .select({
             status: sql<string>`COALESCE(${blogPost.status}, 'draft')`.as(
@@ -211,7 +211,7 @@ export async function getPostsByStatus(): Promise<PostStatusCount[]> {
         .groupBy(blogPost.status)
 
     return results
-}
+})
 
 export type TopPost = {
     title: string
@@ -236,22 +236,24 @@ export const getTopPostsByViews = cache(
     }
 )
 
-export async function getEmailsOverTime(days = 30): Promise<DailyCount[]> {
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - days)
+export const getEmailsOverTime = cache(
+    async (days = 30): Promise<DailyCount[]> => {
+        const startDate = new Date()
+        startDate.setDate(startDate.getDate() - days)
 
-    const results = await db
-        .select({
-            date: sql<string>`DATE(${emailLog.sentAt})`.as('date'),
-            count: count(),
-        })
-        .from(emailLog)
-        .where(gte(emailLog.sentAt, startDate))
-        .groupBy(sql`DATE(${emailLog.sentAt})`)
-        .orderBy(sql`DATE(${emailLog.sentAt})`)
+        const results = await db
+            .select({
+                date: sql<string>`DATE(${emailLog.sentAt})`.as('date'),
+                count: count(),
+            })
+            .from(emailLog)
+            .where(gte(emailLog.sentAt, startDate))
+            .groupBy(sql`DATE(${emailLog.sentAt})`)
+            .orderBy(sql`DATE(${emailLog.sentAt})`)
 
-    return fillMissingDatesSimple(results, days)
-}
+        return fillMissingDatesSimple(results, days)
+    }
+)
 
 export type EmailStatusCount = {
     status: string

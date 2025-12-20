@@ -147,27 +147,27 @@ export const getAnalyticsSummary = cache(
 /**
  * Get page views over time for the specified number of days
  */
-export async function getPageViewsOverTime(
-    days = 30
-): Promise<DailyViewCount[]> {
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - days)
-    startDate.setHours(0, 0, 0, 0)
+export const getPageViewsOverTime = cache(
+    async (days = 30): Promise<DailyViewCount[]> => {
+        const startDate = new Date()
+        startDate.setDate(startDate.getDate() - days)
+        startDate.setHours(0, 0, 0, 0)
 
-    const results = await db
-        .select({
-            date: sql<string>`DATE(${pageView.createdAt})`.as('date'),
-            views: count(),
-            sessions: countDistinct(pageView.sessionId),
-        })
-        .from(pageView)
-        .where(gte(pageView.createdAt, startDate))
-        .groupBy(sql`DATE(${pageView.createdAt})`)
-        .orderBy(sql`DATE(${pageView.createdAt})`)
+        const results = await db
+            .select({
+                date: sql<string>`DATE(${pageView.createdAt})`.as('date'),
+                views: count(),
+                sessions: countDistinct(pageView.sessionId),
+            })
+            .from(pageView)
+            .where(gte(pageView.createdAt, startDate))
+            .groupBy(sql`DATE(${pageView.createdAt})`)
+            .orderBy(sql`DATE(${pageView.createdAt})`)
 
-    // Fill in missing dates with zeros using shared utility
-    return fillMissingDatesWithViews(results, days)
-}
+        // Fill in missing dates with zeros using shared utility
+        return fillMissingDatesWithViews(results, days)
+    }
+)
 
 // ============================================================================
 // Top Pages
@@ -176,7 +176,7 @@ export async function getPageViewsOverTime(
 /**
  * Get top pages by view count
  */
-export async function getTopPages(limit = 10): Promise<TopPage[]> {
+export const getTopPages = cache(async (limit = 10): Promise<TopPage[]> => {
     const results = await db
         .select({
             pagePath: pageView.pagePath,
@@ -190,33 +190,34 @@ export async function getTopPages(limit = 10): Promise<TopPage[]> {
         .limit(limit)
 
     return results
-}
+})
 
 /**
  * Get top pages within a date range
  */
-export async function getTopPagesInRange(
-    days = 30,
-    limit = 10
-): Promise<TopPage[]> {
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - days)
+export const getTopPagesInRange = cache(
+    async (days = 30, limit = 10): Promise<TopPage[]> => {
+        const startDate = new Date()
+        startDate.setDate(startDate.getDate() - days)
 
-    const results = await db
-        .select({
-            pagePath: pageView.pagePath,
-            pageTitle: sql<string>`MAX(${pageView.pageTitle})`.as('pageTitle'),
-            views: count(),
-            uniqueSessions: countDistinct(pageView.sessionId),
-        })
-        .from(pageView)
-        .where(gte(pageView.createdAt, startDate))
-        .groupBy(pageView.pagePath)
-        .orderBy(desc(count()))
-        .limit(limit)
+        const results = await db
+            .select({
+                pagePath: pageView.pagePath,
+                pageTitle: sql<string>`MAX(${pageView.pageTitle})`.as(
+                    'pageTitle'
+                ),
+                views: count(),
+                uniqueSessions: countDistinct(pageView.sessionId),
+            })
+            .from(pageView)
+            .where(gte(pageView.createdAt, startDate))
+            .groupBy(pageView.pagePath)
+            .orderBy(desc(count()))
+            .limit(limit)
 
-    return results
-}
+        return results
+    }
+)
 
 // ============================================================================
 // Traffic Sources
@@ -225,10 +226,11 @@ export async function getTopPagesInRange(
 /**
  * Get traffic sources breakdown
  */
-export async function getTrafficSources(limit = 10): Promise<TrafficSource[]> {
-    const results = await db
-        .select({
-            source: sql<string>`COALESCE(
+export const getTrafficSources = cache(
+    async (limit = 10): Promise<TrafficSource[]> => {
+        const results = await db
+            .select({
+                source: sql<string>`COALESCE(
                 ${pageView.utmSource}, 
                 CASE 
                     WHEN ${pageView.referrer} IS NOT NULL AND ${pageView.referrer} != '' 
@@ -236,39 +238,42 @@ export async function getTrafficSources(limit = 10): Promise<TrafficSource[]> {
                     ELSE 'direct'
                 END
             )`.as('source'),
-            views: count(),
-            sessions: countDistinct(pageView.sessionId),
-        })
-        .from(pageView)
-        .groupBy(sql`1`)
-        .orderBy(desc(count()))
-        .limit(limit)
+                views: count(),
+                sessions: countDistinct(pageView.sessionId),
+            })
+            .from(pageView)
+            .groupBy(sql`1`)
+            .orderBy(desc(count()))
+            .limit(limit)
 
-    return results
-}
+        return results
+    }
+)
 
 /**
  * Get UTM campaign breakdown
  */
-export async function getUTMCampaigns(
-    limit = 10
-): Promise<{ campaign: string; views: number; sessions: number }[]> {
-    const results = await db
-        .select({
-            campaign:
-                sql<string>`COALESCE(${pageView.utmCampaign}, '(none)')`.as(
-                    'campaign'
-                ),
-            views: count(),
-            sessions: countDistinct(pageView.sessionId),
-        })
-        .from(pageView)
-        .groupBy(pageView.utmCampaign)
-        .orderBy(desc(count()))
-        .limit(limit)
+export const getUTMCampaigns = cache(
+    async (
+        limit = 10
+    ): Promise<{ campaign: string; views: number; sessions: number }[]> => {
+        const results = await db
+            .select({
+                campaign:
+                    sql<string>`COALESCE(${pageView.utmCampaign}, '(none)')`.as(
+                        'campaign'
+                    ),
+                views: count(),
+                sessions: countDistinct(pageView.sessionId),
+            })
+            .from(pageView)
+            .groupBy(pageView.utmCampaign)
+            .orderBy(desc(count()))
+            .limit(limit)
 
-    return results
-}
+        return results
+    }
+)
 
 // ============================================================================
 // Device & Browser Stats
@@ -277,7 +282,7 @@ export async function getUTMCampaigns(
 /**
  * Get device type breakdown
  */
-export async function getDeviceBreakdown(): Promise<DeviceStats[]> {
+export const getDeviceBreakdown = cache(async (): Promise<DeviceStats[]> => {
     const results = await db
         .select({
             deviceType:
@@ -296,36 +301,39 @@ export async function getDeviceBreakdown(): Promise<DeviceStats[]> {
         ...r,
         percentage: total > 0 ? Math.round((r.views / total) * 100) : 0,
     }))
-}
+})
 
 /**
  * Get browser breakdown
  */
-export async function getBrowserBreakdown(limit = 10): Promise<BrowserStats[]> {
-    const results = await db
-        .select({
-            browser: sql<string>`COALESCE(${pageView.browser}, 'Unknown')`.as(
-                'browser'
-            ),
-            views: count(),
-        })
-        .from(pageView)
-        .groupBy(pageView.browser)
-        .orderBy(desc(count()))
-        .limit(limit)
+export const getBrowserBreakdown = cache(
+    async (limit = 10): Promise<BrowserStats[]> => {
+        const results = await db
+            .select({
+                browser:
+                    sql<string>`COALESCE(${pageView.browser}, 'Unknown')`.as(
+                        'browser'
+                    ),
+                views: count(),
+            })
+            .from(pageView)
+            .groupBy(pageView.browser)
+            .orderBy(desc(count()))
+            .limit(limit)
 
-    // Calculate percentages
-    const total = results.reduce((sum, r) => sum + r.views, 0)
-    return results.map((r) => ({
-        ...r,
-        percentage: total > 0 ? Math.round((r.views / total) * 100) : 0,
-    }))
-}
+        // Calculate percentages
+        const total = results.reduce((sum, r) => sum + r.views, 0)
+        return results.map((r) => ({
+            ...r,
+            percentage: total > 0 ? Math.round((r.views / total) * 100) : 0,
+        }))
+    }
+)
 
 /**
  * Get OS breakdown
  */
-export async function getOSBreakdown(limit = 10): Promise<OSStats[]> {
+export const getOSBreakdown = cache(async (limit = 10): Promise<OSStats[]> => {
     const results = await db
         .select({
             os: sql<string>`COALESCE(${pageView.os}, 'Unknown')`.as('os'),
@@ -342,7 +350,7 @@ export async function getOSBreakdown(limit = 10): Promise<OSStats[]> {
         ...r,
         percentage: total > 0 ? Math.round((r.views / total) * 100) : 0,
     }))
-}
+})
 
 // ============================================================================
 // Geo Distribution
@@ -351,23 +359,25 @@ export async function getOSBreakdown(limit = 10): Promise<OSStats[]> {
 /**
  * Get geographic distribution by country
  */
-export async function getGeoDistribution(limit = 20): Promise<GeoStats[]> {
-    const results = await db
-        .select({
-            countryCode:
-                sql<string>`COALESCE(${pageView.countryCode}, 'XX')`.as(
-                    'countryCode'
-                ),
-            views: count(),
-            sessions: countDistinct(pageView.sessionId),
-        })
-        .from(pageView)
-        .groupBy(pageView.countryCode)
-        .orderBy(desc(count()))
-        .limit(limit)
+export const getGeoDistribution = cache(
+    async (limit = 20): Promise<GeoStats[]> => {
+        const results = await db
+            .select({
+                countryCode:
+                    sql<string>`COALESCE(${pageView.countryCode}, 'XX')`.as(
+                        'countryCode'
+                    ),
+                views: count(),
+                sessions: countDistinct(pageView.sessionId),
+            })
+            .from(pageView)
+            .groupBy(pageView.countryCode)
+            .orderBy(desc(count()))
+            .limit(limit)
 
-    return results
-}
+        return results
+    }
+)
 
 // ============================================================================
 // Notes

@@ -6,6 +6,7 @@
  *
  * @module app/(dashboard)/analytics/page
  */
+import dynamicImport from 'next/dynamic'
 import {
     Card,
     CardContent,
@@ -23,15 +24,9 @@ import {
     ExternalLink,
     BarChart3,
 } from 'lucide-react'
+import { Skeleton } from '@workspace/ui/components/skeleton'
 
-import {
-    BrowserChart,
-    DeviceChart,
-    GeoTable,
-    PageViewsChart,
-    TopPagesChart,
-    TrafficSourcesChart,
-} from '@/components/charts/analytics-charts.component'
+import { GeoTable } from '@/components/charts/analytics-charts.component'
 import {
     getAnalyticsSummary,
     getPageViewsOverTime,
@@ -42,8 +37,65 @@ import {
     getGeoDistribution,
 } from '@/lib/queries/analytics.query'
 
+// Lazy load chart components for better performance
+const PageViewsChart = dynamicImport(
+    () =>
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.PageViewsChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+const TopPagesChart = dynamicImport(
+    () =>
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.TopPagesChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+const TrafficSourcesChart = dynamicImport(
+    () =>
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.TrafficSourcesChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[280px] w-full' />,
+    }
+)
+
+const DeviceChart = dynamicImport(
+    () =>
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.DeviceChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[200px] w-full' />,
+    }
+)
+
+const BrowserChart = dynamicImport(
+    () =>
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.BrowserChart
+        ),
+    {
+        loading: () => <Skeleton className='h-[200px] w-full' />,
+    }
+)
+
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
+
+export const metadata = {
+    title: 'Analytics | Admin',
+    description:
+        'Website analytics dashboard with page views, traffic sources, and visitor insights',
+}
 
 export default async function AnalyticsPage() {
     const [
