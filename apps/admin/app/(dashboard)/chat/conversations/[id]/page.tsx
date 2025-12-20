@@ -471,52 +471,49 @@ export default async function ConversationDetailPage({ params }: PageProps) {
 
                             {/* Detected Procedures */}
                             {session.detectedProcedures &&
-                                (session.detectedProcedures as string[])
-                                    .length > 0 && (
+                                session.detectedProcedures.length > 0 && (
                                     <div className='border-t pt-3'>
                                         <p className='text-muted-foreground mb-2 text-xs font-medium uppercase'>
                                             Procedures Mentioned
                                         </p>
                                         <div className='flex flex-wrap gap-1'>
-                                            {(
-                                                session.detectedProcedures as string[]
-                                            ).map((proc) => (
-                                                <Badge
-                                                    key={proc}
-                                                    variant='outline'
-                                                    className='text-xs'
-                                                >
-                                                    {PROCEDURE_LABELS[proc] ??
-                                                        proc}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                            {/* Tags */}
-                            {session.tags &&
-                                (session.tags as string[]).length > 0 && (
-                                    <div className='border-t pt-3'>
-                                        <p className='text-muted-foreground mb-2 text-xs font-medium uppercase'>
-                                            Tags
-                                        </p>
-                                        <div className='flex flex-wrap gap-1'>
-                                            {(session.tags as string[]).map(
-                                                (tag) => (
+                                            {session.detectedProcedures.map(
+                                                (proc) => (
                                                     <Badge
-                                                        key={tag}
-                                                        variant='secondary'
+                                                        key={proc}
+                                                        variant='outline'
                                                         className='text-xs'
                                                     >
-                                                        <Tag className='mr-1 h-3 w-3' />
-                                                        {tag.replace(/_/g, ' ')}
+                                                        {PROCEDURE_LABELS[
+                                                            proc
+                                                        ] ?? proc}
                                                     </Badge>
                                                 )
                                             )}
                                         </div>
                                     </div>
                                 )}
+
+                            {/* Tags */}
+                            {session.tags && session.tags.length > 0 && (
+                                <div className='border-t pt-3'>
+                                    <p className='text-muted-foreground mb-2 text-xs font-medium uppercase'>
+                                        Tags
+                                    </p>
+                                    <div className='flex flex-wrap gap-1'>
+                                        {session.tags.map((tag) => (
+                                            <Badge
+                                                key={tag}
+                                                variant='secondary'
+                                                className='text-xs'
+                                            >
+                                                <Tag className='mr-1 h-3 w-3' />
+                                                {tag.replace(/_/g, ' ')}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Escalation Status */}
                             {session.isEscalated && (

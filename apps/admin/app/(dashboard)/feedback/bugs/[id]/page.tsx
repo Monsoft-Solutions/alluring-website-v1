@@ -22,10 +22,7 @@ import {
     CardTitle,
 } from '@workspace/ui/components/card'
 
-import {
-    getBugReportById,
-    updateBugReportStatus,
-} from '@/lib/queries/feedback.query'
+import { getBugReportById } from '@/lib/queries/feedback.query'
 
 /**
  * Validates that a URL uses only http or https protocols

@@ -35,7 +35,7 @@ export function AnalysisResultClient({
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
 
-    const handleApply = async (data: {
+    const handleApply = (data: {
         pairGroupAssignments: Map<string, string[]>
         unpairedGroupAssignments: Map<string, string[]>
         nonBAGroupAssignments: Map<string, string[]>
@@ -207,7 +207,7 @@ export function AnalysisResultClient({
     return (
         <>
             <AnalysisResult
-                analysisResult={analysis.resultData!}
+                analysisResult={analysis.resultData}
                 galleryGroups={galleryGroups}
                 onApply={handleApply}
                 isApplying={isPending}

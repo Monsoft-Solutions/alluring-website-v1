@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot'
 import { ArrowRight } from 'lucide-react'
-import {
+import type {
     ReactNode,
     ComponentPropsWithoutRef,
     ButtonHTMLAttributes,

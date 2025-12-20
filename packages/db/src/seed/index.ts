@@ -8,6 +8,10 @@ import { db } from '../client'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+type SeederModule = {
+    run: (props: { db: typeof db }) => Promise<void>
+}
+
 async function seed() {
     console.log('🌱 Starting to seed database...')
 
@@ -23,7 +27,9 @@ async function seed() {
         console.log('🌱 Discovered seeders:', sortedSeeders)
 
         for (const file of sortedSeeders) {
-            const seeder = await import(path.resolve(seedersDir, file))
+            const seeder = (await import(
+                path.resolve(seedersDir, file)
+            )) as unknown as SeederModule
             console.log(`\n🌱 Running seeder: ${file}`)
             await seeder.run({ db })
         }
@@ -36,4 +42,4 @@ async function seed() {
     }
 }
 
-seed()
+void seed()

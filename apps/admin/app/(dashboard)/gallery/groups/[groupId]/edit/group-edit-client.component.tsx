@@ -39,7 +39,6 @@ type GroupEditClientProps = {
 export function GroupEditClient({
     group,
     groupMedia: initialGroupMedia,
-    allGroups,
 }: GroupEditClientProps) {
     const router = useRouter()
     const [groupMedia, setGroupMedia] = useState(initialGroupMedia)
@@ -50,12 +49,9 @@ export function GroupEditClient({
         setGroupMedia(initialGroupMedia)
     }, [initialGroupMedia])
 
-    const handleMediaSelected = useCallback(
-        async (mediaIds: string[]) => {
-            router.refresh()
-        },
-        [router]
-    )
+    const handleMediaSelected = useCallback(() => {
+        router.refresh()
+    }, [router])
 
     return (
         <div className='space-y-6'>

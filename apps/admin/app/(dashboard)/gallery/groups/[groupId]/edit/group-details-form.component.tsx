@@ -84,7 +84,7 @@ export function GroupDetailsForm({ group, groupMedia }: GroupDetailsFormProps) {
         }
     }
 
-    const handleSaveGroup = async () => {
+    const handleSaveGroup = () => {
         startTransition(async () => {
             try {
                 const result = await updateGalleryGroup(group.id, {

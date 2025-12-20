@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { galleryMediaParamsSchema } from '@/lib/schemas/gallery-media-params.schema'
 import { getGalleryMedia } from '@/lib/queries/gallery.query'

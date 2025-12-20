@@ -33,7 +33,7 @@ export function sanitizeMessageContent(content: string): string {
     return content
         .trim()
         .slice(0, 2000) // Enforce max length
-        .replace(/\u0000/g, '') // Remove null bytes
+        .replaceAll('\u0000', '') // Remove null bytes
 }
 
 /**

@@ -104,7 +104,7 @@ export function GroupFormDialog({
         }
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         startTransition(async () => {
             try {
                 if (mode === 'create') {

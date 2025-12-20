@@ -51,7 +51,7 @@ function LoginForm() {
 
     const redirectTo = getSafeRedirectPath(searchParams.get('redirect'))
 
-    async function handleSubmit(e: React.FormEvent) {
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setError('')
 

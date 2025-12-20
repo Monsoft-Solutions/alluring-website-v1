@@ -221,7 +221,6 @@ export function SyncAllButton({
             // Update cumulative stats
             updateStatsFromResult(currentResult, isFirstBatch)
             isFirstBatch = false
-            hasMore = currentResult.hasMore
 
             // Wait for next batch if we started one
             if (nextFetchPromise) {
@@ -230,7 +229,7 @@ export function SyncAllButton({
 
                 try {
                     pendingResult = await nextFetchPromise
-                } catch (error) {
+                } catch {
                     // Error already handled in the catch above
                     pendingResult = null
                 }
@@ -273,7 +272,7 @@ export function SyncAllButton({
      * Retry after error
      */
     const handleRetry = useCallback(() => {
-        startSyncAll()
+        void startSyncAll()
     }, [startSyncAll])
 
     // ========================================================================

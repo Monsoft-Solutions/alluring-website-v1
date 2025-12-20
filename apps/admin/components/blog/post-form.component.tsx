@@ -110,9 +110,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         return 'Post saved'
     }
 
-    const handleSave = async (
-        status?: 'draft' | 'readyToPublish' | 'published'
-    ) => {
+    const handleSave = (status?: 'draft' | 'readyToPublish' | 'published') => {
         const dataToSave = {
             ...formData,
             status: status ?? formData.status,

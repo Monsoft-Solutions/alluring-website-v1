@@ -89,7 +89,7 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
         }))
     }
 
-    const handleSave = async () => {
+    const handleSave = () => {
         startTransition(async () => {
             try {
                 if (mode === 'create') {
@@ -349,7 +349,7 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                                 </SelectContent>
                             </Select>
                             <p className='text-muted-foreground text-xs'>
-                                Inactive authors won't appear in author
+                                Inactive authors won&apos;t appear in author
                                 selection dropdowns
                             </p>
                         </div>

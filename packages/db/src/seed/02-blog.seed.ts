@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url'
 
 import { eq } from 'drizzle-orm'
 
-import { db } from '../client'
 import { env } from '../env'
 import {
     author,
@@ -19,8 +18,10 @@ import {
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+type Db = typeof import('../client').db
+
 type RunProps = {
-    db: typeof db
+    db: Db
 }
 
 type PostModule = {

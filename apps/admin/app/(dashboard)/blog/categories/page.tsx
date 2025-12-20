@@ -14,13 +14,7 @@ import {
 
 import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@workspace/ui/components/card'
+import { Card, CardContent } from '@workspace/ui/components/card'
 import {
     Table,
     TableBody,
@@ -72,7 +66,7 @@ export default function CategoriesPage() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetchCategories()
+        void fetchCategories()
     }, [])
 
     async function fetchCategories() {
@@ -81,7 +75,7 @@ export default function CategoriesPage() {
             if (!res.ok) {
                 throw new Error(`Failed to fetch: ${res.status}`)
             }
-            const data = await res.json()
+            const data = (await res.json()) as Category[]
             setCategories(data)
         } catch (error) {
             console.error('Failed to fetch categories:', error)

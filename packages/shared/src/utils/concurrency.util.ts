@@ -58,13 +58,13 @@ export async function runWithConcurrency<T>(
             .then((value) => {
                 results[resultIndex] = { status: 'fulfilled', value }
             })
-            .catch((reason) => {
+            .catch((reason: unknown) => {
                 results[resultIndex] = { status: 'rejected', reason }
             })
             .finally(() => {
                 // Remove from executing array when done
                 const idx = executing.indexOf(promise)
-                if (idx > -1) executing.splice(idx, 1)
+                if (idx > -1) void executing.splice(idx, 1)
             })
 
         // If we've reached the concurrency limit, wait for one to finish

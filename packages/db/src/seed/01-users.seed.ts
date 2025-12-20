@@ -1,8 +1,9 @@
-import { db } from '../client'
 import { author } from '../schema/blog'
 
+type Db = typeof import('../client').db
+
 type RunProps = {
-    db: typeof db
+    db: Db
 }
 
 export async function run({ db }: RunProps) {

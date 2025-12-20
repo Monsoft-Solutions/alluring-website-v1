@@ -13,7 +13,6 @@ import {
     ChevronRight,
     Send,
     Menu,
-    X,
     Megaphone,
     Bot,
 } from 'lucide-react'

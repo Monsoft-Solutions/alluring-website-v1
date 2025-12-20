@@ -6,12 +6,13 @@
  *
  * @module packages/db/src/seed/04-gallery-groups
  */
-import { db } from '../client'
 import { env } from '../env'
 import { galleryGroup, type InsertGalleryGroup } from '../schema/gallery'
 
+type Db = typeof import('../client').db
+
 type RunProps = {
-    db: typeof db
+    db: Db
 }
 
 /**

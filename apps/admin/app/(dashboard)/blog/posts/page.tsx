@@ -76,7 +76,7 @@ export default async function BlogPostsPage({
         : 'desc'
 
     // First fetch to get total count
-    let { posts, total } = await getBlogPosts({
+    const { posts: initialPosts, total } = await getBlogPosts({
         page: requestedPage,
         pageSize,
         sortBy,
@@ -89,6 +89,7 @@ export default async function BlogPostsPage({
     const page = Math.min(requestedPage, Math.max(1, totalPages))
 
     // Re-fetch if page was clamped and we got empty results
+    let posts = initialPosts
     if (page !== requestedPage && posts.length === 0 && totalPages > 0) {
         const refetch = await getBlogPosts({
             page,

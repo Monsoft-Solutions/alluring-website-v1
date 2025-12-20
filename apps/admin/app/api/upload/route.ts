@@ -1,7 +1,8 @@
 import { put, del } from '@vercel/blob'
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { env } from '@/env'
 
@@ -61,7 +62,7 @@ type ErrorResponse = {
  */
 export async function POST(
     request: NextRequest
-): Promise<NextResponse<UploadResponse | ErrorResponse | unknown>> {
+): Promise<NextResponse<UploadResponse | ErrorResponse>> {
     // Check authentication
     const authenticated = await isAuthenticated()
     if (!authenticated) {
@@ -81,7 +82,7 @@ export async function POST(
             const jsonResponse = await handleUpload({
                 body,
                 request,
-                onBeforeGenerateToken: async (pathname) => {
+                onBeforeGenerateToken: (pathname) => {
                     // Validate file type from pathname
                     const extension = pathname.split('.').pop()?.toLowerCase()
                     const mimeMap: Record<string, string> = {
@@ -110,7 +111,7 @@ export async function POST(
                         }),
                     }
                 },
-                onUploadCompleted: async ({ blob }) => {
+                onUploadCompleted: ({ blob }) => {
                     console.log('Upload completed:', blob.url)
                 },
             })

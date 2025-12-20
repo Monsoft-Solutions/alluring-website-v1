@@ -95,7 +95,7 @@ export function QuickReplyForm({
             } else {
                 setError(result.error ?? 'An error occurred')
             }
-        } catch (err) {
+        } catch {
             setError('An unexpected error occurred')
         } finally {
             setIsSubmitting(false)

@@ -11,7 +11,7 @@ import { getAbsoluteUrl } from './url.util'
  * Normalize an image input into ImageMetadata with absolute URL.
  */
 export function generateImageMetadata(
-    image: string | (ImageMetadata & { url: string })
+    image: string | ImageMetadata
 ): ImageMetadata {
     if (typeof image === 'string') {
         return { url: getAbsoluteUrl(image), alt: '' }

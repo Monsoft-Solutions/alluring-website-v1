@@ -138,7 +138,7 @@ export function PromotionForm({ initialData, mode }: PromotionFormProps) {
         return 'Promotion saved'
     }
 
-    const handleSave = async (status?: PromotionFormData['status']) => {
+    const handleSave = (status?: PromotionFormData['status']) => {
         const dataToSave = {
             ...formData,
             status: status ?? formData.status,

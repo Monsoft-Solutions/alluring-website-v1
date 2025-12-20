@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
     ArrowLeft,
-    MessageSquare,
     Monitor,
     Star,
     ThumbsUp,
@@ -18,7 +17,6 @@ import { Badge } from '@workspace/ui/components/badge'
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'

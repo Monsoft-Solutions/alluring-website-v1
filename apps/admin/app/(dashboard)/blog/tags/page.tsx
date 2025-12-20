@@ -57,7 +57,7 @@ export default function TagsPage() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetchTags()
+        void fetchTags()
     }, [])
 
     async function fetchTags() {
@@ -66,7 +66,7 @@ export default function TagsPage() {
             if (!res.ok) {
                 throw new Error(`Failed to fetch: ${res.status}`)
             }
-            const data = await res.json()
+            const data = (await res.json()) as TagItem[]
             setTags(data)
         } catch (error) {
             console.error('Failed to fetch tags:', error)
