@@ -9,7 +9,7 @@ import type {
     DeviceStats,
     BrowserStats,
     GeoStats,
-} from '@/lib/queries/analytics.query'
+} from '@/lib/types/analytics.type'
 
 /**
  * Query keys for analytics data.

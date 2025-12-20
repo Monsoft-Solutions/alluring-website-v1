@@ -3,25 +3,12 @@ import { contactSubmission } from '@workspace/db/schema/contact'
 import { emailLog } from '@workspace/db/schema/emails'
 import { count, desc, eq, and, gte, lte, sql } from 'drizzle-orm'
 
-export type EmailLogListItem = {
-    id: string
-    to: string
-    from: string
-    subject: string
-    status: 'sent' | 'failed' | 'pending'
-    resendEmailId: string | null
-    error: string | null
-    sentAt: Date
-    contactSubmissionId: string | null
-    contactName: string | null
-    contactEmail: string | null
-}
-
-export type EmailFilters = {
-    status?: 'sent' | 'failed' | 'pending' | 'all'
-    startDate?: Date
-    endDate?: Date
-}
+import type {
+    EmailLogListItem,
+    EmailFilters,
+    EmailStats,
+    EmailLogById,
+} from '@/lib/types/emails.type'
 
 export async function getEmailLogs(
     page = 1,
@@ -80,14 +67,6 @@ export async function getEmailLogs(
     }
 }
 
-export type EmailStats = {
-    total: number
-    sent: number
-    failed: number
-    pending: number
-    successRate: number
-}
-
 export async function getEmailStats(): Promise<EmailStats> {
     const result = await db.execute<{
         total: number
@@ -116,11 +95,6 @@ export async function getEmailStats(): Promise<EmailStats> {
         pending,
         successRate: total > 0 ? Math.round((sent / total) * 100) : 0,
     }
-}
-
-export type EmailLogById = EmailLogListItem & {
-    contactPhone: string | null
-    contactMessage: string | null
 }
 
 export async function getEmailLogById(

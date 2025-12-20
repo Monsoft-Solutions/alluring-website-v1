@@ -11,62 +11,17 @@ import { db } from '@workspace/db/client'
 import { pageView } from '@workspace/db/schema/analytics'
 import { count, desc, gte, sql, countDistinct } from 'drizzle-orm'
 
-import {
-    fillMissingDatesWithViews,
-    type DailyViewCount,
-} from '@/lib/utils/date.util'
-
-// ============================================================================
-// Types
-// ============================================================================
-
-export type AnalyticsSummary = {
-    totalViews: number
-    uniqueSessions: number
-    todayViews: number
-    topPage: string | null
-    topSource: string | null
-}
-
-// Re-export DailyViewCount from shared utility for backwards compatibility
-export type { DailyViewCount }
-
-export type TopPage = {
-    pagePath: string
-    pageTitle: string | null
-    views: number
-    uniqueSessions: number
-}
-
-export type TrafficSource = {
-    source: string
-    views: number
-    sessions: number
-}
-
-export type DeviceStats = {
-    deviceType: string
-    views: number
-    percentage: number
-}
-
-export type BrowserStats = {
-    browser: string
-    views: number
-    percentage: number
-}
-
-export type OSStats = {
-    os: string
-    views: number
-    percentage: number
-}
-
-export type GeoStats = {
-    countryCode: string
-    views: number
-    sessions: number
-}
+import { fillMissingDatesWithViews } from '@/lib/utils/date.util'
+import type {
+    AnalyticsSummary,
+    DailyViewCount,
+    TopPage,
+    TrafficSource,
+    DeviceStats,
+    BrowserStats,
+    OSStats,
+    GeoStats,
+} from '@/lib/types/analytics.type'
 
 // ============================================================================
 // Summary Stats

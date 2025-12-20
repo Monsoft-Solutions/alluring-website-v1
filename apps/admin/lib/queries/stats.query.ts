@@ -6,27 +6,15 @@ import { bugReport } from '@workspace/db/schema/feedback'
 import { emailLog } from '@workspace/db/schema/emails'
 import { count, eq, desc, sql, gte } from 'drizzle-orm'
 
-import { fillMissingDatesSimple, type DailyCount } from '@/lib/utils/date.util'
-
-export type DashboardStats = {
-    visitors: {
-        today: number
-        allTime: number
-    }
-    contacts: {
-        total: number
-        recent: number
-    }
-    chat: {
-        totalSessions: number
-        totalMessages: number
-        activeSessions: number
-    }
-    leads: {
-        highQualityCount: number
-        highQualityPercentage: number
-    }
-}
+import { fillMissingDatesSimple } from '@/lib/utils/date.util'
+import type { DailyCount } from '@/lib/types/common.type'
+import type { DashboardStats } from '@/lib/types/dashboard-stats.type'
+import type { RecentContact } from '@/lib/types/recent-contact.type'
+import type { RecentBugReport } from '@/lib/types/recent-bug-report.type'
+import type { SeverityCount } from '@/lib/types/severity-count.type'
+import type { PostStatusCount } from '@/lib/types/post-status-count.type'
+import type { TopPost } from '@/lib/types/top-post.type'
+import type { EmailStatusCount } from '@/lib/types/email-status-count.type'
 
 type DashboardStatsRow = {
     today_visitors: number
@@ -92,14 +80,9 @@ export const getDashboardStats = cache(async (): Promise<DashboardStats> => {
     }
 })
 
-export type RecentContact = {
-    id: string
-    name: string
-    email: string
-    subject: string | null
-    createdAt: Date | null
-}
-
+/**
+ * Get recent contact submissions
+ */
 export const getRecentContacts = cache(
     async (limit = 5): Promise<RecentContact[]> => {
         const contacts = await db
@@ -118,15 +101,9 @@ export const getRecentContacts = cache(
     }
 )
 
-export type RecentBugReport = {
-    id: string
-    description: string
-    pageUrl: string
-    severity: string | null
-    status: string | null
-    createdAt: Date
-}
-
+/**
+ * Get recent bug reports
+ */
 export const getRecentBugReports = cache(
     async (limit = 5): Promise<RecentBugReport[]> => {
         const reports = await db
@@ -146,10 +123,9 @@ export const getRecentBugReports = cache(
     }
 )
 
-// Time-series data for charts
-// Re-export DailyCount from shared utility for backwards compatibility
-export type { DailyCount }
-
+/**
+ * Get contacts over time for chart visualization
+ */
 export const getContactsOverTime = cache(
     async (days = 30): Promise<DailyCount[]> => {
         const startDate = new Date()
@@ -172,11 +148,9 @@ export const getContactsOverTime = cache(
     }
 )
 
-export type SeverityCount = {
-    severity: string
-    count: number
-}
-
+/**
+ * Get bug distribution by severity
+ */
 export const getBugsBySeverity = cache(async (): Promise<SeverityCount[]> => {
     const results = await db
         .select({
@@ -191,11 +165,9 @@ export const getBugsBySeverity = cache(async (): Promise<SeverityCount[]> => {
     return results
 })
 
-export type PostStatusCount = {
-    status: string
-    count: number
-}
-
+/**
+ * Get blog post distribution by status
+ */
 export const getPostsByStatus = cache(async (): Promise<PostStatusCount[]> => {
     const results = await db
         .select({
@@ -210,12 +182,9 @@ export const getPostsByStatus = cache(async (): Promise<PostStatusCount[]> => {
     return results
 })
 
-export type TopPost = {
-    title: string
-    views: number
-    slug: string
-}
-
+/**
+ * Get top performing blog posts
+ */
 export const getTopPostsByViews = cache(
     async (limit = 5): Promise<TopPost[]> => {
         const results = await db
@@ -233,6 +202,9 @@ export const getTopPostsByViews = cache(
     }
 )
 
+/**
+ * Get email distribution over time
+ */
 export const getEmailsOverTime = cache(
     async (days = 30): Promise<DailyCount[]> => {
         const startDate = new Date()
@@ -252,11 +224,9 @@ export const getEmailsOverTime = cache(
     }
 )
 
-export type EmailStatusCount = {
-    status: string
-    count: number
-}
-
+/**
+ * Get email distribution by status
+ */
 export const getEmailsByStatus = cache(
     async (): Promise<EmailStatusCount[]> => {
         const results = await db

@@ -26,10 +26,8 @@ import {
 } from '@workspace/ui/components/select'
 
 import { updateGalleryGroup } from '@/lib/actions/gallery.action'
-import type {
-    GalleryGroupDetail,
-    GalleryMediaListItem,
-} from '@/lib/queries/gallery.query'
+import type { GalleryGroupDetail } from '@/lib/types/gallery-group.type'
+import type { GalleryMediaListItem } from '@/lib/types/gallery-media.type'
 import { PROCEDURE_OPTIONS } from '@/lib/constants/procedure.constant'
 
 type GroupDetailsFormProps = {

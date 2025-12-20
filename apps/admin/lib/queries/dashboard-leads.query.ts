@@ -3,15 +3,7 @@ import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
 import { desc, inArray } from 'drizzle-orm'
 
-export type HighValueLead = {
-    id: string
-    fullName: string
-    email: string | null
-    phone: string
-    leadGrade: string | null
-    leadScore: number
-    createdAt: Date
-}
+import type { HighValueLead } from '@/lib/types/high-value-lead.type'
 
 /**
  * Get recent high-value leads (Grade A or B)
@@ -32,7 +24,6 @@ export const getHighValueLeads = cache(
             .where(inArray(chatSession.leadGrade, ['A', 'B']))
             .orderBy(desc(chatSession.createdAt))
             .limit(limit)
-
         return leads
     }
 )

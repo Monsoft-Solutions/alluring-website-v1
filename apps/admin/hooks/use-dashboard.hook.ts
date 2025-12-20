@@ -1,19 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
-import type {
-    DashboardStats,
-    RecentContact,
-    DailyCount,
-    TopPost,
-} from '@/lib/queries/stats.query'
-import type { ProcedureDemand } from '@/lib/queries/dashboard-procedure-demand.query'
-import type {
-    ChatSummary,
-    LeadGradeDistribution,
-} from '@/lib/queries/dashboard-chat.query'
-import type { HighValueLead } from '@/lib/queries/dashboard-leads.query'
-import type { DailyViewCount } from '@/lib/queries/analytics.query'
+import type { DailyCount } from '@/lib/types/common.type'
+import type { DashboardStats } from '@/lib/types/dashboard-stats.type'
+import type { RecentContact } from '@/lib/types/recent-contact.type'
+import type { TopPost } from '@/lib/types/top-post.type'
+import type { ProcedureDemand } from '@/lib/types/procedure-demand.type'
+import type { ChatSummary } from '@/lib/types/chat-summary.type'
+import type { LeadGradeDistribution } from '@/lib/types/lead-grade-distribution.type'
+import type { HighValueLead } from '@/lib/types/high-value-lead.type'
+import type { DailyViewCount } from '@/lib/types/analytics.type'
 
 /**
  * Query keys for dashboard data.

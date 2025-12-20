@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
-import type { EmailStats, EmailLogListItem } from '@/lib/queries/emails.query'
+import type { EmailStats, EmailLogListItem } from '@/lib/types/emails.type'
 
 export const emailKeys = {
     all: ['admin', 'emails'] as const,

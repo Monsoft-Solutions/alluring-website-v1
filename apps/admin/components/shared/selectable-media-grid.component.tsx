@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 
 import { SelectableMediaCard } from './selectable-media-card.component'
-import type { GalleryMediaListItem } from '@/lib/queries/gallery.query'
+import type { GalleryMediaListItem } from '@/lib/types/gallery-media.type'
 
 type SelectableMediaGridProps = {
     media: GalleryMediaListItem[]

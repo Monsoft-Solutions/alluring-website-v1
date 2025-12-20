@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 
-import {
-    getInstagramPosts,
-    type InstagramAnalysisStatusFilter,
-    type InstagramMediaTypeFilter,
-    type InstagramPostSortBy,
-    type InstagramPostSortDirection,
-} from '@/lib/queries/social-media.query'
+import { getInstagramPosts } from '@/lib/queries/social-media.query'
+import type {
+    InstagramAnalysisStatusFilter,
+    InstagramMediaTypeFilter,
+    InstagramPostSortBy,
+    InstagramPostSortDirection,
+} from '@/lib/types/social-media.type'
 import { isAuthenticated } from '@/lib/utils/auth.util'
 
 const DEFAULT_PAGE = 1

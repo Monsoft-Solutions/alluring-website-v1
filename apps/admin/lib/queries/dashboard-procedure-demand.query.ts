@@ -3,10 +3,7 @@ import { db } from '@workspace/db/client'
 import { contactSubmission } from '@workspace/db/schema/contact'
 import { count, desc, isNotNull, and, ne } from 'drizzle-orm'
 
-export type ProcedureDemand = {
-    procedure: string
-    count: number
-}
+import type { ProcedureDemand } from '@/lib/types/procedure-demand.type'
 
 /**
  * Get procedure demand based on contact submissions
@@ -28,7 +25,6 @@ export const getProcedureDemand = cache(
             .groupBy(contactSubmission.procedure)
             .orderBy(desc(count()))
             .limit(limit)
-
         return results.map((r) => ({
             procedure: r.procedure ?? 'Unknown',
             count: r.count,

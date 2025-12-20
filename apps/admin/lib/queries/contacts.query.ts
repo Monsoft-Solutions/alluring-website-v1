@@ -2,32 +2,10 @@ import { db } from '@workspace/db/client'
 import { contactSubmission } from '@workspace/db/schema/contact'
 import { count, desc, eq } from 'drizzle-orm'
 
-export type ContactListItem = {
-    id: string
-    name: string
-    firstName: string | null
-    lastName: string | null
-    email: string
-    phone: string | null
-    subject: string | null
-    message: string | null
-    procedure: string | null
-    source: string | null
-    preferredContactTime: string | null
-    createdAt: Date
-    // UTM & Analytics fields
-    utmSource: string | null
-    utmMedium: string | null
-    utmCampaign: string | null
-    utmContent: string | null
-    utmTerm: string | null
-    gclid: string | null
-    fbclid: string | null
-    ttclid: string | null
-    referrer: string | null
-    landingPage: string | null
-    ipAddress: string | null
-}
+import type {
+    ContactListItem,
+    ContactAnalyticsStats,
+} from '@/lib/types/contacts.type'
 
 export async function getContacts(
     page = 1,
@@ -112,11 +90,4 @@ export async function getContactById(
         .limit(1)
 
     return result[0] ?? null
-}
-
-export type ContactAnalyticsStats = {
-    totalContacts: number
-    bySource: { source: string; count: number }[]
-    byUtmSource: { utmSource: string; count: number }[]
-    byProcedure: { procedure: string; count: number }[]
 }

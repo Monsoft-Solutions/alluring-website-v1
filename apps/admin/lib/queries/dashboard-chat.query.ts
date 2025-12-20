@@ -3,13 +3,8 @@ import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
 import { count, sql, isNotNull } from 'drizzle-orm'
 
-export type ChatSummary = {
-    totalSessions: number
-    totalMessages: number
-    avgMessagesPerSession: number
-    activeSessions: number
-    avgLeadScore: number
-}
+import type { ChatSummary } from '@/lib/types/chat-summary.type'
+import type { LeadGradeDistribution } from '@/lib/types/lead-grade-distribution.type'
 
 type ChatSummaryRow = {
     total_sessions: number
@@ -43,12 +38,6 @@ export const getChatSummary = cache(async (): Promise<ChatSummary> => {
         avgLeadScore: Math.round(stats?.avg_score ?? 0),
     }
 })
-
-export type LeadGradeDistribution = {
-    grade: string
-    count: number
-    color: string
-}
 
 /**
  * Get lead grade distribution for donut chart
