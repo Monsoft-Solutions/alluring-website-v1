@@ -49,25 +49,37 @@ export function getCurrentLanguage(): LanguageCode {
     if (typeof window === 'undefined') return DEFAULT_LANGUAGE
 
     try {
-        // Check Google Translate cookie
-        const cookieMatch = document.cookie.match(
-            /googtrans=\/[a-z]{2}\/([a-z]{2})/
-        )
-        if (cookieMatch && cookieMatch[1]) {
-            const lang = cookieMatch[1]
-            if (lang === 'en' || lang === 'es') {
-                return lang
+        // Check Google Translate cookies (there might be multiple)
+        const cookies = document.cookie.split(';')
+        let detectedLang: LanguageCode | null = null
+
+        for (const cookie of cookies) {
+            const [name, value] = cookie.trim().split('=')
+            if (name === 'googtrans' && value) {
+                const match = value.match(/^\/[a-z]{2}\/([a-z]{2})/)
+                if (match && match[1]) {
+                    const lang = match[1] as LanguageCode
+                    if (lang === 'en' || lang === 'es') {
+                        // If we find 'es', prioritize it as it means translation is active
+                        if (lang === 'es') return 'es'
+                        detectedLang = lang
+                    }
+                }
             }
         }
 
+        if (detectedLang) return detectedLang
+
         // Check if page is translated by looking for Google Translate elements
+        // This is a backup in case cookies are not accessible or clear
+        const htmlLang = document.documentElement.lang
+        if (htmlLang && htmlLang.startsWith('es')) {
+            return 'es'
+        }
+
         const gtFrame = document.querySelector('.goog-te-banner-frame')
         if (gtFrame) {
-            // Page is translated, check which language
-            const htmlLang = document.documentElement.lang
-            if (htmlLang === 'es') {
-                return 'es'
-            }
+            return 'es'
         }
     } catch (error) {
         console.error('Error detecting current language:', error)
@@ -92,16 +104,47 @@ export function changeLanguage(language: LanguageCode): void {
             '.goog-te-combo'
         ) as HTMLSelectElement
 
+        // Always update the cookie for consistency across reloads
+        // We set it for both the current domain and the base domain to ensure it's overwritten
+        const hostname = window.location.hostname
+        const domainParts = hostname.split('.')
+        const baseDomain =
+            domainParts.length >= 2
+                ? `.${domainParts.slice(-2).join('.')}`
+                : hostname
+
+        const domains = [hostname, baseDomain, '']
+
+        // If switching to English (default), we want to clear the translation
+        if (language === 'en') {
+            domains.forEach((domain) => {
+                const domainPath = domain ? `; domain=${domain}` : ''
+                // Clear googtrans cookie
+                document.cookie = `googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT${domainPath}`
+                document.cookie = `googtrans=/en/en; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT${domainPath}`
+                // Also try setting it to /en/en just in case
+                document.cookie = `googtrans=/en/en; path=/${domainPath}`
+            })
+        } else {
+            domains.forEach((domain) => {
+                const domainPath = domain ? `; domain=${domain}` : ''
+                document.cookie = `googtrans=/en/${language}; path=/${domainPath}`
+            })
+        }
+
         if (select) {
             // Set the value and trigger change event
             select.value = language
             select.dispatchEvent(new Event('change', { bubbles: true }))
-        } else {
-            // Fallback: Set cookie directly
-            const domain = window.location.hostname
-            document.cookie = `googtrans=/en/${language}; path=/; domain=${domain}`
 
-            // Force page reload to apply translation
+            // If switching back to English, sometimes a reload is safer to completely clear Google Translate's state
+            if (language === 'en') {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 100)
+            }
+        } else {
+            // Force page reload to apply translation if select is not available
             window.location.reload()
         }
     } catch (error) {
@@ -146,7 +189,14 @@ export function isGoogleTranslateReady(): boolean {
     if (typeof window === 'undefined') return false
 
     try {
-        return !!(window as any).google?.translate?.TranslateElement
+        const win = window as unknown as {
+            google?: {
+                translate?: {
+                    TranslateElement?: unknown
+                }
+            }
+        }
+        return !!win.google?.translate?.TranslateElement
     } catch {
         return false
     }
