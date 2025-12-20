@@ -14,7 +14,7 @@ const client = postgres(env.POSTGRES_URL, {
     idle_timeout: 20, // Close idle connections (seconds) - good for pooler
 
     // Serverless optimization
-    max: 1, // One connection per serverless function instance
+    max: 5, // One connection per serverless function instance
 })
 
 export const db = drizzle(client, { schema })

@@ -7,6 +7,7 @@
  * @module packages/db/src/schema/feedback/bug-report.table
  */
 import {
+    index,
     integer,
     pgTable,
     real,
@@ -43,54 +44,63 @@ export type BugStatus = (typeof BUG_STATUS_OPTIONS)[number]
 /**
  * Bug report table for storing quick bug submissions
  */
-export const bugReport = pgTable('bug_report', {
-    id: uuid('id').primaryKey().defaultRandom(),
+export const bugReport = pgTable(
+    'bug_report',
+    {
+        id: uuid('id').primaryKey().defaultRandom(),
 
-    // Bug details
-    pageUrl: text('page_url').notNull(),
-    description: text('description').notNull(),
-    stepsToReproduce: text('steps_to_reproduce'),
-    expectedBehavior: text('expected_behavior'),
-    actualBehavior: text('actual_behavior'),
-    screenshotUrl: text('screenshot_url'),
+        // Bug details
+        pageUrl: text('page_url').notNull(),
+        description: text('description').notNull(),
+        stepsToReproduce: text('steps_to_reproduce'),
+        expectedBehavior: text('expected_behavior'),
+        actualBehavior: text('actual_behavior'),
+        screenshotUrl: text('screenshot_url'),
 
-    // Device/browser info (auto-detected)
-    deviceType: text('device_type'),
-    browserType: text('browser_type'),
-    browserVersion: text('browser_version'),
-    screenSize: text('screen_size'),
+        // Device/browser info (auto-detected)
+        deviceType: text('device_type'),
+        browserType: text('browser_type'),
+        browserVersion: text('browser_version'),
+        screenSize: text('screen_size'),
 
-    // Status tracking
-    severity: text('severity').default('medium'),
-    status: text('status').default('new'),
+        // Status tracking
+        severity: text('severity').default('medium'),
+        status: text('status').default('new'),
 
-    // Reporter info (optional)
-    reporterEmail: text('reporter_email'),
-    reporterName: text('reporter_name'),
+        // Reporter info (optional)
+        reporterEmail: text('reporter_email'),
+        reporterName: text('reporter_name'),
 
-    // Technical metadata
-    userAgent: text('user_agent'),
-    ipAddress: text('ip_address'),
+        // Technical metadata
+        userAgent: text('user_agent'),
+        ipAddress: text('ip_address'),
 
-    // Screen & viewport dimensions (structured)
-    screenWidth: integer('screen_width'),
-    screenHeight: integer('screen_height'),
-    viewportWidth: integer('viewport_width'),
-    viewportHeight: integer('viewport_height'),
-    devicePixelRatio: real('device_pixel_ratio'),
+        // Screen & viewport dimensions (structured)
+        screenWidth: integer('screen_width'),
+        screenHeight: integer('screen_height'),
+        viewportWidth: integer('viewport_width'),
+        viewportHeight: integer('viewport_height'),
+        devicePixelRatio: real('device_pixel_ratio'),
 
-    // Environment metadata
-    timezone: text('timezone'),
-    language: text('language'),
-    referrer: text('referrer'),
-    connectionType: text('connection_type'),
+        // Environment metadata
+        timezone: text('timezone'),
+        language: text('language'),
+        referrer: text('referrer'),
+        connectionType: text('connection_type'),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at')
-        .defaultNow()
-        .notNull()
-        .$onUpdate(() => new Date()),
-})
+        createdAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at')
+            .defaultNow()
+            .notNull()
+            .$onUpdate(() => new Date()),
+    },
+    (table) => [
+        // Performance Indexes
+        index('bug_report_created_at_idx').on(table.createdAt),
+        index('bug_report_severity_idx').on(table.severity),
+        index('bug_report_status_idx').on(table.status),
+    ]
+)
 
 export type BugReport = typeof bugReport.$inferSelect
 export type InsertBugReport = typeof bugReport.$inferInsert
