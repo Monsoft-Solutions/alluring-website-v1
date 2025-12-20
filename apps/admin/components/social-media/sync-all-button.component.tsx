@@ -159,7 +159,6 @@ export function SyncAllButton({
         }
 
         // Pipeline pattern: overlap fetch with processing
-        let hasMore = true
         let isFirstBatch = true
         let pendingResult: SyncResult | null = null
         let nextFetchPromise: Promise<SyncResult> | null = null

@@ -104,15 +104,16 @@ export async function fetchApi<T>(
         return {} as T
     }
 
-    const data = await response.json()
+    const data: unknown = await response.json()
 
     if (!response.ok) {
         // Handle structured error responses
         if (data && typeof data === 'object' && 'error' in data) {
+            const errorData = data as { error: string; details?: unknown }
             throw new ApiError(
-                data.error as string,
+                errorData.error,
                 response.status,
-                data.details
+                errorData.details
             )
         }
         throw new ApiError(

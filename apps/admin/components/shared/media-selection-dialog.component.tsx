@@ -149,7 +149,10 @@ export function MediaSelectionDialog({
                     throw new Error('Failed to load media')
                 }
 
-                const data = await response.json()
+                const data = (await response.json()) as {
+                    media: GalleryMediaListItem[]
+                    total: number
+                }
                 mergeMedia(data.media ?? [], replace)
                 setTotalCount(data.total ?? 0)
                 setPage(nextPage)

@@ -46,7 +46,7 @@ import { DEFAULT_CHAT_CONFIG } from '@workspace/chat/constants'
 import { updateChatConfig } from '@/lib/actions/chat.action'
 
 type ChatConfigFormProps = {
-    initialData: ChatConfigInput & { id?: string }
+    initialData: ChatConfigInput
 }
 
 export function ChatConfigForm({ initialData }: ChatConfigFormProps) {

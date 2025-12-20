@@ -135,7 +135,10 @@ export function AnalyzePageClient({
                     throw new Error('Failed to load posts')
                 }
 
-                const data = await response.json()
+                const data = (await response.json()) as {
+                    posts: InstagramPostListItem[]
+                    total: number
+                }
                 mergePosts(data.posts ?? [], replace)
                 setTotalCount(data.total ?? 0)
                 setPage(nextPage)

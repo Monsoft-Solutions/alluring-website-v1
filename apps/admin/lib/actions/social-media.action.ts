@@ -657,7 +657,7 @@ async function processPostsBatch(
         } else {
             // Promise rejected - unexpected error
             errorCount++
-            const rejectionError = postProcessResult.reason
+            const rejectionError = postProcessResult.reason as unknown
             errors.push(
                 `Unexpected error: ${rejectionError instanceof Error ? rejectionError.message : 'Unknown error'}`
             )

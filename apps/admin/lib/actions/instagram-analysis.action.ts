@@ -765,7 +765,7 @@ function aggregateAnalysisResults(
                 individualResult.stats.failedMedia
         } else {
             // Handle post-level error
-            const postError = postResult.reason
+            const postError = postResult.reason as unknown
             console.error('Error analyzing post:', postError)
             // Continue with other posts
         }
@@ -1206,8 +1206,7 @@ export async function updateMediaAnalysis(
         }
 
         // Merge updates into existing AI analysis
-        const currentAnalysis =
-            media.aiAnalysis as GalleryMediaAIAnalysis | null
+        const currentAnalysis = media.aiAnalysis
         const updatedAnalysis: GalleryMediaAIAnalysis | null = currentAnalysis
             ? {
                   ...currentAnalysis,

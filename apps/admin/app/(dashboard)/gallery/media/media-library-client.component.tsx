@@ -155,7 +155,10 @@ export function MediaLibraryClient({
                 throw new Error('Failed to load more media')
             }
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                media: GalleryMediaListItem[]
+                total: number
+            }
 
             setLoadedMedia((prev) => {
                 // Deduplicate in case of race conditions

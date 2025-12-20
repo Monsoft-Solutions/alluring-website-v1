@@ -113,7 +113,9 @@ export function InstagramPostDialog({
         if (isOpen && groups.length === 0) {
             fetch('/api/gallery/groups')
                 .then((res) => res.json())
-                .then((data) => setGroups(data.groups || []))
+                .then((data: { groups?: GalleryGroupWithSlug[] }) =>
+                    setGroups(data.groups || [])
+                )
                 .catch((err) =>
                     console.error('Failed to fetch gallery groups:', err)
                 )
@@ -151,7 +153,7 @@ export function InstagramPostDialog({
             if (mediaId) {
                 fetch(`/api/gallery/media/${mediaId}/groups`)
                     .then((res) => res.json())
-                    .then((data) =>
+                    .then((data: { groupIds?: string[] }) =>
                         setCurrentMediaGroupIds(data.groupIds || [])
                     )
                     .catch((err) =>
@@ -477,11 +479,14 @@ export function InstagramPostDialog({
                                                             .then((res) =>
                                                                 res.json()
                                                             )
-                                                            .then((data) =>
-                                                                setCurrentMediaGroupIds(
-                                                                    data.groupIds ||
-                                                                        []
-                                                                )
+                                                            .then(
+                                                                (data: {
+                                                                    groupIds?: string[]
+                                                                }) =>
+                                                                    setCurrentMediaGroupIds(
+                                                                        data.groupIds ||
+                                                                            []
+                                                                    )
                                                             )
                                                             .catch((err) =>
                                                                 console.error(

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Loader2, Save } from 'lucide-react'
@@ -214,11 +215,13 @@ export function AuthorForm({ initialData, mode }: AuthorFormProps) {
                         {formData.avatarUrl &&
                             isValidImageUrl(formData.avatarUrl) && (
                                 <div className='flex items-center gap-4'>
-                                    <div className='h-16 w-16 overflow-hidden rounded-full bg-stone-100'>
-                                        <img
+                                    <div className='relative h-16 w-16 overflow-hidden rounded-full bg-stone-100'>
+                                        <Image
                                             src={formData.avatarUrl}
                                             alt='Avatar preview'
-                                            className='h-full w-full object-cover'
+                                            fill
+                                            className='object-cover'
+                                            unoptimized
                                         />
                                     </div>
                                     <span className='text-muted-foreground text-sm'>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { Loader2, Save, Eye, Send } from 'lucide-react'
@@ -326,11 +327,13 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                                 placeholder='https://...'
                             />
                             {formData.featuredImageUrl && (
-                                <div className='mt-2 overflow-hidden rounded-lg border'>
-                                    <img
+                                <div className='relative mt-2 h-32 w-full overflow-hidden rounded-lg border'>
+                                    <Image
                                         src={formData.featuredImageUrl}
                                         alt='Featured'
-                                        className='h-32 w-full object-cover'
+                                        fill
+                                        className='object-cover'
+                                        unoptimized
                                     />
                                 </div>
                             )}

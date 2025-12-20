@@ -49,8 +49,12 @@ export function BugsChart({ data }: BugsChartProps) {
                     </Pie>
                     <Tooltip
                         content={({ active, payload }) => {
-                            if (!active || !payload?.length) return null
-                            const data = payload[0].payload as SeverityCount
+                            if (!active || !payload?.length || !payload[0])
+                                return null
+                            const item = payload[0] as {
+                                payload: SeverityCount
+                            }
+                            const data = item.payload
                             return (
                                 <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                     <p className='text-muted-foreground text-xs capitalize'>

@@ -60,7 +60,7 @@ export type AITextImprovementState = {
     handleOperation: (
         operation: TextOperation,
         customInstruction?: string
-    ) => void
+    ) => Promise<void>
     /** Undo the last operation */
     handleUndo: () => void
     /** Cancel the current streaming operation */

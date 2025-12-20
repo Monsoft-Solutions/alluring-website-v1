@@ -54,8 +54,12 @@ export function EmailsChart({ data }: EmailsChartProps) {
                     </Pie>
                     <Tooltip
                         content={({ active, payload }) => {
-                            if (!active || !payload?.length) return null
-                            const data = payload[0].payload as EmailStatusCount
+                            if (!active || !payload?.length || !payload[0])
+                                return null
+                            const item = payload[0] as {
+                                payload: EmailStatusCount
+                            }
+                            const data = item.payload
                             const percentage = Math.round(
                                 (data.count / totalEmails) * 100
                             )

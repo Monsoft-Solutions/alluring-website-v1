@@ -6,7 +6,9 @@ import { z } from 'zod'
 if (typeof window === 'undefined') {
     try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const dotenv = require('dotenv')
+        const dotenv = require('dotenv') as {
+            config: (options?: { path?: string }) => void
+        }
         dotenv.config({ path: '.env.local' })
         dotenv.config()
     } catch {

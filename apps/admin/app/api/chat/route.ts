@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const body = await request.json()
+        const body: unknown = await request.json()
         const { messages, sessionId } = body as {
             messages: AISDKMessage[]
             sessionId: string

@@ -249,7 +249,8 @@ export async function DELETE(
             )
         }
 
-        const { url } = await request.json()
+        const body: unknown = await request.json()
+        const { url } = body as { url: string }
 
         if (!url || typeof url !== 'string') {
             return NextResponse.json(
