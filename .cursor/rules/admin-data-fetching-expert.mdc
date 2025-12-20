@@ -1,6 +1,7 @@
 ---
 description: Expert agent for admin app data fetching, API routes, TanStack Query hooks, and database query optimization. Use when building dashboard components, API endpoints, or optimizing data loading in the admin app.
-globs: ['apps/admin/**/*.ts', 'apps/admin/**/*.tsx']
+globs: apps/admin/*,apps/admin/**
+alwaysApply: false
 ---
 
 # Admin Data Fetching Expert
@@ -97,9 +98,9 @@ export async function GET(request: NextRequest) {
 
 ```typescript
 // apps/admin/lib/queries/domain.query.ts
-import { cache } from 'react'
 import { db } from '@workspace/db/client'
-import { sql, count, desc } from 'drizzle-orm'
+import { count, desc, sql } from 'drizzle-orm'
+import { cache } from 'react'
 
 export const getDataByStatus = cache(async (): Promise<StatusCount[]> => {
     const results = await db
@@ -162,25 +163,23 @@ const [posts, contacts, emails] = await Promise.all([
 ```typescript
 // apps/admin/hooks/use-domain.hook.ts
 import { useQuery } from '@tanstack/react-query'
-import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
+
 import type { DomainData } from '@/lib/queries/domain.query'
+import { buildUrl, fetchApi } from '@/lib/utils/api-client.util'
 
 // Centralized query keys for cache invalidation
 export const domainKeys = {
     all: ['admin', 'domain'] as const,
-    list: (params: { limit: number }) => 
+    list: (params: { limit: number }) =>
         [...domainKeys.all, 'list', params] as const,
-    detail: (id: string) => 
-        [...domainKeys.all, 'detail', id] as const,
+    detail: (id: string) => [...domainKeys.all, 'detail', id] as const,
 } as const
 
 export function useDomainList(limit = 10) {
     return useQuery({
         queryKey: domainKeys.list({ limit }),
         queryFn: () =>
-            fetchApi<DomainData[]>(
-                buildUrl('/api/admin/domain', { limit })
-            ),
+            fetchApi<DomainData[]>(buildUrl('/api/admin/domain', { limit })),
         staleTime: 30_000, // 30 seconds for frequently changing data
     })
 }
@@ -199,12 +198,12 @@ export function useDomainChart(days = 30) {
 
 ### staleTime Guidelines
 
-| Data Type | staleTime | Rationale |
-|-----------|-----------|-----------|
-| Stats/counts | 30s | Changes with user actions |
-| Chart data | 60s | Aggregated, less volatile |
-| Config/settings | 5min | Rarely changes |
-| User lists | 30s | May change frequently |
+| Data Type       | staleTime | Rationale                 |
+| --------------- | --------- | ------------------------- |
+| Stats/counts    | 30s       | Changes with user actions |
+| Chart data      | 60s       | Aggregated, less volatile |
+| Config/settings | 5min      | Rarely changes            |
+| User lists      | 30s       | May change frequently     |
 
 ## Card Component Patterns
 
@@ -314,7 +313,7 @@ export default function DomainPage() {
 Use the typed fetch wrapper:
 
 ```typescript
-import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
+import { buildUrl, fetchApi } from '@/lib/utils/api-client.util'
 
 // Simple GET
 const stats = await fetchApi<DashboardStats>('/api/admin/stats')
@@ -395,7 +394,7 @@ export default async function Page() {
 }
 
 // CORRECT: Client component with 'use client'
-'use client'
+;('use client')
 export function StatsGrid() {
     const { data } = useDashboardStats()
 }
