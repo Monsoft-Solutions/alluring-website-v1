@@ -22,6 +22,7 @@ import { deletePromotion } from '@/lib/actions/promotion.action'
 import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type Params = Promise<{ id: string }>
 

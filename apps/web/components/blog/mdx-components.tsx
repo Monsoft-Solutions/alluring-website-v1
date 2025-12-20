@@ -5,8 +5,7 @@ import Link from 'next/link'
 import { CalloutBox } from './callout-box.component'
 
 type MDXComponents = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: React.ComponentType<any>
+    [key: string]: React.ElementType
 }
 
 export function getMDXComponents(): MDXComponents {

@@ -13,6 +13,7 @@ import { getInstagramSettings } from '@/lib/queries/social-media.query'
 import { InstagramSettingsForm } from '@/components/social-media/instagram-settings-form.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function SocialMediaSettingsPage() {
     const settings = await getInstagramSettings()

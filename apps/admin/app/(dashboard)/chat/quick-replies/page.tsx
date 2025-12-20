@@ -39,6 +39,7 @@ import { QuickReplyForm } from '@/components/chat/quick-reply-form.component'
 import { QuickReplyActions } from './quick-reply-actions.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 const CATEGORY_LABELS: Record<string, string> = {
     initial: 'Initial',

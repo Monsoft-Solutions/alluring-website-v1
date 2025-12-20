@@ -20,6 +20,7 @@ import Link from 'next/link'
 import { getAuthors } from '@/lib/queries/blog.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function AuthorsPage() {
     const authors = await getAuthors()

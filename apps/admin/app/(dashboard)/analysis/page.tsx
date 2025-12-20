@@ -30,6 +30,9 @@ export const metadata = {
     description: 'View and manage AI media analysis sessions',
 }
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 30
+
 export default async function AnalysisPage({
     searchParams,
 }: {

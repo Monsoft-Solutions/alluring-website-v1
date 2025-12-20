@@ -17,6 +17,7 @@ import {
 import { AnalyzePageClient } from './analyze-page-client.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function InstagramAnalyzePage() {
     const [postsData, statusCounts] = await Promise.all([

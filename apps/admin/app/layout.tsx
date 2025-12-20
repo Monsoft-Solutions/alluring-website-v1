@@ -1,13 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
-
 import { Toaster } from '@workspace/ui/components/sonner'
 import '@workspace/ui/globals.css'
-
-const inter = Inter({
-    subsets: ['latin'],
-    variable: '--font-inter',
-})
 
 export const metadata: Metadata = {
     title: {
@@ -32,7 +25,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang='en' className={inter.variable}>
+        <html lang='en'>
             <body className='bg-background min-h-screen font-sans antialiased'>
                 {children}
                 <Toaster />

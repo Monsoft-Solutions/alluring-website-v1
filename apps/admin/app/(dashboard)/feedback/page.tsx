@@ -21,6 +21,7 @@ import Link from 'next/link'
 import { getBugReports, getBetaFeedback } from '@/lib/queries/feedback.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function FeedbackPage() {
     const [bugReportsData, betaFeedbackData] = await Promise.all([

@@ -6,6 +6,7 @@
  *
  * @module lib/queries/analytics
  */
+import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { pageView } from '@workspace/db/schema/analytics'
 import { count, desc, gte, sql, countDistinct } from 'drizzle-orm'
@@ -74,66 +75,70 @@ export type GeoStats = {
 /**
  * Get analytics summary stats for the dashboard header cards
  */
-export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+export const getAnalyticsSummary = cache(
+    async (): Promise<AnalyticsSummary> => {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
 
-    const [
-        totalViewsResult,
-        uniqueSessionsResult,
-        todayViewsResult,
-        topPageResult,
-        topSourceResult,
-    ] = await Promise.all([
-        // Total views all time
-        db.select({ count: count() }).from(pageView),
+        const [
+            totalViewsResult,
+            uniqueSessionsResult,
+            todayViewsResult,
+            topPageResult,
+            topSourceResult,
+        ] = await Promise.all([
+            // Total views all time
+            db.select({ count: count() }).from(pageView),
 
-        // Unique sessions (unique session IDs)
-        db.select({ count: countDistinct(pageView.sessionId) }).from(pageView),
+            // Unique sessions (unique session IDs)
+            db
+                .select({ count: countDistinct(pageView.sessionId) })
+                .from(pageView),
 
-        // Today's views
-        db
-            .select({ count: count() })
-            .from(pageView)
-            .where(gte(pageView.createdAt, today)),
+            // Today's views
+            db
+                .select({ count: count() })
+                .from(pageView)
+                .where(gte(pageView.createdAt, today)),
 
-        // Top page by views
-        db
-            .select({
-                pagePath: pageView.pagePath,
-                views: count(),
-            })
-            .from(pageView)
-            .groupBy(pageView.pagePath)
-            .orderBy(desc(count()))
-            .limit(1),
+            // Top page by views
+            db
+                .select({
+                    pagePath: pageView.pagePath,
+                    views: count(),
+                })
+                .from(pageView)
+                .groupBy(pageView.pagePath)
+                .orderBy(desc(count()))
+                .limit(1),
 
-        // Top source (utm_source or referrer domain)
-        db
-            .select({
-                source: sql<string>`COALESCE(${pageView.utmSource}, 
+            // Top source (utm_source or referrer domain)
+            db
+                .select({
+                    source: sql<string>`COALESCE(${pageView.utmSource}, 
                     CASE 
                         WHEN ${pageView.referrer} IS NOT NULL AND ${pageView.referrer} != '' 
                         THEN REGEXP_REPLACE(${pageView.referrer}, '^https?://([^/]+).*$', '\\1')
                         ELSE 'direct'
                     END
                 )`.as('source'),
-                views: count(),
-            })
-            .from(pageView)
-            .groupBy(sql`1`)
-            .orderBy(desc(count()))
-            .limit(1),
-    ])
+                    views: count(),
+                })
+                .from(pageView)
+                .groupBy(sql`1`)
+                .orderBy(desc(count()))
+                .limit(1),
+        ])
 
-    return {
-        totalViews: totalViewsResult[0]?.count ?? 0,
-        uniqueSessions: uniqueSessionsResult[0]?.count ?? 0,
-        todayViews: todayViewsResult[0]?.count ?? 0,
-        topPage: topPageResult[0]?.pagePath ?? null,
-        topSource: topSourceResult[0]?.source ?? null,
+        return {
+            totalViews: totalViewsResult[0]?.count ?? 0,
+            uniqueSessions: uniqueSessionsResult[0]?.count ?? 0,
+            todayViews: todayViewsResult[0]?.count ?? 0,
+            topPage: topPageResult[0]?.pagePath ?? null,
+            topSource: topSourceResult[0]?.source ?? null,
+        }
     }
-}
+)
 
 // ============================================================================
 // Time Series Data

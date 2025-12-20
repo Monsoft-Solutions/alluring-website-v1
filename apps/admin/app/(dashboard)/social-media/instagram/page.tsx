@@ -13,6 +13,7 @@ import { InstagramProfileHeader } from '@/components/social-media/instagram-prof
 import { BulkAnalyzeButton } from '@/components/social-media/bulk-analyze-button.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function InstagramPostsPage() {
     const [settings, postsData, analysisStatusCounts] = await Promise.all([

@@ -30,6 +30,7 @@ import {
 } from '@/lib/queries/social-media.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function SocialMediaDashboardPage() {
     const [stats, settings] = await Promise.all([

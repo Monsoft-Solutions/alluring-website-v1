@@ -54,6 +54,11 @@
             "types": "./dist/schema/contact/contact-submission.table.d.ts",
             "import": "./dist/schema/contact/contact-submission.table.js",
             "default": "./dist/schema/contact/contact-submission.table.js"
+        },
+        "./health": {
+            "types": "./dist/health-check.d.ts",
+            "import": "./dist/health-check.js",
+            "default": "./dist/health-check.js"
         }
     },
     "scripts": {

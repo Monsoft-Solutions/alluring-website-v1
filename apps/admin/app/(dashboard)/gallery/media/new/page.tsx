@@ -7,6 +7,7 @@ import { MediaForm } from '@/components/gallery/media-form.component'
 import { getGalleryGroupsWithSlug } from '@/lib/queries/gallery.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function NewMediaPage() {
     const groups = await getGalleryGroupsWithSlug()

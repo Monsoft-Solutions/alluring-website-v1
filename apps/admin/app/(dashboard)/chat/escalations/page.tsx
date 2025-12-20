@@ -31,6 +31,7 @@ import { formatRelativeTime, formatPhoneNumber } from '@workspace/chat/utils'
 import { getGradeColor } from '@workspace/chat/services'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function EscalationsPage() {
     const escalatedSessions = await getEscalatedSessions()

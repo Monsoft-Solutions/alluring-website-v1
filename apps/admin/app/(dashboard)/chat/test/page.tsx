@@ -14,6 +14,7 @@ import { getChatConfig } from '@/lib/queries/chat.query'
 import { ChatTestInterface } from '@/components/chat/chat-test-interface.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function ChatTestPage() {
     const config = await getChatConfig()

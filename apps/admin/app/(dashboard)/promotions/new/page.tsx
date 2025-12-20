@@ -6,6 +6,7 @@ import { Button } from '@workspace/ui/components/button'
 import { PromotionForm } from '@/components/promotions/promotion-form.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default function NewPromotionPage() {
     return (

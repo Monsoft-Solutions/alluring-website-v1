@@ -32,6 +32,7 @@ import {
 } from '@/lib/queries/stats.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 const DEFAULT_STATS = {
     blogPosts: { total: 0, published: 0, draft: 0 },
