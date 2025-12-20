@@ -1,7 +1,7 @@
 'use client'
 
 import dynamicImport from 'next/dynamic'
-import { Send, AlertCircle, RefreshCw } from 'lucide-react'
+import { BarChart3, AlertCircle, RefreshCw } from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -12,13 +12,13 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
-import { useEmailsChart } from '@/hooks/use-dashboard.hook'
+import { useDashboardTraffic } from '@/hooks/use-dashboard.hook'
 
 // Lazy load chart for better performance
-const EmailsChart = dynamicImport(
+const PageViewsChart = dynamicImport(
     () =>
-        import('@/components/charts/emails-chart.component').then(
-            (mod) => mod.EmailsChart
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.PageViewsChart
         ),
     {
         loading: () => <Skeleton className='h-[200px] w-full' />,
@@ -26,29 +26,31 @@ const EmailsChart = dynamicImport(
 )
 
 /**
- * Emails chart card component that fetches its own data via TanStack Query.
- * Shows email delivery status breakdown.
+ * Traffic chart card component that shows website traffic (views + sessions)
+ * over the last 30 days.
  */
-export function EmailsChartCard() {
-    const { data, isLoading, error, refetch } = useEmailsChart()
+export function TrafficChartCard() {
+    const { data, isLoading, error, refetch } = useDashboardTraffic(30)
 
     return (
         <Card>
             <CardHeader>
                 <CardTitle className='flex items-center gap-2 text-lg'>
-                    <Send className='h-5 w-5' />
-                    Email Delivery
+                    <BarChart3 className='h-5 w-5' />
+                    Website Traffic
                 </CardTitle>
-                <CardDescription>Email delivery success rate</CardDescription>
+                <CardDescription>
+                    Page views and unique sessions (last 30 days)
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <Skeleton className='h-[200px] w-full' />
+                    <Skeleton className='h-[280px] w-full' />
                 ) : error ? (
-                    <div className='flex h-[200px] flex-col items-center justify-center gap-3'>
+                    <div className='flex h-[280px] flex-col items-center justify-center gap-3'>
                         <AlertCircle className='h-5 w-5 text-red-500' />
                         <p className='text-muted-foreground text-sm'>
-                            Failed to load chart
+                            Failed to load traffic data
                         </p>
                         <Button
                             variant='outline'
@@ -60,11 +62,11 @@ export function EmailsChartCard() {
                         </Button>
                     </div>
                 ) : data && data.length > 0 ? (
-                    <EmailsChart data={data} />
+                    <PageViewsChart data={data} />
                 ) : (
-                    <div className='flex h-[200px] items-center justify-center'>
+                    <div className='flex h-[280px] items-center justify-center'>
                         <p className='text-muted-foreground text-sm'>
-                            No emails sent yet
+                            No traffic data available
                         </p>
                     </div>
                 )}

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Clock, AlertCircle, RefreshCw } from 'lucide-react'
+import { Clock, AlertCircle, RefreshCw, Star, Phone, Mail } from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -10,24 +10,25 @@ import {
 } from '@workspace/ui/components/card'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
+import { Badge } from '@workspace/ui/components/badge'
 
-import { useRecentBugReports } from '@/hooks/use-dashboard.hook'
+import { useHighValueLeads } from '@/hooks/use-dashboard.hook'
 
 /**
- * Recent bug reports card component that fetches its own data via TanStack Query.
- * Shows the 5 most recent bug reports.
+ * High-value leads card showing the 5 most recent A/B grade leads from AI chat.
  */
-export function RecentBugsCard() {
-    const { data: reports, isLoading, error, refetch } = useRecentBugReports(5)
+export function HighValueLeadsCard() {
+    const { data: leads, isLoading, error, refetch } = useHighValueLeads(5)
 
     return (
         <Card>
             <CardHeader className='flex flex-row items-center justify-between'>
-                <CardTitle className='text-lg font-medium'>
-                    Recent Bug Reports
+                <CardTitle className='flex items-center gap-2 text-lg font-medium'>
+                    <Star className='h-5 w-5 fill-yellow-400 text-yellow-400' />
+                    High-Value Leads
                 </CardTitle>
                 <Link
-                    href='/feedback'
+                    href='/chat/conversations'
                     className='text-muted-foreground hover:text-foreground text-sm'
                 >
                     View all
@@ -44,7 +45,7 @@ export function RecentBugsCard() {
                     <div className='flex flex-col items-center justify-center gap-3 py-8'>
                         <AlertCircle className='h-5 w-5 text-red-500' />
                         <p className='text-muted-foreground text-sm'>
-                            Failed to load bug reports
+                            Failed to load leads
                         </p>
                         <Button
                             variant='outline'
@@ -55,80 +56,60 @@ export function RecentBugsCard() {
                             Retry
                         </Button>
                     </div>
-                ) : reports && reports.length > 0 ? (
+                ) : leads && leads.length > 0 ? (
                     <div className='space-y-4'>
-                        {reports.map((report) => (
+                        {leads.map((lead) => (
                             <div
-                                key={report.id}
+                                key={lead.id}
                                 className='flex items-start justify-between gap-4 rounded-lg border p-3'
                             >
                                 <div className='min-w-0 flex-1'>
-                                    <p className='line-clamp-1 font-medium'>
-                                        {report.description}
-                                    </p>
-                                    <p className='text-muted-foreground truncate text-sm'>
-                                        {report.pageUrl}
-                                    </p>
-                                    <div className='mt-1 flex items-center gap-2'>
-                                        <SeverityBadge
-                                            severity={report.severity}
-                                        />
-                                        <StatusBadge status={report.status} />
+                                    <div className='flex items-center gap-2'>
+                                        <p className='truncate font-medium'>
+                                            {lead.fullName}
+                                        </p>
+                                        <Badge
+                                            variant={
+                                                lead.leadGrade === 'A'
+                                                    ? 'default'
+                                                    : 'secondary'
+                                            }
+                                            className={
+                                                lead.leadGrade === 'A'
+                                                    ? 'bg-green-500 hover:bg-green-600'
+                                                    : 'bg-blue-500 text-white hover:bg-blue-600'
+                                            }
+                                        >
+                                            Grade {lead.leadGrade}
+                                        </Badge>
+                                    </div>
+                                    <div className='mt-1 flex flex-wrap gap-x-4 gap-y-1'>
+                                        <div className='text-muted-foreground flex items-center gap-1 text-xs'>
+                                            <Phone className='h-3 w-3' />
+                                            {lead.phone}
+                                        </div>
+                                        {lead.email && (
+                                            <div className='text-muted-foreground flex items-center gap-1 text-xs'>
+                                                <Mail className='h-3 w-3' />
+                                                {lead.email}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className='text-muted-foreground flex shrink-0 items-center gap-1 text-xs'>
                                     <Clock className='h-3 w-3' />
-                                    {formatRelativeTime(report.createdAt)}
+                                    {formatRelativeTime(lead.createdAt)}
                                 </div>
                             </div>
                         ))}
                     </div>
                 ) : (
                     <p className='text-muted-foreground py-8 text-center text-sm'>
-                        No bug reports yet
+                        No high-value leads yet
                     </p>
                 )}
             </CardContent>
         </Card>
-    )
-}
-
-function SeverityBadge({ severity }: { severity: string | null }) {
-    const colors: Record<string, string> = {
-        low: 'bg-green-100 text-green-800',
-        medium: 'bg-yellow-100 text-yellow-800',
-        high: 'bg-orange-100 text-orange-800',
-        critical: 'bg-red-100 text-red-800',
-    }
-
-    return (
-        <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                colors[severity ?? 'medium'] ?? colors.medium
-            }`}
-        >
-            {severity ?? 'medium'}
-        </span>
-    )
-}
-
-function StatusBadge({ status }: { status: string | null }) {
-    const colors: Record<string, string> = {
-        new: 'bg-blue-100 text-blue-800',
-        acknowledged: 'bg-purple-100 text-purple-800',
-        'in-progress': 'bg-yellow-100 text-yellow-800',
-        resolved: 'bg-green-100 text-green-800',
-        'wont-fix': 'bg-stone-100 text-stone-800',
-    }
-
-    return (
-        <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                colors[status ?? 'new'] ?? colors.new
-            }`}
-        >
-            {status ?? 'new'}
-        </span>
     )
 }
 

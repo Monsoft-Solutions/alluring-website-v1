@@ -1,7 +1,7 @@
 'use client'
 
 import dynamicImport from 'next/dynamic'
-import { Bug, AlertCircle, RefreshCw } from 'lucide-react'
+import { Share2, AlertCircle, RefreshCw } from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -12,45 +12,44 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
-import { useBugsChart } from '@/hooks/use-dashboard.hook'
+import { useTrafficSources } from '@/hooks/use-analytics.hook'
 
-// Lazy load chart for better performance
-const BugsChart = dynamicImport(
+// Lazy load chart
+const TrafficSourcesChart = dynamicImport(
     () =>
-        import('@/components/charts/bugs-chart.component').then(
-            (mod) => mod.BugsChart
+        import('@/components/charts/analytics-charts.component').then(
+            (mod) => mod.TrafficSourcesChart
         ),
     {
-        loading: () => <Skeleton className='h-[200px] w-full' />,
+        loading: () => <Skeleton className='h-[280px] w-full' />,
     }
 )
 
 /**
- * Bugs chart card component that fetches its own data via TanStack Query.
- * Shows bugs grouped by severity.
+ * Traffic sources card showing where visitors are coming from.
  */
-export function BugsChartCard() {
-    const { data, isLoading, error, refetch } = useBugsChart()
+export function TrafficSourcesCard() {
+    const { data, isLoading, error, refetch } = useTrafficSources(6)
 
     return (
         <Card>
             <CardHeader>
                 <CardTitle className='flex items-center gap-2 text-lg'>
-                    <Bug className='h-5 w-5' />
-                    Bugs by Severity
+                    <Share2 className='h-5 w-5' />
+                    Traffic Sources
                 </CardTitle>
                 <CardDescription>
-                    Distribution of bug report severity
+                    Where your visitors come from (UTM Source or Referrer)
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <Skeleton className='h-[200px] w-full' />
+                    <Skeleton className='h-[280px] w-full' />
                 ) : error ? (
-                    <div className='flex h-[200px] flex-col items-center justify-center gap-3'>
+                    <div className='flex h-[280px] flex-col items-center justify-center gap-3'>
                         <AlertCircle className='h-5 w-5 text-red-500' />
                         <p className='text-muted-foreground text-sm'>
-                            Failed to load chart
+                            Failed to load source data
                         </p>
                         <Button
                             variant='outline'
@@ -62,11 +61,11 @@ export function BugsChartCard() {
                         </Button>
                     </div>
                 ) : data && data.length > 0 ? (
-                    <BugsChart data={data} />
+                    <TrafficSourcesChart data={data} />
                 ) : (
-                    <div className='flex h-[200px] items-center justify-center'>
+                    <div className='flex h-[280px] items-center justify-center'>
                         <p className='text-muted-foreground text-sm'>
-                            No bug reports yet
+                            No source data available
                         </p>
                     </div>
                 )}

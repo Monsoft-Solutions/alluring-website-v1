@@ -1,45 +1,51 @@
 import { StatsGrid } from '@/components/dashboard/stats-grid.component'
 import { ContactsChartCard } from '@/components/dashboard/contacts-chart-card.component'
-import { PostsChartCard } from '@/components/dashboard/posts-chart-card.component'
-import { BugsChartCard } from '@/components/dashboard/bugs-chart-card.component'
-import { EmailsChartCard } from '@/components/dashboard/emails-chart-card.component'
+import { TrafficChartCard } from '@/components/dashboard/traffic-chart-card.component'
+import { ProcedureDemandCard } from '@/components/dashboard/procedure-demand-card.component'
+import { ChatStatsCard } from '@/components/dashboard/chat-stats-card.component'
+import { TrafficSourcesCard } from '@/components/dashboard/traffic-sources-card.component'
+import { LeadGradesCard } from '@/components/dashboard/lead-grades-card.component'
 import { RecentContactsCard } from '@/components/dashboard/recent-contacts-card.component'
-import { RecentBugsCard } from '@/components/dashboard/recent-bugs-card.component'
+import { HighValueLeadsCard } from '@/components/dashboard/high-value-leads-card.component'
 
 export const metadata = {
     title: 'Dashboard | Admin',
     description:
-        'Admin dashboard overview with stats, charts, and recent activity',
+        'Admin dashboard overview with business-focused metrics and lead insights',
 }
 
 /**
- * Dashboard page with independent data-fetching components.
- *
- * Each card component fetches its own data via TanStack Query,
- * enabling parallel loading and granular refresh capabilities.
+ * Enhanced Dashboard page with business intelligence components.
+ * Replaces operational metrics (bugs, emails) with high-impact insights.
  */
 export default function DashboardPage() {
     return (
         <div className='space-y-8'>
-            {/* Stats Grid - fetches dashboard stats */}
+            {/* Row 1: High-Level Stats */}
             <StatsGrid />
 
-            {/* Charts Row 1 - Contacts & Posts */}
+            {/* Row 2: Traffic and Lead Trends */}
             <div className='grid gap-6 lg:grid-cols-2'>
                 <ContactsChartCard />
-                <PostsChartCard />
+                <TrafficChartCard />
             </div>
 
-            {/* Charts Row 2 - Bugs & Emails */}
+            {/* Row 3: Business Intelligence */}
             <div className='grid gap-6 lg:grid-cols-2'>
-                <BugsChartCard />
-                <EmailsChartCard />
+                <ProcedureDemandCard />
+                <ChatStatsCard />
             </div>
 
-            {/* Recent Activity - Contacts & Bug Reports */}
+            {/* Row 4: Source & Quality Analysis */}
+            <div className='grid gap-6 lg:grid-cols-2'>
+                <TrafficSourcesCard />
+                <LeadGradesCard />
+            </div>
+
+            {/* Row 5: Recent Activity & High-Value Leads */}
             <div className='grid gap-6 lg:grid-cols-2'>
                 <RecentContactsCard />
-                <RecentBugsCard />
+                <HighValueLeadsCard />
             </div>
         </div>
     )

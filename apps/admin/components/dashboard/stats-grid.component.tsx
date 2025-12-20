@@ -1,7 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { FileText, Mail, Bug, Send, AlertCircle, RefreshCw } from 'lucide-react'
+import {
+    Users,
+    Mail,
+    MessageSquare,
+    Star,
+    AlertCircle,
+    RefreshCw,
+} from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -15,7 +22,7 @@ import { useDashboardStats } from '@/hooks/use-dashboard.hook'
 
 /**
  * Stats grid component that fetches its own data via TanStack Query.
- * Shows blog posts, contacts, emails, and bug report counts.
+ * Shows website visitors, contacts, chat sessions, and lead quality metrics.
  */
 export function StatsGrid() {
     const { data: stats, isLoading, error, refetch } = useDashboardStats()
@@ -54,32 +61,32 @@ export function StatsGrid() {
     return (
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
             <StatsCard
-                title='Total Posts'
-                value={stats.blogPosts.total}
-                description={`${stats.blogPosts.published} published, ${stats.blogPosts.draft} drafts`}
-                icon={FileText}
-                href='/blog/posts'
+                title='Website Visitors'
+                value={stats.visitors.today}
+                description='Unique visitors today'
+                icon={Users}
+                href='/analytics'
             />
             <StatsCard
-                title='Contact Submissions'
+                title='Contact Leads'
                 value={stats.contacts.total}
-                description='All time submissions'
+                description={`${stats.contacts.recent} in the last 7 days`}
                 icon={Mail}
                 href='/contacts'
             />
             <StatsCard
-                title='Emails Sent'
-                value={stats.emails.total}
-                description={`${stats.emails.successRate}% delivery rate`}
-                icon={Send}
-                href='/emails'
+                title='Chat Sessions'
+                value={stats.chat.totalSessions}
+                description={`${stats.chat.activeSessions} currently active`}
+                icon={MessageSquare}
+                href='/chat'
             />
             <StatsCard
-                title='Bug Reports'
-                value={stats.feedback.bugReports}
-                description={`${stats.feedback.betaFeedback} beta feedback`}
-                icon={Bug}
-                href='/feedback'
+                title='Lead Quality'
+                value={`${stats.leads.highQualityPercentage}%`}
+                description='Percentage of A/B grade leads'
+                icon={Star}
+                href='/chat/conversations'
             />
         </div>
     )
@@ -87,7 +94,7 @@ export function StatsGrid() {
 
 type StatsCardProps = {
     title: string
-    value: number
+    value: number | string
     description: string
     icon: React.ComponentType<{ className?: string }>
     href: string

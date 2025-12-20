@@ -2,96 +2,91 @@ import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema/blog'
 import { contactSubmission } from '@workspace/db/schema/contact'
-import { emailLog } from '@workspace/db/schema/emails'
 import { bugReport } from '@workspace/db/schema/feedback'
+import { emailLog } from '@workspace/db/schema/emails'
 import { count, eq, desc, sql, gte } from 'drizzle-orm'
 
 import { fillMissingDatesSimple, type DailyCount } from '@/lib/utils/date.util'
 
 export type DashboardStats = {
-    blogPosts: {
-        total: number
-        published: number
-        draft: number
+    visitors: {
+        today: number
+        allTime: number
     }
     contacts: {
         total: number
         recent: number
     }
-    feedback: {
-        bugReports: number
-        betaFeedback: number
+    chat: {
+        totalSessions: number
+        totalMessages: number
+        activeSessions: number
     }
-    emails: {
-        total: number
-        sent: number
-        failed: number
-        successRate: number
+    leads: {
+        highQualityCount: number
+        highQualityPercentage: number
     }
 }
 
 type DashboardStatsRow = {
-    total_posts: number
-    published_posts: number
-    draft_posts: number
+    today_visitors: number
+    all_time_sessions: number
     total_contacts: number
     recent_contacts: number
-    total_bug_reports: number
-    total_beta_feedback: number
-    total_emails: number
-    sent_emails: number
-    failed_emails: number
+    total_chat_sessions: number
+    total_chat_messages: number
+    active_chat_sessions: number
+    high_quality_leads: number
 }
 
 export const getDashboardStats = cache(async (): Promise<DashboardStats> => {
     // Calculate date for "recent" contacts (last 7 days)
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-    // Convert to ISO string for SQL compatibility
     const sevenDaysAgoStr = sevenDaysAgo.toISOString()
 
-    // Optimized: Single query instead of 10 concurrent queries
+    // Calculate date for "today" visitors
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const todayStr = today.toISOString()
+
+    // Optimized: Single query instead of multiple concurrent queries
     const result = await db.execute<DashboardStatsRow>(sql`
         SELECT
-            (SELECT COUNT(*)::int FROM blog_post) AS total_posts,
-            (SELECT COUNT(*)::int FROM blog_post WHERE status = 'published') AS published_posts,
-            (SELECT COUNT(*)::int FROM blog_post WHERE status = 'draft') AS draft_posts,
+            (SELECT COUNT(DISTINCT session_id)::int FROM page_view WHERE created_at >= ${todayStr}) AS today_visitors,
+            (SELECT COUNT(DISTINCT session_id)::int FROM page_view) AS all_time_sessions,
             (SELECT COUNT(*)::int FROM contact_submission) AS total_contacts,
             (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${sevenDaysAgoStr}) AS recent_contacts,
-            (SELECT COUNT(*)::int FROM bug_report) AS total_bug_reports,
-            (SELECT COUNT(*)::int FROM beta_feedback) AS total_beta_feedback,
-            (SELECT COUNT(*)::int FROM email_log) AS total_emails,
-            (SELECT COUNT(*)::int FROM email_log WHERE status = 'sent') AS sent_emails,
-            (SELECT COUNT(*)::int FROM email_log WHERE status = 'failed') AS failed_emails
+            (SELECT COUNT(*)::int FROM chat_session) AS total_chat_sessions,
+            (SELECT SUM(message_count)::int FROM chat_session) AS total_chat_messages,
+            (SELECT COUNT(*)::int FROM chat_session WHERE status = 'active') AS active_chat_sessions,
+            (SELECT COUNT(*)::int FROM chat_session WHERE lead_grade IN ('A', 'B')) AS high_quality_leads
     `)
 
     const stats = result[0]
 
-    const totalEmails = stats?.total_emails ?? 0
-    const sentEmails = stats?.sent_emails ?? 0
-    const failedEmails = stats?.failed_emails ?? 0
+    const totalChatSessions = stats?.total_chat_sessions ?? 0
+    const highQualityLeads = stats?.high_quality_leads ?? 0
 
     return {
-        blogPosts: {
-            total: stats?.total_posts ?? 0,
-            published: stats?.published_posts ?? 0,
-            draft: stats?.draft_posts ?? 0,
+        visitors: {
+            today: stats?.today_visitors ?? 0,
+            allTime: stats?.all_time_sessions ?? 0,
         },
         contacts: {
             total: stats?.total_contacts ?? 0,
             recent: stats?.recent_contacts ?? 0,
         },
-        feedback: {
-            bugReports: stats?.total_bug_reports ?? 0,
-            betaFeedback: stats?.total_beta_feedback ?? 0,
+        chat: {
+            totalSessions: totalChatSessions,
+            totalMessages: stats?.total_chat_messages ?? 0,
+            activeSessions: stats?.active_chat_sessions ?? 0,
         },
-        emails: {
-            total: totalEmails,
-            sent: sentEmails,
-            failed: failedEmails,
-            successRate:
-                totalEmails > 0
-                    ? Math.round((sentEmails / totalEmails) * 100)
+        leads: {
+            highQualityCount: highQualityLeads,
+            highQualityPercentage:
+                totalChatSessions > 0
+                    ? Math.round((highQualityLeads / totalChatSessions) * 100)
                     : 0,
         },
     }
