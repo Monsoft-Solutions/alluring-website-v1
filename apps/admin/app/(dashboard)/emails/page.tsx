@@ -47,6 +47,11 @@ import { getEmailLogs, getEmailStats } from '@/lib/queries/emails.query'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
+export const metadata = {
+    title: 'Email Logs | Admin',
+    description: 'View email delivery status and history',
+}
+
 type SearchParams = Promise<{
     page?: string
     status?: 'sent' | 'failed' | 'pending' | 'all'

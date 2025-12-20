@@ -17,6 +17,11 @@ import { getContacts, type ContactListItem } from '@/lib/queries/contacts.query'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
+export const metadata = {
+    title: 'Contact Submissions | Admin',
+    description: 'View and manage contact form submissions',
+}
+
 type SearchParams = Promise<{ page?: string }>
 
 export default async function ContactsPage({

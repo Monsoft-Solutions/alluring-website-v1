@@ -30,6 +30,11 @@ import {
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
+export const metadata = {
+    title: 'Blog Posts | Admin',
+    description: 'Manage blog posts, view analytics, and publish content',
+}
+
 type SearchParams = Promise<{
     page?: string
     sortBy?: string
