@@ -12,6 +12,7 @@ import {
 } from '@/lib/queries/gallery.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type PageProps = {
     params: Promise<{ id: string }>

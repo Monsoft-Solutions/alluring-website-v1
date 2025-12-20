@@ -34,6 +34,7 @@ import { MediaLibraryClient } from './media-library-client.component'
 import { GroupFilterSelect } from './group-filter-select.component'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type SearchParams = Promise<{
     page?: string

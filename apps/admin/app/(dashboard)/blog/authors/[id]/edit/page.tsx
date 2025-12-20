@@ -9,6 +9,7 @@ import { AuthorForm } from '@/components/blog/author-form.component'
 import { getAuthorById } from '@/lib/queries/blog.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type PageProps = {
     params: Promise<{ id: string }>

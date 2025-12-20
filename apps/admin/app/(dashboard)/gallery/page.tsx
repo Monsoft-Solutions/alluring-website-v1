@@ -21,6 +21,7 @@ import Link from 'next/link'
 import { getGalleryStats, getRecentMedia } from '@/lib/queries/gallery.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function GalleryDashboardPage() {
     const [stats, recentMedia] = await Promise.all([

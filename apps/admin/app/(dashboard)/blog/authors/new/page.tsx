@@ -5,6 +5,9 @@ import { Button } from '@workspace/ui/components/button'
 
 import { AuthorForm } from '@/components/blog/author-form.component'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 30
+
 export default function NewAuthorPage() {
     return (
         <div className='space-y-6'>

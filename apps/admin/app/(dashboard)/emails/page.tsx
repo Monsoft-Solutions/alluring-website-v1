@@ -45,6 +45,7 @@ import Link from 'next/link'
 import { getEmailLogs, getEmailStats } from '@/lib/queries/emails.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type SearchParams = Promise<{
     page?: string

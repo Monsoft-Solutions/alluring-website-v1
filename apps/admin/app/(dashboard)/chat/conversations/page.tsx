@@ -94,6 +94,7 @@ const STAGE_LABELS: Record<string, string> = {
 }
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type PageProps = {
     searchParams: Promise<{ page?: string }>

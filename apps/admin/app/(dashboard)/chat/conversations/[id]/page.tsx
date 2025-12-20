@@ -211,6 +211,7 @@ const ACTION_LABELS: Record<string, { label: string; description: string }> = {
 }
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type PageProps = {
     params: Promise<{ id: string }>

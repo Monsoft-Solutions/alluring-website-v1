@@ -15,6 +15,7 @@ import Link from 'next/link'
 import { getContacts, type ContactListItem } from '@/lib/queries/contacts.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type SearchParams = Promise<{ page?: string }>
 

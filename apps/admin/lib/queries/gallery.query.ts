@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import {
     beforeAfterPair,
@@ -344,31 +345,36 @@ export type GalleryGroupListItem = {
     createdAt: Date
 }
 
-export async function getGalleryGroups(): Promise<GalleryGroupListItem[]> {
-    const groups = await db
-        .select({
-            id: galleryGroup.id,
-            name: galleryGroup.name,
-            slug: galleryGroup.slug,
-            description: galleryGroup.description,
-            procedureSlug: galleryGroup.procedureSlug,
-            coverImageId: galleryGroup.coverImageId,
-            coverImageUrl: galleryMedia.url,
-            displayOrder: galleryGroup.displayOrder,
-            isVisible: galleryGroup.isVisible,
-            createdAt: galleryGroup.createdAt,
-            mediaCount: sql<number>`(
+export const getGalleryGroups = cache(
+    async (): Promise<GalleryGroupListItem[]> => {
+        const groups = await db
+            .select({
+                id: galleryGroup.id,
+                name: galleryGroup.name,
+                slug: galleryGroup.slug,
+                description: galleryGroup.description,
+                procedureSlug: galleryGroup.procedureSlug,
+                coverImageId: galleryGroup.coverImageId,
+                coverImageUrl: galleryMedia.url,
+                displayOrder: galleryGroup.displayOrder,
+                isVisible: galleryGroup.isVisible,
+                createdAt: galleryGroup.createdAt,
+                mediaCount: sql<number>`(
                 SELECT COUNT(*)::int 
                 FROM gallery_media_group 
                 WHERE gallery_media_group.group_id = ${galleryGroup.id}
             )`,
-        })
-        .from(galleryGroup)
-        .leftJoin(galleryMedia, eq(galleryGroup.coverImageId, galleryMedia.id))
-        .orderBy(asc(galleryGroup.displayOrder))
+            })
+            .from(galleryGroup)
+            .leftJoin(
+                galleryMedia,
+                eq(galleryGroup.coverImageId, galleryMedia.id)
+            )
+            .orderBy(asc(galleryGroup.displayOrder))
 
-    return groups
-}
+        return groups
+    }
+)
 
 export type GalleryGroupDetail = {
     id: string
@@ -575,53 +581,32 @@ export type GalleryStats = {
     featuredMedia: number
 }
 
-export async function getGalleryStats(): Promise<GalleryStats> {
-    const [
-        totalMediaResult,
-        imagesResult,
-        videosResult,
-        groupsResult,
-        pairsResult,
-        publishedResult,
-        draftResult,
-        featuredResult,
-    ] = await Promise.all([
-        db.select({ count: count() }).from(galleryMedia),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.type, 'image')),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.type, 'video')),
-        db.select({ count: count() }).from(galleryGroup),
-        db.select({ count: count() }).from(beforeAfterPair),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.status, 'published')),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.status, 'draft')),
-        db
-            .select({ count: count() })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.isFeatured, true)),
-    ])
+export const getGalleryStats = cache(async (): Promise<GalleryStats> => {
+    // Optimized: Single query instead of 8 concurrent queries
+    const [stats] = await db.execute(sql`
+        SELECT
+            COUNT(*)::int AS total_media,
+            COUNT(*) FILTER (WHERE type = 'image')::int AS total_images,
+            COUNT(*) FILTER (WHERE type = 'video')::int AS total_videos,
+            COUNT(*) FILTER (WHERE status = 'published')::int AS published_media,
+            COUNT(*) FILTER (WHERE status = 'draft')::int AS draft_media,
+            COUNT(*) FILTER (WHERE is_featured = true)::int AS featured_media,
+            (SELECT COUNT(*)::int FROM gallery_group) AS total_groups,
+            (SELECT COUNT(*)::int FROM before_after_pair) AS total_before_after_pairs
+        FROM gallery_media
+    `)
 
     return {
-        totalMedia: totalMediaResult[0]?.count ?? 0,
-        totalImages: imagesResult[0]?.count ?? 0,
-        totalVideos: videosResult[0]?.count ?? 0,
-        totalGroups: groupsResult[0]?.count ?? 0,
-        totalBeforeAfterPairs: pairsResult[0]?.count ?? 0,
-        publishedMedia: publishedResult[0]?.count ?? 0,
-        draftMedia: draftResult[0]?.count ?? 0,
-        featuredMedia: featuredResult[0]?.count ?? 0,
+        totalMedia: stats.total_media ?? 0,
+        totalImages: stats.total_images ?? 0,
+        totalVideos: stats.total_videos ?? 0,
+        totalGroups: stats.total_groups ?? 0,
+        totalBeforeAfterPairs: stats.total_before_after_pairs ?? 0,
+        publishedMedia: stats.published_media ?? 0,
+        draftMedia: stats.draft_media ?? 0,
+        featuredMedia: stats.featured_media ?? 0,
     }
-}
+})
 
 export type RecentMediaItem = {
     id: string

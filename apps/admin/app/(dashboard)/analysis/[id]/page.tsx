@@ -16,6 +16,9 @@ import { getAnalysisById } from '@/lib/queries/media-analysis.query'
 import { getGalleryGroupsForAI } from '@/lib/queries/gallery.query'
 import { AnalysisResultClient } from './analysis-result-client.component'
 
+export const dynamic = 'force-dynamic'
+export const maxDuration = 30
+
 export async function generateMetadata({
     params,
 }: {

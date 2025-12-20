@@ -38,6 +38,7 @@ import { ChatConfigForm } from '@/components/chat/chat-config-form.component'
 import { formatRelativeTime } from '@workspace/chat/utils'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 export default async function ChatAdminPage() {
     const [config, analytics] = await Promise.all([

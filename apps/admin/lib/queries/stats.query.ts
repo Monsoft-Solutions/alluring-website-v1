@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema/blog'
 import { contactSubmission } from '@workspace/db/schema/contact'
@@ -29,7 +30,7 @@ export type DashboardStats = {
     }
 }
 
-export async function getDashboardStats(): Promise<DashboardStats> {
+export const getDashboardStats = cache(async (): Promise<DashboardStats> => {
     // Calculate date for "recent" contacts (last 7 days)
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
@@ -101,7 +102,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
                     : 0,
         },
     }
-}
+})
 
 export type RecentContact = {
     id: string

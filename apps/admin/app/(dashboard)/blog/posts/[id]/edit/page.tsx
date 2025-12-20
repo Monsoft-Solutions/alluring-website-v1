@@ -9,6 +9,7 @@ import { PostForm } from '@/components/blog/post-form.component'
 import { getAuthorsForSelect, getBlogPostById } from '@/lib/queries/blog.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type PageProps = {
     params: Promise<{ id: string }>

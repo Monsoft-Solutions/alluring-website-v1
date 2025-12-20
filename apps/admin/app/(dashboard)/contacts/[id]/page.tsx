@@ -5,8 +5,6 @@ import {
     Mail,
     Phone,
     Clock,
-    MapPin,
-    Globe,
     MousePointerClick,
     BarChart3,
 } from 'lucide-react'
@@ -24,6 +22,7 @@ import {
 import { getContactById } from '@/lib/queries/contacts.query'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 30
 
 type PageProps = {
     params: Promise<{ id: string }>
