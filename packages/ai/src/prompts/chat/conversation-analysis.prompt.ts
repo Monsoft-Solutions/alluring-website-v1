@@ -42,7 +42,7 @@ Identify the main reason for the conversation:
 
 ### 2. PROCEDURES
 Detect any procedures mentioned (use exact slugs):
-bbl, breast_augmentation, breast_lift, breast_reduction, tummy_tuck, liposuction, mommy_makeover, facelift, rhinoplasty, blepharoplasty, brow_lift, chin_augmentation, lip_augmentation, botox, fillers
+bbl, breast_augmentation, breast_lift, breast_reduction, tummy_tuck, liposuction, mommy_makeover, facelift, blepharoplasty, brow_lift, chin_augmentation, lip_augmentation, botox, fillers
 
 ### 3. TAGS
 Use ONLY these exact tag values where applicable (do not create new tags):

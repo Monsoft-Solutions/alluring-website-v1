@@ -406,7 +406,6 @@ export const PROCEDURE_OPTIONS = [
     { value: 'tummy-tuck', label: 'Tummy Tuck' },
     { value: 'liposuction', label: 'Liposuction / Lipo 360' },
     { value: 'facelift', label: 'Facelift' },
-    { value: 'rhinoplasty', label: 'Rhinoplasty (Nose Job)' },
     { value: 'blepharoplasty', label: 'Eyelid Surgery (Blepharoplasty)' },
     { value: 'multiple', label: 'Multiple Procedures' },
     { value: 'other', label: 'Other / Not Sure Yet' },

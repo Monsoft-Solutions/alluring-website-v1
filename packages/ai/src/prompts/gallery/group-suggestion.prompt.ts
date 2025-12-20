@@ -33,7 +33,7 @@ Your task is to analyze gallery image metadata and suggest the most appropriate 
 
 ### 2. BODY AREA MATCHING
 - Consider the body area when procedure is unclear
-- Face procedures: facelift, blepharoplasty, rhinoplasty
+- Face procedures: facelift, blepharoplasty
 - Breast procedures: augmentation, lift, reduction
 - Body procedures: liposuction, tummy tuck, BBL, mommy makeover
 

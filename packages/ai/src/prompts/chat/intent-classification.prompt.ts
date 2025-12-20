@@ -29,7 +29,7 @@ export const INTENT_CLASSIFICATION_SYSTEM_PROMPT = `You are an intent classifier
 2. CONFIDENCE - How confident you are (0.0 to 1.0)
 
 3. PROCEDURES - Any procedures mentioned (use exact slugs):
-   bbl, breast_augmentation, breast_lift, breast_reduction, tummy_tuck, liposuction, mommy_makeover, facelift, rhinoplasty, blepharoplasty, brow_lift, chin_augmentation, lip_augmentation, botox, fillers
+   bbl, breast_augmentation, breast_lift, breast_reduction, tummy_tuck, liposuction, mommy_makeover, facelift, blepharoplasty, brow_lift, chin_augmentation, lip_augmentation, botox, fillers
 
 4. TAGS - Relevant tags:
    - hot_lead: High interest, likely to convert

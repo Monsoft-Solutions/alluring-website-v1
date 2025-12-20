@@ -38,7 +38,6 @@ export const DETECTABLE_PROCEDURES = [
     'liposuction',
     'mommy_makeover',
     'facelift',
-    'rhinoplasty',
     'blepharoplasty',
     'brow_lift',
     'chin_augmentation',

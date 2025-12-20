@@ -68,13 +68,12 @@ Identify the most likely procedure based on visual cues. Use ONLY these exact pr
 - mommy-makeover-miami: Combined procedures (breast + abdomen typically)
 - facelift-miami: Facial rejuvenation results (tightened jawline, reduced sagging)
 - blepharoplasty-miami: Eyelid surgery results (refreshed eye area)
-- rhinoplasty-miami: Nose reshaping results (refined nasal profile)
 
 Set procedureConfidence based on how certain you are (0.0 to 1.0).
 
 ### 5. BODY AREA
 Categorize the primary body area shown:
-- face: Facial procedures (facelift, rhinoplasty, blepharoplasty)
+- face: Facial procedures (facelift, blepharoplasty)
 - breast: Breast procedures (augmentation, lift, reduction)
 - body: Body contouring (liposuction, tummy tuck, BBL)
 - combined: Multiple areas visible (mommy makeover, full body shots)

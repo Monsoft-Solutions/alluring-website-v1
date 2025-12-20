@@ -69,7 +69,7 @@ export const faqDataContact: Record<string, FaqItem[]> = {
         },
         {
             question: 'Does insurance cover any procedures?',
-            answer: "Elective cosmetic surgery is typically not covered by insurance. However, procedures with functional components—such as rhinoplasty for breathing issues or breast reduction for back pain—may have partially covered elements. We're happy to discuss this during your consultation.",
+            answer: "Elective cosmetic surgery is typically not covered by insurance. However, procedures with functional components—such as breast reduction for back pain—may have partially covered elements. We're happy to discuss this during your consultation.",
         },
         {
             question: 'What does the quoted price include?',

@@ -232,7 +232,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                                 gallery of real patient transformations to see
                                 the incredible outcomes from procedures like
                                 Brazilian Butt Lift, Breast Augmentation,
-                                Rhinoplasty, and more. Each photo reflects the
+                                Facelift, and more. Each photo reflects the
                                 personalized care and attention to detail we
                                 bring to every surgery.
                             </p>

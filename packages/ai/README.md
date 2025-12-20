@@ -423,7 +423,7 @@ const customPrompt = generateSystemPrompt({
     clinicName: 'Beauty Clinic',
     location: 'Los Angeles, CA',
     tagline: 'Your Beauty Journey Starts Here',
-    specialties: ['facelift', 'rhinoplasty', 'botox'],
+    specialties: ['facelift', 'blepharoplasty', 'botox'],
 })
 ```
 

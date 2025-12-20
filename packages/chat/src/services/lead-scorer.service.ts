@@ -259,8 +259,6 @@ export function updateLeadScoreFromMessage(
             'lipo',
             'mommy makeover',
             'facelift',
-            'rhinoplasty',
-            'nose',
             'botox',
             'filler',
         ]

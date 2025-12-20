@@ -81,7 +81,6 @@ const PROCEDURE_LABELS: Record<string, string> = {
     liposuction: 'Liposuction',
     mommy_makeover: 'Mommy Makeover',
     facelift: 'Facelift',
-    rhinoplasty: 'Rhinoplasty',
     blepharoplasty: 'Blepharoplasty',
     brow_lift: 'Brow Lift',
     chin_augmentation: 'Chin Augmentation',

@@ -39,7 +39,7 @@ export const faqDataProcedures: Record<string, FaqItem[]> = {
         },
         {
             question: 'What procedures do you specialize in?',
-            answer: 'We specialize in a comprehensive range of body contouring and facial procedures including Brazilian Butt Lift (BBL), Breast Augmentation, Breast Lift, Breast Reduction, Tummy Tuck, Liposuction, Mommy Makeover, Facelift, Rhinoplasty, and Blepharoplasty (eyelid surgery). Our surgeons have performed thousands of these procedures with exceptional results.',
+            answer: 'We specialize in a comprehensive range of body contouring and facial procedures including Brazilian Butt Lift (BBL), Breast Augmentation, Breast Lift, Breast Reduction, Tummy Tuck, Liposuction, Mommy Makeover, Facelift, and Blepharoplasty (eyelid surgery). Our surgeons have performed thousands of these procedures with exceptional results.',
         },
         {
             question: 'Can I combine multiple procedures in one surgery?',
@@ -119,7 +119,7 @@ export const faqDataProcedures: Record<string, FaqItem[]> = {
         },
         {
             question: 'Does insurance cover cosmetic surgery?',
-            answer: "Elective cosmetic procedures are typically not covered by insurance. However, certain reconstructive components—like hernia repair during a tummy tuck or functional rhinoplasty for breathing issues—may be partially covered depending on your policy. We can provide documentation if you'd like to check with your insurance provider.",
+            answer: "Elective cosmetic procedures are typically not covered by insurance. However, certain reconstructive components—like hernia repair during a tummy tuck—may be partially covered depending on your policy. We can provide documentation if you'd like to check with your insurance provider.",
         },
     ],
     recovery: [

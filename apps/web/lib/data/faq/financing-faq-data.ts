@@ -45,7 +45,7 @@ export const financingFaqData: FaqItem[] = [
     },
     {
         question: 'Can I use financing for any procedure?',
-        answer: 'Yes! All of our cosmetic procedures are eligible for financing, including Brazilian Butt Lift (BBL), breast augmentation, tummy tuck, liposuction, mommy makeover, rhinoplasty, facelift, and more.',
+        answer: 'Yes! All of our cosmetic procedures are eligible for financing, including Brazilian Butt Lift (BBL), breast augmentation, tummy tuck, liposuction, mommy makeover, facelift, and more.',
     },
     {
         question: 'What documents do I need to apply?',

@@ -22,7 +22,6 @@ export const GALLERY_PROCEDURE_SLUGS = [
     'mommy-makeover-miami',
     'facelift-miami',
     'blepharoplasty-miami',
-    'rhinoplasty-miami',
 ] as const
 
 /**

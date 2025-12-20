@@ -95,8 +95,6 @@ export function detectIntentKeywords(message: string): Partial<{
         'mommy makeover': 'mommy_makeover',
         facelift: 'facelift',
         'face lift': 'facelift',
-        rhinoplasty: 'rhinoplasty',
-        'nose job': 'rhinoplasty',
         botox: 'botox',
         filler: 'fillers',
     }

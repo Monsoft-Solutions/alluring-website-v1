@@ -389,7 +389,7 @@ Our website is not intended for children under 18 years of age. We do not knowin
 In accordance with Florida law and medical ethics:
 - Most elective cosmetic procedures require patients to be 18 years or older
 - Certain procedures may be performed on patients 16-17 with parental/guardian consent
-- Rhinoplasty and otoplasty (ear surgery) may be considered for younger patients with parental consent and medical necessity
+- Some procedures may be considered for younger patients with parental consent and medical necessity
 
 ### 11.3 Parental Consent
 

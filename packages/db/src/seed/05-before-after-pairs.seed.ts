@@ -67,7 +67,6 @@ const PROCEDURE_SLUGS = [
     'mommy-makeover-miami',
     'facelift-miami',
     'blepharoplasty-miami',
-    'rhinoplasty-miami',
 ] as const
 
 type ProcedureSlug = (typeof PROCEDURE_SLUGS)[number]

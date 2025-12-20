@@ -330,7 +330,6 @@
 | Keyword                       | Volume | Competition | CPC Range    | Priority        |
 | ----------------------------- | ------ | ----------- | ------------ | --------------- |
 | financing for plastic surgery | 5K     | High (69)   | $3.30-$11.32 | High            |
-| financing for rhinoplasty     | 5K     | Low (5)     | $2.92-$9.91  | **OPPORTUNITY** |
 | breast augmentation financing | 5K     | Low (5)     | $3.13-$10.13 | **OPPORTUNITY** |
 | bbl financing                 | 500    | Low (10)    | $2.68-$11.39 | Medium          |
 | liposuction financing         | 500    | Low (14)    | $3.87-$13.00 | Medium          |
@@ -350,7 +349,6 @@
 **MAJOR OPPORTUNITY:** Several financing keywords have LOW competition:
 
 - "breast augmentation financing" (Competition: 5)
-- "financing for rhinoplasty" (Competition: 5)
 - "affordable plastic surgery" (Competition: 21)
 
 **Recommended Content:**
@@ -523,7 +521,6 @@ Example: "How Much Does a Mommy Makeover Cost in Miami? 2025 Guide"
 | miami liposuction                | 5K     | Low (23)    | Create/optimize procedure page |
 | plastic surgery before and after | 5K     | Low (6)     | Gallery page optimization      |
 | breast augmentation financing    | 5K     | Low (5)     | Financing content              |
-| financing for rhinoplasty        | 5K     | Low (5)     | Financing content              |
 | affordable plastic surgery       | 5K     | Low (21)    | Financing page                 |
 
 ### High-Value Competitive Keywords (Prioritize Quality)

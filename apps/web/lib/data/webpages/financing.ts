@@ -152,7 +152,6 @@ const procedureCategories: FinancingProcedureCategory[] = [
         name: 'Facial Procedures',
         icon: 'Smile',
         procedures: [
-            { name: 'Rhinoplasty', slug: 'rhinoplasty-miami' },
             { name: 'Facelift', slug: 'facelift-miami' },
             { name: 'Blepharoplasty', slug: 'blepharoplasty-miami' },
         ],

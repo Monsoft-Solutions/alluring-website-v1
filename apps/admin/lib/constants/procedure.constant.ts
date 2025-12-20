@@ -54,10 +54,6 @@ export const PROCEDURE_OPTIONS: ProcedureOption[] = [
         slug: 'blepharoplasty-miami',
     },
     {
-        name: 'Rhinoplasty',
-        slug: 'rhinoplasty-miami',
-    },
-    {
         name: 'Other',
         slug: null,
     },

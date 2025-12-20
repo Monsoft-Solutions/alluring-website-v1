@@ -27,7 +27,6 @@ export const metadata = toNextMetadata(seoConfig, {
         'mommy makeover',
         'liposuction miami',
         'facelift miami',
-        'rhinoplasty miami',
     ],
 
     // Open Graph tags for social sharing

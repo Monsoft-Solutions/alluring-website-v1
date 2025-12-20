@@ -114,7 +114,7 @@ const QUICK_REPLIES: InsertChatQuickReply[] = [
     {
         label: 'Facial Procedures',
         message:
-            'What facial procedures do you offer? (Facelift, rhinoplasty, etc.)',
+            'What facial procedures do you offer? (Facelift, blepharoplasty, etc.)',
         category: 'procedures' satisfies QuickReplyCategory,
         sortOrder: 8,
         isActive: true,

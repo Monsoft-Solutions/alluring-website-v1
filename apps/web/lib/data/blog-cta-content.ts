@@ -129,7 +129,7 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
         id: 'facial',
         heading: 'Reveal Your Best Self',
         description:
-            'Expert facial procedures including facelift, rhinoplasty, and blepharoplasty. Turn back the clock with natural-looking rejuvenation.',
+            'Expert facial procedures including facelift and blepharoplasty. Turn back the clock with natural-looking rejuvenation.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {

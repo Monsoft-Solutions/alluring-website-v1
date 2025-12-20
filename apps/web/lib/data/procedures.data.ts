@@ -10,7 +10,6 @@ import { tummyTuckMiami } from './procedures/tummy-tuck-miami.data'
 import { mommyMakeoverMiami } from './procedures/mommy-makeover-miami.data'
 import { faceliftMiami } from './procedures/facelift-miami.data'
 import { blepharoplastyMiami } from './procedures/blepharoplasty-miami.data'
-import { rhinoplastyMiami } from './procedures/rhinoplasty-miami.data'
 
 export const procedures: Procedure[] = [
     breastAugmentationMiami,
@@ -22,7 +21,6 @@ export const procedures: Procedure[] = [
     mommyMakeoverMiami,
     faceliftMiami,
     blepharoplastyMiami,
-    rhinoplastyMiami,
 ]
 
 export const getProcedureBySlug = (slug: string): Procedure | undefined => {
