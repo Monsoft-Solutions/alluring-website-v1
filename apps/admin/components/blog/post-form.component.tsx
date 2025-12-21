@@ -32,6 +32,8 @@ import {
 } from '@workspace/ui/components/tabs'
 
 import { PostEditor } from './editor.component'
+import { ImageGenerationPanel } from './image-generation-panel.component'
+import { GeneratedImagesGallery } from './generated-images-gallery.component'
 import {
     createBlogPost,
     updateBlogPost,
@@ -53,6 +55,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | null>(null)
+    const [galleryRefresh, setGalleryRefresh] = useState(0)
 
     const [formData, setFormData] = useState<BlogPostFormData>({
         title: initialData?.title ?? '',
@@ -99,6 +102,18 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
     const handleContentChange = (content: string) => {
         handleChange('content', content)
         handleChange('readingTime', calculateReadingTime(content))
+    }
+
+    const handleImageGenerated = (_imageId: string, imageUrl: string) => {
+        // Update the featured image URL
+        handleChange('featuredImageUrl', imageUrl)
+        // Trigger gallery refresh
+        setGalleryRefresh((prev) => prev + 1)
+    }
+
+    const handleSelectGeneratedImage = (_imageId: string, imageUrl: string) => {
+        // Update the featured image URL
+        handleChange('featuredImageUrl', imageUrl)
     }
 
     const getSuccessMessage = (
@@ -208,6 +223,23 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                         </div>
                     </CardContent>
                 </Card>
+
+                {/* AI Image Generation */}
+                <ImageGenerationPanel
+                    blogPostId={initialData?.id}
+                    initialSummary={initialData?.aiSummary}
+                    onImageGenerated={handleImageGenerated}
+                />
+
+                {/* Generated Images Gallery */}
+                {initialData?.id && (
+                    <GeneratedImagesGallery
+                        blogPostId={initialData.id}
+                        currentFeaturedImageUrl={formData.featuredImageUrl}
+                        onSelectImage={handleSelectGeneratedImage}
+                        refreshTrigger={galleryRefresh}
+                    />
+                )}
             </div>
 
             {/* Sidebar */}

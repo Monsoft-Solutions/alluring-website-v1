@@ -62,3 +62,16 @@ export {
     streamImproveText,
     type StreamImproveTextOptions,
 } from './stream-improve-text.function'
+
+// Blog Post AI
+export {
+    summarizeBlogPost,
+    type SummarizeBlogPostOptions,
+    type BlogPostSummary,
+} from './summarize-blog-post.function'
+
+export {
+    generateImagePrompt,
+    type GenerateImagePromptOptions,
+    type ImagePromptResult,
+} from './generate-image-prompt.function'

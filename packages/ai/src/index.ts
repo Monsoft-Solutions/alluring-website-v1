@@ -66,6 +66,9 @@ export {
     suggestGalleryGroups,
     // Text improvement
     streamImproveText,
+    // Blog post functions
+    summarizeBlogPost,
+    generateImagePrompt,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
@@ -77,6 +80,10 @@ export {
     type GenerateVisitorContentOptions,
     type SuggestGroupsOptions,
     type StreamImproveTextOptions,
+    type SummarizeBlogPostOptions,
+    type BlogPostSummary,
+    type GenerateImagePromptOptions,
+    type ImagePromptResult,
 } from './functions'
 
 // AI-specific schemas for structured outputs
@@ -137,6 +144,11 @@ export {
     // Text improvement prompts
     TEXT_IMPROVEMENT_SYSTEM_PROMPT,
     getTextImprovementPrompt,
+    // Blog prompts
+    BLOG_SUMMARY_SYSTEM_PROMPT,
+    getBlogSummaryPrompt,
+    IMAGE_PROMPT_SYSTEM_PROMPT,
+    getImagePromptPrompt,
 } from './prompts'
 
 // Telemetry configuration

@@ -129,6 +129,7 @@ export type BlogPostDetail = {
     publishedAt: Date | null
     readingTime: number | null
     authorId: string | null
+    aiSummary: string | null
     featuredImageUrl: string | null
 }
 
@@ -149,6 +150,7 @@ export async function getBlogPostById(
             publishedAt: blogPost.publishedAt,
             readingTime: blogPost.readingTime,
             authorId: blogPost.authorId,
+            aiSummary: blogPost.aiSummary,
             featuredImageUrl: images.url,
         })
         .from(blogPost)

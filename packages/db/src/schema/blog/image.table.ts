@@ -22,6 +22,8 @@ export const images = pgTable(
         mimeType: varchar('mime_type', { length: 100 }),
         originalFilename: varchar('original_filename', { length: 255 }),
         blurDataUrl: text('blur_data_url'), // for Next.js Image optimization
+        generationPrompt: text('generation_prompt'), // AI prompt used to generate this image
+        generatedBy: varchar('generated_by', { length: 50 }), // 'fal-ai' | 'manual' | null
         createdAt: timestamp('created_at').defaultNow(),
         updatedAt: timestamp('updated_at').defaultNow(),
     },

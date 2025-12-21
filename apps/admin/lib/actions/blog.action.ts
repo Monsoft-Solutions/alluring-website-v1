@@ -17,6 +17,7 @@ export type BlogPostFormData = {
     excerpt?: string | null
     authorId?: string | null
     status: 'draft' | 'readyToPublish' | 'published'
+    aiSummary?: string | null
     featuredImageUrl?: string | null
     readingTime?: number | null
 }

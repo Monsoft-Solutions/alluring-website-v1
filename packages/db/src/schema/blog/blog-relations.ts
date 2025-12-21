@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm'
 
 import { author } from './author.table'
+import { blogPostImages } from './blog-post-images.table'
 import { blogPostTag } from './blog-post-tag.table'
 import { blogPost } from './blog-post.table'
 import { blogCategory, blogPostCategory } from './blog-posts-category.table'
@@ -16,6 +17,17 @@ export const blogPostTagsRelations = relations(blogPostTag, ({ one }) => ({
     tag: one(blogTag, {
         fields: [blogPostTag.tagId],
         references: [blogTag.id],
+    }),
+}))
+
+export const blogPostImagesRelations = relations(blogPostImages, ({ one }) => ({
+    blogPost: one(blogPost, {
+        fields: [blogPostImages.blogPostId],
+        references: [blogPost.id],
+    }),
+    image: one(images, {
+        fields: [blogPostImages.imageId],
+        references: [images.id],
     }),
 }))
 
@@ -45,6 +57,7 @@ export const blogPostsRelations = relations(blogPost, ({ one, many }) => ({
     }),
     categories: many(blogPostCategory),
     tags: many(blogPostTag),
+    generatedImages: many(blogPostImages),
 }))
 
 export const blogTagsRelations = relations(blogTag, ({ many }) => ({
@@ -61,4 +74,5 @@ export const authorsRelations = relations(author, ({ many }) => ({
 
 export const imagesRelations = relations(images, ({ many }) => ({
     featuredInBlogPosts: many(blogPost),
+    generatedForBlogPosts: many(blogPostImages),
 }))

@@ -34,6 +34,7 @@ export const blogPost = pgTable(
         scheduledAt: timestamp('scheduled_at'),
         readingTime: integer('reading_time'), // in minutes
         content: text('content').notNull(),
+        aiSummary: text('ai_summary'), // AI-generated summary for image generation
         status: blogPostStatus('status').default('draft'),
         views: integer('views').default(0).notNull(),
         likes: integer('likes').default(0).notNull(),

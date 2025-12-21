@@ -45,3 +45,12 @@ export {
     TEXT_IMPROVEMENT_SYSTEM_PROMPT,
     getTextImprovementPrompt,
 } from './text'
+
+export {
+    // Blog Summary
+    BLOG_SUMMARY_SYSTEM_PROMPT,
+    getBlogSummaryPrompt,
+    // Image Prompt Generation
+    IMAGE_PROMPT_SYSTEM_PROMPT,
+    getImagePromptPrompt,
+} from './blog'

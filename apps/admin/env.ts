@@ -48,6 +48,9 @@ export const env = createEnv({
         LANGFUSE_PUBLIC_KEY: z.string().optional(),
         LANGFUSE_BASE_URL: z.string().url().optional(),
         LANGFUSE_ENABLED: z.enum(['true', 'false']).optional(),
+
+        // fal.ai for AI image generation
+        FAL_KEY: z.string().min(1),
     },
     client: {
         // Public web app URL for building absolute links
