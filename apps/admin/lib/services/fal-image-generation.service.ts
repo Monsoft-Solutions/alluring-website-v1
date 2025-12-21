@@ -70,6 +70,53 @@ function getFalModelId(modelId: ImageModelId): string {
 }
 
 /**
+ * Upload a single generated image to Vercel Blob
+ *
+ * @param imageUrl - URL of the image from fal.ai
+ * @param blogPostId - Blog post ID for organizing blob storage
+ * @param imageIndex - Index of the image in the batch
+ * @param width - Image width
+ * @param height - Image height
+ * @returns Uploaded image metadata
+ * @throws Error if download or upload fails
+ */
+async function uploadImageToBlob(
+    imageUrl: string,
+    blogPostId: string,
+    imageIndex: number,
+    width?: number,
+    height?: number
+): Promise<GeneratedImageItem> {
+    // Download image from fal.ai
+    const imageResponse = await fetch(imageUrl)
+    if (!imageResponse.ok) {
+        throw new Error(
+            `Failed to download image: ${imageResponse.status} ${imageResponse.statusText}`
+        )
+    }
+
+    const imageBlob = await imageResponse.blob()
+
+    // Generate unique filename
+    const timestamp = Date.now()
+    const randomStr = Math.random().toString(36).substring(2, 8)
+    const filename = `blog-images/${blogPostId}/${timestamp}-${randomStr}-${imageIndex}.jpg`
+
+    // Upload to Vercel Blob
+    const uploadedBlob = await put(filename, imageBlob, {
+        access: 'public',
+        token: env.BLOB_READ_WRITE_TOKEN,
+    })
+
+    return {
+        blobUrl: uploadedBlob.url,
+        falUrl: imageUrl,
+        width,
+        height,
+    }
+}
+
+/**
  * Generate images using fal.ai and upload to Vercel Blob
  *
  * @param options - Generation options including prompt, model, and image count
@@ -133,38 +180,30 @@ export async function generateImageWithFal(
 
         for (let i = 0; i < generatedImages.length; i++) {
             const image = generatedImages[i]
-            if (!image?.url) continue
-
-            // Download image from fal.ai
-            const imageResponse = await fetch(image.url)
-            if (!imageResponse.ok) {
-                console.error(
-                    `Failed to download image ${i + 1}: ${imageResponse.status}`
-                )
+            if (!image?.url) {
+                console.warn(`Skipping image ${i + 1}: missing URL`)
                 continue
             }
 
-            const imageBlob = await imageResponse.blob()
+            try {
+                const uploadedImage = await uploadImageToBlob(
+                    image.url,
+                    blogPostId,
+                    i,
+                    image.width,
+                    image.height
+                )
 
-            // Generate unique filename
-            const timestamp = Date.now()
-            const randomStr = Math.random().toString(36).substring(2, 8)
-            const filename = `blog-images/${blogPostId}/${timestamp}-${randomStr}-${i}.jpg`
-
-            // Upload to Vercel Blob
-            const uploadedBlob = await put(filename, imageBlob, {
-                access: 'public',
-                token: env.BLOB_READ_WRITE_TOKEN,
-            })
-
-            uploadedImages.push({
-                blobUrl: uploadedBlob.url,
-                falUrl: image.url,
-                width: image.width,
-                height: image.height,
-            })
-
-            console.log(`Uploaded image ${i + 1}/${generatedImages.length}`)
+                uploadedImages.push(uploadedImage)
+                console.log(`Uploaded image ${i + 1}/${generatedImages.length}`)
+            } catch (error) {
+                console.error(
+                    `Failed to upload image ${i + 1}:`,
+                    error instanceof Error ? error.message : 'Unknown error'
+                )
+                // Continue with other images even if one fails
+                continue
+            }
         }
 
         if (uploadedImages.length === 0) {

@@ -56,7 +56,7 @@ export async function POST(
         const { blogPostId } = validationResult.data
 
         // Fetch blog post content
-        const [post] = await db
+        const [blogPostData] = await db
             .select({
                 title: blogPost.title,
                 content: blogPost.content,
@@ -66,7 +66,7 @@ export async function POST(
             .where(eq(blogPost.id, blogPostId))
             .limit(1)
 
-        if (!post) {
+        if (!blogPostData) {
             return NextResponse.json(
                 {
                     success: false,
@@ -77,17 +77,17 @@ export async function POST(
         }
 
         // Check if summary already exists
-        if (post.aiSummary) {
+        if (blogPostData.aiSummary) {
             return NextResponse.json({
                 success: true,
-                summary: post.aiSummary,
+                summary: blogPostData.aiSummary,
             })
         }
 
         // Generate summary using AI
         const result = await summarizeBlogPost({
-            title: post.title,
-            content: post.content,
+            title: blogPostData.title,
+            content: blogPostData.content,
         })
 
         // Persist summary to database

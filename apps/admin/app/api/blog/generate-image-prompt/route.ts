@@ -63,14 +63,14 @@ export async function POST(
             )
         }
 
-        const data = validationResult.data
+        const requestData = validationResult.data
         let summary: string
         let title: string
         let keywords: string | undefined
 
         // Mode 1: Fetch from database
-        if ('blogPostId' in data) {
-            const [post] = await db
+        if ('blogPostId' in requestData) {
+            const [blogPostData] = await db
                 .select({
                     title: blogPost.title,
                     content: blogPost.content,
@@ -78,10 +78,10 @@ export async function POST(
                     metaKeywords: blogPost.metaKeywords,
                 })
                 .from(blogPost)
-                .where(eq(blogPost.id, data.blogPostId))
+                .where(eq(blogPost.id, requestData.blogPostId))
                 .limit(1)
 
-            if (!post) {
+            if (!blogPostData) {
                 return NextResponse.json(
                     {
                         success: false,
@@ -92,10 +92,10 @@ export async function POST(
             }
 
             // Generate summary if not exists
-            if (!post.aiSummary) {
+            if (!blogPostData.aiSummary) {
                 const summaryResult = await summarizeBlogPost({
-                    title: post.title,
-                    content: post.content,
+                    title: blogPostData.title,
+                    content: blogPostData.content,
                 })
 
                 summary = summaryResult.summary
@@ -104,18 +104,18 @@ export async function POST(
                 await db
                     .update(blogPost)
                     .set({ aiSummary: summary })
-                    .where(eq(blogPost.id, data.blogPostId))
+                    .where(eq(blogPost.id, requestData.blogPostId))
             } else {
-                summary = post.aiSummary
+                summary = blogPostData.aiSummary
             }
 
-            title = post.title
-            keywords = post.metaKeywords || undefined
+            title = blogPostData.title
+            keywords = blogPostData.metaKeywords || undefined
         } else {
             // Mode 2: Use provided data
-            summary = data.summary
-            title = data.title
-            keywords = data.keywords
+            summary = requestData.summary
+            title = requestData.title
+            keywords = requestData.keywords
         }
 
         // Generate image prompt

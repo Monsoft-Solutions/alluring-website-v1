@@ -6,6 +6,7 @@ import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
+import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
 
 export type BlogPostFormData = {
     title: string
@@ -125,17 +126,9 @@ export async function updateBlogPost(
         await requireAuth()
 
         // Validate required fields
-        if (!data.title?.trim()) {
-            return { success: false, error: 'Title is required' }
-        }
-        if (!data.slug?.trim()) {
-            return { success: false, error: 'Slug is required' }
-        }
-        if (!data.content?.trim()) {
-            return { success: false, error: 'Content is required' }
-        }
-        if (!data.metaDescription?.trim()) {
-            return { success: false, error: 'Meta description is required' }
+        const validationResult = validateBlogPostData(data)
+        if (!validationResult.isValid) {
+            return { success: false, error: validationResult.error }
         }
 
         // Check if slug already exists for another post
@@ -300,10 +293,10 @@ export async function updateBlogPostStatus(
             return { success: false, error: 'Post not found' }
         }
 
-        const wasPublished2 = currentPost[0]?.status === 'published'
+        const wasAlreadyPublished = currentPost[0]?.status === 'published'
         const isNowPublished = status === 'published'
         const publishedAt =
-            !wasPublished2 && isNowPublished ? new Date() : undefined
+            !wasAlreadyPublished && isNowPublished ? new Date() : undefined
 
         await db
             .update(blogPost)

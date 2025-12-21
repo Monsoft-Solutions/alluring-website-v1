@@ -92,7 +92,7 @@ export async function POST(
         } = validationResult.data
 
         // Fetch blog post
-        const [post] = await db
+        const [blogPostData] = await db
             .select({
                 title: blogPost.title,
                 content: blogPost.content,
@@ -103,7 +103,7 @@ export async function POST(
             .where(eq(blogPost.id, blogPostId))
             .limit(1)
 
-        if (!post) {
+        if (!blogPostData) {
             return NextResponse.json(
                 {
                     success: false,
@@ -113,15 +113,15 @@ export async function POST(
             )
         }
 
-        let summary = post.aiSummary
+        let summary = blogPostData.aiSummary
         let wasGeneratedSummary = false
 
         // Step 1: Ensure we have a summary
         if (!summary) {
             console.log('Generating summary for blog post...')
             const summaryResult = await summarizeBlogPost({
-                title: post.title,
-                content: post.content,
+                title: blogPostData.title,
+                content: blogPostData.content,
             })
 
             summary = summaryResult.summary
@@ -141,8 +141,8 @@ export async function POST(
             console.log('Generating image prompt...')
             const promptResult = await generateImagePrompt({
                 summary,
-                title: post.title,
-                keywords: post.metaKeywords || undefined,
+                title: blogPostData.title,
+                keywords: blogPostData.metaKeywords || undefined,
             })
 
             finalPrompt = promptResult.prompt
@@ -175,8 +175,8 @@ export async function POST(
                 .insert(images)
                 .values({
                     url: generatedImage.blobUrl,
-                    alt: post.title,
-                    title: post.title,
+                    alt: blogPostData.title,
+                    title: blogPostData.title,
                     width: generatedImage.width,
                     height: generatedImage.height,
                     generationPrompt: finalPrompt,
