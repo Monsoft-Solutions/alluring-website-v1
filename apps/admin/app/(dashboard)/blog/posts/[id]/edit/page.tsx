@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
-import { Badge } from '@workspace/ui/components/badge'
 
 import { PostForm } from '@/components/blog/post-form.component'
+import { StatusBadge } from '@/components/blog/status-badge.component'
 import { getAuthorsForSelect, getBlogPostById } from '@/lib/queries/blog.query'
 
 export const dynamic = 'force-dynamic'
@@ -81,31 +81,5 @@ export default async function EditBlogPostPage({ params }: PageProps) {
                 }}
             />
         </div>
-    )
-}
-
-function StatusBadge({
-    status,
-}: {
-    status: 'draft' | 'readyToPublish' | 'published' | null
-}) {
-    const variants: Record<string, 'default' | 'secondary' | 'outline'> = {
-        published: 'default',
-        readyToPublish: 'secondary',
-        draft: 'outline',
-    }
-
-    const labels: Record<string, string> = {
-        published: 'Published',
-        readyToPublish: 'Ready to Publish',
-        draft: 'Draft',
-    }
-
-    const statusKey = status ?? 'draft'
-
-    return (
-        <Badge variant={variants[statusKey] ?? 'outline'}>
-            {labels[statusKey] ?? 'Draft'}
-        </Badge>
     )
 }
