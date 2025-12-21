@@ -5,7 +5,7 @@ import { author } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 export type AuthorFormData = {
     name: string
@@ -62,7 +62,7 @@ export async function createAuthor(
     } catch (error) {
         console.error('Error creating author:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -138,7 +138,7 @@ export async function updateAuthor(
     } catch (error) {
         console.error('Error updating author:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -164,7 +164,7 @@ export async function deleteAuthor(id: string): Promise<ActionResult> {
     } catch (error) {
         console.error('Error deleting author:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -203,7 +203,7 @@ export async function toggleAuthorStatus(id: string): Promise<ActionResult> {
     } catch (error) {
         console.error('Error toggling author status:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

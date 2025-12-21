@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import { getTrafficSources } from '@/lib/queries/analytics.query'
 import { requireAuth } from '@/lib/utils/auth.util'
+import { handleApiError } from '@/lib/utils/api-error-handler.util'
 
 export const runtime = 'nodejs'
 
@@ -43,17 +44,10 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(data)
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return NextResponse.json(
-                { success: false, error: 'Unauthorized' },
-                { status: 401 }
-            )
-        }
-
-        console.error('Error fetching traffic sources:', error)
-        return NextResponse.json(
-            { success: false, error: 'Failed to fetch traffic sources' },
-            { status: 500 }
+        return handleApiError(
+            error,
+            'Failed to fetch traffic sources',
+            'Error fetching traffic sources:'
         )
     }
 }

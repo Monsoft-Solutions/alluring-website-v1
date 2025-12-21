@@ -17,7 +17,7 @@ import {
 import { eq } from 'drizzle-orm'
 
 import { getGalleryGroupsForAI } from '@/lib/queries/gallery.query'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 // ============================================================================
 // Types
@@ -98,7 +98,7 @@ export async function analyzeGalleryMediaImage(
 
         return { success: true, analysis }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -145,7 +145,7 @@ export async function saveGalleryMediaAnalysis(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -214,7 +214,7 @@ export async function generateGalleryMediaSEOContent(
 
         return { success: true, content }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -253,7 +253,7 @@ export async function generateSEOContentFromAnalysis(
 
         return { success: true, content }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -318,7 +318,7 @@ export async function generateGalleryMediaVisitorContent(
 
         return { success: true, content }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -357,7 +357,7 @@ export async function generateVisitorContentFromAnalysis(
 
         return { success: true, content }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -443,7 +443,7 @@ export async function suggestGroupsForMedia(
             suggestedGroupIds,
         }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -501,7 +501,7 @@ export async function suggestGroupsFromAnalysis(
             suggestedGroupIds,
         }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

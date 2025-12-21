@@ -17,7 +17,7 @@ import {
     getAllGalleryTags,
     CACHE_TAGS,
 } from '@/lib/utils/revalidate-web.util'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 // ============================================================================
 // Types
@@ -156,7 +156,7 @@ export async function createGalleryMedia(
 
         return { success: true, id: newMedia?.id }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -286,7 +286,7 @@ export async function updateGalleryMedia(
 
         return { success: true, id }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -342,7 +342,7 @@ export async function deleteGalleryMedia(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -401,7 +401,7 @@ export async function updateMediaStatus(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -447,7 +447,7 @@ export async function toggleMediaFeatured(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -485,7 +485,7 @@ export async function reorderMedia(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -561,7 +561,7 @@ export async function createGalleryGroup(
 
         return { success: true, id: newGroup?.id }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -643,7 +643,7 @@ export async function updateGalleryGroup(
 
         return { success: true, id }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -686,7 +686,7 @@ export async function deleteGalleryGroup(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -732,7 +732,7 @@ export async function toggleGroupVisibility(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -770,7 +770,7 @@ export async function reorderGroups(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -848,7 +848,7 @@ export async function createBeforeAfterPair(
 
         return { success: true, id: newPair?.id }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -945,7 +945,7 @@ export async function updateBeforeAfterPair(
 
         return { success: true, id }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -1002,7 +1002,7 @@ export async function deleteBeforeAfterPair(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -1037,7 +1037,7 @@ export async function togglePairFeatured(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -1075,7 +1075,7 @@ export async function reorderPairs(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

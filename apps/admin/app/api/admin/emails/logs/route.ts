@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 import { getEmailLogs } from '@/lib/queries/emails.query'
 import { requireAuth } from '@/lib/utils/auth.util'
+import { handleApiError } from '@/lib/utils/api-error-handler.util'
 
 export const runtime = 'nodejs'
 
@@ -41,17 +42,10 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(data)
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return NextResponse.json(
-                { success: false, error: 'Unauthorized' },
-                { status: 401 }
-            )
-        }
-
-        console.error('Error fetching email logs:', error)
-        return NextResponse.json(
-            { success: false, error: 'Failed to fetch email logs' },
-            { status: 500 }
+        return handleApiError(
+            error,
+            'Failed to fetch email logs',
+            'Error fetching email logs:'
         )
     }
 }

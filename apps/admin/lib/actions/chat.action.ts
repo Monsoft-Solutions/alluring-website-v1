@@ -14,7 +14,7 @@ import { revalidatePath } from 'next/cache'
 
 import { chatConfigSchema, type ChatConfigInput } from '@workspace/chat/types'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 type ActionResult = {
     success: boolean
@@ -79,7 +79,7 @@ export async function updateChatConfig(
     } catch (error) {
         console.error('Error updating chat config:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -118,7 +118,7 @@ export async function toggleChatEnabled(
     } catch (error) {
         console.error('Error toggling chat:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -146,7 +146,7 @@ export async function deleteChatSessionAction(
     } catch (error) {
         console.error('Error deleting session:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -185,7 +185,7 @@ export async function createTestSession(): Promise<{
     } catch (error) {
         console.error('Error creating test session:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

@@ -17,7 +17,7 @@ import {
     beforeAfterPair,
     galleryGroup,
 } from '@workspace/db/schema'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import type {
     GalleryMediaAIAnalysis,
     AvailableGroup,
@@ -1155,7 +1155,7 @@ export async function updateAnalysisStatus(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -1258,7 +1258,7 @@ export async function updateMediaAnalysis(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

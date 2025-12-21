@@ -17,7 +17,7 @@ import {
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 // ============================================================================
 // Types
@@ -103,7 +103,7 @@ export async function createAnalysis(
 
         return { success: true, data: { id: createdAnalysis.id } }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -155,7 +155,7 @@ export async function updateAnalysisResult(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -193,7 +193,7 @@ export async function updateAnalysisStatus(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -232,7 +232,7 @@ export async function updateAnalysisName(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -264,7 +264,7 @@ export async function createAnalysisItems(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -303,7 +303,7 @@ export async function updateAnalysisResultData(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -332,7 +332,7 @@ export async function deleteAnalysis(id: string): Promise<ActionResult> {
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

@@ -5,7 +5,7 @@ import { blogCategory } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 export type CategoryFormData = {
     name: string
@@ -66,7 +66,7 @@ export async function createCategory(
     } catch (error) {
         console.error('Error creating category:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -125,7 +125,7 @@ export async function updateCategory(
     } catch (error) {
         console.error('Error updating category:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -151,7 +151,7 @@ export async function deleteCategory(id: string): Promise<ActionResult> {
     } catch (error) {
         console.error('Error deleting category:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

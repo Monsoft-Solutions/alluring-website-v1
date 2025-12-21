@@ -9,7 +9,7 @@ import {
     revalidateWebAppCache,
     getAllPromotionCacheTags,
 } from '@/lib/utils/revalidate-web.util'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 export type PromotionFormData = {
     title: string
@@ -119,7 +119,7 @@ export async function createPromotion(
     } catch (error) {
         console.error('Error creating promotion:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -229,7 +229,7 @@ export async function updatePromotion(
     } catch (error) {
         console.error('Error updating promotion:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -276,7 +276,7 @@ export async function deletePromotion(id: string): Promise<ActionResult> {
     } catch (error) {
         console.error('Error deleting promotion:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -329,7 +329,7 @@ export async function updatePromotionStatus(
     } catch (error) {
         console.error('Error updating promotion status:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -361,7 +361,7 @@ export async function incrementPromotionViews(
     } catch (error) {
         console.error('Error incrementing promotion views:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -393,7 +393,7 @@ export async function incrementPromotionClicks(
     } catch (error) {
         console.error('Error incrementing promotion clicks:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
