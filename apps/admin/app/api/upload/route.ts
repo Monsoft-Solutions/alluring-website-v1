@@ -99,6 +99,7 @@ export async function POST(
             const jsonResponse = (await handleUpload({
                 body,
                 request,
+                // eslint-disable-next-line @typescript-eslint/require-await
                 onBeforeGenerateToken: async (pathname) => {
                     // Validate file type from pathname
                     const extension = pathname.split('.').pop()?.toLowerCase()
@@ -128,6 +129,7 @@ export async function POST(
                         }),
                     }
                 },
+                // eslint-disable-next-line @typescript-eslint/require-await
                 onUploadCompleted: async ({ blob }) => {
                     console.log('Upload completed:', blob.url)
                 },
