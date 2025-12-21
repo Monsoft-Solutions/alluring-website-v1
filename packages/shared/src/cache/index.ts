@@ -5,6 +5,7 @@ export {
     isValidCacheTag,
     getAllPromotionTags,
     getAllGalleryTags,
+    getAllInstagramTags,
 } from './cache-tags.constant'
 
 export type { StaticCacheTag, DynamicTagPrefix } from './cache-tags.constant'

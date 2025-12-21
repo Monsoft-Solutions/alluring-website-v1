@@ -42,6 +42,10 @@ export const CACHE_TAGS = {
     /** Tag for all before/after pair queries */
     BEFORE_AFTER_PAIRS: 'before-after-pairs',
 
+    // Instagram tags
+    /** Tag for all Instagram post queries */
+    INSTAGRAM_POSTS: 'instagram-posts',
+
     /**
      * Generate a tag for a specific promotion by slug
      * @param slug - The promotion slug
@@ -69,6 +73,13 @@ export const CACHE_TAGS = {
      * @returns A unique tag for the specific gallery media
      */
     galleryMediaBySlug: (slug: string) => `gallery-media-${slug}` as const,
+
+    /**
+     * Generate a tag for a specific Instagram post by code
+     * @param code - The Instagram post shortcode
+     * @returns A unique tag for the specific Instagram post
+     */
+    instagramPostByCode: (code: string) => `instagram-post-${code}` as const,
 } as const
 
 /**
@@ -83,6 +94,7 @@ export const ALLOWED_STATIC_TAGS = [
     CACHE_TAGS.GALLERY_GROUPS,
     CACHE_TAGS.GALLERY_MEDIA,
     CACHE_TAGS.BEFORE_AFTER_PAIRS,
+    CACHE_TAGS.INSTAGRAM_POSTS,
 ] as const
 
 /**
@@ -93,6 +105,7 @@ export const DYNAMIC_TAG_PREFIXES = [
     'blog-post-',
     'gallery-group-',
     'gallery-media-',
+    'instagram-post-',
 ] as const
 
 /**
@@ -163,4 +176,14 @@ export function getAllGalleryTags(): string[] {
         CACHE_TAGS.GALLERY_MEDIA,
         CACHE_TAGS.BEFORE_AFTER_PAIRS,
     ]
+}
+
+/**
+ * Get all Instagram-related tags for bulk revalidation.
+ * Use this when any Instagram content is synced or updated.
+ *
+ * @returns Array of all Instagram cache tags
+ */
+export function getAllInstagramTags(): string[] {
+    return [CACHE_TAGS.INSTAGRAM_POSTS]
 }
