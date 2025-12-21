@@ -136,7 +136,7 @@ export async function getAllInstagramPostCodes(): Promise<string[]> {
             const posts = await db
                 .select({ code: instagramPost.code })
                 .from(instagramPost)
-                .orderBy(instagramPost.takenAt)
+                .orderBy(desc(instagramPost.takenAt))
 
             return posts.map((p) => p.code)
         },
