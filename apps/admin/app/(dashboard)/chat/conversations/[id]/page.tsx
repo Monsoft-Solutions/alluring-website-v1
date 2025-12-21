@@ -501,9 +501,9 @@ export default async function ConversationDetailPage({ params }: PageProps) {
                                         Tags
                                     </p>
                                     <div className='flex flex-wrap gap-1'>
-                                        {session.tags.map((tag) => (
+                                        {session.tags.map((tag, index) => (
                                             <Badge
-                                                key={tag}
+                                                key={`${tag}-${index}`}
                                                 variant='secondary'
                                                 className='text-xs'
                                             >
