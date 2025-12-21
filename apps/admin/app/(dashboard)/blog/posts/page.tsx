@@ -17,7 +17,7 @@ import {
     type BlogPostSortBy,
     type BlogPostSortOrder,
 } from '@/lib/queries/blog.query'
-import type { SearchParams } from '@/lib/types/post.type'
+import type { SearchParams } from '@/lib/types/blog/post.type'
 import { SortIcon } from './sort-icon.component'
 import { StatusBadge } from './status-badge.component'
 

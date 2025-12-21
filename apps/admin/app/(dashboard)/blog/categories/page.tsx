@@ -15,7 +15,7 @@ import {
     TableRow,
 } from '@workspace/ui/components/table'
 
-import type { Category } from '@/lib/types/category.type'
+import type { Category } from '@/lib/types/blog/category.type'
 import { CategoryDialog } from './category-dialog.component'
 import { DeleteCategoryButton } from './delete-category-button.component'
 

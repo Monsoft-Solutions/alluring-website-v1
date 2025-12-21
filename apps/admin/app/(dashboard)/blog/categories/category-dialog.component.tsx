@@ -29,7 +29,7 @@ import {
     updateCategory,
     type CategoryFormData,
 } from '@/lib/actions/category.action'
-import type { Category } from '@/lib/types/category.type'
+import type { Category } from '@/lib/types/blog/category.type'
 
 type CategoryDialogProps = {
     mode: 'create' | 'edit'

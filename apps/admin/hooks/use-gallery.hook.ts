@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
-import type { GalleryStats } from '@/lib/types/gallery-stats.type'
-import type { RecentMediaItem } from '@/lib/types/gallery-media.type'
+import type { GalleryStats } from '@/lib/types/gallery/gallery-stats.type'
+import type { RecentMediaItem } from '@/lib/types/gallery/gallery-media.type'
 
 /**
  * Query keys for gallery data.

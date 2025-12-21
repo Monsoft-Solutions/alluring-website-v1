@@ -23,7 +23,7 @@ import type {
     InstagramAnalysisStatusFilter,
     InstagramPostWithMedia,
     SocialMediaStats,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 
 // ============================================================================
 // Settings Queries

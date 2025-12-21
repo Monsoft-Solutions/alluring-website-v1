@@ -30,7 +30,7 @@ import type {
     DeviceStats,
     BrowserStats,
     GeoStats,
-} from '@/lib/types/analytics.type'
+} from '@/lib/types/analytics/analytics.type'
 
 // ============================================================================
 // Color Palette

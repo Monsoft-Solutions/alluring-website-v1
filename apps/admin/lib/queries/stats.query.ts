@@ -7,14 +7,14 @@ import { emailLog } from '@workspace/db/schema/emails'
 import { count, eq, desc, sql, gte } from 'drizzle-orm'
 
 import { fillMissingDatesSimple } from '@/lib/utils/date.util'
-import type { DailyCount } from '@/lib/types/common.type'
-import type { DashboardStats } from '@/lib/types/dashboard-stats.type'
-import type { RecentContact } from '@/lib/types/recent-contact.type'
-import type { RecentBugReport } from '@/lib/types/recent-bug-report.type'
-import type { SeverityCount } from '@/lib/types/severity-count.type'
-import type { PostStatusCount } from '@/lib/types/post-status-count.type'
-import type { TopPost } from '@/lib/types/top-post.type'
-import type { EmailStatusCount } from '@/lib/types/email-status-count.type'
+import type { DailyCount } from '@/lib/types/common/common.type'
+import type { DashboardStats } from '@/lib/types/analytics/dashboard-stats.type'
+import type { RecentContact } from '@/lib/types/contacts/recent-contact.type'
+import type { RecentBugReport } from '@/lib/types/feedback/recent-bug-report.type'
+import type { SeverityCount } from '@/lib/types/feedback/severity-count.type'
+import type { PostStatusCount } from '@/lib/types/blog/post-status-count.type'
+import type { TopPost } from '@/lib/types/blog/top-post.type'
+import type { EmailStatusCount } from '@/lib/types/emails/email-status-count.type'
 
 type DashboardStatsRow = {
     today_visitors: number

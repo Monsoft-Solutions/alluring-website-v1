@@ -18,7 +18,7 @@ import type {
     AnalysisListItem,
     AnalysisDetail,
     AnalysisListResult,
-} from '@/lib/types/media-analysis.type'
+} from '@/lib/types/media-analysis/media-analysis.type'
 
 // ============================================================================
 // Queries

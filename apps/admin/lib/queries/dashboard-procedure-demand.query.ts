@@ -3,7 +3,7 @@ import { db } from '@workspace/db/client'
 import { contactSubmission } from '@workspace/db/schema/contact'
 import { count, desc, isNotNull, and, ne } from 'drizzle-orm'
 
-import type { ProcedureDemand } from '@/lib/types/procedure-demand.type'
+import type { ProcedureDemand } from '@/lib/types/analytics/procedure-demand.type'
 
 /**
  * Get procedure demand based on contact submissions

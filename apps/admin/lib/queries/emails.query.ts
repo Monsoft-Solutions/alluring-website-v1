@@ -8,7 +8,7 @@ import type {
     EmailFilters,
     EmailStats,
     EmailLogById,
-} from '@/lib/types/emails.type'
+} from '@/lib/types/emails/emails.type'
 
 export async function getEmailLogs(
     page = 1,

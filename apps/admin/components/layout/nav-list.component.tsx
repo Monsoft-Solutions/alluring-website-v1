@@ -4,7 +4,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 
-import type { NavItem } from '@/lib/types/sidebar.type'
+import type { NavItem } from '@/lib/types/layout/sidebar.type'
 
 type NavListProps = {
     items: NavItem[]

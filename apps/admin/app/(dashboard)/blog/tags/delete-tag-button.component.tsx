@@ -7,7 +7,7 @@ import { Loader2, Trash2 } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 
 import { deleteTag } from '@/lib/actions/tag.action'
-import type { TagItem } from '@/lib/types/tag.type'
+import type { TagItem } from '@/lib/types/blog/tag.type'
 
 type DeleteTagButtonProps = {
     tag: TagItem

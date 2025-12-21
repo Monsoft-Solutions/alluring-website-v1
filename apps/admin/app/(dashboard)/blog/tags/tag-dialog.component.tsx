@@ -29,7 +29,7 @@ import {
     updateTag,
     type TagFormData,
 } from '@/lib/actions/tag.action'
-import type { TagItem } from '@/lib/types/tag.type'
+import type { TagItem } from '@/lib/types/blog/tag.type'
 
 type TagDialogProps = {
     mode: 'create' | 'edit'

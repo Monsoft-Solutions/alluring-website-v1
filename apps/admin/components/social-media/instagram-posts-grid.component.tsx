@@ -25,7 +25,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import type {
     InstagramMediaTypeFilter,
     InstagramPostListItem,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 import { InstagramPostDialog } from './instagram-post-dialog.component'
 
 export type ProfileInfo = {

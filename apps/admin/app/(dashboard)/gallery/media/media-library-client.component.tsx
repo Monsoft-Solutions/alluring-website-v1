@@ -26,7 +26,7 @@ import type {
     GalleryMediaSortOrder,
     GalleryMediaStatusFilter,
     GalleryMediaTypeFilter,
-} from '@/lib/types/gallery-media.type'
+} from '@/lib/types/gallery/gallery-media.type'
 import { SelectableMediaGrid } from '@/components/shared/selectable-media-grid.component'
 import { BulkActionToolbar } from '@/components/shared/gallery/bulk-action-toolbar.component'
 import { BulkUploadSection } from '@/components/shared/gallery/bulk-upload-section.component'

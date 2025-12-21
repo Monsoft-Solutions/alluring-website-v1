@@ -33,7 +33,7 @@ import {
     SelectValue,
 } from '@workspace/ui/components/select'
 
-import type { AnalysisListResult } from '@/lib/types/media-analysis.type'
+import type { AnalysisListResult } from '@/lib/types/media-analysis/media-analysis.type'
 
 type AnalysisListClientProps = {
     initialData: AnalysisListResult

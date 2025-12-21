@@ -6,7 +6,7 @@ import { CheckSquare, Square } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 
-import type { GalleryMediaListItem } from '@/lib/types/gallery-media.type'
+import type { GalleryMediaListItem } from '@/lib/types/gallery/gallery-media.type'
 import { SelectableMediaCard } from '@/components/shared/selectable-media-card.component'
 import { BulkActionToolbar } from '@/components/shared/gallery/bulk-action-toolbar.component'
 

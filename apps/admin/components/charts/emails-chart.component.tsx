@@ -2,7 +2,7 @@
 
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 
-import type { EmailStatusCount } from '@/lib/types/email-status-count.type'
+import type { EmailStatusCount } from '@/lib/types/emails/email-status-count.type'
 
 type EmailsChartProps = {
     data: EmailStatusCount[]

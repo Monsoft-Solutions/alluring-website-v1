@@ -7,7 +7,7 @@ import { Loader2, Trash2 } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 
 import { deleteCategory } from '@/lib/actions/category.action'
-import type { Category } from '@/lib/types/category.type'
+import type { Category } from '@/lib/types/blog/category.type'
 
 type DeleteCategoryButtonProps = {
     category: Category

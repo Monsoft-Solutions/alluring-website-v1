@@ -21,7 +21,7 @@ import type {
     BrowserStats,
     OSStats,
     GeoStats,
-} from '@/lib/types/analytics.type'
+} from '@/lib/types/analytics/analytics.type'
 
 // ============================================================================
 // Summary Stats

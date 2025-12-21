@@ -23,7 +23,7 @@ import { Button } from '@workspace/ui/components/button'
 
 import { NavList } from './nav-list.component'
 import { MobileSidebar } from './mobile-sidebar.component'
-import type { NavItem } from '@/lib/types/sidebar.type'
+import type { NavItem } from '@/lib/types/layout/sidebar.type'
 
 const navItems: NavItem[] = [
     {

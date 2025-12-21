@@ -15,7 +15,7 @@ import {
     TableRow,
 } from '@workspace/ui/components/table'
 
-import type { TagItem } from '@/lib/types/tag.type'
+import type { TagItem } from '@/lib/types/blog/tag.type'
 import { TagDialog } from './tag-dialog.component'
 import { DeleteTagButton } from './delete-tag-button.component'
 

@@ -2,7 +2,7 @@ import { db } from '@workspace/db/client'
 import { contactSubmission } from '@workspace/db/schema/contact'
 import { count, desc, eq } from 'drizzle-orm'
 
-import type { ContactListItem } from '@/lib/types/contacts.type'
+import type { ContactListItem } from '@/lib/types/contacts/contacts.type'
 
 export async function getContacts(
     page = 1,

@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 import { Badge } from '@workspace/ui/components/badge'
 
-import type { GalleryMediaListItem } from '@/lib/types/gallery-media.type'
+import type { GalleryMediaListItem } from '@/lib/types/gallery/gallery-media.type'
 
 type SelectableMediaCardProps = {
     media: GalleryMediaListItem

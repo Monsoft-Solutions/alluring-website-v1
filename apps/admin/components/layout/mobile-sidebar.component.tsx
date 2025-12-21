@@ -13,7 +13,7 @@ import {
 } from '@workspace/ui/components/sheet'
 
 import { NavList } from './nav-list.component'
-import type { NavItem } from '@/lib/types/sidebar.type'
+import type { NavItem } from '@/lib/types/layout/sidebar.type'
 
 type MobileSidebarProps = {
     navItems: NavItem[]

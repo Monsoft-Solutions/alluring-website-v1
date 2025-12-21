@@ -18,7 +18,7 @@ import type {
     InstagramPostListItem,
     InstagramPostSortBy,
     InstagramPostSortDirection,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 import {
     InstagramPostsGrid,
     type ProfileInfo,

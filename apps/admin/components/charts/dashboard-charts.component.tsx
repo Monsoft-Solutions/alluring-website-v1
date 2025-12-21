@@ -14,8 +14,8 @@ import {
     Legend,
 } from 'recharts'
 
-import type { ProcedureDemand } from '@/lib/types/procedure-demand.type'
-import type { LeadGradeDistribution } from '@/lib/types/lead-grade-distribution.type'
+import type { ProcedureDemand } from '@/lib/types/analytics/procedure-demand.type'
+import type { LeadGradeDistribution } from '@/lib/types/analytics/lead-grade-distribution.type'
 
 const COLORS = {
     primary: '#78716c',

@@ -10,7 +10,7 @@ import {
     YAxis,
 } from 'recharts'
 
-import type { DailyCount } from '@/lib/types/common.type'
+import type { DailyCount } from '@/lib/types/common/common.type'
 
 type ContactsChartProps = {
     data: DailyCount[]

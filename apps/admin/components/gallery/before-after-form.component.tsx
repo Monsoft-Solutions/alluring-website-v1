@@ -36,7 +36,7 @@ import {
     PROCEDURE_OPTIONS,
     getProcedureSlugByName,
 } from '@/lib/constants/procedure.constant'
-import type { MediaOption } from '@/lib/types/media-option.type'
+import type { MediaOption } from '@/lib/types/gallery/media-option.type'
 
 type BeforeAfterFormDialogProps = {
     open: boolean

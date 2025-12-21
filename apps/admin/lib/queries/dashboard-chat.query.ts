@@ -3,8 +3,8 @@ import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
 import { count, sql, isNotNull } from 'drizzle-orm'
 
-import type { ChatSummary } from '@/lib/types/chat-summary.type'
-import type { LeadGradeDistribution } from '@/lib/types/lead-grade-distribution.type'
+import type { ChatSummary } from '@/lib/types/chat/chat-summary.type'
+import type { LeadGradeDistribution } from '@/lib/types/analytics/lead-grade-distribution.type'
 
 type ChatSummaryRow = {
     total_sessions: number

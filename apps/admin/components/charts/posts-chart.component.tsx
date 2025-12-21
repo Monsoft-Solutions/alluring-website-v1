@@ -9,7 +9,7 @@ import {
     YAxis,
 } from 'recharts'
 
-import type { TopPost } from '@/lib/types/top-post.type'
+import type { TopPost } from '@/lib/types/blog/top-post.type'
 
 type PostsChartProps = {
     data: TopPost[]

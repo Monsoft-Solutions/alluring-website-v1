@@ -29,8 +29,8 @@ import {
     Sparkles,
 } from 'lucide-react'
 
-import type { InstagramPostListItem } from '@/lib/types/social-media.type'
-import type { GalleryGroupWithSlug } from '@/lib/types/gallery-group.type'
+import type { InstagramPostListItem } from '@/lib/types/social-media/social-media.type'
+import type { GalleryGroupWithSlug } from '@/lib/types/gallery/gallery-group.type'
 import {
     toggleInstagramPostPublished,
     toggleInstagramPostFeatured,

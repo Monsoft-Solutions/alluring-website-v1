@@ -32,7 +32,7 @@ import {
     updateGalleryGroup,
     type GalleryGroupFormData,
 } from '@/lib/actions/gallery.action'
-import type { MediaOption } from '@/lib/types/media-option.type'
+import type { MediaOption } from '@/lib/types/gallery/media-option.type'
 
 type GroupFormDialogProps = {
     open: boolean
