@@ -14,7 +14,6 @@ import {
     useContext,
     useEffect,
     useState,
-    useTransition,
     type ReactNode,
 } from 'react'
 
@@ -136,15 +135,15 @@ type UTMTrackingProviderProps = {
  * ```
  */
 export function UTMTrackingProvider({ children }: UTMTrackingProviderProps) {
-    // Initialize from stored data using useState initializer
-    const [utmData, setUtmData] = useState<UTMData | null>(() => {
-        if (typeof window === 'undefined') return null
-        return getStoredUTMData()
-    })
+    // Always initialize to null to avoid hydration mismatch
+    // localStorage will be read in useEffect (client-only)
+    const [utmData, setUtmData] = useState<UTMData | null>(null)
     const [isInitialized, setIsInitialized] = useState(false)
-    const [, startTransition] = useTransition()
 
     useEffect(() => {
+        // Guard against SSR
+        if (typeof window === 'undefined') return
+
         // Extract UTM from current URL (needs to happen after mount)
         const urlData = extractUTMFromURL()
 
@@ -152,15 +151,18 @@ export function UTMTrackingProvider({ children }: UTMTrackingProviderProps) {
             // New UTM params in URL - store and use them
             // This overwrites any existing stored data when user arrives with new UTMs
             storeUTMData(urlData)
-            startTransition(() => {
-                setUtmData(urlData)
-            })
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- Synchronizing with external system (URL params) on mount, runs once
+            setUtmData(urlData)
+        } else {
+            // No URL params - load from localStorage if available
+            const storedData = getStoredUTMData()
+            if (storedData) {
+                setUtmData(storedData)
+            }
         }
 
-        startTransition(() => {
-            setIsInitialized(true)
-        })
-    }, [startTransition])
+        setIsInitialized(true)
+    }, [])
 
     return (
         <UTMTrackingContext.Provider value={{ utmData, isInitialized }}>
