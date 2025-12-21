@@ -74,9 +74,6 @@ export async function generateImageWithFal(
 ): Promise<GeneratedImageResult> {
     const { prompt, blogPostId } = options
 
-    // Import fal.ai client dynamically to avoid loading it on the client
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     fal.config({
         credentials: env.FAL_KEY,
@@ -89,6 +86,7 @@ export async function generateImageWithFal(
             input: {
                 prompt,
                 num_images: 1,
+                size: '1024x1024',
             },
             logs: true,
             onQueueUpdate: (update: { status: string }) => {

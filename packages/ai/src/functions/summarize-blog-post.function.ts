@@ -1,8 +1,8 @@
 /**
  * Summarize Blog Post Function
  *
- * AI-powered blog post summarization focused on visual themes
- * for image generation purposes.
+ * AI-powered blog post summarization focused on content extraction.
+ * Captures topic, key message, and audience context for downstream processing.
  *
  * @module @workspace/ai/functions/summarize-blog-post
  */
@@ -21,9 +21,9 @@ const blogSummarySchema = z.object({
     summary: z
         .string()
         .min(50)
-        .max(500)
+        .max(1000)
         .describe(
-            'A 2-3 sentence visual summary of the blog post content, focused on imagery and concrete elements suitable for image generation'
+            'A  content summary capturing the main topic, key message, target audience, and relevant medical/cosmetic context'
         ),
 })
 
@@ -53,13 +53,14 @@ export type SummarizeBlogPostOptions = {
 export type BlogPostSummary = z.infer<typeof blogSummarySchema>
 
 /**
- * Generate a visual summary of a blog post for image generation
+ * Generate a content summary of a blog post
  *
- * Creates a concise 2-3 sentence summary that focuses on visual themes
- * and concrete elements that can be represented in images.
+ * Creates a concise 2-3 sentence summary that captures the main topic,
+ * key message, target audience, and relevant context. Does NOT include
+ * visual descriptions - those are handled by the image prompt generator.
  *
  * @param options - Summarization options including title and content
- * @returns Visual summary suitable for image prompt generation
+ * @returns Content summary suitable for downstream processing
  *
  * @example
  * ```typescript
@@ -68,7 +69,7 @@ export type BlogPostSummary = z.infer<typeof blogSummarySchema>
  *   content: '<p>Recovery from BBL surgery requires...</p>',
  * })
  * console.log(summary.summary)
- * // 'A comprehensive guide to BBL recovery featuring a luxury medical setting...'
+ * // 'A week-by-week recovery guide for BBL patients covering healing milestones, pain management, and return-to-activity timelines...'
  * ```
  */
 export async function summarizeBlogPost(
