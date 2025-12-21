@@ -24,6 +24,9 @@ export const pageLastModified: Record<string, string> = {
     // Gallery pages
     '/gallery': '2025-12-17',
 
+    // Instagram pages
+    '/instagram': '2025-12-21',
+
     // Listing pages
     '/procedures': '2025-12-17',
     '/blog': '2025-12-17',

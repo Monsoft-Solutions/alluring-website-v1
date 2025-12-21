@@ -123,10 +123,15 @@ export function toNextMetadata(
         robots: mergeRobots(base.robots, overrides?.robots),
     }
 
-    // Only set canonical URL when explicitly provided
-    if (overrides?.canonical) {
+    // Handle alternates (canonical, prev, next)
+    if (overrides?.canonical || overrides?.alternates) {
         merged.alternates = {
-            canonical: getCanonicalUrl(overrides.canonical),
+            ...(overrides?.alternates ?? {}),
+        }
+
+        // Set canonical URL (prefer from alternates, fallback to canonical prop)
+        if (overrides?.canonical && !merged.alternates.canonical) {
+            merged.alternates.canonical = getCanonicalUrl(overrides.canonical)
         }
     }
 

@@ -208,6 +208,21 @@ export const Footer = () => {
                                     Before & After Gallery
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href='/instagram'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Instagram',
+                                            '/instagram',
+                                            'patients'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    Instagram
+                                </Link>
+                            </li>
                             <li className='text-stone-400'>Patient Reviews</li>
                             <li>
                                 <Link

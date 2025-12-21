@@ -10,6 +10,7 @@
  * - /sitemap/procedures.xml - Procedure listings and details
  * - /sitemap/gallery.xml - Gallery groups and media
  * - /sitemap/promotions.xml - Special offers and promotions
+ * - /sitemap/instagram.xml - Instagram posts
  */
 import type { MetadataRoute } from 'next'
 
@@ -32,6 +33,7 @@ const SITEMAP_CHILDREN = [
     { name: 'procedures', description: 'Procedure listings and details' },
     { name: 'gallery', description: 'Gallery groups and media' },
     { name: 'promotions', description: 'Special offers and promotions' },
+    { name: 'instagram', description: 'Instagram posts' },
 ] as const
 
 /**
