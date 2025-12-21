@@ -9,23 +9,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, MessageCircle, Play, Layers } from 'lucide-react'
 
-import type { InstagramPostPublic } from '@/types/instagram.type'
+import type { InstagramPostPublic } from '@/lib/types/instagram.type'
+import { formatNumber } from '@/lib/utils/format.util'
 
 type PostThumbnailProps = {
     post: InstagramPostPublic
-}
-
-/**
- * Format large numbers with K/M suffix
- */
-function formatNumber(num: number): string {
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M'
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K'
-    }
-    return num.toString()
 }
 
 export function PostThumbnail({ post }: PostThumbnailProps) {

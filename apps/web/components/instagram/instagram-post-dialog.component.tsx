@@ -31,26 +31,14 @@ import {
 import type {
     InstagramPostPublic,
     InstagramProfileInfo,
-} from '@/types/instagram.type'
+} from '@/lib/types/instagram.type'
+import { formatNumber } from '@/lib/utils/format.util'
 
 type InstagramPostDialogProps = {
     post: InstagramPostPublic | null
     profile?: InstagramProfileInfo | null
     isOpen: boolean
     onClose: () => void
-}
-
-/**
- * Format large numbers with K/M suffix
- */
-function formatNumber(num: number): string {
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M'
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K'
-    }
-    return num.toString()
 }
 
 /**

@@ -12,7 +12,7 @@ import { CACHE_TAGS } from '@workspace/shared/cache'
 import { socialMediaSettings } from '@workspace/db/schema/social-media'
 import { eq } from 'drizzle-orm'
 
-import type { InstagramProfileInfo } from '@/types/instagram.type'
+import type { InstagramProfileInfo } from '@/lib/types/instagram.type'
 
 /** Cache revalidation time in seconds (1 hour) */
 const CACHE_TTL = 3600

@@ -17,7 +17,7 @@ import {
 import { galleryMedia } from '@workspace/db/schema/gallery'
 import { desc, eq, ne } from 'drizzle-orm'
 
-import type { InstagramPostPublic } from '@/types/instagram.type'
+import type { InstagramPostPublic } from '@/lib/types/instagram.type'
 
 /** Cache revalidation time in seconds (1 hour) */
 const CACHE_TTL = 3600

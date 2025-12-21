@@ -20,7 +20,7 @@ import { count, desc, eq, inArray } from 'drizzle-orm'
 import type {
     InstagramPostPublic,
     InstagramPostsResult,
-} from '@/types/instagram.type'
+} from '@/lib/types/instagram.type'
 
 /** Cache revalidation time in seconds (1 hour) */
 const CACHE_TTL = 3600

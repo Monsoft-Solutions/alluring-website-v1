@@ -12,7 +12,7 @@ import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 
-import type { InstagramCarouselItem } from '@/types/instagram.type'
+import type { InstagramCarouselItem } from '@/lib/types/instagram.type'
 
 type InstagramCarouselProps = {
     media: InstagramCarouselItem[]

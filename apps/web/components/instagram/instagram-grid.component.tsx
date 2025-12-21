@@ -6,7 +6,7 @@
  *
  * @module components/instagram/instagram-grid
  */
-import type { InstagramPostPublic } from '@/types/instagram.type'
+import type { InstagramPostPublic } from '@/lib/types/instagram.type'
 import { PostThumbnail } from './post-thumbnail.component'
 
 type InstagramGridProps = {

@@ -20,25 +20,13 @@ import {
 import type {
     InstagramPostPublic,
     InstagramProfileInfo,
-} from '@/types/instagram.type'
+} from '@/lib/types/instagram.type'
+import { formatNumber } from '@/lib/utils/format.util'
 import { InstagramCarousel } from './instagram-carousel.component'
 
 type InstagramPostContentProps = {
     post: InstagramPostPublic
     profile?: InstagramProfileInfo | null
-}
-
-/**
- * Format large numbers with K/M suffix
- */
-function formatNumber(num: number): string {
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M'
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K'
-    }
-    return num.toString()
 }
 
 /**

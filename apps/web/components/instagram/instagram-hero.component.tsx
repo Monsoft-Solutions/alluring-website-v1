@@ -11,25 +11,13 @@ import { Instagram, ExternalLink } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
-import type { InstagramProfileInfo } from '@/types/instagram.type'
+import type { InstagramProfileInfo } from '@/lib/types/instagram.type'
 import { siteConfig } from '@/lib/data/site-config'
+import { formatNumber } from '@/lib/utils/format.util'
 
 type InstagramHeroProps = {
     profile?: InstagramProfileInfo | null
     totalPosts?: number
-}
-
-/**
- * Format large numbers with K/M suffix
- */
-function formatNumber(num: number): string {
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M'
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K'
-    }
-    return num.toString()
 }
 
 export function InstagramHero({ profile, totalPosts }: InstagramHeroProps) {
