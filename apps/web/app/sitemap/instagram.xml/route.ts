@@ -3,8 +3,9 @@
  *
  * Generates sitemap XML for Instagram content including:
  * - Main Instagram listing page
- * - Individual Instagram post pages with images
+ * - Individual Instagram post pages with images and videos
  *
+ * Supports both image and video sitemap extensions for comprehensive SEO.
  * Revalidates every 3 hours to balance freshness with performance
  */
 import { NextResponse } from 'next/server'
@@ -69,6 +70,26 @@ export async function GET(): Promise<NextResponse> {
                 ]
             }
 
+            // Add video data for video sitemap (video posts only)
+            if (post.mediaType === 'video' && post.videoUrl) {
+                const videoTitle = post.caption
+                    ? post.caption.substring(0, 100)
+                    : `Instagram video post ${post.code}`
+                const videoDescription = post.caption
+                    ? post.caption.substring(0, 160).replace(/\s+/g, ' ').trim()
+                    : `Instagram video from Alluring Plastic Surgery`
+
+                entry.videos = [
+                    {
+                        thumbnailUrl: post.thumbnailUrl ?? post.imageUrl,
+                        title: videoTitle,
+                        description: videoDescription,
+                        contentUrl: post.videoUrl,
+                        publicationDate: post.takenAt.toISOString(),
+                    },
+                ]
+            }
+
             entries.push(entry)
         }
     } catch (error) {
@@ -76,7 +97,8 @@ export async function GET(): Promise<NextResponse> {
         return new NextResponse(
             `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 </urlset>`,
             {
                 status: 500,

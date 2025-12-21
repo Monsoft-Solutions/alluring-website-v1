@@ -9,6 +9,7 @@ import type { MetadataRoute } from 'next'
 import type {
     SitemapEntry,
     SitemapImage,
+    SitemapVideo,
 } from '../types/sitemap/sitemap-entry.type'
 import type { SitemapRoute } from '../types/sitemap/sitemap-route.type'
 
@@ -338,10 +339,10 @@ export function escapeXml(str: string): string {
 }
 
 /**
- * Generate XML sitemap string with image support
+ * Generate XML sitemap string with image and video support
  *
  * Converts sitemap entries to a complete XML string following the
- * sitemap protocol and image sitemap extension.
+ * sitemap protocol, image sitemap extension, and video sitemap extension.
  *
  * @param entries - Array of sitemap entries
  * @returns Complete XML sitemap string
@@ -353,7 +354,13 @@ export function escapeXml(str: string): string {
  *   lastModified: '2024-01-15',
  *   changeFrequency: 'weekly',
  *   priority: 0.8,
- *   images: [{ url: 'https://example.com/image.jpg', title: 'Example' }]
+ *   images: [{ url: 'https://example.com/image.jpg', title: 'Example' }],
+ *   videos: [{
+ *     thumbnailUrl: 'https://example.com/thumb.jpg',
+ *     title: 'Video Title',
+ *     description: 'Video Description',
+ *     contentUrl: 'https://example.com/video.mp4'
+ *   }]
  * }]
  *
  * const xml = generateSitemapXml(entries)
@@ -361,6 +368,7 @@ export function escapeXml(str: string): string {
  *
  * @see https://www.sitemaps.org/protocol.html
  * @see https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps
+ * @see https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps
  */
 export function generateSitemapXml(entries: SitemapEntry[]): string {
     const urls = entries
@@ -381,6 +389,44 @@ export function generateSitemapXml(entries: SitemapEntry[]): string {
                       .join('')
                 : ''
 
+            const videoXml = entry.videos?.length
+                ? entry.videos
+                      .map(
+                          (video: SitemapVideo) => `
+    <video:video>
+      <video:thumbnail_loc>${escapeXml(video.thumbnailUrl)}</video:thumbnail_loc>
+      <video:title>${escapeXml(video.title)}</video:title>
+      <video:description>${escapeXml(video.description)}</video:description>${
+          video.contentUrl
+              ? `
+      <video:content_loc>${escapeXml(video.contentUrl)}</video:content_loc>`
+              : ''
+      }${
+          video.playerUrl
+              ? `
+      <video:player_loc>${escapeXml(video.playerUrl)}</video:player_loc>`
+              : ''
+      }${
+          video.duration !== undefined
+              ? `
+      <video:duration>${video.duration}</video:duration>`
+              : ''
+      }${
+          video.publicationDate
+              ? `
+      <video:publication_date>${escapeXml(video.publicationDate)}</video:publication_date>`
+              : ''
+      }${
+          video.live !== undefined
+              ? `
+      <video:live>${video.live ? 'yes' : 'no'}</video:live>`
+              : ''
+      }
+    </video:video>`
+                      )
+                      .join('')
+                : ''
+
             return `
   <url>
     <loc>${escapeXml(entry.url)}</loc>${
@@ -390,14 +436,15 @@ export function generateSitemapXml(entries: SitemapEntry[]): string {
             : ''
     }
     <changefreq>${escapeXml(entry.changeFrequency || 'weekly')}</changefreq>
-    <priority>${entry.priority !== undefined ? entry.priority : 0.5}</priority>${imageXml}
+    <priority>${entry.priority !== undefined ? entry.priority : 0.5}</priority>${imageXml}${videoXml}
   </url>`
         })
         .join('')
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 ${urls}
 </urlset>`
 }

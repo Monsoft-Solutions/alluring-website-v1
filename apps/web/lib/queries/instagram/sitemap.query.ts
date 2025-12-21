@@ -19,13 +19,19 @@ export type InstagramSitemapEntry = {
     /** Image URL for sitemap (uses thumbnail for videos) */
     imageUrl: string
     caption: string | null
+    /** Media type (image, video, carousel) */
+    mediaType: 'image' | 'video' | 'carousel'
+    /** Video URL (only for video posts) */
+    videoUrl: string | null
+    /** Thumbnail URL (for videos) */
+    thumbnailUrl: string | null
 }
 
 /**
  * Get all Instagram posts for sitemap generation
  *
- * For video posts, uses the thumbnail image instead of the video URL
- * since image sitemaps require actual image files.
+ * Includes both image and video data for comprehensive sitemap support.
+ * For video posts, includes video URL for video sitemap and thumbnail for image sitemap.
  *
  * @returns Array of posts with minimal data for sitemap
  */
@@ -45,15 +51,19 @@ export async function getInstagramPostsForSitemap(): Promise<
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
         .orderBy(desc(instagramPost.takenAt))
 
-    // Map to sitemap entries, using thumbnail for videos
+    // Map to sitemap entries with video support
     return posts.map((post) => ({
         code: post.code,
         takenAt: post.takenAt,
+        mediaType: post.mediaType,
         // For videos, use thumbnail; for images/carousels, use the main URL
         imageUrl:
             post.mediaType === 'video' && post.thumbnailUrl
                 ? post.thumbnailUrl
                 : post.mediaUrl,
+        // Include video URL for video posts
+        videoUrl: post.mediaType === 'video' ? post.mediaUrl : null,
+        thumbnailUrl: post.thumbnailUrl,
         caption: post.caption,
     }))
 }

@@ -9,7 +9,11 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
-import { ArticleSchema, BreadcrumbSchema } from '@workspace/seo/react'
+import {
+    ArticleSchema,
+    BreadcrumbSchema,
+    VideoObjectSchema,
+} from '@workspace/seo/react'
 
 import { InstagramPostContent } from '@/components/instagram/instagram-post-content.component'
 import { MorePostsSection } from '@/components/instagram/more-posts-section.component'
@@ -112,6 +116,9 @@ export default async function InstagramPostPage({ params }: PageProps) {
         ? post.caption.substring(0, 160).replace(/\s+/g, ' ').trim()
         : `Instagram post from ${siteConfig.business.name}`
 
+    // Check if this is a video post
+    const isVideo = post.media.type === 'video'
+
     return (
         <>
             {/* Structured Data - Article Schema */}
@@ -127,6 +134,23 @@ export default async function InstagramPostPage({ params }: PageProps) {
                 }}
                 description={articleDescription}
             />
+
+            {/* Structured Data - Video Schema (for video posts only) */}
+            {isVideo && (
+                <VideoObjectSchema
+                    name={`Instagram Post - ${new Date(post.takenAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
+                    description={articleDescription}
+                    thumbnailUrl={post.media.thumbnailUrl ?? post.media.url}
+                    uploadDate={new Date(post.takenAt).toISOString()}
+                    contentUrl={post.media.url}
+                    embedUrl={pageUrl}
+                    author={{
+                        type: 'Organization',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                    }}
+                />
+            )}
 
             {/* Structured Data - Breadcrumb Schema */}
             <BreadcrumbSchema items={breadcrumbItems} />
