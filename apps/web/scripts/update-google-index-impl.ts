@@ -9,6 +9,8 @@ import { GoogleIndexingClient } from '@monsoft/google-indexing'
 import sitemap from '@/app/sitemap'
 import { seoDefaults } from '@/lib/data/site-config'
 
+import type { ParsedSitemapXml } from './types/sitemap.types'
+
 // Helper functions for credentials
 function getClientEmail() {
     // eslint-disable-next-line no-restricted-properties
@@ -38,23 +40,6 @@ function getPrivateKey() {
 }
 
 /**
- * Types for XML sitemap structure
- */
-type SitemapIndex = {
-    sitemapindex?: {
-        sitemap?: Array<{ loc?: string[] }>
-    }
-}
-
-type UrlSet = {
-    urlset?: {
-        url?: Array<{ loc?: string[] }>
-    }
-}
-
-type ParsedSitemap = SitemapIndex & UrlSet
-
-/**
  * Parse XML sitemap and extract URLs
  */
 async function parseSitemapXml(xmlContent: string): Promise<string[]> {
@@ -67,7 +52,7 @@ async function parseSitemapXml(xmlContent: string): Promise<string[]> {
 
             try {
                 const urls: string[] = []
-                const parsed = result as ParsedSitemap
+                const parsed = result as ParsedSitemapXml
 
                 // Handle sitemap index format (contains sitemaps)
                 if (parsed.sitemapindex?.sitemap) {

@@ -11,6 +11,8 @@
 
 import { parseStringPromise } from 'xml2js'
 
+import type { ParsedSitemapXml } from './types/sitemap.types'
+
 // Sitemap endpoints to validate
 const SITEMAP_ENDPOINTS = [
     '/sitemap.xml',
@@ -26,32 +28,6 @@ type ValidationResult = {
     valid: boolean
     urlCount: number
     errors: string[]
-}
-
-/**
- * Types for XML sitemap structure
- */
-type SitemapIndexEntry = {
-    loc?: string[]
-}
-
-type UrlEntry = {
-    loc?: string[]
-    priority?: string[]
-    lastmod?: string[]
-    changefreq?: string[]
-    ['image:image']?: Array<{
-        ['image:loc']?: string[]
-    }>
-}
-
-type ParsedSitemapXml = {
-    sitemapindex?: {
-        sitemap?: SitemapIndexEntry[]
-    }
-    urlset?: {
-        url?: UrlEntry[]
-    }
 }
 
 /**
