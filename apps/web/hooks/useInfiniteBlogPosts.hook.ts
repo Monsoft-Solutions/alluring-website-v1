@@ -57,7 +57,7 @@ export function useInfiniteBlogPosts({
                 throw new Error('Failed to fetch posts')
             }
 
-            const data: BlogPostsPaginatedResponse = await response.json()
+            const data = (await response.json()) as BlogPostsPaginatedResponse
 
             setPosts((prev) => [...prev, ...data.items])
             setCursor(data.nextCursor)
@@ -78,7 +78,7 @@ export function useInfiniteBlogPosts({
 
             observer.current = new IntersectionObserver((entries) => {
                 if (entries[0]?.isIntersecting && hasMore) {
-                    loadMore()
+                    void loadMore()
                 }
             })
 
@@ -100,7 +100,9 @@ export function useInfiniteBlogPosts({
         posts,
         isLoading,
         hasMore,
-        loadMore,
+        loadMore: () => {
+            void loadMore()
+        },
         observerRef,
     }
 }

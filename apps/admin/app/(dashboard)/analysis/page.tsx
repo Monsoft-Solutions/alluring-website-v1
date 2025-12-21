@@ -8,13 +8,12 @@
  */
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { Sparkles, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'

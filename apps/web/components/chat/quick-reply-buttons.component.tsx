@@ -154,9 +154,12 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
                 const response = await fetch(
                     `/api/chat/quick-replies?category=initial`
                 )
-                const data = await response.json()
-                if (data.success) {
-                    setQuickReplies(data.quickReplies)
+                const data = (await response.json()) as {
+                    success: boolean
+                    quickReplies?: unknown[]
+                }
+                if (data.success && data.quickReplies) {
+                    setQuickReplies(data.quickReplies as QuickReply[])
                 }
             } catch (error) {
                 console.error('Failed to fetch quick replies:', error)
@@ -165,13 +168,13 @@ export const QuickReplyButtons = memo(function QuickReplyButtons({
             }
         }
 
-        fetchQuickReplies()
+        void fetchQuickReplies()
     }, [isInitialCategory, hasDynamicQuestions])
 
     const handleStaticClick = useCallback(
-        async (reply: QuickReply) => {
+        (reply: QuickReply) => {
             // Track the click asynchronously (fire and forget)
-            fetch('/api/chat/quick-replies/track', {
+            void fetch('/api/chat/quick-replies/track', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ quickReplyId: reply.id }),

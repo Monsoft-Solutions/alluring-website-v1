@@ -31,21 +31,19 @@ export function AnnouncementBarClient({
     ctaText,
     link,
 }: AnnouncementBarClientProps) {
-    const [isDismissed, setIsDismissed] = useState(true) // Start hidden to prevent flash
-    const [isLoaded, setIsLoaded] = useState(false)
+    // Read from localStorage using useState initializer to avoid setState in effect
+    const storageKey = `${STORAGE_KEY_PREFIX}${promotionId}`
+    const [isDismissed, setIsDismissed] = useState(() => {
+        if (typeof window === 'undefined') return true // SSR: start hidden
+        return localStorage.getItem(storageKey) === 'true'
+    })
 
     // Analytics hook
     const { trackCTA } = useAnalyticsEvent()
 
-    // Check localStorage on mount
+    // Set CSS variable and cleanup (no state updates, only DOM manipulation)
     useEffect(() => {
-        const storageKey = `${STORAGE_KEY_PREFIX}${promotionId}`
-        const wasDismissed = localStorage.getItem(storageKey) === 'true'
-        setIsDismissed(wasDismissed)
-        setIsLoaded(true)
-
-        // Set CSS variable for header positioning
-        if (!wasDismissed) {
+        if (!isDismissed) {
             document.documentElement.style.setProperty(
                 '--announcement-bar-height',
                 `${ANNOUNCEMENT_BAR_HEIGHT}px`
@@ -58,7 +56,7 @@ export function AnnouncementBarClient({
                 '0px'
             )
         }
-    }, [promotionId])
+    }, [isDismissed])
 
     const handleDismiss = () => {
         const storageKey = `${STORAGE_KEY_PREFIX}${promotionId}`
@@ -68,11 +66,6 @@ export function AnnouncementBarClient({
             '--announcement-bar-height',
             '0px'
         )
-    }
-
-    // Don't render anything until we've checked localStorage
-    if (!isLoaded) {
-        return null
     }
 
     return (

@@ -127,7 +127,7 @@ export const ChatInputArea = memo(function ChatInputArea({
                 // Voice not available
             }
         }
-        checkAvailability()
+        void checkAvailability()
     }, [])
 
     // Voice input hook with callbacks
@@ -266,7 +266,7 @@ export const ChatInputArea = memo(function ChatInputArea({
             // The original input value is preserved via the ref
             setBaseText('')
             setPartialText('')
-            startRecording()
+            void startRecording()
         }
     }, [isRecording, stopRecording, startRecording, clearError])
 

@@ -30,7 +30,7 @@ import type {
     DeviceStats,
     BrowserStats,
     GeoStats,
-} from '@/lib/types/analytics.type'
+} from '@/lib/types/analytics/analytics.type'
 
 // ============================================================================
 // Color Palette
@@ -126,10 +126,12 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                 />
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]?.payload as DailyViewCount & {
-                            formattedDate: string
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as {
+                            payload: DailyViewCount & { formattedDate: string }
                         }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='text-muted-foreground text-xs'>
@@ -217,8 +219,10 @@ export function TopPagesChart({ data }: TopPagesChartProps) {
                 />
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]?.payload as TopPage
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as { payload: TopPage }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='mb-1 max-w-[250px] truncate font-medium'>
@@ -292,8 +296,10 @@ export function TrafficSourcesChart({ data }: TrafficSourcesChartProps) {
                 />
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]?.payload as TrafficSource
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as { payload: TrafficSource }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='font-medium'>{data.source}</p>
@@ -362,8 +368,10 @@ export function DeviceChart({ data }: DeviceChartProps) {
                 </Pie>
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]?.payload as DeviceStats
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as { payload: DeviceStats }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='font-medium capitalize'>
@@ -421,8 +429,10 @@ export function BrowserChart({ data }: BrowserChartProps) {
                 </Pie>
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]?.payload as BrowserStats
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as { payload: BrowserStats }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='font-medium'>{data.browser}</p>

@@ -37,8 +37,8 @@ import {
     deleteBeforeAfterPair,
     togglePairFeatured,
 } from '@/lib/actions/gallery.action'
-import type { BeforeAfterPairListItem } from '@/lib/types/before-after.type'
-import type { GalleryMediaOption } from '@/lib/types/gallery-media.type'
+import type { BeforeAfterPairListItem } from '@/lib/types/gallery/before-after.type'
+import type { GalleryMediaOption } from '@/lib/types/gallery/gallery-media.type'
 
 type BeforeAfterPageClientProps = {
     pairs: BeforeAfterPairListItem[]

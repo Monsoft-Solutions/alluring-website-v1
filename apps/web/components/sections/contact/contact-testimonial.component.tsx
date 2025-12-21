@@ -65,7 +65,7 @@ export function ContactTestimonial({
 
                     {/* Rating */}
                     <div className='text-gold-400 mb-6 flex justify-center gap-1'>
-                        {[...Array(5)].map((_, i) => (
+                        {Array.from({ length: 5 }).map((_, i) => (
                             <Star key={i} className='h-5 w-5 fill-current' />
                         ))}
                     </div>
@@ -121,7 +121,7 @@ export function ContactTestimonial({
                             className='border border-stone-200 bg-stone-50 p-6'
                         >
                             <div className='text-gold-400 mb-4 flex gap-0.5'>
-                                {[...Array(5)].map((_, i) => (
+                                {Array.from({ length: 5 }).map((_, i) => (
                                     <Star
                                         key={i}
                                         className='h-3 w-3 fill-current'

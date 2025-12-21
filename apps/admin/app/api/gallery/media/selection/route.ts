@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { galleryMediaSelectionParamsSchema } from '@/lib/schemas/gallery-media-selection-params.schema'
 import { getGalleryMedia } from '@/lib/queries/gallery.query'
 import { requireAuth } from '@/lib/utils/auth.util'
+import { handleApiError } from '@/lib/utils/api-error-handler.util'
 
 export const runtime = 'nodejs'
 
@@ -60,17 +62,10 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(result)
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
-            return NextResponse.json(
-                { success: false, error: 'Unauthorized' },
-                { status: 401 }
-            )
-        }
-
-        console.error('Error fetching gallery media for selection:', error)
-        return NextResponse.json(
-            { success: false, error: 'Failed to fetch media' },
-            { status: 500 }
+        return handleApiError(
+            error,
+            'Failed to fetch media',
+            'Error fetching gallery media for selection:'
         )
     }
 }

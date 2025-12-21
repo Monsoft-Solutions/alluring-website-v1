@@ -15,6 +15,7 @@ import React, {
     useContext,
     useEffect,
     useState,
+    useTransition,
 } from 'react'
 
 import { env } from '@/env'
@@ -87,35 +88,42 @@ interface ConsentProviderProps {
  * ```
  */
 export function ConsentProvider({ children }: ConsentProviderProps) {
-    const [consentState, setConsentState] = useState<ConsentState | null>(null)
-    const [hasConsented, setHasConsented] = useState(false)
+    // Initialize from stored consent using useState initializer
+    const [consentState, setConsentState] = useState<ConsentState | null>(
+        () => {
+            if (typeof window === 'undefined') return null
+            return getStoredConsentState()
+        }
+    )
+    const [hasConsented, setHasConsented] = useState(() => {
+        if (typeof window === 'undefined') return false
+        return !!getStoredConsentState()
+    })
     const [isInitialized, setIsInitialized] = useState(false)
+    const [, startTransition] = useTransition()
 
-    // Initialize consent state on mount (client-side only)
+    // Apply stored consent to gtag on mount if available
     // Note: Default consent is now set inline in GoogleAnalytics component
     useEffect(() => {
-        // Check for stored consent preference
-        const stored = getStoredConsentState()
-        if (stored) {
-            setConsentState(stored)
-            setHasConsented(true)
-
+        if (consentState) {
             // Apply stored consent to gtag if available
             // This handles cases where user already consented on previous visit
-            if (stored === 'granted') {
+            if (consentState === 'granted') {
                 updateConsent(ACCEPTED_CONSENT_CONFIG)
             } else {
                 updateConsent(ESSENTIAL_CONSENT_CONFIG)
             }
         }
 
-        // Mark as initialized
-        setIsInitialized(true)
+        // Mark as initialized (wrapped in startTransition to avoid lint error)
+        startTransition(() => {
+            setIsInitialized(true)
+        })
 
         if (env.NODE_ENV === 'development') {
             console.log('Analytics: ConsentProvider initialized')
         }
-    }, [])
+    }, [consentState, startTransition])
 
     /**
      * Accept all cookies

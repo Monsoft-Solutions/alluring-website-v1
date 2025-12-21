@@ -12,7 +12,7 @@ import { Badge } from '@workspace/ui/components/badge'
 import { Checkbox } from '@workspace/ui/components/checkbox'
 import { Layers } from 'lucide-react'
 
-import type { InstagramPostListItem } from '@/lib/types/social-media.type'
+import type { InstagramPostListItem } from '@/lib/types/social-media/social-media.type'
 
 type PostSelectCardProps = {
     post: InstagramPostListItem

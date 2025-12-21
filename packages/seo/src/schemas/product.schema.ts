@@ -27,11 +27,12 @@ export function buildProductJsonLd(
             availability: o.availability as unknown as Offer['availability'],
             url: o.url,
         })
-        product.offers = Array.isArray(props.offers)
-            ? ((props.offers as ProductOffer[]).map(
-                  mapOffer
-              ) as unknown as Offer[])
-            : (mapOffer(props.offers as ProductOffer) as unknown as Offer)
+
+        if (Array.isArray(props.offers)) {
+            product.offers = props.offers.map(mapOffer)
+        } else {
+            product.offers = mapOffer(props.offers)
+        }
     }
 
     if (props.aggregateRating) {

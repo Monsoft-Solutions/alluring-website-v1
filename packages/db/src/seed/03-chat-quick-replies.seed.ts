@@ -7,7 +7,6 @@
  *
  * @module packages/db/src/seed/03-chat-quick-replies
  */
-import { db } from '../client'
 import { env } from '../env'
 import {
     chatQuickReply,
@@ -15,8 +14,10 @@ import {
     type QuickReplyCategory,
 } from '../schema/chat'
 
+type Db = typeof import('../client').db
+
 type RunProps = {
-    db: typeof db
+    db: Db
 }
 
 /**

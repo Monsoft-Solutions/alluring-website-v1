@@ -14,7 +14,7 @@ const loginSchema = z.object({
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json()
+        const body: unknown = await request.json()
 
         // Validate request body with Zod
         const validationResult = loginSchema.safeParse(body)

@@ -10,7 +10,7 @@ import {
     SelectValue,
 } from '@workspace/ui/components/select'
 
-import type { GalleryGroupOption } from '@/lib/types/gallery-group.type'
+import type { GalleryGroupOption } from '@/lib/types/gallery/gallery-group.type'
 
 type GroupFilterSelectProps = {
     groups: GalleryGroupOption[]

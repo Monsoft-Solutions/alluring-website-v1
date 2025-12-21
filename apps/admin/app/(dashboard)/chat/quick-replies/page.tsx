@@ -6,7 +6,7 @@
  * @module app/(dashboard)/chat/quick-replies/page
  */
 import Link from 'next/link'
-import { ArrowLeft, Plus, MessageSquare, Trash2, Pencil } from 'lucide-react'
+import { ArrowLeft, Plus, MessageSquare } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import { Badge } from '@workspace/ui/components/badge'
@@ -61,19 +61,6 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export default async function QuickRepliesPage() {
     const quickReplies = await getQuickReplies()
-
-    // Group by category for display
-    const groupedReplies = quickReplies.reduce(
-        (acc, reply) => {
-            const category = reply.category
-            if (!acc[category]) {
-                acc[category] = []
-            }
-            acc[category].push(reply)
-            return acc
-        },
-        {} as Record<string, typeof quickReplies>
-    )
 
     return (
         <div className='space-y-6'>

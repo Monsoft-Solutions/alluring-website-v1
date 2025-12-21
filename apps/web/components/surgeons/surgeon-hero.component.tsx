@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
 import { Button } from '@workspace/ui/components/button'
-import { Surgeon } from '@/lib/types/surgeon.type'
+import type { Surgeon } from '@/lib/types/surgeon.type'
 import { getPhoneLink } from '@/lib/data/site-config'
 
 interface SurgeonHeroProps {

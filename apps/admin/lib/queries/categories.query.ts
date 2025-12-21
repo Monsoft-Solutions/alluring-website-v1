@@ -1,6 +1,6 @@
 import { db } from '@workspace/db/client'
 import { blogCategory, blogPostCategory } from '@workspace/db/schema/blog'
-import { count, desc, eq, sql, asc } from 'drizzle-orm'
+import { eq, sql, asc } from 'drizzle-orm'
 
 export type CategoryListItem = {
     id: string

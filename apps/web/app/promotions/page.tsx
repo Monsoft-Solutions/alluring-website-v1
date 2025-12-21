@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { Sparkles } from 'lucide-react'
 
 import { ContainerLayout } from '@/components/container-layout.component'

@@ -6,7 +6,7 @@
  *
  * @module app/api/stt/token/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { env } from '@/env'
 
@@ -17,7 +17,7 @@ import { env } from '@/env'
  * The token expires after 15 minutes and securely allows client-side
  * access to the realtime transcription service.
  */
-export async function POST(_request: NextRequest) {
+export async function POST() {
     try {
         // Check if ElevenLabs is configured
         if (!env.ELEVENLABS_API_KEY) {
@@ -66,7 +66,7 @@ export async function POST(_request: NextRequest) {
             )
         }
 
-        const data = await response.json()
+        const data = (await response.json()) as { token?: string }
 
         console.log(
             '[STT Token] Token generated successfully, length:',
@@ -96,7 +96,7 @@ export async function POST(_request: NextRequest) {
 /**
  * OPTIONS handler for CORS preflight requests
  */
-export async function OPTIONS(): Promise<NextResponse> {
+export function OPTIONS(): NextResponse {
     return new NextResponse(null, {
         status: 204,
         headers: {

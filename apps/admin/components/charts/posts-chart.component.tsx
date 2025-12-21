@@ -9,7 +9,7 @@ import {
     YAxis,
 } from 'recharts'
 
-import type { TopPost } from '@/lib/types/top-post.type'
+import type { TopPost } from '@/lib/types/blog/top-post.type'
 
 type PostsChartProps = {
     data: TopPost[]
@@ -57,10 +57,12 @@ export function PostsChart({ data }: PostsChartProps) {
                 />
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0].payload as TopPost & {
-                            shortTitle: string
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as {
+                            payload: TopPost & { shortTitle: string }
                         }
+                        const data = item.payload
                         return (
                             <div className='max-w-[250px] rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='text-muted-foreground text-xs'>

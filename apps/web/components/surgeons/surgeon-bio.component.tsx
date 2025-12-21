@@ -2,7 +2,7 @@
 
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
-import { Surgeon } from '@/lib/types/surgeon.type'
+import type { Surgeon } from '@/lib/types/surgeon.type'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 

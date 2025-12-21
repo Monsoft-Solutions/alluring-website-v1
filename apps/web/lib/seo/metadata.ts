@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 
-function mapRobots(robots?: RobotsConfig): Metadata['robots'] | undefined {
+function mapRobots(robots?: RobotsConfig): Metadata['robots'] {
     // If crawling is not allowed, force noindex, nofollow
     if (!isCrawlingAllowed()) {
         return {

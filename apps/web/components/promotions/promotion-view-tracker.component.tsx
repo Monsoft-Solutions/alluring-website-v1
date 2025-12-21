@@ -76,7 +76,7 @@ export function PromotionViewTracker({
                             visibleStartTime.current !== null &&
                             !hasTracked.current
                         ) {
-                            trackView()
+                            void trackView()
                         }
                     }, minVisibleTime)
                 }

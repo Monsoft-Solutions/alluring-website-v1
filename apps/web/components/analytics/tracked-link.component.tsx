@@ -60,8 +60,16 @@ export function TrackedLink({
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         // Track the event if tracking is enabled
         if (!disableTracking) {
+            const linkUrl =
+                typeof href === 'string'
+                    ? href
+                    : typeof href === 'object' &&
+                        href !== null &&
+                        'toString' in href
+                      ? (href as { toString(): string }).toString()
+                      : ''
             track(eventName, {
-                link_url: typeof href === 'string' ? href : href.toString(),
+                link_url: linkUrl,
                 link_text: typeof children === 'string' ? children : undefined,
                 ...eventParams,
             })

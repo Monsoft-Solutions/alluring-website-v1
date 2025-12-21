@@ -1,7 +1,7 @@
 'use client'
 
 import { ImageObjectSchema } from '@workspace/seo/react'
-import { Procedure } from '@/lib/types/procedure.type'
+import type { Procedure } from '@/lib/types/procedure.type'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

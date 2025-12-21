@@ -49,7 +49,10 @@ export function AdminRespondForm({
                     }),
                 })
 
-                const data = await response.json()
+                const data = (await response.json()) as {
+                    success: boolean
+                    error?: string
+                }
 
                 if (data.success) {
                     setMessage('')
@@ -57,7 +60,7 @@ export function AdminRespondForm({
                 } else {
                     setError(data.error ?? 'Failed to send message')
                 }
-            } catch (err) {
+            } catch {
                 setError('An unexpected error occurred')
             } finally {
                 setIsSubmitting(false)

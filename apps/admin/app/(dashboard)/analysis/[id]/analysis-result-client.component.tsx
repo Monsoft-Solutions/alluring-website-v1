@@ -17,8 +17,8 @@ import { Loader2 } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
 
-import type { AnalysisDetail } from '@/lib/types/media-analysis.type'
-import type { GalleryGroupForAI } from '@/lib/types/gallery-group.type'
+import type { AnalysisDetail } from '@/lib/types/media-analysis/media-analysis.type'
+import type { GalleryGroupForAI } from '@/lib/types/gallery/gallery-group.type'
 import { AnalysisResult } from '@/components/analysis/analysis-result.component'
 import { applyAnalysisResults } from '@/lib/actions/instagram-analysis.action'
 import { updateAnalysisStatus } from '@/lib/actions/media-analysis.action'
@@ -35,7 +35,7 @@ export function AnalysisResultClient({
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
 
-    const handleApply = async (data: {
+    const handleApply = (data: {
         pairGroupAssignments: Map<string, string[]>
         unpairedGroupAssignments: Map<string, string[]>
         nonBAGroupAssignments: Map<string, string[]>
@@ -207,7 +207,7 @@ export function AnalysisResultClient({
     return (
         <>
             <AnalysisResult
-                analysisResult={analysis.resultData!}
+                analysisResult={analysis.resultData}
                 galleryGroups={galleryGroups}
                 onApply={handleApply}
                 isApplying={isPending}

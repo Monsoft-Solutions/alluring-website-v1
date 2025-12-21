@@ -1,9 +1,6 @@
-import js from '@eslint/js'
-import eslintConfigPrettier from 'eslint-config-prettier'
 import pluginReact from 'eslint-plugin-react'
 import pluginReactHooks from 'eslint-plugin-react-hooks'
 import globals from 'globals'
-import tseslint from 'typescript-eslint'
 
 import { config as baseConfig } from './base.js'
 
@@ -13,9 +10,6 @@ import { config as baseConfig } from './base.js'
  * @type {import("eslint").Linter.Config} */
 export const config = [
     ...baseConfig,
-    js.configs.recommended,
-    eslintConfigPrettier,
-    ...tseslint.configs.recommended,
     pluginReact.configs.flat.recommended,
     {
         languageOptions: {
@@ -32,8 +26,18 @@ export const config = [
         },
         settings: { react: { version: 'detect' } },
         rules: {
+            // Enable all recommended react-hooks rules (includes React 19 + Compiler rules)
+            // This includes: rules-of-hooks, exhaustive-deps, static-components, use-memo,
+            // component-hook-factories, preserve-manual-memoization, immutability, globals,
+            // refs, set-state-in-effect, error-boundaries, purity, set-state-in-render, and more
             ...pluginReactHooks.configs.recommended.rules,
-            // React scope no longer necessary with new JSX transform.
+
+            // Maintenance approach: Use recommended preset to automatically pick up new rules
+            // from future plugin updates. All rules remain as errors to ensure React Compiler
+            // compatibility and optimal performance. Fix issues as they arise rather than
+            // downgrading to warnings.
+
+            // React scope no longer necessary with new JSX transform
             'react/react-in-jsx-scope': 'off',
             'react/prop-types': 'off',
         },

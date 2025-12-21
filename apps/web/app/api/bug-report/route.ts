@@ -342,7 +342,7 @@ export async function POST(
 /**
  * OPTIONS handler for CORS preflight requests
  */
-export async function OPTIONS(request: NextRequest): Promise<NextResponse> {
+export function OPTIONS(request: NextRequest): NextResponse {
     // Get the origin from the request header
     const requestOrigin = request.headers.get('origin')
 

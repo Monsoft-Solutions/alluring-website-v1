@@ -135,24 +135,30 @@ type UTMTrackingProviderProps = {
  * ```
  */
 export function UTMTrackingProvider({ children }: UTMTrackingProviderProps) {
+    // Always initialize to null to avoid hydration mismatch
+    // localStorage will be read in useEffect (client-only)
     const [utmData, setUtmData] = useState<UTMData | null>(null)
     const [isInitialized, setIsInitialized] = useState(false)
 
     useEffect(() => {
-        // Check for existing stored UTM data
-        const storedData = getStoredUTMData()
+        // Guard against SSR
+        if (typeof window === 'undefined') return
 
-        // Extract UTM from current URL
+        // Extract UTM from current URL (needs to happen after mount)
         const urlData = extractUTMFromURL()
 
         if (urlData) {
             // New UTM params in URL - store and use them
             // This overwrites any existing stored data when user arrives with new UTMs
             storeUTMData(urlData)
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- Synchronizing with external system (URL params) on mount, runs once
             setUtmData(urlData)
-        } else if (storedData) {
-            // No new UTMs, but we have stored data from previous landing
-            setUtmData(storedData)
+        } else {
+            // No URL params - load from localStorage if available
+            const storedData = getStoredUTMData()
+            if (storedData) {
+                setUtmData(storedData)
+            }
         }
 
         setIsInitialized(true)

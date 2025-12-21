@@ -30,7 +30,7 @@ export function DeleteMediaButton({ id, title }: DeleteMediaButtonProps) {
     const [isPending, startTransition] = useTransition()
     const [open, setOpen] = useState(false)
 
-    const handleDelete = async () => {
+    const handleDelete = () => {
         startTransition(async () => {
             try {
                 const result = await deleteGalleryMedia(id)

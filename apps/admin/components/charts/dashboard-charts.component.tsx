@@ -14,8 +14,8 @@ import {
     Legend,
 } from 'recharts'
 
-import type { ProcedureDemand } from '@/lib/types/procedure-demand.type'
-import type { LeadGradeDistribution } from '@/lib/types/lead-grade-distribution.type'
+import type { ProcedureDemand } from '@/lib/types/analytics/procedure-demand.type'
+import type { LeadGradeDistribution } from '@/lib/types/analytics/lead-grade-distribution.type'
 
 const COLORS = {
     primary: '#78716c',
@@ -69,8 +69,10 @@ export function ProcedureDemandChart({ data }: ProcedureDemandChartProps) {
                 />
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]?.payload as ProcedureDemand
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as { payload: ProcedureDemand }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='font-medium'>{data.procedure}</p>
@@ -127,9 +129,12 @@ export function LeadGradeChart({ data }: LeadGradeChartProps) {
                 </Pie>
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0]
-                            ?.payload as LeadGradeDistribution
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as {
+                            payload: LeadGradeDistribution
+                        }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='font-medium'>

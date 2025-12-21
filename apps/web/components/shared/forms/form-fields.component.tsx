@@ -18,7 +18,7 @@ import {
 import { Input } from '@workspace/ui/components/input'
 import { Textarea } from '@workspace/ui/components/textarea'
 import { cn } from '@workspace/ui/lib/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 /**
@@ -79,7 +79,7 @@ function getInputStyles(variant: FormFieldVariant) {
 /**
  * Get label styles based on variant
  */
-function getLabelStyles(variant: FormFieldVariant, _required?: boolean) {
+function getLabelStyles(variant: FormFieldVariant) {
     const base =
         variant === 'dark'
             ? 'text-gold-400 text-xs font-bold tracking-widest uppercase transition-colors group-focus-within:text-white'
@@ -102,7 +102,7 @@ export function NameField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -175,7 +175,7 @@ export function EmailField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -254,7 +254,7 @@ export function PhoneField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -334,7 +334,7 @@ export function SubjectField<TFieldValues extends FieldValues>({
     className,
 }: SubjectFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -416,7 +416,7 @@ export function MessageField<TFieldValues extends FieldValues>({
     className,
     rows = 4,
 }: MessageFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         const textareaStyles = cn(
@@ -516,7 +516,7 @@ export function SelectField<TFieldValues extends FieldValues>({
     className,
     options,
 }: SelectFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         const selectStyles = cn(
@@ -614,7 +614,7 @@ export function FirstNameField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -687,7 +687,7 @@ export function LastNameField<TFieldValues extends FieldValues>({
     className,
 }: BaseFieldProps<TFieldValues>) {
     const inputStyles = getInputStyles(variant)
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     if (variant === 'dark') {
         return (
@@ -880,7 +880,7 @@ export function RatingField<TFieldValues extends FieldValues>({
     ratingLabels,
     showLabels = true,
 }: RatingFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     const ratings = Array.from({ length: max - min + 1 }, (_, i) => min + i)
 
@@ -1020,7 +1020,7 @@ export function RadioGroupField<TFieldValues extends FieldValues>({
     otherPlaceholder = 'Please specify...',
     direction = 'vertical',
 }: RadioGroupFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     const getRadioStyles = (isSelected: boolean) => {
         if (variant === 'dark') {
@@ -1235,7 +1235,7 @@ export function YesNoField<TFieldValues extends FieldValues>({
     yesLabel = 'Yes',
     noLabel = 'No',
 }: YesNoFieldProps<TFieldValues>) {
-    const labelStyles = getLabelStyles(variant, required)
+    const labelStyles = getLabelStyles(variant)
 
     const getButtonStyles = (isSelected: boolean) => {
         if (variant === 'dark') {
@@ -1367,19 +1367,27 @@ export function ImageUploadField({
     className,
     error,
 }: ImageUploadFieldProps) {
-    const inputId = `image-upload-${Math.random().toString(36).slice(2, 9)}`
+    // Generate stable ID using useState initializer to avoid calling Math.random during render
+    const [inputId] = useState(
+        () => `image-upload-${Math.random().toString(36).slice(2, 9)}`
+    )
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [localError, setLocalError] = useState<string | null>(null)
+    const [, startTransition] = useTransition()
 
     // Generate preview URL when file changes
     useEffect(() => {
         if (value) {
             const url = URL.createObjectURL(value)
-            setPreviewUrl(url)
+            startTransition(() => {
+                setPreviewUrl(url)
+            })
             return () => URL.revokeObjectURL(url)
         }
-        setPreviewUrl(null)
-    }, [value])
+        startTransition(() => {
+            setPreviewUrl(null)
+        })
+    }, [value, startTransition])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]

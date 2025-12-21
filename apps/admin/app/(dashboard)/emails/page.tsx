@@ -9,7 +9,7 @@ export const metadata = {
     description: 'View email delivery status and history',
 }
 
-export default async function EmailsPage() {
+export default function EmailsPage() {
     return (
         <div className='space-y-6'>
             <div>

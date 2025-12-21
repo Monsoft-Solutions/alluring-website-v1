@@ -6,7 +6,6 @@ import {
     AvatarImage,
 } from '@workspace/ui/components/avatar'
 import { Button } from '@workspace/ui/components/button'
-import { Badge } from '@workspace/ui/components/badge'
 import { CheckCircle2, Link as LinkIcon, MapPin, Settings } from 'lucide-react'
 import Link from 'next/link'
 import type { SocialMediaSettings } from '@workspace/db/schema'

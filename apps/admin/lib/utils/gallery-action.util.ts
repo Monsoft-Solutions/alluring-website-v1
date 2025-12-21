@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 
+import { UnauthorizedError } from './auth.util'
 import {
     getAllGalleryTags,
     CACHE_TAGS,
@@ -59,7 +60,7 @@ export async function revalidateGalleryCache(): Promise<void> {
  * Check if error is an unauthorized error
  */
 export function isUnauthorizedError(error: unknown): boolean {
-    return error instanceof Error && error.message === 'Unauthorized'
+    return error instanceof UnauthorizedError
 }
 
 /**

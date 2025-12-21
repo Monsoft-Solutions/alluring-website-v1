@@ -29,7 +29,7 @@ interface ProcedurePageProps {
     }>
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
     return procedures.map((procedure) => ({
         slug: procedure.slug,
     }))

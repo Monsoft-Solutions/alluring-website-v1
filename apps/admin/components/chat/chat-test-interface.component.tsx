@@ -322,7 +322,7 @@ export function ChatTestInterface({
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault()
-                                handleSubmit()
+                                void handleSubmit()
                             }
                         }}
                     />

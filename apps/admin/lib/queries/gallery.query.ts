@@ -6,32 +6,27 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import { and, asc, count, desc, eq, ilike, notInArray, sql } from 'drizzle-orm'
 
 import type {
     GalleryMediaListItem,
-    GalleryMediaSortBy,
-    GalleryMediaSortOrder,
-    GalleryMediaStatusFilter,
-    GalleryMediaTypeFilter,
     GetGalleryMediaOptions,
     GalleryMediaDetail,
     GalleryMediaOption,
     RecentMediaItem,
-} from '@/lib/types/gallery-media.type'
+} from '@/lib/types/gallery/gallery-media.type'
 import type {
     GalleryGroupListItem,
     GalleryGroupDetail,
     GalleryGroupOption,
     GalleryGroupWithSlug,
     GalleryGroupForAI,
-} from '@/lib/types/gallery-group.type'
+} from '@/lib/types/gallery/gallery-group.type'
 import type {
     BeforeAfterPairListItem,
     BeforeAfterPairDetail,
-} from '@/lib/types/before-after.type'
-import type { GalleryStats } from '@/lib/types/gallery-stats.type'
+} from '@/lib/types/gallery/before-after.type'
+import type { GalleryStats } from '@/lib/types/gallery/gallery-stats.type'
 
 // ============================================================================
 // Gallery Media Queries

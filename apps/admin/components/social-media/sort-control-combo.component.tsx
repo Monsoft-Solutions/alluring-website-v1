@@ -11,7 +11,7 @@ import {
 import type {
     InstagramPostSortBy,
     InstagramPostSortDirection,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 
 type SortControlComboProps = {
     sortBy: InstagramPostSortBy

@@ -9,13 +9,8 @@
 'use server'
 
 import { db } from '@workspace/db/client'
-import {
-    mediaAnalysis,
-    mediaAnalysisItem,
-    type MediaAnalysis,
-} from '@workspace/db/schema'
+import { mediaAnalysis, mediaAnalysisItem } from '@workspace/db/schema'
 import { desc, eq, and, inArray, count, type SQL } from 'drizzle-orm'
-import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
 
 import type {
     AnalysisListFilters,
@@ -23,7 +18,7 @@ import type {
     AnalysisListItem,
     AnalysisDetail,
     AnalysisListResult,
-} from '@/lib/types/media-analysis.type'
+} from '@/lib/types/media-analysis/media-analysis.type'
 
 // ============================================================================
 // Queries

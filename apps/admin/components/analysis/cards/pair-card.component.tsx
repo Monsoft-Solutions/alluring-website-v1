@@ -13,7 +13,7 @@ import { MultiSelect } from '@workspace/ui/components/multi-select'
 import { ArrowRight } from 'lucide-react'
 
 import type { BulkAnalysisResult } from '@workspace/shared/schemas/analysis'
-import type { GalleryGroupForAI } from '@/lib/types/gallery-group.type'
+import type { GalleryGroupForAI } from '@/lib/types/gallery/gallery-group.type'
 
 type PairCardProps = {
     pair: BulkAnalysisResult['detectedPairs'][number]

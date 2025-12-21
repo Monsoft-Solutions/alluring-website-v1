@@ -24,7 +24,7 @@ import type {
     GalleryMediaSortOrder,
     GalleryMediaStatusFilter,
     GalleryMediaTypeFilter,
-} from '@/lib/types/gallery-media.type'
+} from '@/lib/types/gallery/gallery-media.type'
 
 type MediaSelectionDialogProps = {
     open: boolean
@@ -149,7 +149,10 @@ export function MediaSelectionDialog({
                     throw new Error('Failed to load media')
                 }
 
-                const data = await response.json()
+                const data = (await response.json()) as {
+                    media: GalleryMediaListItem[]
+                    total: number
+                }
                 mergeMedia(data.media ?? [], replace)
                 setTotalCount(data.total ?? 0)
                 setPage(nextPage)

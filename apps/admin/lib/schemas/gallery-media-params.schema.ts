@@ -1,5 +1,4 @@
-import { z } from 'zod'
-
+import type { z } from 'zod'
 import { baseGalleryMediaParamsSchema } from './gallery-media-base-params.schema'
 
 /**

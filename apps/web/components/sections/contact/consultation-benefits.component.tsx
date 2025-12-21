@@ -86,8 +86,8 @@ export function ConsultationBenefits({
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
                         Your consultation is the foundation of your
-                        transformation. Here's what you'll experience during
-                        your visit.
+                        transformation. Here&apos;s what you&apos;ll experience
+                        during your visit.
                     </p>
                 </motion.div>
 

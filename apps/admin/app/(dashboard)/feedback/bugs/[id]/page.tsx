@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import {
     ArrowLeft,
@@ -22,10 +23,7 @@ import {
     CardTitle,
 } from '@workspace/ui/components/card'
 
-import {
-    getBugReportById,
-    updateBugReportStatus,
-} from '@/lib/queries/feedback.query'
+import { getBugReportById } from '@/lib/queries/feedback.query'
 
 /**
  * Validates that a URL uses only http or https protocols
@@ -227,11 +225,14 @@ export default async function BugReportDetailPage({ params }: PageProps) {
                                 href={report.screenshotUrl}
                                 target='_blank'
                                 rel='noopener noreferrer'
+                                className='relative block aspect-video w-full'
                             >
-                                <img
+                                <Image
                                     src={report.screenshotUrl}
                                     alt='Bug screenshot'
-                                    className='w-full rounded-lg border'
+                                    fill
+                                    className='rounded-lg border object-contain'
+                                    unoptimized
                                 />
                             </a>
                         </CardContent>

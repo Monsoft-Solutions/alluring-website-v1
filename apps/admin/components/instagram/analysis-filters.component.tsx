@@ -15,7 +15,7 @@ import { Grid, ImageIcon, Layers } from 'lucide-react'
 import type {
     InstagramAnalysisStatusFilter,
     InstagramMediaTypeFilter,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 
 type AnalysisFiltersProps = {
     analysisStatus: InstagramAnalysisStatusFilter

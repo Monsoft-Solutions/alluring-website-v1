@@ -20,7 +20,6 @@ import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
-import { Textarea } from '@workspace/ui/components/textarea'
 import { Checkbox } from '@workspace/ui/components/checkbox'
 import { Badge } from '@workspace/ui/components/badge'
 import {
@@ -319,7 +318,7 @@ export function MediaForm({ groups, initialData, mode }: MediaFormProps) {
         }
     }, [aiAnalysis, mode, initialData?.id, formData.groupIds])
 
-    const handleSave = async (status?: 'draft' | 'published' | 'archived') => {
+    const handleSave = (status?: 'draft' | 'published' | 'archived') => {
         const dataToSave = {
             ...formData,
             status: status ?? formData.status,

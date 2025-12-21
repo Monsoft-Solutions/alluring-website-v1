@@ -11,6 +11,8 @@
 
 import { parseStringPromise } from 'xml2js'
 
+import type { ParsedSitemapXml } from './types/sitemap.types'
+
 // Sitemap endpoints to validate
 const SITEMAP_ENDPOINTS = [
     '/sitemap.xml',
@@ -64,7 +66,7 @@ async function validateSitemap(
         }
 
         // Parse XML
-        const parsed = await parseStringPromise(xml)
+        const parsed = (await parseStringPromise(xml)) as ParsedSitemapXml
 
         // Validate structure
         if (!parsed.urlset && !parsed.sitemapindex) {
@@ -248,4 +250,4 @@ async function main() {
 }
 
 // Run the script
-main()
+void main()

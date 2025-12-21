@@ -21,7 +21,7 @@ import type {
     InstagramAnalysisStatusFilter,
     InstagramMediaTypeFilter,
     InstagramPostListItem,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 import { analyzeInstagramPosts } from '@/lib/actions/instagram-analysis.action'
 import { AnalysisFilters } from '@/components/instagram/analysis-filters.component'
 import { AnalyzingProgress } from '@/components/instagram/analyzing-progress.component'
@@ -135,7 +135,10 @@ export function AnalyzePageClient({
                     throw new Error('Failed to load posts')
                 }
 
-                const data = await response.json()
+                const data = (await response.json()) as {
+                    posts: InstagramPostListItem[]
+                    total: number
+                }
                 mergePosts(data.posts ?? [], replace)
                 setTotalCount(data.total ?? 0)
                 setPage(nextPage)

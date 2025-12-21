@@ -9,6 +9,8 @@ import { GoogleIndexingClient } from '@monsoft/google-indexing'
 import sitemap from '@/app/sitemap'
 import { seoDefaults } from '@/lib/data/site-config'
 
+import type { ParsedSitemapXml } from './types/sitemap.types'
+
 // Helper functions for credentials
 function getClientEmail() {
     // eslint-disable-next-line no-restricted-properties
@@ -44,16 +46,17 @@ async function parseSitemapXml(xmlContent: string): Promise<string[]> {
     return new Promise((resolve, reject) => {
         parseString(xmlContent, (err, result) => {
             if (err) {
-                reject(err)
+                reject(new Error(String(err)))
                 return
             }
 
             try {
                 const urls: string[] = []
+                const parsed = result as ParsedSitemapXml
 
                 // Handle sitemap index format (contains sitemaps)
-                if (result.sitemapindex?.sitemap) {
-                    for (const sitemap of result.sitemapindex.sitemap) {
+                if (parsed.sitemapindex?.sitemap) {
+                    for (const sitemap of parsed.sitemapindex.sitemap) {
                         if (sitemap.loc?.[0]) {
                             urls.push(sitemap.loc[0])
                         }
@@ -61,8 +64,8 @@ async function parseSitemapXml(xmlContent: string): Promise<string[]> {
                 }
 
                 // Handle regular sitemap format (contains URLs)
-                if (result.urlset?.url) {
-                    for (const url of result.urlset.url) {
+                if (parsed.urlset?.url) {
+                    for (const url of parsed.urlset.url) {
                         if (url.loc?.[0]) {
                             urls.push(url.loc[0])
                         }
@@ -71,7 +74,9 @@ async function parseSitemapXml(xmlContent: string): Promise<string[]> {
 
                 resolve(urls)
             } catch (error) {
-                reject(error)
+                reject(
+                    error instanceof Error ? error : new Error(String(error))
+                )
             }
         })
     })
@@ -103,7 +108,7 @@ export async function main() {
 
         // Get child sitemap URLs from the sitemap index
         console.log('📋 Fetching sitemap index...')
-        const sitemapData = await sitemap()
+        const sitemapData = sitemap()
         const childSitemapUrls = sitemapData.map(
             (item: { url: string }): string => item.url.trim()
         )
@@ -199,4 +204,4 @@ export async function main() {
 }
 
 // Run the script
-main()
+void main()

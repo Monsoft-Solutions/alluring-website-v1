@@ -3,7 +3,7 @@ import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
 import { desc, inArray } from 'drizzle-orm'
 
-import type { HighValueLead } from '@/lib/types/high-value-lead.type'
+import type { HighValueLead } from '@/lib/types/analytics/high-value-lead.type'
 
 /**
  * Get recent high-value leads (Grade A or B)

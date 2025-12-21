@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
 /**
  * OPTIONS handler for CORS preflight requests
  */
-export async function OPTIONS(): Promise<NextResponse> {
+export function OPTIONS(): NextResponse {
     return new NextResponse(null, {
         status: 204,
         headers: {

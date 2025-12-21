@@ -115,7 +115,7 @@ export function FloatingChatButton({
             try {
                 const response = await fetch('/api/chat/config')
                 if (response.ok) {
-                    const data = await response.json()
+                    const data = (await response.json()) as ChatConfig
                     setConfig(data)
                 }
             } catch (error) {
@@ -125,7 +125,7 @@ export function FloatingChatButton({
             }
         }
 
-        fetchConfig()
+        void fetchConfig()
     }, [])
 
     // Don't render if loading, disabled, or failed to load

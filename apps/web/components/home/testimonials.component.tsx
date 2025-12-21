@@ -54,7 +54,7 @@ export const Testimonials = () => {
                             {/* Card 1 */}
                             <div className='min-w-[300px] snap-center border border-stone-100 bg-stone-50 p-8 transition-transform duration-300 hover:-translate-y-1 md:min-w-[350px] md:p-10'>
                                 <div className='text-gold-400 mb-6 flex gap-1'>
-                                    {[...Array(5)].map((_, i) => (
+                                    {Array.from({ length: 5 }).map((_, i) => (
                                         <Star
                                             key={i}
                                             className='h-4 w-4 fill-current'
@@ -81,7 +81,7 @@ export const Testimonials = () => {
                             {/* Card 2 */}
                             <div className='min-w-[300px] snap-center border border-stone-100 bg-stone-50 p-8 transition-transform duration-300 hover:-translate-y-1 md:min-w-[350px] md:p-10'>
                                 <div className='text-gold-400 mb-6 flex gap-1'>
-                                    {[...Array(5)].map((_, i) => (
+                                    {Array.from({ length: 5 }).map((_, i) => (
                                         <Star
                                             key={i}
                                             className='h-4 w-4 fill-current'

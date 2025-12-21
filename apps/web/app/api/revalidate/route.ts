@@ -1,5 +1,5 @@
 import { revalidateTag } from 'next/cache'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { env } from '@/env'
@@ -54,7 +54,7 @@ const revalidateRequestSchema = z.object({
  */
 export async function POST(request: NextRequest) {
     try {
-        const body = await request.json()
+        const body = (await request.json()) as unknown
 
         // Validate request body schema
         const parseResult = revalidateRequestSchema.safeParse(body)
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
  * Health check endpoint that returns allowed tags.
  * Useful for debugging and verifying the endpoint is accessible.
  */
-export async function GET() {
+export function GET() {
     return NextResponse.json({
         status: 'ok',
         allowedStaticTags: ALLOWED_STATIC_TAGS,

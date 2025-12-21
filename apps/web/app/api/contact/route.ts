@@ -88,19 +88,34 @@ function formatConsoleLog(
 ): string {
     const displayData = redact ? redactPII(data as ContactFormData) : data
 
+    // Helper to safely convert values to strings
+    const toString = (value: unknown): string => {
+        if (value === null || value === undefined) return 'Not provided'
+        if (typeof value === 'string') return value
+        if (typeof value === 'boolean') return value ? 'Yes' : 'No'
+        if (typeof value === 'number') return String(value)
+        if (typeof value === 'object') return '[Object]'
+        // Handle remaining primitive types (symbol, bigint, function)
+        if (typeof value === 'symbol') return value.toString()
+        if (typeof value === 'bigint') return String(value)
+        if (typeof value === 'function') return '[Function]'
+        // Fallback for any other types
+        return '[Unknown]'
+    }
+
     return `
 === New Contact Form Submission ===
-Name: ${displayData.name}
-First Name: ${displayData.firstName || 'Not provided'}
-Last Name: ${displayData.lastName || 'Not provided'}
-Email: ${displayData.email || 'Not provided'}
-Phone: ${displayData.phone || 'Not provided'}
-Subject: ${displayData.subject || 'Not provided'}
-Message: ${displayData.message || 'Not provided'}
-Procedure: ${displayData.procedure || 'Not specified'}
-Preferred Contact Time: ${displayData.preferredContactTime || 'Not specified'}
-Consent Given: ${displayData.consentGiven ?? 'Not specified'}
-Source: ${displayData.source || 'Not specified'}
+Name: ${toString(displayData.name)}
+First Name: ${toString(displayData.firstName) || 'Not provided'}
+Last Name: ${toString(displayData.lastName) || 'Not provided'}
+Email: ${toString(displayData.email) || 'Not provided'}
+Phone: ${toString(displayData.phone) || 'Not provided'}
+Subject: ${toString(displayData.subject) || 'Not provided'}
+Message: ${toString(displayData.message) || 'Not provided'}
+Procedure: ${toString(displayData.procedure) || 'Not specified'}
+Preferred Contact Time: ${toString(displayData.preferredContactTime) || 'Not specified'}
+Consent Given: ${toString(displayData.consentGiven) || 'Not specified'}
+Source: ${toString(displayData.source) || 'Not specified'}
 Submitted at: ${new Date().toISOString()}
 ===================================
     `.trim()
@@ -476,7 +491,7 @@ export async function POST(
  *
  * @returns Response with CORS headers
  */
-export async function OPTIONS(): Promise<NextResponse> {
+export function OPTIONS(): NextResponse {
     return new NextResponse(null, {
         status: 204,
         headers: {

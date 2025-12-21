@@ -5,7 +5,7 @@ import { blogPost, images } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 export type BlogPostFormData = {
     title: string
@@ -102,7 +102,7 @@ export async function createBlogPost(
     } catch (error) {
         console.error('Error creating blog post:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -226,7 +226,7 @@ export async function updateBlogPost(
     } catch (error) {
         console.error('Error updating blog post:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -268,7 +268,7 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
     } catch (error) {
         console.error('Error deleting blog post:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -319,7 +319,7 @@ export async function updateBlogPostStatus(
     } catch (error) {
         console.error('Error updating post status:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

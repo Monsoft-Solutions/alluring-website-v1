@@ -17,7 +17,7 @@ import {
     beforeAfterPair,
     galleryGroup,
 } from '@workspace/db/schema'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import type {
     GalleryMediaAIAnalysis,
     AvailableGroup,
@@ -765,7 +765,7 @@ function aggregateAnalysisResults(
                 individualResult.stats.failedMedia
         } else {
             // Handle post-level error
-            const postError = postResult.reason
+            const postError = postResult.reason as unknown
             console.error('Error analyzing post:', postError)
             // Continue with other posts
         }
@@ -1155,7 +1155,7 @@ export async function updateAnalysisStatus(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -1206,8 +1206,7 @@ export async function updateMediaAnalysis(
         }
 
         // Merge updates into existing AI analysis
-        const currentAnalysis =
-            media.aiAnalysis as GalleryMediaAIAnalysis | null
+        const currentAnalysis = media.aiAnalysis
         const updatedAnalysis: GalleryMediaAIAnalysis | null = currentAnalysis
             ? {
                   ...currentAnalysis,
@@ -1259,7 +1258,7 @@ export async function updateMediaAnalysis(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

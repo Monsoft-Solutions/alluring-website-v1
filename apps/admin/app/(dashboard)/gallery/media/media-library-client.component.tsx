@@ -26,7 +26,7 @@ import type {
     GalleryMediaSortOrder,
     GalleryMediaStatusFilter,
     GalleryMediaTypeFilter,
-} from '@/lib/types/gallery-media.type'
+} from '@/lib/types/gallery/gallery-media.type'
 import { SelectableMediaGrid } from '@/components/shared/selectable-media-grid.component'
 import { BulkActionToolbar } from '@/components/shared/gallery/bulk-action-toolbar.component'
 import { BulkUploadSection } from '@/components/shared/gallery/bulk-upload-section.component'
@@ -155,7 +155,10 @@ export function MediaLibraryClient({
                 throw new Error('Failed to load more media')
             }
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                media: GalleryMediaListItem[]
+                total: number
+            }
 
             setLoadedMedia((prev) => {
                 // Deduplicate in case of race conditions

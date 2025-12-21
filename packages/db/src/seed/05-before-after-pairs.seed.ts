@@ -21,7 +21,6 @@
  */
 import { eq } from 'drizzle-orm'
 
-import { db } from '../client'
 import { env } from '../env'
 import {
     beforeAfterPair,
@@ -29,8 +28,10 @@ import {
     type InsertBeforeAfterPair,
 } from '../schema/gallery'
 
+type Db = typeof import('../client').db
+
 type RunProps = {
-    db: typeof db
+    db: Db
 }
 
 /**
@@ -113,7 +114,7 @@ const BEFORE_AFTER_PAIRS: BeforeAfterPairSeedData[] = [
 /**
  * Lookup media ID by slug
  */
-async function getMediaIdBySlug(slug: string): Promise<string | null> {
+async function getMediaIdBySlug(db: Db, slug: string): Promise<string | null> {
     const result = await db
         .select({ id: galleryMedia.id })
         .from(galleryMedia)
@@ -163,8 +164,8 @@ export async function run({ db }: RunProps) {
 
         for (const pair of BEFORE_AFTER_PAIRS) {
             const [beforeMediaId, afterMediaId] = await Promise.all([
-                getMediaIdBySlug(pair.beforeSlug),
-                getMediaIdBySlug(pair.afterSlug),
+                getMediaIdBySlug(db, pair.beforeSlug),
+                getMediaIdBySlug(db, pair.afterSlug),
             ])
 
             if (!beforeMediaId) {

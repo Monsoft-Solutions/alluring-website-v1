@@ -1,7 +1,8 @@
 import { put, del } from '@vercel/blob'
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { env } from '@/env'
 
@@ -54,6 +55,16 @@ type ErrorResponse = {
     error: string
 }
 
+type BlobGenerateTokenResponse = {
+    type: 'blob.generate-client-token'
+    clientToken: string
+}
+
+type BlobUploadCompletedResponse = {
+    type: 'blob.upload-completed'
+    response: 'ok'
+}
+
 /**
  * POST /api/upload
  * Handle file uploads using Vercel Blob's handleUpload for client uploads
@@ -61,7 +72,14 @@ type ErrorResponse = {
  */
 export async function POST(
     request: NextRequest
-): Promise<NextResponse<UploadResponse | ErrorResponse | unknown>> {
+): Promise<
+    NextResponse<
+        | UploadResponse
+        | ErrorResponse
+        | BlobGenerateTokenResponse
+        | BlobUploadCompletedResponse
+    >
+> {
     // Check authentication
     const authenticated = await isAuthenticated()
     if (!authenticated) {
@@ -78,9 +96,10 @@ export async function POST(
         try {
             const body = (await request.json()) as HandleUploadBody
 
-            const jsonResponse = await handleUpload({
+            const jsonResponse = (await handleUpload({
                 body,
                 request,
+                // eslint-disable-next-line @typescript-eslint/require-await
                 onBeforeGenerateToken: async (pathname) => {
                     // Validate file type from pathname
                     const extension = pathname.split('.').pop()?.toLowerCase()
@@ -110,10 +129,11 @@ export async function POST(
                         }),
                     }
                 },
+                // eslint-disable-next-line @typescript-eslint/require-await
                 onUploadCompleted: async ({ blob }) => {
                     console.log('Upload completed:', blob.url)
                 },
-            })
+            })) as BlobGenerateTokenResponse | BlobUploadCompletedResponse
 
             return NextResponse.json(jsonResponse)
         } catch (error) {
@@ -248,7 +268,8 @@ export async function DELETE(
             )
         }
 
-        const { url } = await request.json()
+        const body: unknown = await request.json()
+        const { url } = body as { url: string }
 
         if (!url || typeof url !== 'string') {
             return NextResponse.json(

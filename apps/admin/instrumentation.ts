@@ -6,7 +6,7 @@
  *
  * @see https://langfuse.com/integrations/frameworks/vercel-ai-sdk
  */
-import { LangfuseSpanProcessor, ShouldExportSpan } from '@langfuse/otel'
+import { LangfuseSpanProcessor, type ShouldExportSpan } from '@langfuse/otel'
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node'
 
 /**

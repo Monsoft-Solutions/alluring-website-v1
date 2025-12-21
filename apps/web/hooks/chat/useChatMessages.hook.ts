@@ -12,7 +12,14 @@
  */
 'use client'
 
-import { useMemo, useCallback, useRef, useEffect } from 'react'
+import {
+    useMemo,
+    useCallback,
+    useRef,
+    useEffect,
+    useState,
+    useTransition,
+} from 'react'
 import { useChat, type UIMessage } from '@ai-sdk/react'
 import { DefaultChatTransport } from '@workspace/ai'
 import type { StoredMessage, AISDKMessage } from '@/lib/chat/types'
@@ -98,7 +105,8 @@ export function useChatMessages(
     const { sessionId, welcomeMessage, initialMessages = [] } = options
 
     const wasLoadingRef = useRef(false)
-    const streamingJustCompletedRef = useRef(false)
+    const [streamingJustCompleted, setStreamingJustCompleted] = useState(false)
+    const [, startTransition] = useTransition()
 
     // Convert initial messages to AI SDK format with welcome message
     const startingMessages = useMemo(() => {
@@ -137,9 +145,11 @@ export function useChatMessages(
 
     // Track streaming completion
     useEffect(() => {
-        streamingJustCompletedRef.current = wasLoadingRef.current && !isLoading
+        startTransition(() => {
+            setStreamingJustCompleted(wasLoadingRef.current && !isLoading)
+        })
         wasLoadingRef.current = isLoading
-    }, [isLoading])
+    }, [isLoading, startTransition])
 
     /**
      * Extract text content from message parts
@@ -235,7 +245,7 @@ export function useChatMessages(
         userMessageCount,
         lastAssistantMessage,
         lastMessageIsAssistant,
-        streamingJustCompleted: streamingJustCompletedRef.current,
+        streamingJustCompleted,
         streamedQuickQuestions,
     }
 }

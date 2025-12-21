@@ -37,8 +37,8 @@ import {
     deleteGalleryGroup,
     toggleGroupVisibility,
 } from '@/lib/actions/gallery.action'
-import type { GalleryGroupListItem } from '@/lib/types/gallery-group.type'
-import type { GalleryMediaOption } from '@/lib/types/gallery-media.type'
+import type { GalleryGroupListItem } from '@/lib/types/gallery/gallery-group.type'
+import type { GalleryMediaOption } from '@/lib/types/gallery/gallery-media.type'
 
 type GroupsPageClientProps = {
     groups: GalleryGroupListItem[]

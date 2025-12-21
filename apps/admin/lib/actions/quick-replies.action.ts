@@ -16,7 +16,7 @@ import {
     deleteQuickReply,
 } from '@/lib/queries/chat.query'
 import { QUICK_REPLY_CATEGORIES } from '@workspace/db/schema/chat'
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 /**
  * Quick reply form schema
@@ -60,7 +60,7 @@ export async function createQuickReplyAction(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
         if (error instanceof z.ZodError) {
@@ -90,7 +90,7 @@ export async function updateQuickReplyAction(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
         if (error instanceof z.ZodError) {
@@ -121,7 +121,7 @@ export async function deleteQuickReplyAction(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
         console.error('Failed to delete quick reply:', error)
@@ -146,7 +146,7 @@ export async function toggleQuickReplyAction(
 
         return { success: true }
     } catch (error) {
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
         console.error('Failed to toggle quick reply:', error)

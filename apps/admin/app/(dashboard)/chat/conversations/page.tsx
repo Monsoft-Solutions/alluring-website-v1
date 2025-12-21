@@ -342,11 +342,3 @@ export default async function ConversationsPage({ searchParams }: PageProps) {
         </div>
     )
 }
-
-function getPathname(url: string): string {
-    try {
-        return new URL(url).pathname
-    } catch {
-        return url || '/'
-    }
-}

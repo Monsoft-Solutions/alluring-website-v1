@@ -44,7 +44,7 @@ const STATIC_PAGES: Array<{
 /**
  * GET handler for static pages and surgeon pages sitemap
  */
-export async function GET(): Promise<NextResponse> {
+export function GET(): NextResponse {
     // Return empty sitemap if crawling is not allowed
     if (!isCrawlingAllowed()) {
         return new NextResponse(

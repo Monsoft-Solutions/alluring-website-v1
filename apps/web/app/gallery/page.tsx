@@ -9,7 +9,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { getFeaturedBeforeAfterPairs } from '@/lib/queries/gallery/before-after.query'
 import { getVisibleGalleryGroups } from '@/lib/queries/gallery/gallery-list.query'
 import { seoConfig } from '@/lib/seo-config'
-import { generatePageTitle } from '@/lib/seo/generate-title.util'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
 

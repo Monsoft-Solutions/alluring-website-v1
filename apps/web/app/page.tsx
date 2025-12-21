@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { Hero } from '@/components/home/hero.component'

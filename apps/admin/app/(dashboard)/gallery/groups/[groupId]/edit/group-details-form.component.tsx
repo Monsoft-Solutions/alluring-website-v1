@@ -26,8 +26,8 @@ import {
 } from '@workspace/ui/components/select'
 
 import { updateGalleryGroup } from '@/lib/actions/gallery.action'
-import type { GalleryGroupDetail } from '@/lib/types/gallery-group.type'
-import type { GalleryMediaListItem } from '@/lib/types/gallery-media.type'
+import type { GalleryGroupDetail } from '@/lib/types/gallery/gallery-group.type'
+import type { GalleryMediaListItem } from '@/lib/types/gallery/gallery-media.type'
 import { PROCEDURE_OPTIONS } from '@/lib/constants/procedure.constant'
 
 type GroupDetailsFormProps = {
@@ -84,7 +84,7 @@ export function GroupDetailsForm({ group, groupMedia }: GroupDetailsFormProps) {
         }
     }
 
-    const handleSaveGroup = async () => {
+    const handleSaveGroup = () => {
         startTransition(async () => {
             try {
                 const result = await updateGalleryGroup(group.id, {

@@ -124,7 +124,7 @@ export function MediaUpload({
 
             const file = e.dataTransfer.files[0]
             if (file) {
-                handleUpload(file)
+                void handleUpload(file)
             }
         },
         [handleUpload]
@@ -147,7 +147,7 @@ export function MediaUpload({
         (e: React.ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0]
             if (file) {
-                handleUpload(file)
+                void handleUpload(file)
             }
             // Reset input so same file can be selected again
             e.target.value = ''

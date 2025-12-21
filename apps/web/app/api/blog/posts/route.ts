@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import type { BlogPostsPaginatedResponse } from '@/lib/types/blog/api-response.type'

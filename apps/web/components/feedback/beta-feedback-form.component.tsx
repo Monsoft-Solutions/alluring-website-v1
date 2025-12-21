@@ -196,7 +196,9 @@ export function BetaFeedbackForm({ isOpen, onClose }: BetaFeedbackFormProps) {
                     form.reset()
                 }, 2000)
             } else {
-                const error = await response.json()
+                const error = (await response.json()) as {
+                    message?: string
+                }
                 console.error('Feedback submission failed:', error)
                 setErrorMessage(
                     error?.message ||

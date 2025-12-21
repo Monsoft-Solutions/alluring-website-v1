@@ -16,7 +16,6 @@ import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 import { and, asc, count, desc, eq, inArray } from 'drizzle-orm'
 
 import type {
-    InstagramAnalysisStatus,
     InstagramPostListItem,
     InstagramPostSortBy,
     InstagramPostSortDirection,
@@ -24,7 +23,7 @@ import type {
     InstagramAnalysisStatusFilter,
     InstagramPostWithMedia,
     SocialMediaStats,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 
 // ============================================================================
 // Settings Queries

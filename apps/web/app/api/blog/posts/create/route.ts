@@ -9,10 +9,11 @@ import {
     createResourceSchema,
     images,
 } from '@workspace/db/schema/blog'
-import { type ExtractTablesWithRelations, inArray } from 'drizzle-orm'
+import type { ExtractTablesWithRelations } from 'drizzle-orm'
+import { inArray } from 'drizzle-orm'
 import type { PgTransaction } from 'drizzle-orm/pg-core'
 import type { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 import { uploadImageToBlob as uploadImageToBlobFormUrl } from '@/lib/api/upload-image.util'
 import { withApiAuth } from '@/lib/api/withApiAuth.middleware'
@@ -36,7 +37,7 @@ type DbTransaction = PgTransaction<
 async function postHandler(request: NextRequest) {
     try {
         // Parse request body
-        const body = await request.json()
+        const body = (await request.json()) as unknown
 
         // Validate against schema
         const validationResult = createResourceSchema.safeParse(body)

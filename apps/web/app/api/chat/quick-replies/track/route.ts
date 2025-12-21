@@ -17,8 +17,8 @@ import { eq, sql } from 'drizzle-orm'
  */
 export async function POST(request: Request) {
     try {
-        const body = await request.json()
-        const { quickReplyId } = body as { quickReplyId: string }
+        const body = (await request.json()) as { quickReplyId: string }
+        const { quickReplyId } = body
 
         if (!quickReplyId) {
             return NextResponse.json(

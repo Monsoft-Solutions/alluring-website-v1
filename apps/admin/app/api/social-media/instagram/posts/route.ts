@@ -6,7 +6,7 @@ import type {
     InstagramMediaTypeFilter,
     InstagramPostSortBy,
     InstagramPostSortDirection,
-} from '@/lib/types/social-media.type'
+} from '@/lib/types/social-media/social-media.type'
 import { isAuthenticated } from '@/lib/utils/auth.util'
 
 const DEFAULT_PAGE = 1

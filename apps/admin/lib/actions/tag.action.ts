@@ -5,7 +5,7 @@ import { blogTag } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-import { requireAuth } from '@/lib/utils/auth.util'
+import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 export type TagFormData = {
     name: string
@@ -62,7 +62,7 @@ export async function createTag(data: TagFormData): Promise<ActionResult> {
     } catch (error) {
         console.error('Error creating tag:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -118,7 +118,7 @@ export async function updateTag(
     } catch (error) {
         console.error('Error updating tag:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 
@@ -142,7 +142,7 @@ export async function deleteTag(id: string): Promise<ActionResult> {
     } catch (error) {
         console.error('Error deleting tag:', error)
 
-        if (error instanceof Error && error.message === 'Unauthorized') {
+        if (error instanceof UnauthorizedError) {
             return { success: false, error: 'Unauthorized' }
         }
 

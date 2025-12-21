@@ -51,7 +51,7 @@ function LoginForm() {
 
     const redirectTo = getSafeRedirectPath(searchParams.get('redirect'))
 
-    async function handleSubmit(e: React.FormEvent) {
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setError('')
 
@@ -63,10 +63,11 @@ function LoginForm() {
                     body: JSON.stringify({ password }),
                 })
 
-                const data = await response.json()
+                const data: unknown = await response.json()
 
                 if (!response.ok) {
-                    setError(data.error || 'Authentication failed')
+                    const errorData = data as { error?: string }
+                    setError(errorData.error || 'Authentication failed')
                     return
                 }
 

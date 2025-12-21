@@ -10,7 +10,7 @@ import {
     YAxis,
 } from 'recharts'
 
-import type { DailyCount } from '@/lib/types/common.type'
+import type { DailyCount } from '@/lib/types/common/common.type'
 
 type ContactsChartProps = {
     data: DailyCount[]
@@ -68,10 +68,12 @@ export function ContactsChart({ data }: ContactsChartProps) {
                 />
                 <Tooltip
                     content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null
-                        const data = payload[0].payload as DailyCount & {
-                            formattedDate: string
+                        if (!active || !payload?.length || !payload[0])
+                            return null
+                        const item = payload[0] as {
+                            payload: DailyCount & { formattedDate: string }
                         }
+                        const data = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='text-muted-foreground text-xs'>

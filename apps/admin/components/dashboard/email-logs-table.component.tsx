@@ -48,7 +48,7 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 
 import { useEmailLogs } from '@/hooks/use-emails.hook'
-import type { EmailLogListItem } from '@/lib/types/emails.type'
+import type { EmailLogListItem } from '@/lib/types/emails/emails.type'
 
 /**
  * Email logs table component that manages its own pagination and filtering.

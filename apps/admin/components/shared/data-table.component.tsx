@@ -87,7 +87,24 @@ export function DataTable<T>({
             return searchableColumns.some((col) => {
                 const value = getNestedValue(item, col.key as string)
                 if (value == null) return false
-                return String(value).toLowerCase().includes(query)
+
+                let strValueValue: string
+                if (value instanceof Date) {
+                    strValueValue = value.toLocaleDateString()
+                } else if (typeof value === 'string') {
+                    strValueValue = value
+                } else if (
+                    typeof value === 'number' ||
+                    typeof value === 'boolean'
+                ) {
+                    strValueValue = String(value)
+                } else if (typeof value === 'object') {
+                    strValueValue = JSON.stringify(value)
+                } else {
+                    strValueValue = ''
+                }
+
+                return strValueValue.toLowerCase().includes(query)
             })
         })
     }, [data, deferredSearchQuery, searchableColumns])
@@ -110,8 +127,18 @@ export function DataTable<T>({
                     : bValue - aValue
             }
 
-            const aStr = String(aValue).toLowerCase()
-            const bStr = String(bValue).toLowerCase()
+            const formatVal = (v: unknown) => {
+                if (v instanceof Date) return v.toISOString()
+                if (typeof v === 'string') return v.toLowerCase()
+                if (typeof v === 'number' || typeof v === 'boolean')
+                    return String(v)
+                if (v && typeof v === 'object')
+                    return JSON.stringify(v).toLowerCase()
+                return ''
+            }
+
+            const aStr = formatVal(aValue)
+            const bStr = formatVal(bValue)
 
             if (sortDirection === 'asc') {
                 return aStr.localeCompare(bStr)
@@ -272,12 +299,43 @@ export function DataTable<T>({
                                             >
                                                 {column.render
                                                     ? column.render(item)
-                                                    : String(
-                                                          getNestedValue(
-                                                              item,
-                                                              column.key as string
-                                                          ) ?? ''
-                                                      )}
+                                                    : (() => {
+                                                          const val =
+                                                              getNestedValue(
+                                                                  item,
+                                                                  column.key as string
+                                                              )
+                                                          if (
+                                                              val instanceof
+                                                              Date
+                                                          ) {
+                                                              return val.toLocaleDateString()
+                                                          }
+                                                          if (
+                                                              typeof val ===
+                                                              'string'
+                                                          ) {
+                                                              return val
+                                                          }
+                                                          if (
+                                                              typeof val ===
+                                                                  'number' ||
+                                                              typeof val ===
+                                                                  'boolean'
+                                                          ) {
+                                                              return String(val)
+                                                          }
+                                                          if (
+                                                              val &&
+                                                              typeof val ===
+                                                                  'object'
+                                                          ) {
+                                                              return JSON.stringify(
+                                                                  val
+                                                              )
+                                                          }
+                                                          return ''
+                                                      })()}
                                             </TableCell>
                                         ))}
                                     </TableRow>

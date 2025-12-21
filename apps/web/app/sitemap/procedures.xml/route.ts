@@ -23,7 +23,7 @@ const PROCEDURES_LAST_MODIFIED = '2025-12-16'
 /**
  * GET handler for procedures sitemap
  */
-export async function GET(): Promise<NextResponse> {
+export function GET(): NextResponse {
     // Return empty sitemap if crawling is not allowed
     if (!isCrawlingAllowed()) {
         return new NextResponse(

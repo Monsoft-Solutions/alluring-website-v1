@@ -33,7 +33,7 @@ export const basePaginationSchema = z.object({
             try {
                 const decoded = JSON.parse(
                     Buffer.from(val, 'base64').toString('utf-8')
-                )
+                ) as { publishedAt: string; id: string }
                 const publishedAtDate = new Date(decoded.publishedAt)
 
                 // Validate that the date is actually valid

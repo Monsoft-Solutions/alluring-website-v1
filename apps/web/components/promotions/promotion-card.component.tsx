@@ -6,7 +6,6 @@ import type { Promotion } from '@workspace/db/schema/promotion'
 import { Button } from '@workspace/ui/components/button'
 
 import {
-    getPromotionLink,
     formatDiscount,
     getRemainingDays,
     isExpiringSoon,
@@ -23,7 +22,6 @@ type PromotionCardProps = {
  * Features glassmorphism design with type badges and urgency indicators.
  */
 export function PromotionCard({ promotion }: PromotionCardProps) {
-    const link = getPromotionLink(promotion)
     const discount = formatDiscount(promotion)
     const daysRemaining = getRemainingDays(promotion)
     const expiringSoon = isExpiringSoon(promotion)

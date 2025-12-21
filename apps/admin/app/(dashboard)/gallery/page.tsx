@@ -14,7 +14,7 @@ export const metadata = {
     description: 'Manage your media library and before/after comparisons',
 }
 
-export default async function GalleryDashboardPage() {
+export default function GalleryDashboardPage() {
     return (
         <div className='space-y-6'>
             {/* Header */}
