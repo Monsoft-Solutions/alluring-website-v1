@@ -1,14 +1,32 @@
 /**
  * fal.ai Image Generation Service
  *
- * Handles image generation using fal.ai's gpt-image-1 model
- * and uploads the result to Vercel Blob storage.
+ * Handles image generation using fal.ai models (gpt-image-1.5 and nano-banana-pro)
+ * and uploads the results to Vercel Blob storage.
  *
  * @module @/lib/services/fal-image-generation
  */
 import { put } from '@vercel/blob'
 import { env } from '@/env'
 import { fal } from '@fal-ai/client'
+
+/**
+ * Available image generation models
+ */
+export const IMAGE_MODELS = [
+    {
+        id: 'gpt-image-1.5',
+        name: 'GPT Image 1.5',
+        falId: 'fal-ai/gpt-image-1.5',
+    },
+    {
+        id: 'nano-banana-pro',
+        name: 'Nano Banana Pro',
+        falId: 'fal-ai/nano-banana-pro',
+    },
+] as const
+
+export type ImageModelId = (typeof IMAGE_MODELS)[number]['id']
 
 /**
  * Options for image generation
@@ -18,12 +36,16 @@ export type GenerateImageWithFalOptions = {
     prompt: string
     /** Blog post ID (used for blob storage path) */
     blogPostId: string
+    /** Model to use for generation (defaults to gpt-image-1.5) */
+    model?: ImageModelId
+    /** Number of images to generate (1-3, defaults to 1) */
+    numImages?: 1 | 2 | 3
 }
 
 /**
- * Result of image generation
+ * Result of a single generated image
  */
-export type GeneratedImageResult = {
+export type GeneratedImageItem = {
     /** Vercel Blob URL of the uploaded image */
     blobUrl: string
     /** Original fal.ai URL (temporary) */
@@ -35,57 +57,50 @@ export type GeneratedImageResult = {
 }
 
 /**
- * fal.ai result type
+ * Result of image generation (array of images)
  */
-// type FalImageResult = {
-//     data: {
-//         images?: Array<{
-//             url: string
-//             width?: number
-//             height?: number
-//         }>
-//     }
-// }
+export type GeneratedImageResult = GeneratedImageItem[]
 
 /**
- * fal.ai client interface (subset)
+ * Get the fal.ai model ID from our model ID
  */
-// interface FalClient {
-//     subscribe: (
-//         model: string,
-//         options: {
-//             input: Record<string, unknown>
-//             credentials: string
-//             logs?: boolean
-//             onQueueUpdate?: (update: { status: string }) => void
-//         }
-//     ) => Promise<FalImageResult>
-// }
+function getFalModelId(modelId: ImageModelId): string {
+    const model = IMAGE_MODELS.find((m) => m.id === modelId)
+    return model?.falId ?? 'fal-ai/gpt-image-1.5'
+}
 
 /**
- * Generate an image using fal.ai gpt-image-1 and upload to Vercel Blob
+ * Generate images using fal.ai and upload to Vercel Blob
  *
- * @param options - Generation options including prompt and blog post ID
- * @returns Generated image URLs and metadata
+ * @param options - Generation options including prompt, model, and image count
+ * @returns Array of generated image URLs and metadata
  * @throws Error if generation or upload fails
  */
 export async function generateImageWithFal(
     options: GenerateImageWithFalOptions
 ): Promise<GeneratedImageResult> {
-    const { prompt, blogPostId } = options
+    const {
+        prompt,
+        blogPostId,
+        model = 'gpt-image-1.5',
+        numImages = 1,
+    } = options
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     fal.config({
         credentials: env.FAL_KEY,
     })
 
+    const falModelId = getFalModelId(model)
+
     try {
-        // Generate image using gpt-image-1
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        const result = (await fal.subscribe('fal-ai/gpt-image-1.5', {
+        console.log(
+            `Generating ${numImages} image(s) with ${model} (${falModelId})...`
+        )
+
+        const result = (await fal.subscribe(falModelId, {
             input: {
                 prompt,
-                num_images: 1,
+                num_images: numImages,
                 size: '1024x1024',
             },
             logs: true,
@@ -104,43 +119,63 @@ export async function generateImageWithFal(
             }
         }
 
-        // Extract image URL from result
-        const imageUrl = result.data.images?.[0]?.url
-        if (!imageUrl) {
-            throw new Error('No image URL returned from fal.ai')
+        const generatedImages = result.data.images
+        if (!generatedImages || generatedImages.length === 0) {
+            throw new Error('No images returned from fal.ai')
         }
 
-        console.log('Image generated, downloading from fal.ai...')
+        console.log(
+            `Generated ${generatedImages.length} image(s), uploading to Vercel Blob...`
+        )
 
-        // Download image from fal.ai
-        const imageResponse = await fetch(imageUrl)
-        if (!imageResponse.ok) {
-            throw new Error(
-                `Failed to download image: ${imageResponse.status} ${imageResponse.statusText}`
-            )
+        // Process all generated images
+        const uploadedImages: GeneratedImageResult = []
+
+        for (let i = 0; i < generatedImages.length; i++) {
+            const image = generatedImages[i]
+            if (!image?.url) continue
+
+            // Download image from fal.ai
+            const imageResponse = await fetch(image.url)
+            if (!imageResponse.ok) {
+                console.error(
+                    `Failed to download image ${i + 1}: ${imageResponse.status}`
+                )
+                continue
+            }
+
+            const imageBlob = await imageResponse.blob()
+
+            // Generate unique filename
+            const timestamp = Date.now()
+            const randomStr = Math.random().toString(36).substring(2, 8)
+            const filename = `blog-images/${blogPostId}/${timestamp}-${randomStr}-${i}.jpg`
+
+            // Upload to Vercel Blob
+            const uploadedBlob = await put(filename, imageBlob, {
+                access: 'public',
+                token: env.BLOB_READ_WRITE_TOKEN,
+            })
+
+            uploadedImages.push({
+                blobUrl: uploadedBlob.url,
+                falUrl: image.url,
+                width: image.width,
+                height: image.height,
+            })
+
+            console.log(`Uploaded image ${i + 1}/${generatedImages.length}`)
         }
 
-        const imageBlob = await imageResponse.blob()
-
-        // Generate unique filename
-        const timestamp = Date.now()
-        const randomStr = Math.random().toString(36).substring(2, 8)
-        const filename = `blog-images/${blogPostId}/${timestamp}-${randomStr}.jpg`
-
-        console.log('Uploading to Vercel Blob...')
-
-        // Upload to Vercel Blob
-        const uploadedBlob = await put(filename, imageBlob, {
-            access: 'public',
-            token: env.BLOB_READ_WRITE_TOKEN,
-        })
-
-        return {
-            blobUrl: uploadedBlob.url,
-            falUrl: imageUrl,
-            width: result.data.images?.[0]?.width,
-            height: result.data.images?.[0]?.height,
+        if (uploadedImages.length === 0) {
+            throw new Error('Failed to upload any images')
         }
+
+        console.log(
+            `Successfully generated and uploaded ${uploadedImages.length} image(s)`
+        )
+
+        return uploadedImages
     } catch (error) {
         console.error('Error generating image with fal.ai:', error)
         throw new Error(

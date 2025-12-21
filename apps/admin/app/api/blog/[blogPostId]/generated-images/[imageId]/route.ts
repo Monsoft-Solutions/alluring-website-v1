@@ -1,7 +1,7 @@
 import { db } from '@workspace/db/client'
 import { blogPostImages, images } from '@workspace/db/schema'
 import { and, eq } from 'drizzle-orm'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 

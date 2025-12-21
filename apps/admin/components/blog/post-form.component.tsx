@@ -104,10 +104,8 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         handleChange('readingTime', calculateReadingTime(content))
     }
 
-    const handleImageGenerated = (_imageId: string, imageUrl: string) => {
-        // Update the featured image URL
-        handleChange('featuredImageUrl', imageUrl)
-        // Trigger gallery refresh
+    const handleImagesGenerated = () => {
+        // Trigger gallery refresh to show new images
         setGalleryRefresh((prev) => prev + 1)
     }
 
@@ -228,7 +226,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                 <ImageGenerationPanel
                     blogPostId={initialData?.id}
                     initialSummary={initialData?.aiSummary}
-                    onImageGenerated={handleImageGenerated}
+                    onImagesGenerated={handleImagesGenerated}
                 />
 
                 {/* Generated Images Gallery */}

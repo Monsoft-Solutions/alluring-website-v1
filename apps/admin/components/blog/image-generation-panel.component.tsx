@@ -19,21 +19,47 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@workspace/ui/components/collapsible'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@workspace/ui/components/select'
+
+/**
+ * Available image generation models
+ */
+const IMAGE_MODELS = [
+    { id: 'gpt-image-1.5', name: 'GPT Image 1.5' },
+    { id: 'nano-banana-pro', name: 'Nano Banana Pro' },
+] as const
+
+type ModelId = (typeof IMAGE_MODELS)[number]['id']
+
+/**
+ * Available image count options
+ */
+const IMAGE_COUNT_OPTIONS = [1, 2, 3] as const
+
+type ImageCount = (typeof IMAGE_COUNT_OPTIONS)[number]
 
 type ImageGenerationPanelProps = {
     blogPostId?: string
     initialSummary?: string | null
-    onImageGenerated?: (imageId: string, imageUrl: string) => void
+    onImagesGenerated?: (count: number) => void
 }
 
 export function ImageGenerationPanel({
     blogPostId,
     initialSummary,
-    onImageGenerated,
+    onImagesGenerated,
 }: ImageGenerationPanelProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [summary, setSummary] = useState(initialSummary || '')
     const [prompt, setPrompt] = useState('')
+    const [selectedModel, setSelectedModel] = useState<ModelId>('gpt-image-1.5')
+    const [numImages, setNumImages] = useState<ImageCount>(1)
     const [isGeneratingSummary, setIsGeneratingSummary] = useState(false)
     const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
     const [isGeneratingImage, setIsGeneratingImage] = useState(false)
@@ -54,7 +80,11 @@ export function ImageGenerationPanel({
                 body: JSON.stringify({ blogPostId }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                success: boolean
+                summary: string
+                error?: string
+            }
 
             if (data.success) {
                 setSummary(data.summary)
@@ -89,7 +119,11 @@ export function ImageGenerationPanel({
                 body: JSON.stringify({ blogPostId }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                success: boolean
+                prompt: string
+                error?: string
+            }
 
             if (data.success) {
                 setPrompt(data.prompt)
@@ -119,13 +153,25 @@ export function ImageGenerationPanel({
                 body: JSON.stringify({
                     blogPostId,
                     prompt: prompt || undefined,
+                    model: selectedModel,
+                    numImages,
                 }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as {
+                success: boolean
+                images?: unknown[]
+                model: string
+                summary?: string
+                prompt?: string
+                error?: string
+            }
 
             if (data.success) {
-                toast.success('Image generated successfully!')
+                const imageCount = data.images?.length || 1
+                toast.success(
+                    `${imageCount} image${imageCount > 1 ? 's' : ''} generated with ${data.model}!`
+                )
 
                 // Update summary if it was generated
                 if (data.summary) {
@@ -137,9 +183,9 @@ export function ImageGenerationPanel({
                     setPrompt(data.prompt)
                 }
 
-                // Notify parent component
-                if (onImageGenerated) {
-                    onImageGenerated(data.imageId, data.imageUrl)
+                // Notify parent component to refresh gallery
+                if (onImagesGenerated) {
+                    onImagesGenerated(imageCount)
                 }
             } else {
                 toast.error(data.error || 'Failed to generate image')
@@ -223,7 +269,7 @@ export function ImageGenerationPanel({
                                 className='resize-none'
                             />
                             <p className='text-muted-foreground text-xs'>
-                                A visual summary of your post content for image
+                                A content summary of your post for image prompt
                                 generation
                             </p>
                         </div>
@@ -267,6 +313,64 @@ export function ImageGenerationPanel({
                             </p>
                         </div>
 
+                        {/* Model and Count Selection */}
+                        <div className='grid gap-4 sm:grid-cols-2'>
+                            <div className='space-y-2'>
+                                <Label htmlFor='model-select'>3. Model</Label>
+                                <Select
+                                    value={selectedModel}
+                                    onValueChange={(value) =>
+                                        setSelectedModel(value as ModelId)
+                                    }
+                                >
+                                    <SelectTrigger id='model-select'>
+                                        <SelectValue placeholder='Select model' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {IMAGE_MODELS.map((model) => (
+                                            <SelectItem
+                                                key={model.id}
+                                                value={model.id}
+                                            >
+                                                {model.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className='space-y-2'>
+                                <Label htmlFor='count-select'>
+                                    Images to Generate
+                                </Label>
+                                <Select
+                                    value={numImages.toString()}
+                                    onValueChange={(value) =>
+                                        setNumImages(
+                                            parseInt(value) as ImageCount
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger id='count-select'>
+                                        <SelectValue placeholder='Select count' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {IMAGE_COUNT_OPTIONS.map((count) => (
+                                            <SelectItem
+                                                key={count}
+                                                value={count.toString()}
+                                            >
+                                                {count}{' '}
+                                                {count === 1
+                                                    ? 'image'
+                                                    : 'images'}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
                         {/* Generate Button */}
                         <div className='pt-2'>
                             <Button
@@ -279,19 +383,21 @@ export function ImageGenerationPanel({
                                 {isGeneratingImage ? (
                                     <>
                                         <Loader2 className='mr-2 h-5 w-5 animate-spin' />
-                                        Generating Image...
+                                        Generating {numImages} Image
+                                        {numImages > 1 ? 's' : ''}...
                                     </>
                                 ) : (
                                     <>
                                         <ImageIcon className='mr-2 h-5 w-5' />
-                                        Generate Featured Image
+                                        Generate {numImages} Featured Image
+                                        {numImages > 1 ? 's' : ''}
                                     </>
                                 )}
                             </Button>
                             <p className='text-muted-foreground mt-2 text-center text-xs'>
                                 {isGeneratingImage
-                                    ? 'This may take 30-60 seconds...'
-                                    : 'Creates a professional image for your blog post'}
+                                    ? `This may take ${30 + numImages * 20}-${60 + numImages * 30} seconds...`
+                                    : `Creates ${numImages} professional image${numImages > 1 ? 's' : ''} using ${IMAGE_MODELS.find((m) => m.id === selectedModel)?.name}`}
                             </p>
                         </div>
                     </CardContent>

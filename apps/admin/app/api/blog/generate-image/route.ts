@@ -2,14 +2,17 @@ import { db } from '@workspace/db/client'
 import { blogPost, blogPostImages, images } from '@workspace/db/schema'
 import { summarizeBlogPost, generateImagePrompt } from '@workspace/ai'
 import { eq } from 'drizzle-orm'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
-import { generateImageWithFal } from '@/lib/services/fal-image-generation.service'
+import {
+    generateImageWithFal,
+    IMAGE_MODELS,
+} from '@/lib/services/fal-image-generation.service'
 
 export const runtime = 'nodejs'
-export const maxDuration = 60 // Image generation can take longer
+export const maxDuration = 120 // Increased for multiple images
 
 /**
  * Request schema for image generation
@@ -17,7 +20,23 @@ export const maxDuration = 60 // Image generation can take longer
 const requestSchema = z.object({
     blogPostId: z.string().uuid('Invalid blog post ID'),
     prompt: z.string().optional(), // Optional - will generate if not provided
+    model: z
+        .enum(['gpt-image-1.5', 'nano-banana-pro'])
+        .optional()
+        .default('gpt-image-1.5'),
+    numImages: z
+        .union([z.literal(1), z.literal(2), z.literal(3)])
+        .optional()
+        .default(1),
 })
+
+/**
+ * Generated image info for response
+ */
+type GeneratedImageInfo = {
+    imageId: string
+    imageUrl: string
+}
 
 /**
  * Response type for image generation
@@ -25,10 +44,10 @@ const requestSchema = z.object({
 type ImageResponse =
     | {
           success: true
-          imageId: string
-          imageUrl: string
+          images: GeneratedImageInfo[]
           summary?: string
           prompt: string
+          model: string
       }
     | {
           success: false
@@ -37,14 +56,14 @@ type ImageResponse =
 
 /**
  * POST /api/blog/generate-image
- * Generate featured image for blog post using fal.ai
+ * Generate featured image(s) for blog post using fal.ai
  *
  * Workflow:
  * 1. Check/generate summary if missing
  * 2. Check/generate prompt if not provided
- * 3. Generate image with fal.ai
+ * 3. Generate image(s) with fal.ai (supports multiple)
  * 4. Upload to Vercel Blob
- * 5. Create image record and link to blog post
+ * 5. Create image records and link to blog post
  */
 export async function POST(
     request: NextRequest
@@ -52,7 +71,7 @@ export async function POST(
     try {
         await requireAuth()
 
-        const body = await request.json()
+        const body = (await request.json()) as unknown
         const validationResult = requestSchema.safeParse(body)
 
         if (!validationResult.success) {
@@ -65,7 +84,12 @@ export async function POST(
             )
         }
 
-        const { blogPostId, prompt: providedPrompt } = validationResult.data
+        const {
+            blogPostId,
+            prompt: providedPrompt,
+            model,
+            numImages,
+        } = validationResult.data
 
         // Fetch blog post
         const [post] = await db
@@ -124,50 +148,73 @@ export async function POST(
             finalPrompt = promptResult.prompt
         }
 
-        console.log('Generating image with fal.ai...', { prompt: finalPrompt })
+        const modelName =
+            IMAGE_MODELS.find((m) => m.id === model)?.name ?? model
 
-        // Step 3: Generate image with fal.ai
-        const generatedImage = await generateImageWithFal({
+        console.log(`Generating ${numImages} image(s) with ${modelName}...`, {
+            prompt: finalPrompt,
+        })
+
+        // Step 3: Generate images with fal.ai
+        const generatedImages = await generateImageWithFal({
             prompt: finalPrompt,
             blogPostId,
+            model,
+            numImages,
         })
 
         console.log(
-            'Image generated successfully, creating database records...'
+            `${generatedImages.length} image(s) generated successfully, creating database records...`
         )
 
-        // Step 4: Create image record
-        const [imageRecord] = await db
-            .insert(images)
-            .values({
-                url: generatedImage.blobUrl,
-                alt: post.title,
-                title: post.title,
-                width: generatedImage.width,
-                height: generatedImage.height,
-                generationPrompt: finalPrompt,
-                generatedBy: 'fal-ai',
-            })
-            .returning({ id: images.id, url: images.url })
+        // Step 4 & 5: Create image records and link to blog post
+        const createdImages: GeneratedImageInfo[] = []
 
-        if (!imageRecord) {
-            throw new Error('Failed to create image record')
+        for (const generatedImage of generatedImages) {
+            const [imageRecord] = await db
+                .insert(images)
+                .values({
+                    url: generatedImage.blobUrl,
+                    alt: post.title,
+                    title: post.title,
+                    width: generatedImage.width,
+                    height: generatedImage.height,
+                    generationPrompt: finalPrompt,
+                    generatedBy: `fal-ai/${model}`,
+                })
+                .returning({ id: images.id, url: images.url })
+
+            if (!imageRecord) {
+                console.error('Failed to create image record')
+                continue
+            }
+
+            // Link image to blog post
+            await db.insert(blogPostImages).values({
+                blogPostId,
+                imageId: imageRecord.id,
+                prompt: finalPrompt,
+            })
+
+            createdImages.push({
+                imageId: imageRecord.id,
+                imageUrl: imageRecord.url,
+            })
         }
 
-        // Step 5: Link image to blog post
-        await db.insert(blogPostImages).values({
-            blogPostId,
-            imageId: imageRecord.id,
-            prompt: finalPrompt,
-        })
+        if (createdImages.length === 0) {
+            throw new Error('Failed to create any image records')
+        }
 
-        console.log('Image generation complete!')
+        console.log(
+            `Image generation complete! Created ${createdImages.length} image(s)`
+        )
 
         return NextResponse.json({
             success: true,
-            imageId: imageRecord.id,
-            imageUrl: imageRecord.url,
+            images: createdImages,
             prompt: finalPrompt,
+            model: modelName,
             ...(wasGeneratedSummary && { summary }),
         })
     } catch (error) {

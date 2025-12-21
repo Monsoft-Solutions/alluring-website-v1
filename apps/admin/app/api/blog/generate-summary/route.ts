@@ -2,7 +2,7 @@ import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema'
 import { summarizeBlogPost } from '@workspace/ai'
 import { eq } from 'drizzle-orm'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
@@ -40,7 +40,7 @@ export async function POST(
     try {
         await requireAuth()
 
-        const body = await request.json()
+        const body = (await request.json()) as unknown
         const validationResult = requestSchema.safeParse(body)
 
         if (!validationResult.success) {
