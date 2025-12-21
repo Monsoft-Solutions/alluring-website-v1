@@ -68,14 +68,10 @@ export function InstagramPostContent({
 
     return (
         <div className='bg-white'>
-            {/* Fixed Back Navigation - positioned below navbar and announcement bar */}
-            <div
-                style={{
-                    top: 'calc(var(--announcement-bar-height, 0px) + 4rem)',
-                }}
-                className='fixed right-0 left-0 z-40 border-b border-stone-200 bg-white/90 backdrop-blur-xl md:top-[calc(var(--announcement-bar-height,0px)+5rem)]'
-            >
-                <div className='mx-auto max-w-4xl px-4 py-3'>
+            {/* Main Content - adjusted padding for fixed header */}
+            <div className='mx-auto max-w-4xl px-4 pt-24 pb-8 md:pt-32 md:pb-12'>
+                {/* Back Navigation */}
+                <div className='mb-6'>
                     <Link
                         href='/instagram'
                         className='inline-flex items-center gap-1 text-sm font-medium text-stone-600 transition-colors hover:text-stone-900'
@@ -84,18 +80,7 @@ export function InstagramPostContent({
                         Back to Instagram
                     </Link>
                 </div>
-            </div>
 
-            {/* Spacer for announcement bar + navbar + back navigation */}
-            <div
-                style={{
-                    height: 'calc(var(--announcement-bar-height, 0px) + 7rem)',
-                }}
-                className='md:h-[calc(var(--announcement-bar-height,0px)+8rem)]'
-            />
-
-            {/* Main Content */}
-            <div className='mx-auto max-w-4xl px-3 py-6 sm:px-4 md:py-12'>
                 <div className='grid gap-6 md:grid-cols-[1fr_320px] md:gap-8'>
                     {/* Media Section */}
                     <div className='relative aspect-square w-full overflow-hidden rounded-lg bg-stone-900'>
