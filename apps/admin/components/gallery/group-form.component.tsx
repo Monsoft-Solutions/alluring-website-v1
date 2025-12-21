@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useEffect } from 'react'
+import { useState, useTransition, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { ImageIcon, Loader2 } from 'lucide-react'
@@ -32,13 +32,7 @@ import {
     updateGalleryGroup,
     type GalleryGroupFormData,
 } from '@/lib/actions/gallery.action'
-
-type MediaOption = {
-    id: string
-    title: string
-    url: string
-    type: 'image' | 'video'
-}
+import type { MediaOption } from '@/lib/types/media-option.type'
 
 type GroupFormDialogProps = {
     open: boolean
@@ -59,28 +53,31 @@ export function GroupFormDialog({
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | null>(null)
 
-    const [formData, setFormData] = useState<GalleryGroupFormData>({
-        name: initialData?.name ?? '',
-        slug: initialData?.slug ?? '',
-        description: initialData?.description ?? '',
-        coverImageId: initialData?.coverImageId ?? null,
-        displayOrder: initialData?.displayOrder ?? 0,
-        isVisible: initialData?.isVisible ?? true,
-    })
+    // Compute initial form data based on initialData
+    const initialFormData = useMemo<GalleryGroupFormData>(
+        () => ({
+            name: initialData?.name ?? '',
+            slug: initialData?.slug ?? '',
+            description: initialData?.description ?? '',
+            coverImageId: initialData?.coverImageId ?? null,
+            displayOrder: initialData?.displayOrder ?? 0,
+            isVisible: initialData?.isVisible ?? true,
+        }),
+        [initialData]
+    )
 
-    useEffect(() => {
-        if (open) {
-            setFormData({
-                name: initialData?.name ?? '',
-                slug: initialData?.slug ?? '',
-                description: initialData?.description ?? '',
-                coverImageId: initialData?.coverImageId ?? null,
-                displayOrder: initialData?.displayOrder ?? 0,
-                isVisible: initialData?.isVisible ?? true,
-            })
+    const [formData, setFormData] =
+        useState<GalleryGroupFormData>(initialFormData)
+
+    // Reset form and error when dialog opens via onOpenChange callback
+    const handleOpenChange = (newOpen: boolean) => {
+        onOpenChange(newOpen)
+        if (newOpen) {
+            // Reset form data when opening
+            setFormData(initialFormData)
             setError(null)
         }
-    }, [open, initialData])
+    }
 
     const handleChange = (
         field: keyof GalleryGroupFormData,
@@ -145,7 +142,7 @@ export function GroupFormDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>

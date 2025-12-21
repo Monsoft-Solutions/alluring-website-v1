@@ -161,7 +161,11 @@ export function useQuickQuestions(
 
     /**
      * Poll for questions with recursive setTimeout
+     * Use ref to avoid "accessed before declaration" lint error
      */
+    const pollForQuestionsRef = useRef<(() => Promise<void>) | undefined>(
+        undefined
+    )
     const pollForQuestions = useCallback(async () => {
         if (!isMountedRef.current) return
 
@@ -176,11 +180,19 @@ export function useQuickQuestions(
             return
         }
 
-        // Schedule next attempt
-        if (isMountedRef.current) {
-            timeoutIdRef.current = setTimeout(pollForQuestions, pollIntervalMs)
+        // Schedule next attempt using ref to avoid lint error
+        if (isMountedRef.current && pollForQuestionsRef.current) {
+            timeoutIdRef.current = setTimeout(
+                pollForQuestionsRef.current,
+                pollIntervalMs
+            )
         }
     }, [fetchQuestions, maxAttempts, pollIntervalMs])
+
+    // Store the function in ref for recursive calls (in effect to avoid render access)
+    useEffect(() => {
+        pollForQuestionsRef.current = pollForQuestions
+    }, [pollForQuestions])
 
     /**
      * Start fetching questions

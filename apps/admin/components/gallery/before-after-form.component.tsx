@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useEffect } from 'react'
+import { useState, useTransition, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
@@ -36,13 +36,7 @@ import {
     PROCEDURE_OPTIONS,
     getProcedureSlugByName,
 } from '@/lib/constants/procedure.constant'
-
-type MediaOption = {
-    id: string
-    title: string
-    url: string
-    type: 'image' | 'video'
-}
+import type { MediaOption } from '@/lib/types/media-option.type'
 
 type BeforeAfterFormDialogProps = {
     open: boolean
@@ -63,49 +57,46 @@ export function BeforeAfterFormDialog({
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | null>(null)
 
-    const [formData, setFormData] = useState<BeforeAfterPairFormData>({
-        beforeMediaId: initialData?.beforeMediaId ?? '',
-        afterMediaId: initialData?.afterMediaId ?? '',
-        procedureType: initialData?.procedureType ?? '',
-        procedureSlug: initialData?.procedureSlug ?? null,
-        patientInfo: initialData?.patientInfo ?? '',
-        timeframe: initialData?.timeframe ?? '',
-        isFeatured: initialData?.isFeatured ?? false,
-        displayOrder: initialData?.displayOrder ?? 0,
-    })
-
-    // Sync form data when initialData or open changes
-    useEffect(() => {
-        if (open) {
-            if (initialData) {
-                // Edit mode: populate form with existing data
-                setFormData({
-                    beforeMediaId: initialData.beforeMediaId ?? '',
-                    afterMediaId: initialData.afterMediaId ?? '',
-                    procedureType: initialData.procedureType ?? '',
-                    procedureSlug: initialData.procedureSlug ?? null,
-                    patientInfo: initialData.patientInfo ?? '',
-                    timeframe: initialData.timeframe ?? '',
-                    isFeatured: initialData.isFeatured ?? false,
-                    displayOrder: initialData.displayOrder ?? 0,
-                })
-            } else {
-                // Create mode: reset form to defaults
-                setFormData({
-                    beforeMediaId: '',
-                    afterMediaId: '',
-                    procedureType: '',
-                    procedureSlug: null,
-                    patientInfo: '',
-                    timeframe: '',
-                    isFeatured: false,
-                    displayOrder: 0,
-                })
+    // Compute initial form data based on initialData
+    const initialFormData = useMemo<BeforeAfterPairFormData>(() => {
+        if (initialData) {
+            // Edit mode: populate form with existing data
+            return {
+                beforeMediaId: initialData.beforeMediaId ?? '',
+                afterMediaId: initialData.afterMediaId ?? '',
+                procedureType: initialData.procedureType ?? '',
+                procedureSlug: initialData.procedureSlug ?? null,
+                patientInfo: initialData.patientInfo ?? '',
+                timeframe: initialData.timeframe ?? '',
+                isFeatured: initialData.isFeatured ?? false,
+                displayOrder: initialData.displayOrder ?? 0,
             }
-            // Clear any previous errors when opening dialog
+        }
+        // Create mode: reset form to defaults
+        return {
+            beforeMediaId: '',
+            afterMediaId: '',
+            procedureType: '',
+            procedureSlug: null,
+            patientInfo: '',
+            timeframe: '',
+            isFeatured: false,
+            displayOrder: 0,
+        }
+    }, [initialData])
+
+    const [formData, setFormData] =
+        useState<BeforeAfterPairFormData>(initialFormData)
+
+    // Reset form and error when dialog opens via onOpenChange callback
+    const handleOpenChange = (newOpen: boolean) => {
+        onOpenChange(newOpen)
+        if (newOpen) {
+            // Reset form data when opening
+            setFormData(initialFormData)
             setError(null)
         }
-    }, [open, initialData])
+    }
 
     const handleChange = (
         field: keyof BeforeAfterPairFormData,
@@ -167,7 +158,7 @@ export function BeforeAfterFormDialog({
     const afterImage = imageOptions.find((m) => m.id === formData.afterMediaId)
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent className='sm:max-w-[600px]'>
                 <DialogHeader>
                     <DialogTitle>

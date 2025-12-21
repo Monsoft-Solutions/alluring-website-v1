@@ -14,6 +14,7 @@ import {
     useContext,
     useEffect,
     useState,
+    useTransition,
     type ReactNode,
 } from 'react'
 
@@ -135,28 +136,31 @@ type UTMTrackingProviderProps = {
  * ```
  */
 export function UTMTrackingProvider({ children }: UTMTrackingProviderProps) {
-    const [utmData, setUtmData] = useState<UTMData | null>(null)
+    // Initialize from stored data using useState initializer
+    const [utmData, setUtmData] = useState<UTMData | null>(() => {
+        if (typeof window === 'undefined') return null
+        return getStoredUTMData()
+    })
     const [isInitialized, setIsInitialized] = useState(false)
+    const [, startTransition] = useTransition()
 
     useEffect(() => {
-        // Check for existing stored UTM data
-        const storedData = getStoredUTMData()
-
-        // Extract UTM from current URL
+        // Extract UTM from current URL (needs to happen after mount)
         const urlData = extractUTMFromURL()
 
         if (urlData) {
             // New UTM params in URL - store and use them
             // This overwrites any existing stored data when user arrives with new UTMs
             storeUTMData(urlData)
-            setUtmData(urlData)
-        } else if (storedData) {
-            // No new UTMs, but we have stored data from previous landing
-            setUtmData(storedData)
+            startTransition(() => {
+                setUtmData(urlData)
+            })
         }
 
-        setIsInitialized(true)
-    }, [])
+        startTransition(() => {
+            setIsInitialized(true)
+        })
+    }, [startTransition])
 
     return (
         <UTMTrackingContext.Provider value={{ utmData, isInitialized }}>

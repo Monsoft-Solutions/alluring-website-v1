@@ -75,7 +75,6 @@ export function StackingCard({
     const cardRef = useRef<HTMLDivElement>(null)
     const [scrollProgress, setScrollProgress] = useState(0)
     const [isVisible, setIsVisible] = useState(false)
-    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
     const rafRef = useRef<number | undefined>(undefined)
 
     // Merge preset configuration with custom overrides
@@ -94,11 +93,17 @@ export function StackingCard({
         brightnessReduction = 0.2,
     } = config
 
-    // Check for reduced motion preference
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-        setPrefersReducedMotion(mediaQuery.matches)
+    // Initialize reduced motion preference using useState initializer
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+        if (typeof window === 'undefined') return false
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    })
 
+    // Listen for changes to reduced motion preference
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
         const handleChange = (e: MediaQueryListEvent) => {
             setPrefersReducedMotion(e.matches)
         }

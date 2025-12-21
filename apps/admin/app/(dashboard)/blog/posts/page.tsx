@@ -1,4 +1,3 @@
-import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
 import {
@@ -9,15 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import {
-    ArrowDown,
-    ArrowUp,
-    Eye,
-    ExternalLink,
-    Plus,
-    Pencil,
-    TrendingUp,
-} from 'lucide-react'
+import { Eye, ExternalLink, Plus, Pencil, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -26,6 +17,9 @@ import {
     type BlogPostSortBy,
     type BlogPostSortOrder,
 } from '@/lib/queries/blog.query'
+import type { SearchParams } from '@/lib/types/post.type'
+import { SortIcon } from './sort-icon.component'
+import { StatusBadge } from './status-badge.component'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -34,12 +28,6 @@ export const metadata = {
     title: 'Blog Posts | Admin',
     description: 'Manage blog posts, view analytics, and publish content',
 }
-
-type SearchParams = Promise<{
-    page?: string
-    sortBy?: string
-    sortOrder?: string
-}>
 
 const VALID_SORT_BY: BlogPostSortBy[] = ['createdAt', 'views', 'publishedAt']
 const VALID_SORT_ORDER: BlogPostSortOrder[] = ['asc', 'desc']
@@ -112,15 +100,6 @@ export default async function BlogPostsPage({
         return `/blog/posts?page=${newPage}&sortBy=${sortBy}&sortOrder=${sortOrder}`
     }
 
-    const SortIcon = ({ column }: { column: BlogPostSortBy }) => {
-        if (sortBy !== column) return <span className='ml-1 inline-block w-3' />
-        return sortOrder === 'asc' ? (
-            <ArrowUp className='ml-1 inline h-3 w-3' />
-        ) : (
-            <ArrowDown className='ml-1 inline h-3 w-3' />
-        )
-    }
-
     const isSortedByViews = sortBy === 'views' && sortOrder === 'desc'
 
     return (
@@ -169,7 +148,11 @@ export default async function BlogPostsPage({
                                         className='hover:text-foreground inline-flex items-center'
                                     >
                                         Views
-                                        <SortIcon column='views' />
+                                        <SortIcon
+                                            column='views'
+                                            sortBy={sortBy}
+                                            sortOrder={sortOrder}
+                                        />
                                     </Link>
                                 </TableHead>
                                 <TableHead>
@@ -178,7 +161,11 @@ export default async function BlogPostsPage({
                                         className='hover:text-foreground inline-flex items-center'
                                     >
                                         Published
-                                        <SortIcon column='publishedAt' />
+                                        <SortIcon
+                                            column='publishedAt'
+                                            sortBy={sortBy}
+                                            sortOrder={sortOrder}
+                                        />
                                     </Link>
                                 </TableHead>
                                 <TableHead className='w-[120px]'>
@@ -331,31 +318,5 @@ export default async function BlogPostsPage({
                 </div>
             )}
         </div>
-    )
-}
-
-function StatusBadge({
-    status,
-}: {
-    status: 'draft' | 'readyToPublish' | 'published' | null
-}) {
-    const variants: Record<string, 'default' | 'secondary' | 'outline'> = {
-        published: 'default',
-        readyToPublish: 'secondary',
-        draft: 'outline',
-    }
-
-    const labels: Record<string, string> = {
-        published: 'Published',
-        readyToPublish: 'Ready',
-        draft: 'Draft',
-    }
-
-    const statusKey = status ?? 'draft'
-
-    return (
-        <Badge variant={variants[statusKey] ?? 'outline'}>
-            {labels[statusKey] ?? 'Draft'}
-        </Badge>
     )
 }

@@ -18,7 +18,7 @@ import {
 import { Input } from '@workspace/ui/components/input'
 import { Textarea } from '@workspace/ui/components/textarea'
 import { cn } from '@workspace/ui/lib/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 /**
@@ -1367,19 +1367,27 @@ export function ImageUploadField({
     className,
     error,
 }: ImageUploadFieldProps) {
-    const inputId = `image-upload-${Math.random().toString(36).slice(2, 9)}`
+    // Generate stable ID using useState initializer to avoid calling Math.random during render
+    const [inputId] = useState(
+        () => `image-upload-${Math.random().toString(36).slice(2, 9)}`
+    )
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [localError, setLocalError] = useState<string | null>(null)
+    const [, startTransition] = useTransition()
 
     // Generate preview URL when file changes
     useEffect(() => {
         if (value) {
             const url = URL.createObjectURL(value)
-            setPreviewUrl(url)
+            startTransition(() => {
+                setPreviewUrl(url)
+            })
             return () => URL.revokeObjectURL(url)
         }
-        setPreviewUrl(null)
-    }, [value])
+        startTransition(() => {
+            setPreviewUrl(null)
+        })
+    }, [value, startTransition])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
