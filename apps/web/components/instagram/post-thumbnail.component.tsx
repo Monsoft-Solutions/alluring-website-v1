@@ -6,13 +6,13 @@
  * @module components/instagram/post-thumbnail
  */
 import Image from 'next/image'
+import Link from 'next/link'
 import { Heart, MessageCircle, Play, Layers } from 'lucide-react'
 
 import type { InstagramPostPublic } from '@/types/instagram.type'
 
 type PostThumbnailProps = {
     post: InstagramPostPublic
-    onClick: () => void
 }
 
 /**
@@ -28,14 +28,13 @@ function formatNumber(num: number): string {
     return num.toString()
 }
 
-export function PostThumbnail({ post, onClick }: PostThumbnailProps) {
+export function PostThumbnail({ post }: PostThumbnailProps) {
     const isVideo = post.mediaType === 'video'
     const isCarousel = post.mediaType === 'carousel'
 
     return (
-        <button
-            type='button'
-            onClick={onClick}
+        <Link
+            href={`/instagram/${post.code}`}
             className='group relative aspect-square w-full cursor-pointer overflow-hidden bg-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900'
             aria-label={`View Instagram post: ${post.caption?.substring(0, 50) || 'No caption'}`}
         >
@@ -70,6 +69,6 @@ export function PostThumbnail({ post, onClick }: PostThumbnailProps) {
                     {isCarousel && <Layers className='h-5 w-5' />}
                 </div>
             )}
-        </button>
+        </Link>
     )
 }

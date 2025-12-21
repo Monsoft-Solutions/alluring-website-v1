@@ -170,7 +170,7 @@ export default async function InstagramPage({ searchParams }: PageProps) {
             {/* Posts Grid */}
             <SectionContainer className='bg-white pb-8'>
                 <ContentWrapper size='lg'>
-                    <InstagramGrid posts={posts} profile={profile} />
+                    <InstagramGrid posts={posts} />
                     <InstagramPagination
                         currentPage={validPage}
                         totalPages={totalPages}

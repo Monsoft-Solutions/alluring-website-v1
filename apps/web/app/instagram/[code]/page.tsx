@@ -12,6 +12,7 @@ import { cache } from 'react'
 import { ArticleSchema, BreadcrumbSchema } from '@workspace/seo/react'
 
 import { InstagramPostContent } from '@/components/instagram/instagram-post-content.component'
+import { MorePostsSection } from '@/components/instagram/more-posts-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import {
     getInstagramPostByCode,
@@ -132,6 +133,9 @@ export default async function InstagramPostPage({ params }: PageProps) {
 
             {/* Post Content */}
             <InstagramPostContent post={post} profile={profile} />
+
+            {/* More Posts Section */}
+            <MorePostsSection currentPostId={post.id} />
 
             {/* CTA Section */}
             <CTASection

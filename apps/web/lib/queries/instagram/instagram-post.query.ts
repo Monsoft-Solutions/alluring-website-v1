@@ -15,7 +15,7 @@ import {
     instagramPostMedia,
 } from '@workspace/db/schema/social-media'
 import { galleryMedia } from '@workspace/db/schema/gallery'
-import { eq } from 'drizzle-orm'
+import { desc, eq, ne } from 'drizzle-orm'
 
 import type { InstagramPostPublic } from '@/types/instagram.type'
 
@@ -141,6 +141,73 @@ export async function getAllInstagramPostCodes(): Promise<string[]> {
             return posts.map((p) => p.code)
         },
         ['instagram-all-codes'],
+        {
+            tags: [CACHE_TAGS.INSTAGRAM_POSTS],
+            revalidate: CACHE_TTL,
+        }
+    )()
+}
+
+/**
+ * Get more Instagram posts for related content
+ * Excludes the specified post ID and returns most recent posts
+ *
+ * @param excludeId - Post ID to exclude from results
+ * @param limit - Number of posts to return (default 6)
+ * @returns Array of Instagram posts
+ */
+export async function getMoreInstagramPosts(
+    excludeId: string,
+    limit = 6
+): Promise<InstagramPostPublic[]> {
+    return unstable_cache(
+        async () => {
+            const posts = await db
+                .select({
+                    id: instagramPost.id,
+                    code: instagramPost.code,
+                    mediaType: instagramPost.mediaType,
+                    caption: instagramPost.caption,
+                    permalink: instagramPost.permalink,
+                    takenAt: instagramPost.takenAt,
+                    likeCount: instagramPost.likeCount,
+                    commentCount: instagramPost.commentCount,
+                    playCount: instagramPost.playCount,
+                    mediaId: instagramPost.mediaId,
+                    mediaUrl: galleryMedia.url,
+                    mediaThumbnailUrl: galleryMedia.thumbnailUrl,
+                    mediaType_gallery: galleryMedia.type,
+                })
+                .from(instagramPost)
+                .innerJoin(
+                    galleryMedia,
+                    eq(instagramPost.mediaId, galleryMedia.id)
+                )
+                .where(ne(instagramPost.id, excludeId))
+                .orderBy(desc(instagramPost.takenAt), desc(instagramPost.id))
+                .limit(limit)
+
+            return posts.map((p) => ({
+                id: p.id,
+                code: p.code,
+                mediaType: p.mediaType,
+                caption: p.caption,
+                permalink: p.permalink,
+                takenAt: p.takenAt,
+                likeCount: p.likeCount ?? 0,
+                commentCount: p.commentCount ?? 0,
+                playCount: p.playCount,
+                media: {
+                    id: p.mediaId,
+                    url: p.mediaUrl,
+                    thumbnailUrl: p.mediaThumbnailUrl,
+                    type: p.mediaType_gallery,
+                },
+                carouselCount: undefined,
+                carouselMedia: undefined,
+            }))
+        },
+        [`instagram-more-posts-${excludeId}-${limit}`],
         {
             tags: [CACHE_TAGS.INSTAGRAM_POSTS],
             revalidate: CACHE_TTL,
