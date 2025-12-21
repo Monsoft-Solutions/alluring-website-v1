@@ -18,7 +18,6 @@ import {
     getInstagramPostsForSitemap,
     getMostRecentInstagramPostDate,
 } from '@/lib/queries/instagram/sitemap.query'
-import { isCrawlingAllowed } from '@/lib/utils/crawling'
 import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
 import { generateSitemapXml } from '@workspace/seo/utils'
 
@@ -26,22 +25,6 @@ import { generateSitemapXml } from '@workspace/seo/utils'
  * GET handler for Instagram sitemap
  */
 export async function GET(): Promise<NextResponse> {
-    // Return empty sitemap if crawling is not allowed
-    if (!isCrawlingAllowed()) {
-        return new NextResponse(
-            `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-</urlset>`,
-            {
-                headers: {
-                    'Content-Type': 'application/xml',
-                    'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-                },
-            }
-        )
-    }
-
     const baseUrl = seoDefaults.siteUrl
     const entries: SitemapEntry[] = []
     const today = new Date().toISOString().slice(0, 10)
@@ -74,11 +57,11 @@ export async function GET(): Promise<NextResponse> {
                 priority: 0.5,
             }
 
-            // Add post image for image sitemap
-            if (post.mediaUrl) {
+            // Add post image for image sitemap (uses thumbnail for videos)
+            if (post.imageUrl) {
                 entry.images = [
                     {
-                        url: post.mediaUrl,
+                        url: post.imageUrl,
                         title: post.caption
                             ? post.caption.substring(0, 100)
                             : `Instagram post ${post.code}`,

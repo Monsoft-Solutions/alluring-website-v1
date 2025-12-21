@@ -16,12 +16,16 @@ import { desc, eq, max } from 'drizzle-orm'
 export type InstagramSitemapEntry = {
     code: string
     takenAt: Date
-    mediaUrl: string
+    /** Image URL for sitemap (uses thumbnail for videos) */
+    imageUrl: string
     caption: string | null
 }
 
 /**
  * Get all Instagram posts for sitemap generation
+ *
+ * For video posts, uses the thumbnail image instead of the video URL
+ * since image sitemaps require actual image files.
  *
  * @returns Array of posts with minimal data for sitemap
  */
@@ -33,13 +37,25 @@ export async function getInstagramPostsForSitemap(): Promise<
             code: instagramPost.code,
             takenAt: instagramPost.takenAt,
             mediaUrl: galleryMedia.url,
+            thumbnailUrl: galleryMedia.thumbnailUrl,
+            mediaType: instagramPost.mediaType,
             caption: instagramPost.caption,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
         .orderBy(desc(instagramPost.takenAt))
 
-    return posts
+    // Map to sitemap entries, using thumbnail for videos
+    return posts.map((post) => ({
+        code: post.code,
+        takenAt: post.takenAt,
+        // For videos, use thumbnail; for images/carousels, use the main URL
+        imageUrl:
+            post.mediaType === 'video' && post.thumbnailUrl
+                ? post.thumbnailUrl
+                : post.mediaUrl,
+        caption: post.caption,
+    }))
 }
 
 /**
