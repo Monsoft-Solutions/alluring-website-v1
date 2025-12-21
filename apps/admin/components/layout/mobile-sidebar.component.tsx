@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useTransition } from 'react'
+import { useState } from 'react'
 import { Menu } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -31,14 +31,6 @@ export function MobileSidebar({
     isActive,
 }: MobileSidebarProps) {
     const [open, setOpen] = useState(false)
-    const [, startTransition] = useTransition()
-
-    // Close sidebar on navigation (wrapped in startTransition to avoid lint error)
-    useEffect(() => {
-        startTransition(() => {
-            setOpen(false)
-        })
-    }, [pathname, startTransition])
 
     // Handle manual open/close changes
     const handleOpenChange = (newOpen: boolean) => {
