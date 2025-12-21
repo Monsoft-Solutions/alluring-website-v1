@@ -7,3 +7,8 @@ export {
     IMAGE_PROMPT_SYSTEM_PROMPT,
     getImagePromptPrompt,
 } from './image-prompt.prompt'
+
+export {
+    BLOG_ANALYSIS_SYSTEM_PROMPT,
+    getBlogAnalysisPrompt,
+} from './blog-analysis.prompt'

@@ -17,6 +17,7 @@ export {
     blogPostTag,
     images,
     blogPostImages,
+    blogPostAnalysis,
     blogPostTagsRelations,
     blogPostCategoriesRelations,
     blogPostsRelations,
@@ -39,6 +40,9 @@ export {
     type InsertImage,
     type BlogPostImage,
     type InsertBlogPostImage,
+    type BlogPostAnalysis,
+    type InsertBlogPostAnalysis,
+    type BlogPostAnalysisDetails,
     type CreateResourceInput,
 } from './blog'
 

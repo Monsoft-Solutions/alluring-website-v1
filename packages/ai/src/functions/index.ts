@@ -75,3 +75,8 @@ export {
     type GenerateImagePromptOptions,
     type ImagePromptResult,
 } from './generate-image-prompt.function'
+
+export {
+    analyzeBlogPost,
+    type AnalyzeBlogPostOptions,
+} from './analyze-blog-post.function'

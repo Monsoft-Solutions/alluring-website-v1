@@ -33,6 +33,13 @@ export {
 } from './blog-post-images.table'
 
 export {
+    blogPostAnalysis,
+    type BlogPostAnalysis,
+    type InsertBlogPostAnalysis,
+    type BlogPostAnalysisDetails,
+} from './blog-post-analysis.table'
+
+export {
     blogPostTagsRelations,
     blogPostCategoriesRelations,
     blogPostsRelations,

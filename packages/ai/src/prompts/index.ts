@@ -53,4 +53,7 @@ export {
     // Image Prompt Generation
     IMAGE_PROMPT_SYSTEM_PROMPT,
     getImagePromptPrompt,
+    // Blog Analysis
+    BLOG_ANALYSIS_SYSTEM_PROMPT,
+    getBlogAnalysisPrompt,
 } from './blog'

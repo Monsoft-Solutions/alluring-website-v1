@@ -10,6 +10,7 @@ import { PostFormSettings } from './post-form-settings.component'
 import { PostFormSEO } from './post-form-seo.component'
 import { ImageGenerationPanel } from './image-generation-panel.component'
 import { GeneratedImagesGallery } from './generated-images-gallery.component'
+import { AnalysisPanel } from './analysis-panel.component'
 import {
     createBlogPost,
     updateBlogPost,
@@ -166,6 +167,10 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                         onSelectImage={handleSelectGeneratedImage}
                         refreshTrigger={galleryRefresh}
                     />
+                )}
+
+                {initialData?.id && (
+                    <AnalysisPanel blogPostId={initialData.id} />
                 )}
             </div>
 
