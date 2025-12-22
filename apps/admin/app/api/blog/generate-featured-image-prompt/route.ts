@@ -13,12 +13,6 @@ import {
     getLightingOption,
     getColorOption,
     getCompositionOption,
-    type SceneId,
-    type SubjectId,
-    type StyleId,
-    type LightingId,
-    type ColorPaletteId,
-    type CompositionId,
 } from '@/lib/constants/featured-image-options.constant'
 
 export const runtime = 'nodejs'
