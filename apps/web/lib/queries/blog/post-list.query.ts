@@ -169,12 +169,16 @@ export async function getPublishedPostCardsPage(options?: {
 
     // Transform nextCursor.publishedAt from string to Date if needed (after cache deserialization)
     // unstable_cache serializes Dates to strings, so we need to convert them back
-    if (
-        result.nextCursor &&
-        typeof result.nextCursor.publishedAt === 'string'
-    ) {
-        result.nextCursor.publishedAt = new Date(result.nextCursor.publishedAt)
+    // Create a new result object to avoid mutating the cached value
+    return {
+        ...result,
+        nextCursor:
+            result.nextCursor &&
+            typeof result.nextCursor.publishedAt === 'string'
+                ? {
+                      ...result.nextCursor,
+                      publishedAt: new Date(result.nextCursor.publishedAt),
+                  }
+                : result.nextCursor,
     }
-
-    return result
 }
