@@ -48,7 +48,18 @@ export {
     blogCategoriesRelations,
     authorsRelations,
     imagesRelations,
+    blogIdeaRelations,
 } from './blog-relations'
+
+export {
+    blogIdea,
+    blogIdeaStage,
+    blogIdeaPriority,
+    blogContentType,
+    type BlogIdea,
+    type InsertBlogIdea,
+    type BlogIdeaOutlineSection,
+} from './blog-idea.table'
 
 export {
     imageDataSchema,

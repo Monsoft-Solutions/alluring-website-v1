@@ -7,6 +7,7 @@ import {
     Home,
     ImageIcon,
     Instagram,
+    Lightbulb,
     Mail,
     MessageSquare,
     ChevronLeft,
@@ -78,6 +79,7 @@ const navItems: NavItem[] = [
         href: '/blog',
         icon: FileText,
         children: [
+            { title: 'Ideas', href: '/blog/ideas', icon: Lightbulb },
             { title: 'Posts', href: '/blog/posts' },
             { title: 'Authors', href: '/blog/authors' },
             { title: 'Categories', href: '/blog/categories' },
