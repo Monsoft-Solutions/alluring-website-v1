@@ -1,32 +1,14 @@
 'use client'
 
-import { cn } from '@workspace/ui/lib/utils'
-import Placeholder from '@tiptap/extension-placeholder'
-import { EditorContent, useEditor, type Editor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Link from '@tiptap/extension-link'
-import Image from '@tiptap/extension-image'
-import { Markdown } from '@tiptap/markdown'
-import {
-    Bold,
-    Italic,
-    Strikethrough,
-    Code,
-    List,
-    ListOrdered,
-    Quote,
-    Heading1,
-    Heading2,
-    Heading3,
-    Undo,
-    Redo,
-    Link as LinkIcon,
-    ImageIcon,
-    Minus,
-} from 'lucide-react'
+import { EditorContent, useEditor } from '@tiptap/react'
+import { useCallback, useState } from 'react'
 
-import { Button } from '@workspace/ui/components/button'
-import { Separator } from '@workspace/ui/components/separator'
+import { cn } from '@workspace/ui/lib/utils'
+
+import { EditorBubbleMenu } from './editor/bubble-menu.component'
+import { createEditorExtensions } from './editor/editor-extensions'
+import { ImagePopover, LinkPopover } from './editor/link-popover.component'
+import { EditorToolbar } from './editor/toolbar.component'
 
 type PostEditorProps = {
     content: string
@@ -39,228 +21,128 @@ export function PostEditor({
     onChange,
     placeholder = 'Start writing your post...',
 }: PostEditorProps) {
+    const [linkPopoverOpen, setLinkPopoverOpen] = useState(false)
+    const [imagePopoverOpen, setImagePopoverOpen] = useState(false)
+
     const editor = useEditor({
-        extensions: [
-            StarterKit.configure({
-                heading: {
-                    levels: [1, 2, 3],
-                },
-            }),
-            Markdown,
-            Placeholder.configure({
-                placeholder,
-            }),
-            Link.configure({
-                openOnClick: false,
-                HTMLAttributes: {
-                    class: 'text-blue-600 underline cursor-pointer',
-                },
-            }),
-            Image.configure({
-                HTMLAttributes: {
-                    class: 'rounded-lg max-w-full',
-                },
-            }),
-        ],
+        extensions: createEditorExtensions({ placeholder }),
         content,
-        immediatelyRender: false,
+        contentType: 'markdown', // Parse content as Markdown
+        immediatelyRender: false, // Required for SSR compatibility
         onUpdate: ({ editor }) => {
-            const markdown =
-                (editor as any).storage.markdown?.getMarkdown?.() ||
-                editor.getHTML()
+            // Use the correct Markdown API
+            const markdown = editor.getMarkdown()
             onChange(markdown)
         },
         editorProps: {
             attributes: {
-                class: 'prose prose-stone max-w-none min-h-[400px] focus:outline-none p-4',
+                class: cn(
+                    // Typography
+                    'prose prose-stone prose-sm sm:prose-base max-w-none',
+                    // Sizing and spacing
+                    'min-h-[400px] p-4',
+                    // Focus states
+                    'focus:outline-none',
+                    // Custom prose overrides for better editing
+                    'prose-headings:font-semibold',
+                    'prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg',
+                    'prose-p:my-2 prose-p:leading-relaxed',
+                    'prose-blockquote:border-l-4 prose-blockquote:border-stone-300 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-stone-600',
+                    'prose-code:rounded prose-code:bg-stone-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none',
+                    'prose-pre:bg-stone-900 prose-pre:text-stone-100',
+                    'prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline',
+                    'prose-img:rounded-lg prose-img:mx-auto',
+                    'prose-ul:my-2 prose-ol:my-2',
+                    'prose-li:my-0.5'
+                ),
             },
         },
-        contentType: 'markdown',
     })
+
+    const handleAddLink = useCallback(() => {
+        setLinkPopoverOpen(true)
+    }, [])
+
+    const handleAddImage = useCallback(
+        (url: string) => {
+            if (editor && url) {
+                editor.chain().focus().setImage({ src: url }).run()
+            }
+        },
+        [editor]
+    )
+
+    const handleOpenImagePopover = useCallback(() => {
+        setImagePopoverOpen(true)
+    }, [])
 
     if (!editor) {
         return (
-            <div className='flex h-[500px] items-center justify-center rounded-lg border'>
-                <p className='text-muted-foreground'>Loading editor...</p>
+            <div className='flex h-[500px] items-center justify-center rounded-lg border bg-stone-50'>
+                <div className='flex flex-col items-center gap-2'>
+                    <div className='h-5 w-5 animate-spin rounded-full border-2 border-stone-300 border-t-stone-600' />
+                    <p className='text-muted-foreground text-sm'>
+                        Loading editor...
+                    </p>
+                </div>
             </div>
         )
     }
 
+    const characterCount = editor.storage.characterCount?.characters?.() ?? 0
+    const wordCount = editor.storage.characterCount?.words?.() ?? 0
+
     return (
-        <div className='rounded-lg border'>
-            <EditorToolbar editor={editor} />
-            <EditorContent editor={editor} />
+        <div className='overflow-hidden rounded-lg border bg-white shadow-sm'>
+            {/* Toolbar */}
+            <EditorToolbar
+                editor={editor}
+                onAddLink={handleAddLink}
+                onAddImage={handleOpenImagePopover}
+            />
+
+            {/* Link Popover - attached to a hidden trigger */}
+            <LinkPopover
+                editor={editor}
+                open={linkPopoverOpen}
+                onOpenChange={setLinkPopoverOpen}
+            >
+                <span />
+            </LinkPopover>
+
+            {/* Image Popover - attached to a hidden trigger */}
+            <ImagePopover
+                open={imagePopoverOpen}
+                onOpenChange={setImagePopoverOpen}
+                onAddImage={handleAddImage}
+            >
+                <span />
+            </ImagePopover>
+
+            {/* Bubble Menu for inline formatting */}
+            <EditorBubbleMenu editor={editor} onAddLink={handleAddLink} />
+
+            {/* Editor Content */}
+            <EditorContent
+                editor={editor}
+                className='cursor-text'
+                onClick={() => editor.chain().focus().run()}
+            />
+
+            {/* Footer with character/word count */}
+            <div className='flex items-center justify-between border-t bg-stone-50/80 px-4 py-2'>
+                <div className='flex items-center gap-4 text-xs text-stone-500'>
+                    <span>
+                        {wordCount.toLocaleString()}{' '}
+                        {wordCount === 1 ? 'word' : 'words'}
+                    </span>
+                    <span>
+                        {characterCount.toLocaleString()}{' '}
+                        {characterCount === 1 ? 'character' : 'characters'}
+                    </span>
+                </div>
+                <div className='text-xs text-stone-400'>Markdown supported</div>
+            </div>
         </div>
-    )
-}
-
-function EditorToolbar({ editor }: { editor: Editor }) {
-    const addLink = () => {
-        const url = window.prompt('Enter URL:')
-        if (url) {
-            editor.chain().focus().setLink({ href: url }).run()
-        }
-    }
-
-    const addImage = () => {
-        const url = window.prompt('Enter image URL:')
-        if (url) {
-            editor.chain().focus().setImage({ src: url }).run()
-        }
-    }
-
-    return (
-        <div className='flex flex-wrap items-center gap-1 border-b bg-stone-50 p-2'>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                isActive={editor.isActive('bold')}
-                title='Bold'
-            >
-                <Bold className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                isActive={editor.isActive('italic')}
-                title='Italic'
-            >
-                <Italic className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                isActive={editor.isActive('strike')}
-                title='Strikethrough'
-            >
-                <Strikethrough className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleCode().run()}
-                isActive={editor.isActive('code')}
-                title='Inline Code'
-            >
-                <Code className='h-4 w-4' />
-            </ToolbarButton>
-
-            <Separator orientation='vertical' className='mx-1 h-6' />
-
-            <ToolbarButton
-                onClick={() =>
-                    editor.chain().focus().toggleHeading({ level: 1 }).run()
-                }
-                isActive={editor.isActive('heading', { level: 1 })}
-                title='Heading 1'
-            >
-                <Heading1 className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() =>
-                    editor.chain().focus().toggleHeading({ level: 2 }).run()
-                }
-                isActive={editor.isActive('heading', { level: 2 })}
-                title='Heading 2'
-            >
-                <Heading2 className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() =>
-                    editor.chain().focus().toggleHeading({ level: 3 }).run()
-                }
-                isActive={editor.isActive('heading', { level: 3 })}
-                title='Heading 3'
-            >
-                <Heading3 className='h-4 w-4' />
-            </ToolbarButton>
-
-            <Separator orientation='vertical' className='mx-1 h-6' />
-
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                isActive={editor.isActive('bulletList')}
-                title='Bullet List'
-            >
-                <List className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                isActive={editor.isActive('orderedList')}
-                title='Numbered List'
-            >
-                <ListOrdered className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                isActive={editor.isActive('blockquote')}
-                title='Quote'
-            >
-                <Quote className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().setHorizontalRule().run()}
-                title='Horizontal Rule'
-            >
-                <Minus className='h-4 w-4' />
-            </ToolbarButton>
-
-            <Separator orientation='vertical' className='mx-1 h-6' />
-
-            <ToolbarButton
-                onClick={addLink}
-                isActive={editor.isActive('link')}
-                title='Add Link'
-            >
-                <LinkIcon className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton onClick={addImage} title='Add Image'>
-                <ImageIcon className='h-4 w-4' />
-            </ToolbarButton>
-
-            <Separator orientation='vertical' className='mx-1 h-6' />
-
-            <ToolbarButton
-                onClick={() => editor.chain().focus().undo().run()}
-                disabled={!editor.can().undo()}
-                title='Undo'
-            >
-                <Undo className='h-4 w-4' />
-            </ToolbarButton>
-            <ToolbarButton
-                onClick={() => editor.chain().focus().redo().run()}
-                disabled={!editor.can().redo()}
-                title='Redo'
-            >
-                <Redo className='h-4 w-4' />
-            </ToolbarButton>
-        </div>
-    )
-}
-
-type ToolbarButtonProps = {
-    onClick: () => void
-    isActive?: boolean
-    disabled?: boolean
-    title: string
-    children: React.ReactNode
-}
-
-function ToolbarButton({
-    onClick,
-    isActive,
-    disabled,
-    title,
-    children,
-}: ToolbarButtonProps) {
-    return (
-        <Button
-            variant='ghost'
-            size='sm'
-            onClick={onClick}
-            disabled={disabled}
-            title={title}
-            className={cn(
-                'h-8 w-8 p-0',
-                isActive && 'bg-stone-200 text-stone-900'
-            )}
-        >
-            {children}
-        </Button>
     )
 }

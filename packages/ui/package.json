@@ -26,6 +26,7 @@
         "@radix-ui/react-slot": "^1.2.4",
         "@radix-ui/react-switch": "^1.2.6",
         "@radix-ui/react-tabs": "^1.1.13",
+        "@radix-ui/react-tooltip": "^1.2.8",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
@@ -197,6 +198,21 @@
             "types": "./dist/components/carousel.d.ts",
             "import": "./dist/components/carousel.js",
             "default": "./dist/components/carousel.js"
+        },
+        "./components/tooltip": {
+            "types": "./dist/components/tooltip.d.ts",
+            "import": "./dist/components/tooltip.js",
+            "default": "./dist/components/tooltip.js"
+        },
+        "./components/alert": {
+            "types": "./dist/components/alert.d.ts",
+            "import": "./dist/components/alert.js",
+            "default": "./dist/components/alert.js"
+        },
+        "./components/collapsible": {
+            "types": "./dist/components/collapsible.d.ts",
+            "import": "./dist/components/collapsible.js",
+            "default": "./dist/components/collapsible.js"
         }
     }
 }
