@@ -43,12 +43,14 @@ type ImageGenerationPanelProps = {
     blogPostId?: string
     initialSummary?: string | null
     onImagesGenerated?: (count: number) => void
+    onSummaryChange?: (summary: string) => void
 }
 
 export function ImageGenerationPanel({
     blogPostId,
     initialSummary,
     onImagesGenerated,
+    onSummaryChange,
 }: ImageGenerationPanelProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [summary, setSummary] = useState(initialSummary || '')
@@ -59,6 +61,11 @@ export function ImageGenerationPanel({
     const [isGeneratingSummary, setIsGeneratingSummary] = useState(false)
     const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
     const [isGeneratingImage, setIsGeneratingImage] = useState(false)
+
+    const updateSummary = (newSummary: string) => {
+        setSummary(newSummary)
+        onSummaryChange?.(newSummary)
+    }
 
     const handleGenerateSummary = async () => {
         if (!blogPostId) {
@@ -83,7 +90,7 @@ export function ImageGenerationPanel({
             }
 
             if (data.success) {
-                setSummary(data.summary)
+                updateSummary(data.summary)
                 toast.success('Summary generated!')
             } else {
                 toast.error(data.error || 'Failed to generate summary')
@@ -171,7 +178,7 @@ export function ImageGenerationPanel({
 
                 // Update summary if it was generated
                 if (data.summary) {
-                    setSummary(data.summary)
+                    updateSummary(data.summary)
                 }
 
                 // Update prompt if it was generated
@@ -260,7 +267,7 @@ export function ImageGenerationPanel({
                                 id='ai-summary'
                                 placeholder='AI-generated summary will appear here...'
                                 value={summary}
-                                onChange={(e) => setSummary(e.target.value)}
+                                onChange={(e) => updateSummary(e.target.value)}
                                 rows={3}
                                 className='resize-none'
                             />

@@ -44,6 +44,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         excerpt: initialData?.excerpt ?? '',
         authorId: initialData?.authorId ?? '',
         status: initialData?.status ?? 'draft',
+        aiSummary: initialData?.aiSummary ?? null,
         featuredImageUrl: initialData?.featuredImageUrl ?? '',
         readingTime: initialData?.readingTime ?? null,
     })
@@ -83,6 +84,10 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
 
     const handleImagesGenerated = () => {
         setGalleryRefresh((prev) => prev + 1)
+    }
+
+    const handleSummaryChange = (summary: string) => {
+        handleChange('aiSummary', summary)
     }
 
     const handleSelectGeneratedImage = (_imageId: string, imageUrl: string) => {
@@ -156,8 +161,9 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
 
                 <ImageGenerationPanel
                     blogPostId={initialData?.id}
-                    initialSummary={initialData?.aiSummary}
+                    initialSummary={formData.aiSummary}
                     onImagesGenerated={handleImagesGenerated}
+                    onSummaryChange={handleSummaryChange}
                 />
 
                 {initialData?.id && (
