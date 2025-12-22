@@ -4,11 +4,22 @@ import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
+import { Sparkles } from 'lucide-react'
+
+import { Button } from '@workspace/ui/components/button'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@workspace/ui/components/card'
+
 import { PostFormBasicInfo } from './post-form-basic-info.component'
 import { PostFormActions } from './post-form-actions.component'
 import { PostFormSettings } from './post-form-settings.component'
 import { PostFormSEO } from './post-form-seo.component'
-import { ImageGenerationPanel } from './image-generation-panel.component'
+import { FeaturedImageDialog } from './featured-image-dialog.component'
 import { GeneratedImagesGallery } from './generated-images-gallery.component'
 import { AnalysisPanel } from './analysis-panel.component'
 import {
@@ -33,6 +44,8 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | null>(null)
     const [galleryRefresh, setGalleryRefresh] = useState(0)
+    const [featuredImageDialogOpen, setFeaturedImageDialogOpen] =
+        useState(false)
 
     const [formData, setFormData] = useState<BlogPostFormData>({
         title: initialData?.title ?? '',
@@ -46,6 +59,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         status: initialData?.status ?? 'draft',
         aiSummary: initialData?.aiSummary ?? null,
         featuredImageUrl: initialData?.featuredImageUrl ?? '',
+        featuredImageId: initialData?.featuredImageId ?? null,
         readingTime: initialData?.readingTime ?? null,
     })
 
@@ -90,7 +104,8 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         handleChange('aiSummary', summary)
     }
 
-    const handleSelectGeneratedImage = (_imageId: string, imageUrl: string) => {
+    const handleSelectGeneratedImage = (imageId: string, imageUrl: string) => {
+        handleChange('featuredImageId', imageId)
         handleChange('featuredImageUrl', imageUrl)
     }
 
@@ -154,17 +169,64 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                     slug={formData.slug}
                     content={formData.content}
                     readingTime={formData.readingTime ?? null}
+                    blogPostId={initialData?.id}
                     onTitleChange={handleTitleChange}
                     onSlugChange={(slug) => handleChange('slug', slug)}
                     onContentChange={handleContentChange}
                 />
 
-                <ImageGenerationPanel
-                    blogPostId={initialData?.id}
-                    initialSummary={formData.aiSummary}
-                    onImagesGenerated={handleImagesGenerated}
-                    onSummaryChange={handleSummaryChange}
-                />
+                {/* Featured Image Generation */}
+                {initialData?.id ? (
+                    <>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center gap-2 text-lg'>
+                                    <Sparkles className='h-5 w-5' />
+                                    AI Image Generation
+                                </CardTitle>
+                                <CardDescription>
+                                    Generate featured images using AI with
+                                    customizable options
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Button
+                                    type='button'
+                                    onClick={() =>
+                                        setFeaturedImageDialogOpen(true)
+                                    }
+                                    className='w-full'
+                                    size='lg'
+                                >
+                                    <Sparkles className='mr-2 h-5 w-5' />
+                                    Generate Featured Image
+                                </Button>
+                            </CardContent>
+                        </Card>
+
+                        <FeaturedImageDialog
+                            open={featuredImageDialogOpen}
+                            onOpenChange={setFeaturedImageDialogOpen}
+                            blogPostId={initialData.id}
+                            initialSummary={formData.aiSummary}
+                            onImagesGenerated={handleImagesGenerated}
+                            onSummaryChange={handleSummaryChange}
+                        />
+                    </>
+                ) : (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2 text-lg'>
+                                <Sparkles className='h-5 w-5' />
+                                AI Image Generation
+                            </CardTitle>
+                            <CardDescription>
+                                Save the post first to enable AI image
+                                generation
+                            </CardDescription>
+                        </CardHeader>
+                    </Card>
+                )}
 
                 {initialData?.id && (
                     <GeneratedImagesGallery

@@ -131,6 +131,7 @@ export type BlogPostDetail = {
     authorId: string | null
     aiSummary: string | null
     featuredImageUrl: string | null
+    featuredImageId: string | null
 }
 
 export async function getBlogPostById(
@@ -152,6 +153,7 @@ export async function getBlogPostById(
             authorId: blogPost.authorId,
             aiSummary: blogPost.aiSummary,
             featuredImageUrl: images.url,
+            featuredImageId: blogPost.featuredImageId,
         })
         .from(blogPost)
         .leftJoin(images, eq(blogPost.featuredImageId, images.id))

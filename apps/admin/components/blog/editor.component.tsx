@@ -2,11 +2,13 @@
 
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useCallback, useState } from 'react'
+import { toast } from 'sonner'
 
 import { cn } from '@workspace/ui/lib/utils'
 
 import { EditorBubbleMenu } from './editor/bubble-menu.component'
 import { createEditorExtensions } from './editor/editor-extensions'
+import { InlineImageDialog } from './editor/inline-image-dialog.component'
 import { ImagePopover, LinkPopover } from './editor/link-popover.component'
 import { EditorToolbar } from './editor/toolbar.component'
 
@@ -14,15 +16,22 @@ type PostEditorProps = {
     content: string
     onChange: (content: string) => void
     placeholder?: string
+    blogPostId?: string
 }
 
 export function PostEditor({
     content,
     onChange,
     placeholder = 'Start writing your post...',
+    blogPostId,
 }: PostEditorProps) {
     const [linkPopoverOpen, setLinkPopoverOpen] = useState(false)
     const [imagePopoverOpen, setImagePopoverOpen] = useState(false)
+    const [inlineImageDialogOpen, setInlineImageDialogOpen] = useState(false)
+    const [selectedText, setSelectedText] = useState('')
+    const [selectionPosition, setSelectionPosition] = useState<number | null>(
+        null
+    )
 
     const editor = useEditor({
         extensions: createEditorExtensions({ placeholder }),
@@ -76,6 +85,42 @@ export function PostEditor({
         setImagePopoverOpen(true)
     }, [])
 
+    const handleGenerateImage = useCallback(() => {
+        if (editor) {
+            const { from, to } = editor.state.selection
+            const text = editor.state.doc.textBetween(from, to, ' ')
+
+            if (!text || text.trim().length < 10) {
+                toast.error(
+                    'Please select at least 10 characters to generate an image'
+                )
+                return
+            }
+
+            setSelectedText(text)
+            setSelectionPosition(to) // Store the end position
+            setInlineImageDialogOpen(true)
+        }
+    }, [editor])
+
+    const handleImageGenerated = useCallback(
+        (imageUrl: string, altText: string) => {
+            if (editor && selectionPosition !== null) {
+                editor
+                    .chain()
+                    .focus()
+                    .insertContentAt(selectionPosition, {
+                        type: 'image',
+                        attrs: { src: imageUrl, alt: altText },
+                    })
+                    .run()
+
+                setSelectionPosition(null) // Reset after use
+            }
+        },
+        [editor, selectionPosition]
+    )
+
     if (!editor) {
         return (
             <div className='flex h-[500px] items-center justify-center rounded-lg border bg-stone-50'>
@@ -120,7 +165,20 @@ export function PostEditor({
             </ImagePopover>
 
             {/* Bubble Menu for inline formatting */}
-            <EditorBubbleMenu editor={editor} onAddLink={handleAddLink} />
+            <EditorBubbleMenu
+                editor={editor}
+                onAddLink={handleAddLink}
+                onGenerateImage={handleGenerateImage}
+            />
+
+            {/* Inline Image Generation Dialog */}
+            <InlineImageDialog
+                open={inlineImageDialogOpen}
+                onOpenChange={setInlineImageDialogOpen}
+                selectedText={selectedText}
+                blogPostId={blogPostId}
+                onImageGenerated={handleImageGenerated}
+            />
 
             {/* Editor Content */}
             <EditorContent

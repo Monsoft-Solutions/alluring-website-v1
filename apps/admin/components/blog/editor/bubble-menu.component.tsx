@@ -7,6 +7,7 @@ import {
     Code,
     Italic,
     Link as LinkIcon,
+    Sparkles,
     Strikethrough,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -25,9 +26,14 @@ import { getShortcutLabel } from './editor-extensions'
 type EditorBubbleMenuProps = {
     editor: Editor
     onAddLink: () => void
+    onGenerateImage: () => void
 }
 
-export function EditorBubbleMenu({ editor, onAddLink }: EditorBubbleMenuProps) {
+export function EditorBubbleMenu({
+    editor,
+    onAddLink,
+    onGenerateImage,
+}: EditorBubbleMenuProps) {
     return (
         <BubbleMenu
             editor={editor}
@@ -92,6 +98,16 @@ export function EditorBubbleMenu({ editor, onAddLink }: EditorBubbleMenuProps) {
                     aria-label='Add Link'
                 >
                     <LinkIcon className='h-4 w-4' />
+                </BubbleButton>
+
+                <div className='mx-1 h-5 w-px bg-stone-200' />
+
+                <BubbleButton
+                    onClick={onGenerateImage}
+                    tooltip='Generate Image from Selection'
+                    aria-label='Generate Image'
+                >
+                    <Sparkles className='h-4 w-4' />
                 </BubbleButton>
             </TooltipProvider>
         </BubbleMenu>

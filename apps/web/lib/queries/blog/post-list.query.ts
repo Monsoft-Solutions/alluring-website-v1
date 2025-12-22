@@ -158,7 +158,7 @@ export async function getPublishedPostCardsPage(options?: {
         ? `${options.cursor.publishedAt.toISOString()}-${options.cursor.id}`
         : 'initial'
 
-    return unstable_cache(
+    const result = await unstable_cache(
         () => fetchPublishedPostCardsPage(options),
         ['blog-posts-list', String(limit), categorySlug, tagSlug, cursorKey],
         {
@@ -166,4 +166,19 @@ export async function getPublishedPostCardsPage(options?: {
             revalidate: 60, // Cache for 60 seconds
         }
     )()
+
+    // Transform nextCursor.publishedAt from string to Date if needed (after cache deserialization)
+    // unstable_cache serializes Dates to strings, so we need to convert them back
+    // Create a new result object to avoid mutating the cached value
+    return {
+        ...result,
+        nextCursor:
+            result.nextCursor &&
+            typeof result.nextCursor.publishedAt === 'string'
+                ? {
+                      ...result.nextCursor,
+                      publishedAt: new Date(result.nextCursor.publishedAt),
+                  }
+                : result.nextCursor,
+    }
 }

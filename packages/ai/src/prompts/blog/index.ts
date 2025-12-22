@@ -9,6 +9,17 @@ export {
 } from './image-prompt.prompt'
 
 export {
+    INLINE_IMAGE_PROMPT_SYSTEM,
+    getInlineImagePrompt,
+} from './inline-image-prompt.prompt'
+
+export {
     BLOG_ANALYSIS_SYSTEM_PROMPT,
     getBlogAnalysisPrompt,
 } from './blog-analysis.prompt'
+
+export {
+    FEATURED_IMAGE_PROMPT_SYSTEM,
+    getFeaturedImagePrompt,
+    type FeaturedImagePromptInput,
+} from './featured-image-prompt.prompt'

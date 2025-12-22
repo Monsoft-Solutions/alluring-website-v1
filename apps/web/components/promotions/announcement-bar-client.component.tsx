@@ -31,15 +31,23 @@ export function AnnouncementBarClient({
     ctaText,
     link,
 }: AnnouncementBarClientProps) {
-    // Read from localStorage using useState initializer to avoid setState in effect
+    // Initialize with consistent state for server and client to avoid hydration errors
     const storageKey = `${STORAGE_KEY_PREFIX}${promotionId}`
-    const [isDismissed, setIsDismissed] = useState(() => {
-        if (typeof window === 'undefined') return true // SSR: start hidden
-        return localStorage.getItem(storageKey) === 'true'
-    })
+    const [isDismissed, setIsDismissed] = useState(false)
 
     // Analytics hook
     const { trackCTA } = useAnalyticsEvent()
+
+    // Check localStorage after mount to determine if promotion was previously dismissed
+    useEffect(() => {
+        const dismissed = localStorage.getItem(storageKey) === 'true'
+        if (dismissed) {
+            // Use setTimeout to avoid calling setState synchronously within an effect
+            setTimeout(() => {
+                setIsDismissed(true)
+            }, 0)
+        }
+    }, [storageKey])
 
     // Set CSS variable and cleanup (no state updates, only DOM manipulation)
     useEffect(() => {
@@ -75,7 +83,11 @@ export function AnnouncementBarClient({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: ANNOUNCEMENT_BAR_HEIGHT, opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{
+                        duration: 0.3,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: 0.05,
+                    }}
                     className='fixed top-0 right-0 left-0 z-[60] overflow-hidden bg-stone-900'
                     role='banner'
                     aria-label='Special offer announcement'

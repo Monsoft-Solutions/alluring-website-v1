@@ -69,7 +69,10 @@ export {
     // Blog post functions
     summarizeBlogPost,
     generateImagePrompt,
+    generateInlineImagePrompt,
+    generateImageAlt,
     analyzeBlogPost,
+    generateFeaturedImagePrompt,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
@@ -85,7 +88,14 @@ export {
     type BlogPostSummary,
     type GenerateImagePromptOptions,
     type ImagePromptResult,
+    type GenerateInlineImagePromptOptions,
+    type InlineImagePromptResult,
+    type InlineImageType,
+    type GenerateImageAltOptions,
+    type ImageAltResult,
     type AnalyzeBlogPostOptions,
+    type GenerateFeaturedImagePromptOptions,
+    type FeaturedImagePromptResult,
 } from './functions'
 
 // AI-specific schemas for structured outputs
@@ -153,6 +163,9 @@ export {
     getImagePromptPrompt,
     BLOG_ANALYSIS_SYSTEM_PROMPT,
     getBlogAnalysisPrompt,
+    FEATURED_IMAGE_PROMPT_SYSTEM,
+    getFeaturedImagePrompt,
+    type FeaturedImagePromptInput,
 } from './prompts'
 
 // Telemetry configuration

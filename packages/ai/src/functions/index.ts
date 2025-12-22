@@ -80,3 +80,22 @@ export {
     analyzeBlogPost,
     type AnalyzeBlogPostOptions,
 } from './analyze-blog-post.function'
+
+export {
+    generateInlineImagePrompt,
+    type GenerateInlineImagePromptOptions,
+    type InlineImagePromptResult,
+    type InlineImageType,
+} from './generate-inline-image-prompt.function'
+
+export {
+    generateImageAlt,
+    type GenerateImageAltOptions,
+    type ImageAltResult,
+} from './generate-image-alt.function'
+
+export {
+    generateFeaturedImagePrompt,
+    type GenerateFeaturedImagePromptOptions,
+    type FeaturedImagePromptResult,
+} from './generate-featured-image-prompt.function'
