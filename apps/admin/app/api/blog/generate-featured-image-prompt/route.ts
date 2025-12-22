@@ -168,14 +168,12 @@ export async function POST(
         }
 
         // Get option configurations
-        const sceneOption = getSceneOption(scene as SceneId)
-        const subjectOption = getSubjectOption(subject as SubjectId)
-        const styleOption = getStyleOption(style as StyleId)
-        const lightingOption = getLightingOption(lighting as LightingId)
-        const colorOption = getColorOption(colorPalette as ColorPaletteId)
-        const compositionOption = getCompositionOption(
-            composition as CompositionId
-        )
+        const sceneOption = getSceneOption(scene)
+        const subjectOption = getSubjectOption(subject)
+        const styleOption = getStyleOption(style)
+        const lightingOption = getLightingOption(lighting)
+        const colorOption = getColorOption(colorPalette)
+        const compositionOption = getCompositionOption(composition)
 
         if (
             !sceneOption ||
