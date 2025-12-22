@@ -41,7 +41,8 @@
                 "AUTH_SECRET",
                 "GOOGLE_CLIENT_EMAIL",
                 "GOOGLE_PRIVATE_KEY",
-                "NEXUITE_CRM_API_URL"
+                "NEXUITE_CRM_API_URL",
+                "FAL_KEY"
             ]
         },
         "lint": {
@@ -98,7 +99,8 @@
                 "AUTH_SECRET",
                 "GOOGLE_CLIENT_EMAIL",
                 "GOOGLE_PRIVATE_KEY",
-                "NEXUITE_CRM_API_URL"
+                "NEXUITE_CRM_API_URL",
+                "FAL_KEY"
             ]
         },
         "db:generate": {
