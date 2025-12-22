@@ -27,15 +27,10 @@ import {
     SelectValue,
 } from '@workspace/ui/components/select'
 
-/**
- * Available image generation models
- */
-const IMAGE_MODELS = [
-    { id: 'gpt-image-1.5', name: 'GPT Image 1.5' },
-    { id: 'nano-banana-pro', name: 'Nano Banana Pro' },
-] as const
-
-type ModelId = (typeof IMAGE_MODELS)[number]['id']
+import {
+    IMAGE_MODELS,
+    type ImageModelId,
+} from '@/lib/services/fal-image-generation.service'
 
 /**
  * Available image count options
@@ -58,7 +53,8 @@ export function ImageGenerationPanel({
     const [isOpen, setIsOpen] = useState(false)
     const [summary, setSummary] = useState(initialSummary || '')
     const [prompt, setPrompt] = useState('')
-    const [selectedModel, setSelectedModel] = useState<ModelId>('gpt-image-1.5')
+    const [selectedModel, setSelectedModel] =
+        useState<ImageModelId>('gpt-image-1.5')
     const [numImages, setNumImages] = useState<ImageCount>(1)
     const [isGeneratingSummary, setIsGeneratingSummary] = useState(false)
     const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
@@ -320,7 +316,7 @@ export function ImageGenerationPanel({
                                 <Select
                                     value={selectedModel}
                                     onValueChange={(value) =>
-                                        setSelectedModel(value as ModelId)
+                                        setSelectedModel(value as ImageModelId)
                                     }
                                 >
                                     <SelectTrigger id='model-select'>
