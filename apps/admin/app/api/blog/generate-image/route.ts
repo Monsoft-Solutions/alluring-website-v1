@@ -1,6 +1,10 @@
 import { db } from '@workspace/db/client'
 import { blogPost, blogPostImages, images } from '@workspace/db/schema'
-import { summarizeBlogPost, generateImagePrompt } from '@workspace/ai'
+import {
+    summarizeBlogPost,
+    generateImagePrompt,
+    generateImageAlt,
+} from '@workspace/ai'
 import { eq } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
@@ -36,6 +40,7 @@ const requestSchema = z.object({
 type GeneratedImageInfo = {
     imageId: string
     imageUrl: string
+    alt: string
 }
 
 /**
@@ -167,6 +172,13 @@ export async function POST(
             `${generatedImages.length} image(s) generated successfully, creating database records...`
         )
 
+        // Generate alt text from prompt using AI
+        console.log('Generating alt text from prompt...')
+        const altTextResult = await generateImageAlt({
+            prompt: finalPrompt,
+        })
+        const altText = altTextResult.alt
+
         // Step 4 & 5: Create image records and link to blog post
         const createdImages: GeneratedImageInfo[] = []
 
@@ -175,14 +187,14 @@ export async function POST(
                 .insert(images)
                 .values({
                     url: generatedImage.blobUrl,
-                    alt: blogPostData.title,
+                    alt: altText,
                     title: blogPostData.title,
                     width: generatedImage.width,
                     height: generatedImage.height,
                     generationPrompt: finalPrompt,
                     generatedBy: `fal-ai/${model}`,
                 })
-                .returning({ id: images.id, url: images.url })
+                .returning({ id: images.id, url: images.url, alt: images.alt })
 
             if (!imageRecord) {
                 console.error('Failed to create image record')
@@ -199,6 +211,7 @@ export async function POST(
             createdImages.push({
                 imageId: imageRecord.id,
                 imageUrl: imageRecord.url,
+                alt: imageRecord.alt,
             })
         }
 

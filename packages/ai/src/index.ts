@@ -69,6 +69,8 @@ export {
     // Blog post functions
     summarizeBlogPost,
     generateImagePrompt,
+    generateInlineImagePrompt,
+    generateImageAlt,
     analyzeBlogPost,
     type ClassifyIntentOptions,
     type ChatMessage,
@@ -85,6 +87,11 @@ export {
     type BlogPostSummary,
     type GenerateImagePromptOptions,
     type ImagePromptResult,
+    type GenerateInlineImagePromptOptions,
+    type InlineImagePromptResult,
+    type InlineImageType,
+    type GenerateImageAltOptions,
+    type ImageAltResult,
     type AnalyzeBlogPostOptions,
 } from './functions'
 

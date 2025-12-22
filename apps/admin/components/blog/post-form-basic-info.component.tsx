@@ -15,6 +15,7 @@ type PostFormBasicInfoProps = {
     slug: string
     content: string
     readingTime: number | null
+    blogPostId?: string
     onTitleChange: (title: string) => void
     onSlugChange: (slug: string) => void
     onContentChange: (content: string) => void
@@ -25,6 +26,7 @@ export function PostFormBasicInfo({
     slug,
     content,
     readingTime,
+    blogPostId,
     onTitleChange,
     onSlugChange,
     onContentChange,
@@ -63,7 +65,11 @@ export function PostFormBasicInfo({
 
                 <div className='space-y-2'>
                     <Label>Content</Label>
-                    <PostEditor content={content} onChange={onContentChange} />
+                    <PostEditor
+                        content={content}
+                        onChange={onContentChange}
+                        blogPostId={blogPostId}
+                    />
                     {readingTime && (
                         <p className='text-muted-foreground text-xs'>
                             Estimated reading time: {readingTime} min

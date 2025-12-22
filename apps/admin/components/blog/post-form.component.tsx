@@ -154,6 +154,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                     slug={formData.slug}
                     content={formData.content}
                     readingTime={formData.readingTime ?? null}
+                    blogPostId={initialData?.id}
                     onTitleChange={handleTitleChange}
                     onSlugChange={(slug) => handleChange('slug', slug)}
                     onContentChange={handleContentChange}
