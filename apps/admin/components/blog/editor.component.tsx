@@ -2,6 +2,7 @@
 
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useCallback, useState } from 'react'
+import { toast } from 'sonner'
 
 import { cn } from '@workspace/ui/lib/utils'
 
@@ -90,7 +91,9 @@ export function PostEditor({
             const text = editor.state.doc.textBetween(from, to, ' ')
 
             if (!text || text.trim().length < 10) {
-                // Show a subtle error - user should have text selected
+                toast.error(
+                    'Please select at least 10 characters to generate an image'
+                )
                 return
             }
 

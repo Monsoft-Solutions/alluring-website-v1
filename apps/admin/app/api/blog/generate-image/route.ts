@@ -172,22 +172,29 @@ export async function POST(
             `${generatedImages.length} image(s) generated successfully, creating database records...`
         )
 
-        // Generate alt text from prompt using AI
-        console.log('Generating alt text from prompt...')
+        // Generate base alt text from prompt using AI
+        console.log('Generating base alt text from prompt...')
         const altTextResult = await generateImageAlt({
             prompt: finalPrompt,
         })
-        const altText = altTextResult.alt
+        const baseAltText = altTextResult.alt
 
         // Step 4 & 5: Create image records and link to blog post
         const createdImages: GeneratedImageInfo[] = []
 
-        for (const generatedImage of generatedImages) {
+        for (const [index, generatedImage] of generatedImages.entries()) {
+            // Generate unique alt text per image
+            // If multiple images, append variation suffix; otherwise use base alt
+            const imageAltText =
+                generatedImages.length > 1
+                    ? `${baseAltText} – variation ${index + 1} of ${generatedImages.length}`
+                    : baseAltText
+
             const [imageRecord] = await db
                 .insert(images)
                 .values({
                     url: generatedImage.blobUrl,
-                    alt: altText,
+                    alt: imageAltText,
                     title: blogPostData.title,
                     width: generatedImage.width,
                     height: generatedImage.height,
