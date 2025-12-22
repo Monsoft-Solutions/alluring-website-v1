@@ -47,7 +47,6 @@ Analysis Categories (all scored 0-100):
 
 **Heading Structure (10% weight)**
 - Content is in Markdown format (# = H1, ## = H2, ### = H3)
-- Single H1 (title only, marked with #)
 - Logical H2 main sections (marked with ##)
 - H3 subsections where needed (marked with ###)
 - No skipped hierarchy (H1 → H3)
@@ -140,7 +139,7 @@ export function getBlogAnalysisPrompt(input: {
     // Clean content for word count (remove Markdown syntax)
     const cleanContent = content
         .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
-        .replace(/\[.*?\]\(.*?\)/g, '$1') // Remove link syntax, keep text
+        .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove link syntax, keep text
         .replace(/^#+\s*/gm, '') // Remove heading markers
         .replace(/[*_`~]/g, '') // Remove emphasis markers
         .replace(/\s+/g, ' ')
