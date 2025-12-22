@@ -15,6 +15,7 @@ export const maxDuration = 60
  */
 const requestSchema = z.object({
     blogPostId: z.string().uuid('Invalid blog post ID'),
+    modelId: z.string().optional(),
 })
 
 /**
@@ -121,7 +122,7 @@ export async function POST(
             )
         }
 
-        const { blogPostId } = validationResult.data
+        const { blogPostId, modelId: requestedModelId } = validationResult.data
 
         // Fetch blog post content
         const [blogPostData] = await db
@@ -155,6 +156,7 @@ export async function POST(
             metaKeywords: blogPostData.metaKeywords ?? undefined,
             excerpt: blogPostData.excerpt ?? undefined,
             hasFeaturedImage: !!blogPostData.featuredImageId,
+            modelId: requestedModelId,
         })
 
         // Calculate overall score and grade
@@ -186,7 +188,7 @@ export async function POST(
                     topSuggestions: analysisResult.topSuggestions,
                     summary: analysisResult.summary,
                 },
-                modelUsed: 'gpt-5.2',
+                modelUsed: requestedModelId ?? 'gpt-5.2',
             })
             .returning()
 

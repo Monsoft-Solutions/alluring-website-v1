@@ -79,7 +79,7 @@ export type AnalyzeBlogPostOptions = AnalyzeBlogPostInput & {
  */
 export async function analyzeBlogPost(
     options: AnalyzeBlogPostOptions
-): Promise<BlogPostAnalysisResult> {
+): Promise<BlogPostAnalysisResult & { modelId: string }> {
     const {
         title,
         content,
@@ -106,5 +106,8 @@ export async function analyzeBlogPost(
         temperature,
     })
 
-    return result.object
+    return {
+        ...result.object,
+        modelId,
+    }
 }
