@@ -1,37 +1,16 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
-import { Loader2, Save, Eye, Send } from 'lucide-react'
 
-import { Button } from '@workspace/ui/components/button'
-import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
-import { Textarea } from '@workspace/ui/components/textarea'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@workspace/ui/components/card'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@workspace/ui/components/select'
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from '@workspace/ui/components/tabs'
-
-import { PostEditor } from './editor.component'
+import { PostFormBasicInfo } from './post-form-basic-info.component'
+import { PostFormActions } from './post-form-actions.component'
+import { PostFormSettings } from './post-form-settings.component'
+import { PostFormSEO } from './post-form-seo.component'
+import { ImageGenerationPanel } from './image-generation-panel.component'
+import { GeneratedImagesGallery } from './generated-images-gallery.component'
+import { AnalysisPanel } from './analysis-panel.component'
 import {
     createBlogPost,
     updateBlogPost,
@@ -53,6 +32,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | null>(null)
+    const [galleryRefresh, setGalleryRefresh] = useState(0)
 
     const [formData, setFormData] = useState<BlogPostFormData>({
         title: initialData?.title ?? '',
@@ -64,6 +44,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         excerpt: initialData?.excerpt ?? '',
         authorId: initialData?.authorId ?? '',
         status: initialData?.status ?? 'draft',
+        aiSummary: initialData?.aiSummary ?? null,
         featuredImageUrl: initialData?.featuredImageUrl ?? '',
         readingTime: initialData?.readingTime ?? null,
     })
@@ -99,6 +80,18 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
     const handleContentChange = (content: string) => {
         handleChange('content', content)
         handleChange('readingTime', calculateReadingTime(content))
+    }
+
+    const handleImagesGenerated = () => {
+        setGalleryRefresh((prev) => prev + 1)
+    }
+
+    const handleSummaryChange = (summary: string) => {
+        handleChange('aiSummary', summary)
+    }
+
+    const handleSelectGeneratedImage = (_imageId: string, imageUrl: string) => {
+        handleChange('featuredImageUrl', imageUrl)
     }
 
     const getSuccessMessage = (
@@ -156,295 +149,77 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                     </div>
                 )}
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Content</CardTitle>
-                        <CardDescription>
-                            Write your blog post content
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className='space-y-4'>
-                        <div className='space-y-2'>
-                            <Label htmlFor='title'>Title</Label>
-                            <Input
-                                id='title'
-                                value={formData.title}
-                                onChange={(e) =>
-                                    handleTitleChange(e.target.value)
-                                }
-                                placeholder='Enter post title'
-                            />
-                        </div>
+                <PostFormBasicInfo
+                    title={formData.title}
+                    slug={formData.slug}
+                    content={formData.content}
+                    readingTime={formData.readingTime ?? null}
+                    onTitleChange={handleTitleChange}
+                    onSlugChange={(slug) => handleChange('slug', slug)}
+                    onContentChange={handleContentChange}
+                />
 
-                        <div className='space-y-2'>
-                            <Label htmlFor='slug'>URL Slug</Label>
-                            <div className='flex items-center gap-2'>
-                                <span className='text-muted-foreground text-sm'>
-                                    /blog/
-                                </span>
-                                <Input
-                                    id='slug'
-                                    value={formData.slug}
-                                    onChange={(e) =>
-                                        handleChange('slug', e.target.value)
-                                    }
-                                    placeholder='post-url-slug'
-                                />
-                            </div>
-                        </div>
+                <ImageGenerationPanel
+                    blogPostId={initialData?.id}
+                    initialSummary={formData.aiSummary}
+                    onImagesGenerated={handleImagesGenerated}
+                    onSummaryChange={handleSummaryChange}
+                />
 
-                        <div className='space-y-2'>
-                            <Label>Content</Label>
-                            <PostEditor
-                                content={formData.content}
-                                onChange={handleContentChange}
-                            />
-                            {formData.readingTime && (
-                                <p className='text-muted-foreground text-xs'>
-                                    Estimated reading time:{' '}
-                                    {formData.readingTime} min
-                                </p>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
+                {initialData?.id && (
+                    <GeneratedImagesGallery
+                        blogPostId={initialData.id}
+                        currentFeaturedImageUrl={formData.featuredImageUrl}
+                        onSelectImage={handleSelectGeneratedImage}
+                        refreshTrigger={galleryRefresh}
+                    />
+                )}
+
+                {initialData?.id && (
+                    <AnalysisPanel blogPostId={initialData.id} />
+                )}
             </div>
 
             {/* Sidebar */}
             <div className='space-y-6'>
-                {/* Actions */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Actions</CardTitle>
-                    </CardHeader>
-                    <CardContent className='space-y-3'>
-                        <Button
-                            className='w-full'
-                            onClick={() => handleSave()}
-                            disabled={isPending}
-                        >
-                            {isPending ? (
-                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                            ) : (
-                                <Save className='mr-2 h-4 w-4' />
-                            )}
-                            Save {mode === 'create' ? 'Draft' : 'Changes'}
-                        </Button>
-                        {mode === 'edit' && formData.status !== 'published' && (
-                            <Button
-                                variant='outline'
-                                className='w-full'
-                                onClick={() => handleSave('readyToPublish')}
-                                disabled={isPending}
-                            >
-                                <Eye className='mr-2 h-4 w-4' />
-                                Mark Ready to Publish
-                            </Button>
-                        )}
-                        {mode === 'edit' && (
-                            <Button
-                                variant='default'
-                                className='w-full bg-green-600 hover:bg-green-700'
-                                onClick={() => handleSave('published')}
-                                disabled={isPending}
-                            >
-                                <Send className='mr-2 h-4 w-4' />
-                                Publish Now
-                            </Button>
-                        )}
-                    </CardContent>
-                </Card>
+                <PostFormActions
+                    mode={mode}
+                    status={formData.status}
+                    isPending={isPending}
+                    onSave={handleSave}
+                />
 
-                {/* Post Settings */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Settings</CardTitle>
-                    </CardHeader>
-                    <CardContent className='space-y-4'>
-                        <div className='space-y-2'>
-                            <Label htmlFor='author'>Author</Label>
-                            <Select
-                                value={formData.authorId ?? ''}
-                                onValueChange={(value) =>
-                                    handleChange('authorId', value)
-                                }
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder='Select author' />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {authors.map((author) => (
-                                        <SelectItem
-                                            key={author.id}
-                                            value={author.id}
-                                        >
-                                            {author.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                <PostFormSettings
+                    authors={authors}
+                    authorId={formData.authorId ?? null}
+                    status={formData.status}
+                    featuredImageUrl={formData.featuredImageUrl ?? null}
+                    onAuthorChange={(authorId) =>
+                        handleChange('authorId', authorId)
+                    }
+                    onStatusChange={(status) => handleChange('status', status)}
+                    onFeaturedImageChange={(url) =>
+                        handleChange('featuredImageUrl', url)
+                    }
+                />
 
-                        <div className='space-y-2'>
-                            <Label htmlFor='status'>Status</Label>
-                            <Select
-                                value={formData.status}
-                                onValueChange={(
-                                    value:
-                                        | 'draft'
-                                        | 'readyToPublish'
-                                        | 'published'
-                                ) => handleChange('status', value)}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value='draft'>Draft</SelectItem>
-                                    <SelectItem value='readyToPublish'>
-                                        Ready to Publish
-                                    </SelectItem>
-                                    <SelectItem value='published'>
-                                        Published
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className='space-y-2'>
-                            <Label htmlFor='featuredImage'>
-                                Featured Image URL
-                            </Label>
-                            <Input
-                                id='featuredImage'
-                                value={formData.featuredImageUrl ?? ''}
-                                onChange={(e) =>
-                                    handleChange(
-                                        'featuredImageUrl',
-                                        e.target.value
-                                    )
-                                }
-                                placeholder='https://...'
-                            />
-                            {formData.featuredImageUrl && (
-                                <div className='relative mt-2 h-32 w-full overflow-hidden rounded-lg border'>
-                                    <Image
-                                        src={formData.featuredImageUrl}
-                                        alt='Featured'
-                                        fill
-                                        className='object-cover'
-                                        unoptimized
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* SEO */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>SEO</CardTitle>
-                        <CardDescription>
-                            Search engine optimization settings
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Tabs defaultValue='meta' className='w-full'>
-                            <TabsList className='grid w-full grid-cols-2'>
-                                <TabsTrigger value='meta'>Meta</TabsTrigger>
-                                <TabsTrigger value='excerpt'>
-                                    Excerpt
-                                </TabsTrigger>
-                            </TabsList>
-                            <TabsContent
-                                value='meta'
-                                className='space-y-4 pt-4'
-                            >
-                                <div className='space-y-2'>
-                                    <Label htmlFor='metaTitle'>
-                                        Meta Title
-                                    </Label>
-                                    <Input
-                                        id='metaTitle'
-                                        value={formData.metaTitle ?? ''}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                'metaTitle',
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder='SEO title (defaults to post title)'
-                                    />
-                                    <p className='text-muted-foreground text-xs'>
-                                        {(formData.metaTitle ?? formData.title)
-                                            .length || 0}
-                                        /60 characters
-                                    </p>
-                                </div>
-
-                                <div className='space-y-2'>
-                                    <Label htmlFor='metaDescription'>
-                                        Meta Description
-                                    </Label>
-                                    <Textarea
-                                        id='metaDescription'
-                                        value={formData.metaDescription}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                'metaDescription',
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder='Brief description for search results'
-                                        rows={3}
-                                    />
-                                    <p className='text-muted-foreground text-xs'>
-                                        {formData.metaDescription.length}/160
-                                        characters
-                                    </p>
-                                </div>
-
-                                <div className='space-y-2'>
-                                    <Label htmlFor='metaKeywords'>
-                                        Meta Keywords
-                                    </Label>
-                                    <Input
-                                        id='metaKeywords'
-                                        value={formData.metaKeywords ?? ''}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                'metaKeywords',
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder='keyword1, keyword2, keyword3'
-                                    />
-                                </div>
-                            </TabsContent>
-                            <TabsContent
-                                value='excerpt'
-                                className='space-y-4 pt-4'
-                            >
-                                <div className='space-y-2'>
-                                    <Label htmlFor='excerpt'>Excerpt</Label>
-                                    <Textarea
-                                        id='excerpt'
-                                        value={formData.excerpt ?? ''}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                'excerpt',
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder='Short summary shown in blog listings'
-                                        rows={4}
-                                    />
-                                </div>
-                            </TabsContent>
-                        </Tabs>
-                    </CardContent>
-                </Card>
+                <PostFormSEO
+                    title={formData.title}
+                    metaTitle={formData.metaTitle ?? null}
+                    metaDescription={formData.metaDescription}
+                    metaKeywords={formData.metaKeywords ?? null}
+                    excerpt={formData.excerpt ?? null}
+                    onMetaTitleChange={(value) =>
+                        handleChange('metaTitle', value)
+                    }
+                    onMetaDescriptionChange={(value) =>
+                        handleChange('metaDescription', value)
+                    }
+                    onMetaKeywordsChange={(value) =>
+                        handleChange('metaKeywords', value)
+                    }
+                    onExcerptChange={(value) => handleChange('excerpt', value)}
+                />
             </div>
         </div>
     )

@@ -34,6 +34,11 @@
             "types": "./dist/schemas/analysis/index.d.ts",
             "import": "./dist/schemas/analysis/index.js",
             "default": "./dist/schemas/analysis/index.js"
+        },
+        "./schemas/blog": {
+            "types": "./dist/schemas/blog/index.d.ts",
+            "import": "./dist/schemas/blog/index.js",
+            "default": "./dist/schemas/blog/index.js"
         }
     },
     "scripts": {

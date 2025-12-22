@@ -109,3 +109,33 @@ export {
     type AnalysisStats,
     type BulkAnalysisResult,
 } from './analysis'
+
+// Blog schemas
+export {
+    // Zod schemas
+    categoryScoreSchema,
+    contentLengthCategorySchema,
+    readabilityCategorySchema,
+    headingStructureCategorySchema,
+    keywordsCategorySchema,
+    linkingCategorySchema,
+    visualContentCategorySchema,
+    structureCategorySchema,
+    suggestionPrioritySchema,
+    suggestionSchema,
+    blogPostAnalysisResultSchema,
+    analyzeBlogPostInputSchema,
+    // Types
+    type CategoryScore,
+    type ContentLengthCategory,
+    type ReadabilityCategory,
+    type HeadingStructureCategory,
+    type KeywordsCategory,
+    type LinkingCategory,
+    type VisualContentCategory,
+    type StructureCategory,
+    type SuggestionPriority,
+    type Suggestion,
+    type BlogPostAnalysisResult,
+    type AnalyzeBlogPostInput,
+} from './blog'

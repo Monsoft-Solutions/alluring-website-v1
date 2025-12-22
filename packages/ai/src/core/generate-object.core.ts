@@ -6,7 +6,7 @@
  *
  * @module @workspace/ai/core/generate-object
  */
-import { generateObject } from 'ai'
+import { generateObject, NoObjectGeneratedError } from 'ai'
 import { openai } from '@ai-sdk/openai'
 import type { z } from 'zod'
 
@@ -71,16 +71,27 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
     // Check if using prompt or messages format
     const isPromptFormat = 'prompt' in options
 
-    const result = await generateObject({
-        model: openai(modelId),
-        schema,
-        system,
-        ...(isPromptFormat
-            ? { prompt: options.prompt }
-            : { messages: options.messages }),
-        temperature,
-        experimental_telemetry: telemetryConfig,
-    })
+    try {
+        const result = await generateObject({
+            model: openai(modelId),
+            schema,
+            system,
+            ...(isPromptFormat
+                ? { prompt: options.prompt }
+                : { messages: options.messages }),
+            temperature,
+            experimental_telemetry: telemetryConfig,
+        })
 
-    return result
+        return result
+    } catch (error) {
+        if (error instanceof NoObjectGeneratedError) {
+            console.log('NoObjectGeneratedError')
+            console.log('Cause:', error.cause)
+            console.log('Text:', error.text)
+            console.log('Response:', error.response)
+            console.log('Usage:', error.usage)
+        }
+        throw error
+    }
 }

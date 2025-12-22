@@ -27,9 +27,23 @@ export {
 export { images, type Image, type InsertImage } from './image.table'
 
 export {
+    blogPostImages,
+    type BlogPostImage,
+    type InsertBlogPostImage,
+} from './blog-post-images.table'
+
+export {
+    blogPostAnalysis,
+    type BlogPostAnalysis,
+    type InsertBlogPostAnalysis,
+    type BlogPostAnalysisDetails,
+} from './blog-post-analysis.table'
+
+export {
     blogPostTagsRelations,
     blogPostCategoriesRelations,
     blogPostsRelations,
+    blogPostImagesRelations,
     blogTagsRelations,
     blogCategoriesRelations,
     authorsRelations,
