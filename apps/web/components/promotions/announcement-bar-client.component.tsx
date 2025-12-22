@@ -42,7 +42,10 @@ export function AnnouncementBarClient({
     useEffect(() => {
         const dismissed = localStorage.getItem(storageKey) === 'true'
         if (dismissed) {
-            setIsDismissed(true)
+            // Use setTimeout to avoid calling setState synchronously within an effect
+            setTimeout(() => {
+                setIsDismissed(true)
+            }, 0)
         }
     }, [storageKey])
 
