@@ -24,6 +24,7 @@ export type BlogPostFormData = {
     status: 'draft' | 'readyToPublish' | 'published'
     aiSummary?: string | null
     featuredImageUrl?: string | null
+    featuredImageId?: string | null
     readingTime?: number | null
 }
 
@@ -169,7 +170,12 @@ export async function updateBlogPost(
 
         // Handle featured image
         let featuredImageId = currentPost[0]?.featuredImageId ?? null
-        if (data.featuredImageUrl) {
+
+        if (data.featuredImageId) {
+            // Use existing image record (preserves AI-generated alt text)
+            featuredImageId = data.featuredImageId
+        } else if (data.featuredImageUrl) {
+            // Fallback: create/update record for URL-only input
             // Check if we need to create a new image record
             if (featuredImageId) {
                 // Update existing image

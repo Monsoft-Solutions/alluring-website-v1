@@ -59,6 +59,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         status: initialData?.status ?? 'draft',
         aiSummary: initialData?.aiSummary ?? null,
         featuredImageUrl: initialData?.featuredImageUrl ?? '',
+        featuredImageId: initialData?.featuredImageId ?? null,
         readingTime: initialData?.readingTime ?? null,
     })
 
@@ -103,7 +104,8 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         handleChange('aiSummary', summary)
     }
 
-    const handleSelectGeneratedImage = (_imageId: string, imageUrl: string) => {
+    const handleSelectGeneratedImage = (imageId: string, imageUrl: string) => {
+        handleChange('featuredImageId', imageId)
         handleChange('featuredImageUrl', imageUrl)
     }
 

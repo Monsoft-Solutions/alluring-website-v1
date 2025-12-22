@@ -77,6 +77,7 @@ export default async function EditBlogPostPage({ params }: PageProps) {
                     status: post.status ?? 'draft',
                     aiSummary: post.aiSummary,
                     featuredImageUrl: post.featuredImageUrl,
+                    featuredImageId: post.featuredImageId,
                     readingTime: post.readingTime,
                 }}
             />
