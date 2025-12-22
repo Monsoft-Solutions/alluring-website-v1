@@ -1,3 +1,5 @@
+import { unstable_cache } from 'next/cache'
+
 import { db } from '@workspace/db/client'
 import {
     author,
@@ -9,16 +11,17 @@ import {
     images,
 } from '@workspace/db/schema/blog'
 import { and, desc, eq, isNotNull, lt, or } from 'drizzle-orm'
+import { CACHE_TAGS } from '@workspace/shared/cache'
 
 import type { BlogPostCard } from '@/types/blog/post-card.type'
 
 const PAGE_SIZE_DEFAULT = 12
 
 /**
- * Fetch a page of published blog posts ordered by publishedAt DESC then id DESC.
- * Returns post card fields only for efficient listing.
+ * Internal function to fetch blog post cards from database
+ * This is wrapped by getPublishedPostCardsPage for caching
  */
-export async function getPublishedPostCardsPage(options?: {
+async function fetchPublishedPostCardsPage(options?: {
     limit?: number
     cursor?: { publishedAt: Date; id: string } | null
     categorySlug?: string | null
@@ -123,4 +126,44 @@ export async function getPublishedPostCardsPage(options?: {
     }
 
     return { items, nextCursor }
+}
+
+/**
+ * Get a page of published blog posts with caching
+ *
+ * Uses Next.js unstable_cache for cross-request caching.
+ * Cache is tagged with 'blog-posts' for on-demand invalidation.
+ *
+ * Note: Cursor-based pagination results are cached per cursor value.
+ * This means the first page is cached, but subsequent pages with cursors
+ * are also cached independently.
+ *
+ * @param options - Query options including limit, cursor, and taxonomy filters
+ * @returns Paginated blog post cards with next cursor
+ */
+export async function getPublishedPostCardsPage(options?: {
+    limit?: number
+    cursor?: { publishedAt: Date; id: string } | null
+    categorySlug?: string | null
+    tagSlug?: string | null
+}): Promise<{
+    items: BlogPostCard[]
+    nextCursor?: { publishedAt: Date; id: string }
+}> {
+    // Generate cache key based on options
+    const limit = options?.limit ?? PAGE_SIZE_DEFAULT
+    const categorySlug = options?.categorySlug ?? 'all'
+    const tagSlug = options?.tagSlug ?? 'all'
+    const cursorKey = options?.cursor
+        ? `${options.cursor.publishedAt.toISOString()}-${options.cursor.id}`
+        : 'initial'
+
+    return unstable_cache(
+        () => fetchPublishedPostCardsPage(options),
+        ['blog-posts-list', String(limit), categorySlug, tagSlug, cursorKey],
+        {
+            tags: [CACHE_TAGS.BLOG_POSTS],
+            revalidate: 60, // Cache for 60 seconds
+        }
+    )()
 }

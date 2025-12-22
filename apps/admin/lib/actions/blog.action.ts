@@ -7,6 +7,10 @@ import { revalidatePath } from 'next/cache'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
+import {
+    revalidateWebAppCache,
+    CACHE_TAGS,
+} from '@/lib/utils/revalidate-web.util'
 
 export type BlogPostFormData = {
     title: string
@@ -100,6 +104,9 @@ export async function createBlogPost(
 
         revalidatePath('/blog/posts')
         revalidatePath('/')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache([CACHE_TAGS.BLOG_POSTS])
 
         return { success: true, id: newPost?.id }
     } catch (error) {
@@ -218,6 +225,12 @@ export async function updateBlogPost(
         revalidatePath(`/blog/posts/${id}/edit`)
         revalidatePath('/')
 
+        // Revalidate web app cache
+        await revalidateWebAppCache([
+            CACHE_TAGS.BLOG_POSTS,
+            CACHE_TAGS.blogPostBySlug(data.slug),
+        ])
+
         return { success: true, id }
     } catch (error) {
         console.error('Error updating blog post:', error)
@@ -240,18 +253,25 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
     try {
         await requireAuth()
 
-        // Fetch the post to get featuredImageId before deletion
+        // Fetch the post to get featuredImageId and slug before deletion
         const [existingPost] = await db
-            .select({ featuredImageId: blogPost.featuredImageId })
+            .select({
+                featuredImageId: blogPost.featuredImageId,
+                slug: blogPost.slug,
+            })
             .from(blogPost)
             .where(eq(blogPost.id, id))
             .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Post not found' }
+        }
 
         // Delete the blog post first
         await db.delete(blogPost).where(eq(blogPost.id, id))
 
         // Clean up orphaned featured image if it exists
-        if (existingPost?.featuredImageId) {
+        if (existingPost.featuredImageId) {
             await db
                 .delete(images)
                 .where(eq(images.id, existingPost.featuredImageId))
@@ -259,6 +279,12 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
 
         revalidatePath('/blog/posts')
         revalidatePath('/')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache([
+            CACHE_TAGS.BLOG_POSTS,
+            CACHE_TAGS.blogPostBySlug(existingPost.slug),
+        ])
 
         return { success: true }
     } catch (error) {
@@ -286,7 +312,7 @@ export async function updateBlogPostStatus(
         await requireAuth()
 
         const currentPost = await db
-            .select({ status: blogPost.status })
+            .select({ status: blogPost.status, slug: blogPost.slug })
             .from(blogPost)
             .where(eq(blogPost.id, id))
             .limit(1)
@@ -310,6 +336,12 @@ export async function updateBlogPostStatus(
 
         revalidatePath('/blog/posts')
         revalidatePath('/')
+
+        // Revalidate web app cache
+        await revalidateWebAppCache([
+            CACHE_TAGS.BLOG_POSTS,
+            CACHE_TAGS.blogPostBySlug(currentPost[0]!.slug),
+        ])
 
         return { success: true }
     } catch (error) {

@@ -179,6 +179,16 @@ export function getAllGalleryTags(): string[] {
 }
 
 /**
+ * Get all blog-related tags for bulk revalidation.
+ * Use this when any blog post is created, updated, or deleted.
+ *
+ * @returns Array of all blog cache tags
+ */
+export function getAllBlogTags(): string[] {
+    return [CACHE_TAGS.BLOG_POSTS]
+}
+
+/**
  * Get all Instagram-related tags for bulk revalidation.
  * Use this when any Instagram content is synced or updated.
  *
