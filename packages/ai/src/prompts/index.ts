@@ -59,4 +59,8 @@ export {
     // Blog Analysis
     BLOG_ANALYSIS_SYSTEM_PROMPT,
     getBlogAnalysisPrompt,
+    // Featured Image Prompt Generation
+    FEATURED_IMAGE_PROMPT_SYSTEM,
+    getFeaturedImagePrompt,
+    type FeaturedImagePromptInput,
 } from './blog'

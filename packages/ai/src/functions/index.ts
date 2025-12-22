@@ -93,3 +93,9 @@ export {
     type GenerateImageAltOptions,
     type ImageAltResult,
 } from './generate-image-alt.function'
+
+export {
+    generateFeaturedImagePrompt,
+    type GenerateFeaturedImagePromptOptions,
+    type FeaturedImagePromptResult,
+} from './generate-featured-image-prompt.function'
