@@ -23,6 +23,7 @@ import { blogPost } from './blog-post.table'
 /**
  * Detailed analysis data structure (JSONB)
  * Contains category-specific details and suggestions
+ * Metric fields (wordCount, avgSentenceLength, etc.) are optional and included only when determinable
  */
 export type BlogPostAnalysisDetails = {
     categories: {
@@ -38,51 +39,51 @@ export type BlogPostAnalysisDetails = {
         }
         contentLength: {
             score: number
-            wordCount: number
+            wordCount?: number
             findings: string[]
             suggestions: string[]
         }
         readability: {
             score: number
-            avgSentenceLength: number
-            avgParagraphLength: number
+            avgSentenceLength?: number
+            avgParagraphLength?: number
             findings: string[]
             suggestions: string[]
         }
         headingStructure: {
             score: number
-            h1Count: number
-            h2Count: number
-            h3Count: number
+            h1Count?: number
+            h2Count?: number
+            h3Count?: number
             findings: string[]
             suggestions: string[]
         }
         keywords: {
             score: number
-            density: number
-            keywordInFirst100Words: boolean
+            density?: number
+            keywordInFirst100Words?: boolean
             findings: string[]
             suggestions: string[]
         }
         linking: {
             score: number
-            internalLinkCount: number
-            externalLinkCount: number
+            internalLinkCount?: number
+            externalLinkCount?: number
             findings: string[]
             suggestions: string[]
         }
         visualContent: {
             score: number
-            imageCount: number
-            hasFeaturedImage: boolean
-            imagesWithAlt: number
+            imageCount?: number
+            hasFeaturedImage?: boolean
+            imagesWithAlt?: number
             findings: string[]
             suggestions: string[]
         }
         structure: {
             score: number
-            hasTLDR: boolean
-            hasCTA: boolean
+            hasTLDR?: boolean
+            hasCTA?: boolean
             findings: string[]
             suggestions: string[]
         }

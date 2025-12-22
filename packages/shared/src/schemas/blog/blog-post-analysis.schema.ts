@@ -19,59 +19,66 @@ export const categoryScoreSchema = z.object({
 
 /**
  * Content length category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const contentLengthCategorySchema = categoryScoreSchema.extend({
-    wordCount: z.number().min(0),
+    wordCount: z.number().min(0).optional(),
 })
 
 /**
  * Readability category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const readabilityCategorySchema = categoryScoreSchema.extend({
-    avgSentenceLength: z.number().min(0),
-    avgParagraphLength: z.number().min(0),
+    avgSentenceLength: z.number().min(0).optional(),
+    avgParagraphLength: z.number().min(0).optional(),
 })
 
 /**
  * Heading structure category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const headingStructureCategorySchema = categoryScoreSchema.extend({
-    h1Count: z.number().min(0),
-    h2Count: z.number().min(0),
-    h3Count: z.number().min(0),
+    h1Count: z.number().min(0).optional(),
+    h2Count: z.number().min(0).optional(),
+    h3Count: z.number().min(0).optional(),
 })
 
 /**
  * Keywords category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const keywordsCategorySchema = categoryScoreSchema.extend({
-    density: z.number().min(0).max(100),
-    keywordInFirst100Words: z.boolean(),
+    density: z.number().min(0).max(100).optional(),
+    keywordInFirst100Words: z.boolean().optional(),
 })
 
 /**
  * Linking category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const linkingCategorySchema = categoryScoreSchema.extend({
-    internalLinkCount: z.number().min(0),
-    externalLinkCount: z.number().min(0),
+    internalLinkCount: z.number().min(0).optional(),
+    externalLinkCount: z.number().min(0).optional(),
 })
 
 /**
  * Visual content category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const visualContentCategorySchema = categoryScoreSchema.extend({
-    imageCount: z.number().min(0),
-    hasFeaturedImage: z.boolean(),
-    imagesWithAlt: z.number().min(0),
+    imageCount: z.number().min(0).optional(),
+    hasFeaturedImage: z.boolean().optional(),
+    imagesWithAlt: z.number().min(0).optional(),
 })
 
 /**
  * Structure category with additional metrics
+ * All metrics are optional - include only if determinable from content
  */
 export const structureCategorySchema = categoryScoreSchema.extend({
-    hasTLDR: z.boolean(),
-    hasCTA: z.boolean(),
+    hasTLDR: z.boolean().optional(),
+    hasCTA: z.boolean().optional(),
 })
 
 /**
@@ -106,7 +113,7 @@ export const blogPostAnalysisResultSchema = z.object({
         structure: structureCategorySchema,
     }),
     topSuggestions: z.array(suggestionSchema),
-    summary: z.string().min(50).max(500),
+    summary: z.string().min(50).max(1000),
 })
 
 /**

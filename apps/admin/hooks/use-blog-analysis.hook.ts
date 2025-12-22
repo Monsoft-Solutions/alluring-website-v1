@@ -155,7 +155,7 @@ export function useAnalyzeBlogPost() {
                 '/api/blog/analyze',
                 {
                     method: 'POST',
-                    body: JSON.stringify({ blogPostId }),
+                    body: { blogPostId }, // Let fetchApi handle stringification
                 }
             )
 

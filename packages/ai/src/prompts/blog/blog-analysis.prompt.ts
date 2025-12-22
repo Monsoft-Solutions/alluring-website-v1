@@ -91,16 +91,26 @@ Scoring Guidelines:
 - 0-39: Very Poor - fails to meet most criteria, complete rewrite suggested
 
 For each category:
-1. Provide specific, measurable findings
+1. Provide specific, measurable findings (REQUIRED)
 2. Identify what's working well
-3. List concrete, actionable suggestions
+3. List concrete, actionable suggestions (REQUIRED)
 4. Prioritize high-impact improvements
+5. Include detailed metrics ONLY if determinable from the content provided:
+   - Content Length: wordCount (if calculable)
+   - Readability: avgSentenceLength, avgParagraphLength (if analyzable)
+   - Heading Structure: h1Count, h2Count, h3Count (if present in content)
+   - Keywords: density, keywordInFirst100Words (if keywords are provided)
+   - Linking: internalLinkCount, externalLinkCount (if links are detectable)
+   - Visual Content: imageCount, hasFeaturedImage, imagesWithAlt (if images are mentioned)
+   - Structure: hasTLDR, hasCTA (if content structure is clear)
+
+**IMPORTANT**: If you cannot determine a specific metric from the provided content, OMIT that field entirely from your response. Do not include fields with undefined, null, or guessed values.
 
 Overall Analysis:
-- Calculate weighted overall score (0-100)
-- Assign letter grade (A/B/C/D/F)
-- Generate 3-5 top priority suggestions
-- Provide brief summary of strengths and key areas for improvement
+- Calculate weighted overall score (0-100) - REQUIRED
+- Assign letter grade (A/B/C/D/F) - REQUIRED
+- Generate 3-5 top priority suggestions - REQUIRED
+- Provide brief summary of strengths and key areas for improvement (50-1000 characters) - REQUIRED
 
 Be direct, specific, and actionable. Focus on improvements that will meaningfully impact SEO rankings and user engagement.`
 
@@ -191,16 +201,24 @@ H2: ${
 
 ---
 
-Analyze this blog post across all 9 categories. For each category:
-1. Assign a score (0-100) based on the criteria
-2. List specific findings (what's present, what's missing, what's problematic)
-3. Provide 2-4 actionable suggestions for improvement
+**Analysis Instructions:**
 
-Calculate the overall weighted score and assign a letter grade.
+Analyze this blog post across all 9 categories. For each category, you MUST provide:
+1. **score** (0-100) - REQUIRED - based on the criteria above
+2. **findings** (array of strings) - REQUIRED - specific observations about the content
+3. **suggestions** (array of strings) - REQUIRED - 2-4 actionable improvements
+
+For categories with optional metrics (wordCount, avgSentenceLength, etc.):
+- Use the statistics provided above to inform your analysis
+- Include the metric in your output ONLY if you can confidently determine it from the content
+- If you cannot determine a metric, simply omit it from that category
+- Do not include placeholder values, null, or undefined
+
+Calculate the overall weighted score and assign a letter grade (A/B/C/D/F).
 
 Identify the top 3-5 suggestions that would have the biggest impact on SEO and user engagement, prioritized as high/medium/low.
 
-Provide a brief summary (2-3 sentences) highlighting the post's strengths and the most critical areas for improvement.
+Provide a brief summary (2-3 sentences, 50-1000 characters) highlighting the post's strengths and the most critical areas for improvement.
 
-Be specific, measurable, and actionable in your feedback.`
+**Remember**: Score, findings, and suggestions are REQUIRED for every category. Additional metrics are OPTIONAL - only include them if determinable.`
 }
