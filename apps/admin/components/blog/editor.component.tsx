@@ -6,6 +6,7 @@ import { EditorContent, useEditor, type Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
+import { Markdown } from '@tiptap/markdown'
 import {
     Bold,
     Italic,
@@ -45,6 +46,7 @@ export function PostEditor({
                     levels: [1, 2, 3],
                 },
             }),
+            Markdown,
             Placeholder.configure({
                 placeholder,
             }),
@@ -63,13 +65,17 @@ export function PostEditor({
         content,
         immediatelyRender: false,
         onUpdate: ({ editor }) => {
-            onChange(editor.getHTML())
+            const markdown =
+                (editor as any).storage.markdown?.getMarkdown?.() ||
+                editor.getHTML()
+            onChange(markdown)
         },
         editorProps: {
             attributes: {
                 class: 'prose prose-stone max-w-none min-h-[400px] focus:outline-none p-4',
             },
         },
+        contentType: 'markdown',
     })
 
     if (!editor) {
