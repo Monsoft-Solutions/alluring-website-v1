@@ -46,9 +46,10 @@ Analysis Categories (all scored 0-100):
 - Grade level appropriate for audience
 
 **Heading Structure (10% weight)**
-- Single H1 (title only)
-- Logical H2 main sections
-- H3 subsections where needed
+- Content is in Markdown format (# = H1, ## = H2, ### = H3)
+- Single H1 (title only, marked with #)
+- Logical H2 main sections (marked with ##)
+- H3 subsections where needed (marked with ###)
 - No skipped hierarchy (H1 → H3)
 - Keywords in H2 headings (natural integration)
 - Clear content organization
@@ -62,13 +63,15 @@ Analysis Categories (all scored 0-100):
 - No awkward keyword forcing
 
 **Linking (10% weight)**
-- Internal links: 2-3 to related content
-- External links: To authority sources when relevant
+- Content uses Markdown links: [anchor text](url)
+- Internal links: 2-3 to related content (starting with / or contains alluringplasticsurgery.com)
+- External links: To authority sources when relevant (starting with http and doesn't contain alluringplasticsurgery.com)
 - Descriptive anchor text (not "click here")
 - Links add value and context
 - All links functional and relevant
 
 **Visual Content (10% weight)**
+- Content uses Markdown images: ![alt text](url)
 - Featured image present
 - Image alt text descriptive and keyword-aware
 - Multiple images for long content
@@ -134,27 +137,45 @@ export function getBlogAnalysisPrompt(input: {
         hasFeaturedImage,
     } = input
 
-    // Strip HTML tags for analysis
+    // Clean content for word count (remove Markdown syntax)
     const cleanContent = content
-        .replace(/<[^>]*>/g, ' ')
+        .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
+        .replace(/\[.*?\]\(.*?\)/g, '$1') // Remove link syntax, keep text
+        .replace(/^#+\s*/gm, '') // Remove heading markers
+        .replace(/[*_`~]/g, '') // Remove emphasis markers
         .replace(/\s+/g, ' ')
         .trim()
 
-    // Extract headings from content for analysis
-    const h1Matches = content.match(/<h1[^>]*>.*?<\/h1>/gi) || []
-    const h2Matches = content.match(/<h2[^>]*>.*?<\/h2>/gi) || []
-    const h3Matches = content.match(/<h3[^>]*>.*?<\/h3>/gi) || []
+    // Extract Markdown headings from content for analysis
+    const h1Matches = content.match(/^#\s+.+$/gm) || []
+    const h2Matches = content.match(/^##\s+.+$/gm) || []
+    const h3Matches = content.match(/^###\s+.+$/gm) || []
 
-    // Extract links for analysis
-    const internalLinks =
-        content.match(/<a[^>]*href=["']\/[^"']*["'][^>]*>/gi) || []
-    const externalLinks =
-        content.match(/<a[^>]*href=["']https?:\/\/[^"']*["'][^>]*>/gi) || []
+    // Extract Markdown links for analysis [text](url)
+    const allLinks = content.match(/\[([^\]]+)\]\(([^)]+)\)/g) || []
+    const internalLinks = allLinks.filter((link) => {
+        const urlMatch = link.match(/\]\(([^)]+)\)/)
+        const url = urlMatch?.[1]
+        return (
+            url?.startsWith('/') || url?.includes('alluringplasticsurgery.com')
+        )
+    })
+    const externalLinks = allLinks.filter((link) => {
+        const urlMatch = link.match(/\]\(([^)]+)\)/)
+        const url = urlMatch?.[1]
+        return (
+            url?.startsWith('http') &&
+            !url?.includes('alluringplasticsurgery.com')
+        )
+    })
 
-    // Extract images for analysis
-    const images = content.match(/<img[^>]*>/gi) || []
-    const imagesWithAlt =
-        content.match(/<img[^>]*alt=["'][^"']+["'][^>]*>/gi) || []
+    // Extract Markdown images for analysis ![alt](url)
+    const images = content.match(/!\[([^\]]*)\]\(([^)]+)\)/g) || []
+    const imagesWithAlt = images.filter((img) => {
+        const altMatch = img.match(/!\[([^\]]+)\]/)
+        const alt = altMatch?.[1]
+        return alt && alt.trim().length > 0
+    })
 
     // Count words
     const wordCount = cleanContent.split(/\s+/).length
@@ -188,13 +209,13 @@ Featured Image: ${hasFeaturedImage ? 'YES' : 'NO'}
 **Content Preview (first 500 words):**
 ${cleanContent.substring(0, 2500)}${cleanContent.length > 2500 ? '...' : ''}
 
-**Headings Found:**
-H1: ${h1Matches.length > 0 ? h1Matches.map((h) => h.replace(/<[^>]*>/g, '')).join(', ') : 'None'}
+**Headings Found (Markdown format):**
+H1: ${h1Matches.length > 0 ? h1Matches.map((h) => h.replace(/^#\s+/, '')).join(', ') : 'None'}
 H2: ${
         h2Matches.length > 0
             ? h2Matches
                   .slice(0, 5)
-                  .map((h) => h.replace(/<[^>]*>/g, ''))
+                  .map((h) => h.replace(/^##\s+/, ''))
                   .join(', ')
             : 'None'
     }${h2Matches.length > 5 ? ` (+ ${h2Matches.length - 5} more)` : ''}
@@ -202,6 +223,11 @@ H2: ${
 ---
 
 **Analysis Instructions:**
+
+The content above is in **Markdown format**:
+- Headings use # (H1), ## (H2), ### (H3)
+- Links use [anchor text](url)
+- Images use ![alt text](url)
 
 Analyze this blog post across all 9 categories. For each category, you MUST provide:
 1. **score** (0-100) - REQUIRED - based on the criteria above
