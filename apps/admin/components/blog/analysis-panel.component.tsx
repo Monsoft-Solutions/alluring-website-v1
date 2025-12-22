@@ -35,7 +35,6 @@ import { Alert, AlertDescription } from '@workspace/ui/components/alert'
 import {
     useBlogAnalysis,
     useAnalyzeBlogPost,
-    type BlogAnalysis,
 } from '@/hooks/use-blog-analysis.hook'
 
 import { AnalysisScoreCard } from './analysis-score-card.component'
