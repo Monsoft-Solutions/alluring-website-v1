@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import type { ColumnDef, SortingState } from '@tanstack/react-table'
 import {
     FileText,
     AlertCircle,
@@ -15,22 +16,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@workspace/ui/components/table'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@workspace/ui/components/select'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import {
     Tooltip,
@@ -40,69 +25,44 @@ import {
 } from '@workspace/ui/components/tooltip'
 
 import { useSearchConsolePages } from '@/hooks/use-search-console.hook'
+import type { SearchPage } from '@/lib/types/search-console/search-console.type'
+import { ServerDataTable } from '@/components/shared/server-data-table.component'
+import { SortableHeader } from '@/components/shared/sortable-header.component'
 import { PageDeepDiveDialog } from './page-deep-dive-dialog.component'
 
 type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
 type SortDirection = 'asc' | 'desc'
-
-/** Combined sort options for the dropdown */
-const SORT_OPTIONS = [
-    {
-        value: 'clicks_desc',
-        label: 'Clicks ↓',
-        field: 'clicks',
-        direction: 'desc',
-    },
-    {
-        value: 'clicks_asc',
-        label: 'Clicks ↑',
-        field: 'clicks',
-        direction: 'asc',
-    },
-    {
-        value: 'impressions_desc',
-        label: 'Impressions ↓',
-        field: 'impressions',
-        direction: 'desc',
-    },
-    {
-        value: 'impressions_asc',
-        label: 'Impressions ↑',
-        field: 'impressions',
-        direction: 'asc',
-    },
-    { value: 'ctr_desc', label: 'CTR ↓', field: 'ctr', direction: 'desc' },
-    { value: 'ctr_asc', label: 'CTR ↑', field: 'ctr', direction: 'asc' },
-    {
-        value: 'position_desc',
-        label: 'Position (best)',
-        field: 'position',
-        direction: 'desc',
-    },
-    {
-        value: 'position_asc',
-        label: 'Position (worst)',
-        field: 'position',
-        direction: 'asc',
-    },
-] as const
 
 type SearchPagesCardProps = {
     days?: number
 }
 
 /**
+ * Format page URL to show only the path.
+ */
+function formatPagePath(url: string): string {
+    try {
+        const urlObj = new URL(url)
+        return urlObj.pathname || '/'
+    } catch {
+        return url
+    }
+}
+
+/**
  * Search pages card displaying top pages from Google Search Console.
+ * Uses TanStack Table with server-side sorting via clickable column headers.
  */
 export function SearchPagesCard({ days = 28 }: SearchPagesCardProps) {
-    const [sortValue, setSortValue] = useState('clicks_desc')
+    // Default sort: clicks descending
+    const [sorting, setSorting] = useState<SortingState>([
+        { id: 'clicks', desc: true },
+    ])
     const [selectedPage, setSelectedPage] = useState<string | null>(null)
 
-    // Parse the combined sort value
-    const sortOption =
-        SORT_OPTIONS.find((opt) => opt.value === sortValue) ?? SORT_OPTIONS[0]
-    const orderBy = sortOption.field as SortField
-    const orderDirection = sortOption.direction as SortDirection
+    // Convert TanStack sorting state to API parameters
+    const orderBy = (sorting[0]?.id ?? 'clicks') as SortField
+    const orderDirection: SortDirection = sorting[0]?.desc ? 'desc' : 'asc'
 
     const { data, isLoading, error, refetch } = useSearchConsolePages(
         days,
@@ -111,47 +71,132 @@ export function SearchPagesCard({ days = 28 }: SearchPagesCardProps) {
         orderDirection
     )
 
-    /**
-     * Format page URL to show only the path
-     */
-    const formatPagePath = (url: string) => {
-        try {
-            const urlObj = new URL(url)
-            return urlObj.pathname || '/'
-        } catch {
-            return url
-        }
-    }
+    // Define columns with TanStack Table format
+    const columns = useMemo<ColumnDef<SearchPage>[]>(
+        () => [
+            {
+                accessorKey: 'page',
+                header: 'Page',
+                enableSorting: false, // Page column not sortable
+                cell: ({ row }) => (
+                    <div className='max-w-[200px]'>
+                        <a
+                            href={row.original.page}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='flex items-center gap-1 truncate font-medium hover:text-stone-600 hover:underline'
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {formatPagePath(row.original.page)}
+                            <ExternalLink className='h-3 w-3 flex-shrink-0 opacity-50' />
+                        </a>
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'clicks',
+                header: ({ column }) => (
+                    <SortableHeader
+                        column={column}
+                        title='Clicks'
+                        className='justify-center'
+                    />
+                ),
+                cell: ({ row }) => (
+                    <div className='text-center'>
+                        {row.original.clicks.toLocaleString()}
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'impressions',
+                header: ({ column }) => (
+                    <SortableHeader
+                        column={column}
+                        title='Impressions'
+                        className='justify-center'
+                    />
+                ),
+                cell: ({ row }) => (
+                    <div className='text-center'>
+                        {row.original.impressions.toLocaleString()}
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'ctr',
+                header: ({ column }) => (
+                    <SortableHeader
+                        column={column}
+                        title='CTR'
+                        className='justify-center'
+                    />
+                ),
+                cell: ({ row }) => (
+                    <div className='text-center'>
+                        {(row.original.ctr * 100).toFixed(1)}%
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'position',
+                header: ({ column }) => (
+                    <SortableHeader
+                        column={column}
+                        title='Position'
+                        className='justify-center'
+                    />
+                ),
+                cell: ({ row }) => (
+                    <div className='text-center'>
+                        {row.original.position.toFixed(1)}
+                    </div>
+                ),
+            },
+            {
+                id: 'actions',
+                header: '',
+                enableSorting: false,
+                cell: ({ row }) => (
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant='ghost'
+                                    size='icon'
+                                    className='h-8 w-8'
+                                    onClick={() =>
+                                        setSelectedPage(row.original.page)
+                                    }
+                                >
+                                    <Search className='h-4 w-4' />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                View all queries for this page
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                ),
+            },
+        ],
+        []
+    )
 
     return (
         <Card>
-            <CardHeader className='flex flex-row items-center justify-between'>
-                <div>
-                    <CardTitle className='flex items-center gap-2 text-lg'>
-                        <FileText className='h-5 w-5' />
-                        Top Pages
-                    </CardTitle>
-                    <CardDescription>
-                        Pages with the most search visibility
-                    </CardDescription>
-                </div>
-                <Select value={sortValue} onValueChange={setSortValue}>
-                    <SelectTrigger className='w-[160px]'>
-                        <SelectValue placeholder='Sort by' />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {SORT_OPTIONS.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+            <CardHeader>
+                <CardTitle className='flex items-center gap-2 text-lg'>
+                    <FileText className='h-5 w-5' />
+                    Top Pages
+                </CardTitle>
+                <CardDescription>
+                    Pages with the most search visibility. Click column headers
+                    to sort.
+                </CardDescription>
             </CardHeader>
             <CardContent>
-                {isLoading ? (
-                    <TableSkeleton />
-                ) : error ? (
+                {error ? (
                     <div className='flex h-[300px] flex-col items-center justify-center gap-3'>
                         <AlertCircle className='h-5 w-5 text-red-500' />
                         <p className='text-muted-foreground text-sm'>
@@ -166,89 +211,17 @@ export function SearchPagesCard({ days = 28 }: SearchPagesCardProps) {
                             Retry
                         </Button>
                     </div>
-                ) : data?.data && data.data.length > 0 ? (
+                ) : (
                     <>
-                        <div className='max-h-[400px] overflow-auto'>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Page</TableHead>
-                                        <TableHead className='text-right'>
-                                            Clicks
-                                        </TableHead>
-                                        <TableHead className='text-right'>
-                                            Impressions
-                                        </TableHead>
-                                        <TableHead className='text-right'>
-                                            CTR
-                                        </TableHead>
-                                        <TableHead className='text-right'>
-                                            Position
-                                        </TableHead>
-                                        <TableHead className='w-[50px]'></TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {data.data.map((page) => (
-                                        <TableRow
-                                            key={page.page}
-                                            className='group'
-                                        >
-                                            <TableCell className='max-w-[200px]'>
-                                                <a
-                                                    href={page.page}
-                                                    target='_blank'
-                                                    rel='noopener noreferrer'
-                                                    className='flex items-center gap-1 truncate font-medium hover:text-stone-600 hover:underline'
-                                                    onClick={(e) =>
-                                                        e.stopPropagation()
-                                                    }
-                                                >
-                                                    {formatPagePath(page.page)}
-                                                    <ExternalLink className='h-3 w-3 flex-shrink-0 opacity-50' />
-                                                </a>
-                                            </TableCell>
-                                            <TableCell className='text-right'>
-                                                {page.clicks.toLocaleString()}
-                                            </TableCell>
-                                            <TableCell className='text-right'>
-                                                {page.impressions.toLocaleString()}
-                                            </TableCell>
-                                            <TableCell className='text-right'>
-                                                {(page.ctr * 100).toFixed(1)}%
-                                            </TableCell>
-                                            <TableCell className='text-right'>
-                                                {page.position.toFixed(1)}
-                                            </TableCell>
-                                            <TableCell>
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <Button
-                                                                variant='ghost'
-                                                                size='icon'
-                                                                className='h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100'
-                                                                onClick={() =>
-                                                                    setSelectedPage(
-                                                                        page.page
-                                                                    )
-                                                                }
-                                                            >
-                                                                <Search className='h-4 w-4' />
-                                                            </Button>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>
-                                                            View all queries for
-                                                            this page
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </div>
+                        <ServerDataTable
+                            data={data?.data ?? []}
+                            columns={columns}
+                            sorting={sorting}
+                            onSortingChange={setSorting}
+                            isLoading={isLoading}
+                            emptyMessage='No page data yet'
+                            getRowId={(row) => row.page}
+                        />
 
                         {/* Page Deep Dive Dialog */}
                         <PageDeepDiveDialog
@@ -259,30 +232,8 @@ export function SearchPagesCard({ days = 28 }: SearchPagesCardProps) {
                             pageUrl={selectedPage ?? ''}
                         />
                     </>
-                ) : (
-                    <div className='flex h-[300px] items-center justify-center'>
-                        <p className='text-muted-foreground text-sm'>
-                            No page data yet
-                        </p>
-                    </div>
                 )}
             </CardContent>
         </Card>
-    )
-}
-
-function TableSkeleton() {
-    return (
-        <div className='space-y-3'>
-            {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className='flex items-center gap-4'>
-                    <Skeleton className='h-4 flex-1' />
-                    <Skeleton className='h-4 w-16' />
-                    <Skeleton className='h-4 w-16' />
-                    <Skeleton className='h-4 w-12' />
-                    <Skeleton className='h-4 w-12' />
-                </div>
-            ))}
-        </div>
     )
 }

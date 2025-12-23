@@ -92,6 +92,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.91.1
         version: 5.91.1(@tanstack/react-query@5.90.12(react@19.2.1))(react@19.2.1)
+      '@tanstack/react-table':
+        specifier: ^8.21.3
+        version: 8.21.3(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@tiptap/extension-character-count':
         specifier: 3.12.1
         version: 3.12.1(@tiptap/extensions@3.12.1(@tiptap/core@3.12.1(@tiptap/pm@3.12.1))(@tiptap/pm@3.12.1))
@@ -157,7 +160,7 @@ importers:
         version: 0.554.0(react@19.2.1)
       next:
         specifier: ^16.0.7
-        version: 16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: ^19.2.1
         version: 19.2.1
@@ -287,7 +290,7 @@ importers:
         version: 0.554.0(react@19.2.1)
       next:
         specifier: ^16.0.7
-        version: 16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       next-mdx-remote:
         specifier: ^5.0.0
         version: 5.0.0(@types/react@19.2.7)(react@19.2.1)
@@ -541,7 +544,7 @@ importers:
         version: link:../typescript-config
       next:
         specifier: ^16.0.7
-        version: 16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -2489,6 +2492,17 @@ packages:
     resolution: {integrity: sha512-graRZspg7EoEaw0a8faiUASCyJrqjKPdqJ9EwuDRUF9mEYJ1YPczI9H+/agJ0mOJkPCJDk0lsz5QTrLZ/jQ2rg==}
     peerDependencies:
       react: ^18 || ^19
+
+  '@tanstack/react-table@8.21.3':
+    resolution: {integrity: sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
 
   '@tiptap/core@3.12.1':
     resolution: {integrity: sha512-dn5uTnsTUjMze26iRhcus8+2auW9+/vOpk6suXg/lhBp+UzOM+EALKE3S5086ANJNgBh1PDHoBX+r1T7wEmheg==}
@@ -7781,6 +7795,14 @@ snapshots:
       '@tanstack/query-core': 5.90.12
       react: 19.2.1
 
+  '@tanstack/react-table@8.21.3(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+    dependencies:
+      '@tanstack/table-core': 8.21.3
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+
+  '@tanstack/table-core@8.21.3': {}
+
   '@tiptap/core@3.12.1(@tiptap/pm@3.12.1)':
     dependencies:
       '@tiptap/pm': 3.12.1
@@ -10755,7 +10777,7 @@ snapshots:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  next@16.0.7(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  next@16.0.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@next/env': 16.0.7
       '@swc/helpers': 0.5.15
@@ -10763,7 +10785,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
-      styled-jsx: 5.1.6(react@19.2.1)
+      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.0.7
       '@next/swc-darwin-x64': 16.0.7
@@ -11821,10 +11843,12 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.7
 
-  styled-jsx@5.1.6(react@19.2.1):
+  styled-jsx@5.1.6(@babel/core@7.28.5)(react@19.2.1):
     dependencies:
       client-only: 0.0.1
       react: 19.2.1
+    optionalDependencies:
+      '@babel/core': 7.28.5
 
   supports-color@5.5.0:
     dependencies:
