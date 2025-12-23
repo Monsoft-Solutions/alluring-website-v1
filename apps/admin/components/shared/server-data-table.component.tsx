@@ -81,6 +81,7 @@ export function ServerDataTable<TData>({
     emptyIcon,
     getRowId,
 }: ServerDataTableProps<TData>) {
+    // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data,
         columns,

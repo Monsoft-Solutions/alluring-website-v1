@@ -3,7 +3,8 @@
  *
  * Submits (or resubmits) a sitemap to Google Search Console.
  */
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import {
@@ -50,7 +51,7 @@ export async function POST(
         }
 
         // Parse and validate request body
-        const body = await request.json()
+        const body = (await request.json()) as unknown
         const validationResult = submitSitemapSchema.safeParse(body)
 
         if (!validationResult.success) {
