@@ -196,6 +196,11 @@
             "import": "./dist/components/radio-group.js",
             "default": "./dist/components/radio-group.js"
         },
+        "./components/scroll-area": {
+            "types": "./dist/components/scroll-area.d.ts",
+            "import": "./dist/components/scroll-area.js",
+            "default": "./dist/components/scroll-area.js"
+        },
         "./components/multi-select": {
             "types": "./dist/components/multi-select.d.ts",
             "import": "./dist/components/multi-select.js",

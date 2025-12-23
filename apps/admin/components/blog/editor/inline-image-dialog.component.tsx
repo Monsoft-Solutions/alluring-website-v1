@@ -75,46 +75,52 @@ export function InlineImageDialog({
     // Ref to track previous open state for auto-generation
     const wasOpenRef = useRef(false)
 
-    const handleGeneratePrompt = useCallback(async () => {
-        if (!selectedText) {
-            toast.error('No text selected')
-            return
-        }
+    const handleGeneratePrompt = useCallback(
+        async (explicitType?: InlineImageTypeId) => {
+            if (!selectedText) {
+                toast.error('No text selected')
+                return
+            }
 
-        setIsGeneratingPrompt(true)
-        try {
-            const response = await fetch(
-                '/api/blog/generate-inline-image-prompt',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        selectedText,
-                        imageType: selectedType,
-                        blogPostId,
-                    }),
+            // Use explicit type if provided, otherwise fall back to current selectedType
+            const imageType = explicitType ?? selectedType
+
+            setIsGeneratingPrompt(true)
+            try {
+                const response = await fetch(
+                    '/api/blog/generate-inline-image-prompt',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            selectedText,
+                            imageType,
+                            blogPostId,
+                        }),
+                    }
+                )
+
+                const data = (await response.json()) as {
+                    success: boolean
+                    prompt?: string
+                    error?: string
                 }
-            )
 
-            const data = (await response.json()) as {
-                success: boolean
-                prompt?: string
-                error?: string
+                if (data.success && data.prompt) {
+                    setPrompt(data.prompt)
+                    toast.success('Prompt generated!')
+                } else {
+                    toast.error(data.error || 'Failed to generate prompt')
+                }
+            } catch (error) {
+                console.error('Error generating prompt:', error)
+                toast.error('Failed to generate prompt')
+            } finally {
+                setIsGeneratingPrompt(false)
             }
-
-            if (data.success && data.prompt) {
-                setPrompt(data.prompt)
-                toast.success('Prompt generated!')
-            } else {
-                toast.error(data.error || 'Failed to generate prompt')
-            }
-        } catch (error) {
-            console.error('Error generating prompt:', error)
-            toast.error('Failed to generate prompt')
-        } finally {
-            setIsGeneratingPrompt(false)
-        }
-    }, [selectedText, selectedType, blogPostId])
+        },
+        [selectedText, selectedType, blogPostId]
+    )
 
     // Auto-generate prompt when dialog opens with selected text
     useEffect(() => {
@@ -131,10 +137,8 @@ export function InlineImageDialog({
             // Auto-regenerate prompt when type changes
             if (selectedText && !isGeneratingPrompt) {
                 setPrompt('')
-                // Delay slightly so state updates properly
-                setTimeout(() => {
-                    void handleGeneratePrompt()
-                }, 100)
+                // Pass newType explicitly to avoid stale closure
+                void handleGeneratePrompt(newType)
             }
         },
         [selectedText, isGeneratingPrompt, handleGeneratePrompt]
@@ -267,7 +271,7 @@ export function InlineImageDialog({
                                 type='button'
                                 variant='outline'
                                 size='sm'
-                                onClick={handleGeneratePrompt}
+                                onClick={() => void handleGeneratePrompt()}
                                 disabled={isGeneratingPrompt || !selectedText}
                             >
                                 {isGeneratingPrompt ? (
