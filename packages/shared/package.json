@@ -39,6 +39,11 @@
             "types": "./dist/schemas/blog/index.d.ts",
             "import": "./dist/schemas/blog/index.js",
             "default": "./dist/schemas/blog/index.js"
+        },
+        "./schemas/seo": {
+            "types": "./dist/schemas/seo/index.d.ts",
+            "import": "./dist/schemas/seo/index.js",
+            "default": "./dist/schemas/seo/index.js"
         }
     },
     "scripts": {

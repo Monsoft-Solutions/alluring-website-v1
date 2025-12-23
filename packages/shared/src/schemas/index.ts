@@ -139,3 +139,15 @@ export {
     type BlogPostAnalysisResult,
     type AnalyzeBlogPostInput,
 } from './blog'
+
+// SEO schemas
+export {
+    // Zod schemas
+    contentBriefSchema,
+    generateContentBriefInputSchema,
+    outlineSectionSchema,
+    // Types
+    type ContentBrief,
+    type GenerateContentBriefInput,
+    type OutlineSection,
+} from './seo'

@@ -99,3 +99,9 @@ export {
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,
 } from './generate-featured-image-prompt.function'
+
+// SEO Content Brief
+export {
+    generateContentBrief,
+    type GenerateContentBriefOptions,
+} from './generate-content-brief.function'

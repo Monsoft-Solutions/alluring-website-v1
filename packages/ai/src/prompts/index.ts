@@ -64,3 +64,9 @@ export {
     getFeaturedImagePrompt,
     type FeaturedImagePromptInput,
 } from './blog'
+
+export {
+    // Content Brief Generation
+    CONTENT_BRIEF_SYSTEM_PROMPT,
+    getContentBriefPrompt,
+} from './seo'
