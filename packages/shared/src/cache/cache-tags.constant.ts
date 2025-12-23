@@ -46,6 +46,10 @@ export const CACHE_TAGS = {
     /** Tag for all Instagram post queries */
     INSTAGRAM_POSTS: 'instagram-posts',
 
+    // Sitemap URL registry tags
+    /** Tag for URL registry used in page classification */
+    SITEMAP_URLS: 'sitemap-urls',
+
     /**
      * Generate a tag for a specific promotion by slug
      * @param slug - The promotion slug
@@ -95,6 +99,7 @@ export const ALLOWED_STATIC_TAGS = [
     CACHE_TAGS.GALLERY_MEDIA,
     CACHE_TAGS.BEFORE_AFTER_PAIRS,
     CACHE_TAGS.INSTAGRAM_POSTS,
+    CACHE_TAGS.SITEMAP_URLS,
 ] as const
 
 /**
@@ -196,4 +201,15 @@ export function getAllBlogTags(): string[] {
  */
 export function getAllInstagramTags(): string[] {
     return [CACHE_TAGS.INSTAGRAM_POSTS]
+}
+
+/**
+ * Get all sitemap URL registry tags for bulk revalidation.
+ * Use this when blog posts are published, unpublished, or deleted
+ * to update the URL classification registry.
+ *
+ * @returns Array of sitemap URL cache tags
+ */
+export function getSitemapUrlTags(): string[] {
+    return [CACHE_TAGS.SITEMAP_URLS]
 }

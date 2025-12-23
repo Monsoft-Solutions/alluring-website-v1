@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 import type { ColumnDef, SortingState } from '@tanstack/react-table'
 import {
     FileText,
@@ -8,6 +9,7 @@ import {
     RefreshCw,
     ExternalLink,
     Search,
+    ArrowRight,
 } from 'lucide-react'
 import {
     Card,
@@ -25,13 +27,14 @@ import {
 } from '@workspace/ui/components/tooltip'
 
 import { useSearchConsolePages } from '@/hooks/use-search-console.hook'
-import type { SearchPage } from '@/lib/types/search-console/search-console.type'
+import type {
+    SearchPage,
+    SortField,
+    SortDirection,
+} from '@/lib/types/search-console/search-console.type'
 import { ServerDataTable } from '@/components/shared/server-data-table.component'
 import { SortableHeader } from '@/components/shared/sortable-header.component'
 import { PageDeepDiveDialog } from './page-deep-dive-dialog.component'
-
-type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
-type SortDirection = 'asc' | 'desc'
 
 type SearchPagesCardProps = {
     days?: number
@@ -185,15 +188,23 @@ export function SearchPagesCard({ days = 28 }: SearchPagesCardProps) {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle className='flex items-center gap-2 text-lg'>
-                    <FileText className='h-5 w-5' />
-                    Top Pages
-                </CardTitle>
-                <CardDescription>
-                    Pages with the most search visibility. Click column headers
-                    to sort.
-                </CardDescription>
+            <CardHeader className='flex flex-row items-start justify-between'>
+                <div>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <FileText className='h-5 w-5' />
+                        Top Pages
+                    </CardTitle>
+                    <CardDescription>
+                        Pages with the most search visibility. Click column
+                        headers to sort.
+                    </CardDescription>
+                </div>
+                <Button variant='ghost' size='sm' asChild>
+                    <Link href='/seo/pages'>
+                        View All
+                        <ArrowRight className='ml-2 h-4 w-4' />
+                    </Link>
+                </Button>
             </CardHeader>
             <CardContent>
                 {error ? (

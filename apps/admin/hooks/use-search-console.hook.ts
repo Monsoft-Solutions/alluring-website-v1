@@ -15,6 +15,9 @@ import type {
     QueryTrendData,
     SortField,
     SortDirection,
+    PageType,
+    SearchPageWithType,
+    PageTrendData,
 } from '@/lib/types/search-console/search-console.type'
 
 /**
@@ -92,6 +95,27 @@ export const searchConsoleKeys = {
         [...searchConsoleKeys.all, 'query-pages', query, days] as const,
     queryTrend: (query: string, days: number) =>
         [...searchConsoleKeys.all, 'query-trend', query, days] as const,
+    // Page Performance Analysis keys
+    pageSearch: (
+        term: string,
+        pageType: PageType | 'all',
+        days: number,
+        limit: number,
+        orderBy: SortField,
+        orderDirection: SortDirection
+    ) =>
+        [
+            ...searchConsoleKeys.all,
+            'page-search',
+            term,
+            pageType,
+            days,
+            limit,
+            orderBy,
+            orderDirection,
+        ] as const,
+    pageTrend: (pageUrl: string, days: number) =>
+        [...searchConsoleKeys.all, 'page-trend', pageUrl, days] as const,
 } as const
 
 /**
@@ -450,5 +474,85 @@ export function useQueryTrend(query: string, days = 28, enabled = true) {
         },
         staleTime: 5 * 60_000, // 5 minutes
         enabled: enabled && !!query,
+    })
+}
+
+// ============================================================================
+// Page Performance Analysis Hooks
+// ============================================================================
+
+/**
+ * Hook to search pages by term and filter by page type.
+ *
+ * @param term - Search term matching page path (empty returns all pages)
+ * @param pageType - Filter by page type ('blog' | 'procedure' | 'marketing' | 'other' | 'all')
+ * @param days - Number of days to analyze (default: 28)
+ * @param limit - Number of pages to fetch (default: 100)
+ * @param orderBy - Sort field (default: 'clicks')
+ * @param orderDirection - Sort direction (default: 'desc')
+ * @param enabled - Whether to enable the query (default: true)
+ */
+export function usePageSearch(
+    term: string,
+    pageType: PageType | 'all' = 'all',
+    days = 28,
+    limit = 100,
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc',
+    enabled = true
+) {
+    return useQuery({
+        queryKey: searchConsoleKeys.pageSearch(
+            term,
+            pageType,
+            days,
+            limit,
+            orderBy,
+            orderDirection
+        ),
+        queryFn: async () => {
+            const response = await fetchApi<
+                SearchConsoleResponse<SearchPageWithType[]>
+            >(
+                buildUrl('/api/admin/search-console/pages/search', {
+                    term,
+                    pageType,
+                    days,
+                    limit,
+                    orderBy,
+                    orderDirection,
+                })
+            )
+            return response
+        },
+        staleTime: 5 * 60_000, // 5 minutes
+        enabled,
+    })
+}
+
+/**
+ * Hook to fetch historical trend for a specific page.
+ * Used for charting page performance over time.
+ *
+ * @param pageUrl - The full URL of the page
+ * @param days - Number of days to analyze (default: 28)
+ * @param enabled - Whether to enable the query (default: true)
+ */
+export function usePageTrend(pageUrl: string, days = 28, enabled = true) {
+    return useQuery({
+        queryKey: searchConsoleKeys.pageTrend(pageUrl, days),
+        queryFn: async () => {
+            const response = await fetchApi<
+                SearchConsoleResponse<PageTrendData[]>
+            >(
+                buildUrl('/api/admin/search-console/pages/trend', {
+                    pageUrl,
+                    days,
+                })
+            )
+            return response
+        },
+        staleTime: 5 * 60_000, // 5 minutes
+        enabled: enabled && !!pageUrl,
     })
 }

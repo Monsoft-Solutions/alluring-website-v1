@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 import type { ColumnDef, SortingState } from '@tanstack/react-table'
-import { Search, AlertCircle, RefreshCw } from 'lucide-react'
+import { Search, AlertCircle, RefreshCw, ArrowRight } from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -13,12 +14,13 @@ import {
 import { Button } from '@workspace/ui/components/button'
 
 import { useSearchConsoleQueries } from '@/hooks/use-search-console.hook'
-import type { SearchQuery } from '@/lib/types/search-console/search-console.type'
+import type {
+    SearchQuery,
+    SortField,
+    SortDirection,
+} from '@/lib/types/search-console/search-console.type'
 import { ServerDataTable } from '@/components/shared/server-data-table.component'
 import { SortableHeader } from '@/components/shared/sortable-header.component'
-
-type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
-type SortDirection = 'asc' | 'desc'
 
 type SearchQueriesCardProps = {
     days?: number
@@ -124,15 +126,23 @@ export function SearchQueriesCard({ days = 28 }: SearchQueriesCardProps) {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle className='flex items-center gap-2 text-lg'>
-                    <Search className='h-5 w-5' />
-                    Top Search Queries
-                </CardTitle>
-                <CardDescription>
-                    Search terms bringing visitors to your site. Click column
-                    headers to sort.
-                </CardDescription>
+            <CardHeader className='flex flex-row items-start justify-between'>
+                <div>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <Search className='h-5 w-5' />
+                        Top Search Queries
+                    </CardTitle>
+                    <CardDescription>
+                        Search terms bringing visitors to your site. Click
+                        column headers to sort.
+                    </CardDescription>
+                </div>
+                <Button variant='ghost' size='sm' asChild>
+                    <Link href='/seo/queries'>
+                        View All
+                        <ArrowRight className='ml-2 h-4 w-4' />
+                    </Link>
+                </Button>
             </CardHeader>
             <CardContent>
                 {error ? (

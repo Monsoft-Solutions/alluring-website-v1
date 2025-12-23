@@ -25,7 +25,16 @@ export {
     getTopPages,
     getQueriesForPage,
     getPagesForQuery,
+    searchPages,
+    getPageTrend,
+    extractPath,
 } from './google-search-console-pages.service'
+
+// Page Classification
+export {
+    classifyPageBySitemap,
+    classifyPagesBySitemap,
+} from '@/lib/services/sitemap/url-registry.service'
 
 // Trends
 export { getPerformanceTrend } from './google-search-console-trends.service'
