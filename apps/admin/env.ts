@@ -51,6 +51,14 @@ export const env = createEnv({
 
         // fal.ai for AI image generation
         FAL_KEY: z.string().min(1),
+
+        // Google Search Console API (optional - for SEO insights)
+        // Use same service account as Google Indexing API
+        GOOGLE_CLIENT_EMAIL: z.string().email().optional(),
+        GOOGLE_PRIVATE_KEY: z.string().optional(),
+        // Site URL for Search Console - use "sc-domain:example.com" for domain properties
+        // or "https://example.com" for URL-prefix properties
+        GOOGLE_SEARCH_CONSOLE_SITE_URL: z.string().optional(),
     },
     client: {
         // Public web app URL for building absolute links

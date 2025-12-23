@@ -14,6 +14,7 @@ import {
     Send,
     Megaphone,
     Bot,
+    Search,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -35,6 +36,11 @@ const navItems: NavItem[] = [
         title: 'Analytics',
         href: '/analytics',
         icon: BarChart3,
+    },
+    {
+        title: 'SEO Insights',
+        href: '/seo',
+        icon: Search,
     },
     {
         title: 'Promotions',

@@ -39,6 +39,7 @@
         "@workspace/shared": "workspace:*",
         "@workspace/ui": "workspace:*",
         "drizzle-orm": "^0.44.7",
+        "googleapis": "^169.0.0",
         "jiti": "^2.6.1",
         "lowlight": "^3.3.0",
         "lucide-react": "^0.554.0",

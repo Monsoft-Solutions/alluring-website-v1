@@ -41,6 +41,7 @@
                 "AUTH_SECRET",
                 "GOOGLE_CLIENT_EMAIL",
                 "GOOGLE_PRIVATE_KEY",
+                "GOOGLE_SEARCH_CONSOLE_SITE_URL",
                 "NEXUITE_CRM_API_URL",
                 "FAL_KEY"
             ]
@@ -99,6 +100,7 @@
                 "AUTH_SECRET",
                 "GOOGLE_CLIENT_EMAIL",
                 "GOOGLE_PRIVATE_KEY",
+                "GOOGLE_SEARCH_CONSOLE_SITE_URL",
                 "NEXUITE_CRM_API_URL",
                 "FAL_KEY"
             ]
