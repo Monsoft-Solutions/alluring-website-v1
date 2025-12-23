@@ -33,6 +33,17 @@ const topicSuggestionSchema = z.object({
         .describe(
             'What makes this perspective different from existing content'
         ),
+    targetAudience: z
+        .string()
+        .describe(
+            'Specific target audience for this topic (e.g., "Women 30-45 considering BBL surgery in Miami")'
+        ),
+    painPoints: z
+        .array(z.string())
+        .optional()
+        .describe(
+            'Key pain points, concerns, or questions this topic addresses'
+        ),
     estimatedWordCount: z
         .number()
         .optional()
@@ -74,6 +85,16 @@ const generateTopicsResponseSchema = z.object({
 const DEFAULT_MODEL_ID = 'gpt-4.1'
 
 /**
+ * Selected keywords from Google Search Console
+ */
+export type SelectedKeywords = {
+    /** Primary keyword (main target) */
+    primary: string | null
+    /** Secondary keywords (supporting) */
+    secondary: string[]
+}
+
+/**
  * Options for topic generation
  */
 export type GenerateBlogTopicsOptions = {
@@ -87,6 +108,8 @@ export type GenerateBlogTopicsOptions = {
     existingTopics?: string[]
     /** Additional context or requirements */
     additionalContext?: string
+    /** Selected keywords from Google Search Console */
+    selectedKeywords?: SelectedKeywords
     /** Model ID to use */
     modelId?: string
     /** Temperature for creativity (higher = more creative) */
@@ -141,6 +164,7 @@ export async function generateBlogTopics(
         targetAudience,
         existingTopics,
         additionalContext,
+        selectedKeywords,
         modelId = DEFAULT_MODEL_ID,
         temperature = 0.8, // Higher temperature for creativity
     } = options
@@ -155,6 +179,7 @@ export async function generateBlogTopics(
             targetAudience,
             existingTopics,
             additionalContext,
+            selectedKeywords,
         }),
         temperature,
     })

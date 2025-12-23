@@ -10,6 +10,7 @@ import {
     List,
     AlertCircle,
     RefreshCw,
+    TrendingUp,
 } from 'lucide-react'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
@@ -20,6 +21,7 @@ import { STAGE_CONFIG } from '@/lib/constants/blog-ideas.constant'
 import { IdeaKanbanBoard } from './idea-kanban-board.component'
 import { IdeaFormDialog } from './idea-form-dialog.component'
 import { IdeationWizardDialog } from './ideation-wizard-dialog.component'
+import { GscIdeasGeneratorDialog } from './gsc-ideas-generator-dialog.component'
 import { SeoRadarWidget } from './seo-radar-widget.component'
 import { IdeasPipelineSkeleton } from './ideas-pipeline-skeleton.component'
 
@@ -33,6 +35,7 @@ export function IdeasPipelineClient() {
     const [searchQuery, setSearchQuery] = useState('')
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
     const [isWizardOpen, setIsWizardOpen] = useState(false)
+    const [isGscGeneratorOpen, setIsGscGeneratorOpen] = useState(false)
 
     const { data: stats, isLoading: statsLoading } = useIdeasStats()
     const { data: kanbanData, isLoading, error, refetch } = useIdeasKanban()
@@ -130,6 +133,16 @@ export function IdeasPipelineClient() {
                         </Button>
                     </div>
 
+                    {/* Ideas from Search Data Button */}
+                    <Button
+                        variant='outline'
+                        className='gap-2'
+                        onClick={() => setIsGscGeneratorOpen(true)}
+                    >
+                        <TrendingUp className='h-4 w-4' />
+                        Ideas from Search Data
+                    </Button>
+
                     {/* Generate Ideas Button */}
                     <Button
                         variant='outline'
@@ -182,6 +195,12 @@ export function IdeasPipelineClient() {
             <IdeationWizardDialog
                 open={isWizardOpen}
                 onOpenChange={setIsWizardOpen}
+            />
+
+            {/* GSC Ideas Generator */}
+            <GscIdeasGeneratorDialog
+                open={isGscGeneratorOpen}
+                onOpenChange={setIsGscGeneratorOpen}
             />
         </div>
     )

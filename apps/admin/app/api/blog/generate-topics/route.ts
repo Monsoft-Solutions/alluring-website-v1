@@ -15,6 +15,13 @@ const requestSchema = z.object({
     targetAudience: z.string().optional(),
     existingTopics: z.array(z.string()).optional(),
     additionalContext: z.string().optional(),
+    // GSC keyword integration
+    selectedKeywords: z
+        .object({
+            primary: z.string().nullable(),
+            secondary: z.array(z.string()),
+        })
+        .optional(),
 })
 
 /**

@@ -14,6 +14,7 @@ import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 import { Textarea } from '@workspace/ui/components/textarea'
+import { Badge } from '@workspace/ui/components/badge'
 import {
     Select,
     SelectContent,
@@ -21,11 +22,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@workspace/ui/components/select'
-import { Loader2 } from 'lucide-react'
+import { Loader2, X } from 'lucide-react'
 
 import { useCreateIdea } from '@/hooks/use-ideas.hook'
 import type { BlogIdeaFormData } from '@/lib/actions/idea.action'
 import { CONTENT_TYPES, PRIORITIES } from '@/lib/constants/blog-ideas.constant'
+import { GscKeywordPicker } from './gsc-keyword-picker.component'
 
 type IdeaFormDialogProps = {
     open: boolean
@@ -47,12 +49,17 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
         targetAudience: '',
         uniqueAngle: '',
     })
+    const [secondaryKeywords, setSecondaryKeywords] = useState<string[]>([])
 
     const handleChange = (
         field: keyof BlogIdeaFormData,
         value: string | null
     ) => {
         setFormData((prev) => ({ ...prev, [field]: value }))
+    }
+
+    const handleRemoveSecondaryKeyword = (keyword: string) => {
+        setSecondaryKeywords((prev) => prev.filter((k) => k !== keyword))
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -67,6 +74,8 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
             title: formData.title,
             topic: formData.topic || null,
             primaryKeyword: formData.primaryKeyword || null,
+            secondaryKeywords:
+                secondaryKeywords.length > 0 ? secondaryKeywords : null,
             contentType:
                 formData.contentType as BlogIdeaFormData['contentType'],
             priority:
@@ -88,6 +97,7 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
                 targetAudience: '',
                 uniqueAngle: '',
             })
+            setSecondaryKeywords([])
         } else {
             toast.error(result.error || 'Failed to create idea')
         }
@@ -95,7 +105,7 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className='sm:max-w-lg'>
+            <DialogContent className='max-h-[90vh] overflow-y-auto sm:max-w-2xl'>
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>New Blog Idea</DialogTitle>
@@ -138,7 +148,7 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
                         {/* Primary Keyword */}
                         <div className='space-y-2'>
                             <Label htmlFor='primaryKeyword'>
-                                Target Keyword
+                                Primary Keyword
                             </Label>
                             <Input
                                 id='primaryKeyword'
@@ -152,6 +162,46 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
                                 }
                             />
                         </div>
+
+                        {/* GSC Keyword Picker */}
+                        <GscKeywordPicker
+                            primaryKeyword={formData.primaryKeyword ?? ''}
+                            secondaryKeywords={secondaryKeywords}
+                            onPrimaryChange={(keyword) =>
+                                handleChange('primaryKeyword', keyword)
+                            }
+                            onSecondaryChange={setSecondaryKeywords}
+                        />
+
+                        {/* Secondary Keywords */}
+                        {secondaryKeywords.length > 0 && (
+                            <div className='space-y-2'>
+                                <Label>Secondary Keywords</Label>
+                                <div className='flex flex-wrap gap-2'>
+                                    {secondaryKeywords.map((keyword) => (
+                                        <Badge
+                                            key={keyword}
+                                            variant='secondary'
+                                            className='gap-1 pr-1'
+                                        >
+                                            {keyword}
+                                            <button
+                                                type='button'
+                                                onClick={() =>
+                                                    handleRemoveSecondaryKeyword(
+                                                        keyword
+                                                    )
+                                                }
+                                                className='hover:bg-muted rounded p-0.5'
+                                                aria-label={`Remove ${keyword}`}
+                                            >
+                                                <X className='h-3 w-3' />
+                                            </button>
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Content Type & Priority */}
                         <div className='grid grid-cols-2 gap-4'>

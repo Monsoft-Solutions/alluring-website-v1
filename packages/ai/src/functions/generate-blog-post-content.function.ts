@@ -25,7 +25,6 @@ const generatePostContentResponseSchema = z.object({
     wordCount: z.number().describe('Approximate word count of the content'),
     metaDescription: z
         .string()
-        .max(160)
         .describe('SEO meta description (150-160 characters)'),
     excerpt: z
         .string()
@@ -41,7 +40,7 @@ const generatePostContentResponseSchema = z.object({
  * Default model for content generation
  * Using a more capable model for longer content
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'gpt-5.2'
 
 /**
  * Outline section type for input
