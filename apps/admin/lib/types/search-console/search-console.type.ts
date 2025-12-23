@@ -64,13 +64,23 @@ export type ContentOpportunity = {
 }
 
 /**
+ * Sort field options for search console data
+ */
+export type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+
+/**
+ * Sort direction for search console queries
+ */
+export type SortDirection = 'asc' | 'desc'
+
+/**
  * Parameters for querying search console data
  */
 export type SearchConsoleQueryParams = {
     days?: number
     limit?: number
-    orderBy?: 'clicks' | 'impressions' | 'ctr' | 'position'
-    orderDirection?: 'asc' | 'desc'
+    orderBy?: SortField
+    orderDirection?: SortDirection
 }
 
 /**
@@ -127,4 +137,43 @@ export type UrlInspectionResult = {
     pageFetchState: string
     referringUrls: string[]
     mobileUsability: string
+}
+
+/**
+ * Page data for a specific query (Query Performance Analysis)
+ * Shows how a page ranks for a particular query
+ */
+export type QueryPageData = {
+    page: string
+    clicks: number
+    impressions: number
+    ctr: number
+    position: number
+}
+
+/**
+ * Query with associated pages and content gap analysis
+ * Used for comprehensive query performance analysis
+ */
+export type QueryWithPages = {
+    query: string
+    clicks: number
+    impressions: number
+    ctr: number
+    position: number
+    pages: QueryPageData[]
+    /** True if no dedicated page exists for this query */
+    hasContentGap: boolean
+}
+
+/**
+ * Historical trend data for a single query
+ * Used to track query performance over time
+ */
+export type QueryTrendData = {
+    date: string
+    clicks: number
+    impressions: number
+    ctr: number
+    position: number
 }

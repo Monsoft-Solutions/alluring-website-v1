@@ -41,6 +41,10 @@ const navItems: NavItem[] = [
         title: 'SEO Insights',
         href: '/seo',
         icon: Search,
+        children: [
+            { title: 'Overview', href: '/seo' },
+            { title: 'Queries', href: '/seo/queries' },
+        ],
     },
     {
         title: 'Promotions',

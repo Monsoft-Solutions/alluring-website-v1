@@ -11,6 +11,10 @@ import type {
     PositionChange,
     SitemapInfo,
     UrlInspectionResult,
+    QueryPageData,
+    QueryTrendData,
+    SortField,
+    SortDirection,
 } from '@/lib/types/search-console/search-console.type'
 
 /**
@@ -33,8 +37,8 @@ export const searchConsoleKeys = {
     queries: (
         days: number,
         limit: number,
-        orderBy: string,
-        orderDirection: string
+        orderBy: SortField,
+        orderDirection: SortDirection
     ) =>
         [
             ...searchConsoleKeys.all,
@@ -47,8 +51,8 @@ export const searchConsoleKeys = {
     pages: (
         days: number,
         limit: number,
-        orderBy: string,
-        orderDirection: string
+        orderBy: SortField,
+        orderDirection: SortDirection
     ) =>
         [
             ...searchConsoleKeys.all,
@@ -67,6 +71,27 @@ export const searchConsoleKeys = {
     positionChanges: (days: number) =>
         [...searchConsoleKeys.all, 'position-changes', days] as const,
     sitemaps: () => [...searchConsoleKeys.all, 'sitemaps'] as const,
+    // Query Performance Analysis keys
+    querySearch: (
+        term: string,
+        days: number,
+        limit: number,
+        orderBy: SortField,
+        orderDirection: SortDirection
+    ) =>
+        [
+            ...searchConsoleKeys.all,
+            'query-search',
+            term,
+            days,
+            limit,
+            orderBy,
+            orderDirection,
+        ] as const,
+    queryPages: (query: string, days: number) =>
+        [...searchConsoleKeys.all, 'query-pages', query, days] as const,
+    queryTrend: (query: string, days: number) =>
+        [...searchConsoleKeys.all, 'query-trend', query, days] as const,
 } as const
 
 /**
@@ -88,12 +113,6 @@ export function useSearchConsoleSummary(days = 28) {
         staleTime: 5 * 60_000, // 5 minutes - GSC data updates infrequently
     })
 }
-
-/** Sort field type */
-type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
-
-/** Sort direction type */
-type SortDirection = 'asc' | 'desc'
 
 /**
  * Hook to fetch top search queries.
@@ -305,7 +324,7 @@ export function useSubmitSitemap() {
         },
         onSuccess: () => {
             // Invalidate sitemaps query to refresh the list
-            queryClient.invalidateQueries({
+            void queryClient.invalidateQueries({
                 queryKey: searchConsoleKeys.sitemaps(),
             })
         },
@@ -327,5 +346,109 @@ export function useUrlInspection() {
             })
             return response
         },
+    })
+}
+
+// ============================================================================
+// Query Performance Analysis Hooks
+// ============================================================================
+
+/**
+ * Hook to search queries by term.
+ * Uses contains filter to find queries matching the search term.
+ *
+ * @param term - Search term (empty returns all queries)
+ * @param days - Number of days to analyze (default: 28)
+ * @param limit - Number of queries to fetch (default: 50)
+ * @param orderBy - Sort field (default: 'clicks')
+ * @param orderDirection - Sort direction (default: 'desc')
+ * @param enabled - Whether to enable the query (default: true)
+ */
+export function useQuerySearch(
+    term: string,
+    days = 28,
+    limit = 50,
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc',
+    enabled = true
+) {
+    return useQuery({
+        queryKey: searchConsoleKeys.querySearch(
+            term,
+            days,
+            limit,
+            orderBy,
+            orderDirection
+        ),
+        queryFn: async () => {
+            const response = await fetchApi<
+                SearchConsoleResponse<SearchQuery[]>
+            >(
+                buildUrl('/api/admin/search-console/queries/search', {
+                    term,
+                    days,
+                    limit,
+                    orderBy,
+                    orderDirection,
+                })
+            )
+            return response
+        },
+        staleTime: 5 * 60_000, // 5 minutes
+        enabled,
+    })
+}
+
+/**
+ * Hook to fetch pages ranking for a specific query.
+ * Shows which pages compete for the same query.
+ *
+ * @param query - The exact query to analyze
+ * @param days - Number of days to analyze (default: 28)
+ * @param enabled - Whether to enable the query (default: true)
+ */
+export function useQueryPages(query: string, days = 28, enabled = true) {
+    return useQuery({
+        queryKey: searchConsoleKeys.queryPages(query, days),
+        queryFn: async () => {
+            const response = await fetchApi<
+                SearchConsoleResponse<QueryPageData[]>
+            >(
+                buildUrl('/api/admin/search-console/queries/pages', {
+                    query,
+                    days,
+                })
+            )
+            return response
+        },
+        staleTime: 5 * 60_000, // 5 minutes
+        enabled: enabled && !!query,
+    })
+}
+
+/**
+ * Hook to fetch historical trend for a specific query.
+ * Used for charting query performance over time.
+ *
+ * @param query - The exact query to get trend for
+ * @param days - Number of days to analyze (default: 28)
+ * @param enabled - Whether to enable the query (default: true)
+ */
+export function useQueryTrend(query: string, days = 28, enabled = true) {
+    return useQuery({
+        queryKey: searchConsoleKeys.queryTrend(query, days),
+        queryFn: async () => {
+            const response = await fetchApi<
+                SearchConsoleResponse<QueryTrendData[]>
+            >(
+                buildUrl('/api/admin/search-console/queries/trend', {
+                    query,
+                    days,
+                })
+            )
+            return response
+        },
+        staleTime: 5 * 60_000, // 5 minutes
+        enabled: enabled && !!query,
     })
 }

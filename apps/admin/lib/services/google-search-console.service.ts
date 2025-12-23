@@ -19,6 +19,10 @@ import type {
     PositionChange,
     SitemapInfo,
     UrlInspectionResult,
+    QueryPageData,
+    QueryTrendData,
+    SortField,
+    SortDirection,
 } from '@/lib/types/search-console/search-console.type'
 
 // Default settings
@@ -196,12 +200,6 @@ export async function getSearchConsoleSummary(
         throw error
     }
 }
-
-/** Sort field type */
-type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
-
-/** Sort direction type */
-type SortDirection = 'asc' | 'desc'
 
 /**
  * Get top search queries with performance metrics
@@ -665,6 +663,336 @@ export async function submitSitemap(sitemapPath: string): Promise<void> {
         })
     } catch (error) {
         console.error('Error submitting sitemap:', error)
+        throw error
+    }
+}
+
+/**
+ * Search queries by term using contains filter
+ * Returns queries matching the search term with performance metrics
+ *
+ * @param searchTerm - The term to search for (case-insensitive contains match)
+ * @param days - Number of days to analyze (default: 28)
+ * @param limit - Maximum number of results (default: 50)
+ * @param orderBy - Field to sort by (default: 'clicks')
+ * @param orderDirection - Sort direction (default: 'desc')
+ */
+export async function getQueriesByTerm(
+    searchTerm: string,
+    days: number = DEFAULT_DAYS,
+    limit: number = 50,
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc'
+): Promise<SearchQuery[]> {
+    if (!isSearchConsoleConfigured()) {
+        return []
+    }
+
+    // If no search term, return top queries
+    if (!searchTerm.trim()) {
+        return getTopQueries(days, limit, orderBy, orderDirection)
+    }
+
+    try {
+        const client = getSearchConsoleClient()
+        const siteUrl = getSiteUrl()
+        const { startDate, endDate } = getDateRange(days)
+
+        const response = await client.searchanalytics.query({
+            siteUrl,
+            requestBody: {
+                startDate,
+                endDate,
+                dimensions: ['query'],
+                dimensionFilterGroups: [
+                    {
+                        filters: [
+                            {
+                                dimension: 'query',
+                                operator: 'contains',
+                                expression: searchTerm.toLowerCase(),
+                            },
+                        ],
+                    },
+                ],
+                rowLimit: limit * 2, // Fetch more to allow for sorting
+            },
+        })
+
+        const rows = response.data.rows ?? []
+
+        // Sort by the specified field and direction
+        const sortedRows = [...rows].sort((a, b) => {
+            let comparison: number
+            switch (orderBy) {
+                case 'clicks':
+                    comparison = (b.clicks ?? 0) - (a.clicks ?? 0)
+                    break
+                case 'impressions':
+                    comparison = (b.impressions ?? 0) - (a.impressions ?? 0)
+                    break
+                case 'ctr':
+                    comparison = (b.ctr ?? 0) - (a.ctr ?? 0)
+                    break
+                case 'position':
+                    comparison = (a.position ?? 0) - (b.position ?? 0)
+                    break
+                default:
+                    comparison = (b.clicks ?? 0) - (a.clicks ?? 0)
+            }
+            return orderDirection === 'asc' ? -comparison : comparison
+        })
+
+        return sortedRows.slice(0, limit).map((row) => ({
+            query: row.keys?.[0] ?? '',
+            clicks: row.clicks ?? 0,
+            impressions: row.impressions ?? 0,
+            ctr: row.ctr ?? 0,
+            position: row.position ?? 0,
+        }))
+    } catch (error) {
+        console.error('Error searching queries by term:', error)
+        throw error
+    }
+}
+
+/**
+ * Get all pages ranking for a specific query
+ * Used to understand which pages compete for a query
+ *
+ * @param query - The exact query to search for
+ * @param days - Number of days to analyze (default: 28)
+ * @param limit - Maximum number of pages (default: 25)
+ */
+export async function getPagesForQuery(
+    query: string,
+    days: number = DEFAULT_DAYS,
+    limit: number = 25
+): Promise<QueryPageData[]> {
+    if (!isSearchConsoleConfigured()) {
+        return []
+    }
+
+    try {
+        const client = getSearchConsoleClient()
+        const siteUrl = getSiteUrl()
+        const { startDate, endDate } = getDateRange(days)
+
+        const response = await client.searchanalytics.query({
+            siteUrl,
+            requestBody: {
+                startDate,
+                endDate,
+                dimensions: ['page'],
+                dimensionFilterGroups: [
+                    {
+                        filters: [
+                            {
+                                dimension: 'query',
+                                operator: 'equals',
+                                expression: query,
+                            },
+                        ],
+                    },
+                ],
+                rowLimit: limit,
+            },
+        })
+
+        const rows = response.data.rows ?? []
+
+        // Sort by clicks descending (best performing page first)
+        const sortedRows = [...rows].sort(
+            (a, b) => (b.clicks ?? 0) - (a.clicks ?? 0)
+        )
+
+        return sortedRows.map((row) => ({
+            page: row.keys?.[0] ?? '',
+            clicks: row.clicks ?? 0,
+            impressions: row.impressions ?? 0,
+            ctr: row.ctr ?? 0,
+            position: row.position ?? 0,
+        }))
+    } catch (error) {
+        console.error('Error fetching pages for query:', error)
+        throw error
+    }
+}
+
+/**
+ * Get daily performance trend for a specific query
+ * Used for tracking query performance over time
+ *
+ * @param query - The exact query to get trend for
+ * @param days - Number of days to analyze (default: 28)
+ */
+export async function getQueryTrend(
+    query: string,
+    days: number = DEFAULT_DAYS
+): Promise<QueryTrendData[]> {
+    if (!isSearchConsoleConfigured()) {
+        return []
+    }
+
+    try {
+        const client = getSearchConsoleClient()
+        const siteUrl = getSiteUrl()
+        const { startDate, endDate } = getDateRange(days)
+
+        const response = await client.searchanalytics.query({
+            siteUrl,
+            requestBody: {
+                startDate,
+                endDate,
+                dimensions: ['date'],
+                dimensionFilterGroups: [
+                    {
+                        filters: [
+                            {
+                                dimension: 'query',
+                                operator: 'equals',
+                                expression: query,
+                            },
+                        ],
+                    },
+                ],
+                rowLimit: days,
+            },
+        })
+
+        const rows = response.data.rows ?? []
+
+        // Sort by date ascending for charting
+        const sortedRows = [...rows].sort((a, b) => {
+            const dateA = a.keys?.[0] ?? ''
+            const dateB = b.keys?.[0] ?? ''
+            return dateA.localeCompare(dateB)
+        })
+
+        return sortedRows.map((row) => ({
+            date: row.keys?.[0] ?? '',
+            clicks: row.clicks ?? 0,
+            impressions: row.impressions ?? 0,
+            ctr: row.ctr ?? 0,
+            position: row.position ?? 0,
+        }))
+    } catch (error) {
+        console.error('Error fetching query trend:', error)
+        throw error
+    }
+}
+
+/**
+ * Identify content gaps - queries with high impressions but no dedicated page
+ * These are opportunities to create new content
+ *
+ * A content gap is defined as a query where:
+ * - The query has significant impressions (>= MIN_IMPRESSIONS_FOR_OPPORTUNITY)
+ * - The top-ranking page doesn't contain the query terms in the URL
+ *
+ * @param days - Number of days to analyze (default: 28)
+ * @param limit - Maximum number of results (default: 25)
+ */
+export async function getContentGaps(
+    days: number = DEFAULT_DAYS,
+    limit: number = DEFAULT_LIMIT
+): Promise<SearchQuery[]> {
+    if (!isSearchConsoleConfigured()) {
+        return []
+    }
+
+    try {
+        const client = getSearchConsoleClient()
+        const siteUrl = getSiteUrl()
+        const { startDate, endDate } = getDateRange(days)
+
+        // Fetch queries with their associated pages
+        const response = await client.searchanalytics.query({
+            siteUrl,
+            requestBody: {
+                startDate,
+                endDate,
+                dimensions: ['query', 'page'],
+                rowLimit: 1000, // Fetch more to analyze
+            },
+        })
+
+        const rows = response.data.rows ?? []
+
+        // Group by query and find the best page for each
+        const queryMap = new Map<
+            string,
+            {
+                query: string
+                clicks: number
+                impressions: number
+                ctr: number
+                position: number
+                topPage: string
+            }
+        >()
+
+        for (const row of rows) {
+            const query = row.keys?.[0] ?? ''
+            const page = row.keys?.[1] ?? ''
+
+            if (!query || !page) continue
+
+            const existing = queryMap.get(query)
+
+            // Keep track of the best performing page for each query
+            if (!existing || (row.clicks ?? 0) > existing.clicks) {
+                queryMap.set(query, {
+                    query,
+                    clicks: row.clicks ?? 0,
+                    impressions: row.impressions ?? 0,
+                    ctr: row.ctr ?? 0,
+                    position: row.position ?? 0,
+                    topPage: page,
+                })
+            }
+        }
+
+        // Filter for content gaps:
+        // - Significant impressions
+        // - Top page URL doesn't contain query terms (simplified check)
+        const contentGaps: SearchQuery[] = []
+
+        for (const data of queryMap.values()) {
+            if (data.impressions < MIN_IMPRESSIONS_FOR_OPPORTUNITY) continue
+
+            // Check if the top page URL contains any meaningful query terms
+            const queryTerms = data.query
+                .toLowerCase()
+                .split(/\s+/)
+                .filter((term) => term.length > 3) // Skip short words
+
+            const pageUrlLower = data.topPage.toLowerCase()
+
+            // Check if the page seems dedicated to this query
+            const hasDedicatedPage = queryTerms.some(
+                (term) =>
+                    pageUrlLower.includes(term.replace(/[^a-z]/g, '')) ||
+                    pageUrlLower.includes(term)
+            )
+
+            if (!hasDedicatedPage) {
+                contentGaps.push({
+                    query: data.query,
+                    clicks: data.clicks,
+                    impressions: data.impressions,
+                    ctr: data.ctr,
+                    position: data.position,
+                })
+            }
+        }
+
+        // Sort by impressions descending (biggest opportunity first)
+        return contentGaps
+            .sort((a, b) => b.impressions - a.impressions)
+            .slice(0, limit)
+    } catch (error) {
+        console.error('Error fetching content gaps:', error)
         throw error
     }
 }

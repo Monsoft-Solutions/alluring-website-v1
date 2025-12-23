@@ -24,7 +24,7 @@ Use `ServerDataTable` for all server-side sorted tables:
 import { ServerDataTable } from '@/components/shared/server-data-table.component'
 import { SortableHeader } from '@/components/shared/sortable-header.component'
 
-<ServerDataTable
+;<ServerDataTable
     data={data?.items ?? []}
     columns={columns}
     sorting={sorting}
@@ -82,62 +82,62 @@ export function DataTableCard() {
 ### 2. Fetch Data with TanStack Query
 
 ```tsx
-    const { data, isLoading, error, refetch } = useDataQuery(
-        days,
-        limit,
-        orderBy,
-        orderDirection
-    )
+const { data, isLoading, error, refetch } = useDataQuery(
+    days,
+    limit,
+    orderBy,
+    orderDirection
+)
 ```
 
 ### 3. Define Columns with useMemo
 
 ```tsx
-    const columns = useMemo<ColumnDef<DataItem>[]>(
-        () => [
-            {
-                accessorKey: 'name',
-                header: 'Name',
-                enableSorting: false, // Non-sortable column
-                cell: ({ row }) => (
-                    <div className='max-w-[250px] truncate font-medium'>
-                        {row.original.name}
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'clicks',
-                header: ({ column }) => (
-                    <SortableHeader
-                        column={column}
-                        title='Clicks'
-                        className='justify-center'
-                    />
-                ),
-                cell: ({ row }) => (
-                    <div className='text-center'>
-                        {row.original.clicks.toLocaleString()}
-                    </div>
-                ),
-            },
-            // Action column (no sorting)
-            {
-                id: 'actions',
-                header: '',
-                enableSorting: false,
-                cell: ({ row }) => (
-                    <Button
-                        variant='ghost'
-                        size='icon'
-                        onClick={() => handleAction(row.original)}
-                    >
-                        <Search className='h-4 w-4' />
-                    </Button>
-                ),
-            },
-        ],
-        [] // Empty deps - columns are stable
-    )
+const columns = useMemo<ColumnDef<DataItem>[]>(
+    () => [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+            enableSorting: false, // Non-sortable column
+            cell: ({ row }) => (
+                <div className='max-w-[250px] truncate font-medium'>
+                    {row.original.name}
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'clicks',
+            header: ({ column }) => (
+                <SortableHeader
+                    column={column}
+                    title='Clicks'
+                    className='justify-center'
+                />
+            ),
+            cell: ({ row }) => (
+                <div className='text-center'>
+                    {row.original.clicks.toLocaleString()}
+                </div>
+            ),
+        },
+        // Action column (no sorting)
+        {
+            id: 'actions',
+            header: '',
+            enableSorting: false,
+            cell: ({ row }) => (
+                <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => handleAction(row.original)}
+                >
+                    <Search className='h-4 w-4' />
+                </Button>
+            ),
+        },
+    ],
+    [] // Empty deps - columns are stable
+)
 ```
 
 ### 4. Render with Error Handling
@@ -191,7 +191,8 @@ export function DataTableCard() {
 ```tsx
 // hooks/use-data.hook.ts
 import { useQuery } from '@tanstack/react-query'
-import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
+
+import { buildUrl, fetchApi } from '@/lib/utils/api-client.util'
 
 type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
 type SortDirection = 'asc' | 'desc'
@@ -203,7 +204,15 @@ export const dataKeys = {
         limit: number,
         orderBy: string,
         orderDirection: string
-    ) => [...dataKeys.all, 'list', days, limit, orderBy, orderDirection] as const,
+    ) =>
+        [
+            ...dataKeys.all,
+            'list',
+            days,
+            limit,
+            orderBy,
+            orderDirection,
+        ] as const,
 } as const
 
 export function useDataList(
