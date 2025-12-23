@@ -5,7 +5,7 @@ import { z } from 'zod'
 import {
     getSearchConsoleSummary,
     isSearchConsoleConfigured,
-} from '@/lib/services/google-search-console.service'
+} from '@/lib/services/search-console'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 

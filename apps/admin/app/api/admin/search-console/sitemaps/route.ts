@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server'
 import {
     getSitemaps,
     isSearchConsoleConfigured,
-} from '@/lib/services/google-search-console.service'
+} from '@/lib/services/search-console'
 import type { SitemapInfo } from '@/lib/types/search-console/search-console.type'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 

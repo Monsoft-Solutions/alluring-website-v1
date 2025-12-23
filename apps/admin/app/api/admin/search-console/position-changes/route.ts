@@ -10,7 +10,7 @@ import { z } from 'zod'
 import {
     getPositionChanges,
     isSearchConsoleConfigured,
-} from '@/lib/services/google-search-console.service'
+} from '@/lib/services/search-console'
 import type { PositionChange } from '@/lib/types/search-console/search-console.type'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 

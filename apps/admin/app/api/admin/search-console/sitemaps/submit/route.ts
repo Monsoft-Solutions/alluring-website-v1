@@ -9,7 +9,7 @@ import { z } from 'zod'
 import {
     submitSitemap,
     isSearchConsoleConfigured,
-} from '@/lib/services/google-search-console.service'
+} from '@/lib/services/search-console'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 export const runtime = 'nodejs'

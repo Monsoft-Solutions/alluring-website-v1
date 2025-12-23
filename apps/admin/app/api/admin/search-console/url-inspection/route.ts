@@ -10,7 +10,7 @@ import { z } from 'zod'
 import {
     inspectUrls,
     isSearchConsoleConfigured,
-} from '@/lib/services/google-search-console.service'
+} from '@/lib/services/search-console'
 import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
