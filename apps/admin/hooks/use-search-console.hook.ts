@@ -30,10 +30,34 @@ export const searchConsoleKeys = {
     all: ['admin', 'search-console'] as const,
     summary: (days: number) =>
         [...searchConsoleKeys.all, 'summary', days] as const,
-    queries: (days: number, limit: number, orderBy: string) =>
-        [...searchConsoleKeys.all, 'queries', days, limit, orderBy] as const,
-    pages: (days: number, limit: number) =>
-        [...searchConsoleKeys.all, 'pages', days, limit] as const,
+    queries: (
+        days: number,
+        limit: number,
+        orderBy: string,
+        orderDirection: string
+    ) =>
+        [
+            ...searchConsoleKeys.all,
+            'queries',
+            days,
+            limit,
+            orderBy,
+            orderDirection,
+        ] as const,
+    pages: (
+        days: number,
+        limit: number,
+        orderBy: string,
+        orderDirection: string
+    ) =>
+        [
+            ...searchConsoleKeys.all,
+            'pages',
+            days,
+            limit,
+            orderBy,
+            orderDirection,
+        ] as const,
     trends: (days: number) =>
         [...searchConsoleKeys.all, 'trends', days] as const,
     opportunities: (days: number, limit: number) =>
@@ -65,20 +89,33 @@ export function useSearchConsoleSummary(days = 28) {
     })
 }
 
+/** Sort field type */
+type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+
+/** Sort direction type */
+type SortDirection = 'asc' | 'desc'
+
 /**
  * Hook to fetch top search queries.
  *
  * @param days - Number of days to analyze (default: 28)
  * @param limit - Number of queries to fetch (default: 25)
  * @param orderBy - Sort field (default: 'clicks')
+ * @param orderDirection - Sort direction (default: 'desc')
  */
 export function useSearchConsoleQueries(
     days = 28,
     limit = 25,
-    orderBy: 'clicks' | 'impressions' | 'ctr' | 'position' = 'clicks'
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc'
 ) {
     return useQuery({
-        queryKey: searchConsoleKeys.queries(days, limit, orderBy),
+        queryKey: searchConsoleKeys.queries(
+            days,
+            limit,
+            orderBy,
+            orderDirection
+        ),
         queryFn: async () => {
             const response = await fetchApi<
                 SearchConsoleResponse<SearchQuery[]>
@@ -87,6 +124,7 @@ export function useSearchConsoleQueries(
                     days,
                     limit,
                     orderBy,
+                    orderDirection,
                 })
             )
             return response
@@ -100,14 +138,28 @@ export function useSearchConsoleQueries(
  *
  * @param days - Number of days to analyze (default: 28)
  * @param limit - Number of pages to fetch (default: 25)
+ * @param orderBy - Sort field (default: 'clicks')
+ * @param orderDirection - Sort direction (default: 'desc')
  */
-export function useSearchConsolePages(days = 28, limit = 25) {
+export function useSearchConsolePages(
+    days = 28,
+    limit = 25,
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc'
+) {
     return useQuery({
-        queryKey: searchConsoleKeys.pages(days, limit),
+        queryKey: searchConsoleKeys.pages(days, limit, orderBy, orderDirection),
         queryFn: async () => {
             const response = await fetchApi<
                 SearchConsoleResponse<SearchPage[]>
-            >(buildUrl('/api/admin/search-console/pages', { days, limit }))
+            >(
+                buildUrl('/api/admin/search-console/pages', {
+                    days,
+                    limit,
+                    orderBy,
+                    orderDirection,
+                })
+            )
             return response
         },
         staleTime: 5 * 60_000, // 5 minutes

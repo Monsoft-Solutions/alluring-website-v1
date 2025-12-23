@@ -50,11 +50,17 @@ function formatFullDate(dateString: string): string {
     })
 }
 
+type SearchTrendsChartCardProps = {
+    days?: number
+}
+
 /**
  * Search trends chart displaying clicks and impressions over time.
  */
-export function SearchTrendsChartCard() {
-    const { data, isLoading, error, refetch } = useSearchConsoleTrends(28)
+export function SearchTrendsChartCard({
+    days = 28,
+}: SearchTrendsChartCardProps) {
+    const { data, isLoading, error, refetch } = useSearchConsoleTrends(days)
 
     return (
         <Card>
@@ -64,7 +70,7 @@ export function SearchTrendsChartCard() {
                     Search Performance Trend
                 </CardTitle>
                 <CardDescription>
-                    Clicks and impressions over the last 28 days
+                    Clicks and impressions over the last {days} days
                 </CardDescription>
             </CardHeader>
             <CardContent>

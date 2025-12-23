@@ -17,6 +17,7 @@ const querySchema = z.object({
     orderBy: z
         .enum(['clicks', 'impressions', 'ctr', 'position'])
         .default('clicks'),
+    orderDirection: z.enum(['asc', 'desc']).default('desc'),
 })
 
 /**
@@ -27,6 +28,7 @@ const querySchema = z.object({
  * - days: number (1-365, default: 28)
  * - limit: number (1-100, default: 25)
  * - orderBy: 'clicks' | 'impressions' | 'ctr' | 'position' (default: 'clicks')
+ * - orderDirection: 'asc' | 'desc' (default: 'desc')
  */
 export async function GET(request: NextRequest) {
     try {
@@ -57,8 +59,13 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        const { days, limit, orderBy } = validationResult.data
-        const queries = await getTopQueries(days, limit, orderBy)
+        const { days, limit, orderBy, orderDirection } = validationResult.data
+        const queries = await getTopQueries(
+            days,
+            limit,
+            orderBy,
+            orderDirection
+        )
 
         return NextResponse.json({
             configured: true,

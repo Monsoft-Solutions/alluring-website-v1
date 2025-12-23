@@ -19,11 +19,15 @@ import { Button } from '@workspace/ui/components/button'
 
 import { useSearchConsoleSummary } from '@/hooks/use-search-console.hook'
 
+type SeoStatsGridProps = {
+    days?: number
+}
+
 /**
  * SEO stats grid component that displays Search Console summary metrics.
  */
-export function SeoStatsGrid() {
-    const { data, isLoading, error, refetch } = useSearchConsoleSummary()
+export function SeoStatsGrid({ days = 28 }: SeoStatsGridProps) {
+    const { data, isLoading, error, refetch } = useSearchConsoleSummary(days)
 
     if (isLoading) {
         return <SeoStatsGridSkeleton />

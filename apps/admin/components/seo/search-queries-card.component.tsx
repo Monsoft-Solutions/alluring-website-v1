@@ -29,17 +29,72 @@ import { Button } from '@workspace/ui/components/button'
 
 import { useSearchConsoleQueries } from '@/hooks/use-search-console.hook'
 
+type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+type SortDirection = 'asc' | 'desc'
+
+/** Combined sort options for the dropdown */
+const SORT_OPTIONS = [
+    {
+        value: 'clicks_desc',
+        label: 'Clicks ↓',
+        field: 'clicks',
+        direction: 'desc',
+    },
+    {
+        value: 'clicks_asc',
+        label: 'Clicks ↑',
+        field: 'clicks',
+        direction: 'asc',
+    },
+    {
+        value: 'impressions_desc',
+        label: 'Impressions ↓',
+        field: 'impressions',
+        direction: 'desc',
+    },
+    {
+        value: 'impressions_asc',
+        label: 'Impressions ↑',
+        field: 'impressions',
+        direction: 'asc',
+    },
+    { value: 'ctr_desc', label: 'CTR ↓', field: 'ctr', direction: 'desc' },
+    { value: 'ctr_asc', label: 'CTR ↑', field: 'ctr', direction: 'asc' },
+    {
+        value: 'position_desc',
+        label: 'Position (best)',
+        field: 'position',
+        direction: 'desc',
+    },
+    {
+        value: 'position_asc',
+        label: 'Position (worst)',
+        field: 'position',
+        direction: 'asc',
+    },
+] as const
+
+type SearchQueriesCardProps = {
+    days?: number
+}
+
 /**
  * Search queries card displaying top search terms from Google Search Console.
  */
-export function SearchQueriesCard() {
-    const [orderBy, setOrderBy] = useState<
-        'clicks' | 'impressions' | 'ctr' | 'position'
-    >('clicks')
+export function SearchQueriesCard({ days = 28 }: SearchQueriesCardProps) {
+    const [sortValue, setSortValue] = useState('clicks_desc')
+
+    // Parse the combined sort value
+    const sortOption =
+        SORT_OPTIONS.find((opt) => opt.value === sortValue) ?? SORT_OPTIONS[0]
+    const orderBy = sortOption.field as SortField
+    const orderDirection = sortOption.direction as SortDirection
+
     const { data, isLoading, error, refetch } = useSearchConsoleQueries(
-        28,
+        days,
         20,
-        orderBy
+        orderBy,
+        orderDirection
     )
 
     return (
@@ -54,20 +109,16 @@ export function SearchQueriesCard() {
                         Search terms bringing visitors to your site
                     </CardDescription>
                 </div>
-                <Select
-                    value={orderBy}
-                    onValueChange={(value) =>
-                        setOrderBy(value as typeof orderBy)
-                    }
-                >
-                    <SelectTrigger className='w-[140px]'>
+                <Select value={sortValue} onValueChange={setSortValue}>
+                    <SelectTrigger className='w-[160px]'>
                         <SelectValue placeholder='Sort by' />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value='clicks'>Clicks</SelectItem>
-                        <SelectItem value='impressions'>Impressions</SelectItem>
-                        <SelectItem value='ctr'>CTR</SelectItem>
-                        <SelectItem value='position'>Position</SelectItem>
+                        {SORT_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
             </CardHeader>

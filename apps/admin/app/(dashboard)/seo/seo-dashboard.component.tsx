@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import { useSearchConsoleSummary } from '@/hooks/use-search-console.hook'
 import { SearchConsoleNotConfigured } from '@/components/seo/search-console-not-configured.component'
 import { Skeleton } from '@workspace/ui/components/skeleton'
@@ -9,7 +11,23 @@ import {
     TabsList,
     TabsTrigger,
 } from '@workspace/ui/components/tabs'
-import { BarChart3, TrendingUp, FileText, Globe } from 'lucide-react'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@workspace/ui/components/select'
+import { BarChart3, TrendingUp, FileText, Globe, Calendar } from 'lucide-react'
+
+/**
+ * Time frame options for the SEO dashboard
+ */
+const TIME_FRAME_OPTIONS = [
+    { value: '7', label: 'Last 7 days' },
+    { value: '28', label: 'Last 28 days' },
+    { value: '90', label: 'Last 3 months' },
+] as const
 
 // Overview tab components
 import { SeoStatsGrid } from '@/components/seo/seo-stats-grid.component'
@@ -38,7 +56,8 @@ import { IndexCoverageCard } from '@/components/seo/index-coverage-card.componen
  * - Index Status: Sitemap and URL indexing status
  */
 export function SeoDashboard() {
-    const { data, isLoading } = useSearchConsoleSummary()
+    const [days, setDays] = useState(28)
+    const { data, isLoading } = useSearchConsoleSummary(days)
 
     if (isLoading) {
         return (
@@ -78,13 +97,31 @@ export function SeoDashboard() {
     return (
         <div className='space-y-6'>
             {/* Header */}
-            <div>
-                <h1 className='text-2xl font-bold tracking-tight'>
-                    SEO Insights
-                </h1>
-                <p className='text-muted-foreground'>
-                    Search performance data from Google Search Console
-                </p>
+            <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+                <div>
+                    <h1 className='text-2xl font-bold tracking-tight'>
+                        SEO Insights
+                    </h1>
+                    <p className='text-muted-foreground'>
+                        Search performance data from Google Search Console
+                    </p>
+                </div>
+                <Select
+                    value={days.toString()}
+                    onValueChange={(value) => setDays(Number(value))}
+                >
+                    <SelectTrigger className='w-[160px]'>
+                        <Calendar className='mr-2 h-4 w-4' />
+                        <SelectValue placeholder='Select time frame' />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {TIME_FRAME_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </div>
 
             {/* Tabbed Dashboard */}
@@ -123,18 +160,18 @@ export function SeoDashboard() {
                 {/* Overview Tab */}
                 <TabsContent value='overview' className='space-y-6'>
                     {/* Summary Stats */}
-                    <SeoStatsGrid />
+                    <SeoStatsGrid days={days} />
 
                     {/* Performance Trend Chart */}
-                    <SearchTrendsChartCard />
+                    <SearchTrendsChartCard days={days} />
 
                     {/* Content Opportunities */}
-                    <ContentOpportunitiesCard />
+                    <ContentOpportunitiesCard days={days} />
 
                     {/* Queries & Pages Tables */}
                     <div className='grid gap-6 lg:grid-cols-2'>
-                        <SearchQueriesCard />
-                        <SearchPagesCard />
+                        <SearchQueriesCard days={days} />
+                        <SearchPagesCard days={days} />
                     </div>
                 </TabsContent>
 

@@ -23,6 +23,13 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@workspace/ui/components/select'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import {
@@ -35,12 +42,74 @@ import {
 import { useSearchConsolePages } from '@/hooks/use-search-console.hook'
 import { PageDeepDiveDialog } from './page-deep-dive-dialog.component'
 
+type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+type SortDirection = 'asc' | 'desc'
+
+/** Combined sort options for the dropdown */
+const SORT_OPTIONS = [
+    {
+        value: 'clicks_desc',
+        label: 'Clicks ↓',
+        field: 'clicks',
+        direction: 'desc',
+    },
+    {
+        value: 'clicks_asc',
+        label: 'Clicks ↑',
+        field: 'clicks',
+        direction: 'asc',
+    },
+    {
+        value: 'impressions_desc',
+        label: 'Impressions ↓',
+        field: 'impressions',
+        direction: 'desc',
+    },
+    {
+        value: 'impressions_asc',
+        label: 'Impressions ↑',
+        field: 'impressions',
+        direction: 'asc',
+    },
+    { value: 'ctr_desc', label: 'CTR ↓', field: 'ctr', direction: 'desc' },
+    { value: 'ctr_asc', label: 'CTR ↑', field: 'ctr', direction: 'asc' },
+    {
+        value: 'position_desc',
+        label: 'Position (best)',
+        field: 'position',
+        direction: 'desc',
+    },
+    {
+        value: 'position_asc',
+        label: 'Position (worst)',
+        field: 'position',
+        direction: 'asc',
+    },
+] as const
+
+type SearchPagesCardProps = {
+    days?: number
+}
+
 /**
  * Search pages card displaying top pages from Google Search Console.
  */
-export function SearchPagesCard() {
-    const { data, isLoading, error, refetch } = useSearchConsolePages(28, 15)
+export function SearchPagesCard({ days = 28 }: SearchPagesCardProps) {
+    const [sortValue, setSortValue] = useState('clicks_desc')
     const [selectedPage, setSelectedPage] = useState<string | null>(null)
+
+    // Parse the combined sort value
+    const sortOption =
+        SORT_OPTIONS.find((opt) => opt.value === sortValue) ?? SORT_OPTIONS[0]
+    const orderBy = sortOption.field as SortField
+    const orderDirection = sortOption.direction as SortDirection
+
+    const { data, isLoading, error, refetch } = useSearchConsolePages(
+        days,
+        15,
+        orderBy,
+        orderDirection
+    )
 
     /**
      * Format page URL to show only the path
@@ -56,14 +125,28 @@ export function SearchPagesCard() {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle className='flex items-center gap-2 text-lg'>
-                    <FileText className='h-5 w-5' />
-                    Top Pages
-                </CardTitle>
-                <CardDescription>
-                    Pages with the most search visibility
-                </CardDescription>
+            <CardHeader className='flex flex-row items-center justify-between'>
+                <div>
+                    <CardTitle className='flex items-center gap-2 text-lg'>
+                        <FileText className='h-5 w-5' />
+                        Top Pages
+                    </CardTitle>
+                    <CardDescription>
+                        Pages with the most search visibility
+                    </CardDescription>
+                </div>
+                <Select value={sortValue} onValueChange={setSortValue}>
+                    <SelectTrigger className='w-[160px]'>
+                        <SelectValue placeholder='Sort by' />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {SORT_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </CardHeader>
             <CardContent>
                 {isLoading ? (

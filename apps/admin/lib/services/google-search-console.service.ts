@@ -197,13 +197,20 @@ export async function getSearchConsoleSummary(
     }
 }
 
+/** Sort field type */
+type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+
+/** Sort direction type */
+type SortDirection = 'asc' | 'desc'
+
 /**
  * Get top search queries with performance metrics
  */
 export async function getTopQueries(
     days: number = DEFAULT_DAYS,
     limit: number = DEFAULT_LIMIT,
-    orderBy: 'clicks' | 'impressions' | 'ctr' | 'position' = 'clicks'
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc'
 ): Promise<SearchQuery[]> {
     if (!isSearchConsoleConfigured()) {
         return []
@@ -216,20 +223,27 @@ export async function getTopQueries(
             days,
         })
 
-        // Sort by the specified field
+        // Sort by the specified field and direction
         const sortedRows = [...rows].sort((a, b) => {
+            let comparison: number
             switch (orderBy) {
                 case 'clicks':
-                    return (b.clicks ?? 0) - (a.clicks ?? 0)
+                    comparison = (b.clicks ?? 0) - (a.clicks ?? 0)
+                    break
                 case 'impressions':
-                    return (b.impressions ?? 0) - (a.impressions ?? 0)
+                    comparison = (b.impressions ?? 0) - (a.impressions ?? 0)
+                    break
                 case 'ctr':
-                    return (b.ctr ?? 0) - (a.ctr ?? 0)
+                    comparison = (b.ctr ?? 0) - (a.ctr ?? 0)
+                    break
                 case 'position':
-                    return (a.position ?? 0) - (b.position ?? 0) // Lower is better
+                    // For position, lower is better, so default desc means best first
+                    comparison = (a.position ?? 0) - (b.position ?? 0)
+                    break
                 default:
-                    return (b.clicks ?? 0) - (a.clicks ?? 0)
+                    comparison = (b.clicks ?? 0) - (a.clicks ?? 0)
             }
+            return orderDirection === 'asc' ? -comparison : comparison
         })
 
         return sortedRows.slice(0, limit).map((row) => ({
@@ -250,7 +264,9 @@ export async function getTopQueries(
  */
 export async function getTopPages(
     days: number = DEFAULT_DAYS,
-    limit: number = DEFAULT_LIMIT
+    limit: number = DEFAULT_LIMIT,
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc'
 ): Promise<SearchPage[]> {
     if (!isSearchConsoleConfigured()) {
         return []
@@ -259,16 +275,34 @@ export async function getTopPages(
     try {
         const rows = await fetchSearchAnalytics({
             dimensions: ['page'],
-            rowLimit: limit,
+            rowLimit: limit * 2, // Fetch more to allow for sorting
             days,
         })
 
-        // Sort by clicks descending
-        const sortedRows = [...rows].sort(
-            (a, b) => (b.clicks ?? 0) - (a.clicks ?? 0)
-        )
+        // Sort by the specified field and direction
+        const sortedRows = [...rows].sort((a, b) => {
+            let comparison: number
+            switch (orderBy) {
+                case 'clicks':
+                    comparison = (b.clicks ?? 0) - (a.clicks ?? 0)
+                    break
+                case 'impressions':
+                    comparison = (b.impressions ?? 0) - (a.impressions ?? 0)
+                    break
+                case 'ctr':
+                    comparison = (b.ctr ?? 0) - (a.ctr ?? 0)
+                    break
+                case 'position':
+                    // For position, lower is better, so default desc means best first
+                    comparison = (a.position ?? 0) - (b.position ?? 0)
+                    break
+                default:
+                    comparison = (b.clicks ?? 0) - (a.clicks ?? 0)
+            }
+            return orderDirection === 'asc' ? -comparison : comparison
+        })
 
-        return sortedRows.map((row) => ({
+        return sortedRows.slice(0, limit).map((row) => ({
             page: row.keys?.[0] ?? '',
             clicks: row.clicks ?? 0,
             impressions: row.impressions ?? 0,

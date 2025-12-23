@@ -42,12 +42,21 @@ type SelectedOpportunity = {
     impressions: number
 } | null
 
+type ContentOpportunitiesCardProps = {
+    days?: number
+}
+
 /**
  * Content opportunities card showing queries with high impressions but low CTR.
  * These represent potential content gaps or optimization opportunities.
  */
-export function ContentOpportunitiesCard() {
-    const { data, isLoading, error, refetch } = useContentOpportunities(28, 15)
+export function ContentOpportunitiesCard({
+    days = 28,
+}: ContentOpportunitiesCardProps) {
+    const { data, isLoading, error, refetch } = useContentOpportunities(
+        days,
+        15
+    )
     const [selectedOpportunity, setSelectedOpportunity] =
         useState<SelectedOpportunity>(null)
 
