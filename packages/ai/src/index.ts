@@ -73,6 +73,8 @@ export {
     generateImageAlt,
     analyzeBlogPost,
     generateFeaturedImagePrompt,
+    // SEO functions
+    generateContentBrief,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
@@ -96,6 +98,7 @@ export {
     type AnalyzeBlogPostOptions,
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,
+    type GenerateContentBriefOptions,
 } from './functions'
 
 // AI-specific schemas for structured outputs
@@ -166,6 +169,9 @@ export {
     FEATURED_IMAGE_PROMPT_SYSTEM,
     getFeaturedImagePrompt,
     type FeaturedImagePromptInput,
+    // SEO prompts
+    CONTENT_BRIEF_SYSTEM_PROMPT,
+    getContentBriefPrompt,
 } from './prompts'
 
 // Telemetry configuration

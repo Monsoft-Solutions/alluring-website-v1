@@ -120,3 +120,8 @@ export {
     type GenerateBlogPostContentOptions,
     type GenerateBlogPostContentResult,
 } from './generate-blog-post-content.function'
+// SEO Content Brief
+export {
+    generateContentBrief,
+    type GenerateContentBriefOptions,
+} from './generate-content-brief.function'
