@@ -16,12 +16,48 @@ import type { PipelineStep } from '@workspace/ai/agents'
 export type DialogStep = PipelineStep | 'idle' | 'saving' | 'error'
 
 /**
+ * Individual research finding from web search
+ */
+export type ResearchFinding = {
+    title: string
+    url: string
+    snippet: string
+    relevanceScore: number
+}
+
+/**
+ * Research query event data (when a search is starting)
+ */
+export type SSEResearchQueryData = {
+    type: 'research-query'
+    query: string
+    queryIndex: number
+    totalQueries: number
+}
+
+/**
+ * Research finding event data (when results come back)
+ */
+export type SSEResearchFindingData = {
+    type: 'research-finding'
+    query: string
+    findings: ResearchFinding[]
+    summary?: string
+}
+
+/**
+ * Union of research data types
+ */
+export type SSEResearchData = SSEResearchQueryData | SSEResearchFindingData
+
+/**
  * SSE progress event from the pipeline API
  */
 export type SSEProgressEvent = {
     step: PipelineStep
     progress: number
     message: string
+    data?: SSEResearchData
 }
 
 /**
@@ -32,6 +68,18 @@ export type ReviewSummary = {
     score: number
     summary: string
     issueCount: number
+}
+
+/**
+ * Research summary for the complete event
+ */
+export type ResearchSummary = {
+    query: string
+    findingsCount: number
+    topSources: Array<{
+        title: string
+        url: string
+    }>
 }
 
 /**
@@ -57,6 +105,7 @@ export type SSECompleteEvent = {
         review: number
         orchestration: number
     }
+    research?: ResearchSummary[]
 }
 
 /**

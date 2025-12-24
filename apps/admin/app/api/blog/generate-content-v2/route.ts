@@ -147,9 +147,10 @@ export async function POST(request: NextRequest) {
                 onProgress: (
                     step: PipelineStep,
                     progress: number,
-                    message: string
+                    message: string,
+                    data?: unknown
                 ) => {
-                    send('progress', { step, progress, message })
+                    send('progress', { step, progress, message, data })
                 },
             })
                 .then((result) => {
@@ -169,6 +170,15 @@ export async function POST(request: NextRequest) {
                         overallScore: result.orchestratorResult.overallScore,
                         totalProcessingTimeMs: result.totalProcessingTimeMs,
                         timeBreakdown: result.timeBreakdown,
+                        // Include research summary for final display
+                        research: result.research?.map((r) => ({
+                            query: r.query,
+                            findingsCount: r.findings.length,
+                            topSources: r.findings.slice(0, 2).map((f) => ({
+                                title: f.title,
+                                url: f.url,
+                            })),
+                        })),
                     })
                     close()
                 })

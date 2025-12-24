@@ -40,7 +40,7 @@ async function runResearchPhase(
     const searchQueries = [
         primaryKeyword || topic,
         `${topic} latest research`,
-        `${topic} statistics 2024`,
+        `${topic} statistics 2025`,
     ]
 
     const results: ResearchResult[] = []
@@ -49,8 +49,14 @@ async function runResearchPhase(
         const query = searchQueries[i] ?? topic
         onProgress?.(
             'research',
-            10 + (i / searchQueries.length) * 80,
-            `Searching: ${query}`
+            10 + (i / searchQueries.length) * 40,
+            `Searching: ${query}`,
+            {
+                type: 'research-query',
+                query,
+                queryIndex: i,
+                totalQueries: searchQueries.length,
+            }
         )
 
         try {
@@ -65,6 +71,19 @@ async function runResearchPhase(
                 findings: searchResult.results,
                 summary: searchResult.summary,
             })
+
+            // Send findings to the client
+            onProgress?.(
+                'research',
+                10 + ((i + 1) / searchQueries.length) * 80,
+                `Found ${searchResult.results.length} sources for: ${query}`,
+                {
+                    type: 'research-finding',
+                    query: searchResult.query,
+                    findings: searchResult.results.slice(0, 3),
+                    summary: searchResult.summary,
+                }
+            )
         } catch (error) {
             console.error(`Research failed for query: ${query}`, error)
             // Continue with other queries

@@ -44,9 +44,12 @@ import type {
     SSEErrorEvent,
     SSEEventData,
     SSEProgressEvent,
+    SSEResearchFindingData,
+    SSEResearchQueryData,
 } from '@/lib/types/blog/pipeline.type'
 import { createBlogPost } from '@/lib/actions/blog.action'
 import { linkIdeaToBlogPost } from '@/lib/actions/idea.action'
+import { ResearchFindingsDisplay } from './research-findings-display.component'
 import { StepIndicator } from './step-indicator.component'
 
 type GenerateDraftV2DialogProps = {
@@ -109,6 +112,13 @@ export function GenerateDraftV2Dialog({
     const [showReviews, setShowReviews] = useState(false)
     const [useAdvancedPipeline, setUseAdvancedPipeline] = useState(true)
 
+    // Research findings state
+    const [researchFindings, setResearchFindings] = useState<
+        SSEResearchFindingData[]
+    >([])
+    const [currentQuery, setCurrentQuery] =
+        useState<SSEResearchQueryData | null>(null)
+
     const calculateOverallProgress = useCallback(
         (currentStep: DialogStep, stepProgress: number): number => {
             const stepWeights: Record<
@@ -144,6 +154,8 @@ export function GenerateDraftV2Dialog({
         setError(null)
         setResult(null)
         setStepMessage('Starting pipeline...')
+        setResearchFindings([])
+        setCurrentQuery(null)
 
         try {
             // Build outline structure
@@ -267,6 +279,25 @@ export function GenerateDraftV2Dialog({
                                             progressData.progress
                                         )
                                     )
+
+                                    // Capture research data
+                                    if (progressData.data) {
+                                        if (
+                                            progressData.data.type ===
+                                            'research-query'
+                                        ) {
+                                            setCurrentQuery(progressData.data)
+                                        } else if (
+                                            progressData.data.type ===
+                                            'research-finding'
+                                        ) {
+                                            setCurrentQuery(null)
+                                            setResearchFindings((prev) => [
+                                                ...prev,
+                                                progressData.data as SSEResearchFindingData,
+                                            ])
+                                        }
+                                    }
                                 } else if (eventType === 'complete') {
                                     const completeData =
                                         data as SSECompleteEvent
@@ -409,6 +440,8 @@ export function GenerateDraftV2Dialog({
             setPostId(null)
             setStepMessage('')
             setShowReviews(false)
+            setResearchFindings([])
+            setCurrentQuery(null)
         }, 300)
     }
 
@@ -417,7 +450,7 @@ export function GenerateDraftV2Dialog({
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className='sm:max-w-lg'>
+            <DialogContent size='xl'>
                 <DialogHeader>
                     <DialogTitle className='flex items-center gap-2'>
                         <Sparkles className='h-5 w-5 text-amber-500' />
@@ -574,6 +607,16 @@ export function GenerateDraftV2Dialog({
                                     }
                                 />
                             </div>
+
+                            {/* Research findings display */}
+                            {(researchFindings.length > 0 ||
+                                currentQuery !== null) && (
+                                <ResearchFindingsDisplay
+                                    findings={researchFindings}
+                                    currentQuery={currentQuery}
+                                    isSearching={step === 'research'}
+                                />
+                            )}
                         </div>
                     )}
 
