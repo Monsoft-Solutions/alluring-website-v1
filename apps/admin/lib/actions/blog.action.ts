@@ -19,6 +19,8 @@ export type BlogPostFormData = {
     metaDescription: string
     metaTitle?: string | null
     metaKeywords?: string | null
+    primaryKeyword?: string | null
+    secondaryKeywords?: string[] | null
     excerpt?: string | null
     authorId?: string | null
     status: 'draft' | 'readyToPublish' | 'published'
@@ -93,6 +95,8 @@ export async function createBlogPost(
                 metaDescription: data.metaDescription,
                 metaTitle: data.metaTitle ?? null,
                 metaKeywords: data.metaKeywords ?? null,
+                primaryKeyword: data.primaryKeyword ?? null,
+                secondaryKeywords: data.secondaryKeywords ?? null,
                 excerpt: data.excerpt ?? null,
                 authorId: data.authorId || null,
                 status: data.status,
@@ -223,6 +227,8 @@ export async function updateBlogPost(
                 metaDescription: data.metaDescription,
                 metaTitle: data.metaTitle ?? null,
                 metaKeywords: data.metaKeywords ?? null,
+                primaryKeyword: data.primaryKeyword ?? null,
+                secondaryKeywords: data.secondaryKeywords ?? null,
                 excerpt: data.excerpt ?? null,
                 authorId: data.authorId || null,
                 status: data.status,

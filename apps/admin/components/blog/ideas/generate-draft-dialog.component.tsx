@@ -201,6 +201,8 @@ export function GenerateDraftDialog({
                 content: contentData.content,
                 metaDescription: contentData.metaDescription,
                 excerpt: contentData.excerpt,
+                primaryKeyword: idea.primaryKeyword,
+                secondaryKeywords: idea.secondaryKeywords,
                 authorId: idea.assignedAuthorId,
                 status: 'draft',
             })

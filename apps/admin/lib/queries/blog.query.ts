@@ -124,6 +124,8 @@ export type BlogPostDetail = {
     metaDescription: string
     metaTitle: string | null
     metaKeywords: string | null
+    primaryKeyword: string | null
+    secondaryKeywords: string[] | null
     excerpt: string | null
     status: 'draft' | 'readyToPublish' | 'published' | null
     publishedAt: Date | null
@@ -146,6 +148,8 @@ export async function getBlogPostById(
             metaDescription: blogPost.metaDescription,
             metaTitle: blogPost.metaTitle,
             metaKeywords: blogPost.metaKeywords,
+            primaryKeyword: blogPost.primaryKeyword,
+            secondaryKeywords: blogPost.secondaryKeywords,
             excerpt: blogPost.excerpt,
             status: blogPost.status,
             publishedAt: blogPost.publishedAt,
@@ -160,7 +164,13 @@ export async function getBlogPostById(
         .where(eq(blogPost.id, id))
         .limit(1)
 
-    return result[0] ?? null
+    const post = result[0]
+    if (!post) return null
+
+    return {
+        ...post,
+        secondaryKeywords: post.secondaryKeywords as string[] | null,
+    }
 }
 
 export type AuthorOption = {

@@ -19,6 +19,7 @@ import { PostFormBasicInfo } from './post-form-basic-info.component'
 import { PostFormActions } from './post-form-actions.component'
 import { PostFormSettings } from './post-form-settings.component'
 import { PostFormSEO } from './post-form-seo.component'
+import { PostFormKeywords } from './post-form-keywords.component'
 import { FeaturedImageDialog } from './featured-image-dialog.component'
 import { GeneratedImagesGallery } from './generated-images-gallery.component'
 import { AnalysisPanel } from './analysis-panel.component'
@@ -54,6 +55,8 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
         metaDescription: initialData?.metaDescription ?? '',
         metaTitle: initialData?.metaTitle ?? '',
         metaKeywords: initialData?.metaKeywords ?? '',
+        primaryKeyword: initialData?.primaryKeyword ?? null,
+        secondaryKeywords: initialData?.secondaryKeywords ?? null,
         excerpt: initialData?.excerpt ?? '',
         authorId: initialData?.authorId ?? '',
         status: initialData?.status ?? 'draft',
@@ -262,6 +265,20 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                     onStatusChange={(status) => handleChange('status', status)}
                     onFeaturedImageChange={(url) =>
                         handleChange('featuredImageUrl', url)
+                    }
+                />
+
+                <PostFormKeywords
+                    primaryKeyword={formData.primaryKeyword ?? null}
+                    secondaryKeywords={formData.secondaryKeywords ?? null}
+                    onPrimaryKeywordChange={(value) =>
+                        handleChange('primaryKeyword', value)
+                    }
+                    onSecondaryKeywordsChange={(value) =>
+                        setFormData((prev) => ({
+                            ...prev,
+                            secondaryKeywords: value,
+                        }))
                     }
                 />
 
