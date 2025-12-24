@@ -30,7 +30,7 @@ import {
     STAGE_CONFIG,
     CONTENT_TYPE_LABELS,
 } from '@/lib/constants/blog-ideas.constant'
-import { GenerateDraftDialog } from './generate-draft-dialog.component'
+import { GenerateDraftV2Dialog } from './generate-draft-v2-dialog.component'
 import { Section } from './idea-section.component'
 import { DrawerSkeleton } from './idea-drawer-skeleton.component'
 
@@ -365,9 +365,9 @@ export function IdeaDetailDrawer({
                     </>
                 ) : null}
 
-                {/* Generate Draft Dialog */}
+                {/* Generate Draft Dialog (v2 with pipeline) */}
                 {idea && (
-                    <GenerateDraftDialog
+                    <GenerateDraftV2Dialog
                         idea={idea}
                         open={isGenerateDraftOpen}
                         onOpenChange={setIsGenerateDraftOpen}
