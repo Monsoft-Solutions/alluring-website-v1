@@ -201,6 +201,7 @@ async function runContentGenerationPhase(
 
 /**
  * Run the review phase (parallel execution)
+ * Each agent emits its result via onProgress when complete
  */
 async function runReviewPhase(
     content: string,
@@ -224,7 +225,7 @@ async function runReviewPhase(
         modelId: reviewModelId,
     }
 
-    // Run all reviews in parallel
+    // Run all reviews in parallel, emitting results as each completes
     const [
         internalLinksReview,
         externalLinksReview,
@@ -235,7 +236,14 @@ async function runReviewPhase(
             onProgress?.(
                 'review-internal-links',
                 100,
-                'Internal links review complete'
+                'Internal links review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
             )
             return result
         }),
@@ -243,7 +251,14 @@ async function runReviewPhase(
             onProgress?.(
                 'review-external-links',
                 100,
-                'External links review complete'
+                'External links review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
             )
             return result
         }),
@@ -251,12 +266,25 @@ async function runReviewPhase(
             onProgress?.(
                 'review-writing-quality',
                 100,
-                'Writing quality review complete'
+                'Writing quality review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
             )
             return result
         }),
         runAISlopDetector(reviewOptions).then((result) => {
-            onProgress?.('review-ai-slop', 100, 'AI slop detection complete')
+            onProgress?.('review-ai-slop', 100, 'AI slop detection complete', {
+                type: 'review-result',
+                agentName: result.agentName,
+                score: result.score,
+                summary: result.summary,
+                issueCount: result.issues.length,
+            })
             return result
         }),
     ])

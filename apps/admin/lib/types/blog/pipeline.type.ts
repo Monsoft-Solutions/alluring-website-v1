@@ -51,13 +51,29 @@ export type SSEResearchFindingData = {
 export type SSEResearchData = SSEResearchQueryData | SSEResearchFindingData
 
 /**
+ * Review result event data (when a review agent completes)
+ */
+export type SSEReviewResultData = {
+    type: 'review-result'
+    agentName: string
+    score: number
+    summary: string
+    issueCount: number
+}
+
+/**
+ * Union of all progress event data types
+ */
+export type SSEProgressData = SSEResearchData | SSEReviewResultData
+
+/**
  * SSE progress event from the pipeline API
  */
 export type SSEProgressEvent = {
     step: PipelineStep
     progress: number
     message: string
-    data?: SSEResearchData
+    data?: SSEProgressData
 }
 
 /**
