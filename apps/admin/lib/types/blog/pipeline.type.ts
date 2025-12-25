@@ -99,6 +99,14 @@ export type ResearchSummary = {
 }
 
 /**
+ * FAQ item for structured data
+ */
+export type FaqItem = {
+    question: string
+    answer: string
+}
+
+/**
  * SSE completion event from the pipeline API
  */
 export type SSECompleteEvent = {
@@ -109,6 +117,7 @@ export type SSECompleteEvent = {
         wordCount: number
         metaDescription: string
         excerpt: string
+        faqs?: FaqItem[]
     }
     reviews?: ReviewSummary[]
     finalContent?: string

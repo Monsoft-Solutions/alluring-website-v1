@@ -246,6 +246,13 @@
       "when": 1766542008978,
       "tag": "0034_sour_lizard",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1766668053317,
+      "tag": "0035_ancient_fantastic_four",
+      "breakpoints": true
     }
   ]
 }

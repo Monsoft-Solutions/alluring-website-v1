@@ -125,7 +125,7 @@ export async function extractFaqs(
         content,
         primaryKeyword,
         maxFaqs = 10,
-        modelId = 'gpt-4.1-mini',
+        modelId = 'gpt-4.1',
     } = options
 
     // Quick regex check for FAQ patterns (optimization)

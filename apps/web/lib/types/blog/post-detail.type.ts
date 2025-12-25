@@ -1,5 +1,13 @@
 import type { BlogPostCard } from './post-card.type'
 
+/**
+ * FAQ item for structured FAQ data
+ */
+export type FaqItem = {
+    question: string
+    answer: string
+}
+
 export type BlogPostDetail = BlogPostCard & {
     content: string
     updatedAt: string | null
@@ -13,4 +21,5 @@ export type BlogPostDetail = BlogPostCard & {
         name: string
         slug: string
     }>
+    faqs?: FaqItem[] | null
 }

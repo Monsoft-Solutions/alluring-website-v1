@@ -81,6 +81,7 @@ export default async function EditBlogPostPage({ params }: PageProps) {
                     featuredImageUrl: post.featuredImageUrl,
                     featuredImageId: post.featuredImageId,
                     readingTime: post.readingTime,
+                    faqs: post.faqs,
                 }}
             />
         </div>

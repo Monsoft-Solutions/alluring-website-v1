@@ -20,10 +20,12 @@ import {
     runOrchestrator,
 } from '../agents'
 import { generateBlogPostContent } from '../functions/generate-blog-post-content.function'
+import { extractFaqs } from '../functions/extract-faqs.function'
 import type {
     BlogContentPipelineOptions,
     BlogContentPipelineResult,
     ResearchResult,
+    FaqItem,
 } from './types.pipeline'
 import type { AgentReview } from '../agents/types.agent'
 
@@ -183,6 +185,12 @@ async function runContentGenerationPhase(
 
     onProgress?.('content-generation', 100, 'Content generation complete')
 
+    // Extract FAQs from the generated content for FAQ Schema
+    const faqResult = await extractFaqs({
+        content: result.content,
+        primaryKeyword: idea.primaryKeyword,
+    })
+
     // Add link suggestions context to content (AI should have incorporated them)
     // This is additional metadata for the review phase
     return {
@@ -191,6 +199,7 @@ async function runContentGenerationPhase(
         metaDescription: result.metaDescription,
         excerpt: result.excerpt,
         suggestedTags: result.suggestedTags,
+        faqs: faqResult.faqs as FaqItem[],
         linkSuggestions: {
             internal: internalLinkSuggestions,
             external: externalSourceSuggestions,
@@ -406,6 +415,7 @@ export async function runBlogContentPipeline(
                 metaDescription: contentResult.metaDescription,
                 excerpt: contentResult.excerpt,
                 suggestedTags: contentResult.suggestedTags,
+                faqs: contentResult.faqs,
             },
             reviews,
             orchestratorResult,

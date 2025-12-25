@@ -75,6 +75,14 @@ export type ResearchResult = {
 }
 
 /**
+ * FAQ item for structured data
+ */
+export type FaqItem = {
+    question: string
+    answer: string
+}
+
+/**
  * Content generation result
  */
 export type ContentGenerationResult = {
@@ -83,6 +91,7 @@ export type ContentGenerationResult = {
     metaDescription: string
     excerpt: string
     suggestedTags?: string[]
+    faqs?: FaqItem[]
 }
 
 /**

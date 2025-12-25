@@ -157,7 +157,10 @@ export async function POST(request: NextRequest) {
                     send('complete', {
                         success: result.success,
                         error: result.error,
-                        initialContent: result.initialContent,
+                        initialContent: {
+                            ...result.initialContent,
+                            faqs: result.initialContent.faqs,
+                        },
                         reviews: result.reviews.map((r) => ({
                             agentName: r.agentName,
                             score: r.score,
@@ -231,7 +234,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({
                 success: true,
                 // Initial content (before reviews)
-                initialContent: result.initialContent,
+                initialContent: {
+                    ...result.initialContent,
+                    faqs: result.initialContent.faqs,
+                },
                 // Review summaries
                 reviews: result.reviews.map((r) => ({
                     agentName: r.agentName,
@@ -244,6 +250,7 @@ export async function POST(request: NextRequest) {
                 finalContent: result.orchestratorResult.revisedContent,
                 metaDescription: result.initialContent.metaDescription,
                 excerpt: result.initialContent.excerpt,
+                faqs: result.initialContent.faqs,
                 // Orchestrator details
                 changesSummary: result.orchestratorResult.changesSummary,
                 changes: result.orchestratorResult.changes,

@@ -116,6 +116,11 @@ export async function updateBlogPostStatus(
     await db.update(blogPost).set(updateData).where(eq(blogPost.id, postId))
 }
 
+export type FaqItem = {
+    question: string
+    answer: string
+}
+
 export type BlogPostDetail = {
     id: string
     slug: string
@@ -134,6 +139,7 @@ export type BlogPostDetail = {
     aiSummary: string | null
     featuredImageUrl: string | null
     featuredImageId: string | null
+    faqs: FaqItem[] | null
 }
 
 export async function getBlogPostById(
@@ -158,6 +164,7 @@ export async function getBlogPostById(
             aiSummary: blogPost.aiSummary,
             featuredImageUrl: images.url,
             featuredImageId: blogPost.featuredImageId,
+            faqs: blogPost.faqs,
         })
         .from(blogPost)
         .leftJoin(images, eq(blogPost.featuredImageId, images.id))
@@ -170,6 +177,7 @@ export async function getBlogPostById(
     return {
         ...post,
         secondaryKeywords: post.secondaryKeywords as string[] | null,
+        faqs: post.faqs as FaqItem[] | null,
     }
 }
 

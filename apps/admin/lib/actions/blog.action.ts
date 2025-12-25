@@ -28,6 +28,7 @@ export type BlogPostFormData = {
     featuredImageUrl?: string | null
     featuredImageId?: string | null
     readingTime?: number | null
+    faqs?: Array<{ question: string; answer: string }> | null
 }
 
 type ActionResult = {
@@ -101,6 +102,7 @@ export async function createBlogPost(
                 authorId: data.authorId || null,
                 status: data.status,
                 aiSummary: data.aiSummary ?? null,
+                faqs: data.faqs ?? null,
                 featuredImageId,
                 readingTime: data.readingTime ?? null,
                 publishedAt: data.status === 'published' ? new Date() : null,
@@ -233,6 +235,7 @@ export async function updateBlogPost(
                 authorId: data.authorId || null,
                 status: data.status,
                 aiSummary: data.aiSummary ?? null,
+                faqs: data.faqs ?? null,
                 featuredImageId,
                 readingTime: data.readingTime ?? null,
                 ...(publishedAt ? { publishedAt } : {}),

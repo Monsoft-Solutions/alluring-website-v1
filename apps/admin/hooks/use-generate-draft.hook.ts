@@ -126,7 +126,11 @@ export function useGenerateDraft({
      */
     const saveDraft = async (
         content: string,
-        metadata?: { metaDescription?: string; excerpt?: string }
+        metadata?: {
+            metaDescription?: string
+            excerpt?: string
+            faqs?: Array<{ question: string; answer: string }>
+        }
     ) => {
         const slug = idea.title
             .toLowerCase()
@@ -143,6 +147,7 @@ export function useGenerateDraft({
             secondaryKeywords: idea.secondaryKeywords,
             authorId: idea.assignedAuthorId,
             status: 'draft',
+            faqs: metadata?.faqs || null,
         })
 
         if (!createResult.success) {

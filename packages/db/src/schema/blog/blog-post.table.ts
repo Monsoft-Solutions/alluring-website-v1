@@ -4,6 +4,7 @@ import {
     index,
     integer,
     json,
+    jsonb,
     pgEnum,
     pgTable,
     text,
@@ -14,6 +15,14 @@ import {
 
 import { author } from './author.table'
 import { images } from './image.table'
+
+/**
+ * FAQ item type for structured FAQ data
+ */
+export type FaqItem = {
+    question: string
+    answer: string
+}
 
 export const blogPostStatus = pgEnum('blog_post_status', [
     'draft',
@@ -38,6 +47,7 @@ export const blogPost = pgTable(
         readingTime: integer('reading_time'), // in minutes
         content: text('content').notNull(),
         aiSummary: text('ai_summary'), // AI-generated summary for image generation
+        faqs: jsonb('faqs').$type<FaqItem[]>(), // Extracted FAQ items for FAQ Schema
         status: blogPostStatus('status').default('draft'),
         views: integer('views').default(0).notNull(),
         likes: integer('likes').default(0).notNull(),
