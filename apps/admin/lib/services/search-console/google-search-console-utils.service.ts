@@ -5,6 +5,8 @@
  *
  * @module @/lib/services/search-console/google-search-console-utils
  */
+import type { searchconsole_v1 } from 'googleapis'
+
 import type { SortDirection } from '@/lib/types/shared/sorting.type'
 import type { SortField } from '@/lib/types/search-console/search-console.type'
 
@@ -59,7 +61,7 @@ export type SearchAnalyticsRow = {
  */
 export async function fetchSearchAnalytics(options: {
     dimensions: ('query' | 'page' | 'date')[]
-    dimensionFilterGroups?: any[]
+    dimensionFilterGroups?: searchconsole_v1.Schema$ApiDimensionFilterGroup[]
     rowLimit?: number
     days?: number
     startDate?: string

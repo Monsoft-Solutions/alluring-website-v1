@@ -7,11 +7,8 @@
  */
 import type { PositionChange } from '@/lib/types/search-console/search-console.type'
 
-import {
-    isSearchConsoleConfigured,
-    getSearchConsoleClient,
-    getSiteUrl,
-} from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { fetchSearchAnalytics } from './google-search-console-utils.service'
 
 /**
  * Get position changes between two periods
@@ -26,9 +23,6 @@ export async function getPositionChanges(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-
         // Current period
         const currentEnd = new Date()
         currentEnd.setDate(currentEnd.getDate() - 3) // Account for data delay
@@ -42,29 +36,20 @@ export async function getPositionChanges(
         previousStart.setDate(previousStart.getDate() - days)
 
         // Fetch current period data
-        const currentResponse = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate: currentStart.toISOString().split('T')[0]!,
-                endDate: currentEnd.toISOString().split('T')[0]!,
-                dimensions: ['query'],
-                rowLimit: 500,
-            },
+        const currentRows = await fetchSearchAnalytics({
+            dimensions: ['query'],
+            rowLimit: 500,
+            startDate: currentStart.toISOString().split('T')[0]!,
+            endDate: currentEnd.toISOString().split('T')[0]!,
         })
 
         // Fetch previous period data
-        const previousResponse = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate: previousStart.toISOString().split('T')[0]!,
-                endDate: previousEnd.toISOString().split('T')[0]!,
-                dimensions: ['query'],
-                rowLimit: 500,
-            },
+        const previousRows = await fetchSearchAnalytics({
+            dimensions: ['query'],
+            rowLimit: 500,
+            startDate: previousStart.toISOString().split('T')[0]!,
+            endDate: previousEnd.toISOString().split('T')[0]!,
         })
-
-        const currentRows = currentResponse.data.rows ?? []
-        const previousRows = previousResponse.data.rows ?? []
 
         // Create a map of previous positions
         const previousPositions = new Map<string, number>()

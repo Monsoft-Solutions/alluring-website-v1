@@ -7,14 +7,10 @@
  */
 import type { SearchConsoleSummary } from '@/lib/types/search-console/search-console.type'
 
+import { isSearchConsoleConfigured } from './google-search-console-client.service'
 import {
-    isSearchConsoleConfigured,
-    getSearchConsoleClient,
-    getSiteUrl,
-} from './google-search-console-client.service'
-import {
-    getDateRange,
     DEFAULT_DAYS,
+    fetchSearchAnalytics,
 } from './google-search-console-utils.service'
 
 /**
@@ -36,32 +32,20 @@ export async function getSearchConsoleSummary(
 
     try {
         // Fetch aggregated data without dimensions for totals
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
-        const aggregatedResponse = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: [], // No dimensions = aggregated totals
-            },
+        const aggregatedRows = await fetchSearchAnalytics({
+            dimensions: [], // No dimensions = aggregated totals
+            days,
         })
 
         // Fetch top query
-        const topQueryResponse = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['query'],
-                rowLimit: 1,
-            },
+        const topQueryRows = await fetchSearchAnalytics({
+            dimensions: ['query'],
+            rowLimit: 1,
+            days,
         })
 
-        const aggregatedRow = aggregatedResponse.data.rows?.[0]
-        const topQueryRow = topQueryResponse.data.rows?.[0]
+        const aggregatedRow = aggregatedRows[0]
+        const topQueryRow = topQueryRows[0]
 
         return {
             totalClicks: aggregatedRow?.clicks ?? 0,

@@ -10,14 +10,9 @@ import type {
     SearchQuery,
 } from '@/lib/types/search-console/search-console.type'
 
-import {
-    isSearchConsoleConfigured,
-    getSearchConsoleClient,
-    getSiteUrl,
-} from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './google-search-console-client.service'
 import {
     fetchSearchAnalytics,
-    getDateRange,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
     BENCHMARK_CTR,
@@ -116,22 +111,12 @@ export async function getContentGaps(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
         // Fetch queries with their associated pages
-        const response = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['query', 'page'],
-                rowLimit: 1000, // Fetch more to analyze
-            },
+        const rows = await fetchSearchAnalytics({
+            dimensions: ['query', 'page'],
+            rowLimit: 1000, // Fetch more to analyze
+            days,
         })
-
-        const rows = response.data.rows ?? []
 
         // Group by query and find the best page for each
         const queryMap = new Map<
