@@ -44,6 +44,17 @@ type IdeationWizardDialogProps = {
     onOpenChange: (open: boolean) => void
 }
 
+type GenerateTopicsResponse = {
+    success: boolean
+    topics?: TopicSuggestion[]
+    error?: string
+}
+
+type GenerateOutlineResponse = GenerateBlogOutlineResult & {
+    success: boolean
+    error?: string
+}
+
 /**
  * Multi-step AI ideation wizard for generating blog ideas
  */
@@ -86,7 +97,7 @@ export function IdeationWizardDialog({
                 }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as GenerateTopicsResponse
 
             if (data.success && data.topics) {
                 updateState({ topics: data.topics })
@@ -129,7 +140,7 @@ export function IdeationWizardDialog({
                 }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as GenerateOutlineResponse
 
             if (data.success) {
                 updateState({ outline: data })

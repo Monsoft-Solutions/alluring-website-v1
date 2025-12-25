@@ -76,10 +76,8 @@ export function IdeaFormDialog({ open, onOpenChange }: IdeaFormDialogProps) {
             primaryKeyword: formData.primaryKeyword || null,
             secondaryKeywords:
                 secondaryKeywords.length > 0 ? secondaryKeywords : null,
-            contentType:
-                formData.contentType as BlogIdeaFormData['contentType'],
-            priority:
-                (formData.priority as BlogIdeaFormData['priority']) || 'medium',
+            contentType: formData.contentType,
+            priority: formData.priority || 'medium',
             targetAudience: formData.targetAudience || null,
             uniqueAngle: formData.uniqueAngle || null,
         })

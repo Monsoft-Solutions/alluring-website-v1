@@ -176,8 +176,8 @@ export async function getBlogPostById(
 
     return {
         ...post,
-        secondaryKeywords: post.secondaryKeywords as string[] | null,
-        faqs: post.faqs as FaqItem[] | null,
+        secondaryKeywords: post.secondaryKeywords,
+        faqs: post.faqs,
     }
 }
 

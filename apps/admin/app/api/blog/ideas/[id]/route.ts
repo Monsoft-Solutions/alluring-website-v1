@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 import { getBlogIdeaById } from '@/lib/queries/ideas.query'
 import { requireAuth } from '@/lib/utils/auth.util'

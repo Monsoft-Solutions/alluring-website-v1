@@ -70,8 +70,7 @@ const STEPS: StepConfig[] = [
 
 function getStepStatus(
     step: StepConfig,
-    currentStep: DialogStep,
-    progress: number
+    currentStep: DialogStep
 ): 'pending' | 'active' | 'complete' {
     const stepIndex = STEPS.findIndex((s) => s.id === step.id)
     const currentStepIndex = STEPS.findIndex((s) =>
@@ -121,7 +120,7 @@ export function PipelineStepper({
             {/* Steps */}
             <div className='relative flex justify-between'>
                 {STEPS.map((step) => {
-                    const status = getStepStatus(step, currentStep, progress)
+                    const status = getStepStatus(step, currentStep)
                     const Icon = step.icon
 
                     return (

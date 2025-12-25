@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { extractFaqs } from '@workspace/ai/functions'
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     try {
         await requireAuth()
 
-        const body = await request.json()
+        const body: unknown = await request.json()
         const validationResult = requestSchema.safeParse(body)
 
         if (!validationResult.success) {

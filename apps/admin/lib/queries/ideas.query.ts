@@ -287,7 +287,7 @@ export const getIdeaStageStats = cache(async (): Promise<IdeaStageStats> => {
     }
 
     for (const row of result) {
-        const stage = row.stage as keyof Omit<IdeaStageStats, 'total'>
+        const stage = row.stage
         stats[stage] = row.count
         stats.total += row.count
     }

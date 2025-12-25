@@ -100,9 +100,9 @@ export function useCreateIdea() {
 
     return useMutation({
         mutationFn: (data: BlogIdeaFormData) => createBlogIdea(data),
-        onSuccess: () => {
+        onSuccess: async () => {
             // Invalidate all ideas queries
-            queryClient.invalidateQueries({ queryKey: ideasKeys.all })
+            await queryClient.invalidateQueries({ queryKey: ideasKeys.all })
         },
     })
 }
@@ -121,14 +121,16 @@ export function useUpdateIdea() {
             id: string
             data: Partial<BlogIdeaFormData>
         }) => updateBlogIdea(id, data),
-        onSuccess: (_, variables) => {
+        onSuccess: async (_, variables) => {
             // Invalidate specific idea and lists
-            queryClient.invalidateQueries({
-                queryKey: ideasKeys.detail(variables.id),
-            })
-            queryClient.invalidateQueries({ queryKey: ideasKeys.list() })
-            queryClient.invalidateQueries({ queryKey: ideasKeys.kanban() })
-            queryClient.invalidateQueries({ queryKey: ideasKeys.stats() })
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: ideasKeys.detail(variables.id),
+                }),
+                queryClient.invalidateQueries({ queryKey: ideasKeys.list() }),
+                queryClient.invalidateQueries({ queryKey: ideasKeys.kanban() }),
+                queryClient.invalidateQueries({ queryKey: ideasKeys.stats() }),
+            ])
         },
     })
 }
@@ -206,10 +208,12 @@ export function useUpdateIdeaStage() {
                 )
             }
         },
-        onSettled: () => {
+        onSettled: async () => {
             // Refetch to ensure consistency
-            queryClient.invalidateQueries({ queryKey: ideasKeys.kanban() })
-            queryClient.invalidateQueries({ queryKey: ideasKeys.stats() })
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ideasKeys.kanban() }),
+                queryClient.invalidateQueries({ queryKey: ideasKeys.stats() }),
+            ])
         },
     })
 }
@@ -222,8 +226,8 @@ export function useDeleteIdea() {
 
     return useMutation({
         mutationFn: (id: string) => deleteBlogIdea(id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ideasKeys.all })
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ideasKeys.all })
         },
     })
 }

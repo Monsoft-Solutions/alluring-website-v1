@@ -254,7 +254,6 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
 
                 {initialData?.id && (
                     <PostFormFAQs
-                        blogPostId={initialData.id}
                         content={formData.content}
                         primaryKeyword={formData.primaryKeyword ?? null}
                         faqs={formData.faqs ?? null}

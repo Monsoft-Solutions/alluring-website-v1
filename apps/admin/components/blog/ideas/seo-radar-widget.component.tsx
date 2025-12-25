@@ -10,21 +10,18 @@ import {
     CardTitle,
 } from '@workspace/ui/components/card'
 import { Button } from '@workspace/ui/components/button'
-import { Badge } from '@workspace/ui/components/badge'
 import { Skeleton } from '@workspace/ui/components/skeleton'
-import {
-    Radar,
-    Sparkles,
-    Plus,
-    Target,
-    TrendingUp,
-    Loader2,
-    RefreshCw,
-} from 'lucide-react'
+import { Radar, Sparkles, Loader2 } from 'lucide-react'
 
 import { useCreateIdea } from '@/hooks/use-ideas.hook'
 import type { TopicSuggestion } from '@workspace/ai/functions'
 import { OpportunityCard } from './opportunity-card.component'
+
+type GenerateTopicsResponse = {
+    success: boolean
+    topics?: TopicSuggestion[]
+    error?: string
+}
 
 const KEYWORD_GAPS = [
     {
@@ -92,7 +89,7 @@ export function SeoRadarWidget() {
                 }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as GenerateTopicsResponse
 
             if (data.success && data.topics) {
                 setAiSuggestions(data.topics)

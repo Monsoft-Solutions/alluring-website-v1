@@ -23,6 +23,12 @@ type GscIdeasGeneratorDialogProps = {
     onOpenChange: (open: boolean) => void
 }
 
+type GenerateTopicsResponse = {
+    success: boolean
+    topics?: TopicSuggestion[]
+    error?: string
+}
+
 /**
  * GSC Ideas Generator Dialog
  *
@@ -65,7 +71,7 @@ export function GscIdeasGeneratorDialog({
                 }),
             })
 
-            const data = await response.json()
+            const data = (await response.json()) as GenerateTopicsResponse
 
             if (data.success && data.topics) {
                 setIdeas(data.topics)

@@ -71,7 +71,7 @@ export function PostFormKeywords({
                         placeholder='main target keyword'
                     />
                     <p className='text-muted-foreground text-xs'>
-                        The main keyword you're targeting with this content
+                        The main keyword you&apos;re targeting with this content
                     </p>
                 </div>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { HelpCircle, Plus, Sparkles, Trash2, X } from 'lucide-react'
+import { HelpCircle, Plus, Sparkles, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@workspace/ui/components/button'
@@ -22,36 +22,35 @@ type FaqItem = {
 }
 
 type PostFormFAQsProps = {
-    blogPostId: string
     content: string
     primaryKeyword: string | null
     faqs: FaqItem[] | null
     onFaqsChange: (faqs: FaqItem[] | null) => void
 }
 
+type GenerateFaqsResponse = {
+    success: boolean
+    faqs?: FaqItem[]
+    error?: string
+}
+
 export function PostFormFAQs({
-    blogPostId,
     content,
     primaryKeyword,
     faqs,
     onFaqsChange,
 }: PostFormFAQsProps) {
     const [isGenerating, setIsGenerating] = useState(false)
-    const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
     const handleAddFaq = () => {
         const newFaq: FaqItem = { question: '', answer: '' }
         const updatedFaqs = [...(faqs ?? []), newFaq]
         onFaqsChange(updatedFaqs)
-        setEditingIndex(updatedFaqs.length - 1)
     }
 
     const handleRemoveFaq = (index: number) => {
         const updatedFaqs = (faqs ?? []).filter((_, i) => i !== index)
         onFaqsChange(updatedFaqs.length > 0 ? updatedFaqs : null)
-        if (editingIndex === index) {
-            setEditingIndex(null)
-        }
     }
 
     const handleUpdateFaq = (
@@ -89,7 +88,7 @@ export function PostFormFAQs({
                 }),
             })
 
-            const result = await response.json()
+            const result = (await response.json()) as GenerateFaqsResponse
 
             if (result.success && result.faqs) {
                 onFaqsChange(result.faqs)

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { Input } from '@workspace/ui/components/input'
 import { Checkbox } from '@workspace/ui/components/checkbox'
 import { Badge } from '@workspace/ui/components/badge'
@@ -60,10 +60,13 @@ export function GscKeywordSelector({
     const isConfigured = queryResponse?.configured ?? true
 
     // Get all selected keywords (primary + secondary)
-    const allSelected = [
-        ...(selectedKeywords.primary ? [selectedKeywords.primary] : []),
-        ...selectedKeywords.secondary,
-    ]
+    const allSelected = useMemo(
+        () => [
+            ...(selectedKeywords.primary ? [selectedKeywords.primary] : []),
+            ...selectedKeywords.secondary,
+        ],
+        [selectedKeywords.primary, selectedKeywords.secondary]
+    )
 
     // Check if a query is selected
     const isSelected = useCallback(
@@ -143,9 +146,6 @@ export function GscKeywordSelector({
         },
         [handleToggleKeyword]
     )
-
-    // Format CTR for display
-    const formatCtr = (ctr: number) => `${(ctr * 100).toFixed(1)}%`
 
     // Format position for display
     const formatPosition = (position: number) => position.toFixed(1)
