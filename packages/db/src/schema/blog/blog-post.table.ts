@@ -13,16 +13,10 @@ import {
     varchar,
 } from 'drizzle-orm/pg-core'
 
+import type { FaqItem } from '@workspace/shared/schemas/blog'
+
 import { author } from './author.table'
 import { images } from './image.table'
-
-/**
- * FAQ item type for structured FAQ data
- */
-export type FaqItem = {
-    question: string
-    answer: string
-}
 
 export const blogPostStatus = pgEnum('blog_post_status', [
     'draft',

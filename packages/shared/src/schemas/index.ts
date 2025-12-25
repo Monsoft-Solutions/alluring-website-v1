@@ -125,6 +125,8 @@ export {
     suggestionSchema,
     blogPostAnalysisResultSchema,
     analyzeBlogPostInputSchema,
+    faqItemSchema,
+    faqListSchema,
     // Types
     type CategoryScore,
     type ContentLengthCategory,
@@ -138,6 +140,8 @@ export {
     type Suggestion,
     type BlogPostAnalysisResult,
     type AnalyzeBlogPostInput,
+    type FaqItem,
+    type FaqList,
 } from './blog'
 
 // SEO schemas

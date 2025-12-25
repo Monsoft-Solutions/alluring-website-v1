@@ -7,6 +7,7 @@
  * @module @/lib/types/blog/pipeline
  */
 
+import type { FaqItem } from '@workspace/shared/schemas/blog'
 import type { PipelineStep } from '@workspace/ai/agents'
 
 /**
@@ -96,14 +97,6 @@ export type ResearchSummary = {
         title: string
         url: string
     }>
-}
-
-/**
- * FAQ item for structured data
- */
-export type FaqItem = {
-    question: string
-    answer: string
 }
 
 /**

@@ -1,6 +1,7 @@
 /**
  * Google Search Console data types for SEO insights
  */
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
 
 /**
  * Summary statistics from Google Search Console
@@ -67,11 +68,6 @@ export type ContentOpportunity = {
  * Sort field options for search console data
  */
 export type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
-
-/**
- * Sort direction for search console queries
- */
-export type SortDirection = 'asc' | 'desc'
 
 /**
  * Parameters for querying search console data

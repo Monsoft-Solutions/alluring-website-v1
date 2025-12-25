@@ -8,17 +8,9 @@
  */
 import { z } from 'zod'
 
-import { coreGenerateObject } from '../core'
+import { faqItemSchema, type FaqItem } from '@workspace/shared/schemas/blog'
 
-/**
- * Single FAQ item schema
- */
-export const faqItemSchema = z.object({
-    /** Question text */
-    question: z.string().describe('The FAQ question'),
-    /** Answer text */
-    answer: z.string().describe('The FAQ answer'),
-})
+import { coreGenerateObject } from '../core'
 
 /**
  * FAQ extraction response schema
@@ -35,11 +27,6 @@ export const extractFaqsResponseSchema = z.object({
         .boolean()
         .describe('True if content has explicit FAQ section'),
 })
-
-/**
- * Single FAQ item type
- */
-export type FaqItem = z.infer<typeof faqItemSchema>
 
 /**
  * FAQ extraction result type

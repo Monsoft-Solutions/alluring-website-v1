@@ -5,10 +5,8 @@
  *
  * @module @/lib/services/search-console/google-search-console-utils
  */
-import type {
-    SortField,
-    SortDirection,
-} from '@/lib/types/search-console/search-console.type'
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
+import type { SortField } from '@/lib/types/search-console/search-console.type'
 
 import {
     getSearchConsoleClient,

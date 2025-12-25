@@ -14,10 +14,10 @@ import {
 import { Button } from '@workspace/ui/components/button'
 
 import { useSearchConsoleQueries } from '@/hooks/use-search-console.hook'
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
 import type {
     SearchQuery,
     SortField,
-    SortDirection,
 } from '@/lib/types/search-console/search-console.type'
 import { ServerDataTable } from '@/components/shared/server-data-table.component'
 import { SortableHeader } from '@/components/shared/sortable-header.component'

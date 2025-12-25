@@ -1,12 +1,6 @@
-import type { BlogPostCard } from './post-card.type'
+import type { FaqItem } from '@workspace/shared/schemas/blog'
 
-/**
- * FAQ item for structured FAQ data
- */
-export type FaqItem = {
-    question: string
-    answer: string
-}
+import type { BlogPostCard } from './post-card.type'
 
 export type BlogPostDetail = BlogPostCard & {
     content: string

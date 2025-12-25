@@ -1,4 +1,5 @@
 import { db } from '@workspace/db/client'
+import type { FaqItem } from '@workspace/shared/schemas/blog'
 import { author, blogPost, images } from '@workspace/db/schema/blog'
 import { count, desc, eq, sql, asc } from 'drizzle-orm'
 
@@ -114,11 +115,6 @@ export async function updateBlogPostStatus(
     }
 
     await db.update(blogPost).set(updateData).where(eq(blogPost.id, postId))
-}
-
-export type FaqItem = {
-    question: string
-    answer: string
 }
 
 export type BlogPostDetail = {

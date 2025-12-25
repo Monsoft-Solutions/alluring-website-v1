@@ -14,9 +14,12 @@ import {
 } from '../tools/web-search-tavily.tool'
 
 /**
- * Research result structure
+ * Gathered research result structure.
+ *
+ * Named GatheredResearch to distinguish from the pipeline's
+ * ResearchResult type which has a different structure.
  */
-export type ResearchResult = {
+export type GatheredResearch = {
     /** General web search results */
     statistics: WebSearchResult[]
     /** Medical/authoritative source results */
@@ -110,7 +113,7 @@ function formatResearchContext(
  */
 export async function gatherResearch(
     options: GatherResearchOptions
-): Promise<ResearchResult> {
+): Promise<GatheredResearch> {
     const {
         topic,
         primaryKeyword,

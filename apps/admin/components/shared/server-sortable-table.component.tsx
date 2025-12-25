@@ -13,6 +13,8 @@ import {
 } from '@workspace/ui/components/table'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
+
 /**
  * Column definition for server-sortable tables.
  */
@@ -32,8 +34,6 @@ export type ServerSortableColumn<T> = {
     /** Optional className for the header */
     headerClassName?: string
 }
-
-export type SortDirection = 'asc' | 'desc'
 
 export type ServerSortableTableProps<T> = {
     /** Array of data items to display */

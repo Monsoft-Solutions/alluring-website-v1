@@ -5,6 +5,8 @@
  *
  * @module @workspace/ai/pipelines/types
  */
+import type { FaqItem } from '@workspace/shared/schemas/blog'
+
 import type {
     AgentReview,
     OrchestratorResult,
@@ -72,14 +74,6 @@ export type ResearchResult = {
         relevanceScore: number
     }>
     summary?: string
-}
-
-/**
- * FAQ item for structured data
- */
-export type FaqItem = {
-    question: string
-    answer: string
 }
 
 /**

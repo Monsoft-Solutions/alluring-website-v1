@@ -25,7 +25,6 @@ import type {
     BlogContentPipelineOptions,
     BlogContentPipelineResult,
     ResearchResult,
-    FaqItem,
 } from './types.pipeline'
 import type { AgentReview } from '../agents/types.agent'
 
@@ -199,7 +198,7 @@ async function runContentGenerationPhase(
         metaDescription: result.metaDescription,
         excerpt: result.excerpt,
         suggestedTags: result.suggestedTags,
-        faqs: faqResult.faqs as FaqItem[],
+        faqs: faqResult.faqs,
         linkSuggestions: {
             internal: internalLinkSuggestions,
             external: externalSourceSuggestions,

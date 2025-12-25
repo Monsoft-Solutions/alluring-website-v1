@@ -5,10 +5,10 @@
  *
  * @module @/lib/services/search-console/google-search-console-pages
  */
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
 import type {
     SearchPage,
     SortField,
-    SortDirection,
     PageQueryData,
     QueryPageData,
     PageType,

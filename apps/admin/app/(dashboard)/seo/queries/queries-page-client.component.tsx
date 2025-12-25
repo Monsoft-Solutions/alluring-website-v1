@@ -29,10 +29,8 @@ import {
 import { QuerySearchInput } from '@/components/shared/query-performance/query-search-input.component'
 import { QueryPerformanceTable } from '@/components/shared/query-performance/query-performance-table.component'
 import { SearchConsoleNotConfigured } from '@/components/seo/search-console-not-configured.component'
-import type {
-    SortField,
-    SortDirection,
-} from '@/lib/types/search-console/search-console.type'
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
+import type { SortField } from '@/lib/types/search-console/search-console.type'
 
 /**
  * Time frame options for the queries page

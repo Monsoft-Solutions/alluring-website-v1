@@ -32,6 +32,8 @@ import {
     SelectValue,
 } from '@workspace/ui/components/select'
 
+import type { NullableSortDirection } from '@/lib/types/shared/sorting.type'
+
 export type Column<T> = {
     key: keyof T | string
     header: string
@@ -53,8 +55,6 @@ export type DataTableProps<T> = {
     getRowKey: (item: T) => string
 }
 
-type SortDirection = 'asc' | 'desc' | null
-
 export function DataTable<T>({
     data,
     columns,
@@ -68,7 +68,8 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
     const [searchQuery, setSearchQuery] = useState('')
     const [sortColumn, setSortColumn] = useState<string | null>(null)
-    const [sortDirection, setSortDirection] = useState<SortDirection>(null)
+    const [sortDirection, setSortDirection] =
+        useState<NullableSortDirection>(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(defaultPageSize)
 
@@ -426,7 +427,7 @@ function SortIcon({
     direction,
 }: {
     active: boolean
-    direction: SortDirection
+    direction: NullableSortDirection
 }) {
     if (!active || !direction) {
         return <ArrowUpDown className='h-3 w-3 opacity-50' />

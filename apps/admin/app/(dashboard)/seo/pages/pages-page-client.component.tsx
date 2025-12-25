@@ -29,9 +29,9 @@ import { QuerySearchInput } from '@/components/shared/query-performance/query-se
 import { PagePerformanceTable } from '@/components/shared/page-performance/page-performance-table.component'
 import { PageTypeFilter } from '@/components/shared/page-performance/page-type-filter.component'
 import { SearchConsoleNotConfigured } from '@/components/seo/search-console-not-configured.component'
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
 import type {
     SortField,
-    SortDirection,
     PageType,
 } from '@/lib/types/search-console/search-console.type'
 

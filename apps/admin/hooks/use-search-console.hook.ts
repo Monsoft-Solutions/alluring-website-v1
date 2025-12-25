@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
+import type { SortDirection } from '@/lib/types/shared/sorting.type'
 import type {
     SearchConsoleSummary,
     SearchQuery,
@@ -14,7 +15,6 @@ import type {
     QueryPageData,
     QueryTrendData,
     SortField,
-    SortDirection,
     PageType,
     SearchPageWithType,
     PageTrendData,

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { HelpCircle, Plus, Sparkles, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
+import type { FaqItem } from '@workspace/shared/schemas/blog'
 import { Button } from '@workspace/ui/components/button'
 import {
     Card,
@@ -15,11 +16,6 @@ import {
 import { Label } from '@workspace/ui/components/label'
 import { Textarea } from '@workspace/ui/components/textarea'
 import { Alert, AlertDescription } from '@workspace/ui/components/alert'
-
-type FaqItem = {
-    question: string
-    answer: string
-}
 
 type PostFormFAQsProps = {
     content: string

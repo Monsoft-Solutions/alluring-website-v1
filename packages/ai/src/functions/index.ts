@@ -132,7 +132,7 @@ export {
 export {
     gatherResearch,
     type GatherResearchOptions,
-    type ResearchResult,
+    type GatheredResearch,
 } from './gather-research.function'
 
 export {
@@ -159,7 +159,6 @@ export {
     generateFaqSchema,
     type ExtractFaqsOptions,
     type ExtractFaqsResult,
-    type FaqItem,
 } from './extract-faqs.function'
 
 // SEO Content Brief

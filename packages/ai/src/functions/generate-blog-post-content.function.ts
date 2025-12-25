@@ -43,9 +43,11 @@ const generatePostContentResponseSchema = z.object({
 const DEFAULT_MODEL_ID = 'gpt-5.2'
 
 /**
- * Outline section type for input
+ * Outline section input type.
+ * Simplified from the full OutlineSection in generate-blog-outline
+ * since content generation only needs these fields.
  */
-type OutlineSection = {
+type OutlineSectionInput = {
     title: string
     description: string
     keyPoints?: string[]
@@ -72,7 +74,7 @@ export type GenerateBlogPostContentOptions = {
     outline: {
         tldr: string[]
         introduction: { hook: string; preview: string }
-        sections: OutlineSection[]
+        sections: OutlineSectionInput[]
         conclusion: {
             summaryPoints: string[]
             nextSteps: string

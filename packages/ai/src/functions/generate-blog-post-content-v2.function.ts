@@ -16,23 +16,26 @@ import {
     getGeneratePostContentV2Prompt,
 } from '../prompts/blog/generate-post-content.prompt'
 import { getInternalPagesContext } from '../data/internal-pages.data'
-import { gatherResearch, type ResearchResult } from './gather-research.function'
+import {
+    gatherResearch,
+    type GatheredResearch,
+} from './gather-research.function'
+import type { FaqItem } from '@workspace/shared/schemas/blog'
+
 import {
     enhanceContent,
     type EnhanceContentResult,
 } from './enhance-content.function'
 import { extractMetadata } from './extract-metadata.function'
-import {
-    extractFaqs,
-    generateFaqSchema,
-    type FaqItem,
-} from './extract-faqs.function'
+import { extractFaqs, generateFaqSchema } from './extract-faqs.function'
 import { type QualityScoreResult } from './score-content-quality.function'
 
 /**
- * Outline section type for input
+ * Outline section input type.
+ * Simplified from the full OutlineSection in generate-blog-outline
+ * since content generation only needs these fields.
  */
-type OutlineSection = {
+type OutlineSectionInput = {
     title: string
     description: string
     keyPoints?: string[]
@@ -59,7 +62,7 @@ export type GenerateBlogPostContentV2Options = {
     outline: {
         tldr: string[]
         introduction: { hook: string; preview: string }
-        sections: OutlineSection[]
+        sections: OutlineSectionInput[]
         conclusion: {
             summaryPoints: string[]
             nextSteps: string
@@ -108,7 +111,7 @@ export type GenerateBlogPostContentV2Result = {
     /** Quality score details */
     qualityScore: QualityScoreResult
     /** Research results (if gathered) */
-    research?: ResearchResult
+    research?: GatheredResearch
     /** Pipeline metadata */
     pipelineMetadata: {
         /** Total generation time in ms */
@@ -244,7 +247,7 @@ export async function generateBlogPostContentV2(
     // =========================================================================
     // PHASE 1: RESEARCH
     // =========================================================================
-    let research: ResearchResult | undefined
+    let research: GatheredResearch | undefined
     let researchContext: string | undefined = customResearchContext
     let researchTimeMs: number | undefined
 
