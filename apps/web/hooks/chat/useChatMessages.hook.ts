@@ -21,7 +21,7 @@ import {
     useTransition,
 } from 'react'
 import { useChat, type UIMessage } from '@ai-sdk/react'
-import { DefaultChatTransport } from '@workspace/ai'
+import { DefaultChatTransport } from '@workspace/ai/client'
 import type { StoredMessage, AISDKMessage } from '@/lib/chat/types'
 
 /** Re-export UIMessage as Message for backwards compatibility */

@@ -120,6 +120,48 @@ export {
     type GenerateBlogPostContentOptions,
     type GenerateBlogPostContentResult,
 } from './generate-blog-post-content.function'
+
+// Blog Content V2 Pipeline
+export {
+    generateBlogPostContentV2,
+    type GenerateBlogPostContentV2Options,
+    type GenerateBlogPostContentV2Result,
+} from './generate-blog-post-content-v2.function'
+
+// Blog Content Support Functions
+export {
+    gatherResearch,
+    type GatherResearchOptions,
+    type ResearchResult,
+} from './gather-research.function'
+
+export {
+    scoreContentQuality,
+    type ScoreContentQualityOptions,
+    type QualityScoreResult,
+    type QualityDimensions,
+} from './score-content-quality.function'
+
+export {
+    enhanceContent,
+    type EnhanceContentOptions,
+    type EnhanceContentResult,
+} from './enhance-content.function'
+
+export {
+    extractMetadata,
+    type ExtractMetadataOptions,
+    type ContentMetadata,
+} from './extract-metadata.function'
+
+export {
+    extractFaqs,
+    generateFaqSchema,
+    type ExtractFaqsOptions,
+    type ExtractFaqsResult,
+    type FaqItem,
+} from './extract-faqs.function'
+
 // SEO Content Brief
 export {
     generateContentBrief,

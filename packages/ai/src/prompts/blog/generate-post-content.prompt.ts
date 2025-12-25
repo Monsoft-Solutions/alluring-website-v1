@@ -3,6 +3,7 @@
  *
  * AI prompt for generating full blog post content from an idea and outline.
  * Follows brand guidelines, SEO best practices, and content structure.
+ * Enhanced for V2 pipeline with research context and FAQ requirements.
  *
  * @module @workspace/ai/prompts/blog/generate-post-content
  */
@@ -59,18 +60,19 @@ Content Structure Requirements:
 
 1. **TL;DR Section**: Start with key takeaways (2-3 bullet points)
 
-2. **Introduction (100-150 words)**:
-   - State the problem/question clearly
-   - Include primary keyword naturally
-   - Preview what reader will learn
-   - Set expectations
-
-3. **Body Sections**:
+2. **Body Sections**:
    - Use H2 for main sections
    - Use H3 for subsections
    - Keep paragraphs short (3-4 sentences max)
    - Use bullet points for lists
-   - Include relevant statistics when available
+   - Include relevant statistics when available (cite sources!)
+
+3. **FAQ Section (Required)**:
+   - Include a ## Frequently Asked Questions section near the end
+   - 3-5 Q&A pairs that readers commonly search for
+   - Use this format:
+     **Q: Question goes here?**
+     Answer paragraph (2-4 sentences)
 
 4. **Conclusion**:
    - Summarize key points
@@ -84,6 +86,12 @@ SEO Writing Guidelines:
 - Use semantic variations
 - Write for humans first, search engines second
 
+Linking Guidelines:
+- Include 3-5 internal links using the provided internal pages
+- Include 2-4 external links to authoritative sources (use research context)
+- Use descriptive anchor text (not "click here")
+- Format: [anchor text](url)
+
 Formatting:
 - Use markdown format
 - H1 is the title (don't include in content, it's separate)
@@ -91,12 +99,21 @@ Formatting:
 - Use ** for bold important terms
 - Use \`code\` format only for technical terms if relevant
 
+E-E-A-T Signals (for medical content credibility):
+- Reference "our surgeons" or "board-certified plastic surgeons"
+- Mention Miami location for local expertise
+- Use phrases like "In our experience with hundreds of patients..."
+- Cite statistics from authoritative medical sources when available
+
 Medical Content Note:
 - Be informative but not prescriptive
 - Always suggest consulting with a board-certified surgeon
 - Don't make specific medical claims or guarantees
 - Focus on general information and what to expect`
 
+/**
+ * Input type for original content generation (V1)
+ */
 type GeneratePostContentInput = {
     title: string
     topic: string
@@ -122,7 +139,17 @@ type GeneratePostContentInput = {
 }
 
 /**
- * Generate the user prompt for content creation
+ * Enhanced input type for V2 content generation with research and context
+ */
+export type GeneratePostContentV2Input = GeneratePostContentInput & {
+    /** Pre-gathered research context (formatted markdown) */
+    researchContext?: string
+    /** Internal pages context for linking (formatted markdown) */
+    internalPagesContext?: string
+}
+
+/**
+ * Generate the user prompt for content creation (V1 - legacy)
  */
 export function getGeneratePostContentPrompt(
     input: GeneratePostContentInput
@@ -202,6 +229,150 @@ Requirements:
 8. Target approximately ${estimatedWordCount || 1500} words
 
 Do NOT include:
+- The title (H1) - it's handled separately
+- Actual CTA blocks - just end naturally
+- Author bylines or dates
+- Medical disclaimers (handled elsewhere)
+
+Write the complete blog post now:`
+}
+
+/**
+ * Format sections text helper
+ */
+function formatSectionsText(
+    sections: GeneratePostContentInput['outline']['sections']
+): string {
+    let sectionsText = ''
+    for (const section of sections) {
+        sectionsText += `\n### ${section.title}\n${section.description}\n`
+        if (section.keyPoints?.length) {
+            sectionsText += `Key points to cover:\n${section.keyPoints.map((p) => `- ${p}`).join('\n')}\n`
+        }
+        if (section.subsections?.length) {
+            sectionsText += `Subsections:\n${section.subsections.map((s) => `- ${s.title}${s.description ? `: ${s.description}` : ''}`).join('\n')}\n`
+        }
+    }
+    return sectionsText
+}
+
+/**
+ * Generate the user prompt for V2 content creation
+ * Includes research context and internal pages for linking
+ */
+export function getGeneratePostContentV2Prompt(
+    input: GeneratePostContentV2Input
+): string {
+    const {
+        title,
+        topic,
+        primaryKeyword,
+        secondaryKeywords,
+        targetAudience,
+        uniqueAngle,
+        outline,
+        estimatedWordCount,
+        researchContext,
+        internalPagesContext,
+    } = input
+
+    const sectionsText = formatSectionsText(outline.sections)
+
+    // Build context sections
+    const contextSections: string[] = []
+
+    if (researchContext) {
+        contextSections.push(`---
+# RESEARCH CONTEXT
+Use these sources for statistics and citations. Cite them with markdown links.
+
+${researchContext}`)
+    }
+
+    if (internalPagesContext) {
+        contextSections.push(`---
+# INTERNAL LINKING RESOURCES
+
+${internalPagesContext}`)
+    }
+
+    return `Write a complete blog post based on the following brief:
+
+**Title:** ${title}
+
+**Topic:** ${topic}
+
+**Primary Keyword:** ${primaryKeyword}
+
+**Secondary Keywords:** ${secondaryKeywords?.join(', ') || 'None'}
+
+**Target Audience:** ${targetAudience || 'Women 25-55 considering cosmetic procedures'}
+
+**Unique Angle:** ${uniqueAngle || 'Comprehensive, expert perspective'}
+
+**Target Word Count:** ${estimatedWordCount || 1500} words
+
+${contextSections.join('\n\n')}
+
+---
+
+# OUTLINE TO FOLLOW
+
+**TL;DR Points:**
+${outline.tldr.map((p) => `- ${p}`).join('\n')}
+
+**Introduction:**
+Hook: ${outline.introduction.hook}
+Preview: ${outline.introduction.preview}
+
+**Sections:**
+${sectionsText}
+
+**FAQ Section (add after main sections):**
+Include 3-5 frequently asked questions about ${topic}. Use format:
+**Q: Question?**
+Answer paragraph.
+
+**Conclusion:**
+Summary points: ${outline.conclusion.summaryPoints.join('; ')}
+Next steps: ${outline.conclusion.nextSteps}
+
+---
+
+# YOUR TASK
+
+Write the complete blog post following the outline above.
+
+**Content Requirements:**
+1. Start with **TL;DR** section with key takeaways
+2. Follow the section structure exactly as outlined
+3. Include the primary keyword "${primaryKeyword}" naturally in:
+   - First 100 words
+   - At least one H2 heading
+   - FAQ section
+   - Conclusion
+4. Write in markdown format
+5. Keep paragraphs short (3-4 sentences max)
+6. Use bullet points where appropriate
+7. Maintain the brand voice throughout
+8. Target approximately ${estimatedWordCount || 1500} words
+
+**Linking Requirements:**
+- Include 3-5 internal links from the provided internal pages
+- Include 2-4 external links to cited sources from research
+- Use descriptive anchor text
+
+**FAQ Requirements:**
+- Add a "## Frequently Asked Questions" section before the conclusion
+- Include 3-5 Q&A pairs that people actually search for
+- Each answer should be 2-4 sentences
+
+**E-E-A-T Requirements:**
+- Reference "our surgeons" or "board-certified plastic surgeons"
+- Include phrases like "In our experience..." or "We've seen..."
+- Cite statistics with source links when available
+
+**Do NOT include:**
 - The title (H1) - it's handled separately
 - Actual CTA blocks - just end naturally
 - Author bylines or dates

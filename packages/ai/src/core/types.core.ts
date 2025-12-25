@@ -9,6 +9,45 @@ import type { z } from 'zod'
 import type { ModelMessage as AISDKCoreMessage } from 'ai'
 
 /**
+ * Tool definition for AI agents
+ * This is our simplified tool interface that gets converted to AI SDK format
+ */
+export type CoreTool<TParams extends z.ZodType = z.ZodType> = {
+    /** Tool description for the AI */
+    description: string
+    /** Zod schema for tool parameters */
+    parameters: TParams
+    /** Execute function for the tool */
+    execute: (params: z.infer<TParams>) => Promise<unknown>
+}
+
+/**
+ * Tool set for AI agents
+ */
+export type CoreToolSet = Record<string, CoreTool>
+
+/**
+ * Step finish event data (simplified from AI SDK StepResult)
+ */
+export type CoreStepFinishEvent = {
+    /** The text generated in this step */
+    text: string
+    /** Tool calls made in this step */
+    toolCalls: unknown[]
+    /** Tool results from this step */
+    toolResults: unknown[]
+    /** Finish reason for this step */
+    finishReason: string
+}
+
+/**
+ * Step result callback type
+ * Note: Uses 'any' for compatibility with AI SDK's complex step result types
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CoreStepFinishCallback = (step: any) => void
+
+/**
  * Message content part for multimodal content (text or image)
  */
 export type CoreMessageContentPart =
@@ -75,28 +114,42 @@ export type CoreGenerateObjectOptions<TSchema extends z.ZodType> =
     | CoreGenerateObjectMessagesOptions<TSchema>
 
 /**
+ * Tool-related options for generateText
+ */
+export type CoreGenerateTextToolOptions = {
+    /** Tools available for the AI to use */
+    tools?: CoreToolSet
+    /** Maximum number of agentic steps (tool calls + responses) */
+    maxSteps?: number
+    /** Callback when each step finishes */
+    onStepFinish?: CoreStepFinishCallback
+}
+
+/**
  * Options for generateText core function with prompt
  */
-export type CoreGenerateTextPromptOptions = CoreBaseOptions & {
-    /** System prompt for the AI */
-    system?: string
-    /** User prompt for the AI */
-    prompt: string
-    /** Maximum output tokens */
-    maxTokens?: number
-}
+export type CoreGenerateTextPromptOptions = CoreBaseOptions &
+    CoreGenerateTextToolOptions & {
+        /** System prompt for the AI */
+        system?: string
+        /** User prompt for the AI */
+        prompt: string
+        /** Maximum output tokens */
+        maxTokens?: number
+    }
 
 /**
  * Options for generateText core function with messages
  */
-export type CoreGenerateTextMessagesOptions = CoreBaseOptions & {
-    /** System prompt for the AI */
-    system?: string
-    /** Messages for chat-based generation */
-    messages: CoreMessage[]
-    /** Maximum output tokens */
-    maxTokens?: number
-}
+export type CoreGenerateTextMessagesOptions = CoreBaseOptions &
+    CoreGenerateTextToolOptions & {
+        /** System prompt for the AI */
+        system?: string
+        /** Messages for chat-based generation */
+        messages: CoreMessage[]
+        /** Maximum output tokens */
+        maxTokens?: number
+    }
 
 /**
  * Options for generateText core function (either prompt or messages)
