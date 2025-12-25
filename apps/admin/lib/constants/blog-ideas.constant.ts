@@ -46,12 +46,12 @@ export const CONTENT_TYPE_LABELS: Record<string, string> = {
  */
 export const CONTENT_TYPES = [
     { value: 'tutorial', label: 'Tutorial' },
-    { value: 'guide', label: 'Guide' },
-    { value: 'how_to', label: 'How-To' },
+    { value: 'guide', label: 'Comprehensive Guide' },
+    { value: 'how_to', label: 'How-To / Step-by-Step' },
     { value: 'case_study', label: 'Case Study' },
     { value: 'comparison', label: 'Comparison' },
-    { value: 'faq', label: 'FAQ' },
-    { value: 'listicle', label: 'Listicle' },
+    { value: 'faq', label: 'FAQ / Q&A' },
+    { value: 'listicle', label: 'List Article' },
     { value: 'announcement', label: 'Announcement' },
     { value: 'thought_leadership', label: 'Thought Leadership' },
 ] as const

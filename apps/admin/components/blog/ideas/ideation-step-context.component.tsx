@@ -16,6 +16,8 @@ import { Textarea } from '@workspace/ui/components/textarea'
 import { Button } from '@workspace/ui/components/button'
 import { Loader2, Sparkles } from 'lucide-react'
 
+import { CONTENT_TYPES } from '@/lib/constants/blog-ideas.constant'
+
 const PROCEDURES = [
     { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
     { value: 'mommy-makeover', label: 'Mommy Makeover' },
@@ -24,15 +26,6 @@ const PROCEDURES = [
     { value: 'breast-lift', label: 'Breast Lift' },
     { value: 'liposuction', label: 'Liposuction' },
     { value: 'general', label: 'General Plastic Surgery' },
-] as const
-
-const CONTENT_TYPES = [
-    { value: 'guide', label: 'Comprehensive Guide' },
-    { value: 'how_to', label: 'How-To / Step-by-Step' },
-    { value: 'faq', label: 'FAQ / Q&A' },
-    { value: 'comparison', label: 'Comparison' },
-    { value: 'listicle', label: 'List Article' },
-    { value: 'case_study', label: 'Case Study' },
 ] as const
 
 const AUDIENCES = [

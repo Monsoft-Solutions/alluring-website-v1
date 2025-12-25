@@ -24,6 +24,7 @@ import {
 
 import { useCreateIdea } from '@/hooks/use-ideas.hook'
 import type { TopicSuggestion } from '@workspace/ai/functions'
+import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-ideas.constant'
 import type { SelectedKeywords } from './gsc-keyword-selector.component'
 
 type GeneratedIdeasPanelProps = {
@@ -32,18 +33,6 @@ type GeneratedIdeasPanelProps = {
     isGenerating: boolean
     onGenerate: () => void
     hasGenerated: boolean
-}
-
-const CONTENT_TYPE_LABELS: Record<string, string> = {
-    tutorial: 'Tutorial',
-    guide: 'Guide',
-    how_to: 'How-To',
-    case_study: 'Case Study',
-    comparison: 'Comparison',
-    faq: 'FAQ',
-    listicle: 'Listicle',
-    announcement: 'Announcement',
-    thought_leadership: 'Thought Leadership',
 }
 
 /**
