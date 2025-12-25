@@ -13,6 +13,12 @@ const requestSchema = z.object({
     primaryKeyword: z.string().optional(),
 })
 
+/**
+ * Generates FAQs for a blog post using AI based on the provided content.
+ *
+ * @param {NextRequest} request - The incoming Next.js request containing a JSON body with `content` (string) and optional `primaryKeyword` (string).
+ * @returns {Promise<NextResponse>} A JSON response with `success: true` and the generated `faqs`, or `success: false` with an error message and appropriate status code (400, 401, or 500).
+ */
 export async function POST(request: NextRequest) {
     try {
         await requireAuth()
