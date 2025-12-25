@@ -5,22 +5,13 @@
  *
  * @module @/lib/services/search-console/google-search-console-inspection
  */
-import { google } from 'googleapis'
-
-import { env } from '@/env'
 import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
 
 import {
     isSearchConsoleConfigured,
     getSiteUrl,
+    getSearchConsoleClient,
 } from './google-search-console-client.service'
-
-/**
- * Parse the private key to handle escaped newlines
- */
-function parsePrivateKey(key: string): string {
-    return key.replace(/\\n/g, '\n')
-}
 
 /**
  * Inspect a URL using the URL Inspection API
@@ -32,18 +23,7 @@ export async function inspectUrl(url: string): Promise<UrlInspectionResult> {
     }
 
     try {
-        const auth = new google.auth.GoogleAuth({
-            credentials: {
-                client_email: env.GOOGLE_CLIENT_EMAIL,
-                private_key: parsePrivateKey(env.GOOGLE_PRIVATE_KEY!),
-            },
-            scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
-        })
-
-        const searchConsole = google.searchconsole({
-            version: 'v1',
-            auth,
-        })
+        const searchConsole = getSearchConsoleClient()
 
         const siteUrl = getSiteUrl()
 
