@@ -12,16 +12,11 @@ import type {
     QueryTrendData,
 } from '@/lib/types/search-console/search-console.type'
 
-import {
-    isSearchConsoleConfigured,
-    getSearchConsoleClient,
-    getSiteUrl,
-} from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './google-search-console-client.service'
 import {
     fetchSearchAnalytics,
     sortRowsByField,
     sortByDateAsc,
-    getDateRange,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
 } from './google-search-console-utils.service'
@@ -88,32 +83,23 @@ export async function getQueriesByTerm(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
-        const response = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['query'],
-                dimensionFilterGroups: [
-                    {
-                        filters: [
-                            {
-                                dimension: 'query',
-                                operator: 'contains',
-                                expression: searchTerm.toLowerCase(),
-                            },
-                        ],
-                    },
-                ],
-                rowLimit: limit * 2, // Fetch more to allow for sorting
-            },
+        const rows = await fetchSearchAnalytics({
+            dimensions: ['query'],
+            dimensionFilterGroups: [
+                {
+                    filters: [
+                        {
+                            dimension: 'query',
+                            operator: 'contains',
+                            expression: searchTerm.toLowerCase(),
+                        },
+                    ],
+                },
+            ],
+            rowLimit: limit * 2, // Fetch more to allow for sorting
+            days,
         })
 
-        const rows = response.data.rows ?? []
         const sortedRows = sortRowsByField(rows, orderBy, orderDirection)
 
         return sortedRows.slice(0, limit).map((row) => ({
@@ -145,32 +131,23 @@ export async function getQueryTrend(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
-        const response = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['date'],
-                dimensionFilterGroups: [
-                    {
-                        filters: [
-                            {
-                                dimension: 'query',
-                                operator: 'equals',
-                                expression: query,
-                            },
-                        ],
-                    },
-                ],
-                rowLimit: days,
-            },
+        const rows = await fetchSearchAnalytics({
+            dimensions: ['date'],
+            dimensionFilterGroups: [
+                {
+                    filters: [
+                        {
+                            dimension: 'query',
+                            operator: 'equals',
+                            expression: query,
+                        },
+                    ],
+                },
+            ],
+            rowLimit: days,
+            days,
         })
 
-        const rows = response.data.rows ?? []
         const sortedRows = sortByDateAsc(rows)
 
         return sortedRows.map((row) => ({

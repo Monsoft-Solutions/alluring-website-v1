@@ -48,10 +48,9 @@ function parsePrivateKey(key: string): string {
 }
 
 /**
- * Get an authenticated Search Console client (readonly scope)
- * Uses service account credentials for server-to-server authentication
+ * Get an authenticated Search Console client with specific scope
  */
-export function getSearchConsoleClient() {
+function createClient(scope: string) {
     if (!isSearchConsoleConfigured()) {
         throw new Error('Google Search Console credentials are not configured')
     }
@@ -61,7 +60,7 @@ export function getSearchConsoleClient() {
             client_email: env.GOOGLE_CLIENT_EMAIL,
             private_key: parsePrivateKey(env.GOOGLE_PRIVATE_KEY!),
         },
-        scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+        scopes: [scope],
     })
 
     return google.searchconsole({
@@ -71,24 +70,17 @@ export function getSearchConsoleClient() {
 }
 
 /**
+ * Get an authenticated Search Console client (readonly scope)
+ * Uses service account credentials for server-to-server authentication
+ */
+export function getSearchConsoleClient() {
+    return createClient('https://www.googleapis.com/auth/webmasters.readonly')
+}
+
+/**
  * Get an authenticated Search Console client with write access
  * Required for operations like submitting sitemaps
  */
 export function getSearchConsoleWriteClient() {
-    if (!isSearchConsoleConfigured()) {
-        throw new Error('Google Search Console credentials are not configured')
-    }
-
-    const auth = new google.auth.GoogleAuth({
-        credentials: {
-            client_email: env.GOOGLE_CLIENT_EMAIL,
-            private_key: parsePrivateKey(env.GOOGLE_PRIVATE_KEY!),
-        },
-        scopes: ['https://www.googleapis.com/auth/webmasters'],
-    })
-
-    return google.searchconsole({
-        version: 'v1',
-        auth,
-    })
+    return createClient('https://www.googleapis.com/auth/webmasters')
 }

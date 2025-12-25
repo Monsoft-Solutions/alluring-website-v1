@@ -59,12 +59,26 @@ export type SearchAnalyticsRow = {
  */
 export async function fetchSearchAnalytics(options: {
     dimensions: ('query' | 'page' | 'date')[]
+    dimensionFilterGroups?: any[]
     rowLimit?: number
     days?: number
+    startDate?: string
+    endDate?: string
 }): Promise<SearchAnalyticsRow[]> {
     const client = getSearchConsoleClient()
     const siteUrl = getSiteUrl()
-    const { startDate, endDate } = getDateRange(options.days ?? DEFAULT_DAYS)
+
+    let startDate: string
+    let endDate: string
+
+    if (options.startDate && options.endDate) {
+        startDate = options.startDate
+        endDate = options.endDate
+    } else {
+        const range = getDateRange(options.days ?? DEFAULT_DAYS)
+        startDate = range.startDate
+        endDate = range.endDate
+    }
 
     const response = await client.searchanalytics.query({
         siteUrl,
@@ -72,6 +86,7 @@ export async function fetchSearchAnalytics(options: {
             startDate,
             endDate,
             dimensions: options.dimensions,
+            dimensionFilterGroups: options.dimensionFilterGroups,
             rowLimit: options.rowLimit ?? DEFAULT_LIMIT,
         },
     })

@@ -16,17 +16,12 @@ import type {
     PageTrendData,
 } from '@/lib/types/search-console/search-console.type'
 
-import {
-    isSearchConsoleConfigured,
-    getSearchConsoleClient,
-    getSiteUrl,
-} from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './google-search-console-client.service'
 import {
     fetchSearchAnalytics,
     sortRowsByField,
     sortByClicksDesc,
     sortByDateAsc,
-    getDateRange,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
 } from './google-search-console-utils.service'
@@ -92,32 +87,23 @@ export async function getQueriesForPage(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
-        const response = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['query'],
-                dimensionFilterGroups: [
-                    {
-                        filters: [
-                            {
-                                dimension: 'page',
-                                operator: 'equals',
-                                expression: pageUrl,
-                            },
-                        ],
-                    },
-                ],
-                rowLimit: limit,
-            },
+        const rows = await fetchSearchAnalytics({
+            dimensions: ['query'],
+            dimensionFilterGroups: [
+                {
+                    filters: [
+                        {
+                            dimension: 'page',
+                            operator: 'equals',
+                            expression: pageUrl,
+                        },
+                    ],
+                },
+            ],
+            rowLimit: limit,
+            days,
         })
 
-        const rows = response.data.rows ?? []
         const sortedRows = sortByClicksDesc(rows)
 
         return sortedRows.map((row) => ({
@@ -151,32 +137,23 @@ export async function getPagesForQuery(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
-        const response = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['page'],
-                dimensionFilterGroups: [
-                    {
-                        filters: [
-                            {
-                                dimension: 'query',
-                                operator: 'equals',
-                                expression: query,
-                            },
-                        ],
-                    },
-                ],
-                rowLimit: limit,
-            },
+        const rows = await fetchSearchAnalytics({
+            dimensions: ['page'],
+            dimensionFilterGroups: [
+                {
+                    filters: [
+                        {
+                            dimension: 'query',
+                            operator: 'equals',
+                            expression: query,
+                        },
+                    ],
+                },
+            ],
+            rowLimit: limit,
+            days,
         })
 
-        const rows = response.data.rows ?? []
         const sortedRows = sortByClicksDesc(rows)
 
         return sortedRows.map((row) => ({
@@ -307,32 +284,23 @@ export async function getPageTrend(
     }
 
     try {
-        const client = getSearchConsoleClient()
-        const siteUrl = getSiteUrl()
-        const { startDate, endDate } = getDateRange(days)
-
-        const response = await client.searchanalytics.query({
-            siteUrl,
-            requestBody: {
-                startDate,
-                endDate,
-                dimensions: ['date'],
-                dimensionFilterGroups: [
-                    {
-                        filters: [
-                            {
-                                dimension: 'page',
-                                operator: 'equals',
-                                expression: pageUrl,
-                            },
-                        ],
-                    },
-                ],
-                rowLimit: days + 5, // Extra buffer for any missing days
-            },
+        const rows = await fetchSearchAnalytics({
+            dimensions: ['date'],
+            dimensionFilterGroups: [
+                {
+                    filters: [
+                        {
+                            dimension: 'page',
+                            operator: 'equals',
+                            expression: pageUrl,
+                        },
+                    ],
+                },
+            ],
+            rowLimit: days + 5, // Extra buffer for any missing days
+            days,
         })
 
-        const rows = response.data.rows ?? []
         const sortedRows = sortByDateAsc(rows)
 
         return sortedRows.map((row) => ({
