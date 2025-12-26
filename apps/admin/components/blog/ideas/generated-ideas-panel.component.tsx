@@ -56,29 +56,36 @@ export function GeneratedIdeasPanel({
         selectedKeywords.secondary.length > 0
 
     const handleAddToBacklog = async (idea: TopicSuggestion, index: number) => {
-        const result = await createIdea.mutateAsync({
-            title: idea.title,
-            topic: idea.description,
-            primaryKeyword:
-                selectedKeywords.primary || idea.primaryKeyword || null,
-            secondaryKeywords:
-                selectedKeywords.secondary.length > 0
-                    ? selectedKeywords.secondary
-                    : null,
-            contentType: idea.suggestedContentType ?? null,
-            uniqueAngle: idea.uniqueAngle || null,
-            targetAudience: idea.targetAudience || null,
-            painPoints: idea.painPoints || null,
-            estimatedWordCount: idea.estimatedWordCount ?? null,
-            priority: 'medium',
-            stage: 'backlog',
-        })
+        try {
+            const result = await createIdea.mutateAsync({
+                title: idea.title,
+                topic: idea.description,
+                primaryKeyword:
+                    selectedKeywords.primary || idea.primaryKeyword || null,
+                secondaryKeywords:
+                    selectedKeywords.secondary.length > 0
+                        ? selectedKeywords.secondary
+                        : null,
+                contentType: idea.suggestedContentType ?? null,
+                uniqueAngle: idea.uniqueAngle || null,
+                targetAudience: idea.targetAudience || null,
+                painPoints: idea.painPoints || null,
+                estimatedWordCount: idea.estimatedWordCount ?? null,
+                priority: 'medium',
+                stage: 'backlog',
+            })
 
-        if (result.success) {
-            setAddedIds((prev) => new Set([...prev, index]))
-            toast.success('Idea added to backlog!')
-        } else {
-            toast.error(result.error || 'Failed to add idea')
+            if (result.success) {
+                setAddedIds((prev) => new Set([...prev, index]))
+                toast.success('Idea added to backlog!')
+            } else {
+                toast.error(result.error || 'Failed to add idea')
+            }
+        } catch (error) {
+            console.error('Error adding idea to backlog:', error)
+            toast.error(
+                error instanceof Error ? error.message : 'Failed to add idea'
+            )
         }
     }
 
