@@ -3,6 +3,8 @@ import {
     foreignKey,
     index,
     integer,
+    json,
+    jsonb,
     pgEnum,
     pgTable,
     text,
@@ -10,6 +12,8 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
+
+import type { FaqItem } from '@workspace/shared/schemas/blog'
 
 import { author } from './author.table'
 import { images } from './image.table'
@@ -29,12 +33,15 @@ export const blogPost = pgTable(
         metaDescription: text('meta_description').notNull(),
         metaTitle: varchar('meta_title', { length: 255 }),
         metaKeywords: text('meta_keywords'),
+        primaryKeyword: varchar('primary_keyword', { length: 100 }),
+        secondaryKeywords: json('secondary_keywords').$type<string[]>(),
         excerpt: text('excerpt'),
         publishedAt: timestamp('published_at'),
         scheduledAt: timestamp('scheduled_at'),
         readingTime: integer('reading_time'), // in minutes
         content: text('content').notNull(),
         aiSummary: text('ai_summary'), // AI-generated summary for image generation
+        faqs: jsonb('faqs').$type<FaqItem[]>(), // Extracted FAQ items for FAQ Schema
         status: blogPostStatus('status').default('draft'),
         views: integer('views').default(0).notNull(),
         likes: integer('likes').default(0).notNull(),

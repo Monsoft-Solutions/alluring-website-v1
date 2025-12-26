@@ -34,26 +34,42 @@ Example:
 ```
 I can generate this image using several models. Which would you prefer?
 
-1. fal-ai/nano-banana-pro - Google's Latest Model, highest quality, best photorealism
-2. fal-ai/imagen4/preview - Google's Imagen 4 Standard, excellent quality and balance
-3. fal-ai/imagen4/preview/fast - Google's Imagen 4 Fast, speed-optimized photorealism
-4. fal-ai/flux-pro/kontext/max/text-to-image - FLUX Pro Max, maximum detail for complex scenes
+1. fal-ai/gpt-image-1.5 (RECOMMENDED) - Best for structured prompts with Background/Scene → Subject → Key Details → Constraints format
+2. fal-ai/nano-banana-pro - High-quality photorealistic images with natural language prompts
+3. fal-ai/imagen4/preview - Google's Imagen 4 Standard, excellent quality and balance
+4. fal-ai/imagen4/preview/fast - Google's Imagen 4 Fast, speed-optimized photorealism
 5. fal-ai/flux-pro/kontext/text-to-image - FLUX Pro, balanced speed and quality
 6. fal-ai/flux/schnell - FLUX Schnell, fast and inexpensive high-quality generation
 
-For your use case (professional hero image), I recommend #2 (Imagen 4 Standard) for the best balance of quality and generation time, or #6 (FLUX Schnell) if you need a cost-effective option. Would you like to proceed with that, or prefer a different option?
+For blog post featured images, I recommend #1 (GPT Image 1.5) for optimal results with structured prompts, or #2 (Nano Banana Pro) for more natural language prompts. Would you like to proceed with that, or prefer a different option?
 ```
 
 ## Quick Reference: Key Workflow Changes
 
-### Top 6 Preferred Models (2025)
+### Top 6 Preferred Models (December 2025)
 
-1. **fal-ai/nano-banana-pro** - Ultra-high quality photorealistic images (highest quality)
-2. **fal-ai/imagen4/preview** - High quality photorealistic images (standard)
-3. **fal-ai/imagen4/preview/fast** - Fast photorealistic images (speed optimized)
-4. **fal-ai/flux-pro/kontext/max/text-to-image** - Maximum quality for complex scenes
-5. **fal-ai/flux-pro/kontext/text-to-image** - Balanced speed and quality
+1. **fal-ai/gpt-image-1.5** - RECOMMENDED for structured prompts (Background/Scene → Subject → Key Details → Constraints)
+2. **fal-ai/nano-banana-pro** - High-quality photorealistic images with natural language prompts
+3. **fal-ai/imagen4/preview** - High quality photorealistic images (standard)
+4. **fal-ai/imagen4/preview/fast** - Fast photorealistic images (speed optimized)
+5. **fal-ai/flux-pro/kontext/max/text-to-image** - Maximum quality for complex scenes
 6. **fal-ai/flux/schnell** - Fast and inexpensive high-quality generation
+
+### GPT-Image-1.5 Prompt Structure (REQUIRED for best results)
+
+```markdown
+## Background/Scene
+[Setting description with lighting, atmosphere, time of day, environment details]
+
+## Subject
+[Detailed person description: age, ethnicity, body type, skin tone, hair, expression, pose]
+
+## Key Details
+[Specific attributes: attire, accessories, facial features, body positioning, interaction with environment]
+
+## Constraints
+[Style requirements: photorealistic, camera specs, aspect ratio, mood, what to avoid]
+```
 
 ### Incremental Backoff Polling Strategy
 

@@ -232,6 +232,27 @@
       "when": 1766357586733,
       "tag": "0032_needy_ezekiel_stane",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1766430117531,
+      "tag": "0033_married_ricochet",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1766542008978,
+      "tag": "0034_sour_lizard",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1766668053317,
+      "tag": "0035_ancient_fantastic_four",
+      "breakpoints": true
     }
   ]
 }

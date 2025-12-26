@@ -58,6 +58,11 @@ export type {
     CoreGenerateTextOptions,
     CoreGenerateTextPromptOptions,
     CoreGenerateTextMessagesOptions,
+    CoreGenerateTextToolOptions,
     CoreStreamObjectOptions,
     CoreStreamTextOptions,
+    // Tool types
+    CoreTool,
+    CoreToolSet,
+    CoreStepFinishCallback,
 } from './types.core'

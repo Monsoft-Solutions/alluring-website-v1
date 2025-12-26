@@ -6,7 +6,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import {
     Send,
@@ -18,6 +17,7 @@ import {
 } from 'lucide-react'
 
 import { useEmailStats } from '@/hooks/use-emails.hook'
+import { StatsGridSkeleton } from '@/components/shared/skeletons/stats-grid-skeleton.component'
 
 /**
  * Email stats grid component that fetches its own data via TanStack Query.
@@ -27,7 +27,7 @@ export function EmailStatsGrid() {
     const { data: stats, isLoading, error, refetch } = useEmailStats()
 
     if (isLoading) {
-        return <EmailStatsSkeleton />
+        return <StatsGridSkeleton />
     }
 
     if (error) {
@@ -120,24 +120,5 @@ function StatsCard({
                 </p>
             </CardContent>
         </Card>
-    )
-}
-
-function EmailStatsSkeleton() {
-    return (
-        <div className='grid gap-4 md:grid-cols-4'>
-            {Array.from({ length: 4 }).map((_, i) => (
-                <Card key={i}>
-                    <CardHeader className='flex flex-row items-center justify-between pb-2'>
-                        <Skeleton className='h-4 w-24' />
-                        <Skeleton className='h-4 w-4' />
-                    </CardHeader>
-                    <CardContent>
-                        <Skeleton className='h-8 w-16' />
-                        <Skeleton className='mt-1 h-3 w-32' />
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
     )
 }

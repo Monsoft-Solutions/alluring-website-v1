@@ -15,10 +15,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useDashboardStats } from '@/hooks/use-dashboard.hook'
+import { StatsGridSkeleton } from '@/components/shared/skeletons/stats-grid-skeleton.component'
 
 /**
  * Stats grid component that fetches its own data via TanStack Query.
@@ -124,24 +124,5 @@ function StatsCard({
                 </CardContent>
             </Card>
         </Link>
-    )
-}
-
-function StatsGridSkeleton() {
-    return (
-        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-            {Array.from({ length: 4 }).map((_, i) => (
-                <Card key={i}>
-                    <CardHeader className='flex flex-row items-center justify-between pb-2'>
-                        <Skeleton className='h-4 w-24' />
-                        <Skeleton className='h-4 w-4' />
-                    </CardHeader>
-                    <CardContent>
-                        <Skeleton className='h-8 w-16' />
-                        <Skeleton className='mt-1 h-3 w-32' />
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
     )
 }

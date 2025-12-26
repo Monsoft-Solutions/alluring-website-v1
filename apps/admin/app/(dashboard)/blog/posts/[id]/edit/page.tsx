@@ -72,6 +72,8 @@ export default async function EditBlogPostPage({ params }: PageProps) {
                     metaDescription: post.metaDescription,
                     metaTitle: post.metaTitle,
                     metaKeywords: post.metaKeywords,
+                    primaryKeyword: post.primaryKeyword,
+                    secondaryKeywords: post.secondaryKeywords,
                     excerpt: post.excerpt,
                     authorId: post.authorId,
                     status: post.status ?? 'draft',
@@ -79,6 +81,7 @@ export default async function EditBlogPostPage({ params }: PageProps) {
                     featuredImageUrl: post.featuredImageUrl,
                     featuredImageId: post.featuredImageId,
                     readingTime: post.readingTime,
+                    faqs: post.faqs,
                 }}
             />
         </div>

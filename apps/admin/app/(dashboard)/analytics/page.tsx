@@ -6,6 +6,7 @@ import { DevicesCard } from '@/components/analytics/devices-card.component'
 import { BrowsersCard } from '@/components/analytics/browsers-card.component'
 import { GeoCard } from '@/components/analytics/geo-card.component'
 import { PageDetailsCard } from '@/components/analytics/page-details-card.component'
+import { SearchConsoleSummaryCard } from '@/components/analytics/search-console-summary-card.component'
 
 export const metadata = {
     title: 'Analytics | Admin',
@@ -35,6 +36,9 @@ export default function AnalyticsPage() {
 
             {/* Page Views Over Time */}
             <PageViewsChartCard />
+
+            {/* Google Search Console Summary */}
+            <SearchConsoleSummaryCard />
 
             {/* Top Pages & Traffic Sources */}
             <div className='grid gap-6 lg:grid-cols-2'>

@@ -1,25 +1,79 @@
 /**
  * @workspace/ai/tools
  *
- * AI tool definitions for function calling.
- * This module is a placeholder for future tool implementations.
- *
- * Tools can be used with AI SDK for:
- * - Scheduling consultations
- * - Looking up procedure information
- * - Checking availability
- * - And more...
+ * AI tool definitions and utility functions.
+ * Tools enable AI agents to perform actions like web search,
+ * finding internal links, and accessing curated external sources.
  *
  * @module @workspace/ai/tools
  */
 
-// Placeholder for future tool implementations
-// Example structure:
-//
-// export { scheduleConsultationTool } from './schedule-consultation.tool'
-// export { getProcedureInfoTool } from './get-procedure-info.tool'
+// Web Search Tool - Tavily integration for real-time web search
+export {
+    searchWeb,
+    executeWebSearch,
+    executeMedicalSearch,
+    webSearchParametersSchema,
+    webSearchToolDefinition,
+    medicalSearchToolDefinition,
+    type WebSearchResult,
+    type WebSearchToolResult,
+    type WebSearchParameters,
+} from './web-search-tavily.tool'
+
+// Internal Links Tool - Find relevant internal pages to link to
+export {
+    getInternalLinks,
+    executeInternalLinks,
+    getAllInternalPages,
+    getProcedurePages,
+    internalLinksParametersSchema,
+    internalLinksToolDefinition,
+    type InternalLink,
+    type InternalLinksResult,
+    type InternalLinksParameters,
+} from './internal-links.tool'
+
+// External Sources Tool - Curated authoritative sources for linking
+export {
+    getExternalSources,
+    executeExternalSources,
+    getAllTrustedSources,
+    getSourcesByType,
+    isTrustedDomain,
+    isBlockedDomain,
+    externalSourcesParametersSchema,
+    externalSourcesToolDefinition,
+    TRUSTED_MEDICAL_SOURCES,
+    BLOCKED_DOMAINS,
+    type TrustedSource,
+    type SourceType,
+    type ExternalSourceSuggestion,
+    type ExternalSourcesResult,
+    type ExternalSourcesParameters,
+} from './external-sources.tool'
+
+// Google Custom Search Tool - Extensible search with site restrictions
+export {
+    executeGoogleSearch,
+    searchGoogle,
+    searchMedicalGoogle,
+    searchAcademicGoogle,
+    buildQueryString,
+    buildSiteRestrictions,
+    buildSiteExclusions,
+    buildCompleteQuery,
+    googleSearchParametersSchema,
+    googleSearchToolDefinition,
+    medicalGoogleSearchToolDefinition,
+    type GoogleSearchResult,
+    type GoogleSearchToolResult,
+    type GoogleSearchOptions,
+    type GoogleSearchParameters,
+    type QueryGroup,
+} from './web-search-google.tool'
 
 /**
- * Placeholder export to prevent empty module errors
+ * Tool version for tracking changes
  */
-export const TOOLS_VERSION = '0.0.1'
+export const TOOLS_VERSION = '1.1.0'

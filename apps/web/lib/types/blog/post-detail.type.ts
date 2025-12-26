@@ -1,3 +1,5 @@
+import type { FaqItem } from '@workspace/shared/schemas/blog'
+
 import type { BlogPostCard } from './post-card.type'
 
 export type BlogPostDetail = BlogPostCard & {
@@ -13,4 +15,5 @@ export type BlogPostDetail = BlogPostCard & {
         name: string
         slug: string
     }>
+    faqs?: FaqItem[] | null
 }

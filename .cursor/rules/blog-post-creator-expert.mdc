@@ -126,62 +126,139 @@ export const tags = ['Tag1', 'Tag2', 'Tag3', 'Tag4']
 
 ### Step 3: Create Featured Image
 
-**Process:**
+The admin app provides a comprehensive Featured Image Dialog with customizable options. Follow this workflow:
 
-1. **Understand Image Context**: Analyze the blog post content to determine:
-    - Main topic and theme
-    - Target audience
-    - Emotional tone (professional, friendly, technical, etc.)
-    - Key visual elements that support the message
+**Phase A - Subject Selection:**
 
-2. **Propose 3 Image Concepts**: Present user with 3 image ideas:
+Present the user with subject type options and, if "Patient Model" is selected, customize the model's appearance:
 
-    ```
-    Based on your blog post about [topic], here are 3 featured image concepts:
+| Category | Options |
+|----------|---------|
+| **Age Range** | Young Adult (25-35), Mid Adult (35-45), Mature Adult (45-55) |
+| **Ethnicity** | Latina/Hispanic, Caribbean, African American, Caucasian, Asian, Middle Eastern, Mixed Heritage |
+| **Body Type** | Slim, Athletic, Average, Curvy, Plus-size |
+| **Hair** | Color + Length + Style combinations |
+| **Skin Tone** | Fair, Light, Medium, Olive, Tan, Deep, Rich |
+| **Expression** | Confident Smile, Serene/Peaceful, Contemplative, Joyful, Natural/Relaxed |
+| **Pose** | Front-Facing Portrait, Three-Quarter View, Profile, Full Body, Upper Body |
+| **Attire** | Clinical, Casual Elegant, Athleisure, Professional, Spa/Wellness |
 
-    1. **Concept 1**: [Description]
-       - Style: [photorealistic, illustration, etc.]
-       - Composition: [main elements, perspective]
-       - Mood: [professional, warm, energetic, etc.]
+**Phase B - Scene & Style Selection:**
 
-    2. **Concept 2**: [Description]
-       - Style: [...]
-       - Composition: [...]
-       - Mood: [...]
+Select scene, style, lighting, color palette, and composition options from the dialog tabs.
 
-    3. **Concept 3**: [Description]
-       - Style: [...]
-       - Composition: [...]
-       - Mood: [...]
+**Phase C - Prompt Generation:**
 
-    Which concept do you prefer, or would you like to suggest modifications?
-    ```
+Click "Generate Prompt" in the dialog. The system generates a structured prompt following the **GPT-Image-1.5 format**:
 
-3. **Ask for Model Selection**: Present recommended models:
+```markdown
+## Background/Scene
+[Setting description with lighting, atmosphere, time of day, environment details]
 
-    ```
-    I can generate this image using several models. Which would you prefer?
+## Subject
+[Detailed person description: age, ethnicity, body type, skin tone, hair, expression, pose]
 
-    1. fal-ai/imagen4/preview/ultra - Highest quality (recommended for hero images)
-    2. fal-ai/imagen4/preview - Excellent quality and balance
-    3. fal-ai/imagen4/preview/fast - Speed-optimized photorealism (RECOMMENDED for blog posts)
-    4. fal-ai/flux/schnell - Fast and cost-effective high-quality generation
+## Key Details
+[Specific attributes: attire, accessories, facial features, body positioning, interaction with environment]
 
-    For blog post featured images, I recommend #3 (Imagen 4 Fast) for the best balance of quality and generation time.
-    ```
+## Constraints
+[Style requirements: photorealistic, camera specs, aspect ratio, mood, what to avoid]
+```
 
-4. **Craft Detailed Prompt**: Create prompt following image-creator-expert guidelines:
-    - Start with primary subject
-    - Add key details and context
-    - Specify style and composition
-    - Include lighting and mood
-    - Add technical specifications
-    - Target 16:9 aspect ratio (1392x752px)
-
-**Example Prompt:**
+**Phase D - Model Selection:**
 
 ```
-Small business owner working on laptop in modern coffee shop, reviewing website analytics on screen, warm natural lighting from large windows, professional but approachable atmosphere, other customers softly blurred in background, shot with 35mm lens, shallow depth of field, contemporary lifestyle photography, photorealistic, high detail, 16:9 aspect ratio
+I can generate this image using several models. Which would you prefer?
+
+1. fal-ai/gpt-image-1.5 (RECOMMENDED) - Best for structured prompts with Background/Scene → Subject → Key Details → Constraints format
+2. fal-ai/nano-banana-pro - High-quality photorealistic images with natural language prompts
+
+For blog post featured images, I recommend #1 (GPT Image 1.5) for optimal results with structured prompts.
+```
+
+**Example GPT-Image-1.5 Prompt:**
+
+```markdown
+## Background/Scene
+Modern luxury medical spa consultation room with floor-to-ceiling windows overlooking Miami skyline at golden hour. Soft diffused natural light streams through sheer white curtains, creating warm ambient glow. Contemporary minimalist interior with cream marble surfaces, gold accents, and lush tropical plants in ceramic pots.
+
+## Subject
+Latina woman in her early 40s with medium-length wavy dark brown hair, warm olive skin tone with healthy radiant glow. Athletic-curvy body type. Seated in a comfortable cream leather chair, positioned at three-quarter angle to camera. Expression shows confident, genuine smile with relaxed shoulders, conveying satisfaction and self-assurance.
+
+## Key Details
+Wearing an elegant champagne silk blouse with subtle sheen, gold pendant necklace, natural makeup enhancing features without appearing heavy. Hands resting naturally on armrest. Soft focus on background elements while subject remains sharp. Eye contact with camera creates connection with viewer.
+
+## Constraints
+Photorealistic style, professional portrait photography quality. Shot with 85mm lens at f/2.8 for pleasing bokeh. Warm color temperature (5500K). 16:9 aspect ratio (1392x752px). Avoid: heavy retouching look, artificial poses, clinical coldness, stock photo cliches, text overlays, watermarks, medical equipment.
+```
+
+### Featured Image Examples by Blog Topic
+
+**1. Facial Procedure Post (e.g., Facelift, Rhinoplasty)**
+
+```markdown
+## Background/Scene
+Elegant spa-like treatment room with soft pink orchids and warm ambient lighting from concealed fixtures. Luxurious cream walls with subtle gold trim, large mirror reflecting natural light. Miami morning light filtering through sheer curtains.
+
+## Subject
+African American woman in her late 40s with shoulder-length straight black hair, deep skin tone with luminous glow. Average body type. Close-up portrait, front-facing with slight head tilt. Serene and peaceful expression, eyes closed in relaxation.
+
+## Key Details
+Wearing soft white spa robe, delicate gold stud earrings. Flawless skin texture catching light beautifully. Minimal makeup, emphasis on natural radiance. Soft towel draped around shoulders.
+
+## Constraints
+Beauty photography style, macro-like attention to skin quality. Shot with 85mm lens at f/2.0. Soft diffused lighting. 16:9 aspect ratio (1392x752px). Avoid: clinical appearance, before/after implications, medical equipment, harsh shadows.
+```
+
+**2. Body Contouring Post (e.g., Tummy Tuck, Liposuction)**
+
+```markdown
+## Background/Scene
+Bright modern fitness studio with floor-to-ceiling windows overlooking palm trees. Natural Miami sunlight streaming in, clean white walls with minimalist design. Yoga mat and plants adding warmth.
+
+## Subject
+Latina woman in her mid-30s with long wavy brunette hair, medium skin tone with healthy tan. Athletic body type. Full body pose standing confidently, hands on hips, three-quarter angle. Joyful radiant expression.
+
+## Key Details
+Wearing premium black athleisure outfit with subtle logo, fitness tracker on wrist. Confident posture showcasing healthy physique. Natural makeup, ponytail holder on wrist suggesting active lifestyle.
+
+## Constraints
+Lifestyle fitness photography, aspirational but accessible. Shot with 35mm lens at f/2.8. Bright natural lighting. 16:9 aspect ratio (1392x752px). Avoid: before/after implications, surgical references, overly posed appearance, swimwear.
+```
+
+**3. Recovery/Aftercare Post**
+
+```markdown
+## Background/Scene
+Peaceful home living room with plush cream sofa, soft throw blankets, and warm afternoon light. Large windows with view of greenery. Calming neutral color palette with gold accents.
+
+## Subject
+Caucasian woman in her early 50s with medium-length wavy gray-silver hair, fair skin tone with natural glow. Average body type. Upper body pose, relaxed and reclined on sofa, natural three-quarter view. Natural relaxed expression, gentle smile.
+
+## Key Details
+Wearing comfortable cream cashmere cardigan and soft pajama pants. Cup of herbal tea on side table, book in lap. Soft blanket draped over legs. Reading glasses nearby.
+
+## Key Details
+Wearing comfortable cream cashmere cardigan over soft white top. Cup of herbal tea on side table, reading book in hands. Cozy blanket over lap, soft pillows surrounding.
+
+## Constraints
+Lifestyle editorial photography, comfortable and relatable. Shot with 50mm lens at f/2.8. Warm afternoon lighting. 16:9 aspect ratio (1392x752px). Avoid: medical references, clinical settings, sterile appearance, recovery equipment.
+```
+
+**4. Consultation Journey Post**
+
+```markdown
+## Background/Scene
+Upscale medical spa consultation room with contemporary design. Clean white desk with gold accents, fresh flowers in vase, tablet displaying information. Large window with Miami city view softly blurred.
+
+## Subject
+Caribbean woman in her late 30s with medium-length curly black hair, tan skin tone with radiant glow. Curvy body type. Seated in designer chair, upper body visible, three-quarter view. Confident smile, engaged expression.
+
+## Key Details
+Wearing professional business casual - tailored navy blazer over cream blouse. Gold jewelry subtle and elegant. Hands gesturing naturally as if in conversation. Notebook and pen on desk.
+
+## Constraints
+Professional corporate photography, approachable and trustworthy. Shot with 85mm lens at f/2.8. Natural window light with soft fill. 16:9 aspect ratio (1392x752px). Avoid: clinical coldness, medical equipment, sterile environment, stock photo generic feel.
 ```
 
 ### Step 4: Generate Image

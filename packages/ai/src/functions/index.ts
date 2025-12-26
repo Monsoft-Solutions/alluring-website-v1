@@ -99,3 +99,70 @@ export {
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,
 } from './generate-featured-image-prompt.function'
+
+// Blog Ideation AI
+export {
+    generateBlogTopics,
+    type GenerateBlogTopicsOptions,
+    type GenerateBlogTopicsResult,
+    type TopicSuggestion,
+} from './generate-blog-topics.function'
+
+export {
+    generateBlogOutline,
+    type GenerateBlogOutlineOptions,
+    type GenerateBlogOutlineResult,
+    type OutlineSection,
+} from './generate-blog-outline.function'
+
+export {
+    generateBlogPostContent,
+    type GenerateBlogPostContentOptions,
+    type GenerateBlogPostContentResult,
+} from './generate-blog-post-content.function'
+
+// Blog Content V2 Pipeline
+export {
+    generateBlogPostContentV2,
+    type GenerateBlogPostContentV2Options,
+    type GenerateBlogPostContentV2Result,
+} from './generate-blog-post-content-v2.function'
+
+// Blog Content Support Functions
+export {
+    gatherResearch,
+    type GatherResearchOptions,
+    type GatheredResearch,
+} from './gather-research.function'
+
+export {
+    scoreContentQuality,
+    type ScoreContentQualityOptions,
+    type QualityScoreResult,
+    type QualityDimensions,
+} from './score-content-quality.function'
+
+export {
+    enhanceContent,
+    type EnhanceContentOptions,
+    type EnhanceContentResult,
+} from './enhance-content.function'
+
+export {
+    extractMetadata,
+    type ExtractMetadataOptions,
+    type ContentMetadata,
+} from './extract-metadata.function'
+
+export {
+    extractFaqs,
+    generateFaqSchema,
+    type ExtractFaqsOptions,
+    type ExtractFaqsResult,
+} from './extract-faqs.function'
+
+// SEO Content Brief
+export {
+    generateContentBrief,
+    type GenerateContentBriefOptions,
+} from './generate-content-brief.function'

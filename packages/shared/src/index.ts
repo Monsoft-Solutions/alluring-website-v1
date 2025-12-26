@@ -17,6 +17,16 @@ export {
 // Utilities
 export { runWithConcurrency } from './utils'
 
+// Site Pages and Procedures
+export {
+    PROCEDURE_PAGES,
+    WEBSITE_PAGES,
+    SURGEON_PAGES,
+    getAllMainPages,
+} from './config/site-pages.constant'
+
+export type { PageType, SitePage } from './types/site-pages.type'
+
 // Gallery schemas
 export {
     // Const arrays

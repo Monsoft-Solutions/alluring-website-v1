@@ -1,4 +1,8 @@
-import { ArticleSchema, BreadcrumbSchema } from '@workspace/seo/react'
+import {
+    ArticleSchema,
+    BreadcrumbSchema,
+    FAQSchema,
+} from '@workspace/seo/react'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -203,6 +207,16 @@ export default async function BlogPostPage({ params }: PageProps) {
                             { name: post.title, item: `/blog/${post.slug}` },
                         ]}
                     />
+
+                    {/* FAQ Schema for rich results - only render if FAQs exist */}
+                    {post.faqs && post.faqs.length > 0 && (
+                        <FAQSchema
+                            items={post.faqs.map((faq) => ({
+                                question: faq.question,
+                                answer: faq.answer,
+                            }))}
+                        />
+                    )}
 
                     {(post.categories.length > 0 || post.tags.length > 0) && (
                         <footer className='border-border/30 mt-20 border-t pt-12'>

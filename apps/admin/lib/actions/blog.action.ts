@@ -5,12 +5,12 @@ import { blogPost, images } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
+import { revalidateTag } from 'next/cache'
+import { CACHE_TAGS } from '@workspace/shared/cache'
+
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
-import {
-    revalidateWebAppCache,
-    CACHE_TAGS,
-} from '@/lib/utils/revalidate-web.util'
+import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 
 export type BlogPostFormData = {
     title: string
@@ -19,6 +19,8 @@ export type BlogPostFormData = {
     metaDescription: string
     metaTitle?: string | null
     metaKeywords?: string | null
+    primaryKeyword?: string | null
+    secondaryKeywords?: string[] | null
     excerpt?: string | null
     authorId?: string | null
     status: 'draft' | 'readyToPublish' | 'published'
@@ -26,6 +28,7 @@ export type BlogPostFormData = {
     featuredImageUrl?: string | null
     featuredImageId?: string | null
     readingTime?: number | null
+    faqs?: Array<{ question: string; answer: string }> | null
 }
 
 type ActionResult = {
@@ -93,10 +96,13 @@ export async function createBlogPost(
                 metaDescription: data.metaDescription,
                 metaTitle: data.metaTitle ?? null,
                 metaKeywords: data.metaKeywords ?? null,
+                primaryKeyword: data.primaryKeyword ?? null,
+                secondaryKeywords: data.secondaryKeywords ?? null,
                 excerpt: data.excerpt ?? null,
                 authorId: data.authorId || null,
                 status: data.status,
                 aiSummary: data.aiSummary ?? null,
+                faqs: data.faqs ?? null,
                 featuredImageId,
                 readingTime: data.readingTime ?? null,
                 publishedAt: data.status === 'published' ? new Date() : null,
@@ -108,6 +114,12 @@ export async function createBlogPost(
 
         // Revalidate web app cache
         await revalidateWebAppCache([CACHE_TAGS.BLOG_POSTS])
+
+        // Invalidate URL registry cache when a post is published
+        // This ensures page classification stays accurate
+        if (data.status === 'published') {
+            revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
+        }
 
         return { success: true, id: newPost?.id }
     } catch (error) {
@@ -217,10 +229,13 @@ export async function updateBlogPost(
                 metaDescription: data.metaDescription,
                 metaTitle: data.metaTitle ?? null,
                 metaKeywords: data.metaKeywords ?? null,
+                primaryKeyword: data.primaryKeyword ?? null,
+                secondaryKeywords: data.secondaryKeywords ?? null,
                 excerpt: data.excerpt ?? null,
                 authorId: data.authorId || null,
                 status: data.status,
                 aiSummary: data.aiSummary ?? null,
+                faqs: data.faqs ?? null,
                 featuredImageId,
                 readingTime: data.readingTime ?? null,
                 ...(publishedAt ? { publishedAt } : {}),
@@ -236,6 +251,12 @@ export async function updateBlogPost(
             CACHE_TAGS.BLOG_POSTS,
             CACHE_TAGS.blogPostBySlug(data.slug),
         ])
+
+        // Invalidate URL registry cache when publish status changes
+        // This ensures page classification stays accurate
+        if (wasPublished !== isNowPublished) {
+            revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
+        }
 
         return { success: true, id }
     } catch (error) {
@@ -291,6 +312,10 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
             CACHE_TAGS.BLOG_POSTS,
             CACHE_TAGS.blogPostBySlug(existingPost.slug),
         ])
+
+        // Invalidate URL registry cache when a post is deleted
+        // This ensures page classification stays accurate
+        revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
 
         return { success: true }
     } catch (error) {
@@ -348,6 +373,12 @@ export async function updateBlogPostStatus(
             CACHE_TAGS.BLOG_POSTS,
             CACHE_TAGS.blogPostBySlug(currentPost[0]!.slug),
         ])
+
+        // Invalidate URL registry cache when publish status changes
+        // This ensures page classification stays accurate
+        if (wasAlreadyPublished !== isNowPublished) {
+            revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
+        }
 
         return { success: true }
     } catch (error) {

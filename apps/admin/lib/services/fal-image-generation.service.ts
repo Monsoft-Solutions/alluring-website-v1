@@ -12,16 +12,21 @@ import { fal } from '@fal-ai/client'
 
 /**
  * Available image generation models
+ * Prioritized for GPT-Image-1.5 prompting guidelines (Background/Scene → Subject → Key Details → Constraints)
  */
 export const IMAGE_MODELS = [
     {
         id: 'gpt-image-1.5',
-        name: 'GPT Image 1.5',
+        name: 'GPT Image 1.5 (Recommended)',
+        description:
+            'Best for structured prompts with Background/Scene → Subject → Key Details → Constraints format',
         falId: 'fal-ai/gpt-image-1.5',
     },
     {
         id: 'nano-banana-pro',
         name: 'Nano Banana Pro',
+        description:
+            'High-quality photorealistic images with natural language prompts',
         falId: 'fal-ai/nano-banana-pro',
     },
 ] as const
@@ -148,7 +153,8 @@ export async function generateImageWithFal(
             input: {
                 prompt,
                 num_images: numImages,
-                size: '1024x1024',
+                // 16:9 aspect ratio for featured blog images (1392x752)
+                size: '1392x752',
             },
             logs: true,
             onQueueUpdate: (update: { status: string }) => {

@@ -12,24 +12,8 @@
  * - CategorizedFAQ component
  */
 
-/**
- * Single FAQ item
- *
- * Represents a question and answer pair for FAQ sections.
- */
-export type FaqItem = {
-    /**
-     * The question text
-     * Should be clear and concise
-     */
-    readonly question: string
-
-    /**
-     * The answer text
-     * Can be multiple sentences providing detailed information
-     */
-    readonly answer: string
-}
+// FaqItem is the single source of truth from @workspace/shared
+export type { FaqItem } from '@workspace/shared/schemas/blog'
 
 /**
  * FAQ Category

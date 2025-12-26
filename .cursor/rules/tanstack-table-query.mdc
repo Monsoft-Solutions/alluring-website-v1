@@ -1,0 +1,329 @@
+---
+description: TanStack Table and Query patterns for admin dashboard tables with server-side sorting
+---
+
+# TanStack Table & Query Patterns
+
+Apply when creating or modifying data tables in the admin app. Uses `@tanstack/react-table` for table rendering with server-side sorting, and `@tanstack/react-query` for data fetching.
+
+## Architecture
+
+```
+Component State (sorting) → TanStack Query Hook (orderBy, direction) → API → Server-sorted data → TanStack Table
+```
+
+Tables use **manual sorting** - the server handles sorting, not the client. TanStack Table manages sorting state, which triggers new API calls via TanStack Query.
+
+## Core Components
+
+### ServerDataTable
+
+Use `ServerDataTable` for all server-side sorted tables:
+
+```tsx
+import { ServerDataTable } from '@/components/shared/server-data-table.component'
+import { SortableHeader } from '@/components/shared/sortable-header.component'
+
+;<ServerDataTable
+    data={data?.items ?? []}
+    columns={columns}
+    sorting={sorting}
+    onSortingChange={setSorting}
+    isLoading={isLoading}
+    emptyMessage='No data yet'
+    getRowId={(row) => row.id}
+/>
+```
+
+### SortableHeader
+
+Use `SortableHeader` for clickable column headers:
+
+```tsx
+{
+    accessorKey: 'clicks',
+    header: ({ column }) => (
+        <SortableHeader
+            column={column}
+            title='Clicks'
+            className='justify-center'
+        />
+    ),
+    cell: ({ row }) => (
+        <div className='text-center'>
+            {row.original.clicks.toLocaleString()}
+        </div>
+    ),
+}
+```
+
+## Complete Pattern
+
+### 1. Define Sorting State
+
+```tsx
+import { useState, useMemo } from 'react'
+import type { ColumnDef, SortingState } from '@tanstack/react-table'
+
+type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+type SortDirection = 'asc' | 'desc'
+
+export function DataTableCard() {
+    // Default sort: most clicked first
+    const [sorting, setSorting] = useState<SortingState>([
+        { id: 'clicks', desc: true },
+    ])
+
+    // Convert TanStack sorting to API params
+    const orderBy = (sorting[0]?.id ?? 'clicks') as SortField
+    const orderDirection: SortDirection = sorting[0]?.desc ? 'desc' : 'asc'
+```
+
+### 2. Fetch Data with TanStack Query
+
+```tsx
+const { data, isLoading, error, refetch } = useDataQuery(
+    days,
+    limit,
+    orderBy,
+    orderDirection
+)
+```
+
+### 3. Define Columns with useMemo
+
+```tsx
+const columns = useMemo<ColumnDef<DataItem>[]>(
+    () => [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+            enableSorting: false, // Non-sortable column
+            cell: ({ row }) => (
+                <div className='max-w-[250px] truncate font-medium'>
+                    {row.original.name}
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'clicks',
+            header: ({ column }) => (
+                <SortableHeader
+                    column={column}
+                    title='Clicks'
+                    className='justify-center'
+                />
+            ),
+            cell: ({ row }) => (
+                <div className='text-center'>
+                    {row.original.clicks.toLocaleString()}
+                </div>
+            ),
+        },
+        // Action column (no sorting)
+        {
+            id: 'actions',
+            header: '',
+            enableSorting: false,
+            cell: ({ row }) => (
+                <Button
+                    variant='ghost'
+                    size='icon'
+                    onClick={() => handleAction(row.original)}
+                >
+                    <Search className='h-4 w-4' />
+                </Button>
+            ),
+        },
+    ],
+    [] // Empty deps - columns are stable
+)
+```
+
+### 4. Render with Error Handling
+
+```tsx
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Data Table</CardTitle>
+                <CardDescription>
+                    Click column headers to sort.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                {error ? (
+                    <div className='flex h-[300px] flex-col items-center justify-center gap-3'>
+                        <AlertCircle className='h-5 w-5 text-red-500' />
+                        <p className='text-muted-foreground text-sm'>
+                            Failed to load data
+                        </p>
+                        <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => refetch()}
+                        >
+                            <RefreshCw className='mr-2 h-4 w-4' />
+                            Retry
+                        </Button>
+                    </div>
+                ) : (
+                    <ServerDataTable
+                        data={data?.items ?? []}
+                        columns={columns}
+                        sorting={sorting}
+                        onSortingChange={setSorting}
+                        isLoading={isLoading}
+                        emptyMessage='No data yet'
+                        getRowId={(row) => row.id}
+                    />
+                )}
+            </CardContent>
+        </Card>
+    )
+}
+```
+
+## TanStack Query Hook Pattern
+
+### Hook with Sorting Parameters
+
+```tsx
+// hooks/use-data.hook.ts
+import { useQuery } from '@tanstack/react-query'
+
+import { buildUrl, fetchApi } from '@/lib/utils/api-client.util'
+
+type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
+type SortDirection = 'asc' | 'desc'
+
+export const dataKeys = {
+    all: ['admin', 'data'] as const,
+    list: (
+        days: number,
+        limit: number,
+        orderBy: string,
+        orderDirection: string
+    ) =>
+        [
+            ...dataKeys.all,
+            'list',
+            days,
+            limit,
+            orderBy,
+            orderDirection,
+        ] as const,
+} as const
+
+export function useDataList(
+    days = 28,
+    limit = 25,
+    orderBy: SortField = 'clicks',
+    orderDirection: SortDirection = 'desc'
+) {
+    return useQuery({
+        queryKey: dataKeys.list(days, limit, orderBy, orderDirection),
+        queryFn: async () => {
+            const response = await fetchApi<DataResponse>(
+                buildUrl('/api/admin/data', {
+                    days,
+                    limit,
+                    orderBy,
+                    orderDirection,
+                })
+            )
+            return response
+        },
+        staleTime: 5 * 60_000, // 5 minutes
+    })
+}
+```
+
+**Critical**: Include all sorting params in the query key. This ensures TanStack Query refetches when sorting changes.
+
+## Column Definition Guidelines
+
+### Sortable Numeric Columns
+
+```tsx
+{
+    accessorKey: 'value',
+    header: ({ column }) => (
+        <SortableHeader column={column} title='Value' className='justify-center' />
+    ),
+    cell: ({ row }) => (
+        <div className='text-center'>{row.original.value.toLocaleString()}</div>
+    ),
+}
+```
+
+### Non-Sortable Text Columns
+
+```tsx
+{
+    accessorKey: 'name',
+    header: 'Name',
+    enableSorting: false,
+    cell: ({ row }) => (
+        <div className='max-w-[250px] truncate font-medium'>
+            {row.original.name}
+        </div>
+    ),
+}
+```
+
+### External Link Columns
+
+```tsx
+{
+    accessorKey: 'url',
+    header: 'Page',
+    enableSorting: false,
+    cell: ({ row }) => (
+        <div className='max-w-[200px]'>
+            <a
+                href={row.original.url}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex items-center gap-1 truncate font-medium hover:underline'
+            >
+                {formatPath(row.original.url)}
+                <ExternalLink className='h-3 w-3 opacity-50' />
+            </a>
+        </div>
+    ),
+}
+```
+
+### Percentage Columns
+
+```tsx
+{
+    accessorKey: 'ctr',
+    header: ({ column }) => (
+        <SortableHeader column={column} title='CTR' className='justify-center' />
+    ),
+    cell: ({ row }) => (
+        <div className='text-center'>
+            {(row.original.ctr * 100).toFixed(1)}%
+        </div>
+    ),
+}
+```
+
+## Avoid
+
+- **Client-side sorting**: Always use `manualSorting: true` with server-side data
+- **Missing query key params**: All sorting/filter params must be in the query key
+- **Inline column definitions**: Always use `useMemo` to prevent re-renders
+- **Forgetting `enableSorting: false`**: Text/action columns should disable sorting
+- **Using `any` types**: Always type `ColumnDef<YourDataType>[]`
+
+## References
+
+@apps/admin/components/shared/server-data-table.component.tsx
+@apps/admin/components/shared/sortable-header.component.tsx
+@apps/admin/components/seo/search-queries-card.component.tsx
+@apps/admin/components/seo/search-pages-card.component.tsx
+@apps/admin/hooks/use-search-console.hook.ts
+@apps/admin/lib/utils/api-client.util.ts
