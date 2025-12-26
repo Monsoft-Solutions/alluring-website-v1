@@ -167,11 +167,15 @@ export function IndexCoverageCard() {
     const [customUrl, setCustomUrl] = useState('')
     const [hasInspected, setHasInspected] = useState(false)
 
-    const handleInspect = async (urls: string[]) => {
+    const handleInspect = async (urls: string[], append = false) => {
         try {
             const response = await inspectionMutation.mutateAsync(urls)
             if (response.data) {
-                setResults(response.data)
+                if (append) {
+                    setResults((prev) => [...prev, ...response.data])
+                } else {
+                    setResults(response.data)
+                }
                 setHasInspected(true)
             }
         } catch (error) {
@@ -185,7 +189,7 @@ export function IndexCoverageCard() {
 
     const handleAddUrl = () => {
         if (customUrl && !results.find((r) => r.url === customUrl)) {
-            void handleInspect([customUrl])
+            void handleInspect([customUrl], true)
             setCustomUrl('')
         }
     }
