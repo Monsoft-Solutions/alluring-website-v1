@@ -106,12 +106,21 @@ export function SitemapStatusCard() {
     // Calculate totals
     const totals = data?.data?.reduce(
         (acc, sitemap) => {
-            for (const content of sitemap.contents) {
-                acc.submitted += content.submitted
-                acc.indexed += content.indexed
+            // Guard against missing or non-array contents
+            const contents = Array.isArray(sitemap.contents)
+                ? sitemap.contents
+                : []
+
+            for (const content of contents) {
+                // Coerce numeric fields safely to avoid NaN
+                acc.submitted += Number(content.submitted ?? 0)
+                acc.indexed += Number(content.indexed ?? 0)
             }
-            acc.errors += sitemap.errors
-            acc.warnings += sitemap.warnings
+
+            // Still accumulate errors and warnings even if contents is empty
+            acc.errors += Number(sitemap.errors ?? 0)
+            acc.warnings += Number(sitemap.warnings ?? 0)
+
             return acc
         },
         { submitted: 0, indexed: 0, errors: 0, warnings: 0 }
@@ -247,19 +256,27 @@ export function SitemapStatusCard() {
                                 </TableHeader>
                                 <TableBody>
                                     {data.data.map((sitemap) => {
+                                        const contents = Array.isArray(
+                                            sitemap.contents
+                                        )
+                                            ? sitemap.contents
+                                            : []
+
                                         const sitemapSubmitted =
-                                            sitemap.contents.reduce(
-                                                (sum, c) => sum + c.submitted,
+                                            contents.reduce(
+                                                (sum, c) =>
+                                                    sum +
+                                                    Number(c.submitted ?? 0),
                                                 0
                                             )
-                                        const sitemapIndexed =
-                                            sitemap.contents.reduce(
-                                                (sum, c) => sum + c.indexed,
-                                                0
-                                            )
+                                        const sitemapIndexed = contents.reduce(
+                                            (sum, c) =>
+                                                sum + Number(c.indexed ?? 0),
+                                            0
+                                        )
                                         const hasIssues =
-                                            sitemap.errors > 0 ||
-                                            sitemap.warnings > 0
+                                            Number(sitemap.errors ?? 0) > 0 ||
+                                            Number(sitemap.warnings ?? 0) > 0
 
                                         return (
                                             <TableRow key={sitemap.path}>
