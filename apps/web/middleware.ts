@@ -4,13 +4,20 @@ import type { NextRequest } from 'next/server'
 import { env } from '@/env'
 
 /**
- * Middleware to add X-Robots-Tag header when crawling is disabled
- *
- * This provides an additional layer of protection by setting HTTP headers
- * that search engines respect, even if they don't check robots.txt or meta tags.
+ * Middleware to handle:
+ * 1. Trailing slash redirects - redirects /path/ to /path for SEO consistency
+ * 2. X-Robots-Tag header - adds noindex when crawling is disabled
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function middleware(_request: NextRequest) {
+export function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl
+
+    // Redirect trailing slashes to non-trailing slash (except root "/")
+    if (pathname !== '/' && pathname.endsWith('/')) {
+        const url = request.nextUrl.clone()
+        url.pathname = pathname.slice(0, -1)
+        return NextResponse.redirect(url, 308) // Permanent redirect
+    }
+
     const response = NextResponse.next()
 
     // Check if crawling is allowed (defaults to false)
