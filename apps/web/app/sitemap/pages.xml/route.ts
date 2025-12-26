@@ -35,7 +35,6 @@ const STATIC_PAGES: Array<{
         changeFrequency: 'weekly',
         priority: 0.9,
     },
-    { path: '/thank-you', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/cookies', changeFrequency: 'yearly', priority: 0.3 },

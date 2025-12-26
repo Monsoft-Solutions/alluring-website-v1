@@ -19,7 +19,6 @@ export const STATIC_PAGES = [
     '/faq',
     '/plastic-surgery-financing-miami',
     '/miami-plastic-surgery-specials',
-    '/thank-you',
     '/privacy',
     '/terms',
     '/cookies',

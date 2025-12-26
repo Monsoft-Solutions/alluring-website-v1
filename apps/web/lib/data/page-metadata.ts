@@ -19,7 +19,6 @@ export const pageLastModified: Record<string, string> = {
     '/faq': '2025-12-18',
     '/plastic-surgery-financing-miami': '2025-12-16',
     '/miami-plastic-surgery-specials': '2025-12-18',
-    '/thank-you': '2025-12-01',
 
     // Gallery pages
     '/gallery': '2025-12-17',
