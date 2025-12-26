@@ -28,7 +28,6 @@ import {
     TableRow,
 } from '@workspace/ui/components/table'
 import { Badge } from '@workspace/ui/components/badge'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import { Input } from '@workspace/ui/components/input'
 import {
@@ -42,6 +41,7 @@ import { useUrlInspection } from '@/hooks/use-search-console.hook'
 import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
 import { cn } from '@workspace/ui/lib/utils'
 import { getAllMainPages, type SitePage } from '@workspace/shared'
+import { TableSkeleton } from './table-skeleton.component'
 
 const SITE_URL = 'https://www.alluringplasticsurgery.com'
 
@@ -445,28 +445,5 @@ export function IndexCoverageCard() {
                 )}
             </CardContent>
         </Card>
-    )
-}
-
-function TableSkeleton() {
-    return (
-        <div className='space-y-4'>
-            <div className='flex gap-2'>
-                {Array.from({ length: 3 }).map((_, i) => (
-                    <Skeleton key={i} className='h-6 w-24' />
-                ))}
-            </div>
-            <Skeleton className='h-10 w-full' />
-            <div className='space-y-3'>
-                {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className='flex items-center gap-4'>
-                        <Skeleton className='h-4 flex-1' />
-                        <Skeleton className='h-5 w-20' />
-                        <Skeleton className='h-4 w-12' />
-                        <Skeleton className='h-4 w-20' />
-                    </div>
-                ))}
-            </div>
-        </div>
     )
 }
