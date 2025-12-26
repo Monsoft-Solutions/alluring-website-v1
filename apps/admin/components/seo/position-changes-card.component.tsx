@@ -31,7 +31,6 @@ import {
     TabsTrigger,
 } from '@workspace/ui/components/tabs'
 import { Badge } from '@workspace/ui/components/badge'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import {
     Select,
@@ -43,6 +42,7 @@ import {
 
 import { usePositionChanges } from '@/hooks/use-search-console.hook'
 import { cn } from '@workspace/ui/lib/utils'
+import { TableSkeleton } from '@/components/shared/skeletons/table-skeleton.component'
 
 /**
  * Format position change with arrow indicator
@@ -311,28 +311,6 @@ function EmptyState({
             <Icon className='text-muted-foreground h-8 w-8' />
             <p className='text-muted-foreground text-sm'>{message}</p>
             <p className='text-muted-foreground text-xs'>{description}</p>
-        </div>
-    )
-}
-
-function TableSkeleton() {
-    return (
-        <div className='space-y-4'>
-            <div className='flex gap-2'>
-                <Skeleton className='h-10 flex-1' />
-                <Skeleton className='h-10 flex-1' />
-            </div>
-            <div className='space-y-3'>
-                {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className='flex items-center gap-4'>
-                        <Skeleton className='h-4 flex-1' />
-                        <Skeleton className='h-4 w-16' />
-                        <Skeleton className='h-4 w-16' />
-                        <Skeleton className='h-4 w-12' />
-                        <Skeleton className='h-4 w-16' />
-                    </div>
-                ))}
-            </div>
         </div>
     )
 }

@@ -41,7 +41,7 @@ import { useUrlInspection } from '@/hooks/use-search-console.hook'
 import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
 import { cn } from '@workspace/ui/lib/utils'
 import { getAllMainPages, type SitePage } from '@workspace/shared'
-import { TableSkeleton } from './table-skeleton.component'
+import { TableSkeleton } from '@/components/shared/skeletons/table-skeleton.component'
 
 const SITE_URL = 'https://www.alluringplasticsurgery.com'
 

@@ -31,9 +31,8 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { Skeleton } from '@workspace/ui/components/skeleton'
-
 import type { SearchQuery } from '@/lib/types/search-console/search-console.type'
+import { TableSkeleton } from '@/components/shared/skeletons/table-skeleton.component'
 import { SortableHeader } from '@/components/shared/sortable-header.component'
 import { QueryDetailPanel } from './query-detail-panel.component'
 
@@ -308,23 +307,6 @@ export function QueryPerformanceTable({
                     ))}
                 </TableBody>
             </Table>
-        </div>
-    )
-}
-
-function TableSkeleton() {
-    return (
-        <div className='space-y-3'>
-            {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className='flex items-center gap-4'>
-                    <Skeleton className='h-4 w-8' />
-                    <Skeleton className='h-4 flex-1' />
-                    <Skeleton className='h-4 w-16' />
-                    <Skeleton className='h-4 w-20' />
-                    <Skeleton className='h-4 w-12' />
-                    <Skeleton className='h-4 w-14' />
-                </div>
-            ))}
         </div>
     )
 }

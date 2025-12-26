@@ -30,7 +30,6 @@ import {
     TableRow,
 } from '@workspace/ui/components/table'
 import { Badge } from '@workspace/ui/components/badge'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import {
     Tooltip,
@@ -41,6 +40,7 @@ import {
 import { Progress } from '@workspace/ui/components/progress'
 
 import { useSitemaps, useSubmitSitemap } from '@/hooks/use-search-console.hook'
+import { TableSkeleton } from '@/components/shared/skeletons/table-skeleton.component'
 
 /**
  * Format date for display
@@ -398,30 +398,5 @@ export function SitemapStatusCard() {
                 )}
             </CardContent>
         </Card>
-    )
-}
-
-function TableSkeleton() {
-    return (
-        <div className='space-y-4'>
-            <div className='grid grid-cols-4 gap-4'>
-                {Array.from({ length: 4 }).map((_, i) => (
-                    <Skeleton key={i} className='h-16' />
-                ))}
-            </div>
-            <div className='space-y-3'>
-                {Array.from({ length: 3 }).map((_, i) => (
-                    <div key={i} className='flex items-center gap-4'>
-                        <Skeleton className='h-4 flex-1' />
-                        <Skeleton className='h-4 w-16' />
-                        <Skeleton className='h-4 w-16' />
-                        <Skeleton className='h-5 w-16' />
-                        <Skeleton className='h-4 w-20' />
-                        <Skeleton className='h-4 w-20' />
-                        <Skeleton className='h-8 w-8' />
-                    </div>
-                ))}
-            </div>
-        </div>
     )
 }

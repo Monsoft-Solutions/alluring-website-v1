@@ -14,10 +14,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'
-import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useSearchConsoleSummary } from '@/hooks/use-search-console.hook'
+import { StatsGridSkeleton } from '@/components/shared/skeletons/stats-grid-skeleton.component'
 
 type SeoStatsGridProps = {
     days?: number
@@ -30,7 +30,7 @@ export function SeoStatsGrid({ days = 28 }: SeoStatsGridProps) {
     const { data, isLoading, error, refetch } = useSearchConsoleSummary(days)
 
     if (isLoading) {
-        return <SeoStatsGridSkeleton />
+        return <StatsGridSkeleton />
     }
 
     if (error) {
@@ -116,24 +116,5 @@ function StatsCard({ title, value, description, icon: Icon }: StatsCardProps) {
                 </p>
             </CardContent>
         </Card>
-    )
-}
-
-function SeoStatsGridSkeleton() {
-    return (
-        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-            {Array.from({ length: 4 }).map((_, i) => (
-                <Card key={i}>
-                    <CardHeader className='flex flex-row items-center justify-between pb-2'>
-                        <Skeleton className='h-4 w-24' />
-                        <Skeleton className='h-4 w-4' />
-                    </CardHeader>
-                    <CardContent>
-                        <Skeleton className='h-8 w-20' />
-                        <Skeleton className='mt-1 h-3 w-16' />
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
     )
 }
