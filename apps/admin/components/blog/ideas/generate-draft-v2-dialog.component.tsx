@@ -118,8 +118,13 @@ export function GenerateDraftV2Dialog({
                     {step === 'idle' && (
                         <div className='space-y-4'>
                             <div className='rounded-lg border bg-stone-50 p-3'>
-                                <h4 className='mb-1 text-sm font-medium'>
-                                    {idea.title}
+                                <h4
+                                    className='mb-1 text-sm font-medium'
+                                    title={idea.title}
+                                >
+                                    {idea.title.length > 80
+                                        ? `${idea.title.substring(0, 80)}...`
+                                        : idea.title}
                                 </h4>
                                 <p className='text-xs text-stone-500'>
                                     {idea.topic || 'No topic set'}
