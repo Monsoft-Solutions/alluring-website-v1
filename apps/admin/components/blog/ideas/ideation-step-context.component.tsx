@@ -16,24 +16,11 @@ import { Textarea } from '@workspace/ui/components/textarea'
 import { Button } from '@workspace/ui/components/button'
 import { Loader2, Sparkles } from 'lucide-react'
 
-import { CONTENT_TYPES } from '@/lib/constants/blog-ideas.constant'
-
-const PROCEDURES = [
-    { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
-    { value: 'mommy-makeover', label: 'Mommy Makeover' },
-    { value: 'tummy-tuck', label: 'Tummy Tuck' },
-    { value: 'breast-augmentation', label: 'Breast Augmentation' },
-    { value: 'breast-lift', label: 'Breast Lift' },
-    { value: 'liposuction', label: 'Liposuction' },
-    { value: 'general', label: 'General Plastic Surgery' },
-] as const
-
-const AUDIENCES = [
-    { value: 'considering', label: 'Patients considering surgery' },
-    { value: 'post-surgery', label: 'Post-surgery recovery' },
-    { value: 'researching', label: 'Early-stage researchers' },
-    { value: 'financing', label: 'Cost/financing focused' },
-] as const
+import {
+    AUDIENCES,
+    CONTENT_TYPES,
+    PROCEDURES,
+} from '@/lib/constants/blog-ideas.constant'
 
 type WizardState = {
     procedureFocus: string

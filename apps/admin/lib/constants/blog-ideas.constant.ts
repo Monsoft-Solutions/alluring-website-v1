@@ -65,3 +65,26 @@ export const PRIORITIES = [
     { value: 'high', label: 'High' },
     { value: 'urgent', label: 'Urgent' },
 ] as const
+
+/**
+ * Procedure focus options for blog idea generation
+ */
+export const PROCEDURES = [
+    { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
+    { value: 'mommy-makeover', label: 'Mommy Makeover' },
+    { value: 'tummy-tuck', label: 'Tummy Tuck' },
+    { value: 'breast-augmentation', label: 'Breast Augmentation' },
+    { value: 'breast-lift', label: 'Breast Lift' },
+    { value: 'liposuction', label: 'Liposuction' },
+    { value: 'general', label: 'General Plastic Surgery' },
+] as const
+
+/**
+ * Target audience options for blog idea generation
+ */
+export const AUDIENCES = [
+    { value: 'considering', label: 'Patients considering surgery' },
+    { value: 'post-surgery', label: 'Post-surgery recovery' },
+    { value: 'researching', label: 'Early-stage researchers' },
+    { value: 'financing', label: 'Cost/financing focused' },
+] as const
