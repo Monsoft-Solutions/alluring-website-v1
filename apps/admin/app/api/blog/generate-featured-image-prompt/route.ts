@@ -13,10 +13,69 @@ import {
     getLightingOption,
     getColorOption,
     getCompositionOption,
+    buildModelDescription,
+    type ModelProfile,
 } from '@/lib/constants/featured-image-options.constant'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
+
+/**
+ * Model profile schema for patient-model subject type
+ */
+const modelProfileSchema = z.object({
+    age: z.enum(['young-adult', 'mid-adult', 'mature-adult']),
+    ethnicity: z.enum([
+        'latina-hispanic',
+        'caribbean',
+        'african-american',
+        'caucasian',
+        'asian',
+        'middle-eastern',
+        'mixed-heritage',
+    ]),
+    bodyType: z.enum(['slim', 'athletic', 'average', 'curvy', 'plus-size']),
+    hairColor: z.enum([
+        'blonde',
+        'brunette',
+        'black',
+        'auburn',
+        'gray-silver',
+        'highlighted',
+    ]),
+    hairLength: z.enum(['short', 'medium', 'long']),
+    hairStyle: z.enum(['straight', 'wavy', 'curly', 'braided', 'updo']),
+    skinTone: z.enum([
+        'fair',
+        'light',
+        'medium',
+        'olive',
+        'tan',
+        'deep',
+        'rich',
+    ]),
+    expression: z.enum([
+        'confident-smile',
+        'serene-peaceful',
+        'contemplative',
+        'joyful',
+        'natural-relaxed',
+    ]),
+    pose: z.enum([
+        'front-facing',
+        'three-quarter',
+        'profile',
+        'full-body',
+        'upper-body',
+    ]),
+    attire: z.enum([
+        'clinical',
+        'casual-elegant',
+        'athleisure',
+        'professional',
+        'spa-wellness',
+    ]),
+})
 
 /**
  * Request schema for featured image prompt generation
@@ -31,7 +90,7 @@ const requestSchema = z.object({
         'modern-minimalist',
     ]),
     subject: z.enum([
-        'elegant-model',
+        'patient-model',
         'luxury-space',
         'wellness-concept',
         'lifestyle-scene',
@@ -65,6 +124,7 @@ const requestSchema = z.object({
         'wide-environmental',
         'negative-space',
     ]),
+    modelProfile: modelProfileSchema.optional(),
 })
 
 /**
@@ -87,7 +147,7 @@ type PromptResponse =
  * Generate optimized image prompt for featured blog post images
  *
  * Takes customization options and generates a structured prompt
- * incorporating scene, subject, style, lighting, colors, and composition.
+ * following GPT-Image-1.5 format: Background/Scene → Subject → Key Details → Constraints
  */
 export async function POST(
     request: NextRequest
@@ -116,6 +176,7 @@ export async function POST(
             lighting,
             colorPalette,
             composition,
+            modelProfile,
         } = validationResult.data
 
         // Fetch blog post data
@@ -186,6 +247,14 @@ export async function POST(
             )
         }
 
+        // Build model description for patient-model subject type
+        let modelDescription: string | undefined
+        if (subject === 'patient-model' && modelProfile) {
+            modelDescription = buildModelDescription(
+                modelProfile as ModelProfile
+            )
+        }
+
         // Generate featured image prompt with customization
         const result = await generateFeaturedImagePrompt({
             title: blogPostData.title,
@@ -214,6 +283,7 @@ export async function POST(
                 id: compositionOption.id,
                 promptGuidelines: compositionOption.promptGuidelines,
             },
+            modelDescription,
             keywords: blogPostData.metaKeywords || undefined,
         })
 

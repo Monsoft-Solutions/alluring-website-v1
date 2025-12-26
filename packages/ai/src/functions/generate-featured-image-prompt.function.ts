@@ -45,6 +45,8 @@ export type GenerateFeaturedImagePromptOptions = {
     colorPalette: CustomizationOption
     /** Composition option */
     composition: CustomizationOption
+    /** Detailed model description for patient-model subject type */
+    modelDescription?: string
     /** Optional keywords for additional context */
     keywords?: string
     /** Model ID to use (defaults to gpt-5.2) */
@@ -97,6 +99,7 @@ export async function generateFeaturedImagePrompt(
         lighting,
         colorPalette,
         composition,
+        modelDescription,
         keywords,
         modelId = DEFAULT_MODEL_ID,
         temperature = 0.9,
@@ -114,15 +117,18 @@ export async function generateFeaturedImagePrompt(
             lightingGuidelines: lighting.promptGuidelines,
             colorGuidelines: colorPalette.promptGuidelines,
             compositionGuidelines: composition.promptGuidelines,
+            modelDescription,
             keywords,
         }),
         temperature,
     })
 
-    // Clean up the response - remove any markdown formatting if present
+    // Keep the structured markdown format from GPT-Image-1.5 prompt
+    // Only clean up code fences if present
     const cleanedPrompt = result.text
         .trim()
-        .replace(/^```[\s\S]*?\n/, '') // Remove opening code fence
+        .replace(/^```markdown\s*\n/, '') // Remove markdown code fence
+        .replace(/^```\s*\n/, '') // Remove plain code fence
         .replace(/\n```$/, '') // Remove closing code fence
         .trim()
 

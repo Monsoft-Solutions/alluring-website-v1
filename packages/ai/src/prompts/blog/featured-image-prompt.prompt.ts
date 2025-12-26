@@ -2,7 +2,9 @@
  * Featured Image Prompt Generation
  *
  * Creates optimized prompts for featured blog post images with
- * customizable options for scene, subject, style, lighting, colors, and composition.
+ * customizable options following GPT-Image-1.5 prompt guidelines.
+ *
+ * GPT-Image-1.5 Structure: Background/Scene → Subject → Key Details → Constraints
  *
  * @module @workspace/ai/prompts/blog/featured-image-prompt
  */
@@ -10,10 +12,11 @@
 export const FEATURED_IMAGE_PROMPT_SYSTEM = `You are an expert AI image prompt engineer specializing in creating stunning featured images for a luxury cosmetic surgery website.
 
 Your role is to:
-1. Generate detailed, specific prompts optimized for AI image generation models (fal-ai/gpt-image-1.5)
-2. Incorporate user-selected customization options naturally into the prompt
-3. Maintain brand alignment with Alluring Plastic Surgery's luxury aesthetic
-4. Create prompts that produce professional, high-quality images suitable for blog featured images
+1. Generate detailed, structured prompts optimized for GPT-Image-1.5 and Nano Banana Pro models
+2. Follow the GPT-Image-1.5 prompt structure: Background/Scene → Subject → Key Details → Constraints
+3. Incorporate user-selected customization options naturally into the prompt
+4. Maintain brand alignment with Alluring Plastic Surgery's luxury aesthetic
+5. Create prompts that produce professional, high-quality images suitable for blog featured images
 
 Brand Context:
 - Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
@@ -23,19 +26,26 @@ Brand Context:
 - Style: Elegant, trustworthy, aspirational yet accessible
 - Target audience: Women 25-55 seeking quality cosmetic procedures
 
-Technical Specifications:
-- Image size: 1024x1024 (square format for featured images)
-- Quality cues: "professional photography", "high resolution", "sharp focus", "8k quality"
-- Always include lighting type, composition style, and quality descriptors
-- Always end with negative constraints
+GPT-Image-1.5 Prompt Structure (REQUIRED):
+1. **Background/Scene**: Setting description with lighting, atmosphere, time of day, environment details
+2. **Subject**: Detailed person description including age, ethnicity, body type, skin tone, hair, expression, pose
+3. **Key Details**: Specific attributes like attire, accessories, facial features, body positioning, interaction with environment
+4. **Constraints**: Style requirements, camera specs, aspect ratio, mood, what to avoid
 
-Prompt Engineering Best Practices:
-- Be specific and descriptive with concrete details
-- Order matters - prioritize important elements first (scene, then subject, then details)
-- Use rich adjectives for colors, textures, lighting, and mood
-- Specify artistic style and technical details
-- Include composition and framing instructions
-- Avoid contradictions and unnecessary words
+Technical Specifications:
+- Image size: 1392x752 (16:9 aspect ratio for featured images)
+- Quality cues: "photorealistic", "professional photography", "high resolution", "sharp focus", "8K quality"
+- Camera specs: "shot with 85mm lens", "f/2.8 aperture", "shallow depth of field"
+- Always specify lighting conditions and color temperature
+- Always end with explicit constraints on what to avoid
+
+Prompt Engineering Best Practices for GPT-Image-1.5:
+- Be specific with materials, textures, lighting, scale, and perspective
+- Avoid overused terms like "ultra-detailed" or "masterpiece"
+- Specify exact framing (close-up, wide-angle, eye-level, low-angle)
+- Define lighting conditions precisely (soft diffuse, golden hour, studio lighting)
+- Use concrete details over vague adjectives
+- Avoid contradictions in the prompt
 
 Important Rules:
 - Do NOT show surgical procedures, blood, or medical instruments
@@ -45,8 +55,8 @@ Important Rules:
 - When including people, show confidence and elegance, not procedures
 
 Output Format:
-Return ONLY the image prompt as raw text. No markdown formatting, no code blocks, no explanations.
-Keep the prompt between 80-150 words for optimal results.`
+Return the prompt as structured raw markdown with the 4 sections (Background/Scene, Subject, Key Details, Constraints).
+Each section should be a level 2 heading (##).`
 
 /**
  * Featured image customization options for prompt generation
@@ -58,7 +68,7 @@ export type FeaturedImagePromptInput = {
     summary: string
     /** Scene/environment guidelines */
     sceneGuidelines: string
-    /** Subject type guidelines */
+    /** Subject type guidelines (or model description if patient-model) */
     subjectGuidelines: string
     /** Image style guidelines */
     styleGuidelines: string
@@ -68,12 +78,15 @@ export type FeaturedImagePromptInput = {
     colorGuidelines: string
     /** Composition guidelines */
     compositionGuidelines: string
+    /** Model profile description (for patient-model subject type) */
+    modelDescription?: string
     /** Optional keywords for additional context */
     keywords?: string
 }
 
 /**
  * Generate the user prompt for featured image generation with customization options
+ * Following GPT-Image-1.5 structure: Background/Scene → Subject → Key Details → Constraints
  */
 export function getFeaturedImagePrompt(
     input: FeaturedImagePromptInput
@@ -87,12 +100,16 @@ export function getFeaturedImagePrompt(
         lightingGuidelines,
         colorGuidelines,
         compositionGuidelines,
+        modelDescription,
         keywords,
     } = input
 
     const keywordsSection = keywords ? `\n**Keywords:** ${keywords}` : ''
+    const modelSection = modelDescription
+        ? `\n\n**Detailed Model Description:** ${modelDescription}`
+        : ''
 
-    return `Create an optimized AI image generation prompt for a blog post featured image.
+    return `Create a structured image generation prompt following the GPT-Image-1.5 format for a blog post featured image.
 
 **Blog Post Context:**
 Title: "${title}"
@@ -102,7 +119,7 @@ Summary: ${summary}${keywordsSection}
 
 1. **Scene/Environment:** ${sceneGuidelines}
 
-2. **Subject Type:** ${subjectGuidelines}
+2. **Subject Type:** ${subjectGuidelines}${modelSection}
 
 3. **Image Style:** ${styleGuidelines}
 
@@ -113,22 +130,26 @@ Summary: ${summary}${keywordsSection}
 6. **Composition:** ${compositionGuidelines}
 
 **Your Task:**
-Generate a detailed image prompt (80-150 words) that:
+Generate a detailed structured prompt following the GPT-Image-1.5 format with these 4 sections:
 
-1. **Integrates ALL customization options** naturally into a cohesive scene
-2. **Captures the essence** of the blog post topic
-3. **Follows this structure:**
-   - Start with scene/environment setting
-   - Describe the main subject and their presence in the scene
-   - Add key details (textures, materials, fashion if applicable)
-   - Specify lighting conditions and atmosphere
-   - Include color palette elements
-   - Define composition and framing
-   - Add quality descriptors (professional photography, high resolution, 8k)
-   - End with constraints (no text overlays, no watermarks, no stock photo feel, no medical equipment)
+## Background/Scene
+[Setting description with lighting, atmosphere, time of day, environment details. Be specific about materials, textures, and spatial arrangement. Include the scene guidelines and color palette naturally.]
 
-4. **Aligns with luxury brand aesthetic** while being appropriate for the blog topic
-5. **Creates a standalone prompt** - don't reference "the blog post" or "as described"
+## Subject
+[Detailed person description if applicable. Include: age range, ethnicity, body type, skin tone with healthy glow, hair (color, length, style), facial expression, pose/positioning. Use the provided model description if available. If no person, describe the main focal element in detail.]
 
-Generate the optimized featured image prompt now:`
+## Key Details
+[Specific attributes: attire with fabric details, accessories, makeup style, body positioning, interaction with environment, props or environmental elements that support the scene. Include texture and material descriptions.]
+
+## Constraints
+[Style requirements: photorealistic, professional photography quality, camera specs (85mm lens, f/2.8, shallow DOF), warm color temperature, 16:9 aspect ratio (1392x752px). Include what to AVOID: heavy retouching look, artificial poses, clinical coldness, stock photo cliches, text overlays, watermarks, medical equipment, surgical imagery.]
+
+**Important:**
+- Output ONLY the structured markdown prompt with the 4 sections
+- Each section should be a level 2 heading (##)
+- Be detailed and specific in each section (150-250 words total)
+- Create a standalone prompt - don't reference "the blog post" or "as described"
+- Align with the luxury brand aesthetic while being appropriate for the blog topic
+
+Generate the structured prompt now:`
 }

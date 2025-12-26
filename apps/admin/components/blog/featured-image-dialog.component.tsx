@@ -69,8 +69,19 @@ import {
     LIGHTING_OPTIONS,
     COLOR_OPTIONS,
     COMPOSITION_OPTIONS,
+    MODEL_AGE_OPTIONS,
+    MODEL_ETHNICITY_OPTIONS,
+    MODEL_BODY_TYPE_OPTIONS,
+    MODEL_HAIR_COLOR_OPTIONS,
+    MODEL_HAIR_LENGTH_OPTIONS,
+    MODEL_HAIR_STYLE_OPTIONS,
+    MODEL_SKIN_TONE_OPTIONS,
+    MODEL_EXPRESSION_OPTIONS,
+    MODEL_POSE_OPTIONS,
+    MODEL_ATTIRE_OPTIONS,
     DEFAULT_FEATURED_IMAGE_OPTIONS,
     type FeaturedImageOptions,
+    type ModelProfile,
 } from '@/lib/constants/featured-image-options.constant'
 import {
     IMAGE_MODELS,
@@ -172,6 +183,21 @@ export function FeaturedImageDialog({
         []
     )
 
+    const updateModelProfile = useCallback(
+        <K extends keyof ModelProfile>(key: K, value: ModelProfile[K]) => {
+            setOptions((prev) => ({
+                ...prev,
+                modelProfile: { ...prev.modelProfile, [key]: value },
+            }))
+            // Clear prompt when model profile changes
+            setPrompt('')
+        },
+        []
+    )
+
+    // Check if model profile customization should be shown
+    const showModelProfile = options.subject === 'patient-model'
+
     const handleGeneratePrompt = useCallback(async () => {
         setIsGeneratingPrompt(true)
         try {
@@ -182,7 +208,16 @@ export function FeaturedImageDialog({
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         blogPostId,
-                        ...options,
+                        scene: options.scene,
+                        subject: options.subject,
+                        style: options.style,
+                        lighting: options.lighting,
+                        colorPalette: options.colorPalette,
+                        composition: options.composition,
+                        modelProfile:
+                            options.subject === 'patient-model'
+                                ? options.modelProfile
+                                : undefined,
                     }),
                 }
             )
@@ -346,6 +381,14 @@ export function FeaturedImageDialog({
                                     >
                                         Subject
                                     </TabsTrigger>
+                                    {showModelProfile && (
+                                        <TabsTrigger
+                                            value='model'
+                                            className='text-xs'
+                                        >
+                                            Model
+                                        </TabsTrigger>
+                                    )}
                                     <TabsTrigger
                                         value='style'
                                         className='text-xs'
@@ -397,7 +440,9 @@ export function FeaturedImageDialog({
                                             Subject Type
                                         </Label>
                                         <p className='text-xs text-stone-500'>
-                                            Choose the main focus of your image
+                                            Choose the main focus of your image.
+                                            Select &quot;Patient Model&quot; for
+                                            customizable person.
                                         </p>
                                         {renderOptionCards(
                                             SUBJECT_OPTIONS,
@@ -406,6 +451,391 @@ export function FeaturedImageDialog({
                                         )}
                                     </div>
                                 </TabsContent>
+
+                                {showModelProfile && (
+                                    <TabsContent value='model' className='mt-0'>
+                                        <div className='space-y-6'>
+                                            <div className='rounded-lg border border-amber-200 bg-amber-50 p-3'>
+                                                <p className='text-xs text-amber-800'>
+                                                    Customize the patient
+                                                    model&apos;s appearance for
+                                                    your featured image. These
+                                                    options follow GPT-Image-1.5
+                                                    best practices.
+                                                </p>
+                                            </div>
+
+                                            {/* Age Range */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Age Range
+                                                </Label>
+                                                <div className='grid grid-cols-3 gap-2'>
+                                                    {MODEL_AGE_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'age',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded-lg border-2 p-2 text-left text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .age ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-50'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                <div className='font-medium'>
+                                                                    {opt.name}
+                                                                </div>
+                                                                <div className='text-stone-500'>
+                                                                    {
+                                                                        opt.description
+                                                                    }
+                                                                </div>
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Ethnicity */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Ethnicity
+                                                </Label>
+                                                <div className='grid grid-cols-2 gap-2'>
+                                                    {MODEL_ETHNICITY_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'ethnicity',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded-lg border-2 p-2 text-left text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .ethnicity ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-50'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                {opt.name}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Body Type */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Body Type
+                                                </Label>
+                                                <div className='grid grid-cols-5 gap-2'>
+                                                    {MODEL_BODY_TYPE_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'bodyType',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded-lg border-2 p-2 text-center text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .bodyType ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-50'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                {opt.name}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Hair */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Hair
+                                                </Label>
+                                                <div className='grid grid-cols-3 gap-4'>
+                                                    <div className='space-y-1'>
+                                                        <span className='text-xs text-stone-500'>
+                                                            Color
+                                                        </span>
+                                                        <div className='flex flex-wrap gap-1'>
+                                                            {MODEL_HAIR_COLOR_OPTIONS.map(
+                                                                (opt) => (
+                                                                    <button
+                                                                        key={
+                                                                            opt.id
+                                                                        }
+                                                                        type='button'
+                                                                        onClick={() =>
+                                                                            updateModelProfile(
+                                                                                'hairColor',
+                                                                                opt.id
+                                                                            )
+                                                                        }
+                                                                        className={cn(
+                                                                            'rounded border px-2 py-1 text-xs transition-all',
+                                                                            options
+                                                                                .modelProfile
+                                                                                .hairColor ===
+                                                                                opt.id
+                                                                                ? 'border-stone-900 bg-stone-900 text-white'
+                                                                                : 'border-stone-200 hover:border-stone-300'
+                                                                        )}
+                                                                    >
+                                                                        {
+                                                                            opt.name
+                                                                        }
+                                                                    </button>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <div className='space-y-1'>
+                                                        <span className='text-xs text-stone-500'>
+                                                            Length
+                                                        </span>
+                                                        <div className='flex flex-wrap gap-1'>
+                                                            {MODEL_HAIR_LENGTH_OPTIONS.map(
+                                                                (opt) => (
+                                                                    <button
+                                                                        key={
+                                                                            opt.id
+                                                                        }
+                                                                        type='button'
+                                                                        onClick={() =>
+                                                                            updateModelProfile(
+                                                                                'hairLength',
+                                                                                opt.id
+                                                                            )
+                                                                        }
+                                                                        className={cn(
+                                                                            'rounded border px-2 py-1 text-xs transition-all',
+                                                                            options
+                                                                                .modelProfile
+                                                                                .hairLength ===
+                                                                                opt.id
+                                                                                ? 'border-stone-900 bg-stone-900 text-white'
+                                                                                : 'border-stone-200 hover:border-stone-300'
+                                                                        )}
+                                                                    >
+                                                                        {
+                                                                            opt.name
+                                                                        }
+                                                                    </button>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <div className='space-y-1'>
+                                                        <span className='text-xs text-stone-500'>
+                                                            Style
+                                                        </span>
+                                                        <div className='flex flex-wrap gap-1'>
+                                                            {MODEL_HAIR_STYLE_OPTIONS.map(
+                                                                (opt) => (
+                                                                    <button
+                                                                        key={
+                                                                            opt.id
+                                                                        }
+                                                                        type='button'
+                                                                        onClick={() =>
+                                                                            updateModelProfile(
+                                                                                'hairStyle',
+                                                                                opt.id
+                                                                            )
+                                                                        }
+                                                                        className={cn(
+                                                                            'rounded border px-2 py-1 text-xs transition-all',
+                                                                            options
+                                                                                .modelProfile
+                                                                                .hairStyle ===
+                                                                                opt.id
+                                                                                ? 'border-stone-900 bg-stone-900 text-white'
+                                                                                : 'border-stone-200 hover:border-stone-300'
+                                                                        )}
+                                                                    >
+                                                                        {
+                                                                            opt.name
+                                                                        }
+                                                                    </button>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Skin Tone */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Skin Tone
+                                                </Label>
+                                                <div className='flex flex-wrap gap-1'>
+                                                    {MODEL_SKIN_TONE_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'skinTone',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded border px-3 py-1.5 text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .skinTone ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-900 text-white'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                {opt.name}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Expression */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Expression
+                                                </Label>
+                                                <div className='flex flex-wrap gap-1'>
+                                                    {MODEL_EXPRESSION_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'expression',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded border px-3 py-1.5 text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .expression ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-900 text-white'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                {opt.name}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Pose */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Pose
+                                                </Label>
+                                                <div className='flex flex-wrap gap-1'>
+                                                    {MODEL_POSE_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'pose',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded border px-3 py-1.5 text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .pose ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-900 text-white'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                {opt.name}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Attire */}
+                                            <div className='space-y-2'>
+                                                <Label className='text-sm font-medium'>
+                                                    Attire
+                                                </Label>
+                                                <div className='grid grid-cols-3 gap-2'>
+                                                    {MODEL_ATTIRE_OPTIONS.map(
+                                                        (opt) => (
+                                                            <button
+                                                                key={opt.id}
+                                                                type='button'
+                                                                onClick={() =>
+                                                                    updateModelProfile(
+                                                                        'attire',
+                                                                        opt.id
+                                                                    )
+                                                                }
+                                                                className={cn(
+                                                                    'rounded-lg border-2 p-2 text-left text-xs transition-all',
+                                                                    options
+                                                                        .modelProfile
+                                                                        .attire ===
+                                                                        opt.id
+                                                                        ? 'border-stone-900 bg-stone-50'
+                                                                        : 'border-stone-200 hover:border-stone-300'
+                                                                )}
+                                                            >
+                                                                <div className='font-medium'>
+                                                                    {opt.name}
+                                                                </div>
+                                                                <div className='text-stone-500'>
+                                                                    {
+                                                                        opt.description
+                                                                    }
+                                                                </div>
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+                                )}
 
                                 <TabsContent value='style' className='mt-0'>
                                     <div className='space-y-2'>

@@ -60,12 +60,12 @@ export type SceneId = (typeof SCENE_OPTIONS)[number]['id']
 
 export const SUBJECT_OPTIONS = [
     {
-        id: 'elegant-model',
-        name: 'Elegant Model',
+        id: 'patient-model',
+        name: 'Patient Model',
         icon: 'User',
-        description: 'Confident, stylish person as focal point',
+        description: 'Customizable patient-like person as focal point',
         promptGuidelines:
-            'Elegant diverse model, confident pose, natural beauty, tasteful fashion, editorial style, sophisticated appearance, healthy radiant skin',
+            'Patient-like model with customizable appearance (see model profile options below)',
     },
     {
         id: 'luxury-space',
@@ -102,6 +102,447 @@ export const SUBJECT_OPTIONS = [
 ] as const
 
 export type SubjectId = (typeof SUBJECT_OPTIONS)[number]['id']
+
+// =============================================================================
+// MODEL PROFILE OPTIONS (Patient-like customization)
+// =============================================================================
+
+export const MODEL_AGE_OPTIONS = [
+    {
+        id: 'young-adult',
+        name: 'Young Adult (25-35)',
+        description: 'Fresh, vibrant energy',
+        promptGuidelines:
+            'woman in her late 20s to early 30s, youthful appearance',
+    },
+    {
+        id: 'mid-adult',
+        name: 'Mid Adult (35-45)',
+        description: 'Confident, established presence',
+        promptGuidelines:
+            'woman in her late 30s to early 40s, confident and poised',
+    },
+    {
+        id: 'mature-adult',
+        name: 'Mature Adult (45-55)',
+        description: 'Sophisticated, elegant maturity',
+        promptGuidelines:
+            'woman in her late 40s to mid 50s, elegant and sophisticated',
+    },
+] as const
+
+export type ModelAgeId = (typeof MODEL_AGE_OPTIONS)[number]['id']
+
+export const MODEL_ETHNICITY_OPTIONS = [
+    {
+        id: 'latina-hispanic',
+        name: 'Latina/Hispanic',
+        description: 'Latin American heritage',
+        promptGuidelines: 'Latina woman, Latin American heritage',
+    },
+    {
+        id: 'caribbean',
+        name: 'Caribbean',
+        description: 'Caribbean island heritage',
+        promptGuidelines: 'Caribbean woman, island heritage',
+    },
+    {
+        id: 'african-american',
+        name: 'African American',
+        description: 'African American heritage',
+        promptGuidelines: 'African American woman',
+    },
+    {
+        id: 'caucasian',
+        name: 'Caucasian',
+        description: 'European heritage',
+        promptGuidelines: 'Caucasian woman, European heritage',
+    },
+    {
+        id: 'asian',
+        name: 'Asian',
+        description: 'Asian heritage',
+        promptGuidelines: 'Asian woman',
+    },
+    {
+        id: 'middle-eastern',
+        name: 'Middle Eastern',
+        description: 'Middle Eastern heritage',
+        promptGuidelines: 'Middle Eastern woman',
+    },
+    {
+        id: 'mixed-heritage',
+        name: 'Mixed Heritage',
+        description: 'Diverse mixed background',
+        promptGuidelines: 'mixed heritage woman, diverse ethnic background',
+    },
+] as const
+
+export type ModelEthnicityId = (typeof MODEL_ETHNICITY_OPTIONS)[number]['id']
+
+export const MODEL_BODY_TYPE_OPTIONS = [
+    {
+        id: 'slim',
+        name: 'Slim',
+        description: 'Slender figure',
+        promptGuidelines: 'slim body type, slender figure',
+    },
+    {
+        id: 'athletic',
+        name: 'Athletic',
+        description: 'Toned, fit physique',
+        promptGuidelines: 'athletic body type, toned and fit physique',
+    },
+    {
+        id: 'average',
+        name: 'Average',
+        description: 'Natural, balanced figure',
+        promptGuidelines: 'average body type, natural balanced figure',
+    },
+    {
+        id: 'curvy',
+        name: 'Curvy',
+        description: 'Full, curvaceous figure',
+        promptGuidelines: 'curvy body type, full feminine curves',
+    },
+    {
+        id: 'plus-size',
+        name: 'Plus Size',
+        description: 'Beautiful fuller figure',
+        promptGuidelines: 'plus size body type, beautiful fuller figure',
+    },
+] as const
+
+export type ModelBodyTypeId = (typeof MODEL_BODY_TYPE_OPTIONS)[number]['id']
+
+export const MODEL_HAIR_COLOR_OPTIONS = [
+    {
+        id: 'blonde',
+        name: 'Blonde',
+        promptGuidelines: 'blonde hair',
+    },
+    {
+        id: 'brunette',
+        name: 'Brunette',
+        promptGuidelines: 'brunette hair, rich brown tones',
+    },
+    {
+        id: 'black',
+        name: 'Black',
+        promptGuidelines: 'jet black hair',
+    },
+    {
+        id: 'auburn',
+        name: 'Auburn',
+        promptGuidelines: 'auburn hair, warm reddish-brown tones',
+    },
+    {
+        id: 'gray-silver',
+        name: 'Gray/Silver',
+        promptGuidelines: 'elegant gray or silver hair',
+    },
+    {
+        id: 'highlighted',
+        name: 'Highlighted',
+        promptGuidelines: 'hair with professional highlights',
+    },
+] as const
+
+export type ModelHairColorId = (typeof MODEL_HAIR_COLOR_OPTIONS)[number]['id']
+
+export const MODEL_HAIR_LENGTH_OPTIONS = [
+    {
+        id: 'short',
+        name: 'Short',
+        promptGuidelines: 'short hair',
+    },
+    {
+        id: 'medium',
+        name: 'Medium',
+        promptGuidelines: 'medium-length hair',
+    },
+    {
+        id: 'long',
+        name: 'Long',
+        promptGuidelines: 'long flowing hair',
+    },
+] as const
+
+export type ModelHairLengthId = (typeof MODEL_HAIR_LENGTH_OPTIONS)[number]['id']
+
+export const MODEL_HAIR_STYLE_OPTIONS = [
+    {
+        id: 'straight',
+        name: 'Straight',
+        promptGuidelines: 'straight sleek hair',
+    },
+    {
+        id: 'wavy',
+        name: 'Wavy',
+        promptGuidelines: 'soft wavy hair',
+    },
+    {
+        id: 'curly',
+        name: 'Curly',
+        promptGuidelines: 'natural curly hair',
+    },
+    {
+        id: 'braided',
+        name: 'Braided',
+        promptGuidelines: 'elegantly braided hair',
+    },
+    {
+        id: 'updo',
+        name: 'Updo',
+        promptGuidelines: 'sophisticated updo hairstyle',
+    },
+] as const
+
+export type ModelHairStyleId = (typeof MODEL_HAIR_STYLE_OPTIONS)[number]['id']
+
+export const MODEL_SKIN_TONE_OPTIONS = [
+    {
+        id: 'fair',
+        name: 'Fair',
+        promptGuidelines: 'fair skin tone',
+    },
+    {
+        id: 'light',
+        name: 'Light',
+        promptGuidelines: 'light skin tone',
+    },
+    {
+        id: 'medium',
+        name: 'Medium',
+        promptGuidelines: 'medium skin tone',
+    },
+    {
+        id: 'olive',
+        name: 'Olive',
+        promptGuidelines: 'warm olive skin tone',
+    },
+    {
+        id: 'tan',
+        name: 'Tan',
+        promptGuidelines: 'sun-kissed tan skin tone',
+    },
+    {
+        id: 'deep',
+        name: 'Deep',
+        promptGuidelines: 'deep skin tone',
+    },
+    {
+        id: 'rich',
+        name: 'Rich',
+        promptGuidelines: 'rich dark skin tone',
+    },
+] as const
+
+export type ModelSkinToneId = (typeof MODEL_SKIN_TONE_OPTIONS)[number]['id']
+
+export const MODEL_EXPRESSION_OPTIONS = [
+    {
+        id: 'confident-smile',
+        name: 'Confident Smile',
+        promptGuidelines: 'confident genuine smile, warm expression',
+    },
+    {
+        id: 'serene-peaceful',
+        name: 'Serene/Peaceful',
+        promptGuidelines: 'serene and peaceful expression, calm demeanor',
+    },
+    {
+        id: 'contemplative',
+        name: 'Contemplative',
+        promptGuidelines: 'thoughtful contemplative expression',
+    },
+    {
+        id: 'joyful',
+        name: 'Joyful',
+        promptGuidelines: 'joyful radiant expression, genuine happiness',
+    },
+    {
+        id: 'natural-relaxed',
+        name: 'Natural/Relaxed',
+        promptGuidelines: 'natural relaxed expression, at ease',
+    },
+] as const
+
+export type ModelExpressionId = (typeof MODEL_EXPRESSION_OPTIONS)[number]['id']
+
+export const MODEL_POSE_OPTIONS = [
+    {
+        id: 'front-facing',
+        name: 'Front-Facing Portrait',
+        promptGuidelines:
+            'front-facing portrait pose, direct eye contact with camera',
+    },
+    {
+        id: 'three-quarter',
+        name: 'Three-Quarter View',
+        promptGuidelines: 'three-quarter angle pose, slight turn to the side',
+    },
+    {
+        id: 'profile',
+        name: 'Profile',
+        promptGuidelines: 'elegant profile pose, side view',
+    },
+    {
+        id: 'full-body',
+        name: 'Full Body',
+        promptGuidelines: 'full body pose, head to toe visible',
+    },
+    {
+        id: 'upper-body',
+        name: 'Upper Body',
+        promptGuidelines: 'upper body portrait, waist up',
+    },
+] as const
+
+export type ModelPoseId = (typeof MODEL_POSE_OPTIONS)[number]['id']
+
+export const MODEL_ATTIRE_OPTIONS = [
+    {
+        id: 'clinical',
+        name: 'Clinical',
+        description: 'Patient gown or spa robe',
+        promptGuidelines: 'wearing elegant white spa robe or patient gown',
+    },
+    {
+        id: 'casual-elegant',
+        name: 'Casual Elegant',
+        description: 'Sophisticated everyday wear',
+        promptGuidelines:
+            'wearing sophisticated casual elegant attire, tasteful fashion',
+    },
+    {
+        id: 'athleisure',
+        name: 'Athleisure',
+        description: 'Premium sporty comfort',
+        promptGuidelines: 'wearing premium athleisure wear, sporty yet elegant',
+    },
+    {
+        id: 'professional',
+        name: 'Professional',
+        description: 'Business or formal attire',
+        promptGuidelines:
+            'wearing professional business attire, polished and refined',
+    },
+    {
+        id: 'spa-wellness',
+        name: 'Spa/Wellness',
+        description: 'Relaxed wellness attire',
+        promptGuidelines:
+            'wearing spa or wellness attire, relaxed and comfortable',
+    },
+] as const
+
+export type ModelAttireId = (typeof MODEL_ATTIRE_OPTIONS)[number]['id']
+
+/**
+ * Complete Model Profile Type
+ */
+export type ModelProfile = {
+    age: ModelAgeId
+    ethnicity: ModelEthnicityId
+    bodyType: ModelBodyTypeId
+    hairColor: ModelHairColorId
+    hairLength: ModelHairLengthId
+    hairStyle: ModelHairStyleId
+    skinTone: ModelSkinToneId
+    expression: ModelExpressionId
+    pose: ModelPoseId
+    attire: ModelAttireId
+}
+
+/**
+ * Default model profile
+ */
+export const DEFAULT_MODEL_PROFILE: ModelProfile = {
+    age: 'mid-adult',
+    ethnicity: 'latina-hispanic',
+    bodyType: 'athletic',
+    hairColor: 'brunette',
+    hairLength: 'medium',
+    hairStyle: 'wavy',
+    skinTone: 'olive',
+    expression: 'confident-smile',
+    pose: 'three-quarter',
+    attire: 'casual-elegant',
+}
+
+/**
+ * Helper functions to get model profile options
+ */
+export function getModelAgeOption(id: ModelAgeId) {
+    return MODEL_AGE_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelEthnicityOption(id: ModelEthnicityId) {
+    return MODEL_ETHNICITY_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelBodyTypeOption(id: ModelBodyTypeId) {
+    return MODEL_BODY_TYPE_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelHairColorOption(id: ModelHairColorId) {
+    return MODEL_HAIR_COLOR_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelHairLengthOption(id: ModelHairLengthId) {
+    return MODEL_HAIR_LENGTH_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelHairStyleOption(id: ModelHairStyleId) {
+    return MODEL_HAIR_STYLE_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelSkinToneOption(id: ModelSkinToneId) {
+    return MODEL_SKIN_TONE_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelExpressionOption(id: ModelExpressionId) {
+    return MODEL_EXPRESSION_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelPoseOption(id: ModelPoseId) {
+    return MODEL_POSE_OPTIONS.find((opt) => opt.id === id)
+}
+
+export function getModelAttireOption(id: ModelAttireId) {
+    return MODEL_ATTIRE_OPTIONS.find((opt) => opt.id === id)
+}
+
+/**
+ * Build model description from profile for prompt generation
+ */
+export function buildModelDescription(profile: ModelProfile): string {
+    const age = getModelAgeOption(profile.age)
+    const ethnicity = getModelEthnicityOption(profile.ethnicity)
+    const bodyType = getModelBodyTypeOption(profile.bodyType)
+    const hairColor = getModelHairColorOption(profile.hairColor)
+    const hairLength = getModelHairLengthOption(profile.hairLength)
+    const hairStyle = getModelHairStyleOption(profile.hairStyle)
+    const skinTone = getModelSkinToneOption(profile.skinTone)
+    const expression = getModelExpressionOption(profile.expression)
+    const pose = getModelPoseOption(profile.pose)
+    const attire = getModelAttireOption(profile.attire)
+
+    const parts = [
+        age?.promptGuidelines,
+        ethnicity?.promptGuidelines,
+        bodyType?.promptGuidelines,
+        `${hairLength?.promptGuidelines} ${hairStyle?.promptGuidelines} ${hairColor?.promptGuidelines}`,
+        skinTone?.promptGuidelines,
+        `with healthy radiant glow`,
+        expression?.promptGuidelines,
+        pose?.promptGuidelines,
+        attire?.promptGuidelines,
+    ].filter(Boolean)
+
+    return parts.join(', ')
+}
 
 // =============================================================================
 // IMAGE STYLE OPTIONS
@@ -355,6 +796,8 @@ export type FeaturedImageOptions = {
     lighting: LightingId
     colorPalette: ColorPaletteId
     composition: CompositionId
+    /** Model profile for patient-model subject type */
+    modelProfile: ModelProfile
 }
 
 /**
@@ -362,9 +805,10 @@ export type FeaturedImageOptions = {
  */
 export const DEFAULT_FEATURED_IMAGE_OPTIONS: FeaturedImageOptions = {
     scene: 'luxury-clinic',
-    subject: 'elegant-model',
+    subject: 'patient-model',
     style: 'luxury-lifestyle',
     lighting: 'golden-hour',
     colorPalette: 'stone-gold',
     composition: 'centered-focus',
+    modelProfile: DEFAULT_MODEL_PROFILE,
 }
