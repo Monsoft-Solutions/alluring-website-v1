@@ -41,22 +41,14 @@ import {
 import { useUrlInspection } from '@/hooks/use-search-console.hook'
 import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
 import { cn } from '@workspace/ui/lib/utils'
+import { getAllMainPages, type SitePage } from '@workspace/shared'
 
-// Default URLs to check - key pages for the website
-const DEFAULT_URLS = [
-    'https://www.alluringplasticsurgery.com/',
-    'https://www.alluringplasticsurgery.com/about',
-    'https://www.alluringplasticsurgery.com/contact-us',
-    'https://www.alluringplasticsurgery.com/faq',
-    'https://www.alluringplasticsurgery.com/gallery',
-    'https://www.alluringplasticsurgery.com/procedures',
-    'https://www.alluringplasticsurgery.com/blog',
-    'https://www.alluringplasticsurgery.com/plastic-surgery-financing-miami',
-    'https://www.alluringplasticsurgery.com/miami-plastic-surgery-specials',
-    'https://www.alluringplasticsurgery.com/dr-karlinsky',
-    'https://www.alluringplasticsurgery.com/dr-andrew-lofman',
-    'https://www.alluringplasticsurgery.com/dr-rita-shats',
-]
+const SITE_URL = 'https://www.alluringplasticsurgery.com'
+
+// Default URLs to check - key pages for the website derived from shared config
+const DEFAULT_URLS = getAllMainPages().map((page: SitePage) =>
+    page.url.startsWith('http') ? page.url : `${SITE_URL}${page.url}`
+)
 
 /**
  * Get status badge for coverage state
