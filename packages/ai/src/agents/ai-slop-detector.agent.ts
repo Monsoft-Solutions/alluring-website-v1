@@ -23,7 +23,7 @@ import type {
 /**
  * Default model for AI slop detection
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'gpt-5.2'
 
 /**
  * Schema for AI slop detection review

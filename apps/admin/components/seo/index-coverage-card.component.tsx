@@ -42,14 +42,20 @@ import { useUrlInspection } from '@/hooks/use-search-console.hook'
 import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
 import { cn } from '@workspace/ui/lib/utils'
 
-// Default URLs to check - key pages for a typical website
+// Default URLs to check - key pages for the website
 const DEFAULT_URLS = [
     'https://www.alluringplasticsurgery.com/',
+    'https://www.alluringplasticsurgery.com/about',
+    'https://www.alluringplasticsurgery.com/contact-us',
+    'https://www.alluringplasticsurgery.com/faq',
+    'https://www.alluringplasticsurgery.com/gallery',
     'https://www.alluringplasticsurgery.com/procedures',
     'https://www.alluringplasticsurgery.com/blog',
-    'https://www.alluringplasticsurgery.com/financing',
-    'https://www.alluringplasticsurgery.com/about',
-    'https://www.alluringplasticsurgery.com/contact',
+    'https://www.alluringplasticsurgery.com/plastic-surgery-financing-miami',
+    'https://www.alluringplasticsurgery.com/miami-plastic-surgery-specials',
+    'https://www.alluringplasticsurgery.com/dr-karlinsky',
+    'https://www.alluringplasticsurgery.com/dr-andrew-lofman',
+    'https://www.alluringplasticsurgery.com/dr-rita-shats',
 ]
 
 /**

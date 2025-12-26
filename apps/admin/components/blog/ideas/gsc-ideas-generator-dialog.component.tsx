@@ -12,6 +12,7 @@ import {
 import { TrendingUp } from 'lucide-react'
 
 import type { TopicSuggestion } from '@workspace/ai/functions'
+import { fetchApi, buildUrl, ApiError } from '@/lib/utils/api-client.util'
 import {
     GscKeywordSelector,
     type SelectedKeywords,
@@ -61,17 +62,17 @@ export function GscIdeasGeneratorDialog({
         setHasGenerated(true)
 
         try {
-            const response = await fetch('/api/blog/generate-topics', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    selectedKeywords,
-                    additionalContext:
-                        'Generate ideas based on the provided Google Search Console keywords. These are real search queries that users are searching for.',
-                }),
-            })
-
-            const data = (await response.json()) as GenerateTopicsResponse
+            const data = await fetchApi<GenerateTopicsResponse>(
+                buildUrl('/api/blog/generate-topics'),
+                {
+                    method: 'POST',
+                    body: {
+                        selectedKeywords,
+                        additionalContext:
+                            'Generate ideas based on the provided Google Search Console keywords. These are real search queries that users are searching for.',
+                    },
+                }
+            )
 
             if (data.success && data.topics) {
                 setIdeas(data.topics)
@@ -79,8 +80,12 @@ export function GscIdeasGeneratorDialog({
                 toast.error(data.error || 'Failed to generate ideas')
                 setIdeas([])
             }
-        } catch {
-            toast.error('Failed to connect to AI service')
+        } catch (error) {
+            if (error instanceof ApiError) {
+                toast.error(error.message || 'Failed to generate ideas')
+            } else {
+                toast.error('Failed to connect to AI service')
+            }
             setIdeas([])
         } finally {
             setIsGenerating(false)
