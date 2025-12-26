@@ -158,7 +158,7 @@ export function DesktopNav() {
 
                 {/* FAQ Link */}
                 <TrackedLink
-                    href='/faq'
+                    href='/faqs'
                     eventName='nav_click'
                     eventParams={{
                         nav_type: 'desktop',

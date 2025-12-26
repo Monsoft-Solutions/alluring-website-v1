@@ -241,11 +241,11 @@ export const Footer = () => {
                             </li>
                             <li>
                                 <Link
-                                    href='/faq'
+                                    href='/faqs'
                                     onClick={() =>
                                         handleFooterLinkClick(
                                             'FAQ',
-                                            '/faq',
+                                            '/faqs',
                                             'patients'
                                         )
                                     }

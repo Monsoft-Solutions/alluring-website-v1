@@ -241,5 +241,5 @@ export const faqPageSeoData = {
         'plastic surgery recovery',
         'cosmetic surgery safety',
     ],
-    canonical: '/faq',
+    canonical: '/faqs',
 }

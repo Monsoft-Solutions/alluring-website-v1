@@ -38,7 +38,7 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 const siteUrl = siteConfig.seo.siteUrl
-const pageUrl = `${siteUrl}/faq`
+const pageUrl = `${siteUrl}/faqs`
 
 /**
  * Page Metadata

@@ -285,9 +285,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {/* FAQ Link */}
                         <div className='animate-fade-in-up animate-delay-600 w-full'>
                             <Link
-                                href='/faq'
+                                href='/faqs'
                                 onClick={() =>
-                                    handleNavClick('FAQ', '/faq', 'faq')
+                                    handleNavClick('FAQ', '/faqs', 'faq')
                                 }
                                 className='group flex w-full items-center py-4 text-left'
                             >

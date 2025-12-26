@@ -66,6 +66,11 @@ const nextConfig = {
                 destination: '/procedures',
                 permanent: true,
             },
+            {
+                source: '/faq',
+                destination: '/faqs',
+                permanent: true,
+            },
         ]
     },
 }
