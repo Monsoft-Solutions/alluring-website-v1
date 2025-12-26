@@ -14,10 +14,13 @@ const requestSchema = z.object({
 })
 
 /**
- * Generates FAQs for a blog post using AI based on the provided content.
+ * Extracts or generates FAQs for a blog post using AI based on the provided content.
+ *
+ * - If the content has an existing FAQ section, it extracts the Q&A pairs
+ * - If no FAQ section exists, it analyzes the content and generates relevant FAQs
  *
  * @param {NextRequest} request - The incoming Next.js request containing a JSON body with `content` (string) and optional `primaryKeyword` (string).
- * @returns {Promise<NextResponse>} A JSON response with `success: true` and the generated `faqs`, or `success: false` with an error message and appropriate status code (400, 401, or 500).
+ * @returns {Promise<NextResponse>} A JSON response with `success: true`, `faqs`, `hasFaqSection`, and `wasGenerated` flags, or `success: false` with an error message and appropriate status code (400, 401, or 500).
  */
 export async function POST(request: NextRequest) {
     try {
@@ -39,17 +42,19 @@ export async function POST(request: NextRequest) {
 
         const { content, primaryKeyword } = validationResult.data
 
-        // Extract FAQs using AI
+        // Extract or generate FAQs using AI
         const result = await extractFaqs({
             content,
             primaryKeyword,
             maxFaqs: 10,
+            generateIfMissing: true,
         })
 
         return NextResponse.json({
             success: true,
             faqs: result.faqs,
             hasFaqSection: result.hasFaqSection,
+            wasGenerated: result.wasGenerated ?? false,
         })
     } catch (error) {
         if (error instanceof Error && error.message === 'Unauthorized') {

@@ -21,11 +21,16 @@ export const extractFaqsResponseSchema = z.object({
         .array(faqItemSchema)
         .min(0)
         .max(10)
-        .describe('FAQ items extracted from content'),
+        .describe('FAQ items extracted or generated from content'),
     /** Whether FAQs were found in content */
     hasFaqSection: z
         .boolean()
         .describe('True if content has explicit FAQ section'),
+    /** Whether FAQs were AI-generated (vs extracted from existing FAQ section) */
+    wasGenerated: z
+        .boolean()
+        .optional()
+        .describe('True if FAQs were generated, false if extracted'),
 })
 
 /**
@@ -43,8 +48,10 @@ export type ExtractFaqsOptions = {
     primaryKeyword?: string
     /** Maximum FAQs to extract */
     maxFaqs?: number
-    /** Model ID to use (default: gpt-4.1-mini) */
+    /** Model ID to use (default: gpt-4.1) */
     modelId?: string
+    /** Generate FAQs from content analysis if no FAQ section exists (default: true) */
+    generateIfMissing?: boolean
 }
 
 /**
@@ -72,6 +79,87 @@ Your task is to identify and extract FAQ (Frequently Asked Questions) items from
 - Set hasFaqSection to true if explicit FAQ section exists
 
 If no FAQs are found, return an empty array with hasFaqSection: false.`
+
+/**
+ * System prompt for FAQ generation (when no FAQ section exists)
+ */
+const FAQ_GENERATOR_SYSTEM_PROMPT = `You are an expert at creating relevant FAQ content for blog posts about plastic surgery and cosmetic procedures.
+
+Your task is to analyze blog content and generate FAQ items that readers commonly search for.
+
+**Business Context:**
+- Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
+- Audience: Women 25-55, value quality, seek affordability
+- Goal: Create SEO-friendly FAQs that help with featured snippets and People Also Ask
+
+**Generation Guidelines:**
+- Read the content and identify the main topics and subtopics
+- Generate 5-8 questions that readers would commonly ask about these topics
+- Questions should be natural, conversational, and search-friendly
+- Answers should be concise (2-4 sentences) and based on content information
+- Focus on practical, actionable questions (costs, timing, process, results, risks, recovery)
+- Use "How", "What", "When", "Why", "Can I", "Is it" question formats
+- Ensure answers are informative but encourage consultation for specifics
+
+**Question Types to Include:**
+- Process questions ("What happens during...?", "How does... work?")
+- Eligibility questions ("Am I a good candidate for...?", "Who should consider...?")
+- Recovery questions ("What is the recovery time for...?", "When can I return to...?")
+- Cost/financing questions ("How much does... cost?", "Do you offer financing?")
+- Results questions ("How long do results last?", "When will I see results?")
+- Safety questions ("Is... safe?", "What are the risks of...?")
+
+**Output Format:**
+- Clean, natural question text (no "Q:" prefix)
+- Concise, helpful answer text (no "A:" prefix)
+- Set hasFaqSection to false (since we're generating, not extracting)
+- Set wasGenerated to true`
+
+/**
+ * Generate FAQs from content analysis when no FAQ section exists
+ *
+ * Analyzes blog content and generates relevant FAQs that readers commonly search for.
+ *
+ * @param options - Generation options
+ * @returns Generated FAQs with metadata
+ */
+async function generateFaqsFromContent(
+    options: ExtractFaqsOptions
+): Promise<ExtractFaqsResult> {
+    const {
+        content,
+        primaryKeyword,
+        maxFaqs = 8,
+        modelId = 'gpt-4.1',
+    } = options
+
+    const prompt = `Generate FAQ items for this blog post:
+
+${primaryKeyword ? `**Primary Topic:** ${primaryKeyword}\n` : ''}**Target FAQs:** ${Math.min(maxFaqs, 8)}
+
+---
+
+${content}
+
+---
+
+Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ items that readers would commonly search for. Base answers on the information provided in the content.`
+
+    const result = await coreGenerateObject({
+        modelId,
+        schema: extractFaqsResponseSchema,
+        system: FAQ_GENERATOR_SYSTEM_PROMPT,
+        prompt,
+        temperature: 0.7, // Higher for creative generation
+    })
+
+    // Limit to maxFaqs and mark as generated
+    return {
+        faqs: result.object.faqs.slice(0, maxFaqs),
+        hasFaqSection: false,
+        wasGenerated: true,
+    }
+}
 
 /**
  * Extract FAQs from blog content
@@ -113,6 +201,7 @@ export async function extractFaqs(
         primaryKeyword,
         maxFaqs = 10,
         modelId = 'gpt-4.1',
+        generateIfMissing = true,
     } = options
 
     // Quick regex check for FAQ patterns (optimization)
@@ -120,11 +209,18 @@ export async function extractFaqs(
         /(?:FAQ|Frequently Asked|Common Questions|Q:|Q\.|Q\))/i.test(content)
 
     if (!hasFaqPattern) {
-        // No FAQ patterns found, return empty
-        return {
-            faqs: [],
-            hasFaqSection: false,
+        // No FAQ patterns found
+        if (!generateIfMissing) {
+            // Return empty if generation is disabled
+            return {
+                faqs: [],
+                hasFaqSection: false,
+                wasGenerated: false,
+            }
         }
+
+        // Generate FAQs from content analysis
+        return await generateFaqsFromContent(options)
     }
 
     const prompt = `Extract FAQ items from this blog post:
@@ -147,10 +243,11 @@ Find and extract all Q&A pairs. If no genuine FAQs exist, return empty array.`
         temperature: 0.2, // Very low for accurate extraction
     })
 
-    // Limit to maxFaqs
+    // Limit to maxFaqs and mark as extracted (not generated)
     return {
-        ...result.object,
         faqs: result.object.faqs.slice(0, maxFaqs),
+        hasFaqSection: result.object.hasFaqSection,
+        wasGenerated: false,
     }
 }
 
