@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import {
     FileText,
     AlertCircle,
@@ -110,6 +111,14 @@ export function BlogSeoAuditCard() {
         setAnalyzingId(postId)
         try {
             await analyzeMutation.mutateAsync(postId)
+            toast.success('SEO analysis complete')
+        } catch (error) {
+            console.error('Error analyzing blog post:', error)
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to analyze blog post'
+            )
         } finally {
             setAnalyzingId(null)
         }
