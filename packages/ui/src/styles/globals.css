@@ -79,6 +79,7 @@
     --stone-950: lab(2.86037% 0.455312 0.568903);
 
     /* Gold Color Palette */
+    --gold-50: lab(98.5% 0.01 8);
     --gold-100: lab(95.5% 0.02 12);
     --gold-200: lab(93% 0.03 14);
     --gold-300: lab(83% 0.08 22);
@@ -159,6 +160,7 @@
     --color-stone-950: var(--stone-950);
 
     /* Gold Color Palette */
+    --color-gold-50: var(--gold-50);
     --color-gold-100: var(--gold-100);
     --color-gold-200: var(--gold-200);
     --color-gold-300: var(--gold-300);

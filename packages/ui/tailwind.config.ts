@@ -69,6 +69,7 @@ const config = {
                     950: 'var(--stone-950)',
                 },
                 gold: {
+                    50: 'var(--gold-50)',
                     100: 'var(--gold-100)',
                     200: 'var(--gold-200)',
                     300: 'var(--gold-300)',

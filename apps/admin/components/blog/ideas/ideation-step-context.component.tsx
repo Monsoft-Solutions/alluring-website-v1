@@ -84,7 +84,7 @@ export function Step1Context({
                                 />
                                 <Label
                                     htmlFor={ct.value}
-                                    className='flex cursor-pointer items-center justify-center rounded-lg border-2 border-stone-200 p-3 text-sm transition-colors peer-data-[state=checked]:border-amber-500 peer-data-[state=checked]:bg-amber-50 hover:bg-stone-50'
+                                    className='peer-data-[state=checked]:border-gold-500 peer-data-[state=checked]:bg-gold-50 flex cursor-pointer items-center justify-center rounded-lg border-2 border-stone-200 p-3 text-sm transition-colors hover:bg-stone-50'
                                 >
                                     {ct.label}
                                 </Label>
@@ -111,7 +111,7 @@ export function Step1Context({
                                 />
                                 <Label
                                     htmlFor={a.value}
-                                    className='flex cursor-pointer items-center justify-center rounded-lg border-2 border-stone-200 p-3 text-sm transition-colors peer-data-[state=checked]:border-amber-500 peer-data-[state=checked]:bg-amber-50 hover:bg-stone-50'
+                                    className='peer-data-[state=checked]:border-gold-500 peer-data-[state=checked]:bg-gold-50 flex cursor-pointer items-center justify-center rounded-lg border-2 border-stone-200 p-3 text-sm transition-colors hover:bg-stone-50'
                                 >
                                     {a.label}
                                 </Label>
