@@ -38,4 +38,6 @@ export type VideoObjectSchemaProps = {
         | { type: 'Organization'; name: string; url?: string }
     /** Video transcript text */
     transcript?: string
+    /** URL of the page where this video is the main entity (for watch pages) */
+    mainEntityOfPage?: string
 }

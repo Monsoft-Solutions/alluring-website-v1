@@ -22,6 +22,14 @@ export type GalleryMediaSitemapEntry = {
     url: string
     title: string
     updatedAt: Date
+    /** Media type (image or video) for video sitemap support */
+    type: 'image' | 'video'
+    /** Thumbnail URL for video sitemap */
+    thumbnailUrl: string | null
+    /** Description for video sitemap */
+    description: string | null
+    /** Duration in seconds for videos */
+    duration: number | null
 }
 
 /**
@@ -36,7 +44,7 @@ export type GalleryGroupSitemapEntry = {
 
 /**
  * Get all published gallery media for sitemap
- * Includes image URL, title, and last modified date
+ * Includes image/video URL, title, last modified date, and video-specific fields
  */
 export const getGalleryMediaForSitemap = cache(
     async (): Promise<GalleryMediaSitemapEntry[]> => {
@@ -46,6 +54,11 @@ export const getGalleryMediaForSitemap = cache(
                 url: galleryMedia.url,
                 title: galleryMedia.title,
                 updatedAt: galleryMedia.updatedAt,
+                // Video sitemap fields
+                type: galleryMedia.type,
+                thumbnailUrl: galleryMedia.thumbnailUrl,
+                description: galleryMedia.description,
+                duration: galleryMedia.duration,
             })
             .from(galleryMedia)
             .where(eq(galleryMedia.status, 'published'))
@@ -55,6 +68,10 @@ export const getGalleryMediaForSitemap = cache(
             url: r.url,
             title: r.title,
             updatedAt: r.updatedAt,
+            type: r.type,
+            thumbnailUrl: r.thumbnailUrl,
+            description: r.description,
+            duration: r.duration,
         }))
     }
 )

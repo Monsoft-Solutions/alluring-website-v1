@@ -68,4 +68,19 @@ export type ImageObjectSchemaProps = {
      * License URL for the image
      */
     license?: string
+
+    /**
+     * Description of the image (separate from alt text)
+     */
+    description?: string
+
+    /**
+     * Date when the image was first published (ISO 8601)
+     */
+    datePublished?: string
+
+    /**
+     * URL of the page where this image is the main entity (for gallery pages)
+     */
+    mainEntityOfPage?: string
 }

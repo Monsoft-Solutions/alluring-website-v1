@@ -15,6 +15,12 @@ export type InstagramMediaItem = {
     url: string
     thumbnailUrl: string | null
     type: 'image' | 'video'
+    /** Width in pixels (for video SEO) */
+    width?: number | null
+    /** Height in pixels (for video SEO) */
+    height?: number | null
+    /** Duration in seconds (for video SEO) */
+    duration?: number | null
 }
 
 /**

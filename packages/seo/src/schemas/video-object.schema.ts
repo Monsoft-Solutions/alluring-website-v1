@@ -45,5 +45,9 @@ export function buildVideoObjectJsonLd(
         base.transcript = props.transcript
     }
 
+    if (props.mainEntityOfPage !== undefined) {
+        base.mainEntityOfPage = props.mainEntityOfPage
+    }
+
     return withContext(base)
 }
