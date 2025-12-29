@@ -1,56 +1,56 @@
 {
-  "name": "@workspace/seo",
-  "version": "0.0.1",
-  "private": true,
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js",
-      "default": "./dist/config/index.js"
+    "name": "@workspace/seo",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        "./config": {
+            "types": "./dist/config/index.d.ts",
+            "import": "./dist/config/index.js",
+            "default": "./dist/config/index.js"
+        },
+        "./utils": {
+            "types": "./dist/utils/index.d.ts",
+            "import": "./dist/utils/index.js",
+            "default": "./dist/utils/index.js"
+        },
+        "./schemas": {
+            "types": "./dist/schemas/index.d.ts",
+            "import": "./dist/schemas/index.js",
+            "default": "./dist/schemas/index.js"
+        },
+        "./types": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/types/index.js",
+            "default": "./dist/types/index.js"
+        },
+        "./react": {
+            "types": "./dist/react/index.d.ts",
+            "import": "./dist/react/index.js",
+            "default": "./dist/react/index.js"
+        }
     },
-    "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js",
-      "default": "./dist/utils/index.js"
+    "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --ext .ts,.tsx",
+        "typecheck": "tsc --noEmit",
+        "format": "pnpm -w format"
     },
-    "./schemas": {
-      "types": "./dist/schemas/index.d.ts",
-      "import": "./dist/schemas/index.js",
-      "default": "./dist/schemas/index.js"
+    "dependencies": {
+        "@t3-oss/env-core": "^0.13.8",
+        "schema-dts": "^1.1.5",
+        "zod": "^4.1.13"
     },
-    "./types": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.js",
-      "default": "./dist/types/index.js"
+    "peerDependencies": {
+        "next": "^16.0.0"
     },
-    "./react": {
-      "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.js",
-      "default": "./dist/react/index.js"
+    "devDependencies": {
+        "@types/node": "^24.10.1",
+        "@types/react": "^19.2.7",
+        "@workspace/eslint-config": "workspace:*",
+        "@workspace/typescript-config": "workspace:*",
+        "next": "16.0.10",
+        "typescript": "^5.9.3"
     }
-  },
-  "scripts": {
-    "build": "tsc",
-    "lint": "eslint . --ext .ts,.tsx",
-    "typecheck": "tsc --noEmit",
-    "format": "pnpm -w format"
-  },
-  "dependencies": {
-    "@t3-oss/env-core": "^0.13.8",
-    "schema-dts": "^1.1.5",
-    "zod": "^4.1.13"
-  },
-  "peerDependencies": {
-    "next": "^16.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.7",
-    "@workspace/eslint-config": "workspace:*",
-    "@workspace/typescript-config": "workspace:*",
-    "next": "16.0.10",
-    "typescript": "^5.9.3"
-  }
 }
