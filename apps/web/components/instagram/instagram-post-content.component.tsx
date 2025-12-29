@@ -27,6 +27,8 @@ import { InstagramCarousel } from './instagram-carousel.component'
 type InstagramPostContentProps = {
     post: InstagramPostPublic
     profile?: InstagramProfileInfo | null
+    /** Whether this is a video post - used for semantic HTML structure */
+    isVideo?: boolean
 }
 
 /**
@@ -60,14 +62,18 @@ function formatCaptionWithHashtags(caption: string): ReactNode {
 export function InstagramPostContent({
     post,
     profile,
+    isVideo = false,
 }: InstagramPostContentProps) {
     const hasCarousel =
         post.mediaType === 'carousel' && (post.carouselMedia?.length ?? 0) > 0
 
     const handle = profile?.handle ?? 'alluringplasticsurgery'
 
+    // Use <main> for video posts to signal this is the primary content (Google watch page)
+    const Wrapper = isVideo ? 'main' : 'div'
+
     return (
-        <div className='bg-white'>
+        <Wrapper className='bg-white'>
             {/* Main Content - adjusted padding for fixed header */}
             <div className='mx-auto max-w-4xl px-4 pt-24 pb-8 md:pt-32 md:pb-12'>
                 {/* Back Navigation */}
@@ -92,7 +98,9 @@ export function InstagramPostContent({
                         ) : post.media.type === 'video' ? (
                             <video
                                 src={post.media.url}
+                                poster={post.media.thumbnailUrl ?? undefined}
                                 controls
+                                preload='metadata'
                                 className='h-full w-full object-contain'
                             />
                         ) : (
@@ -188,6 +196,6 @@ export function InstagramPostContent({
                     </div>
                 </div>
             </div>
-        </div>
+        </Wrapper>
     )
 }

@@ -7,6 +7,7 @@
  * @module app/instagram/[code]/page
  */
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import {
@@ -175,27 +176,50 @@ export default async function InstagramPostPage({ params }: PageProps) {
             <BreadcrumbSchema items={breadcrumbItems} />
 
             {/* Post Content */}
-            <InstagramPostContent post={post} profile={profile} />
-
-            {/* More Posts Section */}
-            <MorePostsSection currentPostId={post.id} />
-
-            {/* CTA Section */}
-            <CTASection
-                variant='luxury'
-                eyebrow='Start Your Transformation'
-                heading='Ready to Make a Change?'
-                description='Every transformation starts with a single conversation. Schedule your free consultation with our board-certified surgeons.'
-                primaryButton={{
-                    text: 'Schedule Your Consultation',
-                    href: '/contact-us',
-                }}
-                secondaryButton={{
-                    text: 'Follow Us on Instagram',
-                    href: instagramUrl,
-                }}
-                backgroundImage='/images/hero-beautiful-latin-woman.jpg'
+            <InstagramPostContent
+                post={post}
+                profile={profile}
+                isVideo={isVideo}
             />
+
+            {/* Video posts: Minimal layout for Google "watch page" classification
+                Image posts: Full layout with related posts and CTA */}
+            {isVideo ? (
+                /* Minimal inline CTA for video posts - keeps video as primary content */
+                <div className='bg-white py-8 text-center'>
+                    <p className='mb-2 text-stone-600'>
+                        Ready to start your transformation?
+                    </p>
+                    <Link
+                        href='/contact-us'
+                        className='text-gold-600 hover:text-gold-700 font-medium transition-colors'
+                    >
+                        Schedule a Consultation →
+                    </Link>
+                </div>
+            ) : (
+                <>
+                    {/* More Posts Section - only for image posts */}
+                    <MorePostsSection currentPostId={post.id} />
+
+                    {/* CTA Section - only for image posts */}
+                    <CTASection
+                        variant='luxury'
+                        eyebrow='Start Your Transformation'
+                        heading='Ready to Make a Change?'
+                        description='Every transformation starts with a single conversation. Schedule your free consultation with our board-certified surgeons.'
+                        primaryButton={{
+                            text: 'Schedule Your Consultation',
+                            href: '/contact-us',
+                        }}
+                        secondaryButton={{
+                            text: 'Follow Us on Instagram',
+                            href: instagramUrl,
+                        }}
+                        backgroundImage='/images/hero-beautiful-latin-woman.jpg'
+                    />
+                </>
+            )}
         </>
     )
 }
