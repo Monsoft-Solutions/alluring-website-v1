@@ -1,4 +1,9 @@
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    ImageObjectSchema,
+    VideoObjectSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
@@ -7,6 +12,7 @@ import { MediaDetailView } from '@/components/gallery/media-detail-view.componen
 import { RelatedMedia } from '@/components/gallery/related-media.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { siteConfig } from '@/lib/data/site-config'
+import { formatSecondsToISO8601 } from '@/lib/utils/duration.util'
 import {
     getAllGalleryMediaSlugs,
     getGalleryMediaBySlug,
@@ -113,39 +119,55 @@ export default async function GalleryMediaPage({ params }: PageProps) {
             />
             <BreadcrumbSchema items={breadcrumbItems} />
 
-            {/* ImageObject Schema */}
-            <script
-                type='application/ld+json'
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'ImageObject',
-                        name: media.title,
-                        description: media.description ?? media.alt,
-                        contentUrl: media.url,
-                        thumbnailUrl: media.thumbnailUrl ?? media.url,
-                        url: pageUrl,
-                        width: media.width
-                            ? {
-                                  '@type': 'QuantitativeValue',
-                                  value: media.width,
-                              }
-                            : undefined,
-                        height: media.height
-                            ? {
-                                  '@type': 'QuantitativeValue',
-                                  value: media.height,
-                              }
-                            : undefined,
-                        datePublished: media.publishedAt ?? undefined,
-                        author: {
-                            '@type': 'Organization',
-                            name: siteConfig.business.name,
-                            url: siteUrl,
-                        },
-                    }),
-                }}
-            />
+            {/* ImageObject Schema (for images) - mainEntityOfPage signals this is a gallery page */}
+            {media.type === 'image' && (
+                <ImageObjectSchema
+                    name={media.title}
+                    description={media.description ?? undefined}
+                    alt={media.alt}
+                    url={pageUrl}
+                    contentUrl={media.url}
+                    thumbnailUrl={media.thumbnailUrl ?? media.url}
+                    width={media.width ?? undefined}
+                    height={media.height ?? undefined}
+                    datePublished={media.publishedAt ?? undefined}
+                    author={{
+                        '@type': 'Organization',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                    }}
+                    mainEntityOfPage={pageUrl}
+                />
+            )}
+
+            {/* VideoObject Schema (for videos) - mainEntityOfPage signals this is a watch page */}
+            {media.type === 'video' && (
+                <VideoObjectSchema
+                    name={media.title}
+                    description={
+                        media.description ??
+                        media.alt ??
+                        `Video from ${siteConfig.business.name} gallery`
+                    }
+                    thumbnailUrl={media.thumbnailUrl ?? media.url}
+                    uploadDate={media.publishedAt ?? new Date().toISOString()}
+                    contentUrl={media.url}
+                    embedUrl={pageUrl}
+                    duration={
+                        media.duration
+                            ? formatSecondsToISO8601(media.duration)
+                            : undefined
+                    }
+                    width={media.width ?? undefined}
+                    height={media.height ?? undefined}
+                    author={{
+                        type: 'Organization',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                    }}
+                    mainEntityOfPage={pageUrl}
+                />
+            )}
 
             <ContainerLayout
                 as='article'

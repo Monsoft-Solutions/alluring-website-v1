@@ -43,6 +43,10 @@ async function fetchInstagramPostByCode(
             mediaUrl: galleryMedia.url,
             mediaThumbnailUrl: galleryMedia.thumbnailUrl,
             mediaType_gallery: galleryMedia.type,
+            // Video metadata for SEO
+            mediaWidth: galleryMedia.width,
+            mediaHeight: galleryMedia.height,
+            videoDuration: instagramPost.videoDuration,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -97,6 +101,10 @@ async function fetchInstagramPostByCode(
             url: post.mediaUrl,
             thumbnailUrl: post.mediaThumbnailUrl,
             type: post.mediaType_gallery,
+            // Video metadata for SEO
+            width: post.mediaWidth,
+            height: post.mediaHeight,
+            duration: post.videoDuration,
         },
         carouselCount,
         carouselMedia,
@@ -177,6 +185,10 @@ export async function getMoreInstagramPosts(
                     mediaUrl: galleryMedia.url,
                     mediaThumbnailUrl: galleryMedia.thumbnailUrl,
                     mediaType_gallery: galleryMedia.type,
+                    // Video metadata for SEO
+                    mediaWidth: galleryMedia.width,
+                    mediaHeight: galleryMedia.height,
+                    videoDuration: instagramPost.videoDuration,
                 })
                 .from(instagramPost)
                 .innerJoin(
@@ -202,6 +214,10 @@ export async function getMoreInstagramPosts(
                     url: p.mediaUrl,
                     thumbnailUrl: p.mediaThumbnailUrl,
                     type: p.mediaType_gallery,
+                    // Video metadata for SEO
+                    width: p.mediaWidth,
+                    height: p.mediaHeight,
+                    duration: p.videoDuration,
                 },
                 carouselCount: undefined,
                 carouselMedia: undefined,

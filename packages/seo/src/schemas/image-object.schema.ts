@@ -13,7 +13,7 @@ export function buildImageObjectJsonLd(
         contentUrl: props.contentUrl || props.url,
         thumbnailUrl: props.thumbnailUrl,
         name: props.name || props.alt,
-        description: props.alt,
+        description: props.description || props.alt,
         caption: props.caption,
         width: props.width
             ? {
@@ -45,6 +45,8 @@ export function buildImageObjectJsonLd(
             ? { '@type': 'Person', name: props.copyrightHolder }
             : undefined,
         license: props.license,
+        datePublished: props.datePublished,
+        mainEntityOfPage: props.mainEntityOfPage,
     } as ImageObject
 
     return withContext(base)

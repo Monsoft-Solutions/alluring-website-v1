@@ -10,8 +10,8 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import {
-    ArticleSchema,
     BreadcrumbSchema,
+    ImageObjectSchema,
     VideoObjectSchema,
 } from '@workspace/seo/react'
 
@@ -26,6 +26,7 @@ import { getInstagramProfile } from '@/lib/queries/instagram/instagram-profile.q
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { formatSecondsToISO8601 } from '@/lib/utils/duration.util'
 import { env } from '@/env'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
@@ -121,34 +122,52 @@ export default async function InstagramPostPage({ params }: PageProps) {
 
     return (
         <>
-            {/* Structured Data - Article Schema */}
-            <ArticleSchema
-                headline={`Instagram Post - ${new Date(post.takenAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
-                mainEntityOfPage={pageUrl}
-                image={post.media.url}
-                datePublished={new Date(post.takenAt).toISOString()}
-                dateModified={new Date(post.takenAt).toISOString()}
-                author={{
-                    name: siteConfig.business.name,
-                    url: siteUrl,
-                }}
-                description={articleDescription}
-            />
-
-            {/* Structured Data - Video Schema (for video posts only) */}
-            {isVideo && (
+            {/* Structured Data - Video posts get VideoObjectSchema (watch page)
+                Image posts get ImageObjectSchema (gallery page) */}
+            {isVideo ? (
                 <VideoObjectSchema
-                    name={`Instagram Post - ${new Date(post.takenAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
+                    name={
+                        post.caption
+                            ?.substring(0, 70)
+                            .replace(/\s+/g, ' ')
+                            .trim() || `Video from ${siteConfig.business.name}`
+                    }
                     description={articleDescription}
                     thumbnailUrl={post.media.thumbnailUrl ?? post.media.url}
                     uploadDate={new Date(post.takenAt).toISOString()}
                     contentUrl={post.media.url}
                     embedUrl={pageUrl}
+                    duration={
+                        post.media.duration
+                            ? formatSecondsToISO8601(post.media.duration)
+                            : undefined
+                    }
+                    width={post.media.width ?? undefined}
+                    height={post.media.height ?? undefined}
                     author={{
                         type: 'Organization',
                         name: siteConfig.business.name,
                         url: siteUrl,
                     }}
+                    mainEntityOfPage={pageUrl}
+                />
+            ) : (
+                <ImageObjectSchema
+                    name={`Instagram Post - ${new Date(post.takenAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
+                    description={articleDescription}
+                    alt={articleDescription}
+                    url={pageUrl}
+                    contentUrl={post.media.url}
+                    thumbnailUrl={post.media.thumbnailUrl ?? post.media.url}
+                    width={post.media.width ?? undefined}
+                    height={post.media.height ?? undefined}
+                    datePublished={new Date(post.takenAt).toISOString()}
+                    author={{
+                        '@type': 'Organization',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                    }}
+                    mainEntityOfPage={pageUrl}
                 />
             )}
 

@@ -42,6 +42,7 @@ const SITEMAP_URLS = [
     '/sitemap/procedures.xml', // Procedure listings and details
     '/sitemap/gallery.xml', // Gallery groups and media
     '/sitemap/promotions.xml', // Special offers and promotions
+    '/sitemap/instagram.xml', // Instagram posts with video support
 ] as const
 
 /**

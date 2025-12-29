@@ -4,8 +4,9 @@
  * Generates sitemap XML for gallery content including:
  * - Main gallery listing page
  * - Gallery group pages with cover images
- * - Individual gallery media pages with images
+ * - Individual gallery media pages with images and videos
  *
+ * Supports both image and video sitemap extensions for comprehensive SEO.
  * Revalidates every 3 hours to balance freshness with performance
  */
 import { NextResponse } from 'next/server'
@@ -34,7 +35,8 @@ export async function GET(): Promise<NextResponse> {
         return new NextResponse(
             `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 </urlset>`,
             {
                 headers: {
@@ -99,25 +101,51 @@ export async function GET(): Promise<NextResponse> {
         // Gallery media detail pages
         const media = await getGalleryMediaForSitemap()
         for (const item of media) {
-            entries.push({
+            const entry: SitemapEntry = {
                 url: `${baseUrl}/gallery/media/${item.slug}`,
                 lastModified: item.updatedAt.toISOString().slice(0, 10),
                 changeFrequency: 'monthly',
                 priority: 0.6,
-                images: [
+            }
+
+            // Add image or video based on media type
+            if (item.type === 'video') {
+                // Video sitemap entry
+                const videoDescription = item.description
+                    ? item.description
+                          .substring(0, 160)
+                          .replace(/\s+/g, ' ')
+                          .trim()
+                    : `Video from Alluring Plastic Surgery gallery`
+
+                entry.videos = [
+                    {
+                        thumbnailUrl: item.thumbnailUrl ?? item.url,
+                        title: item.title,
+                        description: videoDescription,
+                        contentUrl: item.url,
+                        publicationDate: item.updatedAt.toISOString(),
+                    },
+                ]
+            } else {
+                // Image sitemap entry
+                entry.images = [
                     {
                         url: item.url,
                         title: item.title,
                     },
-                ],
-            })
+                ]
+            }
+
+            entries.push(entry)
         }
     } catch (error) {
         console.error('Error generating gallery sitemap:', error)
         return new NextResponse(
             `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 </urlset>`,
             {
                 status: 500,
