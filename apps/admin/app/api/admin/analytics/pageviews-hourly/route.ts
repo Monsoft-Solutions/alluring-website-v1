@@ -2,22 +2,28 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { getAnalyticsSummary } from '@/lib/queries/analytics.query'
+import { getPageViewsByHour } from '@/lib/queries/analytics.query'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 
 export const runtime = 'nodejs'
 
 const querySchema = z.object({
-    days: z.coerce.number().int().min(0).max(365).default(7),
+    date: z.string().refine(
+        (val) => {
+            const date = new Date(val)
+            return !isNaN(date.getTime())
+        },
+        { message: 'Invalid date format' }
+    ),
 })
 
 /**
- * GET /api/admin/analytics/summary
- * Get analytics summary stats (total views, unique sessions, period views, top source)
+ * GET /api/admin/analytics/pageviews-hourly
+ * Get page views grouped by hour for a specific date
  *
  * Query params:
- * - days: number (0-365, default: 7) - 0 means today only
+ * - date: ISO date string (required)
  */
 export async function GET(request: NextRequest) {
     try {
@@ -39,15 +45,16 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        const { days } = validationResult.data
-        const summary = await getAnalyticsSummary(days)
+        const { date } = validationResult.data
+        const targetDate = new Date(date)
+        const data = await getPageViewsByHour(targetDate)
 
-        return NextResponse.json(summary)
+        return NextResponse.json(data)
     } catch (error) {
         return handleApiError(
             error,
-            'Failed to fetch analytics summary',
-            'Error fetching analytics summary:'
+            'Failed to fetch hourly pageviews data',
+            'Error fetching hourly pageviews data:'
         )
     }
 }

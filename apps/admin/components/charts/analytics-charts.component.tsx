@@ -25,6 +25,7 @@ import {
 
 import type {
     DailyViewCount,
+    HourlyViewCount,
     TopPage,
     TrafficSource,
     DeviceStats,
@@ -53,14 +54,22 @@ const PIE_COLORS = ['#78716c', '#d4a574', '#a8a29e', '#e7e5e4', '#57534e']
 // ============================================================================
 
 type PageViewsChartProps = {
-    data: DailyViewCount[]
+    data: DailyViewCount[] | HourlyViewCount[]
+    mode?: 'daily' | 'hourly'
 }
 
-export function PageViewsChart({ data }: PageViewsChartProps) {
-    const formattedData = data.map((item) => ({
-        ...item,
-        formattedDate: formatDate(item.date),
-    }))
+export function PageViewsChart({ data, mode = 'daily' }: PageViewsChartProps) {
+    const isHourly = mode === 'hourly'
+
+    const formattedData = isHourly
+        ? (data as HourlyViewCount[]).map((item) => ({
+              ...item,
+              formattedLabel: formatHour(item.hour),
+          }))
+        : (data as DailyViewCount[]).map((item) => ({
+              ...item,
+              formattedLabel: formatDate(item.date),
+          }))
 
     return (
         <ResponsiveContainer width='100%' height={280}>
@@ -112,11 +121,11 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                     stroke='#e7e5e4'
                 />
                 <XAxis
-                    dataKey='formattedDate'
+                    dataKey='formattedLabel'
                     tick={{ fontSize: 11, fill: '#78716c' }}
                     tickLine={false}
                     axisLine={false}
-                    interval='preserveStartEnd'
+                    interval={isHourly ? 2 : 'preserveStartEnd'}
                 />
                 <YAxis
                     tick={{ fontSize: 11, fill: '#78716c' }}
@@ -128,20 +137,47 @@ export function PageViewsChart({ data }: PageViewsChartProps) {
                     content={({ active, payload }) => {
                         if (!active || !payload?.length || !payload[0])
                             return null
-                        const item = payload[0] as {
-                            payload: DailyViewCount & { formattedDate: string }
+
+                        if (isHourly) {
+                            const item = payload[0] as {
+                                payload: HourlyViewCount & {
+                                    formattedLabel: string
+                                }
+                            }
+                            const hourData = item.payload
+                            return (
+                                <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
+                                    <p className='text-muted-foreground text-xs'>
+                                        {formatHourFull(hourData.hour)}
+                                    </p>
+                                    <p className='font-medium'>
+                                        {hourData.views.toLocaleString()} page
+                                        views
+                                    </p>
+                                    <p className='text-muted-foreground text-sm'>
+                                        {hourData.sessions.toLocaleString()}{' '}
+                                        sessions
+                                    </p>
+                                </div>
+                            )
                         }
-                        const data = item.payload
+
+                        const item = payload[0] as {
+                            payload: DailyViewCount & { formattedLabel: string }
+                        }
+                        const dailyData = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='text-muted-foreground text-xs'>
-                                    {formatFullDate(data.date)}
+                                    {formatFullDate(dailyData.date)}
                                 </p>
                                 <p className='font-medium'>
-                                    {data.views.toLocaleString()} page views
+                                    {dailyData.views.toLocaleString()} page
+                                    views
                                 </p>
                                 <p className='text-muted-foreground text-sm'>
-                                    {data.sessions.toLocaleString()} sessions
+                                    {dailyData.sessions.toLocaleString()}{' '}
+                                    sessions
                                 </p>
                             </div>
                         )
@@ -550,4 +586,23 @@ function formatFullDate(dateStr: string): string {
         day: 'numeric',
         year: 'numeric',
     })
+}
+
+/**
+ * Format hour number (0-23) to short label (e.g., "9AM", "2PM")
+ */
+function formatHour(hour: number): string {
+    if (hour === 0) return '12AM'
+    if (hour === 12) return '12PM'
+    if (hour < 12) return `${hour}AM`
+    return `${hour - 12}PM`
+}
+
+/**
+ * Format hour number (0-23) to full label (e.g., "9:00 AM", "2:00 PM")
+ */
+function formatHourFull(hour: number): string {
+    const period = hour >= 12 ? 'PM' : 'AM'
+    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour
+    return `${displayHour}:00 ${period}`
 }

@@ -48,3 +48,9 @@ export type DailyViewCount = {
     views: number
     sessions: number
 }
+
+export type HourlyViewCount = {
+    hour: number // 0-23
+    views: number
+    sessions: number
+}

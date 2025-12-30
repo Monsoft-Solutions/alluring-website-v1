@@ -17,6 +17,7 @@ import {
 import { Button } from '@workspace/ui/components/button'
 
 import { useAnalyticsSummary } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { StatsGridSkeleton } from '@/components/shared/skeletons/stats-grid-skeleton.component'
 
 /**
@@ -24,7 +25,13 @@ import { StatsGridSkeleton } from '@/components/shared/skeletons/stats-grid-skel
  * Shows total views, unique sessions, today's views, and top source.
  */
 export function AnalyticsStatsGrid() {
-    const { data: summary, isLoading, error, refetch } = useAnalyticsSummary()
+    const { days, label } = useDateRange()
+    const {
+        data: summary,
+        isLoading,
+        error,
+        refetch,
+    } = useAnalyticsSummary(days)
 
     if (isLoading) {
         return <StatsGridSkeleton />
@@ -62,13 +69,13 @@ export function AnalyticsStatsGrid() {
             <StatsCard
                 title='Total Page Views'
                 value={summary.totalViews.toLocaleString()}
-                description='All time'
+                description={label}
                 icon={Eye}
             />
             <StatsCard
                 title='Unique Sessions'
                 value={summary.uniqueSessions.toLocaleString()}
-                description='All time'
+                description={label}
                 icon={Users}
             />
             <StatsCard
@@ -80,7 +87,7 @@ export function AnalyticsStatsGrid() {
             <StatsCard
                 title='Top Source'
                 value={summary.topSource ?? 'N/A'}
-                description='By page views'
+                description={`${label} by views`}
                 icon={ExternalLink}
             />
         </div>

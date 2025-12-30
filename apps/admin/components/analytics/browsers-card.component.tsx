@@ -13,6 +13,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useBrowserBreakdown } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 
 // Lazy load chart for better performance
 const BrowserChart = dynamicImport(
@@ -27,10 +28,11 @@ const BrowserChart = dynamicImport(
 
 /**
  * Browsers chart card component that fetches its own data via TanStack Query.
- * Shows browser distribution.
+ * Shows browser distribution in the selected date range.
  */
 export function BrowsersCard() {
-    const { data, isLoading, error, refetch } = useBrowserBreakdown(5)
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useBrowserBreakdown(days, 5)
 
     return (
         <Card>
@@ -39,7 +41,9 @@ export function BrowsersCard() {
                     <Globe className='h-5 w-5' />
                     Browsers
                 </CardTitle>
-                <CardDescription>Browser distribution</CardDescription>
+                <CardDescription>
+                    Browser distribution - {label.toLowerCase()}
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (

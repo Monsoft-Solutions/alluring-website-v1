@@ -9,12 +9,13 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { pageView } from '@workspace/db/schema/analytics'
-import { count, desc, gte, sql, countDistinct } from 'drizzle-orm'
+import { count, desc, gte, sql, countDistinct, and, lte } from 'drizzle-orm'
 
 import { fillMissingDatesWithViews } from '@/lib/utils/date.util'
 import type {
     AnalyticsSummary,
     DailyViewCount,
+    HourlyViewCount,
     TopPage,
     TrafficSource,
     DeviceStats,
@@ -24,16 +25,50 @@ import type {
 } from '@/lib/types/analytics/analytics.type'
 
 // ============================================================================
+// Helper Functions
+// ============================================================================
+
+/**
+ * Calculate start date based on days parameter.
+ *
+ * @param days - Number of days to go back (0 = today only, 1 = yesterday only)
+ * @returns Object with startDate and endDate
+ */
+function getDateRange(days: number): { startDate: Date; endDate: Date } {
+    const now = new Date()
+    const endDate = new Date(now)
+    endDate.setHours(23, 59, 59, 999)
+
+    const startDate = new Date(now)
+    startDate.setHours(0, 0, 0, 0)
+
+    if (days === 0) {
+        // Today only - start and end are both today
+        return { startDate, endDate }
+    } else if (days === 1) {
+        // Yesterday only
+        startDate.setDate(startDate.getDate() - 1)
+        endDate.setDate(endDate.getDate() - 1)
+        return { startDate, endDate }
+    } else {
+        // Last N days (includes today)
+        startDate.setDate(startDate.getDate() - (days - 1))
+        return { startDate, endDate }
+    }
+}
+
+// ============================================================================
 // Summary Stats
 // ============================================================================
 
 /**
  * Get analytics summary stats for the dashboard header cards
+ *
+ * @param days - Number of days to analyze (0 = today, 1 = yesterday)
  */
 export const getAnalyticsSummary = cache(
-    async (): Promise<AnalyticsSummary> => {
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
+    async (days = 7): Promise<AnalyticsSummary> => {
+        const { startDate, endDate } = getDateRange(days)
 
         const [
             totalViewsResult,
@@ -42,32 +77,56 @@ export const getAnalyticsSummary = cache(
             topPageResult,
             topSourceResult,
         ] = await Promise.all([
-            // Total views all time
-            db.select({ count: count() }).from(pageView),
-
-            // Unique sessions (unique session IDs)
-            db
-                .select({ count: countDistinct(pageView.sessionId) })
-                .from(pageView),
-
-            // Today's views
+            // Total views in the period
             db
                 .select({ count: count() })
                 .from(pageView)
-                .where(gte(pageView.createdAt, today)),
+                .where(
+                    and(
+                        gte(pageView.createdAt, startDate),
+                        lte(pageView.createdAt, endDate)
+                    )
+                ),
 
-            // Top page by views
+            // Unique sessions in the period
+            db
+                .select({ count: countDistinct(pageView.sessionId) })
+                .from(pageView)
+                .where(
+                    and(
+                        gte(pageView.createdAt, startDate),
+                        lte(pageView.createdAt, endDate)
+                    )
+                ),
+
+            // Today's views (always today regardless of period)
+            (() => {
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+                return db
+                    .select({ count: count() })
+                    .from(pageView)
+                    .where(gte(pageView.createdAt, today))
+            })(),
+
+            // Top page by views in the period
             db
                 .select({
                     pagePath: pageView.pagePath,
                     views: count(),
                 })
                 .from(pageView)
+                .where(
+                    and(
+                        gte(pageView.createdAt, startDate),
+                        lte(pageView.createdAt, endDate)
+                    )
+                )
                 .groupBy(pageView.pagePath)
                 .orderBy(desc(count()))
                 .limit(1),
 
-            // Top source (utm_source or referrer domain)
+            // Top source in the period
             db
                 .select({
                     source: sql<string>`COALESCE(${pageView.utmSource}, 
@@ -80,6 +139,12 @@ export const getAnalyticsSummary = cache(
                     views: count(),
                 })
                 .from(pageView)
+                .where(
+                    and(
+                        gte(pageView.createdAt, startDate),
+                        lte(pageView.createdAt, endDate)
+                    )
+                )
                 .groupBy(sql`1`)
                 .orderBy(desc(count()))
                 .limit(1),
@@ -104,9 +169,7 @@ export const getAnalyticsSummary = cache(
  */
 export const getPageViewsOverTime = cache(
     async (days = 30): Promise<DailyViewCount[]> => {
-        const startDate = new Date()
-        startDate.setDate(startDate.getDate() - days)
-        startDate.setHours(0, 0, 0, 0)
+        const { startDate } = getDateRange(days)
 
         const results = await db
             .select({
@@ -121,6 +184,55 @@ export const getPageViewsOverTime = cache(
 
         // Fill in missing dates with zeros using shared utility
         return fillMissingDatesWithViews(results, days)
+    }
+)
+
+/**
+ * Get page views grouped by hour for a specific date.
+ * Used for Today/Yesterday hourly breakdown.
+ *
+ * @param targetDate - The date to get hourly data for
+ */
+export const getPageViewsByHour = cache(
+    async (targetDate: Date): Promise<HourlyViewCount[]> => {
+        const startOfDay = new Date(targetDate)
+        startOfDay.setHours(0, 0, 0, 0)
+
+        const endOfDay = new Date(targetDate)
+        endOfDay.setHours(23, 59, 59, 999)
+
+        const results = await db
+            .select({
+                hour: sql<number>`EXTRACT(HOUR FROM ${pageView.createdAt})::int`.as(
+                    'hour'
+                ),
+                views: count(),
+                sessions: countDistinct(pageView.sessionId),
+            })
+            .from(pageView)
+            .where(
+                and(
+                    gte(pageView.createdAt, startOfDay),
+                    lte(pageView.createdAt, endOfDay)
+                )
+            )
+            .groupBy(sql`EXTRACT(HOUR FROM ${pageView.createdAt})`)
+            .orderBy(sql`EXTRACT(HOUR FROM ${pageView.createdAt})`)
+
+        // Fill in missing hours with zeros (0-23)
+        const hourlyData: HourlyViewCount[] = []
+        const resultMap = new Map(results.map((r) => [r.hour, r]))
+
+        for (let hour = 0; hour < 24; hour++) {
+            const existing = resultMap.get(hour)
+            hourlyData.push({
+                hour,
+                views: existing?.views ?? 0,
+                sessions: existing?.sessions ?? 0,
+            })
+        }
+
+        return hourlyData
     }
 )
 
@@ -152,8 +264,7 @@ export const getTopPages = cache(async (limit = 10): Promise<TopPage[]> => {
  */
 export const getTopPagesInRange = cache(
     async (days = 30, limit = 10): Promise<TopPage[]> => {
-        const startDate = new Date()
-        startDate.setDate(startDate.getDate() - days)
+        const { startDate, endDate } = getDateRange(days)
 
         const results = await db
             .select({
@@ -165,7 +276,12 @@ export const getTopPagesInRange = cache(
                 uniqueSessions: countDistinct(pageView.sessionId),
             })
             .from(pageView)
-            .where(gte(pageView.createdAt, startDate))
+            .where(
+                and(
+                    gte(pageView.createdAt, startDate),
+                    lte(pageView.createdAt, endDate)
+                )
+            )
             .groupBy(pageView.pagePath)
             .orderBy(desc(count()))
             .limit(limit)
@@ -180,9 +296,14 @@ export const getTopPagesInRange = cache(
 
 /**
  * Get traffic sources breakdown
+ *
+ * @param days - Number of days to analyze
+ * @param limit - Max number of sources to return
  */
 export const getTrafficSources = cache(
-    async (limit = 10): Promise<TrafficSource[]> => {
+    async (days = 30, limit = 10): Promise<TrafficSource[]> => {
+        const { startDate, endDate } = getDateRange(days)
+
         const results = await db
             .select({
                 source: sql<string>`COALESCE(
@@ -197,6 +318,12 @@ export const getTrafficSources = cache(
                 sessions: countDistinct(pageView.sessionId),
             })
             .from(pageView)
+            .where(
+                and(
+                    gte(pageView.createdAt, startDate),
+                    lte(pageView.createdAt, endDate)
+                )
+            )
             .groupBy(sql`1`)
             .orderBy(desc(count()))
             .limit(limit)
@@ -236,33 +363,50 @@ export const getUTMCampaigns = cache(
 
 /**
  * Get device type breakdown
+ *
+ * @param days - Number of days to analyze
  */
-export const getDeviceBreakdown = cache(async (): Promise<DeviceStats[]> => {
-    const results = await db
-        .select({
-            deviceType:
-                sql<string>`COALESCE(${pageView.deviceType}, 'unknown')`.as(
-                    'deviceType'
-                ),
-            views: count(),
-        })
-        .from(pageView)
-        .groupBy(pageView.deviceType)
-        .orderBy(desc(count()))
+export const getDeviceBreakdown = cache(
+    async (days = 30): Promise<DeviceStats[]> => {
+        const { startDate, endDate } = getDateRange(days)
 
-    // Calculate percentages
-    const total = results.reduce((sum, r) => sum + r.views, 0)
-    return results.map((r) => ({
-        ...r,
-        percentage: total > 0 ? Math.round((r.views / total) * 100) : 0,
-    }))
-})
+        const results = await db
+            .select({
+                deviceType:
+                    sql<string>`COALESCE(${pageView.deviceType}, 'unknown')`.as(
+                        'deviceType'
+                    ),
+                views: count(),
+            })
+            .from(pageView)
+            .where(
+                and(
+                    gte(pageView.createdAt, startDate),
+                    lte(pageView.createdAt, endDate)
+                )
+            )
+            .groupBy(pageView.deviceType)
+            .orderBy(desc(count()))
+
+        // Calculate percentages
+        const total = results.reduce((sum, r) => sum + r.views, 0)
+        return results.map((r) => ({
+            ...r,
+            percentage: total > 0 ? Math.round((r.views / total) * 100) : 0,
+        }))
+    }
+)
 
 /**
  * Get browser breakdown
+ *
+ * @param days - Number of days to analyze
+ * @param limit - Max number of browsers to return
  */
 export const getBrowserBreakdown = cache(
-    async (limit = 10): Promise<BrowserStats[]> => {
+    async (days = 30, limit = 10): Promise<BrowserStats[]> => {
+        const { startDate, endDate } = getDateRange(days)
+
         const results = await db
             .select({
                 browser:
@@ -272,6 +416,12 @@ export const getBrowserBreakdown = cache(
                 views: count(),
             })
             .from(pageView)
+            .where(
+                and(
+                    gte(pageView.createdAt, startDate),
+                    lte(pageView.createdAt, endDate)
+                )
+            )
             .groupBy(pageView.browser)
             .orderBy(desc(count()))
             .limit(limit)
@@ -313,9 +463,14 @@ export const getOSBreakdown = cache(async (limit = 10): Promise<OSStats[]> => {
 
 /**
  * Get geographic distribution by country
+ *
+ * @param days - Number of days to analyze
+ * @param limit - Max number of countries to return
  */
 export const getGeoDistribution = cache(
-    async (limit = 20): Promise<GeoStats[]> => {
+    async (days = 30, limit = 20): Promise<GeoStats[]> => {
+        const { startDate, endDate } = getDateRange(days)
+
         const results = await db
             .select({
                 countryCode:
@@ -326,6 +481,12 @@ export const getGeoDistribution = cache(
                 sessions: countDistinct(pageView.sessionId),
             })
             .from(pageView)
+            .where(
+                and(
+                    gte(pageView.createdAt, startDate),
+                    lte(pageView.createdAt, endDate)
+                )
+            )
             .groupBy(pageView.countryCode)
             .orderBy(desc(count()))
             .limit(limit)
