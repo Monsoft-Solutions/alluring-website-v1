@@ -29,6 +29,7 @@ import {
     Sparkles,
 } from 'lucide-react'
 
+import { formatRelativeTime } from '@/lib/utils/format-date.util'
 import type { InstagramPostListItem } from '@/lib/types/social-media/social-media.type'
 import type { GalleryGroupWithSlug } from '@/lib/types/gallery/gallery-group.type'
 import {
@@ -59,23 +60,6 @@ function formatNumber(num: number): string {
         return (num / 1000).toFixed(1) + 'K'
     }
     return num.toString()
-}
-
-function formatRelativeTime(date: Date): string {
-    const now = new Date()
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
-
-    if (diffInSeconds < 60) return 'Just now'
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
-    if (diffInSeconds < 604800)
-        return `${Math.floor(diffInSeconds / 86400)}d ago`
-
-    return date.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-    })
 }
 
 function formatCaptionWithHashtags(caption: string): ReactNode {
