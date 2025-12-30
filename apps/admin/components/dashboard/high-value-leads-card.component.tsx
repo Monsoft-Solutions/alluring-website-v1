@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { Clock, AlertCircle, RefreshCw, Star, Phone, Mail } from 'lucide-react'
+
+import { formatRelativeTime } from '@/lib/utils/format-date.util'
 import {
     Card,
     CardContent,
@@ -12,13 +14,21 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 import { Badge } from '@workspace/ui/components/badge'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useHighValueLeads } from '@/hooks/use-dashboard.hook'
 
 /**
- * High-value leads card showing the 5 most recent A/B grade leads from AI chat.
+ * High-value leads card showing high-value A/B grade leads from AI chat.
+ * Uses the date range context to filter data.
  */
 export function HighValueLeadsCard() {
-    const { data: leads, isLoading, error, refetch } = useHighValueLeads(5)
+    const { days } = useDateRange()
+    const {
+        data: leads,
+        isLoading,
+        error,
+        refetch,
+    } = useHighValueLeads(days, 5)
 
     return (
         <Card>
@@ -111,20 +121,4 @@ export function HighValueLeadsCard() {
             </CardContent>
         </Card>
     )
-}
-
-function formatRelativeTime(date: Date | string): string {
-    const dateObj = typeof date === 'string' ? new Date(date) : date
-    const now = new Date()
-    const diffMs = now.getTime() - dateObj.getTime()
-    const diffMins = Math.floor(diffMs / 60000)
-    const diffHours = Math.floor(diffMins / 60)
-    const diffDays = Math.floor(diffHours / 24)
-
-    if (diffMins < 1) return 'just now'
-    if (diffMins < 60) return `${diffMins}m ago`
-    if (diffHours < 24) return `${diffHours}h ago`
-    if (diffDays < 7) return `${diffDays}d ago`
-
-    return dateObj.toLocaleDateString()
 }

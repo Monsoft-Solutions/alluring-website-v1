@@ -12,7 +12,9 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useDashboardTraffic } from '@/hooks/use-dashboard.hook'
+import { usePageViewsHourly } from '@/hooks/use-analytics.hook'
 
 // Lazy load chart for better performance
 const PageViewsChart = dynamicImport(
@@ -26,11 +28,26 @@ const PageViewsChart = dynamicImport(
 )
 
 /**
- * Traffic chart card component that shows website traffic (views + sessions)
- * over the last 30 days.
+ * Traffic chart card component that shows website traffic (views + sessions).
+ * Uses the date range context to filter data.
+ * Uses hourly breakdown for Today and Yesterday, daily breakdown for longer periods.
  */
 export function TrafficChartCard() {
-    const { data, isLoading, error, refetch } = useDashboardTraffic(30)
+    const { dateRange, days, label, startDate } = useDateRange()
+
+    // Determine if we should show hourly data
+    const isHourlyMode = dateRange === 'today' || dateRange === 'yesterday'
+
+    // Fetch daily data (used for multi-day periods)
+    const dailyQuery = useDashboardTraffic(days)
+
+    // Fetch hourly data (used for today/yesterday)
+    const hourlyQuery = usePageViewsHourly(startDate)
+
+    // Select the appropriate query based on mode
+    const { data, isLoading, error, refetch } = isHourlyMode
+        ? hourlyQuery
+        : dailyQuery
 
     return (
         <Card>
@@ -40,7 +57,8 @@ export function TrafficChartCard() {
                     Website Traffic
                 </CardTitle>
                 <CardDescription>
-                    Page views and unique sessions (last 30 days)
+                    Page views and unique sessions ({label})
+                    {isHourlyMode && ' (by hour)'}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -62,7 +80,10 @@ export function TrafficChartCard() {
                         </Button>
                     </div>
                 ) : data && data.length > 0 ? (
-                    <PageViewsChart data={data} />
+                    <PageViewsChart
+                        data={data}
+                        mode={isHourlyMode ? 'hourly' : 'daily'}
+                    />
                 ) : (
                     <div className='flex h-[280px] items-center justify-center'>
                         <p className='text-muted-foreground text-sm'>

@@ -9,14 +9,16 @@ import { handleApiError } from '@/lib/utils/api-error-handler.util'
 export const runtime = 'nodejs'
 
 const querySchema = z.object({
+    days: z.coerce.number().int().min(0).max(365).default(7),
     limit: z.coerce.number().int().min(1).max(50).default(5),
 })
 
 /**
  * GET /api/admin/contacts/recent
- * Get recent contact submissions
+ * Get recent contact submissions filtered by date range
  *
  * Query params:
+ * - days: number (0-365, default: 7)
  * - limit: number (1-50, default: 5)
  */
 export async function GET(request: NextRequest) {
@@ -39,8 +41,8 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        const { limit } = validationResult.data
-        const contacts = await getRecentContacts(limit)
+        const { days, limit } = validationResult.data
+        const contacts = await getRecentContacts(days, limit)
 
         return NextResponse.json(contacts)
     } catch (error) {

@@ -1,7 +1,7 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
-import { count, sql, isNotNull } from 'drizzle-orm'
+import { count, sql, isNotNull, gte, and } from 'drizzle-orm'
 
 import type { ChatSummary } from '@/lib/types/chat/chat-summary.type'
 import type { LeadGradeDistribution } from '@/lib/types/analytics/lead-grade-distribution.type'
@@ -15,9 +15,18 @@ type ChatSummaryRow = {
 }
 
 /**
- * Get summary stats for chat sessions
+ * Get summary stats for chat sessions filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
  */
-export const getChatSummary = cache(async (): Promise<ChatSummary> => {
+export const getChatSummary = cache(async (days = 7): Promise<ChatSummary> => {
+    const startDate = new Date()
+    startDate.setHours(0, 0, 0, 0)
+    if (days > 0) {
+        startDate.setDate(startDate.getDate() - (days - 1))
+    }
+    const startDateStr = startDate.toISOString()
+
     const result = await db.execute<ChatSummaryRow>(sql`
         SELECT
             COUNT(*)::int AS total_sessions,
@@ -26,6 +35,7 @@ export const getChatSummary = cache(async (): Promise<ChatSummary> => {
             COUNT(*) FILTER (WHERE status = 'active')::int AS active_sessions,
             AVG(lead_score)::float AS avg_score
         FROM chat_session
+        WHERE created_at >= ${startDateStr}
     `)
 
     const stats = result[0]
@@ -40,17 +50,30 @@ export const getChatSummary = cache(async (): Promise<ChatSummary> => {
 })
 
 /**
- * Get lead grade distribution for donut chart
+ * Get lead grade distribution for donut chart filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
  */
 export const getLeadGradeDistribution = cache(
-    async (): Promise<LeadGradeDistribution[]> => {
+    async (days = 7): Promise<LeadGradeDistribution[]> => {
+        const startDate = new Date()
+        startDate.setHours(0, 0, 0, 0)
+        if (days > 0) {
+            startDate.setDate(startDate.getDate() - (days - 1))
+        }
+
         const results = await db
             .select({
                 grade: chatSession.leadGrade,
                 count: count(),
             })
             .from(chatSession)
-            .where(isNotNull(chatSession.leadGrade))
+            .where(
+                and(
+                    isNotNull(chatSession.leadGrade),
+                    gte(chatSession.createdAt, startDate)
+                )
+            )
             .groupBy(chatSession.leadGrade)
 
         const colors: Record<string, string> = {

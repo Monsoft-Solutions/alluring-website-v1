@@ -1,15 +1,24 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
-import { desc, inArray } from 'drizzle-orm'
+import { desc, inArray, gte, and } from 'drizzle-orm'
 
 import type { HighValueLead } from '@/lib/types/analytics/high-value-lead.type'
 
 /**
- * Get recent high-value leads (Grade A or B)
+ * Get recent high-value leads (Grade A or B) filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
+ * @param limit - Maximum number of leads to return (default 5)
  */
 export const getHighValueLeads = cache(
-    async (limit = 5): Promise<HighValueLead[]> => {
+    async (days = 7, limit = 5): Promise<HighValueLead[]> => {
+        const startDate = new Date()
+        startDate.setHours(0, 0, 0, 0)
+        if (days > 0) {
+            startDate.setDate(startDate.getDate() - (days - 1))
+        }
+
         const leads = await db
             .select({
                 id: chatSession.id,
@@ -21,7 +30,12 @@ export const getHighValueLeads = cache(
                 createdAt: chatSession.createdAt,
             })
             .from(chatSession)
-            .where(inArray(chatSession.leadGrade, ['A', 'B']))
+            .where(
+                and(
+                    inArray(chatSession.leadGrade, ['A', 'B']),
+                    gte(chatSession.createdAt, startDate)
+                )
+            )
             .orderBy(desc(chatSession.createdAt))
             .limit(limit)
         return leads
