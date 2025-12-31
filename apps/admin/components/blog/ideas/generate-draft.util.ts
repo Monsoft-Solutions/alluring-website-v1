@@ -18,6 +18,7 @@ import type {
  * Step labels for display during pipeline execution
  */
 export const STEP_LABELS: Record<string, string> = {
+    // Pipeline V2 steps
     research: 'Researching topic...',
     'content-generation': 'Generating content...',
     'link-integration': 'Adding links...',
@@ -26,6 +27,10 @@ export const STEP_LABELS: Record<string, string> = {
     'review-writing-quality': 'Checking writing quality...',
     'review-ai-slop': 'Detecting AI patterns...',
     orchestration: 'Creating final revisions...',
+    // Agentic mode steps
+    'agentic-writing': 'AI writing with research tools...',
+    'extracting-metadata': 'Extracting metadata and FAQs...',
+    // Common steps
     saving: 'Saving draft...',
     complete: 'Complete!',
 }

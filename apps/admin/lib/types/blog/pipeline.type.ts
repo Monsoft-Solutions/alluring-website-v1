@@ -11,10 +11,25 @@ import type { FaqItem } from '@workspace/shared/schemas/blog'
 import type { PipelineStep } from '@workspace/ai/agents'
 
 /**
+ * Pipeline mode for content generation
+ */
+export type PipelineMode = 'pipeline-v2' | 'agentic'
+
+/**
+ * Agentic pipeline step (simpler than full pipeline)
+ */
+export type AgenticStep = 'agentic-writing' | 'extracting-metadata'
+
+/**
  * Component-specific step states that extend the pipeline steps.
  * These are UI states not part of the core pipeline.
  */
-export type DialogStep = PipelineStep | 'idle' | 'saving' | 'error'
+export type DialogStep =
+    | PipelineStep
+    | AgenticStep
+    | 'idle'
+    | 'saving'
+    | 'error'
 
 /**
  * Individual research finding from web search
@@ -63,9 +78,22 @@ export type SSEReviewResultData = {
 }
 
 /**
+ * Tool call event data (for agentic mode)
+ */
+export type SSEToolCallData = {
+    type: 'tool-call'
+    toolName: 'perplexity_search' | 'google_search'
+    query: string
+    toolCallIndex: number
+}
+
+/**
  * Union of all progress event data types
  */
-export type SSEProgressData = SSEResearchData | SSEReviewResultData
+export type SSEProgressData =
+    | SSEResearchData
+    | SSEReviewResultData
+    | SSEToolCallData
 
 /**
  * SSE progress event from the pipeline API
@@ -134,6 +162,48 @@ export type SSEErrorEvent = {
 }
 
 /**
+ * Source collected during agentic research
+ */
+export type AgenticSource = {
+    title: string
+    url: string
+    type: 'perplexity' | 'google'
+}
+
+/**
+ * Agentic pipeline metadata
+ */
+export type AgenticPipelineMetadata = {
+    totalTimeMs: number
+    toolCallCount: number
+    contentGenTimeMs: number
+    metadataTimeMs: number
+}
+
+/**
+ * SSE completion event from the agentic pipeline API
+ */
+export type SSEAgenticCompleteEvent = {
+    success: boolean
+    error?: string
+    content?: string
+    wordCount?: number
+    metaDescription?: string
+    excerpt?: string
+    suggestedTags?: string[]
+    readingTimeMinutes?: number
+    suggestedCategory?: string
+    faqs?: FaqItem[]
+    faqSchema?: object | null
+    sources?: AgenticSource[]
+    pipelineMetadata?: AgenticPipelineMetadata
+}
+
+/**
  * Union of all SSE event types
  */
-export type SSEEventData = SSEProgressEvent | SSECompleteEvent | SSEErrorEvent
+export type SSEEventData =
+    | SSEProgressEvent
+    | SSECompleteEvent
+    | SSEAgenticCompleteEvent
+    | SSEErrorEvent

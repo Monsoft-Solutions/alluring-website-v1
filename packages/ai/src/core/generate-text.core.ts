@@ -31,7 +31,7 @@ function convertTools(coreTools?: CoreToolSet) {
         // Build tool object directly to avoid TypeScript issues with the tool() helper
         aiSdkTools[name] = {
             description: coreTool.description,
-            parameters: coreTool.parameters,
+            inputSchema: coreTool.parameters, // AI SDK v5 expects inputSchema
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             execute: async (params: any) => coreTool.execute(params),
         }

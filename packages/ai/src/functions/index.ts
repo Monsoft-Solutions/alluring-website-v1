@@ -128,6 +128,13 @@ export {
     type GenerateBlogPostContentV2Result,
 } from './generate-blog-post-content-v2.function'
 
+// Blog Content Agentic Pipeline - AI with research tools
+export {
+    generateBlogPostContentAgentic,
+    type GenerateBlogPostContentAgenticOptions,
+    type GenerateBlogPostContentAgenticResult,
+} from './generate-blog-post-content-agentic.function'
+
 // Blog Content Support Functions
 export {
     gatherResearch,

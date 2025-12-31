@@ -73,13 +73,13 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@workspace/shared": "workspace:*",
         "@ai-sdk/openai": "^2.0.77",
-        "@tavily/core": "^0.6.3",
         "@ai-sdk/provider-utils": "^3.0.18",
         "@langfuse/otel": "^4.4.9",
         "@langfuse/tracing": "^4.4.9",
         "@opentelemetry/sdk-trace-node": "^2.2.0",
+        "@tavily/core": "^0.6.3",
+        "@workspace/shared": "workspace:*",
         "ai": "^5.0.107",
         "zod": "^4.1.13"
     },
