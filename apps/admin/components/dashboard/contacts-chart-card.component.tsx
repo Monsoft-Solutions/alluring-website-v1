@@ -40,11 +40,13 @@ export function ContactsChartCard() {
     // Determine if we should show hourly data
     const isHourlyMode = dateRange === 'today' || dateRange === 'yesterday'
 
-    // Fetch daily data (used for multi-day periods)
-    const dailyQuery = useContactsChart(days)
+    // Fetch daily data (used for multi-day periods) - only when NOT hourly mode
+    const dailyQuery = useContactsChart(days, { enabled: !isHourlyMode })
 
-    // Fetch hourly data (used for today/yesterday)
-    const hourlyQuery = useContactsChartHourly(startDate)
+    // Fetch hourly data (used for today/yesterday) - only when in hourly mode
+    const hourlyQuery = useContactsChartHourly(startDate, {
+        enabled: isHourlyMode,
+    })
 
     // Select the appropriate query based on mode
     const { data, isLoading, error, refetch } = isHourlyMode
