@@ -197,13 +197,13 @@ export function useContactsChartHourly(
     targetDate: Date,
     options?: { enabled?: boolean }
 ) {
-    const isoString = targetDate.toISOString()
-    const dateStr = isoString.slice(0, 10) // YYYY-MM-DD format
+    // Build YYYY-MM-DD from local date components (en-CA locale gives YYYY-MM-DD format)
+    const dateStr = targetDate.toLocaleDateString('en-CA')
     return useQuery({
         queryKey: dashboardKeys.contacts.chartHourly(dateStr),
         queryFn: () =>
             fetchApi<HourlyCount[]>(
-                buildUrl('/api/admin/contacts/hourly', { date: isoString })
+                buildUrl('/api/admin/contacts/hourly', { date: dateStr })
             ),
         staleTime: 30_000, // 30 seconds for today's data
         enabled: options?.enabled ?? true, // Default to true
