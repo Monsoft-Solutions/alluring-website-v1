@@ -72,7 +72,7 @@ export function StatsGrid() {
             />
             <StatsCard
                 title='Contact Leads'
-                value={stats.contacts.total}
+                value={stats.contacts.recent}
                 description={`Contact submissions (${label})`}
                 icon={Mail}
                 href='/contacts'

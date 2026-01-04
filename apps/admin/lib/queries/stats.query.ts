@@ -40,16 +40,18 @@ export const getDashboardStats = cache(
 
         // For "today" (days=0), start is today; for days > 0, go back (days - 1) days
         if (days > 0) {
-            startDate.setDate(startDate.getDate() - (days - 1))
+            startDate.setDate(
+                startDate.getDate() - (days - (days === 1 ? 0 : 1))
+            )
         }
-        const startDateStr = startDate.toISOString()
+        const startDateStr = startDate.toLocaleDateString('en-CA')
 
         // Optimized: Single query instead of multiple concurrent queries
         const result = await db.execute<DashboardStatsRow>(sql`
         SELECT
             (SELECT COUNT(DISTINCT session_id)::int FROM page_view WHERE created_at >= ${startDateStr}) AS period_visitors,
             (SELECT COUNT(DISTINCT session_id)::int FROM page_view) AS all_time_sessions,
-            (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${startDateStr}) AS total_contacts,
+            (SELECT COUNT(*)::int FROM contact_submission) AS total_contacts,
             (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${startDateStr}) AS period_contacts,
             (SELECT COUNT(*)::int FROM chat_session WHERE created_at >= ${startDateStr}) AS total_chat_sessions,
             (SELECT SUM(message_count)::int FROM chat_session WHERE created_at >= ${startDateStr}) AS total_chat_messages,
