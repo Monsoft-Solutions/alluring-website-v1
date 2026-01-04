@@ -1,8 +1,9 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
-import { count, sql, isNotNull, gte, and } from 'drizzle-orm'
+import { count, sql, isNotNull, gte, lte, and, eq } from 'drizzle-orm'
 
+import { getQueryDateRange } from '@/lib/utils/query-date-range.util'
 import type { ChatSummary } from '@/lib/types/chat/chat-summary.type'
 import type { LeadGradeDistribution } from '@/lib/types/analytics/lead-grade-distribution.type'
 
@@ -20,22 +21,20 @@ type ChatSummaryRow = {
  * @param days - Number of days to filter by (default 7)
  */
 export const getChatSummary = cache(async (days = 7): Promise<ChatSummary> => {
-    const startDate = new Date()
-    startDate.setHours(0, 0, 0, 0)
-    if (days > 0) {
-        startDate.setDate(startDate.getDate() - (days - 1))
-    }
-    const startDateStr = startDate.toISOString()
+    // Use string versions for raw SQL queries
+    const { startDateStr, endDateStr } = getQueryDateRange(days)
 
     const result = await db.execute<ChatSummaryRow>(sql`
         SELECT
             COUNT(*)::int AS total_sessions,
-            SUM(message_count)::int AS total_messages,
+            COALESCE(SUM(message_count), 0)::int AS total_messages,
             AVG(message_count)::float AS avg_messages,
             COUNT(*) FILTER (WHERE status = 'active')::int AS active_sessions,
             AVG(lead_score)::float AS avg_score
         FROM chat_session
         WHERE created_at >= ${startDateStr}
+          AND created_at <= ${endDateStr}
+          AND is_test_session = false
     `)
 
     const stats = result[0]
@@ -56,11 +55,7 @@ export const getChatSummary = cache(async (days = 7): Promise<ChatSummary> => {
  */
 export const getLeadGradeDistribution = cache(
     async (days = 7): Promise<LeadGradeDistribution[]> => {
-        const startDate = new Date()
-        startDate.setHours(0, 0, 0, 0)
-        if (days > 0) {
-            startDate.setDate(startDate.getDate() - (days - 1))
-        }
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -71,7 +66,9 @@ export const getLeadGradeDistribution = cache(
             .where(
                 and(
                     isNotNull(chatSession.leadGrade),
-                    gte(chatSession.createdAt, startDate)
+                    gte(chatSession.createdAt, startDate),
+                    lte(chatSession.createdAt, endDate),
+                    eq(chatSession.isTestSession, false)
                 )
             )
             .groupBy(chatSession.leadGrade)

@@ -1,8 +1,9 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { chatSession } from '@workspace/db/schema/chat'
-import { desc, inArray, gte, and } from 'drizzle-orm'
+import { desc, inArray, gte, lte, and, eq } from 'drizzle-orm'
 
+import { getQueryDateRange } from '@/lib/utils/query-date-range.util'
 import type { HighValueLead } from '@/lib/types/analytics/high-value-lead.type'
 
 /**
@@ -13,11 +14,7 @@ import type { HighValueLead } from '@/lib/types/analytics/high-value-lead.type'
  */
 export const getHighValueLeads = cache(
     async (days = 7, limit = 5): Promise<HighValueLead[]> => {
-        const startDate = new Date()
-        startDate.setHours(0, 0, 0, 0)
-        if (days > 0) {
-            startDate.setDate(startDate.getDate() - (days - 1))
-        }
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const leads = await db
             .select({
@@ -33,7 +30,9 @@ export const getHighValueLeads = cache(
             .where(
                 and(
                     inArray(chatSession.leadGrade, ['A', 'B']),
-                    gte(chatSession.createdAt, startDate)
+                    gte(chatSession.createdAt, startDate),
+                    lte(chatSession.createdAt, endDate),
+                    eq(chatSession.isTestSession, false)
                 )
             )
             .orderBy(desc(chatSession.createdAt))
