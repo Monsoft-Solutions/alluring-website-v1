@@ -12,6 +12,7 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useProcedureDemand } from '@/hooks/use-dashboard.hook'
 
 // Lazy load chart
@@ -27,9 +28,11 @@ const ProcedureDemandChart = dynamicImport(
 
 /**
  * Procedure demand card showing which procedures are most requested.
+ * Uses the date range context to filter data.
  */
 export function ProcedureDemandCard() {
-    const { data, isLoading, error, refetch } = useProcedureDemand(8)
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useProcedureDemand(days, 8)
 
     return (
         <Card>
@@ -39,7 +42,7 @@ export function ProcedureDemandCard() {
                     Procedure Demand
                 </CardTitle>
                 <CardDescription>
-                    Most requested procedures from contact forms
+                    Most requested procedures ({label})
                 </CardDescription>
             </CardHeader>
             <CardContent>

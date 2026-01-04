@@ -2,19 +2,28 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { getChatSummary } from '@/lib/queries/dashboard-chat.query'
+import { getPageViewsByHour } from '@/lib/queries/analytics.query'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 
 export const runtime = 'nodejs'
 
 const querySchema = z.object({
-    days: z.coerce.number().int().min(0).max(365).default(7),
+    date: z.string().refine(
+        (val) => {
+            const date = new Date(val)
+            return !isNaN(date.getTime())
+        },
+        { message: 'Invalid date format' }
+    ),
 })
 
 /**
- * GET /api/admin/dashboard/chat-summary
- * Get chat summary stats for dashboard filtered by date range
+ * GET /api/admin/analytics/pageviews-hourly
+ * Get page views grouped by hour for a specific date
+ *
+ * Query params:
+ * - date: ISO date string (required)
  */
 export async function GET(request: NextRequest) {
     try {
@@ -22,24 +31,30 @@ export async function GET(request: NextRequest) {
 
         const searchParams = request.nextUrl.searchParams
         const rawParams = Object.fromEntries(searchParams.entries())
+
         const validationResult = querySchema.safeParse(rawParams)
 
         if (!validationResult.success) {
             return NextResponse.json(
-                { success: false, error: 'Invalid parameters' },
+                {
+                    success: false,
+                    error: 'Invalid query parameters',
+                    details: validationResult.error.format(),
+                },
                 { status: 400 }
             )
         }
 
-        const { days } = validationResult.data
-        const data = await getChatSummary(days)
+        const { date } = validationResult.data
+        const targetDate = new Date(date)
+        const data = await getPageViewsByHour(targetDate)
 
         return NextResponse.json(data)
     } catch (error) {
         return handleApiError(
             error,
-            'Failed to fetch chat summary',
-            'Error fetching chat summary:'
+            'Failed to fetch hourly pageviews data',
+            'Error fetching hourly pageviews data:'
         )
     }
 }

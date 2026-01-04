@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { Clock, AlertCircle, RefreshCw } from 'lucide-react'
+
+import { formatRelativeTime } from '@/lib/utils/format-date.util'
 import {
     Card,
     CardContent,
@@ -11,14 +13,21 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useRecentContacts } from '@/hooks/use-dashboard.hook'
 
 /**
  * Recent contacts card component that fetches its own data via TanStack Query.
- * Shows the 5 most recent contact submissions.
+ * Uses the date range context to filter data.
  */
 export function RecentContactsCard() {
-    const { data: contacts, isLoading, error, refetch } = useRecentContacts(5)
+    const { days } = useDateRange()
+    const {
+        data: contacts,
+        isLoading,
+        error,
+        refetch,
+    } = useRecentContacts(days, 5)
 
     return (
         <Card>
@@ -92,20 +101,4 @@ export function RecentContactsCard() {
             </CardContent>
         </Card>
     )
-}
-
-function formatRelativeTime(date: Date | string): string {
-    const dateObj = typeof date === 'string' ? new Date(date) : date
-    const now = new Date()
-    const diffMs = now.getTime() - dateObj.getTime()
-    const diffMins = Math.floor(diffMs / 60000)
-    const diffHours = Math.floor(diffMins / 60)
-    const diffDays = Math.floor(diffHours / 24)
-
-    if (diffMins < 1) return 'just now'
-    if (diffMins < 60) return `${diffMins}m ago`
-    if (diffHours < 24) return `${diffHours}h ago`
-    if (diffDays < 7) return `${diffDays}d ago`
-
-    return dateObj.toLocaleDateString()
 }

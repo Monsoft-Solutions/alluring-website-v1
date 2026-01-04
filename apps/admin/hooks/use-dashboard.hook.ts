@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
-import type { DailyCount } from '@/lib/types/common/common.type'
+import type { DailyCount, HourlyCount } from '@/lib/types/common/common.type'
 import type { DashboardStats } from '@/lib/types/analytics/dashboard-stats.type'
 import type { RecentContact } from '@/lib/types/contacts/recent-contact.type'
 import type { TopPost } from '@/lib/types/blog/top-post.type'
@@ -17,24 +17,33 @@ import type { DailyViewCount } from '@/lib/types/analytics/analytics.type'
  */
 export const dashboardKeys = {
     all: ['admin', 'dashboard'] as const,
-    stats: () => [...dashboardKeys.all, 'stats'] as const,
+    stats: (days: number) => [...dashboardKeys.all, 'stats', days] as const,
     traffic: (days: number) => [...dashboardKeys.all, 'traffic', days] as const,
-    procedureDemand: (limit: number) =>
-        [...dashboardKeys.all, 'procedure-demand', limit] as const,
+    procedureDemand: (days: number, limit: number) =>
+        [...dashboardKeys.all, 'procedure-demand', days, limit] as const,
     chat: {
-        summary: () => [...dashboardKeys.all, 'chat', 'summary'] as const,
-        leadGrades: () =>
-            [...dashboardKeys.all, 'chat', 'lead-grades'] as const,
+        summary: (days: number) =>
+            [...dashboardKeys.all, 'chat', 'summary', days] as const,
+        leadGrades: (days: number) =>
+            [...dashboardKeys.all, 'chat', 'lead-grades', days] as const,
     },
     leads: {
-        highValue: (limit: number) =>
-            [...dashboardKeys.all, 'leads', 'high-value', limit] as const,
+        highValue: (days: number, limit: number) =>
+            [...dashboardKeys.all, 'leads', 'high-value', days, limit] as const,
     },
     contacts: {
-        recent: (limit: number) =>
-            [...dashboardKeys.all, 'contacts', 'recent', limit] as const,
+        recent: (days: number, limit: number) =>
+            [...dashboardKeys.all, 'contacts', 'recent', days, limit] as const,
         chart: (days: number) =>
             [...dashboardKeys.all, 'contacts', 'chart', days] as const,
+        chartHourly: (dateStr: string) =>
+            [
+                ...dashboardKeys.all,
+                'contacts',
+                'chart',
+                'hourly',
+                dateStr,
+            ] as const,
     },
     posts: {
         top: (limit: number) =>
@@ -43,12 +52,15 @@ export const dashboardKeys = {
 } as const
 
 /**
- * Hook to fetch dashboard summary statistics.
+ * Hook to fetch dashboard summary statistics filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
  */
-export function useDashboardStats() {
+export function useDashboardStats(days = 7) {
     return useQuery({
-        queryKey: dashboardKeys.stats(),
-        queryFn: () => fetchApi<DashboardStats>('/api/admin/stats'),
+        queryKey: dashboardKeys.stats(days),
+        queryFn: () =>
+            fetchApi<DashboardStats>(buildUrl('/api/admin/stats', { days })),
         staleTime: 30_000, // 30 seconds
     })
 }
@@ -68,68 +80,89 @@ export function useDashboardTraffic(days = 30) {
 }
 
 /**
- * Hook to fetch procedure demand breakdown.
+ * Hook to fetch procedure demand breakdown filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
+ * @param limit - Maximum number of procedures to return (default 10)
  */
-export function useProcedureDemand(limit = 10) {
+export function useProcedureDemand(days = 7, limit = 10) {
     return useQuery({
-        queryKey: dashboardKeys.procedureDemand(limit),
+        queryKey: dashboardKeys.procedureDemand(days, limit),
         queryFn: () =>
             fetchApi<ProcedureDemand[]>(
-                buildUrl('/api/admin/dashboard/procedure-demand', { limit })
+                buildUrl('/api/admin/dashboard/procedure-demand', {
+                    days,
+                    limit,
+                })
             ),
         staleTime: 60_000,
     })
 }
 
 /**
- * Hook to fetch chat summary stats.
+ * Hook to fetch chat summary stats filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
  */
-export function useChatSummary() {
+export function useChatSummary(days = 7) {
     return useQuery({
-        queryKey: dashboardKeys.chat.summary(),
+        queryKey: dashboardKeys.chat.summary(days),
         queryFn: () =>
-            fetchApi<ChatSummary>('/api/admin/dashboard/chat-summary'),
+            fetchApi<ChatSummary>(
+                buildUrl('/api/admin/dashboard/chat-summary', { days })
+            ),
         staleTime: 30_000,
     })
 }
 
 /**
- * Hook to fetch lead grade distribution.
+ * Hook to fetch lead grade distribution filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
  */
-export function useLeadGradesChart() {
+export function useLeadGradesChart(days = 7) {
     return useQuery({
-        queryKey: dashboardKeys.chat.leadGrades(),
+        queryKey: dashboardKeys.chat.leadGrades(days),
         queryFn: () =>
             fetchApi<LeadGradeDistribution[]>(
-                '/api/admin/dashboard/lead-grades'
+                buildUrl('/api/admin/dashboard/lead-grades', { days })
             ),
         staleTime: 60_000,
     })
 }
 
 /**
- * Hook to fetch recent high-value leads.
+ * Hook to fetch recent high-value leads filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
+ * @param limit - Maximum number of leads to return (default 5)
  */
-export function useHighValueLeads(limit = 5) {
+export function useHighValueLeads(days = 7, limit = 5) {
     return useQuery({
-        queryKey: dashboardKeys.leads.highValue(limit),
+        queryKey: dashboardKeys.leads.highValue(days, limit),
         queryFn: () =>
             fetchApi<HighValueLead[]>(
-                buildUrl('/api/admin/dashboard/high-value-leads', { limit })
+                buildUrl('/api/admin/dashboard/high-value-leads', {
+                    days,
+                    limit,
+                })
             ),
         staleTime: 30_000,
     })
 }
 
 /**
- * Hook to fetch recent contact submissions.
+ * Hook to fetch recent contact submissions filtered by date range.
+ *
+ * @param days - Number of days to filter by (default 7)
+ * @param limit - Maximum number of contacts to return (default 5)
  */
-export function useRecentContacts(limit = 5) {
+export function useRecentContacts(days = 7, limit = 5) {
     return useQuery({
-        queryKey: dashboardKeys.contacts.recent(limit),
+        queryKey: dashboardKeys.contacts.recent(days, limit),
         queryFn: () =>
             fetchApi<RecentContact[]>(
-                buildUrl('/api/admin/contacts/recent', { limit })
+                buildUrl('/api/admin/contacts/recent', { days, limit })
             ),
         staleTime: 30_000,
     })
@@ -137,8 +170,11 @@ export function useRecentContacts(limit = 5) {
 
 /**
  * Hook to fetch contacts over time for chart visualization.
+ *
+ * @param days - Number of days to include in the chart (default 30)
+ * @param options - Query options (e.g., enabled)
  */
-export function useContactsChart(days = 30) {
+export function useContactsChart(days = 30, options?: { enabled?: boolean }) {
     return useQuery({
         queryKey: dashboardKeys.contacts.chart(days),
         queryFn: () =>
@@ -146,6 +182,31 @@ export function useContactsChart(days = 30) {
                 buildUrl('/api/admin/contacts/chart', { days })
             ),
         staleTime: 60_000,
+        enabled: options?.enabled ?? true, // Default to true
+    })
+}
+
+/**
+ * Hook to fetch contacts grouped by hour for a specific date.
+ * Used for Today/Yesterday hourly breakdown.
+ *
+ * @param targetDate - The date to get hourly data for
+ * @param options - Query options (e.g., enabled)
+ */
+export function useContactsChartHourly(
+    targetDate: Date,
+    options?: { enabled?: boolean }
+) {
+    // Build YYYY-MM-DD from local date components (en-CA locale gives YYYY-MM-DD format)
+    const dateStr = targetDate.toLocaleDateString('en-CA')
+    return useQuery({
+        queryKey: dashboardKeys.contacts.chartHourly(dateStr),
+        queryFn: () =>
+            fetchApi<HourlyCount[]>(
+                buildUrl('/api/admin/contacts/hourly', { date: dateStr })
+            ),
+        staleTime: 30_000, // 30 seconds for today's data
+        enabled: options?.enabled ?? true, // Default to true
     })
 }
 

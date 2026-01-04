@@ -13,6 +13,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useTrafficSources } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 
 // Lazy load chart for better performance
 const TrafficSourcesChart = dynamicImport(
@@ -27,10 +28,11 @@ const TrafficSourcesChart = dynamicImport(
 
 /**
  * Traffic sources chart card component that fetches its own data via TanStack Query.
- * Shows where visitors come from.
+ * Shows where visitors come from in the selected date range.
  */
 export function TrafficSourcesCard() {
-    const { data, isLoading, error, refetch } = useTrafficSources(10)
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useTrafficSources(days, 10)
 
     return (
         <Card>
@@ -39,7 +41,9 @@ export function TrafficSourcesCard() {
                     <ExternalLink className='h-5 w-5' />
                     Traffic Sources
                 </CardTitle>
-                <CardDescription>Where your visitors come from</CardDescription>
+                <CardDescription>
+                    Where your visitors come from - {label.toLowerCase()}
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (

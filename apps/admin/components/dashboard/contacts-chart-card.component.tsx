@@ -12,7 +12,11 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
-import { useContactsChart } from '@/hooks/use-dashboard.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
+import {
+    useContactsChart,
+    useContactsChartHourly,
+} from '@/hooks/use-dashboard.hook'
 
 // Lazy load chart for better performance
 const ContactsChart = dynamicImport(
@@ -27,10 +31,27 @@ const ContactsChart = dynamicImport(
 
 /**
  * Contacts chart card component that fetches its own data via TanStack Query.
- * Shows contacts over time for the last 30 days.
+ * Uses the date range context to filter data.
+ * Uses hourly breakdown for Today and Yesterday, daily breakdown for longer periods.
  */
 export function ContactsChartCard() {
-    const { data, isLoading, error, refetch } = useContactsChart(30)
+    const { dateRange, days, label, startDate } = useDateRange()
+
+    // Determine if we should show hourly data
+    const isHourlyMode = dateRange === 'today' || dateRange === 'yesterday'
+
+    // Fetch daily data (used for multi-day periods) - only when NOT hourly mode
+    const dailyQuery = useContactsChart(days, { enabled: !isHourlyMode })
+
+    // Fetch hourly data (used for today/yesterday) - only when in hourly mode
+    const hourlyQuery = useContactsChartHourly(startDate, {
+        enabled: isHourlyMode,
+    })
+
+    // Select the appropriate query based on mode
+    const { data, isLoading, error, refetch } = isHourlyMode
+        ? hourlyQuery
+        : dailyQuery
 
     return (
         <Card>
@@ -40,7 +61,7 @@ export function ContactsChartCard() {
                     Contacts Over Time
                 </CardTitle>
                 <CardDescription>
-                    Last 30 days of contact submissions
+                    Contact submissions ({label}){isHourlyMode && ' (by hour)'}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -62,7 +83,10 @@ export function ContactsChartCard() {
                         </Button>
                     </div>
                 ) : data && data.length > 0 ? (
-                    <ContactsChart data={data} />
+                    <ContactsChart
+                        data={data}
+                        mode={isHourlyMode ? 'hourly' : 'daily'}
+                    />
                 ) : (
                     <div className='flex h-[200px] items-center justify-center'>
                         <p className='text-muted-foreground text-sm'>

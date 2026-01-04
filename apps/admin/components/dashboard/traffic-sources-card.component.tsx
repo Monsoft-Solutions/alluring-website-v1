@@ -12,6 +12,7 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useTrafficSources } from '@/hooks/use-analytics.hook'
 
 // Lazy load chart
@@ -27,9 +28,11 @@ const TrafficSourcesChart = dynamicImport(
 
 /**
  * Traffic sources card showing where visitors are coming from.
+ * Uses the date range context to filter data.
  */
 export function TrafficSourcesCard() {
-    const { data, isLoading, error, refetch } = useTrafficSources(6)
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useTrafficSources(days, 6)
 
     return (
         <Card>
@@ -38,9 +41,7 @@ export function TrafficSourcesCard() {
                     <Share2 className='h-5 w-5' />
                     Traffic Sources
                 </CardTitle>
-                <CardDescription>
-                    Where your visitors come from (UTM Source or Referrer)
-                </CardDescription>
+                <CardDescription>Visitor sources ({label})</CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (

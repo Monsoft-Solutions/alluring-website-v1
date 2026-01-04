@@ -12,14 +12,16 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useGeoDistribution } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { GeoTable } from '@/components/charts/analytics-charts.component'
 
 /**
  * Geographic distribution card component that fetches its own data via TanStack Query.
- * Shows where visitors are located by country.
+ * Shows where visitors are located by country in the selected date range.
  */
 export function GeoCard() {
-    const { data, isLoading, error, refetch } = useGeoDistribution(10)
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useGeoDistribution(days, 10)
 
     return (
         <Card>
@@ -28,7 +30,9 @@ export function GeoCard() {
                     <Globe className='h-5 w-5' />
                     Countries
                 </CardTitle>
-                <CardDescription>Geographic distribution</CardDescription>
+                <CardDescription>
+                    Geographic distribution - {label.toLowerCase()}
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (

@@ -18,13 +18,16 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useChatSummary } from '@/hooks/use-dashboard.hook'
 
 /**
  * Chat performance stats card showing key AI chat metrics.
+ * Uses the date range context to filter data.
  */
 export function ChatStatsCard() {
-    const { data, isLoading, error, refetch } = useChatSummary()
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useChatSummary(days)
 
     return (
         <Card>
@@ -34,7 +37,7 @@ export function ChatStatsCard() {
                     Chat Performance
                 </CardTitle>
                 <CardDescription>
-                    AI assistant engagement and lead quality
+                    AI assistant engagement ({label})
                 </CardDescription>
             </CardHeader>
             <CardContent>

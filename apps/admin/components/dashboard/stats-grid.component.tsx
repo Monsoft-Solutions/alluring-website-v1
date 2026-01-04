@@ -17,15 +17,18 @@ import {
 } from '@workspace/ui/components/card'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useDashboardStats } from '@/hooks/use-dashboard.hook'
 import { StatsGridSkeleton } from '@/components/shared/skeletons/stats-grid-skeleton.component'
 
 /**
  * Stats grid component that fetches its own data via TanStack Query.
  * Shows website visitors, contacts, chat sessions, and lead quality metrics.
+ * Uses the date range context to filter data.
  */
 export function StatsGrid() {
-    const { data: stats, isLoading, error, refetch } = useDashboardStats()
+    const { days, label } = useDateRange()
+    const { data: stats, isLoading, error, refetch } = useDashboardStats(days)
 
     if (isLoading) {
         return <StatsGridSkeleton />
@@ -63,14 +66,14 @@ export function StatsGrid() {
             <StatsCard
                 title='Website Visitors'
                 value={stats.visitors.today}
-                description='Unique visitors today'
+                description={`Unique visitors (${label})`}
                 icon={Users}
                 href='/analytics'
             />
             <StatsCard
                 title='Contact Leads'
-                value={stats.contacts.total}
-                description={`${stats.contacts.recent} in the last 7 days`}
+                value={stats.contacts.recent}
+                description={`Contact submissions (${label})`}
                 icon={Mail}
                 href='/contacts'
             />
@@ -84,7 +87,7 @@ export function StatsGrid() {
             <StatsCard
                 title='Lead Quality'
                 value={`${stats.leads.highQualityPercentage}%`}
-                description='Percentage of A/B grade leads'
+                description={`A/B grade leads (${label})`}
                 icon={Star}
                 href='/chat/conversations'
             />

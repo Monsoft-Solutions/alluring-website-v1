@@ -12,6 +12,7 @@ import {
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 import { useLeadGradesChart } from '@/hooks/use-dashboard.hook'
 
 // Lazy load chart
@@ -27,9 +28,11 @@ const LeadGradeChart = dynamicImport(
 
 /**
  * Lead grades card showing distribution of lead quality from AI chat.
+ * Uses the date range context to filter data.
  */
 export function LeadGradesCard() {
-    const { data, isLoading, error, refetch } = useLeadGradesChart()
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useLeadGradesChart(days)
 
     return (
         <Card>
@@ -39,7 +42,7 @@ export function LeadGradesCard() {
                     Lead Quality
                 </CardTitle>
                 <CardDescription>
-                    Distribution of A/B/C/D grades from chat analysis
+                    Lead grade distribution ({label})
                 </CardDescription>
             </CardHeader>
             <CardContent>

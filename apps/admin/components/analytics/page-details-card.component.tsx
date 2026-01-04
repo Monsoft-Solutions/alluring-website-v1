@@ -12,20 +12,22 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useTopPages } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 
 /**
  * Page details card component that fetches its own data via TanStack Query.
  * Shows detailed breakdown of top pages with views and sessions.
  */
 export function PageDetailsCard() {
-    const { data: topPages, isLoading, error, refetch } = useTopPages(30, 10)
+    const { days, label } = useDateRange()
+    const { data: topPages, isLoading, error, refetch } = useTopPages(days, 10)
 
     return (
         <Card>
             <CardHeader>
                 <CardTitle className='text-lg'>Page Details</CardTitle>
                 <CardDescription>
-                    Detailed breakdown of top pages
+                    Detailed breakdown of top pages - {label.toLowerCase()}
                 </CardDescription>
             </CardHeader>
             <CardContent>

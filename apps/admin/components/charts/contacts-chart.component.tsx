@@ -10,17 +10,25 @@ import {
     YAxis,
 } from 'recharts'
 
-import type { DailyCount } from '@/lib/types/common/common.type'
+import type { DailyCount, HourlyCount } from '@/lib/types/common/common.type'
 
 type ContactsChartProps = {
-    data: DailyCount[]
+    data: DailyCount[] | HourlyCount[]
+    mode?: 'daily' | 'hourly'
 }
 
-export function ContactsChart({ data }: ContactsChartProps) {
-    const formattedData = data.map((item) => ({
-        ...item,
-        formattedDate: formatDate(item.date),
-    }))
+export function ContactsChart({ data, mode = 'daily' }: ContactsChartProps) {
+    const isHourly = mode === 'hourly'
+
+    const formattedData = isHourly
+        ? (data as HourlyCount[]).map((item) => ({
+              ...item,
+              formattedLabel: formatHour(item.hour),
+          }))
+        : (data as DailyCount[]).map((item) => ({
+              ...item,
+              formattedLabel: formatDate(item.date),
+          }))
 
     return (
         <ResponsiveContainer width='100%' height={200}>
@@ -54,11 +62,11 @@ export function ContactsChart({ data }: ContactsChartProps) {
                     stroke='#e7e5e4'
                 />
                 <XAxis
-                    dataKey='formattedDate'
+                    dataKey='formattedLabel'
                     tick={{ fontSize: 11, fill: '#78716c' }}
                     tickLine={false}
                     axisLine={false}
-                    interval='preserveStartEnd'
+                    interval={isHourly ? 2 : 'preserveStartEnd'}
                 />
                 <YAxis
                     tick={{ fontSize: 11, fill: '#78716c' }}
@@ -70,18 +78,39 @@ export function ContactsChart({ data }: ContactsChartProps) {
                     content={({ active, payload }) => {
                         if (!active || !payload?.length || !payload[0])
                             return null
-                        const item = payload[0] as {
-                            payload: DailyCount & { formattedDate: string }
+
+                        if (isHourly) {
+                            const item = payload[0] as {
+                                payload: HourlyCount & {
+                                    formattedLabel: string
+                                }
+                            }
+                            const hourData = item.payload
+                            return (
+                                <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
+                                    <p className='text-muted-foreground text-xs'>
+                                        {formatHourFull(hourData.hour)}
+                                    </p>
+                                    <p className='font-medium'>
+                                        {hourData.count} contact
+                                        {hourData.count !== 1 ? 's' : ''}
+                                    </p>
+                                </div>
+                            )
                         }
-                        const data = item.payload
+
+                        const item = payload[0] as {
+                            payload: DailyCount & { formattedLabel: string }
+                        }
+                        const dailyData = item.payload
                         return (
                             <div className='rounded-lg border bg-white px-3 py-2 shadow-sm'>
                                 <p className='text-muted-foreground text-xs'>
-                                    {formatFullDate(data.date)}
+                                    {formatFullDate(dailyData.date)}
                                 </p>
                                 <p className='font-medium'>
-                                    {data.count} contact
-                                    {data.count !== 1 ? 's' : ''}
+                                    {dailyData.count} contact
+                                    {dailyData.count !== 1 ? 's' : ''}
                                 </p>
                             </div>
                         )
@@ -112,4 +141,23 @@ function formatFullDate(dateStr: string): string {
         day: 'numeric',
         year: 'numeric',
     })
+}
+
+/**
+ * Format hour number (0-23) to short label (e.g., "9AM", "2PM")
+ */
+function formatHour(hour: number): string {
+    if (hour === 0) return '12AM'
+    if (hour === 12) return '12PM'
+    if (hour < 12) return `${hour}AM`
+    return `${hour - 12}PM`
+}
+
+/**
+ * Format hour number (0-23) to full label (e.g., "9:00 AM", "2:00 PM")
+ */
+function formatHourFull(hour: number): string {
+    const period = hour >= 12 ? 'PM' : 'AM'
+    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour
+    return `${displayHour}:00 ${period}`
 }

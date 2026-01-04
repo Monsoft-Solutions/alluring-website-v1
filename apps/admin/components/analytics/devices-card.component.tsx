@@ -13,6 +13,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useDeviceBreakdown } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 
 // Lazy load chart for better performance
 const DeviceChart = dynamicImport(
@@ -30,7 +31,8 @@ const DeviceChart = dynamicImport(
  * Shows device type breakdown (mobile, desktop, tablet).
  */
 export function DevicesCard() {
-    const { data, isLoading, error, refetch } = useDeviceBreakdown()
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useDeviceBreakdown(days)
 
     return (
         <Card>
@@ -39,7 +41,9 @@ export function DevicesCard() {
                     <Monitor className='h-5 w-5' />
                     Devices
                 </CardTitle>
-                <CardDescription>Device type breakdown</CardDescription>
+                <CardDescription>
+                    Device breakdown - {label.toLowerCase()}
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 {isLoading ? (

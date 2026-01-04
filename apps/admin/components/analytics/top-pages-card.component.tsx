@@ -13,6 +13,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useTopPages } from '@/hooks/use-analytics.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 
 // Lazy load chart for better performance
 const TopPagesChart = dynamicImport(
@@ -27,10 +28,11 @@ const TopPagesChart = dynamicImport(
 
 /**
  * Top pages chart card component that fetches its own data via TanStack Query.
- * Shows top 10 pages by views in the last 30 days.
+ * Shows top 10 pages by views in the selected date range.
  */
 export function TopPagesCard() {
-    const { data, isLoading, error, refetch } = useTopPages(30, 10)
+    const { days, label } = useDateRange()
+    const { data, isLoading, error, refetch } = useTopPages(days, 10)
 
     return (
         <Card>
@@ -40,7 +42,7 @@ export function TopPagesCard() {
                     Top Pages
                 </CardTitle>
                 <CardDescription>
-                    Most viewed pages in the last 30 days
+                    Most viewed pages - {label.toLowerCase()}
                 </CardDescription>
             </CardHeader>
             <CardContent>
