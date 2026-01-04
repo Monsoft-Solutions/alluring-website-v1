@@ -2,53 +2,52 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach to Next.js Server",
-            "type": "node",
-            "request": "attach",
-            "port": 9229,
-            "restart": true,
+            "name": "Debug Admin App (Server)",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "pnpm --filter admin dev",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/**",
+                "**/next/dist/**"
             ],
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/**",
                 "!**/node_modules/**"
-            ],
-            "sourceMaps": true,
-            "cwd": "${workspaceFolder}/apps/admin",
-            "env": {
-                "NODE_ENV": "development"
-            }
+            ]
         },
         {
-            "name": "Launch Next.js with Debugging",
-            "type": "node",
+            "name": "Debug Web App (Server)",
+            "type": "node-terminal",
             "request": "launch",
-            "runtimeExecutable": "pnpm",
-            "runtimeArgs": [
-                "--filter",
-                "admin",
-                "dev:debug"
-            ],
+            "command": "pnpm --filter web dev",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/**",
+                "**/next/dist/**"
+            ],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ]
+        },
+        {
+            "name": "Attach to Next.js (port 9230)",
+            "type": "node",
+            "request": "attach",
+            "port": 9230,
+            "restart": true,
+            "skipFiles": [
+                "<node_internals>/**",
+                "**/next/dist/**"
             ],
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/**",
                 "!**/node_modules/**"
             ],
-            "sourceMaps": true,
-            "cwd": "${workspaceFolder}/apps/admin",
-            "env": {
-                "NODE_ENV": "development"
-            },
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "serverReadyAction": {
-                "pattern": "Ready in [0-9]+ms",
-                "uriFormat": "http://localhost:3105",
-                "action": "openExternally"
-            }
+            "sourceMaps": true
         }
     ]
 }

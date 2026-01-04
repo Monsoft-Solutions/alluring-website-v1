@@ -8,6 +8,8 @@ jiti('./env')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Acknowledge Turbopack usage (silences webpack plugin warnings)
+    turbopack: {},
     transpilePackages: ['@workspace/ui', '@workspace/db'],
     images: {
         remotePatterns: [

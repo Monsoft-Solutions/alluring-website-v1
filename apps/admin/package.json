@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev --port 3105",
-        "dev:debug": "NODE_OPTIONS='--inspect' next dev --port 3105",
+        "dev:debug": "next dev --port 3105 --experimental-https",
         "build": "next build",
         "start": "next start --port 3105",
         "lint": "eslint . --max-warnings 0",
