@@ -7,6 +7,7 @@ import { emailLog } from '@workspace/db/schema/emails'
 import { count, eq, desc, sql, gte, lte, and } from 'drizzle-orm'
 
 import { fillMissingDatesSimple } from '@/lib/utils/date.util'
+import { getQueryDateRange } from '@/lib/utils/query-date-range.util'
 import type { DailyCount, HourlyCount } from '@/lib/types/common/common.type'
 import type { DashboardStats } from '@/lib/types/analytics/dashboard-stats.type'
 import type { RecentContact } from '@/lib/types/contacts/recent-contact.type'
@@ -34,27 +35,22 @@ type DashboardStatsRow = {
  */
 export const getDashboardStats = cache(
     async (days = 7): Promise<DashboardStats> => {
-        // Calculate start date for period filtering
-        const startDate = new Date()
-        startDate.setHours(0, 0, 0, 0)
-
-        // For "today" (days=0), start is today; for days > 0, go back (days - 1) days
-        if (days > 0) {
-            startDate.setDate(startDate.getDate() - (days - 1))
-        }
-        const startDateStr = startDate.toISOString()
+        // Use string versions for raw SQL queries
+        const { startDateStr, endDateStr } = getQueryDateRange(days)
 
         // Optimized: Single query instead of multiple concurrent queries
+        // Uses both startDate and endDate bounds for correct "yesterday" filtering
+        // Excludes test sessions from chat counts
         const result = await db.execute<DashboardStatsRow>(sql`
         SELECT
-            (SELECT COUNT(DISTINCT session_id)::int FROM page_view WHERE created_at >= ${startDateStr}) AS period_visitors,
+            (SELECT COUNT(DISTINCT session_id)::int FROM page_view WHERE created_at >= ${startDateStr} AND created_at <= ${endDateStr}) AS period_visitors,
             (SELECT COUNT(DISTINCT session_id)::int FROM page_view) AS all_time_sessions,
-            (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${startDateStr}) AS total_contacts,
-            (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${startDateStr}) AS period_contacts,
-            (SELECT COUNT(*)::int FROM chat_session WHERE created_at >= ${startDateStr}) AS total_chat_sessions,
-            (SELECT SUM(message_count)::int FROM chat_session WHERE created_at >= ${startDateStr}) AS total_chat_messages,
-            (SELECT COUNT(*)::int FROM chat_session WHERE status = 'active' AND created_at >= ${startDateStr}) AS active_chat_sessions,
-            (SELECT COUNT(*)::int FROM chat_session WHERE lead_grade IN ('A', 'B') AND created_at >= ${startDateStr}) AS high_quality_leads
+            (SELECT COUNT(*)::int FROM contact_submission) AS total_contacts,
+            (SELECT COUNT(*)::int FROM contact_submission WHERE created_at >= ${startDateStr} AND created_at <= ${endDateStr}) AS period_contacts,
+            (SELECT COUNT(*)::int FROM chat_session WHERE created_at >= ${startDateStr} AND created_at <= ${endDateStr} AND is_test_session = false) AS total_chat_sessions,
+            (SELECT COALESCE(SUM(message_count), 0)::int FROM chat_session WHERE created_at >= ${startDateStr} AND created_at <= ${endDateStr} AND is_test_session = false) AS total_chat_messages,
+            (SELECT COUNT(*)::int FROM chat_session WHERE status = 'active' AND created_at >= ${startDateStr} AND created_at <= ${endDateStr} AND is_test_session = false) AS active_chat_sessions,
+            (SELECT COUNT(*)::int FROM chat_session WHERE lead_grade IN ('A', 'B') AND created_at >= ${startDateStr} AND created_at <= ${endDateStr} AND is_test_session = false) AS high_quality_leads
     `)
 
         const stats = result[0]
@@ -97,11 +93,7 @@ export const getDashboardStats = cache(
  */
 export const getRecentContacts = cache(
     async (days = 7, limit = 5): Promise<RecentContact[]> => {
-        const startDate = new Date()
-        startDate.setHours(0, 0, 0, 0)
-        if (days > 0) {
-            startDate.setDate(startDate.getDate() - (days - 1))
-        }
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const contacts = await db
             .select({
@@ -112,7 +104,12 @@ export const getRecentContacts = cache(
                 createdAt: contactSubmission.createdAt,
             })
             .from(contactSubmission)
-            .where(gte(contactSubmission.createdAt, startDate))
+            .where(
+                and(
+                    gte(contactSubmission.createdAt, startDate),
+                    lte(contactSubmission.createdAt, endDate)
+                )
+            )
             .orderBy(desc(contactSubmission.createdAt))
             .limit(limit)
 
@@ -143,11 +140,20 @@ export const getRecentBugReports = cache(
 )
 
 /**
- * Get contacts over time for chart visualization
+ * Get contacts over time for chart visualization.
+ *
+ * Note: For charts, we go back exactly N days from today to get N+1 data points.
+ * This is different from the date picker logic which uses "last N days including today".
+ *
+ * @param days - Number of days to go back (default 30)
  */
 export const getContactsOverTime = cache(
     async (days = 30): Promise<DailyCount[]> => {
+        const endDate = new Date()
+        endDate.setHours(23, 59, 59, 999)
+
         const startDate = new Date()
+        startDate.setHours(0, 0, 0, 0)
         startDate.setDate(startDate.getDate() - days)
 
         const results = await db
@@ -158,7 +164,12 @@ export const getContactsOverTime = cache(
                 count: count(),
             })
             .from(contactSubmission)
-            .where(gte(contactSubmission.createdAt, startDate))
+            .where(
+                and(
+                    gte(contactSubmission.createdAt, startDate),
+                    lte(contactSubmission.createdAt, endDate)
+                )
+            )
             .groupBy(sql`DATE(${contactSubmission.createdAt})`)
             .orderBy(sql`DATE(${contactSubmission.createdAt})`)
 

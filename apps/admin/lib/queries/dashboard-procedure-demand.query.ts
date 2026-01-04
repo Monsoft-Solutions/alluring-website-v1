@@ -1,8 +1,9 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { contactSubmission } from '@workspace/db/schema/contact'
-import { count, desc, isNotNull, and, ne, gte } from 'drizzle-orm'
+import { count, desc, isNotNull, and, ne, gte, lte } from 'drizzle-orm'
 
+import { getQueryDateRange } from '@/lib/utils/query-date-range.util'
 import type { ProcedureDemand } from '@/lib/types/analytics/procedure-demand.type'
 
 /**
@@ -13,11 +14,7 @@ import type { ProcedureDemand } from '@/lib/types/analytics/procedure-demand.typ
  */
 export const getProcedureDemand = cache(
     async (days = 7, limit = 10): Promise<ProcedureDemand[]> => {
-        const startDate = new Date()
-        startDate.setHours(0, 0, 0, 0)
-        if (days > 0) {
-            startDate.setDate(startDate.getDate() - (days - 1))
-        }
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -29,7 +26,8 @@ export const getProcedureDemand = cache(
                 and(
                     isNotNull(contactSubmission.procedure),
                     ne(contactSubmission.procedure, ''),
-                    gte(contactSubmission.createdAt, startDate)
+                    gte(contactSubmission.createdAt, startDate),
+                    lte(contactSubmission.createdAt, endDate)
                 )
             )
             .groupBy(contactSubmission.procedure)

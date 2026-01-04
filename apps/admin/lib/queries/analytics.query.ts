@@ -12,6 +12,7 @@ import { pageView } from '@workspace/db/schema/analytics'
 import { count, desc, gte, sql, countDistinct, and, lte } from 'drizzle-orm'
 
 import { fillMissingDatesWithViews } from '@/lib/utils/date.util'
+import { getQueryDateRange } from '@/lib/utils/query-date-range.util'
 import type {
     AnalyticsSummary,
     DailyViewCount,
@@ -25,39 +26,6 @@ import type {
 } from '@/lib/types/analytics/analytics.type'
 
 // ============================================================================
-// Helper Functions
-// ============================================================================
-
-/**
- * Calculate start date based on days parameter.
- *
- * @param days - Number of days to go back (0 = today only, 1 = yesterday only)
- * @returns Object with startDate and endDate
- */
-function getDateRange(days: number): { startDate: Date; endDate: Date } {
-    const now = new Date()
-    const endDate = new Date(now)
-    endDate.setHours(23, 59, 59, 999)
-
-    const startDate = new Date(now)
-    startDate.setHours(0, 0, 0, 0)
-
-    if (days === 0) {
-        // Today only - start and end are both today
-        return { startDate, endDate }
-    } else if (days === 1) {
-        // Yesterday only
-        startDate.setDate(startDate.getDate() - 1)
-        endDate.setDate(endDate.getDate() - 1)
-        return { startDate, endDate }
-    } else {
-        // Last N days (includes today)
-        startDate.setDate(startDate.getDate() - (days - 1))
-        return { startDate, endDate }
-    }
-}
-
-// ============================================================================
 // Summary Stats
 // ============================================================================
 
@@ -68,7 +36,7 @@ function getDateRange(days: number): { startDate: Date; endDate: Date } {
  */
 export const getAnalyticsSummary = cache(
     async (days = 7): Promise<AnalyticsSummary> => {
-        const { startDate, endDate } = getDateRange(days)
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const [
             totalViewsResult,
@@ -169,7 +137,7 @@ export const getAnalyticsSummary = cache(
  */
 export const getPageViewsOverTime = cache(
     async (days = 30): Promise<DailyViewCount[]> => {
-        const { startDate } = getDateRange(days)
+        const { startDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -264,7 +232,7 @@ export const getTopPages = cache(async (limit = 10): Promise<TopPage[]> => {
  */
 export const getTopPagesInRange = cache(
     async (days = 30, limit = 10): Promise<TopPage[]> => {
-        const { startDate, endDate } = getDateRange(days)
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -302,7 +270,7 @@ export const getTopPagesInRange = cache(
  */
 export const getTrafficSources = cache(
     async (days = 30, limit = 10): Promise<TrafficSource[]> => {
-        const { startDate, endDate } = getDateRange(days)
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -368,7 +336,7 @@ export const getUTMCampaigns = cache(
  */
 export const getDeviceBreakdown = cache(
     async (days = 30): Promise<DeviceStats[]> => {
-        const { startDate, endDate } = getDateRange(days)
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -405,7 +373,7 @@ export const getDeviceBreakdown = cache(
  */
 export const getBrowserBreakdown = cache(
     async (days = 30, limit = 10): Promise<BrowserStats[]> => {
-        const { startDate, endDate } = getDateRange(days)
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({
@@ -469,7 +437,7 @@ export const getOSBreakdown = cache(async (limit = 10): Promise<OSStats[]> => {
  */
 export const getGeoDistribution = cache(
     async (days = 30, limit = 20): Promise<GeoStats[]> => {
-        const { startDate, endDate } = getDateRange(days)
+        const { startDate, endDate } = getQueryDateRange(days)
 
         const results = await db
             .select({

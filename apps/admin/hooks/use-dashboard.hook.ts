@@ -170,8 +170,11 @@ export function useRecentContacts(days = 7, limit = 5) {
 
 /**
  * Hook to fetch contacts over time for chart visualization.
+ *
+ * @param days - Number of days to include in the chart (default 30)
+ * @param options - Query options (e.g., enabled)
  */
-export function useContactsChart(days = 30) {
+export function useContactsChart(days = 30, options?: { enabled?: boolean }) {
     return useQuery({
         queryKey: dashboardKeys.contacts.chart(days),
         queryFn: () =>
@@ -179,6 +182,7 @@ export function useContactsChart(days = 30) {
                 buildUrl('/api/admin/contacts/chart', { days })
             ),
         staleTime: 60_000,
+        enabled: options?.enabled ?? true, // Default to true
     })
 }
 
@@ -187,17 +191,22 @@ export function useContactsChart(days = 30) {
  * Used for Today/Yesterday hourly breakdown.
  *
  * @param targetDate - The date to get hourly data for
+ * @param options - Query options (e.g., enabled)
  */
-export function useContactsChartHourly(targetDate: Date) {
-    const isoString = targetDate.toISOString()
-    const dateStr = isoString.slice(0, 10) // YYYY-MM-DD format
+export function useContactsChartHourly(
+    targetDate: Date,
+    options?: { enabled?: boolean }
+) {
+    // Build YYYY-MM-DD from local date components (en-CA locale gives YYYY-MM-DD format)
+    const dateStr = targetDate.toLocaleDateString('en-CA')
     return useQuery({
         queryKey: dashboardKeys.contacts.chartHourly(dateStr),
         queryFn: () =>
             fetchApi<HourlyCount[]>(
-                buildUrl('/api/admin/contacts/hourly', { date: isoString })
+                buildUrl('/api/admin/contacts/hourly', { date: dateStr })
             ),
         staleTime: 30_000, // 30 seconds for today's data
+        enabled: options?.enabled ?? true, // Default to true
     })
 }
 

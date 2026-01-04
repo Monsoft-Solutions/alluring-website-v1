@@ -23,13 +23,15 @@ import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Button } from '@workspace/ui/components/button'
 
 import { useSearchConsoleSummary } from '@/hooks/use-search-console.hook'
+import { useDateRange } from '@/components/analytics/date-range-context.component'
 
 /**
  * Search Console summary card for the Analytics page.
  * Shows key metrics from Google Search Console and links to the full SEO Insights page.
  */
 export function SearchConsoleSummaryCard() {
-    const { data, isLoading, error, refetch } = useSearchConsoleSummary()
+    const { days } = useDateRange()
+    const { data, isLoading, error, refetch } = useSearchConsoleSummary(days)
 
     if (isLoading) {
         return <SearchConsoleSummarySkeleton />
