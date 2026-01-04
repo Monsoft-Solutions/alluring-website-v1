@@ -1,10 +1,14 @@
 import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import { after, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { generateBlogPostContentAgentic } from '@workspace/ai/functions'
+import {
+    generateBlogPostContentAgentic,
+    type GenerateBlogPostContentAgenticResult,
+} from '@workspace/ai/functions'
 
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
+import { langfuseSpanProcessor } from '@/instrumentation'
 
 export const runtime = 'nodejs'
 export const maxDuration = 180 // Allow up to 3 minutes for agentic generation
@@ -93,6 +97,8 @@ function createSSEStream() {
 /**
  * POST /api/blog/generate-content-agentic
  *
+ * TODO: Fix this and improve
+ *
  * Generate blog post content using the agentic approach:
  * - AI writes content while using research tools (Perplexity/Google)
  * - Real-time tool call streaming via SSE
@@ -103,6 +109,8 @@ function createSSEStream() {
 export async function POST(request: NextRequest) {
     try {
         await requireAuth()
+
+        console.log('Generating agentic content...')
 
         const body: unknown = await request.json()
         const validationResult = requestSchema.safeParse(body)
@@ -129,79 +137,104 @@ export async function POST(request: NextRequest) {
             let toolCallIndex = 0
 
             // Start agentic generation in background
-            generateBlogPostContentAgentic({
-                title: idea.title,
-                topic: idea.topic || idea.title,
-                primaryKeyword: idea.primaryKeyword || '',
-                secondaryKeywords: idea.secondaryKeywords,
-                targetAudience: idea.targetAudience,
-                uniqueAngle: idea.uniqueAngle,
-                estimatedWordCount: idea.estimatedWordCount,
-                outline: {
-                    ...outline,
-                    sections: outline.sections.map((s) => ({
-                        title: s.title,
-                        description: s.description,
-                        keyPoints: s.keyPoints,
-                        subsections: s.subsections,
-                    })),
-                },
-                onStepFinish: (step) => {
-                    if (step.stepType === 'tool_call' && step.toolCalls) {
-                        // Send tool call events
-                        // Note: AI SDK v5 uses 'input' property, v4 used 'args'
-                        for (const toolCall of step.toolCalls as Array<{
-                            toolName: string
-                            input?: Record<string, unknown>
-                            args?: Record<string, unknown>
-                        }>) {
-                            toolCallIndex++
-                            // Support both AI SDK v5 (input) and fallback to args for compatibility
-                            const toolInput = toolCall.input ?? toolCall.args
-                            const queryArg =
-                                typeof toolInput?.query === 'string'
-                                    ? toolInput.query
-                                    : 'research query'
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const generationPromise: Promise<GenerateBlogPostContentAgenticResult> =
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                generateBlogPostContentAgentic({
+                    title: idea.title,
+                    topic: idea.topic || idea.title,
+                    primaryKeyword: idea.primaryKeyword || '',
+                    secondaryKeywords: idea.secondaryKeywords,
+                    targetAudience: idea.targetAudience,
+                    uniqueAngle: idea.uniqueAngle,
+                    estimatedWordCount: idea.estimatedWordCount,
+                    outline: {
+                        ...outline,
+                        sections: outline.sections.map((s) => ({
+                            title: s.title,
+                            description: s.description,
+                            keyPoints: s.keyPoints,
+                            subsections: s.subsections,
+                        })),
+                    },
+                    onStepFinish: (step: {
+                        stepType: string
+                        toolCalls?: unknown[]
+                        text?: string
+                    }) => {
+                        if (step.stepType === 'tool_call' && step.toolCalls) {
+                            // Send tool call events
+                            // Note: AI SDK v5 uses 'input' property, v4 used 'args'
+                            for (const toolCall of step.toolCalls as Array<{
+                                toolName: string
+                                input?: Record<string, unknown>
+                                args?: Record<string, unknown>
+                            }>) {
+                                toolCallIndex++
+                                // Support both AI SDK v5 (input) and fallback to args for compatibility
+                                const toolInput =
+                                    toolCall.input ?? toolCall.args
+                                const queryArg =
+                                    typeof toolInput?.query === 'string'
+                                        ? toolInput.query
+                                        : 'research query'
+                                send('progress', {
+                                    step: 'agentic-writing',
+                                    progress: Math.min(
+                                        90,
+                                        20 + toolCallIndex * 10
+                                    ),
+                                    message: `Searching: ${queryArg}`,
+                                    data: {
+                                        type: 'tool-call',
+                                        toolName: toolCall.toolName,
+                                        query: queryArg,
+                                        toolCallIndex,
+                                    },
+                                })
+                            }
+                        } else if (step.text) {
+                            // Periodic text update (AI is writing)
                             send('progress', {
                                 step: 'agentic-writing',
                                 progress: Math.min(90, 20 + toolCallIndex * 10),
-                                message: `Searching: ${queryArg}`,
-                                data: {
-                                    type: 'tool-call',
-                                    toolName: toolCall.toolName,
-                                    query: queryArg,
-                                    toolCallIndex,
-                                },
+                                message: 'AI is writing with research tools...',
                             })
                         }
-                    } else if (step.text) {
-                        // Periodic text update (AI is writing)
-                        send('progress', {
-                            step: 'agentic-writing',
-                            progress: Math.min(90, 20 + toolCallIndex * 10),
-                            message: 'AI is writing with research tools...',
-                        })
-                    }
-                },
-            })
-                .then((result) => {
+                    },
+                })
+
+            generationPromise
+                .then((result: GenerateBlogPostContentAgenticResult) => {
                     send('complete', {
                         success: true,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         content: result.content,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         wordCount: result.wordCount,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         metaDescription: result.metaDescription,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         excerpt: result.excerpt,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         suggestedTags: result.suggestedTags,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         readingTimeMinutes: result.readingTimeMinutes,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         suggestedCategory: result.suggestedCategory,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         faqs: result.faqs,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         faqSchema: result.faqSchema,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         sources: result.sources,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         pipelineMetadata: result.pipelineMetadata,
                     })
                     close()
+                    void langfuseSpanProcessor.forceFlush()
                 })
-                .catch((error) => {
+                .catch((error: unknown) => {
                     send('error', {
                         success: false,
                         error:
@@ -219,6 +252,8 @@ export async function POST(request: NextRequest) {
                 message: 'Starting AI writing with research tools...',
             })
 
+            after(async () => await langfuseSpanProcessor.forceFlush())
+
             return new Response(stream, {
                 headers: {
                     'Content-Type': 'text/event-stream',
@@ -228,37 +263,51 @@ export async function POST(request: NextRequest) {
             })
         } else {
             // Non-streaming response - wait for full result
-            const result = await generateBlogPostContentAgentic({
-                title: idea.title,
-                topic: idea.topic || idea.title,
-                primaryKeyword: idea.primaryKeyword || '',
-                secondaryKeywords: idea.secondaryKeywords,
-                targetAudience: idea.targetAudience,
-                uniqueAngle: idea.uniqueAngle,
-                estimatedWordCount: idea.estimatedWordCount,
-                outline: {
-                    ...outline,
-                    sections: outline.sections.map((s) => ({
-                        title: s.title,
-                        description: s.description,
-                        keyPoints: s.keyPoints,
-                        subsections: s.subsections,
-                    })),
-                },
-            })
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const result: GenerateBlogPostContentAgenticResult =
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                await generateBlogPostContentAgentic({
+                    title: idea.title,
+                    topic: idea.topic || idea.title,
+                    primaryKeyword: idea.primaryKeyword || '',
+                    secondaryKeywords: idea.secondaryKeywords,
+                    targetAudience: idea.targetAudience,
+                    uniqueAngle: idea.uniqueAngle,
+                    estimatedWordCount: idea.estimatedWordCount,
+                    outline: {
+                        ...outline,
+                        sections: outline.sections.map((s) => ({
+                            title: s.title,
+                            description: s.description,
+                            keyPoints: s.keyPoints,
+                            subsections: s.subsections,
+                        })),
+                    },
+                })
 
             return NextResponse.json({
                 success: true,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 content: result.content,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 wordCount: result.wordCount,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 metaDescription: result.metaDescription,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 excerpt: result.excerpt,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 suggestedTags: result.suggestedTags,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 readingTimeMinutes: result.readingTimeMinutes,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 suggestedCategory: result.suggestedCategory,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 faqs: result.faqs,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 faqSchema: result.faqSchema,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 sources: result.sources,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 pipelineMetadata: result.pipelineMetadata,
             })
         }

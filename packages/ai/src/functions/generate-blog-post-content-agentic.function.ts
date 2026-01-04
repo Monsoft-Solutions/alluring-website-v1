@@ -396,7 +396,7 @@ export async function generateBlogPostContentAgentic(
         primaryKeyword,
         modelId = DEFAULT_CONTENT_MODEL,
         temperature = 0.7,
-        maxSteps = 10,
+        maxSteps = 20,
         onStepFinish,
     } = options
 
