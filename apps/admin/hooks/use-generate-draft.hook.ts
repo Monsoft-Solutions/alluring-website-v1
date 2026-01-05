@@ -18,6 +18,7 @@ import type {
     PipelineMode,
     SSECompleteEvent,
     SSEAgenticCompleteEvent,
+    SSEUnifiedCompleteEvent,
     SSEResearchFindingData,
     SSEResearchQueryData,
     SSEReviewResultData,
@@ -44,10 +45,12 @@ type UseGenerateDraftReturn = {
     error: string | null
     result: SSECompleteEvent | null
     agenticResult: SSEAgenticCompleteEvent | null
+    unifiedResult: SSEUnifiedCompleteEvent | null
     isProcessing: boolean
     isInReviewPhase: boolean
     isInResearchPhase: boolean
     isInAgenticPhase: boolean
+    isInGenerationPhase: boolean
     researchFindings: SSEResearchFindingData[]
     currentQuery: SSEResearchQueryData | null
     reviewResults: SSEReviewResultData[]
@@ -71,6 +74,15 @@ type UseGenerateDraftReturn = {
 type AgenticStreamResult = {
     success: boolean
     result: SSEAgenticCompleteEvent | null
+    error?: string
+}
+
+/**
+ * Result type for unified SSE stream processing
+ */
+type UnifiedStreamResult = {
+    success: boolean
+    result: SSEUnifiedCompleteEvent | null
     error?: string
 }
 
@@ -158,6 +170,84 @@ async function processAgenticSSEStream(
 }
 
 /**
+ * Process SSE stream from the unified agentic content pipeline API
+ */
+async function processUnifiedSSEStream(
+    reader: ReadableStreamDefaultReader<Uint8Array>,
+    handlers: {
+        onProgress: (data: {
+            step: DialogStep
+            progress: number
+            message: string
+            data?: SSEToolCallData | SSEReviewResultData
+        }) => void
+        onComplete: (data: SSEUnifiedCompleteEvent) => void
+        onError: (data: { error: string }) => void
+    }
+): Promise<UnifiedStreamResult> {
+    const decoder = new TextDecoder()
+    let buffer = ''
+    let unifiedResult: SSEUnifiedCompleteEvent | null = null
+    let streamError: string | undefined
+
+    try {
+        while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+
+            buffer += decoder.decode(value, { stream: true })
+            const lines = buffer.split('\n\n')
+            buffer = lines.pop() || ''
+
+            for (const line of lines) {
+                if (line.startsWith('event: ')) {
+                    const eventType = line.slice(7).split('\n')[0]
+                    const dataLine = line.split('\ndata: ')[1]
+                    if (dataLine) {
+                        const data = JSON.parse(dataLine) as unknown
+
+                        if (eventType === 'progress') {
+                            handlers.onProgress(
+                                data as {
+                                    step: DialogStep
+                                    progress: number
+                                    message: string
+                                    data?: SSEToolCallData | SSEReviewResultData
+                                }
+                            )
+                        } else if (eventType === 'complete') {
+                            const completeData = data as SSEUnifiedCompleteEvent
+                            unifiedResult = completeData
+                            handlers.onComplete(completeData)
+
+                            if (!completeData.success) {
+                                streamError =
+                                    completeData.error ||
+                                    'Content generation failed'
+                            }
+                        } else if (eventType === 'error') {
+                            const errorData = data as { error: string }
+                            streamError =
+                                errorData.error || 'Content generation failed'
+                            handlers.onError(errorData)
+                        }
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        streamError =
+            err instanceof Error ? err.message : 'Stream processing failed'
+    }
+
+    if (streamError) {
+        return { success: false, result: unifiedResult, error: streamError }
+    }
+
+    return { success: true, result: unifiedResult }
+}
+
+/**
  * Hook for managing blog draft generation with AI pipeline
  */
 export function useGenerateDraft({
@@ -174,9 +264,12 @@ export function useGenerateDraft({
     const [result, setResult] = useState<SSECompleteEvent | null>(null)
     const [agenticResult, setAgenticResult] =
         useState<SSEAgenticCompleteEvent | null>(null)
+    const [unifiedResult, setUnifiedResult] =
+        useState<SSEUnifiedCompleteEvent | null>(null)
     const [postId, setPostId] = useState<string | null>(null)
     const [useAdvancedPipeline, setUseAdvancedPipeline] = useState(true)
-    const [pipelineMode, setPipelineMode] = useState<PipelineMode>('agentic')
+    // Default to unified mode (new recommended approach)
+    const [pipelineMode, setPipelineMode] = useState<PipelineMode>('unified')
 
     // Research findings state (Pipeline V2)
     const [researchFindings, setResearchFindings] = useState<
@@ -201,6 +294,8 @@ export function useGenerateDraft({
         typeof step === 'string' && step.startsWith('review-')
     const isInResearchPhase = step === 'research'
     const isInAgenticPhase = step === 'agentic-writing'
+    const isInGenerationPhase =
+        step === 'generation' || step === 'generation-tool-call'
 
     /**
      * Calculate overall progress from step and step progress (Pipeline V2)
@@ -514,17 +609,139 @@ export function useGenerateDraft({
     }
 
     /**
+     * Run Unified content generation (new recommended approach)
+     * Uses the unified agentic content pipeline with all 4 phases:
+     * 1. Agentic Generation (with on-demand research)
+     * 2. Review (4 parallel agents)
+     * 3. Orchestration (revise based on reviews)
+     * 4. Extraction (FAQ + Metadata)
+     */
+    const handleUnifiedGenerate = async () => {
+        setStep('generation')
+        setProgress(5)
+        setStepMessage('Starting AI content generation pipeline...')
+        setToolCalls([])
+        setAgenticSources([])
+        setUnifiedResult(null)
+        setReviewResults([])
+
+        const outlineForContent = buildOutlineStructure(idea)
+        const requestBody = {
+            idea: {
+                title: idea.title,
+                topic: idea.topic || idea.title,
+                primaryKeyword: idea.primaryKeyword || '',
+                secondaryKeywords: idea.secondaryKeywords || [],
+                targetAudience: idea.targetAudience,
+                uniqueAngle: idea.uniqueAngle,
+                estimatedWordCount: idea.estimatedWordCount || 1500,
+            },
+            outline: outlineForContent,
+            options: {
+                stream: true,
+                skipReview: false,
+                skipOrchestration: false,
+            },
+        }
+
+        const response = await fetch('/api/blog/generate-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+        })
+
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`)
+        }
+
+        const reader = response.body?.getReader()
+        if (!reader) {
+            throw new Error('No response body')
+        }
+
+        const streamResult = await processUnifiedSSEStream(reader, {
+            onProgress: (progressData) => {
+                setStep(progressData.step)
+                setStepMessage(progressData.message)
+                setProgress(progressData.progress)
+
+                // Track tool calls during generation phase
+                if (progressData.data && 'type' in progressData.data) {
+                    if (progressData.data.type === 'tool-call') {
+                        setToolCalls((prev) => [
+                            ...prev,
+                            progressData.data as SSEToolCallData,
+                        ])
+                    } else if (progressData.data.type === 'review-result') {
+                        setReviewResults((prev) => [
+                            ...prev,
+                            progressData.data as SSEReviewResultData,
+                        ])
+                    }
+                }
+            },
+            onComplete: (completeData) => {
+                setUnifiedResult(completeData)
+                if (completeData.sources) {
+                    setAgenticSources(completeData.sources)
+                }
+                if (completeData.reviews) {
+                    setReviewResults(
+                        completeData.reviews.map((r) => ({
+                            type: 'review-result' as const,
+                            agentName: r.agentName,
+                            score: r.score,
+                            summary: r.summary,
+                            issueCount: r.issueCount,
+                        }))
+                    )
+                }
+                if (completeData.success) {
+                    setStep('saving')
+                    setProgress(95)
+                }
+            },
+            onError: (errorData) => {
+                console.error('SSE error event:', errorData.error)
+            },
+        })
+
+        // Check for stream processing errors
+        if (!streamResult.success) {
+            throw new Error(streamResult.error || 'Content generation failed')
+        }
+
+        const pipelineResult = streamResult.result
+        if (pipelineResult?.success && pipelineResult.content) {
+            await saveDraft(pipelineResult.content, {
+                metaDescription: pipelineResult.metaDescription,
+                excerpt: pipelineResult.excerpt,
+                faqs: pipelineResult.faqs,
+            })
+        } else if (!pipelineResult?.success) {
+            throw new Error(
+                pipelineResult?.error || 'Content generation failed'
+            )
+        }
+    }
+
+    /**
      * Start the content generation (routes to correct pipeline based on mode)
      */
     const handleGenerate = async () => {
         setError(null)
         setResult(null)
         setAgenticResult(null)
+        setUnifiedResult(null)
 
         try {
-            if (pipelineMode === 'agentic') {
+            if (pipelineMode === 'unified') {
+                await handleUnifiedGenerate()
+            } else if (pipelineMode === 'agentic') {
+                // Deprecated: redirects to deprecated endpoint
                 await handleAgenticGenerate()
             } else {
+                // Deprecated: redirects to deprecated endpoint
                 await handlePipelineV2Generate()
             }
         } catch (err) {
@@ -560,6 +777,7 @@ export function useGenerateDraft({
             setError(null)
             setResult(null)
             setAgenticResult(null)
+            setUnifiedResult(null)
             setPostId(null)
             setStepMessage('')
             setResearchFindings([])
@@ -578,10 +796,12 @@ export function useGenerateDraft({
         error,
         result,
         agenticResult,
+        unifiedResult,
         isProcessing,
         isInReviewPhase,
         isInResearchPhase,
         isInAgenticPhase,
+        isInGenerationPhase,
         researchFindings,
         currentQuery,
         reviewResults,

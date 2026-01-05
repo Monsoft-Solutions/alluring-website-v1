@@ -97,6 +97,10 @@ function createSSEStream() {
 /**
  * POST /api/blog/generate-content-agentic
  *
+ * @deprecated Use `/api/blog/generate-content` instead.
+ * This endpoint will be removed in a future version.
+ * The unified endpoint now includes all agentic features plus review and orchestration.
+ *
  * Generate blog post content using the agentic approach:
  * - AI writes content while using research tools (Perplexity/Google)
  * - Real-time tool call streaming via SSE
@@ -105,6 +109,9 @@ function createSSEStream() {
  * Supports streaming progress updates via SSE when options.stream is true.
  */
 export async function POST(request: NextRequest) {
+    console.warn(
+        '[DEPRECATED] /api/blog/generate-content-agentic is deprecated. Use /api/blog/generate-content instead.'
+    )
     try {
         await requireAuth()
 

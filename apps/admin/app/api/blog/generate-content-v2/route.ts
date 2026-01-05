@@ -96,6 +96,9 @@ function createSSEStream() {
 /**
  * POST /api/blog/generate-content-v2
  *
+ * @deprecated Use `/api/blog/generate-content` instead.
+ * This endpoint will be removed in a future version.
+ *
  * Generate blog post content using the full AI pipeline:
  * 1. Research phase (web search)
  * 2. Content generation with tools
@@ -105,6 +108,9 @@ function createSSEStream() {
  * Supports streaming progress updates via SSE when options.stream is true.
  */
 export async function POST(request: NextRequest) {
+    console.warn(
+        '[DEPRECATED] /api/blog/generate-content-v2 is deprecated. Use /api/blog/generate-content instead.'
+    )
     try {
         await requireAuth()
 

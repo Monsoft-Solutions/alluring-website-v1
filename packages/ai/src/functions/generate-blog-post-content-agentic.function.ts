@@ -1,6 +1,10 @@
 /**
  * Agentic Blog Post Content Generation Function
  *
+ * @deprecated Use `runAgenticContentPipeline` from `@workspace/ai/pipelines` instead.
+ * This function will be removed in a future version.
+ * The unified pipeline includes agentic generation plus review and orchestration.
+ *
  * Uses an agentic approach where the AI has access to research tools
  * (Perplexity AI and Google Search) during content writing.
  * The AI decides when to search for facts, statistics, and sources

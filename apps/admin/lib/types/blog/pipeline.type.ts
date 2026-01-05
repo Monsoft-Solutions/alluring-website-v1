@@ -2,23 +2,31 @@
  * Pipeline SSE Types
  *
  * Types for the blog content generation pipeline's Server-Sent Events.
- * Core pipeline types are imported from @workspace/ai/agents.
+ * Core pipeline types are imported from @workspace/ai.
  *
  * @module @/lib/types/blog/pipeline
  */
 
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 import type { PipelineStep } from '@workspace/ai/agents'
+import type { AgenticPipelineStep } from '@workspace/ai/pipelines'
 
 /**
  * Pipeline mode for content generation
+ * @deprecated Only 'unified' mode is supported going forward
  */
-export type PipelineMode = 'pipeline-v2' | 'agentic'
+export type PipelineMode = 'pipeline-v2' | 'agentic' | 'unified'
 
 /**
  * Agentic pipeline step (simpler than full pipeline)
+ * @deprecated Use AgenticPipelineStep from @workspace/ai/pipelines
  */
 export type AgenticStep = 'agentic-writing' | 'extracting-metadata'
+
+/**
+ * Unified pipeline step from the new agentic content pipeline
+ */
+export type UnifiedPipelineStep = AgenticPipelineStep
 
 /**
  * Component-specific step states that extend the pipeline steps.
@@ -27,6 +35,7 @@ export type AgenticStep = 'agentic-writing' | 'extracting-metadata'
 export type DialogStep =
     | PipelineStep
     | AgenticStep
+    | UnifiedPipelineStep
     | 'idle'
     | 'saving'
     | 'error'
@@ -200,10 +209,52 @@ export type SSEAgenticCompleteEvent = {
 }
 
 /**
+ * SSE completion event from the unified agentic pipeline API
+ */
+export type SSEUnifiedCompleteEvent = {
+    success: boolean
+    error?: string
+    content?: string
+    wordCount?: number
+    metaDescription?: string
+    excerpt?: string
+    suggestedTags?: string[]
+    readingTimeMinutes?: number
+    suggestedCategory?: string
+    faqs?: FaqItem[]
+    faqSchema?: object | null
+    sources?: AgenticSource[]
+    reviews?: ReviewSummary[]
+    orchestratorResult?: {
+        revisedContent: string
+        changesSummary: string
+        changes: Array<{
+            type: 'fix' | 'improvement' | 'addition' | 'removal'
+            description: string
+            before?: string
+            after?: string
+        }>
+        overallScore: number
+    } | null
+    initialContent?: string
+    initialWordCount?: number
+    metrics?: {
+        totalTimeMs: number
+        generationTimeMs: number
+        reviewTimeMs: number
+        orchestrationTimeMs: number
+        extractionTimeMs: number
+        toolCallCount: number
+        stepCount: number
+    }
+}
+
+/**
  * Union of all SSE event types
  */
 export type SSEEventData =
     | SSEProgressEvent
     | SSECompleteEvent
     | SSEAgenticCompleteEvent
+    | SSEUnifiedCompleteEvent
     | SSEErrorEvent

@@ -1,6 +1,9 @@
 /**
  * Generate Blog Post Content Function
  *
+ * @deprecated Use `runAgenticContentPipeline` from `@workspace/ai/pipelines` instead.
+ * This function will be removed in a future version.
+ *
  * AI-powered blog post content generation from an idea and outline.
  * Creates full markdown content following brand guidelines.
  *

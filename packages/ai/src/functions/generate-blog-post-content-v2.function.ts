@@ -1,6 +1,9 @@
 /**
  * Generate Blog Post Content V2 Function
  *
+ * @deprecated Use `runAgenticContentPipeline` from `@workspace/ai/pipelines` instead.
+ * This function will be removed in a future version.
+ *
  * Enhanced multi-phase blog post content generation pipeline.
  * Features:
  * - Research-first approach with web search

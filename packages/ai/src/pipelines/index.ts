@@ -6,7 +6,7 @@
  * @module @workspace/ai/pipelines
  */
 
-// Types
+// Types (legacy)
 export {
     type BlogIdeaInput,
     type OutlineSection,
@@ -18,5 +18,20 @@ export {
     type BlogContentPipelineResult,
 } from './types.pipeline'
 
-// Pipeline runner
+/**
+ * @deprecated Use `runAgenticContentPipeline` instead.
+ * This pipeline will be removed in a future version.
+ */
 export { runBlogContentPipeline } from './blog-content.pipeline'
+
+// Unified Agentic Content Pipeline (recommended)
+export {
+    runAgenticContentPipeline,
+    type AgenticContentPipelineOptions,
+    type AgenticContentPipelineResult,
+    type AgenticPipelineStep,
+    type AgenticPipelineProgressCallback,
+    type AgenticProgressData,
+    type AgenticPipelineIdeaInput,
+    type AgenticPipelineOutlineInput,
+} from './agentic-content.pipeline'
