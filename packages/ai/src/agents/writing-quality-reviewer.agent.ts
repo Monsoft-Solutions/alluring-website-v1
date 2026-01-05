@@ -18,7 +18,7 @@ import type {
 /**
  * Default model for writing quality review
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'gpt-5.2'
 
 /**
  * Schema for writing quality review

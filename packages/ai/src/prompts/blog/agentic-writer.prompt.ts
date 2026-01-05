@@ -28,15 +28,6 @@ export const BRAND_VOICE_GUIDELINES = `## Brand Voice Guidelines
 - Share learnings, not lectures
 - Show expertise through substance
 
-**What to say:**
-✅ "Here's how..."
-✅ "We typically see..."
-✅ "The solution involves..."
-✅ "In our experience..."
-✅ "Patients often ask..."
-✅ "Most patients find that..."
-✅ "A common approach is..."
-
 **What NOT to say (see AI Slop Prevention):**
 ❌ Corporate jargon
 ❌ Overly promotional language
@@ -100,7 +91,7 @@ export const AI_SLOP_PREVENTION_RULES = `## AI Slop Prevention (CRITICAL)
  */
 export const RESEARCH_TOOL_GUIDELINES = `## Research Tool Usage
 
-You have access to research tools. Use them strategically:
+You have access to research tools. YOu can use it as many times as you need to. Use them strategically:
 
 **Use \`perplexity_search\` when you need:**
 - Current statistics (e.g., "what percentage of BBL patients...")
@@ -114,8 +105,10 @@ You have access to research tools. Use them strategically:
 - Recent news or articles
 - Procedure details from medical organizations
 - Competitor or industry research
+- External links to authoritative sources
 
 **Research best practices:**
+- We prefer up to date information, so search for the latest information. Today's date is ${new Date().toISOString().split('T')[0]}.
 - Search BEFORE making factual claims
 - Cite statistics with source links [text](url)
 - Use the sources returned to add credibility
@@ -160,7 +153,11 @@ export const CONTENT_STRUCTURE_RULES = `## Content Structure Requirements
    - H1 is the title (don't include in content)
    - Use ** for bold important terms
    - Use bullet points for lists of 3+ items
-   - Use numbered lists for sequential steps` as const
+   - Use numbered lists for sequential steps
+   - Use citations for statistics and facts
+      - Format: [text](url)
+      - Use the sources from the research tools
+      - The anchor text [text](url) should be descriptive and not "source" or "click here" as it is not SEO friendly` as const
 
 /**
  * SEO writing guidelines
@@ -182,7 +179,6 @@ export const EEAT_GUIDELINES = `## E-E-A-T Signals (Medical Content Credibility)
 
 - Reference "our surgeons" or "board-certified plastic surgeons"
 - Mention Miami location for local expertise
-- Use phrases like "In our experience with hundreds of patients..."
 - Cite statistics from authoritative medical sources
 - Include "always consult with a board-certified surgeon" where appropriate
 - Be informative but not prescriptive
@@ -201,7 +197,7 @@ export const LINKING_GUIDELINES = `## Linking Guidelines
 - Don't force links - they should fit naturally in context
 
 **External Links:**
-- Include 2-4 external links to authoritative sources
+- Include at least 2-4 external links to authoritative sources
 - Prefer medical organizations, studies, or reputable publications
 - Never link to competitor websites
 - Use descriptive anchor text (not "source" or "click here")
@@ -212,9 +208,8 @@ export const LINKING_GUIDELINES = `## Linking Guidelines
  */
 export const BUSINESS_CONTEXT = `## Business Context
 
-- **Business**: Alluring Plastic Surgery - luxury cosmetic surgery clinic
-- **Location**: Miami, FL (serves locals + medical tourists from Latin America/Caribbean)
-- **Tagline**: "Luxury Surgeries Made Affordable"
+- **Business**: Alluring Plastic Surgery - cosmetic surgery clinic
+- **Location**: Miami, FL (serves locals + medical tourists from around the world)
 - **Target Audience**: Women 25-55, value quality, seek affordability
 - **Industry**: Elective cosmetic procedures with high-consideration purchase cycle` as const
 
@@ -229,7 +224,7 @@ export function buildAgenticSystemPrompt(): string {
     return `You are an expert content writer for a luxury plastic surgery clinic in Miami, FL.
 
 Your role is to write high-quality, SEO-optimized blog posts that:
-1. Educate patients about cosmetic procedures
+1. Educate patients
 2. Build trust through expertise and transparency
 3. Drive organic traffic through natural keyword integration
 4. Convert readers into consultation bookings
