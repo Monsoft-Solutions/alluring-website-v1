@@ -135,6 +135,7 @@ export type PipelineStep =
     | 'review-external-links'
     | 'review-writing-quality'
     | 'review-ai-slop'
+    | 'review-fact-source'
     | 'orchestration'
     | 'complete'
 

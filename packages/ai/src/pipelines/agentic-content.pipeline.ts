@@ -3,7 +3,7 @@
  *
  * Single source of truth for blog content generation with 4 phases:
  * 1. Agentic Content Generation (with on-demand research tools)
- * 2. Review (parallel - all 4 agents)
+ * 2. Review (parallel - all 5 agents)
  * 3. Orchestration (revise based on reviews)
  * 4. Extraction (parallel - FAQ + Metadata)
  *
@@ -22,6 +22,7 @@ import {
     type AgentReview,
     type OrchestratorResult,
 } from '../agents'
+import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import {
     createResearchTools,
     createSourceCollector,
@@ -37,6 +38,7 @@ import { telemetryConfig } from '../telemetry'
 import {
     buildAgenticSystemPrompt,
     buildAgenticUserPrompt,
+    type ContentType,
 } from '../prompts/blog/agentic-writer.prompt'
 
 /**
@@ -49,6 +51,7 @@ export type AgenticPipelineStep =
     | 'review-external-links'
     | 'review-writing-quality'
     | 'review-ai-slop'
+    | 'review-fact-source'
     | 'orchestration'
     | 'extraction'
     | 'complete'
@@ -111,6 +114,8 @@ export type AgenticPipelineIdeaInput = {
     targetAudience?: string
     uniqueAngle?: string
     estimatedWordCount?: number
+    /** Content type for structure guidance */
+    contentType?: ContentType
 }
 
 /**
@@ -256,8 +261,8 @@ async function runGenerationPhase(
     // Get internal pages context
     const internalPagesContext = getInternalPagesContext()
 
-    // Build prompts using modular prompt system
-    const systemPrompt = buildAgenticSystemPrompt()
+    // Build prompts using modular prompt system with content type
+    const systemPrompt = buildAgenticSystemPrompt(idea.contentType)
     const userPrompt = buildAgenticUserPrompt({
         title: idea.title,
         topic: idea.topic || idea.title,
@@ -265,6 +270,7 @@ async function runGenerationPhase(
         secondaryKeywords: idea.secondaryKeywords,
         targetAudience: idea.targetAudience,
         uniqueAngle: idea.uniqueAngle,
+        contentType: idea.contentType,
         outline: {
             tldr: outline.tldr,
             introduction: outline.introduction,
@@ -282,6 +288,9 @@ async function runGenerationPhase(
     console.log('[Agentic Pipeline] ========================================')
     console.log('[Agentic Pipeline] Starting Phase 1: Content Generation')
     console.log(`[Agentic Pipeline] Title: "${idea.title}"`)
+    console.log(
+        `[Agentic Pipeline] Content Type: ${idea.contentType || 'guide'}`
+    )
     console.log(`[Agentic Pipeline] Model: ${contentModelId}`)
     console.log(`[Agentic Pipeline] Max steps: ${maxSteps}`)
     console.log('[Agentic Pipeline] ========================================')
@@ -379,7 +388,12 @@ async function runGenerationPhase(
 /**
  * Phase 2: Review Phase
  *
- * Runs all 4 review agents in parallel.
+ * Runs all 5 review agents in parallel:
+ * 1. Internal Links Reviewer
+ * 2. External Links Reviewer
+ * 3. Writing Quality Reviewer
+ * 4. AI Slop Detector
+ * 5. Fact & Source Verifier
  */
 async function runReviewPhase(
     content: string,
@@ -391,7 +405,7 @@ async function runReviewPhase(
 ): Promise<{ reviews: AgentReview[]; timeMs: number }> {
     const startTime = Date.now()
 
-    console.log('[Agentic Pipeline] Starting Phase 2: Review')
+    console.log('[Agentic Pipeline] Starting Phase 2: Review (5 agents)')
 
     const reviewOptions = {
         content,
@@ -401,87 +415,113 @@ async function runReviewPhase(
         modelId: reviewModelId,
     }
 
-    // Run all reviews in parallel
+    // Run all 5 reviews in parallel
     const [
         internalLinksReview,
         externalLinksReview,
         writingQualityReview,
         aiSlopReview,
-    ] = await Promise.all([
-        runInternalLinksReviewer(reviewOptions).then((result) => {
-            onProgress?.(
-                'review-internal-links',
-                100,
-                'Internal links review complete',
-                {
-                    type: 'review-result',
-                    agentName: result.agentName,
-                    score: result.score,
-                    summary: result.summary,
-                    issueCount: result.issues.length,
-                }
-            )
-            console.log(
-                `[Agentic Pipeline] Internal links: ${result.score}/100 (${result.issues.length} issues)`
-            )
-            return result
-        }),
-        runExternalLinksReviewer(reviewOptions).then((result) => {
-            onProgress?.(
-                'review-external-links',
-                100,
-                'External links review complete',
-                {
-                    type: 'review-result',
-                    agentName: result.agentName,
-                    score: result.score,
-                    summary: result.summary,
-                    issueCount: result.issues.length,
-                }
-            )
-            console.log(
-                `[Agentic Pipeline] External links: ${result.score}/100 (${result.issues.length} issues)`
-            )
-            return result
-        }),
-        runWritingQualityReviewer(reviewOptions).then((result) => {
-            onProgress?.(
-                'review-writing-quality',
-                100,
-                'Writing quality review complete',
-                {
-                    type: 'review-result',
-                    agentName: result.agentName,
-                    score: result.score,
-                    summary: result.summary,
-                    issueCount: result.issues.length,
-                }
-            )
-            console.log(
-                `[Agentic Pipeline] Writing quality: ${result.score}/100 (${result.issues.length} issues)`
-            )
-            return result
-        }),
-        runAISlopDetector(reviewOptions).then((result) => {
-            onProgress?.('review-ai-slop', 100, 'AI slop detection complete', {
-                type: 'review-result',
-                agentName: result.agentName,
-                score: result.score,
-                summary: result.summary,
-                issueCount: result.issues.length,
-            })
-            console.log(
-                `[Agentic Pipeline] AI slop: ${result.score}/100 (${result.issues.length} issues)`
-            )
-            return result
-        }),
-    ])
+        factSourceReview,
+    ]: [AgentReview, AgentReview, AgentReview, AgentReview, AgentReview] =
+        await Promise.all([
+            runInternalLinksReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-internal-links',
+                    100,
+                    'Internal links review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Agentic Pipeline] Internal links: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runExternalLinksReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-external-links',
+                    100,
+                    'External links review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Agentic Pipeline] External links: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runWritingQualityReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-writing-quality',
+                    100,
+                    'Writing quality review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Agentic Pipeline] Writing quality: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runAISlopDetector(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-ai-slop',
+                    100,
+                    'AI slop detection complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Agentic Pipeline] AI slop: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runFactSourceVerifier(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-fact-source',
+                    100,
+                    'Fact & source verification complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Agentic Pipeline] Fact verification: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+        ])
 
     const reviews = [
         internalLinksReview,
         externalLinksReview,
         writingQualityReview,
         aiSlopReview,
+        factSourceReview,
     ]
 
     const timeMs = Date.now() - startTime
@@ -597,7 +637,7 @@ async function runExtractionPhase(
  *
  * Single entry point for all blog content generation with 4 phases:
  * 1. Agentic Generation (with on-demand research)
- * 2. Review (parallel - 4 agents)
+ * 2. Review (parallel - 5 agents including fact verification)
  * 3. Orchestration (revise based on reviews)
  * 4. Extraction (FAQ + Metadata)
  *
@@ -611,6 +651,7 @@ async function runExtractionPhase(
  *     title: 'BBL Recovery Guide: Week by Week',
  *     topic: 'Brazilian Butt Lift Recovery',
  *     primaryKeyword: 'bbl recovery',
+ *     contentType: 'guide',
  *   },
  *   outline: {
  *     tldr: ['Recovery takes 6-8 weeks'],
@@ -624,7 +665,7 @@ async function runExtractionPhase(
  * })
  *
  * console.log(result.content) // Final revised content
- * console.log(result.reviews) // Review agent results
+ * console.log(result.reviews) // Review agent results (5 agents)
  * console.log(result.sources) // All sources used
  * ```
  */
@@ -642,6 +683,9 @@ export async function runAgenticContentPipeline(
     console.log('[Agentic Pipeline] ========================================')
     console.log('[Agentic Pipeline] Starting Unified Agentic Content Pipeline')
     console.log(`[Agentic Pipeline] Title: "${idea.title}"`)
+    console.log(
+        `[Agentic Pipeline] Content Type: ${idea.contentType || 'guide'}`
+    )
     console.log(`[Agentic Pipeline] Skip review: ${skipReview}`)
     console.log(`[Agentic Pipeline] Skip orchestration: ${skipOrchestration}`)
     console.log('[Agentic Pipeline] ========================================')

@@ -92,23 +92,54 @@ const ORCHESTRATOR_SYSTEM_PROMPT = `You are a senior content editor for a luxury
 
 **Critical Issues (MUST FIX):**
 - Factual errors or misleading medical claims
+- Uncited statistics or medical facts (add citations from fact-source-verifier)
 - Links to blocked/competitor domains
 - Classic AI phrases like "delve", "tapestry", "seamlessly"
 - Missing required elements (TL;DR, proper structure)
+- More than 6 external links (consolidate to max 6)
 
 **Warning Issues (SHOULD FIX):**
 - Corporate jargon and buzzwords
-- Poor anchor text on links
+- Poor anchor text on links (must be descriptive)
 - Brand voice violations
 - Missing internal/external links
+- Vague source attributions without links
 
 **Suggestions (NICE TO HAVE):**
 - Minor readability improvements
 - Additional link opportunities
 - Small stylistic tweaks
 
+**External Link Rules (STRICT):**
+- Maximum 6 external source links per post
+- If content has more than 6 external links, consolidate or remove the least authoritative ones
+- Prioritize Tier 1 sources (ASPS, FDA, NIH, CDC, PubMed) over Tier 2/3
+- Each external link MUST have descriptive anchor text (not "click here", "source", or bare URLs)
+- When multiple claims reference the same source, use a single link with varied anchor text
+
+**Anchor Text Requirements:**
+- Internal links: Use natural phrases that describe the destination page
+- External links: Include source name or describe what the reader will learn
+  - Good: "according to the American Society of Plastic Surgeons", "Mayo Clinic's recovery guidelines", "FDA safety recommendations"
+  - Bad: "source", "here", "this study", "link", "click here"
+
+**Fact Verification Issues (from fact-source-verifier):**
+- Add citations using the exact suggestedFix provided (includes the URL)
+- For uncited statistics, either add the source OR soften the claim ("typically" instead of exact numbers)
+- Prefer Tier 1 sources: ASPS, FDA, NIH, CDC, PubMed
+- Tier 2 sources acceptable: Mayo Clinic, Cleveland Clinic, Johns Hopkins
+
+**Content Structure Guidelines:**
+- Maintain the content type structure (tutorial, guide, comparison, faq, case-study)
+- Keep FAQ sections intact - only fix issues within them
+- Preserve "Quick Summary" or "Key Takeaways" sections at the top
+- Don't add generic headings like "Introduction" or "Conclusion"
+- Use topic-specific, descriptive headings
+
 **Conflict Resolution:**
-- When agents disagree, prioritize: Medical accuracy > Brand voice > SEO > Stylistic preferences
+- When agents disagree, prioritize: Medical accuracy (fact-verifier) > Brand voice (ai-slop) > Link quality > SEO > Stylistic preferences
+- Fact verification issues take precedence over style suggestions
+- When adding citations causes the 6-link limit to be exceeded, consolidate existing links
 - When multiple fixes target the same text, combine them intelligently
 - Don't over-edit - some personality quirks are okay
 
@@ -134,16 +165,22 @@ You MUST provide valid JSON matching the expected schema. Follow these rules:
 Example changes array:
 [
   {"type": "fix", "description": "Replaced AI phrase with natural language", "before": "delve into the intricacies", "after": "explore the details"},
-  {"type": "improvement", "description": "Shortened long sentence for readability", "before": "The procedure, which involves...", "after": "This procedure involves..."},
+  {"type": "fix", "description": "Added citation from ASPS for procedure statistic", "before": "Over 300,000 procedures are performed annually", "after": "Over 300,000 procedures are performed annually, [according to ASPS](https://www.plasticsurgery.org/...)"},
+  {"type": "improvement", "description": "Improved anchor text to be descriptive", "before": "[source](https://...)", "after": "[Mayo Clinic's recovery guidelines](https://...)"},
   {"type": "addition", "description": "Added internal link to BBL procedure page", "after": "[BBL procedure](/procedures/bbl)"},
-  {"type": "removal", "description": "Removed redundant disclaimer paragraph", "before": "It's important to note that..."}
+  {"type": "removal", "description": "Removed redundant external link to stay under 6-link limit", "before": "[WebMD article](https://...)"}
 ]`
+
+/**
+ * Issue with agent context
+ */
+type IssueWithAgent = ReviewIssue & { agentName: string }
 
 /**
  * Prioritize issues by severity and category
  */
-function prioritizeIssues(reviews: AgentReview[]): ReviewIssue[] {
-    const allIssues: Array<ReviewIssue & { agentName: string }> = []
+function prioritizeIssues(reviews: AgentReview[]): IssueWithAgent[] {
+    const allIssues: IssueWithAgent[] = []
 
     for (const review of reviews) {
         for (const issue of review.issues) {
@@ -151,11 +188,60 @@ function prioritizeIssues(reviews: AgentReview[]): ReviewIssue[] {
         }
     }
 
-    // Sort by severity
+    // Sort by severity, then by agent priority
     const severityOrder = { critical: 0, warning: 1, suggestion: 2 }
-    return allIssues.sort(
-        (a, b) => severityOrder[a.severity] - severityOrder[b.severity]
-    )
+    const agentPriority: Record<string, number> = {
+        'fact-source-verifier': 0, // Highest priority - medical accuracy
+        'ai-slop-detector': 1, // Brand voice
+        'writing-quality-reviewer': 2,
+        'internal-links-reviewer': 3,
+        'external-links-reviewer': 4,
+    }
+
+    return allIssues.sort((a, b) => {
+        const severityDiff =
+            severityOrder[a.severity] - severityOrder[b.severity]
+        if (severityDiff !== 0) return severityDiff
+        // Within same severity, prioritize by agent importance
+        return (
+            (agentPriority[a.agentName] ?? 5) -
+            (agentPriority[b.agentName] ?? 5)
+        )
+    })
+}
+
+/**
+ * Group issues by agent for better context in the prompt
+ */
+function groupIssuesByAgent(
+    issues: IssueWithAgent[]
+): Record<string, IssueWithAgent[]> {
+    const grouped: Record<string, IssueWithAgent[]> = {}
+
+    for (const issue of issues) {
+        const agentName = issue.agentName
+        const agentIssues = grouped[agentName] ?? []
+        agentIssues.push(issue)
+        grouped[agentName] = agentIssues
+    }
+
+    return grouped
+}
+
+/**
+ * Count external links in content
+ */
+function countExternalLinks(content: string): number {
+    const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g
+    let count = 0
+    let match
+    while ((match = linkPattern.exec(content)) !== null) {
+        // Exclude internal links
+        if (!match[2]?.includes('alluringplasticsurgery.com')) {
+            count++
+        }
+    }
+    return count
 }
 
 /**
@@ -163,10 +249,11 @@ function prioritizeIssues(reviews: AgentReview[]): ReviewIssue[] {
  */
 function calculateWeightedScore(reviews: AgentReview[]): number {
     const weights: Record<string, number> = {
-        'writing-quality-reviewer': 0.35,
-        'ai-slop-detector': 0.3,
-        'internal-links-reviewer': 0.2,
-        'external-links-reviewer': 0.15,
+        'writing-quality-reviewer': 0.25,
+        'ai-slop-detector': 0.25,
+        'fact-source-verifier': 0.25, // High priority for medical content E-E-A-T
+        'internal-links-reviewer': 0.15,
+        'external-links-reviewer': 0.1,
     }
 
     let totalWeight = 0
@@ -217,17 +304,55 @@ export async function runOrchestrator(
         .map((r) => `**${r.agentName}** (Score: ${r.score}/100)\n${r.summary}`)
         .join('\n\n')
 
-    // Build issues list (top 30 most important)
-    const issuesList = prioritizedIssues
-        .slice(0, 30)
-        .map((issue, i) => {
-            const fixText = issue.suggestedFix
-            const originalText = issue.originalText
-                ? `\n   Original: "${issue.originalText}"`
-                : ''
-            return `${i + 1}. [${issue.severity.toUpperCase()}] ${issue.description}${originalText}\n   Fix: ${fixText}`
+    // Group issues by agent for better context
+    const groupedIssues = groupIssuesByAgent(prioritizedIssues)
+
+    // Build issues list grouped by agent
+    const agentDisplayNames: Record<string, string> = {
+        'fact-source-verifier': 'Fact & Source Verification',
+        'ai-slop-detector': 'AI Language Detection',
+        'writing-quality-reviewer': 'Writing Quality',
+        'internal-links-reviewer': 'Internal Links',
+        'external-links-reviewer': 'External Links',
+    }
+
+    const agentOrder = [
+        'fact-source-verifier',
+        'ai-slop-detector',
+        'writing-quality-reviewer',
+        'internal-links-reviewer',
+        'external-links-reviewer',
+    ]
+
+    let issueNumber = 0
+    const issuesByAgentList = agentOrder
+        .filter((agentName) => (groupedIssues[agentName]?.length ?? 0) > 0)
+        .map((agentName) => {
+            const issues = groupedIssues[agentName] ?? []
+            const displayName = agentDisplayNames[agentName] ?? agentName
+            const issuesText = issues
+                .slice(0, 10) // Max 10 issues per agent
+                .map((issue) => {
+                    issueNumber++
+                    const originalText = issue.originalText
+                        ? `\n   Original: "${issue.originalText}"`
+                        : ''
+                    return `${issueNumber}. [${issue.severity.toUpperCase()}] ${issue.description}${originalText}\n   Fix: ${issue.suggestedFix}`
+                })
+                .join('\n\n')
+
+            return `### ${displayName} Issues (${issues.length} total)\n\n${issuesText}`
         })
-        .join('\n\n')
+        .join('\n\n---\n\n')
+
+    // Count current external links
+    const currentExternalLinks = countExternalLinks(originalContent)
+    const externalLinkWarning =
+        currentExternalLinks > 6
+            ? `\n⚠️ ALERT: Content has ${currentExternalLinks} external links. MUST consolidate to max 6.`
+            : currentExternalLinks > 4
+              ? `\nNote: Content has ${currentExternalLinks} external links. Be mindful when adding citations to stay under 6.`
+              : ''
 
     // Build the prompt
     const prompt = `Revise this blog post based on feedback from multiple review agents:
@@ -235,6 +360,7 @@ export async function runOrchestrator(
 **Title:** ${title}
 **Primary Keyword:** ${primaryKeyword || 'Not specified'}
 **Initial Score:** ${initialScore}/100
+**Current External Links:** ${currentExternalLinks}/6 max${externalLinkWarning}
 
 ---
 
@@ -255,8 +381,9 @@ ${reviewSummaries}
 
 ---
 
-**PRIORITIZED ISSUES (Top ${Math.min(30, prioritizedIssues.length)}):**
-${issuesList}
+**ISSUES BY CATEGORY:**
+
+${issuesByAgentList}
 
 ---
 
@@ -266,6 +393,8 @@ ${issuesList}
 3. Consider suggestions but don't force them
 4. Maintain the original voice and intent
 5. Keep the content natural and readable
+6. IMPORTANT: Keep external links to 6 or fewer - consolidate if needed
+7. Ensure all link anchor text is descriptive (not "click here", "source", etc.)
 
 Produce the final revised version with a complete list of changes made.`
 
