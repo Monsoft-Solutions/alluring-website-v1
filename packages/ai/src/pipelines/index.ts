@@ -18,12 +18,6 @@ export {
     type BlogContentPipelineResult,
 } from './types.pipeline'
 
-/**
- * @deprecated Use `runAgenticContentPipeline` instead.
- * This pipeline will be removed in a future version.
- */
-export { runBlogContentPipeline } from './blog-content.pipeline'
-
 // Unified Agentic Content Pipeline (recommended)
 export {
     runAgenticContentPipeline,

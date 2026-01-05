@@ -12,18 +12,6 @@ import type { PipelineStep } from '@workspace/ai/agents'
 import type { AgenticPipelineStep } from '@workspace/ai/pipelines'
 
 /**
- * Pipeline mode for content generation
- * @deprecated Only 'unified' mode is supported going forward
- */
-export type PipelineMode = 'pipeline-v2' | 'agentic' | 'unified'
-
-/**
- * Agentic pipeline step (simpler than full pipeline)
- * @deprecated Use AgenticPipelineStep from @workspace/ai/pipelines
- */
-export type AgenticStep = 'agentic-writing' | 'extracting-metadata'
-
-/**
  * Unified pipeline step from the new agentic content pipeline
  */
 export type UnifiedPipelineStep = AgenticPipelineStep
@@ -34,7 +22,6 @@ export type UnifiedPipelineStep = AgenticPipelineStep
  */
 export type DialogStep =
     | PipelineStep
-    | AgenticStep
     | UnifiedPipelineStep
     | 'idle'
     | 'saving'
