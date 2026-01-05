@@ -97,8 +97,6 @@ function createSSEStream() {
 /**
  * POST /api/blog/generate-content-agentic
  *
- * TODO: Fix this and improve
- *
  * Generate blog post content using the agentic approach:
  * - AI writes content while using research tools (Perplexity/Google)
  * - Real-time tool call streaming via SSE
@@ -243,6 +241,8 @@ export async function POST(request: NextRequest) {
                                 : 'Agentic generation failed',
                     })
                     close()
+                    console.error(error)
+                    void langfuseSpanProcessor.forceFlush()
                 })
 
             // Send initial progress

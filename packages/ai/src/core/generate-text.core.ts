@@ -19,7 +19,9 @@ export type { GenerateTextResult } from 'ai'
 
 /**
  * Convert CoreToolSet to AI SDK tools format
- * Uses explicit any typing due to AI SDK's complex nested generics
+ * AI SDK v5 expects `inputSchema` (FlexibleSchema) for tool parameters.
+ * Passing a Zod schema under `parameters` will NOT be converted and can end up as `type: None`,
+ * which OpenAI rejects (400 invalid_function_parameters).
  */
 function convertTools(coreTools?: CoreToolSet) {
     if (!coreTools) return undefined
@@ -28,12 +30,15 @@ function convertTools(coreTools?: CoreToolSet) {
     const aiSdkTools: Record<string, any> = {}
 
     for (const [name, coreTool] of Object.entries(coreTools)) {
-        // Build tool object directly to avoid TypeScript issues with the tool() helper
+        // Build tool object with `inputSchema` so AI SDK can convert Zod -> JSON Schema correctly.
         aiSdkTools[name] = {
             description: coreTool.description,
-            inputSchema: coreTool.parameters, // AI SDK v5 expects inputSchema
+            // AI SDK v5 expects inputSchema
+            inputSchema: coreTool.parameters,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            execute: async (params: any) => coreTool.execute(params),
+            execute: async (params: any): Promise<unknown> => {
+                return await coreTool.execute(params)
+            },
         }
     }
 

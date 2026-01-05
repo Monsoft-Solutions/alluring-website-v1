@@ -90,9 +90,10 @@ export {
 export {
     createResearchTools,
     createSourceCollector,
-    type ResearchToolsBundle,
-    type ResearchToolsContext,
+    createPerplexitySearchTool,
+    createGoogleSearchTool,
     type CollectedSource,
+    type SourceContext,
 } from './research-tools.tool'
 
 /**
