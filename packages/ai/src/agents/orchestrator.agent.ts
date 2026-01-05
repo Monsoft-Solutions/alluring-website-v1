@@ -18,7 +18,7 @@ import type {
 /**
  * Default model for orchestration (using a more capable model for complex revisions)
  */
-const DEFAULT_MODEL_ID = 'gpt-5.2'
+const DEFAULT_MODEL_ID = 'claude-opus-4-5'
 
 /**
  * Schema for orchestrator output

@@ -8,10 +8,10 @@
  * @module @workspace/ai/agents/fact-source-verifier
  */
 import { generateText, stepCountIs } from 'ai'
-import { openai } from '@ai-sdk/openai'
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
+import { getModel } from '../models/model-resolver.util'
 import {
     createSourceCollector,
     createGoogleSearchTool,
@@ -344,9 +344,11 @@ Search for sources now.`
     let researchOutput = ''
     let searchCount = 0
 
+    const model = getModel(modelId)
+
     try {
         const researchResult = await generateText({
-            model: openai(modelId),
+            model,
             system: FACT_VERIFICATION_RESEARCH_PROMPT,
             prompt: researchPrompt,
             tools: { google_search: googleSearchTool },

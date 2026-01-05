@@ -10,7 +10,6 @@
  * @module @workspace/ai/pipelines/agentic-content
  */
 import { generateText, stepCountIs } from 'ai'
-import { openai } from '@ai-sdk/openai'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 
 import {
@@ -22,6 +21,7 @@ import {
     type AgentReview,
     type OrchestratorResult,
 } from '../agents'
+import { getModel } from '../models/model-resolver.util'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import {
     createResearchTools,
@@ -47,8 +47,8 @@ import type { AgenticContentPipelineResult } from '../types/pipeline/agentic-con
  * Default configuration
  */
 const DEFAULTS = {
-    CONTENT_MODEL: 'gpt-5.2',
-    REVIEW_MODEL: 'gpt-5.2',
+    CONTENT_MODEL: 'claude-opus-4-5',
+    REVIEW_MODEL: 'claude-opus-4-5',
     TEMPERATURE: 0.7,
     MAX_STEPS: 25,
     MIN_QUALITY_SCORE: 70,
@@ -130,9 +130,11 @@ async function runGenerationPhase(
     console.log(`[Agentic Pipeline] Max steps: ${maxSteps}`)
     console.log('[Agentic Pipeline] ========================================')
 
+    const model = getModel(contentModelId)
+
     // Generate content with tools
     const result = await generateText({
-        model: openai(contentModelId),
+        model,
         system: systemPrompt,
         prompt: userPrompt,
         temperature,

@@ -8,10 +8,10 @@
  * @module @workspace/ai/core/generate-text
  */
 import { generateText } from 'ai'
-import { openai } from '@ai-sdk/openai'
 
 import type { CoreGenerateTextOptions, CoreToolSet } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -105,9 +105,11 @@ export async function coreGenerateText(options: CoreGenerateTextOptions) {
     // Convert our tool format to AI SDK format
     const aiSdkTools = convertTools(tools)
 
+    const model = getModel(modelId)
+
     // Build base config - note: we pass onStepFinish directly as the AI SDK accepts any function
     const baseConfig = {
-        model: openai(modelId),
+        model,
         system,
         temperature,
         experimental_telemetry: telemetryConfig,

@@ -21,9 +21,9 @@ import { coreGenerateObject } from '../core'
 
 /**
  * Default model for blog post analysis
- * Uses GPT-4 for comprehensive analysis requiring nuanced evaluation
+ * Uses Claude Opus 4.5 for comprehensive analysis requiring nuanced evaluation
  */
-const DEFAULT_MODEL_ID = 'gpt-5.2'
+const DEFAULT_MODEL_ID = 'claude-opus-4-5'
 
 /**
  * Options for blog post analysis
