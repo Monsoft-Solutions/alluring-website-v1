@@ -4,11 +4,15 @@
  * Consolidates feedback from all review agents and produces
  * a final revised version of the blog post content.
  *
+ * Uses structured thinking prompts for systematic reasoning through complex revisions.
+ *
  * @module @workspace/ai/agents/orchestrator
  */
+import { generateObject } from 'ai'
 import { z } from 'zod'
 
-import { coreGenerateObject } from '../core'
+import { getModel } from '../models/model-resolver.util'
+import { telemetryConfig } from '../telemetry'
 import type {
     AgentReview,
     OrchestratorResult,
@@ -88,6 +92,33 @@ const ORCHESTRATOR_SYSTEM_PROMPT = `You are a senior content editor for a luxury
 4. Apply fixes while maintaining the author's voice and intent
 5. Ensure the final content flows naturally
 
+## Structured Thinking Process
+
+Before making any changes, work through this checklist:
+
+**1. Issue Prioritization**
+   - List all critical issues (medical accuracy, uncited stats, AI slop phrases)
+   - Identify conflicts between agents' recommendations
+   - Note external link count vs. 6-link limit
+
+**2. Conflict Resolution Matrix**
+   | Conflict | Resolution |
+   |----------|------------|
+   | Fact-verifier wants citation + link limit reached | Consolidate or remove lowest-tier source |
+   | AI-slop detector vs writing quality disagree | Prioritize removing AI phrases over stylistic preferences |
+   | Multiple fixes target same text | Combine into single coherent edit |
+
+**3. Change Planning**
+   - Group related fixes to avoid redundant edits
+   - Order: structure fixes → content fixes → citations → polish
+   - Keep word count within ±10% of original
+
+**4. Quality Check**
+   - Will revised content sound natural?
+   - Are all critical issues addressed?
+   - Are links under the 6-limit?
+   - Does content maintain the original voice and intent?
+
 **Revision Guidelines:**
 
 **Critical Issues (MUST FIX):**
@@ -95,7 +126,6 @@ const ORCHESTRATOR_SYSTEM_PROMPT = `You are a senior content editor for a luxury
 - Uncited statistics or medical facts (add citations from fact-source-verifier)
 - Links to blocked/competitor domains
 - Classic AI phrases like "delve", "tapestry", "seamlessly"
-- Missing required elements (TL;DR, proper structure)
 - More than 6 external links (consolidate to max 6)
 
 **Warning Issues (SHOULD FIX):**
@@ -269,7 +299,7 @@ function calculateWeightedScore(reviews: AgentReview[]): number {
 }
 
 /**
- * Run the orchestrator agent
+ * Run the orchestrator agent with think tool for structured reasoning
  */
 export async function runOrchestrator(
     options: OrchestratorOptions
@@ -388,25 +418,33 @@ ${issuesByAgentList}
 ---
 
 **INSTRUCTIONS:**
-1. Fix ALL critical issues
-2. Fix as many warning issues as possible without over-editing
-3. Consider suggestions but don't force them
-4. Maintain the original voice and intent
-5. Keep the content natural and readable
-6. IMPORTANT: Keep external links to 6 or fewer - consolidate if needed
-7. Ensure all link anchor text is descriptive (not "click here", "source", etc.)
+1. Work through the Structured Thinking Process checklist before making changes
+2. Fix ALL critical issues
+3. Fix as many warning issues as possible without over-editing
+4. Consider suggestions but don't force them
+5. Maintain the original voice and intent
+6. Keep the content natural and readable
+7. IMPORTANT: Keep external links to 6 or fewer - consolidate if needed
+8. Ensure all link anchor text is descriptive (not "click here", "source", etc.)
 
 Produce the final revised version with a complete list of changes made.`
 
-    const result = await coreGenerateObject({
-        modelId,
+    console.log('[Orchestrator] Starting revision with structured thinking')
+
+    const result = await generateObject({
+        model: getModel(modelId),
         schema: orchestratorOutputSchema,
         system: ORCHESTRATOR_SYSTEM_PROMPT,
         prompt,
         temperature,
+        experimental_telemetry: telemetryConfig,
     })
 
     const processingTimeMs = Date.now() - startTime
+
+    console.log(
+        `[Orchestrator] Revision complete in ${processingTimeMs}ms (${result.usage?.totalTokens ?? 0} tokens)`
+    )
 
     return {
         revisedContent: result.object.revisedContent,

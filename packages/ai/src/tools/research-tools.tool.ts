@@ -9,6 +9,7 @@
  */
 import { createPerplexitySearchTool } from './perplexity-search.tool'
 import { createGoogleSearchTool } from './google-search.tool'
+import { createThinkTool } from './think.tool'
 import type { SourceContext } from './research-tools.type'
 
 // Re-export types for convenience
@@ -40,8 +41,13 @@ export function createSourceCollector(): SourceContext {
  * directly to generateText. Uses the tool() helper with inputSchema
  * for proper multi-step tool calling.
  *
+ * Includes:
+ * - perplexity_search: AI-powered search with citations
+ * - google_search: Google Custom Search for specific sources
+ * - think: Structured reasoning scratchpad for complex decisions
+ *
  * @param sourceContext - Source collector context for tracking sources
- * @returns Tools bundle with perplexity_search and google_search
+ * @returns Tools bundle with perplexity_search, google_search, and think
  *
  * @example
  * ```typescript
@@ -67,6 +73,7 @@ export function createResearchTools(sourceContext: SourceContext) {
     return {
         perplexity_search: createPerplexitySearchTool(sourceContext),
         google_search: createGoogleSearchTool(sourceContext),
+        think: createThinkTool(),
     }
 }
 

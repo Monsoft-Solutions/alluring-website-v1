@@ -96,6 +96,9 @@ export {
     type SourceContext,
 } from './research-tools.tool'
 
+// Think Tool - Structured reasoning for complex decisions
+export { createThinkTool } from './think.tool'
+
 /**
  * Tool version for tracking changes
  */

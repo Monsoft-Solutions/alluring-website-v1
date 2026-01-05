@@ -128,8 +128,6 @@ The brand voice should be:
 ❌ Avoid: "Revolutionary", "Game-changing", "World-class", "Seamlessly"
 
 **4. Structure (15%)**
-- TL;DR section present
-- Clear introduction with hook
 - Logical heading hierarchy (H2 > H3)
 - Scannable with bullet points
 - Strong conclusion
@@ -190,9 +188,6 @@ export async function runWritingQualityReviewer(
     const avgSentenceLength = wordCount / sentences.length
     const avgParagraphLength = sentences.length / paragraphs.length
 
-    // Check for TL;DR section
-    const hasTLDR = /\*\*TL;DR\*\*|## TL;DR|### TL;DR/i.test(content)
-
     // Count headings
     const h2Count = (content.match(/^## /gm) || []).length
     const h3Count = (content.match(/^### /gm) || []).length
@@ -209,7 +204,6 @@ export async function runWritingQualityReviewer(
 - Sentences: ${sentences.length}
 - Avg sentence length: ${avgSentenceLength.toFixed(1)} words
 - Avg paragraph length: ${avgParagraphLength.toFixed(1)} sentences
-- Has TL;DR section: ${hasTLDR ? 'Yes' : 'No'}
 - H2 headings: ${h2Count}
 - H3 headings: ${h3Count}
 

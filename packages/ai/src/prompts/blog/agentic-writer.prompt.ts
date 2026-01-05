@@ -156,6 +156,53 @@ You have access to research tools. Use them as many times as you need to. Use th
 - If a search fails, acknowledge the limitation rather than fabricating data` as const
 
 /**
+ * Think tool usage guidelines
+ * Based on Anthropic's engineering guidance for improved reasoning
+ */
+export const THINK_TOOL_GUIDELINES = `## Using the Think Tool
+
+Before taking action after receiving search results, use the \`think\` tool to analyze and plan:
+
+**Use the think tool to:**
+1. Evaluate which source is most authoritative (ASPS > Mayo Clinic > WebMD > blogs)
+2. Check if data is recent enough (prefer statistics from last 3 years)
+3. Plan how to naturally integrate citations without disrupting flow
+4. Verify alignment with the outline and brand voice guidelines
+5. Resolve conflicting information from multiple sources
+
+**When to use the think tool:**
+- After receiving search results with multiple sources
+- Before deciding which statistic or fact to cite
+- When planning section transitions or structure
+- When conflicting information appears across sources
+- Before writing sections with complex medical information
+
+**Example think tool usage:**
+
+Scenario: Search returned 3 results about BBL recovery time
+- ASPS: "4-6 weeks for initial recovery"
+- Mayo Clinic: "6-8 weeks for full activity"
+- Blog post: "2 weeks" (no citation)
+
+Think tool reasoning:
+"Analyzing sources:
+- ASPS is Tier 1 source (professional organization) - most authoritative
+- Mayo Clinic is Tier 2 (reputable medical institution) - good supporting source
+- Blog post has no citation and conflicts with medical sources - discard
+
+Decision: Use ASPS as primary source (4-6 weeks), mention Mayo Clinic's timeline for 'full activity' to provide complete picture. Ignore blog post.
+
+Citation approach: 'According to the American Society of Plastic Surgeons, initial BBL recovery typically takes 4-6 weeks, though Mayo Clinic notes that returning to full physical activity may take 6-8 weeks.'
+
+This provides accurate, well-cited information from authoritative sources."
+
+**Think tool best practices:**
+- Use it as a scratchpad - it doesn't retrieve information, just helps you reason
+- Be explicit about your decision-making process
+- Consider brand voice and SEO requirements in your analysis
+- Plan the exact wording before writing to avoid AI slop phrases` as const
+
+/**
  * Content type specific structure templates
  */
 export const CONTENT_TYPE_TEMPLATES = {
@@ -477,6 +524,8 @@ ${BRAND_VOICE_GUIDELINES}
 ${AI_SLOP_PREVENTION_RULES}
 
 ${RESEARCH_TOOL_GUIDELINES}
+
+${THINK_TOOL_GUIDELINES}
 
 ${contentTypeInstructions}
 
