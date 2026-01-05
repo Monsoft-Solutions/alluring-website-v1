@@ -7,25 +7,21 @@
  */
 
 // Types (legacy)
-export {
-    type BlogIdeaInput,
-    type OutlineSection,
-    type BlogOutlineInput,
-    type ResearchResult,
-    type ContentGenerationResult,
-    type PipelineProgressCallback,
-    type BlogContentPipelineOptions,
-    type BlogContentPipelineResult,
-} from './types.pipeline'
+export type { BlogIdeaInput } from '../types/pipeline/blog-idea-input.type'
+export type { OutlineSection } from '../types/pipeline/outline-section.type'
+export type { BlogOutlineInput } from '../types/pipeline/blog-outline-input.type'
+export type { ResearchResult } from '../types/pipeline/research-result.type'
+export type { ContentGenerationResult } from '../types/pipeline/content-generation-result.type'
+export type { PipelineProgressCallback } from '../types/pipeline/pipeline-progress-callback.type'
+export type { BlogContentPipelineOptions } from '../types/pipeline/blog-content-pipeline-options.type'
+export type { BlogContentPipelineResult } from '../types/pipeline/blog-content-pipeline-result.type'
 
 // Unified Agentic Content Pipeline (recommended)
-export {
-    runAgenticContentPipeline,
-    type AgenticContentPipelineOptions,
-    type AgenticContentPipelineResult,
-    type AgenticPipelineStep,
-    type AgenticPipelineProgressCallback,
-    type AgenticProgressData,
-    type AgenticPipelineIdeaInput,
-    type AgenticPipelineOutlineInput,
-} from './agentic-content.pipeline'
+export { runAgenticContentPipeline } from './agentic-content.pipeline'
+export type { AgenticContentPipelineOptions } from '../types/pipeline/agentic-content-pipeline-options.type'
+export type { AgenticContentPipelineResult } from '../types/pipeline/agentic-content-pipeline-result.type'
+export type { AgenticPipelineStep } from '../types/pipeline/agentic-pipeline-step.type'
+export type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
+export type { AgenticProgressData } from '../types/pipeline/agentic-progress-data.type'
+export type { AgenticPipelineIdeaInput } from '../types/pipeline/agentic-pipeline-idea-input.type'
+export type { AgenticPipelineOutlineInput } from '../types/pipeline/agentic-pipeline-outline-input.type'
