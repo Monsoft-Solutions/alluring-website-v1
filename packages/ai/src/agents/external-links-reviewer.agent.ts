@@ -32,9 +32,9 @@ const DEFAULT_MODEL_ID = 'gpt-4.1'
 const externalLinksReviewSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
-        .describe('Score for external linking quality (0-100)'),
+        .describe(
+            'Score for external linking quality. Score is between 0 and 100.'
+        ),
     externalLinkCount: z
         .number()
         .describe('Number of external links currently in the content'),

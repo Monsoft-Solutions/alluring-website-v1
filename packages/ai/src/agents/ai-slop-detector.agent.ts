@@ -31,13 +31,9 @@ const DEFAULT_MODEL_ID = 'claude-opus-4-5'
 const aiSlopDetectionSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
         .describe('Score (0-100, higher is better - less AI slop)'),
     aiPatternScore: z
         .number()
-        .min(0)
-        .max(100)
         .describe(
             'How much the content reads like AI-generated text (0=very AI, 100=very human)'
         ),

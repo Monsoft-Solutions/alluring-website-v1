@@ -34,7 +34,6 @@ const orchestratorOutputSchema = z.object({
         .describe('The fully revised blog post content in markdown format'),
     changesSummary: z
         .string()
-        .max(1000)
         .describe('Summary of the key changes made in 2-4 sentences'),
     changes: z.array(
         z.object({

@@ -30,9 +30,9 @@ const DEFAULT_MODEL_ID = 'gpt-4.1'
 const internalLinksReviewSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
-        .describe('Score for internal linking quality (0-100)'),
+        .describe(
+            'Score for internal linking quality. Score is between 0 and 100.'
+        ),
     internalLinkCount: z
         .number()
         .describe('Number of internal links currently in the content'),

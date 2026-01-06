@@ -18,7 +18,7 @@ import type {
 /**
  * Default model for writing quality review
  */
-const DEFAULT_MODEL_ID = 'claude-opus-4-5'
+const DEFAULT_MODEL_ID = 'claude-sonnet-4-5'
 
 /**
  * Schema for writing quality review
@@ -26,39 +26,33 @@ const DEFAULT_MODEL_ID = 'claude-opus-4-5'
 const writingQualityReviewSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
-        .describe('Overall writing quality score (0-100)'),
+        .describe('Overall writing quality score. Score is between 0 and 100.'),
     metrics: z.object({
         readabilityScore: z
             .number()
-            .min(0)
-            .max(100)
             .describe(
-                'Readability score based on sentence/paragraph length and clarity'
+                'Readability score based on sentence/paragraph length and clarity. Score is between 0 and 100.'
             ),
         grammarScore: z
             .number()
-            .min(0)
-            .max(100)
-            .describe('Grammar, spelling, and punctuation accuracy score'),
+            .describe(
+                'Grammar, spelling, and punctuation accuracy score. Score is between 0 and 100.'
+            ),
         brandVoiceScore: z
             .number()
-            .min(0)
-            .max(100)
             .describe(
-                'How well the content matches the brand voice guidelines'
+                'How well the content matches the brand voice guidelines. Score is between 0 and 100.'
             ),
         structureScore: z
             .number()
-            .min(0)
-            .max(100)
-            .describe('Content structure and organization score'),
+            .describe(
+                'Content structure and organization score. Score is between 0 and 100.'
+            ),
         medicalAccuracyScore: z
             .number()
-            .min(0)
-            .max(100)
-            .describe('Accuracy and appropriateness of medical information'),
+            .describe(
+                'Accuracy and appropriateness of medical information. Score is between 0 and 100.'
+            ),
     }),
     issues: z.array(
         z.object({

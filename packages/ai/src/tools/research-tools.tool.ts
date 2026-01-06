@@ -9,7 +9,6 @@
  */
 import { createPerplexitySearchTool } from './perplexity-search.tool'
 import { createGoogleSearchTool } from './google-search.tool'
-import { createThinkTool } from './think.tool'
 import type { SourceContext } from './research-tools.type'
 
 // Re-export types for convenience
@@ -73,7 +72,6 @@ export function createResearchTools(sourceContext: SourceContext) {
     return {
         perplexity_search: createPerplexitySearchTool(sourceContext),
         google_search: createGoogleSearchTool(sourceContext),
-        think: createThinkTool(),
     }
 }
 

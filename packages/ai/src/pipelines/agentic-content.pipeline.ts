@@ -47,7 +47,7 @@ import type { AgenticContentPipelineResult } from '../types/pipeline/agentic-con
  * Default configuration
  */
 const DEFAULTS = {
-    CONTENT_MODEL: 'claude-opus-4-5',
+    CONTENT_MODEL: 'claude-sonnet-4-5',
     REVIEW_MODEL: 'claude-opus-4-5',
     TEMPERATURE: 0.7,
     MAX_STEPS: 25,
