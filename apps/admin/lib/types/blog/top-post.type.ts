@@ -1,5 +1,5 @@
 export type TopPost = {
     title: string
     views: number
-    slug: string
+    slug: string | null
 }

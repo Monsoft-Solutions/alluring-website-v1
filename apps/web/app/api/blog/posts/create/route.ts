@@ -9,21 +9,14 @@ import {
     createResourceSchema,
     images,
 } from '@workspace/db/schema/blog'
-import type { ExtractTablesWithRelations } from 'drizzle-orm'
 import { inArray } from 'drizzle-orm'
-import type { PgTransaction } from 'drizzle-orm/pg-core'
-import type { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { uploadImageToBlob as uploadImageToBlobFormUrl } from '@/lib/api/upload-image.util'
 import { withApiAuth } from '@/lib/api/withApiAuth.middleware'
 
-// Type alias for Drizzle transaction
-type DbTransaction = PgTransaction<
-    PostgresJsQueryResultHKT,
-    typeof import('@workspace/db/schema/blog'),
-    ExtractTablesWithRelations<typeof import('@workspace/db/schema/blog')>
->
+// Infer transaction type from db client
+type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
 /**
  * POST /api/blog/posts/create

@@ -1,5 +1,7 @@
 export {
     blogPostStatus,
+    processingStatus,
+    blogPostPriority,
     blogPost,
     type BlogPost,
     type InsertBlogPost,

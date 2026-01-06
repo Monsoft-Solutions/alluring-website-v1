@@ -253,6 +253,13 @@
       "when": 1766668053317,
       "tag": "0035_ancient_fantastic_four",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1767719853535,
+      "tag": "0036_first_lightspeed",
+      "breakpoints": true
     }
   ]
 }

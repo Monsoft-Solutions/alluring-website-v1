@@ -51,9 +51,9 @@
             "default": "./dist/schema/social-media/index.js"
         },
         "./types": {
-            "types": "./dist/schema/contact/contact-submission.table.d.ts",
-            "import": "./dist/schema/contact/contact-submission.table.js",
-            "default": "./dist/schema/contact/contact-submission.table.js"
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/types/index.js",
+            "default": "./dist/types/index.js"
         },
         "./health": {
             "types": "./dist/health-check.d.ts",

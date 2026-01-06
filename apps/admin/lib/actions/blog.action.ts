@@ -2,6 +2,7 @@
 
 import { db } from '@workspace/db/client'
 import { blogPost, images } from '@workspace/db/schema/blog'
+import type { PlanningData } from '@workspace/db/types'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
@@ -11,6 +12,29 @@ import { CACHE_TAGS } from '@workspace/shared/cache'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
+
+/**
+ * All possible pipeline status values
+ */
+export type PipelineStatus =
+    | 'ideation'
+    | 'generate'
+    | 'ai_review'
+    | 'generate_metadata'
+    | 'draft'
+    | 'ready_to_publish'
+    | 'scheduled'
+    | 'published'
+
+/**
+ * Processing status for pipeline operations
+ */
+export type ProcessingStatus = 'idle' | 'processing' | 'error'
+
+/**
+ * Priority levels for Kanban ordering
+ */
+export type BlogPostPriority = 'low' | 'medium' | 'high' | 'urgent'
 
 export type BlogPostFormData = {
     title: string
@@ -23,12 +47,24 @@ export type BlogPostFormData = {
     secondaryKeywords?: string[] | null
     excerpt?: string | null
     authorId?: string | null
-    status: 'draft' | 'readyToPublish' | 'published'
+    status: 'draft' | 'ready_to_publish' | 'published'
     aiSummary?: string | null
     featuredImageUrl?: string | null
     featuredImageId?: string | null
     readingTime?: number | null
     faqs?: Array<{ question: string; answer: string }> | null
+}
+
+/**
+ * Form data for creating a new blog post in the pipeline
+ */
+export type CreatePipelinePostData = {
+    title: string
+    primaryKeyword?: string | null
+    secondaryKeywords?: string[] | null
+    authorId?: string | null
+    priority?: BlogPostPriority
+    planningData?: PlanningData | null
 }
 
 type ActionResult = {
@@ -308,10 +344,11 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
         revalidatePath('/')
 
         // Revalidate web app cache
-        await revalidateWebAppCache([
-            CACHE_TAGS.BLOG_POSTS,
-            CACHE_TAGS.blogPostBySlug(existingPost.slug),
-        ])
+        const cacheTags: string[] = [CACHE_TAGS.BLOG_POSTS]
+        if (existingPost.slug) {
+            cacheTags.push(CACHE_TAGS.blogPostBySlug(existingPost.slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         // Invalidate URL registry cache when a post is deleted
         // This ensures page classification stays accurate
@@ -337,7 +374,7 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
 
 export async function updateBlogPostStatus(
     id: string,
-    status: 'draft' | 'readyToPublish' | 'published'
+    status: 'draft' | 'ready_to_publish' | 'published'
 ): Promise<ActionResult> {
     try {
         await requireAuth()
@@ -369,10 +406,11 @@ export async function updateBlogPostStatus(
         revalidatePath('/')
 
         // Revalidate web app cache
-        await revalidateWebAppCache([
-            CACHE_TAGS.BLOG_POSTS,
-            CACHE_TAGS.blogPostBySlug(currentPost[0]!.slug),
-        ])
+        const cacheTags: string[] = [CACHE_TAGS.BLOG_POSTS]
+        if (currentPost[0]?.slug) {
+            cacheTags.push(CACHE_TAGS.blogPostBySlug(currentPost[0].slug))
+        }
+        await revalidateWebAppCache(cacheTags)
 
         // Invalidate URL registry cache when publish status changes
         // This ensures page classification stays accurate
@@ -394,6 +432,228 @@ export async function updateBlogPostStatus(
                 error instanceof Error
                     ? error.message
                     : 'Failed to update status',
+        }
+    }
+}
+
+// ============================================================================
+// Pipeline Actions
+// ============================================================================
+
+/**
+ * Create a new blog post in the ideation stage (pipeline entry point)
+ */
+export async function createPipelinePost(
+    data: CreatePipelinePostData
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        if (!data.title?.trim()) {
+            return { success: false, error: 'Title is required' }
+        }
+
+        const [newPost] = await db
+            .insert(blogPost)
+            .values({
+                title: data.title.trim(),
+                primaryKeyword: data.primaryKeyword ?? null,
+                secondaryKeywords: data.secondaryKeywords ?? null,
+                authorId: data.authorId ?? null,
+                priority: data.priority ?? 'medium',
+                planningData: data.planningData ?? null,
+                status: 'ideation',
+                pipelineProcessingStatus: 'idle',
+            })
+            .returning({ id: blogPost.id })
+
+        revalidatePath('/blog/pipeline')
+        revalidatePath('/blog/posts')
+
+        return { success: true, id: newPost?.id }
+    } catch (error) {
+        console.error('Error creating pipeline post:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to create post',
+        }
+    }
+}
+
+/**
+ * Update a blog post's pipeline status
+ * This is used by the Kanban board for drag-and-drop
+ */
+export async function updatePipelineStatus(
+    id: string,
+    status: PipelineStatus
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const [existingPost] = await db
+            .select({
+                id: blogPost.id,
+                status: blogPost.status,
+                slug: blogPost.slug,
+                pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
+            })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Post not found' }
+        }
+
+        // Don't allow status change while processing
+        if (existingPost.pipelineProcessingStatus === 'processing') {
+            return {
+                success: false,
+                error: 'Cannot change status while processing',
+            }
+        }
+
+        // Determine if this is a publish action
+        const wasPublished = existingPost.status === 'published'
+        const isNowPublished = status === 'published'
+        const publishedAt =
+            !wasPublished && isNowPublished ? new Date() : undefined
+
+        await db
+            .update(blogPost)
+            .set({
+                status,
+                ...(publishedAt ? { publishedAt } : {}),
+            })
+            .where(eq(blogPost.id, id))
+
+        revalidatePath('/blog/pipeline')
+        revalidatePath('/blog/posts')
+
+        // Revalidate web app cache if publishing
+        if (existingPost.slug) {
+            await revalidateWebAppCache([
+                CACHE_TAGS.BLOG_POSTS,
+                CACHE_TAGS.blogPostBySlug(existingPost.slug),
+            ])
+        }
+
+        // Invalidate URL registry cache when publish status changes
+        if (wasPublished !== isNowPublished) {
+            revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
+        }
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error updating pipeline status:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to update status',
+        }
+    }
+}
+
+/**
+ * Update a blog post's planning data
+ */
+export async function updatePlanningData(
+    id: string,
+    planningData: PlanningData
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const [existingPost] = await db
+            .select({ id: blogPost.id })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Post not found' }
+        }
+
+        await db
+            .update(blogPost)
+            .set({ planningData })
+            .where(eq(blogPost.id, id))
+
+        revalidatePath('/blog/pipeline')
+        revalidatePath(`/blog/posts/${id}`)
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error updating planning data:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to update planning data',
+        }
+    }
+}
+
+/**
+ * Update a blog post's priority
+ */
+export async function updatePostPriority(
+    id: string,
+    priority: BlogPostPriority
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const [existingPost] = await db
+            .select({ id: blogPost.id })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Post not found' }
+        }
+
+        await db.update(blogPost).set({ priority }).where(eq(blogPost.id, id))
+
+        revalidatePath('/blog/pipeline')
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error updating post priority:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to update priority',
         }
     }
 }

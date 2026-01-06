@@ -25,3 +25,24 @@ export type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-
 export type { AgenticProgressData } from '../types/pipeline/agentic-progress-data.type'
 export type { AgenticPipelineIdeaInput } from '../types/pipeline/agentic-pipeline-idea-input.type'
 export type { AgenticPipelineOutlineInput } from '../types/pipeline/agentic-pipeline-outline-input.type'
+
+// Standalone Phase Runners (for stage-based processing)
+export {
+    runGenerationPhase,
+    type GenerationPhaseInput,
+    type GenerationPhaseOutline,
+    type GenerationPhaseOptions,
+    type GenerationPhaseResult,
+} from './generation-phase.runner'
+
+export {
+    runReviewPhase,
+    type ReviewPhaseOptions,
+    type ReviewPhaseResult,
+} from './review-phase.runner'
+
+export {
+    runExtractionPhase,
+    type ExtractionPhaseOptions,
+    type ExtractionPhaseResult,
+} from './extraction-phase.runner'

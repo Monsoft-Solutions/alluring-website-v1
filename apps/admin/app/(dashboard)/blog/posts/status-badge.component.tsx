@@ -1,20 +1,40 @@
 import { Badge } from '@workspace/ui/components/badge'
 
+type PipelineStatus =
+    | 'ideation'
+    | 'generate'
+    | 'ai_review'
+    | 'generate_metadata'
+    | 'draft'
+    | 'ready_to_publish'
+    | 'scheduled'
+    | 'published'
+
 type StatusBadgeProps = {
-    status: 'draft' | 'readyToPublish' | 'published' | null
+    status: PipelineStatus | null
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {
     const variants: Record<string, 'default' | 'secondary' | 'outline'> = {
         published: 'default',
-        readyToPublish: 'secondary',
+        scheduled: 'default',
+        ready_to_publish: 'secondary',
         draft: 'outline',
+        ideation: 'outline',
+        generate: 'secondary',
+        ai_review: 'secondary',
+        generate_metadata: 'secondary',
     }
 
     const labels: Record<string, string> = {
         published: 'Published',
-        readyToPublish: 'Ready',
+        scheduled: 'Scheduled',
+        ready_to_publish: 'Ready',
         draft: 'Draft',
+        ideation: 'Idea',
+        generate: 'Generating',
+        ai_review: 'Review',
+        generate_metadata: 'Extract',
     }
 
     const statusKey = status ?? 'draft'

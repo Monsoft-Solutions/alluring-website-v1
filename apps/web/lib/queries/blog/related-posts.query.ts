@@ -112,32 +112,37 @@ export async function getRelatedPosts(
             and(
                 inArray(blogPost.id, idsToFetch),
                 eq(blogPost.status, 'published'),
-                isNotNull(blogPost.publishedAt)
+                isNotNull(blogPost.publishedAt),
+                isNotNull(blogPost.slug)
             )
         )
         .orderBy(desc(blogPost.publishedAt))
 
     // Map and sort by original match count order
     const postsMap = new Map<string, BlogPostCard>(
-        rows.map((r) => [
-            r.id,
-            {
-                id: r.id,
-                slug: r.slug,
-                title: r.title,
-                excerpt: r.excerpt,
-                publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
-                readingTime: r.readingTime,
-                featuredImage: r.imageUrl
-                    ? {
-                          url: r.imageUrl,
-                          alt: r.imageAlt ?? '',
-                          blurDataUrl: r.imageBlur ?? undefined,
-                      }
-                    : null,
-                author: r.authorName ? { name: r.authorName } : null,
-            },
-        ])
+        rows
+            .filter((r) => r.slug !== null)
+            .map((r) => [
+                r.id,
+                {
+                    id: r.id,
+                    slug: r.slug!,
+                    title: r.title,
+                    excerpt: r.excerpt,
+                    publishedAt: r.publishedAt
+                        ? r.publishedAt.toISOString()
+                        : null,
+                    readingTime: r.readingTime,
+                    featuredImage: r.imageUrl
+                        ? {
+                              url: r.imageUrl,
+                              alt: r.imageAlt ?? '',
+                              blurDataUrl: r.imageBlur ?? undefined,
+                          }
+                        : null,
+                    author: r.authorName ? { name: r.authorName } : null,
+                },
+            ])
     )
 
     // Return posts in order of relevance (match count)
@@ -173,6 +178,7 @@ async function getRecentPosts(
         ne(blogPost.id, excludePostId),
         eq(blogPost.status, 'published'),
         isNotNull(blogPost.publishedAt),
+        isNotNull(blogPost.slug),
     ]
 
     // Add additional exclusions
@@ -200,20 +206,22 @@ async function getRecentPosts(
         .orderBy(desc(blogPost.publishedAt))
         .limit(limit)
 
-    return rows.map((r) => ({
-        id: r.id,
-        slug: r.slug,
-        title: r.title,
-        excerpt: r.excerpt,
-        publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
-        readingTime: r.readingTime,
-        featuredImage: r.imageUrl
-            ? {
-                  url: r.imageUrl,
-                  alt: r.imageAlt ?? '',
-                  blurDataUrl: r.imageBlur ?? undefined,
-              }
-            : null,
-        author: r.authorName ? { name: r.authorName } : null,
-    }))
+    return rows
+        .filter((r) => r.slug !== null)
+        .map((r) => ({
+            id: r.id,
+            slug: r.slug!,
+            title: r.title,
+            excerpt: r.excerpt,
+            publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
+            readingTime: r.readingTime,
+            featuredImage: r.imageUrl
+                ? {
+                      url: r.imageUrl,
+                      alt: r.imageAlt ?? '',
+                      blurDataUrl: r.imageBlur ?? undefined,
+                  }
+                : null,
+            author: r.authorName ? { name: r.authorName } : null,
+        }))
 }

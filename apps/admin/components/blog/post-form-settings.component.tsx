@@ -24,10 +24,10 @@ type Author = {
 type PostFormSettingsProps = {
     authors: Author[]
     authorId: string | null
-    status: 'draft' | 'readyToPublish' | 'published'
+    status: 'draft' | 'ready_to_publish' | 'published'
     featuredImageUrl: string | null
     onAuthorChange: (authorId: string) => void
-    onStatusChange: (status: 'draft' | 'readyToPublish' | 'published') => void
+    onStatusChange: (status: 'draft' | 'ready_to_publish' | 'published') => void
     onFeaturedImageChange: (url: string) => void
 }
 
@@ -73,7 +73,7 @@ export function PostFormSettings({
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value='draft'>Draft</SelectItem>
-                            <SelectItem value='readyToPublish'>
+                            <SelectItem value='ready_to_publish'>
                                 Ready to Publish
                             </SelectItem>
                             <SelectItem value='published'>Published</SelectItem>

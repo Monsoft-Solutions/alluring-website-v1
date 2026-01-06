@@ -3,11 +3,21 @@ import type { FaqItem } from '@workspace/shared/schemas/blog'
 import { author, blogPost, images } from '@workspace/db/schema/blog'
 import { count, desc, eq, sql, asc } from 'drizzle-orm'
 
+export type PipelineStatus =
+    | 'ideation'
+    | 'generate'
+    | 'ai_review'
+    | 'generate_metadata'
+    | 'draft'
+    | 'ready_to_publish'
+    | 'scheduled'
+    | 'published'
+
 export type BlogPostListItem = {
     id: string
-    slug: string
+    slug: string | null
     title: string
-    status: 'draft' | 'readyToPublish' | 'published' | null
+    status: PipelineStatus | null
     publishedAt: Date | null
     views: number
     authorName: string | null
@@ -106,7 +116,7 @@ export async function getAuthors(): Promise<AuthorWithPostCount[]> {
 
 export async function updateBlogPostStatus(
     postId: string,
-    status: 'draft' | 'readyToPublish' | 'published'
+    status: 'draft' | 'ready_to_publish' | 'published'
 ): Promise<void> {
     const updateData: { status: typeof status; publishedAt?: Date } = { status }
 
@@ -119,16 +129,16 @@ export async function updateBlogPostStatus(
 
 export type BlogPostDetail = {
     id: string
-    slug: string
+    slug: string | null
     title: string
-    content: string
-    metaDescription: string
+    content: string | null
+    metaDescription: string | null
     metaTitle: string | null
     metaKeywords: string | null
     primaryKeyword: string | null
     secondaryKeywords: string[] | null
     excerpt: string | null
-    status: 'draft' | 'readyToPublish' | 'published' | null
+    status: PipelineStatus | null
     publishedAt: Date | null
     readingTime: number | null
     authorId: string | null

@@ -10,9 +10,9 @@ import {
 
 type PostFormActionsProps = {
     mode: 'create' | 'edit'
-    status: 'draft' | 'readyToPublish' | 'published'
+    status: 'draft' | 'ready_to_publish' | 'published'
     isPending: boolean
-    onSave: (status?: 'draft' | 'readyToPublish' | 'published') => void
+    onSave: (status?: 'draft' | 'ready_to_publish' | 'published') => void
 }
 
 export function PostFormActions({
@@ -43,7 +43,7 @@ export function PostFormActions({
                     <Button
                         variant='outline'
                         className='w-full'
-                        onClick={() => onSave('readyToPublish')}
+                        onClick={() => onSave('ready_to_publish')}
                         disabled={isPending}
                     >
                         <Eye className='mr-2 h-4 w-4' />

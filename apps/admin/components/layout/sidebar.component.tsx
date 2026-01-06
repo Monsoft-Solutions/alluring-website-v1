@@ -16,6 +16,7 @@ import {
     Megaphone,
     Bot,
     Search,
+    Workflow,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -90,6 +91,7 @@ const navItems: NavItem[] = [
         icon: FileText,
         children: [
             { title: 'Ideas', href: '/blog/ideas', icon: Lightbulb },
+            { title: 'Pipeline', href: '/blog/pipeline', icon: Workflow },
             { title: 'Posts', href: '/blog/posts' },
             { title: 'Authors', href: '/blog/authors' },
             { title: 'Categories', href: '/blog/categories' },

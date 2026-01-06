@@ -50,7 +50,11 @@ async function fetchPublishedPostCardsPage(options?: {
                   )
               )
           )
-        : and(eq(blogPost.status, 'published'), isNotNull(blogPost.publishedAt))
+        : and(
+              eq(blogPost.status, 'published'),
+              isNotNull(blogPost.publishedAt),
+              isNotNull(blogPost.slug)
+          )
 
     // Build base query with optional taxonomy filters
     let query = db
@@ -99,22 +103,25 @@ async function fetchPublishedPostCardsPage(options?: {
         .orderBy(desc(blogPost.publishedAt), desc(blogPost.id))
         .limit(limit + 1)
 
-    const items: BlogPostCard[] = rows.slice(0, limit).map((r) => ({
-        id: r.id,
-        slug: r.slug,
-        title: r.title,
-        excerpt: r.excerpt,
-        publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
-        readingTime: r.readingTime,
-        featuredImage: r.imageUrl
-            ? {
-                  url: r.imageUrl,
-                  alt: r.imageAlt ?? '',
-                  blurDataUrl: r.imageBlur,
-              }
-            : null,
-        author: r.authorName ? { name: r.authorName } : null,
-    }))
+    const items: BlogPostCard[] = rows
+        .slice(0, limit)
+        .filter((r) => r.slug !== null)
+        .map((r) => ({
+            id: r.id,
+            slug: r.slug!,
+            title: r.title,
+            excerpt: r.excerpt,
+            publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
+            readingTime: r.readingTime,
+            featuredImage: r.imageUrl
+                ? {
+                      url: r.imageUrl,
+                      alt: r.imageAlt ?? '',
+                      blurDataUrl: r.imageBlur,
+                  }
+                : null,
+            author: r.authorName ? { name: r.authorName } : null,
+        }))
 
     let nextCursor: { publishedAt: Date; id: string } | undefined
     if (rows.length > limit) {

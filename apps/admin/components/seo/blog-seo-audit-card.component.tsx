@@ -394,23 +394,30 @@ export function BlogSeoAuditCard() {
 /**
  * Status badge component
  */
-function StatusBadge({
-    status,
-}: {
-    status: 'draft' | 'readyToPublish' | 'published' | null
-}) {
+type PipelineStatus =
+    | 'ideation'
+    | 'generate'
+    | 'ai_review'
+    | 'generate_metadata'
+    | 'draft'
+    | 'ready_to_publish'
+    | 'scheduled'
+    | 'published'
+
+function StatusBadge({ status }: { status: PipelineStatus | null }) {
     switch (status) {
         case 'published':
+        case 'scheduled':
             return (
                 <Badge
                     variant='outline'
                     className='border-green-200 bg-green-50 text-xs text-green-700'
                 >
                     <CheckCircle2 className='mr-1 h-3 w-3' />
-                    Published
+                    {status === 'published' ? 'Published' : 'Scheduled'}
                 </Badge>
             )
-        case 'readyToPublish':
+        case 'ready_to_publish':
             return (
                 <Badge
                     variant='outline'
@@ -421,13 +428,26 @@ function StatusBadge({
                 </Badge>
             )
         case 'draft':
+        case 'ideation':
             return (
                 <Badge
                     variant='outline'
                     className='border-gray-200 bg-gray-50 text-xs text-gray-700'
                 >
                     <XCircle className='mr-1 h-3 w-3' />
-                    Draft
+                    {status === 'draft' ? 'Draft' : 'Ideation'}
+                </Badge>
+            )
+        case 'generate':
+        case 'ai_review':
+        case 'generate_metadata':
+            return (
+                <Badge
+                    variant='outline'
+                    className='border-amber-200 bg-amber-50 text-xs text-amber-700'
+                >
+                    <Sparkles className='mr-1 h-3 w-3' />
+                    Processing
                 </Badge>
             )
         default:

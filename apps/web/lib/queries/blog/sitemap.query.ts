@@ -64,18 +64,21 @@ export const getPublishedPostSlugs = cache(
             .where(
                 and(
                     eq(blogPost.status, 'published'),
-                    isNotNull(blogPost.publishedAt)
+                    isNotNull(blogPost.publishedAt),
+                    isNotNull(blogPost.slug)
                 )
             )
 
-        return rows.map((r) => ({
-            slug: r.slug,
-            // Use updatedAt if available, otherwise fallback to publishedAt
-            updatedAt: r.updatedAt ?? r.publishedAt!,
-            publishedAt: r.publishedAt!,
-            featuredImageUrl: r.featuredImageUrl,
-            featuredImageTitle: r.featuredImageTitle,
-        }))
+        return rows
+            .filter((r) => r.slug !== null)
+            .map((r) => ({
+                slug: r.slug!,
+                // Use updatedAt if available, otherwise fallback to publishedAt
+                updatedAt: r.updatedAt ?? r.publishedAt!,
+                publishedAt: r.publishedAt!,
+                featuredImageUrl: r.featuredImageUrl,
+                featuredImageTitle: r.featuredImageTitle,
+            }))
     }
 )
 

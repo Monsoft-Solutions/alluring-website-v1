@@ -122,15 +122,17 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
 
     const getSuccessMessage = (
         isCreate: boolean,
-        status?: 'draft' | 'readyToPublish' | 'published'
+        status?: 'draft' | 'ready_to_publish' | 'published'
     ) => {
         if (isCreate) return 'Post created'
         if (status === 'published') return 'Post published'
-        if (status === 'readyToPublish') return 'Post marked ready to publish'
+        if (status === 'ready_to_publish') return 'Post marked ready to publish'
         return 'Post saved'
     }
 
-    const handleSave = (status?: 'draft' | 'readyToPublish' | 'published') => {
+    const handleSave = (
+        status?: 'draft' | 'ready_to_publish' | 'published'
+    ) => {
         const dataToSave = {
             ...formData,
             status: status ?? formData.status,

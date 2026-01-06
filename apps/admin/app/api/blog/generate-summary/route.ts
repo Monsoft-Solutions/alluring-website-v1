@@ -84,6 +84,17 @@ export async function POST(
             })
         }
 
+        // Ensure post has content before generating summary
+        if (!blogPostData.content) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'Blog post must have content to generate summary',
+                },
+                { status: 400 }
+            )
+        }
+
         // Generate summary using AI
         const result = await summarizeBlogPost({
             title: blogPostData.title,

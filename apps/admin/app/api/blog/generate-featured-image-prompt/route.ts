@@ -206,6 +206,17 @@ export async function POST(
 
         // Generate summary if not available
         if (!summary) {
+            // Ensure post has content before generating summary
+            if (!blogPostData.content) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: 'Blog post must have content to generate featured image prompt',
+                    },
+                    { status: 400 }
+                )
+            }
+
             console.log('Generating summary for blog post...')
             const summaryResult = await summarizeBlogPost({
                 title: blogPostData.title,

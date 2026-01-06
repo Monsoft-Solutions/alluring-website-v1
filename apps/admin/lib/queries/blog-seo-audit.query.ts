@@ -16,9 +16,18 @@ import { cache } from 'react'
  */
 export type BlogPostWithAnalysis = {
     id: string
-    slug: string
+    slug: string | null
     title: string
-    status: 'draft' | 'readyToPublish' | 'published' | null
+    status:
+        | 'ideation'
+        | 'generate'
+        | 'ai_review'
+        | 'generate_metadata'
+        | 'draft'
+        | 'ready_to_publish'
+        | 'scheduled'
+        | 'published'
+        | null
     publishedAt: Date | null
     updatedAt: Date | null
     analysis: {

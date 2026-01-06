@@ -67,16 +67,20 @@ export default async function EditBlogPostPage({ params }: PageProps) {
                 initialData={{
                     id: post.id,
                     title: post.title,
-                    slug: post.slug,
-                    content: post.content,
-                    metaDescription: post.metaDescription,
+                    slug: post.slug ?? '',
+                    content: post.content ?? '',
+                    metaDescription: post.metaDescription ?? '',
                     metaTitle: post.metaTitle,
                     metaKeywords: post.metaKeywords,
                     primaryKeyword: post.primaryKeyword,
                     secondaryKeywords: post.secondaryKeywords,
                     excerpt: post.excerpt,
                     authorId: post.authorId,
-                    status: post.status ?? 'draft',
+                    status:
+                        post.status === 'published' ||
+                        post.status === 'ready_to_publish'
+                            ? post.status
+                            : 'draft',
                     aiSummary: post.aiSummary,
                     featuredImageUrl: post.featuredImageUrl,
                     featuredImageId: post.featuredImageId,

@@ -15,22 +15,67 @@ import {
 
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 
+import type {
+    PlanningData,
+    PipelineState,
+} from '../../types/blog-pipeline.type'
 import { author } from './author.table'
 import { images } from './image.table'
 
+/**
+ * Blog post status enum - represents the full pipeline lifecycle
+ *
+ * Pre-content stages (former "idea" stages):
+ * - ideation: Initial idea, planning phase
+ * - generate: Triggers content generation
+ * - ai_review: Triggers review + orchestration
+ * - generate_metadata: Triggers FAQ/meta extraction
+ *
+ * Post-content stages:
+ * - draft: Human review/editing
+ * - ready_to_publish: Approved, awaiting publication
+ * - scheduled: Scheduled for future publish
+ * - published: Live on site
+ */
 export const blogPostStatus = pgEnum('blog_post_status', [
+    // Pre-content stages (former "idea" stages)
+    'ideation',
+    'generate',
+    'ai_review',
+    'generate_metadata',
+    // Post-content stages
     'draft',
-    'readyToPublish',
+    'ready_to_publish',
+    'scheduled',
     'published',
+])
+
+/**
+ * Processing status for pipeline operations
+ */
+export const processingStatus = pgEnum('processing_status', [
+    'idle',
+    'processing',
+    'error',
+])
+
+/**
+ * Priority levels for Kanban ordering
+ */
+export const blogPostPriority = pgEnum('blog_post_priority', [
+    'low',
+    'medium',
+    'high',
+    'urgent',
 ])
 
 export const blogPost = pgTable(
     'blog_post',
     {
         id: uuid('id').primaryKey().defaultRandom(),
-        slug: varchar('slug', { length: 255 }).notNull().unique(),
+        slug: varchar('slug', { length: 255 }).unique(),
         title: varchar('title', { length: 255 }).notNull(),
-        metaDescription: text('meta_description').notNull(),
+        metaDescription: text('meta_description'),
         metaTitle: varchar('meta_title', { length: 255 }),
         metaKeywords: text('meta_keywords'),
         primaryKeyword: varchar('primary_keyword', { length: 100 }),
@@ -39,10 +84,10 @@ export const blogPost = pgTable(
         publishedAt: timestamp('published_at'),
         scheduledAt: timestamp('scheduled_at'),
         readingTime: integer('reading_time'), // in minutes
-        content: text('content').notNull(),
+        content: text('content'),
         aiSummary: text('ai_summary'), // AI-generated summary for image generation
         faqs: jsonb('faqs').$type<FaqItem[]>(), // Extracted FAQ items for FAQ Schema
-        status: blogPostStatus('status').default('draft'),
+        status: blogPostStatus('status').default('ideation'),
         views: integer('views').default(0).notNull(),
         likes: integer('likes').default(0).notNull(),
         shares: integer('shares').default(0).notNull(),
@@ -54,6 +99,19 @@ export const blogPost = pgTable(
         updatedAt: timestamp('updated_at')
             .defaultNow()
             .$onUpdate(() => new Date()),
+
+        // Pipeline management
+        priority: blogPostPriority('priority').default('medium'),
+        pipelineProcessingStatus:
+            processingStatus('processing_status').default('idle'),
+        processingError: text('processing_error'),
+        processingStartedAt: timestamp('processing_started_at'),
+
+        // Planning data (replaces blog_idea fields)
+        planningData: jsonb('planning_data').$type<PlanningData>(),
+
+        // Pipeline state (intermediate results, reviews, sources)
+        pipelineState: jsonb('pipeline_state').$type<PipelineState>(),
     },
     (table) => [
         // Foreign Keys
@@ -81,6 +139,12 @@ export const blogPost = pgTable(
         index('blog_post_is_featured_idx').on(table.isFeatured),
         index('blog_post_views_idx').on(table.views),
         index('blog_post_likes_idx').on(table.likes),
+        // Pipeline indexes
+        index('blog_post_priority_idx').on(table.priority),
+        index('blog_post_processing_status_idx').on(
+            table.pipelineProcessingStatus
+        ),
+        index('blog_post_status_priority_idx').on(table.status, table.priority),
     ]
 )
 
