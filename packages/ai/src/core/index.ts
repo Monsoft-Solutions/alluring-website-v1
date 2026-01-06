@@ -49,7 +49,7 @@ export { coreStreamText, type StreamTextResult } from './stream-text.core'
 // Types
 export type {
     CoreBaseOptions,
-    CoreMessage,
+    ModelMessage,
     CoreMessageContentPart,
     CoreAISDKMessage,
     CoreGenerateObjectOptions,

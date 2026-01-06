@@ -7,7 +7,7 @@
  *
  * @module @workspace/ai/core/generate-text
  */
-import { generateText } from 'ai'
+import { generateText, type Output } from 'ai'
 
 import type { CoreGenerateTextOptions, CoreToolSet } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
@@ -91,7 +91,9 @@ function convertTools(coreTools?: CoreToolSet) {
  * })
  * ```
  */
-export async function coreGenerateText(options: CoreGenerateTextOptions) {
+export async function coreGenerateText(
+    options: CoreGenerateTextOptions
+): Promise<Awaited<ReturnType<typeof generateText>>> {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature = 0.7,

@@ -35,11 +35,6 @@ export {
     getGenerateOutlinePrompt,
 } from './generate-outline.prompt'
 
-export {
-    GENERATE_POST_CONTENT_SYSTEM_PROMPT,
-    getGeneratePostContentPrompt,
-} from './generate-post-content.prompt'
-
 // Agentic Writer Prompts
 export {
     BRAND_VOICE_GUIDELINES,

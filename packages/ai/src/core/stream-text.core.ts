@@ -6,7 +6,7 @@
  *
  * @module @workspace/ai/core/stream-text
  */
-import { streamText, smoothStream } from 'ai'
+import { streamText, smoothStream, type Output } from 'ai'
 
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
@@ -40,7 +40,9 @@ export type { StreamTextResult } from 'ai'
  * return result.toTextStreamResponse()
  * ```
  */
-export function coreStreamText(options: CoreStreamTextOptions) {
+export function coreStreamText(
+    options: CoreStreamTextOptions
+): ReturnType<typeof streamText> {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature = 0.7,

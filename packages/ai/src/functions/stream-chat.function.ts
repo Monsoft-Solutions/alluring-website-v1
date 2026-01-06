@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/functions/stream-chat
  */
+import { type Output } from 'ai'
 import { coreStreamText } from '../core'
 
 /**
@@ -57,7 +58,9 @@ export type StreamChatOptions = {
  * return result.toTextStreamResponse()
  * ```
  */
-export function streamChat(options: StreamChatOptions) {
+export function streamChat(
+    options: StreamChatOptions
+): ReturnType<typeof coreStreamText> {
     const {
         modelId,
         systemPrompt,

@@ -8,7 +8,7 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
-import { generateObject } from 'ai'
+import { generateText, Output } from 'ai'
 import { z } from 'zod'
 
 import { getModel } from '../models/model-resolver.util'
@@ -18,6 +18,7 @@ import type {
     OrchestratorResult,
     ReviewIssue,
 } from './types.agent'
+import { createThinkTool } from '../tools'
 
 /**
  * Default model for orchestration (using a more capable model for complex revisions)
@@ -431,13 +432,16 @@ Produce the final revised version with a complete list of changes made.`
 
     console.log('[Orchestrator] Starting revision with structured thinking')
 
-    const result = await generateObject({
+    const result = await generateText({
         model: getModel(modelId),
-        schema: orchestratorOutputSchema,
+        output: Output.object({ schema: orchestratorOutputSchema }),
         system: ORCHESTRATOR_SYSTEM_PROMPT,
         prompt,
         temperature,
         experimental_telemetry: telemetryConfig,
+        tools: {
+            think: createThinkTool(),
+        },
     })
 
     const processingTimeMs = Date.now() - startTime
@@ -447,10 +451,10 @@ Produce the final revised version with a complete list of changes made.`
     )
 
     return {
-        revisedContent: result.object.revisedContent,
-        changesSummary: result.object.changesSummary,
-        changes: result.object.changes,
-        overallScore: result.object.overallScore,
+        revisedContent: result.output.revisedContent,
+        changesSummary: result.output.changesSummary,
+        changes: result.output.changes,
+        overallScore: result.output.overallScore,
         agentReviews: reviews,
         processingTimeMs,
     }

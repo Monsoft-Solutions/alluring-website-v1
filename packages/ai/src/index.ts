@@ -36,7 +36,7 @@ export {
     type DeepPartial,
     type StreamTextResult,
     type CoreBaseOptions,
-    type CoreMessage,
+    type ModelMessage,
     type CoreGenerateObjectOptions,
     type CoreGenerateTextOptions,
     type CoreGenerateTextPromptOptions,

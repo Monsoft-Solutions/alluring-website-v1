@@ -74,7 +74,7 @@ export type CoreBaseOptions = {
 /**
  * Message format for chat-based functions
  */
-export type CoreMessage = {
+export type ModelMessage = {
     role: 'user' | 'assistant' | 'system'
     content: string
 }
@@ -146,7 +146,7 @@ export type CoreGenerateTextMessagesOptions = CoreBaseOptions &
         /** System prompt for the AI */
         system?: string
         /** Messages for chat-based generation */
-        messages: CoreMessage[]
+        messages: ModelMessage[]
         /** Maximum output tokens */
         maxTokens?: number
     }
@@ -178,7 +178,7 @@ export type CoreStreamTextOptions = CoreBaseOptions & {
     /** System prompt for the AI */
     system?: string
     /** Messages for chat-based streaming */
-    messages: CoreMessage[]
+    messages: ModelMessage[]
     /** Maximum output tokens */
     maxTokens?: number
     /** Enable smooth streaming (word-by-word or line-by-line) */

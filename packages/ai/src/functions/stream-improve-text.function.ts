@@ -59,7 +59,9 @@ export type StreamImproveTextOptions = {
  * return result.toTextStreamResponse()
  * ```
  */
-export function streamImproveText(options: StreamImproveTextOptions) {
+export function streamImproveText(
+    options: StreamImproveTextOptions
+): ReturnType<typeof coreStreamText> {
     const {
         text,
         operation,
