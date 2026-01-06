@@ -17,6 +17,7 @@ import { runReviewPhase } from '@workspace/ai/pipelines'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
+import { runExtractPhaseForPost } from '@/lib/services/pipeline-phase.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 180 // 3 minutes for review + orchestration
@@ -97,9 +98,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             estimatedWordCount: planningData?.estimatedWordCount,
         })
 
-        // Flush telemetry
-        after(async () => await langfuseSpanProcessor.forceFlush())
-
         if (!result.success) {
             // Update with error
             await db
@@ -117,8 +115,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         }
 
         // Build pipeline state update
-        const existingPipelineState = (post.pipelineState ||
-            {}) as PipelineState
+        const existingPipelineState: PipelineState = post.pipelineState ?? {}
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
             reviewPhase: {
@@ -161,6 +158,13 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
                           result.reviews.length
                   )
                 : 0
+
+        // Chain to extraction phase after response is sent (non-blocking)
+        after(async () => {
+            await langfuseSpanProcessor.forceFlush()
+            // Run extraction phase directly (no HTTP, no auth needed)
+            await runExtractPhaseForPost(id)
+        })
 
         return NextResponse.json({
             success: true,

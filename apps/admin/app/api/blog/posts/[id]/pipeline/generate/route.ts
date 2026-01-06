@@ -17,6 +17,7 @@ import { runGenerationPhase } from '@workspace/ai/pipelines'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
+import { runReviewPhaseForPost } from '@/lib/services/pipeline-phase.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 180 // 3 minutes for generation
@@ -100,9 +101,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             },
         })
 
-        // Flush telemetry
-        after(async () => await langfuseSpanProcessor.forceFlush())
-
         if (!result.success) {
             // Update with error
             await db
@@ -120,8 +118,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         }
 
         // Build pipeline state update
-        const existingPipelineState = (post.pipelineState ||
-            {}) as PipelineState
+        const existingPipelineState: PipelineState = post.pipelineState ?? {}
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
             generationPhase: {
@@ -149,6 +146,13 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
                 status: 'ai_review', // Auto-advance to next stage
             })
             .where(eq(blogPost.id, id))
+
+        // Chain to review phase after response is sent (non-blocking)
+        after(async () => {
+            await langfuseSpanProcessor.forceFlush()
+            // Run review phase directly (no HTTP, no auth needed)
+            await runReviewPhaseForPost(id)
+        })
 
         return NextResponse.json({
             success: true,
