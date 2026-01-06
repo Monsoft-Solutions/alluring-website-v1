@@ -22,15 +22,6 @@ export const extractFaqsResponseSchema = z.object({
         .min(0)
         .max(10)
         .describe('FAQ items extracted or generated from content'),
-    /** Whether FAQs were found in content */
-    hasFaqSection: z
-        .boolean()
-        .describe('True if content has explicit FAQ section'),
-    /** Whether FAQs were AI-generated (vs extracted from existing FAQ section) */
-    wasGenerated: z
-        .boolean()
-        .optional()
-        .describe('True if FAQs were generated, false if extracted'),
 })
 
 /**
@@ -76,9 +67,8 @@ Your task is to identify and extract FAQ (Frequently Asked Questions) items from
 **Output Format:**
 - Clean question text without "Q:" prefix
 - Clean answer text without "A:" prefix
-- Set hasFaqSection to true if explicit FAQ section exists
 
-If no FAQs are found, return an empty array with hasFaqSection: false.`
+If no FAQs are found, return an empty array.`
 
 /**
  * System prompt for FAQ generation (when no FAQ section exists)
@@ -111,9 +101,7 @@ Your task is to analyze blog content and generate FAQ items that readers commonl
 
 **Output Format:**
 - Clean, natural question text (no "Q:" prefix)
-- Concise, helpful answer text (no "A:" prefix)
-- Set hasFaqSection to false (since we're generating, not extracting)
-- Set wasGenerated to true`
+- Concise, helpful answer text (no "A:" prefix)`
 
 /**
  * Generate FAQs from content analysis when no FAQ section exists
@@ -153,11 +141,9 @@ Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ item
         temperature: 0.7, // Higher for creative generation
     })
 
-    // Limit to maxFaqs and mark as generated
+    // Limit to maxFaqs
     return {
         faqs: result.object.faqs.slice(0, maxFaqs),
-        hasFaqSection: false,
-        wasGenerated: true,
     }
 }
 
@@ -177,7 +163,7 @@ Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ item
  *   primaryKeyword: 'bbl recovery',
  * })
  *
- * if (result.hasFaqSection) {
+ * if (result.faqs.length > 0) {
  *   // Use for FAQ Schema
  *   const faqSchema = {
  *     "@type": "FAQPage",
@@ -214,8 +200,6 @@ export async function extractFaqs(
             // Return empty if generation is disabled
             return {
                 faqs: [],
-                hasFaqSection: false,
-                wasGenerated: false,
             }
         }
 
@@ -243,11 +227,9 @@ Find and extract all Q&A pairs. If no genuine FAQs exist, return empty array.`
         temperature: 0.2, // Very low for accurate extraction
     })
 
-    // Limit to maxFaqs and mark as extracted (not generated)
+    // Limit to maxFaqs
     return {
         faqs: result.object.faqs.slice(0, maxFaqs),
-        hasFaqSection: result.object.hasFaqSection,
-        wasGenerated: false,
     }
 }
 

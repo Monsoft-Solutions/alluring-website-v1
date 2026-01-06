@@ -27,8 +27,6 @@ type PostFormFAQsProps = {
 type GenerateFaqsResponse = {
     success: boolean
     faqs?: FaqItem[]
-    hasFaqSection?: boolean
-    wasGenerated?: boolean
     error?: string
 }
 
@@ -90,9 +88,8 @@ export function PostFormFAQs({
 
             if (result.success && result.faqs) {
                 onFaqsChange(result.faqs)
-                const action = result.wasGenerated ? 'Generated' : 'Extracted'
                 toast.success(
-                    `${action} ${result.faqs.length} FAQ${result.faqs.length !== 1 ? 's' : ''}${result.wasGenerated ? ' from content analysis' : ' from FAQ section'}`
+                    `Generated ${result.faqs.length} FAQ${result.faqs.length !== 1 ? 's' : ''}`
                 )
             } else {
                 toast.error(result.error ?? 'Failed to generate FAQs')
