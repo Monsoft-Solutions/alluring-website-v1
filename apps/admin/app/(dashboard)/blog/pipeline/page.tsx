@@ -13,7 +13,10 @@ import {
 } from '@workspace/ui/components/card'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 
-import { PipelineKanbanBoard } from '@/components/blog/pipeline'
+import {
+    PipelineKanbanBoard,
+    PipelinePostFormDialog,
+} from '@/components/blog/pipeline'
 import { usePipelineKanban, usePipelineStats } from '@/hooks/use-pipeline.hook'
 
 /**
@@ -23,6 +26,7 @@ import { usePipelineKanban, usePipelineStats } from '@/hooks/use-pipeline.hook'
  */
 export default function PipelinePage() {
     const [searchQuery, setSearchQuery] = useState('')
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
     const { data, isLoading, refetch, isRefetching } = usePipelineKanban()
     const { data: stats } = usePipelineStats()
 
@@ -51,7 +55,10 @@ export default function PipelinePage() {
                         />
                         Refresh
                     </Button>
-                    <Button size='sm'>
+                    <Button
+                        size='sm'
+                        onClick={() => setIsCreateDialogOpen(true)}
+                    >
                         <Plus className='mr-2 h-4 w-4' />
                         New Post
                     </Button>
@@ -155,6 +162,12 @@ export default function PipelinePage() {
                     </CardContent>
                 </Card>
             )}
+
+            {/* Create Post Dialog */}
+            <PipelinePostFormDialog
+                open={isCreateDialogOpen}
+                onOpenChange={setIsCreateDialogOpen}
+            />
         </div>
     )
 }

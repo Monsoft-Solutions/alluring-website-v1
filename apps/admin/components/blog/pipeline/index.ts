@@ -5,3 +5,4 @@
  */
 export { PipelineKanbanBoard } from './pipeline-kanban-board.component'
 export { PipelineCard } from './pipeline-card.component'
+export { PipelinePostFormDialog } from './pipeline-post-form-dialog.component'

@@ -22,7 +22,7 @@ import {
     Users,
 } from 'lucide-react'
 
-import { useCreateIdea } from '@/hooks/use-ideas.hook'
+import { useCreatePipelinePost } from '@/hooks/use-pipeline.hook'
 import type { TopicSuggestion } from '@workspace/ai/functions'
 import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-ideas.constant'
 import type { SelectedKeywords } from './gsc-keyword-selector.component'
@@ -48,43 +48,47 @@ export function GeneratedIdeasPanel({
     onGenerate,
     hasGenerated,
 }: GeneratedIdeasPanelProps) {
-    const createIdea = useCreateIdea()
+    const createPipelinePost = useCreatePipelinePost()
     const [addedIds, setAddedIds] = useState<Set<number>>(new Set())
 
     const hasSelectedKeywords =
         selectedKeywords.primary !== null ||
         selectedKeywords.secondary.length > 0
 
-    const handleAddToBacklog = async (idea: TopicSuggestion, index: number) => {
+    const handleAddToPipeline = async (
+        idea: TopicSuggestion,
+        index: number
+    ) => {
         try {
-            const result = await createIdea.mutateAsync({
+            const result = await createPipelinePost.mutateAsync({
                 title: idea.title,
-                topic: idea.description,
                 primaryKeyword:
                     selectedKeywords.primary || idea.primaryKeyword || null,
                 secondaryKeywords:
                     selectedKeywords.secondary.length > 0
                         ? selectedKeywords.secondary
                         : null,
-                contentType: idea.suggestedContentType ?? null,
-                uniqueAngle: idea.uniqueAngle || null,
-                targetAudience: idea.targetAudience || null,
-                painPoints: idea.painPoints || null,
-                estimatedWordCount: idea.estimatedWordCount ?? null,
                 priority: 'medium',
-                stage: 'backlog',
+                planningData: {
+                    topic: idea.description,
+                    uniqueAngle: idea.uniqueAngle || undefined,
+                    contentType: idea.suggestedContentType || undefined,
+                    targetAudience: idea.targetAudience || undefined,
+                    painPoints: idea.painPoints || undefined,
+                    estimatedWordCount: idea.estimatedWordCount ?? undefined,
+                },
             })
 
             if (result.success) {
                 setAddedIds((prev) => new Set([...prev, index]))
-                toast.success('Idea added to backlog!')
+                toast.success('Post added to pipeline!')
             } else {
-                toast.error(result.error || 'Failed to add idea')
+                toast.error(result.error || 'Failed to add post')
             }
         } catch (error) {
-            console.error('Error adding idea to backlog:', error)
+            console.error('Error adding post to pipeline:', error)
             toast.error(
-                error instanceof Error ? error.message : 'Failed to add idea'
+                error instanceof Error ? error.message : 'Failed to add post'
             )
         }
     }
@@ -174,10 +178,10 @@ export function GeneratedIdeasPanel({
                                                 }
                                                 disabled={
                                                     isAdded ||
-                                                    createIdea.isPending
+                                                    createPipelinePost.isPending
                                                 }
                                                 onClick={() =>
-                                                    handleAddToBacklog(
+                                                    handleAddToPipeline(
                                                         idea,
                                                         index
                                                     )

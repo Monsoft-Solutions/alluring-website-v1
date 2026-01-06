@@ -12,8 +12,7 @@ import {
 import { Sparkles, Check } from 'lucide-react'
 import { cn } from '@workspace/ui/lib/utils'
 
-import { useCreateIdea } from '@/hooks/use-ideas.hook'
-import type { BlogIdeaFormData } from '@/lib/actions/idea.action'
+import { useCreatePipelinePost } from '@/hooks/use-pipeline.hook'
 import type {
     TopicSuggestion,
     GenerateBlogOutlineResult,
@@ -62,7 +61,7 @@ export function IdeationWizardDialog({
     open,
     onOpenChange,
 }: IdeationWizardDialogProps) {
-    const createIdea = useCreateIdea()
+    const createPipelinePost = useCreatePipelinePost()
 
     const [step, setStep] = useState<Step>(1)
     const [isGenerating, setIsGenerating] = useState(false)
@@ -158,48 +157,45 @@ export function IdeationWizardDialog({
     const handleSaveIdea = async () => {
         if (!state.selectedTopic) return
 
-        const ideaData: BlogIdeaFormData = {
-            title: state.refinedTitle,
-            topic: state.selectedTopic.description,
-            primaryKeyword: state.refinedKeyword,
-            uniqueAngle: state.refinedAngle,
-            contentType: (state.contentType ||
-                state.selectedTopic
-                    .suggestedContentType) as BlogIdeaFormData['contentType'],
-            targetAudience: state.targetAudience || undefined,
-            outline: state.outline
-                ? (
-                      state.outline as {
-                          sections: Array<{
-                              id: string
-                              title: string
-                              description: string
-                          }>
-                      }
-                  ).sections?.map(
-                      (s: {
+        // Build outline sections for planningData
+        const outlineSections = state.outline
+            ? (
+                  state.outline as {
+                      sections: Array<{
                           id: string
                           title: string
                           description: string
-                      }) => ({
-                          id: s.id,
-                          title: s.title,
-                          description: s.description,
-                      })
-                  )
-                : undefined,
-            priority: 'medium',
-            stage: 'backlog',
-        }
+                      }>
+                  }
+              ).sections?.map((s) => ({
+                  id: s.id,
+                  title: s.title,
+                  description: s.description,
+              }))
+            : undefined
 
-        const result = await createIdea.mutateAsync(ideaData)
+        const result = await createPipelinePost.mutateAsync({
+            title: state.refinedTitle,
+            primaryKeyword: state.refinedKeyword,
+            priority: 'medium',
+            planningData: {
+                topic: state.selectedTopic.description,
+                uniqueAngle: state.refinedAngle || undefined,
+                contentType:
+                    state.contentType ||
+                    state.selectedTopic.suggestedContentType ||
+                    undefined,
+                targetAudience: state.targetAudience || undefined,
+                outline: outlineSections,
+            },
+        })
 
         if (result.success) {
-            toast.success('Idea saved to pipeline!')
+            toast.success('Post added to pipeline!')
             onOpenChange(false)
             resetWizard()
         } else {
-            toast.error(result.error || 'Failed to save idea')
+            toast.error(result.error || 'Failed to add post to pipeline')
         }
     }
 
@@ -302,7 +298,7 @@ export function IdeationWizardDialog({
                         state={state}
                         onSave={handleSaveIdea}
                         onBack={() => setStep(4)}
-                        isLoading={createIdea.isPending}
+                        isLoading={createPipelinePost.isPending}
                     />
                 )}
             </DialogContent>
