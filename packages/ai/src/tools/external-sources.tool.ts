@@ -69,7 +69,10 @@ export const externalSourcesParametersSchema = z.object({
         )
         .optional()
         .describe('Optional filter for specific source types'),
-    maxResults: z.number().min(1).max(10).default(5),
+    maxResults: z
+        .number()
+        .default(5)
+        .describe('Maximum results to return (1-10)'),
 })
 
 export type ExternalSourcesParameters = z.infer<

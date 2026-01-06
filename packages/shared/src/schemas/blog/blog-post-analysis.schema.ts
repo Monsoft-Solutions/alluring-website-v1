@@ -12,7 +12,7 @@ import { z } from 'zod'
  * Schema for a single category score with details
  */
 export const categoryScoreSchema = z.object({
-    score: z.number().min(0).max(100),
+    score: z.number().describe('Score from 0 to 100'),
     findings: z.array(z.string()),
     suggestions: z.array(z.string()),
 })
@@ -22,7 +22,7 @@ export const categoryScoreSchema = z.object({
  * All metrics are optional - include only if determinable from content
  */
 export const contentLengthCategorySchema = categoryScoreSchema.extend({
-    wordCount: z.number().min(0).optional(),
+    wordCount: z.number().optional().describe('Word count (non-negative)'),
 })
 
 /**
@@ -30,8 +30,14 @@ export const contentLengthCategorySchema = categoryScoreSchema.extend({
  * All metrics are optional - include only if determinable from content
  */
 export const readabilityCategorySchema = categoryScoreSchema.extend({
-    avgSentenceLength: z.number().min(0).optional(),
-    avgParagraphLength: z.number().min(0).optional(),
+    avgSentenceLength: z
+        .number()
+        .optional()
+        .describe('Average sentence length (non-negative)'),
+    avgParagraphLength: z
+        .number()
+        .optional()
+        .describe('Average paragraph length (non-negative)'),
 })
 
 /**
@@ -39,9 +45,9 @@ export const readabilityCategorySchema = categoryScoreSchema.extend({
  * All metrics are optional - include only if determinable from content
  */
 export const headingStructureCategorySchema = categoryScoreSchema.extend({
-    h1Count: z.number().min(0).optional(),
-    h2Count: z.number().min(0).optional(),
-    h3Count: z.number().min(0).optional(),
+    h1Count: z.number().optional().describe('H1 heading count (non-negative)'),
+    h2Count: z.number().optional().describe('H2 heading count (non-negative)'),
+    h3Count: z.number().optional().describe('H3 heading count (non-negative)'),
 })
 
 /**
@@ -49,7 +55,7 @@ export const headingStructureCategorySchema = categoryScoreSchema.extend({
  * All metrics are optional - include only if determinable from content
  */
 export const keywordsCategorySchema = categoryScoreSchema.extend({
-    density: z.number().min(0).max(100).optional(),
+    density: z.number().optional().describe('Keyword density from 0 to 100'),
     keywordInFirst100Words: z.boolean().optional(),
 })
 
@@ -58,8 +64,14 @@ export const keywordsCategorySchema = categoryScoreSchema.extend({
  * All metrics are optional - include only if determinable from content
  */
 export const linkingCategorySchema = categoryScoreSchema.extend({
-    internalLinkCount: z.number().min(0).optional(),
-    externalLinkCount: z.number().min(0).optional(),
+    internalLinkCount: z
+        .number()
+        .optional()
+        .describe('Internal link count (non-negative)'),
+    externalLinkCount: z
+        .number()
+        .optional()
+        .describe('External link count (non-negative)'),
 })
 
 /**
@@ -67,9 +79,12 @@ export const linkingCategorySchema = categoryScoreSchema.extend({
  * All metrics are optional - include only if determinable from content
  */
 export const visualContentCategorySchema = categoryScoreSchema.extend({
-    imageCount: z.number().min(0).optional(),
+    imageCount: z.number().optional().describe('Image count (non-negative)'),
     hasFeaturedImage: z.boolean().optional(),
-    imagesWithAlt: z.number().min(0).optional(),
+    imagesWithAlt: z
+        .number()
+        .optional()
+        .describe('Images with alt text (non-negative)'),
 })
 
 /**
@@ -99,7 +114,7 @@ export const suggestionSchema = z.object({
  * Complete blog post analysis result
  */
 export const blogPostAnalysisResultSchema = z.object({
-    overallScore: z.number().min(0).max(100),
+    overallScore: z.number().describe('Overall score from 0 to 100'),
     grade: z.enum(['A', 'B', 'C', 'D', 'F']),
     categories: z.object({
         title: categoryScoreSchema,
@@ -113,7 +128,7 @@ export const blogPostAnalysisResultSchema = z.object({
         structure: structureCategorySchema,
     }),
     topSuggestions: z.array(suggestionSchema),
-    summary: z.string().min(50).max(1000),
+    summary: z.string().describe('Summary (50-1000 characters)'),
 })
 
 /**

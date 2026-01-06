@@ -48,7 +48,10 @@ export const webSearchParametersSchema = z.object({
         .describe(
             'The search query. Be specific and include relevant medical terms.'
         ),
-    maxResults: z.number().min(1).max(10).default(5),
+    maxResults: z
+        .number()
+        .default(5)
+        .describe('Maximum results to return (1-10)'),
     searchDepth: z.enum(['basic', 'advanced']).default('basic'),
 })
 
@@ -213,6 +216,9 @@ export const medicalSearchToolDefinition = {
         'Search trusted medical sources for health and surgery information. Use this for medical facts, procedure details, and recovery information from authoritative medical sources.',
     parameters: z.object({
         query: z.string().describe('The medical search query'),
-        maxResults: z.number().min(1).max(10).default(5),
+        maxResults: z
+            .number()
+            .default(5)
+            .describe('Maximum results to return (1-10)'),
     }),
 }

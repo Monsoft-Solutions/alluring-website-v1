@@ -15,7 +15,7 @@ export const aiSuggestedGroupSchema = z.object({
     groupId: z.string().uuid(),
     slug: z.string(),
     name: z.string(),
-    confidence: z.number().min(0).max(1),
+    confidence: z.number().describe('Confidence from 0.0 to 1.0'),
     reason: z.string(),
 })
 
@@ -31,7 +31,7 @@ export const detectedPairSchema = z.object({
     afterMediaUrl: z.string().url(),
     procedureSlug: z.string().nullable(),
     bodyArea: z.string(),
-    confidence: z.number().min(0).max(1),
+    confidence: z.number().describe('Confidence from 0.0 to 1.0'),
     aiSuggestedGroups: z.array(aiSuggestedGroupSchema),
     aiPrimaryGroup: z.string().nullable(),
 })
@@ -69,13 +69,28 @@ export const nonBAMediaSchema = z.object({
  * Analysis statistics
  */
 export const analysisStatsSchema = z.object({
-    totalPosts: z.number().int().min(0),
-    totalMedia: z.number().int().min(0),
-    analyzedMedia: z.number().int().min(0),
-    failedMedia: z.number().int().min(0),
-    sideBySideCount: z.number().int().min(0),
-    pairedCount: z.number().int().min(0),
-    unpairedCount: z.number().int().min(0),
+    totalPosts: z.number().int().describe('Total posts (non-negative integer)'),
+    totalMedia: z.number().int().describe('Total media (non-negative integer)'),
+    analyzedMedia: z
+        .number()
+        .int()
+        .describe('Analyzed media (non-negative integer)'),
+    failedMedia: z
+        .number()
+        .int()
+        .describe('Failed media (non-negative integer)'),
+    sideBySideCount: z
+        .number()
+        .int()
+        .describe('Side by side count (non-negative integer)'),
+    pairedCount: z
+        .number()
+        .int()
+        .describe('Paired count (non-negative integer)'),
+    unpairedCount: z
+        .number()
+        .int()
+        .describe('Unpaired count (non-negative integer)'),
 })
 
 /**
