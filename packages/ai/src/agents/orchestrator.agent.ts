@@ -207,14 +207,27 @@ Write the complete revised blog post in markdown format. Output ONLY the publica
 - Demonstrate expertise: use specific examples, reference real procedures and outcomes
 - Be comprehensive: cover all aspects a reader would need to make an informed decision
 
-**Output Requirements:**
-Your output should be ONLY the complete revised blog post in markdown format.
-- Start directly with the content (no preamble, no explanation)
-- Include all headings, paragraphs, links, and formatting
-- The output should be publication-ready
-- Do not include any JSON, metadata, or change summaries
-- Do not wrap the content in code blocks
-- Don't use --- lines to separate sections`
+**Output Requirements (CRITICAL):**
+Your output must be ONLY the complete revised blog post in markdown format.
+
+This is a publication-ready deliverable. The output will be used directly without any editing.
+
+DO NOT include:
+- Preambles ("Here is the revised content...", "I've made the following changes...")
+- JSON wrappers, metadata blocks, or change summaries
+- Thinking process explanations or reasoning
+- Code block wrappers (triple backticks) around the entire content
+- Annotations about what was changed
+- Sign-offs or closing remarks ("I hope this helps...", "Let me know if...")
+- Section dividers (---) between content sections
+- Any text that is not part of the actual blog post
+
+DO include:
+- The complete blog post starting with the first H2 heading
+- All headings, paragraphs, lists, and properly formatted links
+- Publication-ready markdown throughout
+
+The output should be immediately ready for publication with no editing needed to remove wrapper text.`
 
 /**
  * Issue with agent context
@@ -450,7 +463,7 @@ Follow this exact workflow:
    - Keep external links ≤6
    - Ensure descriptive anchor text on all links
 
-3. **OUTPUT:** Write the complete revised blog post in markdown format. No JSON, no explanations - just the publication-ready content.
+3. **OUTPUT:** Write the complete revised blog post in markdown format. Output ONLY the blog post content - no preambles, no explanations, no sign-offs, no wrapper text. The output must be immediately publication-ready.
 
 Begin by using the think tool to plan your revision strategy.`
 

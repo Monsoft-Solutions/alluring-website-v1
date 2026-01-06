@@ -487,6 +487,33 @@ export const LINKING_GUIDELINES = `## Linking Guidelines
 - External links typically in body text for citations` as const
 
 /**
+ * Output format requirements - ensures clean, publication-ready content
+ */
+export const OUTPUT_FORMAT_REQUIREMENTS = `## Output Format (CRITICAL)
+
+**Your output must be ONLY the complete blog post in markdown format.**
+
+This is a publication-ready deliverable. The output will be used directly without any editing.
+
+DO NOT include:
+- Preambles like "Here's the blog post..." or "I've written..."
+- JSON wrappers or metadata blocks
+- Thinking process or reasoning explanations
+- Code block wrappers (triple backticks) around the entire content
+- Section dividers (---) between content sections
+- Comments or annotations about the content
+- Sign-offs or closing remarks like "I hope this helps..."
+- Any text that is not part of the actual blog post
+
+DO include:
+- The complete blog post starting with the first H2 heading
+- All headings, paragraphs, lists, and links
+- Properly formatted markdown throughout
+- FAQ section with Q&A pairs
+
+The content should be immediately ready for publication with no editing needed to remove wrapper text.` as const
+
+/**
  * Business context for the clinic
  */
 export const BUSINESS_CONTEXT = `## Business Context
@@ -538,6 +565,8 @@ ${AEO_GUIDELINES}
 ${ENHANCED_EEAT_GUIDELINES}
 
 ${LINKING_GUIDELINES}
+
+${OUTPUT_FORMAT_REQUIREMENTS}
 
 ## Medical Content Guidelines
 
@@ -736,15 +765,31 @@ Next steps for reader: ${outline.conclusion.nextSteps}
 - Include FAQ section with 3-5 Q&A pairs
 - Natural, human-sounding writing throughout
 
-## DO NOT INCLUDE
+## OUTPUT FORMAT (CRITICAL)
 
+Your output must be ONLY the blog post content in markdown format - nothing else.
+
+**DO NOT include:**
+- Preambles ("Here's the blog post...", "I've written...", "Based on the brief...")
 - The title (H1) - handled separately
-- CTA blocks or promotional banners - just end naturally
+- CTA blocks or promotional banners
 - Author bylines or dates
 - Medical disclaimers (handled elsewhere)
 - Generic section names like "Introduction" or "Conclusion"
+- Thinking or reasoning explanations
+- JSON wrappers or metadata
+- Code block wrappers around the entire content
+- Sign-offs ("I hope this helps...", "Let me know if...")
+- Section dividers (---) between content sections
+- Any commentary about what you wrote
+
+**DO include:**
+- The complete blog post starting with the first H2 heading
+- All sections, paragraphs, lists, and properly formatted links
+- FAQ section with Q&A pairs
+- Publication-ready markdown throughout
 
 ---
 
-Write the complete blog post now, using the research tools as needed:`
+Write the complete blog post now. Output ONLY the content - no explanations, no wrapper text:`
 }
