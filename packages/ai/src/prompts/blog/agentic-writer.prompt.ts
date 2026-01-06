@@ -279,16 +279,6 @@ ${OUTPUT_FORMAT}`
 // =============================================================================
 
 /**
- * Outline section input type for building prompts
- */
-type OutlineSectionForPrompt = {
-    title: string
-    description: string
-    keyPoints?: string[]
-    subsections?: Array<{ title: string; description?: string }>
-}
-
-/**
  * Options for building the user prompt
  */
 export type BuildAgenticUserPromptOptions = {
@@ -307,12 +297,7 @@ export type BuildAgenticUserPromptOptions = {
     /** Content type for structure guidance */
     contentType?: ContentType
     /** Outline structure */
-    outline: {
-        tldr: string[]
-        introduction: { hook: string; preview: string }
-        sections: OutlineSectionForPrompt[]
-        conclusion: { summaryPoints: string[]; nextSteps: string }
-    }
+    outline?: string
     /** Target word count */
     estimatedWordCount?: number
     /** Internal pages context for linking */
@@ -338,6 +323,7 @@ export function buildAgenticUserPrompt(
         contentType = 'guide',
         estimatedWordCount = 1500,
         internalPagesContext,
+        outline,
     } = options
 
     return `Write a complete blog post based on the following brief.
@@ -352,6 +338,7 @@ export function buildAgenticUserPrompt(
 **Target Audience:** ${targetAudience || 'Women 25-55 considering cosmetic procedures'}
 **Unique Angle:** ${uniqueAngle || 'Comprehensive, expert perspective'}
 **Target Word Count:** ${estimatedWordCount} words
+**Outline:** ${outline || 'No outline provided'}
 
 ## Internal Linking Resources
 

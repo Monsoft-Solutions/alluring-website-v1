@@ -5,16 +5,32 @@ import { generateBlogTopics } from '@workspace/ai/functions'
 
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
+import { getProcedureContext } from '@/lib/data/procedure-context.data'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // Allow up to 60 seconds for AI generation
 
-const requestSchema = z.object({
-    procedureFocus: z.string().optional(),
-    contentType: z.string().optional(),
+/**
+ * Context hints schema for enhanced topic generation
+ */
+const contextHintsSchema = z.object({
+    /** Procedure slug for context enrichment */
+    procedureSlug: z.string().optional(),
+    /** Search intent filter */
+    searchIntent: z
+        .enum(['informational', 'commercial', 'transactional', 'mixed'])
+        .optional(),
+    /** Target audience description */
     targetAudience: z.string().optional(),
-    existingTopics: z.array(z.string()).optional(),
-    additionalContext: z.string().optional(),
+    /** Unique angle or perspective */
+    uniqueAngle: z.string().optional(),
+    /** Preferred content type */
+    contentType: z.string().optional(),
+})
+
+const requestSchema = z.object({
+    // NEW: Structured context hints for enhanced generation
+    contextHints: contextHintsSchema.optional(),
     // GSC keyword integration
     selectedKeywords: z
         .object({
@@ -22,6 +38,12 @@ const requestSchema = z.object({
             secondary: z.array(z.string()),
         })
         .optional(),
+    // Keep existing fields for backwards compatibility
+    procedureFocus: z.string().optional(),
+    contentType: z.string().optional(),
+    targetAudience: z.string().optional(),
+    existingTopics: z.array(z.string()).optional(),
+    additionalContext: z.string().optional(),
 })
 
 /**
@@ -46,7 +68,19 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const result = await generateBlogTopics(validationResult.data)
+        const { contextHints, ...restData } = validationResult.data
+
+        // Look up procedure context if procedureSlug provided
+        const procedureContext = contextHints?.procedureSlug
+            ? getProcedureContext(contextHints.procedureSlug)
+            : undefined
+
+        // Build enriched options for AI generation
+        const result = await generateBlogTopics({
+            ...restData,
+            contextHints,
+            procedureContext,
+        })
 
         return NextResponse.json({
             success: true,

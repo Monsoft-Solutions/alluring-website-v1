@@ -66,7 +66,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
         // Validate planning data exists
         const planningData = post.planningData
-        if (!planningData || !planningData.outline) {
+        if (!planningData) {
             return NextResponse.json(
                 {
                     success: false,
@@ -86,46 +86,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             })
             .where(eq(blogPost.id, id))
 
-        // Build outline from planning data
-        const outline = planningData.outline
-        const generationOutline = {
-            tldr: outline
-                .filter((s) => s.title.toLowerCase().includes('tldr'))
-                .flatMap((s) => (s.description ? [s.description] : [])),
-            introduction: {
-                hook:
-                    outline.find((s) => s.title.toLowerCase().includes('intro'))
-                        ?.description || 'Introduction',
-                preview: 'Preview of what this article covers',
-            },
-            sections: outline
-                .filter(
-                    (s) =>
-                        !s.title.toLowerCase().includes('tldr') &&
-                        !s.title.toLowerCase().includes('intro') &&
-                        !s.title.toLowerCase().includes('conclusion')
-                )
-                .map((s) => ({
-                    title: s.title,
-                    description: s.description || '',
-                    keyPoints: s.keyPoints,
-                    subsections: s.subsections?.map((sub) => ({
-                        title: sub.title,
-                        description: sub.description || '',
-                    })),
-                })),
-            conclusion: {
-                summaryPoints:
-                    outline.find((s) =>
-                        s.title.toLowerCase().includes('conclusion')
-                    )?.keyPoints || [],
-                nextSteps:
-                    outline.find((s) =>
-                        s.title.toLowerCase().includes('conclusion')
-                    )?.description || 'Next steps for readers',
-            },
-        }
-
         // Run generation phase
         const result = await runGenerationPhase({
             input: {
@@ -138,7 +98,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
                 contentType: planningData.contentType,
                 estimatedWordCount: planningData.estimatedWordCount,
             },
-            outline: generationOutline,
         })
 
         // Flush telemetry

@@ -60,22 +60,7 @@ const requestSchema = z.object({
         uniqueAngle: z.string().optional(),
         estimatedWordCount: z.number().int().min(300).max(10000).optional(),
     }),
-    outline: z.object({
-        tldr: z
-            .array(z.string())
-            .min(1, 'At least one TL;DR point is required'),
-        introduction: z.object({
-            hook: z.string().min(1, 'Hook is required'),
-            preview: z.string().min(1, 'Preview is required'),
-        }),
-        sections: z
-            .array(outlineSectionSchema)
-            .min(1, 'At least one section is required'),
-        conclusion: z.object({
-            summaryPoints: z.array(z.string()),
-            nextSteps: z.string(),
-        }),
-    }),
+    outline: z.string().optional(),
     options: z
         .object({
             /** Enable SSE streaming for progress updates */
@@ -199,17 +184,7 @@ async function runPipelineWithStreaming(
                 uniqueAngle: idea.uniqueAngle,
                 estimatedWordCount: idea.estimatedWordCount,
             },
-            outline: {
-                tldr: outline.tldr,
-                introduction: outline.introduction,
-                sections: outline.sections.map((s) => ({
-                    title: s.title,
-                    description: s.description,
-                    keyPoints: s.keyPoints,
-                    subsections: s.subsections,
-                })),
-                conclusion: outline.conclusion,
-            },
+            outline: outline,
             skipReview: options?.skipReview ?? false,
             skipOrchestration: options?.skipOrchestration ?? false,
             contentModelId: options?.contentModelId,
@@ -365,17 +340,6 @@ export async function POST(request: NextRequest) {
                     targetAudience: validatedData.idea.targetAudience,
                     uniqueAngle: validatedData.idea.uniqueAngle,
                     estimatedWordCount: validatedData.idea.estimatedWordCount,
-                },
-                outline: {
-                    tldr: validatedData.outline.tldr,
-                    introduction: validatedData.outline.introduction,
-                    sections: validatedData.outline.sections.map((s) => ({
-                        title: s.title,
-                        description: s.description,
-                        keyPoints: s.keyPoints,
-                        subsections: s.subsections,
-                    })),
-                    conclusion: validatedData.outline.conclusion,
                 },
                 skipReview: validatedData.options?.skipReview ?? false,
                 skipOrchestration:

@@ -86,7 +86,7 @@ export type GenerationPhaseOptions = {
     /** Blog input data */
     input: GenerationPhaseInput
     /** Content outline */
-    outline: GenerationPhaseOutline
+    outline?: string
     /** Model ID for content generation */
     contentModelId?: string
     /** Temperature for generation */
@@ -187,12 +187,7 @@ export async function runGenerationPhase(
             targetAudience: input.targetAudience,
             uniqueAngle: input.uniqueAngle,
             contentType,
-            outline: {
-                tldr: outline.tldr,
-                introduction: outline.introduction,
-                sections: outline.sections,
-                conclusion: outline.conclusion,
-            },
+            outline,
             estimatedWordCount: input.estimatedWordCount,
             internalPagesContext,
         })

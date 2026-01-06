@@ -94,14 +94,46 @@ export type SelectedKeywords = {
 }
 
 /**
+ * Context hints for enhanced topic generation
+ */
+export type ContextHints = {
+    /** Procedure slug for context lookup */
+    procedureSlug?: string
+    /** Search intent filter (informational, commercial, transactional, mixed) */
+    searchIntent?: 'informational' | 'commercial' | 'transactional' | 'mixed'
+    /** Target audience description */
+    targetAudience?: string
+    /** Unique angle or perspective for content */
+    uniqueAngle?: string
+    /** Preferred content type */
+    contentType?: string
+}
+
+/**
+ * Procedure-specific context for AI enrichment
+ */
+export type ProcedureContext = {
+    /** Display name of the procedure */
+    name: string
+    /** URL slug */
+    slug: string
+    /** Related SEO keywords */
+    relatedKeywords: string[]
+    /** Common patient concerns and pain points */
+    commonPainPoints: string[]
+    /** Target audience segment hints */
+    targetAudienceHints: string[]
+}
+
+/**
  * Options for topic generation
  */
 export type GenerateBlogTopicsOptions = {
-    /** Procedure to focus on (e.g., 'BBL', 'Mommy Makeover') */
+    /** Procedure to focus on (e.g., 'BBL', 'Mommy Makeover') - legacy field */
     procedureFocus?: string
-    /** Preferred content type */
+    /** Preferred content type - legacy field */
     contentType?: string
-    /** Target audience description */
+    /** Target audience description - legacy field */
     targetAudience?: string
     /** Existing topics to avoid duplicating */
     existingTopics?: string[]
@@ -109,6 +141,10 @@ export type GenerateBlogTopicsOptions = {
     additionalContext?: string
     /** Selected keywords from Google Search Console */
     selectedKeywords?: SelectedKeywords
+    /** Structured context hints for enhanced generation */
+    contextHints?: ContextHints
+    /** Procedure-specific context (injected by API route) */
+    procedureContext?: ProcedureContext
     /** Model ID to use */
     modelId?: string
     /** Temperature for creativity (higher = more creative) */
@@ -164,6 +200,8 @@ export async function generateBlogTopics(
         existingTopics,
         additionalContext,
         selectedKeywords,
+        contextHints,
+        procedureContext,
         modelId = DEFAULT_MODEL_ID,
         temperature = 0.8, // Higher temperature for creativity
     } = options
@@ -179,6 +217,8 @@ export async function generateBlogTopics(
             existingTopics,
             additionalContext,
             selectedKeywords,
+            contextHints,
+            procedureContext,
         }),
         temperature,
     })

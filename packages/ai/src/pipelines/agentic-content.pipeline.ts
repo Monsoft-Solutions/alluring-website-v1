@@ -106,12 +106,7 @@ async function runGenerationPhase(
         targetAudience: idea.targetAudience,
         uniqueAngle: idea.uniqueAngle,
         contentType: idea.contentType,
-        outline: {
-            tldr: outline.tldr,
-            introduction: outline.introduction,
-            sections: outline.sections,
-            conclusion: outline.conclusion,
-        },
+        outline: outline,
         estimatedWordCount: idea.estimatedWordCount,
         internalPagesContext,
     })

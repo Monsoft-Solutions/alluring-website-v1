@@ -106,6 +106,8 @@ export {
     type GenerateBlogTopicsOptions,
     type GenerateBlogTopicsResult,
     type TopicSuggestion,
+    type ContextHints,
+    type ProcedureContext,
 } from './generate-blog-topics.function'
 
 export {

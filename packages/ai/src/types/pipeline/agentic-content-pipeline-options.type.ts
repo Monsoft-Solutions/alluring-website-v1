@@ -4,7 +4,6 @@
  * @module @workspace/ai/types/pipeline/agentic-content-pipeline-options
  */
 import type { AgenticPipelineIdeaInput } from './agentic-pipeline-idea-input.type'
-import type { AgenticPipelineOutlineInput } from './agentic-pipeline-outline-input.type'
 import type { AgenticPipelineProgressCallback } from './agentic-pipeline-progress-callback.type'
 
 /**
@@ -14,7 +13,7 @@ export type AgenticContentPipelineOptions = {
     /** Blog idea input */
     idea: AgenticPipelineIdeaInput
     /** Blog outline */
-    outline: AgenticPipelineOutlineInput
+    outline?: string
     /** Progress callback for streaming updates */
     onProgress?: AgenticPipelineProgressCallback
     /** Skip review phase (faster, lower quality) */

@@ -24,7 +24,6 @@ export type { AgenticPipelineStep } from '../types/pipeline/agentic-pipeline-ste
 export type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
 export type { AgenticProgressData } from '../types/pipeline/agentic-progress-data.type'
 export type { AgenticPipelineIdeaInput } from '../types/pipeline/agentic-pipeline-idea-input.type'
-export type { AgenticPipelineOutlineInput } from '../types/pipeline/agentic-pipeline-outline-input.type'
 
 // Standalone Phase Runners (for stage-based processing)
 export {
