@@ -2,25 +2,21 @@
  * Fact & Source Verification Agent
  *
  * Reviews blog post content for unverified claims and statistics.
- * Uses Google Search to find authoritative sources for citations.
+ * Uses Perplexity AI to find authoritative sources for citations.
  * Returns issues in the standard AgentReview format for orchestrator processing.
  *
  * @module @workspace/ai/agents/fact-source-verifier
  */
-import { generateText, stepCountIs } from 'ai'
+import { generateText, Output, stepCountIs } from 'ai'
 import { z } from 'zod'
 
-import { coreGenerateObject } from '../core'
 import { getModel } from '../models/model-resolver.util'
 import {
     createSourceCollector,
-    createGoogleSearchTool,
+    createPerplexitySearchTool,
 } from '../tools/research-tools.tool'
-import {
-    getTrustedDomains,
-    TIER1_SOURCES,
-    TIER2_SOURCES,
-} from '../config/trusted-sources.config'
+import { createThinkTool } from '../tools/think.tool'
+import { TIER1_SOURCES, TIER2_SOURCES } from '../config/trusted-sources.config'
 import { telemetryConfig } from '../telemetry'
 import type {
     AgentReview,
@@ -31,7 +27,7 @@ import type {
 /**
  * Default model for fact verification
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'claude-sonnet-4-5'
 
 /**
  * Maximum number of search steps allowed
@@ -39,48 +35,11 @@ const DEFAULT_MODEL_ID = 'gpt-4.1'
 const MAX_SEARCH_STEPS = 15
 
 /**
- * Schema for identified claims needing verification
- */
-const claimIdentificationSchema = z.object({
-    claims: z.array(
-        z.object({
-            claim: z.string().describe('The exact claim text from the content'),
-            claimType: z
-                .enum([
-                    'statistic',
-                    'medical-fact',
-                    'outcome',
-                    'timeline',
-                    'cost',
-                ])
-                .describe('Category of the claim'),
-            hasCitation: z
-                .boolean()
-                .describe('Whether the claim already has a source link'),
-            context: z
-                .string()
-                .describe('Brief context of where this claim appears'),
-            searchQuery: z
-                .string()
-                .describe(
-                    'Suggested search query to verify this claim from authoritative sources'
-                ),
-        })
-    ),
-    totalClaims: z.number().describe('Total number of claims identified'),
-    citedClaims: z
-        .number()
-        .describe('Number of claims that already have citations'),
-})
-
-/**
  * Schema for verification results
  */
 const verificationResultSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
         .describe(
             'Score for source citation quality (0-100). 100 = all claims cited'
         ),
@@ -116,9 +75,37 @@ const verificationResultSchema = z.object({
 })
 
 /**
- * System prompt for claim identification phase
+ * Build trusted source context for the prompt
  */
-const CLAIM_IDENTIFICATION_PROMPT = `You are a fact-checker for medical content. Your task is to identify claims that need source citations.
+function buildTrustedSourceContext(): string {
+    const tier1 = TIER1_SOURCES.map((s) => `- ${s.name} (${s.domain})`).join(
+        '\n'
+    )
+    const tier2 = TIER2_SOURCES.map((s) => `- ${s.name} (${s.domain})`).join(
+        '\n'
+    )
+
+    return `### Tier 1 (Highest Priority)
+${tier1}
+
+### Tier 2 (High Priority)
+${tier2}
+
+Prefer Tier 1 sources when available. Only use consumer health sites if no better source exists.`
+}
+
+/**
+ * Unified system prompt for fact verification
+ * Combines claim identification, research, and verification into a single flow
+ */
+const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a luxury plastic surgery clinic's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
+
+## Your Process
+
+1. **Identify claims** that need source citations
+2. **Use the think tool** to analyze claims and plan your search strategy
+3. **Use perplexity_search** to find authoritative sources
+4. **Generate issues** with specific citation fixes for uncited claims
 
 ## What Needs Verification
 
@@ -142,109 +129,85 @@ const CLAIM_IDENTIFICATION_PROMPT = `You are a fact-checker for medical content.
 - Success rates
 - Longevity of results
 
-## Already Has Citation
+## Already Has Citation (Skip These)
 
 A claim HAS a citation if it includes:
 - A markdown link: [text](url)
 - A direct URL reference
 - Attribution like "According to [Organization]..." with a link
 
-## Skip These
+## Skip These Entirely
 
 - General knowledge statements
 - Descriptions of the clinic's own services
 - Subjective opinions clearly marked as such
 - Vague statements without specific claims
 
-For each claim, suggest a search query that would find authoritative sources (ASPS, Mayo Clinic, medical journals, etc.).`
+## Using the Think Tool
 
-/**
- * System prompt for research and verification phase
- */
-const FACT_VERIFICATION_RESEARCH_PROMPT = `You are a medical fact-checker with access to Google Search. Your task is to verify claims and find authoritative sources.
+Before searching, use the \`think\` tool to:
+1. List all claims that need verification
+2. Identify which claims are already cited (skip these)
+3. Prioritize which claims are most important to verify
+4. Plan search queries for each uncited claim
 
-## Your Process
+After receiving search results, use the \`think\` tool to:
+1. Evaluate which source is most authoritative
+2. Check if data is recent enough (prefer statistics from last 3 years)
+3. Plan the exact citation format to suggest
 
-For each uncited claim, you will:
-1. Use google_search to find authoritative sources
-2. Prioritize sources in this order:
-   - Tier 1: ASPS, FDA, NIH, CDC, PubMed
-   - Tier 2: Mayo Clinic, Cleveland Clinic, Johns Hopkins
-   - Tier 3: Healthline, WebMD (only if no better source)
-3. Find the most credible source that supports (or corrects) the claim
-4. Format a proper markdown citation
+## Using Perplexity Search
 
-## Search Strategy
+Use \`perplexity_search\` with \`focus: "medical"\` for health-related claims.
 
-- **IMPORTANT**: Use the \`sites\` parameter in google_search to search across all trusted domains at once
-- Do NOT manually add "site:" to your query string
-- Pass the trusted domains array to the \`sites\` parameter
-- This ensures results come from authoritative sources only
-- Include medical terms in search queries
-- Add organization names (ASPS, Mayo Clinic) to queries
+**Search Strategy:**
 - Use specific medical terminology
-- Search for recent data when statistics are involved
+- Search for the exact claim or statistic
+- Include organization names if looking for specific data
+- Today's date is ${new Date().toISOString().split('T')[0]}
 
-Example tool call:
-{
-  "query": "mommy makeover recovery time",
-  "sites": ["plasticsurgery.org", "mayoclinic.org", "fda.gov", ...],
-  "maxResults": 5
-}
+## Trusted Sources (Priority Order)
+
+${buildTrustedSourceContext()}
 
 ## Citation Format
 
-Create citations in this format:
-- [descriptive anchor text](https://link-to-the-source)
+Create citations as markdown links:
+- \`[descriptive anchor text](https://link-to-the-source)\`
 
-## Important Notes
+Good examples:
+- \`[according to the American Society of Plastic Surgeons](https://www.plasticsurgery.org/...)\`
+- \`[Mayo Clinic recommends](https://www.mayoclinic.org/...)\`
 
-- If you cannot find a source, mark the claim as unverifiable
-- If the claim appears inaccurate, note the correct information
-- Always prefer peer-reviewed or official organization sources
-- Today's date is ${new Date().toISOString().split('T')[0]}
+## Scoring Guide
 
-Search for authoritative sources for each claim and compile your findings.`
+- 90-100: All or nearly all claims have authoritative citations
+- 70-89: Most claims cited, some minor gaps
+- 50-69: About half the claims cited
+- 30-49: Few claims cited
+- 0-29: Very few or no citations
 
-/**
- * Build trusted source context for the prompt
- */
-function buildTrustedSourceContext(): string {
-    const tier1 = TIER1_SOURCES.map((s) => `- ${s.name} (${s.domain})`).join(
-        '\n'
-    )
-    const tier2 = TIER2_SOURCES.map((s) => `- ${s.name} (${s.domain})`).join(
-        '\n'
-    )
+## Issue Severity
 
-    // Add domains array for tool use
-    const allDomains = getTrustedDomains()
-    const domainsArray = JSON.stringify(allDomains)
+- **critical**: Important medical facts or statistics without any citation
+- **warning**: Claims that should have citations but are less critical
+- **suggestion**: Claims where citations would help but aren't essential
 
-    return `## Trusted Sources for Citations
+## Output Requirements
 
-### Tier 1 (Highest Priority)
-${tier1}
+For each issue, provide:
+1. The exact location/context of the claim
+2. A clear description of why it needs a citation
+3. The original claim text
+4. A complete suggestedFix with the exact markdown citation to add
 
-### Tier 2 (High Priority)
-${tier2}
-
-### Domains for Search Tool
-
-When using google_search, pass these domains to the \`sites\` parameter:
-${domainsArray}
-
-This will search across ALL trusted sources simultaneously.
-
-Prefer Tier 1 sources when available. Only use consumer health sites if no better source exists.`
-}
+If all claims are already cited, return a score of 100 with no issues.`
 
 /**
  * Run the fact and source verification agent
  *
- * This agent runs in two phases:
- * 1. Identify claims that need verification (no tool use)
- * 2. Research using Google Search to find sources (with tools)
+ * This agent uses a single generateText call with Perplexity search and Think tools
+ * to identify claims, verify them, and generate a comprehensive verification report.
  *
  * @param options - Review agent options
  * @returns Agent review with issues for uncited claims
@@ -263,174 +226,96 @@ export async function runFactSourceVerifier(
 
     console.log('[Fact Verifier] Starting fact and source verification...')
 
-    // Phase 1: Identify claims that need verification
-    const identificationPrompt = `Analyze this blog post and identify all claims that need source citations:
+    // Create source collector and tools
+    const sourceContext = createSourceCollector()
+    const perplexitySearchTool = createPerplexitySearchTool(sourceContext)
+    const thinkTool = createThinkTool()
+
+    // Build the user prompt
+    const userPrompt = `Analyze this blog post for claims that need source citations, verify them using Perplexity search, and generate a verification report.
 
 **Title:** ${title}
 **Primary Keyword:** ${primaryKeyword || 'Not specified'}
 
-**Content:**
+---
+
+**Content to Verify:**
+
 ${content}
 
 ---
 
-Identify all statistics, medical facts, outcome claims, timeline claims, and cost claims.
-For each, note whether it already has a citation and suggest a search query to verify it.`
+**Instructions:**
 
-    const identificationResult = await coreGenerateObject({
-        modelId,
-        schema: claimIdentificationSchema,
-        system: CLAIM_IDENTIFICATION_PROMPT,
-        prompt: identificationPrompt,
-        temperature,
-    })
+1. First, use the \`think\` tool to identify all claims that need verification (statistics, medical facts, outcomes, timelines, costs). Note which ones already have citations.
 
-    const claims = identificationResult.object.claims
-    const uncitedClaims = claims.filter((c) => !c.hasCitation)
+2. For each uncited claim, use \`perplexity_search\` with \`focus: "medical"\` to find authoritative sources.
 
-    console.log(
-        `[Fact Verifier] Found ${claims.length} claims, ${uncitedClaims.length} need sources`
-    )
+3. Use the \`think\` tool again to evaluate the sources found and determine the best citations to suggest.
 
-    // If all claims are cited, return perfect score
-    if (uncitedClaims.length === 0) {
-        const processingTimeMs = Date.now() - startTime
-        return {
-            agentName: 'fact-source-verifier',
-            score: 100,
-            issues: [],
-            summary: `All ${claims.length} factual claims in the content have proper source citations.`,
-            processingTimeMs,
-            modelId,
-        }
-    }
+4. Generate the final verification report with:
+   - A score (0-100) based on citation coverage
+   - Issues for each uncited claim with the exact markdown citation to add
+   - A summary of your findings
 
-    // Phase 2: Research uncited claims using Google Search
-    const sourceContext = createSourceCollector()
-    const googleSearchTool = createGoogleSearchTool(sourceContext)
+Begin by analyzing the content for claims that need verification.`
 
-    const trustedSourceContext = buildTrustedSourceContext()
-
-    const researchPrompt = `Research and find authoritative sources for these uncited claims from the blog post "${title}":
-
-${trustedSourceContext}
-
-**Use these domains with the google_search \`sites\` parameter:**
-${JSON.stringify(getTrustedDomains())}
-
----
-
-## Claims Needing Sources
-
-${uncitedClaims
-    .map(
-        (c, i) => `${i + 1}. **Claim:** "${c.claim}"
-   - Type: ${c.claimType}
-   - Context: ${c.context}
-   - Suggested query: ${c.searchQuery}`
-    )
-    .join('\n\n')}
-
----
-
-For each claim:
-1. Use google_search to find an authoritative source
-2. Verify the claim is accurate
-3. Note the source URL and how to cite it
-
-Search for sources now.`
-
-    // Run research with tool calling
-    let researchOutput = ''
+    // Track search count for logging
     let searchCount = 0
+    let thinkCount = 0
 
-    const model = getModel(modelId)
-
-    try {
-        const researchResult = await generateText({
-            model,
-            system: FACT_VERIFICATION_RESEARCH_PROMPT,
-            prompt: researchPrompt,
-            tools: { google_search: googleSearchTool },
-            stopWhen: stepCountIs(MAX_SEARCH_STEPS),
-            experimental_telemetry: telemetryConfig,
-            temperature,
-            onStepFinish: (event) => {
-                if (event.toolCalls && event.toolCalls.length > 0) {
-                    searchCount += event.toolCalls.length
-                    console.log(
-                        `[Fact Verifier] Searches performed: ${searchCount}`
-                    )
-                }
-            },
-        })
-
-        researchOutput = researchResult.text
-    } catch (error) {
-        console.error('[Fact Verifier] Research phase error:', error)
-        researchOutput =
-            'Research phase encountered an error. Some claims may not have been verified.'
-    }
-
-    console.log(
-        `[Fact Verifier] Research complete. Total searches: ${searchCount}`
-    )
-    console.log(
-        `[Fact Verifier] Sources found: ${sourceContext.sources.length}`
-    )
-
-    // Phase 3: Generate final verification results
-    const verificationPrompt = `Based on the research, generate the final verification report.
-
-**Original Claims Needing Sources:**
-${uncitedClaims.map((c, i) => `${i + 1}. "${c.claim}" (${c.claimType})`).join('\n')}
-
-**Research Results:**
-${researchOutput}
-
-**Sources Found:**
-${sourceContext.sources.map((s) => `- ${s.title}: ${s.url}`).join('\n') || 'None found'}
-
----
-
-Generate a verification report with:
-1. A score (0-100) based on citation coverage
-2. Issues for each uncited claim with suggested citations
-3. A summary of the verification
-
-Scoring Guide:
-- 90-100: All or nearly all claims have authoritative citations
-- 70-89: Most claims cited, some minor gaps
-- 50-69: About half the claims cited
-- 30-49: Few claims cited
-- 0-29: Very few or no citations
-
-For issues:
-- critical: Important medical facts or statistics without any citation
-- warning: Claims that should have citations but are less critical
-- suggestion: Claims where citations would help but aren't essential
-
-For each issue, provide a complete suggestedFix with the exact markdown citation to add.`
-
-    const verificationResult = await coreGenerateObject({
-        modelId,
-        schema: verificationResultSchema,
-        system: `You are compiling a fact verification report. Generate issues with specific, actionable citation suggestions.`,
-        prompt: verificationPrompt,
+    const result = await generateText({
+        model: getModel(modelId),
+        output: Output.object({ schema: verificationResultSchema }),
+        system: UNIFIED_FACT_VERIFICATION_PROMPT,
+        prompt: userPrompt,
         temperature,
+        stopWhen: stepCountIs(MAX_SEARCH_STEPS),
+        tools: {
+            perplexity_search: perplexitySearchTool,
+            think: thinkTool,
+        },
+        experimental_telemetry: telemetryConfig,
+        onStepFinish: (event) => {
+            if (event.toolCalls && event.toolCalls.length > 0) {
+                for (const toolCall of event.toolCalls) {
+                    if (toolCall.toolName === 'perplexity_search') {
+                        searchCount++
+                        const toolInput =
+                            'input' in toolCall
+                                ? (toolCall.input as Record<string, unknown>)
+                                : {}
+                        const query =
+                            typeof toolInput?.query === 'string'
+                                ? toolInput.query
+                                : 'unknown query'
+                        console.log(
+                            `[Fact Verifier] Search ${searchCount}: "${query}"`
+                        )
+                    } else if (toolCall.toolName === 'think') {
+                        thinkCount++
+                        console.log(`[Fact Verifier] Think step ${thinkCount}`)
+                    }
+                }
+            }
+        },
     })
 
     const processingTimeMs = Date.now() - startTime
 
     console.log(
-        `[Fact Verifier] Complete. Score: ${verificationResult.object.score}/100, Issues: ${verificationResult.object.issues.length}`
+        `[Fact Verifier] Complete. Score: ${result.output.score}/100, Issues: ${result.output.issues.length}`
     )
+    console.log(
+        `[Fact Verifier] Searches: ${searchCount}, Think steps: ${thinkCount}, Sources: ${sourceContext.sources.length}`
+    )
+    console.log(`[Fact Verifier] Processing time: ${processingTimeMs}ms`)
 
     return {
         agentName: 'fact-source-verifier',
-        score: verificationResult.object.score,
-        issues: verificationResult.object.issues as ReviewIssue[],
-        summary: verificationResult.object.summary,
+        score: result.output.score,
+        issues: result.output.issues as ReviewIssue[],
+        summary: result.output.summary,
         processingTimeMs,
         modelId,
     }
