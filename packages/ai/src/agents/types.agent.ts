@@ -107,19 +107,8 @@ export type ReviewAgentOptions = {
  * Result from the orchestrator
  */
 export type OrchestratorResult = {
-    /** The revised content */
+    /** The revised content ready for publication */
     revisedContent: string
-    /** Summary of changes made */
-    changesSummary: string
-    /** List of changes with before/after */
-    changes: Array<{
-        type: 'fix' | 'improvement' | 'addition' | 'removal'
-        description: string
-        before: string | null
-        after: string | null
-    }>
-    /** Combined score from all agents */
-    overallScore: number
     /** Individual agent reviews */
     agentReviews: AgentReview[]
     /** Processing time for orchestration */

@@ -145,18 +145,29 @@ A claim HAS a citation if it includes:
 - Subjective opinions clearly marked as such
 - Vague statements without specific claims
 
-## Using the Think Tool
+## Workflow: Research First, Analyze Later
 
-Before searching, use the \`think\` tool to:
+**IMPORTANT: Do NOT use the think tool between searches. Complete ALL research first.**
+
+### Step 1: Initial Planning (Think Tool)
+Use the \`think\` tool ONCE at the start to:
 1. List all claims that need verification
 2. Identify which claims are already cited (skip these)
-3. Prioritize which claims are most important to verify
-4. Plan search queries for each uncited claim
+3. Plan all search queries you'll need to execute
 
-After receiving search results, use the \`think\` tool to:
-1. Evaluate which source is most authoritative
-2. Check if data is recent enough (prefer statistics from last 3 years)
-3. Plan the exact citation format to suggest
+### Step 2: Batch Research (Perplexity Search)
+Execute ALL \`perplexity_search\` calls in sequence (preferably in parallel) WITHOUT using the think tool between them.
+- Search for each uncited claim
+- Gather all sources and data
+- Do NOT stop to analyze after each search
+
+### Step 3: Final Analysis (Think Tool)
+After ALL searches are complete, use the \`think\` tool ONCE to:
+1. Review all gathered sources together
+2. Evaluate which sources are most authoritative for each claim
+3. Check if data is recent enough (prefer statistics from last 3 years)
+4. Plan the exact citation format for each uncited claim
+5. Determine the final score based on overall citation coverage
 
 ## Using Perplexity Search
 
@@ -249,18 +260,20 @@ ${content}
 
 **Instructions:**
 
-1. First, use the \`think\` tool to identify all claims that need verification (statistics, medical facts, outcomes, timelines, costs). Note which ones already have citations.
+Follow this exact workflow - research first, analyze later:
 
-2. For each uncited claim, use \`perplexity_search\` with \`focus: "medical"\` to find authoritative sources.
+1. **THINK (once):** Use the \`think\` tool to identify all claims needing verification (statistics, medical facts, outcomes, timelines, costs). Note which are already cited. Plan all your search queries.
 
-3. Use the \`think\` tool again to evaluate the sources found and determine the best citations to suggest.
+2. **SEARCH (batch):** Execute ALL \`perplexity_search\` calls with \`focus: "medical"\` for each uncited claim. Do NOT use the think tool between searches - complete all research first.
 
-4. Generate the final verification report with:
+3. **THINK (once):** After ALL searches are complete, use the \`think\` tool to analyze all gathered sources together. Evaluate authority, recency, and plan exact citations for each claim.
+
+4. **REPORT:** Generate the final verification report with:
    - A score (0-100) based on citation coverage
    - Issues for each uncited claim with the exact markdown citation to add
    - A summary of your findings
 
-Begin by analyzing the content for claims that need verification.`
+Begin by using the think tool to identify all claims and plan your search queries.`
 
     // Track search count for logging
     let searchCount = 0

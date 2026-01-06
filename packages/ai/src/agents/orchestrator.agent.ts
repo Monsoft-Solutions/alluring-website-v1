@@ -8,8 +8,7 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
-import { generateText, Output } from 'ai'
-import { z } from 'zod'
+import { generateText } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
@@ -24,41 +23,6 @@ import { createThinkTool } from '../tools'
  * Default model for orchestration (using a more capable model for complex revisions)
  */
 const DEFAULT_MODEL_ID = 'claude-opus-4-5'
-
-/**
- * Schema for orchestrator output
- */
-const orchestratorOutputSchema = z.object({
-    revisedContent: z
-        .string()
-        .describe('The fully revised blog post content in markdown format'),
-    changesSummary: z
-        .string()
-        .describe('Summary of the key changes made in 2-4 sentences'),
-    changes: z.array(
-        z.object({
-            type: z.enum(['fix', 'improvement', 'addition', 'removal']),
-            description: z
-                .string()
-                .describe('Clear explanation of what was changed and why'),
-            before: z
-                .string()
-                .nullable()
-                .describe(
-                    'The original text that was changed. Set to null for additions or structural changes.'
-                ),
-            after: z
-                .string()
-                .nullable()
-                .describe(
-                    'The new text that replaced the original. Set to null for removals.'
-                ),
-        })
-    ),
-    overallScore: z
-        .number()
-        .describe('Overall quality score after revisions (0-100)'),
-})
 
 /**
  * Options for running the orchestrator
@@ -90,32 +54,55 @@ const ORCHESTRATOR_SYSTEM_PROMPT = `You are a senior content editor for a luxury
 4. Apply fixes while maintaining the author's voice and intent
 5. Ensure the final content flows naturally
 
-## Structured Thinking Process
+## Think Tool Workflow
 
-Before making any changes, work through this checklist:
+**IMPORTANT: Use the \`think\` tool ONCE at the start to plan ALL changes before writing.**
 
-**1. Issue Prioritization**
-   - List all critical issues (medical accuracy, uncited stats, AI slop phrases)
-   - Identify conflicts between agents' recommendations
-   - Note external link count vs. 6-link limit
+### Step 1: Strategic Planning (Think Tool - REQUIRED)
+Use the \`think\` tool at the very beginning to work through this comprehensive checklist:
 
-**2. Conflict Resolution Matrix**
+**A. Issue Analysis**
+   - List ALL critical issues by category (medical accuracy, AI slop, links, structure)
+   - List ALL warning issues that should be addressed
+   - Note which suggestions are worth incorporating
+   - Count current external links vs. 6-link limit
+
+**B. Conflict Detection & Resolution**
    | Conflict | Resolution |
    |----------|------------|
    | Fact-verifier wants citation + link limit reached | Consolidate or remove lowest-tier source |
    | AI-slop detector vs writing quality disagree | Prioritize removing AI phrases over stylistic preferences |
    | Multiple fixes target same text | Combine into single coherent edit |
 
-**3. Change Planning**
-   - Group related fixes to avoid redundant edits
-   - Order: structure fixes → content fixes → citations → polish
-   - Keep word count within ±10% of original
+**C. Change Execution Plan**
+   Create a numbered list of ALL changes you will make, in this order:
+   1. External link consolidation (if over 6 links)
+   2. Critical fixes: medical accuracy, factual errors
+   3. Critical fixes: AI slop phrases removal
+   4. Warning fixes: citations, anchor text improvements
+   5. Warning fixes: internal/external link additions
+   6. Suggestions: minor improvements (only if natural)
 
-**4. Quality Check**
-   - Will revised content sound natural?
-   - Are all critical issues addressed?
-   - Are links under the 6-limit?
-   - Does content maintain the original voice and intent?
+**D. Pre-flight Check**
+   - Verify total external links will be ≤6 after changes
+   - Confirm all critical issues have a planned fix
+   - Estimate if word count stays within ±10%
+
+**E. SEO & Engagement Check**
+   - Is the primary keyword in the first paragraph?
+   - Does at least one H2 contain the primary keyword naturally?
+   - Is there a compelling hook in the opening sentences?
+   - Does the content fully answer the search intent?
+   - Are there opportunities for featured snippets (lists, tables, Q&A format)?
+   - Is there a clear, compelling CTA at the end?
+   - Does the content show real expertise (specific examples, concrete details)?
+
+### Step 2: Execute Changes (No Additional Thinking)
+After planning, apply ALL changes systematically without additional think steps.
+Write the complete revised content in one pass, following your execution plan.
+
+### Step 3: Produce Output
+Write the complete revised blog post in markdown format. Output ONLY the publication-ready content - no JSON, no explanations, no wrapper.
 
 **Revision Guidelines:**
 
@@ -137,6 +124,32 @@ Before making any changes, work through this checklist:
 - Minor readability improvements
 - Additional link opportunities
 - Small stylistic tweaks
+
+**SEO Optimization (CRITICAL for Rankings):**
+- Primary keyword MUST appear in first paragraph and at least one H2 heading
+- Natural keyword density (1-2% of content, never forced or awkward)
+- Heading hierarchy: H2 for main sections, H3 for subsections - no skipping levels
+- Format content for featured snippet potential: use lists, tables, and clear Q&A
+- Clear, specific headings that match what people actually search for
+- Strong meta-friendly intro paragraph that summarizes the page's value
+- Include semantic variations of the primary keyword naturally throughout
+
+**E-E-A-T for Medical Content (Google Quality Signals):**
+- Experience: Include real-world examples ("In our practice, we typically see...", "Patients often tell us...")
+- Expertise: Reference surgeon credentials and specialized training naturally where relevant
+- Authoritativeness: Cite Tier 1 medical sources (ASPS, FDA, NIH) - covered by fact-verifier
+- Trustworthiness: Include appropriate disclaimers, avoid overpromising results
+- Be specific: Replace vague claims ("many patients") with concrete details ("most patients see results within 2-4 weeks")
+- Show depth: Demonstrate comprehensive understanding of the topic beyond surface-level information
+
+**Content Value & Reader Engagement:**
+- Hook readers in first 2 sentences with a compelling reason to keep reading
+- Answer the searcher's primary question early (within first 2-3 paragraphs)
+- Provide actionable takeaways the reader can use immediately
+- Anticipate and answer follow-up questions readers will have
+- End with a clear, compelling call-to-action (schedule consultation, learn more)
+- Ensure content is comprehensive enough to be the ONLY article readers need on this topic
+- Address reader concerns and aspirations emotionally, not just informationally
 
 **External Link Rules (STRICT):**
 - Maximum 6 external source links per post
@@ -165,7 +178,13 @@ Before making any changes, work through this checklist:
 - Use topic-specific, descriptive headings
 
 **Conflict Resolution:**
-- When agents disagree, prioritize: Medical accuracy (fact-verifier) > Brand voice (ai-slop) > Link quality > SEO > Stylistic preferences
+- When agents disagree, prioritize in this order:
+  1. Medical accuracy (fact-verifier) - Patient safety is paramount
+  2. SEO optimization (keyword placement, heading structure) - Must rank to reach patients
+  3. Content value (comprehensive answers, reader engagement) - Must deliver real value
+  4. Brand voice (ai-slop removal) - Must sound human and trustworthy
+  5. Link quality (anchor text, internal links) - Supports SEO and user experience
+  6. Stylistic preferences - Nice to have but not critical
 - Fact verification issues take precedence over style suggestions
 - When adding citations causes the 6-link limit to be exceeded, consolidate existing links
 - When multiple fixes target the same text, combine them intelligently
@@ -178,26 +197,24 @@ Before making any changes, work through this checklist:
 - Ensure smooth transitions between sections
 - Final content should read naturally, not like it was "corrected"
 
-**Output Requirements:**
-You MUST provide valid JSON matching the expected schema. Follow these rules:
-1. All required fields MUST have values - never output undefined or null for required fields
-2. "revisedContent" must contain the COMPLETE revised blog post in markdown format
-3. "changesSummary" should be 2-4 sentences summarizing the key changes
-4. For the "changes" array, only include changes where you can provide the required fields (type, description)
-5. The "before" and "after" fields are nullable:
-   - For "fix" or "improvement": include both "before" and "after" showing the change
-   - For "addition": set "before" to null, include "after"
-   - For "removal": include "before", set "after" to null
-6. If no changes were needed, the changes array can be empty []
+**World-Class Content Standards (Aim for #1 on Google):**
+- Content must be the BEST answer for the target search query - better than any competitor
+- Every section should add unique value (no filler paragraphs, no fluff)
+- Include specific numbers, timelines, and actionable details readers can use
+- Format for scannability: short paragraphs (3-4 sentences max), bullets, clear headings
+- Mobile-friendly: no walls of text, break up long sections
+- Engage emotionally: address reader concerns, fears, and aspirations directly
+- Demonstrate expertise: use specific examples, reference real procedures and outcomes
+- Be comprehensive: cover all aspects a reader would need to make an informed decision
 
-Example changes array:
-[
-  {"type": "fix", "description": "Replaced AI phrase with natural language", "before": "delve into the intricacies", "after": "explore the details"},
-  {"type": "fix", "description": "Added citation from ASPS for procedure statistic", "before": "Over 300,000 procedures are performed annually", "after": "Over 300,000 procedures are performed annually, [according to ASPS](https://www.plasticsurgery.org/...)"},
-  {"type": "improvement", "description": "Improved anchor text to be descriptive", "before": "[source](https://...)", "after": "[Mayo Clinic's recovery guidelines](https://...)"},
-  {"type": "addition", "description": "Added internal link to BBL procedure page", "before": null, "after": "[BBL procedure](/procedures/bbl)"},
-  {"type": "removal", "description": "Removed redundant external link to stay under 6-link limit", "before": "[WebMD article](https://...)", "after": null}
-]`
+**Output Requirements:**
+Your output should be ONLY the complete revised blog post in markdown format.
+- Start directly with the content (no preamble, no explanation)
+- Include all headings, paragraphs, links, and formatting
+- The output should be publication-ready
+- Do not include any JSON, metadata, or change summaries
+- Do not wrap the content in code blocks
+- Don't use --- lines to separate sections`
 
 /**
  * Issue with agent context
@@ -416,22 +433,31 @@ ${issuesByAgentList}
 ---
 
 **INSTRUCTIONS:**
-1. Work through the Structured Thinking Process checklist before making changes
-2. Fix ALL critical issues
-3. Fix as many warning issues as possible without over-editing
-4. Consider suggestions but don't force them
-5. Maintain the original voice and intent
-6. Keep the content natural and readable
-7. IMPORTANT: Keep external links to 6 or fewer - consolidate if needed
-8. Ensure all link anchor text is descriptive (not "click here", "source", etc.)
 
-Produce the final revised version with a complete list of changes made.`
+Follow this exact workflow:
+
+1. **THINK (once):** Use the \`think\` tool to work through the complete planning checklist:
+   - Analyze ALL issues (critical, warning, suggestion)
+   - Identify conflicts between agent recommendations
+   - Count external links and plan consolidation if needed
+   - Create a numbered execution plan for all changes
+
+2. **EXECUTE:** After planning, write the complete revised content in ONE pass:
+   - Apply all planned changes systematically
+   - Fix ALL critical issues
+   - Address warnings without over-editing
+   - Maintain original voice and ±10% word count
+   - Keep external links ≤6
+   - Ensure descriptive anchor text on all links
+
+3. **OUTPUT:** Write the complete revised blog post in markdown format. No JSON, no explanations - just the publication-ready content.
+
+Begin by using the think tool to plan your revision strategy.`
 
     console.log('[Orchestrator] Starting revision with structured thinking')
 
     const result = await generateText({
         model: getModel(modelId),
-        output: Output.object({ schema: orchestratorOutputSchema }),
         system: ORCHESTRATOR_SYSTEM_PROMPT,
         prompt,
         temperature,
@@ -448,10 +474,7 @@ Produce the final revised version with a complete list of changes made.`
     )
 
     return {
-        revisedContent: result.output.revisedContent,
-        changesSummary: result.output.changesSummary,
-        changes: result.output.changes,
-        overallScore: result.output.overallScore,
+        revisedContent: result.text,
         agentReviews: reviews,
         processingTimeMs,
     }

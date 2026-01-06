@@ -395,13 +395,9 @@ async function runOrchestrationPhase(
 
     onProgress?.('orchestration', 100, 'Content revision complete', {
         type: 'orchestration-result',
-        changeCount: result.changes.length,
-        overallScore: result.overallScore,
     })
 
-    console.log(
-        `[Agentic Pipeline] Orchestration complete: ${result.changes.length} changes, score ${result.overallScore}/100`
-    )
+    console.log('[Agentic Pipeline] Orchestration complete')
     console.log(`[Agentic Pipeline] Orchestration time: ${timeMs}ms`)
 
     return { result, timeMs }
