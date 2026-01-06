@@ -47,8 +47,8 @@ import type { AgenticContentPipelineResult } from '../types/pipeline/agentic-con
  * Default configuration
  */
 const DEFAULTS = {
-    CONTENT_MODEL: 'claude-sonnet-4-5',
-    REVIEW_MODEL: 'claude-opus-4-5',
+    CONTENT_MODEL: 'gpt-4.1',
+    REVIEW_MODEL: 'claude-sonnet-4-5',
     TEMPERATURE: 0.7,
     MAX_STEPS: 25,
     MIN_QUALITY_SCORE: 70,
@@ -368,18 +368,40 @@ async function runReviewPhase(
 }
 
 /**
+ * Orchestration phase options
+ */
+type OrchestrationPhaseOptions = {
+    content: string
+    title: string
+    primaryKeyword?: string
+    secondaryKeywords?: string[]
+    targetAudience?: string
+    contentType?: string
+    estimatedWordCount?: number
+    reviews: AgentReview[]
+    onProgress?: AgenticPipelineProgressCallback
+}
+
+/**
  * Phase 3: Orchestration Phase
  *
- * Revises content based on review feedback.
+ * Revises content based on review feedback with full context.
  */
 async function runOrchestrationPhase(
-    content: string,
-    title: string,
-    primaryKeyword: string | undefined,
-    reviews: AgentReview[],
-    onProgress?: AgenticPipelineProgressCallback
+    options: OrchestrationPhaseOptions
 ): Promise<{ result: OrchestratorResult; timeMs: number }> {
     const startTime = Date.now()
+    const {
+        content,
+        title,
+        primaryKeyword,
+        secondaryKeywords,
+        targetAudience,
+        contentType,
+        estimatedWordCount,
+        reviews,
+        onProgress,
+    } = options
 
     console.log('[Agentic Pipeline] Starting Phase 3: Orchestration')
     onProgress?.('orchestration', 10, 'Starting content revision...')
@@ -388,6 +410,10 @@ async function runOrchestrationPhase(
         originalContent: content,
         title,
         primaryKeyword,
+        secondaryKeywords,
+        targetAudience,
+        contentType,
+        estimatedWordCount,
         reviews,
     })
 
@@ -560,13 +586,17 @@ export async function runAgenticContentPipeline(
 
             // Phase 3: Orchestration (if not skipped)
             if (!skipOrchestration) {
-                const orchestrationResult = await runOrchestrationPhase(
-                    generationResult.content,
-                    idea.title,
-                    idea.primaryKeyword,
+                const orchestrationResult = await runOrchestrationPhase({
+                    content: generationResult.content,
+                    title: idea.title,
+                    primaryKeyword: idea.primaryKeyword,
+                    secondaryKeywords: idea.secondaryKeywords,
+                    targetAudience: idea.targetAudience,
+                    contentType: idea.contentType,
+                    estimatedWordCount: idea.estimatedWordCount,
                     reviews,
-                    onProgress
-                )
+                    onProgress,
+                })
                 orchestratorResult = orchestrationResult.result
                 finalContent = orchestrationResult.result.revisedContent
                 metrics.orchestrationTimeMs = orchestrationResult.timeMs

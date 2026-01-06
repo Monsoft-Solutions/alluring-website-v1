@@ -37,19 +37,19 @@ export {
 
 // Agentic Writer Prompts
 export {
-    BRAND_VOICE_GUIDELINES,
-    AI_SLOP_PREVENTION_RULES,
-    RESEARCH_TOOL_GUIDELINES,
-    FLEXIBLE_STRUCTURE_RULES,
-    SEO_WRITING_GUIDELINES,
-    ENHANCED_EEAT_GUIDELINES,
-    AEO_GUIDELINES,
-    LINKING_GUIDELINES,
-    BUSINESS_CONTEXT,
+    // New consolidated constants
+    ROLE_AND_CONTEXT,
+    WRITING_STYLE_PRINCIPLES,
+    WRITING_EXAMPLES,
+    CONTENT_REQUIREMENTS,
+    RESEARCH_GUIDELINES,
+    OUTPUT_FORMAT,
     CONTENT_TYPE_TEMPLATES,
+    // Functions
     getContentTypeInstructions,
     buildAgenticSystemPrompt,
     buildAgenticUserPrompt,
+    // Types
     type BuildAgenticUserPromptOptions,
     type ContentType,
 } from './agentic-writer.prompt'
