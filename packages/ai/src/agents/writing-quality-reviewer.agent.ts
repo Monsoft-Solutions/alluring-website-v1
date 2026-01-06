@@ -74,9 +74,9 @@ const writingQualityReviewSchema = z.object({
                 ),
             originalText: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The exact problematic text from the content. Omit this field entirely if not applicable or if the issue is structural.'
+                    'The exact problematic text from the content. Set to null if not applicable or if the issue is structural.'
                 ),
         })
     ),
@@ -148,17 +148,15 @@ Issue Severity:
 You MUST provide valid JSON matching the expected schema. Follow these rules:
 1. All required fields MUST have values - never output undefined or null for required fields
 2. For the "issues" array, only include issues where you can provide ALL required fields (severity, location, description, suggestedFix)
-3. The "originalText" field is OPTIONAL - omit it entirely (do not include the key) if the issue is structural or doesn't have specific problematic text
+3. Set "originalText" to null if the issue is structural or doesn't have specific problematic text
 4. The "strengths" array should contain complete sentences describing what the content does well
 5. If no issues are found in a category, the issues array can be empty []
 
 Example issues array:
 [
   {"severity": "warning", "location": "Paragraph 2", "description": "Sentence is too long at 45 words", "suggestedFix": "Break into 2-3 shorter sentences", "originalText": "The exact long sentence here..."},
-  {"severity": "suggestion", "location": "Conclusion", "description": "Missing call-to-action", "suggestedFix": "Add a clear next step for readers"}
-]
-
-Note: The second example omits "originalText" because it's a structural issue.`
+  {"severity": "suggestion", "location": "Conclusion", "description": "Missing call-to-action", "suggestedFix": "Add a clear next step for readers", "originalText": null}
+]`
 
 /**
  * Run the writing quality reviewer agent

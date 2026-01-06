@@ -57,8 +57,10 @@ const verificationResultSchema = z.object({
                 ),
             originalText: z
                 .string()
-                .optional()
-                .describe('The original claim text'),
+                .nullable()
+                .describe(
+                    'The original claim text. Set to null if not applicable.'
+                ),
         })
     ),
     summary: z

@@ -43,22 +43,20 @@ const orchestratorOutputSchema = z.object({
                 .describe('Clear explanation of what was changed and why'),
             before: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The original text that was changed. Omit this field entirely for additions or structural changes.'
+                    'The original text that was changed. Set to null for additions or structural changes.'
                 ),
             after: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The new text that replaced the original. Omit this field entirely for removals.'
+                    'The new text that replaced the original. Set to null for removals.'
                 ),
         })
     ),
     overallScore: z
         .number()
-        .min(0)
-        .max(100)
         .describe('Overall quality score after revisions (0-100)'),
 })
 
@@ -186,10 +184,10 @@ You MUST provide valid JSON matching the expected schema. Follow these rules:
 2. "revisedContent" must contain the COMPLETE revised blog post in markdown format
 3. "changesSummary" should be 2-4 sentences summarizing the key changes
 4. For the "changes" array, only include changes where you can provide the required fields (type, description)
-5. The "before" and "after" fields are OPTIONAL:
+5. The "before" and "after" fields are nullable:
    - For "fix" or "improvement": include both "before" and "after" showing the change
-   - For "addition": include only "after" (omit "before" entirely)
-   - For "removal": include only "before" (omit "after" entirely)
+   - For "addition": set "before" to null, include "after"
+   - For "removal": include "before", set "after" to null
 6. If no changes were needed, the changes array can be empty []
 
 Example changes array:
@@ -197,8 +195,8 @@ Example changes array:
   {"type": "fix", "description": "Replaced AI phrase with natural language", "before": "delve into the intricacies", "after": "explore the details"},
   {"type": "fix", "description": "Added citation from ASPS for procedure statistic", "before": "Over 300,000 procedures are performed annually", "after": "Over 300,000 procedures are performed annually, [according to ASPS](https://www.plasticsurgery.org/...)"},
   {"type": "improvement", "description": "Improved anchor text to be descriptive", "before": "[source](https://...)", "after": "[Mayo Clinic's recovery guidelines](https://...)"},
-  {"type": "addition", "description": "Added internal link to BBL procedure page", "after": "[BBL procedure](/procedures/bbl)"},
-  {"type": "removal", "description": "Removed redundant external link to stay under 6-link limit", "before": "[WebMD article](https://...)"}
+  {"type": "addition", "description": "Added internal link to BBL procedure page", "before": null, "after": "[BBL procedure](/procedures/bbl)"},
+  {"type": "removal", "description": "Removed redundant external link to stay under 6-link limit", "before": "[WebMD article](https://...)", "after": null}
 ]`
 
 /**

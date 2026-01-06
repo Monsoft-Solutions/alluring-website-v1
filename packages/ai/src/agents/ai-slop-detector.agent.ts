@@ -53,9 +53,9 @@ const aiSlopDetectionSchema = z.object({
                 .describe('Specific actionable suggestion to fix the issue'),
             originalText: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The exact problematic text from the content. Omit if not applicable.'
+                    'The exact problematic text from the content. Set to null if not applicable.'
                 ),
         })
     ),
