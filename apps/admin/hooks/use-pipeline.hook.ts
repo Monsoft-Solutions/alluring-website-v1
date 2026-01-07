@@ -10,20 +10,23 @@ import type {
     PostsByStatus,
     PipelineStats,
     PipelinePostItem,
-    PipelineStatus,
 } from '@/lib/queries/pipeline.query'
 import {
     updatePipelineStatus,
     updatePostPriority,
     createPipelinePost,
     updatePipelinePost,
+    duplicateBlogPost,
+    deleteBlogPost,
     type CreatePipelinePostData,
     type UpdatePipelinePostData,
     type BlogPostPriority,
+    type PipelineStatus,
 } from '@/lib/actions/blog.action'
+import { toast } from 'sonner'
 
 /**
- * Full post detail for edit dialog
+ * Full post detail for edit dialog with all fields needed for tabs
  */
 export type PipelinePostDetail = {
     id: string
@@ -32,7 +35,22 @@ export type PipelinePostDetail = {
     content: string | null
     status: PipelineStatus
     priority: 'low' | 'medium' | 'high' | 'urgent'
+    // Keywords
     primaryKeyword: string | null
+    secondaryKeywords: string[] | null
+    // SEO fields
+    metaTitle: string | null
+    metaDescription: string | null
+    metaKeywords: string | null
+    excerpt: string | null
+    // Author
+    authorId: string | null
+    authorName: string | null
+    // Media
+    featuredImageId: string | null
+    featuredImageUrl: string | null
+    aiSummary: string | null
+    // Planning & FAQs
     planningData: {
         topic?: string
         uniqueAngle?: string
@@ -40,9 +58,15 @@ export type PipelinePostDetail = {
         contentType?: string
         estimatedWordCount?: number
     } | null
+    faqs: Array<{ question: string; answer: string }> | null
+    // Processing
     pipelineProcessingStatus: 'idle' | 'processing' | 'error'
     processingError: string | null
+    // Timestamps
+    createdAt: string | null
     updatedAt: string | null
+    publishedAt: string | null
+    readingTime: number | null
 }
 
 /**
@@ -358,6 +382,104 @@ export function useUpdatePipelinePost() {
             return { previousKanban }
         },
         onError: (_, __, context) => {
+            // Rollback on error
+            if (context?.previousKanban) {
+                queryClient.setQueryData(
+                    pipelineKeys.kanban(),
+                    context.previousKanban
+                )
+            }
+        },
+        onSettled: async () => {
+            // Refetch to ensure consistency
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.kanban(),
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.stats(),
+                }),
+            ])
+        },
+    })
+}
+
+/**
+ * Hook to duplicate a pipeline post
+ */
+export function useDuplicatePipelinePost() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (id: string) => duplicateBlogPost(id),
+        onSuccess: async (result) => {
+            if (result.success) {
+                toast.success('Post duplicated successfully')
+                await Promise.all([
+                    queryClient.invalidateQueries({
+                        queryKey: pipelineKeys.kanban(),
+                    }),
+                    queryClient.invalidateQueries({
+                        queryKey: pipelineKeys.stats(),
+                    }),
+                ])
+            } else {
+                toast.error(result.error || 'Failed to duplicate post')
+            }
+        },
+        onError: (error) => {
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to duplicate post'
+            )
+        },
+    })
+}
+
+/**
+ * Hook to delete a pipeline post
+ */
+export function useDeletePipelinePost() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (id: string) => deleteBlogPost(id),
+        onMutate: async (id) => {
+            // Cancel any outgoing refetches
+            await queryClient.cancelQueries({ queryKey: pipelineKeys.kanban() })
+
+            // Snapshot the previous value
+            const previousKanban = queryClient.getQueryData<PostsByStatus>(
+                pipelineKeys.kanban()
+            )
+
+            // Optimistically remove the post
+            if (previousKanban) {
+                const updatedKanban = { ...previousKanban }
+                for (const statusKey of Object.keys(
+                    updatedKanban
+                ) as PipelineStatus[]) {
+                    updatedKanban[statusKey] = updatedKanban[statusKey].filter(
+                        (p) => p.id !== id
+                    )
+                }
+                queryClient.setQueryData(pipelineKeys.kanban(), updatedKanban)
+            }
+
+            return { previousKanban }
+        },
+        onSuccess: (result) => {
+            if (result.success) {
+                toast.success('Post deleted successfully')
+            } else {
+                toast.error(result.error || 'Failed to delete post')
+            }
+        },
+        onError: (error, _, context) => {
+            toast.error(
+                error instanceof Error ? error.message : 'Failed to delete post'
+            )
             // Rollback on error
             if (context?.previousKanban) {
                 queryClient.setQueryData(

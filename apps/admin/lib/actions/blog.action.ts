@@ -663,16 +663,95 @@ export async function updatePostPriority(
  */
 export type UpdatePipelinePostData = {
     title: string
+    slug?: string | null
     status: PipelineStatus
     priority: BlogPostPriority
+    // Keywords
     primaryKeyword?: string | null
+    secondaryKeywords?: string[] | null
+    // Content
     content?: string | null
+    // SEO
+    metaTitle?: string | null
+    metaDescription?: string | null
+    metaKeywords?: string | null
+    excerpt?: string | null
+    // Author
+    authorId?: string | null
+    // Media
+    featuredImageId?: string | null
+    aiSummary?: string | null
+    // Planning & FAQs
     planningData?: PlanningData | null
+    faqs?: Array<{ question: string; answer: string }> | null
+    // Reading time
+    readingTime?: number | null
+}
+
+/**
+ * Duplicate a blog post (creates a copy in ideation stage)
+ */
+export async function duplicateBlogPost(id: string): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const [existingPost] = await db
+            .select({
+                title: blogPost.title,
+                primaryKeyword: blogPost.primaryKeyword,
+                secondaryKeywords: blogPost.secondaryKeywords,
+                authorId: blogPost.authorId,
+                priority: blogPost.priority,
+                planningData: blogPost.planningData,
+                content: blogPost.content,
+            })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Post not found' }
+        }
+
+        const [newPost] = await db
+            .insert(blogPost)
+            .values({
+                title: `${existingPost.title} (Copy)`,
+                primaryKeyword: existingPost.primaryKeyword,
+                secondaryKeywords: existingPost.secondaryKeywords,
+                authorId: existingPost.authorId,
+                priority: existingPost.priority,
+                planningData: existingPost.planningData,
+                content: existingPost.content,
+                status: 'ideation',
+                pipelineProcessingStatus: 'idle',
+            })
+            .returning({ id: blogPost.id })
+
+        revalidatePath('/blog/pipeline')
+        revalidatePath('/blog/posts')
+
+        return { success: true, id: newPost?.id }
+    } catch (error) {
+        console.error('Error duplicating blog post:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to duplicate post',
+        }
+    }
 }
 
 /**
  * Update a blog post from the pipeline edit dialog
- * Combines title, status, priority, keywords, content, and planning data in one action
+ * Handles all fields including title, SEO, media, planning data, and FAQs
  */
 export async function updatePipelinePost(
     id: string,
@@ -708,34 +787,71 @@ export async function updatePipelinePost(
             }
         }
 
+        // Check for slug uniqueness if changed
+        if (data.slug && data.slug !== existingPost.slug) {
+            const [existingSlug] = await db
+                .select({ id: blogPost.id })
+                .from(blogPost)
+                .where(eq(blogPost.slug, data.slug))
+                .limit(1)
+
+            if (existingSlug && existingSlug.id !== id) {
+                return {
+                    success: false,
+                    error: 'A post with this slug already exists',
+                }
+            }
+        }
+
         // Determine if this is a publish action
         const wasPublished = existingPost.status === 'published'
         const isNowPublished = data.status === 'published'
         const publishedAt =
             !wasPublished && isNowPublished ? new Date() : undefined
 
-        await db
-            .update(blogPost)
-            .set({
-                title: data.title.trim(),
-                status: data.status,
-                priority: data.priority,
-                primaryKeyword: data.primaryKeyword ?? null,
-                content: data.content ?? null,
-                planningData: data.planningData ?? null,
-                ...(publishedAt ? { publishedAt } : {}),
-            })
-            .where(eq(blogPost.id, id))
+        // Build update object with all provided fields
+        const updateData: Record<string, unknown> = {
+            title: data.title.trim(),
+            status: data.status,
+            priority: data.priority,
+        }
+
+        // Optional fields - only set if provided (not undefined)
+        if (data.slug !== undefined) updateData.slug = data.slug
+        if (data.primaryKeyword !== undefined)
+            updateData.primaryKeyword = data.primaryKeyword
+        if (data.secondaryKeywords !== undefined)
+            updateData.secondaryKeywords = data.secondaryKeywords
+        if (data.content !== undefined) updateData.content = data.content
+        if (data.metaTitle !== undefined) updateData.metaTitle = data.metaTitle
+        if (data.metaDescription !== undefined)
+            updateData.metaDescription = data.metaDescription
+        if (data.metaKeywords !== undefined)
+            updateData.metaKeywords = data.metaKeywords
+        if (data.excerpt !== undefined) updateData.excerpt = data.excerpt
+        if (data.authorId !== undefined) updateData.authorId = data.authorId
+        if (data.featuredImageId !== undefined)
+            updateData.featuredImageId = data.featuredImageId
+        if (data.aiSummary !== undefined) updateData.aiSummary = data.aiSummary
+        if (data.planningData !== undefined)
+            updateData.planningData = data.planningData
+        if (data.faqs !== undefined) updateData.faqs = data.faqs
+        if (data.readingTime !== undefined)
+            updateData.readingTime = data.readingTime
+        if (publishedAt) updateData.publishedAt = publishedAt
+
+        await db.update(blogPost).set(updateData).where(eq(blogPost.id, id))
 
         revalidatePath('/blog/pipeline')
         revalidatePath('/blog/posts')
         revalidatePath(`/blog/posts/${id}`)
 
-        // Revalidate web app cache if publishing
-        if (existingPost.slug) {
+        // Revalidate web app cache - use new slug if changed, otherwise existing
+        const slugToRevalidate = data.slug ?? existingPost.slug
+        if (slugToRevalidate) {
             await revalidateWebAppCache([
                 CACHE_TAGS.BLOG_POSTS,
-                CACHE_TAGS.blogPostBySlug(existingPost.slug),
+                CACHE_TAGS.blogPostBySlug(slugToRevalidate),
             ])
         }
 

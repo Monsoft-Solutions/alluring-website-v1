@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@workspace/db/client'
-import { blogPost } from '@workspace/db/schema/blog'
+import { blogPost, author, images } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 
 import { requireAuth } from '@/lib/utils/auth.util'
@@ -9,7 +9,7 @@ export const runtime = 'nodejs'
 
 /**
  * GET /api/blog/pipeline/[id]
- * Fetch full pipeline post details including content for editing
+ * Fetch full pipeline post details including content, SEO, media, and FAQs for editing
  */
 export async function GET(
     _request: NextRequest,
@@ -28,13 +28,37 @@ export async function GET(
                 content: blogPost.content,
                 status: blogPost.status,
                 priority: blogPost.priority,
+                // Keywords
                 primaryKeyword: blogPost.primaryKeyword,
+                secondaryKeywords: blogPost.secondaryKeywords,
+                // SEO fields
+                metaTitle: blogPost.metaTitle,
+                metaDescription: blogPost.metaDescription,
+                metaKeywords: blogPost.metaKeywords,
+                excerpt: blogPost.excerpt,
+                // Author
+                authorId: blogPost.authorId,
+                authorName: author.name,
+                // Media
+                featuredImageId: blogPost.featuredImageId,
+                featuredImageUrl: images.url,
+                aiSummary: blogPost.aiSummary,
+                // Planning & FAQs
                 planningData: blogPost.planningData,
+                faqs: blogPost.faqs,
+                // Processing status
                 pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
                 processingError: blogPost.processingError,
+                // Timestamps
+                createdAt: blogPost.createdAt,
                 updatedAt: blogPost.updatedAt,
+                publishedAt: blogPost.publishedAt,
+                // Reading time
+                readingTime: blogPost.readingTime,
             })
             .from(blogPost)
+            .leftJoin(author, eq(blogPost.authorId, author.id))
+            .leftJoin(images, eq(blogPost.featuredImageId, images.id))
             .where(eq(blogPost.id, id))
             .limit(1)
 

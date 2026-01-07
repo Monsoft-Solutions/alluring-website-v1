@@ -5,9 +5,9 @@
  */
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
-import { blogPost, author } from '@workspace/db/schema/blog'
+import { blogPost, author, images } from '@workspace/db/schema/blog'
 import type { PlanningData, PipelineState } from '@workspace/db/types'
-import { eq, desc, count, sql } from 'drizzle-orm'
+import { eq, desc, sql } from 'drizzle-orm'
 
 /**
  * Pipeline status values
@@ -45,6 +45,7 @@ export type PipelinePostItem = {
     processingError: string | null
     primaryKeyword: string | null
     authorName: string | null
+    featuredImageUrl: string | null
     planningData: PlanningData | null
     pipelineState: PipelineState | null
     createdAt: Date | null
@@ -80,6 +81,7 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
             processingError: blogPost.processingError,
             primaryKeyword: blogPost.primaryKeyword,
             authorName: author.name,
+            featuredImageUrl: images.url,
             planningData: blogPost.planningData,
             pipelineState: blogPost.pipelineState,
             createdAt: blogPost.createdAt,
@@ -87,6 +89,7 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
         })
         .from(blogPost)
         .leftJoin(author, eq(blogPost.authorId, author.id))
+        .leftJoin(images, eq(blogPost.featuredImageId, images.id))
         .orderBy(desc(blogPost.updatedAt))
 
     // Initialize empty arrays for each status
@@ -193,6 +196,7 @@ export const getPipelinePostById = cache(
                 processingError: blogPost.processingError,
                 primaryKeyword: blogPost.primaryKeyword,
                 authorName: author.name,
+                featuredImageUrl: images.url,
                 planningData: blogPost.planningData,
                 pipelineState: blogPost.pipelineState,
                 createdAt: blogPost.createdAt,
@@ -200,6 +204,7 @@ export const getPipelinePostById = cache(
             })
             .from(blogPost)
             .leftJoin(author, eq(blogPost.authorId, author.id))
+            .leftJoin(images, eq(blogPost.featuredImageId, images.id))
             .where(eq(blogPost.id, id))
             .limit(1)
 
@@ -223,6 +228,7 @@ export const getProcessingPosts = cache(
                 processingError: blogPost.processingError,
                 primaryKeyword: blogPost.primaryKeyword,
                 authorName: author.name,
+                featuredImageUrl: images.url,
                 planningData: blogPost.planningData,
                 pipelineState: blogPost.pipelineState,
                 createdAt: blogPost.createdAt,
@@ -230,6 +236,7 @@ export const getProcessingPosts = cache(
             })
             .from(blogPost)
             .leftJoin(author, eq(blogPost.authorId, author.id))
+            .leftJoin(images, eq(blogPost.featuredImageId, images.id))
             .where(eq(blogPost.pipelineProcessingStatus, 'processing'))
 
         return posts as PipelinePostItem[]
