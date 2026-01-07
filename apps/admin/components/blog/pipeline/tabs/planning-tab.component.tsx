@@ -15,7 +15,7 @@ import {
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { TabsContent } from '@workspace/ui/components/tabs'
 
-import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-ideas.constant'
+import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-content.constant'
 import type { PlanningTabProps } from './pipeline-edit-dialog.type'
 
 const CONTENT_TYPE_OPTIONS = Object.entries(CONTENT_TYPE_LABELS).map(

@@ -32,9 +32,9 @@ import type { TopicSuggestion } from '@workspace/ai/functions'
 import {
     SEARCH_INTENTS,
     type SearchIntent,
-} from '@/lib/constants/blog-ideas.constant'
-import { GscKeywordPicker } from '@/components/blog/ideas/gsc-keyword-picker.component'
-import { GeneratedIdeasPanel } from '@/components/blog/ideas/generated-ideas-panel.component'
+} from '@/lib/constants/blog-content.constant'
+import { GscKeywordPicker } from '@/components/blog/shared/gsc-keyword-picker.component'
+import { GeneratedIdeasPanel } from '@/components/blog/shared/generated-ideas-panel.component'
 import { getProcedureOptions } from '@/lib/data/procedure-context.data'
 import { fetchApi, buildUrl, ApiError } from '@/lib/utils/api-client.util'
 

@@ -24,8 +24,12 @@ import {
 
 import { useCreatePipelinePost } from '@/hooks/use-pipeline.hook'
 import type { TopicSuggestion } from '@workspace/ai/functions'
-import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-ideas.constant'
-import type { SelectedKeywords } from './gsc-keyword-selector.component'
+import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-content.constant'
+
+type SelectedKeywords = {
+    primary: string | null
+    secondary: string[]
+}
 
 type GeneratedIdeasPanelProps = {
     selectedKeywords: SelectedKeywords
