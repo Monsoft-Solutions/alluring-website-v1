@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import Image from 'next/image'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import {
@@ -12,42 +11,20 @@ import {
     DialogDescription,
 } from '@workspace/ui/components/dialog'
 import { Button } from '@workspace/ui/components/button'
-import { Input } from '@workspace/ui/components/input'
-import { Label } from '@workspace/ui/components/label'
-import { Textarea } from '@workspace/ui/components/textarea'
 import { Badge } from '@workspace/ui/components/badge'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@workspace/ui/components/select'
-import { ScrollArea } from '@workspace/ui/components/scroll-area'
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from '@workspace/ui/components/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@workspace/ui/components/tabs'
 import {
     Loader2,
     Save,
     X,
-    Tag,
-    Target,
     FileText,
-    Users,
-    Lightbulb,
     AlertCircle,
     Search,
     Image as ImageIcon,
     ListChecks,
     ExternalLink,
     ArrowUpRight,
-    Plus,
-    Trash2,
-    Sparkles,
+    Lightbulb,
 } from 'lucide-react'
 
 import type {
@@ -55,84 +32,20 @@ import type {
     PipelineStatus,
 } from '@/lib/queries/pipeline.query'
 import type { PlanningData } from '@workspace/db/types'
-import type { BlogPostPriority } from '@/lib/actions/blog.action'
+import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 import {
     useUpdatePipelinePost,
     usePipelinePostDetail,
 } from '@/hooks/use-pipeline.hook'
-import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-ideas.constant'
-import { PostEditor } from '../editor.component'
-import { GeneratedImagesGallery } from '../generated-images-gallery.component'
 import { FeaturedImageDialog } from '../featured-image-dialog.component'
 
-/**
- * Priority configuration
- */
-const PRIORITY_OPTIONS: Array<{
-    value: BlogPostPriority
-    label: string
-    className: string
-}> = [
-    { value: 'low', label: 'Low', className: 'bg-stone-100 text-stone-700' },
-    {
-        value: 'medium',
-        label: 'Medium',
-        className: 'bg-blue-100 text-blue-700',
-    },
-    { value: 'high', label: 'High', className: 'bg-amber-100 text-amber-700' },
-    { value: 'urgent', label: 'Urgent', className: 'bg-red-100 text-red-600' },
-]
-
-/**
- * Status options
- */
-const STATUS_OPTIONS: Array<{
-    value: PipelineStatus
-    label: string
-    className: string
-}> = [
-    {
-        value: 'ideation',
-        label: 'Ideation',
-        className: 'bg-stone-100 text-stone-700',
-    },
-    {
-        value: 'generate',
-        label: 'Generate',
-        className: 'bg-amber-100 text-amber-700',
-    },
-    {
-        value: 'ai_review',
-        label: 'AI Review',
-        className: 'bg-blue-100 text-blue-700',
-    },
-    {
-        value: 'generate_metadata',
-        label: 'Metadata',
-        className: 'bg-violet-100 text-violet-700',
-    },
-    { value: 'draft', label: 'Draft', className: 'bg-sky-100 text-sky-700' },
-    {
-        value: 'ready_to_publish',
-        label: 'Ready',
-        className: 'bg-emerald-100 text-emerald-700',
-    },
-    {
-        value: 'scheduled',
-        label: 'Scheduled',
-        className: 'bg-orange-100 text-orange-700',
-    },
-    {
-        value: 'published',
-        label: 'Published',
-        className: 'bg-purple-100 text-purple-700',
-    },
-]
-
-const CONTENT_TYPE_OPTIONS = Object.entries(CONTENT_TYPE_LABELS).map(
-    ([value, label]) => ({ value, label })
-)
+// Tab components
+import { ContentTab } from './tabs/content-tab.component'
+import { DetailsTab } from './tabs/details-tab.component'
+import { SeoTab } from './tabs/seo-tab.component'
+import { MediaTab } from './tabs/media-tab.component'
+import { PlanningTab } from './tabs/planning-tab.component'
 
 type PipelinePostEditDialogProps = {
     post: PipelinePostItem | null
@@ -142,6 +55,7 @@ type PipelinePostEditDialogProps = {
 
 /**
  * Airtable-inspired edit dialog with tabbed interface
+ * Uses extracted tab components for maintainability
  */
 export function PipelinePostEditDialog({
     post,
@@ -221,6 +135,7 @@ export function PipelinePostEditDialog({
     // Mark as dirty on any change
     const markDirty = useCallback(() => setIsDirty(true), [])
 
+    // Planning handlers
     const handlePlanningChange = useCallback(
         (field: keyof PlanningData, value: string) => {
             setPlanningData((prev) => ({
@@ -299,6 +214,7 @@ export function PipelinePostEditDialog({
         [markDirty]
     )
 
+    // Save handler
     const handleSave = useCallback(async () => {
         if (!post) return
 
@@ -394,15 +310,6 @@ export function PipelinePostEditDialog({
     const isProcessing = post?.pipelineProcessingStatus === 'processing'
     const hasError = post?.pipelineProcessingStatus === 'error'
     const isPublished = status === 'published'
-
-    const priorityConfig = useMemo(
-        () => PRIORITY_OPTIONS.find((p) => p.value === priority),
-        [priority]
-    )
-    const statusConfig = useMemo(
-        () => STATUS_OPTIONS.find((s) => s.value === status),
-        [status]
-    )
 
     return (
         <>
@@ -533,682 +440,76 @@ export function PipelinePostEditDialog({
                         </div>
 
                         <div className='flex-1 overflow-hidden'>
-                            {/* Content Tab */}
-                            <TabsContent value='content' className='m-0 h-full'>
-                                <div className='flex h-full flex-col'>
-                                    <div className='border-b p-4'>
-                                        <Label className='text-xs font-medium text-stone-500'>
-                                            Title
-                                        </Label>
-                                        <Input
-                                            value={title}
-                                            onChange={(e) => {
-                                                setTitle(e.target.value)
-                                                markDirty()
-                                            }}
-                                            placeholder='Post title'
-                                            className='mt-1 border-0 bg-transparent p-0 text-lg font-semibold shadow-none focus-visible:ring-0'
-                                        />
-                                    </div>
-                                    <div className='flex-1 overflow-auto p-4'>
-                                        {isLoadingDetail ? (
-                                            <div className='flex h-full items-center justify-center'>
-                                                <div className='flex flex-col items-center gap-2 text-stone-400'>
-                                                    <Loader2 className='h-6 w-6 animate-spin' />
-                                                    <p className='text-sm'>
-                                                        Loading content...
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <PostEditor
-                                                content={content}
-                                                onChange={(val) => {
-                                                    setContent(val)
-                                                    markDirty()
-                                                }}
-                                                placeholder='Start writing your post content...'
-                                                blogPostId={post?.id}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            </TabsContent>
+                            <ContentTab
+                                title={title}
+                                setTitle={setTitle}
+                                content={content}
+                                setContent={setContent}
+                                isLoadingDetail={isLoadingDetail}
+                                markDirty={markDirty}
+                                blogPostId={post?.id}
+                            />
 
-                            {/* Details Tab */}
-                            <TabsContent value='details' className='m-0 h-full'>
-                                <ScrollArea className='h-full'>
-                                    <div className='grid gap-6 p-6 md:grid-cols-2'>
-                                        {/* Left Column */}
-                                        <div className='space-y-4'>
-                                            {/* Slug */}
-                                            <div>
-                                                <Label className='text-xs font-medium text-stone-500'>
-                                                    Slug
-                                                </Label>
-                                                <Input
-                                                    value={slug}
-                                                    onChange={(e) => {
-                                                        setSlug(e.target.value)
-                                                        markDirty()
-                                                    }}
-                                                    placeholder='post-url-slug'
-                                                    className='mt-1'
-                                                />
-                                            </div>
+                            <DetailsTab
+                                slug={slug}
+                                setSlug={setSlug}
+                                status={status}
+                                setStatus={setStatus}
+                                priority={priority}
+                                setPriority={setPriority}
+                                primaryKeyword={primaryKeyword}
+                                setPrimaryKeyword={setPrimaryKeyword}
+                                secondaryKeywords={secondaryKeywords}
+                                secondaryInput={secondaryInput}
+                                setSecondaryInput={setSecondaryInput}
+                                handleAddSecondaryKeyword={
+                                    handleAddSecondaryKeyword
+                                }
+                                handleRemoveSecondaryKeyword={
+                                    handleRemoveSecondaryKeyword
+                                }
+                                isProcessing={isProcessing}
+                                hasError={hasError}
+                                processingError={post?.processingError ?? null}
+                                markDirty={markDirty}
+                            />
 
-                                            {/* Status */}
-                                            <div>
-                                                <Label className='text-xs font-medium text-stone-500'>
-                                                    Status
-                                                </Label>
-                                                <Select
-                                                    value={status}
-                                                    onValueChange={(v) => {
-                                                        setStatus(
-                                                            v as PipelineStatus
-                                                        )
-                                                        markDirty()
-                                                    }}
-                                                    disabled={isProcessing}
-                                                >
-                                                    <SelectTrigger className='mt-1'>
-                                                        <SelectValue>
-                                                            {statusConfig && (
-                                                                <Badge
-                                                                    variant='secondary'
-                                                                    className={
-                                                                        statusConfig.className
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        statusConfig.label
-                                                                    }
-                                                                </Badge>
-                                                            )}
-                                                        </SelectValue>
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {STATUS_OPTIONS.map(
-                                                            (option) => (
-                                                                <SelectItem
-                                                                    key={
-                                                                        option.value
-                                                                    }
-                                                                    value={
-                                                                        option.value
-                                                                    }
-                                                                >
-                                                                    <Badge
-                                                                        variant='secondary'
-                                                                        className={
-                                                                            option.className
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            option.label
-                                                                        }
-                                                                    </Badge>
-                                                                </SelectItem>
-                                                            )
-                                                        )}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
+                            <SeoTab
+                                title={title}
+                                metaTitle={metaTitle}
+                                setMetaTitle={setMetaTitle}
+                                metaDescription={metaDescription}
+                                setMetaDescription={setMetaDescription}
+                                metaKeywords={metaKeywords}
+                                setMetaKeywords={setMetaKeywords}
+                                excerpt={excerpt}
+                                setExcerpt={setExcerpt}
+                                markDirty={markDirty}
+                            />
 
-                                            {/* Priority */}
-                                            <div>
-                                                <Label className='text-xs font-medium text-stone-500'>
-                                                    Priority
-                                                </Label>
-                                                <Select
-                                                    value={priority}
-                                                    onValueChange={(v) => {
-                                                        setPriority(
-                                                            v as BlogPostPriority
-                                                        )
-                                                        markDirty()
-                                                    }}
-                                                >
-                                                    <SelectTrigger className='mt-1'>
-                                                        <SelectValue>
-                                                            {priorityConfig && (
-                                                                <Badge
-                                                                    variant='secondary'
-                                                                    className={
-                                                                        priorityConfig.className
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        priorityConfig.label
-                                                                    }
-                                                                </Badge>
-                                                            )}
-                                                        </SelectValue>
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {PRIORITY_OPTIONS.map(
-                                                            (option) => (
-                                                                <SelectItem
-                                                                    key={
-                                                                        option.value
-                                                                    }
-                                                                    value={
-                                                                        option.value
-                                                                    }
-                                                                >
-                                                                    <Badge
-                                                                        variant='secondary'
-                                                                        className={
-                                                                            option.className
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            option.label
-                                                                        }
-                                                                    </Badge>
-                                                                </SelectItem>
-                                                            )
-                                                        )}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        </div>
+                            <MediaTab
+                                featuredImageUrl={featuredImageUrl}
+                                setFeaturedImageId={setFeaturedImageId}
+                                setFeaturedImageUrl={setFeaturedImageUrl}
+                                handleSelectGeneratedImage={
+                                    handleSelectGeneratedImage
+                                }
+                                galleryRefresh={galleryRefresh}
+                                setFeaturedImageDialogOpen={
+                                    setFeaturedImageDialogOpen
+                                }
+                                markDirty={markDirty}
+                                blogPostId={post?.id}
+                            />
 
-                                        {/* Right Column - Keywords */}
-                                        <div className='space-y-4'>
-                                            {/* Primary Keyword */}
-                                            <div>
-                                                <Label className='flex items-center gap-1 text-xs font-medium text-stone-500'>
-                                                    <Tag className='h-3 w-3' />
-                                                    Primary Keyword
-                                                </Label>
-                                                <Input
-                                                    value={primaryKeyword}
-                                                    onChange={(e) => {
-                                                        setPrimaryKeyword(
-                                                            e.target.value
-                                                        )
-                                                        markDirty()
-                                                    }}
-                                                    placeholder='main target keyword'
-                                                    className='mt-1'
-                                                />
-                                            </div>
-
-                                            {/* Secondary Keywords */}
-                                            <div>
-                                                <Label className='text-xs font-medium text-stone-500'>
-                                                    Secondary Keywords
-                                                </Label>
-                                                <div className='mt-1 flex gap-2'>
-                                                    <Input
-                                                        value={secondaryInput}
-                                                        onChange={(e) =>
-                                                            setSecondaryInput(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        onKeyDown={(e) => {
-                                                            if (
-                                                                e.key ===
-                                                                'Enter'
-                                                            ) {
-                                                                e.preventDefault()
-                                                                handleAddSecondaryKeyword()
-                                                            }
-                                                        }}
-                                                        placeholder='supporting keyword'
-                                                    />
-                                                    <Button
-                                                        type='button'
-                                                        variant='outline'
-                                                        onClick={
-                                                            handleAddSecondaryKeyword
-                                                        }
-                                                        disabled={
-                                                            !secondaryInput.trim()
-                                                        }
-                                                    >
-                                                        Add
-                                                    </Button>
-                                                </div>
-                                                {secondaryKeywords.length >
-                                                    0 && (
-                                                    <div className='mt-2 flex flex-wrap gap-2'>
-                                                        {secondaryKeywords.map(
-                                                            (kw) => (
-                                                                <Badge
-                                                                    key={kw}
-                                                                    variant='secondary'
-                                                                    className='gap-1 pr-1'
-                                                                >
-                                                                    {kw}
-                                                                    <button
-                                                                        type='button'
-                                                                        onClick={() =>
-                                                                            handleRemoveSecondaryKeyword(
-                                                                                kw
-                                                                            )
-                                                                        }
-                                                                        className='hover:bg-muted ml-1 rounded-sm p-0.5'
-                                                                    >
-                                                                        <X className='h-3 w-3' />
-                                                                    </button>
-                                                                </Badge>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* Error message */}
-                                        {hasError && post?.processingError && (
-                                            <div className='col-span-2 rounded-lg border border-red-200 bg-red-50 p-3'>
-                                                <p className='text-xs font-medium text-red-800'>
-                                                    Processing Error
-                                                </p>
-                                                <p className='mt-1 text-xs text-red-700'>
-                                                    {post.processingError}
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </ScrollArea>
-                            </TabsContent>
-
-                            {/* SEO Tab */}
-                            <TabsContent value='seo' className='m-0 h-full'>
-                                <ScrollArea className='h-full'>
-                                    <div className='space-y-6 p-6'>
-                                        <div className='grid gap-6 md:grid-cols-2'>
-                                            {/* Meta Title */}
-                                            <div>
-                                                <Label className='text-xs font-medium text-stone-500'>
-                                                    Meta Title
-                                                </Label>
-                                                <Input
-                                                    value={metaTitle}
-                                                    onChange={(e) => {
-                                                        setMetaTitle(
-                                                            e.target.value
-                                                        )
-                                                        markDirty()
-                                                    }}
-                                                    placeholder='SEO title (defaults to post title)'
-                                                    className='mt-1'
-                                                />
-                                                <p className='mt-1 text-xs text-stone-400'>
-                                                    {
-                                                        (metaTitle || title)
-                                                            .length
-                                                    }
-                                                    /60 characters
-                                                </p>
-                                            </div>
-
-                                            {/* Meta Keywords */}
-                                            <div>
-                                                <Label className='text-xs font-medium text-stone-500'>
-                                                    Meta Keywords
-                                                </Label>
-                                                <Input
-                                                    value={metaKeywords}
-                                                    onChange={(e) => {
-                                                        setMetaKeywords(
-                                                            e.target.value
-                                                        )
-                                                        markDirty()
-                                                    }}
-                                                    placeholder='keyword1, keyword2, keyword3'
-                                                    className='mt-1'
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Meta Description */}
-                                        <div>
-                                            <Label className='text-xs font-medium text-stone-500'>
-                                                Meta Description
-                                            </Label>
-                                            <Textarea
-                                                value={metaDescription}
-                                                onChange={(e) => {
-                                                    setMetaDescription(
-                                                        e.target.value
-                                                    )
-                                                    markDirty()
-                                                }}
-                                                placeholder='Brief description for search results'
-                                                rows={3}
-                                                className='mt-1'
-                                            />
-                                            <p className='mt-1 text-xs text-stone-400'>
-                                                {metaDescription.length}/160
-                                                characters
-                                            </p>
-                                        </div>
-
-                                        {/* Excerpt */}
-                                        <div>
-                                            <Label className='text-xs font-medium text-stone-500'>
-                                                Excerpt
-                                            </Label>
-                                            <Textarea
-                                                value={excerpt}
-                                                onChange={(e) => {
-                                                    setExcerpt(e.target.value)
-                                                    markDirty()
-                                                }}
-                                                placeholder='Short summary shown in blog listings'
-                                                rows={3}
-                                                className='mt-1'
-                                            />
-                                        </div>
-                                    </div>
-                                </ScrollArea>
-                            </TabsContent>
-
-                            {/* Media Tab */}
-                            <TabsContent value='media' className='m-0 h-full'>
-                                <ScrollArea className='h-full'>
-                                    <div className='space-y-6 p-6'>
-                                        {/* Current Featured Image */}
-                                        <div>
-                                            <Label className='text-xs font-medium text-stone-500'>
-                                                Featured Image
-                                            </Label>
-                                            <div className='mt-2 flex items-start gap-4'>
-                                                {featuredImageUrl ? (
-                                                    <div className='relative h-32 w-48 overflow-hidden rounded-lg border bg-stone-100'>
-                                                        <Image
-                                                            src={
-                                                                featuredImageUrl
-                                                            }
-                                                            alt='Featured image'
-                                                            fill
-                                                            className='object-cover'
-                                                        />
-                                                    </div>
-                                                ) : (
-                                                    <div className='flex h-32 w-48 items-center justify-center rounded-lg border-2 border-dashed border-stone-200 bg-stone-50'>
-                                                        <div className='text-center'>
-                                                            <ImageIcon className='mx-auto h-8 w-8 text-stone-300' />
-                                                            <p className='mt-1 text-xs text-stone-400'>
-                                                                No image
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                <div className='space-y-2'>
-                                                    <Button
-                                                        type='button'
-                                                        onClick={() =>
-                                                            setFeaturedImageDialogOpen(
-                                                                true
-                                                            )
-                                                        }
-                                                        disabled={!post?.id}
-                                                    >
-                                                        <Sparkles className='mr-2 h-4 w-4' />
-                                                        Generate Image
-                                                    </Button>
-                                                    {featuredImageUrl && (
-                                                        <Button
-                                                            type='button'
-                                                            variant='outline'
-                                                            onClick={() => {
-                                                                setFeaturedImageId(
-                                                                    null
-                                                                )
-                                                                setFeaturedImageUrl(
-                                                                    null
-                                                                )
-                                                                markDirty()
-                                                            }}
-                                                        >
-                                                            <Trash2 className='mr-2 h-4 w-4' />
-                                                            Remove
-                                                        </Button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Generated Images Gallery */}
-                                        {post?.id && (
-                                            <GeneratedImagesGallery
-                                                blogPostId={post.id}
-                                                currentFeaturedImageUrl={
-                                                    featuredImageUrl
-                                                }
-                                                onSelectImage={
-                                                    handleSelectGeneratedImage
-                                                }
-                                                refreshTrigger={galleryRefresh}
-                                            />
-                                        )}
-                                    </div>
-                                </ScrollArea>
-                            </TabsContent>
-
-                            {/* Planning Tab */}
-                            <TabsContent
-                                value='planning'
-                                className='m-0 h-full'
-                            >
-                                <ScrollArea className='h-full'>
-                                    <div className='space-y-6 p-6'>
-                                        <div className='grid gap-6 md:grid-cols-2'>
-                                            {/* Topic */}
-                                            <div>
-                                                <Label className='flex items-center gap-1 text-xs font-medium text-stone-500'>
-                                                    <Target className='h-3 w-3' />
-                                                    Topic
-                                                </Label>
-                                                <Input
-                                                    value={
-                                                        planningData.topic || ''
-                                                    }
-                                                    onChange={(e) =>
-                                                        handlePlanningChange(
-                                                            'topic',
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    placeholder='Main topic or theme'
-                                                    className='mt-1'
-                                                />
-                                            </div>
-
-                                            {/* Content Type */}
-                                            <div>
-                                                <Label className='flex items-center gap-1 text-xs font-medium text-stone-500'>
-                                                    <FileText className='h-3 w-3' />
-                                                    Content Type
-                                                </Label>
-                                                <Select
-                                                    value={
-                                                        planningData.contentType ||
-                                                        ''
-                                                    }
-                                                    onValueChange={(v) =>
-                                                        handlePlanningChange(
-                                                            'contentType',
-                                                            v
-                                                        )
-                                                    }
-                                                >
-                                                    <SelectTrigger className='mt-1'>
-                                                        <SelectValue placeholder='Select content type' />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {CONTENT_TYPE_OPTIONS.map(
-                                                            (option) => (
-                                                                <SelectItem
-                                                                    key={
-                                                                        option.value
-                                                                    }
-                                                                    value={
-                                                                        option.value
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        option.label
-                                                                    }
-                                                                </SelectItem>
-                                                            )
-                                                        )}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        </div>
-
-                                        {/* Target Audience */}
-                                        <div>
-                                            <Label className='flex items-center gap-1 text-xs font-medium text-stone-500'>
-                                                <Users className='h-3 w-3' />
-                                                Target Audience
-                                            </Label>
-                                            <Textarea
-                                                value={
-                                                    planningData.targetAudience ||
-                                                    ''
-                                                }
-                                                onChange={(e) =>
-                                                    handlePlanningChange(
-                                                        'targetAudience',
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder='Who is this content for?'
-                                                rows={2}
-                                                className='mt-1'
-                                            />
-                                        </div>
-
-                                        {/* Unique Angle */}
-                                        <div>
-                                            <Label className='flex items-center gap-1 text-xs font-medium text-stone-500'>
-                                                <Lightbulb className='h-3 w-3' />
-                                                Unique Angle
-                                            </Label>
-                                            <Textarea
-                                                value={
-                                                    planningData.uniqueAngle ||
-                                                    ''
-                                                }
-                                                onChange={(e) =>
-                                                    handlePlanningChange(
-                                                        'uniqueAngle',
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder='What makes this different?'
-                                                rows={2}
-                                                className='mt-1'
-                                            />
-                                        </div>
-
-                                        {/* FAQs Section */}
-                                        <div className='border-t pt-6'>
-                                            <div className='mb-4 flex items-center justify-between'>
-                                                <Label className='text-sm font-medium'>
-                                                    FAQ Schema
-                                                </Label>
-                                                <Button
-                                                    type='button'
-                                                    variant='outline'
-                                                    size='sm'
-                                                    onClick={handleAddFaq}
-                                                >
-                                                    <Plus className='mr-1 h-3 w-3' />
-                                                    Add FAQ
-                                                </Button>
-                                            </div>
-
-                                            {faqs.length === 0 ? (
-                                                <div className='rounded-lg border border-dashed border-stone-200 bg-stone-50 p-4 text-center'>
-                                                    <p className='text-sm text-stone-500'>
-                                                        No FAQs yet. Add
-                                                        questions for FAQ schema
-                                                        markup.
-                                                    </p>
-                                                </div>
-                                            ) : (
-                                                <div className='space-y-4'>
-                                                    {faqs.map((faq, index) => (
-                                                        <div
-                                                            key={index}
-                                                            className='rounded-lg border bg-stone-50 p-4'
-                                                        >
-                                                            <div className='mb-2 flex items-center justify-between'>
-                                                                <span className='text-xs font-medium text-stone-500'>
-                                                                    FAQ #
-                                                                    {index + 1}
-                                                                </span>
-                                                                <Button
-                                                                    type='button'
-                                                                    variant='ghost'
-                                                                    size='sm'
-                                                                    onClick={() =>
-                                                                        handleRemoveFaq(
-                                                                            index
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <Trash2 className='h-3 w-3 text-red-500' />
-                                                                </Button>
-                                                            </div>
-                                                            <div className='space-y-2'>
-                                                                <Textarea
-                                                                    value={
-                                                                        faq.question
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleUpdateFaq(
-                                                                            index,
-                                                                            'question',
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
-                                                                    placeholder='Question...'
-                                                                    rows={1}
-                                                                    className='text-sm'
-                                                                />
-                                                                <Textarea
-                                                                    value={
-                                                                        faq.answer
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleUpdateFaq(
-                                                                            index,
-                                                                            'answer',
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
-                                                                    placeholder='Answer...'
-                                                                    rows={2}
-                                                                    className='text-sm'
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </ScrollArea>
-                            </TabsContent>
+                            <PlanningTab
+                                planningData={planningData}
+                                handlePlanningChange={handlePlanningChange}
+                                faqs={faqs}
+                                handleAddFaq={handleAddFaq}
+                                handleRemoveFaq={handleRemoveFaq}
+                                handleUpdateFaq={handleUpdateFaq}
+                            />
                         </div>
                     </Tabs>
 

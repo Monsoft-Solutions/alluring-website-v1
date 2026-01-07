@@ -4,13 +4,16 @@
  * TanStack Query hooks for the blog content pipeline Kanban.
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 
 import { fetchApi, buildUrl } from '@/lib/utils/api-client.util'
 import type {
     PostsByStatus,
     PipelineStats,
     PipelinePostItem,
+    PipelineStatus,
 } from '@/lib/queries/pipeline.query'
+import type { PipelinePostDetail } from '@/lib/types/blog/pipeline-post-detail.type'
 import {
     updatePipelineStatus,
     updatePostPriority,
@@ -21,53 +24,10 @@ import {
     type CreatePipelinePostData,
     type UpdatePipelinePostData,
     type BlogPostPriority,
-    type PipelineStatus,
 } from '@/lib/actions/blog.action'
-import { toast } from 'sonner'
 
-/**
- * Full post detail for edit dialog with all fields needed for tabs
- */
-export type PipelinePostDetail = {
-    id: string
-    title: string
-    slug: string | null
-    content: string | null
-    status: PipelineStatus
-    priority: 'low' | 'medium' | 'high' | 'urgent'
-    // Keywords
-    primaryKeyword: string | null
-    secondaryKeywords: string[] | null
-    // SEO fields
-    metaTitle: string | null
-    metaDescription: string | null
-    metaKeywords: string | null
-    excerpt: string | null
-    // Author
-    authorId: string | null
-    authorName: string | null
-    // Media
-    featuredImageId: string | null
-    featuredImageUrl: string | null
-    aiSummary: string | null
-    // Planning & FAQs
-    planningData: {
-        topic?: string
-        uniqueAngle?: string
-        targetAudience?: string
-        contentType?: string
-        estimatedWordCount?: number
-    } | null
-    faqs: Array<{ question: string; answer: string }> | null
-    // Processing
-    pipelineProcessingStatus: 'idle' | 'processing' | 'error'
-    processingError: string | null
-    // Timestamps
-    createdAt: string | null
-    updatedAt: string | null
-    publishedAt: string | null
-    readingTime: number | null
-}
+// Re-export for consumers
+export type { PipelinePostDetail }
 
 /**
  * Query keys for pipeline data

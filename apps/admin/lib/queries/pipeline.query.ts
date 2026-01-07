@@ -9,28 +9,19 @@ import { blogPost, author, images } from '@workspace/db/schema/blog'
 import type { PlanningData, PipelineState } from '@workspace/db/types'
 import { eq, desc, sql } from 'drizzle-orm'
 
-/**
- * Pipeline status values
- */
-export type PipelineStatus =
-    | 'ideation'
-    | 'generate'
-    | 'ai_review'
-    | 'generate_metadata'
-    | 'draft'
-    | 'ready_to_publish'
-    | 'scheduled'
-    | 'published'
+import type {
+    PipelineStatus,
+    ProcessingStatus,
+    BlogPostPriority,
+} from '@/lib/types/blog/blog-action.type'
+
+// Re-export types for consumers
+export type { PipelineStatus, ProcessingStatus }
 
 /**
- * Processing status values
+ * Priority values (alias for BlogPostPriority)
  */
-export type ProcessingStatus = 'idle' | 'processing' | 'error'
-
-/**
- * Priority values
- */
-export type Priority = 'low' | 'medium' | 'high' | 'urgent'
+export type Priority = BlogPostPriority
 
 /**
  * Blog post item for the Kanban board
