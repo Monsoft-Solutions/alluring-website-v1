@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
     Card,
     CardContent,
@@ -28,6 +28,7 @@ import type {
     PipelineStatus,
 } from '@/lib/queries/pipeline.query'
 import { PipelineCard } from './pipeline-card.component'
+import { PipelinePostEditDialog } from './pipeline-post-edit-dialog.component'
 import {
     useUpdatePipelineStatus,
     useTriggerPipeline,
@@ -140,6 +141,24 @@ export function PipelineKanbanBoard({
 }: PipelineKanbanBoardProps) {
     const updateStatusMutation = useUpdatePipelineStatus()
     const triggerPipelineMutation = useTriggerPipeline()
+
+    // Selected post for edit dialog
+    const [selectedPost, setSelectedPost] = useState<PipelinePostItem | null>(
+        null
+    )
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+
+    const handleCardClick = (post: PipelinePostItem) => {
+        setSelectedPost(post)
+        setIsEditDialogOpen(true)
+    }
+
+    const handleEditDialogClose = (open: boolean) => {
+        setIsEditDialogOpen(open)
+        if (!open) {
+            setSelectedPost(null)
+        }
+    }
 
     // Filter posts based on search query
     const filteredData = useMemo(() => {
@@ -302,6 +321,9 @@ export function PipelineKanbanBoard({
                                             onDragStart={(e) =>
                                                 handleDragStart(e, post)
                                             }
+                                            onClick={() =>
+                                                handleCardClick(post)
+                                            }
                                         />
                                     ))
                                 )}
@@ -310,6 +332,13 @@ export function PipelineKanbanBoard({
                     </div>
                 )
             })}
+
+            {/* Edit Dialog */}
+            <PipelinePostEditDialog
+                post={selectedPost}
+                open={isEditDialogOpen}
+                onOpenChange={handleEditDialogClose}
+            />
         </div>
     )
 }

@@ -657,3 +657,107 @@ export async function updatePostPriority(
         }
     }
 }
+
+/**
+ * Form data for updating a pipeline post from the edit dialog
+ */
+export type UpdatePipelinePostData = {
+    title: string
+    status: PipelineStatus
+    priority: BlogPostPriority
+    primaryKeyword?: string | null
+    content?: string | null
+    planningData?: PlanningData | null
+}
+
+/**
+ * Update a blog post from the pipeline edit dialog
+ * Combines title, status, priority, keywords, content, and planning data in one action
+ */
+export async function updatePipelinePost(
+    id: string,
+    data: UpdatePipelinePostData
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        if (!data.title?.trim()) {
+            return { success: false, error: 'Title is required' }
+        }
+
+        const [existingPost] = await db
+            .select({
+                id: blogPost.id,
+                status: blogPost.status,
+                slug: blogPost.slug,
+                pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
+            })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Post not found' }
+        }
+
+        // Don't allow updates while processing
+        if (existingPost.pipelineProcessingStatus === 'processing') {
+            return {
+                success: false,
+                error: 'Cannot update while processing',
+            }
+        }
+
+        // Determine if this is a publish action
+        const wasPublished = existingPost.status === 'published'
+        const isNowPublished = data.status === 'published'
+        const publishedAt =
+            !wasPublished && isNowPublished ? new Date() : undefined
+
+        await db
+            .update(blogPost)
+            .set({
+                title: data.title.trim(),
+                status: data.status,
+                priority: data.priority,
+                primaryKeyword: data.primaryKeyword ?? null,
+                content: data.content ?? null,
+                planningData: data.planningData ?? null,
+                ...(publishedAt ? { publishedAt } : {}),
+            })
+            .where(eq(blogPost.id, id))
+
+        revalidatePath('/blog/pipeline')
+        revalidatePath('/blog/posts')
+        revalidatePath(`/blog/posts/${id}`)
+
+        // Revalidate web app cache if publishing
+        if (existingPost.slug) {
+            await revalidateWebAppCache([
+                CACHE_TAGS.BLOG_POSTS,
+                CACHE_TAGS.blogPostBySlug(existingPost.slug),
+            ])
+        }
+
+        // Invalidate URL registry cache when publish status changes
+        if (wasPublished !== isNowPublished) {
+            revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
+        }
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error updating pipeline post:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to update post',
+        }
+    }
+}

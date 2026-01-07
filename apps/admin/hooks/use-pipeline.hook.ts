@@ -16,9 +16,34 @@ import {
     updatePipelineStatus,
     updatePostPriority,
     createPipelinePost,
+    updatePipelinePost,
     type CreatePipelinePostData,
+    type UpdatePipelinePostData,
     type BlogPostPriority,
 } from '@/lib/actions/blog.action'
+
+/**
+ * Full post detail for edit dialog
+ */
+export type PipelinePostDetail = {
+    id: string
+    title: string
+    slug: string | null
+    content: string | null
+    status: PipelineStatus
+    priority: 'low' | 'medium' | 'high' | 'urgent'
+    primaryKeyword: string | null
+    planningData: {
+        topic?: string
+        uniqueAngle?: string
+        targetAudience?: string
+        contentType?: string
+        estimatedWordCount?: number
+    } | null
+    pipelineProcessingStatus: 'idle' | 'processing' | 'error'
+    processingError: string | null
+    updatedAt: string | null
+}
 
 /**
  * Query keys for pipeline data
@@ -74,6 +99,19 @@ export function usePipelineStats() {
                 buildUrl('/api/blog/pipeline', { view: 'stats' })
             ),
         staleTime: 30_000,
+    })
+}
+
+/**
+ * Hook to fetch full post details for editing
+ */
+export function usePipelinePostDetail(id: string | null) {
+    return useQuery({
+        queryKey: pipelineKeys.detail(id ?? ''),
+        queryFn: () =>
+            fetchApi<PipelinePostDetail>(buildUrl(`/api/blog/pipeline/${id}`)),
+        enabled: !!id,
+        staleTime: 10_000,
     })
 }
 
@@ -225,6 +263,111 @@ export function useTriggerPipeline() {
             return response.json()
         },
         onSuccess: async () => {
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.kanban(),
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.stats(),
+                }),
+            ])
+        },
+    })
+}
+
+/**
+ * Hook to update a pipeline post from the edit dialog
+ * Combines title, status, priority, keywords, content, and planning data
+ */
+export function useUpdatePipelinePost() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({
+            id,
+            data,
+        }: {
+            id: string
+            data: UpdatePipelinePostData
+        }) => updatePipelinePost(id, data),
+        onMutate: async ({ id, data }) => {
+            // Cancel any outgoing refetches
+            await queryClient.cancelQueries({ queryKey: pipelineKeys.kanban() })
+
+            // Snapshot the previous value
+            const previousKanban = queryClient.getQueryData<PostsByStatus>(
+                pipelineKeys.kanban()
+            )
+
+            // Optimistically update the kanban
+            if (previousKanban) {
+                const updatedKanban = { ...previousKanban }
+
+                // Find the post and update it
+                for (const statusKey of Object.keys(
+                    updatedKanban
+                ) as PipelineStatus[]) {
+                    const idx = updatedKanban[statusKey].findIndex(
+                        (p) => p.id === id
+                    )
+                    if (idx !== -1) {
+                        const post = updatedKanban[statusKey][idx]
+                        if (!post) continue
+
+                        // If status changed, move to new column
+                        if (statusKey !== data.status) {
+                            // Remove from old column
+                            updatedKanban[statusKey] = [
+                                ...updatedKanban[statusKey].slice(0, idx),
+                                ...updatedKanban[statusKey].slice(idx + 1),
+                            ]
+                            // Add to new column with updated data
+                            updatedKanban[data.status] = [
+                                {
+                                    ...post,
+                                    title: data.title,
+                                    status: data.status,
+                                    priority: data.priority,
+                                    primaryKeyword: data.primaryKeyword ?? null,
+                                    planningData: data.planningData ?? null,
+                                },
+                                ...updatedKanban[data.status],
+                            ]
+                        } else {
+                            // Update in place
+                            updatedKanban[statusKey] = [
+                                ...updatedKanban[statusKey].slice(0, idx),
+                                {
+                                    ...post,
+                                    title: data.title,
+                                    status: data.status,
+                                    priority: data.priority,
+                                    primaryKeyword: data.primaryKeyword ?? null,
+                                    planningData: data.planningData ?? null,
+                                },
+                                ...updatedKanban[statusKey].slice(idx + 1),
+                            ]
+                        }
+                        break
+                    }
+                }
+
+                queryClient.setQueryData(pipelineKeys.kanban(), updatedKanban)
+            }
+
+            return { previousKanban }
+        },
+        onError: (_, __, context) => {
+            // Rollback on error
+            if (context?.previousKanban) {
+                queryClient.setQueryData(
+                    pipelineKeys.kanban(),
+                    context.previousKanban
+                )
+            }
+        },
+        onSettled: async () => {
+            // Refetch to ensure consistency
             await Promise.all([
                 queryClient.invalidateQueries({
                     queryKey: pipelineKeys.kanban(),

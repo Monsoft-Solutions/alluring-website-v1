@@ -34,12 +34,17 @@ const PRIORITY_CONFIG = {
 type PipelineCardProps = {
     post: PipelinePostItem
     onDragStart?: (e: React.DragEvent) => void
+    onClick?: () => void
 }
 
 /**
  * Card component for a single post in the pipeline Kanban
  */
-export function PipelineCard({ post, onDragStart }: PipelineCardProps) {
+export function PipelineCard({
+    post,
+    onDragStart,
+    onClick,
+}: PipelineCardProps) {
     const isProcessing = post.pipelineProcessingStatus === 'processing'
     const hasError = post.pipelineProcessingStatus === 'error'
     const priorityConfig = PRIORITY_CONFIG[post.priority]
@@ -47,9 +52,16 @@ export function PipelineCard({ post, onDragStart }: PipelineCardProps) {
     // Calculate word count from pipeline state if available
     const wordCount = post.pipelineState?.generationPhase?.initialWordCount
 
+    const handleClick = (e: React.MouseEvent) => {
+        // Don't open dialog if the event was from dragging
+        // Check if any modifier keys are pressed (common for drag operations)
+        if (e.defaultPrevented) return
+        onClick?.()
+    }
+
     return (
         <Card
-            className={`group cursor-grab transition-shadow hover:shadow-md ${
+            className={`group cursor-pointer transition-shadow hover:shadow-md ${
                 isProcessing
                     ? 'cursor-wait border-amber-300 bg-amber-50/50'
                     : hasError
@@ -58,6 +70,7 @@ export function PipelineCard({ post, onDragStart }: PipelineCardProps) {
             }`}
             draggable={!isProcessing}
             onDragStart={onDragStart}
+            onClick={handleClick}
         >
             <CardContent className='p-3'>
                 {/* Header with status indicator */}
@@ -130,7 +143,10 @@ export function PipelineCard({ post, onDragStart }: PipelineCardProps) {
                     </div>
 
                     {post.slug && (
-                        <Link href={`/blog/posts/${post.id}/edit`}>
+                        <Link
+                            href={`/blog/posts/${post.id}/edit`}
+                            onClick={(e) => e.stopPropagation()}
+                        >
                             <Button
                                 variant='ghost'
                                 size='sm'
