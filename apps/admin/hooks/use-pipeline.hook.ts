@@ -21,6 +21,7 @@ import {
     updatePipelinePost,
     duplicateBlogPost,
     deleteBlogPost,
+    resetProcessingStatus,
     type CreatePipelinePostData,
     type UpdatePipelinePostData,
     type BlogPostPriority,
@@ -439,6 +440,137 @@ export function useDeletePipelinePost() {
         onError: (error, _, context) => {
             toast.error(
                 error instanceof Error ? error.message : 'Failed to delete post'
+            )
+            // Rollback on error
+            if (context?.previousKanban) {
+                queryClient.setQueryData(
+                    pipelineKeys.kanban(),
+                    context.previousKanban
+                )
+            }
+        },
+        onSettled: async () => {
+            // Refetch to ensure consistency
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.kanban(),
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.stats(),
+                }),
+            ])
+        },
+    })
+}
+
+/**
+ * Auto-processing stages that should trigger retry after reset
+ */
+const AUTO_PROCESS_STAGES = [
+    'generate',
+    'ai_review',
+    'generate_metadata',
+] as const
+type AutoProcessStage = (typeof AUTO_PROCESS_STAGES)[number]
+
+function isAutoProcessStage(status: string): status is AutoProcessStage {
+    return AUTO_PROCESS_STAGES.includes(status as AutoProcessStage)
+}
+
+/**
+ * Hook to retry a stuck pipeline post
+ * Resets processing status and automatically re-triggers the pipeline for auto-processing stages
+ */
+export function useRetryProcessing() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            // First reset the processing status
+            const result = await resetProcessingStatus(id)
+
+            if (!result.success) {
+                throw new Error(
+                    result.error || 'Failed to reset processing status'
+                )
+            }
+
+            // If the post is in an auto-processing stage, trigger the pipeline
+            if (result.status && isAutoProcessStage(result.status)) {
+                const endpoint = {
+                    generate: `/api/blog/posts/${id}/pipeline/generate`,
+                    ai_review: `/api/blog/posts/${id}/pipeline/review`,
+                    generate_metadata: `/api/blog/posts/${id}/pipeline/extract`,
+                }[result.status]
+
+                const response = await fetch(endpoint, { method: 'POST' })
+                if (!response.ok) {
+                    const error = await response.json()
+                    throw new Error(error.error || 'Pipeline retry failed')
+                }
+            }
+
+            return result
+        },
+        onMutate: async (id) => {
+            // Cancel any outgoing refetches
+            await queryClient.cancelQueries({ queryKey: pipelineKeys.kanban() })
+
+            // Snapshot the previous value
+            const previousKanban = queryClient.getQueryData<PostsByStatus>(
+                pipelineKeys.kanban()
+            )
+
+            // Optimistically update the post's processing status to show it's retrying
+            if (previousKanban) {
+                const updatedKanban = { ...previousKanban }
+                for (const statusKey of Object.keys(
+                    updatedKanban
+                ) as PipelineStatus[]) {
+                    const idx = updatedKanban[statusKey].findIndex(
+                        (p) => p.id === id
+                    )
+                    if (idx !== -1) {
+                        const post = updatedKanban[statusKey][idx]
+                        if (post) {
+                            // For auto-process stages, show as processing (will retry)
+                            // For other stages, show as idle
+                            const newProcessingStatus = isAutoProcessStage(
+                                statusKey
+                            )
+                                ? 'processing'
+                                : 'idle'
+
+                            updatedKanban[statusKey] = [
+                                ...updatedKanban[statusKey].slice(0, idx),
+                                {
+                                    ...post,
+                                    pipelineProcessingStatus:
+                                        newProcessingStatus as
+                                            | 'idle'
+                                            | 'processing'
+                                            | 'error',
+                                    processingError: null,
+                                },
+                                ...updatedKanban[statusKey].slice(idx + 1),
+                            ]
+                        }
+                        break
+                    }
+                }
+                queryClient.setQueryData(pipelineKeys.kanban(), updatedKanban)
+            }
+
+            return { previousKanban }
+        },
+        onSuccess: () => {
+            toast.success('Retrying pipeline processing...')
+        },
+        onError: (error, _, context) => {
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to retry processing'
             )
             // Rollback on error
             if (context?.previousKanban) {

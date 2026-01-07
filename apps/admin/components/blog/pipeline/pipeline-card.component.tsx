@@ -20,6 +20,7 @@ import {
     ChevronRight,
     ChevronLeft,
     ImageIcon,
+    RotateCcw,
 } from 'lucide-react'
 import {
     Tooltip,
@@ -59,6 +60,7 @@ import {
     useUpdatePostPriority,
     useDuplicatePipelinePost,
     useDeletePipelinePost,
+    useRetryProcessing,
 } from '@/hooks/use-pipeline.hook'
 
 /**
@@ -123,9 +125,11 @@ export function PipelineCard({
     const updatePriorityMutation = useUpdatePostPriority()
     const duplicateMutation = useDuplicatePipelinePost()
     const deleteMutation = useDeletePipelinePost()
+    const retryMutation = useRetryProcessing()
 
     const isProcessing = post.pipelineProcessingStatus === 'processing'
     const hasError = post.pipelineProcessingStatus === 'error'
+    const canRetry = isProcessing || hasError
     const priorityConfig = PRIORITY_CONFIG[post.priority]
     const currentStageIndex = STAGE_ORDER.indexOf(post.status)
 
@@ -172,6 +176,10 @@ export function PipelineCard({
     const handleDelete = () => {
         deleteMutation.mutate(post.id)
         setShowDeleteDialog(false)
+    }
+
+    const handleRetry = () => {
+        retryMutation.mutate(post.id)
     }
 
     const canGoPrev = currentStageIndex > 0 && !isProcessing
@@ -446,6 +454,17 @@ export function PipelineCard({
                                         <Copy className='mr-2 h-4 w-4' />
                                         Duplicate
                                     </DropdownMenuItem>
+
+                                    {/* Retry - only show when stuck or errored */}
+                                    {canRetry && (
+                                        <DropdownMenuItem
+                                            onClick={handleRetry}
+                                            disabled={retryMutation.isPending}
+                                        >
+                                            <RotateCcw className='mr-2 h-4 w-4' />
+                                            Retry
+                                        </DropdownMenuItem>
+                                    )}
 
                                     <DropdownMenuSeparator />
 
