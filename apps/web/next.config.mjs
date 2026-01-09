@@ -73,6 +73,25 @@ const nextConfig = {
                 destination: '/faqs',
                 permanent: true,
             },
+            // Social Media Bio Links
+            {
+                source: '/ig',
+                destination:
+                    '/?utm_source=instagram&utm_medium=social&utm_campaign=bio_link',
+                permanent: true,
+            },
+            {
+                source: '/fb',
+                destination:
+                    '/?utm_source=facebook&utm_medium=social&utm_campaign=bio_link',
+                permanent: true,
+            },
+            {
+                source: '/tiktok',
+                destination:
+                    '/?utm_source=tiktok&utm_medium=social&utm_campaign=bio_link',
+                permanent: true,
+            },
         ]
     },
 }
