@@ -38,7 +38,6 @@ export function PipelineCardQuickActions({
     currentStageIndex,
     canGoPrev,
     canGoNext,
-    isProcessing,
     isMenuOpen,
     setIsMenuOpen,
     onPrevStage,

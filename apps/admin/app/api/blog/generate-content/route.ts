@@ -30,24 +30,6 @@ export const runtime = 'nodejs'
 export const maxDuration = 300 // Allow up to 5 minutes for full pipeline
 
 /**
- * Outline section schema
- */
-const outlineSectionSchema = z.object({
-    id: z.string().optional(),
-    title: z.string(),
-    description: z.string(),
-    keyPoints: z.array(z.string()).optional(),
-    subsections: z
-        .array(
-            z.object({
-                title: z.string(),
-                description: z.string().optional(),
-            })
-        )
-        .optional(),
-})
-
-/**
  * Request body schema with full validation
  */
 const requestSchema = z.object({

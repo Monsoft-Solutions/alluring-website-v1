@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { db } from '@workspace/db/client'
 import { blogPost, author, images } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
