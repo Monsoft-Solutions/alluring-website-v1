@@ -7,6 +7,8 @@
  * @module @workspace/db/types/blog-pipeline
  */
 
+import type { SelectedImageOptions } from '@workspace/shared/schemas/blog'
+
 /**
  * Outline section for structured blog outlines
  */
@@ -100,31 +102,6 @@ export type PipelineMetrics = {
     extractionTimeMs: number
     toolCallCount: number
     stepCount: number
-}
-
-/**
- * Selected image options for featured image generation
- */
-export type SelectedImageOptions = {
-    scene: string
-    subject: string
-    style: string
-    lighting: string
-    colorPalette: string
-    composition: string
-    modelProfile?: {
-        age?: string
-        ethnicity?: string
-        bodyType?: string
-        hairColor?: string
-        hairLength?: string
-        hairStyle?: string
-        skinTone?: string
-        expression?: string
-        pose?: string
-        attire?: string
-    }
-    reasoning?: string
 }
 
 /**

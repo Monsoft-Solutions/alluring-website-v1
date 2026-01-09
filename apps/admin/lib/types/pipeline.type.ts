@@ -2,14 +2,36 @@
  * Pipeline Types
  *
  * Types for the blog content pipeline Kanban board.
- * Separated from queries to be client-safe.
+ * Shared between server and client components.
+ *
+ * @module @admin/lib/types/pipeline
  */
 import type { PlanningData, PipelineState } from '@workspace/db/types'
 import type {
     PipelineStatus,
     ProcessingStatus,
     BlogPostPriority,
-} from './blog-action.type'
+} from './blog/blog-action.type'
+
+import { STAGE_ORDER } from '../constants/pipeline.constant'
+
+// Re-export core types
+export type { PipelineStatus, ProcessingStatus, BlogPostPriority }
+
+/**
+ * Type guard for PipelineStatus
+ */
+export function isPipelineStatus(status: unknown): status is PipelineStatus {
+    return (
+        typeof status === 'string' &&
+        (STAGE_ORDER as readonly string[]).includes(status)
+    )
+}
+
+/**
+ * Priority values (alias for BlogPostPriority)
+ */
+export type Priority = BlogPostPriority
 
 /**
  * Blog post item for the Kanban board
@@ -19,7 +41,7 @@ export type PipelinePostItem = {
     title: string
     slug: string | null
     status: PipelineStatus
-    priority: BlogPostPriority
+    priority: Priority
     pipelineProcessingStatus: ProcessingStatus
     processingError: string | null
     primaryKeyword: string | null

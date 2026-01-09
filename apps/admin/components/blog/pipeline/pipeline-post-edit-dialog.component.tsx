@@ -30,7 +30,7 @@ import {
 import type {
     PipelinePostItem,
     PipelineStatus,
-} from '@/lib/queries/pipeline.query'
+} from '@/lib/types/pipeline.type'
 import type { PlanningData } from '@workspace/db/types'
 import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import type { FaqItem } from '@workspace/shared/schemas/blog'

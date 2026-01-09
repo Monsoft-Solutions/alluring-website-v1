@@ -19,7 +19,7 @@ import {
 } from '@/lib/queries/blog.query'
 import type { SearchParams } from '@/lib/types/blog/post.type'
 import { SortIcon } from './sort-icon.component'
-import { StatusBadge } from './status-badge.component'
+import { StatusBadge } from '@/components/blog/status-badge.component'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30

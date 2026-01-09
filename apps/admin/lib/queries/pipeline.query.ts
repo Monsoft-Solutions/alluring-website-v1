@@ -6,57 +6,17 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { blogPost, author, images } from '@workspace/db/schema/blog'
-import type { PlanningData, PipelineState } from '@workspace/db/types'
 import { eq, desc, sql } from 'drizzle-orm'
 
+import { isPipelineStatus } from '@/lib/types/pipeline.type'
 import type {
-    PipelineStatus,
-    ProcessingStatus,
-    BlogPostPriority,
-} from '@/lib/types/blog/blog-action.type'
+    PipelinePostItem,
+    PostsByStatus,
+    PipelineStats,
+} from '@/lib/types/pipeline.type'
 
-// Re-export types for consumers
-export type { PipelineStatus, ProcessingStatus }
-
-/**
- * Priority values (alias for BlogPostPriority)
- */
-export type Priority = BlogPostPriority
-
-/**
- * Blog post item for the Kanban board
- */
-export type PipelinePostItem = {
-    id: string
-    title: string
-    slug: string | null
-    status: PipelineStatus
-    priority: Priority
-    pipelineProcessingStatus: ProcessingStatus
-    processingError: string | null
-    primaryKeyword: string | null
-    authorName: string | null
-    featuredImageUrl: string | null
-    planningData: PlanningData | null
-    pipelineState: PipelineState | null
-    createdAt: Date | null
-    updatedAt: Date | null
-}
-
-/**
- * Posts grouped by pipeline status for Kanban view
- */
-export type PostsByStatus = {
-    ideation: PipelinePostItem[]
-    generate: PipelinePostItem[]
-    ai_review: PipelinePostItem[]
-    generate_metadata: PipelinePostItem[]
-    generate_image: PipelinePostItem[]
-    draft: PipelinePostItem[]
-    ready_to_publish: PipelinePostItem[]
-    scheduled: PipelinePostItem[]
-    published: PipelinePostItem[]
-}
+// Re-export types for backward compatibility (optional but helpful)
+// Types are imported from '@/lib/types/pipeline.type' and used internally
 
 /**
  * Get all posts grouped by pipeline status for Kanban view
@@ -99,9 +59,8 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
 
     // Group posts by status
     for (const post of posts) {
-        const status = post.status as PipelineStatus
-        if (status && status in byStatus) {
-            byStatus[status].push(post as PipelinePostItem)
+        if (isPipelineStatus(post.status)) {
+            byStatus[post.status].push(post as PipelinePostItem)
         }
     }
 
@@ -111,19 +70,6 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
 /**
  * Stats for each pipeline status
  */
-export type PipelineStats = {
-    ideation: number
-    generate: number
-    ai_review: number
-    generate_metadata: number
-    generate_image: number
-    draft: number
-    ready_to_publish: number
-    scheduled: number
-    published: number
-    processing: number
-    error: number
-}
 
 /**
  * Get pipeline stats (counts per status)
@@ -132,7 +78,7 @@ export const getPipelineStats = cache(async (): Promise<PipelineStats> => {
     const result = await db.execute<{
         status: string
         processing_status: string
-        count: string
+        count: number
     }>(sql`
         SELECT 
             status,
@@ -157,10 +103,10 @@ export const getPipelineStats = cache(async (): Promise<PipelineStats> => {
     }
 
     for (const row of result) {
-        const status = row.status as PipelineStatus
-        const countValue = parseInt(row.count, 10)
+        const status = row.status
+        const countValue = Number(row.count)
 
-        if (status in stats) {
+        if (isPipelineStatus(status)) {
             stats[status] = (stats[status] || 0) + countValue
         }
 

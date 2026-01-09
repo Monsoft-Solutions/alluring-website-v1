@@ -17,6 +17,7 @@ import { runExtractionPhase } from '@workspace/ai/pipelines'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
+import { calculateDuration } from '@/lib/utils/time.util'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // 1 minute for extraction
@@ -116,12 +117,10 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
         const metrics: PipelineMetrics = {
             totalTimeMs:
                 (existingPipelineState.generationPhase
-                    ? new Date(
-                          existingPipelineState.generationPhase.completedAt || 0
-                      ).getTime() -
-                      new Date(
-                          existingPipelineState.generationPhase.startedAt
-                      ).getTime()
+                    ? calculateDuration(
+                          existingPipelineState.generationPhase.startedAt,
+                          existingPipelineState.generationPhase.completedAt
+                      )
                     : 0) + result.timeMs,
             generationTimeMs: 0, // Already captured
             reviewTimeMs: 0, // Already captured

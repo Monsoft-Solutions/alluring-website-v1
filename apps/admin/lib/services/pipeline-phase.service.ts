@@ -14,11 +14,7 @@ import {
     blogPostImages,
     type BlogPost,
 } from '@workspace/db/schema/blog'
-import type {
-    PipelineState,
-    PipelineMetrics,
-    SelectedImageOptions,
-} from '@workspace/db/types'
+import type { PipelineState, PipelineMetrics } from '@workspace/db/types'
 import {
     runReviewPhase,
     runExtractionPhase,
@@ -26,6 +22,7 @@ import {
 } from '@workspace/ai/pipelines'
 import { generateImageAlt } from '@workspace/ai/functions'
 
+import { calculateDuration } from '@/lib/utils/time.util'
 import { generateImageWithFal } from './fal-image-generation.service'
 
 // ============================================
@@ -305,11 +302,10 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
         const metrics: PipelineMetrics = {
             totalTimeMs:
                 (existingPipelineState.generationPhase
-                    ? parseInt(
-                          existingPipelineState.generationPhase.completedAt ||
-                              '0'
-                      ) -
-                      parseInt(existingPipelineState.generationPhase.startedAt)
+                    ? calculateDuration(
+                          existingPipelineState.generationPhase.startedAt,
+                          existingPipelineState.generationPhase.completedAt
+                      )
                     : 0) + result.timeMs,
             generationTimeMs: 0,
             reviewTimeMs: 0,
@@ -498,8 +494,7 @@ export async function runImageGenerationPhaseForPost(
                     post.processingStartedAt?.toISOString() ||
                     new Date().toISOString(),
                 completedAt: new Date().toISOString(),
-                selectedOptions:
-                    phaseResult.selectedOptions as SelectedImageOptions,
+                selectedOptions: phaseResult.selectedOptions,
                 prompt: phaseResult.prompt,
                 imageId: imageRecord.id,
                 imageUrl: generatedImage.blobUrl,

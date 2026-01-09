@@ -12,7 +12,7 @@ import type {
     PipelineStats,
     PipelinePostItem,
     PipelineStatus,
-} from '@/lib/queries/pipeline.query'
+} from '@/lib/types/pipeline.type'
 import type { PipelinePostDetail } from '@/lib/types/blog/pipeline-post-detail.type'
 import {
     updatePipelineStatus,

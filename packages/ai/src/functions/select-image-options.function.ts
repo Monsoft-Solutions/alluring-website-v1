@@ -7,151 +7,22 @@
  *
  * @module @workspace/ai/functions/select-image-options
  */
-import { z } from 'zod'
+import {
+    selectedImageOptionsSchema,
+    type SelectedImageOptions,
+    type ModelProfile,
+} from '@workspace/shared/schemas/blog'
 
-import { coreGenerateObject } from '../core'
 import {
     SELECT_IMAGE_OPTIONS_SYSTEM,
     getSelectImageOptionsPrompt,
 } from '../prompts/blog/select-image-options.prompt'
+import { coreGenerateObject } from '../core'
 
 /**
  * Default model for option selection (fast and accurate)
  */
 const DEFAULT_MODEL_ID = 'gpt-4.1-mini'
-
-/**
- * Zod schema for model profile (when subject is patient-model)
- */
-const modelProfileSchema = z.object({
-    age: z
-        .enum(['young-adult', 'mid-adult', 'mature-adult'])
-        .describe('Age range of the model'),
-    ethnicity: z
-        .enum([
-            'latina-hispanic',
-            'caribbean',
-            'african-american',
-            'caucasian',
-            'asian',
-            'middle-eastern',
-            'mixed-heritage',
-        ])
-        .describe('Ethnicity of the model'),
-    bodyType: z
-        .enum(['slim', 'athletic', 'average', 'curvy', 'plus-size'])
-        .describe('Body type of the model'),
-    hairColor: z
-        .enum([
-            'blonde',
-            'brunette',
-            'black',
-            'auburn',
-            'gray-silver',
-            'highlighted',
-        ])
-        .describe('Hair color'),
-    hairLength: z.enum(['short', 'medium', 'long']).describe('Hair length'),
-    hairStyle: z
-        .enum(['straight', 'wavy', 'curly', 'braided', 'updo'])
-        .describe('Hair style'),
-    skinTone: z
-        .enum(['fair', 'light', 'medium', 'olive', 'tan', 'deep', 'rich'])
-        .describe('Skin tone'),
-    expression: z
-        .enum([
-            'confident-smile',
-            'serene-peaceful',
-            'contemplative',
-            'joyful',
-            'natural-relaxed',
-        ])
-        .describe('Facial expression'),
-    pose: z
-        .enum([
-            'front-facing',
-            'three-quarter',
-            'profile',
-            'full-body',
-            'upper-body',
-        ])
-        .describe('Pose and framing'),
-    attire: z
-        .enum([
-            'clinical',
-            'casual-elegant',
-            'athleisure',
-            'professional',
-            'spa-wellness',
-        ])
-        .describe('Attire/clothing style'),
-})
-
-/**
- * Zod schema for selected image options
- */
-const selectedImageOptionsSchema = z.object({
-    scene: z
-        .enum([
-            'luxury-clinic',
-            'miami-lifestyle',
-            'abstract-wellness',
-            'spa-retreat',
-            'modern-minimalist',
-        ])
-        .describe('Scene/environment for the image'),
-    subject: z
-        .enum([
-            'patient-model',
-            'luxury-space',
-            'wellness-concept',
-            'lifestyle-scene',
-            'beauty-details',
-        ])
-        .describe('Main subject/focal element'),
-    style: z
-        .enum([
-            'editorial-photo',
-            'luxury-lifestyle',
-            'clinical-clean',
-            'warm-aspirational',
-            'artistic-conceptual',
-        ])
-        .describe('Photographic style'),
-    lighting: z
-        .enum([
-            'golden-hour',
-            'studio-soft',
-            'natural-bright',
-            'dramatic-moody',
-            'soft-ethereal',
-        ])
-        .describe('Lighting mood'),
-    colorPalette: z
-        .enum([
-            'stone-gold',
-            'ocean-blues',
-            'warm-neutrals',
-            'blush-rose',
-            'monochrome-elegant',
-        ])
-        .describe('Color palette'),
-    composition: z
-        .enum([
-            'centered-focus',
-            'rule-of-thirds',
-            'close-up-detail',
-            'wide-environmental',
-            'negative-space',
-        ])
-        .describe('Composition style'),
-    modelProfile: modelProfileSchema.describe(
-        'Model profile details (required when subject is patient-model)'
-    ),
-    reasoning: z
-        .string()
-        .describe('Brief explanation for why these options were selected'),
-})
 
 /**
  * Options for selecting image options
@@ -172,14 +43,9 @@ export type SelectImageOptionsOptions = {
 }
 
 /**
- * Model profile type
- */
-export type ModelProfile = z.infer<typeof modelProfileSchema>
-
-/**
  * Selected image options result
  */
-export type SelectedImageOptions = z.infer<typeof selectedImageOptionsSchema>
+export type { SelectedImageOptions, ModelProfile }
 
 /**
  * Select optimal featured image options based on blog post content
@@ -216,7 +82,7 @@ export async function selectImageOptions(
         temperature = 0.5,
     } = options
 
-    const result = await coreGenerateObject({
+    const result = (await coreGenerateObject({
         modelId,
         schema: selectedImageOptionsSchema,
         system: SELECT_IMAGE_OPTIONS_SYSTEM,
@@ -227,7 +93,7 @@ export async function selectImageOptions(
             summary,
         }),
         temperature,
-    })
+    })) as { object: SelectedImageOptions }
 
     // If patient-model was selected but no model profile, add defaults
     if (
