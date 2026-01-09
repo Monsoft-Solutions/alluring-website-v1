@@ -32,6 +32,47 @@ import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import type { PlanningData } from '@workspace/db/types'
 import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
+
+// Consolidated form state to avoid cascading renders in useEffect
+type FormState = {
+    title: string
+    slug: string
+    status: PipelineStatus
+    priority: BlogPostPriority
+    authorId: string | null
+    content: string
+    primaryKeyword: string
+    secondaryKeywords: string[]
+    metaTitle: string
+    metaDescription: string
+    metaKeywords: string
+    excerpt: string
+    featuredImageId: string | null
+    featuredImageUrl: string | null
+    aiSummary: string
+    planningData: PlanningData
+    faqs: FaqItem[]
+}
+
+const initialFormState: FormState = {
+    title: '',
+    slug: '',
+    status: 'ideation',
+    priority: 'medium',
+    authorId: null,
+    content: '',
+    primaryKeyword: '',
+    secondaryKeywords: [],
+    metaTitle: '',
+    metaDescription: '',
+    metaKeywords: '',
+    excerpt: '',
+    featuredImageId: null,
+    featuredImageUrl: null,
+    aiSummary: '',
+    planningData: {},
+    faqs: [],
+}
 import {
     useUpdatePipelinePost,
     usePipelinePostDetail,
@@ -66,66 +107,134 @@ export function PipelinePostEditDialog({
     const { data: postDetail, isLoading: isLoadingDetail } =
         usePipelinePostDetail(open ? (post?.id ?? null) : null)
 
-    // Form state
-    const [title, setTitle] = useState('')
-    const [slug, setSlug] = useState('')
-    const [status, setStatus] = useState<PipelineStatus>('ideation')
-    const [priority, setPriority] = useState<BlogPostPriority>('medium')
-    const [authorId, setAuthorId] = useState<string | null>(null)
-    const [content, setContent] = useState('')
-    // Keywords
-    const [primaryKeyword, setPrimaryKeyword] = useState('')
-    const [secondaryKeywords, setSecondaryKeywords] = useState<string[]>([])
+    // Consolidated form state (single setState to avoid cascading renders)
+    const [formState, setFormState] = useState<FormState>(initialFormState)
+
+    // UI-specific state (kept separate as they're not part of form data sync)
     const [secondaryInput, setSecondaryInput] = useState('')
-    // SEO
-    const [metaTitle, setMetaTitle] = useState('')
-    const [metaDescription, setMetaDescription] = useState('')
-    const [metaKeywords, setMetaKeywords] = useState('')
-    const [excerpt, setExcerpt] = useState('')
-    // Media
-    const [featuredImageId, setFeaturedImageId] = useState<string | null>(null)
-    const [featuredImageUrl, setFeaturedImageUrl] = useState<string | null>(
-        null
-    )
-    const [aiSummary, setAiSummary] = useState('')
     const [galleryRefresh, setGalleryRefresh] = useState(0)
     const [featuredImageDialogOpen, setFeaturedImageDialogOpen] =
         useState(false)
-    // Planning
-    const [planningData, setPlanningData] = useState<PlanningData>({})
-    // FAQs
-    const [faqs, setFaqs] = useState<FaqItem[]>([])
-    // Dirty state for unsaved changes warning
     const [isDirty, setIsDirty] = useState(false)
 
+    // Destructure form state for easier access
+    const {
+        title,
+        slug,
+        status,
+        priority,
+        authorId,
+        content,
+        primaryKeyword,
+        secondaryKeywords,
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        excerpt,
+        featuredImageId,
+        featuredImageUrl,
+        aiSummary,
+        planningData,
+        faqs,
+    } = formState
+
+    // Field setters (wrappers around setFormState for child components)
+    const setTitle = useCallback(
+        (value: string) => setFormState((prev) => ({ ...prev, title: value })),
+        []
+    )
+    const setSlug = useCallback(
+        (value: string) => setFormState((prev) => ({ ...prev, slug: value })),
+        []
+    )
+    const setStatus = useCallback(
+        (value: PipelineStatus) =>
+            setFormState((prev) => ({ ...prev, status: value })),
+        []
+    )
+    const setPriority = useCallback(
+        (value: BlogPostPriority) =>
+            setFormState((prev) => ({ ...prev, priority: value })),
+        []
+    )
+    const setContent = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, content: value })),
+        []
+    )
+    const setPrimaryKeyword = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, primaryKeyword: value })),
+        []
+    )
+    const setMetaTitle = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, metaTitle: value })),
+        []
+    )
+    const setMetaDescription = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, metaDescription: value })),
+        []
+    )
+    const setMetaKeywords = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, metaKeywords: value })),
+        []
+    )
+    const setExcerpt = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, excerpt: value })),
+        []
+    )
+    const setFeaturedImageId = useCallback(
+        (value: string | null) =>
+            setFormState((prev) => ({ ...prev, featuredImageId: value })),
+        []
+    )
+    const setFeaturedImageUrl = useCallback(
+        (value: string | null) =>
+            setFormState((prev) => ({ ...prev, featuredImageUrl: value })),
+        []
+    )
+
     // Initialize form when post detail is loaded
+    // Note: This effect intentionally sets state to sync form with fetched data.
+    // We've consolidated 18+ individual setState calls into a single setFormState call
+    // to minimize re-renders. This is a valid pattern for form initialization.
     useEffect(() => {
         if (postDetail) {
-            setTitle(postDetail.title)
-            setSlug(postDetail.slug || '')
-            setStatus(postDetail.status)
-            setPriority(postDetail.priority)
-            setAuthorId(postDetail.authorId)
-            setContent(postDetail.content || '')
-            setPrimaryKeyword(postDetail.primaryKeyword || '')
-            setSecondaryKeywords(postDetail.secondaryKeywords || [])
-            setMetaTitle(postDetail.metaTitle || '')
-            setMetaDescription(postDetail.metaDescription || '')
-            setMetaKeywords(postDetail.metaKeywords || '')
-            setExcerpt(postDetail.excerpt || '')
-            setFeaturedImageId(postDetail.featuredImageId)
-            setFeaturedImageUrl(postDetail.featuredImageUrl)
-            setAiSummary(postDetail.aiSummary || '')
-            setPlanningData(postDetail.planningData || {})
-            setFaqs(postDetail.faqs || [])
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- Valid form initialization from fetched data
+            setFormState({
+                title: postDetail.title,
+                slug: postDetail.slug || '',
+                status: postDetail.status,
+                priority: postDetail.priority,
+                authorId: postDetail.authorId,
+                content: postDetail.content || '',
+                primaryKeyword: postDetail.primaryKeyword || '',
+                secondaryKeywords: postDetail.secondaryKeywords || [],
+                metaTitle: postDetail.metaTitle || '',
+                metaDescription: postDetail.metaDescription || '',
+                metaKeywords: postDetail.metaKeywords || '',
+                excerpt: postDetail.excerpt || '',
+                featuredImageId: postDetail.featuredImageId,
+                featuredImageUrl: postDetail.featuredImageUrl,
+                aiSummary: postDetail.aiSummary || '',
+                planningData: postDetail.planningData || {},
+                faqs: postDetail.faqs || [],
+            })
             setIsDirty(false)
         } else if (post && !postDetail) {
             // Use basic post data while loading
-            setTitle(post.title)
-            setStatus(post.status)
-            setPriority(post.priority)
-            setPrimaryKeyword(post.primaryKeyword || '')
-            setPlanningData(post.planningData || {})
+            setFormState((prev) => ({
+                ...prev,
+                title: post.title,
+                status: post.status,
+                priority: post.priority,
+                primaryKeyword: post.primaryKeyword || '',
+                planningData: post.planningData || {},
+            }))
             setIsDirty(false)
         }
     }, [post, postDetail])
@@ -136,9 +245,12 @@ export function PipelinePostEditDialog({
     // Planning handlers
     const handlePlanningChange = useCallback(
         (field: keyof PlanningData, value: string) => {
-            setPlanningData((prev) => ({
+            setFormState((prev) => ({
                 ...prev,
-                [field]: value || undefined,
+                planningData: {
+                    ...prev.planningData,
+                    [field]: value || undefined,
+                },
             }))
             markDirty()
         },
@@ -149,14 +261,22 @@ export function PipelinePostEditDialog({
     const handleAddSecondaryKeyword = useCallback(() => {
         const keyword = secondaryInput.trim()
         if (!keyword || secondaryKeywords.includes(keyword)) return
-        setSecondaryKeywords((prev) => [...prev, keyword])
+        setFormState((prev) => ({
+            ...prev,
+            secondaryKeywords: [...prev.secondaryKeywords, keyword],
+        }))
         setSecondaryInput('')
         markDirty()
     }, [secondaryInput, secondaryKeywords, markDirty])
 
     const handleRemoveSecondaryKeyword = useCallback(
         (keyword: string) => {
-            setSecondaryKeywords((prev) => prev.filter((k) => k !== keyword))
+            setFormState((prev) => ({
+                ...prev,
+                secondaryKeywords: prev.secondaryKeywords.filter(
+                    (k) => k !== keyword
+                ),
+            }))
             markDirty()
         },
         [markDirty]
@@ -164,13 +284,19 @@ export function PipelinePostEditDialog({
 
     // FAQ handlers
     const handleAddFaq = useCallback(() => {
-        setFaqs((prev) => [...prev, { question: '', answer: '' }])
+        setFormState((prev) => ({
+            ...prev,
+            faqs: [...prev.faqs, { question: '', answer: '' }],
+        }))
         markDirty()
     }, [markDirty])
 
     const handleRemoveFaq = useCallback(
         (index: number) => {
-            setFaqs((prev) => prev.filter((_, i) => i !== index))
+            setFormState((prev) => ({
+                ...prev,
+                faqs: prev.faqs.filter((_, i) => i !== index),
+            }))
             markDirty()
         },
         [markDirty]
@@ -178,12 +304,12 @@ export function PipelinePostEditDialog({
 
     const handleUpdateFaq = useCallback(
         (index: number, field: 'question' | 'answer', value: string) => {
-            setFaqs((prev) => {
-                const updated = [...prev]
+            setFormState((prev) => {
+                const updated = [...prev.faqs]
                 if (updated[index]) {
                     updated[index] = { ...updated[index], [field]: value }
                 }
-                return updated
+                return { ...prev, faqs: updated }
             })
             markDirty()
         },
@@ -193,8 +319,11 @@ export function PipelinePostEditDialog({
     // Image handlers
     const handleSelectGeneratedImage = useCallback(
         (imageId: string, imageUrl: string) => {
-            setFeaturedImageId(imageId)
-            setFeaturedImageUrl(imageUrl)
+            setFormState((prev) => ({
+                ...prev,
+                featuredImageId: imageId,
+                featuredImageUrl: imageUrl,
+            }))
             markDirty()
         },
         [markDirty]
@@ -206,7 +335,10 @@ export function PipelinePostEditDialog({
 
     const handleSummaryChange = useCallback(
         (summary: string) => {
-            setAiSummary(summary)
+            setFormState((prev) => ({
+                ...prev,
+                aiSummary: summary,
+            }))
             markDirty()
         },
         [markDirty]
@@ -315,6 +447,7 @@ export function PipelinePostEditDialog({
                 <DialogContent
                     className='flex h-[90vh] max-h-[950px] w-[95vw] max-w-6xl flex-col gap-0 overflow-hidden p-0'
                     showCloseButton={false}
+                    size='xl'
                 >
                     {/* Header */}
                     <DialogHeader className='flex-shrink-0 border-b bg-stone-50/50 px-6 py-4'>
