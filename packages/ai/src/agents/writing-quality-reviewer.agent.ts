@@ -18,7 +18,7 @@ import type {
 /**
  * Default model for writing quality review
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'claude-sonnet-4-5'
 
 /**
  * Schema for writing quality review
@@ -26,39 +26,33 @@ const DEFAULT_MODEL_ID = 'gpt-4.1'
 const writingQualityReviewSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
-        .describe('Overall writing quality score (0-100)'),
+        .describe('Overall writing quality score. Score is between 0 and 100.'),
     metrics: z.object({
         readabilityScore: z
             .number()
-            .min(0)
-            .max(100)
             .describe(
-                'Readability score based on sentence/paragraph length and clarity'
+                'Readability score based on sentence/paragraph length and clarity. Score is between 0 and 100.'
             ),
         grammarScore: z
             .number()
-            .min(0)
-            .max(100)
-            .describe('Grammar, spelling, and punctuation accuracy score'),
+            .describe(
+                'Grammar, spelling, and punctuation accuracy score. Score is between 0 and 100.'
+            ),
         brandVoiceScore: z
             .number()
-            .min(0)
-            .max(100)
             .describe(
-                'How well the content matches the brand voice guidelines'
+                'How well the content matches the brand voice guidelines. Score is between 0 and 100.'
             ),
         structureScore: z
             .number()
-            .min(0)
-            .max(100)
-            .describe('Content structure and organization score'),
+            .describe(
+                'Content structure and organization score. Score is between 0 and 100.'
+            ),
         medicalAccuracyScore: z
             .number()
-            .min(0)
-            .max(100)
-            .describe('Accuracy and appropriateness of medical information'),
+            .describe(
+                'Accuracy and appropriateness of medical information. Score is between 0 and 100.'
+            ),
     }),
     issues: z.array(
         z.object({
@@ -80,9 +74,9 @@ const writingQualityReviewSchema = z.object({
                 ),
             originalText: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The exact problematic text from the content. Omit this field entirely if not applicable or if the issue is structural.'
+                    'The exact problematic text from the content. Set to null if not applicable or if the issue is structural.'
                 ),
         })
     ),
@@ -128,8 +122,6 @@ The brand voice should be:
 ❌ Avoid: "Revolutionary", "Game-changing", "World-class", "Seamlessly"
 
 **4. Structure (15%)**
-- TL;DR section present
-- Clear introduction with hook
 - Logical heading hierarchy (H2 > H3)
 - Scannable with bullet points
 - Strong conclusion
@@ -156,17 +148,15 @@ Issue Severity:
 You MUST provide valid JSON matching the expected schema. Follow these rules:
 1. All required fields MUST have values - never output undefined or null for required fields
 2. For the "issues" array, only include issues where you can provide ALL required fields (severity, location, description, suggestedFix)
-3. The "originalText" field is OPTIONAL - omit it entirely (do not include the key) if the issue is structural or doesn't have specific problematic text
+3. Set "originalText" to null if the issue is structural or doesn't have specific problematic text
 4. The "strengths" array should contain complete sentences describing what the content does well
 5. If no issues are found in a category, the issues array can be empty []
 
 Example issues array:
 [
   {"severity": "warning", "location": "Paragraph 2", "description": "Sentence is too long at 45 words", "suggestedFix": "Break into 2-3 shorter sentences", "originalText": "The exact long sentence here..."},
-  {"severity": "suggestion", "location": "Conclusion", "description": "Missing call-to-action", "suggestedFix": "Add a clear next step for readers"}
-]
-
-Note: The second example omits "originalText" because it's a structural issue.`
+  {"severity": "suggestion", "location": "Conclusion", "description": "Missing call-to-action", "suggestedFix": "Add a clear next step for readers", "originalText": null}
+]`
 
 /**
  * Run the writing quality reviewer agent
@@ -190,9 +180,6 @@ export async function runWritingQualityReviewer(
     const avgSentenceLength = wordCount / sentences.length
     const avgParagraphLength = sentences.length / paragraphs.length
 
-    // Check for TL;DR section
-    const hasTLDR = /\*\*TL;DR\*\*|## TL;DR|### TL;DR/i.test(content)
-
     // Count headings
     const h2Count = (content.match(/^## /gm) || []).length
     const h3Count = (content.match(/^### /gm) || []).length
@@ -209,7 +196,6 @@ export async function runWritingQualityReviewer(
 - Sentences: ${sentences.length}
 - Avg sentence length: ${avgSentenceLength.toFixed(1)} words
 - Avg paragraph length: ${avgParagraphLength.toFixed(1)} sentences
-- Has TL;DR section: ${hasTLDR ? 'Yes' : 'No'}
 - H2 headings: ${h2Count}
 - H3 headings: ${h3Count}
 

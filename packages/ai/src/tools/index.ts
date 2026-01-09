@@ -73,7 +73,33 @@ export {
     type QueryGroup,
 } from './web-search-google.tool'
 
+// Perplexity AI Search Tool - AI-powered search with source citations
+export {
+    executePerplexitySearch,
+    searchPerplexity,
+    searchPerplexityMedical,
+    perplexitySearchParametersSchema,
+    perplexitySearchToolDefinition,
+    type PerplexitySearchResult,
+    type PerplexitySource,
+    type PerplexityFocus,
+    type PerplexitySearchParameters,
+} from './perplexity.tool'
+
+// Research Tools Bundle - Combined tools for agentic content generation
+export {
+    createResearchTools,
+    createSourceCollector,
+    createPerplexitySearchTool,
+    createGoogleSearchTool,
+    type CollectedSource,
+    type SourceContext,
+} from './research-tools.tool'
+
+// Think Tool - Structured reasoning for complex decisions
+export { createThinkTool } from './think.tool'
+
 /**
  * Tool version for tracking changes
  */
-export const TOOLS_VERSION = '1.1.0'
+export const TOOLS_VERSION = '1.2.0'

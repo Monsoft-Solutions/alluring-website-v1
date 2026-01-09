@@ -1,0 +1,54 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Admin App (Server)",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "pnpm --filter admin dev",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
+            "skipFiles": [
+                "<node_internals>/**",
+                "**/next/dist/**"
+            ],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ]
+        },
+        {
+            "name": "Debug Web App (Server)",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "pnpm --filter web dev",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
+            "skipFiles": [
+                "<node_internals>/**",
+                "**/next/dist/**"
+            ],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ]
+        },
+        {
+            "name": "Attach to Next.js (port 9230)",
+            "type": "node",
+            "request": "attach",
+            "port": 9230,
+            "restart": true,
+            "skipFiles": [
+                "<node_internals>/**",
+                "**/next/dist/**"
+            ],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "sourceMaps": true
+        }
+    ]
+}
+

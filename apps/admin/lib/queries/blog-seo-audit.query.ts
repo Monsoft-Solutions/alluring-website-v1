@@ -11,14 +11,16 @@ import { blogPost, blogPostAnalysis } from '@workspace/db/schema'
 import { desc, eq, sql } from 'drizzle-orm'
 import { cache } from 'react'
 
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
+
 /**
  * Blog post with SEO analysis data
  */
 export type BlogPostWithAnalysis = {
     id: string
-    slug: string
+    slug: string | null
     title: string
-    status: 'draft' | 'readyToPublish' | 'published' | null
+    status: PipelineStatus | null
     publishedAt: Date | null
     updatedAt: Date | null
     analysis: {

@@ -18,10 +18,6 @@ export {
     images,
     blogPostImages,
     blogPostAnalysis,
-    blogIdea,
-    blogIdeaStage,
-    blogIdeaPriority,
-    blogContentType,
     blogPostTagsRelations,
     blogPostCategoriesRelations,
     blogPostsRelations,
@@ -30,7 +26,6 @@ export {
     blogCategoriesRelations,
     authorsRelations,
     imagesRelations,
-    blogIdeaRelations,
     imageDataSchema,
     createResourceSchema,
     type BlogPost,
@@ -49,9 +44,6 @@ export {
     type InsertBlogPostAnalysis,
     type BlogPostAnalysisDetails,
     type CreateResourceInput,
-    type BlogIdea,
-    type InsertBlogIdea,
-    type BlogIdeaOutlineSection,
 } from './blog'
 
 // Chat schema

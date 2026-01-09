@@ -32,9 +32,9 @@ const DEFAULT_MODEL_ID = 'gpt-4.1'
 const externalLinksReviewSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
-        .describe('Score for external linking quality (0-100)'),
+        .describe(
+            'Score for external linking quality. Score is between 0 and 100.'
+        ),
     externalLinkCount: z
         .number()
         .describe('Number of external links currently in the content'),
@@ -59,9 +59,9 @@ const externalLinksReviewSchema = z.object({
                 ),
             originalText: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The problematic URL or anchor text. Omit this field entirely if not applicable.'
+                    'The problematic URL or anchor text. Set to null if not applicable.'
                 ),
         })
     ),
@@ -139,7 +139,7 @@ You MUST provide valid JSON matching the expected schema. Follow these rules:
 1. All required fields MUST have values - never output undefined or null for required fields
 2. For "suggestedSources", only include sources where you can provide ALL required fields (sourceName, domain, reason, suggestedSearchTerm)
 3. Only suggest sources from the provided trusted sources list - do not invent source names or domains
-4. For "issues", the "originalText" field is OPTIONAL - omit it entirely (do not include the key) if not applicable
+4. For "issues", set "originalText" to null if not applicable
 5. If no issues are found, the issues array can be empty []
 6. If no source suggestions are relevant, the suggestedSources array can be empty []
 
@@ -152,7 +152,7 @@ Example suggestedSources array:
 Example issues array:
 [
   {"severity": "critical", "location": "Paragraph 4", "description": "Link points to a competitor clinic", "suggestedFix": "Remove or replace with a link to a trusted medical source", "originalText": "https://competitor-clinic.com"},
-  {"severity": "suggestion", "location": "Throughout content", "description": "No external citations to support medical claims", "suggestedFix": "Add 1-2 links to authoritative medical sources"}
+  {"severity": "suggestion", "location": "Throughout content", "description": "No external citations to support medical claims", "suggestedFix": "Add 1-2 links to authoritative medical sources", "originalText": null}
 ]`
 
 /**

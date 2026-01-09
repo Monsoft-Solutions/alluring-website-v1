@@ -106,6 +106,8 @@ export {
     type GenerateBlogTopicsOptions,
     type GenerateBlogTopicsResult,
     type TopicSuggestion,
+    type ContextHints,
+    type ProcedureContext,
 } from './generate-blog-topics.function'
 
 export {
@@ -114,39 +116,6 @@ export {
     type GenerateBlogOutlineResult,
     type OutlineSection,
 } from './generate-blog-outline.function'
-
-export {
-    generateBlogPostContent,
-    type GenerateBlogPostContentOptions,
-    type GenerateBlogPostContentResult,
-} from './generate-blog-post-content.function'
-
-// Blog Content V2 Pipeline
-export {
-    generateBlogPostContentV2,
-    type GenerateBlogPostContentV2Options,
-    type GenerateBlogPostContentV2Result,
-} from './generate-blog-post-content-v2.function'
-
-// Blog Content Support Functions
-export {
-    gatherResearch,
-    type GatherResearchOptions,
-    type GatheredResearch,
-} from './gather-research.function'
-
-export {
-    scoreContentQuality,
-    type ScoreContentQualityOptions,
-    type QualityScoreResult,
-    type QualityDimensions,
-} from './score-content-quality.function'
-
-export {
-    enhanceContent,
-    type EnhanceContentOptions,
-    type EnhanceContentResult,
-} from './enhance-content.function'
 
 export {
     extractMetadata,
@@ -166,3 +135,11 @@ export {
     generateContentBrief,
     type GenerateContentBriefOptions,
 } from './generate-content-brief.function'
+
+// Image Option Selection
+export {
+    selectImageOptions,
+    type SelectImageOptionsOptions,
+    type SelectedImageOptions,
+    type ModelProfile,
+} from './select-image-options.function'

@@ -148,6 +148,17 @@ export async function POST(
             )
         }
 
+        // Ensure post has content and meta description before analyzing
+        if (!blogPostData.content || !blogPostData.metaDescription) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'Blog post must have content and meta description to be analyzed',
+                },
+                { status: 400 }
+            )
+        }
+
         // Run AI analysis
         const analysisResult = await analyzeBlogPost({
             title: blogPostData.title,

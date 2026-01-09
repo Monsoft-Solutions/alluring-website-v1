@@ -29,6 +29,18 @@ const envSchema = z.object({
      * Create at https://programmablesearchengine.google.com
      */
     GOOGLE_CUSTOM_SEARCH_ENGINE_ID: z.string().optional(),
+
+    /**
+     * Perplexity API key for AI-powered search with citations
+     * Get one at https://www.perplexity.ai/settings/api
+     */
+    PERPLEXITY_API_KEY: z.string().optional(),
+
+    /**
+     * Anthropic API key for Claude models
+     * Get one at https://console.anthropic.com
+     */
+    ANTHROPIC_API_KEY: z.string().optional(),
 })
 
 /**
@@ -38,6 +50,8 @@ export const env = envSchema.parse({
     TAVILY_API_KEY: process.env.TAVILY_API_KEY,
     GOOGLE_CUSTOM_SEARCH_API_KEY: process.env.GOOGLE_CUSTOM_SEARCH_API_KEY,
     GOOGLE_CUSTOM_SEARCH_ENGINE_ID: process.env.GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+    PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
 })
 
 /**
@@ -54,4 +68,18 @@ export function isGoogleSearchConfigured(): boolean {
     return Boolean(
         env.GOOGLE_CUSTOM_SEARCH_API_KEY && env.GOOGLE_CUSTOM_SEARCH_ENGINE_ID
     )
+}
+
+/**
+ * Check if Perplexity AI is configured
+ */
+export function isPerplexityConfigured(): boolean {
+    return Boolean(env.PERPLEXITY_API_KEY)
+}
+
+/**
+ * Check if Anthropic is configured
+ */
+export function isAnthropicConfigured(): boolean {
+    return Boolean(env.ANTHROPIC_API_KEY)
 }

@@ -93,6 +93,17 @@ export async function POST(
 
             // Generate summary if not exists
             if (!blogPostData.aiSummary) {
+                // Ensure post has content before generating summary
+                if (!blogPostData.content) {
+                    return NextResponse.json(
+                        {
+                            success: false,
+                            error: 'Blog post must have content to generate image prompt',
+                        },
+                        { status: 400 }
+                    )
+                }
+
                 const summaryResult = await summarizeBlogPost({
                     title: blogPostData.title,
                     content: blogPostData.content,

@@ -23,7 +23,7 @@ import type {
 /**
  * Default model for AI slop detection
  */
-const DEFAULT_MODEL_ID = 'gpt-5.2'
+const DEFAULT_MODEL_ID = 'claude-opus-4-5'
 
 /**
  * Schema for AI slop detection review
@@ -31,13 +31,9 @@ const DEFAULT_MODEL_ID = 'gpt-5.2'
 const aiSlopDetectionSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
         .describe('Score (0-100, higher is better - less AI slop)'),
     aiPatternScore: z
         .number()
-        .min(0)
-        .max(100)
         .describe(
             'How much the content reads like AI-generated text (0=very AI, 100=very human)'
         ),
@@ -57,9 +53,9 @@ const aiSlopDetectionSchema = z.object({
                 .describe('Specific actionable suggestion to fix the issue'),
             originalText: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The exact problematic text from the content. Omit if not applicable.'
+                    'The exact problematic text from the content. Set to null if not applicable.'
                 ),
         })
     ),

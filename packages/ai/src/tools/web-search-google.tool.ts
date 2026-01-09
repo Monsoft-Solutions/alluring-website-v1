@@ -96,7 +96,10 @@ export const googleSearchParametersSchema = z.object({
         .array(z.string())
         .optional()
         .describe('Optional list of domains to exclude'),
-    maxResults: z.number().min(1).max(10).default(10),
+    maxResults: z
+        .number()
+        .default(10)
+        .describe('Maximum results to return (1-10)'),
     dateRestrict: z
         .string()
         .optional()
@@ -350,7 +353,10 @@ export const medicalGoogleSearchToolDefinition = {
             .describe(
                 'The medical search query. Be specific with medical terms.'
             ),
-        maxResults: z.number().min(1).max(10).default(10),
+        maxResults: z
+            .number()
+            .default(10)
+            .describe('Maximum results to return (1-10)'),
         dateRestrict: z
             .string()
             .optional()

@@ -90,6 +90,21 @@ export const AVAILABLE_MODELS: AIModel[] = [
         description: 'Nano model for fast and cost-effective tasks',
         recommended: true,
     },
+    {
+        id: 'claude-opus-4-5',
+        name: 'Claude 4.5 Opus',
+        provider: 'anthropic',
+        capabilities: [
+            'chat',
+            'function-calling',
+            'vision',
+            'structured-output',
+        ],
+        maxTokens: 200000,
+        tier: 'premium',
+        description: 'Most advanced Anthropic model for complex reasoning',
+        recommended: true,
+    },
 ] as const
 
 /**

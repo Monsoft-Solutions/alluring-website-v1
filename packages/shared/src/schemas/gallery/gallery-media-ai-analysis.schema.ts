@@ -48,7 +48,10 @@ export const galleryMediaAIAnalysisSchema = z.object({
     beforeAfterType: beforeAfterTypeSchema.optional(),
     contentType: contentTypeSchema,
     detectedProcedure: z.string().optional(),
-    procedureConfidence: z.number().min(0).max(1).optional(),
+    procedureConfidence: z
+        .number()
+        .optional()
+        .describe('Procedure confidence from 0.0 to 1.0'),
     bodyArea: bodyAreaSchema,
     imageQuality: imageQualitySchema,
     suggestedTags: z.array(z.string()).optional(),

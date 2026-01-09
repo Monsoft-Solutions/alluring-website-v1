@@ -9,7 +9,6 @@ import {
     Sparkles,
     Clock,
     CheckCircle2,
-    XCircle,
 } from 'lucide-react'
 import {
     Card,
@@ -34,13 +33,14 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@workspace/ui/components/tooltip'
+import { cn } from '@workspace/ui/lib/utils'
 
 import {
     useBlogSeoAudit,
     useAnalyzeBlogPost,
 } from '@/hooks/use-blog-seo-audit.hook'
-import { cn } from '@workspace/ui/lib/utils'
 import { TableSkeleton } from '@/components/shared/skeletons/table-skeleton.component'
+import { StatusBadge } from '@/components/blog/status-badge.component'
 
 /**
  * Get badge variant and color based on grade
@@ -389,52 +389,4 @@ export function BlogSeoAuditCard() {
             </CardContent>
         </Card>
     )
-}
-
-/**
- * Status badge component
- */
-function StatusBadge({
-    status,
-}: {
-    status: 'draft' | 'readyToPublish' | 'published' | null
-}) {
-    switch (status) {
-        case 'published':
-            return (
-                <Badge
-                    variant='outline'
-                    className='border-green-200 bg-green-50 text-xs text-green-700'
-                >
-                    <CheckCircle2 className='mr-1 h-3 w-3' />
-                    Published
-                </Badge>
-            )
-        case 'readyToPublish':
-            return (
-                <Badge
-                    variant='outline'
-                    className='border-blue-200 bg-blue-50 text-xs text-blue-700'
-                >
-                    <Clock className='mr-1 h-3 w-3' />
-                    Ready
-                </Badge>
-            )
-        case 'draft':
-            return (
-                <Badge
-                    variant='outline'
-                    className='border-gray-200 bg-gray-50 text-xs text-gray-700'
-                >
-                    <XCircle className='mr-1 h-3 w-3' />
-                    Draft
-                </Badge>
-            )
-        default:
-            return (
-                <Badge variant='outline' className='text-xs'>
-                    Unknown
-                </Badge>
-            )
-    }
 }

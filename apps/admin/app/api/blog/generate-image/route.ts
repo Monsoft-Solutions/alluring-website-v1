@@ -123,6 +123,17 @@ export async function POST(
 
         // Step 1: Ensure we have a summary
         if (!summary) {
+            // Ensure post has content before generating summary
+            if (!blogPostData.content) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: 'Blog post must have content to generate image',
+                    },
+                    { status: 400 }
+                )
+            }
+
             console.log('Generating summary for blog post...')
             const summaryResult = await summarizeBlogPost({
                 title: blogPostData.title,

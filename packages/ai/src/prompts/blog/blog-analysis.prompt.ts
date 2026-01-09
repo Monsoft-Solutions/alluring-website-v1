@@ -78,10 +78,7 @@ Analysis Categories (all scored 0-100):
 - Proper formatting and placement
 
 **Structure (10% weight)**
-- TL;DR or summary section
-- Clear introduction (problem statement)
 - Logical content flow
-- Conclusion with summary
 - Call-to-action (CTA) present
 - Scannable formatting (lists, breaks)
 

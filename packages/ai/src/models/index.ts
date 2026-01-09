@@ -22,3 +22,5 @@ export {
     type ModelProvider,
     type ModelTier,
 } from './available-models.constant'
+
+export { getModel } from './model-resolver.util'

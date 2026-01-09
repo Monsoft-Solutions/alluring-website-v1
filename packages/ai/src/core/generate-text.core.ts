@@ -8,10 +8,10 @@
  * @module @workspace/ai/core/generate-text
  */
 import { generateText } from 'ai'
-import { openai } from '@ai-sdk/openai'
 
 import type { CoreGenerateTextOptions, CoreToolSet } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
+import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -19,7 +19,9 @@ export type { GenerateTextResult } from 'ai'
 
 /**
  * Convert CoreToolSet to AI SDK tools format
- * Uses explicit any typing due to AI SDK's complex nested generics
+ * AI SDK v5 expects `inputSchema` (FlexibleSchema) for tool parameters.
+ * Passing a Zod schema under `parameters` will NOT be converted and can end up as `type: None`,
+ * which OpenAI rejects (400 invalid_function_parameters).
  */
 function convertTools(coreTools?: CoreToolSet) {
     if (!coreTools) return undefined
@@ -28,12 +30,15 @@ function convertTools(coreTools?: CoreToolSet) {
     const aiSdkTools: Record<string, any> = {}
 
     for (const [name, coreTool] of Object.entries(coreTools)) {
-        // Build tool object directly to avoid TypeScript issues with the tool() helper
+        // Build tool object with `inputSchema` so AI SDK can convert Zod -> JSON Schema correctly.
         aiSdkTools[name] = {
             description: coreTool.description,
-            parameters: coreTool.parameters,
+            // AI SDK v5 expects inputSchema
+            inputSchema: coreTool.parameters,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            execute: async (params: any) => coreTool.execute(params),
+            execute: async (params: any): Promise<unknown> => {
+                return await coreTool.execute(params)
+            },
         }
     }
 
@@ -86,7 +91,9 @@ function convertTools(coreTools?: CoreToolSet) {
  * })
  * ```
  */
-export async function coreGenerateText(options: CoreGenerateTextOptions) {
+export async function coreGenerateText(
+    options: CoreGenerateTextOptions
+): Promise<Awaited<ReturnType<typeof generateText>>> {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature = 0.7,
@@ -100,9 +107,11 @@ export async function coreGenerateText(options: CoreGenerateTextOptions) {
     // Convert our tool format to AI SDK format
     const aiSdkTools = convertTools(tools)
 
+    const model = getModel(modelId)
+
     // Build base config - note: we pass onStepFinish directly as the AI SDK accepts any function
     const baseConfig = {
-        model: openai(modelId),
+        model,
         system,
         temperature,
         experimental_telemetry: telemetryConfig,

@@ -12,7 +12,8 @@ import {
     GENERATE_TOPICS_SYSTEM_PROMPT,
     getGenerateTopicsPrompt,
 } from '../prompts/blog/generate-topics.prompt'
-import { coreGenerateObject } from '../core'
+import { generateText, Output } from 'ai'
+import { getModel } from '../models'
 
 /**
  * Schema for a single topic suggestion
@@ -40,14 +41,14 @@ const topicSuggestionSchema = z.object({
         ),
     painPoints: z
         .array(z.string())
-        .optional()
         .describe(
-            'Key pain points, concerns, or questions this topic addresses'
+            'Key pain points, concerns, or questions this topic addresses. ALWAYS include at least 2-4 pain points.'
         ),
     estimatedWordCount: z
         .number()
-        .optional()
-        .describe('Suggested word count for the post'),
+        .describe(
+            'Suggested word count for the post. ALWAYS include a word count.'
+        ),
     suggestedContentType: z
         .enum([
             'tutorial',
@@ -60,7 +61,6 @@ const topicSuggestionSchema = z.object({
             'announcement',
             'thought_leadership',
         ])
-        .optional()
         .describe('Recommended content type for this topic'),
 })
 
@@ -75,7 +75,6 @@ const generateTopicsResponseSchema = z.object({
         .describe('Array of topic suggestions'),
     reasoning: z
         .string()
-        .optional()
         .describe('Brief explanation of why these topics were selected'),
 })
 
@@ -95,14 +94,46 @@ export type SelectedKeywords = {
 }
 
 /**
+ * Context hints for enhanced topic generation
+ */
+export type ContextHints = {
+    /** Procedure slug for context lookup */
+    procedureSlug?: string
+    /** Search intent filter (informational, commercial, transactional, mixed) */
+    searchIntent?: 'informational' | 'commercial' | 'transactional' | 'mixed'
+    /** Target audience description */
+    targetAudience?: string
+    /** Unique angle or perspective for content */
+    uniqueAngle?: string
+    /** Preferred content type */
+    contentType?: string
+}
+
+/**
+ * Procedure-specific context for AI enrichment
+ */
+export type ProcedureContext = {
+    /** Display name of the procedure */
+    name: string
+    /** URL slug */
+    slug: string
+    /** Related SEO keywords */
+    relatedKeywords: string[]
+    /** Common patient concerns and pain points */
+    commonPainPoints: string[]
+    /** Target audience segment hints */
+    targetAudienceHints: string[]
+}
+
+/**
  * Options for topic generation
  */
 export type GenerateBlogTopicsOptions = {
-    /** Procedure to focus on (e.g., 'BBL', 'Mommy Makeover') */
+    /** Procedure to focus on (e.g., 'BBL', 'Mommy Makeover') - legacy field */
     procedureFocus?: string
-    /** Preferred content type */
+    /** Preferred content type - legacy field */
     contentType?: string
-    /** Target audience description */
+    /** Target audience description - legacy field */
     targetAudience?: string
     /** Existing topics to avoid duplicating */
     existingTopics?: string[]
@@ -110,6 +141,10 @@ export type GenerateBlogTopicsOptions = {
     additionalContext?: string
     /** Selected keywords from Google Search Console */
     selectedKeywords?: SelectedKeywords
+    /** Structured context hints for enhanced generation */
+    contextHints?: ContextHints
+    /** Procedure-specific context (injected by API route) */
+    procedureContext?: ProcedureContext
     /** Model ID to use */
     modelId?: string
     /** Temperature for creativity (higher = more creative) */
@@ -165,13 +200,15 @@ export async function generateBlogTopics(
         existingTopics,
         additionalContext,
         selectedKeywords,
+        contextHints,
+        procedureContext,
         modelId = DEFAULT_MODEL_ID,
         temperature = 0.8, // Higher temperature for creativity
     } = options
 
-    const result = await coreGenerateObject({
-        modelId,
-        schema: generateTopicsResponseSchema,
+    const result = await generateText({
+        model: getModel(modelId),
+        output: Output.object({ schema: generateTopicsResponseSchema }),
         system: GENERATE_TOPICS_SYSTEM_PROMPT,
         prompt: getGenerateTopicsPrompt({
             procedureFocus,
@@ -180,9 +217,11 @@ export async function generateBlogTopics(
             existingTopics,
             additionalContext,
             selectedKeywords,
+            contextHints,
+            procedureContext,
         }),
         temperature,
     })
 
-    return result.object
+    return result.output
 }

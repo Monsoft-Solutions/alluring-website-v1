@@ -30,9 +30,9 @@ const DEFAULT_MODEL_ID = 'gpt-4.1'
 const internalLinksReviewSchema = z.object({
     score: z
         .number()
-        .min(0)
-        .max(100)
-        .describe('Score for internal linking quality (0-100)'),
+        .describe(
+            'Score for internal linking quality. Score is between 0 and 100.'
+        ),
     internalLinkCount: z
         .number()
         .describe('Number of internal links currently in the content'),
@@ -54,9 +54,9 @@ const internalLinksReviewSchema = z.object({
                 ),
             originalText: z
                 .string()
-                .optional()
+                .nullable()
                 .describe(
-                    'The problematic anchor text or link. Omit this field entirely if not applicable.'
+                    'The problematic anchor text or link. Set to null if not applicable.'
                 ),
         })
     ),
@@ -132,7 +132,7 @@ You MUST provide valid JSON matching the expected schema. Follow these rules:
 1. All required fields MUST have values - never output undefined or null for required fields
 2. For "suggestedLinks", only include links where you can provide ALL required fields (url, title, suggestedAnchorText, reason)
 3. The "url" field MUST be a valid path from the available pages list - do not invent URLs
-4. For "issues", the "originalText" field is OPTIONAL - omit it entirely (do not include the key) if not applicable
+4. For "issues", set "originalText" to null if not applicable
 5. If no issues are found, the issues array can be empty []
 6. If no link suggestions are relevant, the suggestedLinks array can be empty []
 
@@ -145,7 +145,7 @@ Example suggestedLinks array:
 Example issues array:
 [
   {"severity": "warning", "location": "Paragraph 3", "description": "Anchor text 'click here' is not descriptive", "suggestedFix": "Use descriptive anchor text like 'tummy tuck procedure'", "originalText": "click here"},
-  {"severity": "suggestion", "location": "Conclusion", "description": "No call-to-action link to consultation page", "suggestedFix": "Add a link to the consultation booking page"}
+  {"severity": "suggestion", "location": "Conclusion", "description": "No call-to-action link to consultation page", "suggestedFix": "Add a link to the consultation booking page", "originalText": null}
 ]`
 
 /**

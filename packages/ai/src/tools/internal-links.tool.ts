@@ -39,7 +39,10 @@ export const internalLinksParametersSchema = z.object({
         .string()
         .optional()
         .describe('Optional slug of the current post to exclude'),
-    maxResults: z.number().min(1).max(20).default(10),
+    maxResults: z
+        .number()
+        .default(10)
+        .describe('Maximum results to return (1-20)'),
 })
 
 export type InternalLinksParameters = z.infer<

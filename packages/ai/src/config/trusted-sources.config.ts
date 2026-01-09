@@ -8,6 +8,11 @@
  */
 
 /**
+ * Business domain for Alluring Plastic Surgery
+ */
+export const BUSINESS_DOMAIN = 'alluringplasticsurgery.com'
+
+/**
  * Source credibility tier
  */
 export type CredibilityTier = 'tier1' | 'tier2' | 'tier3'
@@ -182,6 +187,14 @@ export const BLOCKED_DOMAINS_CONFIG: string[] = [
  */
 export function getTrustedDomains(): string[] {
     return ALL_TRUSTED_SOURCES.map((source) => source.domain)
+}
+
+/**
+ * Get domains for Perplexity search domain filter (allowlist mode)
+ * Includes business domain + all trusted medical sources
+ */
+export function getPerplexitySearchDomains(): string[] {
+    return [BUSINESS_DOMAIN, ...getTrustedDomains()]
 }
 
 /**

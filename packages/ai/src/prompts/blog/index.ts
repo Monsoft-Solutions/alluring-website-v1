@@ -24,6 +24,11 @@ export {
     type FeaturedImagePromptInput,
 } from './featured-image-prompt.prompt'
 
+export {
+    SELECT_IMAGE_OPTIONS_SYSTEM,
+    getSelectImageOptionsPrompt,
+} from './select-image-options.prompt'
+
 // Blog Ideation Prompts
 export {
     GENERATE_TOPICS_SYSTEM_PROMPT,
@@ -35,7 +40,21 @@ export {
     getGenerateOutlinePrompt,
 } from './generate-outline.prompt'
 
+// Agentic Writer Prompts
 export {
-    GENERATE_POST_CONTENT_SYSTEM_PROMPT,
-    getGeneratePostContentPrompt,
-} from './generate-post-content.prompt'
+    // New consolidated constants
+    ROLE_AND_CONTEXT,
+    WRITING_STYLE_PRINCIPLES,
+    WRITING_EXAMPLES,
+    CONTENT_REQUIREMENTS,
+    RESEARCH_GUIDELINES,
+    OUTPUT_FORMAT,
+    CONTENT_TYPE_TEMPLATES,
+    // Functions
+    getContentTypeInstructions,
+    buildAgenticSystemPrompt,
+    buildAgenticUserPrompt,
+    // Types
+    type BuildAgenticUserPromptOptions,
+    type ContentType,
+} from './agentic-writer.prompt'

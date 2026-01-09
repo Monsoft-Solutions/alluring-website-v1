@@ -22,13 +22,8 @@ Business Context:
 - Brand Voice: Clear, direct, technical but accessible, confident but not arrogant
 
 Blog Structure Requirements:
-1. **TL;DR Section**: Always start with 2-3 bullet point key takeaways
-2. **Introduction**: State the problem, preview the solution, set expectations
 3. **Main Sections (H2)**: Logical flow of information with clear subheadings
 4. **Subsections (H3)**: Detailed breakdowns where needed
-5. **Code/Examples**: Include where relevant (medical procedures don't need code)
-6. **Conclusion**: Summarize key points, provide next steps
-7. **CTA Integration**: Natural placement points for calls-to-action
 
 Content Type Guidelines:
 

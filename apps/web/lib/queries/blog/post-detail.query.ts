@@ -52,6 +52,9 @@ async function fetchPublishedPostBySlug(
     const row = base[0]
     if (!row) return null
 
+    // Published posts must have slug and content (enforced by status transition)
+    if (!row.slug || !row.content) return null
+
     const categoriesRows = await db
         .select({
             id: blogCategory.id,

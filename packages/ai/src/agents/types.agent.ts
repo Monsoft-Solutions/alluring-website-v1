@@ -24,8 +24,8 @@ export type ReviewIssue = {
     description: string
     /** Suggested fix */
     suggestedFix: string
-    /** Original text that has the issue */
-    originalText?: string
+    /** Original text that has the issue (null if not applicable) */
+    originalText: string | null
 }
 
 /**
@@ -58,8 +58,10 @@ export const reviewIssueSchema = z.object({
     suggestedFix: z.string().describe('Specific suggestion to fix the issue'),
     originalText: z
         .string()
-        .optional()
-        .describe('The problematic text if applicable'),
+        .nullable()
+        .describe(
+            'The problematic text if applicable. Set to null if not applicable.'
+        ),
 })
 
 /**
@@ -105,19 +107,8 @@ export type ReviewAgentOptions = {
  * Result from the orchestrator
  */
 export type OrchestratorResult = {
-    /** The revised content */
+    /** The revised content ready for publication */
     revisedContent: string
-    /** Summary of changes made */
-    changesSummary: string
-    /** List of changes with before/after */
-    changes: Array<{
-        type: 'fix' | 'improvement' | 'addition' | 'removal'
-        description: string
-        before?: string
-        after?: string
-    }>
-    /** Combined score from all agents */
-    overallScore: number
     /** Individual agent reviews */
     agentReviews: AgentReview[]
     /** Processing time for orchestration */
@@ -135,6 +126,7 @@ export type PipelineStep =
     | 'review-external-links'
     | 'review-writing-quality'
     | 'review-ai-slop'
+    | 'review-fact-source'
     | 'orchestration'
     | 'complete'
 

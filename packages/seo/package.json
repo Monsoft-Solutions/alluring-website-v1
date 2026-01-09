@@ -40,7 +40,7 @@
     "dependencies": {
         "@t3-oss/env-core": "^0.13.8",
         "schema-dts": "^1.1.5",
-        "zod": "^4.1.13"
+        "zod": "^4.3.5"
     },
     "peerDependencies": {
         "next": "^16.0.0"
