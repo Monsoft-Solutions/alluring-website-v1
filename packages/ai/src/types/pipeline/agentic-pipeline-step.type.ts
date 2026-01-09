@@ -17,5 +17,6 @@ export type AgenticPipelineStep =
     | 'review-fact-source'
     | 'orchestration'
     | 'extraction'
+    | 'image-generation'
     | 'complete'
     | 'error'

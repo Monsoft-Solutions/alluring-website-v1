@@ -24,6 +24,11 @@ export {
     type FeaturedImagePromptInput,
 } from './featured-image-prompt.prompt'
 
+export {
+    SELECT_IMAGE_OPTIONS_SYSTEM,
+    getSelectImageOptionsPrompt,
+} from './select-image-options.prompt'
+
 // Blog Ideation Prompts
 export {
     GENERATE_TOPICS_SYSTEM_PROMPT,

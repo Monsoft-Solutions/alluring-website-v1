@@ -12,4 +12,5 @@ export type {
     AgentReview,
     OrchestratorResult,
     PipelineMetrics,
+    SelectedImageOptions,
 } from './blog-pipeline.type'

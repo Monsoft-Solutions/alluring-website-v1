@@ -16,6 +16,7 @@ export type PipelineStatus =
     | 'generate'
     | 'ai_review'
     | 'generate_metadata'
+    | 'generate_image'
     | 'draft'
     | 'ready_to_publish'
     | 'scheduled'

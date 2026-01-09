@@ -30,6 +30,7 @@ import { images } from './image.table'
  * - generate: Triggers content generation
  * - ai_review: Triggers review + orchestration
  * - generate_metadata: Triggers FAQ/meta extraction
+ * - generate_image: Triggers featured image generation
  *
  * Post-content stages:
  * - draft: Human review/editing
@@ -43,6 +44,7 @@ export const blogPostStatus = pgEnum('blog_post_status', [
     'generate',
     'ai_review',
     'generate_metadata',
+    'generate_image',
     // Post-content stages
     'draft',
     'ready_to_publish',

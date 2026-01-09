@@ -267,6 +267,13 @@
       "when": 1767801337778,
       "tag": "0037_breezy_changeling",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1767812758709,
+      "tag": "0038_jazzy_vanisher",
+      "breakpoints": true
     }
   ]
 }

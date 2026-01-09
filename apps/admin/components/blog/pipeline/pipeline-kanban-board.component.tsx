@@ -14,6 +14,7 @@ import {
     Sparkles,
     Shield,
     FileText,
+    ImageIcon,
     Pencil,
     CheckCircle,
     Calendar,
@@ -80,6 +81,14 @@ const STAGE_CONFIG: Record<
         description: 'Extract SEO data',
         autoProcess: true,
     },
+    generate_image: {
+        label: 'Image',
+        icon: ImageIcon,
+        headerClass: 'border-pink-200 bg-pink-50',
+        badgeClass: 'bg-pink-200 text-pink-700',
+        description: 'AI featured image',
+        autoProcess: true,
+    },
     draft: {
         label: 'Draft',
         icon: Pencil,
@@ -119,6 +128,7 @@ const STAGE_ORDER: PipelineStatus[] = [
     'generate',
     'ai_review',
     'generate_metadata',
+    'generate_image',
     'draft',
     'ready_to_publish',
     'scheduled',
@@ -170,6 +180,7 @@ export function PipelineKanbanBoard({
             generate: [],
             ai_review: [],
             generate_metadata: [],
+            generate_image: [],
             draft: [],
             ready_to_publish: [],
             scheduled: [],
@@ -227,7 +238,8 @@ export function PipelineKanbanBoard({
                 config.autoProcess &&
                 (targetStatus === 'generate' ||
                     targetStatus === 'ai_review' ||
-                    targetStatus === 'generate_metadata')
+                    targetStatus === 'generate_metadata' ||
+                    targetStatus === 'generate_image')
             ) {
                 triggerPipelineMutation.mutate({
                     id: postId,

@@ -25,7 +25,7 @@ type RouteParams = {
     params: Promise<{ id: string }>
 }
 
-export async function POST(request: NextRequest, { params }: RouteParams) {
+export async function POST(_request: NextRequest, { params }: RouteParams) {
     const { id } = await params
 
     try {
@@ -112,16 +112,16 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         }
 
         // Build pipeline state update with metrics
-        const existingPipelineState = (post.pipelineState ||
-            {}) as PipelineState
+        const existingPipelineState = post.pipelineState || {}
         const metrics: PipelineMetrics = {
             totalTimeMs:
                 (existingPipelineState.generationPhase
-                    ? parseInt(
-                          existingPipelineState.generationPhase.completedAt ||
-                              '0'
-                      ) -
-                      parseInt(existingPipelineState.generationPhase.startedAt)
+                    ? new Date(
+                          existingPipelineState.generationPhase.completedAt || 0
+                      ).getTime() -
+                      new Date(
+                          existingPipelineState.generationPhase.startedAt
+                      ).getTime()
                     : 0) + result.timeMs,
             generationTimeMs: 0, // Already captured
             reviewTimeMs: 0, // Already captured
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
                 .replace(/[^a-z0-9]+/g, '-')
                 .replace(/(^-|-$)/g, '')
 
-        // Update post with extracted metadata and advance to draft
+        // Update post with extracted metadata and advance to generate_image
         await db
             .update(blogPost)
             .set({
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
                 processingError: null,
                 processingStartedAt: null,
                 pipelineState: updatedPipelineState,
-                status: 'draft', // Auto-advance to draft for human review
+                status: 'generate_image', // Auto-advance to image generation
             })
             .where(eq(blogPost.id, id))
 
@@ -177,7 +177,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             suggestedCategory: result.suggestedCategory,
             suggestedTags: result.suggestedTags,
             timeMs: result.timeMs,
-            nextStatus: 'draft',
+            nextStatus: 'generate_image',
         })
     } catch (error) {
         // Reset processing status on error

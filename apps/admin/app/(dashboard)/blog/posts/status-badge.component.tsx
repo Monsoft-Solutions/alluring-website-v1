@@ -1,14 +1,6 @@
 import { Badge } from '@workspace/ui/components/badge'
 
-type PipelineStatus =
-    | 'ideation'
-    | 'generate'
-    | 'ai_review'
-    | 'generate_metadata'
-    | 'draft'
-    | 'ready_to_publish'
-    | 'scheduled'
-    | 'published'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 
 type StatusBadgeProps = {
     status: PipelineStatus | null
@@ -24,6 +16,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
         generate: 'secondary',
         ai_review: 'secondary',
         generate_metadata: 'secondary',
+        generate_image: 'secondary',
     }
 
     const labels: Record<string, string> = {
@@ -35,6 +28,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
         generate: 'Generating',
         ai_review: 'Review',
         generate_metadata: 'Extract',
+        generate_image: 'Image',
     }
 
     const statusKey = status ?? 'draft'

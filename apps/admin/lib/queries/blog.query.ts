@@ -3,15 +3,9 @@ import type { FaqItem } from '@workspace/shared/schemas/blog'
 import { author, blogPost, images } from '@workspace/db/schema/blog'
 import { count, desc, eq, sql, asc } from 'drizzle-orm'
 
-export type PipelineStatus =
-    | 'ideation'
-    | 'generate'
-    | 'ai_review'
-    | 'generate_metadata'
-    | 'draft'
-    | 'ready_to_publish'
-    | 'scheduled'
-    | 'published'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
+
+export type { PipelineStatus }
 
 export type BlogPostListItem = {
     id: string

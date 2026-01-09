@@ -135,3 +135,11 @@ export {
     generateContentBrief,
     type GenerateContentBriefOptions,
 } from './generate-content-brief.function'
+
+// Image Option Selection
+export {
+    selectImageOptions,
+    type SelectImageOptionsOptions,
+    type SelectedImageOptions,
+    type ModelProfile,
+} from './select-image-options.function'

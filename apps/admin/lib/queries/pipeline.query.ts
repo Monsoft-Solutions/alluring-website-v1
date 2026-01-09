@@ -51,6 +51,7 @@ export type PostsByStatus = {
     generate: PipelinePostItem[]
     ai_review: PipelinePostItem[]
     generate_metadata: PipelinePostItem[]
+    generate_image: PipelinePostItem[]
     draft: PipelinePostItem[]
     ready_to_publish: PipelinePostItem[]
     scheduled: PipelinePostItem[]
@@ -89,6 +90,7 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
         generate: [],
         ai_review: [],
         generate_metadata: [],
+        generate_image: [],
         draft: [],
         ready_to_publish: [],
         scheduled: [],
@@ -114,6 +116,7 @@ export type PipelineStats = {
     generate: number
     ai_review: number
     generate_metadata: number
+    generate_image: number
     draft: number
     ready_to_publish: number
     scheduled: number
@@ -144,6 +147,7 @@ export const getPipelineStats = cache(async (): Promise<PipelineStats> => {
         generate: 0,
         ai_review: 0,
         generate_metadata: 0,
+        generate_image: 0,
         draft: 0,
         ready_to_publish: 0,
         scheduled: 0,

@@ -45,3 +45,9 @@ export {
     type ExtractionPhaseOptions,
     type ExtractionPhaseResult,
 } from './extraction-phase.runner'
+
+export {
+    runImageGenerationPhase,
+    type ImageGenerationPhaseOptions,
+    type ImageGenerationPhaseResult,
+} from './image-generation-phase.runner'

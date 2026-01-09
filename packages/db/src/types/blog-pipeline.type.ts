@@ -103,6 +103,31 @@ export type PipelineMetrics = {
 }
 
 /**
+ * Selected image options for featured image generation
+ */
+export type SelectedImageOptions = {
+    scene: string
+    subject: string
+    style: string
+    lighting: string
+    colorPalette: string
+    composition: string
+    modelProfile?: {
+        age?: string
+        ethnicity?: string
+        bodyType?: string
+        hairColor?: string
+        hairLength?: string
+        hairStyle?: string
+        skinTone?: string
+        expression?: string
+        pose?: string
+        attire?: string
+    }
+    reasoning?: string
+}
+
+/**
  * Pipeline state for tracking intermediate results.
  * Stores results from each phase of the content pipeline.
  */
@@ -133,6 +158,16 @@ export type PipelineState = {
     extractionPhase?: {
         startedAt: string
         completedAt?: string
+    }
+    /** Image generation phase results */
+    imageGenerationPhase?: {
+        startedAt: string
+        completedAt?: string
+        selectedOptions?: SelectedImageOptions
+        prompt?: string
+        imageId?: string
+        imageUrl?: string
+        model?: string
     }
     /** Overall pipeline metrics */
     metrics?: PipelineMetrics

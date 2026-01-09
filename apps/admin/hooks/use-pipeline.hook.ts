@@ -232,12 +232,17 @@ export function useTriggerPipeline() {
             status,
         }: {
             id: string
-            status: 'generate' | 'ai_review' | 'generate_metadata'
+            status:
+                | 'generate'
+                | 'ai_review'
+                | 'generate_metadata'
+                | 'generate_image'
         }) => {
             const endpoint = {
                 generate: `/api/blog/posts/${id}/pipeline/generate`,
                 ai_review: `/api/blog/posts/${id}/pipeline/review`,
                 generate_metadata: `/api/blog/posts/${id}/pipeline/extract`,
+                generate_image: `/api/blog/posts/${id}/pipeline/generate-image`,
             }[status]
 
             const response = await fetch(endpoint, { method: 'POST' })
@@ -246,6 +251,40 @@ export function useTriggerPipeline() {
                 throw new Error(error.error || 'Pipeline processing failed')
             }
             return response.json()
+        },
+        onMutate: async ({ id, status }) => {
+            // Cancel any outgoing refetches
+            await queryClient.cancelQueries({ queryKey: pipelineKeys.kanban() })
+
+            // Snapshot the previous value
+            const previousKanban = queryClient.getQueryData<PostsByStatus>(
+                pipelineKeys.kanban()
+            )
+
+            // Optimistically update to show processing state
+            if (previousKanban) {
+                const updatedKanban = { ...previousKanban }
+                const idx = updatedKanban[status].findIndex((p) => p.id === id)
+                if (idx !== -1) {
+                    const post = updatedKanban[status][idx]
+                    if (post) {
+                        updatedKanban[status] = [
+                            ...updatedKanban[status].slice(0, idx),
+                            {
+                                ...post,
+                                pipelineProcessingStatus: 'processing' as const,
+                            },
+                            ...updatedKanban[status].slice(idx + 1),
+                        ]
+                        queryClient.setQueryData(
+                            pipelineKeys.kanban(),
+                            updatedKanban
+                        )
+                    }
+                }
+            }
+
+            return { previousKanban }
         },
         onSuccess: async () => {
             await Promise.all([
@@ -256,6 +295,20 @@ export function useTriggerPipeline() {
                     queryKey: pipelineKeys.stats(),
                 }),
             ])
+        },
+        onError: (error, _, context) => {
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : 'Pipeline processing failed'
+            )
+            // Rollback on error
+            if (context?.previousKanban) {
+                queryClient.setQueryData(
+                    pipelineKeys.kanban(),
+                    context.previousKanban
+                )
+            }
         },
     })
 }
@@ -470,6 +523,7 @@ const AUTO_PROCESS_STAGES = [
     'generate',
     'ai_review',
     'generate_metadata',
+    'generate_image',
 ] as const
 type AutoProcessStage = (typeof AUTO_PROCESS_STAGES)[number]
 
@@ -501,6 +555,7 @@ export function useRetryProcessing() {
                     generate: `/api/blog/posts/${id}/pipeline/generate`,
                     ai_review: `/api/blog/posts/${id}/pipeline/review`,
                     generate_metadata: `/api/blog/posts/${id}/pipeline/extract`,
+                    generate_image: `/api/blog/posts/${id}/pipeline/generate-image`,
                 }[result.status]
 
                 const response = await fetch(endpoint, { method: 'POST' })

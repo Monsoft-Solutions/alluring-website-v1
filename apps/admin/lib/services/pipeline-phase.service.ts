@@ -8,9 +8,25 @@
  */
 import { eq } from 'drizzle-orm'
 import { db } from '@workspace/db/client'
-import { blogPost, type BlogPost } from '@workspace/db/schema/blog'
-import type { PipelineState, PipelineMetrics } from '@workspace/db/types'
-import { runReviewPhase, runExtractionPhase } from '@workspace/ai/pipelines'
+import {
+    blogPost,
+    images,
+    blogPostImages,
+    type BlogPost,
+} from '@workspace/db/schema/blog'
+import type {
+    PipelineState,
+    PipelineMetrics,
+    SelectedImageOptions,
+} from '@workspace/db/types'
+import {
+    runReviewPhase,
+    runExtractionPhase,
+    runImageGenerationPhase,
+} from '@workspace/ai/pipelines'
+import { generateImageAlt } from '@workspace/ai/functions'
+
+import { generateImageWithFal } from './fal-image-generation.service'
 
 // ============================================
 // Shared Helper Functions
@@ -323,7 +339,7 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
                 .replace(/[^a-z0-9]+/g, '-')
                 .replace(/(^-|-$)/g, '')
 
-        // Update post with extracted metadata and advance to draft
+        // Update post with extracted metadata and advance to generate_image
         await db
             .update(blogPost)
             .set({
@@ -336,17 +352,182 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
                 processingError: null,
                 processingStartedAt: null,
                 pipelineState: updatedPipelineState,
-                status: 'draft',
+                status: 'generate_image', // Chain to image generation
             })
             .where(eq(blogPost.id, postId))
 
         console.log(
             `[Pipeline Service] Extraction phase complete for post ${postId} - ${result.faqs.length} FAQs, Time: ${result.timeMs}ms`
         )
+
+        // Chain to image generation phase
+        console.log(
+            `[Pipeline Service] Chaining to image generation phase for post ${postId}`
+        )
+        await runImageGenerationPhaseForPost(postId)
+    } catch (error) {
+        await handlePhaseError(postId, error, 'Extraction')
+    }
+}
+
+/**
+ * Run image generation phase for a post (called internally after extraction)
+ *
+ * Handles its own DB reads/writes and error handling.
+ * AI selects image options, generates prompt, creates image via fal.ai,
+ * then sets status to draft.
+ *
+ * @param postId - The blog post ID to run image generation for
+ */
+export async function runImageGenerationPhaseForPost(
+    postId: string
+): Promise<void> {
+    console.log(
+        `[Pipeline Service] Starting image generation phase for post ${postId}`
+    )
+
+    try {
+        // Validate post for this phase
+        const validation = await fetchAndValidatePostForPhase(
+            postId,
+            'generate_image',
+            'image-generation'
+        )
+        if (!validation.valid) return
+
+        const { post } = validation
+
+        // Set processing status
+        await setProcessingStatus(postId)
+
+        // Run image generation phase (AI operations only)
+        const phaseResult = await runImageGenerationPhase({
+            title: post.title,
+            content: post.content!,
+            primaryKeyword: post.primaryKeyword || undefined,
+            aiSummary: post.aiSummary || undefined,
+        })
+
+        if (!phaseResult.success || !phaseResult.prompt) {
+            await setPhaseResultError(
+                postId,
+                phaseResult.error || 'Failed to generate image prompt',
+                'ImageGeneration'
+            )
+            return
+        }
+
+        // Generate image using fal.ai
+        console.log(
+            `[Pipeline Service] Generating image with fal.ai for post ${postId}...`
+        )
+        const generatedImages = await generateImageWithFal({
+            prompt: phaseResult.prompt,
+            blogPostId: postId,
+            model: 'gpt-image-1.5',
+            numImages: 1,
+        })
+
+        if (generatedImages.length === 0) {
+            await setPhaseResultError(
+                postId,
+                'Failed to generate image with fal.ai',
+                'ImageGeneration'
+            )
+            return
+        }
+
+        const generatedImage = generatedImages[0]
+        if (!generatedImage) {
+            await setPhaseResultError(
+                postId,
+                'No image generated',
+                'ImageGeneration'
+            )
+            return
+        }
+
+        // Generate alt text from prompt
+        console.log(
+            `[Pipeline Service] Generating alt text for post ${postId}...`
+        )
+        const altResult = await generateImageAlt({
+            prompt: phaseResult.prompt,
+        })
+
+        // Create image record
+        console.log(
+            `[Pipeline Service] Creating image record for post ${postId}...`
+        )
+        const [imageRecord] = await db
+            .insert(images)
+            .values({
+                url: generatedImage.blobUrl,
+                alt: altResult.alt,
+                title: post.title,
+                width: generatedImage.width || 1392,
+                height: generatedImage.height || 752,
+                mimeType: 'image/jpeg',
+                generationPrompt: phaseResult.prompt,
+                generatedBy: 'fal-ai',
+            })
+            .returning({ id: images.id })
+
+        if (!imageRecord) {
+            await setPhaseResultError(
+                postId,
+                'Failed to create image record',
+                'ImageGeneration'
+            )
+            return
+        }
+
+        // Link image to blog post via junction table
+        await db.insert(blogPostImages).values({
+            blogPostId: postId,
+            imageId: imageRecord.id,
+            prompt: phaseResult.prompt,
+        })
+
+        // Build pipeline state update
+        const existingPipelineState: PipelineState = post.pipelineState ?? {}
+        const updatedPipelineState: PipelineState = {
+            ...existingPipelineState,
+            imageGenerationPhase: {
+                startedAt:
+                    post.processingStartedAt?.toISOString() ||
+                    new Date().toISOString(),
+                completedAt: new Date().toISOString(),
+                selectedOptions:
+                    phaseResult.selectedOptions as SelectedImageOptions,
+                prompt: phaseResult.prompt,
+                imageId: imageRecord.id,
+                imageUrl: generatedImage.blobUrl,
+                model: 'gpt-image-1.5',
+            },
+        }
+
+        // Update post with image and advance to draft
+        await db
+            .update(blogPost)
+            .set({
+                featuredImageId: imageRecord.id,
+                aiSummary: phaseResult.summary || post.aiSummary,
+                pipelineProcessingStatus: 'idle',
+                processingError: null,
+                processingStartedAt: null,
+                pipelineState: updatedPipelineState,
+                status: 'draft', // Auto-advance to draft for human review
+            })
+            .where(eq(blogPost.id, postId))
+
+        console.log(
+            `[Pipeline Service] Image generation phase complete for post ${postId} - Time: ${phaseResult.timeMs}ms`
+        )
         console.log(
             `[Pipeline Service] Pipeline complete! Post ${postId} is now in draft status`
         )
     } catch (error) {
-        await handlePhaseError(postId, error, 'Extraction')
+        await handlePhaseError(postId, error, 'ImageGeneration')
     }
 }
