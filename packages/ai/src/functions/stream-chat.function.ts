@@ -6,7 +6,6 @@
  *
  * @module @workspace/ai/functions/stream-chat
  */
-import { type Output } from 'ai'
 import { coreStreamText } from '../core'
 
 /**

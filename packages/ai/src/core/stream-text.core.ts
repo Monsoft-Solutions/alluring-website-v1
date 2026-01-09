@@ -6,7 +6,7 @@
  *
  * @module @workspace/ai/core/stream-text
  */
-import { streamText, smoothStream, type Output } from 'ai'
+import { streamText, smoothStream } from 'ai'
 
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'

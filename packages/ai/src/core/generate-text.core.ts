@@ -7,7 +7,7 @@
  *
  * @module @workspace/ai/core/generate-text
  */
-import { generateText, type Output } from 'ai'
+import { generateText } from 'ai'
 
 import type { CoreGenerateTextOptions, CoreToolSet } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
