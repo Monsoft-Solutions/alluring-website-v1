@@ -1,21 +1,11 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@workspace/ui/components/card'
-import { Badge } from '@workspace/ui/components/badge'
+import { Card, CardContent, CardHeader } from '@workspace/ui/components/card'
 import { Skeleton } from '@workspace/ui/components/skeleton'
-import { AlertCircle, Loader2 } from 'lucide-react'
 
-import type {
-    PostsByStatus,
-    PipelinePostItem,
-    PipelineStatus,
-} from '@/lib/types/pipeline.type'
+import type { PostsByStatus, PipelinePostItem } from '@/lib/types/pipeline.type'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import { isPipelineStatus } from '@/lib/types/pipeline.type'
 import { PipelinePostEditDialog } from './pipeline-post-edit-dialog.component'
 import { PipelineColumn } from './pipeline-column.component'

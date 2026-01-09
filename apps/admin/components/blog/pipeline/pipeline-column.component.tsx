@@ -8,10 +8,8 @@ import {
 } from '@workspace/ui/components/card'
 import { Badge } from '@workspace/ui/components/badge'
 import { AlertCircle, Loader2 } from 'lucide-react'
-import type {
-    PipelinePostItem,
-    PipelineStatus,
-} from '@/lib/types/pipeline.type'
+import type { PipelinePostItem } from '@/lib/types/pipeline.type'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import type { STAGE_CONFIG } from '@/lib/constants/pipeline.constant'
 import { PipelineCard } from './pipeline-card.component'
 

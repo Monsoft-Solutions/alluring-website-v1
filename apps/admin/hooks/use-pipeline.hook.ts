@@ -11,8 +11,11 @@ import type {
     PostsByStatus,
     PipelineStats,
     PipelinePostItem,
-    PipelineStatus,
 } from '@/lib/types/pipeline.type'
+import type {
+    PipelineStatus,
+    BlogPostPriority,
+} from '@/lib/types/blog/blog-action.type'
 import type { PipelinePostDetail } from '@/lib/types/blog/pipeline-post-detail.type'
 import {
     updatePipelineStatus,
@@ -22,10 +25,11 @@ import {
     duplicateBlogPost,
     deleteBlogPost,
     resetProcessingStatus,
-    type CreatePipelinePostData,
-    type UpdatePipelinePostData,
-    type BlogPostPriority,
 } from '@/lib/actions/blog.action'
+import type {
+    CreatePipelinePostData,
+    UpdatePipelinePostData,
+} from '@/lib/types/blog/blog-action.type'
 
 // Re-export for consumers
 export type { PipelinePostDetail }
@@ -245,12 +249,7 @@ export function useTriggerPipeline() {
                 generate_image: `/api/blog/posts/${id}/pipeline/generate-image`,
             }[status]
 
-            const response = await fetch(endpoint, { method: 'POST' })
-            if (!response.ok) {
-                const error = await response.json()
-                throw new Error(error.error || 'Pipeline processing failed')
-            }
-            return response.json()
+            return fetchApi(endpoint, { method: 'POST' })
         },
         onMutate: async ({ id, status }) => {
             // Cancel any outgoing refetches
@@ -558,11 +557,7 @@ export function useRetryProcessing() {
                     generate_image: `/api/blog/posts/${id}/pipeline/generate-image`,
                 }[result.status]
 
-                const response = await fetch(endpoint, { method: 'POST' })
-                if (!response.ok) {
-                    const error = await response.json()
-                    throw new Error(error.error || 'Pipeline retry failed')
-                }
+                await fetchApi(endpoint, { method: 'POST' })
             }
 
             return result

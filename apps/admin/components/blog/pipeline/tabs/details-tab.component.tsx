@@ -16,7 +16,7 @@ import {
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { TabsContent } from '@workspace/ui/components/tabs'
 
-import type { PipelineStatus } from '@/lib/types/pipeline.type'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import type { DetailsTabProps } from './pipeline-edit-dialog.type'
 import { PRIORITY_OPTIONS, STATUS_OPTIONS } from './pipeline-edit-dialog.type'

@@ -4,7 +4,7 @@
  * Types used across all tab components in the pipeline edit dialog.
  */
 
-import type { PipelineStatus } from '@/lib/types/pipeline.type'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import type { PlanningData } from '@workspace/db/types'
 import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import type { FaqItem } from '@workspace/shared/schemas/blog'

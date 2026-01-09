@@ -27,10 +27,8 @@ import {
     Lightbulb,
 } from 'lucide-react'
 
-import type {
-    PipelinePostItem,
-    PipelineStatus,
-} from '@/lib/types/pipeline.type'
+import type { PipelinePostItem } from '@/lib/types/pipeline.type'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import type { PlanningData } from '@workspace/db/types'
 import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
@@ -287,7 +285,7 @@ export function PipelinePostEditDialog({
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.metaKey || e.ctrlKey) && e.key === 's' && open) {
                 e.preventDefault()
-                handleSave()
+                void handleSave()
             }
         }
         window.addEventListener('keydown', handleKeyDown)

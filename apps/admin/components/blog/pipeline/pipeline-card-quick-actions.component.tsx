@@ -7,7 +7,7 @@ import {
     TooltipTrigger,
 } from '@workspace/ui/components/tooltip'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import type { PipelineStatus } from '@/lib/types/pipeline.type'
+import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 import type { PipelinePostItem } from '@/lib/types/pipeline.type'
 import type { BlogPostPriority } from '@/lib/types/blog/blog-action.type'
 import { STAGE_LABELS, STAGE_ORDER } from '@/lib/constants/pipeline.constant'

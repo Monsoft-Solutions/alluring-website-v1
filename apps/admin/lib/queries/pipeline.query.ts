@@ -15,9 +15,6 @@ import type {
     PipelineStats,
 } from '@/lib/types/pipeline.type'
 
-// Re-export types for backward compatibility (optional but helpful)
-// Types are imported from '@/lib/types/pipeline.type' and used internally
-
 /**
  * Get all posts grouped by pipeline status for Kanban view
  */
