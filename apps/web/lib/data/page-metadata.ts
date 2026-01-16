@@ -13,7 +13,7 @@
  */
 export const pageLastModified: Record<string, string> = {
     // Main pages
-    '/': '2025-12-18',
+    '/': '2025-01-16',
     '/about': '2025-12-16',
     '/contact-us': '2025-12-18',
     '/faqs': '2025-12-18',

@@ -8,6 +8,7 @@
 import type { Metadata } from 'next'
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullbleed.component'
 import { PhilosophySection } from '@/components/sections/about/philosophy-section.component'
 import { SurgeonsGridSection } from '@/components/sections/about/surgeons-grid.component'
@@ -91,7 +92,7 @@ export default function AboutPage() {
             />
 
             {/* Main Content */}
-            <main className='bg-stone-50'>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Hero Section - Full-bleed with Glassmorphism Card */}
                 <AboutHeroFullbleed />
 
@@ -126,7 +127,7 @@ export default function AboutPage() {
                     align='center'
                     className='h-dvh items-center'
                 />
-            </main>
+            </ContainerLayout>
         </>
     )
 }

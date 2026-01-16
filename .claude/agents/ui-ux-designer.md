@@ -51,7 +51,7 @@ For simple content pages (blog posts, categories, single-column layouts):
 ```tsx
 import { ContainerLayout } from '@/components/ContainerLayout.component'
 
-;<ContainerLayout size='sm' as='main' className='py-12'>
+;<ContainerLayout size='sm' as='div' className='py-12'>
     {/* Content */}
 </ContainerLayout>
 ```

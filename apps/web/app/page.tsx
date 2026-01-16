@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { Hero } from '@/components/home/hero.component'
 import { Journey } from '@/components/home/journey.component'
 import { Procedures } from '@/components/home/procedures.component'
@@ -102,7 +103,7 @@ export default async function Page() {
             {/* Structured Data - FAQ Schema for rich snippets */}
             {faqSchemaItems.length > 0 && <FAQSchema items={faqSchemaItems} />}
 
-            <div className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 <Hero />
                 <Journey />
                 <Procedures />
@@ -133,7 +134,7 @@ export default async function Page() {
                     }}
                 />
                 <LeadForm />
-            </div>
+            </ContainerLayout>
         </>
     )
 }

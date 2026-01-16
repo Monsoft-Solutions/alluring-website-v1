@@ -1,5 +1,6 @@
 import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { procedures } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
@@ -88,7 +89,9 @@ export default function ProceduresPage() {
             {/* Structured Data - Breadcrumb Schema */}
             <BreadcrumbSchema items={breadcrumbItems} />
 
-            <ProceduresPageContent procedures={procedures} />
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
+                <ProceduresPageContent procedures={procedures} />
+            </ContainerLayout>
         </>
     )
 }

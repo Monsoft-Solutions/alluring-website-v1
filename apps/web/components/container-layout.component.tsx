@@ -1,12 +1,25 @@
 /**
  * ContainerLayout Component
  *
- * A flexible container component for simple content pages that provides
- * consistent width constraints and horizontal padding. Ideal for blog posts,
- * category pages, and other single-purpose content pages.
+ * A flexible container component that serves as the standard page-level wrapper
+ * for all marketing pages. Provides consistent width constraints, horizontal
+ * padding, marketing template styles, and proper top padding to clear the
+ * fixed header.
  *
  * @example
  * ```tsx
+ * // Standard page with top padding (clears fixed header)
+ * <ContainerLayout as="main" noPadding size="full">
+ *   <SomeSection />
+ * </ContainerLayout>
+ *
+ * // Full-bleed hero page (hero handles its own spacing)
+ * <ContainerLayout as="main" noPaddingTop noPadding size="full">
+ *   <HeroSection />
+ *   <OtherSection />
+ * </ContainerLayout>
+ *
+ * // Content page with container width
  * <ContainerLayout size="sm" className="py-12">
  *   <h1>Blog Post Title</h1>
  *   <p>Content goes here...</p>
@@ -15,6 +28,8 @@
  */
 import { cn } from '@workspace/ui/lib/utils'
 import type { ReactNode } from 'react'
+
+import { MARKETING_PAGE_STYLES, PAGE_TOP_PADDING } from '@/lib/constants/layout'
 
 /**
  * Container size options
@@ -73,6 +88,19 @@ export interface ContainerLayoutProps {
      * Accessible label for screen readers
      */
     ariaLabel?: string
+
+    /**
+     * Whether to remove default top padding that clears the fixed header.
+     * Use this for pages with full-bleed heroes that handle their own spacing.
+     * @default false
+     */
+    noPaddingTop?: boolean
+
+    /**
+     * Whether to apply marketing page template styles (bg-stone-50, font-sans, etc.).
+     * @default true
+     */
+    withMarketingStyles?: boolean
 }
 
 export function ContainerLayout({
@@ -84,6 +112,8 @@ export function ContainerLayout({
     as: Element = 'div',
     id,
     ariaLabel,
+    noPaddingTop = false,
+    withMarketingStyles = true,
 }: ContainerLayoutProps) {
     const sizeClasses = {
         default: 'container mx-auto',
@@ -98,7 +128,11 @@ export function ContainerLayout({
         <Element
             id={id}
             className={cn(
-                // Base container styles
+                // Marketing template styles (default on)
+                withMarketingStyles && MARKETING_PAGE_STYLES,
+                // Top padding to clear fixed header (default on)
+                !noPaddingTop && PAGE_TOP_PADDING,
+                // Container size
                 sizeClasses[size],
                 // Horizontal padding (can be overridden)
                 !noPadding && (paddingX || 'px-4 sm:px-6 lg:px-8'),

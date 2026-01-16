@@ -16,6 +16,7 @@ import type { Metadata } from 'next'
 
 import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogHeroSection } from '@/components/blog/blog-hero-section.component'
 import { FeaturedPost } from '@/components/blog/featured-post.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
@@ -131,7 +132,7 @@ export default async function BlogPage() {
             <BreadcrumbSchema items={breadcrumbItems} />
 
             {/* Main Content */}
-            <main className='bg-stone-50'>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Hero Section */}
                 <BlogHeroSection
                     badge={blogHeroData.badge}
@@ -203,7 +204,7 @@ export default async function BlogPage() {
                     ]}
                     size='lg'
                 />
-            </main>
+            </ContainerLayout>
         </>
     )
 }

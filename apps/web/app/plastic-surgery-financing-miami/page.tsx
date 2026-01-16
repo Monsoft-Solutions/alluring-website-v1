@@ -16,6 +16,7 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { FinancingHero } from '@/components/financing/financing-hero.component'
 import { FinancingHowItWorks } from '@/components/financing/financing-how-it-works.component'
 import { FinancingPartners } from '@/components/financing/financing-partners.component'
@@ -124,7 +125,7 @@ export default function FinancingPage() {
             <FAQSchema items={faqSchemaItems} />
 
             {/* Main Content */}
-            <main>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Hero Section - Full viewport with parallax */}
                 <FinancingHero id='financing-hero' {...financingHeroData} />
 
@@ -181,7 +182,7 @@ export default function FinancingPage() {
                     variant='luxury'
                     size='lg'
                 />
-            </main>
+            </ContainerLayout>
         </>
     )
 }
