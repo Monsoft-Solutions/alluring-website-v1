@@ -673,7 +673,7 @@ export default function LandingPage() {
 ```tsx
 export default function BlogPost({ post }) {
     return (
-        <ContainerLayout size='sm' as='main' className='py-12'>
+        <ContainerLayout size='sm' as='div' className='py-12'>
             <Breadcrumbs
                 items={[
                     { label: 'Home', href: '/' },

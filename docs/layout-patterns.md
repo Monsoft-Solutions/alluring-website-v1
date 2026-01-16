@@ -103,7 +103,7 @@ import { ContainerLayout } from '@/components/ContainerLayout.component'
 
 export default function BlogPostPage() {
     return (
-        <ContainerLayout as='main' size='sm' className='py-12 lg:py-16'>
+        <ContainerLayout as='div' size='sm' className='py-12 lg:py-16'>
             <article>
                 <Breadcrumbs items={breadcrumbItems} />
                 <h1>Blog Post Title</h1>
@@ -164,7 +164,7 @@ export default function BlogPostPage() {
 
 ### ContainerLayout Best Practices
 
-1. **Use semantic elements** (`as='main'` for page content)
+1. **Use semantic elements** (`as='div'` for page content)
 2. **Choose appropriate sizes** (sm for reading, default for general content)
 3. **Include consistent padding** (`py-12 lg:py-16` for pages)
 4. **Add proper IDs** for navigation and accessibility
@@ -198,7 +198,7 @@ export default function BlogPostPage() {
 ### Blog Pages
 
 ```tsx
-<ContainerLayout as='main' size='sm' className='py-12 lg:py-16'>
+<ContainerLayout as='div' size='sm' className='py-12 lg:py-16'>
     <Breadcrumbs items={breadcrumbItems} />
     <article className='prose prose-neutral dark:prose-invert'>
         {/* Content */}
@@ -229,7 +229,7 @@ export default function BlogPostPage() {
 ### List Pages
 
 ```tsx
-<ContainerLayout as='main' className='py-12 lg:py-16'>
+<ContainerLayout as='div' className='py-12 lg:py-16'>
     <Breadcrumbs items={breadcrumbItems} />
     <header className='mb-12 space-y-6'>
         <h1>Page Title</h1>

@@ -30,11 +30,7 @@ export function LegalPageLayout({
     lastUpdated,
 }: LegalPageLayoutProps) {
     return (
-        <ContainerLayout
-            size='sm'
-            as='main'
-            className='py-12 md:py-16 lg:py-20'
-        >
+        <ContainerLayout size='sm' as='div' className='py-12 md:py-16 lg:py-20'>
             {/* Page Header */}
             <header className='mb-8 border-b pb-6'>
                 <h1 className='text-foreground text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl'>

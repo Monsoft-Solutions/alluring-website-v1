@@ -20,6 +20,7 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { Surgeons } from '@/components/home/surgeons.component'
@@ -119,7 +120,7 @@ export default function FAQPage() {
             <FAQSchema items={allFaqItems} />
 
             {/* Main Content */}
-            <main>
+            <ContainerLayout as='div' noPadding size='full'>
                 {/* Categorized FAQ Section */}
                 <CategorizedFAQ
                     id='faq'
@@ -162,7 +163,7 @@ export default function FAQPage() {
                     variant='luxury'
                     size='lg'
                 />
-            </main>
+            </ContainerLayout>
         </>
     )
 }

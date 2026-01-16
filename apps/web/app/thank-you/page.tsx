@@ -13,6 +13,7 @@
 
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { ThankYouHero } from '@/components/sections/thank-you/thank-you-hero.component'
 import { ExploreSection } from '@/components/sections/thank-you/explore-section.component'
 import { siteConfig } from '@/lib/data/site-config'
@@ -56,13 +57,13 @@ export default function ThankYouPage() {
             />
 
             {/* Main Content */}
-            <main className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Section 1: Thank You Hero */}
                 <ThankYouHero id='thank-you-hero' />
 
                 {/* Section 2: Explore More */}
                 <ExploreSection id='explore' />
-            </main>
+            </ContainerLayout>
         </>
     )
 }

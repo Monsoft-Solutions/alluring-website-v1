@@ -15,6 +15,7 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { SpecialsHero } from '@/components/sections/specials/specials-hero.component'
 import { SpecialsHowItWorks } from '@/components/sections/specials/specials-how-it-works.component'
 import { SpecialsPromotionsGrid } from '@/components/sections/specials/specials-promotions-grid.component'
@@ -164,7 +165,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
             />
 
             {/* Main Content - Conversion-Optimized Flow */}
-            <main className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Section 1: Hero with Promotions + Form */}
                 <SpecialsHero
                     id='specials-hero'
@@ -239,7 +240,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     eyebrow='Take the First Step'
                     size='lg'
                 />
-            </main>
+            </ContainerLayout>
 
             {/* Mobile Sticky CTA - Removed: handled by root layout */}
         </>

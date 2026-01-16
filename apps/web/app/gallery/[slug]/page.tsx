@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import { Award, Shield, Users, Building2 } from 'lucide-react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { GalleryMediaGrid } from '@/components/gallery/gallery-media-grid.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { CTASection } from '@/components/shared/cta-section.component'
@@ -108,104 +109,106 @@ export default async function GalleryGroupPage({ params }: PageProps) {
             />
             <BreadcrumbSchema items={breadcrumbItems} />
 
-            {/* ImageGallery Schema */}
-            <script
-                type='application/ld+json'
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'ImageGallery',
-                        name: `${group.name} Gallery`,
-                        description:
-                            group.description ??
-                            `Photo gallery showcasing ${group.name} results`,
-                        url: pageUrl,
-                        numberOfItems: group.media.length,
-                        image: group.media.slice(0, 10).map((m) => ({
-                            '@type': 'ImageObject',
-                            url: m.url,
-                            name: m.title,
-                            description: m.alt,
-                        })),
-                    }),
-                }}
-            />
+            <ContainerLayout as='div' noPadding size='full'>
+                {/* ImageGallery Schema */}
+                <script
+                    type='application/ld+json'
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'ImageGallery',
+                            name: `${group.name} Gallery`,
+                            description:
+                                group.description ??
+                                `Photo gallery showcasing ${group.name} results`,
+                            url: pageUrl,
+                            numberOfItems: group.media.length,
+                            image: group.media.slice(0, 10).map((m) => ({
+                                '@type': 'ImageObject',
+                                url: m.url,
+                                name: m.title,
+                                description: m.alt,
+                            })),
+                        }),
+                    }}
+                />
 
-            {/* Header Section */}
-            <SectionContainer variant='default' className='pt-24 pb-0 md:pt-32'>
-                <ContentWrapper>
-                    {/* Group Header */}
-                    <div className='mb-12 max-w-3xl md:mb-16'>
-                        <div className='mb-4 flex items-center gap-3'>
-                            <span className='bg-gold-400 h-px w-12'></span>
-                            <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
-                                Photo Gallery
-                            </span>
-                        </div>
+                {/* Header Section */}
+                <SectionContainer variant='default' className='pb-0'>
+                    <ContentWrapper>
+                        {/* Group Header */}
+                        <div className='mb-12 max-w-3xl md:mb-16'>
+                            <div className='mb-4 flex items-center gap-3'>
+                                <span className='bg-gold-400 h-px w-12'></span>
+                                <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
+                                    Photo Gallery
+                                </span>
+                            </div>
 
-                        <h1 className='mb-6 font-serif text-4xl text-stone-900 md:text-5xl lg:text-6xl'>
-                            {group.name}
-                        </h1>
+                            <h1 className='mb-6 font-serif text-4xl text-stone-900 md:text-5xl lg:text-6xl'>
+                                {group.name}
+                            </h1>
 
-                        {group.description && (
-                            <p className='text-lg leading-relaxed font-light text-stone-600 md:text-xl'>
-                                {group.description}
+                            {group.description && (
+                                <p className='text-lg leading-relaxed font-light text-stone-600 md:text-xl'>
+                                    {group.description}
+                                </p>
+                            )}
+
+                            <p className='mt-4 text-sm text-stone-500'>
+                                {group.media.length}{' '}
+                                {group.media.length === 1 ? 'photo' : 'photos'}{' '}
+                                in this collection
                             </p>
-                        )}
+                        </div>
+                    </ContentWrapper>
+                </SectionContainer>
 
-                        <p className='mt-4 text-sm text-stone-500'>
-                            {group.media.length}{' '}
-                            {group.media.length === 1 ? 'photo' : 'photos'} in
-                            this collection
-                        </p>
-                    </div>
-                </ContentWrapper>
-            </SectionContainer>
+                {/* Gallery Grid */}
+                <SectionContainer variant='default' className='pt-0'>
+                    <ContentWrapper>
+                        <GalleryMediaGrid
+                            media={group.media}
+                            linkToDetail={false}
+                        />
+                    </ContentWrapper>
+                </SectionContainer>
 
-            {/* Gallery Grid */}
-            <SectionContainer variant='default' className='pt-0'>
-                <ContentWrapper>
-                    <GalleryMediaGrid
-                        media={group.media}
-                        linkToDetail={false}
-                    />
-                </ContentWrapper>
-            </SectionContainer>
-
-            {/* CTA Section */}
-            <CTASection
-                variant='luxury'
-                eyebrow='Inspired by These Results?'
-                heading='Your Transformation Story Starts Here'
-                description='Every photo in this gallery represents a journey of confidence and self-improvement. Schedule your complimentary consultation to discuss your personal goals.'
-                primaryButton={{
-                    text: 'Book Free Consultation',
-                    href: '/contact-us',
-                }}
-                secondaryButton={{
-                    text: 'Call Us Now',
-                    href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
-                }}
-                backgroundImage='/images/hero-beautiful-latin-woman.jpg'
-                trustBadges={[
-                    {
-                        icon: <Award className='h-5 w-5' />,
-                        label: 'Board-Certified Surgeons',
-                    },
-                    {
-                        icon: <Shield className='h-5 w-5' />,
-                        label: 'Accredited Facility',
-                    },
-                    {
-                        icon: <Users className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
-                    },
-                    {
-                        icon: <Building2 className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
-                    },
-                ]}
-            />
+                {/* CTA Section */}
+                <CTASection
+                    variant='luxury'
+                    eyebrow='Inspired by These Results?'
+                    heading='Your Transformation Story Starts Here'
+                    description='Every photo in this gallery represents a journey of confidence and self-improvement. Schedule your complimentary consultation to discuss your personal goals.'
+                    primaryButton={{
+                        text: 'Book Free Consultation',
+                        href: '/contact-us',
+                    }}
+                    secondaryButton={{
+                        text: 'Call Us Now',
+                        href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
+                    }}
+                    backgroundImage='/images/hero-beautiful-latin-woman.jpg'
+                    trustBadges={[
+                        {
+                            icon: <Award className='h-5 w-5' />,
+                            label: 'Board-Certified Surgeons',
+                        },
+                        {
+                            icon: <Shield className='h-5 w-5' />,
+                            label: 'Accredited Facility',
+                        },
+                        {
+                            icon: <Users className='h-5 w-5' />,
+                            label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+                        },
+                        {
+                            icon: <Building2 className='h-5 w-5' />,
+                            label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                        },
+                    ]}
+                />
+            </ContainerLayout>
         </>
     )
 }

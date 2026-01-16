@@ -1,3 +1,4 @@
+import { ContainerLayout } from '@/components/container-layout.component'
 import { LegalPageLayout } from '@/components/legal/legal-page-layout.component'
 import { termsOfServiceContent } from '@/lib/data/legal/terms-of-service.content'
 import { seoConfig } from '@/lib/seo-config'
@@ -45,10 +46,12 @@ export const metadata = toNextMetadata(seoConfig, {
  */
 export default function TermsOfServicePage() {
     return (
-        <LegalPageLayout
-            title='Terms of Service'
-            content={termsOfServiceContent}
-            lastUpdated='December 14, 2025'
-        />
+        <ContainerLayout as='div' size='full'>
+            <LegalPageLayout
+                title='Terms of Service'
+                content={termsOfServiceContent}
+                lastUpdated='December 14, 2025'
+            />
+        </ContainerLayout>
     )
 }

@@ -8,6 +8,7 @@
  */
 import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
 
+import { ContainerLayout } from '@/components/container-layout.component'
 import { ContactHeroForm } from '@/components/sections/contact/contact-hero-form.component'
 import { ContactStatsStrip } from '@/components/sections/contact/contact-stats-strip.component'
 import { SurgeonPreview } from '@/components/sections/contact/surgeon-preview.component'
@@ -94,7 +95,7 @@ export default async function ContactPage() {
             />
 
             {/* Main Content - Conversion-Optimized Flow */}
-            <main className='selection:bg-gold-200 bg-stone-50 font-sans text-stone-900 selection:text-stone-900'>
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Section 1: Hero Contact Form */}
                 <ContactHeroForm id='contact-form' />
 
@@ -143,7 +144,7 @@ export default async function ContactPage() {
 
                 {/* Section 9: Alternative Contact Methods */}
                 <ContactAlternative id='location' />
-            </main>
+            </ContainerLayout>
 
             {/* Mobile Call Button - Always visible on contact page for conversion optimization */}
             <MobileCallButton position='bottom-right' style='icon-only' />

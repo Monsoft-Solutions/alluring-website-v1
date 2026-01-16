@@ -24,8 +24,8 @@ export default async function PromotionsPage() {
     const promotions = await getActivePromotions()
 
     return (
-        <ContainerLayout>
-            <div className='py-16 md:py-24'>
+        <ContainerLayout as='div' noPadding size='full'>
+            <div className='container mx-auto px-4 py-16 sm:px-6 md:py-24 lg:px-8'>
                 {/* Header */}
                 <div className='mb-12 text-center'>
                     <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-4 py-2'>
