@@ -1,4 +1,3 @@
-import { ContainerLayout } from '@/components/container-layout.component'
 import { LegalPageLayout } from '@/components/legal/legal-page-layout.component'
 import { privacyPolicyContent } from '@/lib/data/legal/privacy-policy.content'
 import { seoConfig } from '@/lib/seo-config'
@@ -45,12 +44,10 @@ export const metadata = toNextMetadata(seoConfig, {
  */
 export default function PrivacyPolicyPage() {
     return (
-        <ContainerLayout as='div' size='full'>
-            <LegalPageLayout
-                title='Privacy Policy'
-                content={privacyPolicyContent}
-                lastUpdated='December 14, 2025'
-            />
-        </ContainerLayout>
+        <LegalPageLayout
+            title='Privacy Policy'
+            content={privacyPolicyContent}
+            lastUpdated='December 14, 2025'
+        />
     )
 }
