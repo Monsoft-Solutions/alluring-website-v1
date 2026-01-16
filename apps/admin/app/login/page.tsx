@@ -12,7 +12,7 @@ import { Label } from '@workspace/ui/components/label'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 import { Lock, Loader2, Mail } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useState, useTransition, useEffect } from 'react'
+import { Suspense, useState, useTransition } from 'react'
 
 import { signIn } from '@/lib/auth-client'
 
@@ -49,20 +49,18 @@ function LoginForm() {
     const searchParams = useSearchParams()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
     const [isPending, startTransition] = useTransition()
 
     const redirectTo = getSafeRedirectPath(searchParams.get('redirect'))
     const errorParam = searchParams.get('error')
 
-    // Handle error from URL params (e.g., banned user)
-    useEffect(() => {
+    // Initialize error from URL params (e.g., banned user)
+    const [error, setError] = useState(() => {
         if (errorParam === 'banned') {
-            setError(
-                'Your account has been suspended. Please contact an administrator.'
-            )
+            return 'Your account has been suspended. Please contact an administrator.'
         }
-    }, [errorParam])
+        return ''
+    })
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
