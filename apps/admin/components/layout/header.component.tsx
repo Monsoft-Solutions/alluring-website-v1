@@ -15,7 +15,7 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
 
-    async function handleLogout() {
+    function handleLogout() {
         startTransition(async () => {
             try {
                 await signOut()
