@@ -30,7 +30,7 @@ export const Surgeons = () => {
                             className='relative aspect-[3/4] w-full max-w-md'
                         >
                             <Image
-                                src='https://www.alluringplasticsurgery.com/wp-content/uploads/2024/09/dr-karlinsky-featured-image.webp'
+                                src='/images/surgeons/dr-karlinsky.webp'
                                 alt='Dr. Victoria Karlinsky'
                                 fill
                                 className='object-cover grayscale transition-all duration-700 ease-in-out hover:grayscale-0'

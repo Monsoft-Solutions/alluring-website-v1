@@ -1,30 +1,26 @@
-'use client'
-
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getFeaturedGalleryMedia } from '@/lib/queries/gallery/gallery-list.query'
 
-// TODO: Add a link to the full gallery
-const GalleryCard = ({
-    image,
-    label,
-    subLabel,
-}: {
-    image: string
-    label: string
-    subLabel: string
-}) => {
+import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
+
+const GalleryCard = ({ media }: { media: GalleryMediaCard }) => {
     return (
-        <div className='group relative cursor-pointer'>
+        <Link
+            href={`/gallery/${media.slug}`}
+            className='group relative block cursor-pointer'
+        >
             <div className='relative aspect-[4/5] w-full overflow-hidden bg-stone-200 shadow-xl'>
                 <Image
-                    src={image}
-                    alt={label}
+                    src={media.url}
+                    alt={media.alt}
                     fill
                     className='h-full w-full object-cover transition-transform duration-700 group-hover:scale-105'
                     sizes='(max-width: 768px) 50vw, 25vw'
+                    placeholder={media.blurDataUrl ? 'blur' : 'empty'}
+                    blurDataURL={media.blurDataUrl ?? undefined}
                 />
                 {/* Overlay */}
                 <div className='absolute inset-0 bg-stone-900/20 transition-colors duration-500 group-hover:bg-stone-900/0'></div>
@@ -39,17 +35,21 @@ const GalleryCard = ({
 
             <div className='mt-4 text-center'>
                 <h4 className='group-hover:text-gold-600 font-serif text-xl text-stone-900 transition-colors'>
-                    {label}
+                    {media.title}
                 </h4>
-                <p className='mt-1 text-base tracking-widest text-stone-500 uppercase'>
-                    {subLabel}
-                </p>
             </div>
-        </div>
+        </Link>
     )
 }
 
-export const BeforeAfter = () => {
+export async function BeforeAfter() {
+    const { media } = await getFeaturedGalleryMedia(4)
+
+    // Don't render section if no featured gallery images
+    if (media.length === 0) {
+        return null
+    }
+
     return (
         <SectionContainer
             id='gallery'
@@ -71,37 +71,17 @@ export const BeforeAfter = () => {
                 </div>
 
                 <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
-                    <GalleryCard
-                        image='https://www.alluringplasticsurgery.com/wp-content/uploads/2025/08/karlinsky-bbl-01.jpg'
-                        label='BBL & Arm Lipo'
-                        subLabel='Body Contouring'
-                    />
-                    <GalleryCard
-                        image='https://www.alluringplasticsurgery.com/wp-content/uploads/2025/08/karlinsky-baug-04.jpg'
-                        label='Breast Augmentation'
-                        subLabel='Volume Enhancement'
-                    />
-                    <GalleryCard
-                        image='https://www.alluringplasticsurgery.com/wp-content/uploads/2025/08/karlinsky-baug-05.jpg'
-                        label='Breast Augmentation'
-                        subLabel='Natural Profile'
-                    />
-                    <GalleryCard
-                        image='https://www.alluringplasticsurgery.com/wp-content/uploads/2025/08/karlinsky-baug-11.jpg'
-                        label='Breast Augmentation'
-                        subLabel='Lifestyle Result'
-                    />
+                    {media.map((item) => (
+                        <GalleryCard key={item.id} media={item} />
+                    ))}
                 </div>
 
                 <div className='mt-16 text-center'>
-                    <Link href='/gallery'>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className='inline-block border border-stone-200 px-8 py-4 text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors hover:bg-stone-900 hover:text-white'
-                        >
-                            View Full Gallery
-                        </motion.button>
+                    <Link
+                        href='/gallery'
+                        className='inline-block border border-stone-200 px-8 py-4 text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors hover:bg-stone-900 hover:text-white'
+                    >
+                        View Full Gallery
                     </Link>
                 </div>
             </ContentWrapper>
