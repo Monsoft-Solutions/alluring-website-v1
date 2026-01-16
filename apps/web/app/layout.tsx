@@ -10,8 +10,7 @@ import { CookieBanner } from '@/components/cookie-banner.component'
 import { FloatingChatButton } from '@/components/chat/floating-chat-button.component'
 import { FloatingFeedbackButton } from '@/components/feedback/floating-feedback-button.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
-import { Footer } from '@/components/layout/footer.component'
-import { Header } from '@/components/layout/header.component'
+import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
 import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
@@ -129,12 +128,8 @@ export default function RootLayout({
                     {isCookieBannerEnabled && <CookieBanner />}
                     {/* Promotion Announcement Bar */}
                     <AnnouncementBar />
-                    {/* Site Header */}
-                    <Header />
-                    {/* Main Content */}
-                    <main id='main-content'>{children}</main>
-                    {/* Site Footer */}
-                    <Footer />
+                    {/* Conditional Layout - Header/Footer hidden on standalone pages */}
+                    <ConditionalLayout>{children}</ConditionalLayout>
                     {/* Exit Intent Popup - Only on homepage */}
                     <ExitIntentPopup />
                     {/* Promotion Modal - Timed popup with lead capture */}
