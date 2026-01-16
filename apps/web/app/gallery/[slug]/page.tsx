@@ -1,4 +1,8 @@
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    ImageGallerySchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
@@ -111,26 +115,19 @@ export default async function GalleryGroupPage({ params }: PageProps) {
 
             <ContainerLayout as='div' noPadding size='full'>
                 {/* ImageGallery Schema */}
-                <script
-                    type='application/ld+json'
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'ImageGallery',
-                            name: `${group.name} Gallery`,
-                            description:
-                                group.description ??
-                                `Photo gallery showcasing ${group.name} results`,
-                            url: pageUrl,
-                            numberOfItems: group.media.length,
-                            image: group.media.slice(0, 10).map((m) => ({
-                                '@type': 'ImageObject',
-                                url: m.url,
-                                name: m.title,
-                                description: m.alt,
-                            })),
-                        }),
-                    }}
+                <ImageGallerySchema
+                    name={`${group.name} Gallery`}
+                    description={
+                        group.description ??
+                        `Photo gallery showcasing ${group.name} results`
+                    }
+                    url={pageUrl}
+                    numberOfItems={group.media.length}
+                    images={group.media.slice(0, 10).map((m) => ({
+                        url: m.url,
+                        name: m.title,
+                        description: m.alt,
+                    }))}
                 />
 
                 {/* Header Section */}
