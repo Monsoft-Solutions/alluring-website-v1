@@ -48,19 +48,19 @@ const nextConfig = {
             {
                 source: '/melany',
                 destination:
-                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=melany',
+                    '/contact-us?utm_source=influencer&utm_medium=melany',
                 permanent: true,
             },
             {
                 source: '/yele',
                 destination:
-                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=yele',
+                    '/contact-us/?utm_source=influencer&utm_medium=yele',
                 permanent: true,
             },
             {
                 source: '/lorena-gonzalez',
                 destination:
-                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=lorena-gonzalez',
+                    '/contact-us/?utm_source=influencer&utm_medium=lorena-gonzalez',
                 permanent: true,
             },
             {
@@ -77,19 +77,19 @@ const nextConfig = {
             {
                 source: '/ig',
                 destination:
-                    '/?utm_source=instagram&utm_medium=social&utm_campaign=bio_link',
+                    '/links?utm_source=instagram&utm_medium=social&utm_campaign=bio_link',
                 permanent: true,
             },
             {
                 source: '/fb',
                 destination:
-                    '/?utm_source=facebook&utm_medium=social&utm_campaign=bio_link',
+                    '/links?utm_source=facebook&utm_medium=social&utm_campaign=bio_link',
                 permanent: true,
             },
             {
                 source: '/tiktok',
                 destination:
-                    '/?utm_source=tiktok&utm_medium=social&utm_campaign=bio_link',
+                    '/links?utm_source=tiktok&utm_medium=social&utm_campaign=bio_link',
                 permanent: true,
             },
         ]
