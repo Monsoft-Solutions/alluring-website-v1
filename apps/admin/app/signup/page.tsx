@@ -12,7 +12,7 @@ import { Label } from '@workspace/ui/components/label'
 import { Lock, Loader2, Mail, User, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useState, useTransition, useEffect } from 'react'
+import { Suspense, useState, useTransition } from 'react'
 
 import { signUp, organization } from '@/lib/auth-client'
 
@@ -28,15 +28,9 @@ function SignupForm() {
 
     const invitationId = searchParams.get('invitation')
 
-    // If no invitation ID, show error
-    useEffect(() => {
-        if (!invitationId) {
-            setError('Registration requires a valid invitation link.')
-        }
-    }, [invitationId])
-
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
+        if (!invitationId) return
         setError('')
 
         // Validate passwords match
@@ -48,11 +42,6 @@ function SignupForm() {
         // Validate password length
         if (password.length < 8) {
             setError('Password must be at least 8 characters')
-            return
-        }
-
-        if (!invitationId) {
-            setError('Registration requires a valid invitation link.')
             return
         }
 
@@ -95,7 +84,7 @@ function SignupForm() {
         return (
             <div className='space-y-4 text-center'>
                 <div className='bg-destructive/10 text-destructive flex items-center gap-2 rounded-md p-4'>
-                    <AlertCircle className='h-5 w-5 flex-shrink-0' />
+                    <AlertCircle className='h-5 w-5 shrink-0' />
                     <p className='text-sm'>
                         Registration requires a valid invitation link. Please
                         contact an administrator.
