@@ -46,7 +46,7 @@ type UserItem = {
     email: string
     role: string
     banned: boolean
-    banReason: string | null
+    banReason: string | undefined
     createdAt: Date
 }
 
@@ -63,7 +63,9 @@ export default function UsersSettingsPage() {
     const { data: session } = useSession()
     const [users, setUsers] = useState<UserItem[]>([])
     const [invitations, setInvitations] = useState<InvitationItem[]>([])
-    const [organizationId, setOrganizationId] = useState<string | null>(null)
+    const [organizationId, setOrganizationId] = useState<string | undefined>(
+        undefined
+    )
     const [isLoading, setIsLoading] = useState(true)
     const [isPending, startTransition] = useTransition()
 
@@ -82,7 +84,7 @@ export default function UsersSettingsPage() {
                         email: u.email,
                         role: u.role || 'viewer',
                         banned: u.banned || false,
-                        banReason: u.banReason || null,
+                        banReason: u.banReason ?? undefined,
                         createdAt: new Date(u.createdAt),
                     }))
                 )
@@ -137,14 +139,41 @@ export default function UsersSettingsPage() {
             await Promise.all([fetchUsers(), fetchOrganization()])
             setIsLoading(false)
         }
-        loadData()
+        void loadData()
     }, [fetchUsers, fetchOrganization])
 
     useEffect(() => {
-        if (organizationId) {
-            fetchInvitations()
+        if (!organizationId) return
+
+        async function loadInvitations() {
+            try {
+                const { data } = await organization.getFullOrganization({
+                    query: {
+                        organizationId,
+                    },
+                })
+                if (data?.invitations) {
+                    setInvitations(
+                        data.invitations
+                            .filter((inv) => inv.status === 'pending')
+                            .map((inv) => ({
+                                id: inv.id,
+                                email: inv.email,
+                                role: inv.role,
+                                status: inv.status,
+                                expiresAt: new Date(inv.expiresAt),
+                                createdAt: new Date(
+                                    inv.createdAt || Date.now()
+                                ),
+                            }))
+                    )
+                }
+            } catch (error) {
+                console.error('Failed to fetch invitations:', error)
+            }
         }
-    }, [organizationId, fetchInvitations])
+        void loadInvitations()
+    }, [organizationId])
 
     const handleBanUser = (userId: string) => {
         startTransition(async () => {
