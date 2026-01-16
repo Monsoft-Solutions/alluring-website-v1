@@ -5,6 +5,8 @@ import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 
+import { signOut } from '@/lib/auth-client'
+
 type HeaderProps = {
     title?: string
 }
@@ -14,21 +16,16 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
     const [isPending, startTransition] = useTransition()
 
     async function handleLogout() {
-        try {
-            const response = await fetch('/api/auth', { method: 'DELETE' })
-
-            if (!response.ok) {
-                throw new Error('Logout failed')
-            }
-
-            startTransition(() => {
+        startTransition(async () => {
+            try {
+                await signOut()
                 router.push('/login')
                 router.refresh()
-            })
-        } catch (error) {
-            console.error('Logout error:', error)
-            alert('Failed to logout. Please try again.')
-        }
+            } catch (error) {
+                console.error('Logout error:', error)
+                alert('Failed to logout. Please try again.')
+            }
+        })
     }
 
     return (

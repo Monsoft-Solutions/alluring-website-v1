@@ -10,9 +10,11 @@ import {
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 import { Skeleton } from '@workspace/ui/components/skeleton'
-import { Lock, Loader2 } from 'lucide-react'
+import { Lock, Loader2, Mail } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useState, useTransition } from 'react'
+import { Suspense, useState, useTransition, useEffect } from 'react'
+
+import { signIn } from '@/lib/auth-client'
 
 const getSafeRedirectPath = (path: string | null): string => {
     if (!path) return '/'
@@ -45,11 +47,22 @@ const getSafeRedirectPath = (path: string | null): string => {
 function LoginForm() {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [isPending, startTransition] = useTransition()
 
     const redirectTo = getSafeRedirectPath(searchParams.get('redirect'))
+    const errorParam = searchParams.get('error')
+
+    // Handle error from URL params (e.g., banned user)
+    useEffect(() => {
+        if (errorParam === 'banned') {
+            setError(
+                'Your account has been suspended. Please contact an administrator.'
+            )
+        }
+    }, [errorParam])
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
@@ -57,17 +70,22 @@ function LoginForm() {
 
         startTransition(async () => {
             try {
-                const response = await fetch('/api/auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password }),
+                const { error: signInError } = await signIn.email({
+                    email,
+                    password,
                 })
 
-                const data: unknown = await response.json()
-
-                if (!response.ok) {
-                    const errorData = data as { error?: string }
-                    setError(errorData.error || 'Authentication failed')
+                if (signInError) {
+                    // Check if user is banned
+                    if (signInError.message?.includes('banned')) {
+                        setError(
+                            'Your account has been suspended. Please contact an administrator.'
+                        )
+                    } else {
+                        setError(
+                            signInError.message || 'Invalid email or password'
+                        )
+                    }
                     return
                 }
 
@@ -82,16 +100,38 @@ function LoginForm() {
     return (
         <form onSubmit={handleSubmit} className='space-y-4'>
             <div className='space-y-2'>
+                <Label htmlFor='email'>Email</Label>
+                <div className='relative'>
+                    <Mail className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
+                    <Input
+                        id='email'
+                        type='email'
+                        placeholder='admin@example.com'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={isPending}
+                        className='pl-10'
+                        autoComplete='email'
+                        autoFocus
+                    />
+                </div>
+            </div>
+
+            <div className='space-y-2'>
                 <Label htmlFor='password'>Password</Label>
-                <Input
-                    id='password'
-                    type='password'
-                    placeholder='Enter admin password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isPending}
-                    autoFocus
-                />
+                <div className='relative'>
+                    <Lock className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
+                    <Input
+                        id='password'
+                        type='password'
+                        placeholder='Enter your password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={isPending}
+                        className='pl-10'
+                        autoComplete='current-password'
+                    />
+                </div>
             </div>
 
             {error && (
@@ -103,7 +143,7 @@ function LoginForm() {
             <Button
                 type='submit'
                 className='w-full rounded bg-stone-900 px-4 py-2 text-white disabled:opacity-50'
-                disabled={isPending || !password}
+                disabled={isPending || !email || !password}
             >
                 {isPending ? (
                     <>
@@ -121,6 +161,10 @@ function LoginForm() {
 function LoginFormSkeleton() {
     return (
         <div className='space-y-4'>
+            <div className='space-y-2'>
+                <Skeleton className='h-4 w-16' />
+                <Skeleton className='h-10 w-full' />
+            </div>
             <div className='space-y-2'>
                 <Skeleton className='h-4 w-20' />
                 <Skeleton className='h-10 w-full' />
@@ -142,7 +186,7 @@ export default function LoginPage() {
                         Admin Dashboard
                     </CardTitle>
                     <p className='text-muted-foreground text-sm'>
-                        Enter your password to access the dashboard
+                        Sign in with your email and password
                     </p>
                 </CardHeader>
                 <CardContent>

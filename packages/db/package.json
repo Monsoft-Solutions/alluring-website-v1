@@ -10,6 +10,11 @@
             "import": "./dist/client.js",
             "default": "./dist/client.js"
         },
+        "./schema/auth": {
+            "types": "./dist/schema/auth/index.d.ts",
+            "import": "./dist/schema/auth/index.js",
+            "default": "./dist/schema/auth/index.js"
+        },
         "./schema/analytics": {
             "types": "./dist/schema/analytics/index.d.ts",
             "import": "./dist/schema/analytics/index.js",
@@ -72,8 +77,9 @@
         "format": "pnpm -w format"
     },
     "dependencies": {
-        "@workspace/shared": "workspace:*",
         "@t3-oss/env-core": "^0.13.8",
+        "@workspace/shared": "workspace:*",
+        "bcryptjs": "^3.0.3",
         "drizzle-orm": "^0.44.7",
         "glob": "^13.0.0",
         "lodash": "^4.17.21",
@@ -82,6 +88,7 @@
     },
     "devDependencies": {
         "@faker-js/faker": "^10.1.0",
+        "@types/bcryptjs": "^3.0.0",
         "@types/lodash": "^4.17.21",
         "@workspace/eslint-config": "workspace:*",
         "@workspace/typescript-config": "workspace:*",
