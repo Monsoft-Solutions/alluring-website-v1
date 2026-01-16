@@ -1,12 +1,12 @@
 /**
  * ExitIntentPopup Component
  *
- * Lead capture popup that triggers on exit intent (desktop) or scroll depth (mobile).
+ * Lead capture popup that triggers on exit intent OR after 60 seconds.
  * Submits to the unified /api/contact endpoint with EXIT_INTENT source.
  *
  * Features:
- * - Desktop: Triggers when mouse leaves top of viewport
- * - Mobile/Tablet: Triggers at 70% scroll depth
+ * - Triggers when mouse leaves top of viewport (exit intent)
+ * - Triggers automatically after 60 seconds
  * - Robust phone validation using shared schema
  * - Session-based dismissal tracking
  */
@@ -83,40 +83,32 @@ export const ExitIntentPopup = () => {
         if (hasTriggered) return
 
         const handleExitIntent = (e: MouseEvent) => {
-            // Desktop: Trigger when mouse leaves top of viewport
-            if (e.clientY <= 0 && window.innerWidth >= 1024 && !hasTriggered) {
+            // Trigger when mouse leaves top of viewport (exit intent)
+            if (e.clientY <= 0 && !hasTriggered) {
                 track('exit_intent_shown', {
-                    trigger_type: 'desktop_mouse_leave',
+                    trigger_type: 'exit_intent',
                 })
                 setIsVisible(true)
                 setHasTriggered(true)
             }
         }
 
-        const handleScroll = () => {
-            // Mobile/Tablet: Trigger at 70% scroll depth
-            if (window.innerWidth < 1024 && !hasTriggered) {
-                const scrollTop = window.scrollY
-                const docHeight = document.documentElement.scrollHeight
-                const winHeight = window.innerHeight
-                const scrollPercent = (scrollTop + winHeight) / docHeight
-
-                if (scrollPercent > 0.7) {
-                    track('exit_intent_shown', {
-                        trigger_type: 'mobile_scroll',
-                    })
-                    setIsVisible(true)
-                    setHasTriggered(true)
-                }
+        // Timer-based trigger: Show after 60 seconds
+        const timer = setTimeout(() => {
+            if (!hasTriggered) {
+                track('exit_intent_shown', {
+                    trigger_type: 'timer_60s',
+                })
+                setIsVisible(true)
+                setHasTriggered(true)
             }
-        }
+        }, 60000) // 60 seconds
 
         document.addEventListener('mouseleave', handleExitIntent)
-        window.addEventListener('scroll', handleScroll)
 
         return () => {
             document.removeEventListener('mouseleave', handleExitIntent)
-            window.removeEventListener('scroll', handleScroll)
+            clearTimeout(timer)
         }
     }, [hasTriggered, track])
 
