@@ -12,6 +12,7 @@
 import * as bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 
+import { env } from '../env'
 import { account, member, organization, user } from '../schema/auth'
 
 type Db = typeof import('../client').db
@@ -27,9 +28,9 @@ const ORG_SLUG = 'alluring-plastic-surgery'
 export async function run({ db }: RunProps) {
     console.log('Seeding admin user and organization...')
 
-    const adminEmail = process.env.ADMIN_EMAIL
-    const adminPassword = process.env.ADMIN_PASSWORD
-    const adminName = process.env.ADMIN_NAME || 'Admin'
+    const adminEmail = env.ADMIN_EMAIL
+    const adminPassword = env.ADMIN_PASSWORD
+    const adminName = env.ADMIN_NAME ?? 'Admin'
 
     if (!adminEmail || !adminPassword) {
         console.log(

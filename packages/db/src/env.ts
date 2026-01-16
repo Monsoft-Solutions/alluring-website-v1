@@ -13,6 +13,10 @@ export const env = createEnv({
         NODE_ENV: z
             .enum(['development', 'production', 'test'])
             .default('development'),
+        // Admin seed environment variables (optional)
+        ADMIN_EMAIL: z.string().email().optional(),
+        ADMIN_PASSWORD: z.string().min(1).optional(),
+        ADMIN_NAME: z.string().optional(),
     },
     runtimeEnv: process.env,
 })
