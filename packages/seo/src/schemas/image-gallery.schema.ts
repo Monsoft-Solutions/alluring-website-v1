@@ -18,7 +18,6 @@ export function buildImageGalleryJsonLd(
         name: props.name,
         description: props.description,
         url: props.url,
-        numberOfItems: props.numberOfItems,
         image: imageObjects,
     }
 

@@ -122,7 +122,6 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                         `Photo gallery showcasing ${group.name} results`
                     }
                     url={pageUrl}
-                    numberOfItems={group.media.length}
                     images={group.media.slice(0, 10).map((m) => ({
                         url: m.url,
                         name: m.title,
