@@ -50,7 +50,7 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: bmiSeoData.canonical,
     title: pageTitle,
     description: bmiSeoData.description,
-    keywords: bmiSeoData.keywords as unknown as string[],
+    keywords: bmiSeoData.keywords,
 
     openGraph: {
         type: 'website',

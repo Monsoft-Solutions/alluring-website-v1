@@ -80,7 +80,7 @@ export type BmiPageData = {
 export type BmiSeoData = {
     readonly title: string
     readonly description: string
-    readonly keywords: readonly string[]
+    readonly keywords: string[]
     readonly canonical: string
 }
 

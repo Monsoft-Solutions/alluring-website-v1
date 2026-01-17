@@ -1,5 +1,3 @@
-'use client'
-
 /**
  * BMI Result Display Component
  *
