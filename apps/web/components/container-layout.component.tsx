@@ -29,7 +29,7 @@
 import { cn } from '@workspace/ui/lib/utils'
 import type { ReactNode } from 'react'
 
-import { MARKETING_PAGE_STYLES, PAGE_TOP_PADDING } from '@/lib/constants/layout'
+import { PAGE_TOP_PADDING } from '@/lib/constants/layout'
 
 /**
  * Container size options
@@ -113,7 +113,6 @@ export function ContainerLayout({
     id,
     ariaLabel,
     noPaddingTop = false,
-    withMarketingStyles = true,
 }: ContainerLayoutProps) {
     const sizeClasses = {
         default: 'container mx-auto',
