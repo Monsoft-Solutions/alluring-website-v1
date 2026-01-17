@@ -129,7 +129,7 @@ export function ContainerLayout({
             id={id}
             className={cn(
                 // Marketing template styles (default on)
-                withMarketingStyles && MARKETING_PAGE_STYLES,
+                // withMarketingStyles && MARKETING_PAGE_STYLES,
                 // Top padding to clear fixed header (default on)
                 !noPaddingTop && PAGE_TOP_PADDING,
                 // Container size
