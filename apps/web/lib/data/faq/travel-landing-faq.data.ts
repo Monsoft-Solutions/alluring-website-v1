@@ -8,7 +8,6 @@
  * - Logistics: Flights, hotels, transportation
  * - Recovery: Staying in Miami for recovery
  */
-import { siteConfig } from '@/lib/data/site-config'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
 /**

@@ -10,7 +10,6 @@
  * Optimized for patients traveling from other states or countries.
  */
 import {
-    Award,
     ShieldCheck,
     Clock,
     CreditCard,
@@ -23,7 +22,6 @@ import {
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type TravelHeroProps = {
