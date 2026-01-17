@@ -5,8 +5,8 @@
  * Captures leads through emotional storytelling, trust building, and
  * multiple conversion touchpoints.
  *
- * URL: /start (action-oriented, works for marketing materials)
- * Future variants: /start/miami, /start/travel
+ * URL: /free-consultation (SEO-optimized for consultation searches)
+ * Variants: /free-consultation/miami, /fly-in-consultation
  *
  * SEO-optimized for:
  * - "free plastic surgery consultation miami"
@@ -49,7 +49,7 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  * Focus on action-oriented keywords and trust signals.
  */
 export const metadata = toNextMetadata(seoConfig, {
-    canonical: '/start',
+    canonical: '/free-consultation',
     title: 'Free Consultation | Miami Plastic Surgery | Alluring',
     description:
         'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Financing from $27/week.',
@@ -58,7 +58,7 @@ export const metadata = toNextMetadata(seoConfig, {
         title: 'Free Consultation | Miami Plastic Surgery | Alluring',
         description:
             'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Financing from $27/week.',
-        url: `${seoConfig.siteUrl}/start`,
+        url: `${seoConfig.siteUrl}/free-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
         images: [
@@ -80,7 +80,7 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default async function StartPage() {
+export default async function FreeConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
@@ -96,7 +96,7 @@ export default async function StartPage() {
             {/* SEO Schema */}
             <WebPageSchema
                 name={`Free Consultation - ${siteConfig.business.name} Miami`}
-                url={`${seoConfig.siteUrl}/start`}
+                url={`${seoConfig.siteUrl}/free-consultation`}
                 description='Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Flexible financing available.'
             />
 

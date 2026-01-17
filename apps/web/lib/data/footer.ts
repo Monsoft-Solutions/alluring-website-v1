@@ -9,6 +9,26 @@ import type { NavigationSection } from '@/lib/types/navigation.type'
 
 export const footerSections: NavigationSection[] = [
     {
+        title: 'Get Started',
+        items: [
+            {
+                label: 'Free Consultation',
+                href: '/free-consultation',
+                external: false,
+            },
+            {
+                label: 'Miami Patients',
+                href: '/free-consultation/miami',
+                external: false,
+            },
+            {
+                label: 'Out-of-Town Patients',
+                href: '/fly-in-consultation',
+                external: false,
+            },
+        ],
+    },
+    {
         title: 'Company',
         items: [
             { label: 'About', href: '/about', external: false },

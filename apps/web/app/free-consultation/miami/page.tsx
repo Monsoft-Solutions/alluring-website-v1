@@ -4,7 +4,7 @@
  * Ultra-focused landing page targeting Miami local residents (women 25-55).
  * Emphasizes local presence, community trust, convenience, and Spanish support.
  *
- * URL: /start/miami
+ * URL: /free-consultation/miami
  *
  * Key differentiators from general landing page:
  * - Local surgeon, no travel messaging
@@ -82,7 +82,7 @@ const MIAMI_TESTIMONIALS = [
  * Emphasizes local presence and Spanish language support.
  */
 export const metadata = toNextMetadata(seoConfig, {
-    canonical: '/start/miami',
+    canonical: '/free-consultation/miami',
     title: 'Miami Plastic Surgery | Board-Certified Local Surgeons | Free Consultation',
     description:
         "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español. Free consultation.",
@@ -91,7 +91,7 @@ export const metadata = toNextMetadata(seoConfig, {
         title: 'Miami Plastic Surgery | Board-Certified Local Surgeons | Free Consultation',
         description:
             "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español.",
-        url: `${seoConfig.siteUrl}/start/miami`,
+        url: `${seoConfig.siteUrl}/free-consultation/miami`,
         type: 'website',
         siteName: seoConfig.siteName,
         locale: 'en_US',
@@ -115,13 +115,13 @@ export const metadata = toNextMetadata(seoConfig, {
 
     alternates: {
         languages: {
-            'en-US': '/start/miami',
-            'es-US': '/start/miami', // Same page, bilingual support
+            'en-US': '/free-consultation/miami',
+            'es-US': '/free-consultation/miami', // Same page, bilingual support
         },
     },
 })
 
-export default async function MiamiLandingPage() {
+export default async function MiamiConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
@@ -137,7 +137,7 @@ export default async function MiamiLandingPage() {
             {/* SEO Schema - Local Business for Miami targeting */}
             <LocalBusinessSchema
                 name={siteConfig.business.name}
-                url={`${seoConfig.siteUrl}/start/miami`}
+                url={`${seoConfig.siteUrl}/free-consultation/miami`}
                 telephone={siteConfig.contact.phone}
                 address={{
                     streetAddress: siteConfig.contact.address,
@@ -155,7 +155,7 @@ export default async function MiamiLandingPage() {
 
             <WebPageSchema
                 name={`Miami Plastic Surgery - ${siteConfig.business.name}`}
-                url={`${seoConfig.siteUrl}/start/miami`}
+                url={`${seoConfig.siteUrl}/free-consultation/miami`}
                 description="Miami's trusted plastic surgeons in Coral Gables. Board-certified surgeons with 15+ years serving the Miami community. BBL, breast augmentation, mommy makeover & more."
             />
 

@@ -5,13 +5,12 @@
  * Emphasizes virtual consultations, fly-in concierge services,
  * and the complete travel surgery experience.
  *
- * URL: /start/travel
+ * URL: /fly-in-consultation
  *
  * Key differentiators from general landing page:
  * - Virtual consultation first approach
- * - Full concierge service messaging
- * - Recovery accommodation support
- * - Travel logistics handled
+ * - Concierge guidance and recommendations
+ * - Recovery accommodation recommendations
  * - Privacy/discretion benefits
  * - Out-of-state testimonials
  *
@@ -83,7 +82,7 @@ const TRAVEL_TESTIMONIALS = [
  * SEO-optimized for medical tourism and fly-in surgery searches.
  */
 export const metadata = toNextMetadata(seoConfig, {
-    canonical: '/start/travel',
+    canonical: '/fly-in-consultation',
     title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Concierge Service',
     description:
         'World-class plastic surgery in Miami with concierge support. Virtual consultation, travel guidance, recovery accommodation recommendations. BBL, breast augmentation, mommy makeover. Financing available.',
@@ -92,7 +91,7 @@ export const metadata = toNextMetadata(seoConfig, {
         title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Concierge Service',
         description:
             'World-class plastic surgery in Miami with concierge support. Virtual consultation, travel guidance, recovery accommodation recommendations. BBL, breast augmentation, mommy makeover.',
-        url: `${seoConfig.siteUrl}/start/travel`,
+        url: `${seoConfig.siteUrl}/fly-in-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
         locale: 'en_US',
@@ -115,7 +114,7 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default async function TravelLandingPage() {
+export default async function FlyInConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
@@ -131,7 +130,7 @@ export default async function TravelLandingPage() {
             {/* SEO Schema */}
             <WebPageSchema
                 name={`Fly-In Plastic Surgery - ${siteConfig.business.name} Miami`}
-                url={`${seoConfig.siteUrl}/start/travel`}
+                url={`${seoConfig.siteUrl}/fly-in-consultation`}
                 description='World-class plastic surgery in Miami with fly-in concierge support. Start with a virtual consultation, then get expert guidance on travel, accommodations, and recovery.'
             />
 
