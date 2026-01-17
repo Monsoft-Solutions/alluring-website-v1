@@ -35,6 +35,20 @@ const STATIC_PAGES: Array<{
         changeFrequency: 'weekly',
         priority: 0.9,
     },
+    {
+        path: '/bmi-calculator',
+        changeFrequency: 'monthly',
+        priority: 0.8,
+    },
+    // Landing pages
+    { path: '/free-consultation', changeFrequency: 'weekly', priority: 0.9 },
+    {
+        path: '/free-consultation/miami',
+        changeFrequency: 'weekly',
+        priority: 0.9,
+    },
+    { path: '/fly-in-consultation', changeFrequency: 'weekly', priority: 0.9 },
+    // Legal pages
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/cookies', changeFrequency: 'yearly', priority: 0.3 },

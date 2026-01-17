@@ -19,6 +19,12 @@ export const pageLastModified: Record<string, string> = {
     '/faqs': '2025-12-18',
     '/plastic-surgery-financing-miami': '2025-12-16',
     '/miami-plastic-surgery-specials': '2025-12-18',
+    '/bmi-calculator': '2026-01-17',
+
+    // Landing pages
+    '/free-consultation': '2026-01-17',
+    '/free-consultation/miami': '2026-01-17',
+    '/fly-in-consultation': '2026-01-17',
 
     // Gallery pages
     '/gallery': '2025-12-17',
