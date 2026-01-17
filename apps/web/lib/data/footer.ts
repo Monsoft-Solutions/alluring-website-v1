@@ -17,6 +17,11 @@ export const footerSections: NavigationSection[] = [
                 href: '/plastic-surgery-financing-miami',
                 external: false,
             },
+            {
+                label: 'BMI Calculator',
+                href: '/bmi-calculator',
+                external: false,
+            },
             { label: 'Blog', href: '/blog', external: false },
             { label: 'Gallery', href: '/gallery', external: false },
             { label: 'Contact', href: '/contact-us', external: false },

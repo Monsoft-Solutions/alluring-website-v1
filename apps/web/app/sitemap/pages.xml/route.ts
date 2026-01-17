@@ -35,6 +35,11 @@ const STATIC_PAGES: Array<{
         changeFrequency: 'weekly',
         priority: 0.9,
     },
+    {
+        path: '/bmi-calculator',
+        changeFrequency: 'monthly',
+        priority: 0.8,
+    },
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/cookies', changeFrequency: 'yearly', priority: 0.3 },
