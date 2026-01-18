@@ -143,3 +143,10 @@ export {
     type SelectedImageOptions,
     type ModelProfile,
 } from './select-image-options.function'
+
+// Video Analysis
+export {
+    analyzeTestimonialVideo,
+    isGeminiConfigured,
+    type AnalyzeVideoOptions,
+} from './analyze-video.function'

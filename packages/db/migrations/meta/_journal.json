@@ -281,6 +281,13 @@
       "when": 1768736295295,
       "tag": "0039_slim_greymalkin",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1768746595635,
+      "tag": "0040_material_ma_gnuci",
+      "breakpoints": true
     }
   ]
 }

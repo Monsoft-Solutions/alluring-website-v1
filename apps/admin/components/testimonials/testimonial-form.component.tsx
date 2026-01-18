@@ -42,6 +42,7 @@ import type {
     InstagramPostSelectItem,
 } from '@/lib/types/testimonials/testimonial.type'
 import { InstagramPickerDialog } from './instagram-picker-dialog.component'
+import { VideoAnalysisPanel } from './video-analysis-panel.component'
 
 // Extended form data for client-side handling
 interface TestimonialFormDataExtended extends TestimonialFormData {
@@ -74,6 +75,7 @@ export function TestimonialForm({
         procedureSlug: initialData?.procedureSlug ?? null,
         timeframe: initialData?.timeframe ?? '',
         quote: initialData?.quote ?? '',
+        longDescription: initialData?.longDescription ?? '',
         rating: initialData?.rating ?? 5,
         isFeatured: initialData?.isFeatured ?? false,
         displayOrder: initialData?.displayOrder ?? 0,
@@ -175,6 +177,27 @@ export function TestimonialForm({
     const handleDirectMediaUpload = (url: string | null) => {
         setDirectMediaUrl(url)
     }
+
+    const handleVideoAnalysisValue = (
+        field: 'patientName' | 'procedure' | 'quote' | 'longDescription',
+        value: string
+    ) => {
+        if (field === 'patientName') {
+            handlePatientNameChange(value)
+        } else if (field === 'procedure') {
+            handleProcedureChange(value)
+        } else {
+            handleChange(field, value)
+        }
+    }
+
+    // Check if testimonial has video media
+    const hasVideo =
+        (formData.sourceType === 'direct' &&
+            directMediaUrl !== null &&
+            directMediaType === 'video') ||
+        (formData.sourceType === 'instagram' &&
+            selectedInstagramPost?.mediaType === 'video')
 
     const handleSubmit = async (
         targetStatus?: 'draft' | 'published' | 'archived'
@@ -395,6 +418,18 @@ export function TestimonialForm({
                         </CardContent>
                     </Card>
 
+                    {/* Video Analysis Panel - Only show in edit mode with video */}
+                    {mode === 'edit' && initialData && (
+                        <VideoAnalysisPanel
+                            testimonialId={initialData.id}
+                            hasVideo={hasVideo}
+                            existingAnalysis={
+                                initialData.metadata?.videoAnalysis ?? null
+                            }
+                            onUseValue={handleVideoAnalysisValue}
+                        />
+                    )}
+
                     {/* Patient Info */}
                     <Card>
                         <CardHeader>
@@ -473,6 +508,29 @@ export function TestimonialForm({
                                     placeholder="The patient's testimonial..."
                                     rows={5}
                                 />
+                            </div>
+
+                            <div className='space-y-2'>
+                                <Label htmlFor='longDescription'>
+                                    Long Description
+                                </Label>
+                                <Textarea
+                                    id='longDescription'
+                                    value={formData.longDescription ?? ''}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            'longDescription',
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder='Extended marketing description for the testimonial...'
+                                    rows={6}
+                                />
+                                <p className='text-muted-foreground text-xs'>
+                                    Optional detailed description for the
+                                    testimonial page. Can be AI-generated from
+                                    video analysis.
+                                </p>
                             </div>
 
                             <div className='space-y-2'>

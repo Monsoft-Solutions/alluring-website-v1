@@ -75,6 +75,9 @@ export {
     generateFeaturedImagePrompt,
     // SEO functions
     generateContentBrief,
+    // Video analysis functions
+    analyzeTestimonialVideo,
+    isGeminiConfigured,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
@@ -99,6 +102,7 @@ export {
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,
     type GenerateContentBriefOptions,
+    type AnalyzeVideoOptions,
 } from './functions'
 
 // AI-specific schemas for structured outputs
@@ -113,6 +117,10 @@ export {
     // Image analysis - AI-specific schema that composes shared schemas
     imageAnalysisSchema,
     type ImageAnalysis,
+    // Video analysis - AI-specific schema for testimonial videos
+    videoAnalysisSchema,
+    type VideoAnalysis,
+    type VideoAnalysisResult,
 } from './schemas'
 
 // Model definitions

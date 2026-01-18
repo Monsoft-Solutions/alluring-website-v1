@@ -158,6 +158,7 @@ export async function createTestimonial(
                 procedureSlug: data.procedureSlug ?? null,
                 timeframe: data.timeframe ?? null,
                 quote: data.quote,
+                longDescription: data.longDescription ?? null,
                 rating: data.rating,
                 isFeatured: data.isFeatured ?? false,
                 displayOrder,
@@ -284,6 +285,7 @@ export async function updateTestimonial(
                 procedureSlug: data.procedureSlug ?? null,
                 timeframe: data.timeframe ?? null,
                 quote: data.quote,
+                longDescription: data.longDescription ?? null,
                 rating: data.rating,
                 isFeatured: data.isFeatured ?? false,
                 ...(displayOrder !== undefined ? { displayOrder } : {}),
@@ -536,6 +538,181 @@ export async function reorderFeaturedTestimonials(
                 error instanceof Error
                     ? error.message
                     : 'Failed to reorder testimonials',
+        }
+    }
+}
+
+// ============================================================================
+// Video Analysis Actions
+// ============================================================================
+
+type VideoAnalysisActionResult = {
+    success: boolean
+    error?: string
+    analysis?: {
+        transcript: string
+        keyQuote: string
+        patientName: string | null
+        procedure: string | null
+        longDescription: string
+        language?: string
+    }
+}
+
+/**
+ * Analyze a testimonial video using AI
+ * Extracts transcript, key quote, patient name, procedure, and marketing description
+ */
+export async function analyzeTestimonialVideoAction(
+    testimonialId: string
+): Promise<VideoAnalysisActionResult> {
+    try {
+        await requireAuth()
+
+        // Dynamically import to avoid bundling issues
+        const { analyzeTestimonialVideo, isGeminiConfigured } = await import(
+            '@workspace/ai'
+        )
+
+        // Check if Gemini is configured
+        if (!isGeminiConfigured()) {
+            return {
+                success: false,
+                error: 'Google Gemini API is not configured. Please set GOOGLE_GENERATIVE_AI_API_KEY.',
+            }
+        }
+
+        // Fetch testimonial with media
+        const testimonial = await db
+            .select({
+                id: patientTestimonial.id,
+                sourceType: patientTestimonial.sourceType,
+                mediaId: patientTestimonial.mediaId,
+                instagramPostId: patientTestimonial.instagramPostId,
+                metadata: patientTestimonial.metadata,
+                slug: patientTestimonial.slug,
+            })
+            .from(patientTestimonial)
+            .where(eq(patientTestimonial.id, testimonialId))
+            .limit(1)
+
+        if (!testimonial.length) {
+            return { success: false, error: 'Testimonial not found' }
+        }
+
+        const testimonialData = testimonial[0]!
+
+        // Get video URL and Instagram caption based on source type
+        let videoUrl: string | null = null
+        let instagramCaption: string | null = null
+
+        if (testimonialData.mediaId) {
+            // Direct upload - get URL from gallery_media
+            const media = await db
+                .select({ url: galleryMedia.url, type: galleryMedia.type })
+                .from(galleryMedia)
+                .where(eq(galleryMedia.id, testimonialData.mediaId))
+                .limit(1)
+
+            if (media.length && media[0]?.type === 'video') {
+                videoUrl = media[0].url
+            }
+        } else if (testimonialData.instagramPostId) {
+            // Instagram - get video URL and caption from instagram_post
+            const igPost = await db
+                .select({
+                    mediaType: instagramPost.mediaType,
+                    mediaId: instagramPost.mediaId,
+                    caption: instagramPost.caption,
+                })
+                .from(instagramPost)
+                .where(eq(instagramPost.id, testimonialData.instagramPostId))
+                .limit(1)
+
+            if (igPost.length && igPost[0]) {
+                // Store the caption for context
+                instagramCaption = igPost[0].caption
+
+                if (igPost[0].mediaType === 'video' && igPost[0].mediaId) {
+                    const igMedia = await db
+                        .select({ url: galleryMedia.url })
+                        .from(galleryMedia)
+                        .where(eq(galleryMedia.id, igPost[0].mediaId))
+                        .limit(1)
+
+                    if (igMedia.length) {
+                        videoUrl = igMedia[0]!.url
+                    }
+                }
+            }
+        }
+
+        if (!videoUrl) {
+            return {
+                success: false,
+                error: 'No video found for this testimonial. Please ensure the testimonial has a video attached.',
+            }
+        }
+
+        // Analyze the video with Instagram caption context if available
+        const analysis = await analyzeTestimonialVideo({
+            videoUrl,
+            instagramCaption,
+        })
+
+        // Update testimonial metadata with analysis results
+        const updatedMetadata = {
+            ...(testimonialData.metadata || {}),
+            videoAnalysis: {
+                transcript: analysis.transcript,
+                keyQuote: analysis.keyQuote,
+                patientName: analysis.patientName,
+                procedure: analysis.procedure,
+                longDescription: analysis.longDescription,
+                analyzedAt: analysis.analyzedAt,
+                duration: analysis.duration,
+                language: analysis.language,
+            },
+        }
+
+        await db
+            .update(patientTestimonial)
+            .set({ metadata: updatedMetadata })
+            .where(eq(patientTestimonial.id, testimonialId))
+
+        revalidatePath('/testimonials')
+        revalidatePath(`/testimonials/${testimonialId}/edit`)
+
+        // Revalidate web app cache
+        const cacheTags = getAllTestimonialTags()
+        if (testimonialData.slug) {
+            cacheTags.push(CACHE_TAGS.testimonialBySlug(testimonialData.slug))
+        }
+        await revalidateWebAppCache(cacheTags)
+
+        return {
+            success: true,
+            analysis: {
+                transcript: analysis.transcript,
+                keyQuote: analysis.keyQuote,
+                patientName: analysis.patientName,
+                procedure: analysis.procedure,
+                longDescription: analysis.longDescription,
+                language: analysis.language,
+            },
+        }
+    } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        console.error('Error analyzing testimonial video:', error)
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to analyze video',
         }
     }
 }

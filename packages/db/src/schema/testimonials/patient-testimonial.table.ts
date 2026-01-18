@@ -56,6 +56,25 @@ export interface TestimonialMetadata {
         commentCount?: number
         playCount?: number
     }
+    /** AI video analysis results */
+    videoAnalysis?: {
+        /** Full transcript of the testimonial video */
+        transcript: string
+        /** AI-extracted most impactful quote */
+        keyQuote: string
+        /** Patient name if mentioned in video */
+        patientName: string | null
+        /** Procedure detected from video content */
+        procedure: string | null
+        /** AI-generated marketing description */
+        longDescription: string
+        /** When analysis was performed */
+        analyzedAt: string
+        /** Video duration in seconds */
+        duration?: number
+        /** Detected language */
+        language?: string
+    }
     /** Additional unstructured data */
     [key: string]: unknown
 }
@@ -113,6 +132,12 @@ export const patientTestimonial = pgTable(
          * Patient's testimonial quote/review text
          */
         quote: text('quote').notNull(),
+
+        /**
+         * Long-form description of the testimonial for marketing
+         * AI-generated from video analysis or manually entered
+         */
+        longDescription: text('long_description'),
 
         /**
          * Rating out of 5 stars

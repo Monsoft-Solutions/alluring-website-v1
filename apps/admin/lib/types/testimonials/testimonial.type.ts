@@ -83,6 +83,10 @@ export interface TestimonialFormData {
     procedureSlug?: string | null
     timeframe?: string | null
     quote: string
+    /**
+     * Long-form marketing description (AI-generated or manual)
+     */
+    longDescription?: string | null
     rating: number
     isFeatured?: boolean
     displayOrder?: number

@@ -33,3 +33,9 @@ export {
     imageAnalysisSchema,
     type ImageAnalysis,
 } from './image-analysis.schema'
+
+export {
+    videoAnalysisSchema,
+    type VideoAnalysis,
+    type VideoAnalysisResult,
+} from './video-analysis.schema'
