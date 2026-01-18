@@ -29,6 +29,36 @@ export const footerSections: NavigationSection[] = [
         ],
     },
     {
+        title: 'For You',
+        items: [
+            {
+                label: 'Mommy Makeover',
+                href: '/mommy-makeover-consultation',
+                external: false,
+            },
+            {
+                label: 'After Weight Loss',
+                href: '/after-weight-loss-consultation',
+                external: false,
+            },
+            {
+                label: 'BBL Miami',
+                href: '/bbl-miami',
+                external: false,
+            },
+            {
+                label: 'Brides',
+                href: '/bridal-consultation',
+                external: false,
+            },
+            {
+                label: 'En Español',
+                href: '/consulta-gratis',
+                external: false,
+            },
+        ],
+    },
+    {
         title: 'Company',
         items: [
             { label: 'About', href: '/about', external: false },

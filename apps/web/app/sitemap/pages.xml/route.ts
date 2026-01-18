@@ -40,7 +40,7 @@ const STATIC_PAGES: Array<{
         changeFrequency: 'monthly',
         priority: 0.8,
     },
-    // Landing pages
+    // Landing pages - General
     { path: '/free-consultation', changeFrequency: 'weekly', priority: 0.9 },
     {
         path: '/free-consultation/miami',
@@ -48,6 +48,25 @@ const STATIC_PAGES: Array<{
         priority: 0.9,
     },
     { path: '/fly-in-consultation', changeFrequency: 'weekly', priority: 0.9 },
+    // Landing pages - Audience-specific
+    {
+        path: '/mommy-makeover-consultation',
+        changeFrequency: 'weekly',
+        priority: 0.9,
+    },
+    {
+        path: '/after-weight-loss-consultation',
+        changeFrequency: 'weekly',
+        priority: 0.9,
+    },
+    { path: '/consulta-gratis', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/bbl-miami', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/bridal-consultation', changeFrequency: 'weekly', priority: 0.9 },
+    {
+        path: '/new-beginning-consultation',
+        changeFrequency: 'weekly',
+        priority: 0.9,
+    },
     // Legal pages
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },

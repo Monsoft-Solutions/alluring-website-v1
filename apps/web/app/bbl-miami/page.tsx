@@ -1,0 +1,216 @@
+/**
+ * BBL Miami Lead Generation Landing Page
+ *
+ * Ultra-targeted landing page for women 25-40 seeking Brazilian Butt Lift.
+ * Emphasizes Miami as THE global BBL destination, safety-first approach,
+ * and natural-looking results.
+ *
+ * URL: /bbl-miami
+ *
+ * Key differentiators:
+ * - Safety emphasis (critical for BBL marketing)
+ * - Miami's expertise and reputation
+ * - Natural results focus over dramatic transformations
+ * - Ultrasound-guided technique
+ *
+ * SEO-optimized for:
+ * - "bbl miami"
+ * - "brazilian butt lift miami"
+ * - "best bbl surgeon miami"
+ * - "natural bbl results"
+ */
+import {
+    FAQSchema,
+    OrganizationSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
+
+import { ContainerLayout } from '@/components/container-layout.component'
+import { BBLHero } from '@/components/landing/bbl-hero.component'
+import { FearBusters } from '@/components/shared/fear-busters.component'
+import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
+import { Testimonials } from '@/components/shared/testimonials.component'
+import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { CTASection } from '@/components/shared/cta-section.component'
+import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
+import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
+import {
+    bblFaqCategories,
+    bblFaqData,
+    bblFaqConfig,
+} from '@/lib/data/faq/bbl-faq.data'
+import { siteConfig } from '@/lib/data/site-config'
+import { seoConfig } from '@/lib/seo-config'
+import { toNextMetadata } from '@/lib/seo/metadata'
+import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
+
+// BBL-specific testimonials emphasizing natural results and safety
+const BBL_TESTIMONIALS = [
+    {
+        id: 'bbl-testimonial-1',
+        quote: "I was so nervous about looking 'fake' or overdone. Dr. Karlinsky listened to exactly what I wanted and delivered natural results that enhanced what I already had. I just look like a better version of me.",
+        name: 'Daniela R.',
+        procedure: 'BBL',
+        timeframe: '6 months post-op',
+        rating: 5,
+    },
+    {
+        id: 'bbl-testimonial-2',
+        quote: 'After researching BBL surgeons for months, I chose Alluring for their safety protocols. The ultrasound-guided technique gave me peace of mind. My results exceeded expectations—curvy but natural.',
+        name: 'Jasmine T.',
+        procedure: 'BBL + Lipo 360',
+        timeframe: '8 months post-op',
+        rating: 5,
+    },
+    {
+        id: 'bbl-testimonial-3',
+        quote: "I flew in from New York because Miami is THE place for BBL. The team made the whole process easy, and I'm obsessed with my results. My waist is tiny and my curves are exactly what I wanted.",
+        name: 'Taylor M.',
+        procedure: 'BBL',
+        timeframe: '1 year post-op',
+        rating: 5,
+    },
+]
+
+/**
+ * BBL Miami Landing Page Metadata
+ *
+ * SEO-optimized for Brazilian Butt Lift searches.
+ */
+export const metadata = toNextMetadata(seoConfig, {
+    canonical: '/bbl-miami',
+    title: 'BBL Miami | Brazilian Butt Lift | Natural Results | Free Consultation',
+    description:
+        'The Miami BBL: Natural curves with world-class safety. Board-certified surgeons, ultrasound-guided technique, AAAASF-accredited facility. Financing from $45/week. Free consultation.',
+
+    openGraph: {
+        title: 'BBL Miami | Brazilian Butt Lift | Natural Results | Free Consultation',
+        description:
+            'The Miami BBL: Natural curves with world-class safety. Board-certified surgeons, ultrasound-guided technique, AAAASF-accredited facility.',
+        url: `${seoConfig.siteUrl}/bbl-miami`,
+        type: 'website',
+        siteName: seoConfig.siteName,
+        images: [
+            {
+                url: `${seoConfig.siteUrl}/og-image.jpg`,
+                width: 1200,
+                height: 630,
+                alt: `BBL Miami - Brazilian Butt Lift - ${siteConfig.business.name}`,
+            },
+        ],
+    },
+
+    twitter: {
+        card: 'summary_large_image',
+        title: 'BBL Miami | Brazilian Butt Lift | Natural Results',
+        description:
+            'The Miami BBL: Natural curves with world-class safety. Board-certified surgeons. Financing from $45/week.',
+        images: [`${seoConfig.siteUrl}/og-image.jpg`],
+    },
+})
+
+export default async function BBLMiamiPage() {
+    // Fetch gallery images for the carousel
+    const galleryImages = await getSpecialsFeaturedGalleryImages()
+
+    // Flatten FAQ data for schema
+    const allFaqItems = Object.values(bblFaqData).flat()
+    const faqSchemaItems = allFaqItems.map((faq) => ({
+        question: faq.question,
+        answer: faq.answer,
+    }))
+
+    return (
+        <>
+            {/* SEO Schema */}
+            <WebPageSchema
+                name={`BBL Miami - Brazilian Butt Lift - ${siteConfig.business.name}`}
+                url={`${seoConfig.siteUrl}/bbl-miami`}
+                description='The Miami BBL: Natural curves with world-class safety. Board-certified surgeons using ultrasound-guided technique at AAAASF-accredited facility. 2,000+ BBLs performed with exceptional results.'
+            />
+
+            <OrganizationSchema
+                name={seoConfig.siteName}
+                url={seoConfig.siteUrl}
+                logo={seoConfig.organization?.logo}
+                sameAs={seoConfig.organization?.socialProfiles?.map(
+                    (s) => s.url
+                )}
+            />
+
+            <FAQSchema items={faqSchemaItems} />
+
+            {/* Main Content - BBL-Focused Conversion Flow */}
+            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
+                {/* Section 1: Hero with Safety-First Messaging */}
+                <BBLHero id='hero' />
+
+                {/* Section 2: Fear Busters - Address objections */}
+                <FearBusters id='fear-busters' formAnchor='#hero-form' />
+
+                {/* Section 3: Weekly Payments - Make it affordable */}
+                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+
+                {/* Section 4: Before/After Gallery */}
+                <GalleryCarousel id='gallery' images={galleryImages} />
+
+                {/* Section 5: BBL Testimonials */}
+                <Testimonials
+                    id='testimonials'
+                    formAnchor='#hero-form'
+                    testimonials={BBL_TESTIMONIALS}
+                />
+
+                {/* Section 6: FAQ - Address safety, procedure, results */}
+                <CategorizedFAQ
+                    id='faq'
+                    categories={bblFaqCategories}
+                    faqData={bblFaqData}
+                    badge={bblFaqConfig.badge}
+                    title={bblFaqConfig.title}
+                    subtitle={bblFaqConfig.subtitle}
+                    description={bblFaqConfig.description}
+                    variant='default'
+                    showBackgroundDecoration={true}
+                    includeSchema={false}
+                    ctaConfig={{
+                        title: 'Have more questions about BBL?',
+                        description:
+                            'Our patient coordinators specialize in BBL consultations.',
+                        buttonText: 'Call Us Now',
+                        phoneNumber: siteConfig.contact.phone.replace(
+                            /\D/g,
+                            ''
+                        ),
+                    }}
+                />
+
+                {/* Section 7: Mid-Page Lead Capture */}
+                <MiniLeadCapture id='mini-capture' />
+
+                {/* Section 8: Final CTA */}
+                <CTASection
+                    id='final-cta'
+                    variant='luxury'
+                    heading='Get the Curves You Deserve'
+                    description='Miami is the BBL capital of the world for a reason. Our board-certified surgeons combine artistry with safety to create natural, beautiful curves. See why thousands of women trust Alluring for their Brazilian Butt Lift.'
+                    primaryButton={{
+                        text: 'Yes, I Want My Free Consultation',
+                        href: '#hero-form',
+                    }}
+                    secondaryButton={{
+                        text: 'Call to Discuss My BBL',
+                        href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
+                    }}
+                    eyebrow='The Miami BBL'
+                    size='lg'
+                    backgroundImage='/images/landing/bbl-miami-cta-bg.png'
+                />
+            </ContainerLayout>
+
+            {/* Exit Intent Popup */}
+            <ExitIntentPopup />
+        </>
+    )
+}

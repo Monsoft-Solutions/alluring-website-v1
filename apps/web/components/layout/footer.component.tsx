@@ -47,7 +47,7 @@ export const Footer = () => {
     return (
         <footer className='border-t border-stone-900 bg-stone-950 pt-24 pb-12 text-white'>
             <div className='container mx-auto px-6 md:px-12'>
-                <div className='mb-20 grid gap-12 lg:grid-cols-4'>
+                <div className='mb-20 grid gap-12 md:grid-cols-2 lg:grid-cols-6'>
                     <div className='lg:col-span-1'>
                         <Link href='/' className='mb-4 block'>
                             <Image
@@ -152,6 +152,89 @@ export const Footer = () => {
                                     </Link>
                                 </li>
                             ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            For You
+                        </h4>
+                        <ul className='space-y-4 text-base text-stone-400'>
+                            <li>
+                                <Link
+                                    href='/mommy-makeover-consultation'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Mommy Makeover',
+                                            '/mommy-makeover-consultation',
+                                            'for-you'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    Mommy Makeover
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href='/after-weight-loss-consultation'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'After Weight Loss',
+                                            '/after-weight-loss-consultation',
+                                            'for-you'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    After Weight Loss
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href='/bbl-miami'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'BBL Miami',
+                                            '/bbl-miami',
+                                            'for-you'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    BBL Miami
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href='/bridal-consultation'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Brides',
+                                            '/bridal-consultation',
+                                            'for-you'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    Brides
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href='/consulta-gratis'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'En Español',
+                                            '/consulta-gratis',
+                                            'for-you'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    En Español
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
