@@ -7,6 +7,7 @@ export {
     getAllGalleryTags,
     getAllInstagramTags,
     getAllBlogTags,
+    getAllTestimonialTags,
 } from './cache-tags.constant'
 
 export type { StaticCacheTag, DynamicTagPrefix } from './cache-tags.constant'

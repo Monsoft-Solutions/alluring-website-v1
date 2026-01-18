@@ -8,7 +8,7 @@ import { Procedures } from '@/components/home/procedures.component'
 import { BeforeAfter } from '@/components/home/before-after.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
-import { Testimonials } from '@/components/home/testimonials.component'
+import { FeaturedTestimonials } from '@/components/testimonials/featured-testimonials.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { LeadForm } from '@/components/home/lead-form.component'
 import { PromoSection } from '@/components/promotions/promo-section.component'
@@ -114,7 +114,7 @@ export default async function Page() {
                 <BeforeAfter />
                 <WhyUs />
                 <Surgeons />
-                <Testimonials />
+                <FeaturedTestimonials />
                 <CategorizedFAQ
                     categories={faqCategoriesHome}
                     faqData={faqDataHome}

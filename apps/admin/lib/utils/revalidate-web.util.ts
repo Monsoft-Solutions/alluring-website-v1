@@ -4,6 +4,7 @@ import {
     getAllPromotionTags,
     getAllGalleryTags,
     getAllBlogTags,
+    getAllTestimonialTags,
 } from '@workspace/shared/cache'
 
 /**
@@ -85,9 +86,15 @@ export async function revalidateWebAppCache(tags: string[]): Promise<void> {
 
 /**
  * Re-exported from @workspace/shared/cache for convenience.
- * Use these when any promotion, gallery, or blog content is created, updated, or deleted.
+ * Use these when any promotion, gallery, blog, or testimonial content is created, updated, or deleted.
  */
-export { CACHE_TAGS, getAllPromotionTags, getAllGalleryTags, getAllBlogTags }
+export {
+    CACHE_TAGS,
+    getAllPromotionTags,
+    getAllGalleryTags,
+    getAllBlogTags,
+    getAllTestimonialTags,
+}
 
 /**
  * Alias for getAllPromotionTags for backwards compatibility.

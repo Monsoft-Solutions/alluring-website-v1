@@ -46,6 +46,12 @@ export const CACHE_TAGS = {
     /** Tag for all Instagram post queries */
     INSTAGRAM_POSTS: 'instagram-posts',
 
+    // Testimonial tags
+    /** Tag for all testimonial queries */
+    TESTIMONIALS: 'testimonials',
+    /** Tag for featured testimonials section */
+    TESTIMONIALS_FEATURED: 'testimonials-featured',
+
     // Sitemap URL registry tags
     /** Tag for URL registry used in page classification */
     SITEMAP_URLS: 'sitemap-urls',
@@ -84,6 +90,13 @@ export const CACHE_TAGS = {
      * @returns A unique tag for the specific Instagram post
      */
     instagramPostByCode: (code: string) => `instagram-post-${code}` as const,
+
+    /**
+     * Generate a tag for a specific testimonial by slug
+     * @param slug - The testimonial slug
+     * @returns A unique tag for the specific testimonial
+     */
+    testimonialBySlug: (slug: string) => `testimonial-${slug}` as const,
 } as const
 
 /**
@@ -99,6 +112,8 @@ export const ALLOWED_STATIC_TAGS = [
     CACHE_TAGS.GALLERY_MEDIA,
     CACHE_TAGS.BEFORE_AFTER_PAIRS,
     CACHE_TAGS.INSTAGRAM_POSTS,
+    CACHE_TAGS.TESTIMONIALS,
+    CACHE_TAGS.TESTIMONIALS_FEATURED,
     CACHE_TAGS.SITEMAP_URLS,
 ] as const
 
@@ -111,6 +126,7 @@ export const DYNAMIC_TAG_PREFIXES = [
     'gallery-group-',
     'gallery-media-',
     'instagram-post-',
+    'testimonial-',
 ] as const
 
 /**
@@ -201,6 +217,16 @@ export function getAllBlogTags(): string[] {
  */
 export function getAllInstagramTags(): string[] {
     return [CACHE_TAGS.INSTAGRAM_POSTS]
+}
+
+/**
+ * Get all testimonial-related tags for bulk revalidation.
+ * Use this when any testimonial is created, updated, or deleted.
+ *
+ * @returns Array of all testimonial cache tags
+ */
+export function getAllTestimonialTags(): string[] {
+    return [CACHE_TAGS.TESTIMONIALS, CACHE_TAGS.TESTIMONIALS_FEATURED]
 }
 
 /**

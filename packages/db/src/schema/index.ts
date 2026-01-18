@@ -181,3 +181,14 @@ export {
     type InstagramPostMedia,
     type InsertInstagramPostMedia,
 } from './social-media'
+
+// Testimonials schema
+export {
+    testimonialSourceType,
+    testimonialStatus,
+    patientTestimonial,
+    patientTestimonialRelations,
+    type TestimonialMetadata,
+    type PatientTestimonial,
+    type InsertPatientTestimonial,
+} from './testimonials'
