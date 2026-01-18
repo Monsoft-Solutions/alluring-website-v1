@@ -21,11 +21,6 @@ export const footerSections: NavigationSection[] = [
                 href: '/free-consultation/miami',
                 external: false,
             },
-            {
-                label: 'Out-of-Town Patients',
-                href: '/fly-in-consultation',
-                external: false,
-            },
         ],
     },
     {
@@ -49,6 +44,11 @@ export const footerSections: NavigationSection[] = [
             {
                 label: 'Brides',
                 href: '/bridal-consultation',
+                external: false,
+            },
+            {
+                label: 'Out-of-Town Guests',
+                href: '/fly-in-consultation',
                 external: false,
             },
             {

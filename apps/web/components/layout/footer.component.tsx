@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
+import { footerSections } from '@/lib/data/footer'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const Footer = () => {
@@ -160,81 +161,31 @@ export const Footer = () => {
                             For You
                         </h4>
                         <ul className='space-y-4 text-base text-stone-400'>
-                            <li>
-                                <Link
-                                    href='/mommy-makeover-consultation'
-                                    onClick={() =>
-                                        handleFooterLinkClick(
-                                            'Mommy Makeover',
-                                            '/mommy-makeover-consultation',
-                                            'for-you'
-                                        )
-                                    }
-                                    className='cursor-pointer transition-colors hover:text-white'
-                                >
-                                    Mommy Makeover
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href='/after-weight-loss-consultation'
-                                    onClick={() =>
-                                        handleFooterLinkClick(
-                                            'After Weight Loss',
-                                            '/after-weight-loss-consultation',
-                                            'for-you'
-                                        )
-                                    }
-                                    className='cursor-pointer transition-colors hover:text-white'
-                                >
-                                    After Weight Loss
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href='/bbl-miami'
-                                    onClick={() =>
-                                        handleFooterLinkClick(
-                                            'BBL Miami',
-                                            '/bbl-miami',
-                                            'for-you'
-                                        )
-                                    }
-                                    className='cursor-pointer transition-colors hover:text-white'
-                                >
-                                    BBL Miami
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href='/bridal-consultation'
-                                    onClick={() =>
-                                        handleFooterLinkClick(
-                                            'Brides',
-                                            '/bridal-consultation',
-                                            'for-you'
-                                        )
-                                    }
-                                    className='cursor-pointer transition-colors hover:text-white'
-                                >
-                                    Brides
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href='/consulta-gratis'
-                                    onClick={() =>
-                                        handleFooterLinkClick(
-                                            'En Español',
-                                            '/consulta-gratis',
-                                            'for-you'
-                                        )
-                                    }
-                                    className='cursor-pointer transition-colors hover:text-white'
-                                >
-                                    En Español
-                                </Link>
-                            </li>
+                            {footerSections
+                                .find((section) => section.title === 'For You')
+                                ?.items.map((item) => (
+                                    <li key={item.href}>
+                                        <Link
+                                            href={item.href}
+                                            onClick={() =>
+                                                handleFooterLinkClick(
+                                                    item.label,
+                                                    item.href,
+                                                    'for-you'
+                                                )
+                                            }
+                                            className='cursor-pointer transition-colors hover:text-white'
+                                            {...(item.external
+                                                ? {
+                                                      target: '_blank',
+                                                      rel: 'noopener noreferrer',
+                                                  }
+                                                : {})}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
 
@@ -272,9 +223,6 @@ export const Footer = () => {
                                 >
                                     Financing Options
                                 </Link>
-                            </li>
-                            <li className='text-stone-400'>
-                                Out-of-Town Guests
                             </li>
                             <li>
                                 <Link
@@ -381,45 +329,30 @@ export const Footer = () => {
                         Surgery. All rights reserved.
                     </p>
                     <div className='mt-4 flex space-x-8 md:mt-0'>
-                        <Link
-                            href='/privacy'
-                            onClick={() =>
-                                handleFooterLinkClick(
-                                    'Privacy Policy',
-                                    '/privacy',
-                                    'legal'
-                                )
-                            }
-                            className='cursor-pointer transition-colors hover:text-white'
-                        >
-                            Privacy Policy
-                        </Link>
-                        <Link
-                            href='/terms'
-                            onClick={() =>
-                                handleFooterLinkClick(
-                                    'Terms of Service',
-                                    '/terms',
-                                    'legal'
-                                )
-                            }
-                            className='cursor-pointer transition-colors hover:text-white'
-                        >
-                            Terms of Service
-                        </Link>
-                        <Link
-                            href='/cookies'
-                            onClick={() =>
-                                handleFooterLinkClick(
-                                    'Cookie Policy',
-                                    '/cookies',
-                                    'legal'
-                                )
-                            }
-                            className='cursor-pointer transition-colors hover:text-white'
-                        >
-                            Cookie Policy
-                        </Link>
+                        {footerSections
+                            .find((section) => section.title === 'Legal')
+                            ?.items.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            item.label,
+                                            item.href,
+                                            'legal'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                    {...(item.external
+                                        ? {
+                                              target: '_blank',
+                                              rel: 'noopener noreferrer',
+                                          }
+                                        : {})}
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
                         <Link
                             href='/sitemap'
                             onClick={() =>

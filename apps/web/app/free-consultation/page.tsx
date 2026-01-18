@@ -78,6 +78,13 @@ export const metadata = toNextMetadata(seoConfig, {
             'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. Financing from $27/week.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
+
+    alternates: {
+        languages: {
+            'en-US': '/free-consultation',
+            'es-US': '/consulta-gratis',
+        },
+    },
 })
 
 export default async function FreeConsultationPage() {
