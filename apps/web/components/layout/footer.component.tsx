@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedures } from '@/lib/data/procedures.data'
+import { footerSections } from '@/lib/data/footer'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const Footer = () => {
@@ -47,7 +48,7 @@ export const Footer = () => {
     return (
         <footer className='border-t border-stone-900 bg-stone-950 pt-24 pb-12 text-white'>
             <div className='container mx-auto px-6 md:px-12'>
-                <div className='mb-20 grid gap-12 lg:grid-cols-4'>
+                <div className='mb-20 grid gap-12 md:grid-cols-2 lg:grid-cols-6'>
                     <div className='lg:col-span-1'>
                         <Link href='/' className='mb-4 block'>
                             <Image
@@ -157,6 +158,39 @@ export const Footer = () => {
 
                     <div>
                         <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                            For You
+                        </h4>
+                        <ul className='space-y-4 text-base text-stone-400'>
+                            {footerSections
+                                .find((section) => section.title === 'For You')
+                                ?.items.map((item) => (
+                                    <li key={item.href}>
+                                        <Link
+                                            href={item.href}
+                                            onClick={() =>
+                                                handleFooterLinkClick(
+                                                    item.label,
+                                                    item.href,
+                                                    'for-you'
+                                                )
+                                            }
+                                            className='cursor-pointer transition-colors hover:text-white'
+                                            {...(item.external
+                                                ? {
+                                                      target: '_blank',
+                                                      rel: 'noopener noreferrer',
+                                                  }
+                                                : {})}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
                             Patients
                         </h4>
                         <ul className='space-y-4 text-base text-stone-400'>
@@ -189,9 +223,6 @@ export const Footer = () => {
                                 >
                                     Financing Options
                                 </Link>
-                            </li>
-                            <li className='text-stone-400'>
-                                Out-of-Town Guests
                             </li>
                             <li>
                                 <Link
@@ -298,45 +329,30 @@ export const Footer = () => {
                         Surgery. All rights reserved.
                     </p>
                     <div className='mt-4 flex space-x-8 md:mt-0'>
-                        <Link
-                            href='/privacy'
-                            onClick={() =>
-                                handleFooterLinkClick(
-                                    'Privacy Policy',
-                                    '/privacy',
-                                    'legal'
-                                )
-                            }
-                            className='cursor-pointer transition-colors hover:text-white'
-                        >
-                            Privacy Policy
-                        </Link>
-                        <Link
-                            href='/terms'
-                            onClick={() =>
-                                handleFooterLinkClick(
-                                    'Terms of Service',
-                                    '/terms',
-                                    'legal'
-                                )
-                            }
-                            className='cursor-pointer transition-colors hover:text-white'
-                        >
-                            Terms of Service
-                        </Link>
-                        <Link
-                            href='/cookies'
-                            onClick={() =>
-                                handleFooterLinkClick(
-                                    'Cookie Policy',
-                                    '/cookies',
-                                    'legal'
-                                )
-                            }
-                            className='cursor-pointer transition-colors hover:text-white'
-                        >
-                            Cookie Policy
-                        </Link>
+                        {footerSections
+                            .find((section) => section.title === 'Legal')
+                            ?.items.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            item.label,
+                                            item.href,
+                                            'legal'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                    {...(item.external
+                                        ? {
+                                              target: '_blank',
+                                              rel: 'noopener noreferrer',
+                                          }
+                                        : {})}
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
                         <Link
                             href='/sitemap'
                             onClick={() =>

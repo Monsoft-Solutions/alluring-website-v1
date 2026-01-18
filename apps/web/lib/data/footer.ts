@@ -21,9 +21,39 @@ export const footerSections: NavigationSection[] = [
                 href: '/free-consultation/miami',
                 external: false,
             },
+        ],
+    },
+    {
+        title: 'For You',
+        items: [
             {
-                label: 'Out-of-Town Patients',
+                label: 'Mommy Makeover',
+                href: '/mommy-makeover-consultation',
+                external: false,
+            },
+            {
+                label: 'After Weight Loss',
+                href: '/after-weight-loss-consultation',
+                external: false,
+            },
+            {
+                label: 'BBL Miami',
+                href: '/bbl-miami',
+                external: false,
+            },
+            {
+                label: 'Brides',
+                href: '/bridal-consultation',
+                external: false,
+            },
+            {
+                label: 'Out-of-Town Guests',
                 href: '/fly-in-consultation',
+                external: false,
+            },
+            {
+                label: 'En Español',
+                href: '/consulta-gratis',
                 external: false,
             },
         ],

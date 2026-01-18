@@ -48,19 +48,19 @@ const nextConfig = {
             {
                 source: '/melany',
                 destination:
-                    '/contact-us?utm_source=influencer&utm_medium=melany',
+                    '/free-consultation?utm_source=influencer&utm_medium=melany',
                 permanent: true,
             },
             {
                 source: '/yele',
                 destination:
-                    '/contact-us/?utm_source=influencer&utm_medium=yele',
+                    '/free-consultation/?utm_source=influencer&utm_medium=yele',
                 permanent: true,
             },
             {
                 source: '/lorena-gonzalez',
                 destination:
-                    '/contact-us/?utm_source=influencer&utm_medium=lorena-gonzalez',
+                    '/free-consultation/?utm_source=influencer&utm_medium=lorena-gonzalez',
                 permanent: true,
             },
             {

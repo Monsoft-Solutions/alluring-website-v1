@@ -14,6 +14,7 @@ import { ConditionalLayout } from '@/components/layout/conditional-layout.compon
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
 import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
+import { ScrollToTop } from '@/components/scroll-to-top.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { WebVitals } from '@/components/web-vitals.component'
 import { GoogleTranslateInit } from '@/components/google-translate-init.component'
@@ -104,6 +105,7 @@ export default function RootLayout({
                 {/* Google Translate - Client-side only to avoid hydration errors */}
                 <GoogleTranslateInit />
                 <WebVitals />
+                <ScrollToTop />
                 <InternalPageViewTracker />
                 <PageViewTracker />
                 <ScrollDepthTracker />
