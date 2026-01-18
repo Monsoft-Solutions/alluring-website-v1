@@ -10,12 +10,14 @@ import {
     GoogleGenAI,
     createPartFromUri,
     createUserContent,
+    type FileState,
 } from '@google/genai'
 
 import {
     videoAnalysisSchema,
     type VideoAnalysisResult,
 } from '../schemas/video-analysis.schema'
+import { env } from '../env'
 
 /**
  * Default model for video analysis
@@ -158,7 +160,7 @@ export async function analyzeTestimonialVideo(
         temperature = 0.3,
     } = options
 
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    const apiKey = env.GOOGLE_GENERATIVE_AI_API_KEY
     if (!apiKey) {
         throw new Error(
             'GOOGLE_GENERATIVE_AI_API_KEY environment variable is required'
@@ -190,17 +192,20 @@ export async function analyzeTestimonialVideo(
         let attempts = 0
         const maxAttempts = 60 // Max 3 minutes wait (60 * 3s)
 
-        while (fileStatus.state === 'PROCESSING' && attempts < maxAttempts) {
+        while (
+            fileStatus.state === ('PROCESSING' as FileState) &&
+            attempts < maxAttempts
+        ) {
             await new Promise((resolve) => setTimeout(resolve, 3000))
-            fileStatus = await ai.files.get({ name: uploadedFile.name! })
+            fileStatus = await ai.files.get({ name: uploadedFile.name })
             attempts++
         }
 
-        if (fileStatus.state === 'FAILED') {
+        if (fileStatus.state === ('FAILED' as FileState)) {
             throw new Error('Video processing failed')
         }
 
-        if (fileStatus.state !== 'ACTIVE') {
+        if (fileStatus.state !== ('ACTIVE' as FileState)) {
             throw new Error(
                 `Video processing timed out or failed. State: ${fileStatus.state}`
             )
@@ -213,7 +218,7 @@ export async function analyzeTestimonialVideo(
         const response = await ai.models.generateContent({
             model: modelId,
             contents: createUserContent([
-                createPartFromUri(uploadedFile.uri!, mimeType),
+                createPartFromUri(uploadedFile.uri ?? '', mimeType),
                 analysisPrompt,
             ]),
             config: {
@@ -261,7 +266,7 @@ export async function analyzeTestimonialVideo(
     } finally {
         // Clean up: delete the uploaded file
         try {
-            await ai.files.delete({ name: uploadedFile.name! })
+            await ai.files.delete({ name: uploadedFile.name })
         } catch (deleteError) {
             // Log but don't fail if delete fails
             console.warn('Failed to delete uploaded video file:', deleteError)
@@ -273,5 +278,5 @@ export async function analyzeTestimonialVideo(
  * Check if Google Generative AI is configured
  */
 export function isGeminiConfigured(): boolean {
-    return Boolean(process.env.GOOGLE_GENERATIVE_AI_API_KEY)
+    return Boolean(env.GOOGLE_GENERATIVE_AI_API_KEY)
 }
