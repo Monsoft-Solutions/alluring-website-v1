@@ -35,15 +35,33 @@ export function ScrollToTop() {
             const anchor = target.closest('a')
 
             if (anchor && anchor.href) {
-                // Check if it's an internal link (not external, not tel:, not mailto:)
-                const url = new URL(anchor.href)
-                const isInternalLink =
-                    url.origin === window.location.origin &&
-                    !anchor.href.startsWith('tel:') &&
-                    !anchor.href.startsWith('mailto:') &&
-                    !anchor.target // Not opening in new tab
+                // Early exclusion for telephony/mailto protocols
+                const href = anchor.href
+                if (href.startsWith('tel:') || href.startsWith('mailto:')) {
+                    return
+                }
 
-                if (isInternalLink) {
+                const url = new URL(href)
+
+                // Must be same origin
+                if (url.origin !== window.location.origin) {
+                    return
+                }
+
+                // Exclude if opening in new tab (_blank)
+                const target = anchor.target
+                if (target === '_blank') {
+                    return
+                }
+
+                // Only consider same-tab navigation (empty, _self, or undefined)
+                const isSameTab = target === '' || target === '_self' || !target
+
+                // Skip scroll-to-top for same-page hash navigation
+                const isSamePageHash =
+                    url.hash !== '' && url.pathname === window.location.pathname
+
+                if (isSameTab && !isSamePageHash) {
                     // Small delay to let Next.js navigation complete
                     setTimeout(() => {
                         window.scrollTo({ top: 0, behavior: 'smooth' })
