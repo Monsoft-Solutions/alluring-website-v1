@@ -24,6 +24,8 @@ export const createResourceSchema = z.object({
     metaDescription: z.string().min(1, 'Meta description is required'),
     metaTitle: z.string().optional(),
     metaKeywords: z.string().optional(),
+    primaryKeyword: z.string().max(100).optional(),
+    secondaryKeywords: z.array(z.string()).optional(),
     excerpt: z.string().optional(),
     date: z.string().min(1, 'Date is required'),
     readingTime: z.string().optional(),

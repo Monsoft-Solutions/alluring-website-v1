@@ -277,6 +277,10 @@ async function createBlogPostInTransaction(
     publishedAt: Date
 ) {
     const readingTime = data.readingTime ? parseInt(data.readingTime, 10) : null
+    const primaryKeyword: string | null =
+        (data.primaryKeyword as string | undefined) ?? null
+    const secondaryKeywords: string[] | null =
+        (data.secondaryKeywords as string[] | undefined) ?? null
 
     return db.transaction(async (tx) => {
         // Create blog post
@@ -288,6 +292,8 @@ async function createBlogPostInTransaction(
                 metaDescription: data.metaDescription,
                 metaTitle: data.metaTitle,
                 metaKeywords: data.metaKeywords,
+                primaryKeyword,
+                secondaryKeywords,
                 excerpt: data.excerpt,
                 content: data.content,
                 status: data.status,
