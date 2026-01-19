@@ -72,7 +72,7 @@ export function InlineImageDialog({
     const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
     const [isGeneratingImage, setIsGeneratingImage] = useState(false)
 
-    // Ref to track previous open state for auto-generation
+    // Ref to track previous open state for resetting state
     const wasOpenRef = useRef(false)
 
     const handleGeneratePrompt = useCallback(
@@ -122,14 +122,14 @@ export function InlineImageDialog({
         [selectedText, selectedType, blogPostId]
     )
 
-    // Auto-generate prompt when dialog opens with selected text
+    // Reset prompt when dialog opens (prompt generation happens when user selects image type)
     useEffect(() => {
-        // Only trigger when dialog transitions from closed to open
-        if (open && !wasOpenRef.current && selectedText && !prompt) {
-            void handleGeneratePrompt()
+        // Only reset when dialog transitions from closed to open
+        if (open && !wasOpenRef.current) {
+            setPrompt('')
         }
         wasOpenRef.current = open
-    }, [open, selectedText, prompt, handleGeneratePrompt])
+    }, [open])
 
     const handleTypeChange = useCallback(
         (newType: InlineImageTypeId) => {
