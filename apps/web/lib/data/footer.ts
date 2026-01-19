@@ -42,6 +42,11 @@ export const footerSections: NavigationSection[] = [
                 external: false,
             },
             {
+                label: 'For Men',
+                href: '/mens-plastic-surgery-miami',
+                external: false,
+            },
+            {
                 label: 'Brides',
                 href: '/bridal-consultation',
                 external: false,

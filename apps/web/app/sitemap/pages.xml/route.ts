@@ -67,6 +67,11 @@ const STATIC_PAGES: Array<{
         changeFrequency: 'weekly',
         priority: 0.9,
     },
+    {
+        path: '/mens-plastic-surgery-miami',
+        changeFrequency: 'weekly',
+        priority: 0.9,
+    },
     // Legal pages
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
