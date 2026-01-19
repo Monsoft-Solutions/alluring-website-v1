@@ -16,6 +16,7 @@ import {
     Bot,
     Search,
     Workflow,
+    Quote,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -62,6 +63,11 @@ const navItems: NavItem[] = [
             { title: 'Groups', href: '/gallery/groups' },
             { title: 'Before & After', href: '/gallery/before-after' },
         ],
+    },
+    {
+        title: 'Testimonials',
+        href: '/testimonials',
+        icon: Quote,
     },
     {
         title: 'Social Media',

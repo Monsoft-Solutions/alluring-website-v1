@@ -1,0 +1,1 @@
+ALTER TABLE "patient_testimonial" ADD COLUMN "long_description" text;

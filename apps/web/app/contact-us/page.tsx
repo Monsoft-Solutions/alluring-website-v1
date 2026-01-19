@@ -17,7 +17,7 @@ import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { FeaturedTestimonials } from '@/components/testimonials/featured-testimonials.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import {
     faqCategoriesContact,
@@ -109,7 +109,7 @@ export default async function ContactPage() {
                 />
 
                 {/* Section 4: Testimonials - Social proof and emotional connection */}
-                <Testimonials id='testimonials' formAnchor='#contact-form' />
+                <FeaturedTestimonials limit={3} />
 
                 {/* Section 5: Gallery Carousel - Visual proof of results */}
                 <GalleryCarousel id='gallery-results' images={galleryImages} />

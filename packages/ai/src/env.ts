@@ -41,6 +41,12 @@ const envSchema = z.object({
      * Get one at https://console.anthropic.com
      */
     ANTHROPIC_API_KEY: z.string().optional(),
+
+    /**
+     * Google Generative AI API key for Gemini models
+     * Get one at https://aistudio.google.com/apikey
+     */
+    GOOGLE_GENERATIVE_AI_API_KEY: z.string().optional(),
 })
 
 /**
@@ -52,6 +58,7 @@ export const env = envSchema.parse({
     GOOGLE_CUSTOM_SEARCH_ENGINE_ID: process.env.GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
     PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 })
 
 /**
@@ -82,4 +89,11 @@ export function isPerplexityConfigured(): boolean {
  */
 export function isAnthropicConfigured(): boolean {
     return Boolean(env.ANTHROPIC_API_KEY)
+}
+
+/**
+ * Check if Google Generative AI (Gemini) is configured
+ */
+export function isGeminiConfigured(): boolean {
+    return Boolean(env.GOOGLE_GENERATIVE_AI_API_KEY)
 }
