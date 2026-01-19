@@ -18,10 +18,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 
 import { extractFaqs } from '@workspace/ai/functions'
 
-import type {
-    PipelineStatus,
-    ActionResult,
-} from '@/lib/types/blog/blog-action.type'
+import type { ActionResult } from '@/lib/types/blog/blog-action.type'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 

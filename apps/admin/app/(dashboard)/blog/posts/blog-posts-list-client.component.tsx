@@ -9,7 +9,7 @@
  * @module @admin/app/(dashboard)/blog/posts/blog-posts-list-client
  */
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@workspace/ui/components/button'
 import { Plus, TrendingUp } from 'lucide-react'
@@ -41,12 +41,19 @@ export function BlogPostsListClient({
     sortOrder,
 }: BlogPostsListClientProps) {
     const router = useRouter()
+
+    // Create a stable key from posts to detect when they change
+    const postsKey = useMemo(() => posts.map((p) => p.id).join(','), [posts])
+
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+    const [lastPostsKey, setLastPostsKey] = useState(postsKey)
 
     // Clear selection when posts change (pagination, sort, etc.)
-    useEffect(() => {
+    // Using a key comparison instead of direct setState in effect
+    if (postsKey !== lastPostsKey) {
         setSelectedIds(new Set())
-    }, [posts])
+        setLastPostsKey(postsKey)
+    }
 
     // ESC key to clear selection
     useEffect(() => {
