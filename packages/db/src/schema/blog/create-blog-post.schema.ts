@@ -5,6 +5,14 @@ import { z } from 'zod'
  */
 export const imageDataSchema = z.object({
     url: z.url('Invalid image URL'),
+    alt: z.string().optional(),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    width: z.number().int().positive().optional(),
+    height: z.number().int().positive().optional(),
+    fileSize: z.number().int().positive().optional(),
+    mimeType: z.string().optional(),
+    originalFilename: z.string().optional(),
 })
 
 /**

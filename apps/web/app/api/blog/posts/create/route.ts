@@ -9,7 +9,9 @@ import {
     createResourceSchema,
     images,
 } from '@workspace/db/schema/blog'
+import { CACHE_TAGS } from '@workspace/shared/cache'
 import { inArray } from 'drizzle-orm'
+import { revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { uploadImageToBlob as uploadImageToBlobFormUrl } from '@/lib/api/upload-image.util'
@@ -29,6 +31,7 @@ type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
  */
 async function postHandler(request: NextRequest) {
     try {
+        console.log('Creating blog post from external API')
         // Parse request body
         const body = (await request.json()) as unknown
 
@@ -79,11 +82,28 @@ async function postHandler(request: NextRequest) {
             publishedAtValidation
         )
 
+        // Revalidate cache for immediate availability
+        revalidateTag(CACHE_TAGS.BLOG_POSTS, { expire: 0 })
+        if (createdPost.slug) {
+            revalidateTag(CACHE_TAGS.blogPostBySlug(createdPost.slug), {
+                expire: 0,
+            })
+        }
+
+        // If published, revalidate sitemap URLs for page classification
+        if (data.status === 'published') {
+            revalidateTag(CACHE_TAGS.SITEMAP_URLS, { expire: 0 })
+        }
+
+        console.log('Blog post created successfully')
+
         return NextResponse.json(
             {
                 id: createdPost.id,
                 slug: createdPost.slug,
                 featuredImageUrl: imageUrl,
+                success: true,
+                featuredImageId,
             },
             { status: 201 }
         )
@@ -119,16 +139,34 @@ async function handleImageUpload(
             filename
         )
 
-        // Create image record in database
+        // Create image record in database with all metadata
+        const imageValues: {
+            url: string
+            alt: string
+            title: string | null | undefined
+            description: string | null | undefined
+            width: number | null | undefined
+            height: number | null | undefined
+            fileSize: number | null | undefined
+            mimeType: string | null | undefined
+            originalFilename: string | null | undefined
+        } = {
+            url: uploadResult.url,
+            alt: data.featuredImage.alt ?? `Featured image for ${data.title}`,
+            title: data.featuredImage.title ?? data.title,
+            description: data.featuredImage.description ?? null,
+            width: data.featuredImage.width ?? null,
+            height: data.featuredImage.height ?? null,
+            fileSize: data.featuredImage.fileSize ?? null,
+            mimeType: data.featuredImage.mimeType ?? uploadResult.mimeType,
+            originalFilename:
+                data.featuredImage.originalFilename ??
+                uploadResult.originalFilename,
+        }
+
         const [imageRecord] = await db
             .insert(images)
-            .values({
-                url: uploadResult.url,
-                alt: `Featured image for ${data.title}`,
-                title: data.title,
-                originalFilename: uploadResult.originalFilename,
-                mimeType: uploadResult.mimeType,
-            })
+            .values(imageValues)
             .returning({ id: images.id })
 
         if (!imageRecord?.id) {
