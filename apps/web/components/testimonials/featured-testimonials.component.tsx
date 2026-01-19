@@ -26,7 +26,7 @@ export async function FeaturedTestimonials({
     showViewAll = true,
 }: FeaturedTestimonialsProps) {
     // Fetch featured testimonials from database
-    let testimonials = await getFeaturedTestimonials(limit)
+    const testimonials = await getFeaturedTestimonials(limit)
 
     // Return null if no featured testimonials exist
     if (testimonials.length === 0) {

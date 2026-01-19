@@ -28,7 +28,7 @@ export function FeaturedTestimonialCard({
             videoRef.current.pause()
             setIsPlaying(false)
         } else {
-            videoRef.current.play()
+            void videoRef.current.play()
             setIsPlaying(true)
         }
     }

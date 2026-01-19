@@ -44,11 +44,6 @@ import type {
 import { InstagramPickerDialog } from './instagram-picker-dialog.component'
 import { VideoAnalysisPanel } from './video-analysis-panel.component'
 
-// Extended form data for client-side handling
-interface TestimonialFormDataExtended extends TestimonialFormData {
-    directMediaUrl?: string | null
-}
-
 type TestimonialFormProps = {
     initialData?: TestimonialDetail
     instagramPosts?: InstagramPostSelectItem[]
@@ -199,7 +194,7 @@ export function TestimonialForm({
         (formData.sourceType === 'instagram' &&
             selectedInstagramPost?.mediaType === 'video')
 
-    const handleSubmit = async (
+    const handleSubmit = (
         targetStatus?: 'draft' | 'published' | 'archived'
     ) => {
         const status = targetStatus ?? formData.status

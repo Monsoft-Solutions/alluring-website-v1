@@ -79,7 +79,7 @@ export function TestimonialCard({
 
                     {/* Quote text */}
                     <blockquote className='mb-4 line-clamp-4 text-sm leading-relaxed text-stone-600'>
-                        "{testimonial.quote}"
+                        &ldquo;{testimonial.quote}&rdquo;
                     </blockquote>
 
                     {/* Patient info */}

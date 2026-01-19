@@ -6,7 +6,6 @@ import { Button } from '@workspace/ui/components/button'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
-import { SectionHeader } from '@/components/shared/section-header.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { TestimonialCard } from '@/components/testimonials/testimonial-card.component'
 import { siteConfig } from '@/lib/data/site-config'

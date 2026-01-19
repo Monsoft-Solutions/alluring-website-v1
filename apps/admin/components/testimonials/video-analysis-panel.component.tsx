@@ -81,7 +81,7 @@ export function VideoAnalysisPanel({
     }
 
     const handleCopy = (text: string, field: string) => {
-        navigator.clipboard.writeText(text)
+        void navigator.clipboard.writeText(text)
         setCopiedField(field)
         setTimeout(() => setCopiedField(null), 2000)
     }
