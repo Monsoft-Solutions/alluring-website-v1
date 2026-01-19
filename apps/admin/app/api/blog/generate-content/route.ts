@@ -25,6 +25,7 @@ import {
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
+import { createSseStreamSender } from '@/lib/utils/sse-stream.util'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300 // Allow up to 5 minutes for full pipeline
@@ -66,12 +67,7 @@ const requestSchema = z.object({
 type ValidatedRequest = z.infer<typeof requestSchema>
 
 /**
- * SSE stream response type
- */
-type SSEEventType = 'progress' | 'complete' | 'error'
-
-/**
- * Progress event data
+ * SSE event types and payloads
  */
 type ProgressEventData = {
     step: AgenticPipelineStep
@@ -80,9 +76,6 @@ type ProgressEventData = {
     data?: AgenticProgressData
 }
 
-/**
- * Complete event data
- */
 type CompleteEventData = {
     success: true
     content: string
@@ -102,54 +95,27 @@ type CompleteEventData = {
     metrics: AgenticContentPipelineResult['metrics']
 }
 
-/**
- * Error event data
- */
 type ErrorEventData = {
     success: false
     error: string
 }
 
-/**
- * Create a Server-Sent Events stream for real-time progress updates
- */
-function createSSEStream() {
-    const encoder = new TextEncoder()
-    let controller: ReadableStreamDefaultController<Uint8Array> | null = null
-
-    const stream = new ReadableStream<Uint8Array>({
-        start(c) {
-            controller = c
-        },
-    })
-
-    const send = (
-        event: SSEEventType,
-        data: ProgressEventData | CompleteEventData | ErrorEventData
-    ) => {
-        if (controller) {
-            const message = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`
-            controller.enqueue(encoder.encode(message))
-        }
-    }
-
-    const close = () => {
-        if (controller) {
-            controller.close()
-        }
-    }
-
-    return { stream, send, close }
+type SseEventPayloadMap = {
+    progress: ProgressEventData
+    complete: CompleteEventData
+    error: ErrorEventData
 }
+
+type SseEventType = keyof SseEventPayloadMap
 
 /**
  * Run the pipeline with streaming progress
  */
 async function runPipelineWithStreaming(
     validatedData: ValidatedRequest,
-    send: (
-        event: SSEEventType,
-        data: ProgressEventData | CompleteEventData | ErrorEventData
+    send: <E extends SseEventType>(
+        event: E,
+        data: SseEventPayloadMap[E]
     ) => void,
     close: () => void
 ): Promise<void> {
@@ -289,7 +255,10 @@ export async function POST(request: NextRequest) {
 
         if (useStreaming) {
             // SSE streaming response
-            const { stream, send, close } = createSSEStream()
+            const { stream, send, close } = createSseStreamSender<
+                SseEventType,
+                SseEventPayloadMap
+            >()
 
             // Send initial progress
             send('progress', {

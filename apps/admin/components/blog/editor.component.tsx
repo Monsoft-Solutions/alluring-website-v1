@@ -3,20 +3,25 @@
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
+import type { GeneratedInlineImage } from '@workspace/ai'
 
 import { cn } from '@workspace/ui/lib/utils'
 
+import { AutoInlineImagesDialog } from './editor/auto-inline-images-dialog.component'
 import { EditorBubbleMenu } from './editor/bubble-menu.component'
 import { createEditorExtensions } from './editor/editor-extensions'
 import { InlineImageDialog } from './editor/inline-image-dialog.component'
 import { ImagePopover, LinkPopover } from './editor/link-popover.component'
 import { EditorToolbar } from './editor/toolbar.component'
+import { insertGeneratedInlineImages } from './editor/insert-generated-inline-images.util'
 
 type PostEditorProps = {
     content: string
     onChange: (content: string) => void
     placeholder?: string
     blogPostId?: string
+    /** Blog post title for AI context in auto inline images */
+    blogPostTitle?: string
 }
 
 export function PostEditor({
@@ -24,10 +29,13 @@ export function PostEditor({
     onChange,
     placeholder = 'Start writing your post...',
     blogPostId,
+    blogPostTitle = 'Blog Post',
 }: PostEditorProps) {
     const [linkPopoverOpen, setLinkPopoverOpen] = useState(false)
     const [imagePopoverOpen, setImagePopoverOpen] = useState(false)
     const [inlineImageDialogOpen, setInlineImageDialogOpen] = useState(false)
+    const [autoInlineImagesDialogOpen, setAutoInlineImagesDialogOpen] =
+        useState(false)
     const [selectedText, setSelectedText] = useState('')
     const [selectionPosition, setSelectionPosition] = useState<number | null>(
         null
@@ -121,6 +129,22 @@ export function PostEditor({
         [editor, selectionPosition]
     )
 
+    const handleAutoInlineImages = useCallback(() => {
+        if (!blogPostId) {
+            toast.error('Please save the post first before generating images')
+            return
+        }
+        setAutoInlineImagesDialogOpen(true)
+    }, [blogPostId])
+
+    const handleAutoImagesGenerated = useCallback(
+        (images: GeneratedInlineImage[]) => {
+            if (!editor) return
+            insertGeneratedInlineImages(editor, images)
+        },
+        [editor]
+    )
+
     if (!editor) {
         return (
             <div className='flex h-[500px] items-center justify-center rounded-lg border bg-stone-50'>
@@ -144,6 +168,8 @@ export function PostEditor({
                 editor={editor}
                 onAddLink={handleAddLink}
                 onAddImage={handleOpenImagePopover}
+                onAutoInlineImages={handleAutoInlineImages}
+                autoInlineImagesDisabled={!blogPostId}
             />
 
             {/* Link Popover - attached to a hidden trigger */}
@@ -178,6 +204,16 @@ export function PostEditor({
                 selectedText={selectedText}
                 blogPostId={blogPostId}
                 onImageGenerated={handleImageGenerated}
+            />
+
+            {/* Auto Inline Images Dialog */}
+            <AutoInlineImagesDialog
+                open={autoInlineImagesDialogOpen}
+                onOpenChange={setAutoInlineImagesDialogOpen}
+                content={content}
+                title={blogPostTitle}
+                blogPostId={blogPostId}
+                onImagesGenerated={handleAutoImagesGenerated}
             />
 
             {/* Editor Content */}

@@ -113,6 +113,23 @@ export {
     // Image analysis - AI-specific schema that composes shared schemas
     imageAnalysisSchema,
     type ImageAnalysis,
+    // Inline image analysis schemas
+    inlineImageTypeSchema,
+    imageOpportunitySchema,
+    contentAssessmentSchema,
+    inlineImageAnalysisSchema,
+    generatedImageStatusSchema,
+    generatedInlineImageSchema,
+    pipelineMetricsSchema,
+    autoInlineImagePipelineResultSchema,
+    type InlineImageTypeValue,
+    type ImageOpportunity,
+    type ContentAssessment,
+    type InlineImageAnalysis,
+    type GeneratedImageStatus,
+    type GeneratedInlineImage,
+    type PipelineMetrics,
+    type AutoInlineImagePipelineResult,
 } from './schemas'
 
 // Model definitions

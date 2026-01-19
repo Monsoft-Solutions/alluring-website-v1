@@ -14,6 +14,11 @@ export {
 } from './inline-image-prompt.prompt'
 
 export {
+    INLINE_IMAGE_ANALYZER_SYSTEM_PROMPT,
+    getInlineImageAnalyzerPrompt,
+} from './inline-image-analyzer.prompt'
+
+export {
     BLOG_ANALYSIS_SYSTEM_PROMPT,
     getBlogAnalysisPrompt,
 } from './blog-analysis.prompt'
