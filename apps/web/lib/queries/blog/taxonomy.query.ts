@@ -1,5 +1,6 @@
 import { db } from '@workspace/db/client'
 import {
+    author,
     blogCategory,
     blogPost,
     blogPostCategory,
@@ -9,7 +10,11 @@ import {
 import { and, count, eq, isNotNull } from 'drizzle-orm'
 import { cache } from 'react'
 
-import type { BlogCategoryItem, BlogTagItem } from '@/types/blog/taxonomy.type'
+import type {
+    BlogAuthorItem,
+    BlogCategoryItem,
+    BlogTagItem,
+} from '@/types/blog/taxonomy.type'
 
 export const listActiveCategoriesWithCounts = cache(
     async (): Promise<BlogCategoryItem[]> => {
@@ -111,5 +116,33 @@ export const getActiveTagBySlug = cache(
 
         if (!row || row.isActive !== true) return null
         return { id: row.id, name: row.name, slug: row.slug }
+    }
+)
+
+export const listAuthorsWithCounts = cache(
+    async (): Promise<BlogAuthorItem[]> => {
+        const rows = await db
+            .select({
+                id: author.id,
+                name: author.name,
+                count: count(blogPost.id),
+            })
+            .from(author)
+            .leftJoin(
+                blogPost,
+                and(
+                    eq(blogPost.authorId, author.id),
+                    eq(blogPost.status, 'published'),
+                    isNotNull(blogPost.publishedAt)
+                )
+            )
+            .groupBy(author.id)
+
+        return rows.map((r) => ({
+            id: r.id,
+            name: r.name,
+            slug: r.id, // Use ID as slug since author table has no slug field
+            count: Number(r.count),
+        }))
     }
 )

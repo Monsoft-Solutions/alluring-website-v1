@@ -11,3 +11,10 @@ export type BlogTagItem = {
     slug: string
     count?: number
 }
+
+export type BlogAuthorItem = {
+    id: string
+    name: string
+    slug: string
+    count?: number
+}
