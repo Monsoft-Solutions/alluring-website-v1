@@ -10,7 +10,7 @@
  */
 
 import { useState, useTransition } from 'react'
-import { Check, FileText, Sparkles, X } from 'lucide-react'
+import { Check, FileText, ImageIcon, Sparkles, X } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@workspace/ui/components/button'
@@ -24,6 +24,7 @@ import {
 import {
     bulkUpdateBlogPostStatus,
     bulkGenerateFaqs,
+    bulkGenerateInlineImages,
 } from '@/lib/actions/blog-bulk.action'
 
 type BulkActionToolbarProps = {
@@ -119,6 +120,38 @@ export function BlogBulkActionToolbar({
         })
     }
 
+    const handleGenerateInlineImages = () => {
+        startTransition(async () => {
+            const toastId = toast.loading(
+                `Generating inline images for ${selectedIds.length} post${selectedIds.length > 1 ? 's' : ''}...`
+            )
+
+            const result = await bulkGenerateInlineImages(selectedIds)
+
+            toast.dismiss(toastId)
+
+            if (result.success) {
+                const processed = result.processedCount || 0
+                const failed = result.failedCount || 0
+                const images = result.totalImagesGenerated || 0
+
+                if (failed === 0) {
+                    toast.success(
+                        `Generated ${images} image${images !== 1 ? 's' : ''} across ${processed} post${processed !== 1 ? 's' : ''}`
+                    )
+                } else {
+                    toast.warning(
+                        `Generated images for ${processed} post${processed !== 1 ? 's' : ''}, ${failed} failed`
+                    )
+                }
+                onActionComplete()
+                onClearSelection()
+            } else {
+                toast.error(result.error || 'Failed to generate inline images')
+            }
+        })
+    }
+
     if (selectedIds.length === 0) return null
 
     return (
@@ -194,6 +227,21 @@ export function BlogBulkActionToolbar({
                         >
                             <Sparkles className='mr-1.5 h-4 w-4' />
                             Generate FAQs
+                        </Button>
+
+                        {/* Separator */}
+                        <div className='h-6 w-px bg-gray-300' />
+
+                        {/* Generate Inline Images */}
+                        <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={handleGenerateInlineImages}
+                            disabled={isPending}
+                            title='Generate inline images using AI (requires content, 500+ words recommended)'
+                        >
+                            <ImageIcon className='mr-1.5 h-4 w-4' />
+                            Generate Images
                         </Button>
                     </div>
                 </div>
