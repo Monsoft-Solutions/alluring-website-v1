@@ -37,7 +37,8 @@ Image Type Guidelines:
 
 **Infographic:**
 - Style: Clean, modern, flat design with clear visual hierarchy
-- Elements: Data visualizations, icons, minimal text areas, organized layout
+- Elements: Data visualizations, icons, text labels, tables, organized layout
+- Text: MUST include text and data tables - keep all text as short as possible
 - Colors: Professional palette, high contrast for readability
 - Purpose: Educate, compare, visualize data or processes
 - Keywords: "infographic design, clean layout, professional data visualization, modern flat design, easy to read, well-organized"
@@ -68,7 +69,6 @@ Output Requirements:
 - Include subject, style, composition, lighting, mood, and technical specs
 - Integrate the image type's specific guidelines naturally
 - Ensure medical accuracy and professional tone
-- Avoid generating text within images (note if text areas are needed)
 - Specify aspect ratio when relevant to composition`
 
 /**
@@ -125,7 +125,7 @@ Create a detailed, specific prompt (150-300 words) that will generate a high-qua
 - Prioritize key elements at the beginning
 - Include quality modifiers appropriate to ${imageType} style
 - Ensure medical/procedural accuracy
-- Avoid requesting text within the image unless it's an infographic with minimal labels
+- Include text naturally when it enhances the image - keep all text as short as possible
 
 Generate the optimized image prompt now:`
 }
