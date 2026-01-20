@@ -11,6 +11,8 @@
  * @module @admin/app/workflows/inline-image-generation/bulk-inline-images
  */
 
+import type { InlineImageTypeValue } from '@workspace/ai'
+
 import { analyzeContentStep } from './analyze-content.step'
 import { generateImageStep } from './generate-image.step'
 import { saveContentStep } from './save-content.step'
@@ -120,6 +122,7 @@ async function processSinglePost(
             imageUrl: string
             insertAfterText: string
             altText: string
+            imageType: InlineImageTypeValue
         }> = []
 
         for (const opportunity of analysisResult.opportunities) {
@@ -138,6 +141,7 @@ async function processSinglePost(
                     imageUrl: imageResult.imageUrl,
                     insertAfterText: imageResult.insertAfterText,
                     altText: imageResult.altText,
+                    imageType: imageResult.imageType,
                 })
             }
         }

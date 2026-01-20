@@ -12,12 +12,13 @@
 
 import { generateImageWithFal } from '@/lib/services/fal-image-generation.service'
 import type { ImageModelId } from '@/lib/services/fal-image-generation.service'
+import type { InlineImageTypeValue } from '@workspace/ai'
 
 export type GenerateImageStepInput = {
     postId: string
     opportunityId: string
     prompt: string
-    imageType: string
+    imageType: InlineImageTypeValue
     photoStyle?: string
     insertAfterText: string
     altText: string
@@ -29,6 +30,7 @@ export type GenerateImageStepResult = {
     imageUrl?: string
     insertAfterText: string
     altText: string
+    imageType: InlineImageTypeValue
     error?: string
 }
 
@@ -81,6 +83,7 @@ export async function generateImageStep(
                 opportunityId,
                 insertAfterText,
                 altText,
+                imageType,
                 error: 'No image returned from FAL.ai',
             }
         }
@@ -95,6 +98,7 @@ export async function generateImageStep(
             imageUrl: images[0].blobUrl,
             insertAfterText,
             altText,
+            imageType,
         }
     } catch (error) {
         console.error(
@@ -107,6 +111,7 @@ export async function generateImageStep(
             opportunityId,
             insertAfterText,
             altText,
+            imageType,
             error:
                 error instanceof Error
                     ? error.message

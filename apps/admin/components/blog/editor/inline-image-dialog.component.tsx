@@ -51,12 +51,12 @@ type InlineImageDialogProps = {
     onImageGenerated: (imageUrl: string, altText: string) => void
 }
 
-const ICON_MAP = {
+const ICON_MAP: Record<string, typeof BarChart> = {
     BarChart,
     Megaphone,
     Palette,
     Camera,
-} as const
+}
 
 export function InlineImageDialog({
     open,
@@ -66,7 +66,7 @@ export function InlineImageDialog({
     onImageGenerated,
 }: InlineImageDialogProps) {
     const [selectedType, setSelectedType] = useState<InlineImageTypeId>(
-        INLINE_IMAGE_TYPES[0].id
+        INLINE_IMAGE_TYPES[0]?.id ?? 'infographic'
     )
     const [selectedPhotoStyle, setSelectedPhotoStyle] = useState<
         PhotoStyleId | undefined
@@ -265,7 +265,7 @@ export function InlineImageDialog({
                         </Label>
                         <div className='grid grid-cols-2 gap-3'>
                             {INLINE_IMAGE_TYPES.map((type) => {
-                                const Icon = ICON_MAP[type.icon]
+                                const Icon = ICON_MAP[type.icon] ?? ImageIcon
                                 return (
                                     <button
                                         key={type.id}

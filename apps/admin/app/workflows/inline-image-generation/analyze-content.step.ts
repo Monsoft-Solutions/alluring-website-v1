@@ -13,7 +13,12 @@ import { blogPost } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 
 import { runAutoInlineImagePipeline } from '@workspace/ai/pipelines'
-import type { GeneratedInlineImage, InlineImageAnalysis } from '@workspace/ai'
+import type {
+    GeneratedInlineImage,
+    InlineImageAnalysis,
+    InlineImageTypeValue,
+    PhotoStyleValue,
+} from '@workspace/ai'
 
 export type AnalyzeContentStepInput = {
     postId: string
@@ -27,8 +32,8 @@ export type AnalyzeContentStepResult = {
     opportunities: Array<{
         opportunityId: string
         prompt: string
-        imageType: string
-        photoStyle?: string
+        imageType: InlineImageTypeValue
+        photoStyle?: PhotoStyleValue
         insertAfterText: string
         altText: string
     }>
