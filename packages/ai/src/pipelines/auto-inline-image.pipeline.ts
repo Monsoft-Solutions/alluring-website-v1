@@ -14,6 +14,7 @@ import {
     type InlineImageAnalyzerResult,
 } from '../agents/inline-image-analyzer.agent'
 import { getPhotoGuidelinesWithDiversity } from '../constants/photo-diversity.constant'
+import { getPhotoStyleById } from '../constants/photo-style.constant'
 import { generateInlineImagePrompt } from '../functions/generate-inline-image-prompt.function'
 import type {
     InlineImageAnalysis,
@@ -22,7 +23,6 @@ import type {
     AutoInlineImagePipelineResult,
     ImageOpportunity,
     InlineImageTypeValue,
-    PhotoStyleValue,
 } from '../schemas/inline-image-analysis.schema'
 
 /**
@@ -36,21 +36,6 @@ const IMAGE_TYPE_GUIDELINES: Record<InlineImageTypeValue, string> = {
     illustration:
         'Detailed professional medical illustration, clean educational diagram, anatomical accuracy, clear labeling areas, professional medical textbook style, precise and informative',
     photo: 'High-quality professional photography, natural lighting, photorealistic, sharp focus, professional clinic environment, medical grade quality, clean and modern',
-}
-
-/**
- * Photo style-specific guidelines with diversity requirements
- */
-const PHOTO_STYLE_GUIDELINES: Record<PhotoStyleValue, string> = {
-    artistic: getPhotoGuidelinesWithDiversity(
-        'High-end artistic photography, tasteful sensuality, refined and classy aesthetic, elegant composition showing skin and body contours, soft dramatic lighting, luxurious atmosphere, celebration of feminine beauty, sophisticated boudoir-inspired style, premium fashion photography aesthetic, body confidence imagery'
-    ),
-    lifestyle: getPhotoGuidelinesWithDiversity(
-        'Authentic lifestyle photography, natural candid moments, everyday scenarios, warm inviting atmosphere, relatable and approachable, casual elegance, real-life settings, comfortable and natural poses'
-    ),
-    'miami-cover': getPhotoGuidelinesWithDiversity(
-        'Sexy (non-explicit) Miami publication cover-style editorial photography, high-fashion styling, tasteful skin showing (swimwear/lingerie-inspired), confident pose and body confidence, glamorous hair and makeup, glossy magazine lighting, South Beach / Art Deco vibe, vibrant Miami color accents, premium luxury aesthetic, cinematic highlights and shadows, cover-ready composition with negative space for masthead/headlines, NO explicit nudity (no nipples/genitals), adult-only'
-    ),
 }
 
 /**
@@ -117,7 +102,11 @@ function getGuidelinesForOpportunity(opportunity: ImageOpportunity): string {
         opportunity.recommendedImageType === 'photo' &&
         opportunity.recommendedPhotoStyle
     ) {
-        return PHOTO_STYLE_GUIDELINES[opportunity.recommendedPhotoStyle]
+        const baseGuidelines = getPhotoStyleById(
+            opportunity.recommendedPhotoStyle
+        ).promptGuidelines
+
+        return getPhotoGuidelinesWithDiversity(baseGuidelines)
     }
 
     // Otherwise use standard image type guidelines

@@ -141,6 +141,15 @@ export {
     getPhotoGuidelinesWithDiversity,
 } from './constants/photo-diversity.constant'
 
+export {
+    PHOTO_STYLE_IDS,
+    PHOTO_STYLES,
+    getPhotoStyleById,
+    getPhotoStyleLabel,
+    type PhotoStyleId,
+    type PhotoStyleDefinition,
+} from './constants/photo-style.constant'
+
 // Model definitions
 export {
     AVAILABLE_MODELS,

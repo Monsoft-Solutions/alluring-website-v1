@@ -5,7 +5,7 @@
  * along with their specific prompting guidelines for optimal AI generation.
  */
 
-import type { PhotoStyleValue } from '@workspace/ai'
+import { PHOTO_STYLES as AI_PHOTO_STYLES } from '@workspace/ai'
 
 export const INLINE_IMAGE_TYPES = [
     {
@@ -75,32 +75,7 @@ export function getPromptGuidelines(id: InlineImageTypeId): string {
  * These sub-types allow for varying the style of photorealistic images
  * based on content context (results showcase, lifestyle, or medical explanations).
  */
-export const PHOTO_STYLES = [
-    {
-        id: 'artistic' as const satisfies PhotoStyleValue,
-        name: 'Artistic/Sensual',
-        description:
-            'Refined, classy imagery showcasing body with artistic elegance',
-        promptGuidelines:
-            'High-end artistic photography, tasteful sensuality, refined and classy aesthetic, elegant composition showing skin and body contours, soft dramatic lighting, luxurious atmosphere, celebration of feminine beauty, sophisticated boudoir-inspired style, premium fashion photography aesthetic, body confidence imagery, warm skin tones, artistic shadows and highlights',
-    },
-    {
-        id: 'lifestyle' as const satisfies PhotoStyleValue,
-        name: 'Lifestyle/Casual',
-        description:
-            'Natural everyday scenarios, casual settings, real-life moments',
-        promptGuidelines:
-            'Authentic lifestyle photography, natural candid moments, everyday scenarios, warm inviting atmosphere, relatable and approachable, casual elegance, real-life settings, comfortable and natural poses',
-    },
-    {
-        id: 'miami-cover' as const satisfies PhotoStyleValue,
-        name: 'Miami Publication Cover',
-        description:
-            'Sexy (non-explicit) editorial cover vibe with Miami glamour',
-        promptGuidelines:
-            'Sexy (non-explicit) Miami publication cover-style editorial photography, high-fashion styling, tasteful skin showing (swimwear/lingerie-inspired), confident pose and body confidence, glamorous hair and makeup, glossy magazine lighting, South Beach / Art Deco vibe, vibrant Miami color accents, premium luxury aesthetic, cinematic highlights and shadows, cover-ready composition with negative space for masthead/headlines, NO explicit nudity (no nipples/genitals), adult-only',
-    },
-] as const
+export const PHOTO_STYLES = AI_PHOTO_STYLES
 
 export type PhotoStyleId = (typeof PHOTO_STYLES)[number]['id']
 

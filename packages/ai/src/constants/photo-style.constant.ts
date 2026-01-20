@@ -5,7 +5,6 @@
  *
  * @module @workspace/ai/constants/photo-style
  */
-import type { z } from 'zod'
 
 /**
  * Supported photo style IDs (canonical list)
@@ -81,14 +80,4 @@ export function getPhotoStyleById(id: PhotoStyleId): PhotoStyleDefinition {
 
 export function getPhotoStyleLabel(id: PhotoStyleId): string {
     return PHOTO_STYLE_BY_ID[id].label
-}
-
-/**
- * Build a zod enum from the canonical IDs (handy for schema composition).
- *
- * Note: we keep this helper tiny so schemas can avoid importing all constants
- * unless needed.
- */
-export function createPhotoStyleSchema(zod: typeof z) {
-    return zod.enum(PHOTO_STYLE_IDS)
 }

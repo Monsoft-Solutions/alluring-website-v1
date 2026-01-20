@@ -3,6 +3,8 @@ import { blogPost } from '@workspace/db/schema'
 import {
     generateInlineImagePrompt,
     getPhotoGuidelinesWithDiversity,
+    inlineImageTypeSchema,
+    photoStyleSchema,
 } from '@workspace/ai'
 import { eq } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
@@ -25,8 +27,8 @@ const requestSchema = z.object({
         .string()
         .min(10, 'Selected text must be at least 10 characters')
         .max(5000, 'Selected text must be less than 5000 characters'),
-    imageType: z.enum(['infographic', 'marketing', 'illustration', 'photo']),
-    photoStyle: z.enum(['artistic', 'lifestyle', 'miami-cover']).optional(),
+    imageType: inlineImageTypeSchema,
+    photoStyle: photoStyleSchema.optional(),
     blogPostId: z.string().uuid('Invalid blog post ID').optional(),
 })
 

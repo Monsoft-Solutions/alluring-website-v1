@@ -7,6 +7,11 @@
  * @module @workspace/ai/prompts/blog/inline-image-prompt
  */
 
+import {
+    getPhotoStyleLabel,
+    type PhotoStyleId,
+} from '../../constants/photo-style.constant'
+
 export const INLINE_IMAGE_PROMPT_SYSTEM = `You are an expert AI image prompt engineer specializing in medical and cosmetic surgery content.
 You are working for Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
 
@@ -99,15 +104,6 @@ Output Requirements:
 - In case you are gonna specify the brand, make sure to use the brand name "Alluring Plastic Surgery" and the location "Miami, FL"`
 
 /**
- * Photo style labels for display
- */
-const PHOTO_STYLE_LABELS: Record<string, string> = {
-    artistic: 'Artistic/Sensual',
-    lifestyle: 'Lifestyle/Casual',
-    'miami-cover': 'Miami Publication Cover (Sexy Editorial)',
-}
-
-/**
  * Generate the user prompt for inline image generation
  */
 export function getInlineImagePrompt(input: {
@@ -116,7 +112,7 @@ export function getInlineImagePrompt(input: {
     imageTypeGuidelines: string
     blogPostTitle?: string
     blogPostTopic?: string
-    photoStyle?: 'artistic' | 'lifestyle' | 'miami-cover'
+    photoStyle?: PhotoStyleId
 }): string {
     const {
         selectedText,
@@ -130,7 +126,7 @@ export function getInlineImagePrompt(input: {
     // Build photo style section if applicable
     const photoStyleSection =
         imageType === 'photo' && photoStyle
-            ? `\n**Photo Style:** ${PHOTO_STYLE_LABELS[photoStyle] || photoStyle}`
+            ? `\n**Photo Style:** ${getPhotoStyleLabel(photoStyle)}`
             : ''
 
     return `Generate an optimized AI image generation prompt for the following context:
@@ -148,7 +144,7 @@ ${blogPostTopic ? `Topic: ${blogPostTopic}` : ''}
 ${imageTypeGuidelines}
 
 **Your Task:**
-Create a detailed, specific prompt (150-500 words) that will generate a high-quality ${imageType}${photoStyle ? ` (${PHOTO_STYLE_LABELS[photoStyle] || photoStyle} style)` : ''} image related to the selected text. The prompt should:
+Create a detailed, specific prompt (150-500 words) that will generate a high-quality ${imageType}${photoStyle ? ` (${getPhotoStyleLabel(photoStyle)} style)` : ''} image related to the selected text. The prompt should:
 
 1. **Capture the core concept** from the selected text
 2. **Apply the ${imageType}${photoStyle ? ` ${photoStyle}` : ''} style guidelines** naturally

@@ -12,10 +12,10 @@
  */
 export const PHOTO_DIVERSITY_REQUIREMENTS = `
 DIVERSITY REQUIREMENTS (MANDATORY for all photo images):
-- Feature people of diverse ethnicities and backgrounds
-- Include varied skin tones (light, medium, dark complexions)
-- Represent the target demographic: women aged 25-55
-- Show age-appropriate diversity within the 25-55 range
+- Single-subject images are allowed and often preferred (this does NOT require multiple people in one image)
+- If the image contains people, depict an inclusive range of ethnicities and backgrounds over time
+- For the person(s) shown, represent varied skin tones (light, medium, dark complexions) appropriately
+- Represent the target demographic: women aged 25-55 (age-appropriate depiction)
 - Ensure natural, authentic representation without stereotyping
 - Maintain medical context appropriateness
 `
