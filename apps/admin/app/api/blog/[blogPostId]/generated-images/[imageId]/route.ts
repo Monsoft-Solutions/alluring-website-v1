@@ -23,16 +23,19 @@ export async function DELETE(
 
         const { blogPostId, imageId } = await context.params
 
-        // Delete the junction record using raw SQL
-        await db.execute(sql`
-            DELETE FROM blog_post_images
-            WHERE blog_post_id = ${blogPostId} AND image_id = ${imageId}
-        `)
+        // Delete both records in a transaction to ensure atomicity
+        await db.transaction(async (tx) => {
+            // Delete the junction record using raw SQL
+            await tx.execute(sql`
+                DELETE FROM blog_post_images
+                WHERE blog_post_id = ${blogPostId} AND image_id = ${imageId}
+            `)
 
-        // Delete the image record
-        await db.execute(sql`
-            DELETE FROM images WHERE id = ${imageId}
-        `)
+            // Delete the image record
+            await tx.execute(sql`
+                DELETE FROM images WHERE id = ${imageId}
+            `)
+        })
 
         return NextResponse.json({
             success: true,

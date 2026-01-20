@@ -96,12 +96,13 @@ export async function POST(
                 : undefined
 
         // Determine guidelines - use photo style guidelines with diversity for photos
-        let guidelines: string = imageTypeConfig.promptGuidelines
-        if (photoStyleConfig) {
-            guidelines = getPhotoGuidelinesWithDiversity(
-                photoStyleConfig.promptGuidelines
-            )
-        }
+        const guidelines: string =
+            imageType === 'photo'
+                ? getPhotoGuidelinesWithDiversity(
+                      photoStyleConfig?.promptGuidelines ??
+                          imageTypeConfig.promptGuidelines
+                  )
+                : imageTypeConfig.promptGuidelines
 
         // Optionally fetch blog post context if provided
         let blogPostTitle: string | undefined

@@ -18,7 +18,7 @@ import { revalidateTag } from 'next/cache'
 
 import { CACHE_TAGS } from '@workspace/shared/cache'
 import { insertInlineImagesIntoMarkdown } from '@/lib/utils/insert-inline-images.util'
-import type { GeneratedInlineImage } from '@workspace/ai'
+import type { GeneratedInlineImage, InlineImageTypeValue } from '@workspace/ai'
 
 export type SaveContentStepInput = {
     postId: string
@@ -26,6 +26,7 @@ export type SaveContentStepInput = {
         imageUrl: string
         insertAfterText: string
         altText: string
+        imageType: InlineImageTypeValue
     }>
 }
 
@@ -81,14 +82,17 @@ export async function saveContentStep(
         }
 
         // Convert to the format expected by insertInlineImagesIntoMarkdown
-        const generatedImages: GeneratedInlineImage[] = images.map((img) => ({
-            opportunityId: `workflow-${Date.now()}`,
-            imageUrl: img.imageUrl,
-            altText: img.altText,
-            insertAfterText: img.insertAfterText,
-            imageType: 'photo' as const,
-            status: 'success' as const,
-        }))
+        const workflowTimestamp = Date.now()
+        const generatedImages: GeneratedInlineImage[] = images.map(
+            (img, index) => ({
+                opportunityId: `workflow-${workflowTimestamp}-${index}`,
+                imageUrl: img.imageUrl,
+                altText: img.altText,
+                insertAfterText: img.insertAfterText,
+                imageType: img.imageType,
+                status: 'success' as const,
+            })
+        )
 
         // Insert images into markdown
         const updatedContent = insertInlineImagesIntoMarkdown(
@@ -96,32 +100,41 @@ export async function saveContentStep(
             generatedImages
         )
 
-        // Save to database
-        await db
-            .update(blogPost)
-            .set({ content: updatedContent })
-            .where(eq(blogPost.id, postId))
+        // Execute all database operations in a single transaction
+        // This ensures atomicity - either all operations succeed or all are rolled back
+        await db.transaction(async (tx) => {
+            // Save updated content to blog post
+            await tx
+                .update(blogPost)
+                .set({ content: updatedContent })
+                .where(eq(blogPost.id, postId))
 
-        // Track inline images in the junction table
-        for (const img of input.images) {
-            // First, create the image record
-            const [imageRecord] = await db
-                .insert(imagesTable)
-                .values({
-                    url: img.imageUrl,
-                    alt: img.altText,
-                    generatedBy: 'fal-ai',
-                    generationPrompt: img.altText,
-                })
-                .onConflictDoUpdate({
-                    target: imagesTable.url,
-                    set: { updatedAt: new Date() },
-                })
-                .returning({ id: imagesTable.id })
+            // Track inline images in the junction table
+            for (const img of input.images) {
+                // First, create the image record
+                const [imageRecord] = await tx
+                    .insert(imagesTable)
+                    .values({
+                        url: img.imageUrl,
+                        alt: img.altText,
+                        generatedBy: 'fal-ai',
+                        generationPrompt: img.altText,
+                    })
+                    .onConflictDoUpdate({
+                        target: imagesTable.url,
+                        set: { updatedAt: new Date() },
+                    })
+                    .returning({ id: imagesTable.id })
 
-            // Then link to blog post with 'inline' type
-            if (imageRecord) {
-                await db
+                // Ensure imageRecord exists before linking
+                if (!imageRecord?.id) {
+                    throw new Error(
+                        `Failed to insert or retrieve image record for URL: ${img.imageUrl}`
+                    )
+                }
+
+                // Then link to blog post with 'inline' type
+                await tx
                     .insert(blogPostImages)
                     .values({
                         blogPostId: postId,
@@ -131,7 +144,7 @@ export async function saveContentStep(
                     })
                     .onConflictDoNothing()
             }
-        }
+        })
 
         // Revalidate cache for this post
         if (post.slug) {
