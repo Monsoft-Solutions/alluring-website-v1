@@ -93,6 +93,7 @@ export {
     type GenerateInlineImagePromptOptions,
     type InlineImagePromptResult,
     type InlineImageType,
+    type PhotoStyle,
     type GenerateImageAltOptions,
     type ImageAltResult,
     type AnalyzeBlogPostOptions,
@@ -115,6 +116,7 @@ export {
     type ImageAnalysis,
     // Inline image analysis schemas
     inlineImageTypeSchema,
+    photoStyleSchema,
     imageOpportunitySchema,
     contentAssessmentSchema,
     inlineImageAnalysisSchema,
@@ -123,6 +125,7 @@ export {
     pipelineMetricsSchema,
     autoInlineImagePipelineResultSchema,
     type InlineImageTypeValue,
+    type PhotoStyleValue,
     type ImageOpportunity,
     type ContentAssessment,
     type InlineImageAnalysis,
@@ -131,6 +134,12 @@ export {
     type PipelineMetrics,
     type AutoInlineImagePipelineResult,
 } from './schemas'
+
+// Constants
+export {
+    PHOTO_DIVERSITY_REQUIREMENTS,
+    getPhotoGuidelinesWithDiversity,
+} from './constants/photo-diversity.constant'
 
 // Model definitions
 export {

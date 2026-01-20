@@ -5,6 +5,8 @@
  * along with their specific prompting guidelines for optimal AI generation.
  */
 
+import type { PhotoStyleValue } from '@workspace/ai'
+
 export const INLINE_IMAGE_TYPES = [
     {
         id: 'infographic',
@@ -65,4 +67,56 @@ export function getInlineImageType(
 export function getPromptGuidelines(id: InlineImageTypeId): string {
     const imageType = getInlineImageType(id)
     return imageType?.promptGuidelines || ''
+}
+
+/**
+ * Photo style definitions for photo-type images
+ *
+ * These sub-types allow for varying the style of photorealistic images
+ * based on content context (results showcase, lifestyle, or medical explanations).
+ */
+export const PHOTO_STYLES = [
+    {
+        id: 'artistic' as const satisfies PhotoStyleValue,
+        name: 'Artistic/Sensual',
+        description:
+            'Refined, classy imagery showcasing body with artistic elegance',
+        promptGuidelines:
+            'High-end artistic photography, tasteful sensuality, refined and classy aesthetic, elegant composition showing skin and body contours, soft dramatic lighting, luxurious atmosphere, celebration of feminine beauty, sophisticated boudoir-inspired style, premium fashion photography aesthetic, body confidence imagery, warm skin tones, artistic shadows and highlights',
+    },
+    {
+        id: 'lifestyle' as const satisfies PhotoStyleValue,
+        name: 'Lifestyle/Casual',
+        description:
+            'Natural everyday scenarios, casual settings, real-life moments',
+        promptGuidelines:
+            'Authentic lifestyle photography, natural candid moments, everyday scenarios, warm inviting atmosphere, relatable and approachable, casual elegance, real-life settings, comfortable and natural poses',
+    },
+    {
+        id: 'medical-overlay' as const satisfies PhotoStyleValue,
+        name: 'Medical Overlay',
+        description:
+            'Photorealistic with illustrated surgical markings and incision lines',
+        promptGuidelines:
+            'Photorealistic medical photography combined with clean illustrated overlays, surgical planning markings, incision line illustrations, anatomical guide markings, professional medical visualization, clean vector-style surgical annotations on realistic skin, pre-operative planning aesthetic, educational medical imagery with artistic precision',
+    },
+] as const
+
+export type PhotoStyleId = (typeof PHOTO_STYLES)[number]['id']
+
+export type PhotoStyle = (typeof PHOTO_STYLES)[number]
+
+/**
+ * Get photo style configuration by ID
+ */
+export function getPhotoStyle(id: PhotoStyleId): PhotoStyle | undefined {
+    return PHOTO_STYLES.find((style) => style.id === id)
+}
+
+/**
+ * Get prompt guidelines for a specific photo style
+ */
+export function getPhotoStyleGuidelines(id: PhotoStyleId): string {
+    const photoStyle = getPhotoStyle(id)
+    return photoStyle?.promptGuidelines || ''
 }

@@ -13,6 +13,7 @@ import {
     runInlineImageAnalyzer,
     type InlineImageAnalyzerResult,
 } from '../agents/inline-image-analyzer.agent'
+import { getPhotoGuidelinesWithDiversity } from '../constants/photo-diversity.constant'
 import { generateInlineImagePrompt } from '../functions/generate-inline-image-prompt.function'
 import type {
     InlineImageAnalysis,
@@ -21,6 +22,7 @@ import type {
     AutoInlineImagePipelineResult,
     ImageOpportunity,
     InlineImageTypeValue,
+    PhotoStyleValue,
 } from '../schemas/inline-image-analysis.schema'
 
 /**
@@ -34,6 +36,21 @@ const IMAGE_TYPE_GUIDELINES: Record<InlineImageTypeValue, string> = {
     illustration:
         'Detailed professional medical illustration, clean educational diagram, anatomical accuracy, clear labeling areas, professional medical textbook style, precise and informative',
     photo: 'High-quality professional photography, natural lighting, photorealistic, sharp focus, professional clinic environment, medical grade quality, clean and modern',
+}
+
+/**
+ * Photo style-specific guidelines with diversity requirements
+ */
+const PHOTO_STYLE_GUIDELINES: Record<PhotoStyleValue, string> = {
+    artistic: getPhotoGuidelinesWithDiversity(
+        'High-end artistic photography, tasteful sensuality, refined and classy aesthetic, elegant composition showing skin and body contours, soft dramatic lighting, luxurious atmosphere, celebration of feminine beauty, sophisticated boudoir-inspired style, premium fashion photography aesthetic, body confidence imagery'
+    ),
+    lifestyle: getPhotoGuidelinesWithDiversity(
+        'Authentic lifestyle photography, natural candid moments, everyday scenarios, warm inviting atmosphere, relatable and approachable, casual elegance, real-life settings, comfortable and natural poses'
+    ),
+    'medical-overlay': getPhotoGuidelinesWithDiversity(
+        'Photorealistic medical photography combined with clean illustrated overlays, surgical planning markings, incision line illustrations, anatomical guide markings, professional medical visualization, clean vector-style surgical annotations on realistic skin, pre-operative planning aesthetic, educational medical imagery with artistic precision'
+    ),
 }
 
 /**
@@ -90,6 +107,24 @@ export type AutoInlineImagePipelineOptions = {
 }
 
 /**
+ * Get the appropriate guidelines for an opportunity
+ * Uses photo style guidelines (with diversity) for photo types with a style,
+ * otherwise falls back to standard image type guidelines
+ */
+function getGuidelinesForOpportunity(opportunity: ImageOpportunity): string {
+    // If it's a photo type with a recommended style, use photo style guidelines
+    if (
+        opportunity.recommendedImageType === 'photo' &&
+        opportunity.recommendedPhotoStyle
+    ) {
+        return PHOTO_STYLE_GUIDELINES[opportunity.recommendedPhotoStyle]
+    }
+
+    // Otherwise use standard image type guidelines
+    return IMAGE_TYPE_GUIDELINES[opportunity.recommendedImageType]
+}
+
+/**
  * Generate an image prompt for an opportunity
  */
 async function generatePromptForOpportunity(
@@ -103,13 +138,15 @@ async function generatePromptForOpportunity(
     }
 
     try {
+        const guidelines = getGuidelinesForOpportunity(opportunity)
+
         const result = await generateInlineImagePrompt({
             selectedText: opportunity.contextText,
             imageType: opportunity.recommendedImageType,
-            imageTypeGuidelines:
-                IMAGE_TYPE_GUIDELINES[opportunity.recommendedImageType],
+            imageTypeGuidelines: guidelines,
             blogPostTitle: title,
             blogPostTopic: opportunity.suggestedSubject,
+            photoStyle: opportunity.recommendedPhotoStyle,
         })
 
         return {
@@ -143,6 +180,7 @@ function createGeneratedImageResult(
         altText: opportunity.suggestedSubject,
         prompt: prompt ?? undefined,
         imageType: opportunity.recommendedImageType,
+        photoStyle: opportunity.recommendedPhotoStyle,
         insertAfterText: opportunity.insertAfterText,
         status,
         error,

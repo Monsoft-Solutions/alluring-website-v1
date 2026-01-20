@@ -64,12 +64,44 @@ Image Type Guidelines:
 - Quality: Sharp focus, proper exposure, professional composition
 - Keywords: "professional photography, photorealistic, natural lighting, high resolution, clinical setting, modern medical facility"
 
+**Photo Sub-Styles (when photo type with specific style):**
+
+**Artistic/Sensual:**
+- Style: High-end artistic photography, tasteful and refined sensuality
+- Elements: Elegant body composition, artistic shadows, warm skin tones, sophisticated lighting
+- Mood: Confident, luxurious, body-positive, boudoir-inspired but classy
+- Purpose: Show results, transformations, body confidence
+- Keywords: "artistic photography, elegant composition, body contours, soft dramatic lighting, feminine beauty, premium aesthetic"
+
+**Lifestyle/Casual:**
+- Style: Authentic lifestyle photography, natural and approachable
+- Elements: Everyday scenarios, candid moments, real-life settings
+- Mood: Warm, relatable, inviting, comfortable
+- Purpose: Show daily life, recovery, long-term results
+- Keywords: "lifestyle photography, candid moments, natural poses, warm atmosphere, relatable, casual elegance"
+
+**Medical Overlay:**
+- Style: Photorealistic base with illustrated surgical annotations
+- Elements: Clean vector-style markings, incision lines, anatomical guides on realistic skin
+- Mood: Professional, educational, precise
+- Purpose: Explain procedures, show surgical planning, demonstrate technique
+- Keywords: "medical visualization, surgical markings, anatomical annotations, pre-operative planning, educational medical imagery"
+
 Output Requirements:
 - Generate a single, detailed prompt (150-300 words optimal)
 - Include subject, style, composition, lighting, mood, and technical specs
 - Integrate the image type's specific guidelines naturally
 - Ensure medical accuracy and professional tone
 - Specify aspect ratio when relevant to composition`
+
+/**
+ * Photo style labels for display
+ */
+const PHOTO_STYLE_LABELS: Record<string, string> = {
+    artistic: 'Artistic/Sensual',
+    lifestyle: 'Lifestyle/Casual',
+    'medical-overlay': 'Medical Overlay',
+}
 
 /**
  * Generate the user prompt for inline image generation
@@ -80,6 +112,7 @@ export function getInlineImagePrompt(input: {
     imageTypeGuidelines: string
     blogPostTitle?: string
     blogPostTopic?: string
+    photoStyle?: 'artistic' | 'lifestyle' | 'medical-overlay'
 }): string {
     const {
         selectedText,
@@ -87,7 +120,14 @@ export function getInlineImagePrompt(input: {
         imageTypeGuidelines,
         blogPostTitle,
         blogPostTopic,
+        photoStyle,
     } = input
+
+    // Build photo style section if applicable
+    const photoStyleSection =
+        imageType === 'photo' && photoStyle
+            ? `\n**Photo Style:** ${PHOTO_STYLE_LABELS[photoStyle] || photoStyle}`
+            : ''
 
     return `Generate an optimized AI image generation prompt for the following context:
 
@@ -98,16 +138,16 @@ ${blogPostTopic ? `Topic: ${blogPostTopic}` : ''}
 **Selected Text:**
 "${selectedText}"
 
-**Image Type Requested:** ${imageType.charAt(0).toUpperCase() + imageType.slice(1)}
+**Image Type Requested:** ${imageType.charAt(0).toUpperCase() + imageType.slice(1)}${photoStyleSection}
 
 **Type-Specific Guidelines:**
 ${imageTypeGuidelines}
 
 **Your Task:**
-Create a detailed, specific prompt (150-300 words) that will generate a high-quality ${imageType} image related to the selected text. The prompt should:
+Create a detailed, specific prompt (150-300 words) that will generate a high-quality ${imageType}${photoStyle ? ` (${PHOTO_STYLE_LABELS[photoStyle] || photoStyle} style)` : ''} image related to the selected text. The prompt should:
 
 1. **Capture the core concept** from the selected text
-2. **Apply the ${imageType} style guidelines** naturally
+2. **Apply the ${imageType}${photoStyle ? ` ${photoStyle}` : ''} style guidelines** naturally
 3. **Include specific details** about:
    - Primary subject/focus
    - Visual style and medium
@@ -123,7 +163,7 @@ Create a detailed, specific prompt (150-300 words) that will generate a high-qua
 - Make the prompt self-contained (don't reference "the selected text" or "as shown")
 - Use descriptive, specific language
 - Prioritize key elements at the beginning
-- Include quality modifiers appropriate to ${imageType} style
+- Include quality modifiers appropriate to ${imageType}${photoStyle ? ` ${photoStyle}` : ''} style
 - Ensure medical/procedural accuracy
 - Include text naturally when it enhances the image - keep all text as short as possible
 

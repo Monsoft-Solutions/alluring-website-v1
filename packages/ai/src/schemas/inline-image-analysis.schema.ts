@@ -21,6 +21,17 @@ export const inlineImageTypeSchema = z.enum([
 export type InlineImageTypeValue = z.infer<typeof inlineImageTypeSchema>
 
 /**
+ * Photo style enum for photo type images
+ */
+export const photoStyleSchema = z.enum([
+    'artistic', // Artistic/sensual - refined, classy, showing skin with elegance
+    'lifestyle', // Natural everyday scenarios
+    'medical-overlay', // Photorealistic with illustrated surgical markings
+])
+
+export type PhotoStyleValue = z.infer<typeof photoStyleSchema>
+
+/**
  * Schema for a single image opportunity identified in the content
  */
 export const imageOpportunitySchema = z.object({
@@ -65,6 +76,10 @@ export const imageOpportunitySchema = z.object({
         .describe(
             'Priority ranking 1-10, with 1 being highest priority. Higher priority locations should have images first.'
         ),
+
+    recommendedPhotoStyle: photoStyleSchema.describe(
+        'For photo type images, the recommended style (artistic, lifestyle, or medical-overlay)'
+    ),
 })
 
 export type ImageOpportunity = z.infer<typeof imageOpportunitySchema>
@@ -153,6 +168,10 @@ export const generatedInlineImageSchema = z.object({
     imageType: inlineImageTypeSchema.describe(
         'The type of image that was generated'
     ),
+
+    photoStyle: photoStyleSchema
+        .optional()
+        .describe('For photo type images, the style used'),
 
     insertAfterText: z
         .string()

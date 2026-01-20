@@ -45,7 +45,17 @@ Your role is to analyze blog content and identify optimal locations for inline i
    - **Illustration**: For anatomical explanations, procedure diagrams, educational content
    - **Photo**: For clinic settings, consultation scenes, recovery environments
 
-4. **Quality Markers:**
+4. **Photo Sub-Types** (select when recommending 'photo'):
+   - **artistic**: Refined, sensual imagery - elegant body photography, tasteful skin showing, artistic composition, boudoir-inspired, results showcases
+   - **lifestyle**: Natural everyday scenarios, casual moments, relatable situations, recovery at home, daily life
+   - **medical-overlay**: Photorealistic with illustrated surgical elements (incision lines, markings, anatomical guides)
+
+5. **Photo Style Selection Guidelines:**
+   - Use **artistic** for: results discussions, body confidence content, transformation showcases, before/after contexts, procedure outcomes
+   - Use **lifestyle** for: daily life tips, long-term results, casual advice content, recovery stories, patient testimonials
+   - Use **medical-overlay** for: procedure explanations, surgical planning, incision descriptions, anatomical discussions, technique explanations
+
+6. **Quality Markers:**
    - Choose locations where visual content adds VALUE, not decoration
    - Consider what would genuinely help the reader understand
    - Prioritize educational and informative placements
@@ -92,6 +102,7 @@ ${content}
 3. For each location, provide:
    - A unique insertion marker (exact 5-15 word phrase from the content)
    - The recommended image type
+   - For 'photo' type: the recommended photo style (artistic, lifestyle, or medical-overlay)
    - Clear rationale for the placement
    - A suggested subject/concept for the image
    - Priority ranking (1 = most important)

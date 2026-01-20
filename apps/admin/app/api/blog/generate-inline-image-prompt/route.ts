@@ -1,12 +1,18 @@
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema'
-import { generateInlineImagePrompt } from '@workspace/ai'
+import {
+    generateInlineImagePrompt,
+    getPhotoGuidelinesWithDiversity,
+} from '@workspace/ai'
 import { eq } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
-import { INLINE_IMAGE_TYPES } from '@/lib/constants/inline-image-types.constant'
+import {
+    INLINE_IMAGE_TYPES,
+    PHOTO_STYLES,
+} from '@/lib/constants/inline-image-types.constant'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -20,6 +26,7 @@ const requestSchema = z.object({
         .min(10, 'Selected text must be at least 10 characters')
         .max(5000, 'Selected text must be less than 5000 characters'),
     imageType: z.enum(['infographic', 'marketing', 'illustration', 'photo']),
+    photoStyle: z.enum(['artistic', 'lifestyle', 'medical-overlay']).optional(),
     blogPostId: z.string().uuid('Invalid blog post ID').optional(),
 })
 
@@ -62,7 +69,8 @@ export async function POST(
             )
         }
 
-        const { selectedText, imageType, blogPostId } = validationResult.data
+        const { selectedText, imageType, photoStyle, blogPostId } =
+            validationResult.data
 
         // Get image type configuration
         const imageTypeConfig = INLINE_IMAGE_TYPES.find(
@@ -76,6 +84,20 @@ export async function POST(
                     error: 'Invalid image type',
                 },
                 { status: 400 }
+            )
+        }
+
+        // Get photo style configuration if applicable
+        const photoStyleConfig =
+            imageType === 'photo' && photoStyle
+                ? PHOTO_STYLES.find((style) => style.id === photoStyle)
+                : undefined
+
+        // Determine guidelines - use photo style guidelines with diversity for photos
+        let guidelines: string = imageTypeConfig.promptGuidelines
+        if (photoStyleConfig) {
+            guidelines = getPhotoGuidelinesWithDiversity(
+                photoStyleConfig.promptGuidelines
             )
         }
 
@@ -104,9 +126,10 @@ export async function POST(
         const result = await generateInlineImagePrompt({
             selectedText,
             imageType,
-            imageTypeGuidelines: imageTypeConfig.promptGuidelines,
+            imageTypeGuidelines: guidelines,
             blogPostTitle,
             blogPostTopic,
+            photoStyle,
         })
 
         return NextResponse.json({

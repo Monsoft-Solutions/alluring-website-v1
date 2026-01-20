@@ -37,6 +37,7 @@ export {
 export {
     // Schemas
     inlineImageTypeSchema,
+    photoStyleSchema,
     imageOpportunitySchema,
     contentAssessmentSchema,
     inlineImageAnalysisSchema,
@@ -46,6 +47,7 @@ export {
     autoInlineImagePipelineResultSchema,
     // Types
     type InlineImageTypeValue,
+    type PhotoStyleValue,
     type ImageOpportunity,
     type ContentAssessment,
     type InlineImageAnalysis,

@@ -86,6 +86,7 @@ export {
     type GenerateInlineImagePromptOptions,
     type InlineImagePromptResult,
     type InlineImageType,
+    type PhotoStyle,
 } from './generate-inline-image-prompt.function'
 
 export {
