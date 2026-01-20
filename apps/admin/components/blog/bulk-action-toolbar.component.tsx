@@ -84,7 +84,8 @@ export function BlogBulkActionToolbar({
                         throw new Error('Failed to get workflow status')
                     }
 
-                    const data: WorkflowStatusResponse = await response.json()
+                    const data =
+                        (await response.json()) as WorkflowStatusResponse
 
                     if (data.status === 'completed' && data.output) {
                         // Workflow completed successfully
@@ -235,8 +236,8 @@ export function BlogBulkActionToolbar({
                     id: toastId,
                 })
 
-                // Start polling for workflow status
-                pollWorkflowStatus(result.runId)
+                // Start polling for workflow status (intentionally fire-and-forget)
+                void pollWorkflowStatus(result.runId)
             } else {
                 // Failed to start workflow
                 toast.dismiss(toastId)
