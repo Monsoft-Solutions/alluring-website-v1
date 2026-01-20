@@ -26,7 +26,7 @@ const requestSchema = z.object({
         .min(10, 'Selected text must be at least 10 characters')
         .max(5000, 'Selected text must be less than 5000 characters'),
     imageType: z.enum(['infographic', 'marketing', 'illustration', 'photo']),
-    photoStyle: z.enum(['artistic', 'lifestyle', 'medical-overlay']).optional(),
+    photoStyle: z.enum(['artistic', 'lifestyle', 'miami-cover']).optional(),
     blogPostId: z.string().uuid('Invalid blog post ID').optional(),
 })
 

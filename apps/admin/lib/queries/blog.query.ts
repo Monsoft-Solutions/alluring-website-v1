@@ -6,7 +6,7 @@ import {
     blogPostImages,
     images,
 } from '@workspace/db/schema/blog'
-import { and, count, desc, eq, sql, asc } from 'drizzle-orm'
+import { count, desc, eq, sql, asc } from 'drizzle-orm'
 
 import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 

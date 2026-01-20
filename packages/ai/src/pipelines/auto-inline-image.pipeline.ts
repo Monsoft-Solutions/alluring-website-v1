@@ -48,8 +48,8 @@ const PHOTO_STYLE_GUIDELINES: Record<PhotoStyleValue, string> = {
     lifestyle: getPhotoGuidelinesWithDiversity(
         'Authentic lifestyle photography, natural candid moments, everyday scenarios, warm inviting atmosphere, relatable and approachable, casual elegance, real-life settings, comfortable and natural poses'
     ),
-    'medical-overlay': getPhotoGuidelinesWithDiversity(
-        'Photorealistic medical photography combined with clean illustrated overlays, surgical planning markings, incision line illustrations, anatomical guide markings, professional medical visualization, clean vector-style surgical annotations on realistic skin, pre-operative planning aesthetic, educational medical imagery with artistic precision'
+    'miami-cover': getPhotoGuidelinesWithDiversity(
+        'Sexy (non-explicit) Miami publication cover-style editorial photography, high-fashion styling, tasteful skin showing (swimwear/lingerie-inspired), confident pose and body confidence, glamorous hair and makeup, glossy magazine lighting, South Beach / Art Deco vibe, vibrant Miami color accents, premium luxury aesthetic, cinematic highlights and shadows, cover-ready composition with negative space for masthead/headlines, NO explicit nudity (no nipples/genitals), adult-only'
     ),
 }
 

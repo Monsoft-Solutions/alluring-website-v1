@@ -26,7 +26,7 @@ export type InlineImageTypeValue = z.infer<typeof inlineImageTypeSchema>
 export const photoStyleSchema = z.enum([
     'artistic', // Artistic/sensual - refined, classy, showing skin with elegance
     'lifestyle', // Natural everyday scenarios
-    'medical-overlay', // Photorealistic with illustrated surgical markings
+    'miami-cover', // Sexy (non-explicit) Miami publication cover-style editorial
 ])
 
 export type PhotoStyleValue = z.infer<typeof photoStyleSchema>
@@ -78,7 +78,7 @@ export const imageOpportunitySchema = z.object({
         ),
 
     recommendedPhotoStyle: photoStyleSchema.describe(
-        'For photo type images, the recommended style (artistic, lifestyle, or medical-overlay)'
+        'For photo type images, the recommended style (artistic, lifestyle, or miami-cover)'
     ),
 })
 

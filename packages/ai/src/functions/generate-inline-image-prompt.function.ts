@@ -30,7 +30,7 @@ export type InlineImageType =
 /**
  * Supported photo styles (for photo type images)
  */
-export type PhotoStyle = 'artistic' | 'lifestyle' | 'medical-overlay'
+export type PhotoStyle = 'artistic' | 'lifestyle' | 'miami-cover'
 
 /**
  * Options for inline image prompt generation

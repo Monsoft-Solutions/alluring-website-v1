@@ -82,6 +82,14 @@ Image Type Guidelines:
 - Purpose: Show daily life, recovery, long-term results
 - Keywords: "lifestyle photography, candid moments, natural poses, warm atmosphere, relatable, casual elegance"
 
+**Miami Publication Cover (Sexy Editorial):**
+- Style: High-fashion editorial cover photography with a Miami vibe
+- Elements: Tasteful skin showing (swimwear/lingerie-inspired styling), confident pose, glam hair & makeup, glossy magazine lighting, Art Deco / South Beach mood
+- Mood: Bold, sexy, luxurious, premium, aspirational (not explicit)
+- Purpose: “Cover-worthy” hero image that feels like the front page of a Miami publication
+- Safety: NO explicit nudity, no nipples/genitals, no pornographic framing, adult-only
+- Keywords: "editorial cover photography, Miami glamour, high fashion, magazine cover composition, premium luxury aesthetic, tasteful sensuality"
+
 Output Requirements:
 - Generate a single, detailed prompt (150-300 words optimal)
 - Include subject, style, composition, lighting, mood, and technical specs
@@ -96,6 +104,7 @@ Output Requirements:
 const PHOTO_STYLE_LABELS: Record<string, string> = {
     artistic: 'Artistic/Sensual',
     lifestyle: 'Lifestyle/Casual',
+    'miami-cover': 'Miami Publication Cover (Sexy Editorial)',
 }
 
 /**
@@ -107,7 +116,7 @@ export function getInlineImagePrompt(input: {
     imageTypeGuidelines: string
     blogPostTitle?: string
     blogPostTopic?: string
-    photoStyle?: 'artistic' | 'lifestyle'
+    photoStyle?: 'artistic' | 'lifestyle' | 'miami-cover'
 }): string {
     const {
         selectedText,
