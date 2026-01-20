@@ -11,12 +11,19 @@ import { cache } from 'react'
 import { BlogCTA } from '@/components/blog/blog-cta.component'
 import { BlogPostHero } from '@/components/blog/blog-post-hero.component'
 import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
+import { MobileTOC } from '@/components/blog/mobile-toc.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
+import { PopularPosts } from '@/components/blog/popular-posts.component'
+import { PostNavigation } from '@/components/blog/post-navigation.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
+import { SidebarCategories } from '@/components/blog/sidebar-categories.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
+import { getPopularPosts } from '@/lib/queries/blog/popular-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
+import { listActiveCategoriesWithCounts } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
@@ -70,6 +77,15 @@ export default async function BlogPostPage({ params }: PageProps) {
         3
     )
 
+    // Fetch adjacent posts, popular posts, and categories in parallel
+    const [adjacentPosts, popularPosts, allCategories] = await Promise.all([
+        post.publishedAt
+            ? getAdjacentPosts(post.id, post.publishedAt)
+            : Promise.resolve({ previousPost: null, nextPost: null }),
+        getPopularPosts(5),
+        listActiveCategoriesWithCounts(),
+    ])
+
     // Split content at CTA insertion point (explicit marker or automatic 40% split)
     const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(post.content)
 
@@ -88,6 +104,9 @@ export default async function BlogPostPage({ params }: PageProps) {
                 readingTime={post.readingTime}
                 categories={post.categories}
             />
+
+            {/* Mobile Table of Contents - Sticky bar for mobile */}
+            <MobileTOC headings={tableOfContents} />
 
             {/* Content section */}
             <div className='bg-white'>
@@ -196,6 +215,12 @@ export default async function BlogPostPage({ params }: PageProps) {
                             {/* Footer CTA - prominent section */}
                             <BlogCTA variant='footer' ctaId='consultation' />
 
+                            {/* Previous/Next Post Navigation */}
+                            <PostNavigation
+                                previousPost={adjacentPosts.previousPost}
+                                nextPost={adjacentPosts.nextPost}
+                            />
+
                             {/* Related Posts Section */}
                             <RelatedPosts posts={relatedPosts} />
                         </div>
@@ -211,6 +236,26 @@ export default async function BlogPostPage({ params }: PageProps) {
                                         headings={tableOfContents}
                                     />
                                 </div>
+
+                                {/* Popular Posts Widget */}
+                                {popularPosts.length > 0 && (
+                                    <div className='mt-6'>
+                                        <PopularPosts
+                                            posts={popularPosts}
+                                            variant='sidebar'
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Sidebar Categories */}
+                                {allCategories.length > 0 && (
+                                    <div className='mt-6'>
+                                        <SidebarCategories
+                                            categories={allCategories}
+                                            maxDisplay={6}
+                                        />
+                                    </div>
+                                )}
 
                                 {/* Quick CTA in sidebar */}
                                 <div className='border-gold-500/30 bg-gold-500/5 mt-6 rounded-xl border p-6'>

@@ -18,8 +18,11 @@ import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogHeroSection } from '@/components/blog/blog-hero-section.component'
+import { BlogSearch } from '@/components/blog/blog-search.component'
+import { CategoryPills } from '@/components/blog/category-pills.component'
 import { FeaturedPost } from '@/components/blog/featured-post.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
+import { PopularPosts } from '@/components/blog/popular-posts.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { siteConfig } from '@/lib/data/site-config'
 import {
@@ -28,7 +31,10 @@ import {
     blogHeroData,
     blogSeoData,
 } from '@/lib/data/webpages/blog'
+import { getPopularPosts } from '@/lib/queries/blog/popular-posts.query'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
+import { getSearchIndex } from '@/lib/queries/blog/search-posts.query'
+import { listActiveCategoriesWithCounts } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
@@ -91,12 +97,16 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
 export default async function BlogPage() {
     const pageSize = 12
 
-    // Fetch initial posts for SSR
-    const { items: initialPosts, nextCursor } = await getPublishedPostCardsPage(
-        {
-            limit: pageSize,
-        }
-    )
+    // Fetch initial posts, categories, popular posts, and search index in parallel
+    const [postsResult, categories, popularPosts, searchIndex] =
+        await Promise.all([
+            getPublishedPostCardsPage({ limit: pageSize }),
+            listActiveCategoriesWithCounts(),
+            getPopularPosts(5),
+            getSearchIndex(),
+        ])
+
+    const { items: initialPosts, nextCursor } = postsResult
 
     // Encode the cursor for client-side use
     const encodedCursor = nextCursor
@@ -150,6 +160,25 @@ export default async function BlogPage() {
                             badge='Latest Article'
                         />
                     </section>
+                )}
+
+                {/* Category Pills & Search - Quick topic discovery */}
+                <section className='border-b border-stone-100 bg-white py-6'>
+                    <div className='container mx-auto px-5 md:px-8 lg:px-12'>
+                        <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+                            <div className='min-w-0 flex-1'>
+                                <CategoryPills categories={categories} />
+                            </div>
+                            <div className='shrink-0 self-start sm:self-center'>
+                                <BlogSearch searchIndex={searchIndex} />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Popular Posts Section */}
+                {popularPosts.length > 0 && (
+                    <PopularPosts posts={popularPosts} variant='section' />
                 )}
 
                 {/* Articles Grid */}
