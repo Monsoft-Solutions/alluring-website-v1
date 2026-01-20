@@ -150,6 +150,17 @@ export {
     type PhotoStyleDefinition,
 } from './constants/photo-style.constant'
 
+export {
+    INLINE_IMAGE_TYPE_IDS,
+    INLINE_IMAGE_TYPES,
+    getInlineImageTypeById,
+    getInlineImageTypeGuidelines,
+    buildImageTypeGuidelinesRecord,
+    type InlineImageTypeId,
+    type InlineImageTypeDefinition,
+    type InlineImageAspectRatio,
+} from './constants/inline-image-type.constant'
+
 // Model definitions
 export {
     AVAILABLE_MODELS,

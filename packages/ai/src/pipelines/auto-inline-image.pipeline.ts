@@ -13,6 +13,7 @@ import {
     runInlineImageAnalyzer,
     type InlineImageAnalyzerResult,
 } from '../agents/inline-image-analyzer.agent'
+import { buildImageTypeGuidelinesRecord } from '../constants/inline-image-type.constant'
 import { getPhotoGuidelinesWithDiversity } from '../constants/photo-diversity.constant'
 import { getPhotoStyleById } from '../constants/photo-style.constant'
 import { generateInlineImagePrompt } from '../functions/generate-inline-image-prompt.function'
@@ -22,21 +23,12 @@ import type {
     PipelineMetrics,
     AutoInlineImagePipelineResult,
     ImageOpportunity,
-    InlineImageTypeValue,
 } from '../schemas/inline-image-analysis.schema'
 
 /**
- * Image type guidelines mapping
+ * Image type guidelines mapping - built from canonical source in inline-image-type.constant.ts
  */
-const IMAGE_TYPE_GUIDELINES: Record<InlineImageTypeValue, string> = {
-    infographic:
-        'Clean infographic design, minimal text, clear visual hierarchy, professional data visualization, modern flat design, easy to read, well-organized information',
-    marketing:
-        'Aspirational lifestyle photography, emotional appeal, brand-aligned luxury aesthetic, high-end professional photography, warm and inviting atmosphere, premium feel',
-    illustration:
-        'Detailed professional medical illustration, clean educational diagram, anatomical accuracy, clear labeling areas, professional medical textbook style, precise and informative',
-    photo: 'High-quality professional photography, natural lighting, photorealistic, sharp focus, professional clinic environment, medical grade quality, clean and modern',
-}
+const IMAGE_TYPE_GUIDELINES = buildImageTypeGuidelinesRecord()
 
 /**
  * Progress callback for auto inline image pipeline

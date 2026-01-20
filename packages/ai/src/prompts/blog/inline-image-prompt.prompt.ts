@@ -30,7 +30,7 @@ Brand Context:
 - Style: Elegant, trustworthy, aspirational yet accessible
 - Target audience: Women 25-55 seeking quality cosmetic procedures
 - Doctor: Dr. Karlinsky
-- Phone: (786) 506-8649
+- Phone: (786) 305-8649
 
 Prompt Engineering Best Practices:
 - Be specific and descriptive with concrete details
