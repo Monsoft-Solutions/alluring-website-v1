@@ -34,7 +34,9 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import {
     INLINE_IMAGE_TYPES,
+    PHOTO_STYLES,
     type InlineImageTypeId,
+    type PhotoStyleId,
 } from '@/lib/constants/inline-image-types.constant'
 import {
     IMAGE_MODELS,
@@ -49,12 +51,12 @@ type InlineImageDialogProps = {
     onImageGenerated: (imageUrl: string, altText: string) => void
 }
 
-const ICON_MAP = {
+const ICON_MAP: Record<string, typeof BarChart> = {
     BarChart,
     Megaphone,
     Palette,
     Camera,
-} as const
+}
 
 export function InlineImageDialog({
     open,
@@ -64,8 +66,11 @@ export function InlineImageDialog({
     onImageGenerated,
 }: InlineImageDialogProps) {
     const [selectedType, setSelectedType] = useState<InlineImageTypeId>(
-        INLINE_IMAGE_TYPES[0].id
+        INLINE_IMAGE_TYPES[0]?.id ?? 'infographic'
     )
+    const [selectedPhotoStyle, setSelectedPhotoStyle] = useState<
+        PhotoStyleId | undefined
+    >(undefined)
     const [prompt, setPrompt] = useState('')
     const [selectedModel, setSelectedModel] =
         useState<ImageModelId>('gpt-image-1.5')
@@ -76,7 +81,10 @@ export function InlineImageDialog({
     const wasOpenRef = useRef(false)
 
     const handleGeneratePrompt = useCallback(
-        async (explicitType?: InlineImageTypeId) => {
+        async (
+            explicitType?: InlineImageTypeId,
+            explicitPhotoStyle?: PhotoStyleId
+        ) => {
             if (!selectedText) {
                 toast.error('No text selected')
                 return
@@ -84,6 +92,11 @@ export function InlineImageDialog({
 
             // Use explicit type if provided, otherwise fall back to current selectedType
             const imageType = explicitType ?? selectedType
+            // Use explicit photo style if provided, otherwise fall back to current
+            const photoStyle =
+                imageType === 'photo'
+                    ? (explicitPhotoStyle ?? selectedPhotoStyle)
+                    : undefined
 
             setIsGeneratingPrompt(true)
             try {
@@ -95,6 +108,7 @@ export function InlineImageDialog({
                         body: JSON.stringify({
                             selectedText,
                             imageType,
+                            photoStyle,
                             blogPostId,
                         }),
                     }
@@ -119,14 +133,15 @@ export function InlineImageDialog({
                 setIsGeneratingPrompt(false)
             }
         },
-        [selectedText, selectedType, blogPostId]
+        [selectedText, selectedType, selectedPhotoStyle, blogPostId]
     )
 
-    // Reset prompt when dialog opens (prompt generation happens when user selects image type)
+    // Reset state when dialog opens
     useEffect(() => {
         // Only reset when dialog transitions from closed to open
         if (open && !wasOpenRef.current) {
             setPrompt('')
+            setSelectedPhotoStyle(undefined)
         }
         wasOpenRef.current = open
     }, [open])
@@ -134,11 +149,30 @@ export function InlineImageDialog({
     const handleTypeChange = useCallback(
         (newType: InlineImageTypeId) => {
             setSelectedType(newType)
-            // Auto-regenerate prompt when type changes
-            if (selectedText && !isGeneratingPrompt) {
+            // Reset photo style when changing away from photo type
+            if (newType !== 'photo') {
+                setSelectedPhotoStyle(undefined)
+            }
+            // Auto-regenerate prompt when type changes (but not for photo - wait for style selection)
+            if (selectedText && !isGeneratingPrompt && newType !== 'photo') {
                 setPrompt('')
                 // Pass newType explicitly to avoid stale closure
                 void handleGeneratePrompt(newType)
+            } else if (newType === 'photo') {
+                // Clear prompt for photo type - user needs to select style first
+                setPrompt('')
+            }
+        },
+        [selectedText, isGeneratingPrompt, handleGeneratePrompt]
+    )
+
+    const handlePhotoStyleChange = useCallback(
+        (newStyle: PhotoStyleId) => {
+            setSelectedPhotoStyle(newStyle)
+            // Auto-regenerate prompt when photo style changes
+            if (selectedText && !isGeneratingPrompt) {
+                setPrompt('')
+                void handleGeneratePrompt('photo', newStyle)
             }
         },
         [selectedText, isGeneratingPrompt, handleGeneratePrompt]
@@ -231,7 +265,7 @@ export function InlineImageDialog({
                         </Label>
                         <div className='grid grid-cols-2 gap-3'>
                             {INLINE_IMAGE_TYPES.map((type) => {
-                                const Icon = ICON_MAP[type.icon]
+                                const Icon = ICON_MAP[type.icon] ?? ImageIcon
                                 return (
                                     <button
                                         key={type.id}
@@ -260,6 +294,42 @@ export function InlineImageDialog({
                             })}
                         </div>
                     </div>
+
+                    {/* Photo Style Selection - Only shown when photo type is selected */}
+                    {selectedType === 'photo' && (
+                        <div className='space-y-2'>
+                            <Label className='text-sm font-medium'>
+                                Photo Style
+                            </Label>
+                            <div className='grid grid-cols-3 gap-2'>
+                                {PHOTO_STYLES.map((style) => (
+                                    <button
+                                        key={style.id}
+                                        type='button'
+                                        onClick={() =>
+                                            handlePhotoStyleChange(style.id)
+                                        }
+                                        className={cn(
+                                            'flex flex-col items-start gap-1 rounded-lg border-2 p-3 text-left transition-all hover:border-stone-300',
+                                            selectedPhotoStyle === style.id
+                                                ? 'border-stone-900 bg-stone-50'
+                                                : 'border-stone-200 bg-white'
+                                        )}
+                                    >
+                                        <span className='text-sm font-medium'>
+                                            {style.name}
+                                        </span>
+                                        <p className='line-clamp-2 text-xs text-stone-600'>
+                                            {style.description}
+                                        </p>
+                                    </button>
+                                ))}
+                            </div>
+                            <p className='text-xs text-stone-500'>
+                                Select a photo style to generate the prompt
+                            </p>
+                        </div>
+                    )}
 
                     {/* Image Prompt */}
                     <div className='space-y-2'>
@@ -301,7 +371,19 @@ export function InlineImageDialog({
                                 INLINE_IMAGE_TYPES.find(
                                     (t) => t.id === selectedType
                                 )?.name
-                            }{' '}
+                            }
+                            {selectedType === 'photo' && selectedPhotoStyle && (
+                                <>
+                                    {' '}
+                                    (
+                                    {
+                                        PHOTO_STYLES.find(
+                                            (s) => s.id === selectedPhotoStyle
+                                        )?.name
+                                    }
+                                    )
+                                </>
+                            )}{' '}
                             style. Edit as needed before generating.
                         </p>
                     </div>

@@ -28,6 +28,11 @@ export type InlineImageType =
     | 'photo'
 
 /**
+ * Supported photo styles (for photo type images)
+ */
+export type PhotoStyle = 'artistic' | 'lifestyle' | 'miami-cover'
+
+/**
  * Options for inline image prompt generation
  */
 export type GenerateInlineImagePromptOptions = {
@@ -41,6 +46,8 @@ export type GenerateInlineImagePromptOptions = {
     blogPostTitle?: string
     /** Optional blog post topic/category */
     blogPostTopic?: string
+    /** Optional photo style (only applicable when imageType is 'photo') */
+    photoStyle?: PhotoStyle
     /** Model ID to use (defaults to gpt-5.2) */
     modelId?: string
     /** Temperature for generation (defaults to 0.8) */
@@ -86,6 +93,7 @@ export async function generateInlineImagePrompt(
         imageTypeGuidelines,
         blogPostTitle,
         blogPostTopic,
+        photoStyle,
         modelId = DEFAULT_MODEL_ID,
         temperature = 0.8,
     } = options
@@ -99,6 +107,7 @@ export async function generateInlineImagePrompt(
             imageTypeGuidelines,
             blogPostTitle,
             blogPostTopic,
+            photoStyle,
         }),
         temperature,
     })

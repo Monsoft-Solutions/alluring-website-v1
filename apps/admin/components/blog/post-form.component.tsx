@@ -186,6 +186,7 @@ export function PostForm({ authors, initialData, mode }: PostFormProps) {
                     onTitleChange={handleTitleChange}
                     onSlugChange={(slug) => handleChange('slug', slug)}
                     onContentChange={handleContentChange}
+                    onImagesGenerated={handleImagesGenerated}
                 />
 
                 {/* Featured Image Generation */}

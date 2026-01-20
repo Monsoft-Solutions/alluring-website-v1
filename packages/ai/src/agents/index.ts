@@ -31,6 +31,13 @@ export { runFactSourceVerifier } from './fact-source-verifier.agent'
 // Orchestrator
 export { runOrchestrator, type OrchestratorOptions } from './orchestrator.agent'
 
+// Inline Image Analyzer
+export {
+    runInlineImageAnalyzer,
+    type InlineImageAnalyzerOptions,
+    type InlineImageAnalyzerResult,
+} from './inline-image-analyzer.agent'
+
 /**
  * Run all review agents in parallel
  *

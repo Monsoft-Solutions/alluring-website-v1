@@ -1,6 +1,5 @@
 import { db } from '@workspace/db/client'
-import { blogPostImages, images } from '@workspace/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { sql } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
@@ -24,20 +23,19 @@ export async function DELETE(
 
         const { blogPostId, imageId } = await context.params
 
-        // Delete the junction record
-        await db
-            .delete(blogPostImages)
-            .where(
-                and(
-                    eq(blogPostImages.blogPostId, blogPostId),
-                    eq(blogPostImages.imageId, imageId)
-                )
-            )
+        // Delete both records in a transaction to ensure atomicity
+        await db.transaction(async (tx) => {
+            // Delete the junction record using raw SQL
+            await tx.execute(sql`
+                DELETE FROM blog_post_images
+                WHERE blog_post_id = ${blogPostId} AND image_id = ${imageId}
+            `)
 
-        // Delete the image record
-        // Note: If this image is used as a featured image elsewhere,
-        // we should handle that case, but for now we'll just delete it
-        await db.delete(images).where(eq(images.id, imageId))
+            // Delete the image record
+            await tx.execute(sql`
+                DELETE FROM images WHERE id = ${imageId}
+            `)
+        })
 
         return NextResponse.json({
             success: true,

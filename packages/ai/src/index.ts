@@ -93,6 +93,7 @@ export {
     type GenerateInlineImagePromptOptions,
     type InlineImagePromptResult,
     type InlineImageType,
+    type PhotoStyle,
     type GenerateImageAltOptions,
     type ImageAltResult,
     type AnalyzeBlogPostOptions,
@@ -113,7 +114,52 @@ export {
     // Image analysis - AI-specific schema that composes shared schemas
     imageAnalysisSchema,
     type ImageAnalysis,
+    // Inline image analysis schemas
+    inlineImageTypeSchema,
+    photoStyleSchema,
+    imageOpportunitySchema,
+    contentAssessmentSchema,
+    inlineImageAnalysisSchema,
+    generatedImageStatusSchema,
+    generatedInlineImageSchema,
+    pipelineMetricsSchema,
+    autoInlineImagePipelineResultSchema,
+    type InlineImageTypeValue,
+    type PhotoStyleValue,
+    type ImageOpportunity,
+    type ContentAssessment,
+    type InlineImageAnalysis,
+    type GeneratedImageStatus,
+    type GeneratedInlineImage,
+    type PipelineMetrics,
+    type AutoInlineImagePipelineResult,
 } from './schemas'
+
+// Constants
+export {
+    PHOTO_DIVERSITY_REQUIREMENTS,
+    getPhotoGuidelinesWithDiversity,
+} from './constants/photo-diversity.constant'
+
+export {
+    PHOTO_STYLE_IDS,
+    PHOTO_STYLES,
+    getPhotoStyleById,
+    getPhotoStyleLabel,
+    type PhotoStyleId,
+    type PhotoStyleDefinition,
+} from './constants/photo-style.constant'
+
+export {
+    INLINE_IMAGE_TYPE_IDS,
+    INLINE_IMAGE_TYPES,
+    getInlineImageTypeById,
+    getInlineImageTypeGuidelines,
+    buildImageTypeGuidelinesRecord,
+    type InlineImageTypeId,
+    type InlineImageTypeDefinition,
+    type InlineImageAspectRatio,
+} from './constants/inline-image-type.constant'
 
 // Model definitions
 export {

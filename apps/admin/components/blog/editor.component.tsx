@@ -3,20 +3,29 @@
 import { EditorContent, useEditor } from '@tiptap/react'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
+import type { GeneratedInlineImage } from '@workspace/ai'
 
 import { cn } from '@workspace/ui/lib/utils'
 
+import { trackInlineImages } from '@/lib/actions/blog.action'
+
+import { AutoInlineImagesDialog } from './editor/auto-inline-images-dialog.component'
 import { EditorBubbleMenu } from './editor/bubble-menu.component'
 import { createEditorExtensions } from './editor/editor-extensions'
 import { InlineImageDialog } from './editor/inline-image-dialog.component'
 import { ImagePopover, LinkPopover } from './editor/link-popover.component'
 import { EditorToolbar } from './editor/toolbar.component'
+import { insertGeneratedInlineImages } from './editor/insert-generated-inline-images.util'
 
 type PostEditorProps = {
     content: string
     onChange: (content: string) => void
     placeholder?: string
     blogPostId?: string
+    /** Blog post title for AI context in auto inline images */
+    blogPostTitle?: string
+    /** Callback when images are generated (to refresh gallery) */
+    onImagesGenerated?: () => void
 }
 
 export function PostEditor({
@@ -24,10 +33,14 @@ export function PostEditor({
     onChange,
     placeholder = 'Start writing your post...',
     blogPostId,
+    blogPostTitle = 'Blog Post',
+    onImagesGenerated,
 }: PostEditorProps) {
     const [linkPopoverOpen, setLinkPopoverOpen] = useState(false)
     const [imagePopoverOpen, setImagePopoverOpen] = useState(false)
     const [inlineImageDialogOpen, setInlineImageDialogOpen] = useState(false)
+    const [autoInlineImagesDialogOpen, setAutoInlineImagesDialogOpen] =
+        useState(false)
     const [selectedText, setSelectedText] = useState('')
     const [selectionPosition, setSelectionPosition] = useState<number | null>(
         null
@@ -116,9 +129,59 @@ export function PostEditor({
                     .run()
 
                 setSelectionPosition(null) // Reset after use
+
+                // Notify parent to refresh the gallery
+                // Note: trackInlineImages is NOT called here because the
+                // /api/blog/generate-image endpoint already creates the
+                // blogPostImages record. Calling it here would create duplicates.
+                onImagesGenerated?.()
             }
         },
-        [editor, selectionPosition]
+        [editor, selectionPosition, onImagesGenerated]
+    )
+
+    const handleAutoInlineImages = useCallback(() => {
+        if (!blogPostId) {
+            toast.error('Please save the post first before generating images')
+            return
+        }
+        setAutoInlineImagesDialogOpen(true)
+    }, [blogPostId])
+
+    const handleAutoImagesGenerated = useCallback(
+        (images: GeneratedInlineImage[]) => {
+            if (!editor) return
+
+            // Insert images into the editor
+            const insertedCount = insertGeneratedInlineImages(editor, images)
+
+            // Track successfully inserted images in the database (non-blocking)
+            // Failure to track should not affect the image insertion
+            if (blogPostId && insertedCount > 0) {
+                const successfulImages = images
+                    .filter((img) => img.status === 'success' && img.imageUrl)
+                    .map((img) => ({
+                        imageUrl: img.imageUrl!,
+                        altText: img.altText || 'Generated inline image',
+                        prompt: img.prompt,
+                    }))
+
+                if (successfulImages.length > 0) {
+                    void trackInlineImages(blogPostId, successfulImages).catch(
+                        (error) => {
+                            console.error(
+                                'Failed to track inline images:',
+                                error
+                            )
+                        }
+                    )
+
+                    // Notify parent to refresh the gallery
+                    onImagesGenerated?.()
+                }
+            }
+        },
+        [editor, blogPostId, onImagesGenerated]
     )
 
     if (!editor) {
@@ -144,6 +207,8 @@ export function PostEditor({
                 editor={editor}
                 onAddLink={handleAddLink}
                 onAddImage={handleOpenImagePopover}
+                onAutoInlineImages={handleAutoInlineImages}
+                autoInlineImagesDisabled={!blogPostId}
             />
 
             {/* Link Popover - attached to a hidden trigger */}
@@ -178,6 +243,16 @@ export function PostEditor({
                 selectedText={selectedText}
                 blogPostId={blogPostId}
                 onImageGenerated={handleImageGenerated}
+            />
+
+            {/* Auto Inline Images Dialog */}
+            <AutoInlineImagesDialog
+                open={autoInlineImagesDialogOpen}
+                onOpenChange={setAutoInlineImagesDialogOpen}
+                content={content}
+                title={blogPostTitle}
+                blogPostId={blogPostId}
+                onImagesGenerated={handleAutoImagesGenerated}
             />
 
             {/* Editor Content */}

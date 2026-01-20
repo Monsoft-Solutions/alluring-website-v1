@@ -6,6 +6,7 @@
  * Server actions for bulk operations on blog posts:
  * - Bulk status update (draft, ready_to_publish, published)
  * - Bulk FAQ generation using AI
+ * - Bulk inline image generation (via Vercel Workflow)
  *
  * @module @admin/lib/actions/blog-bulk
  */
@@ -15,12 +16,14 @@ import { blogPost } from '@workspace/db/schema/blog'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 import { eq, inArray } from 'drizzle-orm'
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { start } from 'workflow/api'
 
 import { extractFaqs } from '@workspace/ai/functions'
 
 import type { ActionResult } from '@/lib/types/blog/blog-action.type'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
+import { bulkInlineImagesWorkflow } from '@/app/workflows/inline-image-generation/bulk-inline-images.workflow'
 
 // ============================================================================
 // Types
@@ -39,6 +42,16 @@ type BulkFaqResult = {
     }>
 }
 
+type BulkInlineImageResult = {
+    success: boolean
+    error?: string
+    /**
+     * Run ID for tracking the workflow status.
+     * When present, the client should poll /api/workflow/[runId] for status.
+     */
+    runId?: string
+}
+
 // ============================================================================
 // Constants
 // ============================================================================
@@ -46,6 +59,8 @@ type BulkFaqResult = {
 const MAX_BULK_STATUS_UPDATE = 100
 const MAX_BULK_FAQ_GENERATION = 20
 const FAQ_GENERATION_BATCH_SIZE = 5
+const MAX_BULK_INLINE_IMAGE_GENERATION = 10
+const MAX_IMAGES_PER_POST = 5
 
 // ============================================================================
 // Validation Helpers
@@ -331,6 +346,59 @@ export async function bulkGenerateFaqs(
             error,
             'Failed to generate FAQs',
             'Error generating FAQs:'
+        )
+    }
+}
+
+// ============================================================================
+// Bulk Inline Image Generation Action (via Vercel Workflow)
+// ============================================================================
+
+/**
+ * Generate inline images for multiple blog posts using AI
+ *
+ * Uses Vercel Workflow for durable, resumable execution that survives
+ * timeouts and crashes. Returns immediately with a run ID that can be
+ * polled for status.
+ *
+ * @param postIds - Array of blog post IDs to generate images for
+ * @returns BulkInlineImageResult with runId for status polling
+ */
+export async function bulkGenerateInlineImages(
+    postIds: string[]
+): Promise<BulkInlineImageResult> {
+    try {
+        await requireAuth()
+
+        const validation = validatePostIds(
+            postIds,
+            MAX_BULK_INLINE_IMAGE_GENERATION
+        )
+        if (validation) return validation as BulkInlineImageResult
+
+        console.log(
+            `[Bulk Images] Starting workflow for ${postIds.length} posts`
+        )
+
+        // Start the durable workflow - returns immediately
+        const run = await start(bulkInlineImagesWorkflow, [
+            {
+                postIds,
+                maxImagesPerPost: MAX_IMAGES_PER_POST,
+            },
+        ])
+
+        console.log(`[Bulk Images] Workflow started with run ID: ${run.runId}`)
+
+        return {
+            success: true,
+            runId: run.runId,
+        }
+    } catch (error) {
+        return handleActionError<BulkInlineImageResult>(
+            error,
+            'Failed to start inline image generation',
+            'Error starting inline image workflow:'
         )
     }
 }

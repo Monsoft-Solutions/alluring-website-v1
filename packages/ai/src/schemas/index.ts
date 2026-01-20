@@ -33,3 +33,26 @@ export {
     imageAnalysisSchema,
     type ImageAnalysis,
 } from './image-analysis.schema'
+
+export {
+    // Schemas
+    inlineImageTypeSchema,
+    photoStyleSchema,
+    imageOpportunitySchema,
+    contentAssessmentSchema,
+    inlineImageAnalysisSchema,
+    generatedImageStatusSchema,
+    generatedInlineImageSchema,
+    pipelineMetricsSchema,
+    autoInlineImagePipelineResultSchema,
+    // Types
+    type InlineImageTypeValue,
+    type PhotoStyleValue,
+    type ImageOpportunity,
+    type ContentAssessment,
+    type InlineImageAnalysis,
+    type GeneratedImageStatus,
+    type GeneratedInlineImage,
+    type PipelineMetrics,
+    type AutoInlineImagePipelineResult,
+} from './inline-image-analysis.schema'

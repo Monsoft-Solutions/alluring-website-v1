@@ -56,6 +56,9 @@ export {
     // Inline Image Prompt Generation
     INLINE_IMAGE_PROMPT_SYSTEM,
     getInlineImagePrompt,
+    // Inline Image Analyzer
+    INLINE_IMAGE_ANALYZER_SYSTEM_PROMPT,
+    getInlineImageAnalyzerPrompt,
     // Blog Analysis
     BLOG_ANALYSIS_SYSTEM_PROMPT,
     getBlogAnalysisPrompt,

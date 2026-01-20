@@ -51,3 +51,12 @@ export {
     type ImageGenerationPhaseOptions,
     type ImageGenerationPhaseResult,
 } from './image-generation-phase.runner'
+
+// Auto Inline Image Pipeline
+export {
+    runAutoInlineImagePipeline,
+    type AutoInlineImagePipelineOptions,
+    type AutoInlineImageProgressCallback,
+    type AutoInlineImagePipelineStep,
+    type AutoInlineImageProgressData,
+} from './auto-inline-image.pipeline'

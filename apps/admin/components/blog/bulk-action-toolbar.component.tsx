@@ -9,8 +9,8 @@
  * @module @admin/components/blog/bulk-action-toolbar
  */
 
-import { useState, useTransition } from 'react'
-import { Check, FileText, Sparkles, X } from 'lucide-react'
+import { useState, useTransition, useRef, useCallback, useEffect } from 'react'
+import { Check, FileText, ImageIcon, Sparkles, X } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@workspace/ui/components/button'
@@ -24,7 +24,9 @@ import {
 import {
     bulkUpdateBlogPostStatus,
     bulkGenerateFaqs,
+    bulkGenerateInlineImages,
 } from '@/lib/actions/blog-bulk.action'
+import type { WorkflowStatusResponse } from '@/app/api/workflow/[runId]/route'
 
 type BulkActionToolbarProps = {
     selectedIds: string[]
@@ -56,6 +58,9 @@ const STATUS_OPTIONS: Array<{
     },
 ]
 
+// Polling interval for workflow status (3 seconds)
+const WORKFLOW_POLL_INTERVAL = 3000
+
 export function BlogBulkActionToolbar({
     selectedIds,
     onClearSelection,
@@ -63,6 +68,100 @@ export function BlogBulkActionToolbar({
 }: BulkActionToolbarProps) {
     const [isPending, startTransition] = useTransition()
     const [statusDropdownOpen, setStatusDropdownOpen] = useState(false)
+    const [isPolling, setIsPolling] = useState(false)
+    const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null)
+    const toastIdRef = useRef<string | number | null>(null)
+
+    /**
+     * Poll workflow status until completion
+     */
+    const pollWorkflowStatus = useCallback(
+        async (runId: string) => {
+            const checkStatus = async (): Promise<boolean> => {
+                try {
+                    const response = await fetch(`/api/workflow/${runId}`)
+                    if (!response.ok) {
+                        throw new Error('Failed to get workflow status')
+                    }
+
+                    const data =
+                        (await response.json()) as WorkflowStatusResponse
+
+                    if (data.status === 'completed' && data.output) {
+                        // Workflow completed successfully
+                        if (toastIdRef.current) {
+                            toast.dismiss(toastIdRef.current)
+                        }
+
+                        const output = data.output
+                        if (output.failedCount === 0) {
+                            toast.success(
+                                `Generated ${output.totalImagesGenerated} image${output.totalImagesGenerated !== 1 ? 's' : ''} across ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}`
+                            )
+                        } else {
+                            toast.warning(
+                                `Generated images for ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}, ${output.failedCount} failed`
+                            )
+                        }
+
+                        onActionComplete()
+                        onClearSelection()
+                        return true
+                    } else if (data.status === 'failed') {
+                        // Workflow failed
+                        if (toastIdRef.current) {
+                            toast.dismiss(toastIdRef.current)
+                        }
+                        toast.error(data.error || 'Image generation failed')
+                        return true
+                    }
+
+                    // Still running - update toast message
+                    if (toastIdRef.current) {
+                        toast.loading('Processing images...', {
+                            id: toastIdRef.current,
+                        })
+                    }
+
+                    return false
+                } catch (error) {
+                    console.error('Error polling workflow status:', error)
+                    // Don't stop polling on transient errors
+                    return false
+                }
+            }
+
+            // Initial check
+            const isDone = await checkStatus()
+            if (isDone) {
+                setIsPolling(false)
+                return
+            }
+
+            // Set up polling interval
+            setIsPolling(true)
+            pollingIntervalRef.current = setInterval(async () => {
+                const isDone = await checkStatus()
+                if (isDone) {
+                    if (pollingIntervalRef.current) {
+                        clearInterval(pollingIntervalRef.current)
+                        pollingIntervalRef.current = null
+                    }
+                    setIsPolling(false)
+                }
+            }, WORKFLOW_POLL_INTERVAL)
+        },
+        [onActionComplete, onClearSelection]
+    )
+
+    // Cleanup polling interval on unmount
+    useEffect(() => {
+        return () => {
+            if (pollingIntervalRef.current) {
+                clearInterval(pollingIntervalRef.current)
+            }
+        }
+    }, [])
 
     const handleUpdateStatus = (status: BulkStatusOption) => {
         setStatusDropdownOpen(false)
@@ -115,6 +214,35 @@ export function BlogBulkActionToolbar({
                 onClearSelection()
             } else {
                 toast.error(result.error || 'Failed to generate FAQs')
+            }
+        })
+    }
+
+    const handleGenerateInlineImages = () => {
+        // Prevent multiple clicks while polling
+        if (isPolling) return
+
+        startTransition(async () => {
+            const toastId = toast.loading(
+                `Starting image generation for ${selectedIds.length} post${selectedIds.length > 1 ? 's' : ''}...`
+            )
+            toastIdRef.current = toastId
+
+            const result = await bulkGenerateInlineImages(selectedIds)
+
+            if (result.success && result.runId) {
+                // Workflow started - update toast and begin polling
+                toast.loading('Processing images in background...', {
+                    id: toastId,
+                })
+
+                // Start polling for workflow status (intentionally fire-and-forget)
+                void pollWorkflowStatus(result.runId)
+            } else {
+                // Failed to start workflow
+                toast.dismiss(toastId)
+                toastIdRef.current = null
+                toast.error(result.error || 'Failed to start image generation')
             }
         })
     }
@@ -194,6 +322,21 @@ export function BlogBulkActionToolbar({
                         >
                             <Sparkles className='mr-1.5 h-4 w-4' />
                             Generate FAQs
+                        </Button>
+
+                        {/* Separator */}
+                        <div className='h-6 w-px bg-gray-300' />
+
+                        {/* Generate Inline Images */}
+                        <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={handleGenerateInlineImages}
+                            disabled={isPending || isPolling}
+                            title='Generate inline images using AI (requires content, 500+ words recommended)'
+                        >
+                            <ImageIcon className='mr-1.5 h-4 w-4' />
+                            {isPolling ? 'Processing...' : 'Generate Images'}
                         </Button>
                     </div>
                 </div>

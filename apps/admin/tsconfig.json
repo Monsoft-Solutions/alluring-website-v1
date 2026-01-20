@@ -11,6 +11,9 @@
         "plugins": [
             {
                 "name": "next"
+            },
+            {
+                "name": "workflow"
             }
         ]
     },
@@ -21,5 +24,5 @@
         "**/*.tsx",
         ".next/types/**/*.ts"
     ],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "app/.well-known"]
 }

@@ -9,6 +9,7 @@
  * @module @admin/app/(dashboard)/blog/posts/blog-posts-table
  */
 
+import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
 import { Checkbox } from '@workspace/ui/components/checkbox'
@@ -20,7 +21,13 @@ import {
     TableHeader,
     TableRow,
 } from '@workspace/ui/components/table'
-import { Eye, ExternalLink, Pencil } from 'lucide-react'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@workspace/ui/components/tooltip'
+import { Eye, ExternalLink, HelpCircle, ImageIcon, Pencil } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -82,6 +89,7 @@ export function BlogPostsTable({
                             <TableHead>Title</TableHead>
                             <TableHead>Author</TableHead>
                             <TableHead>Status</TableHead>
+                            <TableHead>Content</TableHead>
                             <TableHead className='text-right'>
                                 <Link
                                     href={buildSortUrl('views')}
@@ -115,7 +123,7 @@ export function BlogPostsTable({
                         {posts.length === 0 ? (
                             <TableRow>
                                 <TableCell
-                                    colSpan={8}
+                                    colSpan={9}
                                     className='text-muted-foreground py-8 text-center'
                                 >
                                     No blog posts found.{' '}
@@ -181,6 +189,58 @@ export function BlogPostsTable({
                                     </TableCell>
                                     <TableCell>
                                         <StatusBadge status={post.status} />
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className='flex items-center gap-2'>
+                                            {post.hasFaqs && (
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Badge
+                                                                variant='outline'
+                                                                className='gap-1 px-1.5'
+                                                            >
+                                                                <HelpCircle className='h-3 w-3' />
+                                                                FAQ
+                                                            </Badge>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            FAQs generated
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                            {post.inlineImagesCount > 0 && (
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Badge
+                                                                variant='outline'
+                                                                className='gap-1 px-1.5'
+                                                            >
+                                                                <ImageIcon className='h-3 w-3' />
+                                                                {
+                                                                    post.inlineImagesCount
+                                                                }
+                                                            </Badge>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            {
+                                                                post.inlineImagesCount
+                                                            }{' '}
+                                                            inline image(s)
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                            {!post.hasFaqs &&
+                                                post.inlineImagesCount ===
+                                                    0 && (
+                                                    <span className='text-muted-foreground text-xs'>
+                                                        —
+                                                    </span>
+                                                )}
+                                        </div>
                                     </TableCell>
                                     <TableCell className='text-right'>
                                         <div className='flex items-center justify-end gap-1'>
