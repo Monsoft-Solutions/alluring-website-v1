@@ -1,7 +1,8 @@
-import workflowNext from 'workflow/next'
-const { withWorkflow } = workflowNext
 import { createJiti } from 'jiti'
 import { fileURLToPath } from 'node:url'
+import workflowNext from 'workflow/next'
+
+const { withWorkflow } = workflowNext
 
 const jiti = createJiti(fileURLToPath(import.meta.url))
 
