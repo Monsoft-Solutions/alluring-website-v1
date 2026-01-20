@@ -1,7 +1,11 @@
 'use server'
 
 import { db } from '@workspace/db/client'
-import { blogPost, images } from '@workspace/db/schema/blog'
+import {
+    blogPost,
+    blogPostImages,
+    images as imagesTable,
+} from '@workspace/db/schema/blog'
 import type { PlanningData } from '@workspace/db/types'
 import { eq } from 'drizzle-orm'
 import { revalidatePath, revalidateTag } from 'next/cache'
@@ -69,13 +73,13 @@ export async function createBlogPost(
         let featuredImageId: string | null = null
         if (data.featuredImageUrl) {
             const [imageRecord] = await db
-                .insert(images)
+                .insert(imagesTable)
                 .values({
                     url: data.featuredImageUrl,
                     alt: data.title,
                     title: data.title,
                 })
-                .returning({ id: images.id })
+                .returning({ id: imagesTable.id })
 
             featuredImageId = imageRecord?.id ?? null
         }
@@ -186,19 +190,19 @@ export async function updateBlogPost(
             if (featuredImageId) {
                 // Update existing image
                 await db
-                    .update(images)
+                    .update(imagesTable)
                     .set({ url: data.featuredImageUrl, alt: data.title })
-                    .where(eq(images.id, featuredImageId))
+                    .where(eq(imagesTable.id, featuredImageId))
             } else {
                 // Create new image record
                 const [imageRecord] = await db
-                    .insert(images)
+                    .insert(imagesTable)
                     .values({
                         url: data.featuredImageUrl,
                         alt: data.title,
                         title: data.title,
                     })
-                    .returning({ id: images.id })
+                    .returning({ id: imagesTable.id })
 
                 featuredImageId = imageRecord?.id ?? null
             }
@@ -294,8 +298,8 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
         // Clean up orphaned featured image if it exists
         if (existingPost.featuredImageId) {
             await db
-                .delete(images)
-                .where(eq(images.id, existingPost.featuredImageId))
+                .delete(imagesTable)
+                .where(eq(imagesTable.id, existingPost.featuredImageId))
         }
 
         revalidatePath('/blog/posts')
@@ -867,6 +871,98 @@ export async function resetProcessingStatus(
                 error instanceof Error
                     ? error.message
                     : 'Failed to reset processing status',
+        }
+    }
+}
+
+// ============================================================================
+// Inline Image Tracking
+// ============================================================================
+
+export type InlineImageData = {
+    imageUrl: string
+    altText: string
+    prompt?: string
+}
+
+/**
+ * Track inline images that were generated and inserted into a blog post.
+ * Creates image records and links them to the post via the junction table.
+ */
+export async function trackInlineImages(
+    blogPostId: string,
+    images: InlineImageData[]
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        if (!blogPostId) {
+            return { success: false, error: 'Blog post ID is required' }
+        }
+
+        if (!images.length) {
+            return { success: true } // Nothing to track
+        }
+
+        // Verify the blog post exists
+        const [existingPost] = await db
+            .select({ id: blogPost.id })
+            .from(blogPost)
+            .where(eq(blogPost.id, blogPostId))
+            .limit(1)
+
+        if (!existingPost) {
+            return { success: false, error: 'Blog post not found' }
+        }
+
+        // Track each inline image
+        for (const img of images) {
+            // Create the image record
+            const [imageRecord] = await db
+                .insert(imagesTable)
+                .values({
+                    url: img.imageUrl,
+                    alt: img.altText,
+                    generatedBy: 'fal-ai',
+                    generationPrompt: img.prompt ?? img.altText,
+                })
+                .onConflictDoUpdate({
+                    target: imagesTable.url,
+                    set: { updatedAt: new Date() },
+                })
+                .returning({ id: imagesTable.id })
+
+            // Link to blog post with 'inline' type
+            if (imageRecord) {
+                await db
+                    .insert(blogPostImages)
+                    .values({
+                        blogPostId,
+                        imageId: imageRecord.id,
+                        prompt: img.prompt ?? img.altText,
+                        imageType: 'inline',
+                    })
+                    .onConflictDoNothing()
+            }
+        }
+
+        // Revalidate the blog posts list to update inline image counts
+        revalidatePath('/blog/posts')
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error tracking inline images:', error)
+
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to track inline images',
         }
     }
 }

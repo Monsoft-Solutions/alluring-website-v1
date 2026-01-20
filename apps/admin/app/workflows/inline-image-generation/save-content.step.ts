@@ -8,7 +8,11 @@
  */
 
 import { db } from '@workspace/db/client'
-import { blogPost } from '@workspace/db/schema/blog'
+import {
+    blogPost,
+    blogPostImages,
+    images as imagesTable,
+} from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
 
@@ -98,13 +102,44 @@ export async function saveContentStep(
             .set({ content: updatedContent })
             .where(eq(blogPost.id, postId))
 
+        // Track inline images in the junction table
+        for (const img of input.images) {
+            // First, create the image record
+            const [imageRecord] = await db
+                .insert(imagesTable)
+                .values({
+                    url: img.imageUrl,
+                    alt: img.altText,
+                    generatedBy: 'fal-ai',
+                    generationPrompt: img.altText,
+                })
+                .onConflictDoUpdate({
+                    target: imagesTable.url,
+                    set: { updatedAt: new Date() },
+                })
+                .returning({ id: imagesTable.id })
+
+            // Then link to blog post with 'inline' type
+            if (imageRecord) {
+                await db
+                    .insert(blogPostImages)
+                    .values({
+                        blogPostId: postId,
+                        imageId: imageRecord.id,
+                        prompt: img.altText,
+                        imageType: 'inline',
+                    })
+                    .onConflictDoNothing()
+            }
+        }
+
         // Revalidate cache for this post
         if (post.slug) {
             revalidateTag(CACHE_TAGS.blogPostBySlug(post.slug), { expire: 0 })
         }
 
         console.log(
-            `[Workflow Step] Successfully saved ${images.length} images to post: ${postId}`
+            `[Workflow Step] Successfully saved ${input.images.length} images to post: ${postId}`
         )
 
         return {

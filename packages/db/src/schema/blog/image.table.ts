@@ -12,7 +12,7 @@ export const images = pgTable(
     'images',
     {
         id: uuid('id').primaryKey().defaultRandom(),
-        url: text('url').notNull(),
+        url: text('url').notNull().unique(),
         alt: text('alt').notNull(),
         title: varchar('title', { length: 255 }),
         description: text('description'),

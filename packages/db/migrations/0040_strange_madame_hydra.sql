@@ -1,0 +1,1 @@
+ALTER TABLE "images" ADD CONSTRAINT "images_url_unique" UNIQUE("url");

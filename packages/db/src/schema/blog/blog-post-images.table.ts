@@ -1,6 +1,7 @@
 import {
     foreignKey,
     index,
+    pgEnum,
     pgTable,
     text,
     timestamp,
@@ -9,6 +10,11 @@ import {
 
 import { blogPost } from './blog-post.table'
 import { images } from './image.table'
+
+/**
+ * Image type enum - distinguishes between featured and inline images
+ */
+export const imageTypeEnum = pgEnum('image_type', ['featured', 'inline'])
 
 /**
  * Junction table linking blog posts to their generated images
@@ -21,6 +27,7 @@ export const blogPostImages = pgTable(
         blogPostId: uuid('blog_post_id').notNull(),
         imageId: uuid('image_id').notNull(),
         prompt: text('prompt').notNull(), // The prompt used to generate this image
+        imageType: imageTypeEnum('image_type').default('inline').notNull(),
         createdAt: timestamp('created_at').defaultNow(),
     },
     (table) => [

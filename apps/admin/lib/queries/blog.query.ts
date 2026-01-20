@@ -1,7 +1,12 @@
 import { db } from '@workspace/db/client'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
-import { author, blogPost, images } from '@workspace/db/schema/blog'
-import { count, desc, eq, sql, asc } from 'drizzle-orm'
+import {
+    author,
+    blogPost,
+    blogPostImages,
+    images,
+} from '@workspace/db/schema/blog'
+import { and, count, desc, eq, sql, asc } from 'drizzle-orm'
 
 import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 
@@ -17,6 +22,8 @@ export type BlogPostListItem = {
     authorName: string | null
     featuredImageUrl: string | null
     createdAt: Date | null
+    hasFaqs: boolean
+    inlineImagesCount: number
 }
 
 export type BlogPostSortBy = 'createdAt' | 'views' | 'publishedAt'
@@ -51,6 +58,17 @@ export async function getBlogPosts(
 
     const orderDirection = sortOrder === 'asc' ? asc : desc
 
+    // Subquery for counting inline images per post
+    const inlineImagesSubquery = db
+        .select({
+            postId: blogPostImages.blogPostId,
+            inlineCount: count().as('inline_count'),
+        })
+        .from(blogPostImages)
+        .where(eq(blogPostImages.imageType, 'inline'))
+        .groupBy(blogPostImages.blogPostId)
+        .as('inline_images')
+
     const [posts, totalResult] = await Promise.all([
         db
             .select({
@@ -63,18 +81,39 @@ export async function getBlogPosts(
                 authorName: author.name,
                 featuredImageUrl: images.url,
                 createdAt: blogPost.createdAt,
+                faqs: blogPost.faqs,
+                inlineImagesCount: sql<number>`COALESCE(${inlineImagesSubquery.inlineCount}, 0)`,
             })
             .from(blogPost)
             .leftJoin(author, eq(blogPost.authorId, author.id))
             .leftJoin(images, eq(blogPost.featuredImageId, images.id))
+            .leftJoin(
+                inlineImagesSubquery,
+                eq(blogPost.id, inlineImagesSubquery.postId)
+            )
             .orderBy(orderDirection(sortColumn))
             .limit(pageSize)
             .offset(offset),
         db.select({ count: count() }).from(blogPost),
     ])
 
+    // Transform posts to include hasFaqs and proper inlineImagesCount
+    const transformedPosts: BlogPostListItem[] = posts.map((post) => ({
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        status: post.status,
+        publishedAt: post.publishedAt,
+        views: post.views,
+        authorName: post.authorName,
+        featuredImageUrl: post.featuredImageUrl,
+        createdAt: post.createdAt,
+        hasFaqs: Array.isArray(post.faqs) && post.faqs.length > 0,
+        inlineImagesCount: Number(post.inlineImagesCount) || 0,
+    }))
+
     return {
-        posts,
+        posts: transformedPosts,
         total: totalResult[0]?.count ?? 0,
     }
 }

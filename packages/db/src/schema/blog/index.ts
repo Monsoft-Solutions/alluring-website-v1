@@ -29,6 +29,7 @@ export {
 export { images, type Image, type InsertImage } from './image.table'
 
 export {
+    imageTypeEnum,
     blogPostImages,
     type BlogPostImage,
     type InsertBlogPostImage,

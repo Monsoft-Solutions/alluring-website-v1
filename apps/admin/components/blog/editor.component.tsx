@@ -7,6 +7,8 @@ import type { GeneratedInlineImage } from '@workspace/ai'
 
 import { cn } from '@workspace/ui/lib/utils'
 
+import { trackInlineImages } from '@/lib/actions/blog.action'
+
 import { AutoInlineImagesDialog } from './editor/auto-inline-images-dialog.component'
 import { EditorBubbleMenu } from './editor/bubble-menu.component'
 import { createEditorExtensions } from './editor/editor-extensions'
@@ -124,9 +126,23 @@ export function PostEditor({
                     .run()
 
                 setSelectionPosition(null) // Reset after use
+
+                // Track the inline image in the database (non-blocking)
+                // Failure to track should not affect the image insertion
+                if (blogPostId) {
+                    void trackInlineImages(blogPostId, [
+                        {
+                            imageUrl,
+                            altText,
+                            prompt: selectedText,
+                        },
+                    ]).catch((error) => {
+                        console.error('Failed to track inline image:', error)
+                    })
+                }
             }
         },
-        [editor, selectionPosition]
+        [editor, selectionPosition, blogPostId, selectedText]
     )
 
     const handleAutoInlineImages = useCallback(() => {
@@ -140,9 +156,34 @@ export function PostEditor({
     const handleAutoImagesGenerated = useCallback(
         (images: GeneratedInlineImage[]) => {
             if (!editor) return
-            insertGeneratedInlineImages(editor, images)
+
+            // Insert images into the editor
+            const insertedCount = insertGeneratedInlineImages(editor, images)
+
+            // Track successfully inserted images in the database (non-blocking)
+            // Failure to track should not affect the image insertion
+            if (blogPostId && insertedCount > 0) {
+                const successfulImages = images
+                    .filter((img) => img.status === 'success' && img.imageUrl)
+                    .map((img) => ({
+                        imageUrl: img.imageUrl!,
+                        altText: img.altText || 'Generated inline image',
+                        prompt: img.prompt,
+                    }))
+
+                if (successfulImages.length > 0) {
+                    void trackInlineImages(blogPostId, successfulImages).catch(
+                        (error) => {
+                            console.error(
+                                'Failed to track inline images:',
+                                error
+                            )
+                        }
+                    )
+                }
+            }
         },
-        [editor]
+        [editor, blogPostId]
     )
 
     if (!editor) {

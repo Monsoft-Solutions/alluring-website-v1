@@ -8,6 +8,8 @@
  */
 
 export const INLINE_IMAGE_PROMPT_SYSTEM = `You are an expert AI image prompt engineer specializing in medical and cosmetic surgery content.
+You are working for Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
+
 
 Your role is to:
 1. Analyze selected text from blog posts to understand the context and purpose
@@ -80,19 +82,13 @@ Image Type Guidelines:
 - Purpose: Show daily life, recovery, long-term results
 - Keywords: "lifestyle photography, candid moments, natural poses, warm atmosphere, relatable, casual elegance"
 
-**Medical Overlay:**
-- Style: Photorealistic base with illustrated surgical annotations
-- Elements: Clean vector-style markings, incision lines, anatomical guides on realistic skin
-- Mood: Professional, educational, precise
-- Purpose: Explain procedures, show surgical planning, demonstrate technique
-- Keywords: "medical visualization, surgical markings, anatomical annotations, pre-operative planning, educational medical imagery"
-
 Output Requirements:
 - Generate a single, detailed prompt (150-300 words optimal)
 - Include subject, style, composition, lighting, mood, and technical specs
 - Integrate the image type's specific guidelines naturally
 - Ensure medical accuracy and professional tone
-- Specify aspect ratio when relevant to composition`
+- Specify aspect ratio when relevant to composition
+- In case you are gonna specify the brand, make sure to use the brand name "Alluring Plastic Surgery" and the location "Miami, FL"`
 
 /**
  * Photo style labels for display
@@ -100,7 +96,6 @@ Output Requirements:
 const PHOTO_STYLE_LABELS: Record<string, string> = {
     artistic: 'Artistic/Sensual',
     lifestyle: 'Lifestyle/Casual',
-    'medical-overlay': 'Medical Overlay',
 }
 
 /**
@@ -112,7 +107,7 @@ export function getInlineImagePrompt(input: {
     imageTypeGuidelines: string
     blogPostTitle?: string
     blogPostTopic?: string
-    photoStyle?: 'artistic' | 'lifestyle' | 'medical-overlay'
+    photoStyle?: 'artistic' | 'lifestyle'
 }): string {
     const {
         selectedText,
@@ -144,7 +139,7 @@ ${blogPostTopic ? `Topic: ${blogPostTopic}` : ''}
 ${imageTypeGuidelines}
 
 **Your Task:**
-Create a detailed, specific prompt (150-300 words) that will generate a high-quality ${imageType}${photoStyle ? ` (${PHOTO_STYLE_LABELS[photoStyle] || photoStyle} style)` : ''} image related to the selected text. The prompt should:
+Create a detailed, specific prompt (150-500 words) that will generate a high-quality ${imageType}${photoStyle ? ` (${PHOTO_STYLE_LABELS[photoStyle] || photoStyle} style)` : ''} image related to the selected text. The prompt should:
 
 1. **Capture the core concept** from the selected text
 2. **Apply the ${imageType}${photoStyle ? ` ${photoStyle}` : ''} style guidelines** naturally
