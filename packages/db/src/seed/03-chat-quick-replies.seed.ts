@@ -7,7 +7,6 @@
  *
  * @module packages/db/src/seed/03-chat-quick-replies
  */
-import { env } from '../env'
 import {
     chatQuickReply,
     type InsertChatQuickReply,
@@ -271,44 +270,32 @@ const QUICK_REPLIES: InsertChatQuickReply[] = [
 export async function run({ db }: RunProps) {
     console.log('Seeding chat quick replies...')
 
-    const isDevelopment = env.NODE_ENV === 'development'
-
-    // Check if quick replies exist
+    // Check if quick replies already exist - skip seed if data exists
     const existingReplies = await db.select().from(chatQuickReply).limit(1)
-
-    if (isDevelopment && existingReplies.length > 0) {
-        console.log('🗑️  Clearing existing quick replies (development mode)...')
-        await db.delete(chatQuickReply)
+    if (existingReplies.length > 0) {
+        console.log('ℹ️  Quick replies already exist, skipping seed')
+        return
     }
 
-    // Only insert if table is empty or we're in development
-    if (isDevelopment || existingReplies.length === 0) {
-        await db
-            .insert(chatQuickReply)
-            .values(QUICK_REPLIES)
-            .onConflictDoNothing()
+    // Insert quick replies since table is empty
+    await db.insert(chatQuickReply).values(QUICK_REPLIES).onConflictDoNothing()
 
-        console.log(`✅ Inserted ${QUICK_REPLIES.length} chat quick replies`)
+    console.log(`✅ Inserted ${QUICK_REPLIES.length} chat quick replies`)
 
-        // Log summary by category
-        const categoryCounts = QUICK_REPLIES.reduce(
-            (acc, reply) => {
-                const cat = reply.category as string
-                acc[cat] = (acc[cat] || 0) + 1
-                return acc
-            },
-            {} as Record<string, number>
-        )
+    // Log summary by category
+    const categoryCounts = QUICK_REPLIES.reduce(
+        (acc, reply) => {
+            const cat = reply.category as string
+            acc[cat] = (acc[cat] || 0) + 1
+            return acc
+        },
+        {} as Record<string, number>
+    )
 
-        console.log('📊 Quick replies by category:')
-        Object.entries(categoryCounts).forEach(([category, count]) => {
-            console.log(`   - ${category}: ${count}`)
-        })
-    } else {
-        console.log(
-            'ℹ️  Quick replies already exist, skipping seed (production mode)'
-        )
-    }
+    console.log('📊 Quick replies by category:')
+    Object.entries(categoryCounts).forEach(([category, count]) => {
+        console.log(`   - ${category}: ${count}`)
+    })
 
     console.log('Chat quick replies seeded successfully!')
 }

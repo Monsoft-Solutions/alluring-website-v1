@@ -16,6 +16,8 @@ import {
     Bot,
     Search,
     Workflow,
+    Settings,
+    Users,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -110,6 +112,12 @@ const navItems: NavItem[] = [
         title: 'Feedback',
         href: '/feedback',
         icon: MessageSquare,
+    },
+    {
+        title: 'Settings',
+        href: '/settings',
+        icon: Settings,
+        children: [{ title: 'Users', href: '/settings/users', icon: Users }],
     },
 ]
 

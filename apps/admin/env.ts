@@ -24,11 +24,13 @@ export const env = createEnv({
         // Database
         POSTGRES_URL: z.string(),
 
-        // Admin authentication (min 4 chars for dev, use longer in production)
-        ADMIN_PASSWORD: z.string().min(4),
+        // Better-Auth configuration
+        BETTER_AUTH_URL: z.string().url(),
+        BETTER_AUTH_SECRET: z.string().min(32),
 
-        // Auth signing secret (minimum 32 chars for HMAC-SHA256)
-        AUTH_SECRET: z.string().min(32),
+        // Email configuration (Resend)
+        RESEND_API_KEY: z.string().min(1),
+        RESEND_FROM_EMAIL: z.string().email(),
 
         // Vercel Blob storage for media uploads
         BLOB_READ_WRITE_TOKEN: z.string().min(1),

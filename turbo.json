@@ -48,7 +48,10 @@
                 "GOOGLE_CUSTOM_SEARCH_API_KEY",
                 "GOOGLE_CUSTOM_SEARCH_ENGINE_ID",
                 "PERPLEXITY_API_KEY",
-                "ANTHROPIC_API_KEY"
+                "ANTHROPIC_API_KEY",
+                "ADMIN_EMAIL",
+                "ADMIN_PASSWORD",
+                "ADMIN_NAME"
             ]
         },
         "lint": {
@@ -112,7 +115,10 @@
                 "GOOGLE_CUSTOM_SEARCH_API_KEY",
                 "GOOGLE_CUSTOM_SEARCH_ENGINE_ID",
                 "PERPLEXITY_API_KEY",
-                "ANTHROPIC_API_KEY"
+                "ANTHROPIC_API_KEY",
+                "ADMIN_EMAIL",
+                "ADMIN_PASSWORD",
+                "ADMIN_NAME"
             ]
         },
         "db:generate": {

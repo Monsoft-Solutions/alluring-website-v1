@@ -1,11 +1,22 @@
+import { betterFetch } from '@better-fetch/fetch'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-import { env } from '@/env'
-import { verifyToken } from '@/lib/utils/crypto.util'
+import type { Session } from '@/lib/auth'
 
-const PUBLIC_PATHS = ['/login', '/api/auth']
+/**
+ * Public paths that don't require authentication
+ */
+const PUBLIC_PATHS = ['/login', '/signup', '/accept-invitation', '/api/auth']
 
+/**
+ * Middleware for Better-Auth session validation
+ *
+ * - Protects all dashboard routes
+ * - Allows public paths (login, signup, accept-invitation, api/auth)
+ * - Redirects unauthenticated users to login
+ * - Redirects banned users to login with error
+ */
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
 
@@ -14,35 +25,32 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next()
     }
 
-    // Check for auth cookie
-    const authCookie = request.cookies.get('admin-auth')
+    // Get session from Better-Auth
+    const { data: session } = await betterFetch<Session>(
+        '/api/auth/get-session',
+        {
+            baseURL: request.nextUrl.origin,
+            headers: {
+                cookie: request.headers.get('cookie') || '',
+            },
+        }
+    )
 
-    if (!authCookie?.value) {
-        console.log('❌ No cookie found, redirecting to login')
+    // No session - redirect to login
+    if (!session) {
         const loginUrl = new URL('/login', request.url)
         loginUrl.searchParams.set('redirect', pathname)
         return NextResponse.redirect(loginUrl)
     }
 
-    // Verify HMAC signature and check expiry using Edge-compatible Web Crypto API
-    try {
-        const payload = await verifyToken(authCookie.value, env.AUTH_SECRET)
-
-        // Token must be valid, have correct prefix, and not be expired
-        if (
-            !payload ||
-            payload.prefix !== 'admin' ||
-            payload.expiresAt < Date.now()
-        ) {
-            const loginUrl = new URL('/login', request.url)
-            loginUrl.searchParams.set('redirect', pathname)
-            return NextResponse.redirect(loginUrl)
-        }
-    } catch (error) {
-        console.error('❌ Token verification error:', error)
+    // Check if user is banned
+    if (session.user.banned) {
         const loginUrl = new URL('/login', request.url)
-        loginUrl.searchParams.set('redirect', pathname)
-        return NextResponse.redirect(loginUrl)
+        loginUrl.searchParams.set('error', 'banned')
+        // Clear the session cookie
+        const response = NextResponse.redirect(loginUrl)
+        response.cookies.delete('better-auth.session_token')
+        return response
     }
 
     return NextResponse.next()

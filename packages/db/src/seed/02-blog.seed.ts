@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url'
 
 import { eq } from 'drizzle-orm'
 
-import { env } from '../env'
 import {
     author,
     blogCategory,
@@ -76,44 +75,17 @@ function generateColor(str: string): string {
 export async function run({ db }: RunProps) {
     console.log('Seeding blog posts, categories, and tags...')
 
-    const isDevelopment = env.NODE_ENV === 'development'
-    const shouldClearData = isDevelopment
-
-    // Check if blog posts exist
+    // Check if blog posts already exist - skip seed if data exists
     const existingPosts = await db.select().from(blogPost).limit(1)
-
-    if (shouldClearData && existingPosts.length > 0) {
-        console.log('🗑️  Clearing existing blog data (development mode)...')
-        await db.delete(blogPostTag)
-        await db.delete(blogPostCategory)
-        await db.delete(blogPost)
-        await db.delete(blogCategory)
-        await db.delete(blogTag)
-        await db.delete(images)
-        // Delete authors after blog posts are deleted (due to FK constraint)
-        await db.delete(author)
-        console.log('🗑️  Cleared authors to refresh with new team author')
-
-        // Re-insert the team author
-        await db.insert(author).values({
-            name: 'Alluring Editorial Team',
-            email: 'editorial@alluringplasticsurgery.com',
-            bio: 'Expert insights from our team of board-certified surgeons and medical professionals at Alluring Plastic Surgery in Miami, FL.',
-            avatarUrl: '/logo.png',
-            website: 'https://alluringplasticsurgery.com',
-            socialLinks: {
-                instagram: 'https://instagram.com/alluringplasticsurgery',
-            },
-        })
-        console.log('✅ Inserted Alluring Editorial Team author')
+    if (existingPosts.length > 0) {
+        console.log('ℹ️  Blog data already exists, skipping seed')
+        return
     }
 
-    // Re-fetch authors after potential cleanup
+    // Check for existing authors
     const freshAuthors = await db.select().from(author)
     if (freshAuthors.length === 0) {
-        console.error(
-            '❌ No authors found after cleanup. Please check seed order.'
-        )
+        console.error('❌ No authors found. Please check seed order.')
         return
     }
 
@@ -197,116 +169,102 @@ export async function run({ db }: RunProps) {
     }
 
     // Insert categories
-    if (
-        shouldClearData ||
-        (await db.select().from(blogCategory)).length === 0
-    ) {
-        const categoriesData = Array.from(allCategories).map((name) => ({
-            name,
-            slug: slugify(name),
-            color: generateColor(name),
-        }))
+    const categoriesData = Array.from(allCategories).map((name) => ({
+        name,
+        slug: slugify(name),
+        color: generateColor(name),
+    }))
 
-        if (categoriesData.length > 0) {
-            await db
-                .insert(blogCategory)
-                .values(categoriesData)
-                .onConflictDoNothing()
-            console.log(`✅ Inserted ${categoriesData.length} categories`)
-        }
+    if (categoriesData.length > 0) {
+        await db
+            .insert(blogCategory)
+            .values(categoriesData)
+            .onConflictDoNothing()
+        console.log(`✅ Inserted ${categoriesData.length} categories`)
     }
     const categories = await db.select().from(blogCategory)
 
     // Insert tags
-    if (shouldClearData || (await db.select().from(blogTag)).length === 0) {
-        const tagsData = Array.from(allTags).map((name) => ({
-            name,
-            slug: slugify(name),
-            color: generateColor(name),
-        }))
+    const tagsData = Array.from(allTags).map((name) => ({
+        name,
+        slug: slugify(name),
+        color: generateColor(name),
+    }))
 
-        if (tagsData.length > 0) {
-            await db.insert(blogTag).values(tagsData).onConflictDoNothing()
-            console.log(`✅ Inserted ${tagsData.length} tags`)
-        }
+    if (tagsData.length > 0) {
+        await db.insert(blogTag).values(tagsData).onConflictDoNothing()
+        console.log(`✅ Inserted ${tagsData.length} tags`)
     }
     const tags = await db.select().from(blogTag)
 
-    // Only insert posts if table is empty or we're in development
-    if (shouldClearData || existingPosts.length === 0) {
-        // Get the team author for posts
-        const teamAuthor = freshAuthors[0]
+    // Get the team author for posts
+    const teamAuthor = freshAuthors[0]
 
-        if (!teamAuthor) {
-            console.error('❌ No author available for posts')
-            return
-        }
-
-        // Insert each post
-        for (let i = 0; i < postModules.length; i++) {
-            const postModule = postModules[i]
-            if (!postModule) continue
-
-            const {
-                post: postData,
-                categories: postCategories,
-                tags: postTags,
-            } = postModule
-
-            // Find the corresponding image ID based on filename pattern
-            const postFile = postFiles[i]
-            const baseFilename = postFile
-                ?.replace('.post.ts', '')
-                .replace('.post.js', '')
-            const featuredImageId = baseFilename
-                ? imageMap.get(baseFilename)
-                : undefined
-
-            // Insert the blog post
-            const [insertedPost] = await db
-                .insert(blogPost)
-                .values({
-                    ...postData,
-                    authorId: teamAuthor.id,
-                    featuredImageId,
-                    updatedAt: new Date(),
-                })
-                .returning()
-
-            if (!insertedPost) {
-                console.error(`❌ Failed to insert post: ${postData.title}`)
-                continue
-            }
-
-            console.log(`✅ Inserted post: ${insertedPost.title}`)
-
-            // Link categories
-            for (const categoryName of postCategories) {
-                const category = categories.find((c) => c.name === categoryName)
-                if (category) {
-                    await db.insert(blogPostCategory).values({
-                        blogPostId: insertedPost.id,
-                        categoryId: category.id,
-                    })
-                }
-            }
-
-            // Link tags
-            for (const tagName of postTags) {
-                const tag = tags.find((t) => t.name === tagName)
-                if (tag) {
-                    await db.insert(blogPostTag).values({
-                        blogPostId: insertedPost.id,
-                        tagId: tag.id,
-                    })
-                }
-            }
-        }
-
-        console.log('✅ Blog posts, categories, and tags seeded successfully!')
-    } else {
-        console.log(
-            'ℹ️  Blog data already exists, skipping seed (production mode)'
-        )
+    if (!teamAuthor) {
+        console.error('❌ No author available for posts')
+        return
     }
+
+    // Insert each post
+    for (let i = 0; i < postModules.length; i++) {
+        const postModule = postModules[i]
+        if (!postModule) continue
+
+        const {
+            post: postData,
+            categories: postCategories,
+            tags: postTags,
+        } = postModule
+
+        // Find the corresponding image ID based on filename pattern
+        const postFile = postFiles[i]
+        const baseFilename = postFile
+            ?.replace('.post.ts', '')
+            .replace('.post.js', '')
+        const featuredImageId = baseFilename
+            ? imageMap.get(baseFilename)
+            : undefined
+
+        // Insert the blog post
+        const [insertedPost] = await db
+            .insert(blogPost)
+            .values({
+                ...postData,
+                authorId: teamAuthor.id,
+                featuredImageId,
+                updatedAt: new Date(),
+            })
+            .returning()
+
+        if (!insertedPost) {
+            console.error(`❌ Failed to insert post: ${postData.title}`)
+            continue
+        }
+
+        console.log(`✅ Inserted post: ${insertedPost.title}`)
+
+        // Link categories
+        for (const categoryName of postCategories) {
+            const category = categories.find((c) => c.name === categoryName)
+            if (category) {
+                await db.insert(blogPostCategory).values({
+                    blogPostId: insertedPost.id,
+                    categoryId: category.id,
+                })
+            }
+        }
+
+        // Link tags
+        for (const tagName of postTags) {
+            const tag = tags.find((t) => t.name === tagName)
+            if (tag) {
+                await db.insert(blogPostTag).values({
+                    blogPostId: insertedPost.id,
+                    tagId: tag.id,
+                })
+            }
+        }
+    }
+
+    console.log('✅ Blog posts, categories, and tags seeded successfully!')
 }
