@@ -56,7 +56,8 @@ export const config = {
          * - _next/image (image optimization)
          * - favicon.ico
          * - public files
+         * - .well-known/workflow (Vercel Workflow)
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        '/((?!_next/static|_next/image|favicon.ico|\\.well-known/workflow|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
 }

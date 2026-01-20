@@ -1,3 +1,5 @@
+import workflowNext from 'workflow/next'
+const { withWorkflow } = workflowNext
 import { createJiti } from 'jiti'
 import { fileURLToPath } from 'node:url'
 
@@ -28,4 +30,4 @@ const nextConfig = {
     },
 }
 
-export default nextConfig
+export default withWorkflow(nextConfig)

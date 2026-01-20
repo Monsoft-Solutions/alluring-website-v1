@@ -6,6 +6,7 @@
  * Server actions for bulk operations on blog posts:
  * - Bulk status update (draft, ready_to_publish, published)
  * - Bulk FAQ generation using AI
+ * - Bulk inline image generation (via Vercel Workflow)
  *
  * @module @admin/lib/actions/blog-bulk
  */
@@ -15,16 +16,14 @@ import { blogPost } from '@workspace/db/schema/blog'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 import { eq, inArray } from 'drizzle-orm'
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { start } from 'workflow/api'
 
 import { extractFaqs } from '@workspace/ai/functions'
-import { runAutoInlineImagePipeline } from '@workspace/ai/pipelines'
-import type { GeneratedInlineImage } from '@workspace/ai'
 
-import { generateImageWithFal } from '@/lib/services/fal-image-generation.service'
-import { insertInlineImagesIntoMarkdown } from '@/lib/utils/insert-inline-images.util'
 import type { ActionResult } from '@/lib/types/blog/blog-action.type'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
+import { bulkInlineImagesWorkflow } from '@/app/workflows/inline-image-generation/bulk-inline-images.workflow'
 
 // ============================================================================
 // Types
@@ -46,15 +45,11 @@ type BulkFaqResult = {
 type BulkInlineImageResult = {
     success: boolean
     error?: string
-    processedCount?: number
-    failedCount?: number
-    totalImagesGenerated?: number
-    results?: Array<{
-        postId: string
-        success: boolean
-        error?: string
-        imagesInserted?: number
-    }>
+    /**
+     * Run ID for tracking the workflow status.
+     * When present, the client should poll /api/workflow/[runId] for status.
+     */
+    runId?: string
 }
 
 // ============================================================================
@@ -65,7 +60,7 @@ const MAX_BULK_STATUS_UPDATE = 100
 const MAX_BULK_FAQ_GENERATION = 20
 const FAQ_GENERATION_BATCH_SIZE = 5
 const MAX_BULK_INLINE_IMAGE_GENERATION = 10
-const INLINE_IMAGE_GENERATION_BATCH_SIZE = 2 // Lower due to heavy processing
+const MAX_IMAGES_PER_POST = 5
 
 // ============================================================================
 // Validation Helpers
@@ -356,32 +351,18 @@ export async function bulkGenerateFaqs(
 }
 
 // ============================================================================
-// Bulk Inline Image Generation Action
+// Bulk Inline Image Generation Action (via Vercel Workflow)
 // ============================================================================
-
-/**
- * Get the appropriate FAL model for an image type
- *
- * @param imageType - The type of image being generated
- * @returns The recommended model ID
- */
-function getModelForImageType(
-    imageType: string
-): 'gpt-image-1.5' | 'nano-banana-pro' {
-    if (imageType === 'infographic' || imageType === 'illustration') {
-        return 'nano-banana-pro'
-    }
-    return 'gpt-image-1.5'
-}
 
 /**
  * Generate inline images for multiple blog posts using AI
  *
- * Fully automatic: analyzes content, generates images, inserts them,
- * and saves to database without user approval.
+ * Uses Vercel Workflow for durable, resumable execution that survives
+ * timeouts and crashes. Returns immediately with a run ID that can be
+ * polled for status.
  *
  * @param postIds - Array of blog post IDs to generate images for
- * @returns BulkInlineImageResult with per-item results
+ * @returns BulkInlineImageResult with runId for status polling
  */
 export async function bulkGenerateInlineImages(
     postIds: string[]
@@ -395,195 +376,29 @@ export async function bulkGenerateInlineImages(
         )
         if (validation) return validation as BulkInlineImageResult
 
-        // Fetch posts with content
-        const posts = await db
-            .select({
-                id: blogPost.id,
-                title: blogPost.title,
-                content: blogPost.content,
-                slug: blogPost.slug,
-            })
-            .from(blogPost)
-            .where(inArray(blogPost.id, postIds))
-
-        if (posts.length === 0) {
-            return { success: false, error: 'No posts found' }
-        }
-
-        // Filter posts with sufficient content (min 100 chars)
-        const postsWithContent = posts.filter(
-            (p) => p.content && p.content.length >= 100
+        console.log(
+            `[Bulk Images] Starting workflow for ${postIds.length} posts`
         )
 
-        if (postsWithContent.length === 0) {
-            return {
-                success: false,
-                error: 'No posts with sufficient content. Minimum 100 characters required.',
-            }
-        }
+        // Start the durable workflow - returns immediately
+        const run = await start(bulkInlineImagesWorkflow, [
+            {
+                postIds,
+                maxImagesPerPost: MAX_IMAGES_PER_POST,
+            },
+        ])
 
-        const results: BulkInlineImageResult['results'] = []
-        let processedCount = 0
-        let failedCount = 0
-        let totalImagesGenerated = 0
-
-        // Process in batches
-        for (
-            let i = 0;
-            i < postsWithContent.length;
-            i += INLINE_IMAGE_GENERATION_BATCH_SIZE
-        ) {
-            const batch = postsWithContent.slice(
-                i,
-                i + INLINE_IMAGE_GENERATION_BATCH_SIZE
-            )
-
-            const batchResults = await Promise.all(
-                batch.map(async (post) => {
-                    try {
-                        console.log(`[Bulk Images] Processing: "${post.title}"`)
-
-                        // Phase 1: Run pipeline (analysis + prompt generation)
-                        const pipelineResult = await runAutoInlineImagePipeline(
-                            {
-                                content: post.content!,
-                                title: post.title,
-                                blogPostId: post.id,
-                                maxImages: 5,
-                            }
-                        )
-
-                        if (
-                            !pipelineResult.success ||
-                            !pipelineResult.analysis
-                        ) {
-                            return {
-                                postId: post.id,
-                                success: false,
-                                error:
-                                    pipelineResult.error || 'Analysis failed',
-                            }
-                        }
-
-                        // Phase 2: Generate images via FAL.ai
-                        const pendingImages =
-                            pipelineResult.generatedImages.filter(
-                                (img) => img.status === 'pending' && img.prompt
-                            )
-
-                        if (pendingImages.length === 0) {
-                            return {
-                                postId: post.id,
-                                success: true,
-                                imagesInserted: 0,
-                            }
-                        }
-
-                        // Generate all images in parallel
-                        const imageResults = await Promise.allSettled(
-                            pendingImages.map(async (img) => {
-                                const model = getModelForImageType(
-                                    img.imageType
-                                )
-                                const generated = await generateImageWithFal({
-                                    prompt: img.prompt!,
-                                    blogPostId: post.id,
-                                    model,
-                                    numImages: 1,
-                                })
-                                return {
-                                    ...img,
-                                    imageUrl: generated[0]?.blobUrl,
-                                    status: generated[0]?.blobUrl
-                                        ? 'success'
-                                        : 'error',
-                                } as GeneratedInlineImage
-                            })
-                        )
-
-                        const generatedImages: GeneratedInlineImage[] =
-                            imageResults.map((result, idx) =>
-                                result.status === 'fulfilled'
-                                    ? result.value
-                                    : {
-                                          ...pendingImages[idx]!,
-                                          status: 'error' as const,
-                                          error: 'Generation failed',
-                                      }
-                            )
-
-                        // Phase 3: Insert images into markdown
-                        const successfulImages = generatedImages.filter(
-                            (img) => img.status === 'success' && img.imageUrl
-                        )
-
-                        if (successfulImages.length === 0) {
-                            return {
-                                postId: post.id,
-                                success: false,
-                                error: 'All image generations failed',
-                            }
-                        }
-
-                        const updatedContent = insertInlineImagesIntoMarkdown(
-                            post.content!,
-                            successfulImages
-                        )
-
-                        // Phase 4: Save to database
-                        await db
-                            .update(blogPost)
-                            .set({ content: updatedContent })
-                            .where(eq(blogPost.id, post.id))
-
-                        console.log(
-                            `[Bulk Images] Done: "${post.title}" - ${successfulImages.length} images`
-                        )
-                        totalImagesGenerated += successfulImages.length
-                        processedCount++
-
-                        return {
-                            postId: post.id,
-                            success: true,
-                            imagesInserted: successfulImages.length,
-                        }
-                    } catch (error) {
-                        console.error(
-                            `[Bulk Images] Error for post ${post.id}:`,
-                            error
-                        )
-                        failedCount++
-                        return {
-                            postId: post.id,
-                            success: false,
-                            error:
-                                error instanceof Error
-                                    ? error.message
-                                    : 'Processing failed',
-                        }
-                    }
-                })
-            )
-
-            results.push(...batchResults)
-        }
-
-        // Revalidate caches
-        revalidateBlogPaths()
-        await revalidateBlogCacheWithSlugs(posts.map((p) => p.slug))
+        console.log(`[Bulk Images] Workflow started with run ID: ${run.runId}`)
 
         return {
             success: true,
-            results,
-            processedCount,
-            failedCount,
-            totalImagesGenerated,
+            runId: run.runId,
         }
     } catch (error) {
         return handleActionError<BulkInlineImageResult>(
             error,
-            'Failed to generate inline images',
-            'Error generating inline images:'
+            'Failed to start inline image generation',
+            'Error starting inline image workflow:'
         )
     }
 }

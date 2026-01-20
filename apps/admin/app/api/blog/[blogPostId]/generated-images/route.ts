@@ -1,6 +1,5 @@
 import { db } from '@workspace/db/client'
-import { blogPostImages, images } from '@workspace/db/schema'
-import { eq, desc } from 'drizzle-orm'
+import { sql } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
@@ -9,6 +8,13 @@ export const runtime = 'nodejs'
 
 type RouteContext = {
     params: Promise<{ blogPostId: string }>
+}
+
+type GeneratedImage = {
+    id: string
+    url: string
+    prompt: string | null
+    created_at: Date
 }
 
 /**
@@ -24,18 +30,17 @@ export async function GET(
 
         const { blogPostId } = await context.params
 
-        // Fetch generated images with their metadata
-        const generatedImages = await db
-            .select({
-                id: images.id,
-                url: images.url,
-                prompt: blogPostImages.prompt,
-                createdAt: blogPostImages.createdAt,
-            })
-            .from(blogPostImages)
-            .innerJoin(images, eq(blogPostImages.imageId, images.id))
-            .where(eq(blogPostImages.blogPostId, blogPostId))
-            .orderBy(desc(blogPostImages.createdAt))
+        // Fetch generated images with their metadata using raw SQL
+        const result = await db.execute<GeneratedImage>(sql`
+            SELECT i.id, i.url, bpi.prompt, bpi.created_at
+            FROM blog_post_images bpi
+            INNER JOIN images i ON bpi.image_id = i.id
+            WHERE bpi.blog_post_id = ${blogPostId}
+            ORDER BY bpi.created_at DESC
+        `)
+
+        // postgres-js returns result directly as array
+        const generatedImages = Array.isArray(result) ? result : []
 
         return NextResponse.json({
             success: true,
