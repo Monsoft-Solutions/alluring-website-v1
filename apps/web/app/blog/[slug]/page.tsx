@@ -4,17 +4,17 @@ import {
     FAQSchema,
 } from '@workspace/seo/react'
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 
-import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogCTA } from '@/components/blog/blog-cta.component'
+import { BlogPostHero } from '@/components/blog/blog-post-hero.component'
 import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
+import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -60,14 +60,6 @@ export default async function BlogPostPage({ params }: PageProps) {
     const post = await getCachedPostBySlug(slug)
     if (!post) notFound()
 
-    const publishedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-          })
-        : null
-
     const tableOfContents = extractTableOfContents(post.content)
 
     // Fetch related posts based on categories and tags
@@ -82,184 +74,164 @@ export default async function BlogPostPage({ params }: PageProps) {
     const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(post.content)
 
     return (
-        <ContainerLayout as='article' size='lg' className='py-16 lg:py-20'>
+        <article>
             {/* Track blog post view */}
             <BlogViewTracker postId={post.id} />
 
-            {/* Two column layout: content + TOC */}
-            <div className='grid grid-cols-1 gap-12 lg:grid-cols-[1fr_250px]'>
-                {/* Main content column */}
-                <div className='min-w-0'>
-                    <header className='mb-16 space-y-8'>
-                        <h1 className='text-foreground text-4xl leading-tight font-bold tracking-tight sm:text-5xl sm:leading-tight lg:text-6xl lg:leading-tight'>
-                            {post.title}
-                        </h1>
+            {/* Full-width cinematic hero */}
+            <BlogPostHero
+                title={post.title}
+                excerpt={post.excerpt}
+                featuredImage={post.featuredImage}
+                author={post.author}
+                publishedAt={post.publishedAt}
+                readingTime={post.readingTime}
+                categories={post.categories}
+            />
 
-                        {post.excerpt && (
-                            <p className='text-muted-foreground text-lg leading-relaxed sm:text-xl sm:leading-relaxed'>
-                                {post.excerpt}
-                            </p>
-                        )}
-
-                        <div className='text-muted-foreground border-border/40 flex flex-wrap items-center gap-4 border-t pt-8 text-sm font-normal'>
-                            {post.author && (
-                                <span className='inline-flex items-center font-medium'>
-                                    <span className='sr-only'>Written by </span>
-                                    {post.author.name}
-                                </span>
-                            )}
-                            {publishedDate && (
-                                <>
-                                    <span
-                                        className='text-muted-foreground/30'
-                                        aria-hidden='true'
-                                    >
-                                        •
-                                    </span>
-                                    <time
-                                        dateTime={post.publishedAt ?? undefined}
-                                    >
-                                        <span className='sr-only'>
-                                            Published on{' '}
-                                        </span>
-                                        {publishedDate}
-                                    </time>
-                                </>
-                            )}
-                            {post.readingTime && (
-                                <>
-                                    <span
-                                        className='text-muted-foreground/30'
-                                        aria-hidden='true'
-                                    >
-                                        •
-                                    </span>
-                                    <span>{post.readingTime} min read</span>
-                                </>
-                            )}
-                        </div>
-                    </header>
-
-                    {post.featuredImage && (
-                        <figure className='relative mb-16 aspect-[16/9] w-full overflow-hidden rounded-lg'>
-                            <Image
-                                src={post.featuredImage.url}
-                                alt={post.featuredImage.alt}
-                                fill
-                                className='object-cover'
-                                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px'
-                                priority
-                                placeholder={
-                                    post.featuredImage.blurDataUrl
-                                        ? 'blur'
-                                        : 'empty'
-                                }
-                                blurDataURL={
-                                    post.featuredImage.blurDataUrl ?? undefined
-                                }
-                            />
-                        </figure>
-                    )}
-
-                    {/* Main content before CTA */}
-                    <div className='prose prose-neutral prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-h1:text-3xl prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-snug prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:leading-snug prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-relaxed prose-p:mb-6 prose-li:mb-2 prose-blockquote:border-l-4 prose-blockquote:border-primary/20 prose-blockquote:bg-muted/30 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-code:bg-muted prose-code:text-foreground prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-transparent prose-pre:p-4 prose-pre:my-6 prose-pre:border prose-pre:border-border prose-pre:rounded-lg max-w-none'>
-                        <PostMarkdown content={beforeCTA} />
-                    </div>
-
-                    {/* Inline CTA - appears at marker position or auto-inserted at ~40% of content */}
-                    {beforeCTA && (
-                        <BlogCTA variant='inline' ctaId={ctaId || 'default'} />
-                    )}
-
-                    {/* Content after CTA (if any) */}
-                    {afterCTA ? (
-                        <div className='prose prose-neutral prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-h1:text-3xl prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-snug prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:leading-snug prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-relaxed prose-p:mb-6 prose-li:mb-2 prose-blockquote:border-l-4 prose-blockquote:border-primary/20 prose-blockquote:bg-muted/30 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-code:bg-muted prose-code:text-foreground prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-transparent prose-pre:p-4 prose-pre:my-6 prose-pre:border prose-pre:border-border prose-pre:rounded-lg max-w-none'>
-                            <PostMarkdown content={afterCTA} />
-                        </div>
-                    ) : null}
-
-                    <ArticleSchema
-                        type='BlogPosting'
-                        headline={post.title}
-                        description={post.excerpt ?? undefined}
-                        author={post.author?.name ?? 'Unknown'}
-                        datePublished={
-                            post.publishedAt ?? new Date().toISOString()
-                        }
-                        dateModified={post.publishedAt ?? undefined}
-                        image={post.featuredImage?.url}
-                        mainEntityOfPage={`${seoConfig.siteUrl}/blog/${post.slug}`}
-                        publisher={{
-                            name:
-                                seoConfig.organization?.name ??
-                                seoConfig.siteName,
-                            logo: seoConfig.organization?.logo,
-                            url:
-                                seoConfig.organization?.url ??
-                                seoConfig.siteUrl,
-                        }}
-                    />
-
-                    <BreadcrumbSchema
-                        items={[
-                            { name: 'Home', item: '/' },
-                            { name: 'Blog', item: '/blog' },
-                            { name: post.title, item: `/blog/${post.slug}` },
-                        ]}
-                    />
-
-                    {/* FAQ Schema for rich results - only render if FAQs exist */}
-                    {post.faqs && post.faqs.length > 0 && (
-                        <FAQSchema
-                            items={post.faqs.map((faq) => ({
-                                question: faq.question,
-                                answer: faq.answer,
-                            }))}
-                        />
-                    )}
-
-                    {(post.categories.length > 0 || post.tags.length > 0) && (
-                        <footer className='border-border/30 mt-20 border-t pt-12'>
-                            <h2 className='text-foreground mb-8 text-sm font-medium tracking-wide'>
-                                Topics
-                            </h2>
-                            <div className='flex flex-wrap gap-3'>
-                                {post.categories.map((c) => (
-                                    <Link
-                                        key={c.id}
-                                        href={`/blog/categories/${c.slug}`}
-                                        className='bg-secondary/60 text-secondary-foreground hover:bg-secondary/80 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200'
-                                    >
-                                        {c.name}
-                                    </Link>
-                                ))}
-                                {post.tags.map((t) => (
-                                    <Link
-                                        key={t.id}
-                                        href={`/blog/tags/${t.slug}`}
-                                        className='bg-muted/60 text-muted-foreground hover:bg-muted/80 hover:text-foreground inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200'
-                                    >
-                                        #{t.name}
-                                    </Link>
-                                ))}
+            {/* Content section */}
+            <div className='bg-white'>
+                <ContentWrapper
+                    size='lg'
+                    paddingX='px-5 md:px-8 lg:px-12'
+                    className='py-12 md:py-16 lg:py-20'
+                >
+                    {/* Two column layout: content + TOC */}
+                    <div className='grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px]'>
+                        {/* Main content column */}
+                        <div className='min-w-0'>
+                            {/* Main content before CTA */}
+                            <div className='prose prose-neutral prose-lg prose-headings:font-serif prose-headings:font-medium prose-headings:tracking-tight prose-h1:text-3xl prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-snug prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:leading-snug prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-relaxed prose-p:mb-6 prose-li:mb-2 prose-blockquote:border-l-4 prose-blockquote:border-gold-500/40 prose-blockquote:bg-stone-50 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-code:bg-stone-100 prose-code:text-stone-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-stone-900 prose-pre:p-4 prose-pre:my-6 prose-pre:border-0 prose-pre:rounded-lg prose-a:text-gold-600 prose-a:no-underline hover:prose-a:text-gold-500 prose-strong:text-stone-900 max-w-none'>
+                                <PostMarkdown content={beforeCTA} />
                             </div>
-                        </footer>
-                    )}
 
-                    {/* Footer CTA - prominent section */}
-                    <BlogCTA variant='footer' ctaId='consultation' />
+                            {/* Inline CTA - appears at marker position or auto-inserted at ~40% of content */}
+                            {beforeCTA && (
+                                <BlogCTA
+                                    variant='inline'
+                                    ctaId={ctaId || 'default'}
+                                />
+                            )}
 
-                    {/* Related Posts Section */}
-                    <RelatedPosts posts={relatedPosts} />
-                </div>
+                            {/* Content after CTA (if any) */}
+                            {afterCTA ? (
+                                <div className='prose prose-neutral prose-lg prose-headings:font-serif prose-headings:font-medium prose-headings:tracking-tight prose-h1:text-3xl prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-snug prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:leading-snug prose-h3:mt-10 prose-h3:mb-4 prose-p:leading-relaxed prose-p:mb-6 prose-li:mb-2 prose-blockquote:border-l-4 prose-blockquote:border-gold-500/40 prose-blockquote:bg-stone-50 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-code:bg-stone-100 prose-code:text-stone-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-stone-900 prose-pre:p-4 prose-pre:my-6 prose-pre:border-0 prose-pre:rounded-lg prose-a:text-gold-600 prose-a:no-underline hover:prose-a:text-gold-500 prose-strong:text-stone-900 max-w-none'>
+                                    <PostMarkdown content={afterCTA} />
+                                </div>
+                            ) : null}
 
-                {/* Sidebar: Sticky TOC */}
-                <aside className='hidden lg:block'>
-                    <div className='sticky top-24'>
-                        <TableOfContents headings={tableOfContents} />
+                            <ArticleSchema
+                                type='BlogPosting'
+                                headline={post.title}
+                                description={post.excerpt ?? undefined}
+                                author={post.author?.name ?? 'Unknown'}
+                                datePublished={
+                                    post.publishedAt ?? new Date().toISOString()
+                                }
+                                dateModified={post.publishedAt ?? undefined}
+                                image={post.featuredImage?.url}
+                                mainEntityOfPage={`${seoConfig.siteUrl}/blog/${post.slug}`}
+                                publisher={{
+                                    name:
+                                        seoConfig.organization?.name ??
+                                        seoConfig.siteName,
+                                    logo: seoConfig.organization?.logo,
+                                    url:
+                                        seoConfig.organization?.url ??
+                                        seoConfig.siteUrl,
+                                }}
+                            />
+
+                            <BreadcrumbSchema
+                                items={[
+                                    { name: 'Home', item: '/' },
+                                    { name: 'Blog', item: '/blog' },
+                                    {
+                                        name: post.title,
+                                        item: `/blog/${post.slug}`,
+                                    },
+                                ]}
+                            />
+
+                            {/* FAQ Schema for rich results - only render if FAQs exist */}
+                            {post.faqs && post.faqs.length > 0 && (
+                                <FAQSchema
+                                    items={post.faqs.map((faq) => ({
+                                        question: faq.question,
+                                        answer: faq.answer,
+                                    }))}
+                                />
+                            )}
+
+                            {/* Topics section */}
+                            {(post.categories.length > 0 ||
+                                post.tags.length > 0) && (
+                                <footer className='mt-16 border-t border-stone-200 pt-10'>
+                                    <h2 className='mb-6 text-sm font-bold tracking-[0.15em] text-stone-500 uppercase'>
+                                        Topics
+                                    </h2>
+                                    <div className='flex flex-wrap gap-3'>
+                                        {post.categories.map((c) => (
+                                            <Link
+                                                key={c.id}
+                                                href={`/blog/categories/${c.slug}`}
+                                                className='hover:bg-gold-500/10 hover:text-gold-700 inline-flex items-center rounded-full bg-stone-100 px-4 py-2 text-sm font-medium text-stone-700 transition-colors duration-200'
+                                            >
+                                                {c.name}
+                                            </Link>
+                                        ))}
+                                        {post.tags.map((t) => (
+                                            <Link
+                                                key={t.id}
+                                                href={`/blog/tags/${t.slug}`}
+                                                className='hover:border-gold-500/50 hover:text-gold-600 inline-flex items-center rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-medium text-stone-600 transition-colors duration-200'
+                                            >
+                                                #{t.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </footer>
+                            )}
+
+                            {/* Footer CTA - prominent section */}
+                            <BlogCTA variant='footer' ctaId='consultation' />
+
+                            {/* Related Posts Section */}
+                            <RelatedPosts posts={relatedPosts} />
+                        </div>
+
+                        {/* Sidebar: Sticky TOC - Desktop only */}
+                        <aside className='hidden lg:block'>
+                            <div className='sticky top-24'>
+                                <div className='rounded-xl border border-stone-200 bg-stone-50 p-6'>
+                                    <h3 className='mb-4 text-sm font-bold tracking-[0.15em] text-stone-500 uppercase'>
+                                        In This Article
+                                    </h3>
+                                    <TableOfContents
+                                        headings={tableOfContents}
+                                    />
+                                </div>
+
+                                {/* Quick CTA in sidebar */}
+                                <div className='border-gold-500/30 bg-gold-500/5 mt-6 rounded-xl border p-6'>
+                                    <h3 className='mb-2 font-serif text-lg font-medium text-stone-900'>
+                                        Ready to Transform?
+                                    </h3>
+                                    <p className='mb-4 text-sm text-stone-600'>
+                                        Schedule your free consultation today.
+                                    </p>
+                                    <Link
+                                        href='/contact-us'
+                                        className='bg-gold-500 hover:bg-gold-600 block w-full rounded-lg px-4 py-3 text-center text-sm font-bold text-white transition-colors'
+                                    >
+                                        Book Consultation
+                                    </Link>
+                                </div>
+                            </div>
+                        </aside>
                     </div>
-                </aside>
+                </ContentWrapper>
             </div>
-        </ContainerLayout>
+        </article>
     )
 }
