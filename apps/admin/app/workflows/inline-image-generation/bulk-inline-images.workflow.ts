@@ -16,6 +16,23 @@ import { generateImageStep } from './generate-image.step'
 import { saveContentStep } from './save-content.step'
 
 /**
+ * Maximum number of posts to process concurrently.
+ * Adjust this value to balance speed vs API rate limits.
+ */
+const MAX_CONCURRENT_POSTS = 5
+
+/**
+ * Splits an array into chunks of the specified size.
+ */
+function chunkArray<T>(array: T[], size: number): T[][] {
+    const chunks: T[][] = []
+    for (let i = 0; i < array.length; i += size) {
+        chunks.push(array.slice(i, i + size))
+    }
+    return chunks
+}
+
+/**
  * Input for the bulk inline images workflow
  */
 export type BulkInlineImagesWorkflowInput = {
@@ -47,11 +64,129 @@ export type BulkInlineImagesWorkflowResult = {
 }
 
 /**
+ * Internal result type for processSinglePost that includes image counts
+ */
+type SinglePostResult = PostProcessingResult & {
+    _imagesGenerated: number
+    _imagesInserted: number
+}
+
+/**
+ * Processes a single blog post to generate and insert inline images.
+ *
+ * @param postId - The ID of the post to process
+ * @param maxImagesPerPost - Maximum number of images to generate for this post
+ * @returns Processing result with image counts
+ */
+async function processSinglePost(
+    postId: string,
+    maxImagesPerPost: number
+): Promise<SinglePostResult> {
+    console.log(`[Workflow] Processing post: ${postId}`)
+
+    try {
+        // Step 1: Analyze content and generate prompts
+        const analysisResult = await analyzeContentStep({
+            postId,
+            maxImages: maxImagesPerPost,
+        })
+
+        if (!analysisResult.success) {
+            return {
+                postId,
+                postTitle: analysisResult.postTitle,
+                success: false,
+                error: analysisResult.error || 'Analysis failed',
+                _imagesGenerated: 0,
+                _imagesInserted: 0,
+            }
+        }
+
+        // No opportunities found - still counts as success
+        if (analysisResult.opportunities.length === 0) {
+            return {
+                postId,
+                postTitle: analysisResult.postTitle,
+                success: true,
+                imagesGenerated: 0,
+                imagesInserted: 0,
+                _imagesGenerated: 0,
+                _imagesInserted: 0,
+            }
+        }
+
+        // Step 2: Generate images (each is a separate durable step)
+        const generatedImages: Array<{
+            imageUrl: string
+            insertAfterText: string
+            altText: string
+        }> = []
+
+        for (const opportunity of analysisResult.opportunities) {
+            const imageResult = await generateImageStep({
+                postId,
+                opportunityId: opportunity.opportunityId,
+                prompt: opportunity.prompt,
+                imageType: opportunity.imageType,
+                photoStyle: opportunity.photoStyle,
+                insertAfterText: opportunity.insertAfterText,
+                altText: opportunity.altText,
+            })
+
+            if (imageResult.success && imageResult.imageUrl) {
+                generatedImages.push({
+                    imageUrl: imageResult.imageUrl,
+                    insertAfterText: imageResult.insertAfterText,
+                    altText: imageResult.altText,
+                })
+            }
+        }
+
+        // Step 3: Save content with generated images
+        let imagesInserted = 0
+        if (generatedImages.length > 0) {
+            const saveResult = await saveContentStep({
+                postId,
+                images: generatedImages,
+            })
+
+            if (saveResult.success) {
+                imagesInserted = saveResult.imagesInserted
+            }
+        }
+
+        console.log(
+            `[Workflow] Completed post "${analysisResult.postTitle}": ${generatedImages.length} images`
+        )
+
+        return {
+            postId,
+            postTitle: analysisResult.postTitle,
+            success: true,
+            imagesGenerated: generatedImages.length,
+            imagesInserted: imagesInserted,
+            _imagesGenerated: generatedImages.length,
+            _imagesInserted: imagesInserted,
+        }
+    } catch (error) {
+        console.error(`[Workflow] Error processing post ${postId}:`, error)
+
+        return {
+            postId,
+            success: false,
+            error: error instanceof Error ? error.message : 'Processing failed',
+            _imagesGenerated: 0,
+            _imagesInserted: 0,
+        }
+    }
+}
+
+/**
  * Bulk Inline Images Workflow
  *
  * Processes multiple blog posts to generate and insert inline images.
- * Each post is processed sequentially, but image generation within a post
- * can be parallelized.
+ * Posts are processed in parallel batches (up to MAX_CONCURRENT_POSTS at a time)
+ * for improved performance.
  *
  * @param input - Workflow input containing post IDs and settings
  * @returns Workflow result with processing statistics
@@ -69,107 +204,37 @@ export async function bulkInlineImagesWorkflow(
     let totalImagesInserted = 0
 
     console.log(
-        `[Workflow] Starting bulk inline images workflow for ${postIds.length} posts`
+        `[Workflow] Starting bulk inline images workflow for ${postIds.length} posts (concurrency: ${MAX_CONCURRENT_POSTS})`
     )
 
-    // Process each post sequentially to avoid overwhelming the AI APIs
-    for (const postId of postIds) {
-        console.log(`[Workflow] Processing post: ${postId}`)
+    // Split posts into chunks for parallel processing
+    const postChunks = chunkArray(postIds, MAX_CONCURRENT_POSTS)
 
-        try {
-            // Step 1: Analyze content and generate prompts
-            const analysisResult = await analyzeContentStep({
-                postId,
-                maxImages: maxImagesPerPost,
-            })
+    for (const chunk of postChunks) {
+        console.log(
+            `[Workflow] Processing batch of ${chunk.length} posts in parallel`
+        )
 
-            if (!analysisResult.success) {
-                failedCount++
-                results.push({
-                    postId,
-                    postTitle: analysisResult.postTitle,
-                    success: false,
-                    error: analysisResult.error || 'Analysis failed',
-                })
-                continue
-            }
+        // Process all posts in this chunk concurrently
+        const batchResults = await Promise.all(
+            chunk.map((postId) => processSinglePost(postId, maxImagesPerPost))
+        )
 
-            // No opportunities found - still counts as success
-            if (analysisResult.opportunities.length === 0) {
+        // Aggregate results from this batch
+        for (const result of batchResults) {
+            // Extract internal counters and create clean result
+            const { _imagesGenerated, _imagesInserted, ...cleanResult } = result
+
+            results.push(cleanResult)
+
+            if (result.success) {
                 processedCount++
-                results.push({
-                    postId,
-                    postTitle: analysisResult.postTitle,
-                    success: true,
-                    imagesGenerated: 0,
-                    imagesInserted: 0,
-                })
-                continue
+            } else {
+                failedCount++
             }
 
-            // Step 2: Generate images (each is a separate durable step)
-            const generatedImages: Array<{
-                imageUrl: string
-                insertAfterText: string
-                altText: string
-            }> = []
-
-            for (const opportunity of analysisResult.opportunities) {
-                const imageResult = await generateImageStep({
-                    postId,
-                    opportunityId: opportunity.opportunityId,
-                    prompt: opportunity.prompt,
-                    imageType: opportunity.imageType,
-                    photoStyle: opportunity.photoStyle,
-                    insertAfterText: opportunity.insertAfterText,
-                    altText: opportunity.altText,
-                })
-
-                if (imageResult.success && imageResult.imageUrl) {
-                    generatedImages.push({
-                        imageUrl: imageResult.imageUrl,
-                        insertAfterText: imageResult.insertAfterText,
-                        altText: imageResult.altText,
-                    })
-                    totalImagesGenerated++
-                }
-            }
-
-            // Step 3: Save content with generated images
-            if (generatedImages.length > 0) {
-                const saveResult = await saveContentStep({
-                    postId,
-                    images: generatedImages,
-                })
-
-                if (saveResult.success) {
-                    totalImagesInserted += saveResult.imagesInserted
-                }
-            }
-
-            processedCount++
-            results.push({
-                postId,
-                postTitle: analysisResult.postTitle,
-                success: true,
-                imagesGenerated: generatedImages.length,
-                imagesInserted: generatedImages.length,
-            })
-
-            console.log(
-                `[Workflow] Completed post "${analysisResult.postTitle}": ${generatedImages.length} images`
-            )
-        } catch (error) {
-            console.error(`[Workflow] Error processing post ${postId}:`, error)
-            failedCount++
-            results.push({
-                postId,
-                success: false,
-                error:
-                    error instanceof Error
-                        ? error.message
-                        : 'Processing failed',
-            })
+            totalImagesGenerated += _imagesGenerated
+            totalImagesInserted += _imagesInserted
         }
     }
 
