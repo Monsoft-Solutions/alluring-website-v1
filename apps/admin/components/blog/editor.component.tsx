@@ -24,6 +24,8 @@ type PostEditorProps = {
     blogPostId?: string
     /** Blog post title for AI context in auto inline images */
     blogPostTitle?: string
+    /** Callback when images are generated (to refresh gallery) */
+    onImagesGenerated?: () => void
 }
 
 export function PostEditor({
@@ -32,6 +34,7 @@ export function PostEditor({
     placeholder = 'Start writing your post...',
     blogPostId,
     blogPostTitle = 'Blog Post',
+    onImagesGenerated,
 }: PostEditorProps) {
     const [linkPopoverOpen, setLinkPopoverOpen] = useState(false)
     const [imagePopoverOpen, setImagePopoverOpen] = useState(false)
@@ -127,22 +130,14 @@ export function PostEditor({
 
                 setSelectionPosition(null) // Reset after use
 
-                // Track the inline image in the database (non-blocking)
-                // Failure to track should not affect the image insertion
-                if (blogPostId) {
-                    void trackInlineImages(blogPostId, [
-                        {
-                            imageUrl,
-                            altText,
-                            prompt: selectedText,
-                        },
-                    ]).catch((error) => {
-                        console.error('Failed to track inline image:', error)
-                    })
-                }
+                // Notify parent to refresh the gallery
+                // Note: trackInlineImages is NOT called here because the
+                // /api/blog/generate-image endpoint already creates the
+                // blogPostImages record. Calling it here would create duplicates.
+                onImagesGenerated?.()
             }
         },
-        [editor, selectionPosition, blogPostId, selectedText]
+        [editor, selectionPosition, onImagesGenerated]
     )
 
     const handleAutoInlineImages = useCallback(() => {
@@ -180,10 +175,13 @@ export function PostEditor({
                             )
                         }
                     )
+
+                    // Notify parent to refresh the gallery
+                    onImagesGenerated?.()
                 }
             }
         },
-        [editor, blogPostId]
+        [editor, blogPostId, onImagesGenerated]
     )
 
     if (!editor) {

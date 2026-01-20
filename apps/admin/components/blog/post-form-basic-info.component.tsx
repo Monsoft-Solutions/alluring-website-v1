@@ -19,6 +19,7 @@ type PostFormBasicInfoProps = {
     onTitleChange: (title: string) => void
     onSlugChange: (slug: string) => void
     onContentChange: (content: string) => void
+    onImagesGenerated?: () => void
 }
 
 export function PostFormBasicInfo({
@@ -30,6 +31,7 @@ export function PostFormBasicInfo({
     onTitleChange,
     onSlugChange,
     onContentChange,
+    onImagesGenerated,
 }: PostFormBasicInfoProps) {
     return (
         <Card>
@@ -69,6 +71,7 @@ export function PostFormBasicInfo({
                         content={content}
                         onChange={onContentChange}
                         blogPostId={blogPostId}
+                        onImagesGenerated={onImagesGenerated}
                     />
                     {readingTime && (
                         <p className='text-muted-foreground text-xs'>
