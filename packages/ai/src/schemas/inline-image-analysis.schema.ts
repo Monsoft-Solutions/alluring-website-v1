@@ -7,6 +7,7 @@
  * @module @workspace/ai/schemas/inline-image-analysis
  */
 import { z } from 'zod'
+import { PHOTO_STYLE_IDS } from '../constants/photo-style.constant'
 
 /**
  * Image type enum for inline images
@@ -23,11 +24,7 @@ export type InlineImageTypeValue = z.infer<typeof inlineImageTypeSchema>
 /**
  * Photo style enum for photo type images
  */
-export const photoStyleSchema = z.enum([
-    'artistic', // Artistic/sensual - refined, classy, showing skin with elegance
-    'lifestyle', // Natural everyday scenarios
-    'miami-cover', // Sexy (non-explicit) Miami publication cover-style editorial
-])
+export const photoStyleSchema = z.enum([...PHOTO_STYLE_IDS])
 
 export type PhotoStyleValue = z.infer<typeof photoStyleSchema>
 
