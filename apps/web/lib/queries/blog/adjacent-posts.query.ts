@@ -1,20 +1,8 @@
 import { unstable_cache } from 'next/cache'
 
 import { db } from '@workspace/db/client'
-import { author, blogPost, images } from '@workspace/db/schema/blog'
-import {
-    and,
-    desc,
-    eq,
-    gt,
-    isNotNull,
-    lt,
-    asc,
-    ne,
-    or,
-    lte,
-    gte,
-} from 'drizzle-orm'
+import { blogPost, images } from '@workspace/db/schema/blog'
+import { and, desc, eq, gt, isNotNull, lt, asc, ne, or } from 'drizzle-orm'
 
 /**
  * Minimal post data for prev/next navigation

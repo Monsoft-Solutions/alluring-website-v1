@@ -13,7 +13,6 @@
  * Uses client-side fuzzy search for fast, responsive results.
  */
 import { Search, X, FileText } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 
@@ -86,18 +85,31 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
         [searchIndex, query]
     )
 
-    // Reset selected index when results change
-    useEffect(() => {
+    // Handle query change - reset selected index when query changes
+    const handleQueryChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setQuery(e.target.value)
+            setSelectedIndex(0)
+        },
+        []
+    )
+
+    // Open modal handler
+    const openModal = useCallback(() => {
+        setIsOpen(true)
+    }, [])
+
+    // Close modal handler - resets state when closing
+    const closeModal = useCallback(() => {
+        setIsOpen(false)
+        setQuery('')
         setSelectedIndex(0)
-    }, [results])
+    }, [])
 
     // Focus input when modal opens
     useEffect(() => {
         if (isOpen) {
             inputRef.current?.focus()
-        } else {
-            setQuery('')
-            setSelectedIndex(0)
         }
     }, [isOpen])
 
@@ -107,18 +119,18 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
             // Open search with Cmd/Ctrl + K
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault()
-                setIsOpen(true)
+                openModal()
             }
 
             // Close with Escape
             if (e.key === 'Escape' && isOpen) {
-                setIsOpen(false)
+                closeModal()
             }
         }
 
         document.addEventListener('keydown', handleKeyDown)
         return () => document.removeEventListener('keydown', handleKeyDown)
-    }, [isOpen])
+    }, [isOpen, openModal, closeModal])
 
     // Handle keyboard navigation in results
     const handleKeyDown = useCallback(
@@ -153,7 +165,7 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
         <>
             {/* Search trigger button */}
             <button
-                onClick={() => setIsOpen(true)}
+                onClick={openModal}
                 className='group flex items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-500 shadow-sm transition-all duration-200 hover:border-stone-300 hover:bg-stone-50 hover:shadow-md sm:px-4 sm:py-2'
                 aria-label='Open search'
             >
@@ -170,7 +182,7 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
                     className='fixed inset-0 z-50 flex items-start justify-center bg-stone-900/60 backdrop-blur-sm'
                     onClick={(e) => {
                         if (e.target === e.currentTarget) {
-                            setIsOpen(false)
+                            closeModal()
                         }
                     }}
                 >
@@ -183,13 +195,13 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
                                 ref={inputRef}
                                 type='text'
                                 value={query}
-                                onChange={(e) => setQuery(e.target.value)}
+                                onChange={handleQueryChange}
                                 onKeyDown={handleKeyDown}
                                 placeholder='Search articles...'
                                 className='w-full border-0 bg-transparent py-5 pr-12 pl-14 text-lg text-stone-900 outline-none placeholder:text-stone-400'
                             />
                             <button
-                                onClick={() => setIsOpen(false)}
+                                onClick={closeModal}
                                 className='absolute top-1/2 right-4 -translate-y-1/2 rounded-lg p-1.5 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600'
                             >
                                 <X className='h-5 w-5' />
@@ -226,7 +238,7 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
                                                         ? 'bg-gold-50'
                                                         : 'hover:bg-stone-50'
                                                 )}
-                                                onClick={() => setIsOpen(false)}
+                                                onClick={closeModal}
                                             >
                                                 {/* Icon */}
                                                 <div
