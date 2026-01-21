@@ -76,10 +76,6 @@ export function Testimonials({
     testimonials = DEFAULT_TESTIMONIALS,
     includeSchema = true,
 }: TestimonialsProps) {
-    // Calculate aggregate rating
-    const avgRating =
-        testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length
-
     return (
         <>
             {/* Review Schema for rich search results */}

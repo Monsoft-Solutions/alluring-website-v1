@@ -28,7 +28,7 @@ interface AuthorPageProps {
     }>
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
     const authors = getAllAuthors()
     return authors.map((author) => ({
         slug: author.slug,
@@ -129,9 +129,7 @@ export default async function AuthorPage(props: AuthorPageProps) {
                     telephone={siteConfig.contact.phone}
                     sameAs={
                         author.socialLinks
-                            ? (Object.values(author.socialLinks).filter(
-                                  Boolean
-                              ) as string[])
+                            ? Object.values(author.socialLinks).filter(Boolean)
                             : undefined
                     }
                 />
