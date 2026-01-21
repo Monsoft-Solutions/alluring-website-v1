@@ -151,7 +151,7 @@ ${
     recentPosts.length > 0
         ? `## Recent Blog Posts
 
-${recentPosts.map((post) => `- [${post.title}](/blog/${post.slug})${post.excerpt ? `: ${post.excerpt.slice(0, 100)}...` : ''}`).join('\n')}
+${recentPosts.map((post) => `- [${post.title}](/${post.slug})${post.excerpt ? `: ${post.excerpt.slice(0, 100)}...` : ''}`).join('\n')}
 `
         : ''
 }

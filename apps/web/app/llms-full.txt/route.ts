@@ -180,7 +180,7 @@ A: ${faq.answer}
 ${
     recentPosts.length > 0
         ? `### Recent Articles
-${recentPosts.map((post) => `- [${post.title}](/blog/${post.slug})`).join('\n')}
+${recentPosts.map((post) => `- [${post.title}](/${post.slug})`).join('\n')}
 `
         : ''
 }
