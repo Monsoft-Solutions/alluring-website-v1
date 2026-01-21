@@ -17,7 +17,7 @@
  */
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { cn } from '@workspace/ui/lib/utils'
 
@@ -44,50 +44,49 @@ export function ReadingProgress({
 }: ReadingProgressProps) {
     const [progress, setProgress] = useState(0)
     const [isVisible, setIsVisible] = useState(false)
-
-    const calculateProgress = useCallback(() => {
-        const scrollTop = window.scrollY
-        const docHeight = document.documentElement.scrollHeight
-        const winHeight = window.innerHeight
-        const scrollableHeight = docHeight - winHeight
-
-        if (scrollableHeight <= 0) {
-            setProgress(0)
-            return
-        }
-
-        const currentProgress = Math.min(
-            (scrollTop / scrollableHeight) * 100,
-            100
-        )
-        setProgress(currentProgress)
-        setIsVisible(scrollTop > showAfter)
-    }, [showAfter])
+    const tickingRef = useRef(false)
 
     useEffect(() => {
-        // Calculate on mount
-        calculateProgress()
+        const calculateProgress = () => {
+            const scrollTop = window.scrollY
+            const docHeight = document.documentElement.scrollHeight
+            const winHeight = window.innerHeight
+            const scrollableHeight = docHeight - winHeight
 
-        // Throttled scroll handler
-        let ticking = false
+            if (scrollableHeight <= 0) {
+                setProgress(0)
+                return
+            }
+
+            const currentProgress = Math.min(
+                (scrollTop / scrollableHeight) * 100,
+                100
+            )
+            setProgress(currentProgress)
+            setIsVisible(scrollTop > showAfter)
+        }
+
         const handleScroll = () => {
-            if (!ticking) {
+            if (!tickingRef.current) {
                 window.requestAnimationFrame(() => {
                     calculateProgress()
-                    ticking = false
+                    tickingRef.current = false
                 })
-                ticking = true
+                tickingRef.current = true
             }
         }
 
+        // Initial calculation via scroll handler
+        handleScroll()
+
         window.addEventListener('scroll', handleScroll, { passive: true })
-        window.addEventListener('resize', calculateProgress, { passive: true })
+        window.addEventListener('resize', handleScroll, { passive: true })
 
         return () => {
             window.removeEventListener('scroll', handleScroll)
-            window.removeEventListener('resize', calculateProgress)
+            window.removeEventListener('resize', handleScroll)
         }
-    }, [calculateProgress])
+    }, [showAfter])
 
     return (
         <div

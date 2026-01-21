@@ -24,7 +24,7 @@
 'use client'
 
 import { Check, Copy, Facebook, Share2 } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useMemo, useSyncExternalStore, useState } from 'react'
 
 import { cn } from '@workspace/ui/lib/utils'
 
@@ -113,6 +113,17 @@ function ShareButton({
     )
 }
 
+// Helper to get origin safely for SSR
+function getOrigin() {
+    if (typeof window === 'undefined') return ''
+    return window.location.origin
+}
+
+// Subscribe function for useSyncExternalStore (no-op for static value)
+function subscribe() {
+    return () => {}
+}
+
 export function SocialShare({
     title,
     url,
@@ -121,23 +132,22 @@ export function SocialShare({
     className,
 }: SocialShareProps) {
     const [copied, setCopied] = useState(false)
-    const [absoluteUrl, setAbsoluteUrl] = useState('')
-    const [canNativeShare, setCanNativeShare] = useState(false)
 
-    useEffect(() => {
-        // Build absolute URL on client
-        const fullUrl = url.startsWith('http')
-            ? url
-            : `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`
-        setAbsoluteUrl(fullUrl)
+    // Use useSyncExternalStore to safely get client-side origin
+    const origin = useSyncExternalStore(subscribe, getOrigin, () => '')
 
-        // Check if native share is available
-        setCanNativeShare(
-            typeof navigator !== 'undefined' &&
-                'share' in navigator &&
-                typeof navigator.share === 'function'
-        )
-    }, [url])
+    // Compute absolute URL from origin and url prop
+    const absoluteUrl = useMemo(() => {
+        if (!origin) return ''
+        if (url.startsWith('http')) return url
+        return `${origin}${url.startsWith('/') ? '' : '/'}${url}`
+    }, [origin, url])
+
+    // Check if native share is available (only on client)
+    const canNativeShare = useMemo(() => {
+        if (typeof navigator === 'undefined') return false
+        return 'share' in navigator && typeof navigator.share === 'function'
+    }, [])
 
     const shareToFacebook = useCallback(() => {
         const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(absoluteUrl)}`
