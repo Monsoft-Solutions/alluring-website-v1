@@ -2,6 +2,7 @@ import type { Article, BlogPosting, WithContext } from 'schema-dts'
 
 import type { ArticleSchemaProps } from '../types/schema/article.type'
 import { withContext } from './_internal'
+import { createSpeakableProperty } from './speakable.schema'
 
 export function buildArticleJsonLd(
     props: ArticleSchemaProps
@@ -14,6 +15,11 @@ export function buildArticleJsonLd(
             ? props.image
             : [props.image]
         : undefined
+
+    // Build speakable property if provided
+    const speakableProps = props.speakable
+        ? createSpeakableProperty(props.speakable)
+        : {}
 
     const base = {
         '@type': type,
@@ -44,6 +50,8 @@ export function buildArticleJsonLd(
             props.keywords.length > 0 && {
                 keywords: props.keywords.join(', '),
             }),
+        // Speakable for voice search
+        ...speakableProps,
     } as Article | BlogPosting
 
     return withContext(base)

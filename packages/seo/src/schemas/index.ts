@@ -14,6 +14,13 @@ export { buildImageGalleryJsonLd } from './image-gallery.schema'
 export { buildMedicalProcedureJsonLd } from './medical-procedure.schema'
 export { buildPhysicianJsonLd } from './physician.schema'
 export { buildServiceJsonLd } from './service.schema'
+export {
+    buildSpeakableJsonLd,
+    createSpeakableProperty,
+    DEFAULT_SPEAKABLE_SELECTORS,
+    PROCEDURE_SPEAKABLE_SELECTORS,
+    BLOG_SPEAKABLE_SELECTORS,
+} from './speakable.schema'
 
 // Schema types
 export type { ArticleSchemaProps } from '../types/schema/article.type'

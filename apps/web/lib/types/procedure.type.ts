@@ -40,6 +40,12 @@ export interface Procedure {
     benefits?: ProcedureBenefit[]
     process?: ProcedureStep[]
 
+    // Freshness signals for SEO/LLM optimization
+    /** ISO date string when the content was last modified */
+    dateModified?: string
+    /** ISO date string when the content was first published */
+    datePublished?: string
+
     // Legacy/Optional details
     details?: {
         intro: string

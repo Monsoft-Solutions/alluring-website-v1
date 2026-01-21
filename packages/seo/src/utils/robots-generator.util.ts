@@ -199,7 +199,7 @@ export function generateRobotsForEnvironment(
  * - Maximum visibility to major search engines (Google, Bing)
  * - Blocking aggressive SEO crawlers that waste bandwidth
  * - Allowing social media bots for Open Graph previews
- * - AI crawlers blocked to protect content
+ * - Allowing AI crawlers for LLM/GEO optimization (ChatGPT, Claude, Perplexity)
  *
  * @returns Array of common custom robots rules
  *
@@ -220,18 +220,40 @@ export function createCommonRobotsRules(): RobotsRule[] {
             userAgent: ['AhrefsBot', 'MJ12bot', 'SemrushBot', 'DotBot'],
             disallow: ['/'],
         },
-        // Block AI training crawlers (protect content)
+        // OpenAI crawlers - Allow for ChatGPT visibility
         {
-            userAgent: [
-                'GPTBot',
-                'ChatGPT-User',
-                'CCBot',
-                'anthropic-ai',
-                'Claude-Web',
-                'Google-Extended',
-            ],
+            userAgent: ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot'],
             allow: ['/', '/_next/static/', '/_next/image/'],
-            disallow: ['/admin/', '/api/'],
+            disallow: ['/admin/', '/api/', '/dashboard/', '/user/'],
+        },
+        // Anthropic crawlers - Allow for Claude visibility
+        {
+            userAgent: ['ClaudeBot', 'Claude-Web', 'anthropic-ai'],
+            allow: ['/', '/_next/static/', '/_next/image/'],
+            disallow: ['/admin/', '/api/', '/dashboard/', '/user/'],
+        },
+        // Perplexity crawler - Allow for Perplexity AI visibility
+        {
+            userAgent: ['PerplexityBot'],
+            allow: ['/', '/_next/static/', '/_next/image/'],
+            disallow: ['/admin/', '/api/', '/dashboard/', '/user/'],
+        },
+        // Google AI crawler - Allow for AI Overviews
+        {
+            userAgent: ['Google-Extended'],
+            allow: ['/', '/_next/static/', '/_next/image/'],
+            disallow: ['/admin/', '/api/', '/dashboard/', '/user/'],
+        },
+        // Microsoft/Bing crawlers - Powers ChatGPT search
+        {
+            userAgent: ['Bingbot', 'msnbot'],
+            allow: ['/', '/_next/static/', '/_next/image/'],
+            disallow: ['/admin/', '/api/', '/dashboard/', '/user/'],
+        },
+        // Block AI training-only crawlers (protect content from pure data harvesting)
+        {
+            userAgent: ['CCBot', 'Bytespider', 'Diffbot'],
+            disallow: ['/'],
         },
         // Social media crawlers - allow for Open Graph previews
         {

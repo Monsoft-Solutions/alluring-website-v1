@@ -7,6 +7,7 @@ import { generateImageMetadata, getCanonicalUrl } from '@workspace/seo/utils'
 import type { Metadata } from 'next'
 
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
+import { siteConfig } from '@/lib/data/site-config'
 
 function mapRobots(robots?: RobotsConfig): Metadata['robots'] {
     // If crawling is not allowed, force noindex, nofollow
@@ -98,6 +99,22 @@ export function toNextMetadata(
         )
     }
 
+    // Build verification object from site config
+    const verification: Metadata['verification'] = {}
+    if (siteConfig.seo.verification?.google) {
+        verification.google = siteConfig.seo.verification.google
+    }
+    if (siteConfig.seo.verification?.bing) {
+        // Bing verification is critical for ChatGPT visibility
+        verification.other = {
+            ...verification.other,
+            'msvalidate.01': siteConfig.seo.verification.bing,
+        }
+    }
+    if (siteConfig.seo.verification?.yandex) {
+        verification.yandex = siteConfig.seo.verification.yandex
+    }
+
     const base: Metadata = {
         title,
         description,
@@ -105,6 +122,8 @@ export function toNextMetadata(
         twitter,
         robots,
         metadataBase,
+        verification:
+            Object.keys(verification).length > 0 ? verification : undefined,
     }
 
     const merged: Metadata = {

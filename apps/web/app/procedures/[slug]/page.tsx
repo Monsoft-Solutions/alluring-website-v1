@@ -11,6 +11,7 @@ import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
+import { LastUpdated } from '@/components/shared/last-updated.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
@@ -170,11 +171,17 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
 
     return (
         <>
-            {/* Structured Data - WebPage Schema */}
+            {/* Structured Data - WebPage Schema with freshness signals */}
             <WebPageSchema
                 name={procedure.title}
                 url={pageUrl}
                 description={procedure.description}
+                dateModified={
+                    procedure.dateModified || new Date().toISOString()
+                }
+                speakable={{
+                    cssSelector: ['h1', '.procedure-intro', '.quick-answer'],
+                }}
             />
 
             {/* Structured Data - Breadcrumb Schema */}
@@ -241,6 +248,21 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     procedure.shortDescription || procedure.description
                 }
             />
+
+            {/* Freshness Signal */}
+            <div className='bg-white py-2'>
+                <ContainerLayout>
+                    <div className='flex justify-center'>
+                        <LastUpdated
+                            date={
+                                procedure.dateModified ||
+                                new Date().toISOString()
+                            }
+                            variant='badge'
+                        />
+                    </div>
+                </ContainerLayout>
+            </div>
 
             {/* Benefits Section */}
             {procedure.benefits && (

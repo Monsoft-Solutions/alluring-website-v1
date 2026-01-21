@@ -14,3 +14,4 @@ export { ImageGallerySchema } from './image-gallery/image-gallery-schema.compone
 export { MedicalProcedureSchema } from './medical-procedure/medical-procedure-schema.component'
 export { PhysicianSchema } from './physician/physician-schema.component'
 export { ServiceSchema } from './service/service-schema.component'
+export { SpeakableSchema } from './speakable/speakable-schema.component'
