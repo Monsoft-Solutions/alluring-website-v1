@@ -58,8 +58,8 @@ apps/web/lib/
 apps/web/components/blog/
 └── BlogCTA.component.tsx              # CTA component
 
-apps/web/app/blog/[slug]/
-└── page.tsx                           # Blog post integration
+apps/web/app/[slug]/
+└── page.tsx                           # Blog post integration (root-level)
 ```
 
 ### Data Flow
@@ -370,7 +370,7 @@ Final content...
 
 ### Component Integration
 
-**In blog post page** (`apps/web/app/blog/[slug]/page.tsx`):
+**In blog post page** (`apps/web/app/[slug]/page.tsx` for blog posts):
 
 ```tsx
 // Split content at CTA insertion point

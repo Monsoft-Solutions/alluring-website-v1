@@ -249,7 +249,7 @@ StrReplace({
 
 **Do NOT update these** - they use database `updatedAt` timestamps automatically:
 
-- Blog posts (`/blog/[slug]`)
+- Blog posts (root-level `/{slug}` handled by `apps/web/app/[slug]/page.tsx`)
 - Gallery items (`/gallery/[slug]`, `/gallery/media/[slug]`)
 - Promotions (`/promotions/[slug]`)
 
@@ -276,7 +276,7 @@ StrReplace({
 
 These use database `updatedAt` timestamps automatically:
 
-- Blog posts (`/blog/[slug]`)
+- Blog posts (root-level `/{slug}` handled by `apps/web/app/[slug]/page.tsx`)
 - Blog categories (`/blog/categories/[slug]`)
 - Blog tags (`/blog/tags/[slug]`)
 - Gallery groups (`/gallery/[slug]`)
