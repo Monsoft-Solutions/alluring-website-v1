@@ -83,7 +83,6 @@ export async function GET(): Promise<NextResponse> {
                     {
                         url: post.featuredImageUrl,
                         title: post.featuredImageTitle ?? undefined,
-                        caption: post.featuredImageAlt ?? undefined,
                     },
                 ]
             }
