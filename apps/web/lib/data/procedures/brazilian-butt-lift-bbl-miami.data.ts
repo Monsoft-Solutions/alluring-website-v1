@@ -11,6 +11,8 @@ export const brazilianButtLiftBblMiami: Procedure = {
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
     category: 'body',
     image: '/images/procedures/brazilian-butt-lift.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'brazilian butt lift miami',
         'bbl miami',

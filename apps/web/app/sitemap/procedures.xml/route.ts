@@ -16,9 +16,20 @@ import { generateSitemapXml } from '@workspace/seo/utils'
 
 /**
  * Get last modified date for a procedure page
- * Uses pageLastModified if available, otherwise falls back to the procedures listing page date
+ *
+ * Priority order:
+ * 1. procedure.dateModified (from procedure data - source of truth)
+ * 2. pageLastModified (legacy fallback)
+ * 3. procedures listing page date
+ * 4. Current date
  */
-function getProcedureLastModified(slug: string): string {
+function getProcedureLastModified(slug: string, dateModified?: string): string {
+    // First priority: Use dateModified from procedure data (convert to YYYY-MM-DD format)
+    if (dateModified) {
+        return dateModified.split('T')[0]!
+    }
+
+    // Fallback to pageLastModified for backwards compatibility
     const procedurePath = `/procedures/${slug}`
     return (
         pageLastModified[procedurePath] ??
@@ -65,7 +76,10 @@ export function GET(): NextResponse {
         for (const procedure of procedures) {
             const entry: SitemapEntry = {
                 url: `${baseUrl}/procedures/${procedure.slug}`,
-                lastModified: getProcedureLastModified(procedure.slug),
+                lastModified: getProcedureLastModified(
+                    procedure.slug,
+                    procedure.dateModified
+                ),
                 changeFrequency: 'monthly',
                 priority: 0.8,
             }

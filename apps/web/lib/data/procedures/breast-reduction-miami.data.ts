@@ -11,6 +11,8 @@ export const breastReductionMiami: Procedure = {
     heroSubtitle: 'Achieve a Proportionate Shape with Personalized Care',
     category: 'breast',
     image: '/images/procedures/breast-reduction.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'breast reduction miami',
         'reduction mammaplasty',

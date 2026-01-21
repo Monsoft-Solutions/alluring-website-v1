@@ -11,6 +11,8 @@ export const breastLiftMiami: Procedure = {
     heroSubtitle: 'Enhance Your Confidence with a Natural-Looking Breast Lift',
     category: 'breast',
     image: '/images/procedures/breast-lift.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'breast lift miami',
         'mastopexy',

@@ -11,6 +11,8 @@ export const breastAugmentationMiami: Procedure = {
     heroSubtitle: 'Transform Your Confidence with the Best Breast Augmentation',
     category: 'breast',
     image: '/images/procedures/breast-augmentation.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'breast augmentation miami',
         'breast implants miami',

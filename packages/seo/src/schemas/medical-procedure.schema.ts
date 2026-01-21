@@ -40,6 +40,8 @@ export function buildMedicalProcedureJsonLd(
             procedureType: props.procedureType,
         }),
         ...(props.status && { status: props.status }),
+        ...(props.dateModified && { dateModified: props.dateModified }),
+        ...(props.datePublished && { datePublished: props.datePublished }),
     } as MedicalProcedure
 
     return withContext(procedure)

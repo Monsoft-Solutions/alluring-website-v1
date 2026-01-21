@@ -228,6 +228,8 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                         : undefined
                 }
                 procedureType='Surgical'
+                dateModified={procedure.dateModified ?? undefined}
+                datePublished={procedure.datePublished ?? undefined}
             />
 
             {/* Hero Section */}

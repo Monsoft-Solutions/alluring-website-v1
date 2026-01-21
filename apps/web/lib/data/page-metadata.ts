@@ -3,6 +3,9 @@
  *
  * Tracks last modified dates for static pages to provide accurate
  * sitemap data. Update these dates when page content actually changes.
+ *
+ * NOTE: Individual procedure pages use dateModified from their procedure data files.
+ * Only the main /procedures listing page should be tracked here.
  */
 
 /**

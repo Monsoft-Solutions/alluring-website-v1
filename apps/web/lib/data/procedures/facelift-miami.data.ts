@@ -12,6 +12,8 @@ export const faceliftMiami: Procedure = {
         'Rejuvenate Your Appearance with a Customized Facelift in Miami',
     category: 'face',
     image: '/images/procedures/facelift.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'facelift miami',
         'rhytidectomy',

@@ -12,6 +12,8 @@ export const liposuctionMiami: Procedure = {
         'Achieve a Slimmer, More Defined Shape with Expert Liposuction Techniques',
     category: 'body',
     image: '/images/procedures/liposuction.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'liposuction miami',
         'body contouring',

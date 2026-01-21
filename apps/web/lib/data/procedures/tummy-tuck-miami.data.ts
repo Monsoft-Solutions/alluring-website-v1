@@ -12,6 +12,8 @@ export const tummyTuckMiami: Procedure = {
         'Transform Your Midsection with Our Expertly Tailored Tummy Tuck Procedure',
     category: 'body',
     image: '/images/procedures/tummy-tuck.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'tummy tuck miami',
         'abdominoplasty miami',

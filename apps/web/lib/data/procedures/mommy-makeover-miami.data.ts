@@ -12,6 +12,8 @@ export const mommyMakeoverMiami: Procedure = {
         'Transform Your Look with Our Tailored Mommy Makeover Procedure in Miami',
     category: 'combined',
     image: '/images/procedures/mommy-makeover.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'mommy makeover miami',
         'post pregnancy surgery',

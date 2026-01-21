@@ -42,4 +42,10 @@ export type MedicalProcedureSchemaProps = {
 
     /** Status of the procedure (available, not available, etc.) */
     status?: 'EventScheduled' | 'EventCancelled' | 'EventPostponed'
+
+    /** ISO date string when the content was last modified (e.g., "2025-01-15") */
+    dateModified?: string
+
+    /** ISO date string when the content was first published (e.g., "2024-06-01") */
+    datePublished?: string
 }
