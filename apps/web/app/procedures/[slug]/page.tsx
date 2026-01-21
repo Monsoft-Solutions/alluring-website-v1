@@ -7,6 +7,7 @@ import {
 } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
@@ -22,6 +23,21 @@ import { ProcedureIntro } from '@/components/procedures/procedure-intro.componen
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import { env } from '@/env'
+
+/**
+ * Maps procedure slugs to their corresponding blog category slugs
+ * Procedures without a matching category will show general blog posts
+ */
+const procedureToBlogCategory: Record<string, string> = {
+    'breast-augmentation-miami': 'breast-augmentation',
+    'breast-lift-miami': 'breast-augmentation', // Related breast content
+    'breast-reduction-miami': 'breast-reduction',
+    'liposuction-miami': 'liposuction',
+    'brazilian-butt-lift-bbl-miami': 'bbl',
+    'tummy-tuck-miami': 'tummy-tuck',
+    'mommy-makeover-miami': 'mommy-makeover',
+    // facelift-miami and blepharoplasty-miami have no matching category
+}
 
 interface ProcedurePageProps {
     params: Promise<{
@@ -250,6 +266,17 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     includeSchema={false}
                 />
             )}
+
+            {/* Blog Posts Section */}
+            <BlogPostsSection
+                categorySlug={procedureToBlogCategory[params.slug]}
+                title={`${procedure.title} Insights`}
+                description={`Expert advice, recovery tips, and patient stories about ${procedure.title.toLowerCase()}`}
+                badge='From Our Blog'
+                variant='default'
+                limit={6}
+                columns={3}
+            />
 
             {/* Related Procedures Section */}
             {relatedProcedures.length > 0 && (

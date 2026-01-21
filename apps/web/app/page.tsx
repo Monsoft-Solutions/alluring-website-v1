@@ -9,6 +9,7 @@ import { BeforeAfter } from '@/components/home/before-after.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
 import { Testimonials } from '@/components/home/testimonials.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { LeadForm } from '@/components/home/lead-form.component'
 import { PromoSection } from '@/components/promotions/promo-section.component'
@@ -115,6 +116,14 @@ export default async function Page() {
                 <WhyUs />
                 <Surgeons />
                 <Testimonials />
+                <BlogPostsSection
+                    title='Latest from Our Blog'
+                    description='Expert insights and advice from our board-certified plastic surgeons'
+                    badge='Knowledge Center'
+                    variant='muted'
+                    limit={3}
+                    columns={3}
+                />
                 <CategorizedFAQ
                     categories={faqCategoriesHome}
                     faqData={faqDataHome}
