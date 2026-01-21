@@ -1,5 +1,6 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { procedureSchema } from '@/lib/types/procedure.type'
+import { env } from '@/env'
 
 // Import individual procedure data files
 import { breastAugmentationMiami } from './procedures/breast-augmentation-miami.data'
@@ -52,7 +53,7 @@ export const procedures: Procedure[] = rawProcedures.map((procedure) => {
         )
 
         // In development, throw an error to catch issues early
-        if (process.env.NODE_ENV === 'development') {
+        if (env.NODE_ENV === 'development') {
             throw new Error(
                 `Procedure validation failed for "${procedure.slug}": ${result.error.message}`
             )
