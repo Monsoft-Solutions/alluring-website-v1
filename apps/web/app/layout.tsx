@@ -122,6 +122,7 @@ export default function RootLayout({
                 <WebSiteSchema
                     name={seoConfig.siteName}
                     url={seoConfig.siteUrl}
+                    searchUrlTemplate={`${seoConfig.siteUrl}/blog?q={search_term_string}`}
                 />
                 <Providers>
                     {/* Analytics Scripts - Load automatically when configured */}

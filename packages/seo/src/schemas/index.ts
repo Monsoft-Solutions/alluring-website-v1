@@ -11,6 +11,9 @@ export { buildLocalBusinessJsonLd } from './local-business.schema'
 export { buildImageObjectJsonLd } from './image-object.schema'
 export { buildVideoObjectJsonLd } from './video-object.schema'
 export { buildImageGalleryJsonLd } from './image-gallery.schema'
+export { buildMedicalProcedureJsonLd } from './medical-procedure.schema'
+export { buildPhysicianJsonLd } from './physician.schema'
+export { buildServiceJsonLd } from './service.schema'
 
 // Schema types
 export type { ArticleSchemaProps } from '../types/schema/article.type'
@@ -43,3 +46,16 @@ export type {
     ImageGalleryImage,
     ImageGallerySchemaProps,
 } from '../types/schema/image-gallery.type'
+export type { MedicalProcedureSchemaProps } from '../types/schema/medical-procedure.type'
+export type {
+    PhysicianSchemaProps,
+    PhysicianService,
+    PhysicianMembership,
+    PhysicianEducation,
+    PhysicianAddress,
+} from '../types/schema/physician.type'
+export type {
+    ServiceSchemaProps,
+    ServiceProvider,
+    ServiceOffer,
+} from '../types/schema/service.type'

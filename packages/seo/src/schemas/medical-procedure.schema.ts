@@ -1,0 +1,46 @@
+import type { MedicalProcedure, WithContext } from 'schema-dts'
+
+import type { MedicalProcedureSchemaProps } from '../types/schema/medical-procedure.type'
+import { withContext } from './_internal'
+
+/**
+ * Builds JSON-LD structured data for a MedicalProcedure
+ *
+ * Used for plastic surgery procedure pages to enhance Google understanding
+ * and enable rich results for medical content.
+ *
+ * @see https://schema.org/MedicalProcedure
+ */
+export function buildMedicalProcedureJsonLd(
+    props: MedicalProcedureSchemaProps
+): WithContext<MedicalProcedure> {
+    // Normalize image to array if provided
+    const imageArray = props.image
+        ? Array.isArray(props.image)
+            ? props.image
+            : [props.image]
+        : undefined
+
+    // Build the base procedure object
+    // Note: Some schema.org properties are added via spread to work around schema-dts limitations
+    const procedure = {
+        '@type': 'MedicalProcedure' as const,
+        name: props.name,
+        description: props.description,
+        ...(props.howPerformed && { howPerformed: props.howPerformed }),
+        ...(props.preparation && { preparation: props.preparation }),
+        ...(props.followup && { followup: props.followup }),
+        ...(props.bodyLocation && { bodyLocation: props.bodyLocation }),
+        ...(imageArray && { image: imageArray }),
+        ...(props.mainEntityOfPage && {
+            mainEntityOfPage: props.mainEntityOfPage,
+        }),
+        ...(props.url && { url: props.url }),
+        ...(props.procedureType && {
+            procedureType: props.procedureType,
+        }),
+        ...(props.status && { status: props.status }),
+    } as MedicalProcedure
+
+    return withContext(procedure)
+}

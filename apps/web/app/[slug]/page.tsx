@@ -20,6 +20,7 @@ import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
 
@@ -200,10 +201,14 @@ export default async function DynamicPage({ params }: PageProps) {
             post.content
         )
 
+        // Get related procedures for cross-linking (SEO benefit)
+        const relatedProcedures = getRelatedProcedures(post, 3)
+
         return (
             <BlogPostContent
                 post={post}
                 relatedPosts={relatedPosts}
+                relatedProcedures={relatedProcedures}
                 tableOfContents={tableOfContents}
                 beforeCTA={beforeCTA}
                 afterCTA={afterCTA}

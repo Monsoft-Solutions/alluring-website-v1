@@ -26,6 +26,7 @@ import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { PostNavigation } from '@/components/blog/post-navigation.component'
 import { ReadingProgress } from '@/components/blog/reading-progress.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
+import { RelatedProcedures } from '@/components/blog/related-procedures.component'
 import { SocialShare } from '@/components/blog/social-share.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
@@ -35,10 +36,12 @@ import { seoConfig } from '@/lib/seo-config'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
 import type { TOCHeading } from '@/lib/types/blog/toc.type'
+import type { Procedure } from '@/lib/types/procedure.type'
 
 type BlogPostContentProps = {
     post: BlogPostDetail
     relatedPosts: BlogPostCard[]
+    relatedProcedures?: Procedure[]
     tableOfContents: TOCHeading[]
     beforeCTA: string
     afterCTA: string | null
@@ -54,6 +57,7 @@ type BlogPostContentProps = {
 export function BlogPostContent({
     post,
     relatedPosts,
+    relatedProcedures,
     tableOfContents,
     beforeCTA,
     afterCTA,
@@ -399,6 +403,18 @@ export function BlogPostContent({
                             <div className='mt-16'>
                                 <RelatedPosts posts={relatedPosts} />
                             </div>
+
+                            {/* Related Procedures - Cross-linking for SEO */}
+                            {relatedProcedures &&
+                                relatedProcedures.length > 0 && (
+                                    <div className='mt-8'>
+                                        <RelatedProcedures
+                                            procedures={relatedProcedures}
+                                            title='Related Procedures'
+                                            description='Explore the procedures discussed in this article'
+                                        />
+                                    </div>
+                                )}
                         </div>
 
                         {/* Sidebar */}

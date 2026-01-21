@@ -11,3 +11,6 @@ export { LocalBusinessSchema } from './local-business/local-business-schema.comp
 export { ImageObjectSchema } from './image-object/image-object-schema.component'
 export { VideoObjectSchema } from './video-object/video-object-schema.component'
 export { ImageGallerySchema } from './image-gallery/image-gallery-schema.component'
+export { MedicalProcedureSchema } from './medical-procedure/medical-procedure-schema.component'
+export { PhysicianSchema } from './physician/physician-schema.component'
+export { ServiceSchema } from './service/service-schema.component'

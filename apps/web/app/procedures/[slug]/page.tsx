@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import {
     BreadcrumbSchema,
     FAQSchema,
+    MedicalProcedureSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -183,6 +184,43 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
             {faqSchemaItems && faqSchemaItems.length > 0 && (
                 <FAQSchema items={faqSchemaItems} />
             )}
+
+            {/* Structured Data - MedicalProcedure Schema */}
+            <MedicalProcedureSchema
+                name={procedure.title}
+                description={procedure.description}
+                url={pageUrl}
+                mainEntityOfPage={pageUrl}
+                image={
+                    procedure.image
+                        ? `${siteUrl}${procedure.image}`
+                        : `${siteUrl}/og-image.jpg`
+                }
+                bodyLocation={
+                    procedure.category === 'face'
+                        ? 'face'
+                        : procedure.category === 'breast'
+                          ? 'breast'
+                          : procedure.category === 'body'
+                            ? 'abdomen'
+                            : undefined
+                }
+                howPerformed={
+                    procedure.process
+                        ? procedure.process
+                              .map(
+                                  (step) => `${step.title}: ${step.description}`
+                              )
+                              .join('. ')
+                        : undefined
+                }
+                followup={
+                    procedure.quickStats?.recovery
+                        ? `Recovery time: ${procedure.quickStats.recovery}`
+                        : undefined
+                }
+                procedureType='Surgical'
+            />
 
             {/* Hero Section */}
             <ProcedureDetailHero

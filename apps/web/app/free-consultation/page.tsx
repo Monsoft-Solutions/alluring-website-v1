@@ -16,6 +16,7 @@
 import {
     FAQSchema,
     OrganizationSchema,
+    ServiceSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -80,9 +81,11 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 
     alternates: {
+        canonical: '/free-consultation',
         languages: {
             'en-US': '/free-consultation',
-            'es-US': '/consulta-gratis',
+            es: '/consulta-gratis',
+            'x-default': '/free-consultation',
         },
     },
 })
@@ -117,6 +120,29 @@ export default async function FreeConsultationPage() {
             />
 
             <FAQSchema items={faqSchemaItems} />
+
+            {/* Structured Data - Service Schema for consultation offering */}
+            <ServiceSchema
+                name='Free Plastic Surgery Consultation'
+                description='Complimentary, no-obligation consultation with board-certified plastic surgeons. Discuss your aesthetic goals, explore surgical and non-surgical options, and receive personalized recommendations.'
+                url={`${seoConfig.siteUrl}/free-consultation`}
+                serviceType='Cosmetic Surgery Consultation'
+                provider={{
+                    name: siteConfig.business.name,
+                    url: seoConfig.siteUrl,
+                    type: 'Organization',
+                    logo: seoConfig.organization?.logo,
+                }}
+                areaServed={['Miami', 'Florida', 'Latin America', 'Caribbean']}
+                availableLanguage={['English', 'Spanish']}
+                offers={{
+                    price: 0,
+                    priceCurrency: 'USD',
+                    availability: 'InStock',
+                    url: `${seoConfig.siteUrl}/free-consultation`,
+                }}
+                image={`${seoConfig.siteUrl}/og-image.jpg`}
+            />
 
             {/* Main Content - Conversion-Optimized Flow */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
