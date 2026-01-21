@@ -31,7 +31,7 @@ function NavigationLink({
 
     return (
         <Link
-            href={`/blog/${post.slug}`}
+            href={`/${post.slug}`}
             className='group relative flex flex-1 items-center gap-4 rounded-xl border border-stone-200 bg-white p-4 transition-all duration-300 hover:border-stone-300 hover:bg-stone-50 hover:shadow-lg md:p-5'
         >
             {/* Arrow indicator - previous on left, next on right */}

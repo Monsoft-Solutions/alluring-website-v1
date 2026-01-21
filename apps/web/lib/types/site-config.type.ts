@@ -97,6 +97,20 @@ export type BrandAssets = {
 }
 
 /**
+ * Search engine verification codes
+ */
+export type VerificationCodes = {
+    /** Google Search Console verification code */
+    google?: string
+    /** Bing Webmaster Tools verification code */
+    bing?: string
+    /** Yandex Webmaster verification code */
+    yandex?: string
+    /** Yahoo Site Explorer verification code */
+    yahoo?: string
+}
+
+/**
  * SEO defaults and metadata
  */
 export type SEODefaults = {
@@ -116,6 +130,8 @@ export type SEODefaults = {
     facebookAppId?: string
     /** Enable search engine indexing */
     enableIndexing?: boolean
+    /** Search engine verification codes */
+    verification?: VerificationCodes
 }
 
 /**

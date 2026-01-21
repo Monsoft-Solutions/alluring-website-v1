@@ -3,6 +3,9 @@
  *
  * Tracks last modified dates for static pages to provide accurate
  * sitemap data. Update these dates when page content actually changes.
+ *
+ * NOTE: Individual procedure pages use dateModified from their procedure data files.
+ * Only the main /procedures listing page should be tracked here.
  */
 
 /**
@@ -13,36 +16,37 @@
  */
 export const pageLastModified: Record<string, string> = {
     // Main pages
-    '/': '2025-01-16',
-    '/about': '2025-12-16',
-    '/contact-us': '2025-12-18',
-    '/faqs': '2025-12-18',
-    '/plastic-surgery-financing-miami': '2025-12-16',
-    '/miami-plastic-surgery-specials': '2025-12-18',
+    '/': '2026-01-21',
+    '/about': '2026-01-21',
+    '/contact-us': '2026-01-21',
+    '/faqs': '2026-01-21',
+    '/plastic-surgery-financing-miami': '2026-01-21',
+    '/miami-plastic-surgery-specials': '2026-01-21',
     '/bmi-calculator': '2026-01-17',
 
     // Landing pages
     '/free-consultation': '2026-01-17',
     '/free-consultation/miami': '2026-01-17',
     '/fly-in-consultation': '2026-01-17',
+    '/consulta-gratis': '2026-01-21',
 
     // Gallery pages
     '/gallery': '2025-12-17',
 
     // Instagram pages
-    '/instagram': '2025-12-21',
+    '/instagram': '2026-01-21',
 
     // Listing pages
-    '/procedures': '2025-12-17',
-    '/blog': '2025-12-17',
-    '/blog/categories': '2025-12-17',
-    '/blog/tags': '2025-12-17',
-    '/promotions': '2025-12-17',
+    '/procedures': '2026-01-21',
+    '/blog': '2026-01-21',
+    '/blog/categories': '2026-01-21',
+    '/blog/tags': '2026-01-21',
+    '/promotions': '2026-01-21',
 
     // Surgeon pages
-    '/dr-karlinsky': '2025-12-16',
-    '/dr-andrew-lofman': '2025-12-16',
-    '/dr-rita-shats': '2025-12-16',
+    '/dr-karlinsky': '2026-01-21',
+    '/dr-andrew-lofman': '2026-01-21',
+    '/dr-rita-shats': '2026-01-21',
 
     // Legal pages (rarely change)
     '/privacy': '2025-12-16',

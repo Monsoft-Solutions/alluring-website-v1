@@ -38,10 +38,11 @@ export function getMDXComponents(): MDXComponents {
             ...props
         }: ComponentPropsWithoutRef<'img'>) => {
             if (!src || typeof src !== 'string') return null
+
             return (
                 <Image
                     src={src}
-                    alt={alt || ''}
+                    alt={alt || 'Blog post image'}
                     width={
                         typeof width === 'number'
                             ? width

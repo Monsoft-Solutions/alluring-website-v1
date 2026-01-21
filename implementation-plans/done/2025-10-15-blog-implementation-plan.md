@@ -28,7 +28,7 @@ The plan emphasizes a minimal viable path while leaving room for incremental enh
     - `author`, `images`
 - Target pages:
     - `app/blog/page.tsx` → initial 12 posts on server
-    - `app/blog/[slug]/page.tsx` → server-rendered post
+    - `app/[slug]/page.tsx` → server-rendered post at root level (matches WordPress structure)
     - `app/blog/categories/page.tsx` + `app/blog/categories/[slug]/page.tsx`
     - `app/blog/tags/page.tsx` + `app/blog/tags/[slug]/page.tsx`
 - Data access via `@workspace/db` Drizzle queries. Keep queries small for card payloads.
@@ -92,9 +92,9 @@ The plan emphasizes a minimal viable path while leaving room for incremental enh
 
 ### Phase 4 — Post detail page with Markdown (SSR) (DONE)
 
-- Objective: `/blog/[slug]` renders server-side with Markdown content.
+- Objective: `/{slug}` renders server-side with Markdown content (root-level URL matches WordPress structure).
 - Deliverables:
-    - `apps/web/app/blog/[slug]/page.tsx`
+    - `apps/web/app/[slug]/page.tsx` (handles blog posts at root level)
     - `apps/web/components/blog/PostMarkdown.component.tsx` with remark/rehype pipeline
     - Optional `TableOfContents` later
 - Criteria:

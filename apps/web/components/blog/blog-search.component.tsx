@@ -22,6 +22,8 @@ import type { SearchIndexPost } from '@/lib/queries/blog/search-posts.query'
 
 type BlogSearchProps = {
     searchIndex: SearchIndexPost[]
+    /** Optional initial query to pre-populate and open the search modal */
+    initialQuery?: string
 }
 
 /**
@@ -72,9 +74,10 @@ function highlightMatch(text: string, query: string): string {
     return result
 }
 
-export function BlogSearch({ searchIndex }: BlogSearchProps) {
-    const [isOpen, setIsOpen] = useState(false)
-    const [query, setQuery] = useState('')
+export function BlogSearch({ searchIndex, initialQuery }: BlogSearchProps) {
+    // Initialize state based on whether we have an initial query
+    const [isOpen, setIsOpen] = useState(!!initialQuery)
+    const [query, setQuery] = useState(initialQuery ?? '')
     const [selectedIndex, setSelectedIndex] = useState(0)
     const inputRef = useRef<HTMLInputElement>(null)
     const resultsRef = useRef<HTMLDivElement>(null)
@@ -145,7 +148,7 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
                 setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
             } else if (e.key === 'Enter' && results[selectedIndex]) {
                 e.preventDefault()
-                window.location.href = `/blog/${results[selectedIndex].slug}`
+                window.location.href = `/${results[selectedIndex].slug}`
             }
         },
         [results, selectedIndex]
@@ -231,7 +234,7 @@ export function BlogSearch({ searchIndex }: BlogSearchProps) {
                                     {results.map((post, index) => (
                                         <li key={post.slug}>
                                             <Link
-                                                href={`/blog/${post.slug}`}
+                                                href={`/${post.slug}`}
                                                 className={cn(
                                                     'flex items-start gap-4 px-5 py-4 transition-colors',
                                                     index === selectedIndex

@@ -11,6 +11,8 @@ export const breastAugmentationMiami: Procedure = {
     heroSubtitle: 'Transform Your Confidence with the Best Breast Augmentation',
     category: 'breast',
     image: '/images/procedures/breast-augmentation.jpg',
+    dateModified: '2026-01-21T00:00:00.000Z',
+    datePublished: '2024-06-15T00:00:00.000Z',
     keywords: [
         'breast augmentation miami',
         'breast implants miami',
@@ -82,6 +84,12 @@ export const breastAugmentationMiami: Procedure = {
                 'Most patients return to light activities within a week. Final results settle in over a few months as swelling subsides.',
         },
     ],
+    quickAnswer: {
+        question: 'What is breast augmentation?',
+        answer: 'Breast augmentation is a surgical procedure that uses implants or fat transfer to increase breast size, enhance shape, and improve symmetry.',
+        details:
+            'The procedure typically takes 1-2 hours under general anesthesia. Most patients return to light activities within 1-2 weeks, with full results visible after 3-6 months as swelling subsides.',
+    },
     content: `## Breast Augmentation Miami: Achieve the Curves and Confidence You Deserve
 
 When you look in the mirror, do you wish your breasts reflected the confidence you feel inside? Whether you've always desired fuller curves, want to restore volume lost after pregnancy, or simply seek better proportion for your frame, **breast augmentation** offers a transformative path forward. In **Miami**—a city where beauty, wellness, and self-expression thrive year-round—thousands of women choose **breast augmentation** to align their appearance with their inner vision of themselves.

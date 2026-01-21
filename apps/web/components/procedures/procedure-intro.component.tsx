@@ -59,8 +59,11 @@ export function ProcedureIntro({
                             Refine Your{' '}
                             <span className='text-gold-600 italic'>Beauty</span>
                         </h2>
-                        <div className='relative'>
-                            <p className='text-lg leading-relaxed font-light text-stone-600 md:text-xl md:leading-loose'>
+                        <div className='procedure-intro relative'>
+                            <p
+                                className='text-lg leading-relaxed font-light text-stone-600 md:text-xl md:leading-loose'
+                                data-speakable='true'
+                            >
                                 <span className='text-gold-500 float-left mr-3 font-serif text-6xl leading-[0.8]'>
                                     {description.charAt(0)}
                                 </span>

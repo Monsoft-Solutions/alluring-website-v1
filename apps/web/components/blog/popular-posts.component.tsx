@@ -55,7 +55,7 @@ export function PopularPosts({
                         {posts.slice(0, 5).map((post, index) => (
                             <Link
                                 key={post.slug}
-                                href={`/blog/${post.slug}`}
+                                href={`/${post.slug}`}
                                 className='group flex flex-col overflow-hidden rounded-xl border border-stone-200 bg-white transition-all duration-300 hover:border-stone-300 hover:shadow-lg'
                             >
                                 {/* Thumbnail */}
@@ -122,7 +122,7 @@ export function PopularPosts({
                 {posts.slice(0, 5).map((post, index) => (
                     <li key={post.slug}>
                         <Link
-                            href={`/blog/${post.slug}`}
+                            href={`/${post.slug}`}
                             className='group flex items-start gap-3'
                         >
                             {/* Rank number */}

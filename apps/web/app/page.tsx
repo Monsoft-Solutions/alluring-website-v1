@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
-import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    FAQSchema,
+    LocalBusinessSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { Hero } from '@/components/home/hero.component'
@@ -9,6 +13,7 @@ import { BeforeAfter } from '@/components/home/before-after.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
 import { Testimonials } from '@/components/home/testimonials.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { LeadForm } from '@/components/home/lead-form.component'
 import { PromoSection } from '@/components/promotions/promo-section.component'
@@ -100,6 +105,43 @@ export default async function Page() {
                 description={siteConfig.seo.siteDescription}
             />
 
+            {/* Structured Data - LocalBusiness Schema for local SEO */}
+            <LocalBusinessSchema
+                name={siteConfig.business.name}
+                url={siteUrl}
+                telephone={siteConfig.contact.phone}
+                address={{
+                    streetAddress: siteConfig.contact.address,
+                    addressLocality: siteConfig.contact.city,
+                    addressRegion: siteConfig.contact.state,
+                    postalCode: siteConfig.contact.postalCode,
+                    addressCountry: 'US',
+                }}
+                geo={{
+                    latitude: siteConfig.contact.coordinates?.lat ?? 25.7529,
+                    longitude: siteConfig.contact.coordinates?.lng ?? -80.3309,
+                }}
+                openingHoursSpecification={[
+                    {
+                        dayOfWeek: [
+                            'Monday',
+                            'Tuesday',
+                            'Wednesday',
+                            'Thursday',
+                            'Friday',
+                        ],
+                        opens: '09:00',
+                        closes: '17:00',
+                    },
+                    {
+                        dayOfWeek: ['Saturday'],
+                        opens: '09:00',
+                        closes: '15:00',
+                    },
+                ]}
+                image={`${siteUrl}/og-image.jpg`}
+            />
+
             {/* Structured Data - FAQ Schema for rich snippets */}
             {faqSchemaItems.length > 0 && <FAQSchema items={faqSchemaItems} />}
 
@@ -115,6 +157,14 @@ export default async function Page() {
                 <WhyUs />
                 <Surgeons />
                 <Testimonials />
+                <BlogPostsSection
+                    title='Latest from Our Blog'
+                    description='Expert insights and advice from our board-certified plastic surgeons'
+                    badge='Knowledge Center'
+                    variant='muted'
+                    limit={3}
+                    columns={3}
+                />
                 <CategorizedFAQ
                     categories={faqCategoriesHome}
                     faqData={faqDataHome}

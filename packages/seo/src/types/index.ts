@@ -37,3 +37,9 @@ export type { OrganizationSchemaProps } from './schema/organization.type'
 export type { WebSiteSchemaProps } from './schema/website.type'
 export type { WebPageSchemaProps } from './schema/webpage.type'
 export type { ImageObjectSchemaProps } from './schema/image-object.type'
+export type {
+    SpeakableSpecification,
+    SpeakableSchemaProps,
+    ArticleWithSpeakable,
+    WebPageWithSpeakable,
+} from './schema/speakable.type'

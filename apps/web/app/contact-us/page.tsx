@@ -6,7 +6,11 @@
  *
  * Optimized for conversions with the contact form as the primary hero element.
  */
-import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    LocalBusinessSchema,
+    OrganizationSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ContactHeroForm } from '@/components/sections/contact/contact-hero-form.component'
@@ -92,6 +96,43 @@ export default async function ContactPage() {
                 sameAs={seoConfig.organization?.socialProfiles?.map(
                     (s) => s.url
                 )}
+            />
+
+            {/* Structured Data - LocalBusiness Schema for local SEO */}
+            <LocalBusinessSchema
+                name={siteConfig.business.name}
+                url={`${seoConfig.siteUrl}/contact-us`}
+                telephone={siteConfig.contact.phone}
+                address={{
+                    streetAddress: siteConfig.contact.address,
+                    addressLocality: siteConfig.contact.city,
+                    addressRegion: siteConfig.contact.state,
+                    postalCode: siteConfig.contact.postalCode,
+                    addressCountry: 'US',
+                }}
+                geo={{
+                    latitude: siteConfig.contact.coordinates?.lat ?? 25.7529,
+                    longitude: siteConfig.contact.coordinates?.lng ?? -80.3309,
+                }}
+                openingHoursSpecification={[
+                    {
+                        dayOfWeek: [
+                            'Monday',
+                            'Tuesday',
+                            'Wednesday',
+                            'Thursday',
+                            'Friday',
+                        ],
+                        opens: '09:00',
+                        closes: '17:00',
+                    },
+                    {
+                        dayOfWeek: ['Saturday'],
+                        opens: '09:00',
+                        closes: '15:00',
+                    },
+                ]}
+                image={`${seoConfig.siteUrl}/og-image.jpg`}
             />
 
             {/* Main Content - Conversion-Optimized Flow */}

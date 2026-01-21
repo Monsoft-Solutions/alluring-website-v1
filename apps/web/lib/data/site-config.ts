@@ -171,6 +171,13 @@ export const siteConfig: SiteConfig = {
         twitterHandle: '@alluringplasticsurgery',
         facebookAppId: '',
         enableIndexing: true,
+        // Search engine verification codes
+        // Obtain from respective webmaster tools dashboards
+        verification: {
+            google: undefined, // Google Search Console
+            bing: undefined, // Bing Webmaster Tools - IMPORTANT for ChatGPT visibility
+            yandex: undefined, // Yandex Webmaster
+        },
     },
 
     /**

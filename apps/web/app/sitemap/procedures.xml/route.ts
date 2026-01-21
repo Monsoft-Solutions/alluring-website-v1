@@ -15,10 +15,28 @@ import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.ty
 import { generateSitemapXml } from '@workspace/seo/utils'
 
 /**
- * Last modified date for procedures
- * Update this when procedure content changes
+ * Get last modified date for a procedure page
+ *
+ * Priority order:
+ * 1. procedure.dateModified (from procedure data - source of truth)
+ * 2. pageLastModified (legacy fallback)
+ * 3. procedures listing page date
+ * 4. Current date
  */
-const PROCEDURES_LAST_MODIFIED = '2025-12-16'
+function getProcedureLastModified(slug: string, dateModified?: string): string {
+    // First priority: Use dateModified from procedure data (convert to YYYY-MM-DD format)
+    if (dateModified) {
+        return dateModified.split('T')[0]!
+    }
+
+    // Fallback to pageLastModified for backwards compatibility
+    const procedurePath = `/procedures/${slug}`
+    return (
+        pageLastModified[procedurePath] ??
+        pageLastModified['/procedures'] ??
+        new Date().toISOString().split('T')[0]!
+    )
+}
 
 /**
  * GET handler for procedures sitemap
@@ -48,7 +66,8 @@ export function GET(): NextResponse {
         entries.push({
             url: `${baseUrl}/procedures`,
             lastModified:
-                pageLastModified['/procedures'] ?? PROCEDURES_LAST_MODIFIED,
+                pageLastModified['/procedures'] ??
+                new Date().toISOString().split('T')[0]!,
             changeFrequency: 'monthly',
             priority: 0.9,
         })
@@ -57,7 +76,10 @@ export function GET(): NextResponse {
         for (const procedure of procedures) {
             const entry: SitemapEntry = {
                 url: `${baseUrl}/procedures/${procedure.slug}`,
-                lastModified: PROCEDURES_LAST_MODIFIED,
+                lastModified: getProcedureLastModified(
+                    procedure.slug,
+                    procedure.dateModified
+                ),
                 changeFrequency: 'monthly',
                 priority: 0.8,
             }

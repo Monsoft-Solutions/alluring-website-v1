@@ -23,6 +23,7 @@ import {
     FAQSchema,
     LocalBusinessSchema,
     OrganizationSchema,
+    ServiceSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -112,9 +113,11 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 
     alternates: {
+        canonical: '/consulta-gratis',
         languages: {
-            'es-US': '/consulta-gratis',
+            es: '/consulta-gratis',
             'en-US': '/free-consultation',
+            'x-default': '/free-consultation',
         },
     },
 })
@@ -167,6 +170,29 @@ export default async function ConsultaGratisPage() {
             />
 
             <FAQSchema items={faqSchemaItems} />
+
+            {/* Structured Data - Service Schema for consultation offering */}
+            <ServiceSchema
+                name='Consulta Gratis de Cirugía Plástica'
+                description='Consulta gratuita y sin compromiso con cirujanos plásticos certificados. Discuta sus metas estéticas, explore opciones quirúrgicas y no quirúrgicas, y reciba recomendaciones personalizadas.'
+                url={`${seoConfig.siteUrl}/consulta-gratis`}
+                serviceType='Cosmetic Surgery Consultation'
+                provider={{
+                    name: siteConfig.business.name,
+                    url: seoConfig.siteUrl,
+                    type: 'Organization',
+                    logo: seoConfig.organization?.logo,
+                }}
+                areaServed={['Miami', 'Florida', 'América Latina', 'Caribe']}
+                availableLanguage={['Español', 'Inglés']}
+                offers={{
+                    price: 0,
+                    priceCurrency: 'USD',
+                    availability: 'InStock',
+                    url: `${seoConfig.siteUrl}/consulta-gratis`,
+                }}
+                image={`${seoConfig.siteUrl}/og-image.jpg`}
+            />
 
             {/* Main Content - Spanish-Focused Conversion Flow */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>

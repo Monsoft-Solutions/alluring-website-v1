@@ -6,10 +6,14 @@
  * - Glassmorphism content card on desktop
  * - Engaging visual hierarchy
  * - Sticky sidebar with TOC and CTAs
+ * - Reading progress bar
+ * - Social sharing buttons
+ * - Breadcrumbs navigation
+ * - "More from This Category" section
  *
  * SSR-compatible with CSS animations.
  */
-import { ArticleSchema } from '@workspace/seo/react'
+import { ArticleSchema, FAQSchema } from '@workspace/seo/react'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,21 +23,30 @@ import { Button } from '@workspace/ui/components/button'
 import { BlogCTA } from '@/components/blog/blog-cta.component'
 import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
+import { PostNavigation } from '@/components/blog/post-navigation.component'
+import { ReadingProgress } from '@/components/blog/reading-progress.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
+import { RelatedProcedures } from '@/components/blog/related-procedures.component'
+import { SocialShare } from '@/components/blog/social-share.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { seoConfig } from '@/lib/seo-config'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
 import type { TOCHeading } from '@/lib/types/blog/toc.type'
+import type { Procedure } from '@/lib/types/procedure.type'
 
 type BlogPostContentProps = {
     post: BlogPostDetail
     relatedPosts: BlogPostCard[]
+    relatedProcedures?: Procedure[]
     tableOfContents: TOCHeading[]
     beforeCTA: string
     afterCTA: string | null
     ctaId: string | null
+    adjacentPosts: AdjacentPosts
 }
 
 /**
@@ -44,10 +57,12 @@ type BlogPostContentProps = {
 export function BlogPostContent({
     post,
     relatedPosts,
+    relatedProcedures,
     tableOfContents,
     beforeCTA,
     afterCTA,
     ctaId,
+    adjacentPosts,
 }: BlogPostContentProps) {
     // Guard: publishedAt is required for published posts
     if (!post.publishedAt) {
@@ -69,6 +84,17 @@ export function BlogPostContent({
 
     return (
         <article className='relative'>
+            {/* Reading progress bar */}
+            <ReadingProgress />
+
+            {/* Social sharing buttons */}
+            <SocialShare
+                title={post.title}
+                url={`/${post.slug}`}
+                description={post.excerpt ?? undefined}
+                imageUrl={post.featuredImage?.url}
+            />
+
             {/* Track blog post view */}
             <BlogViewTracker postId={post.id} />
 
@@ -291,7 +317,9 @@ export function BlogPostContent({
                                     seoConfig.siteName
                                 }
                                 datePublished={post.publishedAt}
-                                dateModified={post.updatedAt ?? undefined}
+                                dateModified={
+                                    post.updatedAt ?? post.publishedAt
+                                }
                                 image={post.featuredImage?.url}
                                 mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
                                 publisher={{
@@ -303,7 +331,29 @@ export function BlogPostContent({
                                         seoConfig.organization?.url ??
                                         seoConfig.siteUrl,
                                 }}
+                                wordCount={
+                                    post.readingTime
+                                        ? Math.round(post.readingTime * 200)
+                                        : undefined
+                                }
+                                articleSection={primaryCategory?.name}
+                                keywords={
+                                    post.tags.length > 0
+                                        ? post.tags.map((t) => t.name)
+                                        : undefined
+                                }
                             />
+
+                            {/* FAQ Schema for blog posts with FAQs */}
+                            {post.faqs && post.faqs.length > 0 && (
+                                <FAQSchema
+                                    items={post.faqs.map((faq) => ({
+                                        question: faq.question,
+                                        answer: faq.answer,
+                                    }))}
+                                    mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
+                                />
+                            )}
 
                             {/* Topics/Tags section */}
                             {(post.categories.length > 0 ||
@@ -343,10 +393,28 @@ export function BlogPostContent({
                                 />
                             </div>
 
+                            {/* Previous/Next Post Navigation */}
+                            <PostNavigation
+                                previousPost={adjacentPosts.previousPost}
+                                nextPost={adjacentPosts.nextPost}
+                            />
+
                             {/* Related Posts */}
                             <div className='mt-16'>
                                 <RelatedPosts posts={relatedPosts} />
                             </div>
+
+                            {/* Related Procedures - Cross-linking for SEO */}
+                            {relatedProcedures &&
+                                relatedProcedures.length > 0 && (
+                                    <div className='mt-8'>
+                                        <RelatedProcedures
+                                            procedures={relatedProcedures}
+                                            title='Related Procedures'
+                                            description='Explore the procedures discussed in this article'
+                                        />
+                                    </div>
+                                )}
                         </div>
 
                         {/* Sidebar */}
@@ -459,6 +527,21 @@ export function BlogPostContent({
                     </div>
                 </ContentWrapper>
             </section>
+
+            {/* More from This Category Section */}
+            {primaryCategory && (
+                <BlogPostsSection
+                    categorySlug={primaryCategory.slug}
+                    excludeSlug={post.slug}
+                    title={`More ${primaryCategory.name} Articles`}
+                    description={`Continue exploring our ${primaryCategory.name.toLowerCase()} resources`}
+                    badge='Keep Reading'
+                    limit={3}
+                    variant='muted'
+                    viewAllText={`View all ${primaryCategory.name.toLowerCase()} articles`}
+                    viewAllHref={`/blog/categories/${primaryCategory.slug}`}
+                />
+            )}
         </article>
     )
 }

@@ -1,20 +1,26 @@
 /**
  * Blog Category Detail Page
  *
- * Displays posts from a specific category.
+ * Displays posts from a specific category with enhanced content for SEO/LLM optimization.
  * Features luxury styling with dark header and gold accents.
+ * Includes category-specific descriptions, FAQs, and related category links.
  */
-import { WebPageSchema } from '@workspace/seo/react'
-import { ArrowLeft, FolderOpen } from 'lucide-react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
+import { ArrowLeft, ArrowRight, FolderOpen } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cache } from 'react'
 
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { FAQComponent } from '@/components/shared/faq.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
+import { getCategoryDescription } from '@/lib/data/category-descriptions.data'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
-import { getActiveCategoryBySlug } from '@/lib/queries/blog/taxonomy.query'
+import {
+    getActiveCategoryBySlug,
+    listActiveCategoriesWithCounts,
+} from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
@@ -36,9 +42,17 @@ export async function generateMetadata({
         return { title: 'Category not found' }
     }
 
+    // Get enhanced description if available
+    const categoryDescription = getCategoryDescription(slug)
+    const description =
+        categoryDescription?.shortDescription ||
+        `Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`
+
+    const title = categoryDescription?.title || `${category.name} Articles`
+
     return toNextMetadata(seoConfig, {
-        title: `${category.name} Articles`,
-        description: `Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`,
+        title,
+        description,
         canonical: `/blog/categories/${category.slug}`,
     })
 }
@@ -46,7 +60,13 @@ export async function generateMetadata({
 export default async function CategoryDetailPage({ params }: PageProps) {
     const { slug } = await params
 
-    const category = await getCachedCategoryBySlug(slug)
+    const [category, allCategories] = await Promise.all([
+        getCachedCategoryBySlug(slug),
+        listActiveCategoriesWithCounts(),
+    ])
+
+    // Get enhanced description if available
+    const categoryDescription = getCategoryDescription(slug)
     if (!category) {
         return (
             <main className='bg-stone-50'>
@@ -91,13 +111,34 @@ export default async function CategoryDetailPage({ params }: PageProps) {
           ).toString('base64')
         : undefined
 
+    // Get related categories for internal linking
+    const relatedCategorySlugs = categoryDescription?.relatedCategories || []
+    const relatedCategories = allCategories.filter((cat) =>
+        relatedCategorySlugs.includes(cat.slug)
+    )
+
+    // Prepare FAQ items for schema
+    const faqItems = categoryDescription?.faqs?.map((faq) => ({
+        question: faq.question,
+        answer: faq.answer,
+    }))
+
+    const pageDescription =
+        categoryDescription?.shortDescription ||
+        `Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`
+
+    const pageTitle = categoryDescription?.title || `${category.name} Articles`
+
     return (
         <>
             <WebPageSchema
-                name={`${category.name} Articles`}
+                name={pageTitle}
                 url={`${seoConfig.siteUrl}/blog/categories/${category.slug}`}
-                description={`Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`}
+                description={pageDescription}
             />
+
+            {/* FAQ Schema if FAQs exist */}
+            {faqItems && faqItems.length > 0 && <FAQSchema items={faqItems} />}
 
             <main className='bg-stone-50'>
                 {/* Header */}
@@ -133,15 +174,30 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                             {/* Gold accent line */}
                             <div className='bg-gold-500 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(234,179,8,0.3)]' />
 
-                            {/* Description */}
+                            {/* Description - Enhanced if available */}
                             <p className='text-base leading-relaxed font-light text-stone-300 md:text-lg'>
-                                Browse all articles in this category and
-                                discover expert insights, recovery guides, and
-                                best practices.
+                                {pageDescription}
                             </p>
                         </div>
                     </ContentWrapper>
                 </SectionContainer>
+
+                {/* Full Description Section - Enhanced content for LLM/SEO */}
+                {categoryDescription?.fullDescription && (
+                    <SectionContainer variant='default' className='py-12'>
+                        <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                            <article className='mx-auto max-w-3xl'>
+                                <div className='prose prose-stone prose-lg prose-headings:font-serif prose-p:font-light prose-p:leading-relaxed'>
+                                    {categoryDescription.fullDescription
+                                        .split('\n\n')
+                                        .map((paragraph, i) => (
+                                            <p key={i}>{paragraph}</p>
+                                        ))}
+                                </div>
+                            </article>
+                        </ContentWrapper>
+                    </SectionContainer>
+                )}
 
                 {/* Posts List */}
                 <InfinitePostList
@@ -151,6 +207,40 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                     categorySlug={slug}
                     showHeader={false}
                 />
+
+                {/* FAQs Section */}
+                {categoryDescription?.faqs &&
+                    categoryDescription.faqs.length > 0 && (
+                        <FAQComponent
+                            faqs={categoryDescription.faqs}
+                            title={`Frequently Asked Questions About ${category.name}`}
+                            variant='muted'
+                            includeSchema={false} // Schema is already added above
+                        />
+                    )}
+
+                {/* Related Categories Section */}
+                {relatedCategories.length > 0 && (
+                    <SectionContainer variant='default' className='py-16'>
+                        <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
+                            <h2 className='mb-8 font-serif text-2xl text-stone-900 md:text-3xl'>
+                                Related Topics
+                            </h2>
+                            <div className='flex flex-wrap gap-4'>
+                                {relatedCategories.map((relatedCat) => (
+                                    <Link
+                                        key={relatedCat.id}
+                                        href={`/blog/categories/${relatedCat.slug}`}
+                                        className='group hover:border-gold-400 hover:text-gold-600 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-5 py-2.5 text-sm font-medium text-stone-700 transition-all'
+                                    >
+                                        {relatedCat.name}
+                                        <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-1' />
+                                    </Link>
+                                ))}
+                            </div>
+                        </ContentWrapper>
+                    </SectionContainer>
+                )}
             </main>
         </>
     )

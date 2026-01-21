@@ -65,7 +65,7 @@ If no staged files, compare current branch against master.
 
 **Dynamic Pages (Skip These)**:
 
-- Blog posts: `apps/web/app/blog/[slug]/page.tsx` and related
+- Blog posts: `apps/web/app/[slug]/page.tsx` (for blog posts at root level)
 - Gallery: `apps/web/app/gallery/[slug]/page.tsx` and `apps/web/app/gallery/media/[slug]/page.tsx`
 - Promotions: `apps/web/app/promotions/[slug]/page.tsx`
 - Procedures: `apps/web/app/procedures/[slug]/page.tsx`
@@ -227,7 +227,7 @@ Detection mode: Staged files
 Found 3 changed file(s)
 
 Skipped files (use database timestamps):
-  • apps/web/app/blog/[slug]/page.tsx
+  • apps/web/app/[slug]/page.tsx (blog posts at root level)
   • apps/web/app/gallery/[slug]/page.tsx
   • apps/web/app/promotions/[slug]/page.tsx
 
@@ -257,7 +257,7 @@ Detected changes:
   • apps/web/app/about/page.tsx → /about
 
 Skipped files (use database timestamps):
-  • apps/web/app/blog/[slug]/page.tsx
+  • apps/web/app/[slug]/page.tsx (blog posts at root level)
 
 ✅ Updated page-metadata.ts:
   • /about: 2025-12-15 → 2025-12-16

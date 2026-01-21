@@ -77,7 +77,7 @@ export async function GET(): Promise<NextResponse> {
                 priority: 0.7,
             }
 
-            // Add featured image if available
+            // Add featured image if available (with caption for better image SEO)
             if (post.featuredImageUrl) {
                 entry.images = [
                     {

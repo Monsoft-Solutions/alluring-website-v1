@@ -167,11 +167,14 @@ export function FAQComponent({
                         className='mb-12'
                     />
 
-                    {/* FAQ Accordion */}
-                    <div className='space-y-4'>
+                    {/* FAQ Accordion with semantic microdata */}
+                    <div className='space-y-4' role='list'>
                         {faqs.map((faq, index) => (
-                            <div
+                            <article
                                 key={index}
+                                role='listitem'
+                                itemScope
+                                itemType='https://schema.org/Question'
                                 className={`group border border-stone-200 bg-white transition-all duration-300 ${
                                     openIndex === index
                                         ? 'border-gold-400 shadow-lg'
@@ -182,9 +185,12 @@ export function FAQComponent({
                                     onClick={() =>
                                         handleToggle(index, faq.question)
                                     }
-                                    className='flex w-full items-center justify-between p-6 text-left focus:outline-none md:p-8'
+                                    aria-expanded={openIndex === index}
+                                    aria-controls={`faq-answer-${index}`}
+                                    className='focus-visible:ring-gold-500 flex w-full items-center justify-between p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:p-8'
                                 >
                                     <span
+                                        itemProp='name'
                                         className={`font-serif text-xl transition-colors duration-300 ${
                                             openIndex === index
                                                 ? 'text-stone-900'
@@ -225,16 +231,23 @@ export function FAQComponent({
                                                 ease: 'easeInOut',
                                             }}
                                             className='overflow-hidden'
+                                            id={`faq-answer-${index}`}
+                                            itemScope
+                                            itemType='https://schema.org/Answer'
+                                            itemProp='acceptedAnswer'
                                         >
                                             <div className='px-6 pt-0 pb-8 md:px-8'>
-                                                <p className='border-t border-stone-100 pt-6 text-lg leading-relaxed text-stone-500'>
+                                                <p
+                                                    itemProp='text'
+                                                    className='border-t border-stone-100 pt-6 text-lg leading-relaxed text-stone-500'
+                                                >
                                                     {faq.answer}
                                                 </p>
                                             </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
-                            </div>
+                            </article>
                         ))}
                     </div>
 

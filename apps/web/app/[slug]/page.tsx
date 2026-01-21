@@ -15,10 +15,12 @@ import { env } from '@/env'
 
 // Blog imports
 import { BlogPostContent } from '@/components/blog/blog-post-content.component'
+import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
 
@@ -138,6 +140,8 @@ function generateSurgeonMetadata(
 function generateBlogPostMetadata(
     post: NonNullable<Awaited<ReturnType<typeof getPublishedPostBySlug>>>
 ): Metadata {
+    const primaryCategory = post.categories[0]
+
     return toNextMetadata(seoConfig, {
         title: post.title,
         description: post.excerpt ?? undefined,
@@ -151,6 +155,13 @@ function generateBlogPostMetadata(
                       },
                   ]
                 : undefined,
+            // Enhanced OG article fields for better SEO
+            publishedTime: post.publishedAt ?? undefined,
+            modifiedTime: post.updatedAt ?? post.publishedAt ?? undefined,
+            authors: post.author?.name ? [post.author.name] : undefined,
+            section: primaryCategory?.name,
+            tags:
+                post.tags.length > 0 ? post.tags.map((t) => t.name) : undefined,
         },
         // Root-level canonical URL to match WordPress structure
         canonical: `/${post.slug}`,
@@ -173,26 +184,36 @@ export default async function DynamicPage({ params }: PageProps) {
     // Check blog posts (database query)
     const post = await getCachedPostBySlug(slug)
     if (post) {
-        // Fetch related data for blog post
+        // Fetch related data for blog post (6 posts for better discovery)
         const tableOfContents = extractTableOfContents(post.content)
-        const relatedPosts = await getRelatedPosts(
-            post.id,
-            post.categories.map((c) => c.id),
-            post.tags.map((t) => t.id),
-            3
-        )
+        const [relatedPosts, adjacentPosts] = await Promise.all([
+            getRelatedPosts(
+                post.id,
+                post.categories.map((c) => c.id),
+                post.tags.map((t) => t.id),
+                6
+            ),
+            post.publishedAt
+                ? getAdjacentPosts(post.id, post.publishedAt)
+                : Promise.resolve({ previousPost: null, nextPost: null }),
+        ])
         const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
             post.content
         )
+
+        // Get related procedures for cross-linking (SEO benefit)
+        const relatedProcedures = getRelatedProcedures(post, 3)
 
         return (
             <BlogPostContent
                 post={post}
                 relatedPosts={relatedPosts}
+                relatedProcedures={relatedProcedures}
                 tableOfContents={tableOfContents}
                 beforeCTA={beforeCTA}
                 afterCTA={afterCTA}
                 ctaId={ctaId ?? null}
+                adjacentPosts={adjacentPosts}
             />
         )
     }

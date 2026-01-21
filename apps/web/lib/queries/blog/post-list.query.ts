@@ -10,7 +10,7 @@ import {
     blogTag,
     images,
 } from '@workspace/db/schema/blog'
-import { and, desc, eq, isNotNull, lt, or } from 'drizzle-orm'
+import { and, desc, eq, isNotNull, lt, ne, or } from 'drizzle-orm'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 
 import type { BlogPostCard } from '@/types/blog/post-card.type'
@@ -26,6 +26,7 @@ async function fetchPublishedPostCardsPage(options?: {
     cursor?: { publishedAt: Date; id: string } | null
     categorySlug?: string | null
     tagSlug?: string | null
+    excludeSlug?: string | null
 }): Promise<{
     items: BlogPostCard[]
     nextCursor?: { publishedAt: Date; id: string }
@@ -38,6 +39,7 @@ async function fetchPublishedPostCardsPage(options?: {
     const cursor = options?.cursor
     const categorySlug = options?.categorySlug ?? null
     const tagSlug = options?.tagSlug ?? null
+    const excludeSlug = options?.excludeSlug ?? null
     const whereExpr = cursor
         ? and(
               eq(blogPost.status, 'published'),
@@ -97,7 +99,8 @@ async function fetchPublishedPostCardsPage(options?: {
             and(
                 whereExpr,
                 categorySlug ? eq(blogCategory.slug, categorySlug) : undefined,
-                tagSlug ? eq(blogTag.slug, tagSlug) : undefined
+                tagSlug ? eq(blogTag.slug, tagSlug) : undefined,
+                excludeSlug ? ne(blogPost.slug, excludeSlug) : undefined
             )
         )
         .orderBy(desc(blogPost.publishedAt), desc(blogPost.id))
@@ -153,6 +156,7 @@ export async function getPublishedPostCardsPage(options?: {
     cursor?: { publishedAt: Date; id: string } | null
     categorySlug?: string | null
     tagSlug?: string | null
+    excludeSlug?: string | null
 }): Promise<{
     items: BlogPostCard[]
     nextCursor?: { publishedAt: Date; id: string }
@@ -161,13 +165,21 @@ export async function getPublishedPostCardsPage(options?: {
     const limit = options?.limit ?? PAGE_SIZE_DEFAULT
     const categorySlug = options?.categorySlug ?? 'all'
     const tagSlug = options?.tagSlug ?? 'all'
+    const excludeSlug = options?.excludeSlug ?? 'none'
     const cursorKey = options?.cursor
         ? `${options.cursor.publishedAt.toISOString()}-${options.cursor.id}`
         : 'initial'
 
     const result = await unstable_cache(
         () => fetchPublishedPostCardsPage(options),
-        ['blog-posts-list', String(limit), categorySlug, tagSlug, cursorKey],
+        [
+            'blog-posts-list',
+            String(limit),
+            categorySlug,
+            tagSlug,
+            excludeSlug,
+            cursorKey,
+        ],
         {
             tags: [CACHE_TAGS.BLOG_POSTS],
             revalidate: 60, // Cache for 60 seconds

@@ -3,12 +3,16 @@ import { notFound } from 'next/navigation'
 import {
     BreadcrumbSchema,
     FAQSchema,
+    MedicalProcedureSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
+import { LastUpdated } from '@/components/shared/last-updated.component'
+import { QuickAnswer } from '@/components/shared/quick-answer.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
@@ -22,6 +26,21 @@ import { ProcedureIntro } from '@/components/procedures/procedure-intro.componen
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import { env } from '@/env'
+
+/**
+ * Maps procedure slugs to their corresponding blog category slugs
+ * Procedures without a matching category will show general blog posts
+ */
+const procedureToBlogCategory: Record<string, string> = {
+    'breast-augmentation-miami': 'breast-augmentation',
+    'breast-lift-miami': 'breast-augmentation', // Related breast content
+    'breast-reduction-miami': 'breast-reduction',
+    'liposuction-miami': 'liposuction',
+    'brazilian-butt-lift-bbl-miami': 'bbl',
+    'tummy-tuck-miami': 'tummy-tuck',
+    'mommy-makeover-miami': 'mommy-makeover',
+    // facelift-miami and blepharoplasty-miami have no matching category
+}
 
 interface ProcedurePageProps {
     params: Promise<{
@@ -153,11 +172,17 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
 
     return (
         <>
-            {/* Structured Data - WebPage Schema */}
+            {/* Structured Data - WebPage Schema with freshness signals */}
             <WebPageSchema
                 name={procedure.title}
                 url={pageUrl}
                 description={procedure.description}
+                dateModified={
+                    procedure.dateModified || new Date().toISOString()
+                }
+                speakable={{
+                    cssSelector: ['h1', '.procedure-intro', '.quick-answer'],
+                }}
             />
 
             {/* Structured Data - Breadcrumb Schema */}
@@ -167,6 +192,45 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
             {faqSchemaItems && faqSchemaItems.length > 0 && (
                 <FAQSchema items={faqSchemaItems} />
             )}
+
+            {/* Structured Data - MedicalProcedure Schema */}
+            <MedicalProcedureSchema
+                name={procedure.title}
+                description={procedure.description}
+                url={pageUrl}
+                mainEntityOfPage={pageUrl}
+                image={
+                    procedure.image
+                        ? `${siteUrl}${procedure.image}`
+                        : `${siteUrl}/og-image.jpg`
+                }
+                bodyLocation={
+                    procedure.category === 'face'
+                        ? 'face'
+                        : procedure.category === 'breast'
+                          ? 'breast'
+                          : procedure.category === 'body'
+                            ? 'abdomen'
+                            : undefined
+                }
+                howPerformed={
+                    procedure.process
+                        ? procedure.process
+                              .map(
+                                  (step) => `${step.title}: ${step.description}`
+                              )
+                              .join('. ')
+                        : undefined
+                }
+                followup={
+                    procedure.quickStats?.recovery
+                        ? `Recovery time: ${procedure.quickStats.recovery}`
+                        : undefined
+                }
+                procedureType='Surgical'
+                dateModified={procedure.dateModified ?? undefined}
+                datePublished={procedure.datePublished ?? undefined}
+            />
 
             {/* Hero Section */}
             <ProcedureDetailHero
@@ -187,6 +251,38 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     procedure.shortDescription || procedure.description
                 }
             />
+
+            {/* Quick Answer - AI Citation Optimized */}
+            {procedure.quickAnswer && (
+                <section className='bg-stone-50 py-16 lg:py-20'>
+                    <ContainerLayout>
+                        <div className='mx-auto max-w-2xl'>
+                            <QuickAnswer
+                                question={procedure.quickAnswer.question}
+                                answer={procedure.quickAnswer.answer}
+                                details={procedure.quickAnswer.details}
+                                headingLevel='h2'
+                                variant='featured'
+                            />
+                        </div>
+                    </ContainerLayout>
+                </section>
+            )}
+
+            {/* Freshness Signal */}
+            <div className='bg-stone-50 py-4'>
+                <ContainerLayout>
+                    <div className='flex justify-center'>
+                        <LastUpdated
+                            date={
+                                procedure.dateModified ||
+                                new Date().toISOString()
+                            }
+                            variant='badge'
+                        />
+                    </div>
+                </ContainerLayout>
+            </div>
 
             {/* Benefits Section */}
             {procedure.benefits && (
@@ -250,6 +346,17 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     includeSchema={false}
                 />
             )}
+
+            {/* Blog Posts Section */}
+            <BlogPostsSection
+                categorySlug={procedureToBlogCategory[params.slug]}
+                title={`${procedure.title} Insights`}
+                description={`Expert advice, recovery tips, and patient stories about ${procedure.title.toLowerCase()}`}
+                badge='From Our Blog'
+                variant='default'
+                limit={6}
+                columns={3}
+            />
 
             {/* Related Procedures Section */}
             {relatedProcedures.length > 0 && (
