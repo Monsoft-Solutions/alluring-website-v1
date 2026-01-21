@@ -15,6 +15,7 @@ import { env } from '@/env'
 
 // Blog imports
 import { BlogPostContent } from '@/components/blog/blog-post-content.component'
+import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -175,12 +176,17 @@ export default async function DynamicPage({ params }: PageProps) {
     if (post) {
         // Fetch related data for blog post (6 posts for better discovery)
         const tableOfContents = extractTableOfContents(post.content)
-        const relatedPosts = await getRelatedPosts(
-            post.id,
-            post.categories.map((c) => c.id),
-            post.tags.map((t) => t.id),
-            6
-        )
+        const [relatedPosts, adjacentPosts] = await Promise.all([
+            getRelatedPosts(
+                post.id,
+                post.categories.map((c) => c.id),
+                post.tags.map((t) => t.id),
+                6
+            ),
+            post.publishedAt
+                ? getAdjacentPosts(post.id, post.publishedAt)
+                : Promise.resolve({ previousPost: null, nextPost: null }),
+        ])
         const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
             post.content
         )
@@ -193,6 +199,7 @@ export default async function DynamicPage({ params }: PageProps) {
                 beforeCTA={beforeCTA}
                 afterCTA={afterCTA}
                 ctaId={ctaId ?? null}
+                adjacentPosts={adjacentPosts}
             />
         )
     }
