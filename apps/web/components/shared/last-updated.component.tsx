@@ -29,6 +29,13 @@ export type LastUpdatedProps = {
 }
 
 /**
+ * Check if a date is valid
+ */
+function isValidDate(date: Date): boolean {
+    return !isNaN(date.getTime())
+}
+
+/**
  * Format a date to a human-readable string
  */
 function formatDate(date: Date): string {
@@ -87,6 +94,11 @@ export function LastUpdated({
               ? new Date(date)
               : date
 
+    // Validate date before using it to avoid SSR errors
+    if (!isValidDate(dateObj)) {
+        return null
+    }
+
     // Get ISO string for machine-readable dateTime attribute
     const isoString = dateObj.toISOString()
 
@@ -140,8 +152,18 @@ export function PublishedAndUpdated({
               : updatedDate
         : null
 
+    // Validate published date - it's required
+    if (!isValidDate(publishedObj)) {
+        return null
+    }
+
+    // Validate updated date if provided
+    const hasValidUpdatedDate = updatedObj && isValidDate(updatedObj)
+
     const publishedIso = publishedObj.toISOString()
-    const updatedIso = updatedObj?.toISOString()
+    const updatedIso = hasValidUpdatedDate
+        ? updatedObj.toISOString()
+        : undefined
 
     return (
         <div className={cn('flex flex-wrap gap-x-4 gap-y-1', className)}>
@@ -153,7 +175,7 @@ export function PublishedAndUpdated({
                 Published:{' '}
                 <time dateTime={publishedIso}>{formatDate(publishedObj)}</time>
             </p>
-            {updatedObj && (
+            {hasValidUpdatedDate && (
                 <p
                     className={variantStyles[variant]}
                     itemProp='dateModified'

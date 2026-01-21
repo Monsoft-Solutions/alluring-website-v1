@@ -64,6 +64,7 @@ export function QuickAnswer({
     variant = 'featured',
 }: QuickAnswerProps) {
     const Heading = headingLevel
+    const headingId = id ? `${id}-heading` : undefined
 
     if (variant === 'featured') {
         return (
@@ -72,6 +73,8 @@ export function QuickAnswer({
                 className={cn('quick-answer', className)}
                 itemScope
                 itemType='https://schema.org/Question'
+                aria-labelledby={headingId}
+                aria-label={headingId ? undefined : question}
             >
                 {/* Gold accent line */}
                 <div className='mb-6 flex items-center gap-3'>
@@ -83,6 +86,7 @@ export function QuickAnswer({
 
                 {/* Question */}
                 <Heading
+                    id={headingId}
                     itemProp='name'
                     className='mb-5 font-serif text-2xl text-stone-900 md:text-3xl'
                 >
@@ -157,9 +161,12 @@ export function QuickAnswer({
             className={cn('quick-answer group', className)}
             itemScope
             itemType='https://schema.org/Question'
+            aria-labelledby={headingId}
+            aria-label={headingId ? undefined : question}
         >
             {/* Question */}
             <Heading
+                id={headingId}
                 itemProp='name'
                 className='mb-3 font-serif text-xl text-stone-900'
             >
