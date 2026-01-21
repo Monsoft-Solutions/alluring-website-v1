@@ -27,6 +27,7 @@ export type BlogPostSitemapEntry = {
     publishedAt: Date
     featuredImageUrl: string | null
     featuredImageTitle: string | null
+    featuredImageAlt: string | null
 }
 
 /**
@@ -58,6 +59,7 @@ export const getPublishedPostSlugs = cache(
                 publishedAt: blogPost.publishedAt,
                 featuredImageUrl: images.url,
                 featuredImageTitle: images.title,
+                featuredImageAlt: images.alt,
             })
             .from(blogPost)
             .leftJoin(images, eq(images.id, blogPost.featuredImageId))
@@ -78,6 +80,7 @@ export const getPublishedPostSlugs = cache(
                 publishedAt: r.publishedAt!,
                 featuredImageUrl: r.featuredImageUrl,
                 featuredImageTitle: r.featuredImageTitle,
+                featuredImageAlt: r.featuredImageAlt,
             }))
     }
 )

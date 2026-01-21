@@ -48,6 +48,10 @@ export async function generateMetadata({
     const post = await getCachedPostBySlug(slug)
     if (!post) return { title: 'Post not found' }
 
+    // Extract primary category and tags for OG metadata
+    const primaryCategory = post.categories[0]
+    const tagNames = post.tags.map((t) => t.name)
+
     return toNextMetadata(seoConfig, {
         title: post.title,
         description: post.excerpt ?? undefined,
@@ -61,6 +65,11 @@ export async function generateMetadata({
                       },
                   ]
                 : undefined,
+            publishedTime: post.publishedAt ?? undefined,
+            modifiedTime: post.updatedAt ?? post.publishedAt ?? undefined,
+            authors: post.author?.name ? [post.author.name] : undefined,
+            section: primaryCategory?.name,
+            tags: tagNames.length > 0 ? tagNames : undefined,
         },
         canonical: `/blog/${post.slug}`,
     })
@@ -191,7 +200,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                                 datePublished={
                                     post.publishedAt ?? new Date().toISOString()
                                 }
-                                dateModified={post.publishedAt ?? undefined}
+                                dateModified={
+                                    post.updatedAt ??
+                                    post.publishedAt ??
+                                    undefined
+                                }
                                 image={post.featuredImage?.url}
                                 mainEntityOfPage={`${seoConfig.siteUrl}/blog/${post.slug}`}
                                 publisher={{
@@ -203,6 +216,18 @@ export default async function BlogPostPage({ params }: PageProps) {
                                         seoConfig.organization?.url ??
                                         seoConfig.siteUrl,
                                 }}
+                                // Enhanced SEO fields
+                                wordCount={
+                                    post.readingTime
+                                        ? Math.round(post.readingTime * 200)
+                                        : undefined
+                                }
+                                articleSection={primaryCategory?.name}
+                                keywords={
+                                    post.tags.length > 0
+                                        ? post.tags.map((t) => t.name)
+                                        : undefined
+                                }
                             />
 
                             <BreadcrumbSchema
@@ -223,6 +248,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                                         question: faq.question,
                                         answer: faq.answer,
                                     }))}
+                                    mainEntityOfPage={`${seoConfig.siteUrl}/blog/${post.slug}`}
                                 />
                             )}
 

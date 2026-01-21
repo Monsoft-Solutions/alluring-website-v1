@@ -13,6 +13,13 @@ export function buildFAQJsonLd(props: FAQSchemaProps): WithContext<FAQPage> {
     const faq: FAQPage = {
         '@type': 'FAQPage',
         mainEntity,
+        // Associate FAQ with the page for better Google indexing
+        ...(props.mainEntityOfPage && {
+            mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': props.mainEntityOfPage,
+            },
+        }),
     }
 
     return withContext(faq)

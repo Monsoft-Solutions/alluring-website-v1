@@ -16,4 +16,10 @@ export type ArticleSchemaProps = {
         logo?: string
         url?: string
     }
+    /** Estimated word count of the article content */
+    wordCount?: number
+    /** Primary category/section of the article */
+    articleSection?: string
+    /** Keywords/tags associated with the article */
+    keywords?: string[]
 }
