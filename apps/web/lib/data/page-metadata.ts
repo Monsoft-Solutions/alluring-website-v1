@@ -25,6 +25,7 @@ export const pageLastModified: Record<string, string> = {
     '/free-consultation': '2026-01-17',
     '/free-consultation/miami': '2026-01-17',
     '/fly-in-consultation': '2026-01-17',
+    '/consulta-gratis': '2026-01-21',
 
     // Gallery pages
     '/gallery': '2025-12-17',
