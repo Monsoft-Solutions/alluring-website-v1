@@ -94,8 +94,16 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default async function BlogPage() {
+type BlogPageProps = {
+    searchParams?: Promise<{ q?: string }>
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
     const pageSize = 12
+
+    // Extract search query from URL params
+    const params = await searchParams
+    const searchQuery = params?.q
 
     // Fetch initial posts, categories, popular posts, and search index in parallel
     const [postsResult, categories, popularPosts, searchIndex] =
@@ -170,7 +178,10 @@ export default async function BlogPage() {
                                 <CategoryPills categories={categories} />
                             </div>
                             <div className='shrink-0 self-start sm:self-center'>
-                                <BlogSearch searchIndex={searchIndex} />
+                                <BlogSearch
+                                    searchIndex={searchIndex}
+                                    initialQuery={searchQuery}
+                                />
                             </div>
                         </div>
                     </div>

@@ -22,6 +22,8 @@ import type { SearchIndexPost } from '@/lib/queries/blog/search-posts.query'
 
 type BlogSearchProps = {
     searchIndex: SearchIndexPost[]
+    /** Optional initial query to pre-populate and open the search modal */
+    initialQuery?: string
 }
 
 /**
@@ -72,9 +74,10 @@ function highlightMatch(text: string, query: string): string {
     return result
 }
 
-export function BlogSearch({ searchIndex }: BlogSearchProps) {
-    const [isOpen, setIsOpen] = useState(false)
-    const [query, setQuery] = useState('')
+export function BlogSearch({ searchIndex, initialQuery }: BlogSearchProps) {
+    // Initialize state based on whether we have an initial query
+    const [isOpen, setIsOpen] = useState(!!initialQuery)
+    const [query, setQuery] = useState(initialQuery ?? '')
     const [selectedIndex, setSelectedIndex] = useState(0)
     const inputRef = useRef<HTMLInputElement>(null)
     const resultsRef = useRef<HTMLDivElement>(null)
