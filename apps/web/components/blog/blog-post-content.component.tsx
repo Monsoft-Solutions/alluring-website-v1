@@ -13,7 +13,7 @@
  *
  * SSR-compatible with CSS animations.
  */
-import { ArticleSchema } from '@workspace/seo/react'
+import { ArticleSchema, FAQSchema } from '@workspace/seo/react'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -313,7 +313,9 @@ export function BlogPostContent({
                                     seoConfig.siteName
                                 }
                                 datePublished={post.publishedAt}
-                                dateModified={post.updatedAt ?? undefined}
+                                dateModified={
+                                    post.updatedAt ?? post.publishedAt
+                                }
                                 image={post.featuredImage?.url}
                                 mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
                                 publisher={{
@@ -325,7 +327,29 @@ export function BlogPostContent({
                                         seoConfig.organization?.url ??
                                         seoConfig.siteUrl,
                                 }}
+                                wordCount={
+                                    post.readingTime
+                                        ? Math.round(post.readingTime * 200)
+                                        : undefined
+                                }
+                                articleSection={primaryCategory?.name}
+                                keywords={
+                                    post.tags.length > 0
+                                        ? post.tags.map((t) => t.name)
+                                        : undefined
+                                }
                             />
+
+                            {/* FAQ Schema for blog posts with FAQs */}
+                            {post.faqs && post.faqs.length > 0 && (
+                                <FAQSchema
+                                    items={post.faqs.map((faq) => ({
+                                        question: faq.question,
+                                        answer: faq.answer,
+                                    }))}
+                                    mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
+                                />
+                            )}
 
                             {/* Topics/Tags section */}
                             {(post.categories.length > 0 ||

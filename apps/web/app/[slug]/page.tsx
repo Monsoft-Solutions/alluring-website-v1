@@ -139,6 +139,8 @@ function generateSurgeonMetadata(
 function generateBlogPostMetadata(
     post: NonNullable<Awaited<ReturnType<typeof getPublishedPostBySlug>>>
 ): Metadata {
+    const primaryCategory = post.categories[0]
+
     return toNextMetadata(seoConfig, {
         title: post.title,
         description: post.excerpt ?? undefined,
@@ -152,6 +154,13 @@ function generateBlogPostMetadata(
                       },
                   ]
                 : undefined,
+            // Enhanced OG article fields for better SEO
+            publishedTime: post.publishedAt ?? undefined,
+            modifiedTime: post.updatedAt ?? post.publishedAt ?? undefined,
+            authors: post.author?.name ? [post.author.name] : undefined,
+            section: primaryCategory?.name,
+            tags:
+                post.tags.length > 0 ? post.tags.map((t) => t.name) : undefined,
         },
         // Root-level canonical URL to match WordPress structure
         canonical: `/${post.slug}`,
