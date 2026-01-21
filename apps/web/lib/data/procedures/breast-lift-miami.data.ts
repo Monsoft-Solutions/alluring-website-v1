@@ -81,6 +81,12 @@ export const breastLiftMiami: Procedure = {
                 'Most patients return to light work within 7-10 days. Final breast shape settles around 3 months as swelling subsides and scars fade.',
         },
     ],
+    quickAnswer: {
+        question: 'What is a breast lift?',
+        answer: 'A breast lift (mastopexy) is a surgical procedure that raises and reshapes sagging breasts by removing excess skin and tightening surrounding tissue for a more youthful contour.',
+        details:
+            'Unlike breast augmentation, a lift focuses on repositioning rather than adding volume. The nipple-areola complex is elevated to a more youthful position. Results are long-lasting, typically 10+ years with stable weight.',
+    },
     content: `## Breast Lift Miami: Restore Your Youthful Contour
 
 When gravity, pregnancy, weight fluctuations, or aging take their toll on your breast shape, a **breast lift** can restore the youthful, perky contour you deserve. In **Miami**, where confidence and self-expression are celebrated year-round, women are rediscovering their natural curves through **mastopexy**—a transformative **procedure** that repositions sagging breasts to a firmer, more lifted appearance. Whether you're looking to regain your pre-pregnancy silhouette or simply feel more comfortable in your favorite swimwear, a **breast lift** offers renewed confidence and a refreshed sense of self.

@@ -12,6 +12,7 @@ import { BlogPostsSection } from '@/components/shared/blog-posts-section.compone
 import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import { LastUpdated } from '@/components/shared/last-updated.component'
+import { QuickAnswer } from '@/components/shared/quick-answer.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
@@ -249,8 +250,25 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 }
             />
 
+            {/* Quick Answer - AI Citation Optimized */}
+            {procedure.quickAnswer && (
+                <section className='bg-stone-50 py-16 lg:py-20'>
+                    <ContainerLayout>
+                        <div className='mx-auto max-w-2xl'>
+                            <QuickAnswer
+                                question={procedure.quickAnswer.question}
+                                answer={procedure.quickAnswer.answer}
+                                details={procedure.quickAnswer.details}
+                                headingLevel='h2'
+                                variant='featured'
+                            />
+                        </div>
+                    </ContainerLayout>
+                </section>
+            )}
+
             {/* Freshness Signal */}
-            <div className='bg-white py-2'>
+            <div className='bg-stone-50 py-4'>
                 <ContainerLayout>
                     <div className='flex justify-center'>
                         <LastUpdated

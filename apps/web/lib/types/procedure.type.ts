@@ -23,6 +23,12 @@ export interface ProcedureStats {
     inpatientOutpatient?: string
 }
 
+export interface ProcedureQuickAnswer {
+    question: string
+    answer: string
+    details?: string
+}
+
 export interface Procedure {
     title: string
     slug: string
@@ -39,6 +45,7 @@ export interface Procedure {
     quickStats?: ProcedureStats
     benefits?: ProcedureBenefit[]
     process?: ProcedureStep[]
+    quickAnswer?: ProcedureQuickAnswer
 
     // Freshness signals for SEO/LLM optimization
     /** ISO date string when the content was last modified */

@@ -83,6 +83,12 @@ export const faceliftMiami: Procedure = {
                 'Most patients return to normal activities within 2-3 weeks. Final results become visible over 3-6 months as swelling fully subsides.',
         },
     ],
+    quickAnswer: {
+        question: 'What is a facelift?',
+        answer: 'A facelift (rhytidectomy) is a surgical procedure that addresses sagging skin, deep wrinkles, and jowls in the lower face and neck by tightening underlying muscles and removing excess skin.',
+        details:
+            'Modern techniques focus on natural-looking results that restore youthful contours without an overdone appearance. Results typically last 10-15 years. Recovery takes 2-3 weeks before returning to normal activities.',
+    },
     content: `## Facelift Miami: Restore Your Youthful Appearance with Confidence
 
 Time leaves its mark on all of us. Wrinkles deepen, skin loses elasticity, and the mirror reflects a version of yourself that doesn't match how vibrant you feel inside. If you've noticed sagging jowls, deep creases around your mouth, or a neck that no longer looks as defined as it once did, you're not alone—and you don't have to accept these changes as permanent.

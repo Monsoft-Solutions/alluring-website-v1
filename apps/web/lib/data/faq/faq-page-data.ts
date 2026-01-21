@@ -184,6 +184,48 @@ export const faqPageData: Record<string, FaqItem[]> = {
 }
 
 /**
+ * Featured FAQs for AI citation optimization
+ * These are the most important/searched questions displayed prominently
+ * using the QuickAnswerList component for LLM-friendly extraction.
+ */
+export const featuredFaqs: Array<{
+    question: string
+    answer: string
+    details?: string
+}> = [
+    {
+        question: 'How do I schedule a consultation?',
+        answer: 'Schedule a free consultation by calling our office or filling out the online form. We offer both in-person and virtual consultations.',
+        details:
+            "During your consultation, you'll meet with a board-certified surgeon who will discuss your goals, examine you, and create a personalized treatment plan.",
+    },
+    {
+        question: 'What financing options are available?',
+        answer: 'We offer flexible financing through Cherry, CareCredit, and United Credit with plans starting as low as $99/month and 0% APR options.',
+        details:
+            'Apply online or in-office for instant approval. Our patient coordinators can help you find the best plan for your budget.',
+    },
+    {
+        question: 'Are your surgeons board-certified?',
+        answer: 'Yes, our surgeons are double board-certified by both the American Board of Plastic Surgery and the American Board of Surgery.',
+        details:
+            'This dual certification demonstrates the highest level of training and expertise in plastic surgery.',
+    },
+    {
+        question: 'What is the recovery time for plastic surgery?',
+        answer: 'Recovery varies by procedure: 1-2 weeks for breast augmentation, 2-3 weeks for BBL, and 2-4 weeks for tummy tuck before returning to normal activities.',
+        details:
+            'Our team provides detailed post-operative instructions and 24/7 support during your recovery.',
+    },
+    {
+        question: 'Do you offer surgery for out-of-town patients?',
+        answer: 'Yes, we welcome medical tourists from across the US, Latin America, and the Caribbean with virtual consultations and recovery concierge services.',
+        details:
+            'We can recommend nearby hotels and recovery houses, and coordinate your entire surgical journey.',
+    },
+]
+
+/**
  * FAQ page section configuration
  */
 export const faqPageConfig = {
