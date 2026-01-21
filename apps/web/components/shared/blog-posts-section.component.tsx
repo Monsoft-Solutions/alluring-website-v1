@@ -36,6 +36,11 @@ type BlogPostsSectionProps = {
     categorySlug?: string
 
     /**
+     * Exclude a post by slug (useful to exclude current post in "More from This Category")
+     */
+    excludeSlug?: string
+
+    /**
      * Number of posts to display (3-6)
      * @default 3
      */
@@ -100,6 +105,7 @@ type BlogPostsSectionProps = {
 
 export async function BlogPostsSection({
     categorySlug,
+    excludeSlug,
     limit = 3,
     title = 'From Our Blog',
     description,
@@ -112,10 +118,11 @@ export async function BlogPostsSection({
     className,
     id,
 }: BlogPostsSectionProps) {
-    // Fetch posts, optionally filtered by category
+    // Fetch posts, optionally filtered by category and excluding a specific post
     const { items: posts } = await getPublishedPostCardsPage({
         limit,
         categorySlug: categorySlug ?? null,
+        excludeSlug: excludeSlug ?? null,
     })
 
     // Return null if no posts found

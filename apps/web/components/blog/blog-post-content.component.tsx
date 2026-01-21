@@ -532,6 +532,7 @@ export function BlogPostContent({
             {primaryCategory && (
                 <BlogPostsSection
                     categorySlug={primaryCategory.slug}
+                    excludeSlug={post.slug}
                     title={`More ${primaryCategory.name} Articles`}
                     description={`Continue exploring our ${primaryCategory.name.toLowerCase()} resources`}
                     badge='Keep Reading'
