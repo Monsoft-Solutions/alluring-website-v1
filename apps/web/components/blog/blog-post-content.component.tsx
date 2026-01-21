@@ -6,6 +6,10 @@
  * - Glassmorphism content card on desktop
  * - Engaging visual hierarchy
  * - Sticky sidebar with TOC and CTAs
+ * - Reading progress bar
+ * - Social sharing buttons
+ * - Breadcrumbs navigation
+ * - "More from This Category" section
  *
  * SSR-compatible with CSS animations.
  */
@@ -19,9 +23,14 @@ import { Button } from '@workspace/ui/components/button'
 import { BlogCTA } from '@/components/blog/blog-cta.component'
 import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
+import { PostNavigation } from '@/components/blog/post-navigation.component'
+import { ReadingProgress } from '@/components/blog/reading-progress.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
+import { SocialShare } from '@/components/blog/social-share.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { seoConfig } from '@/lib/seo-config'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
@@ -34,6 +43,7 @@ type BlogPostContentProps = {
     beforeCTA: string
     afterCTA: string | null
     ctaId: string | null
+    adjacentPosts: AdjacentPosts
 }
 
 /**
@@ -48,6 +58,7 @@ export function BlogPostContent({
     beforeCTA,
     afterCTA,
     ctaId,
+    adjacentPosts,
 }: BlogPostContentProps) {
     // Guard: publishedAt is required for published posts
     if (!post.publishedAt) {
@@ -69,6 +80,17 @@ export function BlogPostContent({
 
     return (
         <article className='relative'>
+            {/* Reading progress bar */}
+            <ReadingProgress />
+
+            {/* Social sharing buttons */}
+            <SocialShare
+                title={post.title}
+                url={`/${post.slug}`}
+                description={post.excerpt ?? undefined}
+                imageUrl={post.featuredImage?.url}
+            />
+
             {/* Track blog post view */}
             <BlogViewTracker postId={post.id} />
 
@@ -343,6 +365,12 @@ export function BlogPostContent({
                                 />
                             </div>
 
+                            {/* Previous/Next Post Navigation */}
+                            <PostNavigation
+                                previousPost={adjacentPosts.previousPost}
+                                nextPost={adjacentPosts.nextPost}
+                            />
+
                             {/* Related Posts */}
                             <div className='mt-16'>
                                 <RelatedPosts posts={relatedPosts} />
@@ -459,6 +487,20 @@ export function BlogPostContent({
                     </div>
                 </ContentWrapper>
             </section>
+
+            {/* More from This Category Section */}
+            {primaryCategory && (
+                <BlogPostsSection
+                    categorySlug={primaryCategory.slug}
+                    title={`More ${primaryCategory.name} Articles`}
+                    description={`Continue exploring our ${primaryCategory.name.toLowerCase()} resources`}
+                    badge='Keep Reading'
+                    limit={3}
+                    variant='muted'
+                    viewAllText={`View all ${primaryCategory.name.toLowerCase()} articles`}
+                    viewAllHref={`/blog/categories/${primaryCategory.slug}`}
+                />
+            )}
         </article>
     )
 }

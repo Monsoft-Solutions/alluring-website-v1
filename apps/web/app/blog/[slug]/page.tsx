@@ -15,9 +15,13 @@ import { MobileTOC } from '@/components/blog/mobile-toc.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { PopularPosts } from '@/components/blog/popular-posts.component'
 import { PostNavigation } from '@/components/blog/post-navigation.component'
+import { ReadingProgress } from '@/components/blog/reading-progress.component'
 import { RelatedPosts } from '@/components/blog/related-posts.component'
 import { SidebarCategories } from '@/components/blog/sidebar-categories.component'
+import { SocialShare } from '@/components/blog/social-share.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
+import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
+import { Breadcrumbs } from '@/components/shared/breadcrumbs.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPopularPosts } from '@/lib/queries/blog/popular-posts.query'
@@ -69,13 +73,16 @@ export default async function BlogPostPage({ params }: PageProps) {
 
     const tableOfContents = extractTableOfContents(post.content)
 
-    // Fetch related posts based on categories and tags
+    // Fetch related posts based on categories and tags (6 posts for better discovery)
     const relatedPosts = await getRelatedPosts(
         post.id,
         post.categories.map((c) => c.id),
         post.tags.map((t) => t.id),
-        3
+        6
     )
+
+    // Get primary category for "More from this Category" section
+    const primaryCategory = post.categories[0] ?? null
 
     // Fetch adjacent posts, popular posts, and categories in parallel
     const [adjacentPosts, popularPosts, allCategories] = await Promise.all([
@@ -91,8 +98,45 @@ export default async function BlogPostPage({ params }: PageProps) {
 
     return (
         <article>
+            {/* Reading progress bar */}
+            <ReadingProgress />
+
+            {/* Social sharing buttons */}
+            <SocialShare
+                title={post.title}
+                url={`/blog/${post.slug}`}
+                description={post.excerpt ?? undefined}
+                imageUrl={post.featuredImage?.url}
+            />
+
             {/* Track blog post view */}
             <BlogViewTracker postId={post.id} />
+
+            {/* Breadcrumbs navigation */}
+            <div className='border-b border-stone-100 bg-stone-50/50'>
+                <ContentWrapper
+                    size='lg'
+                    paddingX='px-5 md:px-8 lg:px-12'
+                    className='py-3'
+                >
+                    <Breadcrumbs
+                        items={[
+                            { label: 'Home', href: '/' },
+                            { label: 'Blog', href: '/blog' },
+                            ...(primaryCategory
+                                ? [
+                                      {
+                                          label: primaryCategory.name,
+                                          href: `/blog/categories/${primaryCategory.slug}`,
+                                      },
+                                  ]
+                                : []),
+                            { label: post.title },
+                        ]}
+                        showBackground={false}
+                    />
+                </ContentWrapper>
+            </div>
 
             {/* Full-width cinematic hero */}
             <BlogPostHero
@@ -277,6 +321,20 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </div>
                 </ContentWrapper>
             </div>
+
+            {/* More from This Category Section */}
+            {primaryCategory && (
+                <BlogPostsSection
+                    categorySlug={primaryCategory.slug}
+                    title={`More ${primaryCategory.name} Articles`}
+                    description={`Continue exploring our ${primaryCategory.name.toLowerCase()} resources`}
+                    badge='Keep Reading'
+                    limit={3}
+                    variant='muted'
+                    viewAllText={`View all ${primaryCategory.name.toLowerCase()} articles`}
+                    viewAllHref={`/blog/categories/${primaryCategory.slug}`}
+                />
+            )}
         </article>
     )
 }

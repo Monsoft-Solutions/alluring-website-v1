@@ -173,13 +173,13 @@ export default async function DynamicPage({ params }: PageProps) {
     // Check blog posts (database query)
     const post = await getCachedPostBySlug(slug)
     if (post) {
-        // Fetch related data for blog post
+        // Fetch related data for blog post (6 posts for better discovery)
         const tableOfContents = extractTableOfContents(post.content)
         const relatedPosts = await getRelatedPosts(
             post.id,
             post.categories.map((c) => c.id),
             post.tags.map((t) => t.id),
-            3
+            6
         )
         const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
             post.content
