@@ -128,6 +128,44 @@ async function fetchPromotionBySlug(slug: string): Promise<Promotion | null> {
 }
 
 /**
+ * Internal: Fetch the highest priority active promotion for a specific procedure
+ *
+ * Matches promotions that either:
+ * 1. Are specifically linked to this procedure (procedureSlug matches)
+ * 2. Apply to all procedures (procedureSlug is NULL)
+ *
+ * If multiple promotions match, returns the one with highest priority.
+ */
+async function fetchActivePromotionByProcedure(
+    procedureSlug: string
+): Promise<Promotion | null> {
+    const now = new Date()
+
+    const [result] = await db
+        .select()
+        .from(promotion)
+        .where(
+            and(
+                eq(promotion.status, 'active'),
+                // Match specific procedure OR promotions that apply to all (NULL)
+                or(
+                    eq(promotion.procedureSlug, procedureSlug),
+                    sql`${promotion.procedureSlug} IS NULL`
+                ),
+                or(
+                    sql`${promotion.startsAt} IS NULL`,
+                    lte(promotion.startsAt, now)
+                ),
+                or(sql`${promotion.endsAt} IS NULL`, gte(promotion.endsAt, now))
+            )
+        )
+        .orderBy(desc(promotion.priority), desc(promotion.createdAt))
+        .limit(1)
+
+    return result ?? null
+}
+
+/**
  * Internal: Fetch the highest priority active promotion for modal display
  */
 async function fetchFeaturedPromotionForModal(): Promise<Promotion | null> {
@@ -231,6 +269,28 @@ export function getPromotionBySlug(slug: string): Promise<Promotion | null> {
         [`promotion-${slug}`],
         {
             tags: [CACHE_TAGS.PROMOTIONS, CACHE_TAGS.promotionBySlug(slug)],
+            revalidate: CACHE_TTL,
+        }
+    )()
+}
+
+/**
+ * Get the highest priority active promotion for a specific procedure.
+ * Used on procedure detail pages to show related promotional offers in structured data.
+ *
+ * Uses ISR caching with 'promotions' tag for on-demand revalidation.
+ *
+ * @param procedureSlug - The procedure slug to find promotions for
+ * @returns The promotion or null if no active promotion exists for this procedure
+ */
+export function getActivePromotionByProcedure(
+    procedureSlug: string
+): Promise<Promotion | null> {
+    return unstable_cache(
+        () => fetchActivePromotionByProcedure(procedureSlug),
+        [`promotion-procedure-${procedureSlug}`],
+        {
+            tags: [CACHE_TAGS.PROMOTIONS],
             revalidate: CACHE_TTL,
         }
     )()

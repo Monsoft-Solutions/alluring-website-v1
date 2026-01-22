@@ -4,6 +4,7 @@ import {
     BreadcrumbSchema,
     FAQSchema,
     MedicalProcedureSchema,
+    OfferSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -17,6 +18,10 @@ import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-befor
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
+import {
+    formatDiscount,
+    getActivePromotionByProcedure,
+} from '@/lib/queries/promotion.query'
 import { ProcedureDetailHero } from '@/components/procedures/procedure-detail-hero.component'
 import { ProcedureStats } from '@/components/procedures/procedure-stats.component'
 import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.component'
@@ -157,6 +162,9 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
         )
         .slice(0, 3)
 
+    // Fetch related promotion for this procedure (for structured data)
+    const relatedPromotion = await getActivePromotionByProcedure(params.slug)
+
     // Prepare FAQ items for schema (if FAQs exist)
     const faqSchemaItems = procedure.faqs?.map((faq) => ({
         question: faq.question,
@@ -231,6 +239,61 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 dateModified={procedure.dateModified ?? undefined}
                 datePublished={procedure.datePublished ?? undefined}
             />
+
+            {/* Structured Data - Offer Schema for related promotion */}
+            {relatedPromotion && (
+                <OfferSchema
+                    name={relatedPromotion.title}
+                    description={
+                        relatedPromotion.excerpt ?? relatedPromotion.description
+                    }
+                    url={`${siteUrl}/promotions/${relatedPromotion.slug}`}
+                    validFrom={
+                        relatedPromotion.startsAt
+                            ? new Date(relatedPromotion.startsAt).toISOString()
+                            : undefined
+                    }
+                    validThrough={
+                        relatedPromotion.endsAt
+                            ? new Date(relatedPromotion.endsAt).toISOString()
+                            : undefined
+                    }
+                    priceValidUntil={
+                        relatedPromotion.endsAt
+                            ? new Date(relatedPromotion.endsAt).toISOString()
+                            : undefined
+                    }
+                    availability='LimitedAvailability'
+                    category={relatedPromotion.type}
+                    image={relatedPromotion.imageUrl ?? undefined}
+                    discount={formatDiscount(relatedPromotion) ?? undefined}
+                    discountDescription={
+                        formatDiscount(relatedPromotion)
+                            ? `${formatDiscount(relatedPromotion)} - ${relatedPromotion.title}`
+                            : undefined
+                    }
+                    offeredBy={{
+                        type: 'LocalBusiness',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                        image: `${siteUrl}${siteConfig.brand.logo}`,
+                        telephone: siteConfig.contact.phone,
+                        priceRange: '$2500-$25000',
+                        address: {
+                            streetAddress: siteConfig.contact.address,
+                            addressLocality: siteConfig.contact.city ?? '',
+                            addressRegion: siteConfig.contact.state ?? '',
+                            postalCode: siteConfig.contact.postalCode ?? '',
+                            addressCountry: siteConfig.contact.country ?? '',
+                        },
+                    }}
+                    itemOffered={{
+                        type: 'MedicalProcedure',
+                        name: procedure.title,
+                        url: pageUrl,
+                    }}
+                />
+            )}
 
             {/* Hero Section */}
             <ProcedureDetailHero
