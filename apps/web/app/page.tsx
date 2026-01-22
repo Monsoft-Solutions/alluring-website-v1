@@ -22,6 +22,7 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
 import { getFeaturedPromotion } from '@/lib/queries/promotion.query'
+import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 import { env } from '@/env'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
@@ -89,6 +90,9 @@ export default async function Page() {
     // Fetch featured promotion for homepage section
     const featuredPromotion = await getFeaturedPromotion()
 
+    // Fetch Google reviews for aggregate rating schema
+    const { averageRating, totalCount } = await getPublishedGoogleReviews(1)
+
     // Flatten FAQ data for schema (combine all categories)
     const allFaqItems = Object.values(faqDataHome).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
@@ -140,6 +144,16 @@ export default async function Page() {
                     },
                 ]}
                 image={`${siteUrl}/og-image.jpg`}
+                {...(averageRating && totalCount > 0
+                    ? {
+                          aggregateRating: {
+                              ratingValue: averageRating,
+                              reviewCount: totalCount,
+                              bestRating: 5,
+                              worstRating: 1,
+                          },
+                      }
+                    : {})}
             />
 
             {/* Structured Data - FAQ Schema for rich snippets */}
