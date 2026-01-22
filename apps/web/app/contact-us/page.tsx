@@ -22,7 +22,6 @@ import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import {
     faqCategoriesContact,
@@ -150,10 +149,7 @@ export default async function ContactPage() {
                     formAnchor='#contact-form'
                 />
 
-                {/* Section 4: Testimonials - Social proof and emotional connection */}
-                <Testimonials id='testimonials' formAnchor='#contact-form' />
-
-                {/* Section 5: Google Reviews - Real Google reviews for trust */}
+                {/* Section 4: Google Reviews - Real Google reviews for trust */}
                 <GoogleReviews
                     title='Verified Google Reviews'
                     subtitle='Real feedback from real patients'

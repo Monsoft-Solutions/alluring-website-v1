@@ -29,7 +29,7 @@ import { BridalHero } from '@/components/landing/bridal-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -43,34 +43,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Bridal-specific testimonials
-const BRIDAL_TESTIMONIALS = [
-    {
-        id: 'bridal-testimonial-1',
-        quote: 'I wanted to feel confident in my strapless wedding dress. Dr. Karlinsky helped me plan the perfect timeline—my results settled beautifully and I felt like the best version of myself walking down the aisle.',
-        name: 'Michelle K.',
-        procedure: 'Breast Augmentation',
-        timeframe: 'Bride, March 2024',
-        rating: 5,
-    },
-    {
-        id: 'bridal-testimonial-2',
-        quote: "I couldn't get rid of my arm and back fat no matter how much I worked out. Five months before my wedding, I had liposuction at Alluring. My dress fit perfectly and every photo was gorgeous!",
-        name: 'Amanda T.',
-        procedure: 'Liposuction',
-        timeframe: 'Bride, October 2023',
-        rating: 5,
-    },
-    {
-        id: 'bridal-testimonial-3',
-        quote: 'The team helped me coordinate everything with my wedding timeline. They understood how important this day was to me and treated me like a VIP from consultation to my final follow-up.',
-        name: 'Jessica R.',
-        procedure: 'Rhinoplasty',
-        timeframe: 'Bride, June 2024',
-        rating: 5,
-    },
-]
 
 /**
  * Bridal Landing Page Metadata
@@ -154,11 +126,11 @@ export default async function BridalConsultationPage() {
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: Bridal Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={BRIDAL_TESTIMONIALS}
+                {/* Section 5: Google Reviews */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from patients who looked radiant on their special day'
+                    limit={6}
                 />
 
                 {/* Section 6: FAQ - Address timing, recovery, planning */}

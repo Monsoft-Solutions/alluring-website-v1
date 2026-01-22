@@ -34,7 +34,7 @@ import { TravelMiniCapture } from '@/components/landing/travel-mini-capture.comp
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -47,34 +47,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Travel-specific testimonials from out-of-state patients
-const TRAVEL_TESTIMONIALS = [
-    {
-        id: 'travel-testimonial-1',
-        quote: "Flying from New York felt so easy. Their team recommended a great recovery house and checked on me daily. I came back looking amazing and no one knew I'd had surgery—just that I looked incredible.",
-        name: 'Rachel K.',
-        procedure: 'Mommy Makeover',
-        timeframe: 'New York • 10 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'travel-testimonial-2',
-        quote: 'I was nervous about traveling for surgery, but the specialists answered all my questions during the virtual consultation. By the time I met my surgeon in Miami, I felt completely prepared. The whole experience was like a luxury retreat.',
-        name: 'Stephanie M.',
-        procedure: 'BBL',
-        timeframe: 'Atlanta • 8 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'travel-testimonial-3',
-        quote: 'Their team made planning so easy. They gave me great recommendations for recovery houses, compression garments, and even food delivery. I felt supported every step of the way. Worth every mile traveled.',
-        name: 'Amanda L.',
-        procedure: 'Breast Augmentation',
-        timeframe: 'Chicago • 1 year post-op',
-        rating: 5,
-    },
-]
 
 /**
  * Travel Landing Page Metadata
@@ -165,11 +137,11 @@ export default async function FlyInConsultationPage() {
                 {/* Section 6: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 7: Travel-Specific Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={TRAVEL_TESTIMONIALS}
+                {/* Section 7: Google Reviews */}
+                <GoogleReviews
+                    title='What Our Fly-In Patients Say'
+                    subtitle='Real reviews from patients who traveled to Miami for their transformation'
+                    limit={6}
                 />
 
                 {/* Section 8: Travel FAQ */}

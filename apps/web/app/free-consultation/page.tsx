@@ -28,7 +28,6 @@ import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
 import { Journey } from '@/components/home/journey.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
@@ -162,10 +161,7 @@ export default async function FreeConsultationPage() {
                 {/* Section 5: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 6: Testimonials - Social proof */}
-                <Testimonials id='testimonials' formAnchor='#hero-form' />
-
-                {/* Section 7: Google Reviews - Real Google reviews for trust */}
+                {/* Section 6: Google Reviews - Real Google reviews for trust */}
                 <GoogleReviews
                     title='What Patients Say on Google'
                     subtitle='Verified reviews from real patients'

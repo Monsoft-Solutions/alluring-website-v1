@@ -23,9 +23,9 @@ import {
 import { ContainerLayout } from '@/components/container-layout.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { Surgeons } from '@/components/home/surgeons.component'
 import { Procedures } from '@/components/home/procedures.component'
-import { Testimonials } from '@/components/home/testimonials.component'
 import {
     faqPageCategories,
     faqPageData,
@@ -142,8 +142,12 @@ export default function FAQPage() {
                 {/* Procedures Section - Explore Options */}
                 <Procedures />
 
-                {/* Testimonials Section - Social Proof */}
-                <Testimonials />
+                {/* Google Reviews Section - Social Proof */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from patients who trusted us with their care'
+                    limit={6}
+                />
 
                 {/* Final CTA Section */}
                 <CTASection
