@@ -9,6 +9,8 @@
  * - "cosmetic surgery deals"
  * - "promotional offers"
  */
+import type { Metadata } from 'next'
+
 import {
     FAQSchema,
     OfferCatalogSchema,
@@ -61,37 +63,54 @@ function getCurrentMonthYear(): string {
 const monthYear = getCurrentMonthYear()
 const pageTitle = `Miami Plastic Surgery Specials ${monthYear} | Limited Time Offers`
 
-export const metadata = toNextMetadata(seoConfig, {
-    canonical: '/miami-plastic-surgery-specials',
-    title: pageTitle,
-    description:
-        'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
+/**
+ * Generate dynamic metadata with featured promotion's OG image
+ */
+export async function generateMetadata(): Promise<Metadata> {
+    const promotions = await getActivePromotions(1)
+    const featuredPromotion = promotions[0]
 
-    openGraph: {
+    const ogImage = featuredPromotion?.imageUrl
+        ? {
+              url: featuredPromotion.imageUrl,
+              width: 1200,
+              height: 630,
+              alt:
+                  featuredPromotion.imageAlt ??
+                  `${featuredPromotion.title} - ${siteConfig.business.name}`,
+          }
+        : {
+              url: `${seoConfig.siteUrl}/og-image.jpg`,
+              width: 1200,
+              height: 630,
+              alt: `Plastic Surgery Specials - ${siteConfig.business.name} Miami`,
+          }
+
+    return toNextMetadata(seoConfig, {
+        canonical: '/miami-plastic-surgery-specials',
         title: pageTitle,
         description:
             'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
-        url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
-        type: 'website',
-        siteName: seoConfig.siteName,
-        images: [
-            {
-                url: `${seoConfig.siteUrl}/og-image.jpg`,
-                width: 1200,
-                height: 630,
-                alt: `Plastic Surgery Specials - ${siteConfig.business.name} Miami`,
-            },
-        ],
-    },
 
-    twitter: {
-        card: 'summary_large_image',
-        title: pageTitle,
-        description:
-            'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Board-certified surgeons. Offers end soon.',
-        images: [`${seoConfig.siteUrl}/og-image.jpg`],
-    },
-})
+        openGraph: {
+            title: pageTitle,
+            description:
+                'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
+            url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
+            type: 'website',
+            siteName: seoConfig.siteName,
+            images: [ogImage],
+        },
+
+        twitter: {
+            card: 'summary_large_image',
+            title: pageTitle,
+            description:
+                'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Board-certified surgeons. Offers end soon.',
+            images: [ogImage.url],
+        },
+    })
+}
 
 /**
  * Find the promotion with the nearest expiration date
