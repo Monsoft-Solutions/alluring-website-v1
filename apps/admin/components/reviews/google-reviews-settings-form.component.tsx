@@ -111,7 +111,7 @@ export function GoogleReviewsSettingsForm({
     // Load accounts when connected
     useEffect(() => {
         if (isConnected && accounts.length === 0) {
-            loadAccounts()
+            void loadAccounts()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isConnected])
@@ -119,7 +119,7 @@ export function GoogleReviewsSettingsForm({
     // Load locations when account changes
     useEffect(() => {
         if (selectedAccount && selectedAccount !== initialData?.accountId) {
-            loadLocations(selectedAccount)
+            void loadLocations(selectedAccount)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedAccount])

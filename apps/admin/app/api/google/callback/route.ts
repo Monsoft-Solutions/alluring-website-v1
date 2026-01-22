@@ -7,7 +7,7 @@
  * GET /api/google/callback?code=xxx&state=xxx
  */
 import { redirect } from 'next/navigation'
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { isAuthenticated } from '@/lib/utils/auth.util'
 import { handleOAuthCallback } from '@/lib/actions/google-reviews.action'
