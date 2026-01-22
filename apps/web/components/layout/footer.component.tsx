@@ -254,7 +254,21 @@ export const Footer = () => {
                                     Instagram
                                 </Link>
                             </li>
-                            <li className='text-stone-400'>Patient Reviews</li>
+                            <li className='text-stone-400'>
+                                <Link
+                                    href='/reviews'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'Patient Reviews',
+                                            '/reviews',
+                                            'patients'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    Patient Reviews
+                                </Link>
+                            </li>
                             <li>
                                 <Link
                                     href='/blog'
