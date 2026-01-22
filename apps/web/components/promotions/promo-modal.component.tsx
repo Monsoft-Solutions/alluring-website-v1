@@ -23,6 +23,7 @@ import {
     NameField,
     PhoneField,
 } from '@/components/shared/forms/form-fields.component'
+import { PromotionMarkdownClient } from '@/components/promotions/promotion-markdown.component'
 import {
     FORM_SUBMITTED_KEY,
     useContactFormSubmission,
@@ -225,9 +226,10 @@ export function PromoModal({ promotion }: PromoModalProps) {
 
                                 {/* Description */}
                                 {promotion.excerpt && (
-                                    <p className='mb-6 text-sm leading-relaxed text-stone-400'>
-                                        {promotion.excerpt}
-                                    </p>
+                                    <PromotionMarkdownClient
+                                        content={promotion.excerpt}
+                                        className='mb-6 text-sm leading-relaxed text-stone-400'
+                                    />
                                 )}
 
                                 {/* Countdown */}

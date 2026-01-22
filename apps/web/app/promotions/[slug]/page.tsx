@@ -15,6 +15,7 @@ import {
     isExpiringSoon,
 } from '@/lib/queries/promotion.query'
 import { PromotionViewTracker } from '@/components/promotions/promotion-view-tracker.component'
+import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
 import { siteConfig } from '@/lib/data/site-config'
 
 type Params = Promise<{ slug: string }>
@@ -162,11 +163,9 @@ export default async function PromotionDetailPage({
                         </div>
 
                         {/* Description */}
-                        <div
+                        <PromotionMarkdown
+                            content={promotion.description}
                             className='prose prose-stone prose-lg max-w-none'
-                            dangerouslySetInnerHTML={{
-                                __html: promotion.description,
-                            }}
                         />
                     </div>
 

@@ -173,20 +173,20 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     totalPromotions={promotions.length}
                 />
 
-                {/* Section 2: Fear Busters - Address objections immediately */}
-                <FearBusters id='fear-busters' formAnchor='#specials-form' />
-
-                {/* Section 3: Weekly Payments - Reinforce affordability */}
-                <WeeklyPayments
-                    id='weekly-payments'
-                    formAnchor='#specials-form'
-                />
-
-                {/* Section 4: Google Reviews - Social proof */}
+                {/* Section 2: Google Reviews - Immediate social proof */}
                 <GoogleReviews
                     title='What Our Patients Say'
                     subtitle='Real reviews from patients who trusted us with their transformation'
                     limit={6}
+                />
+
+                {/* Section 3: Fear Busters - Address objections */}
+                <FearBusters id='fear-busters' formAnchor='#specials-form' />
+
+                {/* Section 4: Weekly Payments - Reinforce affordability */}
+                <WeeklyPayments
+                    id='weekly-payments'
+                    formAnchor='#specials-form'
                 />
 
                 {/* Section 5: Gallery Carousel - Visual proof of results */}

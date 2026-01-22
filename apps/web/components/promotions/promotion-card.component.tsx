@@ -10,6 +10,7 @@ import {
     getRemainingDays,
     isExpiringSoon,
 } from '@/lib/queries/promotion.query'
+import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
 
 type PromotionCardProps = {
     promotion: Promotion
@@ -98,9 +99,10 @@ export function PromotionCard({ promotion }: PromotionCardProps) {
                 </h3>
 
                 {promotion.excerpt && (
-                    <p className='mb-4 line-clamp-2 text-sm leading-relaxed text-stone-600'>
-                        {promotion.excerpt}
-                    </p>
+                    <PromotionMarkdown
+                        content={promotion.excerpt}
+                        className='mb-4 line-clamp-2 text-sm leading-relaxed text-stone-600'
+                    />
                 )}
 
                 {/* CTA */}

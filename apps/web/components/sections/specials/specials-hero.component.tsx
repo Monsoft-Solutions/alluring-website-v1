@@ -21,6 +21,7 @@ import { ConsultationForm } from '@/components/shared/forms/consultation-form.co
 import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 import type { FeaturedPromotionData } from '@/lib/types/specials/featured-promotion.type'
+import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
 
 export type SpecialsHeroProps = {
     readonly id?: string
@@ -131,6 +132,22 @@ export function SpecialsHero({
                                 been dreaming about. Lock in promotional pricing
                                 with a free, no-obligation consultation.
                             </p>
+
+                            {/* Featured Promotion Excerpt */}
+                            {featuredPromotion?.excerpt && (
+                                <div className='mt-4 rounded-lg border border-white/10 bg-white/5 p-4'>
+                                    <div className='mb-2 flex items-center gap-2'>
+                                        <Sparkles className='text-gold-400 h-4 w-4' />
+                                        <span className='text-gold-400 text-sm font-semibold'>
+                                            Featured Offer
+                                        </span>
+                                    </div>
+                                    <PromotionMarkdown
+                                        content={featuredPromotion.excerpt}
+                                        className='text-sm leading-relaxed text-stone-300'
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         {/* Financing Callout */}
@@ -154,6 +171,28 @@ export function SpecialsHero({
                                         : 'offers'}{' '}
                                     available below
                                 </span>
+                            </div>
+                        )}
+
+                        {/* Urgency Badge - Desktop (shown near form) */}
+                        {daysRemaining !== null && daysRemaining <= 14 && (
+                            <div className='mb-4 hidden lg:block'>
+                                <div
+                                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 ${
+                                        expiringSoon
+                                            ? 'animate-pulse-subtle bg-red-500/20 text-red-300'
+                                            : 'bg-gold-500/20 text-gold-300'
+                                    }`}
+                                >
+                                    <Clock className='h-4 w-4' />
+                                    <span className='text-sm font-semibold'>
+                                        {daysRemaining === 0
+                                            ? 'Offer Ends Today!'
+                                            : daysRemaining === 1
+                                              ? 'Only 1 Day Left!'
+                                              : `${daysRemaining} Days Left to Save`}
+                                    </span>
+                                </div>
                             </div>
                         )}
 
