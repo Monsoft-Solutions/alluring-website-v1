@@ -15,6 +15,7 @@ import { Surgeons } from '@/components/home/surgeons.component'
 import { Testimonials } from '@/components/home/testimonials.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { LeadForm } from '@/components/home/lead-form.component'
 import { PromoSection } from '@/components/promotions/promo-section.component'
 import { siteConfig } from '@/lib/data/site-config'
@@ -157,6 +158,11 @@ export default async function Page() {
                 <WhyUs />
                 <Surgeons />
                 <Testimonials />
+                <GoogleReviews
+                    title='Real Reviews from Google'
+                    subtitle='See what our patients are saying on Google'
+                    limit={6}
+                />
                 <BlogPostsSection
                     title='Latest from Our Blog'
                     description='Expert insights and advice from our board-certified plastic surgeons'

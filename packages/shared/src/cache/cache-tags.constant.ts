@@ -46,6 +46,10 @@ export const CACHE_TAGS = {
     /** Tag for all Instagram post queries */
     INSTAGRAM_POSTS: 'instagram-posts',
 
+    // Google Reviews tags
+    /** Tag for all Google review queries */
+    GOOGLE_REVIEWS: 'google-reviews',
+
     // Sitemap URL registry tags
     /** Tag for URL registry used in page classification */
     SITEMAP_URLS: 'sitemap-urls',
@@ -99,6 +103,7 @@ export const ALLOWED_STATIC_TAGS = [
     CACHE_TAGS.GALLERY_MEDIA,
     CACHE_TAGS.BEFORE_AFTER_PAIRS,
     CACHE_TAGS.INSTAGRAM_POSTS,
+    CACHE_TAGS.GOOGLE_REVIEWS,
     CACHE_TAGS.SITEMAP_URLS,
 ] as const
 
@@ -212,4 +217,14 @@ export function getAllInstagramTags(): string[] {
  */
 export function getSitemapUrlTags(): string[] {
     return [CACHE_TAGS.SITEMAP_URLS]
+}
+
+/**
+ * Get all Google reviews tags for bulk revalidation.
+ * Use this when any Google review is synced, updated, or visibility changed.
+ *
+ * @returns Array of Google reviews cache tags
+ */
+export function getAllGoogleReviewsTags(): string[] {
+    return [CACHE_TAGS.GOOGLE_REVIEWS]
 }
