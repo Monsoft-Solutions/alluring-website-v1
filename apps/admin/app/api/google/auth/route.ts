@@ -17,6 +17,7 @@ import {
     OAUTH_STATE_COOKIE,
     OAUTH_STATE_COOKIE_MAX_AGE,
 } from '@/lib/constants/oauth.constant'
+import { env } from '@/env'
 
 export async function GET() {
     // Verify admin is authenticated
@@ -37,7 +38,7 @@ export async function GET() {
     const cookieStore = await cookies()
     cookieStore.set(OAUTH_STATE_COOKIE, state, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: OAUTH_STATE_COOKIE_MAX_AGE,
         path: '/',
