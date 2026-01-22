@@ -20,6 +20,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: '*.public.blob.vercel-storage.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+            },
         ],
     },
     // Increase body size limit for file uploads (50MB for videos)

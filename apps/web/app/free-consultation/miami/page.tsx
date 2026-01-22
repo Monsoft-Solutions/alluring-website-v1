@@ -33,7 +33,7 @@ import { MiamiMiniCapture } from '@/components/landing/miami-mini-capture.compon
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -46,34 +46,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Miami-specific testimonials emphasizing local experience
-const MIAMI_TESTIMONIALS = [
-    {
-        id: 'miami-testimonial-1',
-        quote: "I love that I didn't have to travel. My surgeon is right here in Coral Gables, and the follow-up appointments were so easy to fit into my schedule. The whole team speaks Spanish, which made me feel right at home.",
-        name: 'Isabella M.',
-        procedure: 'Mommy Makeover',
-        timeframe: 'Brickell Resident • 8 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'miami-testimonial-2',
-        quote: 'My neighbor recommended Alluring, and I am so glad I listened. Having my surgeon nearby during recovery gave me such peace of mind. Plus, I could see her results in person before making my decision.',
-        name: 'Carmen R.',
-        procedure: 'BBL',
-        timeframe: 'Kendall Resident • 6 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'miami-testimonial-3',
-        quote: "As a busy Miami mom, I couldn't imagine traveling for surgery. Alluring made everything so convenient—from the consultation to my final follow-up, everything was just minutes from home.",
-        name: 'Sofia T.',
-        procedure: 'Breast Augmentation',
-        timeframe: 'South Miami Resident • 1 year post-op',
-        rating: 5,
-    },
-]
 
 /**
  * Miami Landing Page Metadata
@@ -187,11 +159,11 @@ export default async function MiamiConsultationPage() {
                 {/* Section 5: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 6: Miami-Specific Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={MIAMI_TESTIMONIALS}
+                {/* Section 6: Google Reviews */}
+                <GoogleReviews
+                    title='Real Reviews from Miami Patients'
+                    subtitle='See what our local Miami community says about us'
+                    limit={6}
                 />
 
                 {/* Section 7: Miami FAQ - Location, Experience, Aftercare */}

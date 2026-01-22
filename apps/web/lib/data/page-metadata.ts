@@ -16,19 +16,20 @@
  */
 export const pageLastModified: Record<string, string> = {
     // Main pages
-    '/': '2026-01-21',
+    '/': '2026-01-22',
     '/about': '2026-01-21',
     '/contact-us': '2026-01-21',
     '/faqs': '2026-01-21',
     '/plastic-surgery-financing-miami': '2026-01-21',
-    '/miami-plastic-surgery-specials': '2026-01-21',
+    '/miami-plastic-surgery-specials': '2026-01-22',
     '/bmi-calculator': '2026-01-17',
+    '/reviews': '2026-01-22',
 
     // Landing pages
-    '/free-consultation': '2026-01-17',
-    '/free-consultation/miami': '2026-01-17',
-    '/fly-in-consultation': '2026-01-17',
-    '/consulta-gratis': '2026-01-21',
+    '/free-consultation': '2026-01-22',
+    '/free-consultation/miami': '2026-01-22',
+    '/fly-in-consultation': '2026-01-22',
+    '/consulta-gratis': '2026-01-22',
 
     // Gallery pages
     '/gallery': '2025-12-17',

@@ -16,6 +16,7 @@ import {
     Bot,
     Search,
     Workflow,
+    Star,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -110,6 +111,15 @@ const navItems: NavItem[] = [
         title: 'Feedback',
         href: '/feedback',
         icon: MessageSquare,
+    },
+    {
+        title: 'Reviews',
+        href: '/reviews',
+        icon: Star,
+        children: [
+            { title: 'All Reviews', href: '/reviews' },
+            { title: 'Settings', href: '/reviews/settings' },
+        ],
     },
 ]
 

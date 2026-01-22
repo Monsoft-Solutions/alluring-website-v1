@@ -29,7 +29,7 @@ import { MensHero } from '@/components/landing/mens-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -43,34 +43,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Men's cosmetic surgery testimonials
-const MENS_TESTIMONIALS = [
-    {
-        id: 'mens-testimonial-1',
-        quote: "I worked out religiously but couldn't get rid of my chest. Gynecomastia surgery at Alluring changed everything. I finally feel confident at the pool and in fitted shirts. The team was professional and the whole process was discrete.",
-        name: 'Michael T.',
-        procedure: 'Gynecomastia Surgery',
-        timeframe: '8 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'mens-testimonial-2',
-        quote: "As an executive, looking tired and older than I felt was affecting my confidence in meetings. Dr. Karlinsky's approach was subtle—I look refreshed, not 'done.' Colleagues just think I got more sleep.",
-        name: 'Robert K.',
-        procedure: 'Facelift + Neck Lift',
-        timeframe: '1 year post-op',
-        rating: 5,
-    },
-    {
-        id: 'mens-testimonial-3',
-        quote: "No matter how much cardio I did, I couldn't lose my love handles. Liposuction gave me the athletic physique I'd been working toward. Back in the gym at 4 weeks and looking better than I did in my 20s.",
-        name: 'James P.',
-        procedure: 'Liposuction',
-        timeframe: '6 months post-op',
-        rating: 5,
-    },
-]
 
 /**
  * Men's Plastic Surgery Landing Page Metadata
@@ -154,11 +126,11 @@ export default async function MensPlasticSurgeryMiamiPage() {
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: Men's Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={MENS_TESTIMONIALS}
+                {/* Section 5: Google Reviews */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from men who invested in themselves'
+                    limit={6}
                 />
 
                 {/* Section 6: FAQ - Address male-specific concerns */}

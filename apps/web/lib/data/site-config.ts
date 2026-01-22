@@ -56,6 +56,9 @@ export const siteConfig: SiteConfig = {
         foundedYear: undefined,
         founders: undefined,
         organizationType: 'Medical Practice',
+        // Google Place ID - used for Google Reviews link
+        // Find at: https://developers.google.com/maps/documentation/places/web-service/place-id
+        googlePlaceId: undefined,
     },
 
     /**

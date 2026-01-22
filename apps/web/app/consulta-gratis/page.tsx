@@ -32,7 +32,7 @@ import { SpanishHero } from '@/components/landing/spanish-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -46,34 +46,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Spanish-language testimonials from Hispanic patients
-const SPANISH_TESTIMONIALS = [
-    {
-        id: 'spanish-testimonial-1',
-        quote: 'Desde la primera llamada me atendieron en español. Me sentí cómoda explicando exactamente lo que quería. El Dr. Karlinsky entendió perfectamente mi visión y los resultados superaron mis expectativas.',
-        name: 'Gabriela M.',
-        procedure: 'BBL',
-        timeframe: 'Venezuela • 8 meses post-op',
-        rating: 5,
-    },
-    {
-        id: 'spanish-testimonial-2',
-        quote: 'Viajé desde Colombia específicamente para mi cirugía en Alluring. El equipo me ayudó a coordinar todo—hotel, transporte, citas. Me sentí completamente cuidada, como si estuviera en casa.',
-        name: 'Valentina R.',
-        procedure: 'Mommy Makeover',
-        timeframe: 'Colombia • 1 año post-op',
-        rating: 5,
-    },
-    {
-        id: 'spanish-testimonial-3',
-        quote: 'Como residente de Miami, quería un cirujano que hablara mi idioma y entendiera la estética latina. Alluring fue la elección perfecta. Los resultados son naturales y hermosos.',
-        name: 'Isabella C.',
-        procedure: 'Aumento de Senos',
-        timeframe: 'Miami • 6 meses post-op',
-        rating: 5,
-    },
-]
 
 /**
  * Spanish Landing Page Metadata
@@ -208,11 +180,11 @@ export default async function ConsultaGratisPage() {
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: Spanish Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={SPANISH_TESTIMONIALS}
+                {/* Section 5: Google Reviews */}
+                <GoogleReviews
+                    title='Lo Que Dicen Nuestros Pacientes'
+                    subtitle='Reseñas reales de pacientes en Google'
+                    limit={6}
                 />
 
                 {/* Section 6: Spanish FAQ */}

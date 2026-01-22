@@ -30,7 +30,7 @@ import { WeightLossHero } from '@/components/landing/weight-loss-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -44,34 +44,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Post-weight loss specific testimonials
-const WEIGHT_LOSS_TESTIMONIALS = [
-    {
-        id: 'weight-loss-testimonial-1',
-        quote: "I lost 120 pounds after gastric bypass but couldn't see my progress because of all the excess skin. After my body lift at Alluring, I finally look like the healthy person I became. The transformation is complete.",
-        name: 'Marcus T.',
-        procedure: 'Lower Body Lift',
-        timeframe: 'Lost 120 lbs • 10 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'weight-loss-testimonial-2',
-        quote: 'The hanging skin on my arms and thighs made me so self-conscious. I worked so hard to lose 85 pounds, and now I can finally wear short sleeves and shorts. Dr. Karlinsky gave me my confidence back.',
-        name: 'Patricia L.',
-        procedure: 'Arm Lift + Thigh Lift',
-        timeframe: 'Lost 85 lbs • 8 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'weight-loss-testimonial-3',
-        quote: 'After losing 100+ pounds through diet and exercise, I was left with so much loose skin. The team at Alluring staged my procedures perfectly—body lift first, then arms. I look like a completely different person now.',
-        name: 'David R.',
-        procedure: 'Staged Body Contouring',
-        timeframe: 'Lost 110 lbs • 1 year post-op',
-        rating: 5,
-    },
-]
 
 /**
  * Post-Weight Loss Landing Page Metadata
@@ -155,11 +127,11 @@ export default async function AfterWeightLossConsultationPage() {
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: Post-Weight Loss Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={WEIGHT_LOSS_TESTIMONIALS}
+                {/* Section 5: Google Reviews */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from patients who completed their weight loss transformation'
+                    limit={6}
                 />
 
                 {/* Section 6: FAQ - Address eligibility, procedures, recovery */}

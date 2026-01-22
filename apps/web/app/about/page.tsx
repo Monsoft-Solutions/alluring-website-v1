@@ -13,7 +13,7 @@ import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullb
 import { PhilosophySection } from '@/components/sections/about/philosophy-section.component'
 import { SurgeonsGridSection } from '@/components/sections/about/surgeons-grid.component'
 import { AccreditationSection } from '@/components/sections/about/accreditation-section.component'
-import { Testimonials } from '@/components/home/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { aboutCTAData } from '@/lib/data/webpages/about.data'
 import { siteConfig } from '@/lib/data/site-config'
@@ -105,8 +105,12 @@ export default function AboutPage() {
                 {/* Accreditation & Safety */}
                 <AccreditationSection />
 
-                {/* Testimonials Section */}
-                <Testimonials />
+                {/* Google Reviews Section */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from patients who trusted our surgeons'
+                    limit={6}
+                />
 
                 {/* Final CTA Section */}
                 <CTASection

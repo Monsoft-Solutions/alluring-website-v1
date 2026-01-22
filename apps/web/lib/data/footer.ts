@@ -79,6 +79,7 @@ export const footerSections: NavigationSection[] = [
             },
             { label: 'Blog', href: '/blog', external: false },
             { label: 'Gallery', href: '/gallery', external: false },
+            { label: 'Reviews', href: '/reviews', external: false },
             { label: 'Contact', href: '/contact-us', external: false },
         ],
     },

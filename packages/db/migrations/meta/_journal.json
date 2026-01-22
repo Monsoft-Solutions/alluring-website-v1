@@ -288,6 +288,13 @@
       "when": 1768907411993,
       "tag": "0040_strange_madame_hydra",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1769038005356,
+      "tag": "0041_wealthy_scalphunter",
+      "breakpoints": true
     }
   ]
 }

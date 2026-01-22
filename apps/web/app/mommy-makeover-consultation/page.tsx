@@ -30,7 +30,7 @@ import { MommyMakeoverHero } from '@/components/landing/mommy-makeover-hero.comp
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -44,34 +44,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// Mommy makeover specific testimonials
-const MOMMY_MAKEOVER_TESTIMONIALS = [
-    {
-        id: 'mommy-testimonial-1',
-        quote: 'For years, I avoided the beach and hid my body in loose clothes. After my mommy makeover at Alluring, I finally feel like myself again. The confidence boost has affected every part of my life—my marriage, my career, even how I play with my kids.',
-        name: 'Jennifer M.',
-        procedure: 'Mommy Makeover',
-        timeframe: 'Mother of 3 • 8 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'mommy-testimonial-2',
-        quote: 'I waited until my youngest was in kindergarten. The timing was perfect—I had help with the kids, and I finally did something for ME. My only regret is not doing it sooner. Dr. Karlinsky understood exactly what I wanted.',
-        name: 'Maria S.',
-        procedure: 'Tummy Tuck + Breast Lift',
-        timeframe: 'Mother of 2 • 1 year post-op',
-        rating: 5,
-    },
-    {
-        id: 'mommy-testimonial-3',
-        quote: 'The recovery was easier than I expected. Yes, you need help with the kids for a couple weeks, but it was so worth it. I can finally wear a swimsuit without feeling self-conscious. My husband says I look better than before we had kids!',
-        name: 'Ashley T.',
-        procedure: 'Mommy Makeover + Lipo',
-        timeframe: 'Mother of 2 • 6 months post-op',
-        rating: 5,
-    },
-]
 
 /**
  * Mommy Makeover Landing Page Metadata
@@ -155,11 +127,11 @@ export default async function MommyMakeoverConsultationPage() {
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: Mommy Makeover Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={MOMMY_MAKEOVER_TESTIMONIALS}
+                {/* Section 5: Google Reviews */}
+                <GoogleReviews
+                    title='What Moms Are Saying'
+                    subtitle='Real reviews from mothers who reclaimed their confidence'
+                    limit={6}
                 />
 
                 {/* Section 6: FAQ - Address timing, recovery, results */}

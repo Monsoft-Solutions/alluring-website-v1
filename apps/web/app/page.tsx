@@ -12,9 +12,9 @@ import { Procedures } from '@/components/home/procedures.component'
 import { BeforeAfter } from '@/components/home/before-after.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
-import { Testimonials } from '@/components/home/testimonials.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { LeadForm } from '@/components/home/lead-form.component'
 import { PromoSection } from '@/components/promotions/promo-section.component'
 import { siteConfig } from '@/lib/data/site-config'
@@ -22,6 +22,7 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
 import { getFeaturedPromotion } from '@/lib/queries/promotion.query'
+import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 import { env } from '@/env'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
@@ -89,6 +90,9 @@ export default async function Page() {
     // Fetch featured promotion for homepage section
     const featuredPromotion = await getFeaturedPromotion()
 
+    // Fetch Google reviews for aggregate rating schema
+    const { averageRating, totalCount } = await getPublishedGoogleReviews(1)
+
     // Flatten FAQ data for schema (combine all categories)
     const allFaqItems = Object.values(faqDataHome).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
@@ -140,6 +144,16 @@ export default async function Page() {
                     },
                 ]}
                 image={`${siteUrl}/og-image.jpg`}
+                {...(averageRating && totalCount > 0
+                    ? {
+                          aggregateRating: {
+                              ratingValue: averageRating,
+                              reviewCount: totalCount,
+                              bestRating: 5,
+                              worstRating: 1,
+                          },
+                      }
+                    : {})}
             />
 
             {/* Structured Data - FAQ Schema for rich snippets */}
@@ -156,7 +170,11 @@ export default async function Page() {
                 <BeforeAfter />
                 <WhyUs />
                 <Surgeons />
-                <Testimonials />
+                <GoogleReviews
+                    title='Real Reviews from Google'
+                    subtitle='See what our patients are saying on Google'
+                    limit={6}
+                />
                 <BlogPostsSection
                     title='Latest from Our Blog'
                     description='Expert insights and advice from our board-certified plastic surgeons'

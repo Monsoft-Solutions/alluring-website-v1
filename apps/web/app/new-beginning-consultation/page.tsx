@@ -29,7 +29,7 @@ import { NewBeginningHero } from '@/components/landing/new-beginning-hero.compon
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
@@ -43,34 +43,6 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-
-// New beginning specific testimonials
-const NEW_BEGINNING_TESTIMONIALS = [
-    {
-        id: 'new-beginning-testimonial-1',
-        quote: "After my divorce, I wanted to do something for myself. The facelift was the best investment I've ever made in myself. I look refreshed, not different—and I feel like I have a whole new life ahead of me.",
-        name: 'Linda S.',
-        procedure: 'Facelift',
-        timeframe: '52 years old • 1 year post-op',
-        rating: 5,
-    },
-    {
-        id: 'new-beginning-testimonial-2',
-        quote: 'With both kids in college, it was finally my turn. I had been wanting to do something about my neck and jowls for years. Dr. Karlinsky gave me results that look completely natural—people just say I look "well-rested."',
-        name: 'Catherine M.',
-        procedure: 'Mini Facelift + Neck Lift',
-        timeframe: 'Empty Nester • 8 months post-op',
-        rating: 5,
-    },
-    {
-        id: 'new-beginning-testimonial-3',
-        quote: 'I turned 50 and decided it was time to invest in myself. Between the tummy tuck and breast lift, I feel like I got my confidence back. The team treated me with such care throughout the whole process.',
-        name: 'Patricia D.',
-        procedure: 'Tummy Tuck + Breast Lift',
-        timeframe: '50 years old • 10 months post-op',
-        rating: 5,
-    },
-]
 
 /**
  * New Beginning Landing Page Metadata
@@ -154,11 +126,11 @@ export default async function NewBeginningConsultationPage() {
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: New Beginning Testimonials */}
-                <Testimonials
-                    id='testimonials'
-                    formAnchor='#hero-form'
-                    testimonials={NEW_BEGINNING_TESTIMONIALS}
+                {/* Section 5: Google Reviews */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from patients who embraced their new beginning'
+                    limit={6}
                 />
 
                 {/* Section 6: FAQ - Address mindset, procedures, results */}

@@ -17,6 +17,13 @@ export type LocalBusinessOpeningHours = {
     closes: string
 }
 
+export type LocalBusinessAggregateRating = {
+    ratingValue: number
+    reviewCount: number
+    bestRating?: number
+    worstRating?: number
+}
+
 export type LocalBusinessSchemaProps = {
     name: string
     url?: string
@@ -25,4 +32,5 @@ export type LocalBusinessSchemaProps = {
     geo?: LocalBusinessGeo
     openingHoursSpecification?: LocalBusinessOpeningHours[]
     image?: string | string[]
+    aggregateRating?: LocalBusinessAggregateRating
 }

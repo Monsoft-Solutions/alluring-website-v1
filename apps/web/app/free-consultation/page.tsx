@@ -25,9 +25,9 @@ import { LandingHero } from '@/components/landing/landing-hero.component'
 import { TransformationNarrative } from '@/components/landing/transformation-narrative.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
+import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { Journey } from '@/components/home/journey.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
@@ -161,10 +161,15 @@ export default async function FreeConsultationPage() {
                 {/* Section 5: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 6: Testimonials - Social proof */}
-                <Testimonials id='testimonials' formAnchor='#hero-form' />
+                {/* Section 6: Google Reviews - Real Google reviews for trust */}
+                <GoogleReviews
+                    title='What Patients Say on Google'
+                    subtitle='Verified reviews from real patients'
+                    limit={3}
+                    includeSchema={false}
+                />
 
-                {/* Section 7: Journey/Process - Make it feel easy */}
+                {/* Section 8: Journey/Process - Make it feel easy */}
                 <Journey />
 
                 {/* Section 8: Why Alluring - Differentiators */}

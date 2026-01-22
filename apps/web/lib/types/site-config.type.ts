@@ -152,6 +152,8 @@ export type BusinessInfo = {
     founders?: string[]
     /** Type of organization (e.g., "Corporation", "LLC") */
     organizationType?: string
+    /** Google Place ID for reviews and maps */
+    googlePlaceId?: string
 }
 
 /**

@@ -69,6 +69,12 @@ export const env = createEnv({
         // Create search engine at https://programmablesearchengine.google.com
         GOOGLE_CUSTOM_SEARCH_API_KEY: z.string().optional(),
         GOOGLE_CUSTOM_SEARCH_ENGINE_ID: z.string().optional(),
+
+        // Google Business Profile OAuth (optional - for reviews integration)
+        // Create OAuth credentials at https://console.cloud.google.com/apis/credentials
+        GOOGLE_BUSINESS_CLIENT_ID: z.string().optional(),
+        GOOGLE_BUSINESS_CLIENT_SECRET: z.string().optional(),
+        GOOGLE_BUSINESS_REDIRECT_URI: z.string().url().optional(),
     },
     client: {
         // Public web app URL for building absolute links

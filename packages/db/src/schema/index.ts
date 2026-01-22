@@ -181,3 +181,13 @@ export {
     type InstagramPostMedia,
     type InsertInstagramPostMedia,
 } from './social-media'
+
+// Reviews schema
+export {
+    googleReview,
+    googleReviewsSettings,
+    type GoogleReview,
+    type InsertGoogleReview,
+    type GoogleReviewsSettings,
+    type InsertGoogleReviewsSettings,
+} from './reviews'

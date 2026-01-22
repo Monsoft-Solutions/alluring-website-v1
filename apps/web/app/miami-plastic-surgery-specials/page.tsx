@@ -24,7 +24,7 @@ import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
-import { Testimonials } from '@/components/shared/testimonials.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
@@ -182,8 +182,12 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     formAnchor='#specials-form'
                 />
 
-                {/* Section 4: Testimonials - Social proof and emotional connection */}
-                <Testimonials id='testimonials' formAnchor='#specials-form' />
+                {/* Section 4: Google Reviews - Social proof */}
+                <GoogleReviews
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from patients who trusted us with their transformation'
+                    limit={6}
+                />
 
                 {/* Section 5: Gallery Carousel - Visual proof of results */}
                 <GalleryCarousel id='gallery-results' images={galleryImages} />
