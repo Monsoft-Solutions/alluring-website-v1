@@ -1,4 +1,5 @@
 import type {
+    AggregateRating,
     GeoCoordinates,
     LocalBusiness,
     OpeningHoursSpecification,
@@ -52,6 +53,17 @@ export function buildLocalBusinessJsonLd(
                 closes: o.closes,
             }))
         lb.openingHoursSpecification = oh
+    }
+
+    if (props.aggregateRating) {
+        const ar: AggregateRating = {
+            '@type': 'AggregateRating',
+            ratingValue: props.aggregateRating.ratingValue,
+            reviewCount: props.aggregateRating.reviewCount,
+            bestRating: props.aggregateRating.bestRating ?? 5,
+            worstRating: props.aggregateRating.worstRating ?? 1,
+        }
+        lb.aggregateRating = ar
     }
 
     return withContext(lb)

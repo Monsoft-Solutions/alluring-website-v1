@@ -23,6 +23,7 @@ export const pageLastModified: Record<string, string> = {
     '/plastic-surgery-financing-miami': '2026-01-21',
     '/miami-plastic-surgery-specials': '2026-01-21',
     '/bmi-calculator': '2026-01-17',
+    '/reviews': '2026-01-22',
 
     // Landing pages
     '/free-consultation': '2026-01-17',

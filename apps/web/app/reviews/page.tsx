@@ -20,6 +20,7 @@ import { Star } from 'lucide-react'
 import {
     BreadcrumbSchema,
     FAQSchema,
+    LocalBusinessSchema,
     ReviewSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
@@ -147,6 +148,29 @@ export default async function ReviewsPage() {
 
             {/* Structured Data - FAQ Schema */}
             {faqSchemaItems.length > 0 && <FAQSchema items={faqSchemaItems} />}
+
+            {/* Structured Data - LocalBusiness with AggregateRating for LLM search */}
+            {averageRating && totalCount > 0 && (
+                <LocalBusinessSchema
+                    name={siteConfig.business.name}
+                    url={siteUrl}
+                    telephone={siteConfig.contact.phone}
+                    address={{
+                        streetAddress: siteConfig.contact.address,
+                        addressLocality: siteConfig.contact.city,
+                        addressRegion: siteConfig.contact.state,
+                        postalCode: siteConfig.contact.postalCode,
+                        addressCountry: 'US',
+                    }}
+                    image={`${siteUrl}/og-image.jpg`}
+                    aggregateRating={{
+                        ratingValue: averageRating,
+                        reviewCount: totalCount,
+                        bestRating: 5,
+                        worstRating: 1,
+                    }}
+                />
+            )}
 
             {/* Main Content */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>

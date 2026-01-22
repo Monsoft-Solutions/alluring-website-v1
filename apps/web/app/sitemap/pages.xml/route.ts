@@ -40,6 +40,7 @@ const STATIC_PAGES: Array<{
         changeFrequency: 'monthly',
         priority: 0.8,
     },
+    { path: '/reviews', changeFrequency: 'weekly', priority: 0.9 },
     // Landing pages - General
     { path: '/free-consultation', changeFrequency: 'weekly', priority: 0.9 },
     {
