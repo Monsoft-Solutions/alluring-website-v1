@@ -135,6 +135,7 @@ export default async function ReviewsPage() {
                         .slice(0, 10)}
                     reviewBody={review.comment ?? ''}
                     itemReviewed={{
+                        type: 'MedicalBusiness',
                         name: siteConfig.business.name,
                         url: siteConfig.seo.siteUrl,
                     }}

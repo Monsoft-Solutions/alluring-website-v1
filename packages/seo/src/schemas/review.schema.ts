@@ -11,8 +11,9 @@ export function buildReviewJsonLd(
         author: { '@type': 'Person', name: props.author },
         datePublished: props.datePublished,
         reviewBody: props.reviewBody,
+        // Use LocalBusiness as default - 'Thing' is too generic and causes Google validation errors
         itemReviewed: props.itemReviewed && {
-            '@type': 'Thing',
+            '@type': props.itemReviewed.type ?? 'LocalBusiness',
             name: props.itemReviewed.name,
             url: props.itemReviewed.url,
         },
