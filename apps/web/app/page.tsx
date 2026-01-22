@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import {
     FAQSchema,
     LocalBusinessSchema,
+    OfferSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -21,7 +22,10 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
-import { getFeaturedPromotion } from '@/lib/queries/promotion.query'
+import {
+    formatDiscount,
+    getFeaturedPromotion,
+} from '@/lib/queries/promotion.query'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 import { env } from '@/env'
 
@@ -158,6 +162,68 @@ export default async function Page() {
 
             {/* Structured Data - FAQ Schema for rich snippets */}
             {faqSchemaItems.length > 0 && <FAQSchema items={faqSchemaItems} />}
+
+            {/* Structured Data - Offer Schema for featured promotion */}
+            {featuredPromotion && (
+                <OfferSchema
+                    name={featuredPromotion.title}
+                    description={
+                        featuredPromotion.excerpt ??
+                        featuredPromotion.description
+                    }
+                    url={`${siteUrl}/promotions/${featuredPromotion.slug}`}
+                    validFrom={
+                        featuredPromotion.startsAt
+                            ? new Date(featuredPromotion.startsAt).toISOString()
+                            : undefined
+                    }
+                    validThrough={
+                        featuredPromotion.endsAt
+                            ? new Date(featuredPromotion.endsAt).toISOString()
+                            : undefined
+                    }
+                    priceValidUntil={
+                        featuredPromotion.endsAt
+                            ? new Date(featuredPromotion.endsAt).toISOString()
+                            : undefined
+                    }
+                    availability='LimitedAvailability'
+                    category={featuredPromotion.type}
+                    image={featuredPromotion.imageUrl ?? undefined}
+                    discount={formatDiscount(featuredPromotion) ?? undefined}
+                    discountDescription={
+                        formatDiscount(featuredPromotion)
+                            ? `${formatDiscount(featuredPromotion)} - ${featuredPromotion.title}`
+                            : undefined
+                    }
+                    offeredBy={{
+                        type: 'LocalBusiness',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                        image: `${siteUrl}${siteConfig.brand.logo}`,
+                        telephone: siteConfig.contact.phone,
+                        priceRange: '$2500-$25000',
+                        address: {
+                            streetAddress: siteConfig.contact.address,
+                            addressLocality: siteConfig.contact.city ?? '',
+                            addressRegion: siteConfig.contact.state ?? '',
+                            postalCode: siteConfig.contact.postalCode ?? '',
+                            addressCountry: siteConfig.contact.country ?? '',
+                        },
+                    }}
+                    itemOffered={
+                        featuredPromotion.procedureSlug
+                            ? {
+                                  type: 'MedicalProcedure',
+                                  name: featuredPromotion.title
+                                      .replace(/\d+%?\s*(OFF|off)?\s*/g, '')
+                                      .trim(),
+                                  url: `${siteUrl}/procedures/${featuredPromotion.procedureSlug}`,
+                              }
+                            : undefined
+                    }
+                />
+            )}
 
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 <Hero />

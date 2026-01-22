@@ -11,6 +11,7 @@
  */
 import {
     FAQSchema,
+    OfferCatalogSchema,
     OrganizationSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
@@ -161,6 +162,38 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 items={specialsFaqData.map((faq) => ({
                     question: faq.question,
                     answer: faq.answer,
+                }))}
+            />
+
+            <OfferCatalogSchema
+                name={`Miami Plastic Surgery Specials - ${monthYear}`}
+                url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
+                description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
+                numberOfItems={promotions.length}
+                offeredBy={{
+                    type: 'LocalBusiness',
+                    name: siteConfig.business.name,
+                    url: seoConfig.siteUrl,
+                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
+                    telephone: siteConfig.contact.phone,
+                    priceRange: '$2500-$25000',
+                    address: {
+                        streetAddress: siteConfig.contact.address,
+                        addressLocality: siteConfig.contact.city ?? '',
+                        addressRegion: siteConfig.contact.state ?? '',
+                        postalCode: siteConfig.contact.postalCode ?? '',
+                        addressCountry: siteConfig.contact.country ?? '',
+                    },
+                }}
+                itemListElement={promotions.map((promo) => ({
+                    name: promo.title,
+                    url: `${seoConfig.siteUrl}/promotions/${promo.slug}`,
+                    description: promo.excerpt ?? promo.description,
+                    validThrough: promo.endsAt
+                        ? new Date(promo.endsAt).toISOString()
+                        : undefined,
+                    image: promo.imageUrl ?? undefined,
+                    category: promo.type,
                 }))}
             />
 

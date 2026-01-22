@@ -43,3 +43,12 @@ export type {
     ArticleWithSpeakable,
     WebPageWithSpeakable,
 } from './schema/speakable.type'
+export type {
+    OfferSchemaProps,
+    OfferCatalogSchemaProps,
+    OfferAvailability,
+    OfferedItem,
+    OfferProvider,
+    OfferProviderAddress,
+    OfferCatalogItem,
+} from './schema/offer.type'

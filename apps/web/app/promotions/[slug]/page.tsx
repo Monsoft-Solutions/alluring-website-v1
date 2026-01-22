@@ -5,8 +5,10 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Calendar, Clock, Sparkles } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
+import { OfferSchema } from '@workspace/seo/react'
 
 import {
+    formatDiscount,
     getPromotionBySlug,
     getPromotionLink,
     getRemainingDays,
@@ -15,6 +17,7 @@ import {
 import { PromotionViewTracker } from '@/components/promotions/promotion-view-tracker.component'
 import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
 import { siteConfig } from '@/lib/data/site-config'
+import { seoConfig } from '@/lib/seo-config'
 
 type Params = Promise<{ slug: string }>
 
@@ -72,8 +75,70 @@ export default async function PromotionDetailPage({
         financing: 'Financing Offer',
     }
 
+    // Build the full URL for the promotion
+    const promotionUrl = `${seoConfig.siteUrl}/promotions/${promotion.slug}`
+
+    // Build discount description
+    const discount = formatDiscount(promotion)
+    const discountDescription = discount
+        ? `${discount} - ${promotion.title}`
+        : undefined
+
     return (
         <>
+            {/* SEO Schema */}
+            <OfferSchema
+                name={promotion.title}
+                description={promotion.excerpt ?? promotion.description}
+                url={promotionUrl}
+                validFrom={
+                    promotion.startsAt
+                        ? new Date(promotion.startsAt).toISOString()
+                        : undefined
+                }
+                validThrough={
+                    promotion.endsAt
+                        ? new Date(promotion.endsAt).toISOString()
+                        : undefined
+                }
+                priceValidUntil={
+                    promotion.endsAt
+                        ? new Date(promotion.endsAt).toISOString()
+                        : undefined
+                }
+                availability='LimitedAvailability'
+                category={promotion.type}
+                image={promotion.imageUrl ?? undefined}
+                discount={discount ?? undefined}
+                discountDescription={discountDescription}
+                offeredBy={{
+                    type: 'LocalBusiness',
+                    name: siteConfig.business.name,
+                    url: seoConfig.siteUrl,
+                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
+                    telephone: siteConfig.contact.phone,
+                    priceRange: '$2500-$25000',
+                    address: {
+                        streetAddress: siteConfig.contact.address,
+                        addressLocality: siteConfig.contact.city ?? '',
+                        addressRegion: siteConfig.contact.state ?? '',
+                        postalCode: siteConfig.contact.postalCode ?? '',
+                        addressCountry: siteConfig.contact.country ?? '',
+                    },
+                }}
+                itemOffered={
+                    promotion.procedureSlug
+                        ? {
+                              type: 'MedicalProcedure',
+                              name: promotion.title
+                                  .replace(/\d+%?\s*(OFF|off)?\s*/g, '')
+                                  .trim(),
+                              url: `${seoConfig.siteUrl}/procedures/${promotion.procedureSlug}`,
+                          }
+                        : undefined
+                }
+            />
+
             {/* Client-side view tracking */}
             <PromotionViewTracker promotionId={promotion.id} />
 

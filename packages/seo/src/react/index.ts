@@ -15,3 +15,5 @@ export { MedicalProcedureSchema } from './medical-procedure/medical-procedure-sc
 export { PhysicianSchema } from './physician/physician-schema.component'
 export { ServiceSchema } from './service/service-schema.component'
 export { SpeakableSchema } from './speakable/speakable-schema.component'
+export { OfferSchema } from './offer/offer-schema.component'
+export { OfferCatalogSchema } from './offer/offer-catalog-schema.component'

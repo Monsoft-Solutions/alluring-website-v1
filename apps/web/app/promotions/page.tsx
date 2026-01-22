@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
 import { Sparkles } from 'lucide-react'
+import Link from 'next/link'
+
+import { OfferCatalogSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { PromotionCard } from '@/components/promotions/promotion-card.component'
 import { getActivePromotions } from '@/lib/queries/promotion.query'
-import Link from 'next/link'
+import { siteConfig } from '@/lib/data/site-config'
+import { seoConfig } from '@/lib/seo-config'
 
 const pageTitle = 'Special Offers & Promotions'
 
@@ -23,75 +27,112 @@ export const metadata: Metadata = {
 export default async function PromotionsPage() {
     const promotions = await getActivePromotions()
 
+    const pageUrl = `${seoConfig.siteUrl}/promotions`
+
     return (
-        <ContainerLayout as='div' noPadding size='full'>
-            <div className='container mx-auto px-4 py-16 sm:px-6 md:py-24 lg:px-8'>
-                {/* Header */}
-                <div className='mb-12 text-center'>
-                    <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-4 py-2'>
-                        <Sparkles className='text-gold-500 h-4 w-4' />
-                        <span className='text-sm font-medium tracking-wide text-stone-600 uppercase'>
-                            Limited Time Offers
-                        </span>
-                    </div>
+        <>
+            {/* SEO Schema */}
+            <OfferCatalogSchema
+                name='Current Plastic Surgery Specials & Promotions'
+                url={pageUrl}
+                description='Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.'
+                numberOfItems={promotions.length}
+                offeredBy={{
+                    type: 'LocalBusiness',
+                    name: siteConfig.business.name,
+                    url: seoConfig.siteUrl,
+                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
+                    telephone: siteConfig.contact.phone,
+                    priceRange: '$2500-$25000',
+                    address: {
+                        streetAddress: siteConfig.contact.address,
+                        addressLocality: siteConfig.contact.city ?? '',
+                        addressRegion: siteConfig.contact.state ?? '',
+                        postalCode: siteConfig.contact.postalCode ?? '',
+                        addressCountry: siteConfig.contact.country ?? '',
+                    },
+                }}
+                itemListElement={promotions.map((promo) => ({
+                    name: promo.title,
+                    url: `${seoConfig.siteUrl}/promotions/${promo.slug}`,
+                    description: promo.excerpt ?? promo.description,
+                    validThrough: promo.endsAt
+                        ? new Date(promo.endsAt).toISOString()
+                        : undefined,
+                    image: promo.imageUrl ?? undefined,
+                    category: promo.type,
+                }))}
+            />
 
-                    <h1 className='mb-4 font-serif text-4xl text-stone-900 md:text-5xl lg:text-6xl'>
-                        Special Offers &{' '}
-                        <span className='font-light text-stone-600 italic'>
-                            Promotions
-                        </span>
-                    </h1>
+            <ContainerLayout as='div' noPadding size='full'>
+                <div className='container mx-auto px-4 py-16 sm:px-6 md:py-24 lg:px-8'>
+                    {/* Header */}
+                    <div className='mb-12 text-center'>
+                        <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-4 py-2'>
+                            <Sparkles className='text-gold-500 h-4 w-4' />
+                            <span className='text-sm font-medium tracking-wide text-stone-600 uppercase'>
+                                Limited Time Offers
+                            </span>
+                        </div>
 
-                    <div className='bg-gold-500 mx-auto mb-6 h-1 w-24' />
+                        <h1 className='mb-4 font-serif text-4xl text-stone-900 md:text-5xl lg:text-6xl'>
+                            Special Offers &{' '}
+                            <span className='font-light text-stone-600 italic'>
+                                Promotions
+                            </span>
+                        </h1>
 
-                    <p className='mx-auto max-w-2xl text-lg leading-relaxed font-light text-stone-600'>
-                        Take advantage of our exclusive promotions and make your
-                        transformation journey more accessible. All offers are
-                        for a limited time.
-                    </p>
-                </div>
+                        <div className='bg-gold-500 mx-auto mb-6 h-1 w-24' />
 
-                {/* Promotions Grid */}
-                {promotions.length > 0 ? (
-                    <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
-                        {promotions.map((promotion) => (
-                            <PromotionCard
-                                key={promotion.id}
-                                promotion={promotion}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div className='rounded-2xl border border-stone-200 bg-stone-50 py-16 text-center'>
-                        <Sparkles className='mx-auto mb-4 h-12 w-12 text-stone-300' />
-                        <h2 className='mb-2 font-serif text-2xl text-stone-700'>
-                            No Active Promotions
-                        </h2>
-                        <p className='text-stone-500'>
-                            Check back soon for new special offers and exclusive
-                            deals.
+                        <p className='mx-auto max-w-2xl text-lg leading-relaxed font-light text-stone-600'>
+                            Take advantage of our exclusive promotions and make
+                            your transformation journey more accessible. All
+                            offers are for a limited time.
                         </p>
                     </div>
-                )}
 
-                {/* CTA Section */}
-                <div className='mt-16 rounded-2xl bg-stone-900 p-8 text-center md:p-12'>
-                    <h2 className='mb-4 font-serif text-2xl text-white md:text-3xl'>
-                        Don&apos;t Miss Out on Future Offers
-                    </h2>
-                    <p className='mx-auto mb-6 max-w-xl text-stone-300'>
-                        Schedule a consultation today to learn about all
-                        available options and how we can help you achieve your
-                        aesthetic goals.
-                    </p>
-                    <Link
-                        href='/contact-us'
-                        className='bg-gold-500 hover:bg-gold-600 inline-flex items-center rounded-lg px-8 py-4 font-bold tracking-wide text-white uppercase shadow-lg transition-all'
-                    >
-                        Book Consultation
-                    </Link>
+                    {/* Promotions Grid */}
+                    {promotions.length > 0 ? (
+                        <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
+                            {promotions.map((promotion) => (
+                                <PromotionCard
+                                    key={promotion.id}
+                                    promotion={promotion}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className='rounded-2xl border border-stone-200 bg-stone-50 py-16 text-center'>
+                            <Sparkles className='mx-auto mb-4 h-12 w-12 text-stone-300' />
+                            <h2 className='mb-2 font-serif text-2xl text-stone-700'>
+                                No Active Promotions
+                            </h2>
+                            <p className='text-stone-500'>
+                                Check back soon for new special offers and
+                                exclusive deals.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* CTA Section */}
+                    <div className='mt-16 rounded-2xl bg-stone-900 p-8 text-center md:p-12'>
+                        <h2 className='mb-4 font-serif text-2xl text-white md:text-3xl'>
+                            Don&apos;t Miss Out on Future Offers
+                        </h2>
+                        <p className='mx-auto mb-6 max-w-xl text-stone-300'>
+                            Schedule a consultation today to learn about all
+                            available options and how we can help you achieve
+                            your aesthetic goals.
+                        </p>
+                        <Link
+                            href='/contact-us'
+                            className='bg-gold-500 hover:bg-gold-600 inline-flex items-center rounded-lg px-8 py-4 font-bold tracking-wide text-white uppercase shadow-lg transition-all'
+                        >
+                            Book Consultation
+                        </Link>
+                    </div>
                 </div>
-            </div>
-        </ContainerLayout>
+            </ContainerLayout>
+        </>
     )
 }

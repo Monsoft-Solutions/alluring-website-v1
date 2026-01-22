@@ -21,6 +21,7 @@ export {
     PROCEDURE_SPEAKABLE_SELECTORS,
     BLOG_SPEAKABLE_SELECTORS,
 } from './speakable.schema'
+export { buildOfferJsonLd, buildOfferCatalogJsonLd } from './offer.schema'
 
 // Schema types
 export type { ArticleSchemaProps } from '../types/schema/article.type'
@@ -66,3 +67,12 @@ export type {
     ServiceProvider,
     ServiceOffer,
 } from '../types/schema/service.type'
+export type {
+    OfferSchemaProps,
+    OfferCatalogSchemaProps,
+    OfferAvailability,
+    OfferedItem,
+    OfferProvider,
+    OfferProviderAddress,
+    OfferCatalogItem,
+} from '../types/schema/offer.type'
