@@ -67,10 +67,21 @@ export async function handleOAuthCallback(code: string): Promise<ActionResult> {
         // Get existing settings or create new
         const existing = await db.select().from(googleReviewsSettings).limit(1)
 
-        const tokenData = {
+        // Build token data - only include refreshToken if Google provided one,
+        // otherwise preserve the existing stored value
+        const tokenData: {
+            accessToken: string
+            refreshToken?: string | null
+            tokenExpiresAt: Date
+        } = {
             accessToken: tokens.access_token,
-            refreshToken: tokens.refresh_token ?? null,
             tokenExpiresAt: calculateTokenExpiry(tokens.expires_in),
+        }
+
+        // Only set refreshToken if Google returned one (first auth only)
+        // Otherwise, preserve the existing refresh token
+        if (tokens.refresh_token) {
+            tokenData.refreshToken = tokens.refresh_token
         }
 
         if (existing.length > 0) {
@@ -79,8 +90,11 @@ export async function handleOAuthCallback(code: string): Promise<ActionResult> {
                 .set(tokenData)
                 .where(eq(googleReviewsSettings.id, existing[0]!.id))
         } else {
+            // For new records, set refreshToken (may be null on first insert)
             await db.insert(googleReviewsSettings).values({
-                ...tokenData,
+                accessToken: tokenData.accessToken,
+                refreshToken: tokens.refresh_token ?? null,
+                tokenExpiresAt: tokenData.tokenExpiresAt,
                 isEnabled: false,
             })
         }
