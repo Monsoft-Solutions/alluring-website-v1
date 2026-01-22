@@ -116,6 +116,10 @@ const navItems: NavItem[] = [
         title: 'Reviews',
         href: '/reviews',
         icon: Star,
+        children: [
+            { title: 'All Reviews', href: '/reviews' },
+            { title: 'Settings', href: '/reviews/settings' },
+        ],
     },
 ]
 

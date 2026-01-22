@@ -14,7 +14,7 @@ import { CACHE_TAGS } from '@workspace/shared/cache'
 import { and, desc, eq, gte, asc } from 'drizzle-orm'
 
 /** Cache revalidation time in seconds (1 hour) */
-const CACHE_TTL = 3600
+const CACHE_TTL = 3600 * 24
 
 /** Minimum rating to display on the website */
 const MIN_RATING = 4
