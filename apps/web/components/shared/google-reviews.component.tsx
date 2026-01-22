@@ -12,7 +12,8 @@
  * - Text truncation with expand/collapse (via client component)
  * - Luxury gold accent styling
  */
-import { Star, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
+import { Star, ExternalLink, ArrowRight } from 'lucide-react'
 import { ReviewSchema } from '@workspace/seo/react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
@@ -39,6 +40,8 @@ export type GoogleReviewsProps = {
     readonly featuredOnly?: boolean
     /** Show the "View all on Google" link */
     readonly showGoogleLink?: boolean
+    /** Show the "View all patient reviews" button linking to /reviews page */
+    readonly showViewAllButton?: boolean
     /** Include Review JSON-LD schema */
     readonly includeSchema?: boolean
     /** Custom CSS class */
@@ -52,6 +55,7 @@ export async function GoogleReviews({
     limit = 6,
     featuredOnly = false,
     showGoogleLink = true,
+    showViewAllButton = true,
     includeSchema = true,
     className,
 }: GoogleReviewsProps) {
@@ -131,18 +135,42 @@ export async function GoogleReviews({
                         ))}
                     </div>
 
-                    {/* Google Link */}
-                    {showGoogleLink && siteConfig.business.googlePlaceId && (
-                        <div className='mt-10 text-center'>
-                            <a
-                                href={`https://search.google.com/local/reviews?placeid=${siteConfig.business.googlePlaceId}`}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                className='text-gold-600 hover:text-gold-700 inline-flex items-center gap-2 text-sm font-medium transition-colors'
-                            >
-                                View all reviews on Google
-                                <ExternalLink className='h-4 w-4' />
-                            </a>
+                    {/* Links Section */}
+                    {(showGoogleLink || showViewAllButton) && (
+                        <div className='mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6'>
+                            {/* View All Patient Reviews Link */}
+                            {showViewAllButton && (
+                                <Link
+                                    href='/reviews'
+                                    className='text-gold-600 hover:text-gold-700 inline-flex items-center gap-2 text-sm font-medium transition-colors'
+                                >
+                                    View all patient reviews
+                                    <ArrowRight className='h-4 w-4' />
+                                </Link>
+                            )}
+
+                            {/* Separator */}
+                            {showViewAllButton &&
+                                showGoogleLink &&
+                                siteConfig.business.googlePlaceId && (
+                                    <span className='hidden text-stone-300 sm:block'>
+                                        |
+                                    </span>
+                                )}
+
+                            {/* Google Link */}
+                            {showGoogleLink &&
+                                siteConfig.business.googlePlaceId && (
+                                    <a
+                                        href={`https://search.google.com/local/reviews?placeid=${siteConfig.business.googlePlaceId}`}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        className='text-gold-600 hover:text-gold-700 inline-flex items-center gap-2 text-sm font-medium transition-colors'
+                                    >
+                                        View all reviews on Google
+                                        <ExternalLink className='h-4 w-4' />
+                                    </a>
+                                )}
                         </div>
                     )}
                 </ContentWrapper>
