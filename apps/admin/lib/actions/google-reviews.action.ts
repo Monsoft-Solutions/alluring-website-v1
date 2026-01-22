@@ -15,6 +15,7 @@ import { revalidateTag } from 'next/cache'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
+import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 import {
     exchangeCodeForTokens,
     calculateTokenExpiry,
@@ -281,6 +282,7 @@ export async function syncGoogleReviews(): Promise<ReviewsSyncResult> {
         if (result.success) {
             revalidatePath('/reviews')
             revalidateTag(CACHE_TAGS.GOOGLE_REVIEWS as string, { expire: 0 })
+            await revalidateWebAppCache([CACHE_TAGS.GOOGLE_REVIEWS])
         }
 
         return result
@@ -329,6 +331,7 @@ export async function toggleReviewPublished(
 
         revalidatePath('/reviews')
         revalidateTag(CACHE_TAGS.GOOGLE_REVIEWS as string, { expire: 0 })
+        await revalidateWebAppCache([CACHE_TAGS.GOOGLE_REVIEWS])
 
         return { success: true }
     } catch (error) {
@@ -364,6 +367,7 @@ export async function toggleReviewFeatured(
 
         revalidatePath('/reviews')
         revalidateTag(CACHE_TAGS.GOOGLE_REVIEWS as string, { expire: 0 })
+        await revalidateWebAppCache([CACHE_TAGS.GOOGLE_REVIEWS])
 
         return { success: true }
     } catch (error) {
@@ -399,6 +403,7 @@ export async function updateReviewDisplayOrder(
 
         revalidatePath('/reviews')
         revalidateTag(CACHE_TAGS.GOOGLE_REVIEWS as string, { expire: 0 })
+        await revalidateWebAppCache([CACHE_TAGS.GOOGLE_REVIEWS])
 
         return { success: true }
     } catch (error) {
