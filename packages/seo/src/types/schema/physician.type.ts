@@ -7,6 +7,12 @@
  * @see https://schema.org/Physician
  */
 export type PhysicianSchemaProps = {
+    /**
+     * Entity identifier for Knowledge Graph linking.
+     * Format: "https://www.example.com/#physician-{slug}"
+     */
+    id?: string
+
     /** Name of the physician */
     name: string
 
@@ -39,6 +45,8 @@ export type PhysicianSchemaProps = {
 
     /** Works for organization */
     worksFor?: {
+        /** Reference to organization entity via @id (instead of embedding full org) */
+        '@id'?: string
         name: string
         url?: string
     }

@@ -111,6 +111,7 @@ export default async function FreeConsultationPage() {
             />
 
             <OrganizationSchema
+                id={`${seoConfig.siteUrl}/#organization`}
                 name={seoConfig.siteName}
                 url={seoConfig.siteUrl}
                 logo={seoConfig.organization?.logo}
@@ -128,9 +129,10 @@ export default async function FreeConsultationPage() {
                 url={`${seoConfig.siteUrl}/free-consultation`}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
+                    '@id': `${seoConfig.siteUrl}/#organization`,
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    type: 'Organization',
+                    type: 'MedicalBusiness',
                     logo: seoConfig.organization?.logo,
                 }}
                 areaServed={['Miami', 'Florida', 'Latin America', 'Caribbean']}

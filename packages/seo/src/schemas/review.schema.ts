@@ -31,6 +31,10 @@ export function buildReviewJsonLd(
     if (props.itemReviewed) {
         review.itemReviewed = {
             '@type': props.itemReviewed.type ?? 'LocalBusiness',
+            // Include @id for Knowledge Graph entity linking if provided
+            ...(props.itemReviewed['@id'] && {
+                '@id': props.itemReviewed['@id'],
+            }),
             name: props.itemReviewed.name,
             ...(props.itemReviewed.url && { url: props.itemReviewed.url }),
         }

@@ -112,7 +112,8 @@ export default async function PromotionDetailPage({
                 discount={discount ?? undefined}
                 discountDescription={discountDescription}
                 offeredBy={{
-                    type: 'LocalBusiness',
+                    '@id': `${seoConfig.siteUrl}/#organization`,
+                    type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
                     image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,

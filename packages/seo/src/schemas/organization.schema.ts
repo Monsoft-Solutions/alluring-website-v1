@@ -6,8 +6,11 @@ import { withContext } from './_internal'
 export function buildOrganizationJsonLd(
     props: OrganizationSchemaProps
 ): WithContext<Organization> {
-    const organization: Organization = {
+    // Build organization with @id for Knowledge Graph entity linking
+    const organization: Record<string, unknown> = {
         '@type': 'Organization',
+        // Include @id for entity identification and cross-page linking
+        ...(props.id && { '@id': props.id }),
         name: props.name,
         url: props.url,
         logo: props.logo,
@@ -33,5 +36,5 @@ export function buildOrganizationJsonLd(
         sameAs: props.sameAs,
     }
 
-    return withContext(organization)
+    return withContext(organization as unknown as Organization)
 }

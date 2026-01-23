@@ -169,6 +169,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
             />
 
             <OrganizationSchema
+                id={`${seoConfig.siteUrl}/#organization`}
                 name={seoConfig.siteName}
                 url={seoConfig.siteUrl}
                 logo={seoConfig.organization?.logo}
@@ -190,7 +191,8 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
                 numberOfItems={promotions.length}
                 offeredBy={{
-                    type: 'LocalBusiness',
+                    '@id': `${seoConfig.siteUrl}/#organization`,
+                    type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
                     image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,

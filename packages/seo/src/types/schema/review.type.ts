@@ -45,6 +45,13 @@ export type ReviewSchemaProps = {
     datePublished: string
     reviewBody?: string
     itemReviewed?: {
+        /**
+         * Reference to an existing entity via @id
+         * When provided, creates a linked reference in the Knowledge Graph
+         * Should match the @id of the organization entity on other pages
+         * (e.g., "https://www.example.com/#organization")
+         */
+        '@id'?: string
         name: string
         url?: string
         /** @default 'LocalBusiness' */

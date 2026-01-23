@@ -6,7 +6,11 @@
  * Includes SEO optimization and structured data.
  */
 import type { Metadata } from 'next'
-import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    OrganizationSchema,
+    PhysicianSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullbleed.component'
@@ -17,6 +21,7 @@ import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { aboutCTAData } from '@/lib/data/webpages/about.data'
 import { siteConfig } from '@/lib/data/site-config'
+import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
@@ -85,11 +90,36 @@ export default function AboutPage() {
 
             {/* SEO Schema - Organization */}
             <OrganizationSchema
+                id={`${siteUrl}/#organization`}
                 name={siteConfig.business.name}
                 url={siteUrl}
                 logo={siteConfig.brand.logo}
                 sameAs={siteConfig.social.map((s) => s.url)}
             />
+
+            {/* SEO Schema - Physician for each surgeon (E-E-A-T signals) */}
+            {surgeons.map((surgeon) => (
+                <PhysicianSchema
+                    key={surgeon.id}
+                    id={`${siteUrl}/#physician-${surgeon.slug}`}
+                    name={surgeon.name}
+                    url={`${siteUrl}/${surgeon.slug}`}
+                    image={
+                        surgeon.images.featured.startsWith('http')
+                            ? surgeon.images.featured
+                            : `${siteUrl}${surgeon.images.featured}`
+                    }
+                    description={surgeon.shortBio}
+                    jobTitle={surgeon.title}
+                    medicalSpecialty={surgeon.specialties}
+                    award={surgeon.certifications}
+                    worksFor={{
+                        '@id': `${siteUrl}/#organization`,
+                        name: siteConfig.business.name,
+                    }}
+                    knowsAbout={surgeon.specialties}
+                />
+            ))}
 
             {/* Main Content */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>

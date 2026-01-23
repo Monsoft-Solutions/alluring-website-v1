@@ -1,6 +1,10 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    PhysicianSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import { cache } from 'react'
 
 // Surgeon imports
@@ -252,6 +256,38 @@ function SurgeonContent({
 
             {/* Structured Data - Breadcrumb Schema */}
             <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* Structured Data - Physician Schema for E-E-A-T */}
+            <PhysicianSchema
+                id={`${siteUrl}/#physician-${slug}`}
+                name={surgeon.name}
+                url={pageUrl}
+                image={
+                    surgeon.images.featured.startsWith('http')
+                        ? surgeon.images.featured
+                        : `${siteUrl}${surgeon.images.featured}`
+                }
+                description={surgeon.fullBio}
+                jobTitle={surgeon.title}
+                medicalSpecialty={surgeon.specialties}
+                award={surgeon.certifications}
+                alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
+                worksFor={{
+                    '@id': `${siteUrl}/#organization`,
+                    name: siteConfig.business.name,
+                    url: siteUrl,
+                }}
+                address={{
+                    streetAddress: siteConfig.contact.address,
+                    addressLocality: siteConfig.contact.city,
+                    addressRegion: siteConfig.contact.state,
+                    postalCode: siteConfig.contact.postalCode,
+                    addressCountry: siteConfig.contact.country,
+                }}
+                telephone={siteConfig.contact.phone}
+                sameAs={Object.values(surgeon.social ?? {}).filter(Boolean)}
+                knowsAbout={surgeon.specialties}
+            />
 
             <main className='min-h-screen bg-stone-950'>
                 <SurgeonHero surgeon={surgeon} />

@@ -21,6 +21,7 @@ export function buildPhysicianJsonLd(
     // Use type assertion at the end to handle schema-dts limitations
     const physician: Record<string, unknown> = {
         '@type': 'Physician',
+        ...(props.id && { '@id': props.id }),
         name: props.name,
     }
 
@@ -76,6 +77,7 @@ export function buildPhysicianJsonLd(
     if (props.worksFor) {
         physician.worksFor = {
             '@type': 'Organization',
+            ...(props.worksFor['@id'] && { '@id': props.worksFor['@id'] }),
             name: props.worksFor.name,
             ...(props.worksFor.url && { url: props.worksFor.url }),
         }

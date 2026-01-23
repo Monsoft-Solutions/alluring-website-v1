@@ -110,6 +110,7 @@ export default function RootLayout({
                 <PageViewTracker />
                 <ScrollDepthTracker />
                 <OrganizationSchema
+                    id={`${seoConfig.siteUrl}/#organization`}
                     name={seoConfig.siteName}
                     url={seoConfig.siteUrl}
                     logo={seoConfig.organization?.logo}

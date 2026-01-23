@@ -38,7 +38,8 @@ export default async function PromotionsPage() {
                 description='Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.'
                 numberOfItems={promotions.length}
                 offeredBy={{
-                    type: 'LocalBusiness',
+                    '@id': `${seoConfig.siteUrl}/#organization`,
+                    type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
                     image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
