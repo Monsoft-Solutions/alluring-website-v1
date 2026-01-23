@@ -5,6 +5,7 @@ import {
     FAQSchema,
     MedicalProcedureSchema,
     OfferSchema,
+    ServiceSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -201,7 +202,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 <FAQSchema items={faqSchemaItems} />
             )}
 
-            {/* Structured Data - MedicalProcedure Schema */}
+            {/* Structured Data - SurgicalProcedure Schema (more specific than MedicalProcedure) */}
             <MedicalProcedureSchema
                 name={procedure.title}
                 description={procedure.description}
@@ -236,8 +237,32 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                         : undefined
                 }
                 procedureType='Surgical'
+                schemaType='SurgicalProcedure'
                 dateModified={procedure.dateModified ?? undefined}
                 datePublished={procedure.datePublished ?? undefined}
+                performedBy={{
+                    '@id': `${siteUrl}/#organization`,
+                    name: siteConfig.business.name,
+                    type: 'MedicalBusiness',
+                }}
+            />
+
+            {/* Structured Data - Service Schema for SEO Rich Results */}
+            <ServiceSchema
+                name={`${procedure.title} in Miami`}
+                description={procedure.description}
+                url={pageUrl}
+                serviceType='Cosmetic Surgery'
+                provider={{
+                    '@id': `${siteUrl}/#organization`,
+                    name: siteConfig.business.name,
+                    type: 'MedicalBusiness',
+                }}
+                areaServed={['Miami', 'Florida', 'United States']}
+                availableLanguage={['English', 'Spanish']}
+                image={
+                    procedure.image ? `${siteUrl}${procedure.image}` : undefined
+                }
             />
 
             {/* Structured Data - Offer Schema for related promotion */}
@@ -273,7 +298,8 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                             : undefined
                     }
                     offeredBy={{
-                        type: 'LocalBusiness',
+                        '@id': `${siteUrl}/#organization`,
+                        type: 'MedicalBusiness',
                         name: siteConfig.business.name,
                         url: siteUrl,
                         image: `${siteUrl}${siteConfig.brand.logo}`,

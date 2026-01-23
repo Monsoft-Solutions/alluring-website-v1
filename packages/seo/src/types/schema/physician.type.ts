@@ -54,6 +54,18 @@ export type PhysicianSchemaProps = {
 
     /** Same as links (social profiles, medical board pages, etc.) */
     sameAs?: string[]
+
+    /**
+     * Formal credentials (board certifications, licenses, degrees)
+     * Provides strong E-E-A-T signals for medical expertise
+     */
+    hasCredential?: PhysicianCredential[]
+
+    /**
+     * Topics/procedures the physician specializes in
+     * Helps Google understand expertise areas
+     */
+    knowsAbout?: string[]
 }
 
 export type PhysicianService = {
@@ -78,4 +90,28 @@ export type PhysicianAddress = {
     addressRegion?: string
     postalCode?: string
     addressCountry?: string
+}
+
+/**
+ * Educational or occupational credential for E-E-A-T signals
+ * @see https://schema.org/EducationalOccupationalCredential
+ */
+export type PhysicianCredential = {
+    /** Category of credential (e.g., "BoardCertification", "Degree", "License") */
+    credentialCategory:
+        | 'BoardCertification'
+        | 'Degree'
+        | 'License'
+        | 'Certificate'
+    /** Name of the credential (e.g., "Board Certified Plastic Surgeon") */
+    name: string
+    /** Organization that recognizes/issues this credential */
+    recognizedBy?: {
+        name: string
+        url?: string
+    }
+    /** Geographic area where the credential is valid */
+    validIn?: string
+    /** Date the credential was issued (ISO format) */
+    dateCreated?: string
 }

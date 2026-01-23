@@ -50,15 +50,18 @@ export function buildServiceJsonLd(
     if (props.category) service.category = props.category
     if (props.brand) service.brand = props.brand
 
-    // Handle provider (Organization or Person)
+    // Handle provider (Organization, Person, or MedicalBusiness)
     if (props.provider) {
         const providerType = props.provider.type ?? 'Organization'
         service.provider = {
             '@type': providerType,
+            // Include @id for Knowledge Graph entity linking if provided
+            ...(props.provider['@id'] && { '@id': props.provider['@id'] }),
             name: props.provider.name,
             ...(props.provider.url && { url: props.provider.url }),
             ...(props.provider.logo &&
-                providerType === 'Organization' && {
+                (providerType === 'Organization' ||
+                    providerType === 'MedicalBusiness') && {
                     logo: props.provider.logo,
                 }),
         }

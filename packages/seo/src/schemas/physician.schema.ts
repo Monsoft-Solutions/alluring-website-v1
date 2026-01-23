@@ -108,5 +108,30 @@ export function buildPhysicianJsonLd(
         physician.sameAs = props.sameAs
     }
 
+    // Handle credentials (board certifications, licenses, degrees) - E-E-A-T enhancement
+    if (props.hasCredential && props.hasCredential.length > 0) {
+        physician.hasCredential = props.hasCredential.map((cred) => ({
+            '@type': 'EducationalOccupationalCredential',
+            credentialCategory: cred.credentialCategory,
+            name: cred.name,
+            ...(cred.recognizedBy && {
+                recognizedBy: {
+                    '@type': 'Organization',
+                    name: cred.recognizedBy.name,
+                    ...(cred.recognizedBy.url && {
+                        url: cred.recognizedBy.url,
+                    }),
+                },
+            }),
+            ...(cred.validIn && { validIn: cred.validIn }),
+            ...(cred.dateCreated && { dateCreated: cred.dateCreated }),
+        }))
+    }
+
+    // Handle knowsAbout - expertise areas for E-E-A-T signals
+    if (props.knowsAbout && props.knowsAbout.length > 0) {
+        physician.knowsAbout = props.knowsAbout
+    }
+
     return withContext(physician as unknown as Physician)
 }

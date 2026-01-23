@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import {
     FAQSchema,
-    LocalBusinessSchema,
+    MedicalClinicSchema,
     OfferSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
@@ -113,10 +113,12 @@ export default async function Page() {
                 description={siteConfig.seo.siteDescription}
             />
 
-            {/* Structured Data - LocalBusiness Schema for local SEO */}
-            <LocalBusinessSchema
+            {/* Structured Data - MedicalBusiness Schema for healthcare SEO */}
+            <MedicalClinicSchema
                 name={siteConfig.business.name}
+                id={`${siteUrl}/#organization`}
                 url={siteUrl}
+                logo={`${siteUrl}${siteConfig.brand.logo}`}
                 telephone={siteConfig.contact.phone}
                 address={{
                     streetAddress: siteConfig.contact.address,
@@ -148,6 +150,19 @@ export default async function Page() {
                     },
                 ]}
                 image={`${siteUrl}/og-image.jpg`}
+                medicalSpecialty={['PlasticSurgery']}
+                isAcceptingNewPatients={true}
+                priceRange='$2500-$25000'
+                availableLanguage={['English', 'Spanish']}
+                contactPoint={[
+                    {
+                        contactType: 'Appointments',
+                        telephone: siteConfig.contact.phone,
+                        availableLanguage: ['English', 'Spanish'],
+                        areaServed: 'US',
+                    },
+                ]}
+                sameAs={siteConfig.social.map((s) => s.url)}
                 {...(averageRating && totalCount > 0
                     ? {
                           aggregateRating: {

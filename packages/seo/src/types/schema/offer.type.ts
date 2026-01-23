@@ -62,8 +62,17 @@ export type OfferProviderAddress = {
  * Organization or business offering the promotion
  */
 export type OfferProvider = {
+    /**
+     * Reference to an existing entity via @id
+     * When provided, creates a linked reference in the Knowledge Graph
+     * Should match the @id of the organization entity on other pages
+     * (e.g., "https://www.example.com/#organization")
+     * When @id is provided, other properties become optional (except name and type)
+     */
+    '@id'?: string
+
     /** Type of provider */
-    type: 'LocalBusiness' | 'Organization'
+    type: 'LocalBusiness' | 'Organization' | 'MedicalBusiness'
 
     /** Name of the provider */
     name: string

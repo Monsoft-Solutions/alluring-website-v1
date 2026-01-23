@@ -48,6 +48,11 @@ export function buildOfferJsonLd(props: OfferSchemaProps): WithContext<Offer> {
             name: props.offeredBy.name,
         }
 
+        // Add @id for Knowledge Graph entity linking if provided
+        if (props.offeredBy['@id']) {
+            offeredBy['@id'] = props.offeredBy['@id']
+        }
+
         if (props.offeredBy.url) offeredBy.url = props.offeredBy.url
         if (props.offeredBy.logo) offeredBy.logo = props.offeredBy.logo
         if (props.offeredBy.image) offeredBy.image = props.offeredBy.image
@@ -117,6 +122,11 @@ export function buildOfferCatalogJsonLd(
         const offeredBy: Record<string, unknown> = {
             '@type': props.offeredBy.type,
             name: props.offeredBy.name,
+        }
+
+        // Add @id for Knowledge Graph entity linking if provided
+        if (props.offeredBy['@id']) {
+            offeredBy['@id'] = props.offeredBy['@id']
         }
 
         if (props.offeredBy.url) offeredBy.url = props.offeredBy.url
