@@ -13,6 +13,7 @@ import { RelatedMedia } from '@/components/gallery/related-media.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { siteConfig } from '@/lib/data/site-config'
 import { formatSecondsToISO8601 } from '@/lib/utils/duration.util'
+import { getImageMimeType } from '@/lib/utils/image.util'
 import {
     getAllGalleryMediaSlugs,
     getGalleryMediaBySlug,
@@ -137,6 +138,15 @@ export default async function GalleryMediaPage({ params }: PageProps) {
                         url: siteUrl,
                     }}
                     mainEntityOfPage={pageUrl}
+                    // Enhanced SEO properties
+                    caption={media.description ?? media.alt}
+                    encodingFormat={getImageMimeType(media.url)}
+                    representativeOfPage={true}
+                    copyrightHolder={
+                        siteConfig.legal?.copyrightHolder ??
+                        siteConfig.business.name
+                    }
+                    license={siteConfig.legal?.defaultImageLicense}
                 />
             )}
 

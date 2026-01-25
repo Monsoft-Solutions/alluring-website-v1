@@ -22,6 +22,7 @@ import { BlogPostContent } from '@/components/blog/blog-post-content.component'
 import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
+import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
@@ -190,7 +191,7 @@ export default async function DynamicPage({ params }: PageProps) {
     if (post) {
         // Fetch related data for blog post (6 posts for better discovery)
         const tableOfContents = extractTableOfContents(post.content)
-        const [relatedPosts, adjacentPosts] = await Promise.all([
+        const [relatedPosts, adjacentPosts, inlineImages] = await Promise.all([
             getRelatedPosts(
                 post.id,
                 post.categories.map((c) => c.id),
@@ -200,6 +201,7 @@ export default async function DynamicPage({ params }: PageProps) {
             post.publishedAt
                 ? getAdjacentPosts(post.id, post.publishedAt)
                 : Promise.resolve({ previousPost: null, nextPost: null }),
+            getInlineImagesByPostId(post.id),
         ])
         const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
             post.content
@@ -218,6 +220,7 @@ export default async function DynamicPage({ params }: PageProps) {
                 afterCTA={afterCTA}
                 ctaId={ctaId ?? null}
                 adjacentPosts={adjacentPosts}
+                inlineImages={inlineImages}
             />
         )
     }

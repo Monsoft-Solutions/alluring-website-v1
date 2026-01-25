@@ -5,7 +5,11 @@
  * Features luxury styling with dark header and gold accents.
  * Includes category-specific descriptions, FAQs, and related category links.
  */
-import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    FAQSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import { ArrowLeft, ArrowRight, FolderOpen } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -129,6 +133,16 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
     const pageTitle = categoryDescription?.title || `${category.name} Articles`
 
+    // Breadcrumb items for navigation schema
+    const breadcrumbItems = [
+        { name: 'Home', item: seoConfig.siteUrl },
+        { name: 'Blog', item: `${seoConfig.siteUrl}/blog` },
+        {
+            name: category.name,
+            item: `${seoConfig.siteUrl}/blog/categories/${category.slug}`,
+        },
+    ]
+
     return (
         <>
             <WebPageSchema
@@ -136,6 +150,9 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 url={`${seoConfig.siteUrl}/blog/categories/${category.slug}`}
                 description={pageDescription}
             />
+
+            {/* Breadcrumb Schema for navigation signals */}
+            <BreadcrumbSchema items={breadcrumbItems} />
 
             {/* FAQ Schema if FAQs exist */}
             {faqItems && faqItems.length > 0 && <FAQSchema items={faqItems} />}

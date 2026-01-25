@@ -4,7 +4,7 @@
  * Displays posts with a specific tag.
  * Features luxury styling with dark header and gold accents.
  */
-import { WebPageSchema } from '@workspace/seo/react'
+import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
 import { ArrowLeft, Hash } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -91,6 +91,16 @@ export default async function TagDetailPage({ params }: PageProps) {
           ).toString('base64')
         : undefined
 
+    // Breadcrumb items for navigation schema
+    const breadcrumbItems = [
+        { name: 'Home', item: seoConfig.siteUrl },
+        { name: 'Blog', item: `${seoConfig.siteUrl}/blog` },
+        {
+            name: tag.name,
+            item: `${seoConfig.siteUrl}/blog/tags/${tag.slug}`,
+        },
+    ]
+
     return (
         <>
             <WebPageSchema
@@ -98,6 +108,9 @@ export default async function TagDetailPage({ params }: PageProps) {
                 url={`${seoConfig.siteUrl}/blog/tags/${tag.slug}`}
                 description={`Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`}
             />
+
+            {/* Breadcrumb Schema for navigation signals */}
+            <BreadcrumbSchema items={breadcrumbItems} />
 
             <main className='bg-stone-50'>
                 {/* Header */}

@@ -14,6 +14,8 @@
  * SSR-compatible with CSS animations.
  */
 import { ArticleSchema, FAQSchema } from '@workspace/seo/react'
+
+import { BlogPostImagesSchema } from '@/components/blog/blog-post-images-schema.component'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,6 +34,7 @@ import { TableOfContents } from '@/components/blog/table-of-contents.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
+import type { InlineImage } from '@/lib/queries/blog/post-images.query'
 import { seoConfig } from '@/lib/seo-config'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
@@ -47,6 +50,8 @@ type BlogPostContentProps = {
     afterCTA: string | null
     ctaId: string | null
     adjacentPosts: AdjacentPosts
+    /** Inline images for schema generation */
+    inlineImages?: InlineImage[]
 }
 
 /**
@@ -63,6 +68,7 @@ export function BlogPostContent({
     afterCTA,
     ctaId,
     adjacentPosts,
+    inlineImages,
 }: BlogPostContentProps) {
     // Guard: publishedAt is required for published posts
     if (!post.publishedAt) {
@@ -352,6 +358,19 @@ export function BlogPostContent({
                                         answer: faq.answer,
                                     }))}
                                     mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
+                                />
+                            )}
+
+                            {/* ImageObject schemas for inline images */}
+                            {inlineImages && inlineImages.length > 0 && (
+                                <BlogPostImagesSchema
+                                    images={inlineImages}
+                                    postUrl={`${seoConfig.siteUrl}/${post.slug}`}
+                                    postTitle={post.title}
+                                    authorName={post.author?.name}
+                                    datePublished={
+                                        post.publishedAt ?? undefined
+                                    }
                                 />
                             )}
 

@@ -194,6 +194,16 @@ export const siteConfig: SiteConfig = {
         rating: '4.9',
         accreditation: 'Double Board-Certified',
     },
+
+    /**
+     * Legal Information
+     * Copyright and licensing details for structured data schemas
+     */
+    legal: {
+        copyrightHolder: 'Alluring Plastic Surgery',
+        defaultImageLicense:
+            'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    },
 }
 
 /**
