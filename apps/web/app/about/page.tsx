@@ -6,7 +6,11 @@
  * Includes SEO optimization and structured data.
  */
 import type { Metadata } from 'next'
-import { PhysicianSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    PhysicianSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullbleed.component'
@@ -82,6 +86,14 @@ export default function AboutPage() {
                 name={metadata.title as string}
                 url={`${siteUrl}/about`}
                 description={metadata.description as string}
+            />
+
+            {/* SEO Schema - Breadcrumb */}
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', item: siteUrl },
+                    { name: 'About Us', item: `${siteUrl}/about` },
+                ]}
             />
 
             {/* SEO Schema - Physician for each surgeon (E-E-A-T signals) */}

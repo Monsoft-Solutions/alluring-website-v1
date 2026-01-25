@@ -12,6 +12,7 @@
 import type { Metadata } from 'next'
 
 import {
+    BreadcrumbSchema,
     FAQSchema,
     OfferCatalogSchema,
     WebPageSchema,
@@ -160,13 +161,25 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
 
     return (
         <>
-            {/* SEO Schema */}
+            {/* SEO Schema - WebPage */}
             <WebPageSchema
                 name={`Plastic Surgery Specials & Deals - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
                 description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
             />
 
+            {/* SEO Schema - Breadcrumb */}
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', item: seoConfig.siteUrl },
+                    {
+                        name: 'Miami Plastic Surgery Specials',
+                        item: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
+                    },
+                ]}
+            />
+
+            {/* SEO Schema - FAQ */}
             <FAQSchema
                 items={specialsFaqData.map((faq) => ({
                     question: faq.question,

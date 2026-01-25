@@ -7,6 +7,7 @@
  * Optimized for conversions with the contact form as the primary hero element.
  */
 import {
+    BreadcrumbSchema,
     MedicalClinicSchema,
     ServiceSchema,
     WebPageSchema,
@@ -82,11 +83,22 @@ export default async function ContactPage() {
 
     return (
         <>
-            {/* SEO Schema */}
+            {/* SEO Schema - WebPage */}
             <WebPageSchema
                 name={`Schedule Your Consultation - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/contact-us`}
                 description='Request your private consultation with board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey.'
+            />
+
+            {/* SEO Schema - Breadcrumb */}
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', item: seoConfig.siteUrl },
+                    {
+                        name: 'Contact Us',
+                        item: `${seoConfig.siteUrl}/contact-us`,
+                    },
+                ]}
             />
 
             {/* MedicalBusiness Schema - Healthcare-specific LocalBusiness for local SEO */}
