@@ -22,7 +22,6 @@
 import {
     FAQSchema,
     LocalBusinessSchema,
-    OrganizationSchema,
     ServiceSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
@@ -130,15 +129,6 @@ export default async function ConsultaGratisPage() {
                 name={`Cirugía Plástica Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/consulta-gratis`}
                 description='Cirugía plástica de clase mundial en Miami con equipo 100% bilingüe. BBL, aumento de senos, liposucción, mommy makeover. Cirujanos certificados con 15+ años de experiencia.'
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

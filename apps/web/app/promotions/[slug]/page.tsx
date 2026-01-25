@@ -116,16 +116,6 @@ export default async function PromotionDetailPage({
                     type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
-                    telephone: siteConfig.contact.phone,
-                    priceRange: '$2500-$25000',
-                    address: {
-                        streetAddress: siteConfig.contact.address,
-                        addressLocality: siteConfig.contact.city ?? '',
-                        addressRegion: siteConfig.contact.state ?? '',
-                        postalCode: siteConfig.contact.postalCode ?? '',
-                        addressCountry: siteConfig.contact.country ?? '',
-                    },
                 }}
                 itemOffered={
                     promotion.procedureSlug

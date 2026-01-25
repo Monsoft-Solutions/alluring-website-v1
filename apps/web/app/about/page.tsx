@@ -6,11 +6,7 @@
  * Includes SEO optimization and structured data.
  */
 import type { Metadata } from 'next'
-import {
-    OrganizationSchema,
-    PhysicianSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { PhysicianSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { AboutHeroFullbleed } from '@/components/sections/about/about-hero-fullbleed.component'
@@ -86,15 +82,6 @@ export default function AboutPage() {
                 name={metadata.title as string}
                 url={`${siteUrl}/about`}
                 description={metadata.description as string}
-            />
-
-            {/* SEO Schema - Organization */}
-            <OrganizationSchema
-                id={`${siteUrl}/#organization`}
-                name={siteConfig.business.name}
-                url={siteUrl}
-                logo={siteConfig.brand.logo}
-                sameAs={siteConfig.social.map((s) => s.url)}
             />
 
             {/* SEO Schema - Physician for each surgeon (E-E-A-T signals) */}

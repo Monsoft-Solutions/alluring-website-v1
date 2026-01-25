@@ -18,11 +18,7 @@
  * - "gynecomastia surgery miami"
  * - "liposuction for men miami"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { MensHero } from '@/components/landing/mens-hero.component'
@@ -99,15 +95,6 @@ export default async function MensPlasticSurgeryMiamiPage() {
                 name={`Men's Plastic Surgery Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/mens-plastic-surgery-miami`}
                 description="Men's cosmetic surgery in Miami. Gynecomastia surgery, liposuction, facelift, and body contouring for men. Board-certified surgeons with expertise in male aesthetics."
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

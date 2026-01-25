@@ -19,11 +19,7 @@
  * - "tummy tuck after baby"
  * - "breast lift after breastfeeding"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { MommyMakeoverHero } from '@/components/landing/mommy-makeover-hero.component'
@@ -100,15 +96,6 @@ export default async function MommyMakeoverConsultationPage() {
                 name={`Mommy Makeover Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/mommy-makeover-consultation`}
                 description='Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction combined in one transformative procedure. Board-certified surgeons with 15+ years of experience.'
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

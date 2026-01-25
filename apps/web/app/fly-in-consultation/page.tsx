@@ -20,11 +20,7 @@
  * - "virtual plastic surgery consultation"
  * - "plastic surgery travel package"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { TravelHero } from '@/components/landing/travel-hero.component'
@@ -104,15 +100,6 @@ export default async function FlyInConsultationPage() {
                 name={`Fly-In Plastic Surgery - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/fly-in-consultation`}
                 description='World-class plastic surgery in Miami with fly-in concierge support. Start with a virtual consultation, then get expert guidance on travel, accommodations, and recovery.'
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

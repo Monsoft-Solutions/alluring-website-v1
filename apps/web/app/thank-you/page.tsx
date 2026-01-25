@@ -11,7 +11,7 @@
  * - No-indexed to prevent search engine indexing
  */
 
-import { OrganizationSchema, WebPageSchema } from '@workspace/seo/react'
+import { WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ThankYouHero } from '@/components/sections/thank-you/thank-you-hero.component'
@@ -45,15 +45,6 @@ export default function ThankYouPage() {
                 name={`Thank You - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/thank-you`}
                 description="Thank you for reaching out. We'll contact you shortly to schedule your consultation."
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             {/* Main Content */}

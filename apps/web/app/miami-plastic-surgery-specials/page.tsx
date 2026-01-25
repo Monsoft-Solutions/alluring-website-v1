@@ -14,7 +14,6 @@ import type { Metadata } from 'next'
 import {
     FAQSchema,
     OfferCatalogSchema,
-    OrganizationSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -168,16 +167,6 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
             />
 
-            <OrganizationSchema
-                id={`${seoConfig.siteUrl}/#organization`}
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
-            />
-
             <FAQSchema
                 items={specialsFaqData.map((faq) => ({
                     question: faq.question,
@@ -195,16 +184,6 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
-                    telephone: siteConfig.contact.phone,
-                    priceRange: '$2500-$25000',
-                    address: {
-                        streetAddress: siteConfig.contact.address,
-                        addressLocality: siteConfig.contact.city ?? '',
-                        addressRegion: siteConfig.contact.state ?? '',
-                        postalCode: siteConfig.contact.postalCode ?? '',
-                        addressCountry: siteConfig.contact.country ?? '',
-                    },
                 }}
                 itemListElement={promotions.map((promo) => ({
                     name: promo.title,

@@ -13,12 +13,7 @@
  * - "plastic surgery financing"
  * - Lead generation landing searches
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    ServiceSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, ServiceSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { LandingHero } from '@/components/landing/landing-hero.component'
@@ -108,16 +103,6 @@ export default async function FreeConsultationPage() {
                 name={`Free Consultation - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/free-consultation`}
                 description='Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Flexible financing available.'
-            />
-
-            <OrganizationSchema
-                id={`${seoConfig.siteUrl}/#organization`}
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

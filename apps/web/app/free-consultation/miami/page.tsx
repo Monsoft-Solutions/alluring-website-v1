@@ -22,7 +22,6 @@
 import {
     FAQSchema,
     LocalBusinessSchema,
-    OrganizationSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -129,15 +128,6 @@ export default async function MiamiConsultationPage() {
                 name={`Miami Plastic Surgery - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/free-consultation/miami`}
                 description="Miami's trusted plastic surgeons in Coral Gables. Board-certified surgeons with 15+ years serving the Miami community. BBL, breast augmentation, mommy makeover & more."
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

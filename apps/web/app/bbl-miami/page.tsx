@@ -19,11 +19,7 @@
  * - "best bbl surgeon miami"
  * - "natural bbl results"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BBLHero } from '@/components/landing/bbl-hero.component'
@@ -100,15 +96,6 @@ export default async function BBLMiamiPage() {
                 name={`BBL Miami - Brazilian Butt Lift - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/bbl-miami`}
                 description='The Miami BBL: Natural curves with world-class safety. Board-certified surgeons using ultrasound-guided technique at AAAASF-accredited facility. 2,000+ BBLs performed with exceptional results.'
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

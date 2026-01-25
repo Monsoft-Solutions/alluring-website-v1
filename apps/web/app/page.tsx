@@ -212,19 +212,10 @@ export default async function Page() {
                             : undefined
                     }
                     offeredBy={{
-                        type: 'LocalBusiness',
+                        '@id': `${siteUrl}/#organization`,
+                        type: 'MedicalBusiness',
                         name: siteConfig.business.name,
                         url: siteUrl,
-                        image: `${siteUrl}${siteConfig.brand.logo}`,
-                        telephone: siteConfig.contact.phone,
-                        priceRange: '$2500-$25000',
-                        address: {
-                            streetAddress: siteConfig.contact.address,
-                            addressLocality: siteConfig.contact.city ?? '',
-                            addressRegion: siteConfig.contact.state ?? '',
-                            postalCode: siteConfig.contact.postalCode ?? '',
-                            addressCountry: siteConfig.contact.country ?? '',
-                        },
                     }}
                     itemOffered={
                         featuredPromotion.procedureSlug
