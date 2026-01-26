@@ -99,5 +99,10 @@ export function buildCollectionPageJsonLd(
         }
     }
 
+    // Add genre to semantically differentiate category vs tag pages
+    if (props.isCategory !== undefined) {
+        base.genre = props.isCategory ? 'Category' : 'Tag'
+    }
+
     return withContext(base as unknown as CollectionPage)
 }

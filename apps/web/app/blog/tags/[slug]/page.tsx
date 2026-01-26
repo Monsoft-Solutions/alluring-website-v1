@@ -136,6 +136,7 @@ export default async function TagDetailPage({ params }: PageProps) {
                     author: post.author?.name ?? 'Alluring Plastic Surgery',
                 }))}
                 numberOfItems={initialPosts.length}
+                isCategory={false}
             />
 
             <main className='bg-stone-50'>
