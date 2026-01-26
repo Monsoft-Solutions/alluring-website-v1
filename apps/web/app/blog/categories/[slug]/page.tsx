@@ -180,7 +180,10 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                     datePublished: post.publishedAt ?? undefined,
                     author: post.author?.name ?? 'Alluring Plastic Surgery',
                 }))}
-                numberOfItems={initialPosts.length}
+                numberOfItems={
+                    allCategories.find((c) => c.slug === slug)?.count ??
+                    initialPosts.length
+                }
                 isCategory={true}
             />
 
