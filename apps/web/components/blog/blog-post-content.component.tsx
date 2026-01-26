@@ -14,6 +14,8 @@
  * SSR-compatible with CSS animations.
  */
 import { ArticleSchema, FAQSchema } from '@workspace/seo/react'
+
+import { BlogPostImagesSchema } from '@/components/blog/blog-post-images-schema.component'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,6 +34,7 @@ import { TableOfContents } from '@/components/blog/table-of-contents.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
+import type { InlineImage } from '@/lib/queries/blog/post-images.query'
 import { seoConfig } from '@/lib/seo-config'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
@@ -47,6 +50,8 @@ type BlogPostContentProps = {
     afterCTA: string | null
     ctaId: string | null
     adjacentPosts: AdjacentPosts
+    /** Inline images for schema generation */
+    inlineImages?: InlineImage[]
 }
 
 /**
@@ -63,6 +68,7 @@ export function BlogPostContent({
     afterCTA,
     ctaId,
     adjacentPosts,
+    inlineImages,
 }: BlogPostContentProps) {
     // Guard: publishedAt is required for published posts
     if (!post.publishedAt) {
@@ -306,16 +312,31 @@ export function BlogPostContent({
                                 </div>
                             )}
 
-                            {/* Schema markup */}
+                            {/* Schema markup - Enhanced with E-E-A-T signals */}
                             <ArticleSchema
                                 type='BlogPosting'
                                 headline={post.title}
                                 description={post.excerpt ?? undefined}
                                 author={
-                                    post.author?.name ??
-                                    seoConfig.organization?.name ??
-                                    seoConfig.siteName
+                                    post.author
+                                        ? {
+                                              name: post.author.name,
+                                              // Link to author profile for E-E-A-T
+                                              url: `${seoConfig.siteUrl}/blog/authors/editorial-team`,
+                                              // Job title adds authority signal
+                                              jobTitle: 'Medical Content Team',
+                                          }
+                                        : (seoConfig.organization?.name ??
+                                          seoConfig.siteName)
                                 }
+                                // Medical content reviewed by surgeon team (E-E-A-T)
+                                reviewedBy={{
+                                    name: 'Alluring Plastic Surgery Medical Team',
+                                    url: `${seoConfig.siteUrl}/about`,
+                                    '@id': `${seoConfig.siteUrl}/#organization`,
+                                    jobTitle:
+                                        'Board-Certified Plastic Surgeons',
+                                }}
                                 datePublished={post.publishedAt}
                                 dateModified={
                                     post.updatedAt ?? post.publishedAt
@@ -342,6 +363,10 @@ export function BlogPostContent({
                                         ? post.tags.map((t) => t.name)
                                         : undefined
                                 }
+                                // Speakable for voice search optimization
+                                speakable={{
+                                    cssSelector: ['h1'],
+                                }}
                             />
 
                             {/* FAQ Schema for blog posts with FAQs */}
@@ -352,6 +377,19 @@ export function BlogPostContent({
                                         answer: faq.answer,
                                     }))}
                                     mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
+                                />
+                            )}
+
+                            {/* ImageObject schemas for inline images */}
+                            {inlineImages && inlineImages.length > 0 && (
+                                <BlogPostImagesSchema
+                                    images={inlineImages}
+                                    postUrl={`${seoConfig.siteUrl}/${post.slug}`}
+                                    postTitle={post.title}
+                                    authorName={post.author?.name}
+                                    datePublished={
+                                        post.publishedAt ?? undefined
+                                    }
                                 />
                             )}
 

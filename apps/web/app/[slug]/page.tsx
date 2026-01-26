@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    PhysicianSchema,
+    ProfilePageSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import { cache } from 'react'
 
 // Surgeon imports
@@ -18,6 +23,7 @@ import { BlogPostContent } from '@/components/blog/blog-post-content.component'
 import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
+import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
@@ -186,7 +192,7 @@ export default async function DynamicPage({ params }: PageProps) {
     if (post) {
         // Fetch related data for blog post (6 posts for better discovery)
         const tableOfContents = extractTableOfContents(post.content)
-        const [relatedPosts, adjacentPosts] = await Promise.all([
+        const [relatedPosts, adjacentPosts, inlineImages] = await Promise.all([
             getRelatedPosts(
                 post.id,
                 post.categories.map((c) => c.id),
@@ -196,6 +202,7 @@ export default async function DynamicPage({ params }: PageProps) {
             post.publishedAt
                 ? getAdjacentPosts(post.id, post.publishedAt)
                 : Promise.resolve({ previousPost: null, nextPost: null }),
+            getInlineImagesByPostId(post.id),
         ])
         const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
             post.content
@@ -214,6 +221,7 @@ export default async function DynamicPage({ params }: PageProps) {
                 afterCTA={afterCTA}
                 ctaId={ctaId ?? null}
                 adjacentPosts={adjacentPosts}
+                inlineImages={inlineImages}
             />
         )
     }
@@ -252,6 +260,97 @@ function SurgeonContent({
 
             {/* Structured Data - Breadcrumb Schema */}
             <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* Structured Data - ProfilePage Schema for Knowledge Panel */}
+            <ProfilePageSchema
+                url={pageUrl}
+                name={`${surgeon.name} | ${siteConfig.business.name}`}
+                description={surgeon.shortBio}
+                mainEntity={{
+                    '@type': 'Physician',
+                    '@id': `${siteUrl}/#physician-${slug}`,
+                    name: surgeon.name,
+                    url: pageUrl,
+                    image: surgeon.images.featured.startsWith('http')
+                        ? surgeon.images.featured
+                        : `${siteUrl}${surgeon.images.featured}`,
+                    description: surgeon.shortBio,
+                    jobTitle: surgeon.title,
+                    worksFor: {
+                        '@type': 'Organization',
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                        address: {
+                            streetAddress: siteConfig.contact.address,
+                            addressLocality: siteConfig.contact.city,
+                            addressRegion: siteConfig.contact.state,
+                            postalCode: siteConfig.contact.postalCode,
+                            addressCountry: siteConfig.contact.country,
+                        },
+                    },
+                    sameAs: [
+                        ...Object.values(surgeon.social ?? {}).filter(
+                            (v): v is string => Boolean(v)
+                        ),
+                        ...Object.values(surgeon.externalProfiles ?? {}).filter(
+                            (v): v is string => Boolean(v)
+                        ),
+                    ],
+                }}
+                publisher={{
+                    name: siteConfig.business.name,
+                    url: siteUrl,
+                }}
+            />
+
+            {/* Structured Data - Physician Schema for E-E-A-T */}
+            <PhysicianSchema
+                id={`${siteUrl}/#physician-${slug}`}
+                name={surgeon.name}
+                url={pageUrl}
+                image={
+                    surgeon.images.featured.startsWith('http')
+                        ? surgeon.images.featured
+                        : `${siteUrl}${surgeon.images.featured}`
+                }
+                description={surgeon.fullBio}
+                jobTitle={surgeon.title}
+                medicalSpecialty={surgeon.specialties}
+                award={surgeon.certifications}
+                alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
+                worksFor={{
+                    '@id': `${siteUrl}/#organization`,
+                    name: siteConfig.business.name,
+                    url: siteUrl,
+                    address: {
+                        streetAddress: siteConfig.contact.address,
+                        addressLocality: siteConfig.contact.city,
+                        addressRegion: siteConfig.contact.state,
+                        postalCode: siteConfig.contact.postalCode,
+                        addressCountry: siteConfig.contact.country,
+                    },
+                }}
+                address={{
+                    streetAddress: siteConfig.contact.address,
+                    addressLocality: siteConfig.contact.city,
+                    addressRegion: siteConfig.contact.state,
+                    postalCode: siteConfig.contact.postalCode,
+                    addressCountry: siteConfig.contact.country,
+                }}
+                telephone={siteConfig.contact.phone}
+                // Enhanced sameAs with external profiles for E-E-A-T authority signals
+                sameAs={[
+                    // Social profiles
+                    ...Object.values(surgeon.social ?? {}).filter(
+                        (v): v is string => Boolean(v)
+                    ),
+                    // External medical directory profiles (Healthgrades, RealSelf, etc.)
+                    ...Object.values(surgeon.externalProfiles ?? {}).filter(
+                        (v): v is string => Boolean(v)
+                    ),
+                ]}
+                knowsAbout={surgeon.specialties}
+            />
 
             <main className='min-h-screen bg-stone-950'>
                 <SurgeonHero surgeon={surgeon} />

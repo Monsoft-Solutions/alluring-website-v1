@@ -19,11 +19,7 @@
  * - "plastic surgery after bariatric surgery"
  * - "skin removal after weight loss"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { WeightLossHero } from '@/components/landing/weight-loss-hero.component'
@@ -100,15 +96,6 @@ export default async function AfterWeightLossConsultationPage() {
                 name={`Body Contouring After Weight Loss - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/after-weight-loss-consultation`}
                 description="Complete your weight loss transformation with body contouring in Miami. Expert skin removal surgery for patients who've lost 50+ pounds through bariatric surgery, diet, or exercise."
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

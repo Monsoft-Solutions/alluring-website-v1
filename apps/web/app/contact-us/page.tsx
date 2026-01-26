@@ -7,8 +7,9 @@
  * Optimized for conversions with the contact form as the primary hero element.
  */
 import {
-    LocalBusinessSchema,
-    OrganizationSchema,
+    BreadcrumbSchema,
+    MedicalClinicSchema,
+    ServiceSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -82,26 +83,30 @@ export default async function ContactPage() {
 
     return (
         <>
-            {/* SEO Schema */}
+            {/* SEO Schema - WebPage */}
             <WebPageSchema
                 name={`Schedule Your Consultation - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/contact-us`}
                 description='Request your private consultation with board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey.'
             />
 
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
+            {/* SEO Schema - Breadcrumb */}
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', item: seoConfig.siteUrl },
+                    {
+                        name: 'Contact Us',
+                        item: `${seoConfig.siteUrl}/contact-us`,
+                    },
+                ]}
             />
 
-            {/* Structured Data - LocalBusiness Schema for local SEO */}
-            <LocalBusinessSchema
+            {/* MedicalBusiness Schema - Healthcare-specific LocalBusiness for local SEO */}
+            <MedicalClinicSchema
                 name={siteConfig.business.name}
-                url={`${seoConfig.siteUrl}/contact-us`}
+                id={`${seoConfig.siteUrl}/#organization`}
+                url={seoConfig.siteUrl}
+                logo={`${seoConfig.siteUrl}${siteConfig.brand.logo}`}
                 telephone={siteConfig.contact.phone}
                 address={{
                     streetAddress: siteConfig.contact.address,
@@ -132,6 +137,33 @@ export default async function ContactPage() {
                         closes: '15:00',
                     },
                 ]}
+                image={`${seoConfig.siteUrl}/og-image.jpg`}
+                medicalSpecialty={['PlasticSurgery']}
+                isAcceptingNewPatients={true}
+                sameAs={siteConfig.social.map((s) => s.url)}
+                availableLanguage={['English', 'Spanish']}
+                priceRange='$$$'
+            />
+
+            {/* Service Schema - Free Consultation offering */}
+            <ServiceSchema
+                name='Free Plastic Surgery Consultation'
+                description='Complimentary consultation with board-certified plastic surgeons. Discuss your goals, explore your options, and receive personalized recommendations with no obligation.'
+                url={`${seoConfig.siteUrl}/contact-us`}
+                serviceType='Cosmetic Surgery Consultation'
+                provider={{
+                    '@id': `${seoConfig.siteUrl}/#organization`,
+                    name: siteConfig.business.name,
+                    type: 'MedicalBusiness',
+                }}
+                areaServed={['Miami', 'Florida', 'United States']}
+                availableLanguage={['English', 'Spanish']}
+                offers={{
+                    price: 0,
+                    priceCurrency: 'USD',
+                    availability: 'InStock',
+                    url: `${seoConfig.siteUrl}/contact-us`,
+                }}
                 image={`${seoConfig.siteUrl}/og-image.jpg`}
             />
 

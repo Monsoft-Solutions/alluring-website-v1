@@ -21,6 +21,7 @@ export function buildPhysicianJsonLd(
     // Use type assertion at the end to handle schema-dts limitations
     const physician: Record<string, unknown> = {
         '@type': 'Physician',
+        ...(props.id && { '@id': props.id }),
         name: props.name,
     }
 
@@ -74,11 +75,36 @@ export function buildPhysicianJsonLd(
 
     // Handle worksFor organization
     if (props.worksFor) {
-        physician.worksFor = {
+        const worksForOrg: Record<string, unknown> = {
             '@type': 'Organization',
+            ...(props.worksFor['@id'] && { '@id': props.worksFor['@id'] }),
             name: props.worksFor.name,
             ...(props.worksFor.url && { url: props.worksFor.url }),
         }
+
+        // Add address to organization (recommended for rich results eligibility)
+        if (props.worksFor.address) {
+            worksForOrg.address = {
+                '@type': 'PostalAddress',
+                ...(props.worksFor.address.streetAddress && {
+                    streetAddress: props.worksFor.address.streetAddress,
+                }),
+                ...(props.worksFor.address.addressLocality && {
+                    addressLocality: props.worksFor.address.addressLocality,
+                }),
+                ...(props.worksFor.address.addressRegion && {
+                    addressRegion: props.worksFor.address.addressRegion,
+                }),
+                ...(props.worksFor.address.postalCode && {
+                    postalCode: props.worksFor.address.postalCode,
+                }),
+                ...(props.worksFor.address.addressCountry && {
+                    addressCountry: props.worksFor.address.addressCountry,
+                }),
+            }
+        }
+
+        physician.worksFor = worksForOrg
     }
 
     // Handle address
@@ -106,6 +132,31 @@ export function buildPhysicianJsonLd(
     // Handle sameAs links (social profiles, medical board pages)
     if (props.sameAs && props.sameAs.length > 0) {
         physician.sameAs = props.sameAs
+    }
+
+    // Handle credentials (board certifications, licenses, degrees) - E-E-A-T enhancement
+    if (props.hasCredential && props.hasCredential.length > 0) {
+        physician.hasCredential = props.hasCredential.map((cred) => ({
+            '@type': 'EducationalOccupationalCredential',
+            credentialCategory: cred.credentialCategory,
+            name: cred.name,
+            ...(cred.recognizedBy && {
+                recognizedBy: {
+                    '@type': 'Organization',
+                    name: cred.recognizedBy.name,
+                    ...(cred.recognizedBy.url && {
+                        url: cred.recognizedBy.url,
+                    }),
+                },
+            }),
+            ...(cred.validIn && { validIn: cred.validIn }),
+            ...(cred.dateCreated && { dateCreated: cred.dateCreated }),
+        }))
+    }
+
+    // Handle knowsAbout - expertise areas for E-E-A-T signals
+    if (props.knowsAbout && props.knowsAbout.length > 0) {
+        physician.knowsAbout = props.knowsAbout
     }
 
     return withContext(physician as unknown as Physician)

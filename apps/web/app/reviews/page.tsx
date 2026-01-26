@@ -135,6 +135,7 @@ export default async function ReviewsPage() {
                         .slice(0, 10)}
                     reviewBody={review.comment ?? ''}
                     itemReviewed={{
+                        '@id': `${siteUrl}/#organization`,
                         type: 'MedicalBusiness',
                         name: siteConfig.business.name,
                         url: siteConfig.seo.siteUrl,
@@ -153,6 +154,7 @@ export default async function ReviewsPage() {
             {/* Structured Data - LocalBusiness with AggregateRating for LLM search */}
             {averageRating && totalCount > 0 && (
                 <LocalBusinessSchema
+                    id={`${siteUrl}/#organization`}
                     name={siteConfig.business.name}
                     url={siteUrl}
                     telephone={siteConfig.contact.phone}

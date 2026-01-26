@@ -5,7 +5,12 @@
  * Features luxury styling with dark header and gold accents.
  * Includes category-specific descriptions, FAQs, and related category links.
  */
-import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    CollectionPageSchema,
+    FAQSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import { ArrowLeft, ArrowRight, FolderOpen } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -129,6 +134,16 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
     const pageTitle = categoryDescription?.title || `${category.name} Articles`
 
+    // Breadcrumb items for navigation schema
+    const breadcrumbItems = [
+        { name: 'Home', item: seoConfig.siteUrl },
+        { name: 'Blog', item: `${seoConfig.siteUrl}/blog` },
+        {
+            name: category.name,
+            item: `${seoConfig.siteUrl}/blog/categories/${category.slug}`,
+        },
+    ]
+
     return (
         <>
             <WebPageSchema
@@ -137,8 +152,40 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                 description={pageDescription}
             />
 
+            {/* Breadcrumb Schema for navigation signals */}
+            <BreadcrumbSchema items={breadcrumbItems} />
+
             {/* FAQ Schema if FAQs exist */}
             {faqItems && faqItems.length > 0 && <FAQSchema items={faqItems} />}
+
+            {/* CollectionPage Schema for enhanced category page SEO */}
+            <CollectionPageSchema
+                url={`${seoConfig.siteUrl}/blog/categories/${category.slug}`}
+                name={pageTitle}
+                description={pageDescription}
+                about={{
+                    // Use MedicalSpecialty for surgery-related categories
+                    '@type': 'MedicalSpecialty',
+                    name: category.name,
+                    description:
+                        categoryDescription?.shortDescription ??
+                        `Information about ${category.name} procedures and treatments`,
+                }}
+                hasPart={initialPosts.map((post) => ({
+                    url: `${seoConfig.siteUrl}/${post.slug}`,
+                    name: post.title,
+                    headline: post.title,
+                    description: post.excerpt ?? undefined,
+                    image: post.featuredImage?.url,
+                    datePublished: post.publishedAt ?? undefined,
+                    author: post.author?.name ?? 'Alluring Plastic Surgery',
+                }))}
+                numberOfItems={
+                    allCategories.find((c) => c.slug === slug)?.count ??
+                    initialPosts.length
+                }
+                isCategory={true}
+            />
 
             <main className='bg-stone-50'>
                 {/* Header */}

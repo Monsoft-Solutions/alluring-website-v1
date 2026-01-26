@@ -45,6 +45,13 @@ export const surgeons: Surgeon[] = [
             facebook: 'https://facebook.com/alluringplasticsurgery',
             tiktok: 'https://tiktok.com/@alluringplasticsurgery',
         },
+        // External profile links for E-E-A-T signals
+        externalProfiles: {
+            healthgrades:
+                'https://www.healthgrades.com/physician/dr-victoria-karlinsky-bellini-x3vmt',
+            realself:
+                'https://www.realself.com/dr/victoria-karlinsky-bellini-manhattan-ny',
+        },
     },
     {
         id: 'dr-lofman',
@@ -87,6 +94,12 @@ export const surgeons: Surgeon[] = [
             facebook: 'https://facebook.com/alluringplasticsurgery',
             tiktok: 'https://tiktok.com/@alluringplasticsurgery',
         },
+        // External profile links for E-E-A-T signals
+        externalProfiles: {
+            healthgrades:
+                'https://www.healthgrades.com/physician/dr-andrew-lofman-3crvf',
+            realself: 'https://www.realself.com/dr/andrew-m-lofman-novi-mi',
+        },
     },
     {
         id: 'dr-shats',
@@ -128,6 +141,12 @@ export const surgeons: Surgeon[] = [
             instagram: 'https://instagram.com/alluringplasticsurgery',
             facebook: 'https://facebook.com/alluringplasticsurgery',
             tiktok: 'https://tiktok.com/@alluringplasticsurgery',
+        },
+        // External profile links for E-E-A-T signals
+        externalProfiles: {
+            healthgrades:
+                'https://www.healthgrades.com/physician/dr-rita-shats-39hgw',
+            realself: 'https://www.realself.com/dr/rita-shats-hollywood-fl',
         },
     },
 ]

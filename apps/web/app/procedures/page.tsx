@@ -1,4 +1,8 @@
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    ItemListSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { procedures } from '@/lib/data/procedures.data'
@@ -77,6 +81,15 @@ export default function ProceduresPage() {
         { name: 'Procedures', item: pageUrl },
     ]
 
+    // ItemList elements for procedure listing schema
+    const itemListElements = procedures.map((procedure, index) => ({
+        position: index + 1,
+        name: procedure.title,
+        url: `${siteUrl}/procedures/${procedure.slug}`,
+        image: procedure.image ? `${siteUrl}${procedure.image}` : undefined,
+        description: procedure.shortDescription || procedure.description,
+    }))
+
     return (
         <>
             {/* Structured Data - WebPage Schema */}
@@ -88,6 +101,16 @@ export default function ProceduresPage() {
 
             {/* Structured Data - Breadcrumb Schema */}
             <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* Structured Data - ItemList Schema for procedure listing */}
+            <ItemListSchema
+                name='Cosmetic Surgery Procedures'
+                description={`Comprehensive list of plastic surgery procedures offered at ${siteConfig.business.name} Miami`}
+                url={pageUrl}
+                itemListElement={itemListElements}
+                mainEntityType='MedicalProcedure'
+                itemListOrder='Unordered'
+            />
 
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 <ProceduresPageContent procedures={procedures} />

@@ -1,5 +1,4 @@
 import type {
-    AggregateRating,
     GeoCoordinates,
     LocalBusiness,
     OpeningHoursSpecification,
@@ -13,8 +12,11 @@ import { withContext } from './_internal'
 export function buildLocalBusinessJsonLd(
     props: LocalBusinessSchemaProps
 ): WithContext<LocalBusiness> {
-    const lb: LocalBusiness = {
+    // Build with @id for Knowledge Graph entity linking
+    const lb: Record<string, unknown> = {
         '@type': 'LocalBusiness',
+        // Include @id for entity identification and cross-page linking
+        ...(props.id && { '@id': props.id }),
         name: props.name,
         url: props.url,
         telephone: props.telephone,
@@ -56,15 +58,14 @@ export function buildLocalBusinessJsonLd(
     }
 
     if (props.aggregateRating) {
-        const ar: AggregateRating = {
+        lb.aggregateRating = {
             '@type': 'AggregateRating',
             ratingValue: props.aggregateRating.ratingValue,
             reviewCount: props.aggregateRating.reviewCount,
             bestRating: props.aggregateRating.bestRating ?? 5,
             worstRating: props.aggregateRating.worstRating ?? 1,
         }
-        lb.aggregateRating = ar
     }
 
-    return withContext(lb)
+    return withContext(lb as unknown as LocalBusiness)
 }

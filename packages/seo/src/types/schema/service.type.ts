@@ -42,6 +42,14 @@ export type ServiceSchemaProps = {
 }
 
 export type ServiceProvider = {
+    /**
+     * Reference to an existing entity via @id
+     * When provided, creates a linked reference in the Knowledge Graph
+     * Should match the @id of the organization entity on other pages
+     * (e.g., "https://www.example.com/#organization")
+     */
+    '@id'?: string
+
     /** Name of the provider (organization or person) */
     name: string
 
@@ -49,7 +57,7 @@ export type ServiceProvider = {
     url?: string
 
     /** Type of provider */
-    type?: 'Organization' | 'Person'
+    type?: 'Organization' | 'Person' | 'MedicalBusiness'
 
     /** Logo URL for organization */
     logo?: string

@@ -174,6 +174,17 @@ export type TrustStats = {
 }
 
 /**
+ * Legal information for copyright and licensing
+ * Used in structured data schemas for images and content
+ */
+export type LegalInfo = {
+    /** Name of the copyright holder for content/images */
+    copyrightHolder: string
+    /** Default license URL for images (e.g., Creative Commons) */
+    defaultImageLicense?: string
+}
+
+/**
  * Complete site configuration
  *
  * Central source of truth for all business and site information.
@@ -192,4 +203,6 @@ export type SiteConfig = {
     seo: SEODefaults
     /** Trust statistics for credibility metrics */
     trustStats?: TrustStats
+    /** Legal information for copyright and licensing */
+    legal?: LegalInfo
 }

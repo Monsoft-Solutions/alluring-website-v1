@@ -30,6 +30,12 @@ export const pageLastModified: Record<string, string> = {
     '/free-consultation/miami': '2026-01-22',
     '/fly-in-consultation': '2026-01-22',
     '/consulta-gratis': '2026-01-22',
+    '/mommy-makeover-consultation': '2026-01-26',
+    '/bridal-consultation': '2026-01-26',
+    '/after-weight-loss-consultation': '2026-01-26',
+    '/new-beginning-consultation': '2026-01-26',
+    '/bbl-miami': '2026-01-26',
+    '/mens-plastic-surgery-miami': '2026-01-26',
 
     // Gallery pages
     '/gallery': '2025-12-17',
@@ -45,9 +51,9 @@ export const pageLastModified: Record<string, string> = {
     '/promotions': '2026-01-21',
 
     // Surgeon pages
-    '/dr-karlinsky': '2026-01-21',
-    '/dr-andrew-lofman': '2026-01-21',
-    '/dr-rita-shats': '2026-01-21',
+    '/dr-karlinsky': '2026-01-26',
+    '/dr-andrew-lofman': '2026-01-26',
+    '/dr-rita-shats': '2026-01-26',
 
     // Legal pages (rarely change)
     '/privacy': '2025-12-16',

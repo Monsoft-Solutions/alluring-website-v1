@@ -18,11 +18,7 @@
  * - "body contouring for wedding"
  * - "breast augmentation before wedding"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BridalHero } from '@/components/landing/bridal-hero.component'
@@ -99,15 +95,6 @@ export default async function BridalConsultationPage() {
                 name={`Bridal Plastic Surgery Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/bridal-consultation`}
                 description='Look radiant on your wedding day with bridal plastic surgery consultations. Expert wedding timeline planning for breast augmentation, body contouring, rhinoplasty, and more.'
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

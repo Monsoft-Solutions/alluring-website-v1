@@ -12,9 +12,9 @@
 import type { Metadata } from 'next'
 
 import {
+    BreadcrumbSchema,
     FAQSchema,
     OfferCatalogSchema,
-    OrganizationSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -161,22 +161,25 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
 
     return (
         <>
-            {/* SEO Schema */}
+            {/* SEO Schema - WebPage */}
             <WebPageSchema
                 name={`Plastic Surgery Specials & Deals - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
                 description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
             />
 
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
+            {/* SEO Schema - Breadcrumb */}
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', item: seoConfig.siteUrl },
+                    {
+                        name: 'Miami Plastic Surgery Specials',
+                        item: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
+                    },
+                ]}
             />
 
+            {/* SEO Schema - FAQ */}
             <FAQSchema
                 items={specialsFaqData.map((faq) => ({
                     question: faq.question,
@@ -190,19 +193,10 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
                 numberOfItems={promotions.length}
                 offeredBy={{
-                    type: 'LocalBusiness',
+                    '@id': `${seoConfig.siteUrl}/#organization`,
+                    type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
-                    telephone: siteConfig.contact.phone,
-                    priceRange: '$2500-$25000',
-                    address: {
-                        streetAddress: siteConfig.contact.address,
-                        addressLocality: siteConfig.contact.city ?? '',
-                        addressRegion: siteConfig.contact.state ?? '',
-                        postalCode: siteConfig.contact.postalCode ?? '',
-                        addressCountry: siteConfig.contact.country ?? '',
-                    },
                 }}
                 itemListElement={promotions.map((promo) => ({
                     name: promo.title,

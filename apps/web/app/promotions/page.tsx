@@ -2,7 +2,11 @@ import type { Metadata } from 'next'
 import { Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
-import { OfferCatalogSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    OfferCatalogSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { PromotionCard } from '@/components/promotions/promotion-card.component'
@@ -29,28 +33,35 @@ export default async function PromotionsPage() {
 
     const pageUrl = `${seoConfig.siteUrl}/promotions`
 
+    // Breadcrumb items for schema
+    const breadcrumbItems = [
+        { name: 'Home', item: seoConfig.siteUrl },
+        { name: 'Promotions', item: pageUrl },
+    ]
+
     return (
         <>
-            {/* SEO Schema */}
+            {/* SEO Schema - WebPage */}
+            <WebPageSchema
+                name='Special Offers & Promotions'
+                url={pageUrl}
+                description='Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.'
+            />
+
+            {/* SEO Schema - Breadcrumb */}
+            <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* SEO Schema - OfferCatalog */}
             <OfferCatalogSchema
                 name='Current Plastic Surgery Specials & Promotions'
                 url={pageUrl}
                 description='Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.'
                 numberOfItems={promotions.length}
                 offeredBy={{
-                    type: 'LocalBusiness',
+                    '@id': `${seoConfig.siteUrl}/#organization`,
+                    type: 'MedicalBusiness',
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    image: `${seoConfig.siteUrl}${siteConfig.brand.logo}`,
-                    telephone: siteConfig.contact.phone,
-                    priceRange: '$2500-$25000',
-                    address: {
-                        streetAddress: siteConfig.contact.address,
-                        addressLocality: siteConfig.contact.city ?? '',
-                        addressRegion: siteConfig.contact.state ?? '',
-                        postalCode: siteConfig.contact.postalCode ?? '',
-                        addressCountry: siteConfig.contact.country ?? '',
-                    },
                 }}
                 itemListElement={promotions.map((promo) => ({
                     name: promo.title,

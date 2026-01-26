@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import {
     FAQSchema,
-    LocalBusinessSchema,
+    MedicalClinicSchema,
     OfferSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
@@ -106,17 +106,26 @@ export default async function Page() {
 
     return (
         <>
-            {/* Structured Data - WebPage Schema */}
+            {/* Structured Data - WebPage Schema with Speakable for Voice Search */}
             <WebPageSchema
                 name={`${siteConfig.business.name} | ${siteConfig.business.tagline}`}
                 url={siteUrl}
                 description={siteConfig.seo.siteDescription}
+                speakable={{
+                    cssSelector: [
+                        'h1',
+                        '.quick-answer',
+                        '[data-speakable="true"]',
+                    ],
+                }}
             />
 
-            {/* Structured Data - LocalBusiness Schema for local SEO */}
-            <LocalBusinessSchema
+            {/* Structured Data - MedicalBusiness Schema for healthcare SEO */}
+            <MedicalClinicSchema
                 name={siteConfig.business.name}
+                id={`${siteUrl}/#organization`}
                 url={siteUrl}
+                logo={`${siteUrl}${siteConfig.brand.logo}`}
                 telephone={siteConfig.contact.phone}
                 address={{
                     streetAddress: siteConfig.contact.address,
@@ -148,6 +157,19 @@ export default async function Page() {
                     },
                 ]}
                 image={`${siteUrl}/og-image.jpg`}
+                medicalSpecialty={['PlasticSurgery']}
+                isAcceptingNewPatients={true}
+                priceRange='$2500-$25000'
+                availableLanguage={['English', 'Spanish']}
+                contactPoint={[
+                    {
+                        contactType: 'Appointments',
+                        telephone: siteConfig.contact.phone,
+                        availableLanguage: ['English', 'Spanish'],
+                        areaServed: 'US',
+                    },
+                ]}
+                sameAs={siteConfig.social.map((s) => s.url)}
                 {...(averageRating && totalCount > 0
                     ? {
                           aggregateRating: {
@@ -197,19 +219,10 @@ export default async function Page() {
                             : undefined
                     }
                     offeredBy={{
-                        type: 'LocalBusiness',
+                        '@id': `${siteUrl}/#organization`,
+                        type: 'MedicalBusiness',
                         name: siteConfig.business.name,
                         url: siteUrl,
-                        image: `${siteUrl}${siteConfig.brand.logo}`,
-                        telephone: siteConfig.contact.phone,
-                        priceRange: '$2500-$25000',
-                        address: {
-                            streetAddress: siteConfig.contact.address,
-                            addressLocality: siteConfig.contact.city ?? '',
-                            addressRegion: siteConfig.contact.state ?? '',
-                            postalCode: siteConfig.contact.postalCode ?? '',
-                            addressCountry: siteConfig.contact.country ?? '',
-                        },
                     }}
                     itemOffered={
                         featuredPromotion.procedureSlug

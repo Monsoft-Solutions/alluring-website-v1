@@ -14,7 +14,11 @@
 import { Award, Building2, Shield, Users } from 'lucide-react'
 import type { Metadata } from 'next'
 
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    ItemListSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogHeroSection } from '@/components/blog/blog-hero-section.component'
@@ -148,6 +152,24 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
             {/* Structured Data - Breadcrumb Schema */}
             <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* Structured Data - ItemList Schema for blog posts */}
+            {initialPosts.length > 0 && (
+                <ItemListSchema
+                    name='Plastic Surgery Blog Articles'
+                    description={blogSeoData.description}
+                    url={pageUrl}
+                    itemListElement={initialPosts.map((post, index) => ({
+                        position: index + 1,
+                        name: post.title,
+                        url: `${siteUrl}/${post.slug}`,
+                        image: post.featuredImage?.url,
+                        description: post.excerpt ?? undefined,
+                    }))}
+                    numberOfItems={initialPosts.length}
+                    itemListOrder='Descending'
+                />
+            )}
 
             {/* Main Content */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>

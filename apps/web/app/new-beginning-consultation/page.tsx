@@ -18,11 +18,7 @@
  * - "facelift miami"
  * - "look younger plastic surgery"
  */
-import {
-    FAQSchema,
-    OrganizationSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { NewBeginningHero } from '@/components/landing/new-beginning-hero.component'
@@ -99,15 +95,6 @@ export default async function NewBeginningConsultationPage() {
                 name={`New Beginning Plastic Surgery Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/new-beginning-consultation`}
                 description='A new chapter deserves a new you. Natural rejuvenation and body contouring for women ready to invest in themselves. Board-certified surgeons specializing in natural, refreshed results.'
-            />
-
-            <OrganizationSchema
-                name={seoConfig.siteName}
-                url={seoConfig.siteUrl}
-                logo={seoConfig.organization?.logo}
-                sameAs={seoConfig.organization?.socialProfiles?.map(
-                    (s) => s.url
-                )}
             />
 
             <FAQSchema items={faqSchemaItems} />

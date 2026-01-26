@@ -8,6 +8,7 @@ export { buildFAQJsonLd } from './faq.schema'
 export { buildProductJsonLd } from './product.schema'
 export { buildReviewJsonLd } from './review.schema'
 export { buildLocalBusinessJsonLd } from './local-business.schema'
+export { buildMedicalClinicJsonLd } from './medical-clinic.schema'
 export { buildImageObjectJsonLd } from './image-object.schema'
 export { buildVideoObjectJsonLd } from './video-object.schema'
 export { buildImageGalleryJsonLd } from './image-gallery.schema'
@@ -22,9 +23,16 @@ export {
     BLOG_SPEAKABLE_SELECTORS,
 } from './speakable.schema'
 export { buildOfferJsonLd, buildOfferCatalogJsonLd } from './offer.schema'
+export { buildItemListJsonLd } from './item-list.schema'
+export { buildProfilePageJsonLd } from './profile-page.schema'
+export { buildCollectionPageJsonLd } from './collection-page.schema'
 
 // Schema types
-export type { ArticleSchemaProps } from '../types/schema/article.type'
+export type {
+    ArticleSchemaProps,
+    ArticleAuthor,
+    ArticleReviewer,
+} from '../types/schema/article.type'
 export type {
     BreadcrumbItem,
     BreadcrumbSchemaProps,
@@ -38,6 +46,8 @@ export type {
 export type {
     ReviewRating,
     ReviewSchemaProps,
+    ReviewVideo,
+    ItemReviewedType,
 } from '../types/schema/review.type'
 export type {
     LocalBusinessAddress,
@@ -45,6 +55,15 @@ export type {
     LocalBusinessOpeningHours,
     LocalBusinessSchemaProps,
 } from '../types/schema/local-business.type'
+export type {
+    MedicalClinicAddress,
+    MedicalClinicGeo,
+    MedicalClinicOpeningHours,
+    MedicalClinicAggregateRating,
+    MedicalClinicContactPoint,
+    MedicalClinicService,
+    MedicalClinicSchemaProps,
+} from '../types/schema/medical-clinic.type'
 export type { OrganizationSchemaProps } from '../types/schema/organization.type'
 export type { WebSiteSchemaProps } from '../types/schema/website.type'
 export type { WebPageSchemaProps } from '../types/schema/webpage.type'
@@ -61,6 +80,7 @@ export type {
     PhysicianMembership,
     PhysicianEducation,
     PhysicianAddress,
+    PhysicianCredential,
 } from '../types/schema/physician.type'
 export type {
     ServiceSchemaProps,
@@ -76,3 +96,16 @@ export type {
     OfferProviderAddress,
     OfferCatalogItem,
 } from '../types/schema/offer.type'
+export type {
+    ItemListElement,
+    ItemListSchemaProps,
+} from '../types/schema/item-list.type'
+export type {
+    ProfilePageSchemaProps,
+    ProfilePageMainEntity,
+} from '../types/schema/profile-page.type'
+export type {
+    CollectionPageSchemaProps,
+    CollectionItem,
+    CollectionAbout,
+} from '../types/schema/collection-page.type'
