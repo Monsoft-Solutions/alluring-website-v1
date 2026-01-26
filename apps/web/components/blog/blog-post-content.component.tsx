@@ -365,12 +365,7 @@ export function BlogPostContent({
                                 }
                                 // Speakable for voice search optimization
                                 speakable={{
-                                    cssSelector: [
-                                        'h1',
-                                        '.quick-answer',
-                                        '.post-excerpt',
-                                        '[data-speakable="true"]',
-                                    ],
+                                    cssSelector: ['h1'],
                                 }}
                             />
 

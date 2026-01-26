@@ -114,7 +114,6 @@ export default async function Page() {
                 speakable={{
                     cssSelector: [
                         'h1',
-                        '.hero-headline',
                         '.quick-answer',
                         '[data-speakable="true"]',
                     ],
