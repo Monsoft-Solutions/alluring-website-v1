@@ -299,6 +299,21 @@ export const Footer = () => {
                                     FAQ
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href='/bmi-calculator'
+                                    onClick={() =>
+                                        handleFooterLinkClick(
+                                            'BMI Calculator',
+                                            '/bmi-calculator',
+                                            'patients'
+                                        )
+                                    }
+                                    className='cursor-pointer transition-colors hover:text-white'
+                                >
+                                    BMI Calculator
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
