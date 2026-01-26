@@ -18,7 +18,10 @@ import { InfinitePostList } from '@/components/blog/infinite-post-list.component
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
-import { getActiveTagBySlug } from '@/lib/queries/blog/taxonomy.query'
+import {
+    getActiveTagBySlug,
+    listActiveTagsWithCounts,
+} from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
@@ -50,7 +53,11 @@ export async function generateMetadata({
 export default async function TagDetailPage({ params }: PageProps) {
     const { slug } = await params
 
-    const tag = await getCachedTagBySlug(slug)
+    const [tag, allTags] = await Promise.all([
+        getCachedTagBySlug(slug),
+        listActiveTagsWithCounts(),
+    ])
+
     if (!tag) {
         return (
             <main className='bg-stone-50'>
@@ -135,7 +142,10 @@ export default async function TagDetailPage({ params }: PageProps) {
                     datePublished: post.publishedAt ?? undefined,
                     author: post.author?.name ?? 'Alluring Plastic Surgery',
                 }))}
-                numberOfItems={initialPosts.length}
+                numberOfItems={
+                    allTags.find((t) => t.slug === slug)?.count ??
+                    initialPosts.length
+                }
                 isCategory={false}
             />
 
