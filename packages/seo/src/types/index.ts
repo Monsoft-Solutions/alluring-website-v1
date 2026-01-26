@@ -15,7 +15,11 @@ export type {
 } from '../config/seo-config.type'
 
 // Schema types
-export type { ArticleSchemaProps } from './schema/article.type'
+export type {
+    ArticleSchemaProps,
+    ArticleAuthor,
+    ArticleReviewer,
+} from './schema/article.type'
 export type {
     BreadcrumbItem,
     BreadcrumbSchemaProps,
@@ -74,3 +78,12 @@ export type {
     MedicalProcedureSchemaProps,
     MedicalProcedurePerformer,
 } from './schema/medical-procedure.type'
+export type {
+    ProfilePageSchemaProps,
+    ProfilePageMainEntity,
+} from './schema/profile-page.type'
+export type {
+    CollectionPageSchemaProps,
+    CollectionItem,
+    CollectionAbout,
+} from './schema/collection-page.type'

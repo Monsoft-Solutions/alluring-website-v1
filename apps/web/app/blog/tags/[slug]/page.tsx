@@ -4,7 +4,11 @@
  * Displays posts with a specific tag.
  * Features luxury styling with dark header and gold accents.
  */
-import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
+import {
+    BreadcrumbSchema,
+    CollectionPageSchema,
+    WebPageSchema,
+} from '@workspace/seo/react'
 import { ArrowLeft, Hash } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -111,6 +115,28 @@ export default async function TagDetailPage({ params }: PageProps) {
 
             {/* Breadcrumb Schema for navigation signals */}
             <BreadcrumbSchema items={breadcrumbItems} />
+
+            {/* CollectionPage Schema for enhanced tag page SEO */}
+            <CollectionPageSchema
+                url={`${seoConfig.siteUrl}/blog/tags/${tag.slug}`}
+                name={`${tag.name} Articles`}
+                description={`Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`}
+                about={{
+                    '@type': 'Thing',
+                    name: tag.name,
+                    description: `Topics related to ${tag.name} in plastic surgery`,
+                }}
+                hasPart={initialPosts.map((post) => ({
+                    url: `${seoConfig.siteUrl}/${post.slug}`,
+                    name: post.title,
+                    headline: post.title,
+                    description: post.excerpt ?? undefined,
+                    image: post.featuredImage?.url,
+                    datePublished: post.publishedAt ?? undefined,
+                    author: post.author?.name ?? 'Alluring Plastic Surgery',
+                }))}
+                numberOfItems={initialPosts.length}
+            />
 
             <main className='bg-stone-50'>
                 {/* Header */}

@@ -7,6 +7,7 @@
  */
 import {
     BreadcrumbSchema,
+    CollectionPageSchema,
     FAQSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
@@ -156,6 +157,32 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
             {/* FAQ Schema if FAQs exist */}
             {faqItems && faqItems.length > 0 && <FAQSchema items={faqItems} />}
+
+            {/* CollectionPage Schema for enhanced category page SEO */}
+            <CollectionPageSchema
+                url={`${seoConfig.siteUrl}/blog/categories/${category.slug}`}
+                name={pageTitle}
+                description={pageDescription}
+                about={{
+                    // Use MedicalSpecialty for surgery-related categories
+                    '@type': 'MedicalSpecialty',
+                    name: category.name,
+                    description:
+                        categoryDescription?.shortDescription ??
+                        `Information about ${category.name} procedures and treatments`,
+                }}
+                hasPart={initialPosts.map((post) => ({
+                    url: `${seoConfig.siteUrl}/${post.slug}`,
+                    name: post.title,
+                    headline: post.title,
+                    description: post.excerpt ?? undefined,
+                    image: post.featuredImage?.url,
+                    datePublished: post.publishedAt ?? undefined,
+                    author: post.author?.name ?? 'Alluring Plastic Surgery',
+                }))}
+                numberOfItems={initialPosts.length}
+                isCategory={true}
+            />
 
             <main className='bg-stone-50'>
                 {/* Header */}

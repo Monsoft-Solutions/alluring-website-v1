@@ -75,12 +75,36 @@ export function buildPhysicianJsonLd(
 
     // Handle worksFor organization
     if (props.worksFor) {
-        physician.worksFor = {
+        const worksForOrg: Record<string, unknown> = {
             '@type': 'Organization',
             ...(props.worksFor['@id'] && { '@id': props.worksFor['@id'] }),
             name: props.worksFor.name,
             ...(props.worksFor.url && { url: props.worksFor.url }),
         }
+
+        // Add address to organization (recommended for rich results eligibility)
+        if (props.worksFor.address) {
+            worksForOrg.address = {
+                '@type': 'PostalAddress',
+                ...(props.worksFor.address.streetAddress && {
+                    streetAddress: props.worksFor.address.streetAddress,
+                }),
+                ...(props.worksFor.address.addressLocality && {
+                    addressLocality: props.worksFor.address.addressLocality,
+                }),
+                ...(props.worksFor.address.addressRegion && {
+                    addressRegion: props.worksFor.address.addressRegion,
+                }),
+                ...(props.worksFor.address.postalCode && {
+                    postalCode: props.worksFor.address.postalCode,
+                }),
+                ...(props.worksFor.address.addressCountry && {
+                    addressCountry: props.worksFor.address.addressCountry,
+                }),
+            }
+        }
+
+        physician.worksFor = worksForOrg
     }
 
     // Handle address

@@ -49,6 +49,8 @@ export type PhysicianSchemaProps = {
         '@id'?: string
         name: string
         url?: string
+        /** Organization address (recommended for rich results eligibility) */
+        address?: PhysicianAddress
     }
 
     /** Contact information */

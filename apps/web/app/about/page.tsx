@@ -115,8 +115,27 @@ export default function AboutPage() {
                     worksFor={{
                         '@id': `${siteUrl}/#organization`,
                         name: siteConfig.business.name,
+                        url: siteUrl,
+                        address: {
+                            streetAddress: siteConfig.contact.address,
+                            addressLocality: siteConfig.contact.city,
+                            addressRegion: siteConfig.contact.state,
+                            postalCode: siteConfig.contact.postalCode,
+                            addressCountry: siteConfig.contact.country,
+                        },
                     }}
                     knowsAbout={surgeon.specialties}
+                    // Enhanced sameAs with external profiles for E-E-A-T authority signals
+                    sameAs={[
+                        // Social profiles
+                        ...Object.values(surgeon.social ?? {}).filter(
+                            (v): v is string => Boolean(v)
+                        ),
+                        // External medical directory profiles (Healthgrades, RealSelf, etc.)
+                        ...Object.values(surgeon.externalProfiles ?? {}).filter(
+                            (v): v is string => Boolean(v)
+                        ),
+                    ]}
                 />
             ))}
 

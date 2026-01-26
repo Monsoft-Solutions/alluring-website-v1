@@ -24,9 +24,15 @@ export {
 } from './speakable.schema'
 export { buildOfferJsonLd, buildOfferCatalogJsonLd } from './offer.schema'
 export { buildItemListJsonLd } from './item-list.schema'
+export { buildProfilePageJsonLd } from './profile-page.schema'
+export { buildCollectionPageJsonLd } from './collection-page.schema'
 
 // Schema types
-export type { ArticleSchemaProps } from '../types/schema/article.type'
+export type {
+    ArticleSchemaProps,
+    ArticleAuthor,
+    ArticleReviewer,
+} from '../types/schema/article.type'
 export type {
     BreadcrumbItem,
     BreadcrumbSchemaProps,
@@ -94,3 +100,12 @@ export type {
     ItemListElement,
     ItemListSchemaProps,
 } from '../types/schema/item-list.type'
+export type {
+    ProfilePageSchemaProps,
+    ProfilePageMainEntity,
+} from '../types/schema/profile-page.type'
+export type {
+    CollectionPageSchemaProps,
+    CollectionItem,
+    CollectionAbout,
+} from '../types/schema/collection-page.type'
