@@ -43,6 +43,15 @@ export const faqDataHome: Record<string, FaqItem[]> = {
             question: 'How long does BBL recovery take?',
             answer: 'BBL recovery typically requires 2 weeks off work and avoiding sitting directly on your buttocks for 6-8 weeks. Most patients see initial results immediately, with final results visible at 3-6 months once swelling subsides. We provide detailed post-op care instructions and recovery supplies.',
         },
+        {
+            question: 'Do you serve patients from outside Miami?',
+            answer: 'Absolutely! We welcome patients from across South Florida, Latin America, the Caribbean, and beyond. Our Miami clinic is a top destination for medical tourism. We offer virtual consultations, airport pickup coordination, and can recommend trusted recovery houses nearby. Many patients fly in for their procedure and stay in Miami during their initial recovery.',
+        },
+        {
+            question:
+                'What travel packages are available for out-of-town patients?',
+            answer: 'Our patient concierge can coordinate your entire surgical journey. We partner with luxury recovery suites offering 24/7 nursing care, transportation services, and all-inclusive packages. We also provide detailed pre-travel checklists, virtual pre-op appointments, and can recommend nearby hotels and Airbnbs for accompanying family members. Contact us for a personalized travel surgery quote.',
+        },
     ],
     recovery: [
         {

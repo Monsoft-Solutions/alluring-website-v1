@@ -1,6 +1,6 @@
 'use client'
 
-import { ImageObjectSchema } from '@workspace/seo/react'
+import { ImageObjectSchema, ServiceSchema } from '@workspace/seo/react'
 import type { Procedure } from '@/lib/types/procedure.type'
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion'
@@ -88,15 +88,29 @@ export function SignatureProcedureCard({
                 <span className='sr-only'>{procedure.title}</span>
             </Link>
 
-            {/* Image Wrapper with Parallax & Zoom Effect */}
+            {/* Structured Data Schemas */}
             {includeSchema && (
-                <ImageObjectSchema
-                    url={imageSrc}
-                    alt={procedure.title}
-                    author={defaultAuthor}
-                    copyrightHolder={siteConfig.business.name}
-                    name={procedure.title || siteConfig.business.name}
-                />
+                <>
+                    <ImageObjectSchema
+                        url={imageSrc}
+                        alt={procedure.title}
+                        author={defaultAuthor}
+                        copyrightHolder={siteConfig.business.name}
+                        name={procedure.title || siteConfig.business.name}
+                    />
+                    <ServiceSchema
+                        name={`${procedure.title} in Miami`}
+                        description={description}
+                        url={`/procedures/${procedure.slug}`}
+                        provider={{
+                            name: siteConfig.business.name,
+                            type: 'MedicalBusiness',
+                        }}
+                        areaServed='Miami, FL'
+                        serviceType='Cosmetic Surgery'
+                        category={categoryDisplay}
+                    />
+                </>
             )}
             <div className='absolute inset-0 h-full w-full overflow-hidden bg-stone-800'>
                 <motion.div

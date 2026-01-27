@@ -64,6 +64,17 @@ export type MedicalClinicService = {
     description?: string
 }
 
+/**
+ * OfferCatalog for listing services/procedures
+ * @see https://schema.org/OfferCatalog
+ */
+export type MedicalClinicOfferCatalog = {
+    /** Name of the catalog (e.g., "Plastic Surgery Procedures") */
+    name: string
+    /** List of items/services in the catalog */
+    itemListElement: string[]
+}
+
 export type MedicalClinicSchemaProps = {
     /** Name of the medical clinic */
     name: string
@@ -134,4 +145,18 @@ export type MedicalClinicSchemaProps = {
 
     /** Social media and other profile links */
     sameAs?: string[]
+
+    /**
+     * Geographic area(s) served by the clinic
+     * Useful for local SEO and medical tourism targeting
+     * @see https://schema.org/areaServed
+     */
+    areaServed?: string | string[]
+
+    /**
+     * Catalog of services/procedures offered
+     * Helps search engines understand the range of services
+     * @see https://schema.org/hasOfferCatalog
+     */
+    hasOfferCatalog?: MedicalClinicOfferCatalog
 }

@@ -157,5 +157,28 @@ export function buildMedicalClinicJsonLd(
         clinic.sameAs = props.sameAs
     }
 
+    // Handle areaServed - Geographic areas the clinic serves
+    if (props.areaServed) {
+        clinic.areaServed = props.areaServed
+    }
+
+    // Handle hasOfferCatalog - Catalog of services/procedures
+    if (props.hasOfferCatalog) {
+        clinic.hasOfferCatalog = {
+            '@type': 'OfferCatalog',
+            name: props.hasOfferCatalog.name,
+            itemListElement: props.hasOfferCatalog.itemListElement.map(
+                (item, index) => ({
+                    '@type': 'Offer',
+                    position: index + 1,
+                    itemOffered: {
+                        '@type': 'MedicalProcedure',
+                        name: item,
+                    },
+                })
+            ),
+        }
+    }
+
     return withContext(clinic as unknown as MedicalBusiness | MedicalClinic)
 }

@@ -11,8 +11,10 @@ import {
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { Hero } from '@/components/home/hero.component'
+import { TrustBar } from '@/components/home/trust-bar.component'
 import { Journey } from '@/components/home/journey.component'
 import { Procedures } from '@/components/home/procedures.component'
+import { SecondaryProcedures } from '@/components/home/secondary-procedures.component'
 import { GalleryShowcase } from '@/components/shared/gallery-showcase.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
@@ -190,6 +192,23 @@ export default async function Page() {
                     },
                 ]}
                 sameAs={siteConfig.social.map((s) => s.url)}
+                areaServed={[
+                    'Miami, FL',
+                    'United States',
+                    'South Florida',
+                    'Latin America',
+                    'Caribbean',
+                ]}
+                hasOfferCatalog={{
+                    name: 'Plastic Surgery Procedures',
+                    itemListElement: [
+                        'Brazilian Butt Lift',
+                        'Mommy Makeover',
+                        'Breast Augmentation',
+                        'Liposuction',
+                        'Tummy Tuck',
+                    ],
+                }}
                 {...(averageRating && totalCount > 0
                     ? {
                           aggregateRating: {
@@ -304,8 +323,10 @@ export default async function Page() {
 
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 <Hero />
+                <TrustBar />
                 <Journey />
                 <Procedures />
+                <SecondaryProcedures />
                 {/* Featured Promotion Section - Only shown when active promotion exists */}
                 {featuredPromotion && (
                     <PromoSection promotion={featuredPromotion} />

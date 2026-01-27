@@ -31,7 +31,7 @@ export const Surgeons = () => {
                         >
                             <Image
                                 src='/images/surgeons/dr-karlinsky.webp'
-                                alt='Dr. Victoria Karlinsky'
+                                alt='Dr. Victoria Karlinsky - Double Board-Certified Cosmetic Surgeon specializing in BBL, breast augmentation, and mommy makeover at Alluring Plastic Surgery Miami'
                                 fill
                                 className='object-cover grayscale transition-all duration-700 ease-in-out hover:grayscale-0'
                                 sizes='(max-width: 1024px) 100vw, 50vw'

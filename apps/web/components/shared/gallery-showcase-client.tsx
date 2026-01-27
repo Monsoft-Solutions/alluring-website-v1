@@ -12,6 +12,19 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 
+/**
+ * Enhances alt text with SEO-optimized keywords
+ * Appends location and clinic info for better search visibility
+ */
+function getEnhancedAlt(baseAlt: string): string {
+    // Check if alt already contains location/clinic info to avoid duplication
+    const hasLocation = /miami|alluring/i.test(baseAlt)
+    if (hasLocation) {
+        return baseAlt
+    }
+    return `${baseAlt} - Results by Dr. Victoria Karlinsky at Alluring Plastic Surgery Miami`
+}
+
 type GalleryShowcaseClientProps = {
     readonly media: GalleryMediaCard[]
 }
@@ -67,10 +80,10 @@ export function GalleryShowcaseClient({ media }: GalleryShowcaseClientProps) {
         scrollToSelected(newIndex)
     }, [selectedIndex, media.length, scrollToSelected])
 
-    // Generate lightbox slides
+    // Generate lightbox slides with enhanced alt text
     const lightboxSlides = media.map((item) => ({
         src: item.url,
-        alt: item.alt,
+        alt: getEnhancedAlt(item.alt),
         title: item.title,
     }))
 
@@ -88,7 +101,7 @@ export function GalleryShowcaseClient({ media }: GalleryShowcaseClientProps) {
                     >
                         <Image
                             src={selectedMedia.url}
-                            alt={selectedMedia.alt}
+                            alt={getEnhancedAlt(selectedMedia.alt)}
                             fill
                             className='object-cover transition-transform duration-500 group-hover:scale-105'
                             sizes='(max-width: 1024px) 100vw, 50vw'
@@ -249,7 +262,7 @@ function ThumbnailCard({
         >
             <Image
                 src={media.thumbnailUrl ?? media.url}
-                alt={media.alt}
+                alt={getEnhancedAlt(media.alt)}
                 fill
                 className='object-cover object-center transition-transform duration-300 group-hover:scale-105'
                 sizes='(max-width: 640px) 28vw, (max-width: 768px) 22vw, (max-width: 1024px) 18vw, 14vw'
