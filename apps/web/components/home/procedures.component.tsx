@@ -46,7 +46,10 @@ export const Procedures = () => {
 
         const hasSeenHint = localStorage.getItem(SWIPE_HINT_KEY)
         if (!hasSeenHint) {
-            setShowSwipeHint(true)
+            // Defer state update to avoid cascading renders
+            queueMicrotask(() => {
+                setShowSwipeHint(true)
+            })
             localStorage.setItem(SWIPE_HINT_KEY, 'true')
 
             // Hide after 3 seconds

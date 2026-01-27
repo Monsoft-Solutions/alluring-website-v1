@@ -117,8 +117,10 @@ export function useScrollProgress(
         const container = containerRef.current
         if (!container) return
 
-        // Initial update
-        updateScrollState()
+        // Defer initial update to avoid cascading renders
+        queueMicrotask(() => {
+            updateScrollState()
+        })
 
         // Listen for scroll events
         container.addEventListener('scroll', updateScrollState, {
