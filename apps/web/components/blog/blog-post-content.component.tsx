@@ -137,9 +137,9 @@ export function BlogPostContent({
 
                 {/* Hero Content */}
                 <div className='absolute inset-0 flex flex-col justify-end'>
-                    <div className='container mx-auto px-5 pb-16 md:px-8 md:pb-20 lg:px-12 lg:pb-24'>
-                        {/* Mobile Layout */}
-                        <div className='md:hidden'>
+                    <div className='container mx-auto flex flex-col px-5 pb-16 md:px-8 md:pb-20 lg:px-12 lg:pb-24'>
+                        {/* Mobile Category Badge - order 1 (before h1) */}
+                        <div className='order-1 md:hidden'>
                             {/* Category badge */}
                             {primaryCategory && (
                                 <Link
@@ -149,12 +149,15 @@ export function BlogPostContent({
                                     {primaryCategory.name}
                                 </Link>
                             )}
+                        </div>
 
-                            {/* Title */}
-                            <h1 className='animate-fade-in-up animate-delay-100 mb-5 font-serif text-3xl leading-[1.15] font-medium text-white drop-shadow-lg sm:text-4xl'>
-                                {post.title}
-                            </h1>
+                        {/* SINGLE H1 - ALWAYS VISIBLE on both mobile and desktop */}
+                        <h1 className='animate-fade-in-up animate-delay-100 order-2 mb-5 font-serif text-3xl leading-[1.15] font-medium text-white drop-shadow-lg sm:text-4xl md:mb-8 md:text-4xl lg:text-5xl xl:text-6xl'>
+                            {post.title}
+                        </h1>
 
+                        {/* Mobile Excerpt and Meta - order 3 (after h1) */}
+                        <div className='order-3 md:hidden'>
                             {/* Excerpt */}
                             {post.excerpt && (
                                 <p className='animate-fade-in-up animate-delay-200 mb-6 line-clamp-3 text-base leading-relaxed text-stone-200/90'>
@@ -183,81 +186,63 @@ export function BlogPostContent({
                             </div>
                         </div>
 
-                        {/* Desktop Layout - Glassmorphism Card */}
-                        <div className='hidden md:block'>
-                            <div className='max-w-4xl'>
-                                <div className='animate-fade-in-up relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl lg:p-14'>
-                                    {/* Decorative blurs */}
-                                    <div className='bg-gold-400/15 absolute -top-32 -right-32 h-96 w-96 rounded-full blur-3xl' />
-                                    <div className='absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-stone-500/15 blur-3xl' />
+                        {/* Desktop Layout - Clean flowing content (no card) */}
+                        <div className='order-4 hidden max-w-4xl md:block'>
+                            {/* Category + Reading time row */}
+                            <div className='animate-fade-in-up animate-delay-200 mb-6 flex items-center gap-4'>
+                                {primaryCategory && (
+                                    <Link
+                                        href={`/blog/categories/${primaryCategory.slug}`}
+                                        className='border-gold-500/60 bg-gold-500/20 text-gold-400 hover:bg-gold-500/30 inline-flex items-center border px-5 py-2 text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-sm transition-all hover:scale-105'
+                                    >
+                                        {primaryCategory.name}
+                                    </Link>
+                                )}
+                                {post.readingTime && (
+                                    <span className='flex items-center gap-2 text-sm text-stone-300/80'>
+                                        <Clock className='h-4 w-4' />
+                                        {post.readingTime} min read
+                                    </span>
+                                )}
+                            </div>
 
-                                    <div className='relative z-10'>
-                                        {/* Top row: Category + Reading time */}
-                                        <div className='mb-8 flex items-center justify-between'>
-                                            <div className='flex items-center gap-4'>
-                                                {primaryCategory && (
-                                                    <Link
-                                                        href={`/blog/categories/${primaryCategory.slug}`}
-                                                        className='border-gold-500/60 bg-gold-500/20 text-gold-400 hover:bg-gold-500/30 inline-flex items-center border px-5 py-2 text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-sm transition-all hover:scale-105'
-                                                    >
-                                                        {primaryCategory.name}
-                                                    </Link>
-                                                )}
-                                                {post.readingTime && (
-                                                    <span className='flex items-center gap-2 text-sm text-stone-400'>
-                                                        <Clock className='h-4 w-4' />
-                                                        {post.readingTime} min
-                                                        read
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
+                            {/* Gold accent line */}
+                            <div className='animate-fade-in-up animate-delay-300 bg-gold-500 mb-6 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)]' />
 
-                                        {/* Title */}
-                                        <h1 className='mb-6 font-serif text-4xl leading-[1.1] font-medium text-white drop-shadow-lg lg:text-5xl xl:text-6xl'>
-                                            {post.title}
-                                        </h1>
+                            {/* Excerpt */}
+                            {post.excerpt && (
+                                <p className='animate-fade-in-up animate-delay-300 mb-8 max-w-3xl text-lg leading-relaxed text-stone-200/90 lg:text-xl'>
+                                    {post.excerpt}
+                                </p>
+                            )}
 
-                                        {/* Gold accent line */}
-                                        <div className='bg-gold-500 mb-8 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)]' />
-
-                                        {/* Excerpt */}
-                                        {post.excerpt && (
-                                            <p className='mb-10 max-w-3xl text-lg leading-relaxed text-stone-200/90 lg:text-xl'>
-                                                {post.excerpt}
-                                            </p>
-                                        )}
-
-                                        {/* Bottom row: Author + CTA */}
-                                        <div className='flex flex-wrap items-center justify-between gap-6'>
-                                            <div className='flex items-center gap-6 text-sm text-stone-400'>
-                                                {post.author && (
-                                                    <span className='flex items-center gap-2'>
-                                                        <User className='h-4 w-4' />
-                                                        <span className='font-medium text-stone-300'>
-                                                            {post.author.name}
-                                                        </span>
-                                                    </span>
-                                                )}
-                                                <span className='flex items-center gap-2'>
-                                                    <Calendar className='h-4 w-4' />
-                                                    {publishedDate}
-                                                </span>
-                                            </div>
-
-                                            <Button
-                                                asChild
-                                                variant='gold'
-                                                size='lg'
-                                                withArrow
-                                            >
-                                                <Link href='/contact-us'>
-                                                    Free Consultation
-                                                </Link>
-                                            </Button>
-                                        </div>
-                                    </div>
+                            {/* Author + Date + CTA row */}
+                            <div className='animate-fade-in-up animate-delay-400 flex flex-wrap items-center gap-8'>
+                                <div className='flex items-center gap-6 text-sm text-stone-300/80'>
+                                    {post.author && (
+                                        <span className='flex items-center gap-2'>
+                                            <User className='h-4 w-4' />
+                                            <span className='font-medium text-stone-200'>
+                                                {post.author.name}
+                                            </span>
+                                        </span>
+                                    )}
+                                    <span className='flex items-center gap-2'>
+                                        <Calendar className='h-4 w-4' />
+                                        {publishedDate}
+                                    </span>
                                 </div>
+
+                                <Button
+                                    asChild
+                                    variant='gold'
+                                    size='lg'
+                                    withArrow
+                                >
+                                    <Link href='/contact-us'>
+                                        Free Consultation
+                                    </Link>
+                                </Button>
                             </div>
                         </div>
                     </div>
