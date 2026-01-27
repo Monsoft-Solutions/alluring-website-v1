@@ -243,9 +243,9 @@ export function AnalyzePageClient({
         setSelectedPostIds(new Set(posts.map((p) => p.id)))
     }
 
-    const clearSelection = () => {
+    const clearSelection = useCallback(() => {
         setSelectedPostIds(new Set())
-    }
+    }, [])
 
     // Start analysis
     const handleStartAnalysis = () => {
