@@ -43,8 +43,9 @@ const nextConfig = {
                 permanent: true, // 308 permanent redirect
             },
             // Redirect old /blog/:slug URLs to root-level /:slug (WordPress URL structure)
+            // Excludes reserved subpaths: categories, tags, authors
             {
-                source: '/blog/:slug',
+                source: '/blog/:slug((?!categories|tags|authors).*)',
                 destination: '/:slug',
                 permanent: true, // 301 permanent redirect for SEO
             },
