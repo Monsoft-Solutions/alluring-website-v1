@@ -10,7 +10,7 @@ import { ContainerLayout } from '@/components/container-layout.component'
 import { Hero } from '@/components/home/hero.component'
 import { Journey } from '@/components/home/journey.component'
 import { Procedures } from '@/components/home/procedures.component'
-import { BeforeAfter } from '@/components/home/before-after.component'
+import { GalleryShowcase } from '@/components/shared/gallery-showcase.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
@@ -246,7 +246,7 @@ export default async function Page() {
                 {featuredPromotion && (
                     <PromoSection promotion={featuredPromotion} />
                 )}
-                <BeforeAfter />
+                <GalleryShowcase variant='muted' />
                 <WhyUs />
                 <Surgeons />
                 <GoogleReviews
