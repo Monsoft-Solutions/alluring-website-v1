@@ -2,7 +2,7 @@
  * Workflow Status API Route
  *
  * Provides status polling endpoint for Vercel Workflow runs.
- * Used by the UI to track progress of long-running image generation workflows.
+ * Used by the UI to track progress of long-running workflows.
  *
  * @module @admin/app/api/workflow/[runId]
  */
@@ -12,11 +12,12 @@ import { NextResponse } from 'next/server'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import type { BulkInlineImagesWorkflowResult } from '@/app/workflows/inline-image-generation/bulk-inline-images.workflow'
+import type { BulkSeoTitlesWorkflowResult } from '@/app/workflows/seo-title-generation/bulk-seo-titles.workflow'
 
 export type WorkflowStatusResponse = {
     id: string
     status: 'pending' | 'running' | 'completed' | 'failed'
-    output?: BulkInlineImagesWorkflowResult
+    output?: BulkInlineImagesWorkflowResult | BulkSeoTitlesWorkflowResult
     error?: string
 }
 
@@ -40,14 +41,19 @@ export async function GET(
             )
         }
 
-        const run = getRun<BulkInlineImagesWorkflowResult>(runId)
+        const run = getRun<
+            BulkInlineImagesWorkflowResult | BulkSeoTitlesWorkflowResult
+        >(runId)
 
         // Get status - returns a Promise
         const status = await run.status
 
         // Map workflow status to our response status
         let responseStatus: WorkflowStatusResponse['status']
-        let output: BulkInlineImagesWorkflowResult | undefined
+        let output:
+            | BulkInlineImagesWorkflowResult
+            | BulkSeoTitlesWorkflowResult
+            | undefined
         let error: string | undefined
 
         if (status === 'completed') {

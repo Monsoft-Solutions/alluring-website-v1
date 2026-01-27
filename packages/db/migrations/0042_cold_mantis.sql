@@ -1,0 +1,1 @@
+ALTER TABLE "instagram_post" ADD COLUMN "seo_title" varchar(60);

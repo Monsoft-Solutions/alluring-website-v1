@@ -41,6 +41,28 @@ const getCachedPostByCode = cache(async (code: string) =>
 )
 
 /**
+ * Generate a fallback SEO title when seoTitle is not available
+ * Format: "Photo Jan 2024 | Alluring Plastic Surgery"
+ */
+function generateFallbackTitle(post: {
+    mediaType: string
+    takenAt: Date
+}): string {
+    const date = new Date(post.takenAt)
+    const monthYear = date.toLocaleDateString('en-US', {
+        month: 'short',
+        year: 'numeric',
+    })
+    const prefix =
+        post.mediaType === 'video'
+            ? 'Video'
+            : post.mediaType === 'carousel'
+              ? 'Gallery'
+              : 'Photo'
+    return `${prefix} ${monthYear} | ${siteConfig.business.name}`
+}
+
+/**
  * Generate static params for all Instagram posts
  */
 export async function generateStaticParams() {
@@ -67,10 +89,13 @@ export async function generateMetadata({
           (post.caption.length > 160 ? '...' : '')
         : `Instagram post from ${siteConfig.business.name}`
 
+    // Generate unique title - use seoTitle if available, else smart fallback
+    const title = post.seoTitle ?? generateFallbackTitle(post)
+
     const pageUrl = `${siteUrl}/instagram/${code}`
 
     return toNextMetadata(seoConfig, {
-        title: `Instagram Post | ${siteConfig.business.name}`,
+        title,
         description,
         canonical: `/instagram/${code}`,
         openGraph: {

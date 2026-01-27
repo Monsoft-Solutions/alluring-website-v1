@@ -295,6 +295,13 @@
       "when": 1769038005356,
       "tag": "0041_wealthy_scalphunter",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1769536215908,
+      "tag": "0042_cold_mantis",
+      "breakpoints": true
     }
   ]
 }

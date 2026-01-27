@@ -27,6 +27,7 @@ import {
     bulkGenerateInlineImages,
 } from '@/lib/actions/blog-bulk.action'
 import type { WorkflowStatusResponse } from '@/app/api/workflow/[runId]/route'
+import type { BulkInlineImagesWorkflowResult } from '@/app/workflows/inline-image-generation/bulk-inline-images.workflow'
 
 type BulkActionToolbarProps = {
     selectedIds: string[]
@@ -61,6 +62,15 @@ const STATUS_OPTIONS: Array<{
 // Polling interval for workflow status (3 seconds)
 const WORKFLOW_POLL_INTERVAL = 3000
 
+/**
+ * Type guard to check if workflow output is from inline images workflow
+ */
+function isInlineImagesResult(
+    output: WorkflowStatusResponse['output']
+): output is BulkInlineImagesWorkflowResult {
+    return output !== undefined && 'totalImagesGenerated' in output
+}
+
 export function BlogBulkActionToolbar({
     selectedIds,
     onClearSelection,
@@ -93,15 +103,18 @@ export function BlogBulkActionToolbar({
                             toast.dismiss(toastIdRef.current)
                         }
 
-                        const output = data.output
-                        if (output.failedCount === 0) {
-                            toast.success(
-                                `Generated ${output.totalImagesGenerated} image${output.totalImagesGenerated !== 1 ? 's' : ''} across ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}`
-                            )
-                        } else {
-                            toast.warning(
-                                `Generated images for ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}, ${output.failedCount} failed`
-                            )
+                        // Check if this is an inline images workflow result
+                        if (isInlineImagesResult(data.output)) {
+                            const output = data.output
+                            if (output.failedCount === 0) {
+                                toast.success(
+                                    `Generated ${output.totalImagesGenerated} image${output.totalImagesGenerated !== 1 ? 's' : ''} across ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}`
+                                )
+                            } else {
+                                toast.warning(
+                                    `Generated images for ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}, ${output.failedCount} failed`
+                                )
+                            }
                         }
 
                         onActionComplete()

@@ -75,6 +75,8 @@ export {
     generateFeaturedImagePrompt,
     // SEO functions
     generateContentBrief,
+    // Instagram SEO
+    generateInstagramSeoTitle,
     type ClassifyIntentOptions,
     type ChatMessage,
     type StreamChatOptions,
@@ -100,6 +102,8 @@ export {
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,
     type GenerateContentBriefOptions,
+    type GenerateInstagramSeoTitleOptions,
+    type GenerateInstagramSeoTitleResult,
 } from './functions'
 
 // AI-specific schemas for structured outputs

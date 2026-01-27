@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@workspace/ui/components/button'
 import { Card, CardContent } from '@workspace/ui/components/card'
 import { Badge } from '@workspace/ui/components/badge'
-import { Sparkles, Loader2 } from 'lucide-react'
+import { Sparkles, Loader2, Type } from 'lucide-react'
 import { toast } from 'sonner'
 
 import type {
@@ -23,6 +23,9 @@ import type {
     InstagramPostListItem,
 } from '@/lib/types/social-media/social-media.type'
 import { analyzeInstagramPosts } from '@/lib/actions/instagram-analysis.action'
+import { bulkGenerateInstagramSeoTitles } from '@/lib/actions/instagram-seo.action'
+import type { WorkflowStatusResponse } from '@/app/api/workflow/[runId]/route'
+import type { BulkSeoTitlesWorkflowResult } from '@/app/workflows/seo-title-generation/bulk-seo-titles.workflow'
 import { AnalysisFilters } from '@/components/instagram/analysis-filters.component'
 import { AnalyzingProgress } from '@/components/instagram/analyzing-progress.component'
 import { PostSelectCard } from '@/components/instagram/post-select-card.component'
@@ -41,6 +44,20 @@ type AnalyzePageClientProps = {
 type AnalysisStep = 'select' | 'analyzing'
 
 const PAGE_SIZE = 24
+const WORKFLOW_POLL_INTERVAL = 3000
+
+/**
+ * Type guard to check if workflow output is SEO titles result
+ */
+function isSeoTitlesResult(
+    output: WorkflowStatusResponse['output']
+): output is BulkSeoTitlesWorkflowResult {
+    return (
+        output !== undefined &&
+        'results' in output &&
+        !('totalImagesGenerated' in output)
+    )
+}
 
 export function AnalyzePageClient({
     initialPosts,
@@ -54,6 +71,11 @@ export function AnalyzePageClient({
         new Set()
     )
     const [analysisProgress, setAnalysisProgress] = useState(0)
+
+    // SEO title generation state
+    const [isSeoTitlePolling, setIsSeoTitlePolling] = useState(false)
+    const seoTitlePollingRef = useRef<NodeJS.Timeout | null>(null)
+    const seoTitleToastRef = useRef<string | number | null>(null)
 
     // Infinite scroll state
     const [posts, setPosts] = useState<InstagramPostListItem[]>(initialPosts)
@@ -272,6 +294,126 @@ export function AnalyzePageClient({
         })
     }
 
+    // Poll SEO title workflow status
+    const pollSeoTitleWorkflow = useCallback(
+        async (runId: string) => {
+            const checkStatus = async (): Promise<boolean> => {
+                try {
+                    const response = await fetch(`/api/workflow/${runId}`)
+                    if (!response.ok) {
+                        throw new Error('Failed to get workflow status')
+                    }
+
+                    const data =
+                        (await response.json()) as WorkflowStatusResponse
+
+                    if (data.status === 'completed' && data.output) {
+                        if (seoTitleToastRef.current) {
+                            toast.dismiss(seoTitleToastRef.current)
+                        }
+
+                        if (isSeoTitlesResult(data.output)) {
+                            const output = data.output
+                            if (output.failedCount === 0) {
+                                toast.success(
+                                    `Generated SEO titles for ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}`
+                                )
+                            } else {
+                                toast.warning(
+                                    `Generated titles for ${output.processedCount} post${output.processedCount !== 1 ? 's' : ''}, ${output.failedCount} failed`
+                                )
+                            }
+                        }
+
+                        // Refresh posts list
+                        void fetchPage(1, { replace: true })
+                        clearSelection()
+                        return true
+                    } else if (data.status === 'failed') {
+                        if (seoTitleToastRef.current) {
+                            toast.dismiss(seoTitleToastRef.current)
+                        }
+                        toast.error(data.error || 'SEO title generation failed')
+                        return true
+                    }
+
+                    if (seoTitleToastRef.current) {
+                        toast.loading('Generating SEO titles...', {
+                            id: seoTitleToastRef.current,
+                        })
+                    }
+
+                    return false
+                } catch (error) {
+                    console.error('Error polling workflow status:', error)
+                    return false
+                }
+            }
+
+            const isDone = await checkStatus()
+            if (isDone) {
+                setIsSeoTitlePolling(false)
+                return
+            }
+
+            setIsSeoTitlePolling(true)
+            seoTitlePollingRef.current = setInterval(async () => {
+                const isDone = await checkStatus()
+                if (isDone) {
+                    if (seoTitlePollingRef.current) {
+                        clearInterval(seoTitlePollingRef.current)
+                        seoTitlePollingRef.current = null
+                    }
+                    setIsSeoTitlePolling(false)
+                }
+            }, WORKFLOW_POLL_INTERVAL)
+        },
+        [fetchPage, clearSelection]
+    )
+
+    // Cleanup polling on unmount
+    useEffect(() => {
+        return () => {
+            if (seoTitlePollingRef.current) {
+                clearInterval(seoTitlePollingRef.current)
+            }
+        }
+    }, [])
+
+    // Start SEO title generation
+    const handleGenerateSeoTitles = () => {
+        if (selectedPostIds.size === 0) {
+            toast.error('Please select at least one post')
+            return
+        }
+
+        if (isSeoTitlePolling) return
+
+        startTransition(async () => {
+            const toastId = toast.loading(
+                `Starting SEO title generation for ${selectedPostIds.size} post${selectedPostIds.size > 1 ? 's' : ''}...`
+            )
+            seoTitleToastRef.current = toastId
+
+            const result = await bulkGenerateInstagramSeoTitles(
+                Array.from(selectedPostIds)
+            )
+
+            if (result.success && result.runId) {
+                toast.loading('Generating SEO titles in background...', {
+                    id: toastId,
+                })
+                void pollSeoTitleWorkflow(result.runId)
+            } else {
+                toast.dismiss(toastId)
+                seoTitleToastRef.current = null
+                toast.error(
+                    result.error || 'Failed to start SEO title generation'
+                )
+            }
+        })
+    }
+
     // Render analyzing step
     if (step === 'analyzing') {
         return (
@@ -318,13 +460,29 @@ export function AnalyzePageClient({
                         {selectedPostIds.size} selected
                     </Badge>
                 </div>
-                <Button
-                    onClick={handleStartAnalysis}
-                    disabled={isPending || selectedPostIds.size === 0}
-                >
-                    <Sparkles className='mr-2 h-4 w-4' />
-                    Analyze {selectedPostIds.size} Posts
-                </Button>
+                <div className='flex items-center gap-2'>
+                    <Button
+                        variant='outline'
+                        onClick={handleGenerateSeoTitles}
+                        disabled={
+                            isPending ||
+                            isSeoTitlePolling ||
+                            selectedPostIds.size === 0
+                        }
+                    >
+                        <Type className='mr-2 h-4 w-4' />
+                        {isSeoTitlePolling
+                            ? 'Generating...'
+                            : `SEO Titles (${selectedPostIds.size})`}
+                    </Button>
+                    <Button
+                        onClick={handleStartAnalysis}
+                        disabled={isPending || selectedPostIds.size === 0}
+                    >
+                        <Sparkles className='mr-2 h-4 w-4' />
+                        Analyze {selectedPostIds.size} Posts
+                    </Button>
+                </div>
             </div>
 
             {/* Error Message */}
