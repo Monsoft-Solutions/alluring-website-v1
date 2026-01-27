@@ -49,6 +49,8 @@ export async function generateTitleStep(
                 takenAt: instagramPost.takenAt,
                 aiAnalysis: instagramPost.aiAnalysis,
                 mediaAiAnalysis: galleryMedia.aiAnalysis,
+                seoTitle: instagramPost.seoTitle,
+                seoDescription: instagramPost.seoDescription,
             })
             .from(instagramPost)
             .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -64,6 +66,19 @@ export async function generateTitleStep(
         }
 
         const post = posts[0]!
+
+        // Skip if both SEO fields are already populated (prevents duplicate AI calls on retry)
+        if (post.seoTitle && post.seoDescription) {
+            console.log(
+                `[Workflow Step] SEO metadata already exists for ${postId}, skipping generation`
+            )
+            return {
+                success: true,
+                postId,
+                seoTitle: post.seoTitle,
+                seoDescription: post.seoDescription,
+            }
+        }
 
         // Prefer post-level AI analysis, fallback to media-level
         const aiAnalysis = post.aiAnalysis ?? post.mediaAiAnalysis
