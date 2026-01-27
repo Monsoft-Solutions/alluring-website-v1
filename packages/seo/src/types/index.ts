@@ -87,3 +87,9 @@ export type {
     CollectionItem,
     CollectionAbout,
 } from './schema/collection-page.type'
+export type {
+    HowToSchemaProps,
+    HowToStep,
+    HowToTool,
+    HowToSupply,
+} from './schema/how-to.type'

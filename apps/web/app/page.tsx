@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import {
     BreadcrumbSchema,
     FAQSchema,
+    HowToSchema,
     MedicalClinicSchema,
     OfferSchema,
     PhysicianSchema,
@@ -13,11 +14,14 @@ import { ContainerLayout } from '@/components/container-layout.component'
 import { Hero } from '@/components/home/hero.component'
 import { TrustBar } from '@/components/home/trust-bar.component'
 import { Journey } from '@/components/home/journey.component'
+import { PricingPreview } from '@/components/home/pricing-preview.component'
 import { Procedures } from '@/components/home/procedures.component'
 import { SecondaryProcedures } from '@/components/home/secondary-procedures.component'
 import { GalleryShowcase } from '@/components/shared/gallery-showcase.component'
+import { RecoveryTimeline } from '@/components/home/recovery-timeline.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
+import { MedicalTourism } from '@/components/home/medical-tourism.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
@@ -268,6 +272,33 @@ export default async function Page() {
             {/* Structured Data - FAQ Schema for rich snippets */}
             {faqSchemaItems.length > 0 && <FAQSchema items={faqSchemaItems} />}
 
+            {/* Structured Data - HowTo Schema for patient journey (voice search optimization) */}
+            <HowToSchema
+                name='How to Get Plastic Surgery at Alluring Plastic Surgery Miami'
+                description="Three simple steps to your transformation at Miami's premier plastic surgery clinic. From free consultation to your final results."
+                url={`${siteUrl}/#experience`}
+                image={`${siteUrl}/og-image.jpg`}
+                totalTime='P8W'
+                steps={[
+                    {
+                        name: 'Schedule Your Free Consultation',
+                        description:
+                            'Book a private consultation with a board-certified cosmetic surgeon. Discuss your goals for BBL, mommy makeover, breast augmentation, liposuction, or other procedures. No salespeople—just honest medical advice.',
+                    },
+                    {
+                        name: 'Receive Your Custom Surgical Plan',
+                        description:
+                            'Get a personalized treatment plan tailored to your anatomy and goals. Review all-inclusive pricing, financing options including 0% interest plans, and your recovery timeline.',
+                    },
+                    {
+                        name: 'Your Transformation',
+                        description:
+                            'Undergo your procedure with expert care from our double board-certified surgeons. Your dedicated concierge team supports you from surgery day through final follow-up, ensuring results that exceed expectations.',
+                    },
+                ]}
+                yield='Your dream transformation'
+            />
+
             {/* Structured Data - Offer Schema for featured promotion */}
             {featuredPromotion && (
                 <OfferSchema
@@ -325,6 +356,7 @@ export default async function Page() {
                 <Hero />
                 <TrustBar />
                 <Journey />
+                <PricingPreview />
                 <Procedures />
                 <SecondaryProcedures />
                 {/* Featured Promotion Section - Only shown when active promotion exists */}
@@ -332,8 +364,10 @@ export default async function Page() {
                     <PromoSection promotion={featuredPromotion} />
                 )}
                 <GalleryShowcase variant='muted' />
+                <RecoveryTimeline />
                 <WhyUs />
                 <Surgeons />
+                <MedicalTourism />
                 <GoogleReviews
                     title='Real Reviews from Google'
                     subtitle='See what our patients are saying on Google'

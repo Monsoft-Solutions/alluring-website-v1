@@ -6,8 +6,42 @@ import { motion } from 'framer-motion'
 import { Button } from '@workspace/ui/components/button'
 import Image from 'next/image'
 import Link from 'next/link'
+import {
+    Award,
+    BadgeCheck,
+    ExternalLink,
+    Sparkles,
+    TrendingUp,
+} from 'lucide-react'
+
+/**
+ * Credential stat type
+ */
+type CredentialStat = {
+    readonly icon: React.ReactNode
+    readonly value: string
+    readonly label: string
+}
 
 export const Surgeons = () => {
+    const credentialStats: CredentialStat[] = [
+        {
+            icon: <Sparkles className='h-4 w-4' />,
+            value: '1,500+',
+            label: 'BBL Procedures',
+        },
+        {
+            icon: <TrendingUp className='h-4 w-4' />,
+            value: '5,000+',
+            label: 'Total Surgeries',
+        },
+        {
+            icon: <Award className='h-4 w-4' />,
+            value: '15+',
+            label: 'Years Experience',
+        },
+    ]
+
     return (
         <SectionContainer
             id='surgeons'
@@ -38,6 +72,30 @@ export const Surgeons = () => {
                             />
                             {/* Floating Box */}
                             <div className='bg-gold-500/10 border-gold-500/30 absolute -right-8 -bottom-8 hidden h-48 w-48 border backdrop-blur-md md:block'></div>
+
+                            {/* Credential Stats Overlay */}
+                            <div className='absolute right-4 -bottom-4 left-4 flex gap-2 md:right-auto md:-bottom-12 md:left-0 md:gap-3'>
+                                {credentialStats.map((stat, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1 }}
+                                        className='flex flex-1 flex-col items-center gap-1 border border-stone-700 bg-stone-900/95 p-3 backdrop-blur-sm md:p-4'
+                                    >
+                                        <div className='text-gold-400'>
+                                            {stat.icon}
+                                        </div>
+                                        <span className='text-lg font-bold text-white md:text-xl'>
+                                            {stat.value}
+                                        </span>
+                                        <span className='text-center text-[10px] text-stone-400 uppercase md:text-xs'>
+                                            {stat.label}
+                                        </span>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </motion.div>
                     </div>
 
@@ -53,7 +111,7 @@ export const Surgeons = () => {
                             </h2>
                         </div>
 
-                        <div className='mb-12 space-y-8 border-l border-stone-800 pl-8'>
+                        <div className='mb-8 space-y-8 border-l border-stone-800 pl-8'>
                             <p className='font-serif text-2xl leading-relaxed text-stone-300 italic'>
                                 &quot;Cosmetic surgery is never just about a
                                 single feature. It&apos;s about how you feel
@@ -65,8 +123,61 @@ export const Surgeons = () => {
                                     Dr. Victoria Karlinsky
                                 </span>
                                 <span className='text-base text-stone-500'>
-                                    Board Certified Cosmetic Surgeon
+                                    Double Board-Certified Cosmetic Surgeon
                                 </span>
+                            </div>
+                        </div>
+
+                        {/* Board Certifications */}
+                        <div className='mb-8 rounded-lg border border-stone-800 bg-stone-900/50 p-5'>
+                            <h3 className='mb-4 flex items-center gap-2 text-sm font-bold tracking-wider text-white uppercase'>
+                                <BadgeCheck className='text-gold-400 h-4 w-4' />
+                                Verified Credentials
+                            </h3>
+                            <div className='space-y-3'>
+                                <a
+                                    href='https://www.americanboardcosmeticsurgery.org/'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='hover:border-gold-500/50 group flex items-center justify-between border-b border-stone-800 pb-3 transition-colors'
+                                >
+                                    <div>
+                                        <span className='block text-sm font-medium text-white'>
+                                            American Board of Cosmetic Surgery
+                                        </span>
+                                        <span className='text-xs text-stone-500'>
+                                            Board Certified
+                                        </span>
+                                    </div>
+                                    <ExternalLink className='text-gold-500 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100' />
+                                </a>
+                                <a
+                                    href='https://www.flhealthsource.gov/mqa/'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='hover:border-gold-500/50 group flex items-center justify-between border-b border-stone-800 pb-3 transition-colors'
+                                >
+                                    <div>
+                                        <span className='block text-sm font-medium text-white'>
+                                            Florida Medical Quality Assurance
+                                        </span>
+                                        <span className='text-xs text-stone-500'>
+                                            State Licensed
+                                        </span>
+                                    </div>
+                                    <ExternalLink className='text-gold-500 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100' />
+                                </a>
+                                <div className='flex items-center justify-between pt-1'>
+                                    <div>
+                                        <span className='block text-sm font-medium text-white'>
+                                            Fellowship Trained
+                                        </span>
+                                        <span className='text-xs text-stone-500'>
+                                            Cosmetic Surgery & Body Contouring
+                                        </span>
+                                    </div>
+                                    <Award className='text-gold-400 h-4 w-4' />
+                                </div>
                             </div>
                         </div>
 
@@ -80,7 +191,7 @@ export const Surgeons = () => {
                                 asChild
                             >
                                 <Link href='/about#credentials'>
-                                    Verify Credentials
+                                    Full Credentials
                                 </Link>
                             </Button>
                         </div>
