@@ -91,7 +91,7 @@ export function PricingPreview() {
         <SectionContainer
             id='pricing'
             variant='default'
-            className='relative overflow-hidden bg-stone-50'
+            className='relative overflow-hidden bg-white'
             paddingY='py-24 lg:py-32'
             ariaLabel='Pricing information'
         >

@@ -262,7 +262,7 @@ export function RecoveryTimeline() {
         <SectionContainer
             id='recovery'
             variant='default'
-            className='relative overflow-hidden bg-white'
+            className='relative overflow-hidden bg-stone-100'
             paddingY='py-24 lg:py-32'
             ariaLabel='Recovery timeline information'
         >

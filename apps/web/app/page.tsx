@@ -355,24 +355,27 @@ export default async function Page() {
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 <Hero />
                 <TrustBar />
-                <Journey />
-                <PricingPreview />
                 <Procedures />
                 <SecondaryProcedures />
-                {/* Featured Promotion Section - Only shown when active promotion exists */}
-                {featuredPromotion && (
-                    <PromoSection promotion={featuredPromotion} />
-                )}
-                <GalleryShowcase variant='muted' />
-                <RecoveryTimeline />
-                <WhyUs />
-                <Surgeons />
-                <MedicalTourism />
                 <GoogleReviews
                     title='Real Reviews from Google'
                     subtitle='See what our patients are saying on Google'
                     limit={6}
                 />
+                {/* Featured Promotion Section - Only shown when active promotion exists */}
+                {featuredPromotion && (
+                    <PromoSection promotion={featuredPromotion} />
+                )}
+                <GalleryShowcase variant='muted' />
+                <Surgeons />
+
+                <Journey />
+                <MedicalTourism />
+
+                <WhyUs />
+
+                <PricingPreview />
+                <RecoveryTimeline />
                 <BlogPostsSection
                     title='Latest from Our Blog'
                     description='Expert insights and advice from our board-certified plastic surgeons'
