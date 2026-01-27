@@ -77,6 +77,8 @@ const STATIC_PAGES: Array<{
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/cookies', changeFrequency: 'yearly', priority: 0.3 },
+    // Utility pages
+    { path: '/html-sitemap', changeFrequency: 'weekly', priority: 0.4 },
 ]
 
 /**

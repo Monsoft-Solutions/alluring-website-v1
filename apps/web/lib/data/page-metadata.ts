@@ -59,6 +59,9 @@ export const pageLastModified: Record<string, string> = {
     '/privacy': '2025-12-16',
     '/terms': '2025-12-16',
     '/cookies': '2025-12-16',
+
+    // Utility pages
+    '/html-sitemap': '2026-01-27',
 } as const
 
 /**

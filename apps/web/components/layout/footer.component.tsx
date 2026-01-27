@@ -383,11 +383,11 @@ export const Footer = () => {
                                 </Link>
                             ))}
                         <Link
-                            href='/sitemap'
+                            href='/html-sitemap'
                             onClick={() =>
                                 handleFooterLinkClick(
                                     'Sitemap',
-                                    '/sitemap',
+                                    '/html-sitemap',
                                     'legal'
                                 )
                             }
