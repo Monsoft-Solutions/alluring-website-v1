@@ -21,6 +21,7 @@ export type GenerateTitleStepResult = {
     success: boolean
     postId: string
     seoTitle?: string
+    seoDescription?: string
     error?: string
 }
 
@@ -82,23 +83,25 @@ export async function generateTitleStep(
                 : null,
         })
 
-        // Update the post with the generated title
+        // Update the post with the generated title and description
         await db
             .update(instagramPost)
             .set({
                 seoTitle: result.seoTitle,
+                seoDescription: result.seoDescription,
                 updatedAt: new Date(),
             })
             .where(eq(instagramPost.id, postId))
 
         console.log(
-            `[Workflow Step] Generated SEO title for ${postId}: "${result.seoTitle}"`
+            `[Workflow Step] Generated SEO metadata for ${postId}: "${result.seoTitle}" / "${result.seoDescription}"`
         )
 
         return {
             success: true,
             postId,
             seoTitle: result.seoTitle,
+            seoDescription: result.seoDescription,
         }
     } catch (error) {
         console.error(

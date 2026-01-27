@@ -302,6 +302,13 @@
       "when": 1769536215908,
       "tag": "0042_cold_mantis",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1769538429749,
+      "tag": "0043_flat_bill_hollister",
+      "breakpoints": true
     }
   ]
 }

@@ -29,12 +29,6 @@ type BulkSeoTitlesResult = {
 }
 
 // ============================================================================
-// Constants
-// ============================================================================
-
-const MAX_BULK_SEO_TITLE_GENERATION = 100
-
-// ============================================================================
 // Validation Helpers
 // ============================================================================
 
@@ -42,18 +36,10 @@ const MAX_BULK_SEO_TITLE_GENERATION = 100
  * Validate post IDs array
  */
 function validatePostIds(
-    postIds: string[] | undefined,
-    maxCount: number
+    postIds: string[] | undefined
 ): BulkSeoTitlesResult | null {
     if (!postIds || postIds.length === 0) {
         return { success: false, error: 'No post IDs provided' }
-    }
-
-    if (postIds.length > maxCount) {
-        return {
-            success: false,
-            error: `Maximum ${maxCount} posts can be processed at once`,
-        }
     }
 
     return null
@@ -100,10 +86,7 @@ export async function bulkGenerateInstagramSeoTitles(
     try {
         await requireAuth()
 
-        const validation = validatePostIds(
-            postIds,
-            MAX_BULK_SEO_TITLE_GENERATION
-        )
+        const validation = validatePostIds(postIds)
         if (validation) return validation
 
         console.log(

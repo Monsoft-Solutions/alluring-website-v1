@@ -1,30 +1,61 @@
 /**
- * Generate Instagram SEO Title Function
+ * Generate Instagram SEO Metadata Function
  *
- * AI-powered SEO title generation for Instagram posts.
- * Creates unique, descriptive titles for individual post pages
- * to avoid duplicate title issues in Google Search Console.
+ * AI-powered SEO title and description generation for Instagram posts.
+ * Creates unique, descriptive metadata for individual post pages
+ * to avoid duplicate title/description issues in Google Search Console.
  *
  * @module @workspace/ai/functions/generate-instagram-seo-title
  */
-import { coreGenerateText } from '../core'
+import { z } from 'zod'
+
+import { coreGenerateObject } from '../core'
 
 /**
- * Model for SEO title generation (cost-efficient)
+ * Model for SEO metadata generation (cost-efficient)
  */
-const MODEL_FOR_SEO_TITLE_GENERATION = 'gpt-4.1-mini'
+const MODEL_FOR_SEO_GENERATION = 'gpt-4.1-mini'
 
 /**
- * System prompt for Instagram SEO title generation
+ * Zod schema for SEO metadata output
  */
-const SEO_TITLE_SYSTEM_PROMPT = `You are an expert in writing SEO-optimized page titles for a plastic surgery clinic's Instagram posts.
+const seoMetadataSchema = z.object({
+    title: z
+        .string()
+        .describe(
+            'SEO-optimized page title, max 50 characters. No quotes, no brand name, no pipe symbol.'
+        ),
+    description: z
+        .string()
+        .describe(
+            'SEO meta description, max 155 characters. Compelling with call to action.'
+        ),
+})
+
+/**
+ * System prompt for Instagram SEO metadata generation
+ */
+const SEO_METADATA_SYSTEM_PROMPT = `You are an expert in writing SEO-optimized page titles and meta descriptions for a plastic surgery clinic's Instagram posts.
 
 Your role is to:
-1. Generate unique, descriptive titles for Instagram post pages
-2. Follow SEO best practices for title tags
+1. Generate unique, descriptive titles and descriptions for Instagram post pages
+2. Follow SEO best practices for title tags and meta descriptions
 3. Include relevant keywords naturally
-4. Create engaging, click-worthy titles
-5. Keep titles concise and within character limits
+4. Create engaging, click-worthy content
+5. Keep within character limits
+
+Context:
+
+- Business: Alluring Plastic Surgery
+- Location: Miami, FL
+- Target audience: Women 25-55, value quality, seek affordability
+- Serves: Local Miami residents + women and men from US and around the world
+- Doctors: Dr. Victoria Karlinsky, Dr. Andrew Lofman, Dr. Rita Shats
+- Specialties: BBL, breast augmentation, tummy liposuction, mommy makeover, facial procedures
+- Services: Financing options, consultations, recovery guides, pricing guides
+- Brand voice: Luxury, but accessible and affordable
+- Tone: Professional, warm, informative - like a trusted advisor
+- Value proposition: World-class aesthetic procedures combining high-end results with flexible financing and personalized care. Where luxury meets affordability.
 
 Title Best Practices:
 - **Length**: Maximum 50 characters (will be suffixed with " | Alluring Plastic Surgery")
@@ -32,6 +63,15 @@ Title Best Practices:
 - **Uniqueness**: Each title should be distinct and specific
 - **Clarity**: Clearly describe the content type and subject
 - **No Clickbait**: Be accurate and professional
+- **Localization**: Use "Miami" when relevant
+
+Description Best Practices:
+- **Length**: Maximum 155 characters
+- **Compelling**: Include a call to action or value proposition
+- **Keywords**: Include relevant procedure/body area keywords naturally
+- **Informative**: Summarize what the user will see
+- **Unique**: Avoid generic descriptions
+- **Localization**: Use "Miami" when relevant
 
 For plastic surgery content:
 - Use proper procedure names when AI analysis is available
@@ -45,18 +85,18 @@ Examples of good titles:
 - "Breast Augmentation Before & After"
 - "Tummy Tuck Recovery Journey"
 - "Mommy Makeover Reveal"
-- "Liposuction Transformation"
+- "Liposuction Transformation in Miami"
 - "Facial Rejuvenation Results"
 
-Output Requirements:
-- Maximum 50 characters
-- No quotation marks around the text
-- No pipe symbol or brand name (will be added automatically)
-- Professional medical terminology
-- Title case capitalization`
+Examples of good descriptions:
+- "See stunning BBL before and after results at Alluring Plastic Surgery. Schedule your free consultation in Miami."
+- "Watch this incredible tummy tuck transformation. Our board-certified surgeons deliver natural-looking results."
+- "Breast augmentation results from our Miami clinic. View real patient photos and book your consultation today."
+
+IMPORTANT: Do not include quotation marks, pipe symbols, or the brand name in the title.`
 
 /**
- * Options for Instagram SEO title generation
+ * Options for Instagram SEO metadata generation
  */
 export type GenerateInstagramSeoTitleOptions = {
     /** Post caption (for keyword extraction) */
@@ -79,21 +119,23 @@ export type GenerateInstagramSeoTitleOptions = {
 }
 
 /**
- * Result of Instagram SEO title generation
+ * Result of Instagram SEO metadata generation
  */
 export type GenerateInstagramSeoTitleResult = {
     /** The generated SEO title (max 50 chars) */
     seoTitle: string
+    /** The generated SEO description (max 155 chars) */
+    seoDescription: string
 }
 
 /**
- * Generate an SEO-optimized title for an Instagram post page
+ * Generate SEO-optimized title and description for an Instagram post page
  *
- * Uses AI to analyze post content and generate a unique, descriptive
- * title that helps with search rankings and avoids duplicate titles.
+ * Uses AI to analyze post content and generate unique, descriptive
+ * metadata that helps with search rankings and avoids duplicate titles.
  *
  * @param options - Generation options including caption and AI analysis
- * @returns The generated SEO title
+ * @returns The generated SEO title and description
  *
  * @example
  * ```typescript
@@ -110,6 +152,8 @@ export type GenerateInstagramSeoTitleResult = {
  *
  * console.log(result.seoTitle)
  * // "BBL Before & After Results"
+ * console.log(result.seoDescription)
+ * // "See stunning BBL transformation results at Alluring Plastic Surgery Miami. Book your free consultation today."
  * ```
  */
 export async function generateInstagramSeoTitle(
@@ -120,7 +164,7 @@ export async function generateInstagramSeoTitle(
         mediaType,
         takenAt,
         aiAnalysis,
-        modelId = MODEL_FOR_SEO_TITLE_GENERATION,
+        modelId = MODEL_FOR_SEO_GENERATION,
         temperature = 0.4,
     } = options
 
@@ -173,32 +217,26 @@ export async function generateInstagramSeoTitle(
         context.push(`Caption: ${truncatedCaption}`)
     }
 
-    const userPrompt = `Generate an SEO-optimized page title for this Instagram post from a plastic surgery clinic:
+    const userPrompt = `Generate SEO-optimized page title and meta description for this Instagram post from a plastic surgery clinic:
 
 ${context.join('\n')}
 
 Requirements:
-- Maximum 50 characters
-- Include relevant procedure/body area keywords if identifiable
-- Make it unique and descriptive
-- Professional medical tone
-- No quotation marks
-- No brand name or pipe symbol
+- Title: Maximum 50 characters, include relevant keywords, no quotes/brand name/pipe symbol
+- Description: Maximum 155 characters, compelling, include call to action`
 
-Generate the title now:`
-
-    const result = await coreGenerateText({
+    const result = await coreGenerateObject({
         modelId,
-        system: SEO_TITLE_SYSTEM_PROMPT,
+        schema: seoMetadataSchema,
+        system: SEO_METADATA_SYSTEM_PROMPT,
         prompt: userPrompt,
         temperature,
-        maxTokens: 30,
     })
 
-    // Clean up the result
-    let seoTitle = result.text.trim()
+    let seoTitle = result.object.title
+    let seoDescription = result.object.description
 
-    // Remove surrounding quotes if present
+    // Clean up title - remove surrounding quotes if present
     if (
         (seoTitle.startsWith('"') && seoTitle.endsWith('"')) ||
         (seoTitle.startsWith("'") && seoTitle.endsWith("'"))
@@ -211,12 +249,41 @@ Generate the title now:`
         seoTitle = seoTitle.split('|')[0]!.trim()
     }
 
-    // Ensure max length (50 chars, will have " | Alluring Plastic Surgery" appended)
+    // Ensure max length (50 chars)
     if (seoTitle.length > 50) {
         seoTitle = seoTitle.substring(0, 47) + '...'
     }
 
+    // Clean up description - remove surrounding quotes if present
+    if (
+        (seoDescription.startsWith('"') && seoDescription.endsWith('"')) ||
+        (seoDescription.startsWith("'") && seoDescription.endsWith("'"))
+    ) {
+        seoDescription = seoDescription.slice(1, -1)
+    }
+
+    // Ensure max length (155 chars)
+    if (seoDescription.length > 155) {
+        seoDescription = seoDescription.substring(0, 152) + '...'
+    }
+
+    // Fallback if empty (unlikely with object generation, but defensive)
+    if (!seoTitle) {
+        const prefix =
+            mediaType === 'video'
+                ? 'Video'
+                : mediaType === 'carousel'
+                  ? 'Gallery'
+                  : 'Photo'
+        seoTitle = `${prefix} ${monthYear}`
+    }
+
+    if (!seoDescription) {
+        seoDescription = `View this ${mediaTypeLabel.toLowerCase()} from Alluring Plastic Surgery Miami. Schedule your consultation today.`
+    }
+
     return {
         seoTitle,
+        seoDescription,
     }
 }

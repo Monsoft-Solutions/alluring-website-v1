@@ -17,7 +17,7 @@ import { generateTitleStep } from './generate-title.step'
  * Maximum number of posts to process concurrently.
  * Adjust this value to balance speed vs API rate limits.
  */
-const MAX_CONCURRENT_POSTS = 10
+const MAX_CONCURRENT_POSTS = 100
 
 /**
  * Splits an array into chunks of the specified size.

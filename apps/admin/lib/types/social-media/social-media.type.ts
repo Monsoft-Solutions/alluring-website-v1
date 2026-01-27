@@ -13,6 +13,7 @@ export type InstagramPostListItem = {
     mediaType: 'image' | 'video' | 'carousel'
     caption: string | null
     seoTitle: string | null
+    seoDescription: string | null
     permalink: string
     takenAt: Date
     likeCount: number

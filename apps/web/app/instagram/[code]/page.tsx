@@ -83,14 +83,16 @@ export async function generateMetadata({
         return { title: 'Post not found' }
     }
 
-    // Create a description from the caption
-    const description = post.caption
-        ? post.caption.substring(0, 160).replace(/\s+/g, ' ').trim() +
-          (post.caption.length > 160 ? '...' : '')
-        : `Instagram post from ${siteConfig.business.name}`
-
     // Generate unique title - use seoTitle if available, else smart fallback
     const title = post.seoTitle ?? generateFallbackTitle(post)
+
+    // Create a description - use seoDescription if available, else caption fallback
+    const description =
+        post.seoDescription ??
+        (post.caption
+            ? post.caption.substring(0, 160).replace(/\s+/g, ' ').trim() +
+              (post.caption.length > 160 ? '...' : '')
+            : `Instagram post from ${siteConfig.business.name}`)
 
     const pageUrl = `${siteUrl}/instagram/${code}`
 

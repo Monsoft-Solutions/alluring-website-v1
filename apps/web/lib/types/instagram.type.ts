@@ -46,6 +46,8 @@ export type InstagramPostPublic = {
     caption: string | null
     /** SEO-optimized title for unique page titles */
     seoTitle: string | null
+    /** SEO-optimized description for unique meta descriptions */
+    seoDescription: string | null
     /** Original Instagram permalink */
     permalink: string
     /** When the post was published on Instagram */
