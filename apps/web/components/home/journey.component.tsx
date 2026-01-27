@@ -9,17 +9,17 @@ export const Journey = () => {
         {
             num: '01',
             title: 'The Conversation',
-            desc: 'Share your goals over a private consult. Get realistic options from a surgeon, not a salesperson.',
+            desc: "Whether you're considering a BBL, mommy makeover, breast augmentation, or liposuction—share your goals over a private consult with a surgeon, not a salesperson.",
         },
         {
             num: '02',
             title: 'The Custom Plan',
-            desc: 'We map out your anatomy, recovery timeline, and all-inclusive financing options together.',
+            desc: 'From body contouring to facial rejuvenation, we map out your anatomy, recovery timeline, and all-inclusive financing options together.',
         },
         {
             num: '03',
             title: 'The Transformation',
-            desc: 'From surgery day to your final follow-up, your dedicated concierge team is by your side.',
+            desc: 'From surgery day to your final follow-up, your dedicated concierge team is by your side—ensuring your results exceed expectations.',
         },
     ]
 

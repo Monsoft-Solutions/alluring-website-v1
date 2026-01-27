@@ -95,21 +95,27 @@ export const Hero = () => {
                                 </span>
                             </div>
 
-                            <h1 className='mb-8 font-serif text-5xl leading-[1.05] md:text-6xl xl:text-7xl'>
+                            <h1
+                                className='mb-8 font-serif text-5xl leading-[1.05] md:text-6xl xl:text-7xl'
+                                data-speakable='true'
+                            >
                                 <span className='text-stone-900'>
-                                    Luxury Results,
+                                    Miami&apos;s Premier Plastic Surgery.
                                 </span>
                                 <br />
                                 <span className='font-light text-stone-600 italic'>
-                                    Designed for You.
+                                    Luxury Results, Designed for You.
                                 </span>
                             </h1>
 
-                            <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-600'>
-                                You bring the vision — our surgeons bring years
-                                of board-certified expertise and a concierge
-                                experience that feels as elevated as your
-                                results.
+                            <p
+                                className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-600'
+                                data-speakable='true'
+                            >
+                                BBL, breast augmentation, mommy makeover,
+                                liposuction—tailored to your unique goals by
+                                double board-certified surgeons with a concierge
+                                experience as elevated as your results.
                             </p>
 
                             <div className='mb-10 flex flex-col gap-5 sm:flex-row'>

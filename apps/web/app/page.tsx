@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
 import {
+    BreadcrumbSchema,
     FAQSchema,
     MedicalClinicSchema,
     OfferSchema,
+    PhysicianSchema,
+    VideoObjectSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
@@ -120,6 +123,23 @@ export default async function Page() {
                 }}
             />
 
+            {/* Structured Data - BreadcrumbList for navigation */}
+            <BreadcrumbSchema items={[{ name: 'Home', item: siteUrl }]} />
+
+            {/* Structured Data - VideoObject for hero background video */}
+            <VideoObjectSchema
+                name='Alluring Plastic Surgery - Miami Clinic Experience'
+                description="Experience world-class cosmetic surgery at Miami's premier plastic surgery destination. Our state-of-the-art facility combines luxury with affordability."
+                thumbnailUrl={`${siteUrl}/og-image.jpg`}
+                uploadDate='2024-01-01'
+                contentUrl='https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/videos/alluring-home-hero-v1-desktop.mp4'
+                author={{
+                    type: 'Organization',
+                    name: siteConfig.business.name,
+                    url: siteUrl,
+                }}
+            />
+
             {/* Structured Data - MedicalBusiness Schema for healthcare SEO */}
             <MedicalClinicSchema
                 name={siteConfig.business.name}
@@ -180,6 +200,50 @@ export default async function Page() {
                           },
                       }
                     : {})}
+            />
+
+            {/* Structured Data - Physician Schema for Dr. Victoria Karlinsky (E-E-A-T) */}
+            <PhysicianSchema
+                id={`${siteUrl}/#physician-dr-karlinsky`}
+                name='Dr. Victoria Karlinsky'
+                url={`${siteUrl}/about`}
+                image={`${siteUrl}/images/surgeons/dr-karlinsky.webp`}
+                description='Double Board-Certified Cosmetic Surgeon specializing in Brazilian Butt Lift (BBL), breast augmentation, mommy makeover, and body contouring procedures at Alluring Plastic Surgery in Miami, FL.'
+                jobTitle='Double Board-Certified Cosmetic Surgeon'
+                medicalSpecialty={['Plastic Surgery', 'Cosmetic Surgery']}
+                telephone={siteConfig.contact.phone}
+                address={{
+                    streetAddress: siteConfig.contact.address,
+                    addressLocality: siteConfig.contact.city,
+                    addressRegion: siteConfig.contact.state,
+                    postalCode: siteConfig.contact.postalCode,
+                    addressCountry: 'US',
+                }}
+                worksFor={{
+                    '@id': `${siteUrl}/#organization`,
+                    name: siteConfig.business.name,
+                    url: siteUrl,
+                }}
+                hasCredential={[
+                    {
+                        credentialCategory: 'BoardCertification',
+                        name: 'Board Certified Cosmetic Surgeon',
+                        recognizedBy: {
+                            name: 'American Board of Cosmetic Surgery',
+                            url: 'https://www.americanboardcosmeticsurgery.org/',
+                        },
+                    },
+                ]}
+                knowsAbout={[
+                    'Brazilian Butt Lift (BBL)',
+                    'Breast Augmentation',
+                    'Mommy Makeover',
+                    'Liposuction',
+                    'Tummy Tuck',
+                    'Body Contouring',
+                    'Facial Rejuvenation',
+                ]}
+                sameAs={siteConfig.social.map((s) => s.url)}
             />
 
             {/* Structured Data - FAQ Schema for rich snippets */}

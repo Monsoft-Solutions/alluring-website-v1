@@ -35,6 +35,14 @@ export const faqDataHome: Record<string, FaqItem[]> = {
             question: 'Where is the surgery performed?',
             answer: 'All procedures are performed in our state-of-the-art surgical facility located right here in Miami by Double Board-Certified surgeons. We prioritize privacy, safety, and comfort.',
         },
+        {
+            question: 'What procedures are included in a mommy makeover?',
+            answer: 'A mommy makeover typically combines a tummy tuck (abdominoplasty), breast procedure (augmentation, lift, or both), and often liposuction to restore pre-pregnancy contours. During your consultation, we customize the combination to address your specific concerns and goals.',
+        },
+        {
+            question: 'How long does BBL recovery take?',
+            answer: 'BBL recovery typically requires 2 weeks off work and avoiding sitting directly on your buttocks for 6-8 weeks. Most patients see initial results immediately, with final results visible at 3-6 months once swelling subsides. We provide detailed post-op care instructions and recovery supplies.',
+        },
     ],
     recovery: [
         {
@@ -51,6 +59,18 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
     ],
     financing: [
+        {
+            question: 'How much does a BBL cost in Miami?',
+            answer: 'BBL pricing at our Miami clinic starts at $6,500, which includes surgeon fees, anesthesia, facility fees, and all pre/post-op appointments. Final cost depends on the amount of liposuction needed and whether additional procedures are combined. We offer financing starting at $99/month.',
+        },
+        {
+            question: 'How much does a mommy makeover cost?',
+            answer: 'Mommy makeover pricing ranges from $12,000-$18,000 depending on the combination of procedures (tummy tuck, breast surgery, liposuction). This all-inclusive pricing covers surgeon fees, anesthesia, facility, and follow-up care. Financing plans available with 0% interest for qualified applicants.',
+        },
+        {
+            question: 'Do you offer 0% financing for plastic surgery?',
+            answer: `Yes! We partner with ${getFinancingPartnersString()} to offer 0% interest financing for qualified applicants. Plans range from 6-24 months. Many patients pay as little as $99-$199/month for their dream results. Apply during your free consultation.`,
+        },
         {
             question: 'Do you offer payment plans?',
             answer: `Yes. We believe luxury care should be accessible. We work with ${getFinancingPartnersString()} to offer flexible monthly payment plans, some with 0% interest for qualified applicants.`,
