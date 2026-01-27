@@ -14,7 +14,7 @@ import { coreGenerateObject } from '../core'
 /**
  * Model for SEO metadata generation (cost-efficient)
  */
-const MODEL_FOR_SEO_GENERATION = 'gpt-4.1-mini'
+const MODEL_FOR_SEO_GENERATION = 'gpt-4.1'
 
 /**
  * Zod schema for SEO metadata output
