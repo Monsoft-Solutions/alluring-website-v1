@@ -12,6 +12,8 @@ import { instagramPost } from '@workspace/db/schema/social-media'
 import { galleryMedia } from '@workspace/db/schema/gallery'
 import { eq } from 'drizzle-orm'
 import { generateInstagramSeoTitle } from '@workspace/ai'
+import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
+import { CACHE_TAGS } from '@workspace/shared/cache'
 
 export type GenerateTitleStepInput = {
     postId: string
@@ -44,6 +46,7 @@ export async function generateTitleStep(
         const posts = await db
             .select({
                 id: instagramPost.id,
+                code: instagramPost.code,
                 caption: instagramPost.caption,
                 mediaType: instagramPost.mediaType,
                 takenAt: instagramPost.takenAt,
@@ -107,6 +110,12 @@ export async function generateTitleStep(
                 updatedAt: new Date(),
             })
             .where(eq(instagramPost.id, postId))
+
+        // Revalidate web app cache for Instagram pages and sitemap
+        await revalidateWebAppCache([
+            CACHE_TAGS.INSTAGRAM_POSTS,
+            CACHE_TAGS.instagramPostByCode(post.code),
+        ])
 
         console.log(
             `[Workflow Step] Generated SEO metadata for ${postId}: "${result.seoTitle}" / "${result.seoDescription}"`
