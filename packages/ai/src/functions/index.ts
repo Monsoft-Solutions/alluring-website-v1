@@ -144,3 +144,10 @@ export {
     type SelectedImageOptions,
     type ModelProfile,
 } from './select-image-options.function'
+
+// Instagram SEO Title Generation
+export {
+    generateInstagramSeoTitle,
+    type GenerateInstagramSeoTitleOptions,
+    type GenerateInstagramSeoTitleResult,
+} from './generate-instagram-seo-title.function'

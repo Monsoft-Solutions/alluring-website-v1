@@ -19,6 +19,10 @@ export type InstagramSitemapEntry = {
     /** Image URL for sitemap (uses thumbnail for videos) */
     imageUrl: string
     caption: string | null
+    /** SEO-optimized title for sitemap */
+    seoTitle: string | null
+    /** SEO-optimized description for sitemap */
+    seoDescription: string | null
     /** Media type (image, video, carousel) */
     mediaType: 'image' | 'video' | 'carousel'
     /** Video URL (only for video posts) */
@@ -46,6 +50,8 @@ export async function getInstagramPostsForSitemap(): Promise<
             thumbnailUrl: galleryMedia.thumbnailUrl,
             mediaType: instagramPost.mediaType,
             caption: instagramPost.caption,
+            seoTitle: instagramPost.seoTitle,
+            seoDescription: instagramPost.seoDescription,
         })
         .from(instagramPost)
         .innerJoin(galleryMedia, eq(instagramPost.mediaId, galleryMedia.id))
@@ -65,6 +71,8 @@ export async function getInstagramPostsForSitemap(): Promise<
         videoUrl: post.mediaType === 'video' ? post.mediaUrl : null,
         thumbnailUrl: post.thumbnailUrl,
         caption: post.caption,
+        seoTitle: post.seoTitle,
+        seoDescription: post.seoDescription,
     }))
 }
 

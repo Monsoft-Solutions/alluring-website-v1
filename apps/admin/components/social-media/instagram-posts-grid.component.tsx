@@ -4,6 +4,7 @@
  * Instagram Posts Grid Component
  *
  * Instagram-style grid display with detail modal.
+ * Supports selection mode for bulk operations.
  *
  * @module components/social-media/instagram-posts-grid
  */
@@ -18,8 +19,10 @@ import {
     Clapperboard,
     ImageIcon,
     Pin,
+    Check,
 } from 'lucide-react'
 
+import { cn } from '@workspace/ui/lib/utils'
 import { Skeleton } from '@workspace/ui/components/skeleton'
 
 import type {
@@ -42,6 +45,12 @@ type InstagramPostsGridProps = {
     isLoading?: boolean
     isLoadingMore?: boolean
     loadingPlaceholders?: number
+    /** Selection mode - enables checkboxes on posts */
+    selectionMode?: boolean
+    /** Currently selected post IDs */
+    selectedIds?: string[]
+    /** Callback when a post is selected/deselected */
+    onSelectPost?: (postId: string) => void
 }
 
 function formatNumber(num: number): string {
@@ -57,52 +66,110 @@ function formatNumber(num: number): string {
 type PostThumbnailProps = {
     post: InstagramPostListItem
     onClick: () => void
+    selectionMode?: boolean
+    isSelected?: boolean
+    onSelect?: () => void
 }
 
-function PostThumbnail({ post, onClick }: PostThumbnailProps) {
+function PostThumbnail({
+    post,
+    onClick,
+    selectionMode = false,
+    isSelected = false,
+    onSelect,
+}: PostThumbnailProps) {
     const isVideo = post.mediaType === 'video'
     const isCarousel = post.mediaType === 'carousel'
 
+    const handleClick = () => {
+        if (selectionMode && onSelect) {
+            onSelect()
+        } else {
+            onClick()
+        }
+    }
+
     return (
         <button
-            onClick={onClick}
+            onClick={handleClick}
             className='group relative aspect-square w-full cursor-pointer overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-white'
         >
             <Image
                 src={post.media.thumbnailUrl ?? post.media.url}
                 alt={post.caption?.substring(0, 100) ?? 'Instagram post'}
                 fill
-                className='object-cover'
+                className={cn(
+                    'object-cover transition-all duration-200',
+                    selectionMode && isSelected && 'scale-[0.92] rounded-lg'
+                )}
                 sizes='(max-width: 768px) 33vw, (max-width: 1200px) 25vw, 20vw'
             />
 
-            {/* Hover overlay with stats */}
-            <div className='absolute inset-0 flex items-center justify-center gap-6 bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
-                <div className='flex items-center gap-1.5 text-white'>
-                    <Heart className='h-5 w-5 fill-white' />
-                    <span className='text-sm font-bold'>
-                        {formatNumber(post.likeCount)}
-                    </span>
+            {/* Selection overlay */}
+            {selectionMode && (
+                <div
+                    className={cn(
+                        'absolute inset-0 transition-colors duration-200',
+                        isSelected ? 'bg-blue-500/20' : 'bg-transparent'
+                    )}
+                />
+            )}
+
+            {/* Selection checkbox */}
+            {selectionMode && (
+                <div className='absolute top-2 left-2 z-10'>
+                    <div
+                        className={cn(
+                            'flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all duration-200',
+                            isSelected
+                                ? 'border-blue-500 bg-blue-500 text-white'
+                                : 'border-white bg-black/30 text-transparent hover:border-blue-300'
+                        )}
+                    >
+                        <Check className='h-4 w-4' />
+                    </div>
                 </div>
-                <div className='flex items-center gap-1.5 text-white'>
-                    <MessageCircle className='h-5 w-5 fill-white' />
-                    <span className='text-sm font-bold'>
-                        {formatNumber(post.commentCount)}
-                    </span>
+            )}
+
+            {/* Hover overlay with stats - only show when not in selection mode */}
+            {!selectionMode && (
+                <div className='absolute inset-0 flex items-center justify-center gap-6 bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100'>
+                    <div className='flex items-center gap-1.5 text-white'>
+                        <Heart className='h-5 w-5 fill-white' />
+                        <span className='text-sm font-bold'>
+                            {formatNumber(post.likeCount)}
+                        </span>
+                    </div>
+                    <div className='flex items-center gap-1.5 text-white'>
+                        <MessageCircle className='h-5 w-5 fill-white' />
+                        <span className='text-sm font-bold'>
+                            {formatNumber(post.commentCount)}
+                        </span>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Media type indicator - top right */}
             {(isVideo || isCarousel) && (
-                <div className='absolute top-2 right-2 text-white drop-shadow-lg'>
+                <div
+                    className={cn(
+                        'absolute top-2 right-2 text-white drop-shadow-lg',
+                        selectionMode && isSelected && 'top-3 right-3'
+                    )}
+                >
                     {isVideo && <Play className='h-5 w-5 fill-white' />}
                     {isCarousel && <Layers className='h-5 w-5' />}
                 </div>
             )}
 
-            {/* Pinned indicator - top left */}
+            {/* Pinned indicator - below selection checkbox when in selection mode */}
             {post.isFeatured && (
-                <div className='absolute top-2 left-2 text-white drop-shadow-lg'>
+                <div
+                    className={cn(
+                        'absolute text-white drop-shadow-lg',
+                        selectionMode ? 'top-10 left-2' : 'top-2 left-2'
+                    )}
+                >
                     <Pin className='h-4 w-4 fill-white' />
                 </div>
             )}
@@ -118,9 +185,14 @@ export function InstagramPostsGrid({
     isLoading = false,
     isLoadingMore = false,
     loadingPlaceholders = 6,
+    selectionMode = false,
+    selectedIds = [],
+    onSelectPost,
 }: InstagramPostsGridProps) {
     const [selectedPost, setSelectedPost] =
         useState<InstagramPostListItem | null>(null)
+
+    const selectedSet = new Set(selectedIds)
 
     if (posts.length === 0 && !isLoading) {
         return (
@@ -192,6 +264,9 @@ export function InstagramPostsGrid({
                         key={post.id}
                         post={post}
                         onClick={() => setSelectedPost(post)}
+                        selectionMode={selectionMode}
+                        isSelected={selectedSet.has(post.id)}
+                        onSelect={() => onSelectPost?.(post.id)}
                     />
                 ))}
 

@@ -73,6 +73,16 @@ export const instagramPost = pgTable(
         caption: text('caption'),
 
         /**
+         * SEO-optimized title for unique page titles (max 60 chars)
+         */
+        seoTitle: varchar('seo_title', { length: 60 }),
+
+        /**
+         * SEO-optimized description for unique meta descriptions (max 160 chars)
+         */
+        seoDescription: varchar('seo_description', { length: 160 }),
+
+        /**
          * Full URL to the Instagram post
          */
         permalink: text('permalink').notNull(),

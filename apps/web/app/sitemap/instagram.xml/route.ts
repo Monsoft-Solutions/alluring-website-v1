@@ -58,26 +58,42 @@ export async function GET(): Promise<NextResponse> {
                 priority: 0.5,
             }
 
+            // Generate title: prefer seoTitle, fallback to caption, then default
+            let imageTitle =
+                post.seoTitle ??
+                (post.caption
+                    ? post.caption.substring(0, 100)
+                    : `Instagram post ${post.code}`)
+
+            imageTitle += ' | Alluring Plastic Surgery'
+
             // Add post image for image sitemap (uses thumbnail for videos)
             if (post.imageUrl) {
                 entry.images = [
                     {
                         url: post.imageUrl,
-                        title: post.caption
-                            ? post.caption.substring(0, 100)
-                            : `Instagram post ${post.code}`,
+                        title: imageTitle,
                     },
                 ]
             }
 
             // Add video data for video sitemap (video posts only)
             if (post.mediaType === 'video' && post.videoUrl) {
-                const videoTitle = post.caption
-                    ? post.caption.substring(0, 100)
-                    : `Instagram video post ${post.code}`
-                const videoDescription = post.caption
-                    ? post.caption.substring(0, 160).replace(/\s+/g, ' ').trim()
-                    : `Instagram video from Alluring Plastic Surgery`
+                // Prefer SEO metadata, fallback to caption
+                let videoTitle =
+                    post.seoTitle ??
+                    (post.caption
+                        ? post.caption.substring(0, 100)
+                        : `Instagram video post ${post.code}`)
+                videoTitle += ' | Alluring Plastic Surgery'
+                const videoDescription =
+                    post.seoDescription ??
+                    (post.caption
+                        ? post.caption
+                              .substring(0, 160)
+                              .replace(/\s+/g, ' ')
+                              .trim()
+                        : `Instagram video from Alluring Plastic Surgery`)
 
                 entry.videos = [
                     {
