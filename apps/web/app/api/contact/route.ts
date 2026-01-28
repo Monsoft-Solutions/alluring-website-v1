@@ -34,7 +34,7 @@ import {
     sendContactEmails,
     sendContactNotification,
 } from '@/lib/services/email.service'
-import { syncLeadToCRM } from '@/lib/services/crm.service'
+import { sendLeadToN8N } from '@/lib/services/n8n-webhook.service'
 
 /**
  * Extract client IP address from request headers
@@ -210,20 +210,23 @@ async function processLeadInBackground(
     source: string,
     fullName: string
 ): Promise<void> {
-    // Sync to CRM
+    // 1. Send to N8N FIRST (before email)
+    let sentToCrm = false
     try {
-        await syncLeadToCRM(insertData)
-    } catch (crmError) {
-        console.error('CRM sync failed:', crmError)
+        const n8nResult = await sendLeadToN8N(insertData)
+        sentToCrm = n8nResult.success
+    } catch (n8nError) {
+        console.error('N8N webhook failed:', n8nError)
     }
 
-    // Send emails based on whether user provided a real email
+    // 2. Send emails with CRM status
     if (hasUserProvidedEmail) {
         // User provided email - send both notification and confirmation
         try {
             const emailResult = await sendContactEmails(
                 validatedData,
-                submissionId
+                submissionId,
+                sentToCrm
             )
 
             if (emailResult.errors.length > 0) {
@@ -250,7 +253,8 @@ async function processLeadInBackground(
                     subject: `${sourceLabel} Lead: ${fullName} - Callback Requested`,
                     message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${fullName}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
                 },
-                submissionId
+                submissionId,
+                sentToCrm
             )
         } catch (emailError) {
             console.error('Failed to send lead notification email:', emailError)

@@ -31,6 +31,8 @@ export type SendContactEmailsResult = {
 export type ContactNotificationProps = {
     contactData: ContactFormData
     submittedAt: string
+    /** Indicates if lead was successfully sent to CRM */
+    sentToCrm?: boolean
 }
 
 /**

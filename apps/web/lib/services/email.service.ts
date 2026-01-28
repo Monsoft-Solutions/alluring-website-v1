@@ -60,11 +60,13 @@ async function logEmailToDatabase(
  *
  * @param contactData - Contact form submission data
  * @param submissionId - Database ID of the contact submission
+ * @param sentToCrm - Whether the lead was successfully sent to CRM
  * @returns Promise resolving to send result
  */
 export async function sendContactNotification(
     contactData: ContactFormData,
-    submissionId: string
+    submissionId: string,
+    sentToCrm?: boolean
 ): Promise<SendEmailResult> {
     const subject = contactData.subject
         ? `New Contact: ${contactData.subject}`
@@ -76,6 +78,7 @@ export async function sendContactNotification(
             ContactNotificationEmail({
                 contactData,
                 submittedAt: new Date().toISOString(),
+                sentToCrm,
             })
         )
 
@@ -249,18 +252,21 @@ export async function sendContactConfirmation(
  *
  * @param contactData - Contact form submission data
  * @param submissionId - Database ID of the contact submission
+ * @param sentToCrm - Whether the lead was successfully sent to CRM
  * @returns Promise resolving to results for both emails
  */
 export async function sendContactEmails(
     contactData: ContactFormData,
-    submissionId: string
+    submissionId: string,
+    sentToCrm?: boolean
 ): Promise<SendContactEmailsResult> {
     const errors: string[] = []
 
     // Send notification to owner
     const notificationResult = await sendContactNotification(
         contactData,
-        submissionId
+        submissionId,
+        sentToCrm
     )
     if (!notificationResult.success && notificationResult.error) {
         errors.push(`Notification: ${notificationResult.error}`)

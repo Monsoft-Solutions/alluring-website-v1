@@ -36,6 +36,7 @@ import { EmailLayout } from '../components/email-layout.component'
 export function ContactNotificationEmail({
     contactData,
     submittedAt,
+    sentToCrm,
 }: ContactNotificationProps) {
     const formattedDate = new Date(submittedAt).toLocaleString('en-US', {
         dateStyle: 'full',
@@ -58,6 +59,19 @@ export function ContactNotificationEmail({
                     <Text className='m-0 mt-1 text-sm text-stone-600'>
                         {formattedDate}
                     </Text>
+                    {sentToCrm !== undefined && (
+                        <Text className='m-0 mt-2 text-sm'>
+                            {sentToCrm ? (
+                                <span style={{ color: '#16a34a' }}>
+                                    ✓ Sent to CRM
+                                </span>
+                            ) : (
+                                <span style={{ color: '#dc2626' }}>
+                                    ✗ Failed to send to CRM
+                                </span>
+                            )}
+                        </Text>
+                    )}
                 </Section>
 
                 <Text className='m-0 mb-6 text-base leading-relaxed text-stone-600'>
