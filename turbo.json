@@ -51,7 +51,8 @@
                 "GOOGLE_CUSTOM_SEARCH_API_KEY",
                 "GOOGLE_CUSTOM_SEARCH_ENGINE_ID",
                 "PERPLEXITY_API_KEY",
-                "ANTHROPIC_API_KEY"
+                "ANTHROPIC_API_KEY",
+                "N8N_WEBHOOK_URL"
             ]
         },
         "lint": {
@@ -118,7 +119,8 @@
                 "GOOGLE_CUSTOM_SEARCH_API_KEY",
                 "GOOGLE_CUSTOM_SEARCH_ENGINE_ID",
                 "PERPLEXITY_API_KEY",
-                "ANTHROPIC_API_KEY"
+                "ANTHROPIC_API_KEY",
+                "N8N_WEBHOOK_URL"
             ]
         },
         "db:generate": {

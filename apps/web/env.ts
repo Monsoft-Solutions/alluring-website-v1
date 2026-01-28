@@ -57,8 +57,8 @@ export const env = createEnv({
         // Google Indexing API (optional - required for google:index script)
         GOOGLE_CLIENT_EMAIL: z.email().optional(),
         GOOGLE_PRIVATE_KEY: z.string().optional(),
-        // CRM Integration (optional - enables lead sync to CRM)
-        NEXUITE_CRM_API_URL: z.url(),
+        // N8N Webhook Integration (optional - enables lead sync to CRM)
+        N8N_WEBHOOK_URL: z.url().optional(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)
