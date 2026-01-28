@@ -117,37 +117,67 @@ export async function sendLeadToN8N(
 
         console.log('N8N webhook payload:', payload)
 
-        // Make POST request to N8N webhook
-        const response = await fetch(env.N8N_WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        })
+        // Set up timeout guard with AbortController
+        const TIMEOUT_MS = 5000
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS)
 
-        if (!response.ok) {
-            const errorText = await response.text()
-            console.error('N8N webhook failed:', {
-                status: response.status,
-                statusText: response.statusText,
-                error: errorText,
+        try {
+            // Make POST request to N8N webhook with timeout
+            const response = await fetch(env.N8N_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+                signal: controller.signal,
             })
 
-            return {
-                success: false,
-                error: `HTTP ${response.status}: ${response.statusText}`,
+            // Clear timeout on successful response
+            clearTimeout(timeoutId)
+
+            if (!response.ok) {
+                const errorText = await response.text()
+                console.error('N8N webhook failed:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    error: errorText,
+                })
+
+                return {
+                    success: false,
+                    error: `HTTP ${response.status}: ${response.statusText}`,
+                }
             }
-        }
 
-        // Log success
-        console.log('Lead sent to N8N successfully:', {
-            name: payload.name,
-            email: payload.email,
-        })
+            // Log success
+            console.log('Lead sent to N8N successfully:')
 
-        return {
-            success: true,
+            return {
+                success: true,
+            }
+        } catch (fetchError) {
+            // Clear timeout to prevent memory leak
+            clearTimeout(timeoutId)
+
+            // Handle abort/timeout error specifically
+            if (
+                fetchError instanceof Error &&
+                fetchError.name === 'AbortError'
+            ) {
+                console.error('N8N webhook timeout:', {
+                    timeoutMs: TIMEOUT_MS,
+                    url: env.N8N_WEBHOOK_URL,
+                })
+
+                return {
+                    success: false,
+                    error: `Request timeout after ${TIMEOUT_MS}ms`,
+                }
+            }
+
+            // Re-throw other errors to be caught by outer catch
+            throw fetchError
         }
     } catch (error) {
         console.error('N8N webhook error:', error)
