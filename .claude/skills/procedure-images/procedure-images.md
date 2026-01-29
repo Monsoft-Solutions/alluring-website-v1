@@ -112,6 +112,8 @@ contentImages: [
 
 ## Image Specifications
 
+### Photos (use gpt-image-1.5)
+
 - **Format:** WebP
 - **Aspect Ratio:** 3:2 (landscape)
 - **Quality:** High (professional medical content)
@@ -120,6 +122,17 @@ contentImages: [
     - **Content:** Artistic/Sensual (elegant, sophisticated)
     - **Process:** Lifestyle/Casual (warm, approachable)
     - **Recovery:** Lifestyle/Casual (authentic, relatable)
+
+### Infographics (use nano-banana-pro)
+
+- **Format:** WebP
+- **Aspect Ratio:** 4:5 (vertical)
+- **Style:** Luxury medical infographic, clean vector design
+- **Types:**
+    - **Comparison:** Side-by-side procedure/technique comparisons
+    - **Timeline:** Recovery milestones, healing phases
+    - **Cost:** Price breakdowns, financing info
+    - **Educational:** Anatomical diagrams, technique explanations
 
 ## Directory Structure
 

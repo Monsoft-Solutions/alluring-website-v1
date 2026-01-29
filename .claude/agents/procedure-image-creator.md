@@ -45,7 +45,18 @@ Generate 5-6 high-quality images for each procedure page following the pattern e
 
 ## Image Sections & Styles
 
-Each procedure page requires images for these sections:
+Each procedure page requires images for these sections (5-6 total):
+
+**Photo-based (use gpt-image-1.5):**
+
+- Hero (1 image)
+- Content (2-3 images)
+- Process (1 image)
+- Recovery (1 image)
+
+**Infographic-based (use nano-banana-pro):**
+
+- Optional: Comparison, Timeline, Cost, or Educational diagrams
 
 ### 1. Hero Section (Miami Editorial Style)
 
@@ -173,6 +184,144 @@ Photorealistic, authentic lifestyle, 3:2 aspect ratio, relatable and aspirationa
 warm color tones, natural poses, no explicit content, Miami vibes
 ```
 
+### 5. Infographic Section (Vector/Illustration Style)
+
+**Purpose:** Data visualizations, comparisons, timelines, and educational diagrams.
+
+**Style:** Luxury medical infographic, clean vector design, premium typography.
+
+**Model:** ALWAYS use `fal-ai/nano-banana-pro` for infographics.
+
+**Aspect Ratio:** 4:5 (vertical) for most infographics.
+
+---
+
+## Infographic Prompt Templates
+
+### Comparison Infographic (Side-by-Side)
+
+Use for: Procedure comparisons, treatment options, technique differences.
+
+**Prompt Structure:**
+
+```
+Create a luxury, modern **comparison infographic** titled **"[Procedure A] vs [Procedure B] (Miami): [Topic]"** for **Alluring Plastic Surgery, Miami, FL** in a clean, high-end medical aesthetic. Primary focus: a **two-column side-by-side comparison table** with clear visual hierarchy and minimal text. Use **modern flat vector design** with subtle **artistic/sensual elegance** (tasteful feminine curves in abstract silhouette lines only—no nudity, no explicit body parts), refined spacing, and premium typography.
+
+**Layout/Composition (vertical 4:5):** Top header bar with the title; beneath, two equal panels: **Left "[Procedure A]"** and **Right "[Procedure B]"**. Each panel includes [N] icon rows with short labels and concise values. Add thin gold divider lines and rounded cards. Include a small footer line: **"Alluring Plastic Surgery • (786) 305-8649"**.
+
+**Icons (simple gold outline + stone-filled accents):**
+1) [Icon description] (icon type)
+2) [Icon description] (icon type)
+[... continue for each comparison point]
+
+**Table Text (keep exact, short):**
+- [Procedure A]: **[Attribute 1]: [Value]** | **[Attribute 2]: [Value]** | ...
+- [Procedure B]: **[Attribute 1]: [Value]** | **[Attribute 2]: [Value]** | ...
+
+**Color/Mood:** stone tones (cream, beige, warm gray) with **gold accents**, soft gradient background, calm premium mood. **Technical:** ultra-clean vector lines, crisp legible type, high contrast for readability, print-ready **high resolution**, sharp edges, no clutter.
+```
+
+### Timeline Infographic
+
+Use for: Recovery timelines, healing milestones, treatment phases.
+
+**Prompt Structure:**
+
+```
+Create a **luxury medical infographic** titled **"[Timeline Title]"** for **Alluring Plastic Surgery (Miami, FL)**. Clean, modern **flat infographic design** with a subtle **artistic/sensual elegance** (tasteful, body-positive, non-explicit): use abstract feminine curves and soft silhouette shapes (no explicit anatomy), suggesting the body form only through refined contour lines.
+
+**Primary focus:** a horizontal timeline with **[N] milestone bands** using rounded rectangles and thin gold divider lines: **[PERIOD 1]**, **[PERIOD 2]**, **[PERIOD 3]**, **[PERIOD 4]**. Each band includes **1–2 ultra-short bullets** (max 4–6 words each) and a small icon. Suggested text:
+- **[PERIOD 1]:** "[Short description]"
+- **[PERIOD 2]:** "[Short description]"
+- **[PERIOD 3]:** "[Short description]"
+- **[PERIOD 4]:** "[Short description]"
+
+Add a discreet right-side callout box with a thin gold border for any important notes. Include a tiny footer line: **"Timeline varies by patient."** and **phone (786) 305-8649** in small type.
+
+**Palette:** stone tones (warm beige, cream, soft gray gradients) with restrained **gold accents**; high contrast charcoal text. **Composition:** centered timeline, generous white space, clear hierarchy, grid-aligned spacing, consistent icon style (minimal line icons). **Lighting/atmosphere:** soft studio glow effect, premium print-ready finish. **Technical:** ultra-high resolution, vector-like sharp edges, crisp typography, 4:5 vertical aspect ratio, professional medical infographic, no clutter, no photorealistic surgery imagery.
+```
+
+### Anatomical/Educational Diagram
+
+Use for: Technique explanations, anatomy illustrations, procedure visualizations.
+
+**Prompt Structure:**
+
+```
+Create a **luxury, medical-grade anatomical illustration** explaining **[topic/procedure]**: a clean, tasteful **[body area] diagram (adult, non-erotic, simplified anatomy only)** with **[key anatomical features to highlight]**. Primary focus: [main educational point] shown through [visualization approach].
+
+**Style & medium:** professional **medical textbook illustration** blended with **high-end artistic refinement** (soft gradients, elegant contour shading, silky paper texture), premium clinic aesthetic. **Composition:** centered, symmetrical, minimal negative space; include a **small inset** (upper-right) of [simplified detail view] if needed.
+
+**Callouts:** thin **metallic gold** leader lines and icons marking **[key points]** as clean outlines; highlight [areas of interest] with translucent warm-beige overlays (non-graphic). **Labels (short):** "[Label 1]," "[Label 2]," "[Label 3]," "[Label 4]."
+
+**Color palette:** stone tones (cream, warm beige, soft greige) with **subtle gold accents**; clinical whites for background. **Lighting:** soft studio illumination, gentle vignette, calm and reassuring mood. **Branding:** small footer text "Alluring Plastic Surgery — Miami, FL" in understated sans-serif.
+
+**Technical:** ultra-high resolution, crisp vector-like edges, 4K, print-ready, clean linework, anatomically accurate proportions, aspect ratio **4:5**.
+```
+
+### Cost/Pricing Infographic
+
+Use for: Cost breakdowns, financing options, investment visualizations.
+
+**Prompt Structure:**
+
+```
+Create a luxury, modern **cost breakdown infographic** titled **"[Procedure] Cost Guide (Miami)"** for **Alluring Plastic Surgery, Miami, FL** in a clean, high-end medical aesthetic. Primary focus: a **clear cost visualization** with itemized components and total range.
+
+**Layout/Composition (vertical 4:5):** Top header bar with the title and decorative gold accent line. Main area with **cost breakdown cards** showing: **Surgeon's Fee**, **Anesthesia**, **Facility Fee**, **[Additional costs]**. Each card has a small gold icon, label, and price range. Bottom section shows **Total Investment Range** in a highlighted box. Include a small callout: "Financing Available" with thin gold border. Footer: **"Alluring Plastic Surgery • (786) 305-8649"**.
+
+**Icons (simple gold outline + stone-filled accents):**
+- Surgeon fee: medical cross or scalpel icon
+- Anesthesia: mask icon
+- Facility: building icon
+- [Other relevant icons]
+
+**Color/Mood:** stone tones (cream, beige, warm gray) with **gold accents**, soft gradient background, premium and trustworthy mood. **Technical:** ultra-clean vector lines, crisp legible type, clear number hierarchy, print-ready **high resolution**, sharp edges, elegant spacing.
+```
+
+### Results/Benefits Infographic
+
+Use for: Procedure benefits, expected outcomes, patient satisfaction data.
+
+**Prompt Structure:**
+
+```
+Create a **luxury benefits infographic** titled **"[Procedure] Results & Benefits"** for **Alluring Plastic Surgery (Miami, FL)**. Clean, modern **flat infographic design** with subtle **artistic elegance**.
+
+**Layout/Composition (vertical 4:5):** Centered title with decorative gold underline. Main area with **[N] benefit cards** arranged in a grid or vertical stack. Each card includes: gold outline icon, benefit headline (3-4 words), brief description (under 10 words). Add subtle connecting lines or visual flow between cards. Footer with contact info.
+
+**Benefits to highlight:**
+1) [Benefit 1 - Icon type]: "[Short headline]" - "[Brief description]"
+2) [Benefit 2 - Icon type]: "[Short headline]" - "[Brief description]"
+[... continue]
+
+**Color/Mood:** stone tones with **gold accents**, warm and aspirational, premium clinic aesthetic. **Technical:** ultra-clean vector design, modern typography, generous white space, 4:5 aspect ratio, print-ready resolution.
+```
+
+---
+
+## Infographic Design Principles
+
+**Always Follow:**
+
+- **Stone + Gold palette** - cream, beige, warm gray with gold accents
+- **4:5 vertical aspect ratio** for most infographics
+- **Vector-style design** - clean lines, sharp edges, no photorealistic elements
+- **Minimal text** - short labels, bullet points (4-6 words max per point)
+- **Clear hierarchy** - title → main content → footer
+- **Gold divider lines** and accent elements
+- **Professional medical aesthetic** - premium but approachable
+- **Footer branding** - "Alluring Plastic Surgery • (786) 305-8649" or "Alluring Plastic Surgery — Miami, FL"
+
+**Always Avoid:**
+
+- Photorealistic imagery in infographics
+- Cluttered layouts
+- Explicit anatomical details
+- Before/after clinical style
+- Harsh colors or high contrast that feels clinical
+- Generic stock infographic styling
+
 ---
 
 ## Procedure-Specific Visual Elements
@@ -247,69 +396,94 @@ warm color tones, natural poses, no explicit content, Miami vibes
 
 **MCP Server:** `fal-create-image` (uses `@monsoft/mcp-fal-ai`)
 
-### Recommended Models
+### Model Selection by Image Type
 
-**Primary: gpt-image-1.5** (`fal-ai/gpt-image-1.5`)
+| Image Type                                          | Model                    | Reason                                                         |
+| --------------------------------------------------- | ------------------------ | -------------------------------------------------------------- |
+| **Photos** (hero, lifestyle, recovery)              | `fal-ai/gpt-image-1.5`   | Best for structured prompts, photorealistic output             |
+| **Infographics** (comparisons, timelines, diagrams) | `fal-ai/nano-banana-pro` | Excellent for detailed vector-style graphics, clean typography |
+
+**gpt-image-1.5** (`fal-ai/gpt-image-1.5`)
 
 - Best for structured prompts with Background/Subject/Details/Constraints format
 - High-quality photorealistic output
-- Recommended for most procedure images
+- Use for: hero images, lifestyle photos, recovery images
 
-**Alternative: nano-banana-pro** (`fal-ai/nano-banana`)
+**nano-banana-pro** (`fal-ai/nano-banana-pro`)
 
-- Natural language prompts
-- Fast generation
-- Good for lifestyle images
+- Detailed natural language prompts
+- Clean vector-like output, sharp edges
+- **REQUIRED for all infographics** - comparisons, timelines, anatomical diagrams
 
-### Generation Process
+### Generation Process (Parallel Execution)
 
-1. **Check Model Schema**
+**IMPORTANT:** Always use `fal-enqueue` (async) - NEVER use `fal-run-sync`. Generate all images in parallel for efficiency.
 
-    ```
-    Tool: mcp__fal-create-image__fal-get-model-schema
-    Model: fal-ai/gpt-image-1.5 (or fal-ai/nano-banana)
-    ```
+#### Phase 1: Enqueue All Images (Parallel)
 
-2. **Enqueue Image Generation**
+Call `mcp__fal-create-image__fal-enqueue` for ALL images simultaneously in a single message with multiple tool calls:
 
-    ```
-    Tool: mcp__fal-create-image__fal-enqueue
-    Model: [selected model]
-    Parameters:
-    - prompt: [structured prompt]
-    - aspect_ratio: "3:2"
-    - output_format: "webp" (preferred) or "jpeg"
-    - num_images: 1
-    ```
+```
+Tool: mcp__fal-create-image__fal-enqueue
+Model: fal-ai/gpt-image-1.5 (for photos) or fal-ai/nano-banana-pro (for infographics)
+Parameters:
+- prompt: [structured prompt]
+- aspect_ratio: "3:2" (photos) or "4:5" (infographics)
+- num_images: 1
+```
 
-3. **Monitor with Incremental Backoff**
+Store each request_id with its corresponding image name:
 
-    ```
-    Tool: mcp__fal-create-image__fal-get-status
-    Request ID: [from enqueue response]
+- hero → request_id_1
+- content-1 → request_id_2
+- content-2 → request_id_3
+- consultation → request_id_4
+- recovery-lifestyle → request_id_5
 
-    Polling intervals: 2s → 4s → 6s → 8s → 10s → repeat 10s
-    Continue until status is "COMPLETED"
-    ```
+#### Phase 2: Monitor All Requests (Parallel Polling)
 
-4. **Retrieve Result**
+Poll all request statuses in parallel using `mcp__fal-create-image__fal-get-status`:
 
-    ```
-    Tool: mcp__fal-create-image__fal-get-result
-    Request ID: [from enqueue response]
+```
+Tool: mcp__fal-create-image__fal-get-status
+Parameters:
+- requestId: [request_id from enqueue]
+- modelId: [model used]
+```
 
-    Extract image URL from response
-    ```
+Polling strategy with incremental backoff:
 
-5. **Download Image**
+- Initial wait: 5 seconds after enqueue
+- Poll intervals: 3s → 5s → 8s → 10s → repeat 10s
+- Continue until ALL requests show status "COMPLETED"
 
-    ```bash
-    # Create directory if needed
-    mkdir -p apps/web/public/images/procedures/{slug}
+#### Phase 3: Retrieve All Results (Parallel)
 
-    # Download image
-    curl -L -o apps/web/public/images/procedures/{slug}/{image-name}.webp "{image-url}"
-    ```
+Once all complete, retrieve results in parallel:
+
+```
+Tool: mcp__fal-create-image__fal-get-result
+Parameters:
+- requestId: [request_id]
+- modelId: [model used]
+```
+
+Extract image URLs from each response.
+
+#### Phase 4: Download All Images
+
+```bash
+# Create directory first
+mkdir -p apps/web/public/images/procedures/{slug}
+
+# Download all images (can run in parallel with &)
+curl -L -o apps/web/public/images/procedures/{slug}/hero.webp "{url_1}" &
+curl -L -o apps/web/public/images/procedures/{slug}/content-1.webp "{url_2}" &
+curl -L -o apps/web/public/images/procedures/{slug}/content-2.webp "{url_3}" &
+curl -L -o apps/web/public/images/procedures/{slug}/consultation.webp "{url_4}" &
+curl -L -o apps/web/public/images/procedures/{slug}/recovery-lifestyle.webp "{url_5}" &
+wait
+```
 
 ---
 
@@ -332,15 +506,19 @@ warm color tones, natural poses, no explicit content, Miami vibes
     - Show proposed image list with descriptions
     - Ask for confirmation or modifications
 
-4. **For Each Image**
-   a. Generate structured prompt using templates above
-   b. Show prompt to user for approval
-   c. Ask user which model to use (gpt-image-1.5 recommended)
-   d. Generate image via fal.ai
-   e. Download to correct directory
-   f. Confirm success before continuing
+4. **Generate All Prompts**
+    - Create structured prompts for all images using templates
+    - Show all prompts to user for approval/modifications
+    - Confirm model selection (gpt-image-1.5 for photos, nano-banana-pro for infographics)
 
-5. **Update Data File**
+5. **Parallel Image Generation**
+    - **Enqueue ALL images simultaneously** (single message, multiple tool calls)
+    - Store all request_ids with image names
+    - Wait 5 seconds, then poll all statuses in parallel
+    - Once all complete, retrieve all results in parallel
+    - Download all images to directory
+
+6. **Update Data File**
     - Add `contentImages` array to procedure data file
     - Follow exact structure from mommy-makeover pattern
 
@@ -464,37 +642,42 @@ contentImages: [
 
 1. Read `apps/web/lib/data/procedures/breast-augmentation-miami.data.ts`
 
-2. Propose images:
+2. Propose images and get user approval:
     - Hero: Confident woman showcasing natural-looking results
-    - Content 1: Implant options visualization (silicone vs saline concept)
-    - Content 2: Natural results focus (elegant styling, proportions)
-    - Content 3: Clothing fit transformation
+    - Content 1: Implant options visualization
+    - Content 2: Natural results focus
     - Process: Consultation with surgeon
     - Recovery: Beach lifestyle confidence
 
-3. For each image, generate prompt like:
+3. Generate all prompts, show to user for approval
 
-    ```markdown
-    ## Background/Scene
+4. **Parallel Enqueue** - Single message with 5 tool calls:
 
-    Luxurious Miami beach club setting, golden hour lighting...
-
-    ## Subject
-
-    Confident woman, 30-35, radiant complexion...
-
-    ## Key Details
-
-    Elegant summer dress with tasteful neckline...
-
-    ## Constraints
-
-    Photorealistic, 3:2 aspect ratio...
+    ```
+    [Tool Call 1] fal-enqueue: hero prompt → request_id_1
+    [Tool Call 2] fal-enqueue: content-1 prompt → request_id_2
+    [Tool Call 3] fal-enqueue: content-2 prompt → request_id_3
+    [Tool Call 4] fal-enqueue: consultation prompt → request_id_4
+    [Tool Call 5] fal-enqueue: recovery prompt → request_id_5
     ```
 
-4. Generate, download, save each image
+5. **Parallel Status Check** - Poll all 5 requests simultaneously:
 
-5. Update data file with complete contentImages array
+    ```
+    [Tool Call 1-5] fal-get-status for each request_id
+    Repeat until all show "COMPLETED"
+    ```
+
+6. **Parallel Result Retrieval** - Get all results:
+
+    ```
+    [Tool Call 1-5] fal-get-result for each request_id
+    Extract all image URLs
+    ```
+
+7. **Download all images** to `apps/web/public/images/procedures/breast-augmentation/`
+
+8. Update data file with complete contentImages array
 
 ---
 
