@@ -12,7 +12,7 @@ export const mommyMakeoverMiami: Procedure = {
         "Reclaim Your Pre-Baby Body with Miami's Premier Post-Pregnancy Transformation",
     category: 'combined',
     image: '/images/procedures/mommy-makeover/hero.webp',
-    dateModified: '2026-01-28T00:00:00.000Z',
+    dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Inline content images for enhanced engagement
@@ -80,6 +80,12 @@ export const mommyMakeoverMiami: Procedure = {
         'mini mommy makeover cost',
         'post pregnancy surgery',
         'breast augmentation tummy tuck',
+        'mommy makeover recovery',
+        'mommy makeover recovery time',
+        'mommy makeover before and after',
+        'best mommy makeover surgeon miami',
+        'mommy makeover financing miami',
+        'tummy tuck breast lift combo miami',
     ],
     quickStats: {
         duration: '3 to 5 Hours',
@@ -159,17 +165,17 @@ A **mommy makeover** combines multiple procedures into one surgery, addressing t
 A mom makeover isn't a single procedure—it's a personalized combination of surgeries performed together to address post-pregnancy changes. Here's what's typically included:
 
 ### Breast Enhancement
-Breast augmentation, lift, or both to restore volume and position. Many mothers experience deflated or sagging breasts after breastfeeding, and these procedures restore a more youthful appearance.
+[Breast augmentation](/procedures/breast-augmentation-miami), lift, or both to restore volume and position. Many mothers experience deflated or sagging breasts after breastfeeding, and these procedures restore a more youthful appearance.
 
 <ProcedureImage id="breast-enhancement" />
 
 ### Tummy Tuck (Abdominoplasty)
-Removes excess skin and repairs separated abdominal muscles (diastasis recti). This addresses the loose, stretched skin and protruding belly that sit-ups and planks simply can't fix.
+A [tummy tuck](/procedures/tummy-tuck-miami) removes excess skin and repairs separated abdominal muscles (diastasis recti). This addresses the loose, stretched skin and protruding belly that sit-ups and planks simply can't fix.
 
 <ProcedureImage id="tummy-tuck" />
 
 ### Liposuction
-Sculpts stubborn fat deposits in the abdomen, hips, thighs, or flanks that resist even the most dedicated fitness routines.
+[Liposuction](/procedures/liposuction-miami) sculpts stubborn fat deposits in the abdomen, hips, thighs, or flanks that resist even the most dedicated fitness routines.
 
 <ProcedureImage id="liposuction-contouring" />
 
