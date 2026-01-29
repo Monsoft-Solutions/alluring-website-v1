@@ -17,7 +17,7 @@ import { Button } from '@workspace/ui/components/button'
 import { Form } from '@workspace/ui/components/form'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle2, Languages, Loader2, Sparkles, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
@@ -29,12 +29,13 @@ import {
     FORM_SUBMITTED_KEY,
     useContactFormSubmission,
 } from '@/hooks/useContactFormSubmission.hook'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import { useFormSubmittedListener } from '@/lib/events/form-events'
 import {
     CONTACT_SOURCES,
     type LeadCaptureInput,
     leadCaptureSchema,
 } from '@/lib/types/forms/contact-form.type'
-import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 export const ExitIntentPopup = () => {
     const [isVisible, setIsVisible] = useState(false)
@@ -47,6 +48,25 @@ export const ExitIntentPopup = () => {
         const hasSubmittedForm = sessionStorage.getItem(FORM_SUBMITTED_KEY)
         return Boolean(hasSeen || hasSubmittedForm)
     })
+
+    // Ref to track current hasTriggered value, avoiding stale closure in timer callback
+    const hasTriggeredRef = useRef(hasTriggered)
+
+    // Keep ref in sync with state
+    useEffect(() => {
+        hasTriggeredRef.current = hasTriggered
+    }, [hasTriggered])
+
+    // Listen for form submissions from ANY form in the app
+    // This handles the case where user submits a form elsewhere (e.g., PromoModal)
+    // and we need to prevent this popup from showing on the thank-you page
+    useFormSubmittedListener(
+        useCallback(() => {
+            setHasTriggered(true)
+            hasTriggeredRef.current = true
+            setIsVisible(false) // Close if currently open
+        }, [])
+    )
 
     const { track } = useAnalyticsEvent()
 
@@ -84,23 +104,27 @@ export const ExitIntentPopup = () => {
 
         const handleExitIntent = (e: MouseEvent) => {
             // Trigger when mouse leaves top of viewport (exit intent)
-            if (e.clientY <= 0 && !hasTriggered) {
+            // Use ref to get current value and avoid stale closure
+            if (e.clientY <= 0 && !hasTriggeredRef.current) {
                 track('exit_intent_shown', {
                     trigger_type: 'exit_intent',
                 })
                 setIsVisible(true)
                 setHasTriggered(true)
+                hasTriggeredRef.current = true
             }
         }
 
         // Timer-based trigger: Show after 60 seconds
+        // Use ref instead of state to avoid stale closure issue
         const timer = setTimeout(() => {
-            if (!hasTriggered) {
+            if (!hasTriggeredRef.current) {
                 track('exit_intent_shown', {
                     trigger_type: 'timer_60s',
                 })
                 setIsVisible(true)
                 setHasTriggered(true)
+                hasTriggeredRef.current = true
             }
         }, 60000) // 60 seconds
 

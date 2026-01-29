@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -28,6 +28,7 @@ import {
     FORM_SUBMITTED_KEY,
     useContactFormSubmission,
 } from '@/hooks/useContactFormSubmission.hook'
+import { useFormSubmittedListener } from '@/lib/events/form-events'
 import {
     CONTACT_SOURCES,
     type LeadCaptureInput,
@@ -79,6 +80,25 @@ export function PromoModal({ promotion }: PromoModalProps) {
         return Boolean(hasSeen || hasSubmittedForm)
     })
 
+    // Ref to track current hasTriggered value, avoiding stale closure in timer callback
+    const hasTriggeredRef = useRef(hasTriggered)
+
+    // Keep ref in sync with state
+    useEffect(() => {
+        hasTriggeredRef.current = hasTriggered
+    }, [hasTriggered])
+
+    // Listen for form submissions from ANY form in the app
+    // This handles the case where user submits a form elsewhere (e.g., ExitIntentPopup)
+    // and we need to prevent this modal from showing on the thank-you page
+    useFormSubmittedListener(
+        useCallback(() => {
+            setHasTriggered(true)
+            hasTriggeredRef.current = true
+            setIsVisible(false) // Close if currently open
+        }, [])
+    )
+
     const form = useForm<LeadCaptureInput>({
         resolver: zodResolver(leadCaptureSchema),
         defaultValues: {
@@ -111,10 +131,12 @@ export function PromoModal({ promotion }: PromoModalProps) {
         // Set timer based on promotion's modalDelaySeconds
         const delayMs = (promotion.modalDelaySeconds ?? 60) * 1000
 
+        // Use ref instead of state to avoid stale closure issue
         const timer = setTimeout(() => {
-            if (!hasTriggered) {
+            if (!hasTriggeredRef.current) {
                 setIsVisible(true)
                 setHasTriggered(true)
+                hasTriggeredRef.current = true
             }
         }, delayMs)
 

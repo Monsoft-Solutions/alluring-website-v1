@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { useUTMTracking } from '@/lib/analytics/utm-tracking.context'
+import { dispatchFormSubmitted } from '@/lib/events/form-events'
 import {
     type ContactFormResponse,
     type ContactSource,
@@ -200,6 +201,9 @@ export function useContactFormSubmission(
                     // This prevents additional lead capture popups/modals from showing
                     if (typeof window !== 'undefined') {
                         sessionStorage.setItem(FORM_SUBMITTED_KEY, 'true')
+                        // Dispatch custom event to immediately notify all floating modals
+                        // This prevents stale closure issues where modals check sessionStorage only on mount
+                        dispatchFormSubmitted()
                     }
 
                     // Track successful submission
