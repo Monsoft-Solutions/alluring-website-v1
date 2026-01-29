@@ -11,7 +11,7 @@ export const mommyMakeoverMiami: Procedure = {
     heroSubtitle:
         "Reclaim Your Pre-Baby Body with Miami's Premier Post-Pregnancy Transformation",
     category: 'combined',
-    image: '/images/procedures/mommy-makeover/hero.webp',
+    image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/hero.webp',
     dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
@@ -19,14 +19,14 @@ export const mommyMakeoverMiami: Procedure = {
     contentImages: [
         {
             id: 'hero',
-            src: '/images/procedures/mommy-makeover/hero.webp',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/hero.webp',
             alt: 'Confident woman after mommy makeover transformation at Alluring Plastic Surgery Miami',
             section: 'hero',
             variant: 'full-width',
         },
         {
             id: 'breast-enhancement',
-            src: '/images/procedures/mommy-makeover/breast-enhancement.webp',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/breast-enhancement.webp',
             alt: 'Elegant woman showcasing confidence after breast enhancement procedure',
             caption:
                 'Restore volume and lift with personalized breast enhancement',
@@ -35,7 +35,7 @@ export const mommyMakeoverMiami: Procedure = {
         },
         {
             id: 'tummy-tuck',
-            src: '/images/procedures/mommy-makeover/tummy-tuck.webp',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/tummy-tuck.webp',
             alt: 'Fit woman with toned midsection after tummy tuck surgery',
             caption: 'Achieve a flat, toned midsection with abdominoplasty',
             section: 'content',
@@ -43,7 +43,7 @@ export const mommyMakeoverMiami: Procedure = {
         },
         {
             id: 'liposuction-contouring',
-            src: '/images/procedures/mommy-makeover/liposuction-contouring.webp',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/liposuction-contouring.webp',
             alt: 'Sculpted silhouette achieved through liposuction body contouring',
             caption:
                 'Sculpt stubborn areas with precision liposuction contouring',
@@ -52,7 +52,7 @@ export const mommyMakeoverMiami: Procedure = {
         },
         {
             id: 'consultation',
-            src: '/images/procedures/mommy-makeover/consultation.webp',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/consultation.webp',
             alt: 'Patient consultation with plastic surgeon at Alluring Plastic Surgery Miami',
             caption:
                 'Your transformation begins with a personalized consultation',
@@ -61,7 +61,7 @@ export const mommyMakeoverMiami: Procedure = {
         },
         {
             id: 'recovery-lifestyle',
-            src: '/images/procedures/mommy-makeover/recovery-lifestyle.webp',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/recovery-lifestyle.webp',
             alt: 'Happy woman enjoying poolside lifestyle after mommy makeover recovery',
             caption: 'Embrace your new confidence and live life to the fullest',
             section: 'recovery',
