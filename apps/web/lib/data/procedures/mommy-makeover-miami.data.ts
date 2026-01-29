@@ -11,9 +11,64 @@ export const mommyMakeoverMiami: Procedure = {
     heroSubtitle:
         "Reclaim Your Pre-Baby Body with Miami's Premier Post-Pregnancy Transformation",
     category: 'combined',
-    image: '/images/procedures/mommy-makeover.jpg',
+    image: '/images/procedures/mommy-makeover/hero.webp',
     dateModified: '2026-01-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
+
+    // Inline content images for enhanced engagement
+    contentImages: [
+        {
+            id: 'hero',
+            src: '/images/procedures/mommy-makeover/hero.webp',
+            alt: 'Confident woman after mommy makeover transformation at Alluring Plastic Surgery Miami',
+            section: 'hero',
+            variant: 'full-width',
+        },
+        {
+            id: 'breast-enhancement',
+            src: '/images/procedures/mommy-makeover/breast-enhancement.webp',
+            alt: 'Elegant woman showcasing confidence after breast enhancement procedure',
+            caption:
+                'Restore volume and lift with personalized breast enhancement',
+            section: 'content',
+            variant: 'full-width',
+        },
+        {
+            id: 'tummy-tuck',
+            src: '/images/procedures/mommy-makeover/tummy-tuck.webp',
+            alt: 'Fit woman with toned midsection after tummy tuck surgery',
+            caption: 'Achieve a flat, toned midsection with abdominoplasty',
+            section: 'content',
+            variant: 'full-width',
+        },
+        {
+            id: 'liposuction-contouring',
+            src: '/images/procedures/mommy-makeover/liposuction-contouring.webp',
+            alt: 'Sculpted silhouette achieved through liposuction body contouring',
+            caption:
+                'Sculpt stubborn areas with precision liposuction contouring',
+            section: 'content',
+            variant: 'full-width',
+        },
+        {
+            id: 'consultation',
+            src: '/images/procedures/mommy-makeover/consultation.webp',
+            alt: 'Patient consultation with plastic surgeon at Alluring Plastic Surgery Miami',
+            caption:
+                'Your transformation begins with a personalized consultation',
+            section: 'process',
+            variant: 'full-width',
+        },
+        {
+            id: 'recovery-lifestyle',
+            src: '/images/procedures/mommy-makeover/recovery-lifestyle.webp',
+            alt: 'Happy woman enjoying poolside lifestyle after mommy makeover recovery',
+            caption: 'Embrace your new confidence and live life to the fullest',
+            section: 'recovery',
+            variant: 'full-width',
+        },
+    ],
+
     keywords: [
         'mommy makeover miami',
         'mommy makeover cost',
@@ -106,11 +161,17 @@ A mom makeover isn't a single procedure—it's a personalized combination of sur
 ### Breast Enhancement
 Breast augmentation, lift, or both to restore volume and position. Many mothers experience deflated or sagging breasts after breastfeeding, and these procedures restore a more youthful appearance.
 
+<ProcedureImage id="breast-enhancement" />
+
 ### Tummy Tuck (Abdominoplasty)
 Removes excess skin and repairs separated abdominal muscles (diastasis recti). This addresses the loose, stretched skin and protruding belly that sit-ups and planks simply can't fix.
 
+<ProcedureImage id="tummy-tuck" />
+
 ### Liposuction
 Sculpts stubborn fat deposits in the abdomen, hips, thighs, or flanks that resist even the most dedicated fitness routines.
+
+<ProcedureImage id="liposuction-contouring" />
 
 Some patients also add procedures like labiaplasty, arm lift, or non-surgical skin treatments. By combining surgeries into one operation, you experience a single recovery period—meaning less time away from your family.
 
@@ -207,6 +268,8 @@ Your journey begins with a consultation where we discuss your concerns and goals
 - Preparing your recovery space with essentials within reach
 - **Planning childcare for at least two weeks**
 
+<ProcedureImage id="consultation" />
+
 ### Surgery Day
 
 The combined procedure is performed under general anesthesia and typically takes 3-5 hours. Your surgeon follows a strategic sequence:
@@ -246,6 +309,8 @@ We know recovery with children at home is your biggest concern. Here's what to r
 - Scars fade and flatten
 - All activities including exercise approved
 - **Your transformation is complete**
+
+<ProcedureImage id="recovery-lifestyle" />
 
 ## Why Miami Mothers Choose Alluring
 
