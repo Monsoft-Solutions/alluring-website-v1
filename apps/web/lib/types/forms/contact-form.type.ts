@@ -31,6 +31,7 @@ export const CONTACT_SOURCES = {
     SPECIALS_PAGE: 'specials-page',
     BMI_CALCULATOR: 'bmi-calculator',
     LANDING_PAGE: 'landing-page',
+    PROCEDURE_PAGE: 'procedure-page',
 } as const
 
 export type ContactSource =
@@ -413,6 +414,30 @@ export const PROCEDURE_OPTIONS = [
     { value: 'multiple', label: 'Multiple Procedures' },
     { value: 'other', label: 'Other / Not Sure Yet' },
 ] as const
+
+/**
+ * Maps procedure page slugs to form procedure values
+ * Used to pre-populate the procedure dropdown on procedure pages
+ */
+export const PROCEDURE_SLUG_TO_FORM_VALUE: Record<string, string> = {
+    'breast-augmentation-miami': 'breast-augmentation',
+    'breast-lift-miami': 'breast-lift',
+    'breast-reduction-miami': 'breast-reduction',
+    'liposuction-miami': 'liposuction',
+    'brazilian-butt-lift-bbl-miami': 'bbl',
+    'tummy-tuck-miami': 'tummy-tuck',
+    'mommy-makeover-miami': 'mommy-makeover',
+    'facelift-miami': 'facelift',
+    'blepharoplasty-miami': 'blepharoplasty',
+}
+
+/**
+ * Gets the form procedure value for a given procedure slug
+ * Returns empty string if no mapping exists
+ */
+export function getProcedureFormValue(slug: string): string {
+    return PROCEDURE_SLUG_TO_FORM_VALUE[slug] ?? ''
+}
 
 /**
  * Consultation form schema

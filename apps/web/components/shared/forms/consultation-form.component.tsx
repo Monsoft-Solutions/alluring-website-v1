@@ -66,6 +66,8 @@ export type ConsultationFormProps = {
     readonly redirectOnSuccess?: string
     /** Whether to show the preferred contact time field (default: true) */
     readonly showPreferredContactTime?: boolean
+    /** Default procedure value for pre-populating the procedure dropdown */
+    readonly defaultProcedure?: string
 }
 
 /**
@@ -94,6 +96,7 @@ export function ConsultationForm({
     className,
     redirectOnSuccess,
     showPreferredContactTime = true,
+    defaultProcedure,
 }: ConsultationFormProps) {
     const form = useForm<ConsultationFormInput>({
         resolver: zodResolver(consultationFormSchema),
@@ -102,7 +105,7 @@ export function ConsultationForm({
             lastName: '',
             email: '',
             phone: '',
-            procedure: '',
+            procedure: defaultProcedure ?? '',
             preferredContactTime: '',
             consentGiven: false,
         },

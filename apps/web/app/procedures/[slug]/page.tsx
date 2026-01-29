@@ -31,6 +31,8 @@ import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
 import { ProcedureContentImagesSection } from '@/components/procedures/procedure-content-images-section.component'
+import { ProcedureConsultationForm } from '@/components/procedures/procedure-consultation-form.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import { env } from '@/env'
 
@@ -391,6 +393,17 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 procedureTitle={procedure.title}
             />
 
+            {/* Google Reviews - Social Proof */}
+            <GoogleReviews
+                title={`What Our ${procedure.title} Patients Say`}
+                subtitle='Real reviews from real patients'
+                limit={3}
+                featuredOnly={true}
+                showGoogleLink={false}
+                showViewAllButton={true}
+                includeSchema={true}
+            />
+
             {/* Process Section */}
             {procedure.process && (
                 <ProcedureProcess steps={procedure.process} />
@@ -406,6 +419,12 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     variant='muted'
                 />
             )}
+
+            {/* Lead Capture Form */}
+            <ProcedureConsultationForm
+                procedureSlug={params.slug}
+                procedureTitle={procedure.title}
+            />
 
             {/* Main Content Section - Markdown */}
             {procedure.content ? (
