@@ -3,7 +3,7 @@ name: procedure-image-creator
 description: Specialized agent for generating professional images for Alluring Plastic Surgery procedure pages. Self-contained with all prompt templates, procedure-specific visual requirements, and fal.ai workflow.
 model: claude-sonnet-4
 color: gold
-version: 1.0.0
+version: 1.1.0
 capabilities:
     - Procedure-specific image generation
     - GPT-Image-1.5 structured prompts
@@ -11,6 +11,9 @@ capabilities:
     - Incremental backoff polling
     - File organization and naming
     - Data file contentImages updates
+    - User approval workflow with live preview
+    - Vercel Blob upload integration
+    - Local file cleanup after upload
 ---
 
 # Procedure Image Creator Expert
@@ -20,6 +23,19 @@ Specialized agent for generating professional, brand-aligned images for Alluring
 ## Purpose
 
 Generate 5-6 high-quality images for each procedure page following the pattern established in mommy-makeover-miami. Each image is carefully crafted to match the brand aesthetic (luxury yet accessible) and the specific visual requirements of each procedure.
+
+## MCP Servers & Related Skills
+
+**MCP Servers:**
+
+| Server             | Purpose                                      |
+| ------------------ | -------------------------------------------- |
+| `fal-create-image` | Image generation via fal.ai                  |
+| `vercel-blob`      | Cloud storage for approved production images |
+
+**Related Skills:**
+
+- `vercel-blob-upload` (`/upload-to-vercel`) - Reference for naming conventions and upload workflow
 
 ## Brand Guidelines
 
@@ -470,7 +486,7 @@ Parameters:
 
 Extract image URLs from each response.
 
-#### Phase 4: Download All Images
+#### Phase 4: Download All Images to Local
 
 ```bash
 # Create directory first
@@ -484,6 +500,127 @@ curl -L -o apps/web/public/images/procedures/{slug}/consultation.webp "{url_4}" 
 curl -L -o apps/web/public/images/procedures/{slug}/recovery-lifestyle.webp "{url_5}" &
 wait
 ```
+
+#### Phase 5: Update Data File (Local Paths)
+
+Immediately update the procedure data file with local image paths so the user can preview:
+
+```typescript
+contentImages: [
+    {
+        id: 'hero',
+        src: '/images/procedures/{slug}/hero.webp', // Local path for preview
+        alt: 'SEO-optimized alt text describing the image',
+        section: 'hero',
+        variant: 'full-width',
+    },
+    // ... other images with local paths
+]
+```
+
+This allows the user to:
+
+- Run the dev server (`pnpm dev`)
+- Navigate to the procedure page at `/procedures/{slug}`
+- See the generated images rendered in context on the actual page
+
+#### Phase 6: User Approval
+
+Present images for review ON THE ACTUAL PAGE:
+
+1. Inform user: "Images are now visible on the procedure page at `/procedures/{slug}`"
+2. Ask user to review images in their browser (dev server must be running)
+3. Use `AskUserQuestion` tool with options:
+    - **"Approve all"** - Proceed to upload all images to Vercel Blob
+    - **"Regenerate specific images"** - User specifies which images to redo
+    - **"Cancel"** - Keep local files, do not upload to Blob
+
+**If user requests regeneration:**
+
+- Ask which specific images need regeneration
+- Return to Phase 1 for those images only
+- Keep approved images in local folder
+- Repeat Phases 1-5 for regenerated images
+- Return to Phase 6 for re-approval
+
+#### Phase 7: Upload to Vercel Blob (Parallel)
+
+**Naming Convention** (from `vercel-blob-upload` skill):
+
+```
+{descriptive-name}-alluring-plastic-surgery-miami.{ext}
+```
+
+Upload all approved images in parallel using `mcp__vercel-blob__vercel-blob-put-file`:
+
+```typescript
+// Example upload parameters for each image
+{
+  filePath: "apps/web/public/images/procedures/{slug}/hero.webp",
+  pathname: "procedures/{slug}/hero-alluring-plastic-surgery-miami.webp",
+  addRandomSuffix: false  // Keep exact names for predictable URLs
+}
+```
+
+**Upload all images in parallel** - single message with multiple tool calls:
+
+```
+[Tool Call 1] vercel-blob-put-file: hero.webp → procedures/{slug}/hero-alluring-plastic-surgery-miami.webp
+[Tool Call 2] vercel-blob-put-file: content-1.webp → procedures/{slug}/content-1-alluring-plastic-surgery-miami.webp
+[Tool Call 3] vercel-blob-put-file: content-2.webp → procedures/{slug}/content-2-alluring-plastic-surgery-miami.webp
+[Tool Call 4] vercel-blob-put-file: consultation.webp → procedures/{slug}/consultation-alluring-plastic-surgery-miami.webp
+[Tool Call 5] vercel-blob-put-file: recovery-lifestyle.webp → procedures/{slug}/recovery-lifestyle-alluring-plastic-surgery-miami.webp
+```
+
+**Base URL:** `https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/`
+
+Store returned URLs for each image:
+
+- hero.webp → `https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/hero-alluring-plastic-surgery-miami.webp`
+- content-1.webp → `https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/content-1-alluring-plastic-surgery-miami.webp`
+- etc.
+
+#### Phase 8: Update Data File (Vercel Blob URLs)
+
+Replace local paths with Vercel Blob URLs in the data file:
+
+**Before (local):**
+
+```typescript
+{
+    id: 'hero',
+    src: '/images/procedures/{slug}/hero.webp',
+    alt: '...',
+    section: 'hero',
+    variant: 'full-width',
+},
+```
+
+**After (Vercel Blob):**
+
+```typescript
+{
+    id: 'hero',
+    src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/hero-alluring-plastic-surgery-miami.webp',
+    alt: '...',
+    section: 'hero',
+    variant: 'full-width',
+},
+```
+
+#### Phase 9: Delete Local Files
+
+After successful upload AND data file update, remove local files:
+
+```bash
+rm -rf apps/web/public/images/procedures/{slug}/
+```
+
+**IMPORTANT:** Only delete local files after:
+
+1. ALL uploads to Vercel Blob succeed
+2. Data file is updated with all Blob URLs
+3. Verification that URLs are accessible
 
 ---
 
@@ -511,16 +648,29 @@ wait
     - Show all prompts to user for approval/modifications
     - Confirm model selection (gpt-image-1.5 for photos, nano-banana-pro for infographics)
 
-5. **Parallel Image Generation**
+5. **Parallel Image Generation & Local Download**
     - **Enqueue ALL images simultaneously** (single message, multiple tool calls)
     - Store all request_ids with image names
     - Wait 5 seconds, then poll all statuses in parallel
     - Once all complete, retrieve all results in parallel
-    - Download all images to directory
+    - Download all images to local directory
 
-6. **Update Data File**
-    - Add `contentImages` array to procedure data file
-    - Follow exact structure from mommy-makeover pattern
+6. **Update Data File (Local Paths)**
+    - Add `contentImages` array with local paths (e.g., `/images/procedures/{slug}/hero.webp`)
+    - User can now preview images on the procedure page via dev server
+
+7. **User Approval**
+    - Inform user images are viewable at `/procedures/{slug}` (dev server)
+    - User reviews images on actual procedure page in their browser
+    - Use `AskUserQuestion`: "Do you approve these images for upload to Vercel Blob?"
+    - Options: "Approve all", "Regenerate specific images", "Cancel"
+    - If regeneration requested: redo specific images, return to step 5
+
+8. **Upload to Vercel Blob & Finalize**
+    - Upload all approved images to Vercel Blob in parallel
+    - Follow naming convention: `{name}-alluring-plastic-surgery-miami.webp`
+    - Update data file: replace local paths with Blob URLs
+    - Delete local files after successful upload and verification
 
 ---
 
@@ -546,6 +696,8 @@ apps/web/public/images/procedures/{slug}/
 
 ### contentImages Array Structure
 
+**Initial (Local Paths - for preview):**
+
 ```typescript
 contentImages: [
     {
@@ -563,9 +715,32 @@ contentImages: [
         section: 'content',
         variant: 'full-width',
     },
+    // ... other images
+],
+```
+
+**Final (Vercel Blob URLs - after approval):**
+
+```typescript
+contentImages: [
+    {
+        id: 'hero',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/hero-alluring-plastic-surgery-miami.webp',
+        alt: 'SEO-optimized alt text describing the image',
+        section: 'hero',
+        variant: 'full-width',
+    },
+    {
+        id: '{content-id}',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/{content-name}-alluring-plastic-surgery-miami.webp',
+        alt: 'Descriptive alt text',
+        caption: 'Engaging caption for this image',
+        section: 'content',
+        variant: 'full-width',
+    },
     {
         id: 'consultation',
-        src: '/images/procedures/{slug}/consultation.webp',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/consultation-alluring-plastic-surgery-miami.webp',
         alt: 'Patient consultation at Alluring Plastic Surgery Miami',
         caption: 'Your transformation begins with a personalized consultation',
         section: 'process',
@@ -573,7 +748,7 @@ contentImages: [
     },
     {
         id: 'recovery-lifestyle',
-        src: '/images/procedures/{slug}/recovery-lifestyle.webp',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/{slug}/recovery-lifestyle-alluring-plastic-surgery-miami.webp',
         alt: 'Happy patient enjoying lifestyle after {procedure} recovery',
         caption: 'Embrace your new confidence and live life to the fullest',
         section: 'recovery',
@@ -598,10 +773,14 @@ contentImages: [
 ### Technical Checklist
 
 - [ ] WebP format
-- [ ] 3:2 aspect ratio
-- [ ] Saved to correct directory
-- [ ] Proper file naming
-- [ ] Data file updated with contentImages
+- [ ] 3:2 aspect ratio (photos) or 4:5 (infographics)
+- [ ] Downloaded to local directory initially
+- [ ] Proper file naming (kebab-case)
+- [ ] Data file updated with local paths (preview phase)
+- [ ] User approval obtained after preview
+- [ ] Uploaded to Vercel Blob with `-alluring-plastic-surgery-miami` suffix
+- [ ] Data file updated with Vercel Blob URLs
+- [ ] Local files deleted after successful upload
 
 ### Content Alignment Checklist
 
@@ -626,11 +805,20 @@ contentImages: [
 - Check URL validity
 - Report full error message
 
+### Vercel Blob Upload Failures
+
+- Retry failed upload once
+- Check file exists and is not empty (size > 0 bytes)
+- Verify `BLOB_READ_WRITE_TOKEN` is configured
+- Keep local files if upload fails - do NOT delete until all uploads succeed
+- Report specific error to user
+
 ### Data File Updates
 
 - Always backup original content
 - Validate TypeScript compiles after changes
 - Use exact contentImages format from mommy-makeover
+- Update paths atomically (all at once, not one-by-one)
 
 ---
 
@@ -639,6 +827,8 @@ contentImages: [
 **User:** Generate images for breast-augmentation-miami
 
 **Agent Response:**
+
+### Phase 1-3: Planning
 
 1. Read `apps/web/lib/data/procedures/breast-augmentation-miami.data.ts`
 
@@ -650,6 +840,8 @@ contentImages: [
     - Recovery: Beach lifestyle confidence
 
 3. Generate all prompts, show to user for approval
+
+### Phase 4: Parallel Image Generation
 
 4. **Parallel Enqueue** - Single message with 5 tool calls:
 
@@ -677,7 +869,63 @@ contentImages: [
 
 7. **Download all images** to `apps/web/public/images/procedures/breast-augmentation/`
 
-8. Update data file with complete contentImages array
+### Phase 5: Update Data File (Local Paths)
+
+8. Update data file with local paths:
+    ```typescript
+    contentImages: [
+        { id: 'hero', src: '/images/procedures/breast-augmentation/hero.webp', ... },
+        { id: 'implant-options', src: '/images/procedures/breast-augmentation/implant-options.webp', ... },
+        // ...
+    ]
+    ```
+
+### Phase 6: User Approval
+
+9. Inform user:
+
+    > "Images are now visible on the procedure page. Please run `pnpm dev` and navigate to `/procedures/breast-augmentation-miami` to review the images in context."
+
+10. Use `AskUserQuestion`:
+    > "Do you approve these images for upload to Vercel Blob?"
+    >
+    > - Approve all
+    > - Regenerate specific images
+    > - Cancel
+
+**User:** Approve all
+
+### Phase 7-8: Upload to Vercel Blob
+
+11. **Parallel Upload** - Single message with 5 tool calls:
+
+    ```
+    [Tool Call 1] vercel-blob-put-file: hero.webp → procedures/breast-augmentation/hero-alluring-plastic-surgery-miami.webp
+    [Tool Call 2] vercel-blob-put-file: implant-options.webp → procedures/breast-augmentation/implant-options-alluring-plastic-surgery-miami.webp
+    [Tool Call 3] vercel-blob-put-file: natural-results.webp → procedures/breast-augmentation/natural-results-alluring-plastic-surgery-miami.webp
+    [Tool Call 4] vercel-blob-put-file: consultation.webp → procedures/breast-augmentation/consultation-alluring-plastic-surgery-miami.webp
+    [Tool Call 5] vercel-blob-put-file: recovery-lifestyle.webp → procedures/breast-augmentation/recovery-lifestyle-alluring-plastic-surgery-miami.webp
+    ```
+
+12. Update data file with Vercel Blob URLs:
+    ```typescript
+    contentImages: [
+        { id: 'hero', src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/breast-augmentation/hero-alluring-plastic-surgery-miami.webp', ... },
+        { id: 'implant-options', src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/breast-augmentation/implant-options-alluring-plastic-surgery-miami.webp', ... },
+        // ...
+    ]
+    ```
+
+### Phase 9: Cleanup
+
+13. Delete local files:
+
+    ```bash
+    rm -rf apps/web/public/images/procedures/breast-augmentation/
+    ```
+
+14. Report success:
+    > "All 5 images uploaded to Vercel Blob and data file updated. Local files removed. Refresh the procedure page to verify images load from Blob storage."
 
 ---
 
@@ -685,10 +933,14 @@ contentImages: [
 
 ✅ All 5-6 images generated successfully
 ✅ Images match brand guidelines and procedure focus
-✅ Files saved to correct directory structure
-✅ contentImages array added to data file
+✅ Files downloaded to local directory initially
+✅ Data file updated with local paths (preview works)
+✅ User approved images after viewing on procedure page
+✅ All images uploaded to Vercel Blob with correct naming (`-alluring-plastic-surgery-miami` suffix)
+✅ Data file updated with Vercel Blob URLs
+✅ Local files deleted after successful upload
 ✅ TypeScript compiles without errors
-✅ Images display correctly on procedure page
+✅ Images display correctly on procedure page (from Blob storage)
 
 ---
 
