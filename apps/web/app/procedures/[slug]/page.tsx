@@ -16,7 +16,7 @@ import { FAQComponent } from '@/components/shared/faq.component'
 import { LastUpdated } from '@/components/shared/last-updated.component'
 import { QuickAnswer } from '@/components/shared/quick-answer.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
-import { PostMarkdown } from '@/components/blog/post-markdown.component'
+import { ProcedureMarkdown } from '@/components/procedures/procedure-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
 import {
@@ -30,6 +30,9 @@ import { ProcedureProcess } from '@/components/procedures/procedure-process.comp
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
+import { ProcedureContentImagesSection } from '@/components/procedures/procedure-content-images-section.component'
+import { ProcedureConsultationForm } from '@/components/procedures/procedure-consultation-form.component'
+import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import { env } from '@/env'
 
@@ -390,10 +393,38 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 procedureTitle={procedure.title}
             />
 
+            {/* Google Reviews - Social Proof */}
+            <GoogleReviews
+                title={`What Our ${procedure.title} Patients Say`}
+                subtitle='Real reviews from real patients'
+                limit={3}
+                featuredOnly={true}
+                showGoogleLink={false}
+                showViewAllButton={true}
+                includeSchema={true}
+            />
+
             {/* Process Section */}
             {procedure.process && (
                 <ProcedureProcess steps={procedure.process} />
             )}
+
+            {/* Process Images Section */}
+            {procedure.contentImages && procedure.contentImages.length > 0 && (
+                <ProcedureContentImagesSection
+                    images={procedure.contentImages}
+                    section='process'
+                    title='Your Journey With Us'
+                    description='Experience personalized care from consultation to recovery'
+                    variant='muted'
+                />
+            )}
+
+            {/* Lead Capture Form */}
+            <ProcedureConsultationForm
+                procedureSlug={params.slug}
+                procedureTitle={procedure.title}
+            />
 
             {/* Main Content Section - Markdown */}
             {procedure.content ? (
@@ -401,7 +432,10 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     <ContainerLayout>
                         <div className='mx-auto max-w-3xl'>
                             <div className='prose prose-stone prose-lg prose-headings:font-serif prose-headings:font-medium prose-p:font-light prose-p:leading-relaxed prose-a:text-gold-600 prose-a:no-underline hover:prose-a:underline mx-auto'>
-                                <PostMarkdown content={procedure.content} />
+                                <ProcedureMarkdown
+                                    content={procedure.content}
+                                    contentImages={procedure.contentImages}
+                                />
                             </div>
                         </div>
                     </ContainerLayout>
@@ -424,6 +458,28 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                         </div>
                     </ContainerLayout>
                 </section>
+            )}
+
+            {/* Content Images Section - Procedure Components */}
+            {procedure.contentImages && procedure.contentImages.length > 0 && (
+                <ProcedureContentImagesSection
+                    images={procedure.contentImages}
+                    section='content'
+                    title='What Your Transformation Includes'
+                    description='Each procedure is customized to address your unique concerns and goals'
+                    variant='default'
+                />
+            )}
+
+            {/* Recovery Lifestyle Section */}
+            {procedure.contentImages && procedure.contentImages.length > 0 && (
+                <ProcedureContentImagesSection
+                    images={procedure.contentImages}
+                    section='recovery'
+                    title='Embrace Your New Life'
+                    description='Our patients enjoy lasting confidence and renewed vitality'
+                    variant='muted'
+                />
             )}
 
             {/* FAQs Section */}

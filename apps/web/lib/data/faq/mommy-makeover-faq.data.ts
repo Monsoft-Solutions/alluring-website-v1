@@ -17,6 +17,7 @@ import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 export const mommyMakeoverFaqCategories: FaqCategory[] = [
     { id: 'timing', label: 'Timing' },
     { id: 'procedures', label: 'Procedures' },
+    { id: 'cost', label: 'Cost & Financing' },
     { id: 'recovery', label: 'Recovery' },
     { id: 'results', label: 'Results' },
 ]
@@ -41,6 +42,25 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
         {
             question: 'Can I have a mommy makeover if I had a C-section?',
             answer: `Absolutely! In fact, having a C-section can be beneficial for your tummy tuck because the incision is often made in a similar location. We can revise the C-section scar and create a single, well-hidden incision. Most of our mommy makeover patients have had C-sections.`,
+        },
+    ],
+    cost: [
+        {
+            question: 'How much does a mommy makeover cost in Miami?',
+            answer: `The average mommy makeover price in Miami ranges from $7,000 to $20,000, depending on the procedures included and complexity. During your free consultation, we provide a detailed cost breakdown based on your personalized surgical plan.`,
+        },
+        {
+            question: 'Does insurance cover a mommy makeover?',
+            answer: `No, mommy makeovers are elective cosmetic procedures and not covered by insurance. However, we offer flexible financing through Cherry, CareCredit, and United Credit with payments starting at $67/week and 0% APR options available.`,
+        },
+        {
+            question: 'Are there affordable payment options?',
+            answer: `Yes! Our "Luxury Made Affordable" approach means you don't have to choose between quality and accessibility. We partner with multiple financing providers offering weekly payments starting at $67, 0% APR options, and no penalty for early payoff.`,
+        },
+        {
+            question:
+                'What is a mini mommy makeover and how much does it cost?',
+            answer: `A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. It costs 30-40% less than a full procedure—typically $5,000 to $12,000—and is ideal for mothers with moderate post-pregnancy changes who want targeted improvement.`,
         },
     ],
     procedures: [

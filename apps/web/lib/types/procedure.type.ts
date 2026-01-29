@@ -31,6 +31,32 @@ export interface ProcedureQuickAnswer {
     details?: string
 }
 
+/**
+ * Inline content image for procedure pages
+ * Used to add visual engagement throughout the content sections
+ */
+export interface ProcedureContentImage {
+    /** Unique identifier for the image (used for positioning) */
+    id: string
+    /** Image source path (relative to public folder) */
+    src: string
+    /** Alt text for accessibility */
+    alt: string
+    /** Optional caption displayed below the image */
+    caption?: string
+    /** Section where this image should appear */
+    section:
+        | 'hero'
+        | 'intro'
+        | 'benefits'
+        | 'process'
+        | 'content'
+        | 'recovery'
+        | 'cta'
+    /** Optional display variant */
+    variant?: 'full-width' | 'half' | 'float-right' | 'float-left'
+}
+
 export interface Procedure {
     title: string
     slug: string
@@ -48,6 +74,9 @@ export interface Procedure {
     benefits?: ProcedureBenefit[]
     process?: ProcedureStep[]
     quickAnswer?: ProcedureQuickAnswer
+
+    // Inline content images for enhanced engagement
+    contentImages?: ProcedureContentImage[]
 
     // Freshness signals for SEO/LLM optimization
     /** ISO date string when the content was last modified */
@@ -127,6 +156,30 @@ export const procedureSchema = z.object({
             answer: z.string(),
             details: z.string().optional(),
         })
+        .optional(),
+
+    // Inline content images
+    contentImages: z
+        .array(
+            z.object({
+                id: z.string(),
+                src: z.string(),
+                alt: z.string(),
+                caption: z.string().optional(),
+                section: z.enum([
+                    'hero',
+                    'intro',
+                    'benefits',
+                    'process',
+                    'content',
+                    'recovery',
+                    'cta',
+                ]),
+                variant: z
+                    .enum(['full-width', 'half', 'float-right', 'float-left'])
+                    .optional(),
+            })
+        )
         .optional(),
 
     // Freshness signals for SEO/LLM optimization

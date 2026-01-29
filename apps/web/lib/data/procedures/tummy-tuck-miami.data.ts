@@ -5,24 +5,96 @@ export const tummyTuckMiami: Procedure = {
     title: 'Tummy Tuck Miami',
     slug: 'tummy-tuck-miami',
     description:
-        'Transform your midsection with expertly tailored tummy tuck surgery in Miami. Achieve a flatter, more confident you with expert abdominoplasty.',
+        'Tummy tuck in Miami from $3,500. Board-certified surgeons, 5,000+ procedures. Mini & full abdominoplasty with financing from $35/week. See before & afters. Free consultation.',
     shortDescription:
         'Remove excess skin and tighten your abdomen for a flatter, more toned midsection. Perfect for post-pregnancy recovery or after significant weight loss.',
     heroSubtitle:
-        'Transform Your Midsection with Our Expertly Tailored Tummy Tuck Procedure',
+        "Achieve the Flat, Toned Abdomen You've Always Wanted with Miami's Most Trusted Abdominoplasty Specialists",
     category: 'body',
-    image: '/images/procedures/tummy-tuck.jpg',
-    dateModified: '2026-01-21T00:00:00.000Z',
+    image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/hero.webp',
+    dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
+
+    // Inline content images for enhanced engagement
+    contentImages: [
+        {
+            id: 'hero',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/hero.webp',
+            alt: 'Confident Latina woman showing flat stomach after tummy tuck surgery at Alluring Plastic Surgery Miami',
+            section: 'hero',
+            variant: 'full-width',
+        },
+        {
+            id: 'full-tummy-tuck',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/full-tummy-tuck.webp',
+            alt: 'Before and after comparison of full tummy tuck abdominoplasty results',
+            caption:
+                'Full tummy tuck addresses the entire abdominal area for dramatic transformation',
+            section: 'content',
+            variant: 'full-width',
+        },
+        {
+            id: 'mini-tummy-tuck',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/mini-tummy-tuck.webp',
+            alt: 'Mini tummy tuck results showing flatter lower abdomen',
+            caption:
+                'Mini abdominoplasty targets the lower belly with a shorter recovery time',
+            section: 'content',
+            variant: 'full-width',
+        },
+        {
+            id: 'infographic-procedure-types',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/infographic-procedure-types.webp',
+            alt: 'Infographic comparing mini, full, extended, and circumferential tummy tuck procedures',
+            caption:
+                'Compare tummy tuck options to find the right procedure for your needs',
+            section: 'content',
+            variant: 'full-width',
+        },
+        {
+            id: 'consultation',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/consultation.webp',
+            alt: 'Patient consultation with board-certified plastic surgeon in Miami',
+            caption:
+                'Your transformation begins with a personalized consultation',
+            section: 'process',
+            variant: 'full-width',
+        },
+        {
+            id: 'infographic-recovery-timeline',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/infographic-recovery-timeline.webp',
+            alt: 'Tummy tuck recovery timeline infographic showing week-by-week healing milestones',
+            caption: 'What to expect during your tummy tuck recovery journey',
+            section: 'recovery',
+            variant: 'full-width',
+        },
+        {
+            id: 'recovery-lifestyle',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/recovery-lifestyle.webp',
+            alt: 'Happy woman enjoying beach lifestyle after tummy tuck recovery in Miami',
+            caption: 'Enjoy Miami life with newfound confidence in your body',
+            section: 'recovery',
+            variant: 'full-width',
+        },
+    ],
+
     keywords: [
         'tummy tuck miami',
         'abdominoplasty miami',
         'tummy tuck surgery',
-        'abdominal contouring',
-        'tummy tuck cost',
         'mini tummy tuck',
-        'tummy tuck scar',
+        'tummy tuck cost',
+        'how much does a tummy tuck cost',
+        'tummy tuck recovery',
+        'tummy tuck recovery time',
         'tummy tuck before and after',
+        'tummy tuck belly button',
+        'mini tummy tuck cost',
+        'best tummy tuck surgeon miami',
+        'tummy tuck and liposuction combo miami',
+        'tummy tuck scars healing',
+        'diastasis recti surgery miami',
+        'post pregnancy tummy tuck miami',
     ],
     quickStats: {
         duration: '2 to 5 Hours',
@@ -91,26 +163,45 @@ export const tummyTuckMiami: Procedure = {
         details:
             'The procedure creates a flatter, firmer midsection that diet and exercise alone cannot achieve. It is especially popular after pregnancy or significant weight loss. Recovery takes 2-3 weeks before returning to work.',
     },
-    content: `## Tummy Tuck Miami: Achieve a Flatter, More Confident You
+    content: `## Tummy Tuck Miami: Achieve the Flat Stomach You Deserve
 
-For many people, diet and exercise alone aren't enough to achieve the flat, toned midsection they desire. Pregnancy, significant weight loss, aging, and genetics can leave behind stubborn fat deposits, loose skin, and separated abdominal muscles that won't respond to even the most dedicated fitness routines. If you've been working hard to reclaim your pre-pregnancy body or simply want to feel more confident in your favorite clothes, a **tummy tuck in Miami** might be the transformative solution you've been looking for.
+You've done everything right. Hundreds of crunches, strict diets, early morning workouts—and still, when you look in the mirror, you see loose skin that hangs over your waistband, stretch marks that remind you of what your body has been through, and a belly that refuses to flatten no matter how hard you try. This isn't a lack of effort. It's biology.
 
-Also known as **abdominoplasty**, a **tummy tuck** removes excess skin and fat from the abdominal area while tightening weakened or separated muscles. The result? A smoother, firmer profile that helps you look as amazing as you feel. At **Alluring Plastic Surgery**, our **board-certified surgeons** understand that this **procedure** isn't just about aesthetics—it's about reclaiming your self-esteem and enjoying life without feeling self-conscious about your midsection.
+Pregnancy, significant weight loss, and aging stretch your skin and separate your abdominal muscles in ways that no amount of exercise can reverse. The frustration is real—but so is the solution.
+
+A **tummy tuck** (abdominoplasty) removes what diet can't and repairs what exercise won't. At **Alluring Plastic Surgery** in Miami, our board-certified surgeons have performed over 5,000 body contouring procedures, helping patients finally achieve the flat, toned midsection they deserve.
 
 ## What Is a Tummy Tuck?
 
-A **tummy tuck** is a surgical **procedure** designed to create a flatter, more contoured abdomen by removing excess skin and fat while repairing weakened abdominal muscles. Unlike **liposuction**, which only targets fat, **abdominoplasty** addresses multiple concerns at once: stretched skin, stubborn fat pockets, and muscle separation (diastasis recti) that commonly occurs after pregnancy or major weight fluctuations.
+A **tummy tuck** is a surgical procedure designed to create a flatter, more contoured abdomen by removing excess skin and fat while repairing weakened abdominal muscles. Unlike **[liposuction](/procedures/liposuction-miami)**, which only targets fat, **abdominoplasty** addresses multiple concerns at once: stretched skin, stubborn fat pockets, and muscle separation (diastasis recti) that commonly occurs after pregnancy or major weight fluctuations.
 
-During the **procedure**, your **surgeon** makes a horizontal incision along the lower abdomen, typically placed low enough to be hidden beneath most underwear and swimwear. Through this incision, they remove unwanted tissue, tighten the abdominal wall, and reposition the belly button for a natural appearance. The remaining skin is then pulled taut and sutured into place, creating a smooth, youthful contour.
+During the procedure, your surgeon makes a horizontal incision along the lower abdomen, typically placed low enough to be hidden beneath most underwear and swimwear. Through this incision, they remove unwanted tissue, tighten the abdominal wall, and reposition the belly button for a natural appearance. The remaining skin is then pulled taut and sutured into place, creating a smooth, youthful contour.
 
-Because every patient's anatomy and concerns are unique, **tummy tucks** aren't one-size-fits-all. Your **surgeon** will recommend the specific type of **abdominoplasty** that best addresses your individual needs and goals.
+Because every patient's anatomy and concerns are unique, **tummy tucks** aren't one-size-fits-all. Your surgeon will recommend the specific type of **abdominoplasty** that best addresses your individual needs and goals.
+
+### What Happens to Your Belly Button?
+
+A common question about **tummy tuck surgery** involves the **tummy tuck belly button**. During a full abdominoplasty, your belly button isn't actually removed—it stays attached to your abdominal wall while the surrounding skin is repositioned.
+
+Here's what to expect:
+- **Full tummy tuck**: Belly button is repositioned through a new opening for natural placement
+- **Mini tummy tuck**: Belly button usually stays untouched
+- **Healing**: Your navel may look different initially but settles into a natural appearance
+- **Scarring**: A small scar around the belly button is hidden within the navel itself
+
+Our surgeons take great care to create a natural-looking belly button that complements your new flat contour.
 
 ## Types of Tummy Tuck Procedures
 
-Choosing the right type of **tummy tuck** is essential for achieving your desired results. At **Alluring Plastic Surgery**, our **surgeons** evaluate your abdominal structure, skin quality, and aesthetic goals to recommend the most appropriate technique.
+Choosing the right type of **tummy tuck** is essential for achieving your desired results. At **Alluring Plastic Surgery**, our surgeons evaluate your abdominal structure, skin quality, and aesthetic goals to recommend the most appropriate technique.
+
+<ProcedureImage id="infographic-procedure-types" />
 
 ### Full Tummy Tuck (Traditional Abdominoplasty)
-A **full tummy tuck** is the most comprehensive option, addressing the entire abdominal area from the ribcage to the pubic region. This **procedure** is ideal for patients with significant excess skin, substantial fat deposits, or severe muscle separation extending above and below the belly button.
+
+A **full tummy tuck** is the most comprehensive option, addressing the entire abdominal area from the ribcage to the pubic region. This procedure is ideal for patients with significant excess skin, substantial fat deposits, or severe muscle separation extending above and below the belly button.
+
+<ProcedureImage id="full-tummy-tuck" />
 
 **What It Involves:**
 *   A horizontal incision from hip to hip
@@ -121,7 +212,10 @@ A **full tummy tuck** is the most comprehensive option, addressing the entire ab
 This technique typically requires the longest recovery time but delivers the most transformative results for patients with extensive concerns—particularly those who've experienced multiple pregnancies or massive weight loss.
 
 ### Mini Tummy Tuck (Partial Abdominoplasty)
+
 A **mini tummy tuck** is a less invasive option designed for patients whose concerns are limited to the lower abdomen below the navel. If you have relatively good muscle tone in your upper abdomen but struggle with a small pooch, loose skin, or stretch marks below your belly button, this might be the perfect solution.
+
+<ProcedureImage id="mini-tummy-tuck" />
 
 **What It Involves:**
 *   A shorter incision (typically smaller than a C-section scar)
@@ -129,9 +223,10 @@ A **mini tummy tuck** is a less invasive option designed for patients whose conc
 *   Tightening of muscles below the belly button
 *   Usually no repositioning of the navel
 
-Because it's less extensive, a **mini tummy tuck** offers faster recovery, less scarring, and reduced post-operative discomfort compared to a full **procedure**. However, it won't address concerns above the navel or provide the dramatic transformation of a full **abdominoplasty**.
+Because it's less extensive, a **mini tummy tuck** offers faster recovery, less scarring, and reduced post-operative discomfort compared to a full procedure. However, it won't address concerns above the navel or provide the dramatic transformation of a full **abdominoplasty**.
 
 ### Extended Tummy Tuck
+
 An **extended tummy tuck** goes beyond the traditional approach by addressing not only the front of the abdomen but also the flanks (love handles) and sometimes even the lower back. This technique is particularly beneficial for patients who've lost significant weight and have excess skin that extends around their sides and back.
 
 **What It Involves:**
@@ -142,14 +237,49 @@ An **extended tummy tuck** goes beyond the traditional approach by addressing no
 This creates a more comprehensive body contour, improving your profile from every angle. While an **extended tummy tuck** requires longer surgery time and a more extensive recovery period, patients who need 360-degree contouring often find the comprehensive results well worth it.
 
 ### Circumferential Tummy Tuck (Body Lift)
-Also known as a belt lipectomy or lower body lift, a **circumferential tummy tuck** completely encircles the torso, addressing loose skin around the entire midsection, including the abdomen, flanks, back, and buttocks. This extensive **procedure** is most commonly recommended for patients who've undergone bariatric surgery or lost 100+ pounds.
+
+Also known as a belt lipectomy or lower body lift, a **circumferential tummy tuck** completely encircles the torso, addressing loose skin around the entire midsection, including the abdomen, flanks, back, and buttocks. This extensive procedure is most commonly recommended for patients who've undergone bariatric surgery or lost 100+ pounds.
 
 **What It Involves:**
 *   Removal of excess skin and fat all the way around the body's circumference
 *   Lifting and tightening of the buttocks and outer thighs
 *   Creating a more proportionate, contoured silhouette from front to back
 
-Because of its comprehensive nature, this **procedure** typically requires a longer operating time (four to six hours) and a more extended recovery period. Patients who choose a **circumferential tummy tuck** often experience life-changing results.
+Because of its comprehensive nature, this procedure typically requires a longer operating time (four to six hours) and a more extended recovery period. Patients who choose a **circumferential tummy tuck** often experience life-changing results.
+
+## How Much Does a Tummy Tuck Cost in Miami?
+
+Understanding **tummy tuck cost** helps you plan and make informed decisions. Here's what affects pricing:
+
+### Average Tummy Tuck Price in Miami
+
+At Alluring Plastic Surgery, our **tummy tuck price** starts from just **$3,500**, depending on:
+
+- **Type of procedure**: Mini abdominoplasty costs less than extended
+- **Procedure complexity**: Muscle repair and liposuction add to cost
+- **Anesthesia time**: Longer surgeries require more anesthesia
+- **Facility fees**: Accredited surgical centers ensure safety
+
+| Procedure Type | Price Range |
+|----------------|-------------|
+| Mini Tummy Tuck | $3,500 - $8,000 |
+| Full Tummy Tuck | $4,000 - $12,000 |
+| Extended Tummy Tuck | $5,000 - $15,000 |
+| Circumferential (Body Lift) | $12,000 - $18,000 |
+
+### Does Insurance Cover a Tummy Tuck?
+
+No. Because **abdominoplasty** is considered a cosmetic procedure, insurance does not cover it. However, if you have documented diastasis recti causing functional problems (back pain, hernia), a portion of the muscle repair *may* qualify for coverage. We can provide documentation for your insurance company.
+
+### Affordable Tummy Tuck Financing
+
+We believe everyone deserves to feel confident in their body. That's why we partner with multiple financing providers:
+
+- **Cherry**: Payments as low as $35/week
+- **CareCredit**: 0% APR options available
+- **United Credit**: Flexible terms with no prepayment penalties
+
+A **mini tummy tuck** starts from just **$3,500**—an excellent option if your concerns are limited to below the belly button.
 
 ## Benefits of Tummy Tuck Surgery
 
@@ -184,21 +314,23 @@ Ideal candidates for **tummy tuck surgery** are individuals who are in good over
 *   Don't smoke, or are willing to quit several weeks before and after surgery
 *   Are in good overall health without conditions that could complicate surgery
 
-**Tummy tucks** are particularly popular among women who've completed their families and want to restore their pre-pregnancy bodies. The **procedure** is also sought by patients who've lost significant weight and are left with loose, sagging skin that undermines their hard-earned results.
+**Tummy tucks** are particularly popular among women who've completed their families and want to restore their pre-pregnancy bodies. The procedure is also sought by patients who've lost significant weight and are left with loose, sagging skin that undermines their hard-earned results.
 
-During your consultation at **Alluring Plastic Surgery**, your **surgeon** will evaluate your abdominal anatomy, discuss your goals, and determine whether a **tummy tuck** is right for you—or if an alternative or combination **procedure** would better serve your needs.
+<ProcedureImage id="consultation" />
+
+During your consultation at **Alluring Plastic Surgery**, your surgeon will evaluate your abdominal anatomy, discuss your goals, and determine whether a **tummy tuck** is right for you—or if an alternative or combination procedure would better serve your needs.
 
 ## The Tummy Tuck Procedure: What to Expect
 
 Understanding each phase of the **tummy tuck** process helps you feel prepared and confident throughout your journey.
 
 ### Pre-Operative Preparation
-Your journey begins with a comprehensive consultation at **Alluring Plastic Surgery**. Your **surgeon** will examine your abdomen, discuss your goals and medical history, and explain which type of **tummy tuck** will best achieve your desired outcome.
+Your journey begins with a comprehensive consultation at **Alluring Plastic Surgery**. Your surgeon will examine your abdomen, discuss your goals and medical history, and explain which type of **tummy tuck** will best achieve your desired outcome.
 
-Before surgery, you'll receive detailed pre-operative instructions, including guidelines about medications to avoid, fasting requirements, and preparing your home for recovery. You'll also need to arrange for someone to drive you home after the **procedure** and stay with you for at least the first 24 hours.
+Before surgery, you'll receive detailed pre-operative instructions, including guidelines about medications to avoid, fasting requirements, and preparing your home for recovery. You'll also need to arrange for someone to drive you home after the procedure and stay with you for at least the first 24 hours.
 
 ### During Surgery
-**Tummy tuck surgery** is performed under general anesthesia and typically takes two to five hours, depending on the extent of the **procedure**. Your **surgeon** makes the planned incision, removes excess skin and fat, repairs separated abdominal muscles by suturing them together in the midline, and repositions the belly button if necessary.
+**Tummy tuck surgery** is performed under general anesthesia and typically takes two to five hours, depending on the extent of the procedure. Your surgeon makes the planned incision, removes excess skin and fat, repairs separated abdominal muscles by suturing them together in the midline, and repositions the belly button if necessary.
 
 The remaining skin is pulled down and taut, excess tissue is trimmed away, and incisions are closed in layers with dissolvable sutures beneath the skin and fine stitches on the surface. Drains may be placed to prevent fluid accumulation during early healing.
 
@@ -207,25 +339,64 @@ Immediately after surgery, you'll wake up wearing a compression garment that sup
 
 The first few days require rest and limited movement. You'll need to keep your upper body slightly bent at the waist to avoid tension on the incision. Drains typically remain in place for one to two weeks and are removed during a follow-up appointment.
 
-## Recovery and Results: What You'll Experience
+## Tummy Tuck Recovery: What to Realistically Expect
 
-Recovery from a **tummy tuck** happens in stages, with gradual improvement over several weeks and months.
+Understanding **tummy tuck recovery time** helps you plan your life around healing. We know you have responsibilities—work, family, commitments. Here's an honest timeline:
 
-### Recovery Timeline:
+<ProcedureImage id="infographic-recovery-timeline" />
 
-**Week 1-2:** Rest is essential. You'll experience swelling, bruising, and tightness. Most patients can manage discomfort with prescribed medication. Light walking is encouraged to promote circulation.
+### Week 1-2: Rest Mode
+- **Help is essential**: You cannot lift anything over 5 lbs, bend, or twist
+- **Walking required**: Short walks every few hours prevent blood clots
+- **Sleep position**: Elevated, slightly bent at waist (recliner works well)
+- **Work status**: Off work entirely
+- **Pro tip**: Prepare meals in advance; you won't feel like cooking
 
-**Week 2-3:** Many patients return to light desk work. Swelling begins to subside, though you'll still feel some tightness. Drains are typically removed by this point.
+### Week 2-3: Light Activity Returns
+- **Back to desk work**: Sedentary jobs can resume around day 10-14
+- **Driving**: Usually possible once off pain medication
+- **Drains removed**: Typically between days 7-14
+- **Swelling**: Still significant but improving daily
+- **Light housework**: Possible, but no vacuuming or lifting laundry baskets
 
-**Week 4-6:** You can gradually resume more normal activities, including light exercise. Swelling continues to decrease, and you'll start seeing your new contours emerge.
+### Week 4-6: Gradual Return to Normal
+- **Resume most activities**: Grocery shopping, light errands
+- **Light exercise**: Walking, stationary bike (no ab exercises yet)
+- **Lifting limit**: 10-15 pounds maximum
+- **Visible results**: Your new contours become apparent as swelling decreases
+- **Intimacy**: Usually cleared around week 4-6
 
-**Month 3-6:** Most swelling has resolved. Your **tummy tuck scar** begins to fade and flatten. You can resume all normal activities, including strenuous exercise, with surgeon approval.
+### Month 3-6: Final Results Emerge
+- **All activities approved**: Including full exercise routine
+- **Swelling fully resolves**: Final shape is visible
+- **Scar maturation**: Begins fading from red/pink to pale white
+- **Return to beaches and pools**: Most patients feel confident in swimwear
 
-**6 Months and Beyond:** Your final results become fully apparent as residual swelling completely resolves and your scars mature. With proper care, including sun protection and scar treatments, incision lines will fade to thin, pale lines easily concealed beneath clothing and swimwear.
+### 6 Months and Beyond
+- Your **tummy tuck scar** continues to fade (can take 12-18 months)
+- With stable weight, results are essentially permanent
+- Compression garments no longer needed
+
+<ProcedureImage id="recovery-lifestyle" />
+
+## Can I Combine a Tummy Tuck with Other Procedures?
+
+Yes, combining **abdominoplasty** with other procedures is common and often recommended for optimal contouring. Popular combinations include:
+
+### Tummy Tuck with Liposuction
+[Liposuction](/procedures/liposuction-miami) can sculpt the flanks, hips, and areas not addressed by the tummy tuck alone, creating a more comprehensive result. Many patients opt for this combination to achieve balanced, harmonious contours.
+
+### Mommy Makeover
+A [Mommy Makeover](/procedures/mommy-makeover-miami) combines tummy tuck with breast surgery (augmentation, lift, or both), addressing multiple post-pregnancy concerns in a single surgery with one recovery period.
+
+### Brazilian Butt Lift (BBL)
+Fat removed during liposuction can be transferred to the buttocks with a [Brazilian Butt Lift (BBL)](/procedures/brazilian-butt-lift-bbl-miami), creating curves while slimming the midsection.
+
+During your consultation, we'll discuss which combination of procedures will best achieve your aesthetic goals.
 
 ## Why Choose Miami for Your Tummy Tuck?
 
-**Miami's** reputation as a premier destination for **plastic surgery** isn't just about sunny beaches and vibrant culture—it's also home to some of the nation's most skilled and experienced **cosmetic surgeons**. At **Alluring Plastic Surgery**, our **board-certified surgeons** combine advanced techniques with an artistic eye to deliver natural-looking results tailored to your unique anatomy and goals.
+**Miami's** reputation as a premier destination for **plastic surgery** isn't just about sunny beaches and vibrant culture—it's also home to some of the nation's most skilled and experienced cosmetic surgeons. At **Alluring Plastic Surgery**, our board-certified surgeons combine advanced techniques with an artistic eye to deliver natural-looking results tailored to your unique anatomy and goals.
 
 Living in South Florida means embracing a lifestyle where swimwear season never ends. Whether you're enjoying Biscayne Bay, lounging poolside, or simply feeling confident in summer dresses, having a body you're proud of can make all the difference.
 
@@ -235,15 +406,27 @@ Beyond surgical expertise, choosing **Alluring Plastic Surgery** means receiving
 
 If you've been dreaming of a flatter, firmer abdomen but haven't been able to achieve it through diet and exercise alone, a **tummy tuck** may be the answer. Whether you're recovering from pregnancy, celebrating major weight loss, or simply want to feel more confident in your body, **Alluring Plastic Surgery** is here to help you achieve your goals.
 
-**Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your consultation and discover how **tummy tuck surgery** can transform your confidence and help you embrace the body you've always wanted. Your journey to a flatter, more confident you starts here.`,
+**Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your free consultation and discover how **tummy tuck surgery** can transform your confidence and help you embrace the body you've always wanted. Your journey to a flatter, more confident you starts here.`,
     faqs: [
         {
             question: 'What is a tummy tuck?',
             answer: 'A tummy tuck, or abdominoplasty, is a cosmetic procedure that removes excess skin and fat from the abdomen while tightening the muscles to create a firmer, flatter midsection.',
         },
         {
-            question: 'How much is a tummy tuck?',
-            answer: 'The tummy tuck cost varies depending on the complexity of the procedure and additional factors like whether you choose a full, mini, or extended tummy tuck. We offer a range of financing options to suit different budgets. Contact us for a personalized estimate.',
+            question: 'How much does a tummy tuck cost in Miami?',
+            answer: 'Tummy tuck cost at Alluring Plastic Surgery starts from $3,500 for a mini abdominoplasty to $12,000 for a full tummy tuck. The exact price depends on procedure type, complexity, and whether liposuction is included. We offer financing from $35/week through Cherry, CareCredit, and United Credit.',
+        },
+        {
+            question: 'What is the tummy tuck recovery time?',
+            answer: 'Most patients return to desk work in 2-3 weeks and light exercise by week 4-6. Full recovery, including strenuous exercise and final results, takes 3-6 months. The first week requires complete rest with no lifting.',
+        },
+        {
+            question: 'What happens to the belly button during a tummy tuck?',
+            answer: "During a full tummy tuck, your belly button stays attached to your abdominal wall while surrounding skin is repositioned. A new opening is created for natural placement. Mini tummy tucks usually don't affect the belly button at all.",
+        },
+        {
+            question: 'How much does a mini tummy tuck cost?',
+            answer: 'A mini tummy tuck at Alluring Plastic Surgery starts from $3,500 to $8,000—significantly less than a full abdominoplasty. This option addresses only the lower abdomen below the belly button and has a shorter recovery time.',
         },
         {
             question: 'Am I a good candidate for a tummy tuck?',
@@ -255,12 +438,16 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
             answer: 'A mini tummy tuck focuses only on the lower abdomen below the belly button, whereas a full tummy tuck addresses the entire abdomen, including muscle tightening above and below the navel and belly button repositioning.',
         },
         {
-            question: 'Will there be a scar after my tummy tuck?',
-            answer: "Yes, there will be a tummy tuck scar, but our skilled surgeons ensure it's placed low and discreet, typically along the bikini line. Over time, the scar will fade and become less noticeable with proper care.",
+            question: 'Can I combine a tummy tuck with liposuction?',
+            answer: 'Yes, combining abdominoplasty with liposuction is common and often recommended for optimal contouring. Liposuction can sculpt the flanks, hips, and areas not addressed by the tummy tuck alone, creating a more comprehensive result.',
         },
         {
-            question: 'How long does it take to recover from a tummy tuck?',
-            answer: "Most patients can resume light activities after two weeks, with full recovery taking 6-8 weeks. We'll provide detailed aftercare instructions to aid in a smooth recovery.",
+            question: 'How long until I can exercise after a tummy tuck?',
+            answer: 'Light walking is encouraged immediately. Cardio (stationary bike, light treadmill) is typically approved at week 4-6. Core exercises and heavy lifting usually wait until week 8-12, with full exercise clearance by month 3.',
+        },
+        {
+            question: 'Will there be a scar after my tummy tuck?',
+            answer: "Yes, there will be a tummy tuck scar, but our skilled surgeons ensure it's placed low and discreet, typically along the bikini line. Over time, the scar will fade and become less noticeable with proper care.",
         },
         {
             question: 'Are the results of a tummy tuck permanent?',
@@ -268,7 +455,7 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
         },
         {
             question: 'How can I see tummy tuck results?',
-            answer: 'Check our gallery of tummy tuck before and after photos that showcase the transformative results achieved by our patients. These real patient examples can help you visualize potential outcomes.',
+            answer: 'Check our gallery of tummy tuck before and after photos that showcase the transformative results achieved by our patients. Visit our before and after gallery to see real patient examples that can help you visualize potential outcomes.',
         },
         {
             question: 'How do I prepare for a tummy tuck?',
@@ -277,6 +464,10 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
         {
             question: 'Is a tummy tuck safe?',
             answer: 'Like all surgeries, there are risks involved. However, tummy tuck surgery is generally considered safe when performed by experienced, board-certified surgeons like those at Alluring Plastic Surgery.',
+        },
+        {
+            question: 'Does insurance cover a tummy tuck?',
+            answer: 'No. Because abdominoplasty is considered a cosmetic procedure, insurance does not cover it. However, if you have documented diastasis recti causing functional problems, a portion of the muscle repair may qualify for coverage. We can provide documentation for your insurance company.',
         },
     ],
 }

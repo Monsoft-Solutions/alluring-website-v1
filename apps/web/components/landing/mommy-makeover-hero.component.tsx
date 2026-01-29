@@ -48,7 +48,7 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                     <div className='h-[65vh] p-4 lg:h-full lg:p-20'>
                         <div className='shadow-gold-500/20 relative h-full w-full overflow-hidden rounded-2xl shadow-2xl sm:rounded-none sm:shadow-none'>
                             <Image
-                                src='/images/landing/mommy-makeover-hero.jpg'
+                                src='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/mommy-makeover-hero.jpg'
                                 alt='Confident mother embracing her transformation after mommy makeover'
                                 fill
                                 className='object-cover object-top lg:object-contain lg:object-center'

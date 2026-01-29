@@ -164,7 +164,7 @@ export default async function MommyMakeoverConsultationPage() {
                     }}
                     eyebrow="It's Your Turn Now"
                     size='lg'
-                    backgroundImage='/images/landing/mommy-makeover-cta-bg.png'
+                    backgroundImage='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/mommy-makeover-cta-bg.png'
                 />
             </ContainerLayout>
 
