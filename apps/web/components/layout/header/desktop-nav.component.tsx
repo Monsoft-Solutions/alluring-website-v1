@@ -100,6 +100,20 @@ export function DesktopNav() {
                     onClose={() => setIsSurgeonsDropdownOpen(false)}
                 />
 
+                {/* Quiz Link - Featured */}
+                <TrackedLink
+                    href='/quiz'
+                    eventName='nav_click'
+                    eventParams={{
+                        nav_type: 'desktop',
+                        link_category: 'quiz',
+                    }}
+                    className='hover:text-gold-600 group text-gold-500 relative text-sm font-bold tracking-widest uppercase transition-colors'
+                >
+                    Find Your Procedure
+                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                </TrackedLink>
+
                 {/* Financing Link */}
                 <TrackedLink
                     href='/plastic-surgery-financing-miami'

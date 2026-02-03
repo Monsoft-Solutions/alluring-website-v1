@@ -214,8 +214,27 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             )}
                         </div>
 
-                        {/* Financing Link */}
+                        {/* Quiz Link - Featured */}
                         <div className='animate-fade-in-up animate-delay-200 w-full'>
+                            <Link
+                                href='/quiz'
+                                onClick={() =>
+                                    handleNavClick(
+                                        'Find Your Procedure',
+                                        '/quiz',
+                                        'quiz'
+                                    )
+                                }
+                                className='group flex w-full items-center py-4 text-left'
+                            >
+                                <span className='text-gold-600 group-hover:text-gold-700 font-serif text-3xl transition-colors md:text-4xl'>
+                                    Find Your Procedure
+                                </span>
+                            </Link>
+                        </div>
+
+                        {/* Financing Link */}
+                        <div className='animate-fade-in-up animate-delay-300 w-full'>
                             <Link
                                 href='/plastic-surgery-financing-miami'
                                 onClick={() =>
@@ -234,7 +253,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         </div>
 
                         {/* Blog Link */}
-                        <div className='animate-fade-in-up animate-delay-300 w-full'>
+                        <div className='animate-fade-in-up animate-delay-400 w-full'>
                             <Link
                                 href='/blog'
                                 onClick={() =>
@@ -249,7 +268,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         </div>
 
                         {/* Gallery Link */}
-                        <div className='animate-fade-in-up animate-delay-400 w-full'>
+                        <div className='animate-fade-in-up animate-delay-500 w-full'>
                             <Link
                                 href='/gallery'
                                 onClick={() =>
@@ -268,7 +287,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         </div>
 
                         {/* About Link */}
-                        <div className='animate-fade-in-up animate-delay-500 w-full'>
+                        <div className='animate-fade-in-up animate-delay-600 w-full'>
                             <Link
                                 href='/about'
                                 onClick={() =>
@@ -283,7 +302,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         </div>
 
                         {/* FAQ Link */}
-                        <div className='animate-fade-in-up animate-delay-600 w-full'>
+                        <div className='animate-fade-in-up animate-delay-700 w-full'>
                             <Link
                                 href='/faqs'
                                 onClick={() =>
