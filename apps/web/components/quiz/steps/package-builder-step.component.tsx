@@ -11,14 +11,8 @@ import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
 import type { ProcedureId, ProcedureRecommendation } from '../lib/quiz-types'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
-import {
-    getProcedureDetails,
-    PROCEDURE_PRICING,
-} from '../lib/quiz-pricing.data'
-import {
-    calculatePackagePrice,
-    getComplementaryProcedures,
-} from '../lib/quiz-logic'
+import { getProcedureDetails } from '../lib/quiz-pricing.data'
+import { getComplementaryProcedures } from '../lib/quiz-logic'
 import {
     MiniProcedureCard,
     PackageSummary,
@@ -75,12 +69,9 @@ export function PackageBuilderStep({
         .map((id) => getProcedureDetails(id))
         .filter(Boolean)
 
-    // Calculate package pricing
     const selectedDetails = selectedProcedures
         .map((id) => getProcedureDetails(id))
         .filter(Boolean)
-
-    const pricing = calculatePackagePrice(selectedProcedures)
 
     return (
         <motion.div
@@ -204,14 +195,7 @@ export function PackageBuilderStep({
                     className='lg:col-span-2'
                 >
                     <div className='sticky top-24'>
-                        <PackageSummary
-                            procedures={selectedDetails as any[]}
-                            totalMin={pricing.totalMin}
-                            totalMax={pricing.totalMax}
-                            monthlyMin={pricing.monthlyMin}
-                            monthlyMax={pricing.monthlyMax}
-                            savings={pricing.savings}
-                        />
+                        <PackageSummary procedures={selectedDetails as any[]} />
 
                         {/* Action buttons */}
                         <div className='mt-6 space-y-3'>

@@ -173,23 +173,23 @@ export const LIFE_EVENT_OPTIONS: readonly QuizOption<LifeEvent>[] = [
 export const BUDGET_RANGE_OPTIONS: readonly QuizOption<BudgetRange>[] = [
     {
         value: 'low',
-        label: '$50-100/mo',
-        description: 'Budget-friendly financing',
+        label: 'Budget-friendly',
+        description: 'Looking for affordable options',
     },
     {
         value: 'medium',
-        label: '$100-200/mo',
-        description: 'Moderate monthly investment',
+        label: 'Moderate investment',
+        description: 'Comfortable monthly plan',
     },
     {
         value: 'high',
-        label: '$200-350/mo',
-        description: 'Comfortable monthly payment',
+        label: 'Premium investment',
+        description: 'Ready to invest in my goals',
     },
     {
         value: 'premium',
-        label: '$350+/mo',
-        description: 'Premium procedures & combinations',
+        label: 'All-inclusive',
+        description: 'Comprehensive transformation',
     },
 ] as const
 
@@ -228,7 +228,7 @@ export const QUIZ_QUESTIONS = {
         subtitle: 'Optional - helps us understand your timeline',
     },
     budget: {
-        title: 'What Monthly Payment Feels Comfortable?',
+        title: 'What Investment Level Feels Right for You?',
         subtitle:
             'We offer flexible financing through Cherry, CareCredit & United Credit',
     },

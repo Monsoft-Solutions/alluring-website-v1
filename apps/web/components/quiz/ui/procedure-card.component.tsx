@@ -10,16 +10,12 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
-import { Check, Clock, DollarSign, Sparkles, Star } from 'lucide-react'
+import { Check, Clock, CreditCard, Sparkles, Star } from 'lucide-react'
 import Link from 'next/link'
 import type {
     ProcedureDetails,
     ProcedureRecommendation,
 } from '../lib/quiz-types'
-import {
-    formatMonthlyPayment,
-    formatPriceRange,
-} from '../lib/quiz-pricing.data'
 
 export interface ProcedureCardProps {
     /** Procedure details */
@@ -163,9 +159,9 @@ export function ProcedureCard({
                         isPrimary ? 'border-stone-700' : 'border-stone-100'
                     )}
                 >
-                    {/* Price */}
+                    {/* Payment options */}
                     <div className='flex items-center gap-2'>
-                        <DollarSign
+                        <CreditCard
                             className={cn(
                                 'h-4 w-4',
                                 isPrimary ? 'text-gold-400' : 'text-gold-500'
@@ -180,17 +176,17 @@ export function ProcedureCard({
                                         : 'text-stone-500'
                                 )}
                             >
-                                Starting at
+                                Flexible payment options
                             </p>
                             <p
                                 className={cn(
-                                    'font-semibold',
-                                    isPrimary ? 'text-white' : 'text-stone-900'
+                                    'text-xs font-medium',
+                                    isPrimary
+                                        ? 'text-stone-300'
+                                        : 'text-stone-700'
                                 )}
                             >
-                                {formatMonthlyPayment(
-                                    procedure.monthlyPayment.min
-                                )}
+                                Financing & full payment available
                             </p>
                         </div>
                     </div>
@@ -363,7 +359,8 @@ export function MiniProcedureCard({
                     {procedure.title}
                 </p>
                 <p className='text-sm text-stone-500'>
-                    +{formatMonthlyPayment(procedure.monthlyPayment.min)}
+                    ~{procedure.recoveryWeeks} week
+                    {procedure.recoveryWeeks !== 1 ? 's' : ''} recovery
                 </p>
             </div>
         </motion.button>
@@ -375,23 +372,10 @@ export function MiniProcedureCard({
  */
 export interface PackageSummaryProps {
     readonly procedures: readonly ProcedureDetails[]
-    readonly totalMin: number
-    readonly totalMax: number
-    readonly monthlyMin: number
-    readonly monthlyMax: number
-    readonly savings: number
     readonly className?: string
 }
 
-export function PackageSummary({
-    procedures,
-    totalMin,
-    totalMax,
-    monthlyMin,
-    monthlyMax,
-    savings,
-    className,
-}: PackageSummaryProps) {
+export function PackageSummary({ procedures, className }: PackageSummaryProps) {
     if (procedures.length === 0) return null
 
     return (
@@ -415,31 +399,26 @@ export function PackageSummary({
                 ))}
             </ul>
 
-            {/* Pricing */}
+            {/* Payment options */}
             <div className='mt-4 border-t border-stone-700 pt-4'>
                 <div className='flex justify-between text-sm'>
-                    <span className='text-stone-400'>Total Investment</span>
-                    <span className='font-semibold'>
-                        {formatPriceRange(totalMin, totalMax)}
-                    </span>
-                </div>
-                <div className='mt-2 flex justify-between text-sm'>
-                    <span className='text-stone-400'>Monthly Payment</span>
+                    <span className='text-stone-400'>Payment Options</span>
                     <span className='text-gold-400 font-semibold'>
-                        {formatMonthlyPayment(monthlyMin)} -{' '}
-                        {formatMonthlyPayment(monthlyMax)}
+                        Financing & upfront payment available
                     </span>
                 </div>
-
-                {/* Savings */}
-                {savings > 0 && (
-                    <div className='mt-3 rounded-lg bg-green-500/20 p-3 text-center'>
-                        <p className='text-sm font-medium text-green-400'>
-                            Save ${savings.toLocaleString()} with this
-                            combination!
-                        </p>
-                    </div>
-                )}
+                <div className='mt-3 flex flex-wrap gap-2'>
+                    {['Cherry', 'CareCredit', 'United Credit'].map(
+                        (partner) => (
+                            <span
+                                key={partner}
+                                className='rounded-full bg-white/10 px-3 py-1 text-xs text-stone-300'
+                            >
+                                {partner}
+                            </span>
+                        )
+                    )}
+                </div>
             </div>
         </div>
     )

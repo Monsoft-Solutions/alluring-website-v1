@@ -24,12 +24,7 @@ import Link from 'next/link'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 import type { ProcedureId, ProcedureRecommendation } from '../lib/quiz-types'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
-import {
-    getProcedureDetails,
-    formatPriceRange,
-    formatMonthlyPayment,
-} from '../lib/quiz-pricing.data'
-import { calculatePackagePrice } from '../lib/quiz-logic'
+import { getProcedureDetails } from '../lib/quiz-pricing.data'
 
 export interface ConfirmationStepProps {
     /** Selected procedures */
@@ -52,7 +47,6 @@ export function ConfirmationStep({
     className,
 }: ConfirmationStepProps) {
     const content = QUIZ_QUESTIONS.confirmation
-    const pricing = calculatePackagePrice(selectedProcedures)
 
     const selectedDetails = selectedProcedures
         .map((id) => getProcedureDetails(id))
@@ -164,36 +158,20 @@ export function ConfirmationStep({
                         ))}
                     </ul>
 
-                    {/* Pricing */}
+                    {/* Payment options */}
                     <div className='mt-4 border-t border-stone-700 pt-4'>
                         <div className='flex justify-between text-sm'>
                             <span className='text-stone-400'>
-                                Estimated Investment
-                            </span>
-                            <span className='font-semibold'>
-                                {formatPriceRange(
-                                    pricing.totalMin,
-                                    pricing.totalMax
-                                )}
-                            </span>
-                        </div>
-                        <div className='mt-2 flex justify-between text-sm'>
-                            <span className='text-stone-400'>
-                                Monthly Payment
+                                Payment Options
                             </span>
                             <span className='text-gold-400 font-semibold'>
-                                From {formatMonthlyPayment(pricing.monthlyMin)}
+                                Financing & upfront payment available
                             </span>
                         </div>
-
-                        {pricing.savings > 0 && (
-                            <div className='mt-3 rounded-lg bg-green-500/20 p-2 text-center'>
-                                <p className='text-xs font-medium text-green-400'>
-                                    Combination Savings: $
-                                    {pricing.savings.toLocaleString()}
-                                </p>
-                            </div>
-                        )}
+                        <p className='mt-2 text-xs text-stone-400'>
+                            Discuss pricing details during your free
+                            consultation
+                        </p>
                     </div>
                 </motion.div>
             )}

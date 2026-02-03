@@ -10,7 +10,9 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useReducer, useState } from 'react'
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import { trackEvent } from '@/lib/analytics/analytics.client'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 import {
@@ -116,6 +118,8 @@ export interface QuizContainerProps {
 export function QuizContainer({ className }: QuizContainerProps) {
     const [state, dispatch] = useReducer(quizReducer, initialQuizState)
     const [submitError, setSubmitError] = useState<string | undefined>()
+    const { track } = useAnalyticsEvent()
+    const stepRef = useRef(state.currentStep)
 
     // Form submission hook
     const { submit, isSubmitting } = useContactFormSubmission({
@@ -124,17 +128,52 @@ export function QuizContainer({ className }: QuizContainerProps) {
         analyticsFormName: 'procedure-quiz',
     })
 
+    // Keep stepRef in sync for the beforeunload handler
+    useEffect(() => {
+        stepRef.current = state.currentStep
+    }, [state.currentStep])
+
+    // Track quiz abandonment on page unload (mid-quiz only)
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            const step = stepRef.current
+            const terminalSteps: QuizStep[] = [
+                'welcome',
+                'results',
+                'package-builder',
+                'booking',
+            ]
+            if (!terminalSteps.includes(step)) {
+                // Use trackEvent directly with transport_type beacon for reliability during unload
+                trackEvent('quiz_abandoned', {
+                    quiz_name: 'procedure-finder',
+                    last_step: step,
+                    transport_type: 'beacon',
+                })
+            }
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+        return () =>
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+    }, [])
+
     // Navigation handlers
     const goToStep = useCallback((step: QuizStep) => {
         dispatch({ type: 'SET_STEP', step })
     }, [])
 
     const goNext = useCallback(() => {
+        // Fire quiz_started when leaving welcome step
+        if (state.currentStep === 'welcome') {
+            track('quiz_started', { quiz_name: 'procedure-finder' })
+        }
+
         const nextStep = getNextStep(state.currentStep, state)
         if (nextStep) {
             goToStep(nextStep)
         }
-    }, [state, goToStep])
+    }, [state, track, goToStep])
 
     const goBack = useCallback(() => {
         const prevStep = getPreviousStep(state.currentStep, state)
@@ -227,6 +266,10 @@ export function QuizContainer({ className }: QuizContainerProps) {
 
             if (success) {
                 dispatch({ type: 'SET_LEAD_DATA', data })
+                track('quiz_completed', {
+                    quiz_name: 'procedure-finder',
+                    primary_recommendation: primary?.procedureId,
+                })
                 goToStep('results')
             } else {
                 setSubmitError(

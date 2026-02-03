@@ -214,25 +214,6 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             )}
                         </div>
 
-                        {/* Quiz Link - Featured */}
-                        <div className='animate-fade-in-up animate-delay-200 w-full'>
-                            <Link
-                                href='/quiz'
-                                onClick={() =>
-                                    handleNavClick(
-                                        'Find Your Procedure',
-                                        '/quiz',
-                                        'quiz'
-                                    )
-                                }
-                                className='group flex w-full items-center py-4 text-left'
-                            >
-                                <span className='text-gold-600 group-hover:text-gold-700 font-serif text-3xl transition-colors md:text-4xl'>
-                                    Find Your Procedure
-                                </span>
-                            </Link>
-                        </div>
-
                         {/* Financing Link */}
                         <div className='animate-fade-in-up animate-delay-300 w-full'>
                             <Link

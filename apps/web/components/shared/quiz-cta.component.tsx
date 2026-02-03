@@ -2,13 +2,14 @@
  * QuizCTA Component
  *
  * Reusable call-to-action that drives users to the procedure quiz.
- * Server component — zero JS overhead.
+ * Server component — zero JS overhead for layout/structure.
+ * Link is wrapped in a client component for click tracking.
  *
  * @module components/shared/quiz-cta
  */
 import { cn } from '@workspace/ui/lib/utils'
-import Link from 'next/link'
 import { ContainerLayout } from '@/components/container-layout.component'
+import { QuizCTALink } from './quiz-cta-link.component'
 
 type QuizCTAVariant = 'inline' | 'banner'
 
@@ -58,8 +59,10 @@ export function QuizCTA({
                         <p className='mx-auto mb-8 max-w-xl text-lg leading-relaxed text-stone-600'>
                             {description}
                         </p>
-                        <Link
+                        <QuizCTALink
                             href={href}
+                            trackingRef={trackingRef}
+                            variant='banner'
                             className='bg-gold-500 hover:bg-gold-600 hover:shadow-gold-500/20 inline-flex items-center gap-2 rounded-xl px-8 py-4 text-sm font-bold text-white transition-all hover:shadow-lg'
                         >
                             {buttonText}
@@ -76,7 +79,7 @@ export function QuizCTA({
                                     d='M17 8l4 4m0 0l-4 4m4-4H3'
                                 />
                             </svg>
-                        </Link>
+                        </QuizCTALink>
                     </div>
                 </ContainerLayout>
             </section>
@@ -97,8 +100,10 @@ export function QuizCTA({
                 {heading}
             </h3>
             <p className='mb-6 leading-relaxed text-stone-600'>{description}</p>
-            <Link
+            <QuizCTALink
                 href={href}
+                trackingRef={trackingRef}
+                variant='inline'
                 className='bg-gold-500 hover:bg-gold-600 hover:shadow-gold-500/20 inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold text-white transition-all hover:shadow-lg'
             >
                 {buttonText}
@@ -115,7 +120,7 @@ export function QuizCTA({
                         d='M17 8l4 4m0 0l-4 4m4-4H3'
                     />
                 </svg>
-            </Link>
+            </QuizCTALink>
         </div>
     )
 }

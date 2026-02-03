@@ -95,49 +95,36 @@ export function BudgetStep({ value, onChange, className }: BudgetStepProps) {
                 </div>
             </motion.div>
 
-            {/* Coffee comparison (shown when budget selected) */}
+            {/* Encouragement message (shown when budget selected) */}
             {value && (
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className='bg-gold-50 flex items-center justify-center gap-3 rounded-lg p-4'
                 >
-                    <span className='text-2xl'>☕</span>
+                    <span className='text-2xl'>✨</span>
                     <p className='text-sm text-stone-600'>
                         {value === 'low' && (
-                            <>
-                                That's about{' '}
-                                <span className='font-semibold text-stone-800'>
-                                    $2-3/day
-                                </span>{' '}
-                                — less than your daily coffee
-                            </>
+                            <span className='font-medium text-stone-700'>
+                                Great options are available at every budget
+                                level
+                            </span>
                         )}
                         {value === 'medium' && (
-                            <>
-                                That's about{' '}
-                                <span className='font-semibold text-stone-800'>
-                                    $5/day
-                                </span>{' '}
-                                — the cost of a fancy latte
-                            </>
+                            <span className='font-medium text-stone-700'>
+                                Many of our most popular procedures fit this
+                                range
+                            </span>
                         )}
                         {value === 'high' && (
-                            <>
-                                That's about{' '}
-                                <span className='font-semibold text-stone-800'>
-                                    $9/day
-                                </span>{' '}
-                                — an investment in yourself
-                            </>
+                            <span className='font-medium text-stone-700'>
+                                You'll have access to a wide range of procedures
+                            </span>
                         )}
                         {value === 'premium' && (
-                            <>
-                                You're ready for{' '}
-                                <span className='font-semibold text-stone-800'>
-                                    comprehensive transformation
-                                </span>
-                            </>
+                            <span className='font-medium text-stone-700'>
+                                You're ready for comprehensive transformation
+                            </span>
                         )}
                     </p>
                 </motion.div>
