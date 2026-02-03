@@ -15,6 +15,7 @@ import type {
     ProcedureRecommendation,
     QuizState,
 } from './quiz-types'
+import { PROCEDURE_PRICING } from './quiz-pricing.data'
 
 /**
  * Scoring weights for different answer types
@@ -356,9 +357,6 @@ export function calculatePackagePrice(procedures: readonly ProcedureId[]): {
             savings: 0,
         }
     }
-
-    // Import procedure pricing data
-    const { PROCEDURE_PRICING } = require('./quiz-pricing.data')
 
     let totalMin = 0
     let totalMax = 0

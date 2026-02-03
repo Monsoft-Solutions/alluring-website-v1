@@ -38,3 +38,4 @@ npm-debug.log*
 .env.production
 packages/db/.env.development
 packages/db/.env.production
+.mcp.json

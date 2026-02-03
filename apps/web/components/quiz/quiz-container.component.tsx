@@ -119,7 +119,7 @@ export function QuizContainer({ className }: QuizContainerProps) {
 
     // Form submission hook
     const { submit, isSubmitting } = useContactFormSubmission({
-        source: CONTACT_SOURCES.QUIZ as any,
+        source: CONTACT_SOURCES.QUIZ,
         enableAnalytics: true,
         analyticsFormName: 'procedure-quiz',
     })
@@ -229,7 +229,9 @@ export function QuizContainer({ className }: QuizContainerProps) {
                 dispatch({ type: 'SET_LEAD_DATA', data })
                 goToStep('results')
             } else {
-                setSubmitError('Something went wrong. Please try again.')
+                setSubmitError(
+                    'We could not submit your information right now. Please check your connection and try again, or call us directly.'
+                )
             }
         },
         [state, submit, goToStep]

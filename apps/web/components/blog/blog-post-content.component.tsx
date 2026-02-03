@@ -32,6 +32,7 @@ import { RelatedProcedures } from '@/components/blog/related-procedures.componen
 import { SocialShare } from '@/components/blog/social-share.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
+import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import type { InlineImage } from '@/lib/queries/blog/post-images.query'
@@ -407,6 +408,14 @@ export function BlogPostContent({
                                     </div>
                                 </footer>
                             )}
+
+                            {/* Quiz CTA - Procedure Finder */}
+                            <div className='mt-16'>
+                                <QuizCTA
+                                    variant='inline'
+                                    trackingRef='blog-post'
+                                />
+                            </div>
 
                             {/* Footer CTA */}
                             <div className='mt-16'>
