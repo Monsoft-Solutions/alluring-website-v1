@@ -35,6 +35,56 @@ import {
     sendContactNotification,
 } from '@/lib/services/email.service'
 import { sendLeadToN8N } from '@/lib/services/n8n-webhook.service'
+import { siteConfig } from '@/lib/data/site-config'
+
+/** Minimum time (ms) a real user would take to fill out a form */
+const MIN_FORM_FILL_TIME_MS = 3000
+
+/**
+ * Validates that the request Origin or Referer header matches the site URL.
+ * Allows localhost in development.
+ */
+function isValidOrigin(request: NextRequest): boolean {
+    const origin = request.headers.get('origin')
+    const referer = request.headers.get('referer')
+    const siteUrl = siteConfig.seo.siteUrl
+
+    // Allow localhost in development
+    const isDev = process.env.NODE_ENV === 'development'
+    if (isDev) {
+        const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/
+        if (
+            (origin && localhostPattern.test(origin)) ||
+            (referer && localhostPattern.test(referer))
+        ) {
+            return true
+        }
+    }
+
+    // Check Origin header
+    if (origin) {
+        try {
+            const originHost = new URL(origin).host
+            const siteHost = new URL(siteUrl).host
+            if (originHost === siteHost) return true
+        } catch {
+            // Invalid URL, fall through
+        }
+    }
+
+    // Check Referer header
+    if (referer) {
+        try {
+            const refererHost = new URL(referer).host
+            const siteHost = new URL(siteUrl).host
+            if (refererHost === siteHost) return true
+        } catch {
+            // Invalid URL, fall through
+        }
+    }
+
+    return false
+}
 
 /**
  * Extract client IP address from request headers
@@ -276,9 +326,10 @@ async function processLeadInBackground(
  * Security considerations:
  * - Zod schema validation sanitizes and validates all inputs
  * - Content-Type validation ensures JSON payloads only
- * - TODO: Add rate limiting to prevent spam (consider upstash/ratelimit or similar)
- * - TODO: Add CSRF protection for production
- * - TODO: Consider adding honeypot field for bot detection
+ * - Origin/Referer validation blocks requests from external sources
+ * - Honeypot field detection catches form-filling bots
+ * - Time-based detection blocks instant submissions (< 3s)
+ * - TODO: Add rate limiting (consider upstash/ratelimit) if spam persists
  *
  * @param request - Next.js request object
  * @returns JSON response with success status and message
@@ -300,8 +351,64 @@ export async function POST(
             )
         }
 
+        // Layer 3: Origin/Referer validation
+        if (!isValidOrigin(request)) {
+            console.warn(
+                '[spam:origin] Blocked request with invalid origin/referer'
+            )
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Forbidden',
+                    error: 'Request origin not allowed',
+                },
+                { status: 403 }
+            )
+        }
+
         // Parse request body
-        const body = (await request.json()) as unknown
+        const body = (await request.json()) as Record<string, unknown>
+
+        // Layer 1: Honeypot field check
+        if (
+            body._website &&
+            typeof body._website === 'string' &&
+            body._website.length > 0
+        ) {
+            console.warn('[spam:honeypot] Bot detected via honeypot field')
+            // Return fake success to avoid tipping off bots
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: true,
+                    message:
+                        "Thank you for contacting us! We'll get back to you soon.",
+                },
+                { status: 200 }
+            )
+        }
+
+        // Layer 2: Time-based detection
+        if (body._formLoadedAt && typeof body._formLoadedAt === 'number') {
+            const elapsed = Date.now() - body._formLoadedAt
+            if (elapsed < MIN_FORM_FILL_TIME_MS) {
+                console.warn(
+                    `[spam:timing] Form submitted too fast (${elapsed}ms)`
+                )
+                // Return fake success to avoid tipping off bots
+                return NextResponse.json<ContactFormResponse>(
+                    {
+                        success: true,
+                        message:
+                            "Thank you for contacting us! We'll get back to you soon.",
+                    },
+                    { status: 200 }
+                )
+            }
+        }
+
+        // Strip anti-spam fields before validation
+        delete body._website
+        delete body._formLoadedAt
 
         // Validate request body against schema
         const validatedData = contactFormSchema.parse(body)

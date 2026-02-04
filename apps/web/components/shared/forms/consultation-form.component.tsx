@@ -170,6 +170,27 @@ export function ConsultationForm({
                         onSubmit={form.handleSubmit(handleSubmit)}
                         className='space-y-6'
                     >
+                        {/* Honeypot field - hidden from real users, bots will fill it */}
+                        <div
+                            aria-hidden='true'
+                            style={{
+                                position: 'absolute',
+                                left: '-9999px',
+                                opacity: 0,
+                                height: 0,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <label htmlFor='_website'>Website</label>
+                            <input
+                                type='text'
+                                id='_website'
+                                name='_website'
+                                tabIndex={-1}
+                                autoComplete='off'
+                            />
+                        </div>
+
                         {/* First Name & Last Name Row */}
                         <div className='grid gap-6 md:grid-cols-2'>
                             <FirstNameField

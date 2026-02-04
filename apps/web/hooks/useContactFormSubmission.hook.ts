@@ -8,7 +8,7 @@
  *
  * @module hooks/useContactFormSubmission
  */
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
@@ -118,6 +118,7 @@ export function useContactFormSubmission(
     const { track, trackFormSubmit } = useAnalyticsEvent()
     const { utmData } = useUTMTracking()
     const router = useRouter()
+    const formLoadedAt = useRef(Date.now())
 
     const formName = analyticsFormName ?? source
 
@@ -148,6 +149,9 @@ export function useContactFormSubmission(
                     body: JSON.stringify({
                         ...data,
                         source,
+                        // Anti-spam fields
+                        _website: '',
+                        _formLoadedAt: formLoadedAt.current,
                         // Include UTM tracking data for attribution
                         ...(utmData ?? {}),
                     }),

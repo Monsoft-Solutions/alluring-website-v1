@@ -103,6 +103,27 @@ export function ContactForm({
                         onSubmit={form.handleSubmit(onSubmit)}
                         className='group bg-card/80 border-border/50 mx-auto max-w-2xl space-y-8 rounded-2xl border p-8 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl md:p-10'
                     >
+                        {/* Honeypot field - hidden from real users, bots will fill it */}
+                        <div
+                            aria-hidden='true'
+                            style={{
+                                position: 'absolute',
+                                left: '-9999px',
+                                opacity: 0,
+                                height: 0,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <label htmlFor='_website_contact'>Website</label>
+                            <input
+                                type='text'
+                                id='_website_contact'
+                                name='_website'
+                                tabIndex={-1}
+                                autoComplete='off'
+                            />
+                        </div>
+
                         {/* Form Fields Grid */}
                         <div className='space-y-8'>
                             {/* Name and Email Row */}
