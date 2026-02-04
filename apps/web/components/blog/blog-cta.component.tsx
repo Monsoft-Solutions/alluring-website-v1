@@ -345,6 +345,29 @@ export function BlogCTA({
                                 onSubmit={form.handleSubmit(onSubmit)}
                                 className='space-y-6'
                             >
+                                {/* Honeypot field - hidden from real users, bots will fill it */}
+                                <div
+                                    aria-hidden='true'
+                                    style={{
+                                        position: 'absolute',
+                                        left: '-9999px',
+                                        opacity: 0,
+                                        height: 0,
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <label htmlFor='_website_blog'>
+                                        Website
+                                    </label>
+                                    <input
+                                        type='text'
+                                        id='_website_blog'
+                                        name='_website'
+                                        tabIndex={-1}
+                                        autoComplete='off'
+                                    />
+                                </div>
+
                                 {/* Form fields */}
                                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                                     <NameField
