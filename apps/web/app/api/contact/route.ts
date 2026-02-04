@@ -36,6 +36,7 @@ import {
 } from '@/lib/services/email.service'
 import { sendLeadToN8N } from '@/lib/services/n8n-webhook.service'
 import { siteConfig } from '@/lib/data/site-config'
+import { env } from '@/env'
 
 /** Minimum time (ms) a real user would take to fill out a form */
 const MIN_FORM_FILL_TIME_MS = 3000
@@ -50,7 +51,7 @@ function isValidOrigin(request: NextRequest): boolean {
     const siteUrl = siteConfig.seo.siteUrl
 
     // Allow localhost in development
-    const isDev = process.env.NODE_ENV === 'development'
+    const isDev = env.NODE_ENV === 'development'
     if (isDev) {
         const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/
         if (
