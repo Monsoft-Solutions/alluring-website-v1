@@ -108,6 +108,7 @@ export function ConsultationForm({
             procedure: defaultProcedure ?? '',
             preferredContactTime: '',
             consentGiven: false,
+            _website: '',
         },
     })
 
@@ -173,6 +174,26 @@ export function ConsultationForm({
                         onSubmit={form.handleSubmit(handleSubmit)}
                         className='space-y-6'
                     >
+                        {/* Honeypot field - hidden from real users, bots will fill it */}
+                        <div
+                            aria-hidden='true'
+                            style={{
+                                position: 'absolute',
+                                left: '-9999px',
+                                height: 0,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <label htmlFor='_website'>Website</label>
+                            <input
+                                type='text'
+                                id='_website'
+                                tabIndex={-1}
+                                autoComplete='off'
+                                {...form.register('_website')}
+                            />
+                        </div>
+
                         {/* First Name & Last Name Row */}
                         <div className='grid gap-6 md:grid-cols-2'>
                             <FirstNameField

@@ -104,6 +104,7 @@ export function PromoModal({ promotion }: PromoModalProps) {
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -290,6 +291,30 @@ export function PromoModal({ promotion }: PromoModalProps) {
                                             )}
                                             className='space-y-4'
                                         >
+                                            {/* Honeypot field - hidden from real users, bots will fill it */}
+                                            <div
+                                                aria-hidden='true'
+                                                style={{
+                                                    position: 'absolute',
+                                                    left: '-9999px',
+                                                    height: 0,
+                                                    overflow: 'hidden',
+                                                }}
+                                            >
+                                                <label htmlFor='_website_promo'>
+                                                    Website
+                                                </label>
+                                                <input
+                                                    type='text'
+                                                    id='_website_promo'
+                                                    tabIndex={-1}
+                                                    autoComplete='off'
+                                                    {...form.register(
+                                                        '_website'
+                                                    )}
+                                                />
+                                            </div>
+
                                             <p className='mb-2 text-sm text-stone-400'>
                                                 Claim your exclusive offer.
                                                 We&apos;ll contact you to

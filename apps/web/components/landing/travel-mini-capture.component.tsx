@@ -42,6 +42,7 @@ export function TravelMiniCapture({
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -144,6 +145,28 @@ export function TravelMiniCapture({
                                         )}
                                         className='space-y-4'
                                     >
+                                        {/* Honeypot field - hidden from real users, bots will fill it */}
+                                        <div
+                                            aria-hidden='true'
+                                            style={{
+                                                position: 'absolute',
+                                                left: '-9999px',
+                                                height: 0,
+                                                overflow: 'hidden',
+                                            }}
+                                        >
+                                            <label htmlFor='_website_travel'>
+                                                Website
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='_website_travel'
+                                                tabIndex={-1}
+                                                autoComplete='off'
+                                                {...form.register('_website')}
+                                            />
+                                        </div>
+
                                         <NameField
                                             control={form.control}
                                             name='name'

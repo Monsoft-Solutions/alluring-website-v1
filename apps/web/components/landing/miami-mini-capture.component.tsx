@@ -48,6 +48,7 @@ export function MiamiMiniCapture({
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -150,6 +151,28 @@ export function MiamiMiniCapture({
                                         )}
                                         className='space-y-4'
                                     >
+                                        {/* Honeypot field - hidden from real users, bots will fill it */}
+                                        <div
+                                            aria-hidden='true'
+                                            style={{
+                                                position: 'absolute',
+                                                left: '-9999px',
+                                                height: 0,
+                                                overflow: 'hidden',
+                                            }}
+                                        >
+                                            <label htmlFor='_website_miami'>
+                                                Website
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='_website_miami'
+                                                tabIndex={-1}
+                                                autoComplete='off'
+                                                {...form.register('_website')}
+                                            />
+                                        </div>
+
                                         <NameField
                                             control={form.control}
                                             name='name'

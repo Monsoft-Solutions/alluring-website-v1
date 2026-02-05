@@ -75,6 +75,7 @@ export const ExitIntentPopup = () => {
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -214,6 +215,28 @@ export const ExitIntentPopup = () => {
                                         onSubmit={form.handleSubmit(onSubmit)}
                                         className='space-y-3'
                                     >
+                                        {/* Honeypot field - hidden from real users */}
+                                        <div
+                                            aria-hidden='true'
+                                            style={{
+                                                position: 'absolute',
+                                                left: '-9999px',
+                                                height: 0,
+                                                overflow: 'hidden',
+                                            }}
+                                        >
+                                            <label htmlFor='_website_exit'>
+                                                Website
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='_website_exit'
+                                                tabIndex={-1}
+                                                autoComplete='off'
+                                                {...form.register('_website')}
+                                            />
+                                        </div>
+
                                         <NameField
                                             control={form.control}
                                             name='name'
