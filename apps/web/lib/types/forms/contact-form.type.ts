@@ -32,6 +32,7 @@ export const CONTACT_SOURCES = {
     BMI_CALCULATOR: 'bmi-calculator',
     LANDING_PAGE: 'landing-page',
     PROCEDURE_PAGE: 'procedure-page',
+    QUIZ: 'quiz',
 } as const
 
 export type ContactSource =

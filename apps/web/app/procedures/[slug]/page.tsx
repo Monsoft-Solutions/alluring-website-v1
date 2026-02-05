@@ -33,6 +33,7 @@ import { ProcedureGallerySection } from '@/components/procedures/procedure-galle
 import { ProcedureContentImagesSection } from '@/components/procedures/procedure-content-images-section.component'
 import { ProcedureConsultationForm } from '@/components/procedures/procedure-consultation-form.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
+import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import { env } from '@/env'
 
@@ -403,6 +404,9 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 showViewAllButton={true}
                 includeSchema={true}
             />
+
+            {/* Quiz CTA - Procedure Finder */}
+            <QuizCTA variant='banner' trackingRef='procedure-page' />
 
             {/* Process Section */}
             {procedure.process && (
