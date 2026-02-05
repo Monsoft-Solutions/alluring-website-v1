@@ -75,6 +75,7 @@ export const ExitIntentPopup = () => {
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -220,7 +221,6 @@ export const ExitIntentPopup = () => {
                                             style={{
                                                 position: 'absolute',
                                                 left: '-9999px',
-                                                opacity: 0,
                                                 height: 0,
                                                 overflow: 'hidden',
                                             }}
@@ -231,9 +231,9 @@ export const ExitIntentPopup = () => {
                                             <input
                                                 type='text'
                                                 id='_website_exit'
-                                                name='_website'
                                                 tabIndex={-1}
                                                 autoComplete='off'
+                                                {...form.register('_website')}
                                             />
                                         </div>
 

@@ -108,6 +108,7 @@ export function ConsultationForm({
             procedure: defaultProcedure ?? '',
             preferredContactTime: '',
             consentGiven: false,
+            _website: '',
         },
     })
 
@@ -179,7 +180,6 @@ export function ConsultationForm({
                             style={{
                                 position: 'absolute',
                                 left: '-9999px',
-                                opacity: 0,
                                 height: 0,
                                 overflow: 'hidden',
                             }}
@@ -188,9 +188,9 @@ export function ConsultationForm({
                             <input
                                 type='text'
                                 id='_website'
-                                name='_website'
                                 tabIndex={-1}
                                 autoComplete='off'
+                                {...form.register('_website')}
                             />
                         </div>
 

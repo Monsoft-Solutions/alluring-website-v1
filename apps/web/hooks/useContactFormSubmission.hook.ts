@@ -148,10 +148,10 @@ export function useContactFormSubmission(
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        // Anti-spam: default honeypot value (overridden by form's registered field)
+                        _website: '',
                         ...data,
                         source,
-                        // Anti-spam fields
-                        _website: '',
                         _formLoadedAt: formLoadedAt.current,
                         // Include UTM tracking data for attribution
                         ...(utmData ?? {}),

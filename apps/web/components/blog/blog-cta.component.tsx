@@ -160,6 +160,7 @@ export function BlogCTA({
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -351,7 +352,6 @@ export function BlogCTA({
                                     style={{
                                         position: 'absolute',
                                         left: '-9999px',
-                                        opacity: 0,
                                         height: 0,
                                         overflow: 'hidden',
                                     }}
@@ -362,9 +362,9 @@ export function BlogCTA({
                                     <input
                                         type='text'
                                         id='_website_blog'
-                                        name='_website'
                                         tabIndex={-1}
                                         autoComplete='off'
+                                        {...form.register('_website')}
                                     />
                                 </div>
 

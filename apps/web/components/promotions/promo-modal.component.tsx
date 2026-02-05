@@ -104,6 +104,7 @@ export function PromoModal({ promotion }: PromoModalProps) {
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -296,7 +297,6 @@ export function PromoModal({ promotion }: PromoModalProps) {
                                                 style={{
                                                     position: 'absolute',
                                                     left: '-9999px',
-                                                    opacity: 0,
                                                     height: 0,
                                                     overflow: 'hidden',
                                                 }}
@@ -307,9 +307,11 @@ export function PromoModal({ promotion }: PromoModalProps) {
                                                 <input
                                                     type='text'
                                                     id='_website_promo'
-                                                    name='_website'
                                                     tabIndex={-1}
                                                     autoComplete='off'
+                                                    {...form.register(
+                                                        '_website'
+                                                    )}
                                                 />
                                             </div>
 

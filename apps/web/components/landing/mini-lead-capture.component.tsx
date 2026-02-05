@@ -41,6 +41,7 @@ export function MiniLeadCapture({ id = 'mini-capture' }: MiniLeadCaptureProps) {
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -149,7 +150,6 @@ export function MiniLeadCapture({ id = 'mini-capture' }: MiniLeadCaptureProps) {
                                             style={{
                                                 position: 'absolute',
                                                 left: '-9999px',
-                                                opacity: 0,
                                                 height: 0,
                                                 overflow: 'hidden',
                                             }}
@@ -160,9 +160,9 @@ export function MiniLeadCapture({ id = 'mini-capture' }: MiniLeadCaptureProps) {
                                             <input
                                                 type='text'
                                                 id='_website_mini'
-                                                name='_website'
                                                 tabIndex={-1}
                                                 autoComplete='off'
+                                                {...form.register('_website')}
                                             />
                                         </div>
 

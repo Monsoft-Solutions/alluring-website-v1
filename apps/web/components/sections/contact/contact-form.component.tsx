@@ -57,6 +57,7 @@ export function ContactForm({
             phone: '',
             subject: '',
             message: '',
+            _website: '',
         },
     })
 
@@ -109,7 +110,6 @@ export function ContactForm({
                             style={{
                                 position: 'absolute',
                                 left: '-9999px',
-                                opacity: 0,
                                 height: 0,
                                 overflow: 'hidden',
                             }}
@@ -118,9 +118,9 @@ export function ContactForm({
                             <input
                                 type='text'
                                 id='_website_contact'
-                                name='_website'
                                 tabIndex={-1}
                                 autoComplete='off'
+                                {...form.register('_website')}
                             />
                         </div>
 

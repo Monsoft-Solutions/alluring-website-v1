@@ -48,6 +48,7 @@ export function MiamiMiniCapture({
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -156,7 +157,6 @@ export function MiamiMiniCapture({
                                             style={{
                                                 position: 'absolute',
                                                 left: '-9999px',
-                                                opacity: 0,
                                                 height: 0,
                                                 overflow: 'hidden',
                                             }}
@@ -167,9 +167,9 @@ export function MiamiMiniCapture({
                                             <input
                                                 type='text'
                                                 id='_website_miami'
-                                                name='_website'
                                                 tabIndex={-1}
                                                 autoComplete='off'
+                                                {...form.register('_website')}
                                             />
                                         </div>
 

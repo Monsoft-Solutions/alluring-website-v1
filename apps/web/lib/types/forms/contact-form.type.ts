@@ -375,6 +375,9 @@ export const contactFormSchema = z.object({
     // Session context
     referrer: z.string().optional(),
     landingPage: z.string().optional(),
+
+    // Anti-spam honeypot
+    _website: z.string().optional(),
 })
 
 /**
@@ -454,6 +457,7 @@ export const consultationFormSchema = z.object({
     procedure: z.string().optional(),
     preferredContactTime: preferredContactTimeSchema,
     consentGiven: consentSchema,
+    _website: z.string().optional(),
 })
 
 export type ConsultationFormInput = z.input<typeof consultationFormSchema>
@@ -467,6 +471,7 @@ export type ConsultationFormData = z.output<typeof consultationFormSchema>
 export const leadCaptureSchema = z.object({
     name: nameSchema.optional(),
     phone: requiredPhoneSchema,
+    _website: z.string().optional(),
 })
 
 export type LeadCaptureInput = z.input<typeof leadCaptureSchema>

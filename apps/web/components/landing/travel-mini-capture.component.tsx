@@ -42,6 +42,7 @@ export function TravelMiniCapture({
         defaultValues: {
             name: '',
             phone: '',
+            _website: '',
         },
     })
 
@@ -150,7 +151,6 @@ export function TravelMiniCapture({
                                             style={{
                                                 position: 'absolute',
                                                 left: '-9999px',
-                                                opacity: 0,
                                                 height: 0,
                                                 overflow: 'hidden',
                                             }}
@@ -161,9 +161,9 @@ export function TravelMiniCapture({
                                             <input
                                                 type='text'
                                                 id='_website_travel'
-                                                name='_website'
                                                 tabIndex={-1}
                                                 autoComplete='off'
+                                                {...form.register('_website')}
                                             />
                                         </div>
 
