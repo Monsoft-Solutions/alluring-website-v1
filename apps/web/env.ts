@@ -37,6 +37,7 @@ export const env = createEnv({
         RESEND_API_KEY: z.string().min(1),
         RESEND_FROM_EMAIL: z.string().email(),
         OWNER_EMAIL: z.string().email(),
+        SEND_CONFIRMATION_EMAIL: z.enum(['true', 'false']).optional(),
 
         // Cache revalidation (required for on-demand ISR from admin)
         REVALIDATION_SECRET: z.string().min(32),
