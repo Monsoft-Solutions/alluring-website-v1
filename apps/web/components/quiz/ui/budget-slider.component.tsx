@@ -246,7 +246,7 @@ export function CoffeeComparison({
         >
             <span className='text-2xl'>☕</span>
             <p className='text-sm text-stone-600'>
-                That's less than{' '}
+                That&apos;s less than{' '}
                 <span className='font-semibold text-stone-800'>
                     ${dailyAmount}
                 </span>{' '}

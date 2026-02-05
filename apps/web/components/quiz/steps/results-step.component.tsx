@@ -10,6 +10,16 @@
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
+
+// Pre-computed particle animation values (deterministic for consistency)
+const PARTICLE_ANIMATIONS = [
+    { x: 25, y: -35 },
+    { x: -18, y: -42 },
+    { x: 22, y: -28 },
+    { x: -27, y: -38 },
+    { x: 15, y: -45 },
+    { x: -20, y: -32 },
+]
 import type { ProcedureRecommendation } from '../lib/quiz-types'
 import {
     QUIZ_QUESTIONS,
@@ -67,18 +77,15 @@ export function ResultsStep({
                         <CheckCircle2 className='h-10 w-10 text-white' />
                     </div>
                     {/* Celebration particles */}
-                    {[...Array(6)].map((_, i) => (
+                    {PARTICLE_ANIMATIONS.map((particle, i) => (
                         <motion.div
                             key={i}
                             initial={{ scale: 0, opacity: 1 }}
                             animate={{
                                 scale: [0, 1.5],
                                 opacity: [1, 0],
-                                x: [
-                                    0,
-                                    (i % 2 === 0 ? 1 : -1) * 30 * Math.random(),
-                                ],
-                                y: [0, -50 * Math.random()],
+                                x: [0, particle.x],
+                                y: [0, particle.y],
                             }}
                             transition={{
                                 duration: 0.8,

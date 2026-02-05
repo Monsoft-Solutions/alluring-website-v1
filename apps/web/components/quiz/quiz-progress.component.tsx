@@ -131,7 +131,7 @@ export function CircularProgress({
         lg: { outer: 72, inner: 56, stroke: 8 },
     }
 
-    const { outer, inner, stroke } = sizes[size]
+    const { outer, stroke } = sizes[size]
     const radius = (outer - stroke) / 2
     const circumference = 2 * Math.PI * radius
 

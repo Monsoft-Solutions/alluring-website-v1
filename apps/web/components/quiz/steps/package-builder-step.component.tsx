@@ -9,7 +9,11 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
-import type { ProcedureId, ProcedureRecommendation } from '../lib/quiz-types'
+import type {
+    ProcedureDetails,
+    ProcedureId,
+    ProcedureRecommendation,
+} from '../lib/quiz-types'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
 import { getProcedureDetails } from '../lib/quiz-pricing.data'
 import { getComplementaryProcedures } from '../lib/quiz-logic'
@@ -64,14 +68,19 @@ export function PackageBuilderStep({
         ...new Set([...complementaryIds, ...recommendedIds]),
     ]
 
+    // Type guard for filtering undefined values
+    const isDefined = (
+        p: ProcedureDetails | undefined
+    ): p is ProcedureDetails => p !== undefined
+
     // Get procedure details
     const additionalProcedureDetails = additionalProcedures
         .map((id) => getProcedureDetails(id))
-        .filter(Boolean)
+        .filter(isDefined)
 
     const selectedDetails = selectedProcedures
         .map((id) => getProcedureDetails(id))
-        .filter(Boolean)
+        .filter(isDefined)
 
     return (
         <motion.div
@@ -145,7 +154,7 @@ export function PackageBuilderStep({
                                 {additionalProcedureDetails.map(
                                     (procedure, index) => (
                                         <motion.div
-                                            key={procedure!.id}
+                                            key={procedure.id}
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{
@@ -153,13 +162,13 @@ export function PackageBuilderStep({
                                             }}
                                         >
                                             <MiniProcedureCard
-                                                procedure={procedure!}
+                                                procedure={procedure}
                                                 isSelected={selectedProcedures.includes(
-                                                    procedure!.id
+                                                    procedure.id
                                                 )}
                                                 onToggle={() =>
                                                     onToggleProcedure(
-                                                        procedure!.id
+                                                        procedure.id
                                                     )
                                                 }
                                             />
@@ -195,7 +204,7 @@ export function PackageBuilderStep({
                     className='lg:col-span-2'
                 >
                     <div className='sticky top-24'>
-                        <PackageSummary procedures={selectedDetails as any[]} />
+                        <PackageSummary procedures={selectedDetails} />
 
                         {/* Action buttons */}
                         <div className='mt-6 space-y-3'>

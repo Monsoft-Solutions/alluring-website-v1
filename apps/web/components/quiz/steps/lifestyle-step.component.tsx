@@ -105,8 +105,8 @@ export function LifestyleStep({
                 className='rounded-lg bg-stone-50 p-4 text-center'
             >
                 <p className='text-sm text-stone-600'>
-                    Recovery times vary by procedure. We'll recommend options
-                    that fit your availability.
+                    Recovery times vary by procedure. We&apos;ll recommend
+                    options that fit your availability.
                 </p>
             </motion.div>
         </motion.div>

@@ -265,7 +265,7 @@ export function calculateRecommendations(
 
     // Sort procedures by score
     const sortedProcedures = (Object.entries(scores) as [ProcedureId, number][])
-        .filter(([_, score]) => score > 0)
+        .filter(([, score]) => score > 0)
         .sort((a, b) => b[1] - a[1])
 
     // Mark top procedure as primary, others based on confidence

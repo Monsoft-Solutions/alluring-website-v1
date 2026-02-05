@@ -277,7 +277,7 @@ export function QuizContainer({ className }: QuizContainerProps) {
                 )
             }
         },
-        [state, submit, goToStep]
+        [state, submit, goToStep, track]
     )
 
     const handlePackageToggle = useCallback((procedureId: ProcedureId) => {

@@ -118,12 +118,14 @@ export function BudgetStep({ value, onChange, className }: BudgetStepProps) {
                         )}
                         {value === 'high' && (
                             <span className='font-medium text-stone-700'>
-                                You'll have access to a wide range of procedures
+                                You&apos;ll have access to a wide range of
+                                procedures
                             </span>
                         )}
                         {value === 'premium' && (
                             <span className='font-medium text-stone-700'>
-                                You're ready for comprehensive transformation
+                                You&apos;re ready for comprehensive
+                                transformation
                             </span>
                         )}
                     </p>
