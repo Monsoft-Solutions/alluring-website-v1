@@ -31,9 +31,9 @@ export interface PackageBuilderStepProps {
     readonly selectedProcedures: readonly ProcedureId[]
     /** Toggle procedure selection */
     readonly onToggleProcedure: (procedureId: ProcedureId) => void
-    /** Handler for continuing to booking */
+    /** Handler for continuing to confirmation */
     readonly onContinue: () => void
-    /** Handler for skipping to booking */
+    /** Handler for skipping to confirmation */
     readonly onSkip: () => void
     /** Additional class names */
     readonly className?: string
@@ -222,7 +222,7 @@ export function PackageBuilderStep({
                                     'hover:shadow-gold-500/40 hover:shadow-xl'
                                 )}
                             >
-                                Book My Consultation
+                                Finalize My Preferences
                             </motion.button>
 
                             <button
@@ -230,7 +230,7 @@ export function PackageBuilderStep({
                                 onClick={onSkip}
                                 className='w-full py-2 text-sm text-stone-500 transition-colors hover:text-stone-700'
                             >
-                                Skip and book with just my primary procedure
+                                Continue with just my primary procedure
                             </button>
                         </div>
                     </div>

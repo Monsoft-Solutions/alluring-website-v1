@@ -192,12 +192,12 @@ export function ResultsStep({
                         'hover:shadow-gold-500/40 transition-all duration-300 hover:shadow-xl'
                     )}
                 >
-                    Continue to Book Your Consultation
+                    View Enhancement Options
                     <ArrowRight className='h-5 w-5' />
                 </motion.button>
 
                 <p className='mt-4 text-sm text-stone-500'>
-                    Or explore additional procedures to enhance your results
+                    Or skip ahead to finalize your plan
                 </p>
             </motion.div>
         </motion.div>
