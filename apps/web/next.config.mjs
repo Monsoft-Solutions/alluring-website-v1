@@ -69,6 +69,12 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/melany-capote',
+                destination:
+                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=melany-capote',
+                permanent: true,
+            },
+            {
                 source: '/cosmetic-procedures-in-miami',
                 destination: '/procedures',
                 permanent: true,

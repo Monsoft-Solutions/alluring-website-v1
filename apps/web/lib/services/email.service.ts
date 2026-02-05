@@ -156,6 +156,11 @@ export async function sendContactConfirmation(
     contactData: ContactFormData,
     submissionId: string
 ): Promise<SendEmailResult> {
+    // Skip confirmation email if disabled via env
+    if (env.SEND_CONFIRMATION_EMAIL === 'false') {
+        return { success: true }
+    }
+
     // Early return if no email provided
     if (!contactData.email) {
         return {
