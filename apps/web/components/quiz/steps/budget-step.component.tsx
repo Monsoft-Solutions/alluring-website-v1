@@ -9,10 +9,11 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
+import { CreditCard, Shield } from 'lucide-react'
+import { FINANCING_PARTNERS } from '@/lib/data/site-config'
 import type { BudgetRange } from '../lib/quiz-types'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
 import { BudgetCards } from '../ui/budget-slider.component'
-import { CreditCard, Shield } from 'lucide-react'
 
 export interface BudgetStepProps {
     /** Currently selected budget range */
@@ -78,16 +79,14 @@ export function BudgetStep({ value, onChange, className }: BudgetStepProps) {
                     </p>
                 </div>
                 <div className='mt-4 flex flex-wrap items-center justify-center gap-4'>
-                    {/* Partner logos as text (replace with actual logos if available) */}
-                    <span className='rounded-full bg-white px-4 py-2 text-xs font-semibold text-stone-600 shadow-sm'>
-                        Cherry
-                    </span>
-                    <span className='rounded-full bg-white px-4 py-2 text-xs font-semibold text-stone-600 shadow-sm'>
-                        CareCredit
-                    </span>
-                    <span className='rounded-full bg-white px-4 py-2 text-xs font-semibold text-stone-600 shadow-sm'>
-                        United Credit
-                    </span>
+                    {FINANCING_PARTNERS.map((partner) => (
+                        <span
+                            key={partner}
+                            className='rounded-full bg-white px-4 py-2 text-xs font-semibold text-stone-600 shadow-sm'
+                        >
+                            {partner}
+                        </span>
+                    ))}
                 </div>
                 <div className='mt-4 flex items-center justify-center gap-2 text-xs text-stone-500'>
                     <Shield className='h-4 w-4' />

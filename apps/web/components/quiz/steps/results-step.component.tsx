@@ -9,7 +9,7 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
-import { CheckCircle2 } from 'lucide-react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
 
 // Pre-computed particle animation values (deterministic for consistency)
 const PARTICLE_ANIMATIONS = [
@@ -193,19 +193,7 @@ export function ResultsStep({
                     )}
                 >
                     Continue to Book Your Consultation
-                    <svg
-                        className='h-5 w-5'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                        strokeWidth={2}
-                    >
-                        <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M9 5l7 7-7 7'
-                        />
-                    </svg>
+                    <ArrowRight className='h-5 w-5' />
                 </motion.button>
 
                 <p className='mt-4 text-sm text-stone-500'>

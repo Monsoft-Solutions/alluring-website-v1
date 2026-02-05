@@ -278,17 +278,23 @@ export function ConfirmationStep({
                 className='flex flex-wrap items-center justify-center gap-6 pt-4'
             >
                 <div className='text-center'>
-                    <p className='text-2xl font-bold text-stone-800'>5,000+</p>
+                    <p className='text-2xl font-bold text-stone-800'>
+                        {siteConfig.trustStats?.patients ?? '5,000+'}
+                    </p>
                     <p className='text-xs text-stone-500'>Happy Patients</p>
                 </div>
                 <div className='h-8 w-px bg-stone-200' />
                 <div className='text-center'>
-                    <p className='text-2xl font-bold text-stone-800'>15+</p>
+                    <p className='text-2xl font-bold text-stone-800'>
+                        {siteConfig.trustStats?.years ?? '15+'}
+                    </p>
                     <p className='text-xs text-stone-500'>Years Experience</p>
                 </div>
                 <div className='h-8 w-px bg-stone-200' />
                 <div className='text-center'>
-                    <p className='text-2xl font-bold text-stone-800'>4.9</p>
+                    <p className='text-2xl font-bold text-stone-800'>
+                        {siteConfig.trustStats?.rating ?? '4.9'}
+                    </p>
                     <p className='text-xs text-stone-500'>Star Rating</p>
                 </div>
             </motion.div>
@@ -343,7 +349,3 @@ export function ConfirmationStep({
         </motion.div>
     )
 }
-
-// Re-export with legacy name for backwards compatibility
-export { ConfirmationStep as BookingStep }
-export type { ConfirmationStepProps as BookingStepProps }

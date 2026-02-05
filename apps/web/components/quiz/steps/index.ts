@@ -43,8 +43,5 @@ export type { ResultsStepProps } from './results-step.component'
 export { PackageBuilderStep } from './package-builder-step.component'
 export type { PackageBuilderStepProps } from './package-builder-step.component'
 
-export { ConfirmationStep, BookingStep } from './confirmation-step.component'
-export type {
-    ConfirmationStepProps,
-    BookingStepProps,
-} from './confirmation-step.component'
+export { ConfirmationStep } from './confirmation-step.component'
+export type { ConfirmationStepProps } from './confirmation-step.component'

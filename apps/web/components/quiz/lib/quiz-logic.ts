@@ -18,6 +18,19 @@ import type {
 import { PROCEDURE_PRICING } from './quiz-pricing.data'
 
 /**
+ * Confidence thresholds for recommendation scoring
+ */
+const HIGH_CONFIDENCE_THRESHOLD = 0.8
+const MEDIUM_CONFIDENCE_THRESHOLD = 0.5
+
+/**
+ * Package pricing constants
+ */
+const PACKAGE_DISCOUNT_RATE = 0.15
+const MIN_PROCEDURES_FOR_DISCOUNT = 2
+const FINANCING_TERM_MONTHS = 36
+
+/**
  * Scoring weights for different answer types
  */
 const SCORING_WEIGHTS = {
@@ -276,9 +289,9 @@ export function calculateRecommendations(
         if (!entry) continue
         const [procedureId, score] = entry
         const confidence =
-            score >= maxScore * 0.8
+            score >= maxScore * HIGH_CONFIDENCE_THRESHOLD
                 ? 'high'
-                : score >= maxScore * 0.5
+                : score >= maxScore * MEDIUM_CONFIDENCE_THRESHOLD
                   ? 'medium'
                   : 'low'
 
@@ -369,16 +382,19 @@ export function calculatePackagePrice(procedures: readonly ProcedureId[]): {
         }
     }
 
-    // Apply combination discount (15% for 2+ procedures)
-    const discount = procedures.length >= 2 ? 0.15 : 0
+    // Apply combination discount for multiple procedures
+    const discount =
+        procedures.length >= MIN_PROCEDURES_FOR_DISCOUNT
+            ? PACKAGE_DISCOUNT_RATE
+            : 0
     const savings = Math.round(((totalMin + totalMax) / 2) * discount)
 
     const discountedMin = Math.round(totalMin * (1 - discount))
     const discountedMax = Math.round(totalMax * (1 - discount))
 
-    // Calculate monthly payments (36 month financing)
-    const monthlyMin = Math.round(discountedMin / 36)
-    const monthlyMax = Math.round(discountedMax / 36)
+    // Calculate monthly payments over financing term
+    const monthlyMin = Math.round(discountedMin / FINANCING_TERM_MONTHS)
+    const monthlyMax = Math.round(discountedMax / FINANCING_TERM_MONTHS)
 
     return {
         totalMin: discountedMin,

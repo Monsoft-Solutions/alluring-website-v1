@@ -76,7 +76,7 @@ export type QuizStep =
     | 'lead-capture'
     | 'results'
     | 'package-builder'
-    | 'booking'
+    | 'confirmation'
 
 /**
  * Lead capture form data
@@ -199,7 +199,7 @@ export const QUIZ_STEP_ORDER: readonly QuizStep[] = [
     'lead-capture',
     'results',
     'package-builder',
-    'booking',
+    'confirmation',
 ]
 
 /**
@@ -250,9 +250,9 @@ export function getNextStep(
             return 'package-builder'
 
         case 'package-builder':
-            return 'booking'
+            return 'confirmation'
 
-        case 'booking':
+        case 'confirmation':
             return null
 
         default:
@@ -309,7 +309,7 @@ export function getPreviousStep(
         case 'package-builder':
             return 'results'
 
-        case 'booking':
+        case 'confirmation':
             return 'package-builder'
 
         default:

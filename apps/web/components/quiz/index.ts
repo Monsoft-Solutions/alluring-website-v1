@@ -11,16 +11,8 @@ export { QuizContainer } from './quiz-container.component'
 export type { QuizContainerProps } from './quiz-container.component'
 
 // Progress components
-export {
-    CircularProgress,
-    QuizProgress,
-    SegmentedProgress,
-} from './quiz-progress.component'
-export type {
-    CircularProgressProps,
-    QuizProgressProps,
-    SegmentedProgressProps,
-} from './quiz-progress.component'
+export { QuizProgress } from './quiz-progress.component'
+export type { QuizProgressProps } from './quiz-progress.component'
 
 // Navigation
 export { MinimalNavigation, QuizNavigation } from './quiz-navigation.component'

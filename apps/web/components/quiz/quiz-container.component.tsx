@@ -48,7 +48,7 @@ import {
     LeadCaptureStep,
     ResultsStep,
     PackageBuilderStep,
-    BookingStep,
+    ConfirmationStep,
 } from './steps'
 
 /**
@@ -141,7 +141,7 @@ export function QuizContainer({ className }: QuizContainerProps) {
                 'welcome',
                 'results',
                 'package-builder',
-                'booking',
+                'confirmation',
             ]
             if (!terminalSteps.includes(step)) {
                 // Use trackEvent directly with transport_type beacon for reliability during unload
@@ -315,7 +315,7 @@ export function QuizContainer({ className }: QuizContainerProps) {
         'welcome',
         'lead-capture',
         'results',
-        'booking',
+        'confirmation',
     ].includes(state.currentStep)
 
     // Render current step
@@ -409,14 +409,14 @@ export function QuizContainer({ className }: QuizContainerProps) {
                         recommendations={state.recommendedProcedures}
                         selectedProcedures={state.selectedPackage}
                         onToggleProcedure={handlePackageToggle}
-                        onContinue={() => goToStep('booking')}
-                        onSkip={() => goToStep('booking')}
+                        onContinue={() => goToStep('confirmation')}
+                        onSkip={() => goToStep('confirmation')}
                     />
                 )
 
-            case 'booking':
+            case 'confirmation':
                 return (
-                    <BookingStep
+                    <ConfirmationStep
                         selectedProcedures={state.selectedPackage}
                         firstName={state.leadData?.firstName}
                         primaryRecommendation={state.recommendedProcedures.find(
@@ -433,9 +433,12 @@ export function QuizContainer({ className }: QuizContainerProps) {
     return (
         <div className={cn('relative min-h-[600px]', className)}>
             {/* Progress bar (not on welcome or final steps) */}
-            {!['welcome', 'results', 'package-builder', 'booking'].includes(
-                state.currentStep
-            ) && (
+            {![
+                'welcome',
+                'results',
+                'package-builder',
+                'confirmation',
+            ].includes(state.currentStep) && (
                 <div className='mb-8'>
                     <QuizProgress
                         currentStep={currentStepNumber}

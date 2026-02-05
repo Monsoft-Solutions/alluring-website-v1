@@ -10,6 +10,7 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
+import { getFinancingPartnersString } from '@/lib/data/site-config'
 import type { BudgetRange } from '../lib/quiz-types'
 import { BUDGET_RANGE_OPTIONS } from '../lib/quiz-questions.data'
 
@@ -133,8 +134,8 @@ export function BudgetSlider({
                         {options.find((o) => o.value === value)?.description}
                     </p>
                     <p className='mt-2 text-sm text-stone-500'>
-                        Financing available through Cherry, CareCredit & United
-                        Credit
+                        Financing available through{' '}
+                        {getFinancingPartnersString()}
                     </p>
                 </motion.div>
             )}

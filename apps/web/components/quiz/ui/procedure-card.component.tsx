@@ -12,6 +12,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
 import { Check, Clock, CreditCard, Sparkles, Star } from 'lucide-react'
 import Link from 'next/link'
+import { FINANCING_PARTNERS } from '@/lib/data/site-config'
 import type {
     ProcedureDetails,
     ProcedureRecommendation,
@@ -408,16 +409,14 @@ export function PackageSummary({ procedures, className }: PackageSummaryProps) {
                     </span>
                 </div>
                 <div className='mt-3 flex flex-wrap gap-2'>
-                    {['Cherry', 'CareCredit', 'United Credit'].map(
-                        (partner) => (
-                            <span
-                                key={partner}
-                                className='rounded-full bg-white/10 px-3 py-1 text-xs text-stone-300'
-                            >
-                                {partner}
-                            </span>
-                        )
-                    )}
+                    {FINANCING_PARTNERS.map((partner) => (
+                        <span
+                            key={partner}
+                            className='rounded-full bg-white/10 px-3 py-1 text-xs text-stone-300'
+                        >
+                            {partner}
+                        </span>
+                    ))}
                 </div>
             </div>
         </div>

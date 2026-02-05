@@ -7,6 +7,8 @@
  * @module components/quiz/lib/quiz-questions.data
  */
 
+import { getFinancingPartnersString } from '@/lib/data/site-config'
+
 import type {
     BodyArea,
     BodyConcern,
@@ -229,8 +231,7 @@ export const QUIZ_QUESTIONS = {
     },
     budget: {
         title: 'What Investment Level Feels Right for You?',
-        subtitle:
-            'We offer flexible financing through Cherry, CareCredit & United Credit',
+        subtitle: `We offer flexible financing through ${getFinancingPartnersString()}`,
     },
     leadCapture: {
         title: 'Your Personalized Plan Is Ready!',
