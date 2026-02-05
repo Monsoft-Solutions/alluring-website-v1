@@ -433,7 +433,7 @@ export async function POST(
         // Check if user provided a real email (source of truth for email sending)
         const hasUserProvidedEmail = Boolean(validatedData.email)
 
-        // Sources that typically don't collect email (used for placeholder generation)
+        // Sources that typically don't collect email (used for default message)
         const SOURCES_WITHOUT_EMAIL_FIELD = [
             CONTACT_SOURCES.BLOG_LEAD,
             CONTACT_SOURCES.EXIT_INTENT,
@@ -443,12 +443,8 @@ export async function POST(
             source as (typeof SOURCES_WITHOUT_EMAIL_FIELD)[number]
         )
 
-        // Email is required in DB - use placeholder for forms without email
-        const email =
-            validatedData.email ||
-            (isLeadCaptureSource
-                ? `lead-${Date.now()}@${source}.capture`
-                : `contact-${Date.now()}@form.capture`)
+        // Email is required in DB - use placeholder for forms without email field
+        const email = validatedData.email || 'abc@gmail.com'
 
         // Generate default subject based on source
         const getDefaultSubject = (): string => {
