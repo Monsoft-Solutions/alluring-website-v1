@@ -103,6 +103,23 @@ const nextConfig = {
                     '/links?utm_source=tiktok&utm_medium=social&utm_campaign=bio_link',
                 permanent: true,
             },
+
+            // KEyword Cannibalization Redirects
+            {
+                source: '/mommy-makeover-miami-guide',
+                destination: '/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/prepare-mommy-makeover-miami',
+                destination: '/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-myths-miami',
+                destination: '/mommy-makeover-miami',
+                permanent: true,
+            },
         ]
     },
 }
