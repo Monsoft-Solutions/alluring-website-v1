@@ -44,6 +44,9 @@ function mapRobots(robots?: RobotsConfig): Metadata['robots'] {
             noarchive,
             nosnippet,
             noimageindex,
+            'max-video-preview': -1,
+            'max-image-preview': 'large' as const,
+            'max-snippet': -1,
         },
     }
 }

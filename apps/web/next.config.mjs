@@ -54,19 +54,19 @@ const nextConfig = {
             {
                 source: '/yele',
                 destination:
-                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=yele',
+                    '/miami-plastic-surgery-specials?utm_source=influencer&utm_medium=yele',
                 permanent: true,
             },
             {
                 source: '/lorena-gonzalez',
                 destination:
-                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=lorena-gonzalez',
+                    '/miami-plastic-surgery-specials?utm_source=influencer&utm_medium=lorena-gonzalez',
                 permanent: true,
             },
             {
                 source: '/melany-capote',
                 destination:
-                    '/miami-plastic-surgery-specials/?utm_source=influencer&utm_medium=melany-capote',
+                    '/miami-plastic-surgery-specials?utm_source=influencer&utm_medium=melany-capote',
                 permanent: true,
             },
             {

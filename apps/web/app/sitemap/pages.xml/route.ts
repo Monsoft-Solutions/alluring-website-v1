@@ -81,6 +81,8 @@ const STATIC_PAGES: Array<{
     { path: '/quiz', changeFrequency: 'monthly', priority: 0.7 },
     // Utility pages
     { path: '/html-sitemap', changeFrequency: 'weekly', priority: 0.4 },
+    // Social/bio link pages
+    { path: '/links', changeFrequency: 'weekly', priority: 0.5 },
 ]
 
 /**
