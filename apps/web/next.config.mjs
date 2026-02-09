@@ -117,71 +117,72 @@ const nextConfig = {
             },
 
             // Duplicate blog content consolidation redirects
+            // Destinations use /blog/ prefix since canonical posts are published >= Jan 2026
             // Mommy Makeover Recovery (6 posts, same topic -> 1 canonical)
             {
                 source: '/mommy-makeover-recovery-timeline',
-                destination: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-timeline-miami',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-guide',
-                destination: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-timeline-miami',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-time-miami',
-                destination: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-timeline-miami',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-pain-management',
-                destination: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-timeline-miami',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-pain-guide',
-                destination: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-timeline-miami',
                 permanent: true,
             },
             // Liposuction Cost (duplicate keyword)
             {
                 source: '/miami-liposuction-cost',
-                destination: '/liposuction-cost-miami',
+                destination: '/blog/liposuction-cost-miami',
                 permanent: true,
             },
             // Blepharoplasty Candidate (3 posts -> 1 canonical)
             {
                 source: '/blepharoplasty-candidate-checklist',
-                destination: '/blepharoplasty-candidate-miami-checklist',
+                destination: '/blog/blepharoplasty-candidate-miami-checklist',
                 permanent: true,
             },
             {
                 source: '/blepharoplasty-miami-candidate',
-                destination: '/blepharoplasty-candidate-miami-checklist',
+                destination: '/blog/blepharoplasty-candidate-miami-checklist',
                 permanent: true,
             },
             // Blepharoplasty Age (2 posts -> 1 canonical)
             {
                 source: '/best-blepharoplasty-age-miami',
-                destination: '/best-blepharoplasty-age-miami-checklist',
+                destination: '/blog/best-blepharoplasty-age-miami-checklist',
                 permanent: true,
             },
             // Liposuction Candidate (2 posts -> 1 canonical)
             {
                 source: '/liposuction-candidate-checklist-miami',
-                destination: '/liposuction-candidate-miami',
+                destination: '/blog/liposuction-candidate-miami',
                 permanent: true,
             },
             // Liposuction Moms (2 posts -> 1 canonical)
             {
                 source: '/liposuction-miami-moms-faq',
-                destination: '/liposuction-miami-moms-tips',
+                destination: '/blog/liposuction-miami-moms-tips',
                 permanent: true,
             },
             // Breast Reduction Candidate (2 posts -> 1 canonical)
             {
                 source: '/breast-reduction-miami-recovery-candidates',
-                destination: '/breast-reduction-candidate-miami',
+                destination: '/blog/breast-reduction-candidate-miami',
                 permanent: true,
             },
         ]
