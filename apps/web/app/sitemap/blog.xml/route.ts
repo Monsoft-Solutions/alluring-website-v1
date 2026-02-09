@@ -24,6 +24,7 @@ import {
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
+import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
 import { generateSitemapXml } from '@workspace/seo/utils'
 
@@ -67,11 +68,15 @@ export async function GET(): Promise<NextResponse> {
             priority: 0.9,
         })
 
-        // Blog posts (root-level URLs to match WordPress structure)
+        // Blog posts (date-aware URLs: pre-2026 at root, post-2025 at /blog/)
         const posts = await getPublishedPostSlugs()
         for (const post of posts) {
             const entry: SitemapEntry = {
-                url: `${baseUrl}/${post.slug}`,
+                url: getBlogPostAbsoluteUrl(
+                    baseUrl,
+                    post.slug,
+                    post.publishedAt
+                ),
                 lastModified: post.updatedAt.toISOString().slice(0, 10),
                 changeFrequency: 'weekly',
                 priority: 0.7,

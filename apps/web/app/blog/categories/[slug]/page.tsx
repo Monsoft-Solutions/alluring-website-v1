@@ -28,6 +28,7 @@ import {
 } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 
 type PageProps = {
     params: Promise<{ slug: string }>
@@ -172,7 +173,11 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                         `Information about ${category.name} procedures and treatments`,
                 }}
                 hasPart={initialPosts.map((post) => ({
-                    url: `${seoConfig.siteUrl}/${post.slug}`,
+                    url: getBlogPostAbsoluteUrl(
+                        seoConfig.siteUrl,
+                        post.slug,
+                        post.publishedAt
+                    ),
                     name: post.title,
                     headline: post.title,
                     description: post.excerpt ?? undefined,

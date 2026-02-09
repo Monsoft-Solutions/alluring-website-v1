@@ -19,6 +19,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 
 import type { SearchIndexPost } from '@/lib/queries/blog/search-posts.query'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type BlogSearchProps = {
     searchIndex: SearchIndexPost[]
@@ -148,7 +149,11 @@ export function BlogSearch({ searchIndex, initialQuery }: BlogSearchProps) {
                 setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
             } else if (e.key === 'Enter' && results[selectedIndex]) {
                 e.preventDefault()
-                window.location.href = `/${results[selectedIndex].slug}`
+                const selectedPost = results[selectedIndex]
+                window.location.href = getBlogPostUrl(
+                    selectedPost.slug,
+                    selectedPost.publishedAt
+                )
             }
         },
         [results, selectedIndex]
@@ -234,7 +239,10 @@ export function BlogSearch({ searchIndex, initialQuery }: BlogSearchProps) {
                                     {results.map((post, index) => (
                                         <li key={post.slug}>
                                             <Link
-                                                href={`/${post.slug}`}
+                                                href={getBlogPostUrl(
+                                                    post.slug,
+                                                    post.publishedAt
+                                                )}
                                                 className={cn(
                                                     'flex items-start gap-4 px-5 py-4 transition-colors',
                                                     index === selectedIndex

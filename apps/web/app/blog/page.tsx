@@ -41,6 +41,7 @@ import { getSearchIndex } from '@/lib/queries/blog/search-posts.query'
 import { listActiveCategoriesWithCounts } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 
 const siteUrl = siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/blog`
@@ -162,7 +163,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     itemListElement={initialPosts.map((post, index) => ({
                         position: index + 1,
                         name: post.title,
-                        url: `${siteUrl}/${post.slug}`,
+                        url: getBlogPostAbsoluteUrl(
+                            siteUrl,
+                            post.slug,
+                            post.publishedAt
+                        ),
                         image: post.featuredImage?.url,
                         description: post.excerpt ?? undefined,
                     }))}

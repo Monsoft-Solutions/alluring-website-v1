@@ -11,6 +11,7 @@ export type PopularPost = {
     slug: string
     title: string
     views: number
+    publishedAt: string | null
     featuredImage: {
         url: string
         alt: string
@@ -40,6 +41,7 @@ async function fetchPopularPosts(limit: number): Promise<PopularPost[]> {
             slug: blogPost.slug,
             title: blogPost.title,
             views: blogPost.views,
+            publishedAt: blogPost.publishedAt,
             imageUrl: images.url,
             imageAlt: images.alt,
             imageBlur: images.blurDataUrl,
@@ -62,6 +64,7 @@ async function fetchPopularPosts(limit: number): Promise<PopularPost[]> {
             slug: r.slug!,
             title: r.title,
             views: r.views,
+            publishedAt: r.publishedAt?.toISOString() ?? null,
             featuredImage: r.imageUrl
                 ? {
                       url: r.imageUrl,

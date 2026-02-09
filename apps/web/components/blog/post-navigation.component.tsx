@@ -14,6 +14,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import type { AdjacentPost } from '@/lib/queries/blog/adjacent-posts.query'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type PostNavigationProps = {
     previousPost: AdjacentPost | null
@@ -31,7 +32,7 @@ function NavigationLink({
 
     return (
         <Link
-            href={`/${post.slug}`}
+            href={getBlogPostUrl(post.slug, post.publishedAt)}
             className='group relative flex flex-1 items-center gap-4 rounded-xl border border-stone-200 bg-white p-4 transition-all duration-300 hover:border-stone-300 hover:bg-stone-50 hover:shadow-lg md:p-5'
         >
             {/* Arrow indicator - previous on left, next on right */}

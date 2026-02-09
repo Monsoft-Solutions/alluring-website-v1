@@ -42,13 +42,8 @@ const nextConfig = {
                 destination: '/contact-us',
                 permanent: true, // 308 permanent redirect
             },
-            // Redirect old /blog/:slug URLs to root-level /:slug (WordPress URL structure)
-            // Excludes reserved subpaths: categories, tags, authors
-            {
-                source: '/blog/:slug((?!categories|tags|authors).*)',
-                destination: '/:slug',
-                permanent: true, // 301 permanent redirect for SEO
-            },
+            // Blog post URL routing is now handled by route-level logic in
+            // app/[slug]/page.tsx and app/blog/[slug]/page.tsx based on publish date.
             // Influencer marketing redirects
             {
                 source: '/melany',
@@ -118,6 +113,75 @@ const nextConfig = {
             {
                 source: '/mommy-makeover-myths-miami',
                 destination: '/mommy-makeover-miami',
+                permanent: true,
+            },
+
+            // Duplicate blog content consolidation redirects
+            // Mommy Makeover Recovery (6 posts, same topic -> 1 canonical)
+            {
+                source: '/mommy-makeover-recovery-timeline',
+                destination: '/mommy-makeover-recovery-timeline-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-guide',
+                destination: '/mommy-makeover-recovery-timeline-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-time-miami',
+                destination: '/mommy-makeover-recovery-timeline-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-pain-management',
+                destination: '/mommy-makeover-recovery-timeline-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-pain-guide',
+                destination: '/mommy-makeover-recovery-timeline-miami',
+                permanent: true,
+            },
+            // Liposuction Cost (duplicate keyword)
+            {
+                source: '/miami-liposuction-cost',
+                destination: '/liposuction-cost-miami',
+                permanent: true,
+            },
+            // Blepharoplasty Candidate (3 posts -> 1 canonical)
+            {
+                source: '/blepharoplasty-candidate-checklist',
+                destination: '/blepharoplasty-candidate-miami-checklist',
+                permanent: true,
+            },
+            {
+                source: '/blepharoplasty-miami-candidate',
+                destination: '/blepharoplasty-candidate-miami-checklist',
+                permanent: true,
+            },
+            // Blepharoplasty Age (2 posts -> 1 canonical)
+            {
+                source: '/best-blepharoplasty-age-miami',
+                destination: '/best-blepharoplasty-age-miami-checklist',
+                permanent: true,
+            },
+            // Liposuction Candidate (2 posts -> 1 canonical)
+            {
+                source: '/liposuction-candidate-checklist-miami',
+                destination: '/liposuction-candidate-miami',
+                permanent: true,
+            },
+            // Liposuction Moms (2 posts -> 1 canonical)
+            {
+                source: '/liposuction-miami-moms-faq',
+                destination: '/liposuction-miami-moms-tips',
+                permanent: true,
+            },
+            // Breast Reduction Candidate (2 posts -> 1 canonical)
+            {
+                source: '/breast-reduction-miami-recovery-candidates',
+                destination: '/breast-reduction-candidate-miami',
                 permanent: true,
             },
         ]

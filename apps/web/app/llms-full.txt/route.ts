@@ -11,6 +11,7 @@ import { NextResponse } from 'next/server'
 import { procedures } from '@/lib/data/procedures.data'
 import { siteConfig, getFullAddress } from '@/lib/data/site-config'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
  * Generate comprehensive llms-full.txt content
@@ -21,6 +22,7 @@ async function generateLlmsFullTxt(): Promise<string> {
         title: string
         slug: string
         excerpt: string | null
+        publishedAt: string | null
     }> = []
     try {
         const { items } = await getPublishedPostCardsPage({ limit: 20 })
@@ -28,6 +30,7 @@ async function generateLlmsFullTxt(): Promise<string> {
             title: post.title,
             slug: post.slug,
             excerpt: post.excerpt,
+            publishedAt: post.publishedAt,
         }))
     } catch {
         // Blog posts fetch failed, continue without them
@@ -180,7 +183,7 @@ A: ${faq.answer}
 ${
     recentPosts.length > 0
         ? `### Recent Articles
-${recentPosts.map((post) => `- [${post.title}](/${post.slug})`).join('\n')}
+${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.publishedAt)})`).join('\n')}
 `
         : ''
 }

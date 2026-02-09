@@ -25,6 +25,7 @@ export type SearchIndexPost = {
     slug: string
     title: string
     excerpt: string | null
+    publishedAt: string | null
 }
 
 /**
@@ -118,6 +119,7 @@ async function fetchSearchIndex(): Promise<SearchIndexPost[]> {
             slug: blogPost.slug,
             title: blogPost.title,
             excerpt: blogPost.excerpt,
+            publishedAt: blogPost.publishedAt,
         })
         .from(blogPost)
         .where(
@@ -135,6 +137,7 @@ async function fetchSearchIndex(): Promise<SearchIndexPost[]> {
             slug: r.slug!,
             title: r.title,
             excerpt: r.excerpt,
+            publishedAt: r.publishedAt?.toISOString() ?? null,
         }))
 }
 

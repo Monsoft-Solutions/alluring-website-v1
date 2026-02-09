@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import {
     BreadcrumbSchema,
@@ -29,6 +29,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
+import { usesBlogPrefix, getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type PageProps = {
     params: Promise<{ slug: string }>
@@ -67,6 +68,10 @@ export async function generateMetadata({
     // Check blog posts (database query)
     const post = await getCachedPostBySlug(slug)
     if (post) {
+        // Post-2025 posts belong at /blog/{slug} — redirect will happen in page component
+        if (usesBlogPrefix(post.publishedAt)) {
+            return { title: 'Redirecting...' }
+        }
         return generateBlogPostMetadata(post)
     }
 
@@ -169,8 +174,7 @@ function generateBlogPostMetadata(
             tags:
                 post.tags.length > 0 ? post.tags.map((t) => t.name) : undefined,
         },
-        // Root-level canonical URL to match WordPress structure
-        canonical: `/${post.slug}`,
+        canonical: getBlogPostUrl(post.slug, post.publishedAt),
     })
 }
 
@@ -190,6 +194,11 @@ export default async function DynamicPage({ params }: PageProps) {
     // Check blog posts (database query)
     const post = await getCachedPostBySlug(slug)
     if (post) {
+        // Post-2025 posts belong at /blog/{slug}
+        if (usesBlogPrefix(post.publishedAt)) {
+            permanentRedirect(`/blog/${slug}`)
+        }
+
         // Fetch related data for blog post (6 posts for better discovery)
         const tableOfContents = extractTableOfContents(post.content)
         const [relatedPosts, adjacentPosts, inlineImages] = await Promise.all([
