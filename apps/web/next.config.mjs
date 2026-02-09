@@ -102,17 +102,17 @@ const nextConfig = {
             // KEyword Cannibalization Redirects
             {
                 source: '/mommy-makeover-miami-guide',
-                destination: '/mommy-makeover-miami',
+                destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
             {
                 source: '/prepare-mommy-makeover-miami',
-                destination: '/mommy-makeover-miami',
+                destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-myths-miami',
-                destination: '/mommy-makeover-miami',
+                destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
 

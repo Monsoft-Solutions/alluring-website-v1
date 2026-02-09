@@ -4,7 +4,6 @@
  * Generates sitemap XML for blog content including:
  * - Blog posts with featured images (for image SEO)
  * - Category pages
- * - Tag pages
  *
  * Revalidates every 3 hours to balance freshness with performance
  */
@@ -17,10 +16,8 @@ import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import {
     getActiveCategorySlugs,
-    getActiveTagSlugs,
     getMostRecentPostDate,
     getMostRecentPostDateForCategory,
-    getMostRecentPostDateForTag,
     getPublishedPostSlugs,
 } from '@/lib/queries/blog/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
@@ -103,7 +100,7 @@ export async function GET(): Promise<NextResponse> {
                 pageLastModified['/blog/categories'] ??
                 today,
             changeFrequency: 'weekly',
-            priority: 0.8,
+            priority: 0.6,
         })
 
         // Category detail pages
@@ -122,34 +119,7 @@ export async function GET(): Promise<NextResponse> {
                 url: `${baseUrl}/blog/categories/${category.slug}`,
                 lastModified,
                 changeFrequency: 'weekly',
-                priority: 0.7,
-            })
-        }
-
-        // Tags listing page
-        entries.push({
-            url: `${baseUrl}/blog/tags`,
-            lastModified:
-                mostRecentPostDateStr ??
-                pageLastModified['/blog/tags'] ??
-                today,
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        })
-
-        // Tag detail pages
-        const tags = await getActiveTagSlugs()
-        for (const tag of tags) {
-            const tagPostDate = await getMostRecentPostDateForTag(tag.slug)
-            const lastModified =
-                tagPostDate?.toISOString().slice(0, 10) ??
-                tag.createdAt.toISOString().slice(0, 10)
-
-            entries.push({
-                url: `${baseUrl}/blog/tags/${tag.slug}`,
-                lastModified,
-                changeFrequency: 'weekly',
-                priority: 0.6,
+                priority: 0.5,
             })
         }
     } catch (error) {
