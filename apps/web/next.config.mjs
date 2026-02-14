@@ -185,6 +185,43 @@ const nextConfig = {
                 destination: '/blog/breast-reduction-candidate-miami',
                 permanent: true,
             },
+
+            // Anti-cannibalization redirects — blog posts → procedure pages
+            {
+                source: '/what-is-the-mommy-makeover-procedure',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-cost-miami',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/breast-reduction-cost-miami',
+                destination: '/procedures/breast-reduction-miami',
+                permanent: true,
+            },
+            {
+                source: '/miami-breast-reduction-cost-weight-loss',
+                destination: '/procedures/breast-reduction-miami',
+                permanent: true,
+            },
+            {
+                source: '/facelift-cost-miami',
+                destination: '/procedures/facelift-miami',
+                permanent: true,
+            },
+            {
+                source: '/breast-reduction-surgeons-miami',
+                destination: '/procedures/breast-reduction-miami',
+                permanent: true,
+            },
+            {
+                source: '/best-breast-lift-surgeons-miami',
+                destination: '/procedures/breast-lift-miami',
+                permanent: true,
+            },
         ]
     },
 }
