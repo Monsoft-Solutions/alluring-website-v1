@@ -20,6 +20,7 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type PostCardProps = {
     post: BlogPostCard
@@ -71,7 +72,7 @@ export function PostCard({
         >
             {/* Clickable overlay */}
             <Link
-                href={`/${post.slug}`}
+                href={getBlogPostUrl(post.slug, post.publishedAt)}
                 onClick={handleClick}
                 aria-labelledby={titleId}
                 className='focus:ring-gold-500/50 absolute inset-0 z-10 focus:ring-2 focus:ring-offset-2 focus:outline-none'

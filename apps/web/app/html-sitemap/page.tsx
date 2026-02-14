@@ -22,6 +22,7 @@ import {
 import { getGalleryGroupsForSitemap } from '@/lib/queries/gallery/sitemap.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 const MAX_BLOG_POSTS_DISPLAYED = 200
 
@@ -134,7 +135,7 @@ export default async function SitemapPage() {
                 .split('-')
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' '),
-            href: `/blog/${post.slug}`,
+            href: getBlogPostUrl(post.slug, post.publishedAt),
         })),
     }
 

@@ -16,12 +16,15 @@ import { listActiveTagsWithCounts } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
-export const metadata: Metadata = toNextMetadata(seoConfig, {
-    title: 'Blog Tags',
-    description:
-        'Browse our plastic surgery blog posts by tag. Discover content on specific procedures and topics.',
-    canonical: '/blog/tags',
-})
+export const metadata: Metadata = {
+    ...toNextMetadata(seoConfig, {
+        title: 'Blog Tags',
+        description:
+            'Browse our plastic surgery blog posts by tag. Discover content on specific procedures and topics.',
+        canonical: '/blog/tags',
+    }),
+    robots: { index: false, follow: true },
+}
 
 export default async function TagsIndexPage() {
     const tags = await listActiveTagsWithCounts()

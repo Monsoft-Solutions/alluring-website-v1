@@ -80,8 +80,8 @@ export function GET(): NextResponse {
                     procedure.slug,
                     procedure.dateModified
                 ),
-                changeFrequency: 'monthly',
-                priority: 0.8,
+                changeFrequency: 'weekly',
+                priority: 0.9,
             }
 
             // Add procedure image if available

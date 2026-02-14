@@ -11,6 +11,7 @@ import { NextResponse } from 'next/server'
 import { procedures } from '@/lib/data/procedures.data'
 import { siteConfig, getFullAddress } from '@/lib/data/site-config'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
  * Group procedures by category
@@ -54,6 +55,7 @@ async function generateLlmsTxt(): Promise<string> {
         title: string
         slug: string
         excerpt: string | null
+        publishedAt: string | null
     }> = []
     try {
         const { items } = await getPublishedPostCardsPage({ limit: 10 })
@@ -61,6 +63,7 @@ async function generateLlmsTxt(): Promise<string> {
             title: post.title,
             slug: post.slug,
             excerpt: post.excerpt,
+            publishedAt: post.publishedAt,
         }))
     } catch {
         // Blog posts fetch failed, continue without them
@@ -151,7 +154,7 @@ ${
     recentPosts.length > 0
         ? `## Recent Blog Posts
 
-${recentPosts.map((post) => `- [${post.title}](/${post.slug})${post.excerpt ? `: ${post.excerpt.slice(0, 100)}...` : ''}`).join('\n')}
+${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.publishedAt)})${post.excerpt ? `: ${post.excerpt.slice(0, 100)}...` : ''}`).join('\n')}
 `
         : ''
 }

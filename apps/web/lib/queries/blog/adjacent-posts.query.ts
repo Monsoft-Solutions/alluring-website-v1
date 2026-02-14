@@ -10,6 +10,7 @@ import { and, desc, eq, gt, isNotNull, lt, asc, ne, or } from 'drizzle-orm'
 export type AdjacentPost = {
     slug: string
     title: string
+    publishedAt: string | null
     featuredImage: {
         url: string
         alt: string
@@ -41,6 +42,7 @@ async function fetchAdjacentPosts(
         .select({
             slug: blogPost.slug,
             title: blogPost.title,
+            publishedAt: blogPost.publishedAt,
             imageUrl: images.url,
             imageAlt: images.alt,
             imageBlur: images.blurDataUrl,
@@ -71,6 +73,7 @@ async function fetchAdjacentPosts(
         .select({
             slug: blogPost.slug,
             title: blogPost.title,
+            publishedAt: blogPost.publishedAt,
             imageUrl: images.url,
             imageAlt: images.alt,
             imageBlur: images.blurDataUrl,
@@ -105,6 +108,8 @@ async function fetchAdjacentPosts(
                 ? {
                       slug: previousRow.slug,
                       title: previousRow.title,
+                      publishedAt:
+                          previousRow.publishedAt?.toISOString() ?? null,
                       featuredImage: previousRow.imageUrl
                           ? {
                                 url: previousRow.imageUrl,
@@ -119,6 +124,7 @@ async function fetchAdjacentPosts(
                 ? {
                       slug: nextRow.slug,
                       title: nextRow.title,
+                      publishedAt: nextRow.publishedAt?.toISOString() ?? null,
                       featuredImage: nextRow.imageUrl
                           ? {
                                 url: nextRow.imageUrl,

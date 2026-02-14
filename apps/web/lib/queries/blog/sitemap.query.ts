@@ -11,7 +11,6 @@ import {
     blogCategory,
     blogPost,
     blogPostCategory,
-    blogPostTag,
     blogTag,
     images,
 } from '@workspace/db/schema/blog'
@@ -170,32 +169,6 @@ export const getMostRecentPostDateForCategory = cache(
                     isNotNull(blogPost.publishedAt),
                     eq(blogCategory.slug, categorySlug),
                     eq(blogCategory.isActive, true)
-                )
-            )
-            .orderBy(desc(blogPost.publishedAt))
-            .limit(1)
-
-        return result[0]?.publishedAt ?? null
-    }
-)
-
-/**
- * Get most recent post date for a specific tag
- * Returns the publishedAt date of the most recent post with the tag
- */
-export const getMostRecentPostDateForTag = cache(
-    async (tagSlug: string): Promise<Date | null> => {
-        const result = await db
-            .select({ publishedAt: blogPost.publishedAt })
-            .from(blogPost)
-            .innerJoin(blogPostTag, eq(blogPostTag.blogPostId, blogPost.id))
-            .innerJoin(blogTag, eq(blogTag.id, blogPostTag.tagId))
-            .where(
-                and(
-                    eq(blogPost.status, 'published'),
-                    isNotNull(blogPost.publishedAt),
-                    eq(blogTag.slug, tagSlug),
-                    eq(blogTag.isActive, true)
                 )
             )
             .orderBy(desc(blogPost.publishedAt))

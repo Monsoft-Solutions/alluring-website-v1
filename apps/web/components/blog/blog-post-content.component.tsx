@@ -37,6 +37,10 @@ import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import type { InlineImage } from '@/lib/queries/blog/post-images.query'
 import { seoConfig } from '@/lib/seo-config'
+import {
+    getBlogPostUrl,
+    getBlogPostAbsoluteUrl,
+} from '@/lib/utils/blog-url.util'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
 import type { TOCHeading } from '@/lib/types/blog/toc.type'
@@ -97,7 +101,7 @@ export function BlogPostContent({
             {/* Social sharing buttons */}
             <SocialShare
                 title={post.title}
-                url={`/${post.slug}`}
+                url={getBlogPostUrl(post.slug, post.publishedAt)}
                 description={post.excerpt ?? undefined}
                 imageUrl={post.featuredImage?.url}
             />
@@ -328,7 +332,11 @@ export function BlogPostContent({
                                     post.updatedAt ?? post.publishedAt
                                 }
                                 image={post.featuredImage?.url}
-                                mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
+                                mainEntityOfPage={getBlogPostAbsoluteUrl(
+                                    seoConfig.siteUrl,
+                                    post.slug,
+                                    post.publishedAt
+                                )}
                                 publisher={{
                                     name:
                                         seoConfig.organization?.name ??
@@ -362,7 +370,11 @@ export function BlogPostContent({
                                         question: faq.question,
                                         answer: faq.answer,
                                     }))}
-                                    mainEntityOfPage={`${seoConfig.siteUrl}/${post.slug}`}
+                                    mainEntityOfPage={getBlogPostAbsoluteUrl(
+                                        seoConfig.siteUrl,
+                                        post.slug,
+                                        post.publishedAt
+                                    )}
                                 />
                             )}
 
@@ -370,7 +382,11 @@ export function BlogPostContent({
                             {inlineImages && inlineImages.length > 0 && (
                                 <BlogPostImagesSchema
                                     images={inlineImages}
-                                    postUrl={`${seoConfig.siteUrl}/${post.slug}`}
+                                    postUrl={getBlogPostAbsoluteUrl(
+                                        seoConfig.siteUrl,
+                                        post.slug,
+                                        post.publishedAt
+                                    )}
                                     postTitle={post.title}
                                     authorName={post.author?.name}
                                     datePublished={

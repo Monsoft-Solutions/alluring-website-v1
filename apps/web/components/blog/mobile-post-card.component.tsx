@@ -20,6 +20,7 @@ import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site-config'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type MobilePostCardProps = {
     post: BlogPostCard
@@ -56,7 +57,7 @@ export function MobilePostCard({
 
     return (
         <Link
-            href={`/${post.slug}`}
+            href={getBlogPostUrl(post.slug, post.publishedAt)}
             onClick={handleClick}
             className='group relative block aspect-4/5 w-full overflow-hidden'
             aria-label={`Read article: ${post.title}`}

@@ -16,6 +16,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
+import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type FeaturedPostProps = {
     post: BlogPostCard
@@ -51,7 +52,7 @@ export function FeaturedPost({
                 {/* Full-bleed card */}
                 <article className='group relative'>
                     <Link
-                        href={`/${post.slug}`}
+                        href={getBlogPostUrl(post.slug, post.publishedAt)}
                         className='absolute inset-0 z-20'
                         aria-label={`Read full article: ${post.title}`}
                     >
@@ -153,7 +154,7 @@ export function FeaturedPost({
                 {/* Featured Card */}
                 <article className='group relative overflow-hidden rounded-2xl bg-stone-900 shadow-2xl'>
                     <Link
-                        href={`/${post.slug}`}
+                        href={getBlogPostUrl(post.slug, post.publishedAt)}
                         className='absolute inset-0 z-20'
                         aria-label={`Read full article: ${post.title}`}
                     >

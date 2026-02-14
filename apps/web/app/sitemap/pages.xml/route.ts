@@ -61,7 +61,7 @@ const STATIC_PAGES: Array<{
         priority: 0.9,
     },
     { path: '/consulta-gratis', changeFrequency: 'weekly', priority: 0.9 },
-    { path: '/bbl-miami', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/bbl-miami', changeFrequency: 'weekly', priority: 0.85 },
     { path: '/bridal-consultation', changeFrequency: 'weekly', priority: 0.9 },
     {
         path: '/new-beginning-consultation',
@@ -77,8 +77,12 @@ const STATIC_PAGES: Array<{
     { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
     { path: '/cookies', changeFrequency: 'yearly', priority: 0.3 },
+    // Engagement pages
+    { path: '/quiz', changeFrequency: 'monthly', priority: 0.7 },
     // Utility pages
     { path: '/html-sitemap', changeFrequency: 'weekly', priority: 0.4 },
+    // Social/bio link pages
+    { path: '/links', changeFrequency: 'weekly', priority: 0.5 },
 ]
 
 /**

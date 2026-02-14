@@ -24,6 +24,7 @@ import {
 } from '@/lib/queries/blog/taxonomy.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 
 type PageProps = {
     params: Promise<{ slug: string }>
@@ -43,11 +44,14 @@ export async function generateMetadata({
         return { title: 'Tag not found' }
     }
 
-    return toNextMetadata(seoConfig, {
-        title: `${tag.name} Articles`,
-        description: `Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`,
-        canonical: `/blog/tags/${tag.slug}`,
-    })
+    return {
+        ...toNextMetadata(seoConfig, {
+            title: `${tag.name} Articles`,
+            description: `Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`,
+            canonical: `/blog/tags/${tag.slug}`,
+        }),
+        robots: { index: false, follow: true },
+    }
 }
 
 export default async function TagDetailPage({ params }: PageProps) {
@@ -134,7 +138,11 @@ export default async function TagDetailPage({ params }: PageProps) {
                     description: `Topics related to ${tag.name} in plastic surgery`,
                 }}
                 hasPart={initialPosts.map((post) => ({
-                    url: `${seoConfig.siteUrl}/${post.slug}`,
+                    url: getBlogPostAbsoluteUrl(
+                        seoConfig.siteUrl,
+                        post.slug,
+                        post.publishedAt
+                    ),
                     name: post.title,
                     headline: post.title,
                     description: post.excerpt ?? undefined,
