@@ -4,6 +4,7 @@ import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import type { Surgeon } from '@/lib/types/surgeon.type'
 import { Award, GraduationCap, Check } from 'lucide-react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 interface SurgeonCredentialsProps {
@@ -82,6 +83,41 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
                                 </motion.li>
                             ))}
                         </ul>
+
+                        {surgeon.certificationBadges &&
+                            surgeon.certificationBadges.length > 0 && (
+                                <div className='mt-10 flex flex-wrap gap-6 border-t border-stone-700 pt-8'>
+                                    {surgeon.certificationBadges.map(
+                                        (badge, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{
+                                                    opacity: 0,
+                                                    scale: 0.8,
+                                                }}
+                                                whileInView={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                }}
+                                                viewport={{ once: true }}
+                                                transition={{
+                                                    delay: 0.8 + index * 0.15,
+                                                }}
+                                            >
+                                                <div className='rounded-full bg-white/90 p-1.5'>
+                                                    <Image
+                                                        src={badge.src}
+                                                        alt={badge.alt}
+                                                        width={80}
+                                                        height={80}
+                                                        className='rounded-full'
+                                                    />
+                                                </div>
+                                            </motion.div>
+                                        )
+                                    )}
+                                </div>
+                            )}
                     </motion.div>
                 </div>
             </ContentWrapper>

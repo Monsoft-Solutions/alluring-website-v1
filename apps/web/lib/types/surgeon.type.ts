@@ -45,6 +45,7 @@ export interface Surgeon {
     externalProfiles?: SurgeonExternalProfiles
     education: string[]
     certifications: string[]
+    certificationBadges?: { src: string; alt: string }[]
     specialties: string[]
     philosophy?: string
 }

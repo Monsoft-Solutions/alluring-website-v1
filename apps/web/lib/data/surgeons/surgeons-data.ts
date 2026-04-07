@@ -27,6 +27,13 @@ export const surgeons: Surgeon[] = [
             'Board Certified, American Board of Surgery',
             'Fellow, American College of Surgeons (FACS)',
             'Fellow, American Academy of Cosmetic Surgery',
+            'Fellowship Director, American Board of Cosmetic Surgery',
+        ],
+        certificationBadges: [
+            {
+                src: '/images/certifications/abcs-fellowship-director.png',
+                alt: 'American Board of Cosmetic Surgery - Fellowship Director Badge',
+            },
         ],
         specialties: [
             'Facelift (Rhytidectomy)',
