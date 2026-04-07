@@ -1,6 +1,7 @@
 import { OrganizationSchema, WebSiteSchema } from '@workspace/seo/react'
 import '@workspace/ui/globals.css'
 import { Geist, Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
+import Script from 'next/script'
 
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
 import { InternalPageViewTracker } from '@/components/analytics/internal-page-view-tracker.component'
@@ -97,6 +98,24 @@ export default function RootLayout({
                 {/* Favicon and app icons */}
                 <link rel='icon' type='image/png' href='/favicon.png' />
                 <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
+
+                {/* Harmonee Tracking Script */}
+                <Script
+                    id='harmonee-tracking'
+                    strategy='afterInteractive'
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            (function(s, p, i, c, e) {
+                                s[e] = s[e] || function() { (s[e].a = s[e].a || []).push(arguments); };
+                                s[e].l = 1 * new Date();
+                                var t = new Date().getTime();
+                                var k = c.createElement("script"), a = c.getElementsByTagName("script")[0];
+                                k.async = 1, k.src = p + "?request_id=" + i + "&t=" + t, a.parentNode.insertBefore(k, a);
+                                s.pixelClientId = i;
+                            })(window, "https://app.harmonee.co/script", "alluring", document, "script");
+                        `,
+                    }}
+                />
             </head>
             <body
                 className={`${fontLato.variable} ${fontMono.variable} ${fontGeist.variable} ${fontPlayfair.variable} font-sans antialiased`}
