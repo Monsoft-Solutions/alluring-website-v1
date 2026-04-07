@@ -4,6 +4,7 @@ import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import type { Surgeon } from '@/lib/types/surgeon.type'
 import { Award, GraduationCap, Check } from 'lucide-react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 interface SurgeonCredentialsProps {
@@ -82,6 +83,40 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
                                 </motion.li>
                             ))}
                         </ul>
+
+                        {surgeon.certificationBadges &&
+                            surgeon.certificationBadges.length > 0 && (
+                                <div className='mt-10 flex flex-wrap items-center gap-5 border-t border-stone-700 pt-8'>
+                                    {surgeon.certificationBadges.map(
+                                        (badge, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{
+                                                    opacity: 0,
+                                                    scale: 0.8,
+                                                }}
+                                                whileInView={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                }}
+                                                viewport={{ once: true }}
+                                                transition={{
+                                                    delay: 0.8 + index * 0.15,
+                                                }}
+                                                className='flex items-center justify-center rounded-lg bg-white/90 p-2'
+                                            >
+                                                <Image
+                                                    src={badge.src}
+                                                    alt={badge.alt}
+                                                    width={72}
+                                                    height={72}
+                                                    className='h-14 w-auto object-contain'
+                                                />
+                                            </motion.div>
+                                        )
+                                    )}
+                                </div>
+                            )}
                     </motion.div>
                 </div>
             </ContentWrapper>
