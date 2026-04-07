@@ -31,8 +31,28 @@ export const surgeons: Surgeon[] = [
         ],
         certificationBadges: [
             {
+                src: '/images/certifications/abcs-board-certified.svg',
+                alt: 'American Board of Cosmetic Surgery',
+            },
+            {
+                src: '/images/certifications/abfcs-board-certified.png',
+                alt: 'American Board of Facial Cosmetic Surgery',
+            },
+            {
+                src: '/images/certifications/abs-board-certified.png',
+                alt: 'The American Board of Surgery',
+            },
+            {
+                src: '/images/certifications/facs-fellow.svg',
+                alt: 'Fellow of the American College of Surgeons',
+            },
+            {
+                src: '/images/certifications/aacs-fellow.png',
+                alt: 'American Academy of Cosmetic Surgery',
+            },
+            {
                 src: '/images/certifications/abcs-fellowship-director.png',
-                alt: 'American Board of Cosmetic Surgery - Fellowship Director Badge',
+                alt: 'American Board of Cosmetic Surgery - Fellowship Director',
             },
         ],
         specialties: [

@@ -86,7 +86,7 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
 
                         {surgeon.certificationBadges &&
                             surgeon.certificationBadges.length > 0 && (
-                                <div className='mt-10 flex flex-wrap gap-6 border-t border-stone-700 pt-8'>
+                                <div className='mt-10 flex flex-wrap items-center gap-5 border-t border-stone-700 pt-8'>
                                     {surgeon.certificationBadges.map(
                                         (badge, index) => (
                                             <motion.div
@@ -103,16 +103,15 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
                                                 transition={{
                                                     delay: 0.8 + index * 0.15,
                                                 }}
+                                                className='flex items-center justify-center rounded-lg bg-white/90 p-2'
                                             >
-                                                <div className='rounded-full bg-white/90 p-1.5'>
-                                                    <Image
-                                                        src={badge.src}
-                                                        alt={badge.alt}
-                                                        width={80}
-                                                        height={80}
-                                                        className='rounded-full'
-                                                    />
-                                                </div>
+                                                <Image
+                                                    src={badge.src}
+                                                    alt={badge.alt}
+                                                    width={72}
+                                                    height={72}
+                                                    className='h-14 w-auto object-contain'
+                                                />
                                             </motion.div>
                                         )
                                     )}
