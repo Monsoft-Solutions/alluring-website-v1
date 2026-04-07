@@ -17,7 +17,7 @@ export const surgeons: Surgeon[] = [
             portrait: '/images/surgeons/dr-karlinsky.webp',
         },
         education: [
-            'MD, Ross University School of Medicine (Cosmetic & Aesthetic Surgery Concentration)',
+            'MD, Ross University School of Medicine',
             'Residency, Dept. of Surgery, Beth Israel Medical Center, NYC',
             'Fellowship, Facial Plastic & Cosmetic Surgical Center, Abilene, Texas',
         ],
