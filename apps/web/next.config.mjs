@@ -70,6 +70,12 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/cristina-deletto',
+                destination:
+                    '/miami-plastic-surgery-specials?utm_source=influencer&utm_medium=cristina-deletto',
+                permanent: true,
+            },
+            {
                 source: '/cosmetic-procedures-in-miami',
                 destination: '/procedures',
                 permanent: true,
