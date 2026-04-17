@@ -55,7 +55,6 @@ This agent activates automatically when it detects:
 | File/Data Source                                                 | URL in page-metadata.ts |
 | ---------------------------------------------------------------- | ----------------------- |
 | `apps/web/lib/data/surgeons/surgeons-data.ts` (dr-karlinsky)     | `/dr-karlinsky`         |
-| `apps/web/lib/data/surgeons/surgeons-data.ts` (dr-andrew-lofman) | `/dr-andrew-lofman`     |
 | `apps/web/lib/data/surgeons/surgeons-data.ts` (dr-rita-shats)    | `/dr-rita-shats`        |
 
 ### Procedure Pages
@@ -152,7 +151,6 @@ Report: "✅ Updated `/about` lastModified date to 2025-12-17 in page-metadata.t
 3. Update all surgeon dates (safest approach) or specific surgeon if identifiable:
     ```typescript
     '/dr-karlinsky': '2025-12-17',
-    '/dr-andrew-lofman': '2025-12-17',
     '/dr-rita-shats': '2025-12-17',
     ```
 4. Confirm: "✅ Updated surgeon page dates to 2025-12-17"

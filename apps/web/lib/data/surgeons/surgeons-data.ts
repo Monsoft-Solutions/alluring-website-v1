@@ -81,54 +81,6 @@ export const surgeons: Surgeon[] = [
         },
     },
     {
-        id: 'dr-lofman',
-        name: 'Dr. Andrew Lofman',
-        slug: 'dr-andrew-lofman',
-        title: 'Board Certified Plastic Surgeon',
-        role: 'Plastic Surgeon',
-        quote: "Plastic surgery is where medical precision meets artistic vision. My goal is to create results that don't just look natural, but feel like they were always meant to be there.",
-        shortBio:
-            'A board-certified plastic surgeon with over 20 years of experience. Dr. Lofman combines seasoned expertise with a compassionate approach to deliver stunning breast and body transformations.',
-        fullBio:
-            'Dr. Andrew Lofman is a board-certified plastic and reconstructive surgeon who has dedicated over two decades to the art of aesthetic enhancement. Known for his warm bedside manner and meticulous surgical technique, Dr. Lofman believes that every patient deserves a transformative journey that prioritizes both safety and satisfaction.\n\nSpecializing in breast augmentation, tummy tucks, and mommy makeovers, Dr. Lofman approaches every procedure as a unique collaboration. He takes the time to listen deeply to your goals, ensuring that your surgical plan is perfectly aligned with your vision. His philosophy focuses on enhancing your natural beauty rather than altering your identity, resulting in outcomes that are harmonious, balanced, and timeless.\n\nFrom your initial consultation to your final follow-up, Dr. Lofman and his team provide a supportive, pressure-free environment where you can feel confident in your decisions. With Dr. Lofman, you are choosing a surgeon who sees the person behind the patient and is committed to helping you look and feel your absolute best.',
-        images: {
-            featured: '/images/surgeons/dr-andrew-lofman.jpg',
-            portrait: '/images/surgeons/dr-andrew-lofman.jpg',
-        },
-        education: [
-            'MD, Ross University School of Medicine',
-            'Plastic Surgery Fellowship, Providence Hospital and Medical Center',
-            'General Surgery Residency, Mercy Catholic Medical Center (Chief Resident)',
-            'BA, Wayne State University',
-        ],
-        certifications: [
-            'Board Certified, American Board of Plastic Surgery',
-            'Member, American Society of Plastic Surgeons (ASPS)',
-            'Fellow, American College of Surgeons (FACS)',
-        ],
-        specialties: [
-            'Breast Augmentation',
-            'Mommy Makeover',
-            'Tummy Tuck (Abdominoplasty)',
-            'Liposuction',
-            'Body Contouring',
-            'Facial Rejuvenation',
-        ],
-        philosophy:
-            "Dr. Lofman's philosophy is simple: exceptional results start with a strong patient-surgeon relationship. He believes that plastic surgery should be an empowering experience that boosts self-esteem and improves quality of life. By combining advanced surgical techniques with a personalized, compassionate approach, he ensures that every patient feels heard, valued, and thrilled with their results. For Dr. Lofman, the ultimate measure of success is a happy, confident patient.",
-        social: {
-            instagram: 'https://instagram.com/alluringplasticsurgery',
-            facebook: 'https://facebook.com/alluringplasticsurgery',
-            tiktok: 'https://tiktok.com/@alluringplasticsurgery',
-        },
-        // External profile links for E-E-A-T signals
-        externalProfiles: {
-            healthgrades:
-                'https://www.healthgrades.com/physician/dr-andrew-lofman-3crvf',
-            realself: 'https://www.realself.com/dr/andrew-m-lofman-novi-mi',
-        },
-    },
-    {
         id: 'dr-shats',
         name: 'Dr. Rita Shats',
         slug: 'dr-rita-shats',
