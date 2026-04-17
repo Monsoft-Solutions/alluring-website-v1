@@ -60,7 +60,6 @@ If no staged files, compare current branch against master.
 **Surgeon Data Files**: Any file in `apps/web/lib/data/surgeons/*.ts` triggers updates to ALL surgeon pages:
 
 - `/dr-karlinsky`
-- `/dr-andrew-lofman`
 - `/dr-rita-shats`
 
 **Dynamic Pages (Skip These)**:
@@ -156,7 +155,7 @@ URL:  /
 
 ```
 File: apps/web/lib/data/surgeons/*.ts
-URLs: /dr-karlinsky, /dr-andrew-lofman, /dr-rita-shats (all three)
+URLs: /dr-karlinsky, /dr-rita-shats (both)
 ```
 
 ### Skip Patterns
@@ -201,10 +200,9 @@ Detected changes:
 
 ✅ Updated page-metadata.ts:
   • /dr-karlinsky: 2025-12-10 → 2025-12-16
-  • /dr-andrew-lofman: 2025-12-10 → 2025-12-16
   • /dr-rita-shats: 2025-12-10 → 2025-12-16
 
-📋 3 page(s) updated with today's date (2025-12-16)
+📋 2 page(s) updated with today's date (2025-12-16)
 ```
 
 ### When No Changes Detected
@@ -387,7 +385,6 @@ Action: Queue all surgeon URLs for update
 
 URLs to update:
   - /dr-karlinsky
-  - /dr-andrew-lofman
   - /dr-rita-shats
 ```
 

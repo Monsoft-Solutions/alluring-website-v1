@@ -28,11 +28,7 @@ export const STATIC_PAGES = [
  * Surgeon profile page slugs
  * These are dynamic pages based on surgeon data.
  */
-export const SURGEON_SLUGS = [
-    '/dr-karlinsky',
-    '/dr-andrew-lofman',
-    '/dr-rita-shats',
-] as const
+export const SURGEON_SLUGS = ['/dr-karlinsky', '/dr-rita-shats'] as const
 
 /**
  * Type for static page paths

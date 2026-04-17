@@ -198,13 +198,6 @@ export const SURGEON_PAGES: SitePage[] = [
         keywords: ['surgeon', 'dr karlinsky', 'female plastic surgeon'],
     },
     {
-        url: '/dr-andrew-lofman',
-        title: 'Dr. Andrew Lofman',
-        description: 'Board-certified plastic surgeon',
-        type: 'surgeon',
-        keywords: ['surgeon', 'dr lofman'],
-    },
-    {
         url: '/dr-rita-shats',
         title: 'Dr. Rita Shats',
         description: 'Board-certified plastic surgeon',

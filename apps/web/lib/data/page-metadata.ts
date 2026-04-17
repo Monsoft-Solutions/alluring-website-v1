@@ -52,7 +52,6 @@ export const pageLastModified: Record<string, string> = {
 
     // Surgeon pages
     '/dr-karlinsky': '2026-01-26',
-    '/dr-andrew-lofman': '2026-01-26',
     '/dr-rita-shats': '2026-01-26',
 
     // Legal pages (rarely change)
