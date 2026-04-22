@@ -38,6 +38,10 @@ const navItems: NavItem[] = [
         title: 'Analytics',
         href: '/analytics',
         icon: BarChart3,
+        children: [
+            { title: 'Website', href: '/analytics' },
+            { title: 'Leads', href: '/analytics/leads' },
+        ],
     },
     {
         title: 'SEO Insights',
