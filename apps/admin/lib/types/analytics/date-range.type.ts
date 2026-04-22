@@ -1,3 +1,5 @@
+import type { Granularity } from '@/lib/types/analytics/lead-trends.type'
+
 /**
  * Date range preset values for analytics filtering.
  *
@@ -6,8 +8,15 @@
  * - `7d`: Last 7 days
  * - `28d`: Last 28 days
  * - `90d`: Last 3 months
+ * - `custom`: User-defined date range
  */
-export type DateRangePreset = 'today' | 'yesterday' | '7d' | '28d' | '90d'
+export type DateRangePreset =
+    | 'today'
+    | 'yesterday'
+    | '7d'
+    | '28d'
+    | '90d'
+    | 'custom'
 
 /**
  * Date range preset configuration with label and days value.
@@ -27,6 +36,7 @@ export const DATE_RANGE_OPTIONS: DateRangeOption[] = [
     { value: '7d', label: 'Last 7 days', days: 7 },
     { value: '28d', label: 'Last 28 days', days: 28 },
     { value: '90d', label: 'Last 3 months', days: 90 },
+    { value: 'custom', label: 'Custom…', days: 0 },
 ]
 
 /**
@@ -90,7 +100,29 @@ export function getDateRangeFromPreset(preset: DateRangePreset): {
         case '90d':
             startDate.setDate(startDate.getDate() - 89)
             break
+        case 'custom':
+            // 'custom' ranges are managed by DateRangeProvider via setCustomRange.
+            // When called directly, fall back to the default 7-day range.
+            startDate.setDate(startDate.getDate() - 6)
+            break
     }
 
     return { startDate, endDate }
+}
+
+/**
+ * Pick a chart granularity from a date range.
+ *   - 0–1 day inclusive  → 'hour'
+ *   - 2–30 days          → 'day'
+ *   - > 30 days          → 'week'
+ */
+export function deriveGranularityFromRange(
+    startDate: Date,
+    endDate: Date
+): Granularity {
+    const diffDays =
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    if (diffDays <= 1) return 'hour'
+    if (diffDays <= 30) return 'day'
+    return 'week'
 }

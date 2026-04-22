@@ -2,33 +2,33 @@
 
 import {
     createContext,
+    useCallback,
     useContext,
+    useMemo,
     useState,
     type ReactNode,
-    useMemo,
 } from 'react'
 
 import {
-    type DateRangePreset,
+    DATE_RANGE_OPTIONS,
     DEFAULT_DATE_RANGE,
+    deriveGranularityFromRange,
+    getDateRangeFromPreset,
     getDaysFromPreset,
     getLabelFromPreset,
-    getDateRangeFromPreset,
+    type DateRangePreset,
 } from '@/lib/types/analytics/date-range.type'
+import type { Granularity } from '@/lib/types/analytics/lead-trends.type'
 
 type DateRangeContextValue = {
-    /** Current date range preset */
     dateRange: DateRangePreset
-    /** Update the date range preset */
     setDateRange: (preset: DateRangePreset) => void
-    /** Number of days for current preset */
     days: number
-    /** Human-readable label for current preset */
     label: string
-    /** Start date for current preset */
     startDate: Date
-    /** End date for current preset */
     endDate: Date
+    granularity: Granularity
+    setCustomRange: (startDate: Date, endDate: Date) => void
 }
 
 const DateRangeContext = createContext<DateRangeContextValue | null>(null)
@@ -38,21 +38,48 @@ type DateRangeProviderProps = {
     defaultValue?: DateRangePreset
 }
 
-/**
- * Provider for date range state across analytics components.
- *
- * Wraps analytics cards to share a single date range selection.
- */
 export function DateRangeProvider({
     children,
     defaultValue = DEFAULT_DATE_RANGE,
 }: DateRangeProviderProps) {
-    const [dateRange, setDateRange] = useState<DateRangePreset>(defaultValue)
+    const [dateRange, setDateRangeState] =
+        useState<DateRangePreset>(defaultValue)
+    const [customStart, setCustomStart] = useState<Date | null>(null)
+    const [customEnd, setCustomEnd] = useState<Date | null>(null)
 
-    const value = useMemo(() => {
-        const days = getDaysFromPreset(dateRange)
-        const label = getLabelFromPreset(dateRange)
-        const { startDate, endDate } = getDateRangeFromPreset(dateRange)
+    const setDateRange = useCallback((preset: DateRangePreset) => {
+        setDateRangeState(preset)
+    }, [])
+
+    const setCustomRange = useCallback((startDate: Date, endDate: Date) => {
+        setCustomStart(startDate)
+        setCustomEnd(endDate)
+        setDateRangeState('custom')
+    }, [])
+
+    const value = useMemo<DateRangeContextValue>(() => {
+        let startDate: Date
+        let endDate: Date
+
+        if (dateRange === 'custom' && customStart && customEnd) {
+            startDate = customStart
+            endDate = customEnd
+        } else {
+            const presetForRange =
+                dateRange === 'custom' ? DEFAULT_DATE_RANGE : dateRange
+            const range = getDateRangeFromPreset(presetForRange)
+            startDate = range.startDate
+            endDate = range.endDate
+        }
+
+        const days = getDaysFromPreset(
+            dateRange === 'custom' ? DEFAULT_DATE_RANGE : dateRange
+        )
+        const label =
+            dateRange === 'custom'
+                ? formatCustomLabel(startDate, endDate)
+                : getLabelFromPreset(dateRange)
+        const granularity = deriveGranularityFromRange(startDate, endDate)
 
         return {
             dateRange,
@@ -61,8 +88,10 @@ export function DateRangeProvider({
             label,
             startDate,
             endDate,
+            granularity,
+            setCustomRange,
         }
-    }, [dateRange])
+    }, [dateRange, customStart, customEnd, setDateRange, setCustomRange])
 
     return (
         <DateRangeContext.Provider value={value}>
@@ -71,19 +100,20 @@ export function DateRangeProvider({
     )
 }
 
-/**
- * Hook to access the date range context.
- *
- * Must be used within a DateRangeProvider.
- *
- * @throws Error if used outside of DateRangeProvider
- */
+function formatCustomLabel(start: Date, end: Date): string {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+    })
+    return `${fmt.format(start)} – ${fmt.format(end)}`
+}
+
 export function useDateRange(): DateRangeContextValue {
     const context = useContext(DateRangeContext)
-
     if (!context) {
         throw new Error('useDateRange must be used within a DateRangeProvider')
     }
-
     return context
 }
+
+export { DATE_RANGE_OPTIONS }
