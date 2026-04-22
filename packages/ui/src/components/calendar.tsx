@@ -13,7 +13,7 @@ import {
 } from 'react-day-picker'
 
 import { cn } from '@workspace/ui/lib/utils'
-import { Button, buttonVariants } from '@workspace/ui/components/button'
+import { buttonVariants } from '@workspace/ui/components/button'
 
 function Calendar({
     className,
@@ -25,7 +25,15 @@ function Calendar({
     components,
     ...props
 }: React.ComponentProps<typeof DayPicker> & {
-    buttonVariant?: React.ComponentProps<typeof Button>['variant']
+    buttonVariant?:
+        | 'default'
+        | 'primary'
+        | 'secondary'
+        | 'outline'
+        | 'ghost'
+        | 'gold'
+        | 'destructive'
+        | 'link'
 }) {
     const defaultClassNames = getDefaultClassNames()
 
@@ -208,10 +216,9 @@ function CalendarDayButton({
     }, [modifiers.focused])
 
     return (
-        <Button
+        <button
             ref={ref}
-            variant='ghost'
-            size='icon'
+            type='button'
             data-day={day.date.toLocaleDateString()}
             data-selected-single={
                 modifiers.selected &&
@@ -223,7 +230,8 @@ function CalendarDayButton({
             data-range-end={modifiers.range_end}
             data-range-middle={modifiers.range_middle}
             className={cn(
-                'group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70',
+                'inline-flex items-center justify-center rounded-md text-sm transition-colors hover:bg-stone-100 focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+                'group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-end=true]:bg-stone-900 data-[range-end=true]:text-white data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-stone-100 data-[range-middle=true]:text-stone-900 data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md data-[range-start=true]:bg-stone-900 data-[range-start=true]:text-white data-[selected-single=true]:bg-stone-900 data-[selected-single=true]:text-white [&>span]:text-xs [&>span]:opacity-70',
                 defaultClassNames.day,
                 className
             )}

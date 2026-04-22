@@ -1,35 +1,42 @@
-import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { Slot } from 'radix-ui'
-
+import { Slot } from '@radix-ui/react-slot'
+import { ArrowRight } from 'lucide-react'
+import type {
+    ReactNode,
+    ComponentPropsWithoutRef,
+    ButtonHTMLAttributes,
+} from 'react'
+import { cva } from 'class-variance-authority'
 import { cn } from '@workspace/ui/lib/utils'
 
+/**
+ * buttonVariants - CVA helper for generating button class names
+ * Used by components like AlertDialog that need button styling
+ */
 const buttonVariants = cva(
-    "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+    'relative overflow-hidden inline-flex items-center justify-center transition-all duration-500 font-sans tracking-[0.2em] uppercase text-sm font-bold group disabled:pointer-events-none disabled:opacity-50 w-auto active:scale-[0.98]',
     {
         variants: {
             variant: {
                 default:
-                    'bg-primary text-primary-foreground hover:bg-primary/90',
-                destructive:
-                    'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40',
-                outline:
-                    'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+                    'bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 hover:text-gold-200',
+                primary:
+                    'bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 hover:text-gold-200',
                 secondary:
-                    'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-                ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-                link: 'text-primary underline-offset-4 hover:underline',
+                    'bg-stone-50 text-stone-900 border border-stone-200 hover:border-gold-400',
+                outline:
+                    'bg-transparent text-stone-900 border border-stone-300 hover:border-stone-900',
+                gold: 'bg-gold-400 text-white border border-gold-400 hover:bg-gold-500',
+                ghost: 'bg-transparent text-stone-500 hover:text-stone-900',
+                destructive:
+                    'bg-red-500 text-white border border-red-500 hover:bg-red-600',
+                link: 'text-stone-900 underline-offset-4 hover:underline',
             },
             size: {
-                default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-                xs: "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
-                sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5',
-                lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
-                icon: 'size-9',
-                'icon-xs':
-                    "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
-                'icon-sm': 'size-8',
-                'icon-lg': 'size-10',
+                default: 'px-8 py-4',
+                sm: 'px-5 py-3',
+                md: 'px-8 py-4',
+                lg: 'px-10 py-5',
+                icon: 'h-14 w-14 p-0',
             },
         },
         defaultVariants: {
@@ -39,26 +46,79 @@ const buttonVariants = cva(
     }
 )
 
-function Button({
-    className,
-    variant = 'default',
-    size = 'default',
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?:
+        | 'primary'
+        | 'secondary'
+        | 'outline'
+        | 'ghost'
+        | 'gold'
+        | 'default'
+        | 'destructive'
+        | 'link'
+    size?: 'sm' | 'md' | 'lg' | 'icon' | 'default'
+    withArrow?: boolean
+    children?: ReactNode
+    className?: string
+    asChild?: boolean
+}
+
+const Button = ({
+    children,
+    variant = 'primary',
+    size = 'md',
+    className = '',
+    withArrow = false,
     asChild = false,
     ...props
-}: React.ComponentProps<'button'> &
-    VariantProps<typeof buttonVariants> & {
-        asChild?: boolean
-    }) {
-    const Comp = asChild ? Slot.Root : 'button'
+}: ButtonProps) => {
+    // Map 'default' variant to 'primary' for internal use
+    const effectiveVariant = variant === 'default' ? 'primary' : variant
+    const effectiveSize = size === 'default' ? 'md' : size
+
+    const buttonContent = (
+        <>
+            <span className='relative z-10 flex items-center'>
+                {children}
+                {withArrow && (
+                    <ArrowRight className='ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
+                )}
+            </span>
+
+            {/* Shine effect for primary/gold buttons */}
+            {(effectiveVariant === 'primary' ||
+                effectiveVariant === 'gold') && (
+                <span className='absolute inset-0 z-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]' />
+            )}
+        </>
+    )
+
+    const buttonClassName = cn(
+        buttonVariants({ variant: effectiveVariant, size: effectiveSize }),
+        // Add ghost underline effect that CVA can't handle cleanly
+        effectiveVariant === 'ghost' &&
+            "after:content-[''] after:block after:w-full after:h-[1px] after:bg-stone-900 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300",
+        className
+    )
+
+    if (asChild) {
+        // When using asChild, we let Radix Slot handle prop merging naturally
+        // We DO NOT manipulate the child's structure (no wrapping, no adding elements)
+        // This prevents nested interactive element issues and ensures proper HTML structure
+        const standardProps =
+            props as unknown as ComponentPropsWithoutRef<'button'>
+
+        return (
+            <Slot className={buttonClassName} {...standardProps}>
+                {children}
+            </Slot>
+        )
+    }
 
     return (
-        <Comp
-            data-slot='button'
-            data-variant={variant}
-            data-size={size}
-            className={cn(buttonVariants({ variant, size, className }))}
-            {...props}
-        />
+        <button type='button' className={buttonClassName} {...props}>
+            {buttonContent}
+        </button>
     )
 }
 
