@@ -26,6 +26,28 @@ import type {
 import { LeadTrendsLegend } from './lead-trends-legend.component'
 import { LeadTrendsTooltip } from './lead-trends-tooltip.component'
 
+type RechartsTooltipProps = {
+    active?: boolean
+    payload?: { name?: string | number; value?: number; color?: string }[]
+    label?: string | number
+}
+
+type OurTooltipPayloadItem = { name: string; value: number; color: string }
+
+function mapRechartsTooltipProps(input: unknown): {
+    active?: boolean
+    payload?: OurTooltipPayloadItem[]
+    label?: string | number
+} {
+    const { active, payload, label } = input as RechartsTooltipProps
+    const mapped: OurTooltipPayloadItem[] | undefined = payload?.map((p) => ({
+        name: String(p.name ?? ''),
+        value: typeof p.value === 'number' ? p.value : 0,
+        color: p.color ?? '#78716c',
+    }))
+    return { active, payload: mapped, label }
+}
+
 type Props = {
     trend: TrendPipelineOutput
     granularity: Granularity
@@ -132,7 +154,7 @@ export function LeadTrendsChart({ trend, granularity }: Props) {
                         <Tooltip
                             content={(props) => (
                                 <LeadTrendsTooltip
-                                    {...(props as any)}
+                                    {...mapRechartsTooltipProps(props)}
                                     granularity={granularity}
                                 />
                             )}
@@ -180,7 +202,7 @@ export function LeadTrendsChart({ trend, granularity }: Props) {
                         <Tooltip
                             content={(props) => (
                                 <LeadTrendsTooltip
-                                    {...(props as any)}
+                                    {...mapRechartsTooltipProps(props)}
                                     granularity={granularity}
                                 />
                             )}

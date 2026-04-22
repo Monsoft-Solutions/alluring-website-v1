@@ -42,8 +42,14 @@ function LeadTrendsView() {
     const [mediums, setMediums] = useState<string[]>([])
     const [breakdownBy, setBreakdownBy] = useState<BreakdownBy>('source')
 
-    const allLeads: ClassifiedLead[] = current.data?.leads ?? []
-    const priorLeads: ClassifiedLead[] = prior.data?.leads ?? []
+    const allLeads = useMemo<ClassifiedLead[]>(
+        () => current.data?.leads ?? [],
+        [current.data]
+    )
+    const priorLeads = useMemo<ClassifiedLead[]>(
+        () => prior.data?.leads ?? [],
+        [prior.data]
+    )
 
     const filtered = useMemo(
         () => applyFilters(allLeads, { sources, mediums }),
@@ -88,8 +94,8 @@ function LeadTrendsView() {
                 isLoading={current.isLoading}
                 isError={Boolean(current.error)}
                 onRetry={() => {
-                    current.refetch()
-                    prior.refetch()
+                    void current.refetch()
+                    void prior.refetch()
                 }}
                 hasData={allLeads.length > 0}
                 filteredCount={filtered.length}
