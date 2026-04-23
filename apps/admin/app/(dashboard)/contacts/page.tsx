@@ -12,8 +12,15 @@ import {
 import { Mail, Phone, Eye, Download } from 'lucide-react'
 import Link from 'next/link'
 
-import { getContacts } from '@/lib/queries/contacts.query'
-import type { ContactListItem } from '@/lib/types/contacts/contacts.type'
+import { ContactsFilterBar } from '@/components/contacts/contacts-filter-bar.component'
+import {
+    getContactsPageData,
+    parseContactFilters,
+} from '@/lib/queries/contacts-filters'
+import type {
+    ClassifiedContactListItem,
+    ContactListItem,
+} from '@/lib/types/contacts/contacts.type'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -23,7 +30,10 @@ export const metadata = {
     description: 'View and manage contact form submissions',
 }
 
-type SearchParams = Promise<{ page?: string }>
+const PAGE_SIZE = 10
+const MAX_PAGE = 1000
+
+type SearchParams = Promise<Record<string, string | string[] | undefined>>
 
 export default async function ContactsPage({
     searchParams,
@@ -32,19 +42,26 @@ export default async function ContactsPage({
 }) {
     const params = await searchParams
 
-    const MAX_PAGE = 1000
     let page = Number(params.page)
-
-    // Validate: ensure it's a finite integer and positive
-    if (!Number.isInteger(page) || !Number.isFinite(page) || page < 1) {
-        page = 1
-    }
-
-    // Clamp to safe range
+    if (!Number.isInteger(page) || !Number.isFinite(page) || page < 1) page = 1
     page = Math.min(page, MAX_PAGE)
 
-    const { contacts, total } = await getContacts(page, 10)
-    const totalPages = Math.ceil(total / 10)
+    const filters = parseContactFilters(params)
+    const { contacts, total, sourceOptions, mediumOptions } =
+        await getContactsPageData(filters)
+
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+    const safePage = Math.min(page, totalPages)
+    const pageStart = (safePage - 1) * PAGE_SIZE
+    const pageContacts = contacts.slice(pageStart, pageStart + PAGE_SIZE)
+
+    const hasFilterState =
+        filters.sources.length > 0 ||
+        filters.mediums.length > 0 ||
+        filters.dateRangePreset !== '28d'
+
+    const exportHref = buildExportHref(params)
+    const pageHref = (targetPage: number) => buildPageHref(params, targetPage)
 
     return (
         <div className='space-y-6'>
@@ -59,12 +76,22 @@ export default async function ContactsPage({
                     </p>
                 </div>
                 <Button variant='outline' asChild>
-                    <a href='/api/contacts/export' download>
+                    <a href={exportHref} download>
                         <Download className='mr-2 h-4 w-4' />
                         Export CSV
                     </a>
                 </Button>
             </div>
+
+            <ContactsFilterBar
+                sourceOptions={sourceOptions}
+                mediumOptions={mediumOptions}
+                selectedSources={filters.sources}
+                selectedMediums={filters.mediums}
+                dateRangePreset={filters.dateRangePreset}
+                startDate={filters.startDate}
+                endDate={filters.endDate}
+            />
 
             <Card>
                 <CardContent className='p-0'>
@@ -73,7 +100,7 @@ export default async function ContactsPage({
                             <TableRow>
                                 <TableHead>Contact</TableHead>
                                 <TableHead>Subject / Procedure</TableHead>
-                                <TableHead>Source</TableHead>
+                                <TableHead>Attribution</TableHead>
                                 <TableHead>UTM</TableHead>
                                 <TableHead>Date</TableHead>
                                 <TableHead className='w-[100px]'>
@@ -82,17 +109,32 @@ export default async function ContactsPage({
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {contacts.length === 0 ? (
+                            {pageContacts.length === 0 ? (
                                 <TableRow>
                                     <TableCell
                                         colSpan={6}
-                                        className='text-muted-foreground py-8 text-center'
+                                        className='text-muted-foreground py-10 text-center'
                                     >
-                                        No contact submissions yet
+                                        {hasFilterState ? (
+                                            <div className='space-y-2'>
+                                                <p>
+                                                    No contacts match these
+                                                    filters.
+                                                </p>
+                                                <Link
+                                                    href='/contacts'
+                                                    className='text-foreground underline-offset-4 hover:underline'
+                                                >
+                                                    Clear filters
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            'No contact submissions yet'
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                contacts.map((contact) => (
+                                pageContacts.map((contact) => (
                                     <TableRow key={contact.id}>
                                         <TableCell>
                                             <div className='space-y-1'>
@@ -142,9 +184,9 @@ export default async function ContactsPage({
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <span className='text-muted-foreground text-sm'>
-                                                {contact.source ?? 'Direct'}
-                                            </span>
+                                            <AttributionCell
+                                                contact={contact}
+                                            />
                                         </TableCell>
                                         <TableCell>
                                             <UtmBadges contact={contact} />
@@ -188,42 +230,58 @@ export default async function ContactsPage({
                 </CardContent>
             </Card>
 
-            {/* Pagination */}
             {totalPages > 1 && (
                 <div className='flex items-center justify-center gap-2'>
                     <Button
                         variant='outline'
                         size='sm'
-                        disabled={page <= 1}
-                        asChild={page > 1}
+                        disabled={safePage <= 1}
+                        asChild={safePage > 1}
                     >
-                        {page > 1 ? (
-                            <Link href={`/contacts?page=${page - 1}`}>
-                                Previous
-                            </Link>
+                        {safePage > 1 ? (
+                            <Link href={pageHref(safePage - 1)}>Previous</Link>
                         ) : (
                             <span>Previous</span>
                         )}
                     </Button>
                     <span className='text-muted-foreground text-sm'>
-                        Page {page} of {totalPages}
+                        Page {safePage} of {totalPages}
                     </span>
                     <Button
                         variant='outline'
                         size='sm'
-                        disabled={page >= totalPages}
-                        asChild={page < totalPages}
+                        disabled={safePage >= totalPages}
+                        asChild={safePage < totalPages}
                     >
-                        {page < totalPages ? (
-                            <Link href={`/contacts?page=${page + 1}`}>
-                                Next
-                            </Link>
+                        {safePage < totalPages ? (
+                            <Link href={pageHref(safePage + 1)}>Next</Link>
                         ) : (
                             <span>Next</span>
                         )}
                     </Button>
                 </div>
             )}
+        </div>
+    )
+}
+
+function AttributionCell({ contact }: { contact: ClassifiedContactListItem }) {
+    return (
+        <div className='flex flex-col gap-1'>
+            <div className='flex items-center gap-1'>
+                <Badge variant='secondary' className='text-xs'>
+                    {contact.attribution.source}
+                </Badge>
+                <Badge variant='outline' className='text-xs'>
+                    {contact.attribution.medium}
+                </Badge>
+            </div>
+            {contact.source &&
+                contact.source !== contact.attribution.source && (
+                    <span className='text-muted-foreground text-xs'>
+                        raw: {contact.source}
+                    </span>
+                )}
         </div>
     )
 }
@@ -273,4 +331,39 @@ function formatDate(date: Date): string {
         day: 'numeric',
         year: 'numeric',
     }).format(new Date(date))
+}
+
+function serializeParams(
+    params: Record<string, string | string[] | undefined>
+): URLSearchParams {
+    const out = new URLSearchParams()
+    for (const [key, value] of Object.entries(params)) {
+        if (value === undefined) continue
+        if (Array.isArray(value)) {
+            for (const v of value) if (v) out.append(key, v)
+        } else {
+            if (value) out.set(key, value)
+        }
+    }
+    return out
+}
+
+function buildPageHref(
+    params: Record<string, string | string[] | undefined>,
+    targetPage: number
+): string {
+    const next = serializeParams(params)
+    if (targetPage <= 1) next.delete('page')
+    else next.set('page', String(targetPage))
+    const query = next.toString()
+    return query ? `/contacts?${query}` : '/contacts'
+}
+
+function buildExportHref(
+    params: Record<string, string | string[] | undefined>
+): string {
+    const next = serializeParams(params)
+    next.delete('page')
+    const query = next.toString()
+    return query ? `/api/contacts/export?${query}` : '/api/contacts/export'
 }

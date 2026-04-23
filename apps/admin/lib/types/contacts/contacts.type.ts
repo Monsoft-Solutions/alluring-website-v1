@@ -1,3 +1,5 @@
+import type { LeadAttribution } from '@/lib/types/analytics/lead-trends.type'
+
 export type ContactListItem = {
     id: string
     name: string
@@ -22,6 +24,15 @@ export type ContactListItem = {
     landingPage: string | null
     ipAddress: string | null
     createdAt: Date
+}
+
+/**
+ * A ContactListItem with its derived attribution (canonical source/medium
+ * produced by `classifyLeadAttribution`). The attribution is nested to avoid
+ * shadowing the raw `source` column preserved on `ContactListItem`.
+ */
+export type ClassifiedContactListItem = ContactListItem & {
+    attribution: LeadAttribution
 }
 
 export type ContactAnalyticsStats = {
