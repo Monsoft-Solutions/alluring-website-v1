@@ -13,6 +13,12 @@ import { Mail, Phone, Eye, Download } from 'lucide-react'
 import Link from 'next/link'
 
 import { ContactsFilterBar } from '@/components/contacts/contacts-filter-bar.component'
+import { PageSizeSelect } from '@/components/contacts/page-size-select.component'
+import {
+    DEFAULT_PAGE_SIZE,
+    PAGE_SIZE_OPTIONS,
+    type PageSize,
+} from '@/components/contacts/page-size.constants'
 import {
     getContactsPageData,
     parseContactFilters,
@@ -30,8 +36,15 @@ export const metadata = {
     description: 'View and manage contact form submissions',
 }
 
-const PAGE_SIZE = 10
 const MAX_PAGE = 1000
+
+function parsePageSize(raw: string | string[] | undefined): PageSize {
+    const value = Array.isArray(raw) ? raw[0] : raw
+    const parsed = Number(value)
+    return (PAGE_SIZE_OPTIONS as readonly number[]).includes(parsed)
+        ? (parsed as PageSize)
+        : DEFAULT_PAGE_SIZE
+}
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>
 
@@ -46,14 +59,16 @@ export default async function ContactsPage({
     if (!Number.isInteger(page) || !Number.isFinite(page) || page < 1) page = 1
     page = Math.min(page, MAX_PAGE)
 
+    const pageSize = parsePageSize(params.pageSize)
+
     const filters = parseContactFilters(params)
     const { contacts, total, sourceOptions, mediumOptions } =
         await getContactsPageData(filters)
 
-    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+    const totalPages = Math.max(1, Math.ceil(total / pageSize))
     const safePage = Math.min(page, totalPages)
-    const pageStart = (safePage - 1) * PAGE_SIZE
-    const pageContacts = contacts.slice(pageStart, pageStart + PAGE_SIZE)
+    const pageStart = (safePage - 1) * pageSize
+    const pageContacts = contacts.slice(pageStart, pageStart + pageSize)
 
     const hasFilterState =
         filters.sources.length > 0 ||
@@ -230,37 +245,46 @@ export default async function ContactsPage({
                 </CardContent>
             </Card>
 
-            {totalPages > 1 && (
-                <div className='flex items-center justify-center gap-2'>
-                    <Button
-                        variant='outline'
-                        size='sm'
-                        disabled={safePage <= 1}
-                        asChild={safePage > 1}
-                    >
-                        {safePage > 1 ? (
-                            <Link href={pageHref(safePage - 1)}>Previous</Link>
-                        ) : (
-                            <span>Previous</span>
-                        )}
-                    </Button>
+            <div className='flex flex-wrap items-center justify-between gap-3'>
+                <PageSizeSelect pageSize={pageSize} />
+                {totalPages > 1 ? (
+                    <div className='flex items-center gap-2'>
+                        <Button
+                            variant='outline'
+                            size='sm'
+                            disabled={safePage <= 1}
+                            asChild={safePage > 1}
+                        >
+                            {safePage > 1 ? (
+                                <Link href={pageHref(safePage - 1)}>
+                                    Previous
+                                </Link>
+                            ) : (
+                                <span>Previous</span>
+                            )}
+                        </Button>
+                        <span className='text-muted-foreground text-sm'>
+                            Page {safePage} of {totalPages}
+                        </span>
+                        <Button
+                            variant='outline'
+                            size='sm'
+                            disabled={safePage >= totalPages}
+                            asChild={safePage < totalPages}
+                        >
+                            {safePage < totalPages ? (
+                                <Link href={pageHref(safePage + 1)}>Next</Link>
+                            ) : (
+                                <span>Next</span>
+                            )}
+                        </Button>
+                    </div>
+                ) : (
                     <span className='text-muted-foreground text-sm'>
-                        Page {safePage} of {totalPages}
+                        {total} {total === 1 ? 'contact' : 'contacts'}
                     </span>
-                    <Button
-                        variant='outline'
-                        size='sm'
-                        disabled={safePage >= totalPages}
-                        asChild={safePage < totalPages}
-                    >
-                        {safePage < totalPages ? (
-                            <Link href={pageHref(safePage + 1)}>Next</Link>
-                        ) : (
-                            <span>Next</span>
-                        )}
-                    </Button>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     )
 }
