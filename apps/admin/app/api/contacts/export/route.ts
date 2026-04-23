@@ -1,46 +1,21 @@
-import { NextResponse } from 'next/server'
-import { db } from '@workspace/db/client'
-import { contactSubmission } from '@workspace/db/schema/contact'
-import { desc } from 'drizzle-orm'
+import { NextResponse, type NextRequest } from 'next/server'
+
+import {
+    getFilteredClassifiedContacts,
+    parseContactFilters,
+} from '@/lib/queries/contacts-filters'
 import { isAuthenticated } from '@/lib/utils/auth.util'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         const authenticated = await isAuthenticated()
         if (!authenticated) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const contacts = await db
-            .select({
-                id: contactSubmission.id,
-                name: contactSubmission.name,
-                firstName: contactSubmission.firstName,
-                lastName: contactSubmission.lastName,
-                email: contactSubmission.email,
-                phone: contactSubmission.phone,
-                subject: contactSubmission.subject,
-                message: contactSubmission.message,
-                procedure: contactSubmission.procedure,
-                preferredContactTime: contactSubmission.preferredContactTime,
-                source: contactSubmission.source,
-                utmSource: contactSubmission.utmSource,
-                utmMedium: contactSubmission.utmMedium,
-                utmCampaign: contactSubmission.utmCampaign,
-                utmContent: contactSubmission.utmContent,
-                utmTerm: contactSubmission.utmTerm,
-                gclid: contactSubmission.gclid,
-                fbclid: contactSubmission.fbclid,
-                ttclid: contactSubmission.ttclid,
-                referrer: contactSubmission.referrer,
-                landingPage: contactSubmission.landingPage,
-                ipAddress: contactSubmission.ipAddress,
-                createdAt: contactSubmission.createdAt,
-            })
-            .from(contactSubmission)
-            .orderBy(desc(contactSubmission.createdAt))
+        const filters = parseContactFilters(request.nextUrl.searchParams)
+        const { contacts } = await getFilteredClassifiedContacts(filters)
 
-        // Generate CSV
         const headers = [
             'ID',
             'Name',
@@ -53,6 +28,9 @@ export async function GET() {
             'Procedure',
             'Preferred Contact Time',
             'Source',
+            'Classified Source',
+            'Classified Medium',
+            'Classification',
             'UTM Source',
             'UTM Medium',
             'UTM Campaign',
@@ -79,6 +57,9 @@ export async function GET() {
             contact.procedure ?? '',
             contact.preferredContactTime ?? '',
             contact.source ?? '',
+            contact.attribution.source,
+            contact.attribution.medium,
+            contact.attribution.classification,
             contact.utmSource ?? '',
             contact.utmMedium ?? '',
             contact.utmCampaign ?? '',
