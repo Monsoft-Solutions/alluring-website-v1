@@ -97,10 +97,16 @@ async function fetchSpecialsFeaturedGalleryImages(): Promise<GalleryImage[]> {
     // Create a map of groupId to procedureSlug
     const groupToProcedure = new Map(groups.map((g) => [g.id, g.procedureSlug]))
 
-    // Group media by procedure and limit to IMAGES_PER_PROCEDURE each
+    // Group media by procedure and limit to IMAGES_PER_PROCEDURE each.
+    // Media can belong to multiple groups (the join produces one row per
+    // group membership), so track seen IDs to avoid the same image landing
+    // in more than one procedure bucket — that would duplicate React keys.
     const mediaByProcedure = new Map<string, typeof allMedia>()
+    const seenMediaIds = new Set<string>()
 
     for (const media of allMedia) {
+        if (seenMediaIds.has(media.id)) continue
+
         const procedureSlug = groupToProcedure.get(media.groupId)
         if (!procedureSlug) continue
 
@@ -108,6 +114,7 @@ async function fetchSpecialsFeaturedGalleryImages(): Promise<GalleryImage[]> {
         if (existing.length < IMAGES_PER_PROCEDURE) {
             existing.push(media)
             mediaByProcedure.set(procedureSlug, existing)
+            seenMediaIds.add(media.id)
         }
     }
 
