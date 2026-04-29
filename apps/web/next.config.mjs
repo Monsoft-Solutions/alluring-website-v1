@@ -76,7 +76,7 @@ const nextConfig = {
                 permanent: true,
             },
             {
-                source: '/dr-karlinsky',
+                source: '/dr-karlinsky-ig',
                 destination:
                     '/miami-plastic-surgery-specials?utm_source=doctor&utm_medium=dr-karlinsky',
                 permanent: true,
