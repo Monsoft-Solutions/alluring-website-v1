@@ -46,7 +46,7 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
         <section
             id={id}
             aria-labelledby='dr-karlinsky-hero-heading'
-            className='relative w-full overflow-hidden bg-stone-950 pt-28 pb-16 lg:min-h-[100vh] lg:pt-36 lg:pb-24'
+            className='relative w-full overflow-hidden bg-stone-950 pt-10 pb-16 sm:pt-14 lg:min-h-[calc(100vh-72px)] lg:pt-20 lg:pb-24'
         >
             {/* Ambient gradient + gold orbs */}
             <div className='pointer-events-none absolute inset-0'>

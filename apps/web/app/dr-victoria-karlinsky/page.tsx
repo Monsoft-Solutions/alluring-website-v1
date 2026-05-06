@@ -20,10 +20,11 @@ import { ContainerLayout } from '@/components/container-layout.component'
 import { DrKarlinskyAbout } from '@/components/dr-karlinsky-landing/dr-karlinsky-about.component'
 import { DrKarlinskyCredentialsWall } from '@/components/dr-karlinsky-landing/dr-karlinsky-credentials-wall.component'
 import { DrKarlinskyHero } from '@/components/dr-karlinsky-landing/dr-karlinsky-hero.component'
+import { DrKarlinskyMinimalFooter } from '@/components/dr-karlinsky-landing/dr-karlinsky-minimal-footer.component'
+import { DrKarlinskyMinimalHeader } from '@/components/dr-karlinsky-landing/dr-karlinsky-minimal-header.component'
 import { DrKarlinskySpecialties } from '@/components/dr-karlinsky-landing/dr-karlinsky-specialties.component'
 import { DrKarlinskyTrustStrip } from '@/components/dr-karlinsky-landing/dr-karlinsky-trust-strip.component'
 import { DrKarlinskyWhyChoose } from '@/components/dr-karlinsky-landing/dr-karlinsky-why-choose.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
@@ -180,6 +181,9 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                 />
             )}
 
+            {/* Stripped chrome — no nav exits, just logo + phone + book CTA */}
+            <DrKarlinskyMinimalHeader formAnchor={HERO_FORM_ANCHOR} />
+
             {/* Page content */}
             <ContainerLayout as='main' noPaddingTop noPadding size='full'>
                 <DrKarlinskyHero id='hero' />
@@ -213,6 +217,8 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     title='Patients on Dr. Karlinsky'
                     subtitle='Verified Google reviews from real patients'
                     limit={3}
+                    showGoogleLink={false}
+                    showViewAllButton={false}
                     includeSchema={false}
                 />
 
@@ -258,7 +264,7 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                 />
             </ContainerLayout>
 
-            <ExitIntentPopup />
+            <DrKarlinskyMinimalFooter />
         </>
     )
 }

@@ -5,7 +5,7 @@
  * deeper research (link to procedure detail) AND offers a fast-path back to
  * the hero form for visitors ready to book without reading more.
  */
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowDownRight } from 'lucide-react'
 import Link from 'next/link'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
@@ -13,49 +13,40 @@ import { SectionContainer } from '@/components/shared/section-container.componen
 
 type SpecialtyCard = {
     readonly title: string
-    readonly procedureSlug: string
     readonly tagline: string
 }
 
 const SPECIALTIES: readonly SpecialtyCard[] = [
     {
         title: 'Brazilian Butt Lift (BBL)',
-        procedureSlug: 'brazilian-butt-lift-bbl-miami',
         tagline: 'Sculpted curves with safety-first technique.',
     },
     {
         title: 'Mommy Makeover',
-        procedureSlug: 'mommy-makeover-miami',
         tagline: 'Reclaim your pre-pregnancy silhouette.',
     },
     {
         title: 'Tummy Tuck (Abdominoplasty)',
-        procedureSlug: 'tummy-tuck-miami',
         tagline: 'A flatter, firmer midsection.',
     },
     {
         title: 'Liposuction & Lipo 360',
-        procedureSlug: 'liposuction-miami',
         tagline: 'Full-body contouring with precision.',
     },
     {
         title: 'Breast Augmentation & Lift',
-        procedureSlug: 'breast-augmentation-miami',
         tagline: 'Natural shape, balanced proportions.',
     },
     {
         title: 'Breast Reduction',
-        procedureSlug: 'breast-reduction-miami',
         tagline: 'Comfort and confidence restored.',
     },
     {
         title: 'Facelift',
-        procedureSlug: 'facelift-miami',
         tagline: 'Refreshed, rested — never overdone.',
     },
     {
         title: 'Blepharoplasty (Eyelid)',
-        procedureSlug: 'blepharoplasty-miami',
         tagline: 'Brighter, more open eyes.',
     },
 ] as const
@@ -100,9 +91,9 @@ export function DrKarlinskySpecialties({
 
                 <ul className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5'>
                     {SPECIALTIES.map((specialty, index) => (
-                        <li key={specialty.procedureSlug}>
+                        <li key={specialty.title}>
                             <Link
-                                href={`/procedures/${specialty.procedureSlug}`}
+                                href={formAnchor}
                                 className='hover:ring-gold-300 group relative flex h-full flex-col justify-between overflow-hidden rounded-xl bg-stone-50 p-5 ring-1 ring-stone-200/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg hover:shadow-stone-300/50'
                             >
                                 {/* Number plate */}
@@ -124,9 +115,9 @@ export function DrKarlinskySpecialties({
 
                                 <div className='mt-5 flex items-center justify-between border-t border-stone-200/70 pt-4'>
                                     <span className='text-gold-600 group-hover:text-gold-700 text-xs font-semibold tracking-wide uppercase transition-colors'>
-                                        Explore Procedure
+                                        Ask Dr. Karlinsky
                                     </span>
-                                    <ArrowUpRight className='text-gold-500 group-hover:text-gold-700 h-4 w-4 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                                    <ArrowDownRight className='text-gold-500 group-hover:text-gold-700 h-4 w-4 transition-all group-hover:translate-x-0.5 group-hover:translate-y-0.5' />
                                 </div>
                             </Link>
                         </li>
