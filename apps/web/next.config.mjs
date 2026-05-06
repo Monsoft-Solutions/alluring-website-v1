@@ -78,7 +78,7 @@ const nextConfig = {
             {
                 source: '/dr-karlinsky-ig',
                 destination:
-                    '/miami-plastic-surgery-specials?utm_source=doctor&utm_medium=dr-karlinsky',
+                    '/landing/dr-victoria-karlinsky?utm_source=doctor&utm_medium=dr-karlinsky',
                 permanent: true,
             },
             {
