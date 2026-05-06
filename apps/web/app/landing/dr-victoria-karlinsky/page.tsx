@@ -61,7 +61,7 @@ export const metadata = toNextMetadata(seoConfig, {
         siteName: seoConfig.siteName,
         images: [
             {
-                url: `${seoConfig.siteUrl}/og-image.jpg`,
+                url: `${PAGE_PATH}/opengraph-image`,
                 width: 1200,
                 height: 630,
                 alt: `Dr. Victoria Karlinsky - ${siteConfig.business.name} Miami`,
@@ -74,7 +74,7 @@ export const metadata = toNextMetadata(seoConfig, {
         title: 'Book With Dr. Karlinsky · Miami Cosmetic Surgeon',
         description:
             'Triple board-certified. Free consult. Booking this month — virtual or in-person.',
-        images: [`${seoConfig.siteUrl}/og-image.jpg`],
+        images: [`${PAGE_PATH}/opengraph-image`],
     },
 
     alternates: {
