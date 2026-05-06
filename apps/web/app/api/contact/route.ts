@@ -35,6 +35,7 @@ import {
     sendContactNotification,
 } from '@/lib/services/email.service'
 import { sendLeadToN8N } from '@/lib/services/n8n-webhook.service'
+import { sanitizeAdClickIds } from '@/lib/analytics/sanitize-attribution.util'
 import { siteConfig } from '@/lib/data/site-config'
 import { env } from '@/env'
 
@@ -477,6 +478,11 @@ export async function POST(
         // Extract client IP for analytics
         const clientIP = getClientIP(request)
 
+        // Drop click IDs that don't match the explicit utm_source. Instagram
+        // appends fbclid to every outbound bio-link click, so without this
+        // doctor/influencer/organic-social leads get falsely attributed to Meta.
+        const attribution = sanitizeAdClickIds(validatedData)
+
         const insertData: InsertContactSubmission = {
             name: fullName,
             firstName: validatedData.firstName,
@@ -500,9 +506,9 @@ export async function POST(
             utmCampaign: validatedData.utmCampaign,
             utmContent: validatedData.utmContent,
             utmTerm: validatedData.utmTerm,
-            gclid: validatedData.gclid,
-            fbclid: validatedData.fbclid,
-            ttclid: validatedData.ttclid,
+            gclid: attribution.gclid,
+            fbclid: attribution.fbclid,
+            ttclid: attribution.ttclid,
             referrer: validatedData.referrer,
             landingPage: validatedData.landingPage,
         }
