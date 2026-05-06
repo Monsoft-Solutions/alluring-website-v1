@@ -8,10 +8,10 @@ import { Header } from './header.component'
 
 /**
  * Routes that should not have header/footer
- * These are standalone pages like link-in-bio and ad landing pages
- * that ship with their own minimal chrome.
+ * These are standalone pages like link-in-bio (/links) and paid ad landing
+ * pages under /landing/*, which ship with their own minimal chrome.
  */
-const STANDALONE_ROUTES = ['/links', '/dr-victoria-karlinsky']
+const STANDALONE_ROUTES = ['/links', '/landing']
 
 interface ConditionalLayoutProps {
     children: ReactNode

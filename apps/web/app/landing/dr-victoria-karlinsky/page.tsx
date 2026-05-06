@@ -5,8 +5,10 @@
  * and high-intent organic searches. Conversion-optimized: every section drives
  * toward the hero ConsultationForm (#hero-form).
  *
- * URL: /dr-victoria-karlinsky
- * Distinct from the existing /dr-karlinsky bio page (slug-based) so paid
+ * URL: /landing/dr-victoria-karlinsky
+ * Lives under /landing/* so the global header/footer are auto-stripped via
+ * STANDALONE_ROUTES, and so future ad LPs share the same namespace and chrome
+ * treatment. Distinct from /dr-karlinsky (the canonical bio page) so paid
  * traffic and organic discovery stay separate.
  */
 import {
@@ -44,7 +46,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 const HERO_FORM_ANCHOR = '#hero-form'
-const PAGE_PATH = '/dr-victoria-karlinsky'
+const PAGE_PATH = '/landing/dr-victoria-karlinsky'
 const PAGE_URL = `${seoConfig.siteUrl}${PAGE_PATH}`
 
 export const metadata = toNextMetadata(seoConfig, {
