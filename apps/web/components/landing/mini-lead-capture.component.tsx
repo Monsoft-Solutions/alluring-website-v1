@@ -27,15 +27,22 @@ import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import {
     CONTACT_SOURCES,
+    type ContactSource,
     type LeadCaptureInput,
     leadCaptureSchema,
 } from '@/lib/types/forms/contact-form.type'
 
 export type MiniLeadCaptureProps = {
     readonly id?: string
+    readonly source?: ContactSource
+    readonly analyticsFormName?: string
 }
 
-export function MiniLeadCapture({ id = 'mini-capture' }: MiniLeadCaptureProps) {
+export function MiniLeadCapture({
+    id = 'mini-capture',
+    source = CONTACT_SOURCES.LANDING_PAGE,
+    analyticsFormName = 'landing_mini_capture',
+}: MiniLeadCaptureProps) {
     const form = useForm<LeadCaptureInput>({
         resolver: zodResolver(leadCaptureSchema),
         defaultValues: {
@@ -47,9 +54,9 @@ export function MiniLeadCapture({ id = 'mini-capture' }: MiniLeadCaptureProps) {
 
     const { submit, state, isSubmitting, isSuccess, isError } =
         useContactFormSubmission({
-            source: CONTACT_SOURCES.LANDING_PAGE,
+            source,
             enableAnalytics: true,
-            analyticsFormName: 'landing_mini_capture',
+            analyticsFormName,
             redirectOnSuccess: '/thank-you',
             onSuccess: () => {
                 form.reset()
