@@ -1,9 +1,9 @@
 /**
  * DrKarlinskySpecialties
  *
- * 8-card specialty grid mapped to real procedure pages. Each card invites
- * deeper research (link to procedure detail) AND offers a fast-path back to
- * the hero form for visitors ready to book without reading more.
+ * Six top-of-mind procedures for IG-bio-link traffic. Trimmed from
+ * eight to keep the grid one-screen-tall on mobile and to bias toward
+ * the procedures Dr. K's IG audience actually asks about.
  */
 import { ArrowDownRight } from 'lucide-react'
 import Link from 'next/link'
@@ -18,36 +18,28 @@ type SpecialtyCard = {
 
 const SPECIALTIES: readonly SpecialtyCard[] = [
     {
-        title: 'Brazilian Butt Lift (BBL)',
-        tagline: 'Sculpted curves with safety-first technique.',
+        title: 'Brazilian Butt Lift',
+        tagline: 'Sculpted curves, safety first.',
     },
     {
         title: 'Mommy Makeover',
-        tagline: 'Reclaim your pre-pregnancy silhouette.',
+        tagline: 'Pre-pregnancy silhouette, restored.',
     },
     {
-        title: 'Tummy Tuck (Abdominoplasty)',
+        title: 'Tummy Tuck',
         tagline: 'A flatter, firmer midsection.',
     },
     {
-        title: 'Liposuction & Lipo 360',
-        tagline: 'Full-body contouring with precision.',
+        title: 'Lipo 360',
+        tagline: 'Full-body contouring, precise.',
     },
     {
         title: 'Breast Augmentation & Lift',
-        tagline: 'Natural shape, balanced proportions.',
-    },
-    {
-        title: 'Breast Reduction',
-        tagline: 'Comfort and confidence restored.',
+        tagline: 'Natural shape. Balanced proportions.',
     },
     {
         title: 'Facelift',
-        tagline: 'Refreshed, rested — never overdone.',
-    },
-    {
-        title: 'Blepharoplasty (Eyelid)',
-        tagline: 'Brighter, more open eyes.',
+        tagline: 'Refreshed — never overdone.',
     },
 ] as const
 
@@ -74,22 +66,18 @@ export function DrKarlinskySpecialties({
             >
                 <div className='mx-auto mb-14 max-w-3xl text-center lg:mb-16'>
                     <p className='text-gold-600 mb-3 text-xs font-bold tracking-[0.22em] uppercase'>
-                        Procedures Performed by Dr. Karlinsky
+                        What Dr. Karlinsky Does
                     </p>
                     <h2 className='font-serif text-3xl leading-tight text-stone-900 md:text-4xl lg:text-5xl'>
-                        Eight signature procedures.{' '}
-                        <span className='text-gold-600 italic'>
-                            One uncompromising standard.
-                        </span>
+                        What women fly into Miami{' '}
+                        <span className='text-gold-600 italic'>for.</span>
                     </h2>
                     <p className='mt-4 text-base leading-relaxed text-stone-600 lg:text-lg'>
-                        Each plan is built around <em>your</em> anatomy and
-                        goals. Not sure which procedure fits? Dr. Karlinsky will
-                        walk you through every option in your free consult.
+                        Tap any procedure and we&apos;ll start the conversation.
                     </p>
                 </div>
 
-                <ul className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5'>
+                <ul className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5'>
                     {SPECIALTIES.map((specialty, index) => (
                         <li key={specialty.title}>
                             <Link
@@ -125,16 +113,16 @@ export function DrKarlinskySpecialties({
                 </ul>
 
                 {/* Bottom redirect to form */}
-                <div className='mt-12 flex flex-col items-center gap-3 text-center'>
+                <div className='mt-12 flex flex-col items-center gap-2 text-center'>
                     <p className='text-stone-600'>
-                        Considering more than one? Dr. Karlinsky often combines
-                        procedures safely in a single session.
+                        Combining two? Dr. Karlinsky does that, safely, all the
+                        time.
                     </p>
                     <Link
                         href={formAnchor}
                         className='text-gold-700 hover:text-gold-800 hover:decoration-gold-500 inline-flex items-center gap-2 font-medium underline decoration-stone-300 underline-offset-4 transition-colors'
                     >
-                        Discuss your combination
+                        Discuss yours
                         <span aria-hidden='true'>↑</span>
                     </Link>
                 </div>

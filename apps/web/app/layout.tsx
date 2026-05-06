@@ -12,6 +12,7 @@ import { FloatingChatButton } from '@/components/chat/floating-chat-button.compo
 import { FloatingFeedbackButton } from '@/components/feedback/floating-feedback-button.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
+import { NonStandaloneOnly } from '@/components/layout/non-standalone-only.component'
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
 import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
@@ -157,13 +158,17 @@ export default function RootLayout({
                     <ExitIntentPopup />
                     {/* Promotion Modal - Timed popup with lead capture */}
                     <PromoModalWrapper />
-                    {/* Mobile Call Button - visible on mobile devices only */}
+                    {/* Mobile Call Button - visible on mobile devices only.
+                        Suppressed on standalone routes (/landing, /links) so
+                        ad/IG landing pages can ship their own chrome. */}
                     {isMobileCallButtonEnabled && (
-                        <MobileCallButton
-                            position='bottom-left'
-                            style='icon-only'
-                            isBanner={false}
-                        />
+                        <NonStandaloneOnly>
+                            <MobileCallButton
+                                position='bottom-left'
+                                style='icon-only'
+                                isBanner={false}
+                            />
+                        </NonStandaloneOnly>
                     )}
                     {/* Beta Feedback Button - visible during beta testing */}
                     {isBetaMode && <FloatingFeedbackButton />}

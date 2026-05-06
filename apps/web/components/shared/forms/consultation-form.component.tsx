@@ -22,7 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@workspace/ui/components/form'
 import { CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { type Resolver, useForm } from 'react-hook-form'
 
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
@@ -39,6 +39,7 @@ import { siteConfig } from '@/lib/data/site-config'
 import {
     type ConsultationFormInput,
     type ContactSource,
+    consultationFormCompactSchema,
     consultationFormSchema,
     PREFERRED_CONTACT_TIME_OPTIONS,
     PROCEDURE_OPTIONS,
@@ -68,6 +69,18 @@ export type ConsultationFormProps = {
     readonly showPreferredContactTime?: boolean
     /** Default procedure value for pre-populating the procedure dropdown */
     readonly defaultProcedure?: string
+    /**
+     * Mobile-first compact variant. When true:
+     * - Hides Last Name, Email, and Preferred Contact Time fields
+     * - Only First Name + Phone + Procedure (optional) + Consent are visible
+     * - Uses the relaxed `consultationFormCompactSchema`
+     * - Replaces the default submit copy unless `submitText` is set
+     */
+    readonly compact?: boolean
+    /** Custom submit button label (overrides default) */
+    readonly submitText?: string
+    /** Custom privacy/footer note below the submit button */
+    readonly footerNote?: string
 }
 
 /**
@@ -97,9 +110,14 @@ export function ConsultationForm({
     redirectOnSuccess,
     showPreferredContactTime = true,
     defaultProcedure,
+    compact = false,
+    submitText,
+    footerNote,
 }: ConsultationFormProps) {
     const form = useForm<ConsultationFormInput>({
-        resolver: zodResolver(consultationFormSchema),
+        resolver: zodResolver(
+            compact ? consultationFormCompactSchema : consultationFormSchema
+        ) as Resolver<ConsultationFormInput>,
         defaultValues: {
             firstName: '',
             lastName: '',
@@ -194,8 +212,8 @@ export function ConsultationForm({
                             />
                         </div>
 
-                        {/* First Name & Last Name Row */}
-                        <div className='grid gap-6 md:grid-cols-2'>
+                        {/* Name row — last name hidden in compact mode */}
+                        {compact ? (
                             <FirstNameField
                                 control={form.control}
                                 name='firstName'
@@ -205,28 +223,31 @@ export function ConsultationForm({
                                 variant='dark'
                                 required
                             />
-                            <LastNameField
-                                control={form.control}
-                                name='lastName'
-                                label='Last Name'
-                                placeholder='Last name'
-                                disabled={isSubmitting}
-                                variant='dark'
-                                required
-                            />
-                        </div>
+                        ) : (
+                            <div className='grid gap-6 md:grid-cols-2'>
+                                <FirstNameField
+                                    control={form.control}
+                                    name='firstName'
+                                    label='First Name'
+                                    placeholder='First name'
+                                    disabled={isSubmitting}
+                                    variant='dark'
+                                    required
+                                />
+                                <LastNameField
+                                    control={form.control}
+                                    name='lastName'
+                                    label='Last Name'
+                                    placeholder='Last name'
+                                    disabled={isSubmitting}
+                                    variant='dark'
+                                    required
+                                />
+                            </div>
+                        )}
 
-                        {/* Email & Phone Row */}
-                        <div className='grid gap-6 md:grid-cols-2'>
-                            <EmailField
-                                control={form.control}
-                                name='email'
-                                label='Email'
-                                placeholder='your@email.com'
-                                disabled={isSubmitting}
-                                variant='dark'
-                                required
-                            />
+                        {/* Phone always shown; email hidden in compact mode */}
+                        {compact ? (
                             <PhoneField
                                 control={form.control}
                                 name='phone'
@@ -236,7 +257,28 @@ export function ConsultationForm({
                                 variant='dark'
                                 required
                             />
-                        </div>
+                        ) : (
+                            <div className='grid gap-6 md:grid-cols-2'>
+                                <EmailField
+                                    control={form.control}
+                                    name='email'
+                                    label='Email'
+                                    placeholder='your@email.com'
+                                    disabled={isSubmitting}
+                                    variant='dark'
+                                    required
+                                />
+                                <PhoneField
+                                    control={form.control}
+                                    name='phone'
+                                    label='Phone Number'
+                                    placeholder='(555) 555-5555'
+                                    disabled={isSubmitting}
+                                    variant='dark'
+                                    required
+                                />
+                            </div>
+                        )}
 
                         {/* Procedure Selector */}
                         <SelectField
@@ -248,8 +290,8 @@ export function ConsultationForm({
                             options={PROCEDURE_OPTIONS}
                         />
 
-                        {/* Preferred Contact Time - Optional based on prop */}
-                        {showPreferredContactTime && (
+                        {/* Preferred Contact Time - hidden in compact mode */}
+                        {!compact && showPreferredContactTime && (
                             <SelectField
                                 control={form.control}
                                 name='preferredContactTime'
@@ -308,14 +350,17 @@ export function ConsultationForm({
                                 showSendIcon
                                 showSparkles
                             >
-                                Yes, I Want My Free Consultation
+                                {submitText ??
+                                    (compact
+                                        ? 'Book My Consult'
+                                        : 'Yes, I Want My Free Consultation')}
                             </SubmitButton>
                         </div>
 
                         {/* Privacy Note */}
                         <p className='text-center text-xs text-stone-500'>
-                            Your information is private and secure. We respond
-                            within 24 hours.
+                            {footerNote ??
+                                'Your information is private and secure. We respond within 24 hours.'}
                         </p>
                     </form>
                 </Form>
