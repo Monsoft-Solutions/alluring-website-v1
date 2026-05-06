@@ -1,15 +1,17 @@
 /**
  * Dr. Victoria Karlinsky — Lead Conversion Landing Page
  *
- * Dedicated landing page for paid ad traffic targeting Dr. Karlinsky's name
- * and high-intent organic searches. Conversion-optimized: every section drives
- * toward the hero ConsultationForm (#hero-form).
+ * Optimized for warm Instagram-bio-link traffic. The visitor already
+ * follows Dr. Karlinsky on IG, so the page leads with results and gives
+ * them one decisive booking path — not a credentials wall.
  *
  * URL: /landing/dr-victoria-karlinsky
  * Lives under /landing/* so the global header/footer are auto-stripped via
- * STANDALONE_ROUTES, and so future ad LPs share the same namespace and chrome
- * treatment. Distinct from /dr-karlinsky (the canonical bio page) so paid
- * traffic and organic discovery stay separate.
+ * STANDALONE_ROUTES, and so future ad LPs share the same namespace and
+ * chrome treatment. Distinct from /dr-karlinsky (the canonical bio page)
+ * so paid traffic and organic discovery stay separate.
+ *
+ * Entry point for IG: `/dr-karlinsky-ig` (308 redirect appends UTMs).
  */
 import {
     FAQSchema,
@@ -19,15 +21,11 @@ import {
 } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
-import { DrKarlinskyAbout } from '@/components/dr-karlinsky-landing/dr-karlinsky-about.component'
-import { DrKarlinskyCredentialsWall } from '@/components/dr-karlinsky-landing/dr-karlinsky-credentials-wall.component'
 import { DrKarlinskyHero } from '@/components/dr-karlinsky-landing/dr-karlinsky-hero.component'
 import { DrKarlinskyMinimalFooter } from '@/components/dr-karlinsky-landing/dr-karlinsky-minimal-footer.component'
 import { DrKarlinskyMinimalHeader } from '@/components/dr-karlinsky-landing/dr-karlinsky-minimal-header.component'
 import { DrKarlinskySpecialties } from '@/components/dr-karlinsky-landing/dr-karlinsky-specialties.component'
-import { DrKarlinskyTrustStrip } from '@/components/dr-karlinsky-landing/dr-karlinsky-trust-strip.component'
-import { DrKarlinskyWhyChoose } from '@/components/dr-karlinsky-landing/dr-karlinsky-why-choose.component'
-import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
+import { DrKarlinskyStickyMobileCTA } from '@/components/dr-karlinsky-landing/dr-karlinsky-sticky-mobile-cta.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
@@ -43,7 +41,6 @@ import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
-import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 const HERO_FORM_ANCHOR = '#hero-form'
 const PAGE_PATH = '/landing/dr-victoria-karlinsky'
@@ -51,14 +48,14 @@ const PAGE_URL = `${seoConfig.siteUrl}${PAGE_PATH}`
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: PAGE_PATH,
-    title: 'Dr. Victoria Karlinsky | Triple Board-Certified Miami Surgeon',
+    title: 'Book With Dr. Karlinsky · Triple Board-Certified Miami Surgeon',
     description:
-        'Meet Dr. Victoria Karlinsky — triple board-certified cosmetic surgeon and FACS Fellow in Miami. BBL, mommy makeover, tummy tuck, breast & facial surgery. Free consult. Financing from $27/week.',
+        "Free consult with Dr. Victoria Karlinsky — triple board-certified Miami cosmetic surgeon. BBL, mommy makeover, tummy tuck, breast & facial surgery. Financing from $27/week. We'll text you within 24 hours.",
 
     openGraph: {
-        title: 'Dr. Victoria Karlinsky | Triple Board-Certified Miami Surgeon',
+        title: 'Book With Dr. Karlinsky · Triple Board-Certified Miami Surgeon',
         description:
-            'Meet Dr. Victoria Karlinsky — triple board-certified cosmetic surgeon in Miami. Triple board-certified, FACS Fellow, fellowship director. Book your free consultation.',
+            "Free consult with Dr. Victoria Karlinsky in Miami. Triple board-certified. Financing available. We'll text you within 24 hours.",
         url: PAGE_URL,
         type: 'profile',
         siteName: seoConfig.siteName,
@@ -74,9 +71,9 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Dr. Victoria Karlinsky | Miami Cosmetic Surgeon',
+        title: 'Book With Dr. Karlinsky · Miami Cosmetic Surgeon',
         description:
-            'Triple board-certified. FACS Fellow. Now booking complimentary consultations in Miami.',
+            'Triple board-certified. Free consult. Booking this month — virtual or in-person.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 
@@ -106,15 +103,13 @@ export default async function DrVictoriaKarlinskyLandingPage() {
           ]
         : []
 
-    const phoneTel = siteConfig.contact.phone.replace(/\D/g, '')
-
     return (
         <>
             {/* Page schema */}
             <WebPageSchema
                 name={`Dr. Victoria Karlinsky - ${siteConfig.business.name}`}
                 url={PAGE_URL}
-                description='Meet Dr. Victoria Karlinsky, triple board-certified cosmetic surgeon at Alluring Plastic Surgery Miami. Book a complimentary consultation.'
+                description='Book a complimentary consultation with Dr. Victoria Karlinsky, triple board-certified cosmetic surgeon at Alluring Plastic Surgery Miami.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -186,47 +181,26 @@ export default async function DrVictoriaKarlinskyLandingPage() {
             {/* Stripped chrome — no nav exits, just logo + phone + book CTA */}
             <DrKarlinskyMinimalHeader formAnchor={HERO_FORM_ANCHOR} />
 
-            {/* Page content */}
+            {/* Page content — IG-warm flow: hero → results → voices →
+                procedures → answers → financing → final CTA */}
             <ContainerLayout as='main' noPaddingTop noPadding size='full'>
                 <DrKarlinskyHero id='hero' />
-
-                <DrKarlinskyTrustStrip id='trust-strip' />
-
-                <DrKarlinskyAbout
-                    id='about-doctor'
-                    formAnchor={HERO_FORM_ANCHOR}
-                />
-
-                <DrKarlinskyWhyChoose
-                    id='why-dr-karlinsky'
-                    formAnchor={HERO_FORM_ANCHOR}
-                />
-
-                <DrKarlinskySpecialties
-                    id='specialties'
-                    formAnchor={HERO_FORM_ANCHOR}
-                />
-
-                <MiniLeadCapture
-                    id='mini-capture'
-                    source={CONTACT_SOURCES.DR_KARLINSKY_LANDING}
-                    analyticsFormName='dr_karlinsky_mini_capture'
-                />
 
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
                 <GoogleReviews
                     title='Patients on Dr. Karlinsky'
-                    subtitle='Verified Google reviews from real patients'
+                    subtitle='Verified Google reviews'
                     limit={3}
                     showGoogleLink={false}
                     showViewAllButton={false}
                     includeSchema={false}
                 />
 
-                <DrKarlinskyCredentialsWall id='credentials' />
-
-                <WeeklyPayments id='financing' formAnchor={HERO_FORM_ANCHOR} />
+                <DrKarlinskySpecialties
+                    id='specialties'
+                    formAnchor={HERO_FORM_ANCHOR}
+                />
 
                 <CategorizedFAQ
                     id='faq'
@@ -239,34 +213,31 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     variant='default'
                     showBackgroundDecoration={true}
                     includeSchema={false}
-                    ctaConfig={{
-                        title: 'Still have questions?',
-                        description:
-                            'Our patient concierge is happy to talk it through — no pressure, just honest answers.',
-                        buttonText: 'Call Now',
-                        phoneNumber: phoneTel,
-                    }}
                 />
+
+                <WeeklyPayments id='financing' formAnchor={HERO_FORM_ANCHOR} />
 
                 <CTASection
                     id='final-cta'
                     variant='luxury'
                     eyebrow='Take the First Step'
-                    heading='Ready to meet Dr. Karlinsky?'
-                    description='Triple board-certified. FACS Fellow. Fellowship Director. Now booking complimentary consultations in Miami — virtual or in-person.'
+                    heading="Let's plan yours."
+                    description='Free consult. Honest plan. No pressure — just answers, when you’re ready.'
                     primaryButton={{
                         text: 'Book My Free Consultation',
                         href: HERO_FORM_ANCHOR,
-                    }}
-                    secondaryButton={{
-                        text: `Call ${siteConfig.contact.phoneDisplay}`,
-                        href: `tel:${phoneTel}`,
                     }}
                     size='lg'
                 />
             </ContainerLayout>
 
             <DrKarlinskyMinimalFooter />
+
+            {/* Mobile-only sticky booking bar — hides while hero form is on screen */}
+            <DrKarlinskyStickyMobileCTA
+                formAnchor={HERO_FORM_ANCHOR}
+                heroFormId='hero-form'
+            />
         </>
     )
 }

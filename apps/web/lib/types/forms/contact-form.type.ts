@@ -465,6 +465,24 @@ export type ConsultationFormInput = z.input<typeof consultationFormSchema>
 export type ConsultationFormData = z.output<typeof consultationFormSchema>
 
 /**
+ * Compact consultation form schema
+ * Mobile-first variant for warm-traffic landing pages where every
+ * field cut compounds into a higher submit rate. Only firstName,
+ * phone, and consent are required. lastName/email are dropped from
+ * the UI entirely (callback will capture what we need).
+ */
+export const consultationFormCompactSchema = z.object({
+    firstName: firstNameSchema,
+    lastName: lastNameSchema.optional(),
+    email: emailSchema,
+    phone: requiredPhoneSchema,
+    procedure: z.string().optional(),
+    preferredContactTime: preferredContactTimeSchema,
+    consentGiven: consentSchema,
+    _website: z.string().optional(),
+})
+
+/**
  * Lead capture schema - minimal fields for conversion-focused forms
  * Used by: BlogCTA footer, ExitIntentPopup, LeadForm
  * Name is optional to minimize friction in lead capture forms

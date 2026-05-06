@@ -1,18 +1,20 @@
 /**
  * DrKarlinskyHero
  *
- * Lead-conversion hero for Dr. Victoria Karlinsky's landing page.
+ * Lead-conversion hero for warm Instagram-bio-link traffic. The visitor
+ * already follows Dr. Karlinsky on IG — we don't introduce her, we
+ * acknowledge her work and pivot to "let's plan yours."
  *
- * Layout: portrait + authority on the left, ConsultationForm on the right.
- * Mobile stacks form-first (above the fold) with portrait moving below the
- * headline so the call-to-action stays one tap away.
+ * Layout: portrait + authority on the left, compact ConsultationForm on
+ * the right (3 fields + consent). Mobile stacks form-first so the call
+ * to action stays one tap away.
  */
 import {
     Award,
     BadgeCheck,
+    ExternalLink,
     Languages,
     MapPin,
-    Quote,
     ShieldCheck,
 } from 'lucide-react'
 import Image from 'next/image'
@@ -41,6 +43,8 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
     }
 
     const firstName = surgeon.name.replace(/^Dr\.\s+/, '').split(' ')[0]
+    const healthgradesUrl = surgeon.externalProfiles?.healthgrades
+    const realselfUrl = surgeon.externalProfiles?.realself
 
     return (
         <section
@@ -72,80 +76,55 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
                         <span className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm'>
                             <span className='bg-gold-400 h-1.5 w-1.5 rounded-full' />
                             <span className='text-xs font-medium tracking-wide text-stone-300 uppercase'>
-                                Now booking consultations
+                                Booking this month
                             </span>
                         </span>
                     </div>
 
-                    {/* Headline */}
+                    {/* Headline — IG-warm voice */}
                     <h1
                         id='dr-karlinsky-hero-heading'
                         className='animate-fade-in-up animate-delay-100 mb-5 font-serif text-4xl leading-[1.05] text-white sm:text-5xl lg:text-6xl xl:text-7xl'
                     >
-                        Meet{' '}
-                        <span className='text-gold-300 italic'>
-                            {surgeon.name}
-                        </span>
-                        <span className='mt-2 block text-2xl font-light text-stone-300 sm:text-3xl lg:text-4xl'>
-                            The Miami surgeon trusted with your most personal
-                            transformation.
+                        You followed{' '}
+                        <span className='text-gold-300 italic'>her work.</span>
+                        <span className='mt-2 block text-3xl font-light text-stone-200 sm:text-4xl lg:text-5xl'>
+                            Now let&apos;s plan yours.
                         </span>
                     </h1>
 
-                    {/* Subhead / promise */}
+                    {/* Subhead / promise — tight, benefit-led */}
                     <p className='animate-fade-in-up animate-delay-150 mb-8 max-w-xl text-lg leading-relaxed text-stone-300 lg:text-xl'>
-                        Triple board-certified. Fellowship-trained. Known for
-                        results that look unmistakably <em>like you</em> — never
-                        overdone. Book a complimentary consultation with Dr.{' '}
-                        {firstName} and start a plan that actually fits your
-                        body, your life, and your budget.
+                        Triple board-certified Miami surgeon. Booking
+                        complimentary consults this month — virtual or
+                        in-person. Honest plan. No pressure.
                     </p>
 
-                    {/* Portrait + Quote (split inside the left column) */}
-                    <div className='animate-fade-in-up animate-delay-200 mb-8 grid gap-6 sm:grid-cols-5'>
-                        <div className='relative sm:col-span-2'>
-                            <div className='ring-gold-500/20 group relative aspect-[3/4] w-full overflow-hidden rounded-2xl ring-1 sm:rounded-3xl'>
-                                <Image
-                                    src={surgeon.images.featured}
-                                    alt={`${surgeon.name}, ${surgeon.title}`}
-                                    fill
-                                    sizes='(min-width: 1024px) 280px, (min-width: 640px) 38vw, 100vw'
-                                    className='object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]'
-                                    priority
-                                />
-                                <div className='absolute inset-0 bg-gradient-to-t from-stone-950/70 via-transparent to-transparent' />
-                                <div className='absolute right-3 bottom-3 left-3'>
-                                    <div className='border-gold-500/30 inline-flex items-center gap-1.5 rounded-full border bg-stone-950/70 px-2.5 py-1 backdrop-blur-md'>
-                                        <BadgeCheck className='text-gold-400 h-3 w-3' />
-                                        <span className='text-[10px] font-medium tracking-wide text-white uppercase'>
-                                            Medical Director
-                                        </span>
-                                    </div>
+                    {/* Portrait — slimmer footprint, mobile-friendly */}
+                    <div className='animate-fade-in-up animate-delay-200 mb-8 max-w-sm'>
+                        <div className='ring-gold-500/20 group relative aspect-[4/5] w-full overflow-hidden rounded-2xl ring-1 sm:rounded-3xl'>
+                            <Image
+                                src={surgeon.images.featured}
+                                alt={`${surgeon.name}, ${surgeon.title}`}
+                                fill
+                                sizes='(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw'
+                                className='object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]'
+                                priority
+                            />
+                            <div className='absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent' />
+                            <div className='absolute right-3 bottom-3 left-3 flex items-end justify-between gap-2'>
+                                <div className='border-gold-500/30 inline-flex items-center gap-1.5 rounded-full border bg-stone-950/70 px-2.5 py-1 backdrop-blur-md'>
+                                    <BadgeCheck className='text-gold-400 h-3 w-3' />
+                                    <span className='text-[10px] font-medium tracking-wide text-white uppercase'>
+                                        Dr. {firstName} · Medical Director
+                                    </span>
                                 </div>
                             </div>
-                            {/* Decorative gold corner */}
-                            <div className='border-gold-500 absolute -top-2 -left-2 hidden h-10 w-10 rounded-tl-2xl border-t-2 border-l-2 sm:block' />
-                            <div className='border-gold-500 absolute -right-2 -bottom-2 hidden h-10 w-10 rounded-br-2xl border-r-2 border-b-2 sm:block' />
                         </div>
-
-                        {surgeon.quote && (
-                            <figure className='relative flex flex-col justify-center sm:col-span-3'>
-                                <Quote className='text-gold-500/50 mb-3 h-8 w-8' />
-                                <blockquote className='font-serif text-xl leading-snug text-stone-100 italic md:text-2xl'>
-                                    &ldquo;{surgeon.quote}&rdquo;
-                                </blockquote>
-                                <figcaption className='mt-4 flex items-center gap-3'>
-                                    <span className='from-gold-500 to-gold-300 inline-block h-px w-10 bg-gradient-to-r' />
-                                    <span className='text-gold-400 text-xs font-semibold tracking-[0.2em] uppercase'>
-                                        — Dr. {firstName}
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        )}
                     </div>
 
                     {/* Trust pills */}
-                    <ul className='animate-fade-in-up animate-delay-300 flex flex-wrap gap-2.5'>
+                    <ul className='animate-fade-in-up animate-delay-300 mb-4 flex flex-wrap gap-2.5'>
                         {TRUST_PILLS.map((pill) => (
                             <li
                                 key={pill.label}
@@ -158,38 +137,66 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
                             </li>
                         ))}
                     </ul>
+
+                    {/* Verification microlinks (replaces full credentials wall) */}
+                    {(healthgradesUrl || realselfUrl) && (
+                        <p className='animate-fade-in-up animate-delay-300 text-xs text-stone-400'>
+                            Verified on{' '}
+                            {healthgradesUrl && (
+                                <a
+                                    href={healthgradesUrl}
+                                    target='_blank'
+                                    rel='noopener noreferrer nofollow'
+                                    className='text-gold-300 hover:text-gold-200 inline-flex items-center gap-0.5 underline underline-offset-2'
+                                >
+                                    Healthgrades
+                                    <ExternalLink className='h-3 w-3' />
+                                </a>
+                            )}
+                            {healthgradesUrl && realselfUrl && (
+                                <span className='text-stone-500'> · </span>
+                            )}
+                            {realselfUrl && (
+                                <a
+                                    href={realselfUrl}
+                                    target='_blank'
+                                    rel='noopener noreferrer nofollow'
+                                    className='text-gold-300 hover:text-gold-200 inline-flex items-center gap-0.5 underline underline-offset-2'
+                                >
+                                    RealSelf
+                                    <ExternalLink className='h-3 w-3' />
+                                </a>
+                            )}
+                        </p>
+                    )}
                 </div>
 
-                {/* RIGHT — Sticky form */}
+                {/* RIGHT — Sticky compact form */}
                 <div className='animate-fade-in-up animate-delay-200 lg:col-span-5'>
                     <div className='lg:sticky lg:top-32'>
                         <div
                             id={HERO_FORM_ID}
-                            className='ring-gold-500/10 relative rounded-2xl bg-white p-6 shadow-2xl ring-1 shadow-stone-950/40 sm:rounded-3xl md:p-8'
+                            className='ring-gold-500/20 relative rounded-2xl border border-white/10 bg-stone-900/80 p-6 shadow-2xl ring-1 shadow-stone-950/60 backdrop-blur-xl sm:rounded-3xl md:p-8'
                         >
                             {/* Gold tag */}
                             <div className='from-gold-500 to-gold-400 absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r px-3 py-1 shadow-lg'>
                                 <span className='text-[10px] font-bold tracking-[0.18em] text-stone-950 uppercase'>
-                                    Free · No Obligation
+                                    Free · 24-hr response
                                 </span>
                             </div>
 
                             <ConsultationForm
-                                title={`Book With Dr. ${firstName}`}
-                                subtitle='Complimentary consult • 24-hour response • 100% confidential'
+                                title='Tell us a little about you'
+                                subtitle="We'll text you within 24 hours."
                                 source={CONTACT_SOURCES.DR_KARLINSKY_LANDING}
                                 analyticsFormName='dr_karlinsky_hero_form'
                                 enableAnalytics
                                 redirectOnSuccess='/thank-you'
-                                showPreferredContactTime
+                                compact
+                                submitText='Book My Consult'
+                                footerNote="We'll never spam, sell, or share your data."
                             />
                         </div>
-
-                        {/* Below-form micro-trust */}
-                        <p className='mt-4 text-center text-xs text-stone-400'>
-                            Your information is private. We&apos;ll never spam,
-                            sell, or share your data.
-                        </p>
                     </div>
                 </div>
             </div>
