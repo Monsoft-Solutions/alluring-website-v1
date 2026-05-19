@@ -76,6 +76,12 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/angelica',
+                destination:
+                    '/miami-plastic-surgery-specials?utm_source=influencer&utm_medium=angelica',
+                permanent: true,
+            },
+            {
                 source: '/dr-karlinsky-ig',
                 destination:
                     '/landing/dr-victoria-karlinsky?utm_source=doctor&utm_medium=dr-karlinsky',
