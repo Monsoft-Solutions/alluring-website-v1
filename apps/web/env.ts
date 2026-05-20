@@ -96,6 +96,9 @@ export const env = createEnv({
         // Chat widget enable/disable
         NEXT_PUBLIC_CHAT_ENABLED: z.enum(['true', 'false']).optional(),
 
+        // Loquent external chat widget enable/disable
+        NEXT_PUBLIC_LOQUENT_CHAT_ENABLED: z.enum(['true', 'false']).optional(),
+
         // Cookie banner enable/disable (optional, defaults to enabled)
         NEXT_PUBLIC_ENABLE_COOKIE_BANNER: z.enum(['true', 'false']).optional(),
     },
@@ -126,6 +129,8 @@ export const env = createEnv({
         NEXT_PUBLIC_ALLOW_CRAWLING: process.env.NEXT_PUBLIC_ALLOW_CRAWLING,
         NEXT_PUBLIC_BETA_MODE: process.env.NEXT_PUBLIC_BETA_MODE,
         NEXT_PUBLIC_CHAT_ENABLED: process.env.NEXT_PUBLIC_CHAT_ENABLED,
+        NEXT_PUBLIC_LOQUENT_CHAT_ENABLED:
+            process.env.NEXT_PUBLIC_LOQUENT_CHAT_ENABLED,
         NEXT_PUBLIC_ENABLE_COOKIE_BANNER:
             process.env.NEXT_PUBLIC_ENABLE_COOKIE_BANNER,
         NODE_ENV: process.env.NODE_ENV,
