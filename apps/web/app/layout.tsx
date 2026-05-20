@@ -81,6 +81,9 @@ export default function RootLayout({
     // Check if chat widget is enabled (default: true, fetches config from API)
     const isChatEnabled = env.NEXT_PUBLIC_CHAT_ENABLED !== 'false'
 
+    // Check if Loquent external chat widget is enabled (default: false)
+    const isLoquentChatEnabled = env.NEXT_PUBLIC_LOQUENT_CHAT_ENABLED === 'true'
+
     // Check if cookie banner should be enabled (default: true)
     const isCookieBannerEnabled =
         env.NEXT_PUBLIC_ENABLE_COOKIE_BANNER !== 'false'
@@ -117,6 +120,16 @@ export default function RootLayout({
                         `,
                     }}
                 />
+
+                {/* Loquent Chat Widget */}
+                {isLoquentChatEnabled && (
+                    <Script
+                        id='loquent-widget'
+                        src='https://app.loquent.io/api/widget/embed.js'
+                        strategy='afterInteractive'
+                        data-widget='wid_554cd1300f244407ab084a095f3e1c1d'
+                    />
+                )}
             </head>
             <body
                 className={`${fontLato.variable} ${fontMono.variable} ${fontGeist.variable} ${fontPlayfair.variable} font-sans antialiased`}
