@@ -14,6 +14,8 @@ export const blepharoplastyMiami: Procedure = {
     image: '/images/procedures/blepharoplasty.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
+    priceFrom: '$3,500',
+    weeklyPaymentFrom: '$22/week with approved credit',
     keywords: [
         'blepharoplasty miami',
         'eyelid surgery miami',

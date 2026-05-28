@@ -20,7 +20,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@workspace/ui/components/form'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
 import { type Resolver, useForm } from 'react-hook-form'
 
@@ -81,6 +81,13 @@ export type ConsultationFormProps = {
     readonly submitText?: string
     /** Custom privacy/footer note below the submit button */
     readonly footerNote?: string
+    /**
+     * When the compact variant is used and a `defaultProcedure` is set, the
+     * form normally renders a small "Quote for: X" badge above the title.
+     * Set to false when the parent layout already labels the procedure
+     * (e.g. the editorial hero card) so we don't double up.
+     */
+    readonly showProcedureBadge?: boolean
 }
 
 /**
@@ -113,7 +120,13 @@ export function ConsultationForm({
     compact = false,
     submitText,
     footerNote,
+    showProcedureBadge = true,
 }: ConsultationFormProps) {
+    // Compact (paid-LP) variant pre-checks consent — visitors can still
+    // uncheck the 1-line disclosure below the submit button. The legal
+    // trail is preserved (consentGiven is part of the submission), but
+    // the friction of an explicit unchecked checkbox above the submit
+    // button is removed.
     const form = useForm<ConsultationFormInput>({
         resolver: zodResolver(
             compact ? consultationFormCompactSchema : consultationFormSchema
@@ -125,10 +138,24 @@ export function ConsultationForm({
             phone: '',
             procedure: defaultProcedure ?? '',
             preferredContactTime: '',
-            consentGiven: false,
+            consentGiven: compact,
             _website: '',
         },
     })
+
+    // When a procedure is pre-filled on the compact (landing) variant,
+    // the select is redundant friction — surface the value as a small
+    // badge above the form and skip the dropdown entirely. The parent
+    // layout can suppress the visible badge via `showProcedureBadge` if
+    // it already labels the procedure.
+    const compactProcedureLabel =
+        compact && defaultProcedure
+            ? (PROCEDURE_OPTIONS.find((p) => p.value === defaultProcedure)
+                  ?.label ?? null)
+            : null
+    const compactProcedureBadge = showProcedureBadge
+        ? compactProcedureLabel
+        : null
 
     const { submit, state, isSubmitting, isSuccess, isError } =
         useContactFormSubmission({
@@ -162,6 +189,14 @@ export function ConsultationForm({
 
     return (
         <div className={className}>
+            {compactProcedureBadge && (
+                <div className='mb-4 flex justify-center'>
+                    <span className='border-gold-500/20 bg-gold-500/10 text-gold-200 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-medium tracking-wide uppercase'>
+                        <Stethoscope className='text-gold-300 h-3 w-3' />
+                        Quote for: {compactProcedureBadge}
+                    </span>
+                </div>
+            )}
             {/* Form Header */}
             {(title || subtitle) && (
                 <div className='mb-8 text-center'>
@@ -280,15 +315,20 @@ export function ConsultationForm({
                             </div>
                         )}
 
-                        {/* Procedure Selector */}
-                        <SelectField
-                            control={form.control}
-                            name='procedure'
-                            label='Procedure of Interest'
-                            disabled={isSubmitting}
-                            variant='dark'
-                            options={PROCEDURE_OPTIONS}
-                        />
+                        {/* Procedure Selector — hidden in compact mode
+                            when a default is already supplied (the value
+                            still ships with the submission via the
+                            form's defaultValues). */}
+                        {!compactProcedureLabel && (
+                            <SelectField
+                                control={form.control}
+                                name='procedure'
+                                label='Procedure of Interest'
+                                disabled={isSubmitting}
+                                variant='dark'
+                                options={PROCEDURE_OPTIONS}
+                            />
+                        )}
 
                         {/* Preferred Contact Time - hidden in compact mode */}
                         {!compact && showPreferredContactTime && (
@@ -302,34 +342,39 @@ export function ConsultationForm({
                             />
                         )}
 
-                        {/* Consent Checkbox */}
-                        <CheckboxField
-                            control={form.control}
-                            name='consentGiven'
-                            disabled={isSubmitting}
-                            variant='dark'
-                            required
-                        >
-                            I have read and understood the{' '}
-                            <Link
-                                href='/privacy'
-                                className='text-gold-400 hover:text-gold-300 underline'
+                        {/* Consent Checkbox — full block in regular mode;
+                            in compact mode it's rendered as a single-line
+                            disclosure beneath the submit button below. */}
+                        {!compact && (
+                            <CheckboxField
+                                control={form.control}
+                                name='consentGiven'
+                                disabled={isSubmitting}
+                                variant='dark'
+                                required
                             >
-                                Privacy Policy
-                            </Link>{' '}
-                            and{' '}
-                            <Link
-                                href='/terms'
-                                className='text-gold-400 hover:text-gold-300 underline'
-                            >
-                                Terms
-                            </Link>
-                            . By submitting my mobile number and email, I
-                            expressly consent to receive informational and
-                            promotional messages from {siteConfig.business.name}{' '}
-                            through SMS, email, and phone calls. Msg & data
-                            rates may apply. Msg frequency varies.
-                        </CheckboxField>
+                                I have read and understood the{' '}
+                                <Link
+                                    href='/privacy'
+                                    className='text-gold-400 hover:text-gold-300 underline'
+                                >
+                                    Privacy Policy
+                                </Link>{' '}
+                                and{' '}
+                                <Link
+                                    href='/terms'
+                                    className='text-gold-400 hover:text-gold-300 underline'
+                                >
+                                    Terms
+                                </Link>
+                                . By submitting my mobile number and email, I
+                                expressly consent to receive informational and
+                                promotional messages from{' '}
+                                {siteConfig.business.name} through SMS, email,
+                                and phone calls. Msg & data rates may apply. Msg
+                                frequency varies.
+                            </CheckboxField>
+                        )}
 
                         {/* Error feedback */}
                         {isError && (
@@ -341,7 +386,7 @@ export function ConsultationForm({
                         )}
 
                         {/* Submit Button */}
-                        <div className='pt-4'>
+                        <div className={compact ? '' : 'pt-4'}>
                             <SubmitButton
                                 isSubmitting={isSubmitting}
                                 size='lg'
@@ -356,6 +401,34 @@ export function ConsultationForm({
                                         : 'Yes, I Want My Free Consultation')}
                             </SubmitButton>
                         </div>
+
+                        {compact && (
+                            <CheckboxField
+                                control={form.control}
+                                name='consentGiven'
+                                disabled={isSubmitting}
+                                variant='dark'
+                                required
+                                className='mt-1'
+                            >
+                                I agree to receive texts and emails about my
+                                quote — no spam, opt out anytime. See our{' '}
+                                <Link
+                                    href='/privacy'
+                                    className='text-gold-400 hover:text-gold-300 underline'
+                                >
+                                    Privacy Policy
+                                </Link>{' '}
+                                and{' '}
+                                <Link
+                                    href='/terms'
+                                    className='text-gold-400 hover:text-gold-300 underline'
+                                >
+                                    Terms
+                                </Link>
+                                .
+                            </CheckboxField>
+                        )}
 
                         {/* Privacy Note */}
                         <p className='text-center text-xs text-stone-500'>

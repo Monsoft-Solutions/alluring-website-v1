@@ -18,6 +18,19 @@ type ProcedureBeforeAfterSectionProps = {
     readonly limit?: number
     /** Additional CSS classes */
     readonly className?: string
+    /**
+     * Hide the "View Full Gallery" button below the sliders. Used on
+     * paid-ad landing pages where the convert-or-exit directive
+     * forbids sending the visitor to another route.
+     */
+    readonly hideViewAllButton?: boolean
+    /**
+     * Hide the procedure-type metadata pill on each slider. Defaults to
+     * showing the pill, which is useful on the general /gallery page
+     * but redundant on a procedure-specific landing page where the
+     * visitor already knows which procedure they're looking at.
+     */
+    readonly hideProcedureTypePill?: boolean
 }
 
 /**
@@ -39,6 +52,8 @@ export async function ProcedureBeforeAfterSection({
     procedureTitle,
     limit = 6,
     className,
+    hideViewAllButton = false,
+    hideProcedureTypePill = false,
 }: ProcedureBeforeAfterSectionProps) {
     const pairs = await getBeforeAfterPairsByProcedure(procedureSlug, limit)
 
@@ -100,24 +115,29 @@ export async function ProcedureBeforeAfterSection({
                 {/* Before/After Sliders Grid */}
                 <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
                     {pairs.map((pair) => (
-                        <BeforeAfterSlider key={pair.id} pair={pair} />
+                        <BeforeAfterSlider
+                            key={pair.id}
+                            pair={pair}
+                            hideProcedureTypePill={hideProcedureTypePill}
+                        />
                     ))}
                 </div>
 
-                {/* CTA */}
-                <div className='mt-12 text-center md:mt-16'>
-                    <Button
-                        asChild
-                        variant='outline'
-                        size='lg'
-                        className='group hover:border-gold-500 hover:bg-gold-50 border-stone-300'
-                    >
-                        <Link href='/gallery'>
-                            <span>View Full Gallery</span>
-                            <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover:translate-x-1' />
-                        </Link>
-                    </Button>
-                </div>
+                {!hideViewAllButton && (
+                    <div className='mt-12 text-center md:mt-16'>
+                        <Button
+                            asChild
+                            variant='outline'
+                            size='lg'
+                            className='group hover:border-gold-500 hover:bg-gold-50 border-stone-300'
+                        >
+                            <Link href='/gallery'>
+                                <span>View Full Gallery</span>
+                                <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover:translate-x-1' />
+                            </Link>
+                        </Button>
+                    </div>
+                )}
             </ContentWrapper>
         </SectionContainer>
     )

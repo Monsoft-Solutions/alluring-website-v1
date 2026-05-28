@@ -11,6 +11,8 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+
 export type ProcedureLandingStickyMobileCTAProps = {
     readonly formAnchor?: string
     readonly heroFormId?: string
@@ -23,6 +25,7 @@ export function ProcedureLandingStickyMobileCTA({
     label = 'Get My Free Quote',
 }: ProcedureLandingStickyMobileCTAProps) {
     const [isVisible, setIsVisible] = useState(false)
+    const { trackCTA } = useAnalyticsEvent()
 
     useEffect(() => {
         const heroForm = document.getElementById(heroFormId)
@@ -75,6 +78,12 @@ export function ProcedureLandingStickyMobileCTA({
             <div className='px-4 py-3'>
                 <Link
                     href={formAnchor}
+                    onClick={() =>
+                        trackCTA('landing_cta_sticky_mobile', {
+                            cta_position: 'landing_sticky_mobile',
+                            lp_template_version: 'v2',
+                        })
+                    }
                     className='from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 flex w-full items-center justify-center rounded-full bg-gradient-to-r px-5 py-3 text-sm font-bold tracking-wide text-stone-950 shadow-lg shadow-stone-950/40 transition-all active:scale-[0.98]'
                 >
                     {label}

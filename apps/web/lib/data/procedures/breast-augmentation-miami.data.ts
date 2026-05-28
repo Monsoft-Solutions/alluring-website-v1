@@ -15,6 +15,10 @@ export const breastAugmentationMiami: Procedure = {
     dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
+    // Paid-LP hero pricing — sourced from the public WeeklyPayments table
+    priceFrom: '$4,500',
+    weeklyPaymentFrom: '$27/week with approved credit',
+
     // Inline content images for enhanced engagement
     contentImages: [
         {

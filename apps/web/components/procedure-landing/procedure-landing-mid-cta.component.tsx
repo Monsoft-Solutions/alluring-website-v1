@@ -1,15 +1,26 @@
 /**
  * ProcedureLandingMidCTA
  *
- * Mid-page conversion punch that sits between social-proof sections and
- * the financing/FAQ stack. Dark glass on gold so it visually separates
- * the page into "above the decision" and "ready to act" halves without
- * adding another sticky element to compete with the mobile bar.
+ * Mid-page conversion punch styled as a magazine pull quote. Large
+ * italic Playfair, gold quotation marks framing the message, hairline
+ * gold rule below, and a single refined CTA. The dark background mirrors
+ * the hero so the chapter visually picks up where the cover spread left
+ * off.
  */
-import { ArrowRight, MessageCircle, ShieldCheck } from 'lucide-react'
+'use client'
 
+import { ArrowRight } from 'lucide-react'
+
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
+
+/**
+ * Inline SVG noise — same recipe as the hero, used to keep the dark
+ * section feeling like a textured magazine spread rather than flat ink.
+ */
+const GRAIN_DATA_URI =
+    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.78 0 0 0 0 0.42 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")"
 
 export type ProcedureLandingMidCTAProps = {
     readonly id?: string
@@ -23,20 +34,28 @@ export function ProcedureLandingMidCTA({
     formAnchor = '#hero-form',
 }: ProcedureLandingMidCTAProps) {
     const cleanTitle = procedureTitle.replace(/\s*Miami\s*$/i, '')
+    const { trackCTA } = useAnalyticsEvent()
 
     return (
         <SectionContainer
             id={id}
             variant='default'
             className='relative overflow-hidden bg-stone-950'
-            paddingY='py-16 lg:py-20'
+            paddingY='py-20 lg:py-28'
         >
+            {/* Atmospheric layers */}
             <div
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0'
             >
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(212,175,55,0.18),_transparent_55%)]' />
-                <div className='bg-gold-500/10 absolute -bottom-1/3 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full blur-3xl' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_0%,_rgba(212,175,55,0.18),_transparent_70%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_100%,_rgba(212,175,55,0.10),_transparent_70%)]' />
+                <div
+                    className='absolute inset-0 opacity-[0.35] mix-blend-overlay'
+                    style={{ backgroundImage: GRAIN_DATA_URI }}
+                />
+                <div className='absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-amber-200/30 to-transparent' />
+                <div className='absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-amber-200/30 to-transparent' />
             </div>
 
             <ContentWrapper
@@ -44,41 +63,73 @@ export function ProcedureLandingMidCTA({
                 paddingX='px-6 md:px-12'
                 className='relative z-10'
             >
-                <div className='mx-auto flex max-w-3xl flex-col items-center gap-6 text-center'>
-                    <span className='border-gold-500/30 bg-gold-500/10 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
-                        <MessageCircle className='text-gold-400 h-3.5 w-3.5' />
-                        <span className='text-gold-300 text-xs font-medium tracking-wide uppercase'>
-                            Free · No pressure
+                <div className='mx-auto max-w-3xl text-center'>
+                    {/* Chapter marker */}
+                    <div className='mb-10 flex items-center justify-center gap-4'>
+                        <span
+                            aria-hidden='true'
+                            className='h-px w-12 bg-gradient-to-l from-amber-300/40 to-transparent'
+                        />
+                        <span className='font-serif text-[11px] tracking-[0.4em] text-amber-200/80 uppercase'>
+                            №04 — A Note
                         </span>
-                    </span>
-
-                    <h2 className='font-serif text-3xl leading-tight text-white md:text-4xl lg:text-5xl'>
-                        Get a personalized{' '}
-                        <span className='text-gold-300 italic'>
-                            {cleanTitle}
-                        </span>{' '}
-                        plan in under 24 hours.
-                    </h2>
-
-                    <p className='max-w-xl text-base leading-relaxed text-stone-300 lg:text-lg'>
-                        Tell us a little about you and we&apos;ll text you with
-                        a quote, financing options, and a few times that work
-                        for your consult. That&apos;s it.
-                    </p>
-
-                    <div className='mt-2 flex flex-col items-center gap-3 sm:flex-row sm:gap-4'>
-                        <a
-                            href={formAnchor}
-                            className='from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r px-8 py-4 text-base font-bold tracking-wide text-stone-950 shadow-xl shadow-amber-500/30 transition-all hover:shadow-2xl hover:shadow-amber-500/40 active:scale-[0.98]'
-                        >
-                            Get My Free Quote
-                            <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />
-                        </a>
+                        <span
+                            aria-hidden='true'
+                            className='h-px w-12 bg-gradient-to-r from-amber-300/40 to-transparent'
+                        />
                     </div>
 
-                    <p className='mt-1 inline-flex items-center gap-1.5 text-xs text-stone-500'>
-                        <ShieldCheck className='text-gold-400 h-3.5 w-3.5' />
-                        We never spam, sell, or share your data.
+                    {/* Pull-quote treatment */}
+                    <span
+                        aria-hidden='true'
+                        className='block font-serif text-7xl leading-none text-amber-200/40 select-none md:text-8xl'
+                    >
+                        &ldquo;
+                    </span>
+
+                    <h2 className='-mt-4 font-serif text-3xl leading-[1.15] text-white italic md:text-4xl lg:text-[2.75rem]'>
+                        A personalized{' '}
+                        <span className='not-italic'>{cleanTitle}</span> plan,
+                        texted to you in under 24 hours.
+                    </h2>
+
+                    <span
+                        aria-hidden='true'
+                        className='block text-right font-serif text-7xl leading-none text-amber-200/40 select-none md:text-8xl'
+                    >
+                        &rdquo;
+                    </span>
+
+                    {/* Author byline */}
+                    <p className='-mt-6 mb-10 font-serif text-sm text-stone-400 italic'>
+                        — Tell us a little about you. We&apos;ll send back a
+                        quote, financing options, and a few times that work for
+                        your consult.
+                    </p>
+
+                    {/* Gold hairline divider */}
+                    <div
+                        aria-hidden='true'
+                        className='mx-auto mb-10 h-px w-24 bg-gradient-to-r from-transparent via-amber-300 to-transparent'
+                    />
+
+                    {/* CTA */}
+                    <a
+                        href={formAnchor}
+                        onClick={() =>
+                            trackCTA('landing_cta_mid', {
+                                cta_position: 'landing_mid_cta',
+                                lp_template_version: 'v2',
+                            })
+                        }
+                        className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-9 py-3.5 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_15px_35px_-10px_rgba(212,175,55,0.45)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_18px_40px_-8px_rgba(212,175,55,0.55)] active:scale-[0.98]'
+                    >
+                        Send My Free Quote
+                        <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />
+                    </a>
+
+                    <p className='mt-6 text-[11px] tracking-[0.24em] text-stone-500 uppercase'>
+                        Free · Private · No pressure
                     </p>
                 </div>
             </ContentWrapper>

@@ -32,6 +32,7 @@ import {
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ProcedureLandingBenefits } from '@/components/procedure-landing/procedure-landing-benefits.component'
+import { ProcedureLandingFinalCTA } from '@/components/procedure-landing/procedure-landing-final-cta.component'
 import { ProcedureLandingHero } from '@/components/procedure-landing/procedure-landing-hero.component'
 import { ProcedureLandingMidCTA } from '@/components/procedure-landing/procedure-landing-mid-cta.component'
 import { ProcedureLandingMinimalFooter } from '@/components/procedure-landing/procedure-landing-minimal-footer.component'
@@ -39,7 +40,6 @@ import { ProcedureLandingMinimalHeader } from '@/components/procedure-landing/pr
 import { ProcedureLandingPromo } from '@/components/procedure-landing/procedure-landing-promo.component'
 import { ProcedureLandingStatsStrip } from '@/components/procedure-landing/procedure-landing-stats-strip.component'
 import { ProcedureLandingStickyMobileCTA } from '@/components/procedure-landing/procedure-landing-sticky-mobile-cta.component'
-import { CTASection } from '@/components/shared/cta-section.component'
 import { FAQComponent } from '@/components/shared/faq.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
@@ -324,10 +324,16 @@ export default async function ProcedureLandingPage(
                 )}
 
                 {/* Real patient results — server component, gracefully
-                    renders nothing if no pairs exist for the slug */}
+                    renders nothing if no pairs exist for the slug. The
+                    "View Full Gallery" CTA and the per-card procedure
+                    pill are suppressed: the landing page is a closed
+                    funnel (no off-page exits) and the visitor already
+                    knows the procedure context. */}
                 <ProcedureBeforeAfterSection
                     procedureSlug={params.slug}
                     procedureTitle={procedure.title}
+                    hideViewAllButton
+                    hideProcedureTypePill
                 />
 
                 {/* Mid-page conversion punch */}
@@ -351,18 +357,10 @@ export default async function ProcedureLandingPage(
                     />
                 )}
 
-                {/* Final luxury CTA */}
-                <CTASection
-                    id='final-cta'
-                    variant='luxury'
-                    eyebrow='Take the first step'
-                    heading="Let's plan yours."
-                    description='Free quote. Honest plan. No pressure — just answers, when you’re ready.'
-                    primaryButton={{
-                        text: 'Get My Free Quote',
-                        href: HERO_FORM_ANCHOR,
-                    }}
-                    size='lg'
+                {/* Final editorial CTA — landing-specific colophon */}
+                <ProcedureLandingFinalCTA
+                    procedureTitle={procedure.title}
+                    formAnchor={HERO_FORM_ANCHOR}
                 />
             </ContainerLayout>
 

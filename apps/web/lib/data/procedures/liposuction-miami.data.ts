@@ -14,6 +14,8 @@ export const liposuctionMiami: Procedure = {
     image: '/images/procedures/liposuction.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
+    priceFrom: '$4,500',
+    weeklyPaymentFrom: '$27/week with approved credit',
     keywords: [
         'liposuction miami',
         'body contouring',
