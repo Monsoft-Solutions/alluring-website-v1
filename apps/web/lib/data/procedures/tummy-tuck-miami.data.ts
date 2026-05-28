@@ -15,6 +15,10 @@ export const tummyTuckMiami: Procedure = {
     dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
+    // Paid-LP hero pricing — sourced from the public WeeklyPayments table
+    priceFrom: '$5,500',
+    weeklyPaymentFrom: '$34/week with approved credit',
+
     // Inline content images for enhanced engagement
     contentImages: [
         {

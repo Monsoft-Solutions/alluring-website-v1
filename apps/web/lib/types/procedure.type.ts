@@ -84,6 +84,21 @@ export interface Procedure {
     /** ISO date string when the content was first published */
     datePublished?: string
 
+    // Paid-LP copy fields — surfaced on /landing/procedure/[slug]. All
+    // optional; the template falls back gracefully when unset.
+    /** Starting "from" price, formatted with currency, e.g. "$4,500" */
+    priceFrom?: string
+    /** Starting financing-payment phrase, e.g. "$27/week with approved credit" */
+    weeklyPaymentFrom?: string
+    /** Outcome-focused H1 override (overrides `title` on the landing hero) */
+    outcomeHeadline?: string
+    /** One-line social proof for the landing hero */
+    microProof?: string
+    /** Optional inline scarcity line in the landing hero */
+    urgencyNote?: string
+    /** Reassurance shown under the landing form submit button */
+    postSubmitPromise?: string
+
     // Legacy/Optional details
     details?: {
         intro: string
@@ -193,6 +208,14 @@ export const procedureSchema = z.object({
             message: 'datePublished must be a valid ISO 8601 datetime',
         })
         .optional(),
+
+    // Paid-LP copy fields (all optional, hero falls back gracefully)
+    priceFrom: z.string().optional(),
+    weeklyPaymentFrom: z.string().optional(),
+    outcomeHeadline: z.string().optional(),
+    microProof: z.string().optional(),
+    urgencyNote: z.string().optional(),
+    postSubmitPromise: z.string().optional(),
 
     // Legacy details
     details: z

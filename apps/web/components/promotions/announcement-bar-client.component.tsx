@@ -5,7 +5,10 @@ import Link from 'next/link'
 import { X, Sparkles, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+import { useIsLandingRoute } from '@/hooks/use-is-landing-route.hook'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+
+const LANDING_HERO_FORM_ANCHOR = '#hero-form'
 
 type AnnouncementBarClientProps = {
     promotionId: string
@@ -37,6 +40,12 @@ export function AnnouncementBarClient({
 
     // Analytics hook
     const { trackCTA } = useAnalyticsEvent()
+
+    // On /landing/* routes the convert-or-exit directive overrides the
+    // default destination — redirect the banner to the hero form instead
+    // of routing the visitor away to /miami-plastic-surgery-specials.
+    const isLandingRoute = useIsLandingRoute()
+    const effectiveLink = isLandingRoute ? LANDING_HERO_FORM_ANCHOR : link
 
     // Check localStorage after mount to determine if promotion was previously dismissed
     useEffect(() => {
@@ -97,13 +106,19 @@ export function AnnouncementBarClient({
 
                     {/* Full-width clickable link area */}
                     <Link
-                        href={link}
+                        href={effectiveLink}
                         onClick={() => {
                             trackCTA('promotion_banner', {
                                 promotion_id: promotionId,
                                 promotion_title: title,
                                 promotion_discount: discount ?? undefined,
-                                promotion_link: link,
+                                promotion_link: effectiveLink,
+                                cta_position: isLandingRoute
+                                    ? 'landing_announcement_bar'
+                                    : 'site_announcement_bar',
+                                ...(isLandingRoute && {
+                                    lp_template_version: 'v2',
+                                }),
                             })
                         }}
                         className='group absolute inset-0 flex items-center justify-center pr-12'

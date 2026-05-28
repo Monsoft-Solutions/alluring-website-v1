@@ -10,6 +10,13 @@ import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 type BeforeAfterSliderProps = {
     readonly pair: BeforeAfterPairCard
     readonly className?: string
+    /**
+     * Hide the procedure-type metadata pill below the slider. Useful on
+     * procedure-specific landing pages where the visitor already knows
+     * the procedure context and the pill (which sometimes holds raw
+     * slugs from the gallery dataset) just adds visual noise.
+     */
+    readonly hideProcedureTypePill?: boolean
 }
 
 /**
@@ -18,7 +25,11 @@ type BeforeAfterSliderProps = {
  * An interactive comparison slider for before/after images.
  * Supports mouse drag and touch gestures.
  */
-export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
+export function BeforeAfterSlider({
+    pair,
+    className,
+    hideProcedureTypePill = false,
+}: BeforeAfterSliderProps) {
     const [sliderPosition, setSliderPosition] = useState(50)
     const [isDragging, setIsDragging] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -251,9 +262,10 @@ export function BeforeAfterSlider({ pair, className }: BeforeAfterSliderProps) {
             </div>
 
             {/* Metadata */}
-            {(pair.procedureType || pair.timeframe) && (
+            {((pair.procedureType && !hideProcedureTypePill) ||
+                pair.timeframe) && (
                 <div className='mt-4 flex flex-wrap items-center gap-3 text-sm'>
-                    {pair.procedureType && (
+                    {pair.procedureType && !hideProcedureTypePill && (
                         <span className='bg-gold-500/10 text-gold-700 rounded-full px-3 py-1 font-medium'>
                             {pair.procedureType}
                         </span>

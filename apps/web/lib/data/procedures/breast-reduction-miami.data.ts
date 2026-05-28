@@ -13,6 +13,8 @@ export const breastReductionMiami: Procedure = {
     image: '/images/procedures/breast-reduction.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
+    priceFrom: '$6,500',
+    weeklyPaymentFrom: '$41/week with approved credit',
     keywords: [
         'breast reduction miami',
         'reduction mammaplasty',
