@@ -18,7 +18,6 @@ import {
     ShieldCheck,
     Sparkles,
     Star,
-    Stethoscope,
 } from 'lucide-react'
 import Image from 'next/image'
 
