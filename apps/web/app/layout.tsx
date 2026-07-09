@@ -78,11 +78,13 @@ export default function RootLayout({
     // Check if beta mode is enabled (shows feedback button)
     const isBetaMode = env.NEXT_PUBLIC_BETA_MODE === 'true'
 
-    // Check if chat widget is enabled (default: true, fetches config from API)
-    const isChatEnabled = env.NEXT_PUBLIC_CHAT_ENABLED !== 'false'
+    // Check if the built-in chat widget is enabled (default: false).
+    // Disabled in favor of the Loquent chat widget below — opt in explicitly.
+    const isChatEnabled = env.NEXT_PUBLIC_CHAT_ENABLED === 'true'
 
-    // Check if Loquent external chat widget is enabled (default: false)
-    const isLoquentChatEnabled = env.NEXT_PUBLIC_LOQUENT_CHAT_ENABLED === 'true'
+    // Check if Loquent external chat widget is enabled (default: true)
+    const isLoquentChatEnabled =
+        env.NEXT_PUBLIC_LOQUENT_CHAT_ENABLED !== 'false'
 
     // Check if cookie banner should be enabled (default: true)
     const isCookieBannerEnabled =
@@ -106,10 +108,10 @@ export default function RootLayout({
                 {/* Loquent Chat Widget */}
                 {isLoquentChatEnabled && (
                     <Script
-                        id='loquent-widget'
-                        src='https://app.loquent.io/api/widget/embed.js'
+                        id='loquent-tag'
+                        src='https://app.loquent.io/api/tag/loquent-tag.js'
                         strategy='afterInteractive'
-                        data-widget='wid_554cd1300f244407ab084a095f3e1c1d'
+                        data-tag='tag_2a2044fdafc54be6b4fdddf3a66442c0'
                     />
                 )}
             </head>
