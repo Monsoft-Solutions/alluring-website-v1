@@ -1,3 +1,12 @@
+/**
+ * Gallery Media Detail Page
+ *
+ * SEO note (issue #118): these individual media detail pages are thin
+ * (~230 words) and number in the hundreds, so they are intentionally
+ * `noindex, follow` — they pass link equity to the indexable gallery
+ * GROUP pages (`/gallery` and `/gallery/[slug]`), which carry the real
+ * procedure context and remain fully indexable.
+ */
 import {
     BreadcrumbSchema,
     ImageObjectSchema,
@@ -20,6 +29,7 @@ import {
 } from '@/lib/queries/gallery/gallery-detail.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { stripBrandSuffix } from '@/lib/seo/strip-brand-suffix.util'
 import { env } from '@/env'
 
 type PageProps = {
@@ -48,7 +58,9 @@ export async function generateMetadata({
     }
 
     const pageUrl = `${siteUrl}/gallery/media/${media.slug}`
-    const pageTitle = media.seoTitle ?? `${media.title} | Gallery`
+    const pageTitle = stripBrandSuffix(
+        media.seoTitle ?? `${media.title} | Gallery`
+    )
     const description =
         media.seoDescription ??
         media.description ??
@@ -58,6 +70,16 @@ export async function generateMetadata({
         title: pageTitle,
         description,
         canonical: `/gallery/media/${media.slug}`,
+        // Thin, high-volume detail pages: noindex but follow so link equity
+        // still flows to the indexable gallery group pages (issue #118).
+        robots: {
+            index: false,
+            follow: true,
+            googleBot: {
+                index: false,
+                follow: true,
+            },
+        },
         openGraph: {
             type: 'article',
             url: pageUrl,

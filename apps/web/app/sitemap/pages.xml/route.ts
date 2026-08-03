@@ -79,6 +79,9 @@ const STATIC_PAGES: Array<{
     { path: '/cookies', changeFrequency: 'yearly', priority: 0.3 },
     // Engagement pages
     { path: '/quiz', changeFrequency: 'monthly', priority: 0.7 },
+    // Instagram hub — the only indexable Instagram page; the /instagram/[code]
+    // detail pages are noindex and have no sitemap (issue #118)
+    { path: '/instagram', changeFrequency: 'daily', priority: 0.8 },
     // Utility pages
     { path: '/html-sitemap', changeFrequency: 'weekly', priority: 0.4 },
     // Social/bio link pages

@@ -22,7 +22,7 @@ Your task is to analyze blog post content and select the optimal featured image 
 
 ## Brand Context
 - **Business**: Alluring Plastic Surgery - luxury cosmetic surgery clinic
-- **Location**: Miami, FL (serves locals + medical tourists from Latin America/Caribbean)
+- **Location**: Miami, FL (serves locals + patients traveling from across the United States)
 - **Tagline**: "Luxury Surgeries Made Affordable"
 - **Visual Identity**: Stone & gold palette, serif headings, glassmorphism
 - **Target Audience**: Women 25-55, value quality, seek affordability

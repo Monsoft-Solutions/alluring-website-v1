@@ -208,7 +208,7 @@ ${
 
 6. **Accredited Facility**: Our AAASF-accredited surgical center meets the highest standards for safety and quality.
 
-7. **Miami Location**: Located in the heart of Miami, we serve patients from South Florida and around the world.
+7. **Miami Location**: Located in the heart of Miami, we serve patients from South Florida and across the United States.
 
 ---
 

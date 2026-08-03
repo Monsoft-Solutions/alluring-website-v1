@@ -40,13 +40,16 @@ const SITEMAP_URLS = [
     '/sitemap/pages.xml', // Static pages and surgeon profiles
     '/sitemap/blog.xml', // Blog posts, categories, and tags
     '/sitemap/procedures.xml', // Procedure listings and details
-    '/sitemap/gallery.xml', // Gallery groups and media
+    '/sitemap/gallery.xml', // Gallery listing and group pages
     '/sitemap/promotions.xml', // Special offers and promotions
-    '/sitemap/instagram.xml', // Instagram posts with video support
 ] as const
 
 /**
  * Get additional disallowed paths specific to this application
+ *
+ * 2026-08 audit note: blog pagination uses client-side infinite scroll, so no
+ * `?page=` URLs are actually generated today. The `/*?page=*` rule below is
+ * kept as a defensive guard in case paginated URLs are reintroduced.
  */
 function getAppSpecificDisallows(): string[] {
     return [

@@ -2,8 +2,10 @@
  * Gallery Sitemap Query
  *
  * Fetches data needed for sitemap generation:
- * - All published gallery media with image URLs and updatedAt
  * - All visible gallery groups with cover image URLs and updatedAt
+ *
+ * Media detail pages (/gallery/media/[slug]) are noindexed and no longer
+ * listed in the sitemap (issue #118), so only group-level queries remain.
  */
 import { db } from '@workspace/db/client'
 import {
@@ -15,24 +17,6 @@ import { and, desc, eq, max } from 'drizzle-orm'
 import { cache } from 'react'
 
 /**
- * Gallery media sitemap entry
- */
-export type GalleryMediaSitemapEntry = {
-    slug: string
-    url: string
-    title: string
-    updatedAt: Date
-    /** Media type (image or video) for video sitemap support */
-    type: 'image' | 'video'
-    /** Thumbnail URL for video sitemap */
-    thumbnailUrl: string | null
-    /** Description for video sitemap */
-    description: string | null
-    /** Duration in seconds for videos */
-    duration: number | null
-}
-
-/**
  * Gallery group sitemap entry
  */
 export type GalleryGroupSitemapEntry = {
@@ -41,40 +25,6 @@ export type GalleryGroupSitemapEntry = {
     name: string
     updatedAt: Date
 }
-
-/**
- * Get all published gallery media for sitemap
- * Includes image/video URL, title, last modified date, and video-specific fields
- */
-export const getGalleryMediaForSitemap = cache(
-    async (): Promise<GalleryMediaSitemapEntry[]> => {
-        const rows = await db
-            .select({
-                slug: galleryMedia.slug,
-                url: galleryMedia.url,
-                title: galleryMedia.title,
-                updatedAt: galleryMedia.updatedAt,
-                // Video sitemap fields
-                type: galleryMedia.type,
-                thumbnailUrl: galleryMedia.thumbnailUrl,
-                description: galleryMedia.description,
-                duration: galleryMedia.duration,
-            })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.status, 'published'))
-
-        return rows.map((r) => ({
-            slug: r.slug,
-            url: r.url,
-            title: r.title,
-            updatedAt: r.updatedAt,
-            type: r.type,
-            thumbnailUrl: r.thumbnailUrl,
-            description: r.description,
-            duration: r.duration,
-        }))
-    }
-)
 
 /**
  * Get all visible gallery groups for sitemap

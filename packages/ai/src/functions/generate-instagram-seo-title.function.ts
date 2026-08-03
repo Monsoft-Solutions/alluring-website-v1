@@ -49,7 +49,7 @@ Context:
 - Business: Alluring Plastic Surgery
 - Location: Miami, FL
 - Target audience: Women 25-55, value quality, seek affordability
-- Serves: Local Miami residents + women and men from US and around the world
+- Serves: Local Miami residents + patients traveling from across the United States
 - Doctors: Dr. Victoria Karlinsky, Dr. Rita Shats
 - Specialties: BBL, breast augmentation, tummy liposuction, mommy makeover, facial procedures
 - Services: Financing options, consultations, recovery guides, pricing guides

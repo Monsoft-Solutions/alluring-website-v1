@@ -32,7 +32,7 @@ Guidelines:
 - Our tagline is "Luxury Surgeries Made Affordable"
 
 Key information:
-- Location: Miami, FL (we serve local patients and medical tourists)
+- Location: Miami, FL (we serve local patients and fly-in patients from across the United States)
 - Specialties: BBL, breast procedures, tummy tuck, liposuction, mommy makeover, facial procedures
 - We offer flexible financing options
 - Consultations can be scheduled online or by phone`
@@ -89,7 +89,7 @@ Guidelines:
 - Our tagline is "${tagline}"
 
 Key information:
-- Location: ${location} (we serve local patients and medical tourists)
+- Location: ${location} (we serve local patients and fly-in patients from across the United States)
 - Specialties: ${specialties.join(', ')}
 - We offer flexible financing options
 - Consultations can be scheduled online or by phone`

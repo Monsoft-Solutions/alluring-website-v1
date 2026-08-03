@@ -19,7 +19,7 @@ export type ServiceSchemaProps = {
     /** Organization or person providing the service */
     provider?: ServiceProvider
 
-    /** Area served by the service (e.g., "Miami", "Latin America") */
+    /** Area served by the service (e.g., "Miami", "Florida") */
     areaServed?: string | string[]
 
     /** Type of service offered */

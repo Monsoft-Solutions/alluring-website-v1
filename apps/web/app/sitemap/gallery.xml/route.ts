@@ -4,9 +4,13 @@
  * Generates sitemap XML for gallery content including:
  * - Main gallery listing page
  * - Gallery group pages with cover images
- * - Individual gallery media pages with images and videos
  *
- * Supports both image and video sitemap extensions for comprehensive SEO.
+ * Individual gallery media detail pages (/gallery/media/[slug]) are
+ * intentionally excluded: per issue #118 they are noindex,follow thin
+ * pages, so they must not be listed in the sitemap. Only the indexable
+ * gallery group pages (/gallery and /gallery/[slug]) are included.
+ *
+ * Supports the image sitemap extension for the group pages' cover images.
  * Revalidates every 3 hours to balance freshness with performance
  */
 import { NextResponse } from 'next/server'
@@ -19,7 +23,6 @@ import { seoDefaults } from '@/lib/data/site-config'
 import {
     getAllGroupsRecentMediaDates,
     getGalleryGroupsForSitemap,
-    getGalleryMediaForSitemap,
     getMostRecentMediaDate,
 } from '@/lib/queries/gallery/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
@@ -35,8 +38,7 @@ export async function GET(): Promise<NextResponse> {
         return new NextResponse(
             `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 </urlset>`,
             {
                 headers: {
@@ -98,54 +100,15 @@ export async function GET(): Promise<NextResponse> {
             entries.push(entry)
         }
 
-        // Gallery media detail pages
-        const media = await getGalleryMediaForSitemap()
-        for (const item of media) {
-            const entry: SitemapEntry = {
-                url: `${baseUrl}/gallery/media/${item.slug}`,
-                lastModified: item.updatedAt.toISOString().slice(0, 10),
-                changeFrequency: 'monthly',
-                priority: 0.6,
-            }
-
-            // Add image or video based on media type
-            if (item.type === 'video') {
-                // Video sitemap entry
-                const videoDescription = item.description
-                    ? item.description
-                          .substring(0, 160)
-                          .replace(/\s+/g, ' ')
-                          .trim()
-                    : `Video from Alluring Plastic Surgery gallery`
-
-                entry.videos = [
-                    {
-                        thumbnailUrl: item.thumbnailUrl ?? item.url,
-                        title: item.title,
-                        description: videoDescription,
-                        contentUrl: item.url,
-                        publicationDate: item.updatedAt.toISOString(),
-                    },
-                ]
-            } else {
-                // Image sitemap entry
-                entry.images = [
-                    {
-                        url: item.url,
-                        title: item.title,
-                    },
-                ]
-            }
-
-            entries.push(entry)
-        }
+        // Note: gallery media detail pages (/gallery/media/[slug]) are
+        // intentionally NOT added here — they are noindex,follow per
+        // issue #118 and must be excluded from the sitemap.
     } catch (error) {
         console.error('Error generating gallery sitemap:', error)
         return new NextResponse(
             `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 </urlset>`,
             {
                 status: 500,

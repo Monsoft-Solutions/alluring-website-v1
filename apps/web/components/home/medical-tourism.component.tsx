@@ -33,10 +33,16 @@ type ServiceArea = {
 }
 
 /**
- * Medical Tourism Component
+ * Fly-In Patient Component
  *
- * Showcases the fly-in patient program for medical tourists.
- * Server-rendered for SEO optimization on medical tourism queries.
+ * Showcases the fly-in patient program for out-of-state patients
+ * traveling to Miami from elsewhere in the United States.
+ * Server-rendered for SEO optimization on fly-in surgery queries.
+ *
+ * Naming note: the file name, component name and `id='medical-tourism'`
+ * DOM anchor predate the US-only market scope and are kept for anchor
+ * and import stability. All user-facing copy speaks to domestic (US)
+ * patients only — see CLAUDE.md "Market scope is the United States only".
  *
  * Scope note: Alluring does NOT coordinate travel and does NOT partner
  * with recovery houses or recovery suites. Every claim in this section is
@@ -52,7 +58,7 @@ export function MedicalTourism() {
             icon: <Video className='h-6 w-6' />,
             title: 'Virtual Consultations',
             description:
-                'Meet your surgeon from anywhere in the world. Our HIPAA-compliant video consultations let you discuss goals, review options, and ask questions before you book anything.',
+                'Meet your surgeon from anywhere in the U.S. Our HIPAA-compliant video consultations let you discuss goals, review options, and ask questions before you book anything.',
         },
         {
             icon: <CalendarCheck className='h-6 w-6' />,
@@ -115,7 +121,7 @@ export function MedicalTourism() {
             variant='default'
             className='relative overflow-hidden bg-stone-900 text-white'
             paddingY='py-24 lg:py-32'
-            ariaLabel='Medical tourism services'
+            ariaLabel='Fly-in patient program'
         >
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diamond-upholstery.png')] opacity-[0.02]" />
@@ -137,7 +143,7 @@ export function MedicalTourism() {
                         Fly-In Patient Program
                     </div>
                     <h2 className='mb-6 font-serif text-4xl leading-tight md:text-5xl'>
-                        Medical Tourism{' '}
+                        Flying In for Surgery,{' '}
                         <span className='text-stone-400 italic'>Made Easy</span>
                     </h2>
                     <p

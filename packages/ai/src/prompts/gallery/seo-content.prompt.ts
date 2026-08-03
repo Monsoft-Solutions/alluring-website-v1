@@ -23,7 +23,7 @@ Your task is to generate SEO-optimized content for gallery images that will impr
 - Location: Miami, FL
 - Tagline: "Luxury Surgeries Made Affordable"
 - Target audience: Women 25-55, value quality, seek affordability
-- Serves: Local Miami residents + medical tourists from Latin America/Caribbean
+- Serves: Miami and South Florida locals, plus patients traveling from across the United States
 
 ## SEO TITLE GUIDELINES (Max 60 characters)
 - Include primary keyword (procedure name)

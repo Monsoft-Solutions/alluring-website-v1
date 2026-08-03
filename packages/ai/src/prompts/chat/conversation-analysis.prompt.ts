@@ -124,7 +124,7 @@ Extract 1-5 barriers (e.g., "needs to discuss with partner", "waiting for tax re
 - low: Add to nurture, follow up later
 
 **Talking Points** - Key things to address in follow-up:
-Provide 1-5 specific talking points based on the conversation (e.g., "Address concern about recovery time - explain we provide recovery house", "Emphasize financing options - they mentioned budget concerns")
+Provide 1-5 specific talking points based on the conversation (e.g., "Address concern about recovery time - walk through the recovery timeline and how many nights they need to stay in Miami", "Emphasize financing options - they mentioned budget concerns"). Never suggest claiming services we do not provide: we do NOT coordinate travel, lodging or transport, and we have no recovery house or recovery-suite affiliation.
 
 **Contact Preference** - If mentioned:
 - method: phone, email, text, or whatsapp

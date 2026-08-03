@@ -73,8 +73,8 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
         },
         {
             question:
-                '¿Puedo obtener financiamiento si vivo fuera de Estados Unidos?',
-            answer: `Las opciones de financiamiento tradicionales generalmente requieren residencia en EE.UU. Sin embargo, ofrecemos planes de pago flexibles para pacientes internacionales. Podemos discutir opciones como depósitos y pagos programados.`,
+                '¿Qué necesito para solicitar financiamiento si vivo en otro estado?',
+            answer: `Lo mismo que cualquier paciente local: las solicitudes se evalúan según tu historial crediticio en EE.UU., sin importar en qué estado vivas. Puedes completar la solicitud a distancia antes de viajar a Miami, y nuestro equipo te acompaña en español durante todo el proceso.`,
         },
         {
             question: '¿Qué incluye el precio del procedimiento?',
