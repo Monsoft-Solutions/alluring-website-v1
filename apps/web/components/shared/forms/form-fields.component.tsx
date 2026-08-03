@@ -18,7 +18,7 @@ import {
 import { Input } from '@workspace/ui/components/input'
 import { Textarea } from '@workspace/ui/components/textarea'
 import { cn } from '@workspace/ui/lib/utils'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useId, useState, useTransition } from 'react'
 import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 /**
@@ -769,6 +769,12 @@ export function CheckboxField<TFieldValues extends FieldValues>({
     className,
     children,
 }: CheckboxFieldProps<TFieldValues>) {
+    // Unique per instance. Using the field name alone gave every checkbox the
+    // id `consentGiven`, so on any page rendering more than one consultation
+    // form (the homepage renders three) clicking a later form's consent label
+    // toggled the FIRST form's checkbox instead of its own.
+    const checkboxId = `${name}-${useId()}`
+
     if (variant === 'dark') {
         return (
             <FormField
@@ -780,7 +786,7 @@ export function CheckboxField<TFieldValues extends FieldValues>({
                             <FormControl>
                                 <input
                                     type='checkbox'
-                                    id={name}
+                                    id={checkboxId}
                                     checked={field.value as boolean}
                                     onChange={field.onChange}
                                     disabled={disabled}
@@ -792,7 +798,7 @@ export function CheckboxField<TFieldValues extends FieldValues>({
                                 />
                             </FormControl>
                             <label
-                                htmlFor={name}
+                                htmlFor={checkboxId}
                                 className='cursor-pointer text-sm leading-relaxed text-stone-400'
                             >
                                 {children}
@@ -820,7 +826,7 @@ export function CheckboxField<TFieldValues extends FieldValues>({
                         <FormControl>
                             <input
                                 type='checkbox'
-                                id={name}
+                                id={checkboxId}
                                 checked={field.value as boolean}
                                 onChange={field.onChange}
                                 disabled={disabled}
@@ -831,7 +837,7 @@ export function CheckboxField<TFieldValues extends FieldValues>({
                             />
                         </FormControl>
                         <label
-                            htmlFor={name}
+                            htmlFor={checkboxId}
                             className='text-muted-foreground cursor-pointer text-sm leading-relaxed'
                         >
                             {children}
