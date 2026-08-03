@@ -74,28 +74,37 @@ export function MedicalTourism() {
         },
     ]
 
+    /**
+     * Domestic only, by design. This section speaks to patients flying in
+     * from elsewhere in the United States; international regions were
+     * removed so the fly-in messaging is not making promises about
+     * cross-border travel, visas or care abroad that the practice does not
+     * handle. Spanish-language care is still surfaced above via the
+     * Bilingual Care card.
+     */
     const serviceAreas: ServiceArea[] = [
         {
-            region: 'United States',
+            region: 'Northeast',
             locations: [
                 'New York',
-                'Los Angeles',
-                'Houston',
-                'Chicago',
-                'Atlanta',
+                'Boston',
+                'Philadelphia',
+                'Washington, D.C.',
+                'New Jersey',
             ],
         },
         {
-            region: 'Latin America',
-            locations: ['Colombia', 'Brazil', 'Mexico', 'Argentina', 'Peru'],
+            region: 'South & Midwest',
+            locations: ['Atlanta', 'Houston', 'Dallas', 'Chicago', 'Nashville'],
         },
         {
-            region: 'Caribbean',
+            region: 'West',
             locations: [
-                'Puerto Rico',
-                'Dominican Republic',
-                'Jamaica',
-                'Bahamas',
+                'Los Angeles',
+                'San Francisco',
+                'Las Vegas',
+                'Phoenix',
+                'Seattle',
             ],
         },
     ]
@@ -185,7 +194,7 @@ export function MedicalTourism() {
                     <div className='mb-6 flex items-center gap-3'>
                         <MapPin className='text-gold-500 h-5 w-5' />
                         <h3 className='font-serif text-xl font-medium text-white'>
-                            Patients Travel From
+                            Patients Fly In From Across the U.S.
                         </h3>
                     </div>
                     <div className='grid gap-6 md:grid-cols-3'>
