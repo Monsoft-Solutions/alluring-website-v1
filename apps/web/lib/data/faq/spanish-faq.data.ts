@@ -83,7 +83,7 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
     viaje: [
         {
             question: '¿Ayudan a coordinar el viaje desde mi país?',
-            answer: `Sí, nuestro equipo de concierge puede orientarte sobre todo lo necesario para tu viaje: documentación requerida, recomendaciones de alojamiento cerca de nuestra clínica, transporte desde el aeropuerto, y casas de recuperación. Te guiamos en cada paso.`,
+            answer: `No. No reservamos vuelos, alojamiento ni transporte, y no trabajamos con casas de recuperación, así que no podemos reservarte una ni recomendarte ninguna. Eso lo organizas tú. Lo que sí hacemos es darte por escrito la fecha de tu cirugía, tu cita preoperatoria y tus controles posteriores, y decirte cuántas noches necesitas quedarte en Miami antes de que tu cirujano te autorice a volar de regreso — para que compres los pasajes sobre un calendario ya confirmado. Te atendemos en español.`,
         },
         {
             question: '¿Cuánto tiempo necesito quedarme en Miami?',

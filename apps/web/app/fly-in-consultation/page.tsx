@@ -2,23 +2,27 @@
  * Travel/Out-of-Town Lead Generation Landing Page
  *
  * Landing page targeting out-of-town and medical tourism patients.
- * Emphasizes virtual consultations, fly-in concierge services,
- * and the complete travel surgery experience.
+ * Emphasizes virtual consultations and getting confirmed surgical dates
+ * before a patient books travel.
  *
  * URL: /fly-in-consultation
  *
  * Key differentiators from general landing page:
  * - Virtual consultation first approach
- * - Concierge guidance and recommendations
- * - Recovery accommodation recommendations
+ * - Confirmed surgery, pre-op and follow-up dates before booking travel
+ * - Clear guidance on how many nights to stay in Miami
  * - Privacy/discretion benefits
  * - Out-of-state testimonials
+ *
+ * SCOPE: the practice does not book flights, lodging or transport and is
+ * not affiliated with any recovery house. Nothing on this page may claim
+ * otherwise.
  *
  * SEO-optimized for:
  * - "fly in plastic surgery miami"
  * - "medical tourism miami plastic surgery"
  * - "virtual plastic surgery consultation"
- * - "plastic surgery travel package"
+ * - "plastic surgery for out of state patients"
  */
 import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
@@ -51,14 +55,14 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/fly-in-consultation',
-    title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Concierge Service',
+    title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Board-Certified',
     description:
-        'World-class plastic surgery in Miami with concierge support. Virtual consultation, travel guidance, recovery accommodation recommendations. BBL, breast augmentation, mommy makeover. Financing available.',
+        'Board-certified plastic surgery in Miami for out-of-state patients. Start with a virtual consultation and get your surgery and follow-up dates in writing before you book travel. BBL, breast augmentation, mommy makeover. Financing available.',
 
     openGraph: {
-        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Concierge Service',
+        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Board-Certified',
         description:
-            'World-class plastic surgery in Miami with concierge support. Virtual consultation, travel guidance, recovery accommodation recommendations. BBL, breast augmentation, mommy makeover.',
+            'Board-certified plastic surgery in Miami for out-of-state patients. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
         url: `${seoConfig.siteUrl}/fly-in-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -75,9 +79,9 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Fly-In Plastic Surgery Miami | Concierge Service',
+        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Board-Certified',
         description:
-            'World-class plastic surgery in Miami with concierge support. Virtual consultation first. We guide your entire journey.',
+            'Board-certified plastic surgery in Miami for out-of-state patients. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
@@ -99,7 +103,7 @@ export default async function FlyInConsultationPage() {
             <WebPageSchema
                 name={`Fly-In Plastic Surgery - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/fly-in-consultation`}
-                description='World-class plastic surgery in Miami with fly-in concierge support. Start with a virtual consultation, then get expert guidance on travel, accommodations, and recovery.'
+                description='Board-certified plastic surgery in Miami for patients flying in. Start with a virtual consultation, then get your surgery, pre-op and follow-up dates in writing so you can book travel around a confirmed schedule.'
             />
 
             <FAQSchema items={faqSchemaItems} />

@@ -487,7 +487,7 @@ Our approach prioritizes safety, natural-looking results, and open communication
 
 **Innovation:** Miami's competitive market drives adoption of the latest, safest techniques.
 
-**Medical Tourism Infrastructure:** World-class surgical facilities, recovery houses, and support services.
+**Medical Tourism Infrastructure:** As a city, Miami is set up for patients travelling in — accredited surgical facilities, plentiful short-stay accommodation and easy flight connections. (Alluring is not affiliated with any recovery house; patients arrange their own stay.)
 
 **Results-Driven Culture:** Miami's beach lifestyle demands natural-looking results that look amazing in swimwear.
 

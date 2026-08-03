@@ -44,9 +44,9 @@ const accreditationBadges = [
     },
     {
         icon: Plane,
-        title: 'Medical Tourism Excellence',
+        title: 'Built for Fly-In Patients',
         description:
-            'Comprehensive fly-in concierge services for patients traveling from across the US, Latin America, and Caribbean.',
+            'Virtual consultations, and your surgery and follow-up dates confirmed in writing before you book travel. Care in English and Spanish.',
     },
 ]
 

@@ -91,7 +91,7 @@ export const faqDataContact: Record<string, FaqItem[]> = {
         },
         {
             question: 'Do you help with travel arrangements?',
-            answer: 'Our concierge service assists out-of-town patients with hotel recommendations, recovery house bookings, airport transportation, and post-operative care coordination. We want your Miami experience to be as seamless as possible.',
+            answer: "No — we don't book flights, hotels or transport, and we're not affiliated with any recovery house. What we do give you is the part you can't plan without: confirmed surgery, pre-op and follow-up dates in writing, and how many nights you need to be in Miami before your surgeon clears you to fly home.",
         },
     ],
 }

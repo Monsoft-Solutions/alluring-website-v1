@@ -166,11 +166,11 @@ export const faqPageData: Record<string, FaqItem[]> = {
         },
         {
             question: "I'm traveling from out of town—when can I fly home?",
-            answer: "For most procedures, we recommend staying in Miami for 7-10 days post-surgery for initial follow-up appointments and to ensure you're healing well before flying. For procedures like BBL, you may need special seating arrangements for your flight. Our concierge team helps out-of-town patients plan every detail.",
+            answer: "For most procedures we recommend staying in Miami 7-10 days after surgery, so you can be seen for follow-up and cleared before you fly. For BBL you may need special seating on the flight home. We'll give you the exact number of nights for your procedure before you book a ticket — you arrange the travel itself.",
         },
         {
             question: 'Do you offer recovery accommodations?',
-            answer: 'Yes, we partner with luxury recovery suites in Miami that provide 24/7 nursing care, medication management, healthy meals, and transportation to follow-up appointments. These facilities offer a hotel-like experience with medical-grade support. Our concierge can handle all booking details.',
+            answer: 'No. We do not operate recovery accommodation and we are not partnered with any recovery house or recovery suite, so we cannot book one for you or vouch for one. Patients arrange their own stay. What we provide is the clinical side: your follow-up appointments, written post-op instructions, and a number to call if something does not look right.',
         },
         {
             question: 'What aftercare and support do you provide?',
@@ -219,9 +219,9 @@ export const featuredFaqs: Array<{
     },
     {
         question: 'Do you offer surgery for out-of-town patients?',
-        answer: 'Yes, we welcome medical tourists from across the US, Latin America, and the Caribbean with virtual consultations and recovery concierge services.',
+        answer: 'Yes. Out-of-town patients start with a virtual consultation, then travel to Miami for their pre-op appointment and surgery.',
         details:
-            'We can recommend nearby hotels and recovery houses, and coordinate your entire surgical journey.',
+            'We schedule your surgery and follow-up dates and tell you how many nights you need to stay. You book your own flights, lodging and transport — we are not affiliated with any recovery house.',
     },
 ]
 
