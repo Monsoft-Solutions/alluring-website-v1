@@ -25,7 +25,7 @@ const JOURNEY_STEPS = [
         icon: FileCheck,
         title: 'Plan Your Trip',
         description:
-            'Once you decide to proceed, our team helps you plan: surgery date, recovery housing recommendations, and pre-op requirements.',
+            'Once you decide to proceed we confirm your surgery date, pre-op requirements and follow-up appointments in writing — so you can book your own flights and lodging around a fixed schedule.',
         duration: 'Weeks 2-4',
     },
     {
@@ -33,7 +33,7 @@ const JOURNEY_STEPS = [
         icon: Plane,
         title: 'Arrive in Miami',
         description:
-            'Fly into Miami and settle into your recovery accommodation. Attend your in-person consultation and pre-op appointment with your surgeon.',
+            'Fly into Miami and settle in wherever you have booked. Attend your in-person consultation and pre-op appointment with your surgeon.',
         duration: 'Day 1',
     },
     {
@@ -41,7 +41,7 @@ const JOURNEY_STEPS = [
         icon: Heart,
         title: 'Surgery & Recovery',
         description:
-            'Your procedure takes place at our accredited facility. Recover in comfort with daily check-ins, nurse support, and scheduled follow-ups.',
+            'Your procedure takes place at our accredited facility. You go home the same day with written post-op instructions, scheduled follow-up appointments, and a number to call if something does not look right.',
         duration: 'Days 2-10',
     },
     {

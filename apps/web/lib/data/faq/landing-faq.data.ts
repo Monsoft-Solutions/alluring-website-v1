@@ -90,7 +90,7 @@ export const landingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'What if I am traveling from out of state?',
-            answer: `We welcome patients from across the country and abroad. Our concierge service helps coordinate everything—from local accommodations and transportation to post-operative care. We recommend staying in Miami for 7-14 days depending on your procedure.`,
+            answer: `We welcome patients travelling in from out of state. You start with a virtual consultation, then come to Miami for your pre-op appointment and surgery. Plan on staying 7-14 days depending on the procedure so you can be seen for follow-up before flying home. You arrange your own flights and lodging — we're not affiliated with any recovery house.`,
         },
         {
             question: 'When will I see my final results?',

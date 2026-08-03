@@ -5,8 +5,14 @@
  * Organized by categories addressing travel patient concerns:
  * - Planning: How to plan your trip
  * - Virtual: Virtual consultation process
- * - Logistics: Flights, hotels, transportation
+ * - Logistics: How long to stay, getting around
  * - Recovery: Staying in Miami for recovery
+ *
+ * IMPORTANT: the practice does not book travel or lodging and is not
+ * partnered with any recovery house. Answers here must stay limited to
+ * clinical scheduling and medical guidance. Do not reintroduce claims
+ * about arranging accommodation, transport or "recommended" recovery
+ * houses.
  */
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
@@ -27,7 +33,7 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
     planning: [
         {
             question: 'How do I start planning my surgery trip to Miami?',
-            answer: `It's simple: Start with a free consultation. Our patient specialists will discuss your goals, answer your questions, and provide a detailed quote. Once you're ready to proceed, we'll help you plan your surgery date and provide recommendations for recovery accommodations.`,
+            answer: `Start with a free consultation. Our patient specialists will discuss your goals, answer your questions, and give you a detailed quote. Once you're ready to proceed we'll confirm your surgery, pre-op and follow-up dates in writing, and tell you how many nights you need to be in Miami — so you can book your own flights and lodging around a schedule that is already fixed.`,
         },
         {
             question: 'How far in advance should I book?',
@@ -39,7 +45,7 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Can I combine my surgery with a vacation?',
-            answer: `Many of our travel patients extend their stay to enjoy Miami before or after their recovery period. While you'll need to rest during the initial recovery phase, you can absolutely plan some relaxation time in sunny Miami. Our team can recommend recovery-friendly activities appropriate for your healing timeline.`,
+            answer: `Some patients extend their stay, though it's worth being realistic: the first week is for resting, not sightseeing. If you want time to enjoy Miami, plan it for before surgery or well after your surgeon has cleared you. We'll tell you what activity is safe at each stage of healing.`,
         },
     ],
     virtual: [
@@ -62,8 +68,8 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
     ],
     logistics: [
         {
-            question: 'Do you recommend places to stay?',
-            answer: `Yes! Our specialists have trusted recommendations for recovery houses and accommodations near our facility. These are places that understand surgical recovery needs—comfortable environments with staff experienced in caring for recovering patients. We'll provide you with options at various price points.`,
+            question: 'Do you arrange somewhere for me to stay?',
+            answer: `No. We don't book lodging and we're not affiliated with any recovery house, so we can't reserve one for you or vouch for one. Patients arrange their own stay. What we will tell you is which dates you need to be in Miami and how mobile you're likely to be in the first week, so you can choose somewhere that suits your recovery.`,
         },
         {
             question: 'How long do I need to stay in Miami?',
@@ -71,17 +77,17 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: "What about transportation while I'm in Miami?",
-            answer: `Many of our recommended recovery houses offer transportation services or can help arrange rides to your appointments. We suggest using rideshare services like Uber or Lyft for convenient, on-demand transportation during your stay.`,
+            answer: `You arrange your own — we don't provide transport or airport pickup. Most patients use rideshare services for appointments. Plan on not driving yourself for the first week or so after surgery, and while you're taking prescription pain medication.`,
         },
         {
-            question: 'What are recovery houses like?',
-            answer: `Recovery houses are accommodations specifically designed for patients recovering from surgery. They typically offer comfortable beds, quiet environments, staff who understand post-operative care, and often include meals and basic recovery supplies. Our team can recommend options based on your budget and preferences.`,
+            question: 'What should I look for in a place to stay?',
+            answer: `Practical things: somewhere quiet, a bed you can get in and out of without straining, and no stairs if you can avoid them. Some patients book a recovery house — accommodation aimed at post-surgical guests — and others book a normal hotel or rental. We have no affiliation with any of them and don't take referral fees, so research and book whichever suits you.`,
         },
     ],
     recovery: [
         {
             question: 'How will I be cared for during recovery in Miami?',
-            answer: `You're never alone during your Miami recovery. Our concierge team checks on you daily, you have 24/7 access to our nurse line, and you'll have scheduled follow-up appointments with your surgeon. Many patients also choose to have a private nurse visit their accommodation.`,
+            answer: `You'll have scheduled follow-up appointments with your surgeon while you're here, written post-op instructions, and a number to call if something doesn't look right. To be clear about the limits: we provide clinical care and follow-up, not in-person daily care where you're staying. Arrange for someone to be with you for at least the first 24-48 hours.`,
         },
         {
             question: "What if something goes wrong while I'm recovering?",

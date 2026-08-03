@@ -2,10 +2,13 @@
  * TravelHero Component
  *
  * A travel/medical tourism focused hero section for out-of-town patients:
- * - Emphasizes fly-in concierge services
  * - Virtual consultation first approach
- * - Recovery accommodation support
- * - "Vacation + transformation" positioning
+ * - Confirmed surgery and follow-up dates before travel is booked
+ * - Bilingual care
+ *
+ * SCOPE: the practice does not book flights, lodging or transport and is
+ * not partnered with any recovery house. Do not reintroduce claims about
+ * arranging accommodation or "concierge" travel services here.
  *
  * Optimized for patients traveling from other states or countries.
  */
@@ -151,9 +154,9 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                                 <div>
                                     <p className='text-sm leading-relaxed text-stone-300 italic'>
                                         &ldquo;Flying from New York felt so
-                                        easy. Their team recommended a great
-                                        recovery house and checked on me daily.
-                                        Best decision I ever made.&rdquo;
+                                        easy. I had my dates in writing before I
+                                        booked anything. Best decision I ever
+                                        made.&rdquo;
                                     </p>
                                     <p className='text-gold-400 mt-2 text-xs font-medium'>
                                         — Rachel K., New York

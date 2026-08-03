@@ -14,44 +14,7 @@ import { CreditCard, Check, Languages } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
-
-type PaymentOption = {
-    procedure: string
-    weeklyPayment: number
-    highlight?: string
-}
-
-const PAYMENT_OPTIONS: PaymentOption[] = [
-    {
-        procedure: 'Breast Augmentation',
-        weeklyPayment: 27,
-        highlight: 'Most Popular',
-    },
-    {
-        procedure: 'Liposuction 360',
-        weeklyPayment: 27,
-    },
-    {
-        procedure: 'Brazilian Butt Lift (BBL)',
-        weeklyPayment: 34,
-    },
-    {
-        procedure: 'Extended Tummy Tuck',
-        weeklyPayment: 34,
-    },
-    {
-        procedure: 'Breast Lift with Silicone',
-        weeklyPayment: 41,
-    },
-    {
-        procedure: 'Breast Reduction',
-        weeklyPayment: 41,
-    },
-    {
-        procedure: 'Face & Neck Lift',
-        weeklyPayment: 69,
-    },
-]
+import { WEEKLY_PAYMENT_OPTIONS as PAYMENT_OPTIONS } from '@/lib/data/weekly-payments.data'
 
 export type WeeklyPaymentsProps = {
     readonly id?: string

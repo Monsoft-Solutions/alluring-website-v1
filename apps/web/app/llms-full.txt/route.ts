@@ -226,11 +226,9 @@ ${
 - West Palm Beach
 - Boca Raton
 
-**Medical Tourism**: We welcome patients from:
-- Latin America (Brazil, Colombia, Venezuela, Mexico)
-- Caribbean Islands
-- Other US states
-- International destinations
+**Fly-In Patients**: We welcome patients travelling in from other US
+states. Care is available in English and Spanish. The practice does not
+book travel or lodging and is not affiliated with any recovery house.
 
 ---
 

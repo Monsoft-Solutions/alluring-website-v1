@@ -251,7 +251,7 @@ export default async function ProcedureLandingPage(
                     name: siteConfig.business.name,
                     type: 'MedicalBusiness',
                 }}
-                areaServed={['Miami', 'Florida', 'Latin America', 'Caribbean']}
+                areaServed={['Miami', 'Florida', 'United States']}
                 availableLanguage={['English', 'Spanish']}
                 offers={{
                     price: 0,

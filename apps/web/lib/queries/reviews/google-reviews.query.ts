@@ -29,7 +29,18 @@ export type GoogleReviewPublic = {
     reviewerPhotoUrl: string | null
     rating: number
     comment: string | null
-    reviewCreatedAt: Date
+    /**
+     * Declared as `Date | string` because it is both, depending on the path.
+     *
+     * This query is wrapped in `unstable_cache`, which serialises its result
+     * to JSON — so on a cache hit the Date has already become an ISO string,
+     * while a cache miss returns the real Date from Drizzle. Typing it as
+     * `Date` alone compiles fine and then throws
+     * `reviewCreatedAt.getFullYear is not a function` at prerender time.
+     *
+     * Always wrap in `new Date(...)` before calling any Date method.
+     */
+    reviewCreatedAt: Date | string
     replyText: string | null
 }
 

@@ -22,6 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@workspace/ui/components/form'
 import { CheckCircle2, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
+import { useId } from 'react'
 import { type Resolver, useForm } from 'react-hook-form'
 
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
@@ -127,6 +128,13 @@ export function ConsultationForm({
     // trail is preserved (consentGiven is part of the submission), but
     // the friction of an explicit unchecked checkbox above the submit
     // button is removed.
+    // The honeypot's DOM id must be unique per instance: the homepage renders
+    // this form three times (hero, mid-page CTA, final lead form), and a
+    // hardcoded id would produce duplicate ids and leave every label pointing
+    // at the first input. Only the id changes — the field NAME stays
+    // `_website`, which is what /api/contact inspects to reject bots.
+    const honeypotId = `_website_${useId()}`
+
     const form = useForm<ConsultationFormInput>({
         resolver: zodResolver(
             compact ? consultationFormCompactSchema : consultationFormSchema
@@ -237,10 +245,10 @@ export function ConsultationForm({
                                 overflow: 'hidden',
                             }}
                         >
-                            <label htmlFor='_website'>Website</label>
+                            <label htmlFor={honeypotId}>Website</label>
                             <input
                                 type='text'
-                                id='_website'
+                                id={honeypotId}
                                 tabIndex={-1}
                                 autoComplete='off'
                                 {...form.register('_website')}

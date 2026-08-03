@@ -13,13 +13,13 @@ import {
 import { ContainerLayout } from '@/components/container-layout.component'
 import { Hero } from '@/components/home/hero.component'
 import { TrustBar } from '@/components/home/trust-bar.component'
+import { AudiencePaths } from '@/components/home/audience-paths.component'
+import { InlineCtaBand } from '@/components/home/inline-cta-band.component'
+import { Objections } from '@/components/home/objections.component'
 import { Journey } from '@/components/home/journey.component'
-import { PricingPreview } from '@/components/home/pricing-preview.component'
 import { Procedures } from '@/components/home/procedures.component'
 import { SecondaryProcedures } from '@/components/home/secondary-procedures.component'
 import { GalleryShowcase } from '@/components/shared/gallery-showcase.component'
-import { RecoveryTimeline } from '@/components/home/recovery-timeline.component'
-import { WhyUs } from '@/components/home/why-us.component'
 import { Surgeons } from '@/components/home/surgeons.component'
 import { MedicalTourism } from '@/components/home/medical-tourism.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
@@ -134,11 +134,11 @@ export default async function Page() {
 
             {/* Structured Data - VideoObject for hero background video */}
             <VideoObjectSchema
-                name='Alluring Plastic Surgery - Miami Clinic Experience'
-                description="Experience world-class cosmetic surgery at Miami's premier plastic surgery destination. Our state-of-the-art facility combines luxury with affordability."
-                thumbnailUrl={`${siteUrl}/og-image.jpg`}
-                uploadDate='2024-01-01'
-                contentUrl='https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/videos/alluring-home-hero-v1-desktop.mp4'
+                name='Alluring Plastic Surgery - Miami'
+                description="Lifestyle brand film for Miami's premier plastic surgery destination, where world-class cosmetic surgery meets flexible financing. Model shown; not a patient."
+                thumbnailUrl='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-desktop-poster.jpg'
+                uploadDate='2026-08-03'
+                contentUrl='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-desktop.mp4'
                 author={{
                     type: 'Organization',
                     name: siteConfig.business.name,
@@ -196,13 +196,7 @@ export default async function Page() {
                     },
                 ]}
                 sameAs={siteConfig.social.map((s) => s.url)}
-                areaServed={[
-                    'Miami, FL',
-                    'United States',
-                    'South Florida',
-                    'Latin America',
-                    'Caribbean',
-                ]}
+                areaServed={['Miami, FL', 'South Florida', 'United States']}
                 hasOfferCatalog={{
                     name: 'Plastic Surgery Procedures',
                     itemListElement: [
@@ -353,37 +347,62 @@ export default async function Page() {
             )}
 
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
+                {/* ---------------------------------------------------- */}
+                {/* 1 — Capture. Form lives in the first viewport.        */}
+                {/* ---------------------------------------------------- */}
                 <Hero />
                 <TrustBar />
+
+                {/* ---------------------------------------------------- */}
+                {/* 2 — Qualify. Route visitors by situation, not by      */}
+                {/*     procedure name, into the matching consult page.   */}
+                {/* ---------------------------------------------------- */}
+                <AudiencePaths />
+
+                {/* ---------------------------------------------------- */}
+                {/* 3 — Desire.                                           */}
+                {/* ---------------------------------------------------- */}
                 <Procedures />
                 <SecondaryProcedures />
+                {featuredPromotion && (
+                    <PromoSection promotion={featuredPromotion} />
+                )}
+
+                {/* ---------------------------------------------------- */}
+                {/* 4 — Proof. Results, then reviews.                     */}
+                {/* ---------------------------------------------------- */}
+                {/* Gallery renders white so it steps against the muted
+                    reviews block directly beneath it — muted on muted read as
+                    one flat wall. */}
+                <GalleryShowcase variant='default' />
                 <GoogleReviews
                     title='Real Reviews from Google'
                     subtitle='See what our patients are saying on Google'
                     limit={6}
                 />
-                {/* Featured Promotion Section - Only shown when active promotion exists */}
-                {featuredPromotion && (
-                    <PromoSection promotion={featuredPromotion} />
-                )}
-                <GalleryShowcase variant='muted' />
-                <Surgeons />
 
+                {/* ---------------------------------------------------- */}
+                {/* 5 — Capture again, at peak trust: straight after the  */}
+                {/*     visitor has seen results and read reviews.        */}
+                {/* ---------------------------------------------------- */}
+                <InlineCtaBand />
+
+                {/* ---------------------------------------------------- */}
+                {/* 6 — Objections: who is operating, then everything     */}
+                {/*     else. Pricing detail lives on the financing and   */}
+                {/*     specials pages rather than here.                  */}
+                {/* ---------------------------------------------------- */}
+                <Surgeons />
+                <Objections />
+
+                {/* ---------------------------------------------------- */}
+                {/* 7 — Process. What happens, and how it works if you're */}
+                {/*     flying in. Week-by-week recovery detail lives on  */}
+                {/*     each procedure page, where it can be specific.    */}
+                {/* ---------------------------------------------------- */}
                 <Journey />
                 <MedicalTourism />
 
-                <WhyUs />
-
-                <PricingPreview />
-                <RecoveryTimeline />
-                <BlogPostsSection
-                    title='Latest from Our Blog'
-                    description='Expert insights and advice from our board-certified plastic surgeons'
-                    badge='Knowledge Center'
-                    variant='muted'
-                    limit={3}
-                    columns={3}
-                />
                 <CategorizedFAQ
                     categories={faqCategoriesHome}
                     faqData={faqDataHome}
@@ -402,7 +421,25 @@ export default async function Page() {
                         phoneNumber: '7863058649',
                     }}
                 />
+
+                {/* ---------------------------------------------------- */}
+                {/* 8 — Final capture, for visitors who read everything.  */}
+                {/* ---------------------------------------------------- */}
                 <LeadForm />
+
+                {/* ---------------------------------------------------- */}
+                {/* 9 — Below the conversion path: editorial content that */}
+                {/*     earns organic traffic without competing with the  */}
+                {/*     forms above it.                                   */}
+                {/* ---------------------------------------------------- */}
+                <BlogPostsSection
+                    title='Latest from Our Blog'
+                    description='Expert insights and advice from our board-certified plastic surgeons'
+                    badge='Knowledge Center'
+                    variant='muted'
+                    limit={3}
+                    columns={3}
+                />
             </ContainerLayout>
         </>
     )

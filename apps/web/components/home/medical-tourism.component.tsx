@@ -3,6 +3,7 @@ import {
     Video,
     Plane,
     Building,
+    CalendarCheck,
     Languages,
     MapPin,
     Globe,
@@ -37,11 +38,13 @@ type ServiceArea = {
  * Showcases the fly-in patient program for medical tourists.
  * Server-rendered for SEO optimization on medical tourism queries.
  *
- * Features:
- * - Virtual Consultations
- * - Travel Coordination
- * - Recovery Suites
- * - Bilingual Care
+ * Scope note: Alluring does NOT coordinate travel and does NOT partner
+ * with recovery houses or recovery suites. Every claim in this section is
+ * limited to what happens inside the practice — consultation, surgery,
+ * clinical timeline, follow-up. The disclosure below the cards states the
+ * boundary plainly so out-of-town patients plan their own lodging and
+ * transport with correct expectations. Do not reintroduce airport pickup,
+ * hotel booking, partner recovery facilities or "travel packages" here.
  */
 export function MedicalTourism() {
     const features: FeatureCard[] = [
@@ -49,19 +52,19 @@ export function MedicalTourism() {
             icon: <Video className='h-6 w-6' />,
             title: 'Virtual Consultations',
             description:
-                'Meet your surgeon from anywhere in the world. Our HIPAA-compliant video consultations let you discuss goals, review options, and ask questions before traveling.',
+                'Meet your surgeon from anywhere in the world. Our HIPAA-compliant video consultations let you discuss goals, review options, and ask questions before you book anything.',
         },
         {
-            icon: <Plane className='h-6 w-6' />,
-            title: 'Travel Coordination',
+            icon: <CalendarCheck className='h-6 w-6' />,
+            title: 'Dates Before You Book',
             description:
-                'From airport pickup to hotel recommendations near our clinic, our concierge team handles every detail so you can focus on your transformation.',
+                'You get your surgery date, your pre-op date and your follow-up dates in writing first — so you book flights around a confirmed schedule instead of guessing.',
         },
         {
             icon: <Building className='h-6 w-6' />,
-            title: 'Recovery Suites',
+            title: 'One Miami Facility',
             description:
-                'Partner recovery facilities offer 24/7 nursing care, comfortable accommodations, and all the support you need during your initial healing period.',
+                'Pre-op, surgery and every follow-up happen at our accredited Miami surgical facility. No second location to get to, no procedure sent out to a partner clinic.',
         },
         {
             icon: <Languages className='h-6 w-6' />,
@@ -71,28 +74,37 @@ export function MedicalTourism() {
         },
     ]
 
+    /**
+     * Domestic only, by design. This section speaks to patients flying in
+     * from elsewhere in the United States; international regions were
+     * removed so the fly-in messaging is not making promises about
+     * cross-border travel, visas or care abroad that the practice does not
+     * handle. Spanish-language care is still surfaced above via the
+     * Bilingual Care card.
+     */
     const serviceAreas: ServiceArea[] = [
         {
-            region: 'United States',
+            region: 'Northeast',
             locations: [
                 'New York',
-                'Los Angeles',
-                'Houston',
-                'Chicago',
-                'Atlanta',
+                'Boston',
+                'Philadelphia',
+                'Washington, D.C.',
+                'New Jersey',
             ],
         },
         {
-            region: 'Latin America',
-            locations: ['Colombia', 'Brazil', 'Mexico', 'Argentina', 'Peru'],
+            region: 'South & Midwest',
+            locations: ['Atlanta', 'Houston', 'Dallas', 'Chicago', 'Nashville'],
         },
         {
-            region: 'Caribbean',
+            region: 'West',
             locations: [
-                'Puerto Rico',
-                'Dominican Republic',
-                'Jamaica',
-                'Bahamas',
+                'Los Angeles',
+                'San Francisco',
+                'Las Vegas',
+                'Phoenix',
+                'Seattle',
             ],
         },
     ]
@@ -140,7 +152,7 @@ export function MedicalTourism() {
                 </div>
 
                 {/* Feature Cards Grid */}
-                <div className='mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+                <div className='mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4'>
                     {features.map((feature, index) => (
                         <div
                             key={index}
@@ -159,12 +171,30 @@ export function MedicalTourism() {
                     ))}
                 </div>
 
+                {/* Scope disclosure. Stated plainly and directly under the
+                    cards rather than buried at the foot of the section: an
+                    out-of-town patient needs to know what they are booking
+                    themselves before they read any further. */}
+                <div className='mb-16 border-l-2 border-stone-700 py-1 pl-5'>
+                    <p className='text-sm leading-relaxed text-stone-400'>
+                        <span className='font-semibold text-stone-200'>
+                            What we don&apos;t do:
+                        </span>{' '}
+                        we don&apos;t book flights, hotels or transportation,
+                        and we don&apos;t own or partner with recovery houses.
+                        You arrange your own stay. What we give you is the
+                        medical side you can&apos;t plan without — your dates,
+                        how many nights you need to be in Miami, and when your
+                        surgeon clears you to fly home.
+                    </p>
+                </div>
+
                 {/* Service Areas */}
                 <div className='mb-12 rounded-lg border border-stone-800 bg-stone-900/50 p-6 backdrop-blur-sm md:p-8'>
                     <div className='mb-6 flex items-center gap-3'>
                         <MapPin className='text-gold-500 h-5 w-5' />
                         <h3 className='font-serif text-xl font-medium text-white'>
-                            Patients Travel From
+                            Patients Fly In From Across the U.S.
                         </h3>
                     </div>
                     <div className='grid gap-6 md:grid-cols-3'>
@@ -211,7 +241,7 @@ export function MedicalTourism() {
                             href='/fly-in-consultation'
                             className='flex items-center gap-2'
                         >
-                            Learn About Travel Packages
+                            How Fly-In Surgery Works
                             <ArrowRight className='h-4 w-4' />
                         </Link>
                     </Button>
@@ -219,14 +249,14 @@ export function MedicalTourism() {
 
                 {/* Trust Note */}
                 <p className='mt-8 text-center text-sm text-stone-500'>
-                    Need help planning your trip?{' '}
+                    Not sure how many days to plan for?{' '}
                     <Link
                         href='/fly-in-consultation'
                         className='text-gold-400 hover:text-gold-300 underline underline-offset-2'
                     >
-                        Contact our patient concierge
+                        Ask us before you book
                     </Link>{' '}
-                    for personalized assistance.
+                    — the answer depends on your procedure.
                 </p>
             </ContentWrapper>
         </SectionContainer>

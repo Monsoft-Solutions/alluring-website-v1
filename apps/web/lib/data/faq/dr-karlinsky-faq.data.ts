@@ -25,7 +25,7 @@ export const drKarlinskyFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Can I do a virtual consult first?',
-            answer: `Yes. Most out-of-state and international patients start virtual — discuss your goals, see preliminary options, get a quote estimate — then fly in for surgery.`,
+            answer: `Yes. Most out-of-state patients start virtual — discuss your goals, see preliminary options, get a quote estimate — then fly in for surgery.`,
         },
     ],
     'safety-results': [

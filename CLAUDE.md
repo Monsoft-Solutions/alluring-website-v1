@@ -8,7 +8,11 @@
 
 **Business**: Alluring Plastic Surgery — luxury cosmetic surgery clinic.
 
-**Location**: Miami, FL (serves locals + medical tourists from Latin America/Caribbean).
+**Location**: Miami, FL. Serves South Florida locals plus patients flying in from other **US states**.
+
+**Market scope is the United States only.** Do not describe the practice as serving Latin America, the Caribbean or "international" patients — not in copy, metadata, `areaServed` structured data, or the `llms*.txt` routes. Spanish-language content (`/consulta-gratis`, the Spanish FAQ) exists for Spanish speakers **within** the US, not for cross-border patients.
+
+**We do not coordinate travel.** No flights, lodging, transport or airport pickup, and no affiliation with any recovery house or recovery suite. What the practice provides is clinical: confirmed surgery, pre-op and follow-up dates in writing, and how many nights a patient needs to stay in Miami before being cleared to fly home. Do not reintroduce "concierge" travel claims.
 
 **Tagline**: "Luxury Surgeries Made Affordable"
 

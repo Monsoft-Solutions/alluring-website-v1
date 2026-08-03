@@ -15,8 +15,8 @@ export const WhyUs = () => {
     const features = [
         {
             icon: <Plane className='h-6 w-6' />,
-            title: 'Fly-In Concierge',
-            desc: 'We plan around your travel. From virtual consults to recovery hotels, your trip is part of the surgical plan.',
+            title: 'Built for Fly-In Patients',
+            desc: 'Meet your surgeon by video, get your surgery and follow-up dates in writing, and know exactly how many nights you need in Miami before you book a flight.',
         },
         {
             icon: <Shield className='h-6 w-6' />,

@@ -40,13 +40,13 @@ const accreditationBadges = [
         icon: Heart,
         title: `${siteConfig.trustStats?.years} Years Experience`,
         description:
-            'Over 15 years of combined surgical expertise serving Miami and international patients seeking world-class results.',
+            'Over 15 years of combined surgical expertise serving Miami and patients travelling in from across the United States.',
     },
     {
         icon: Plane,
-        title: 'Medical Tourism Excellence',
+        title: 'Built for Fly-In Patients',
         description:
-            'Comprehensive fly-in concierge services for patients traveling from across the US, Latin America, and Caribbean.',
+            'Virtual consultations, and your surgery and follow-up dates confirmed in writing before you book travel. Care in English and Spanish.',
     },
 ]
 

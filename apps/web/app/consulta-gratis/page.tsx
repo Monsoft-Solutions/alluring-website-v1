@@ -3,14 +3,17 @@
  *
  * Full Spanish-language landing page targeting:
  * - Miami's Hispanic population (60%+)
- * - Medical tourists from Latin America and Caribbean
+ * - Spanish-speaking patients travelling in from other US states
+ *
+ * Note: Spanish-language, not international. The practice serves the
+ * United States; this page exists for Spanish speakers within it.
  *
  * URL: /consulta-gratis
  *
  * Key differentiators:
  * - 100% Spanish content
  * - Emphasizes bilingual staff and cultural understanding
- * - Addresses international patient concerns
+ * - Addresses out-of-state patient concerns
  * - All procedures available with Spanish consultation
  *
  * SEO-optimized for:
@@ -145,7 +148,7 @@ export default async function ConsultaGratisPage() {
                     type: 'Organization',
                     logo: seoConfig.organization?.logo,
                 }}
-                areaServed={['Miami', 'Florida', 'América Latina', 'Caribe']}
+                areaServed={['Miami', 'Florida', 'Estados Unidos']}
                 availableLanguage={['Español', 'Inglés']}
                 offers={{
                     price: 0,

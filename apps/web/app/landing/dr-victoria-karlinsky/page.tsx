@@ -126,7 +126,7 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     type: 'MedicalBusiness',
                     logo: seoConfig.organization?.logo,
                 }}
-                areaServed={['Miami', 'Florida', 'Latin America', 'Caribbean']}
+                areaServed={['Miami', 'Florida', 'United States']}
                 availableLanguage={['English', 'Spanish']}
                 offers={{
                     price: 0,

@@ -31,10 +31,10 @@ const TRAVEL_BENEFITS = [
     },
     {
         icon: Plane,
-        title: 'Dedicated Concierge Support',
+        title: 'Your Dates, Before You Book',
         description:
-            'From your first virtual call to your flight home, we guide you every step. Our specialists provide trusted recommendations for recovery accommodations, answer all your questions, and ensure you feel prepared and supported.',
-        highlight: 'Expert Guidance',
+            'You get your surgery, pre-op and follow-up dates in writing first, plus the number of nights you need to stay before your surgeon clears you to fly home. You book your own flights and lodging around a schedule that is already fixed.',
+        highlight: 'No Guesswork',
     },
     {
         icon: Eye,

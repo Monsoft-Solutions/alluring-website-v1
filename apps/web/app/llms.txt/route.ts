@@ -184,7 +184,7 @@ ${
 **Business Hours**:
 ${formatBusinessHours()}
 
-**Serving**: South Florida (Miami, Fort Lauderdale, Coral Gables, Hialeah) and international patients from Latin America, Caribbean, and beyond.
+**Serving**: South Florida (Miami, Fort Lauderdale, Coral Gables, Hialeah) and patients travelling in from other US states.
 
 ## Social Media
 
