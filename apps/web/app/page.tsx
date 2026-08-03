@@ -196,13 +196,7 @@ export default async function Page() {
                     },
                 ]}
                 sameAs={siteConfig.social.map((s) => s.url)}
-                areaServed={[
-                    'Miami, FL',
-                    'United States',
-                    'South Florida',
-                    'Latin America',
-                    'Caribbean',
-                ]}
+                areaServed={['Miami, FL', 'South Florida', 'United States']}
                 hasOfferCatalog={{
                     name: 'Plastic Surgery Procedures',
                     itemListElement: [

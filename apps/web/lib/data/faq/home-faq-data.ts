@@ -45,7 +45,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'Do you serve patients from outside Miami?',
-            answer: 'Yes. We welcome patients from across South Florida, Latin America, the Caribbean, and beyond. You start with a virtual consultation, so you meet your surgeon and get your quote before you commit to a trip. To be clear about what we do and do not handle: we schedule your surgery, pre-op and follow-up appointments, and we tell you how many nights you need to stay in Miami — but you arrange your own flights, lodging and transportation.',
+            answer: 'Yes. We welcome patients from across South Florida and from other states. You start with a virtual consultation, so you meet your surgeon and get your quote before you commit to a trip. To be clear about what we do and do not handle: we schedule your surgery, pre-op and follow-up appointments, and we tell you how many nights you need to stay in Miami — but you arrange your own flights, lodging and transportation.',
         },
         {
             question:

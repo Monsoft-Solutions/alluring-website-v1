@@ -40,7 +40,7 @@ const accreditationBadges = [
         icon: Heart,
         title: `${siteConfig.trustStats?.years} Years Experience`,
         description:
-            'Over 15 years of combined surgical expertise serving Miami and international patients seeking world-class results.',
+            'Over 15 years of combined surgical expertise serving Miami and patients travelling in from across the United States.',
     },
     {
         icon: Plane,

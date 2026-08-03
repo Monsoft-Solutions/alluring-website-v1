@@ -6,7 +6,12 @@
  * - Idioma: Language support and cultural understanding
  * - Procedimientos: Available procedures
  * - Financiamiento: Payment and financing options
- * - Viaje: Information for patients traveling from Latin America
+ * - Viaje: Information for patients travelling in from other US states
+ *
+ * Note: this page is Spanish-LANGUAGE, not international. The practice
+ * serves the United States; these answers exist for Spanish speakers
+ * within it, whether they are local to Miami or flying in from another
+ * state. Do not reintroduce cross-border framing.
  */
 import { siteConfig } from '@/lib/data/site-config'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
@@ -39,8 +44,8 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
             answer: `Sí, ofrecemos todos los documentos importantes en español, incluyendo formularios de consentimiento, instrucciones pre y post operatorias, e información sobre tu procedimiento. Queremos asegurarnos de que entiendas completamente cada paso.`,
         },
         {
-            question: '¿Atienden pacientes de otros países?',
-            answer: `¡Por supuesto! Recibimos pacientes de toda Latinoamérica y el Caribe: Venezuela, Colombia, Argentina, México, Brasil, República Dominicana, Puerto Rico, y muchos más. Entendemos las necesidades específicas de los pacientes internacionales.`,
+            question: '¿Atienden pacientes de otros estados?',
+            answer: `Sí. Recibimos pacientes de todo Estados Unidos — Nueva York, Nueva Jersey, Texas, Georgia, Illinois, California y muchos más — además de todo el sur de la Florida. Te atendemos en español en cada etapa, desde la consulta virtual hasta tus controles posoperatorios.`,
         },
     ],
     procedimientos: [
@@ -82,7 +87,7 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
     ],
     viaje: [
         {
-            question: '¿Ayudan a coordinar el viaje desde mi país?',
+            question: '¿Ayudan a coordinar el viaje?',
             answer: `No. No reservamos vuelos, alojamiento ni transporte, y no trabajamos con casas de recuperación, así que no podemos reservarte una ni recomendarte ninguna. Eso lo organizas tú. Lo que sí hacemos es darte por escrito la fecha de tu cirugía, tu cita preoperatoria y tus controles posteriores, y decirte cuántas noches necesitas quedarte en Miami antes de que tu cirujano te autorice a volar de regreso — para que compres los pasajes sobre un calendario ya confirmado. Te atendemos en español.`,
         },
         {
@@ -95,8 +100,8 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
         },
         {
             question:
-                '¿Qué pasa si necesito seguimiento después de regresar a mi país?',
-            answer: `Proporcionamos instrucciones detalladas de cuidado post-operatorio y estamos disponibles para consultas virtuales de seguimiento. También podemos coordinar con médicos en tu país si es necesario. Tu bienestar continúa siendo nuestra prioridad después de que regreses a casa.`,
+                '¿Qué pasa si necesito seguimiento después de regresar a casa?',
+            answer: `Te damos instrucciones detalladas de cuidado posoperatorio por escrito y quedamos disponibles para consultas virtuales de seguimiento. Si hace falta, también podemos coordinar con un médico en tu ciudad. Tu bienestar sigue siendo nuestra prioridad después de que regreses a casa.`,
         },
     ],
 }

@@ -2,7 +2,8 @@
  * SpanishHero Component
  *
  * A Spanish-language hero section targeting Hispanic/Latino audiences:
- * - Full Spanish content for Miami's Hispanic population and Latin American tourists
+ * - Full Spanish content for Miami's Hispanic population and Spanish
+ * speakers travelling in from other US states
  * - Emphasizes bilingual staff and cultural understanding
  * - All procedures available with Spanish consultation
  *
