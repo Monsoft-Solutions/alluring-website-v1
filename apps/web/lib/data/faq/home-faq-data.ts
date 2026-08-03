@@ -45,12 +45,12 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'Do you serve patients from outside Miami?',
-            answer: 'Absolutely! We welcome patients from across South Florida, Latin America, the Caribbean, and beyond. Our Miami clinic is a top destination for medical tourism. We offer virtual consultations, airport pickup coordination, and can recommend trusted recovery houses nearby. Many patients fly in for their procedure and stay in Miami during their initial recovery.',
+            answer: 'Yes. We welcome patients from across South Florida, Latin America, the Caribbean, and beyond. You start with a virtual consultation, so you meet your surgeon and get your quote before you commit to a trip. To be clear about what we do and do not handle: we schedule your surgery, pre-op and follow-up appointments, and we tell you how many nights you need to stay in Miami — but you arrange your own flights, lodging and transportation.',
         },
         {
             question:
-                'What travel packages are available for out-of-town patients?',
-            answer: 'Our patient concierge can coordinate your entire surgical journey. We partner with luxury recovery suites offering 24/7 nursing care, transportation services, and all-inclusive packages. We also provide detailed pre-travel checklists, virtual pre-op appointments, and can recommend nearby hotels and Airbnbs for accompanying family members. Contact us for a personalized travel surgery quote.',
+                'How far in advance should out-of-town patients plan a trip?',
+            answer: 'Plan on booking 4-6 weeks out. That gives time for your virtual consultation, medical clearance and any lab work before your surgery date is locked in. Once your date is confirmed in writing, you can book travel around it. Most procedures require staying in Miami for 7-10 days after surgery so your surgeon can see you for follow-up and clear you to fly home — we will give you the exact number for your procedure before you buy a ticket.',
         },
     ],
     recovery: [
@@ -60,7 +60,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'Do you offer recovery houses?',
-            answer: 'We partner with top-tier luxury recovery suites in Miami that offer 24/7 nursing care, transportation, and meals. Our concierge can handle all booking details for you.',
+            answer: 'No. We do not operate recovery houses and we are not partnered with any, so we cannot book one for you or vouch for one. Patients who want that kind of stay research and book it themselves. What we do provide is the clinical side of your recovery: written post-op instructions, your follow-up appointment schedule, and a number to call if something does not look right.',
         },
         {
             question: 'When can I exercise again?',

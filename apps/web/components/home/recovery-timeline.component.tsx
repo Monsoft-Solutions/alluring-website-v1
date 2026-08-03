@@ -59,7 +59,7 @@ export function RecoveryTimeline() {
                     title: 'Surgery Day',
                     icon: <BedDouble className='h-5 w-5' />,
                     description:
-                        'Rest at recovery facility with 24/7 nursing care. Expect soreness and swelling.',
+                        'Discharged the same day to rest wherever you are staying. Expect soreness and swelling, and plan to have someone with you.',
                     tips: [
                         'Use BBL pillow for all sitting',
                         'Take prescribed medications',
