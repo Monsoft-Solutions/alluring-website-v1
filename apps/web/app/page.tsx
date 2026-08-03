@@ -15,13 +15,11 @@ import { Hero } from '@/components/home/hero.component'
 import { TrustBar } from '@/components/home/trust-bar.component'
 import { AudiencePaths } from '@/components/home/audience-paths.component'
 import { InlineCtaBand } from '@/components/home/inline-cta-band.component'
-import { CostClarity } from '@/components/home/cost-clarity.component'
 import { Objections } from '@/components/home/objections.component'
 import { Journey } from '@/components/home/journey.component'
 import { Procedures } from '@/components/home/procedures.component'
 import { SecondaryProcedures } from '@/components/home/secondary-procedures.component'
 import { GalleryShowcase } from '@/components/shared/gallery-showcase.component'
-import { RecoveryTimeline } from '@/components/home/recovery-timeline.component'
 import { Surgeons } from '@/components/home/surgeons.component'
 import { MedicalTourism } from '@/components/home/medical-tourism.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
@@ -396,19 +394,19 @@ export default async function Page() {
                 <InlineCtaBand />
 
                 {/* ---------------------------------------------------- */}
-                {/* 6 — Objections, heaviest first. Price, then who is    */}
-                {/*     operating, then everything else.                  */}
+                {/* 6 — Objections: who is operating, then everything     */}
+                {/*     else. Pricing detail lives on the financing and   */}
+                {/*     specials pages rather than here.                  */}
                 {/* ---------------------------------------------------- */}
-                <CostClarity />
                 <Surgeons />
                 <Objections />
 
                 {/* ---------------------------------------------------- */}
-                {/* 7 — Process. What happens, how long, and how it works */}
-                {/*     if you're flying in.                              */}
+                {/* 7 — Process. What happens, and how it works if you're */}
+                {/*     flying in. Week-by-week recovery detail lives on  */}
+                {/*     each procedure page, where it can be specific.    */}
                 {/* ---------------------------------------------------- */}
                 <Journey />
-                <RecoveryTimeline />
                 <MedicalTourism />
 
                 <CategorizedFAQ

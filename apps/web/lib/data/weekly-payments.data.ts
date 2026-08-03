@@ -2,13 +2,12 @@
  * Weekly Payment Options
  *
  * Single source of truth for the "from $X/week" figures used across the
- * site (specials page, contact page, homepage cost sections, and each of
- * the homepage design variants).
+ * site (specials page, contact page, and the Atelier homepage direction).
  *
  * These were previously inlined in `weekly-payments.component.tsx` and
- * partially restated in `cost-clarity.component.tsx`, which meant a price
- * change had to be made in more than one place to be correct. Import from
- * here instead of adding another copy.
+ * partially restated elsewhere, which meant a price change had to be made
+ * in more than one place to be correct. Import from here instead of adding
+ * another copy.
  *
  * IMPORTANT: these are illustrative financed payments for qualified
  * applicants, not quotes. Anything rendering them must say so — see
