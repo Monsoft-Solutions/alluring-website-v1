@@ -4,6 +4,13 @@
  * SEO-optimized page for individual Instagram posts.
  * Statically generated for all posts.
  *
+ * Intentionally `noindex, follow` per issue #118 (thin-content consolidation):
+ * these ~800 pages are thin (no h1, ~300 words) and dragged down site-wide
+ * quality signals as the majority of the site's indexable URLs. The pages
+ * stay live and linked (crawlable, internally linked from the hub and from
+ * each other) so link equity still flows, but they are excluded from the
+ * index. The `/instagram` hub page remains fully indexable.
+ *
  * @module app/instagram/[code]/page
  */
 import type { Metadata } from 'next'
@@ -27,6 +34,7 @@ import { getInstagramProfile } from '@/lib/queries/instagram/instagram-profile.q
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { stripBrandSuffix } from '@/lib/seo/strip-brand-suffix.util'
 import { formatSecondsToISO8601 } from '@/lib/utils/duration.util'
 import { env } from '@/env'
 
@@ -42,7 +50,9 @@ const getCachedPostByCode = cache(async (code: string) =>
 
 /**
  * Generate a fallback SEO title when seoTitle is not available
- * Format: "Photo Jan 2024 | Alluring Plastic Surgery"
+ * Format: "Photo Jan 2024" (the root layout's title template appends
+ * "| Alluring Plastic Surgery" automatically — do not append it here or
+ * the brand ends up doubled in the rendered <title>)
  */
 function generateFallbackTitle(post: {
     mediaType: string
@@ -59,7 +69,7 @@ function generateFallbackTitle(post: {
             : post.mediaType === 'carousel'
               ? 'Gallery'
               : 'Photo'
-    return `${prefix} ${monthYear} | ${siteConfig.business.name}`
+    return `${prefix} ${monthYear}`
 }
 
 /**
@@ -83,8 +93,10 @@ export async function generateMetadata({
         return { title: 'Post not found' }
     }
 
-    // Generate unique title - use seoTitle if available, else smart fallback
-    const title = post.seoTitle ?? generateFallbackTitle(post)
+    // Generate unique title - use seoTitle if available, else smart fallback.
+    // Strip any trailing brand suffix so the root layout's title template
+    // ("%s | Alluring Plastic Surgery") doesn't double it up.
+    const title = stripBrandSuffix(post.seoTitle ?? generateFallbackTitle(post))
 
     // Create a description - use seoDescription if available, else caption fallback
     const description =
@@ -100,6 +112,18 @@ export async function generateMetadata({
         title,
         description,
         canonical: `/instagram/${code}`,
+        // Thin, high-volume detail pages: noindex but follow so link equity
+        // still flows to the indexable /instagram hub (issue #118). Passed
+        // through toNextMetadata so mergeRobots keeps the stricter global
+        // noindex set on non-production deploys.
+        robots: {
+            index: false,
+            follow: true,
+            googleBot: {
+                index: false,
+                follow: true,
+            },
+        },
         openGraph: {
             type: 'article',
             url: pageUrl,

@@ -197,7 +197,9 @@ export function generateRobotsForEnvironment(
  *
  * These rules are optimized for:
  * - Maximum visibility to major search engines (Google, Bing)
- * - Blocking aggressive SEO crawlers that waste bandwidth
+ * - Allowing SEO crawlers (Ahrefs, Majestic, Semrush, Moz) so our own dashboards
+ *   and third-party SEO datasets stay populated
+ * - Blocking AI training-only crawlers that provide little value in return
  * - Allowing social media bots for Open Graph previews
  * - Allowing AI crawlers for LLM/GEO optimization (ChatGPT, Claude, Perplexity)
  *
@@ -215,11 +217,6 @@ export function generateRobotsForEnvironment(
  */
 export function createCommonRobotsRules(): RobotsRule[] {
     return [
-        // Block aggressive SEO crawlers (waste bandwidth, provide little value)
-        {
-            userAgent: ['AhrefsBot', 'MJ12bot', 'SemrushBot', 'DotBot'],
-            disallow: ['/'],
-        },
         // OpenAI crawlers - Allow for ChatGPT visibility
         {
             userAgent: ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot'],

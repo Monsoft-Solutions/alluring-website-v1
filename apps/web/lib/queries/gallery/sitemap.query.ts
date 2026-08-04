@@ -2,8 +2,15 @@
  * Gallery Sitemap Query
  *
  * Fetches data needed for sitemap generation:
- * - All published gallery media with image URLs and updatedAt
  * - All visible gallery groups with cover image URLs and updatedAt
+ * - All published media grouped by their group slug, so every image and
+ *   video can be attached to its indexable group page URL in the image /
+ *   video sitemap extensions
+ *
+ * Media detail pages (/gallery/media/[slug]) are noindexed and no longer
+ * listed as sitemap URLs (issue #118). Their images and videos are still
+ * surfaced to Google Images/Video by attaching them to the group page
+ * entries instead — image sitemaps support up to 1,000 images per URL.
  */
 import { db } from '@workspace/db/client'
 import {
@@ -11,26 +18,8 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import { and, desc, eq, max } from 'drizzle-orm'
+import { and, desc, eq, isNull, max } from 'drizzle-orm'
 import { cache } from 'react'
-
-/**
- * Gallery media sitemap entry
- */
-export type GalleryMediaSitemapEntry = {
-    slug: string
-    url: string
-    title: string
-    updatedAt: Date
-    /** Media type (image or video) for video sitemap support */
-    type: 'image' | 'video'
-    /** Thumbnail URL for video sitemap */
-    thumbnailUrl: string | null
-    /** Description for video sitemap */
-    description: string | null
-    /** Duration in seconds for videos */
-    duration: number | null
-}
 
 /**
  * Gallery group sitemap entry
@@ -41,40 +30,6 @@ export type GalleryGroupSitemapEntry = {
     name: string
     updatedAt: Date
 }
-
-/**
- * Get all published gallery media for sitemap
- * Includes image/video URL, title, last modified date, and video-specific fields
- */
-export const getGalleryMediaForSitemap = cache(
-    async (): Promise<GalleryMediaSitemapEntry[]> => {
-        const rows = await db
-            .select({
-                slug: galleryMedia.slug,
-                url: galleryMedia.url,
-                title: galleryMedia.title,
-                updatedAt: galleryMedia.updatedAt,
-                // Video sitemap fields
-                type: galleryMedia.type,
-                thumbnailUrl: galleryMedia.thumbnailUrl,
-                description: galleryMedia.description,
-                duration: galleryMedia.duration,
-            })
-            .from(galleryMedia)
-            .where(eq(galleryMedia.status, 'published'))
-
-        return rows.map((r) => ({
-            slug: r.slug,
-            url: r.url,
-            title: r.title,
-            updatedAt: r.updatedAt,
-            type: r.type,
-            thumbnailUrl: r.thumbnailUrl,
-            description: r.description,
-            duration: r.duration,
-        }))
-    }
-)
 
 /**
  * Get all visible gallery groups for sitemap
@@ -101,6 +56,113 @@ export const getGalleryGroupsForSitemap = cache(
             name: r.name,
             coverImageUrl: r.coverImageUrl,
             updatedAt: r.updatedAt,
+        }))
+    }
+)
+
+/**
+ * Published media item attached to a group page for sitemap extensions
+ */
+export type GroupMediaSitemapItem = {
+    url: string
+    title: string
+    description: string | null
+    /** Media type (image or video) for video sitemap support */
+    type: 'image' | 'video'
+    /** Thumbnail URL (required for video sitemap entries) */
+    thumbnailUrl: string | null
+    /** Duration in seconds for videos */
+    duration: number | null
+}
+
+/**
+ * Get all published media keyed by their gallery group slug
+ *
+ * Used to attach every image/video to its indexable group page URL in
+ * the gallery sitemap (issue #118 follow-up: media detail pages are
+ * noindexed, so this is how the media stays visible to Google Images).
+ */
+export const getMediaByGroupForSitemap = cache(
+    async (): Promise<Map<string, GroupMediaSitemapItem[]>> => {
+        const rows = await db
+            .select({
+                groupSlug: galleryGroup.slug,
+                url: galleryMedia.url,
+                title: galleryMedia.title,
+                description: galleryMedia.description,
+                type: galleryMedia.type,
+                thumbnailUrl: galleryMedia.thumbnailUrl,
+                duration: galleryMedia.duration,
+            })
+            .from(galleryGroup)
+            .innerJoin(
+                galleryMediaGroup,
+                eq(galleryMediaGroup.groupId, galleryGroup.id)
+            )
+            .innerJoin(
+                galleryMedia,
+                eq(galleryMedia.id, galleryMediaGroup.mediaId)
+            )
+            .where(
+                and(
+                    eq(galleryGroup.isVisible, true),
+                    eq(galleryMedia.status, 'published')
+                )
+            )
+
+        const byGroup = new Map<string, GroupMediaSitemapItem[]>()
+        for (const row of rows) {
+            const items = byGroup.get(row.groupSlug) ?? []
+            items.push({
+                url: row.url,
+                title: row.title,
+                description: row.description,
+                type: row.type,
+                thumbnailUrl: row.thumbnailUrl,
+                duration: row.duration,
+            })
+            byGroup.set(row.groupSlug, items)
+        }
+        return byGroup
+    }
+)
+
+/**
+ * Get published media that belong to no gallery group
+ *
+ * These have no group page to be attached to, so the sitemap attaches
+ * them to the main /gallery listing page instead.
+ */
+export const getUngroupedMediaForSitemap = cache(
+    async (): Promise<GroupMediaSitemapItem[]> => {
+        const rows = await db
+            .select({
+                url: galleryMedia.url,
+                title: galleryMedia.title,
+                description: galleryMedia.description,
+                type: galleryMedia.type,
+                thumbnailUrl: galleryMedia.thumbnailUrl,
+                duration: galleryMedia.duration,
+            })
+            .from(galleryMedia)
+            .leftJoin(
+                galleryMediaGroup,
+                eq(galleryMediaGroup.mediaId, galleryMedia.id)
+            )
+            .where(
+                and(
+                    eq(galleryMedia.status, 'published'),
+                    isNull(galleryMediaGroup.mediaId)
+                )
+            )
+
+        return rows.map((r) => ({
+            url: r.url,
+            title: r.title,
+            description: r.description,
+            type: r.type,
+            thumbnailUrl: r.thumbnailUrl,
+            duration: r.duration,
         }))
     }
 )

@@ -50,7 +50,7 @@ export const PROCEDURE_CONTEXTS: ProcedureContext[] = [
         targetAudienceHints: [
             'Women 25-45 seeking body contouring',
             'First-time cosmetic surgery patients',
-            'Medical tourists from Latin America/Caribbean',
+            'Out-of-state patients flying to Miami for surgery',
             'Patients researching cost vs quality',
         ],
     },
