@@ -1,7 +1,7 @@
 # Autopilot — Epic #122 Implementation Plan
 
 **Date:** 2026-08-11
-**Status:** Ready to implement
+**Status:** Implemented on `feat/autopilot-122`; E2E-tested against a local clone of the prod DB (see §9). Awaiting deploy steps in §6.
 **Epic:** [#122 Autopilot — scheduled content loop where the admin only reviews](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/122) (sub-issues #123–#127)
 **Builds on:** PR #121 (Blog AI Settings, phase chaining), PR #170 (ideation gate, GSC topic sourcing, keyword ownership registry)
 **Extends:** `implementation-plans/2026-08-11-blog-content-pipeline-v2.md`
@@ -257,3 +257,28 @@ Epic #134 carries the content _format_ work, but autopilot itself ships with qua
 5. **PR 5 — Phase 5:** run history + notifications (closes #127, #125 acceptance fully provable).
 
 Each PR: `pnpm lint`, `pnpm typecheck`, `pnpm build`, unit tests for the pure logic it adds (cadence, ranking, lock, similarity de-dup), plus the per-phase acceptance checks above.
+
+---
+
+## 9. E2E test results (2026-08-11, local clone of prod DB)
+
+Environment: `alluring-autopilot-dev` (local Postgres 17, cloned from the admin Supabase DB the same day), migration 0047 applied, admin dev server on :3105 with `.env.local` overrides. Real models (config: gpt-5.6-terra content, gemini-3.6-flash review, claude-opus-5 ideation), real GSC seeds, real fal.ai image.
+
+| Check                                                                                                                                                                                                                     | Result |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Cron auth: no/wrong bearer → 401 (no login redirect); heartbeat 200; unknown job 404                                                                                                                                      | ✅     |
+| `mode=off` kill switch skips both jobs                                                                                                                                                                                    | ✅     |
+| Ideation run (cron): 3 GSC-seeded, gate-passing pending ideas in 52s; run recorded                                                                                                                                        | ✅     |
+| Cadence guard: immediate re-trigger → `cadence-not-due` (both jobs, after completion)                                                                                                                                     | ✅     |
+| Approve exactly one idea → content run wrote **exactly that post**                                                                                                                                                        | ✅     |
+| Concurrent content trigger while running → `locked` (partial unique index)                                                                                                                                                | ✅     |
+| Full pipeline to Draft, zero human action: 14.8k chars, slug, metaTitle/Desc, 5 FAQs, featured image (artistic style, real alt) — **quality score 94/100**; phases: generate 60s · review 60s · extract 14s · images 105s | ✅     |
+| Settings round-trip + status card (counters, run history incl. manual/cron trigger source)                                                                                                                                | ✅     |
+| Approve/Reject on Kanban cards; rejected idea leaves board, never re-proposed on re-ideation                                                                                                                              | ✅     |
+| Manual "Generate ideas now": 3 fresh ideas, no dupes of rejected/approved/drafted topics                                                                                                                                  | ✅     |
+| `queue-full` skip when pending ideas ≥ target                                                                                                                                                                             | ✅     |
+| Forced failure (invalid model id): run `failed` fast → next trigger blocked (`unacknowledged-failure`) → red banner → Acknowledge clears the rail                                                                         | ✅     |
+| Email path: no-ops with a log line when RESEND/OWNER_EMAIL unset (by design locally)                                                                                                                                      | ✅     |
+| 105 unit tests, lint, typecheck, all green                                                                                                                                                                                | ✅     |
+
+Fixes surfaced by the E2E (committed): intra-batch idea dedupe; dedupe scope widened to in-flight pipeline posts. Known limitation: dedupe is lexical — semantically-adjacent topics from neighboring GSC queries (e.g. "smell" vs "stink") can both be proposed; the approval queue is the net in `ideas` mode, and the cannibalization reviewer catches overlap at write time.
