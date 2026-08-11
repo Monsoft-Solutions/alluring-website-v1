@@ -2,7 +2,7 @@
  * Review Phase Runner
  *
  * Standalone runner for the review and orchestration phases.
- * Runs 5 review agents in parallel and then orchestrates content revision.
+ * Runs 6 review agents in parallel and then orchestrates content revision.
  *
  * @module @workspace/ai/pipelines/review-phase
  */
@@ -11,9 +11,11 @@ import {
     runExternalLinksReviewer,
     runWritingQualityReviewer,
     runAISlopDetector,
+    runCannibalizationChecker,
     runOrchestrator,
     type AgentReview,
     type OrchestratorResult,
+    type RankingPage,
 } from '../agents'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
@@ -47,6 +49,13 @@ export type ReviewPhaseOptions = {
     reviewModelId?: string
     /** Whether to skip orchestration (just return reviews) */
     skipOrchestration?: boolean
+    /** Slug of the post under review (cannibalization self-match guard) */
+    currentPostSlug?: string
+    /**
+     * Live Search Console lookup for the cannibalization checker,
+     * injected by the caller. Registry-only mode when absent.
+     */
+    pagesForQuery?: (query: string) => Promise<RankingPage[]>
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -76,12 +85,13 @@ export type ReviewPhaseResult = {
 /**
  * Run the review phase standalone
  *
- * Runs 5 review agents in parallel:
+ * Runs 6 review agents in parallel:
  * 1. Internal Links Reviewer
  * 2. External Links Reviewer
  * 3. Writing Quality Reviewer
  * 4. AI Slop Detector
  * 5. Fact & Source Verifier
+ * 6. Cannibalization Checker
  *
  * Then runs orchestration to revise content based on feedback.
  *
@@ -96,7 +106,7 @@ export type ReviewPhaseResult = {
  *   primaryKeyword: 'bbl recovery',
  * })
  *
- * console.log(result.reviews) // 5 agent reviews
+ * console.log(result.reviews) // 6 agent reviews
  * console.log(result.revisedContent) // Improved content
  * ```
  */
@@ -114,12 +124,14 @@ export async function runReviewPhase(
         estimatedWordCount,
         reviewModelId = DEFAULTS.REVIEW_MODEL,
         skipOrchestration = false,
+        currentPostSlug,
+        pagesForQuery,
         onProgress,
     } = options
 
     try {
-        // Phase 1: Run all 5 reviews in parallel
-        console.log('[Review Phase] Starting Review (5 agents)')
+        // Phase 1: Run all 6 reviews in parallel
+        console.log('[Review Phase] Starting Review (6 agents)')
         const reviewStartTime = Date.now()
 
         const reviewOptions = {
@@ -136,99 +148,128 @@ export async function runReviewPhase(
             writingQualityReview,
             aiSlopReview,
             factSourceReview,
-        ]: [AgentReview, AgentReview, AgentReview, AgentReview, AgentReview] =
-            await Promise.all([
-                runInternalLinksReviewer(reviewOptions).then((result) => {
-                    onProgress?.(
-                        'review-internal-links',
-                        100,
-                        'Internal links review complete',
-                        {
-                            type: 'review-result',
-                            agentName: result.agentName,
-                            score: result.score,
-                            summary: result.summary,
-                            issueCount: result.issues.length,
-                        }
-                    )
-                    console.log(
-                        `[Review Phase] Internal links: ${result.score}/100 (${result.issues.length} issues)`
-                    )
-                    return result
-                }),
-                runExternalLinksReviewer(reviewOptions).then((result) => {
-                    onProgress?.(
-                        'review-external-links',
-                        100,
-                        'External links review complete',
-                        {
-                            type: 'review-result',
-                            agentName: result.agentName,
-                            score: result.score,
-                            summary: result.summary,
-                            issueCount: result.issues.length,
-                        }
-                    )
-                    console.log(
-                        `[Review Phase] External links: ${result.score}/100 (${result.issues.length} issues)`
-                    )
-                    return result
-                }),
-                runWritingQualityReviewer(reviewOptions).then((result) => {
-                    onProgress?.(
-                        'review-writing-quality',
-                        100,
-                        'Writing quality review complete',
-                        {
-                            type: 'review-result',
-                            agentName: result.agentName,
-                            score: result.score,
-                            summary: result.summary,
-                            issueCount: result.issues.length,
-                        }
-                    )
-                    console.log(
-                        `[Review Phase] Writing quality: ${result.score}/100 (${result.issues.length} issues)`
-                    )
-                    return result
-                }),
-                runAISlopDetector(reviewOptions).then((result) => {
-                    onProgress?.(
-                        'review-ai-slop',
-                        100,
-                        'AI slop detection complete',
-                        {
-                            type: 'review-result',
-                            agentName: result.agentName,
-                            score: result.score,
-                            summary: result.summary,
-                            issueCount: result.issues.length,
-                        }
-                    )
-                    console.log(
-                        `[Review Phase] AI slop: ${result.score}/100 (${result.issues.length} issues)`
-                    )
-                    return result
-                }),
-                runFactSourceVerifier(reviewOptions).then((result) => {
-                    onProgress?.(
-                        'review-fact-source',
-                        100,
-                        'Fact & source verification complete',
-                        {
-                            type: 'review-result',
-                            agentName: result.agentName,
-                            score: result.score,
-                            summary: result.summary,
-                            issueCount: result.issues.length,
-                        }
-                    )
-                    console.log(
-                        `[Review Phase] Fact verification: ${result.score}/100 (${result.issues.length} issues)`
-                    )
-                    return result
-                }),
-            ])
+            cannibalizationReview,
+        ]: [
+            AgentReview,
+            AgentReview,
+            AgentReview,
+            AgentReview,
+            AgentReview,
+            AgentReview,
+        ] = await Promise.all([
+            runInternalLinksReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-internal-links',
+                    100,
+                    'Internal links review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] Internal links: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runExternalLinksReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-external-links',
+                    100,
+                    'External links review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] External links: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runWritingQualityReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-writing-quality',
+                    100,
+                    'Writing quality review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] Writing quality: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runAISlopDetector(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-ai-slop',
+                    100,
+                    'AI slop detection complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] AI slop: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runFactSourceVerifier(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-fact-source',
+                    100,
+                    'Fact & source verification complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] Fact verification: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+            runCannibalizationChecker({
+                ...reviewOptions,
+                currentPostSlug,
+                pagesForQuery,
+            }).then((result) => {
+                onProgress?.(
+                    'review-cannibalization',
+                    100,
+                    'Cannibalization review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] Cannibalization: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
+        ])
 
         const reviews = [
             internalLinksReview,
@@ -236,6 +277,7 @@ export async function runReviewPhase(
             writingQualityReview,
             aiSlopReview,
             factSourceReview,
+            cannibalizationReview,
         ]
 
         const reviewTimeMs = Date.now() - reviewStartTime
@@ -260,6 +302,8 @@ export async function runReviewPhase(
                 contentType,
                 estimatedWordCount,
                 reviews,
+                // Configured review model drives the orchestrator too
+                modelId: reviewModelId,
             })
 
             revisedContent = orchestratorResult.revisedContent

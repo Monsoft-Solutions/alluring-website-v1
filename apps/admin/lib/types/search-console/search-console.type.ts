@@ -182,7 +182,8 @@ export type QueryTrendData = {
  * Page type classification for filtering and analysis.
  * Maps to the different XML sitemaps the web app generates.
  *
- * - blog: Individual blog posts (at root level, e.g., /best-plastic-surgeon-miami)
+ * - blog: Individual blog posts — at root level when published before 2026
+ *   (e.g., /best-plastic-surgeon-miami), under /blog/ from 2026 on
  * - blog-listing: Blog index, categories, and tags pages
  * - procedure: Individual procedure pages and procedures index
  * - pages: Static marketing pages (home, about, contact) and surgeon profiles

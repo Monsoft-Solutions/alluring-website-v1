@@ -19,6 +19,7 @@ import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 import { runExtractPhaseForPost } from '@/lib/services/pipeline-phase.service'
+import { createPagesForQueryAdapter } from '@/lib/services/topic-sourcing.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 180 // 3 minutes for review + orchestration
@@ -102,6 +103,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             contentType: planningData?.contentType,
             estimatedWordCount: planningData?.estimatedWordCount,
             reviewModelId: aiConfig.reviewModelId,
+            currentPostSlug: post.slug || undefined,
+            pagesForQuery: createPagesForQueryAdapter(),
         })
 
         if (!result.success) {

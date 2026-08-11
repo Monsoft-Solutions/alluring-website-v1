@@ -74,6 +74,16 @@ type ProcedureContext = {
     targetAudienceHints: string[]
 }
 
+/** Live Search Console demand seed (mirrors GscTopicSeed in functions) */
+type GscSeed = {
+    query: string
+    impressions: number
+    clicks: number
+    ctr: number
+    position: number
+    source: 'opportunity' | 'gap' | 'decay'
+}
+
 type GenerateTopicsInput = {
     procedureFocus?: string
     contentType?: string
@@ -81,8 +91,15 @@ type GenerateTopicsInput = {
     existingTopics?: string[]
     additionalContext?: string
     selectedKeywords?: SelectedKeywords
+    gscSeeds?: GscSeed[]
     contextHints?: ContextHints
     procedureContext?: ProcedureContext
+}
+
+/** One prompt line per seed: metrics + label */
+function formatGscSeed(seed: GscSeed): string {
+    const ctrPct = (seed.ctr * 100).toFixed(1)
+    return `- "${seed.query}" [${seed.source}] — ${seed.impressions.toLocaleString('en-US')} impressions, ${seed.clicks} clicks, CTR ${ctrPct}%, position ${seed.position.toFixed(1)}`
 }
 
 /**
@@ -145,6 +162,7 @@ export function getGenerateTopicsPrompt(input: GenerateTopicsInput): string {
         existingTopics,
         additionalContext,
         selectedKeywords,
+        gscSeeds,
         contextHints,
         procedureContext,
     } = input
@@ -226,6 +244,24 @@ ${selectedKeywords.secondary.map((k) => `  - "${k}"`).join('\n')}
         }
         prompt += `
 Each generated topic MUST incorporate at least one of these keywords. The primary keyword should be the main focus of at least 2-3 topics.
+`
+    }
+
+    // Live Search Console demand seeds (headless/autopilot sourcing)
+    if (gscSeeds && gscSeeds.length > 0) {
+        prompt += `
+**LIVE SEARCH DEMAND FROM GOOGLE SEARCH CONSOLE (strongest signal — prioritize):**
+Real queries from the last weeks, labeled by opportunity type:
+- [opportunity] = high impressions but low CTR — searchers see the site and don't click
+- [gap] = no dedicated page ranks for it — unclaimed demand
+- [decay] = rankings recently dropped — content needs freshness
+
+${gscSeeds.map(formatGscSeed).join('\n')}
+
+Ground your topics in these seeds:
+- Prefer seeds with high impressions and weak positions (11-30) — those are winnable with a dedicated post.
+- For every topic derived from a seed, set sourceQuery to the EXACT seed query string.
+- Topics not derived from any seed must set sourceQuery to null.
 `
     }
 

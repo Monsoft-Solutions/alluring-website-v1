@@ -195,3 +195,16 @@ Decisions below are **candidates** — the batch skill's `audit` produces per-cl
 - Schema honesty: never emit `reviewedBy`/review claims without a real reviewer; never assert ImageObjects absent from the body.
 - YMYL: medical-accuracy reviewer output is stored per post from day one, so when a physician joins, the backlog of "claims to verify" already exists.
 - Cost: image generation ~$0.25/post; content generation the dominant cost — modest cadence keeps this trivial. The scarce resource is human review time; the pipeline's scores/changelogs exist to spend it efficiently.
+
+## 8. Post-foundations follow-ups (logged 2026-08-11, after the E2E test)
+
+Debts and quick wins discovered during implementation/testing, on top of workstreams P and B above:
+
+- **metaTitle backfill** for the 152 published posts (extraction now produces titles; legacy posts render the fallback).
+- **Stuck-post auto-recovery**: reap `processing_status='processing'` older than ~10 min into `error` + surface a retry action (the "10 stuck posts" failure class).
+- **Admin UX**: surface `peopleDetected`/`qaRegenerated` on post cards; label `patient-model` as the exceptional path in the featured-image dialog.
+- **Settings gaps**: ideation/topic model not configurable (runs code default); `reviewModelId` reaches the 5 agents but not the orchestrator (pre-existing).
+- **Image engines**: add Recraft V4.1 (`style_id` series consistency) and Ideogram V4 (true negative prompts) alongside gpt-image-2.
+- **SEO odds & ends**: RSS feed (none exists); `formats: ['image/avif','image/webp']` in `apps/web/next.config.mjs`; `/blog/categories/[slug]` noindex-vs-sitemap consistency check; crawlable pagination beyond the first 12 posts; orphaned image records/blobs sweep after the unpublished-posts purge.
+- **Ops**: reconcile `packages/db/.env.local` (DigitalOcean) vs `apps/admin/.env` (Supabase) so `db:migrate` targets the real database; Dependabot reports 106 vulnerabilities on the default branch (4 critical) — repo-wide dependency pass.
+- **Open decisions**: physician reviewer buy-in (unlocks E-E-A-T phase 2: named `reviewedBy`, review dates, `lastReviewed`); whether to produce Spanish-language posts for US Spanish speakers.

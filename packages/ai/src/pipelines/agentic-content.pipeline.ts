@@ -17,6 +17,7 @@ import {
     runExternalLinksReviewer,
     runWritingQualityReviewer,
     runAISlopDetector,
+    runCannibalizationChecker,
     runOrchestrator,
     type AgentReview,
     type OrchestratorResult,
@@ -227,6 +228,7 @@ async function runGenerationPhase(
  * 3. Writing Quality Reviewer
  * 4. AI Slop Detector
  * 5. Fact & Source Verifier
+ * 6. Cannibalization Checker (registry-only in this path)
  */
 async function runReviewPhase(
     content: string,
@@ -238,7 +240,7 @@ async function runReviewPhase(
 ): Promise<{ reviews: AgentReview[]; timeMs: number }> {
     const startTime = Date.now()
 
-    console.log('[Agentic Pipeline] Starting Phase 2: Review (5 agents)')
+    console.log('[Agentic Pipeline] Starting Phase 2: Review (6 agents)')
 
     const reviewOptions = {
         content,
@@ -248,106 +250,126 @@ async function runReviewPhase(
         modelId: reviewModelId,
     }
 
-    // Run all 5 reviews in parallel
+    // Run all 6 reviews in parallel
     const [
         internalLinksReview,
         externalLinksReview,
         writingQualityReview,
         aiSlopReview,
         factSourceReview,
-    ]: [AgentReview, AgentReview, AgentReview, AgentReview, AgentReview] =
-        await Promise.all([
-            runInternalLinksReviewer(reviewOptions).then((result) => {
-                onProgress?.(
-                    'review-internal-links',
-                    100,
-                    'Internal links review complete',
-                    {
-                        type: 'review-result',
-                        agentName: result.agentName,
-                        score: result.score,
-                        summary: result.summary,
-                        issueCount: result.issues.length,
-                    }
-                )
-                console.log(
-                    `[Agentic Pipeline] Internal links: ${result.score}/100 (${result.issues.length} issues)`
-                )
-                return result
-            }),
-            runExternalLinksReviewer(reviewOptions).then((result) => {
-                onProgress?.(
-                    'review-external-links',
-                    100,
-                    'External links review complete',
-                    {
-                        type: 'review-result',
-                        agentName: result.agentName,
-                        score: result.score,
-                        summary: result.summary,
-                        issueCount: result.issues.length,
-                    }
-                )
-                console.log(
-                    `[Agentic Pipeline] External links: ${result.score}/100 (${result.issues.length} issues)`
-                )
-                return result
-            }),
-            runWritingQualityReviewer(reviewOptions).then((result) => {
-                onProgress?.(
-                    'review-writing-quality',
-                    100,
-                    'Writing quality review complete',
-                    {
-                        type: 'review-result',
-                        agentName: result.agentName,
-                        score: result.score,
-                        summary: result.summary,
-                        issueCount: result.issues.length,
-                    }
-                )
-                console.log(
-                    `[Agentic Pipeline] Writing quality: ${result.score}/100 (${result.issues.length} issues)`
-                )
-                return result
-            }),
-            runAISlopDetector(reviewOptions).then((result) => {
-                onProgress?.(
-                    'review-ai-slop',
-                    100,
-                    'AI slop detection complete',
-                    {
-                        type: 'review-result',
-                        agentName: result.agentName,
-                        score: result.score,
-                        summary: result.summary,
-                        issueCount: result.issues.length,
-                    }
-                )
-                console.log(
-                    `[Agentic Pipeline] AI slop: ${result.score}/100 (${result.issues.length} issues)`
-                )
-                return result
-            }),
-            runFactSourceVerifier(reviewOptions).then((result) => {
-                onProgress?.(
-                    'review-fact-source',
-                    100,
-                    'Fact & source verification complete',
-                    {
-                        type: 'review-result',
-                        agentName: result.agentName,
-                        score: result.score,
-                        summary: result.summary,
-                        issueCount: result.issues.length,
-                    }
-                )
-                console.log(
-                    `[Agentic Pipeline] Fact verification: ${result.score}/100 (${result.issues.length} issues)`
-                )
-                return result
-            }),
-        ])
+        cannibalizationReview,
+    ]: [
+        AgentReview,
+        AgentReview,
+        AgentReview,
+        AgentReview,
+        AgentReview,
+        AgentReview,
+    ] = await Promise.all([
+        runInternalLinksReviewer(reviewOptions).then((result) => {
+            onProgress?.(
+                'review-internal-links',
+                100,
+                'Internal links review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
+            )
+            console.log(
+                `[Agentic Pipeline] Internal links: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
+        runExternalLinksReviewer(reviewOptions).then((result) => {
+            onProgress?.(
+                'review-external-links',
+                100,
+                'External links review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
+            )
+            console.log(
+                `[Agentic Pipeline] External links: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
+        runWritingQualityReviewer(reviewOptions).then((result) => {
+            onProgress?.(
+                'review-writing-quality',
+                100,
+                'Writing quality review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
+            )
+            console.log(
+                `[Agentic Pipeline] Writing quality: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
+        runAISlopDetector(reviewOptions).then((result) => {
+            onProgress?.('review-ai-slop', 100, 'AI slop detection complete', {
+                type: 'review-result',
+                agentName: result.agentName,
+                score: result.score,
+                summary: result.summary,
+                issueCount: result.issues.length,
+            })
+            console.log(
+                `[Agentic Pipeline] AI slop: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
+        runFactSourceVerifier(reviewOptions).then((result) => {
+            onProgress?.(
+                'review-fact-source',
+                100,
+                'Fact & source verification complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
+            )
+            console.log(
+                `[Agentic Pipeline] Fact verification: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
+        runCannibalizationChecker(reviewOptions).then((result) => {
+            onProgress?.(
+                'review-cannibalization',
+                100,
+                'Cannibalization review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
+            )
+            console.log(
+                `[Agentic Pipeline] Cannibalization: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
+    ])
 
     const reviews = [
         internalLinksReview,
@@ -355,6 +377,7 @@ async function runReviewPhase(
         writingQualityReview,
         aiSlopReview,
         factSourceReview,
+        cannibalizationReview,
     ]
 
     const timeMs = Date.now() - startTime
@@ -375,6 +398,8 @@ type OrchestrationPhaseOptions = {
     contentType?: string
     estimatedWordCount?: number
     reviews: AgentReview[]
+    /** Model for the orchestrator (defaults to the agent's own) */
+    modelId?: string
     onProgress?: AgenticPipelineProgressCallback
 }
 
@@ -396,6 +421,7 @@ async function runOrchestrationPhase(
         contentType,
         estimatedWordCount,
         reviews,
+        modelId,
         onProgress,
     } = options
 
@@ -411,6 +437,7 @@ async function runOrchestrationPhase(
         contentType,
         estimatedWordCount,
         reviews,
+        modelId,
     })
 
     const timeMs = Date.now() - startTime
@@ -591,6 +618,8 @@ export async function runAgenticContentPipeline(
                     contentType: idea.contentType,
                     estimatedWordCount: idea.estimatedWordCount,
                     reviews,
+                    // Configured review model drives the orchestrator too
+                    modelId: options.reviewModelId,
                     onProgress,
                 })
                 orchestratorResult = orchestrationResult.result

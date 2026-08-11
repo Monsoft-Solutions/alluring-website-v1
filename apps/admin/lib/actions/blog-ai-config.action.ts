@@ -48,6 +48,7 @@ const imageModelIds = IMAGE_MODELS.map((model) => model.id) as [
  * Input schema for {@link updateBlogAiConfig}
  */
 const blogAiConfigSchema = z.object({
+    ideationModelId: modelIdSchema,
     contentModelId: modelIdSchema,
     reviewModelId: modelIdSchema,
     extractionModelId: modelIdSchema,
@@ -87,6 +88,7 @@ export async function updateBlogAiConfig(
             await db
                 .update(blogAiConfig)
                 .set({
+                    ideationModelId: validated.ideationModelId,
                     contentModelId: validated.contentModelId,
                     reviewModelId: validated.reviewModelId,
                     extractionModelId: validated.extractionModelId,
@@ -96,6 +98,7 @@ export async function updateBlogAiConfig(
                 .where(eq(blogAiConfig.id, existing.id))
         } else {
             await db.insert(blogAiConfig).values({
+                ideationModelId: validated.ideationModelId,
                 contentModelId: validated.contentModelId,
                 reviewModelId: validated.reviewModelId,
                 extractionModelId: validated.extractionModelId,

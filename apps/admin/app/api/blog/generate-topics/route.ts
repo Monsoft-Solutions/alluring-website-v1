@@ -6,6 +6,9 @@ import { generateBlogTopics } from '@workspace/ai/functions'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { getProcedureContext } from '@/lib/data/procedure-context.data'
+import { evaluateTopicCandidates } from '@/lib/services/ideation-gate.service'
+import { getGscTopicSeeds } from '@/lib/services/topic-sourcing.service'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // Allow up to 60 seconds for AI generation
@@ -29,6 +32,9 @@ const contextHintsSchema = z.object({
 })
 
 const requestSchema = z.object({
+    // Sourcing mode: 'search-console' seeds topics from live GSC demand
+    // (opportunities, gaps, decaying queries) instead of picked keywords
+    mode: z.enum(['keywords', 'search-console']).optional(),
     // NEW: Structured context hints for enhanced generation
     contextHints: contextHintsSchema.optional(),
     // GSC keyword integration
@@ -68,23 +74,49 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const { contextHints, ...restData } = validationResult.data
+        const { mode, contextHints, ...restData } = validationResult.data
 
         // Look up procedure context if procedureSlug provided
         const procedureContext = contextHints?.procedureSlug
             ? getProcedureContext(contextHints.procedureSlug)
             : undefined
 
+        // Search Console mode: seed generation from live demand data
+        const gscSeeds =
+            mode === 'search-console' ? await getGscTopicSeeds() : undefined
+        if (mode === 'search-console' && (!gscSeeds || gscSeeds.length === 0)) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'No Search Console data available — check the integration configuration',
+                },
+                { status: 400 }
+            )
+        }
+
+        // Admin-configured ideation model wins; the function keeps its own
+        // default when no configuration row exists yet
+        const aiConfig = await getBlogAiConfig()
+
         // Build enriched options for AI generation
         const result = await generateBlogTopics({
             ...restData,
             contextHints,
             procedureContext,
+            gscSeeds,
+            modelId: aiConfig.ideationModelId,
         })
+
+        // Ideation gate: every candidate gets a new/refresh/reject verdict
+        // against the keyword ownership registry + live posts
+        const gatedTopics = await evaluateTopicCandidates(result.topics)
 
         return NextResponse.json({
             success: true,
             ...result,
+            topics: gatedTopics,
+            // Seeds echoed back so idea cards can show sourcing metrics
+            gscSeeds,
         })
     } catch (error) {
         return handleApiError(

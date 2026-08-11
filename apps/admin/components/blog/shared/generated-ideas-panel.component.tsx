@@ -20,10 +20,15 @@ import {
     Target,
     AlertCircle,
     Users,
+    ShieldCheck,
+    ShieldAlert,
+    RefreshCw,
+    Search,
 } from 'lucide-react'
 
 import { useCreatePipelinePost } from '@/hooks/use-pipeline.hook'
-import type { TopicSuggestion } from '@workspace/ai/functions'
+import type { TopicSuggestion, GscTopicSeed } from '@workspace/ai/functions'
+import type { TopicVerdict } from '@workspace/shared/seo'
 import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-content.constant'
 
 type SelectedKeywords = {
@@ -31,12 +36,71 @@ type SelectedKeywords = {
     secondary: string[]
 }
 
+/** Topic suggestion decorated with its ideation-gate verdict */
+export type GatedTopicSuggestion = TopicSuggestion & {
+    gate?: TopicVerdict
+}
+
 type GeneratedIdeasPanelProps = {
     selectedKeywords: SelectedKeywords
-    ideas: TopicSuggestion[]
+    ideas: GatedTopicSuggestion[]
+    /** Seeds used in Search Console mode — keyed back via idea.sourceQuery */
+    gscSeeds?: GscTopicSeed[]
     isGenerating: boolean
     onGenerate: () => void
+    /** Generate headlessly from live Search Console demand */
+    onGenerateFromGsc?: () => void
     hasGenerated: boolean
+}
+
+/** "1.2k impressions · CTR 0.8% · position 14" sourcing line */
+function SeedMetrics({ seed }: { seed: GscTopicSeed }) {
+    const impressions =
+        seed.impressions >= 1000
+            ? `${(seed.impressions / 1000).toFixed(1)}k`
+            : String(seed.impressions)
+    const label =
+        seed.source === 'gap'
+            ? 'no owning page'
+            : seed.source === 'decay'
+              ? 'position dropping'
+              : 'low CTR'
+    return (
+        <p className='mt-2 flex items-center gap-1.5 text-xs text-stone-500'>
+            <Search className='h-3 w-3 shrink-0' />
+            <span>
+                &ldquo;{seed.query}&rdquo; — {impressions} impressions · CTR{' '}
+                {(seed.ctr * 100).toFixed(1)}% · position{' '}
+                {seed.position.toFixed(0)} · {label}
+            </span>
+        </p>
+    )
+}
+
+/** Verdict badge + reason line for an idea card */
+function GateVerdictBadge({ gate }: { gate: TopicVerdict }) {
+    if (gate.verdict === 'new') {
+        return (
+            <Badge className='gap-1 border-green-200 bg-green-50 text-green-700'>
+                <ShieldCheck className='h-3 w-3' />
+                New topic
+            </Badge>
+        )
+    }
+    if (gate.verdict === 'refresh') {
+        return (
+            <Badge className='gap-1 border-amber-200 bg-amber-50 text-amber-700'>
+                <RefreshCw className='h-3 w-3' />
+                Refresh {gate.owningUrl}
+            </Badge>
+        )
+    }
+    return (
+        <Badge className='gap-1 border-red-200 bg-red-50 text-red-700'>
+            <ShieldAlert className='h-3 w-3' />
+            Rejected{gate.owningUrl ? ` — owned by ${gate.owningUrl}` : ''}
+        </Badge>
+    )
 }
 
 /**
@@ -48,19 +112,25 @@ type GeneratedIdeasPanelProps = {
 export function GeneratedIdeasPanel({
     selectedKeywords,
     ideas,
+    gscSeeds,
     isGenerating,
     onGenerate,
+    onGenerateFromGsc,
     hasGenerated,
 }: GeneratedIdeasPanelProps) {
     const createPipelinePost = useCreatePipelinePost()
     const [addedIds, setAddedIds] = useState<Set<number>>(new Set())
+
+    const seedsByQuery = new Map(
+        (gscSeeds ?? []).map((seed) => [seed.query, seed])
+    )
 
     const hasSelectedKeywords =
         selectedKeywords.primary !== null ||
         selectedKeywords.secondary.length > 0
 
     const handleAddToPipeline = async (
-        idea: TopicSuggestion,
+        idea: GatedTopicSuggestion,
         index: number
     ) => {
         try {
@@ -108,14 +178,27 @@ export function GeneratedIdeasPanel({
                         AI-powered blog post suggestions based on your keywords
                     </p>
                 </div>
-                <Button
-                    onClick={onGenerate}
-                    disabled={!hasSelectedKeywords || isGenerating}
-                    className='gap-2'
-                >
-                    <Sparkles className='h-4 w-4' />
-                    {isGenerating ? 'Generating...' : 'Generate Ideas'}
-                </Button>
+                <div className='flex items-center gap-2'>
+                    {onGenerateFromGsc && (
+                        <Button
+                            variant='outline'
+                            onClick={onGenerateFromGsc}
+                            disabled={isGenerating}
+                            className='gap-2'
+                        >
+                            <Search className='h-4 w-4' />
+                            From Search Console
+                        </Button>
+                    )}
+                    <Button
+                        onClick={onGenerate}
+                        disabled={!hasSelectedKeywords || isGenerating}
+                        className='gap-2'
+                    >
+                        <Sparkles className='h-4 w-4' />
+                        {isGenerating ? 'Generating...' : 'Generate Ideas'}
+                    </Button>
+                </div>
             </div>
 
             <div className='flex-1 overflow-y-auto'>
@@ -127,8 +210,10 @@ export function GeneratedIdeasPanel({
                         </h4>
                         <p className='text-muted-foreground max-w-sm text-sm'>
                             Choose keywords from the Search Console data on the
-                            left, then click &quot;Generate Ideas&quot; to get
-                            AI-powered blog post suggestions.
+                            left, then click &quot;Generate Ideas&quot; — or use
+                            &quot;From Search Console&quot; to propose topics
+                            straight from live demand data (opportunities, gaps
+                            and dropping rankings).
                         </p>
                     </div>
                 ) : isGenerating ? (
@@ -153,6 +238,12 @@ export function GeneratedIdeasPanel({
                     <div className='space-y-4'>
                         {ideas.map((idea, index) => {
                             const isAdded = addedIds.has(index)
+                            const isBlocked =
+                                idea.gate !== undefined &&
+                                idea.gate.verdict !== 'new'
+                            const seed = idea.sourceQuery
+                                ? seedsByQuery.get(idea.sourceQuery)
+                                : undefined
 
                             return (
                                 <Card
@@ -182,6 +273,7 @@ export function GeneratedIdeasPanel({
                                                 }
                                                 disabled={
                                                     isAdded ||
+                                                    isBlocked ||
                                                     createPipelinePost.isPending
                                                 }
                                                 onClick={() =>
@@ -212,6 +304,11 @@ export function GeneratedIdeasPanel({
                                     </CardHeader>
                                     <CardContent className='pt-0'>
                                         <div className='flex flex-wrap items-center gap-2'>
+                                            {idea.gate && (
+                                                <GateVerdictBadge
+                                                    gate={idea.gate}
+                                                />
+                                            )}
                                             <Badge
                                                 variant='outline'
                                                 className='gap-1'
@@ -238,6 +335,7 @@ export function GeneratedIdeasPanel({
                                                 </Badge>
                                             )}
                                         </div>
+                                        {seed && <SeedMetrics seed={seed} />}
                                         {idea.targetAudience && (
                                             <p className='mt-3 flex items-start gap-1.5 text-xs text-stone-600'>
                                                 <Users className='mt-0.5 h-3 w-3 shrink-0' />
@@ -254,6 +352,20 @@ export function GeneratedIdeasPanel({
                                                 {idea.uniqueAngle}
                                             </p>
                                         )}
+                                        {idea.gate &&
+                                            idea.gate.verdict !== 'new' && (
+                                                <p className='mt-2 text-xs text-red-600/80'>
+                                                    {idea.gate.reason}
+                                                </p>
+                                            )}
+                                        {idea.gate?.warnings.map((warning) => (
+                                            <p
+                                                key={warning}
+                                                className='mt-1 text-xs text-amber-600/90'
+                                            >
+                                                {warning}
+                                            </p>
+                                        ))}
                                     </CardContent>
                                 </Card>
                             )

@@ -56,17 +56,28 @@ export type SearchAnalyticsRow = {
     position?: number | null
 }
 
-/**
- * Fetch search analytics data from Google Search Console
- */
-export async function fetchSearchAnalytics(options: {
+/** Maximum rows per request accepted by the Search Console API */
+export const GSC_MAX_ROW_LIMIT = 25000
+
+/** Options accepted by fetchSearchAnalytics */
+export type SearchAnalyticsOptions = {
     dimensions: ('query' | 'page' | 'date')[]
     dimensionFilterGroups?: searchconsole_v1.Schema$ApiDimensionFilterGroup[]
     rowLimit?: number
+    startRow?: number
     days?: number
     startDate?: string
     endDate?: string
-}): Promise<SearchAnalyticsRow[]> {
+}
+
+/**
+ * Fetch search analytics data from Google Search Console.
+ * Returns a single page of at most `rowLimit` rows starting at `startRow`;
+ * use fetchAllSearchAnalytics for site-wide pulls that may exceed one page.
+ */
+export async function fetchSearchAnalytics(
+    options: SearchAnalyticsOptions
+): Promise<SearchAnalyticsRow[]> {
     const client = getSearchConsoleClient()
     const siteUrl = getSiteUrl()
 
@@ -90,10 +101,42 @@ export async function fetchSearchAnalytics(options: {
             dimensions: options.dimensions,
             dimensionFilterGroups: options.dimensionFilterGroups,
             rowLimit: options.rowLimit ?? DEFAULT_LIMIT,
+            ...(options.startRow ? { startRow: options.startRow } : {}),
         },
     })
 
     return response.data.rows ?? []
+}
+
+/**
+ * Fetch search analytics data across multiple pages via startRow pagination.
+ * Keeps requesting full pages of `rowLimit` (default: the API max of 25,000)
+ * until a short page signals the end of the result set or `maxRows` is hit.
+ *
+ * @param options - Same as fetchSearchAnalytics minus paging fields
+ * @param maxRows - Safety cap on total rows fetched (default 100,000)
+ */
+export async function fetchAllSearchAnalytics(
+    options: Omit<SearchAnalyticsOptions, 'startRow'>,
+    maxRows: number = 100000
+): Promise<SearchAnalyticsRow[]> {
+    const rowLimit = Math.min(options.rowLimit ?? GSC_MAX_ROW_LIMIT, maxRows)
+    const rows: SearchAnalyticsRow[] = []
+
+    let startRow = 0
+    for (;;) {
+        const page = await fetchSearchAnalytics({
+            ...options,
+            rowLimit: Math.min(rowLimit, maxRows - rows.length),
+            startRow,
+        })
+        rows.push(...page)
+
+        if (page.length < rowLimit || rows.length >= maxRows) break
+        startRow += page.length
+    }
+
+    return rows.slice(0, maxRows)
 }
 
 /**

@@ -11,6 +11,7 @@ import {
     PROCEDURE_PAGES as SHARED_PROCEDURE_PAGES,
     WEBSITE_PAGES as SHARED_WEBSITE_PAGES,
     SURGEON_PAGES as SHARED_SURGEON_PAGES,
+    getBlogPostUrl,
     type SitePage,
 } from '@workspace/shared'
 
@@ -110,6 +111,7 @@ export function getInternalLinks(
             slug: string
             title: string
             excerpt?: string | null
+            publishedAt?: string | Date | null
         }>
         maxResults?: number
     }
@@ -121,7 +123,8 @@ export function getInternalLinks(
         ...PROCEDURE_PAGES,
         ...WEBSITE_PAGES,
         ...blogPosts.map((post) => ({
-            url: `/blog/${post.slug}`,
+            // Pre-2026 posts live at root /{slug}, later ones at /blog/{slug}
+            url: getBlogPostUrl(post.slug, post.publishedAt ?? null),
             title: post.title,
             description: post.excerpt || post.title,
             type: 'blog' as const,

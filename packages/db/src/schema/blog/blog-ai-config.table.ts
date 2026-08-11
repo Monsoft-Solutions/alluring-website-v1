@@ -24,6 +24,13 @@ export const blogAiConfig = pgTable('blog_ai_config', {
     id: uuid('id').primaryKey().defaultRandom(),
 
     /**
+     * Model used for the ideation phase (topic generation).
+     */
+    ideationModelId: varchar('ideation_model_id', { length: 120 })
+        .notNull()
+        .default('claude-opus-5'),
+
+    /**
      * Model used for the content generation phase (research + drafting).
      */
     contentModelId: varchar('content_model_id', { length: 120 })

@@ -113,6 +113,7 @@ export {
     type GenerateBlogTopicsOptions,
     type GenerateBlogTopicsResult,
     type TopicSuggestion,
+    type GscTopicSeed,
     type ContextHints,
     type ProcedureContext,
 } from './generate-blog-topics.function'

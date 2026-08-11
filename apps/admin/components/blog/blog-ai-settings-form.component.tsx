@@ -82,10 +82,17 @@ type BlogAiSettingsFormProps = {
 }
 
 export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
+    const initialIdeation = splitStoredModelId(initialData.ideationModelId)
     const initialContent = splitStoredModelId(initialData.contentModelId)
     const initialReview = splitStoredModelId(initialData.reviewModelId)
     const initialExtraction = splitStoredModelId(initialData.extractionModelId)
 
+    const [ideationModelId, setIdeationModelId] = useState(
+        initialIdeation.selected
+    )
+    const [customIdeationModelId, setCustomIdeationModelId] = useState(
+        initialIdeation.custom
+    )
     const [contentModelId, setContentModelId] = useState(
         initialContent.selected
     )
@@ -109,17 +116,21 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
         useState<ArtisticImageStyleId | null>(initialData.artisticStyleId)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
+    const trimmedIdeationCustom = customIdeationModelId.trim()
     const trimmedContentCustom = customContentModelId.trim()
     const trimmedReviewCustom = customReviewModelId.trim()
     const trimmedExtractionCustom = customExtractionModelId.trim()
 
     // A non-empty custom field always wins over the select.
+    const effectiveIdeationModelId = trimmedIdeationCustom || ideationModelId
     const effectiveContentModelId = trimmedContentCustom || contentModelId
     const effectiveReviewModelId = trimmedReviewCustom || reviewModelId
     const effectiveExtractionModelId =
         trimmedExtractionCustom || extractionModelId
 
     const hasInvalidCustom =
+        (trimmedIdeationCustom.length > 0 &&
+            !isOpenRouterModelId(trimmedIdeationCustom)) ||
         (trimmedContentCustom.length > 0 &&
             !isOpenRouterModelId(trimmedContentCustom)) ||
         (trimmedReviewCustom.length > 0 &&
@@ -139,6 +150,7 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
 
         try {
             const result = await updateBlogAiConfig({
+                ideationModelId: effectiveIdeationModelId,
                 contentModelId: effectiveContentModelId,
                 reviewModelId: effectiveReviewModelId,
                 extractionModelId: effectiveExtractionModelId,
@@ -170,6 +182,16 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className='space-y-6'>
+                    <BlogAiModelField
+                        id='ideation-model'
+                        label='Ideation model'
+                        description='Generates blog topic ideas — both keyword-based and Search Console modes.'
+                        selectedModelId={ideationModelId}
+                        customModelId={customIdeationModelId}
+                        onSelectedModelIdChange={setIdeationModelId}
+                        onCustomModelIdChange={setCustomIdeationModelId}
+                    />
+
                     <BlogAiModelField
                         id='content-model'
                         label='Content model'

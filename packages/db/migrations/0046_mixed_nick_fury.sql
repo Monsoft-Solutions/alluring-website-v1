@@ -1,0 +1,1 @@
+ALTER TABLE "blog_ai_config" ADD COLUMN "ideation_model_id" varchar(120) DEFAULT 'claude-opus-5' NOT NULL;
