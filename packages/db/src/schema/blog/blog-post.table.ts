@@ -71,6 +71,21 @@ export const blogPostPriority = pgEnum('blog_post_priority', [
     'urgent',
 ])
 
+/**
+ * Idea approval state for the autopilot approval queue.
+ *
+ * Only meaningful while a post is in `ideation` status. Manual admin creates
+ * are stamped `approved` (the admin chose the topic); autopilot-generated
+ * ideas start `pending`. Rejected ideas stay in the DB (hidden from the
+ * board) so ideation stops re-proposing them. Legacy NULL is treated as
+ * approved.
+ */
+export const ideaApprovalStatus = pgEnum('idea_approval_status', [
+    'pending',
+    'approved',
+    'rejected',
+])
+
 export const blogPost = pgTable(
     'blog_post',
     {
@@ -104,6 +119,7 @@ export const blogPost = pgTable(
 
         // Pipeline management
         priority: blogPostPriority('priority').default('medium'),
+        ideaApproval: ideaApprovalStatus('idea_approval'),
         pipelineProcessingStatus:
             processingStatus('processing_status').default('idle'),
         processingError: text('processing_error'),
@@ -147,6 +163,10 @@ export const blogPost = pgTable(
             table.pipelineProcessingStatus
         ),
         index('blog_post_status_priority_idx').on(table.status, table.priority),
+        index('blog_post_status_idea_approval_idx').on(
+            table.status,
+            table.ideaApproval
+        ),
     ]
 )
 

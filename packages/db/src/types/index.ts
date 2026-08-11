@@ -13,3 +13,9 @@ export type {
     OrchestratorResult,
     PipelineMetrics,
 } from './blog-pipeline.type'
+
+export type {
+    AutopilotPhaseOutcome,
+    RefreshCandidate,
+    AutopilotSkipReason,
+} from './autopilot.type'

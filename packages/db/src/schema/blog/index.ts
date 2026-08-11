@@ -2,10 +2,20 @@ export {
     blogPostStatus,
     processingStatus,
     blogPostPriority,
+    ideaApprovalStatus,
     blogPost,
     type BlogPost,
     type InsertBlogPost,
 } from './blog-post.table'
+
+export {
+    autopilotRunKind,
+    autopilotTrigger,
+    autopilotRunStatus,
+    autopilotRun,
+    type AutopilotRun,
+    type InsertAutopilotRun,
+} from './autopilot-run.table'
 
 export {
     blogCategory,
@@ -43,6 +53,8 @@ export {
 } from './blog-post-analysis.table'
 
 export {
+    autopilotMode,
+    autopilotCadence,
     blogAiConfig,
     type BlogAiConfig,
     type InsertBlogAiConfig,

@@ -14,7 +14,7 @@ import { CACHE_TAGS } from '@workspace/shared/cache'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
-import { evaluateSingleTopic } from '@/lib/services/ideation-gate.service'
+import { createPipelinePostInternal } from '@/lib/services/pipeline-post.service'
 import type {
     PipelineStatus,
     ProcessingStatus,
@@ -405,6 +405,9 @@ export async function updateBlogPostStatus(
 
 /**
  * Create a new blog post in the ideation stage (pipeline entry point)
+ *
+ * Delegates to createPipelinePostInternal (shared with autopilot); manual
+ * creates are stamped as approved ideas since the admin chose the topic.
  */
 export async function createPipelinePost(
     data: CreatePipelinePostData
@@ -412,56 +415,19 @@ export async function createPipelinePost(
     try {
         await requireAuth()
 
-        if (!data.title?.trim()) {
-            return { success: false, error: 'Title is required' }
-        }
-
-        // Keyword-ownership gate: a topic whose cluster is owned by a money
-        // page or duplicates an existing post cannot enter the pipeline
-        const gate = await evaluateSingleTopic({
-            title: data.title,
-            primaryKeyword: data.primaryKeyword,
-            secondaryKeywords: data.secondaryKeywords,
+        const result = await createPipelinePostInternal({
+            ...data,
+            ideaApproval: 'approved',
         })
-        if (gate.verdict === 'reject') {
-            return { success: false, error: `Topic rejected: ${gate.reason}` }
-        }
-        if (gate.verdict === 'refresh') {
-            return {
-                success: false,
-                error: `Topic refused: ${gate.reason}`,
-            }
-        }
 
-        const planningData: PlanningData = {
-            ...(data.planningData ?? {}),
-            ideationGate: {
-                verdict: gate.verdict,
-                reason: gate.reason,
-                owningUrl: gate.owningUrl,
-                claimedQueries: gate.claimedQueries,
-                checkedAt: new Date().toISOString(),
-            },
+        if (!result.success) {
+            return { success: false, error: result.error }
         }
-
-        const [newPost] = await db
-            .insert(blogPost)
-            .values({
-                title: data.title.trim(),
-                primaryKeyword: data.primaryKeyword ?? null,
-                secondaryKeywords: data.secondaryKeywords ?? null,
-                authorId: data.authorId ?? null,
-                priority: data.priority ?? 'medium',
-                planningData,
-                status: 'ideation',
-                pipelineProcessingStatus: 'idle',
-            })
-            .returning({ id: blogPost.id })
 
         revalidatePath('/blog/pipeline')
         revalidatePath('/blog/posts')
 
-        return { success: true, id: newPost?.id }
+        return { success: true, id: result.id }
     } catch (error) {
         console.error('Error creating pipeline post:', error)
 
