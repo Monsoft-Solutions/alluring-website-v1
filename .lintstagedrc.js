@@ -1,6 +1,8 @@
 export default {
     // Format with Prettier (runs on staged files only)
-    '**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,yml,yaml}': ['prettier --write'],
+    '**/*.{js,mjs,cjs,jsx,ts,tsx,json,css,scss,md,mdx,yml,yaml}': [
+        'prettier --write',
+    ],
 
     // Lint and auto-fix TypeScript/JavaScript files in web app (staged files only)
     'apps/web/**/*.{js,jsx,ts,tsx}': (filenames) => {

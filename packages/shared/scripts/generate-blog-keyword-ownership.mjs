@@ -105,7 +105,8 @@ const RETIRED = {
         '/blog/blepharoplasty-candidate-miami-checklist',
     'best-blepharoplasty-age-miami':
         '/blog/best-blepharoplasty-age-miami-checklist',
-    'liposuction-candidate-checklist-miami': '/blog/liposuction-candidate-miami',
+    'liposuction-candidate-checklist-miami':
+        '/blog/liposuction-candidate-miami',
     'liposuction-miami-moms-faq': '/blog/liposuction-miami-moms-tips',
     'breast-reduction-miami-recovery-candidates':
         '/blog/breast-reduction-candidate-miami',
@@ -123,7 +124,9 @@ const RETIRED = {
 
 const inputPath = process.argv[2]
 if (!inputPath) {
-    console.error('Usage: node generate-blog-keyword-ownership.mjs <posts.json>')
+    console.error(
+        'Usage: node generate-blog-keyword-ownership.mjs <posts.json>'
+    )
     process.exit(1)
 }
 
