@@ -20,10 +20,14 @@ import {
     Target,
     AlertCircle,
     Users,
+    ShieldCheck,
+    ShieldAlert,
+    RefreshCw,
 } from 'lucide-react'
 
 import { useCreatePipelinePost } from '@/hooks/use-pipeline.hook'
 import type { TopicSuggestion } from '@workspace/ai/functions'
+import type { TopicVerdict } from '@workspace/shared/seo'
 import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-content.constant'
 
 type SelectedKeywords = {
@@ -31,12 +35,43 @@ type SelectedKeywords = {
     secondary: string[]
 }
 
+/** Topic suggestion decorated with its ideation-gate verdict */
+export type GatedTopicSuggestion = TopicSuggestion & {
+    gate?: TopicVerdict
+}
+
 type GeneratedIdeasPanelProps = {
     selectedKeywords: SelectedKeywords
-    ideas: TopicSuggestion[]
+    ideas: GatedTopicSuggestion[]
     isGenerating: boolean
     onGenerate: () => void
     hasGenerated: boolean
+}
+
+/** Verdict badge + reason line for an idea card */
+function GateVerdictBadge({ gate }: { gate: TopicVerdict }) {
+    if (gate.verdict === 'new') {
+        return (
+            <Badge className='gap-1 border-green-200 bg-green-50 text-green-700'>
+                <ShieldCheck className='h-3 w-3' />
+                New topic
+            </Badge>
+        )
+    }
+    if (gate.verdict === 'refresh') {
+        return (
+            <Badge className='gap-1 border-amber-200 bg-amber-50 text-amber-700'>
+                <RefreshCw className='h-3 w-3' />
+                Refresh {gate.owningUrl}
+            </Badge>
+        )
+    }
+    return (
+        <Badge className='gap-1 border-red-200 bg-red-50 text-red-700'>
+            <ShieldAlert className='h-3 w-3' />
+            Rejected{gate.owningUrl ? ` — owned by ${gate.owningUrl}` : ''}
+        </Badge>
+    )
 }
 
 /**
@@ -60,7 +95,7 @@ export function GeneratedIdeasPanel({
         selectedKeywords.secondary.length > 0
 
     const handleAddToPipeline = async (
-        idea: TopicSuggestion,
+        idea: GatedTopicSuggestion,
         index: number
     ) => {
         try {
@@ -153,6 +188,9 @@ export function GeneratedIdeasPanel({
                     <div className='space-y-4'>
                         {ideas.map((idea, index) => {
                             const isAdded = addedIds.has(index)
+                            const isBlocked =
+                                idea.gate !== undefined &&
+                                idea.gate.verdict !== 'new'
 
                             return (
                                 <Card
@@ -182,6 +220,7 @@ export function GeneratedIdeasPanel({
                                                 }
                                                 disabled={
                                                     isAdded ||
+                                                    isBlocked ||
                                                     createPipelinePost.isPending
                                                 }
                                                 onClick={() =>
@@ -212,6 +251,11 @@ export function GeneratedIdeasPanel({
                                     </CardHeader>
                                     <CardContent className='pt-0'>
                                         <div className='flex flex-wrap items-center gap-2'>
+                                            {idea.gate && (
+                                                <GateVerdictBadge
+                                                    gate={idea.gate}
+                                                />
+                                            )}
                                             <Badge
                                                 variant='outline'
                                                 className='gap-1'
@@ -254,6 +298,20 @@ export function GeneratedIdeasPanel({
                                                 {idea.uniqueAngle}
                                             </p>
                                         )}
+                                        {idea.gate &&
+                                            idea.gate.verdict !== 'new' && (
+                                                <p className='mt-2 text-xs text-red-600/80'>
+                                                    {idea.gate.reason}
+                                                </p>
+                                            )}
+                                        {idea.gate?.warnings.map((warning) => (
+                                            <p
+                                                key={warning}
+                                                className='mt-1 text-xs text-amber-600/90'
+                                            >
+                                                {warning}
+                                            </p>
+                                        ))}
                                     </CardContent>
                                 </Card>
                             )

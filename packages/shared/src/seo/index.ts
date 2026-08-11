@@ -25,3 +25,11 @@ export {
     findSimilarOwnedQueries,
     getRegistryIntegrityIssues,
 } from './keyword-ownership.util'
+
+export {
+    evaluateTopicCandidate,
+    type TopicCandidate,
+    type TopicVerdict,
+    type TopicVerdictKind,
+    type EvaluateTopicOptions,
+} from './topic-gate.util'

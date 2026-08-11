@@ -28,13 +28,15 @@ import {
 } from '@workspace/ui/components/collapsible'
 import { ChevronDown, Sparkles, X } from 'lucide-react'
 
-import type { TopicSuggestion } from '@workspace/ai/functions'
 import {
     SEARCH_INTENTS,
     type SearchIntent,
 } from '@/lib/constants/blog-content.constant'
 import { GscKeywordPicker } from '@/components/blog/shared/gsc-keyword-picker.component'
-import { GeneratedIdeasPanel } from '@/components/blog/shared/generated-ideas-panel.component'
+import {
+    GeneratedIdeasPanel,
+    type GatedTopicSuggestion,
+} from '@/components/blog/shared/generated-ideas-panel.component'
 import { getProcedureOptions } from '@/lib/data/procedure-context.data'
 import { fetchApi, buildUrl, ApiError } from '@/lib/utils/api-client.util'
 
@@ -57,7 +59,7 @@ type SelectedKeywords = {
 
 type GenerateTopicsResponse = {
     success: boolean
-    topics?: TopicSuggestion[]
+    topics?: GatedTopicSuggestion[]
     error?: string
 }
 
@@ -89,7 +91,7 @@ export function PipelinePostFormDialog({
     const [advancedOpen, setAdvancedOpen] = useState(false)
 
     // Generation state
-    const [ideas, setIdeas] = useState<TopicSuggestion[]>([])
+    const [ideas, setIdeas] = useState<GatedTopicSuggestion[]>([])
     const [isGenerating, setIsGenerating] = useState(false)
     const [hasGenerated, setHasGenerated] = useState(false)
 

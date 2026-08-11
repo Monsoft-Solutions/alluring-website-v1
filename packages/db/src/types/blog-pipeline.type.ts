@@ -48,6 +48,17 @@ export type PlanningData = {
     aiGeneratedScore?: number
     /** AI-generated suggestions for improvement */
     aiSuggestions?: string
+    /** Keyword-ownership gate verdict recorded when the post was created */
+    ideationGate?: {
+        verdict: 'new' | 'refresh' | 'reject'
+        reason?: string
+        /** Owning page when the verdict is refresh/reject */
+        owningUrl?: string
+        /** Queries this post claims (verdict 'new') */
+        claimedQueries?: string[]
+        /** ISO timestamp of the gate check */
+        checkedAt?: string
+    }
 }
 
 /**

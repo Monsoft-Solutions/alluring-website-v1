@@ -14,6 +14,7 @@ import { CACHE_TAGS } from '@workspace/shared/cache'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
+import { evaluateSingleTopic } from '@/lib/services/ideation-gate.service'
 import type {
     PipelineStatus,
     ProcessingStatus,
@@ -415,6 +416,34 @@ export async function createPipelinePost(
             return { success: false, error: 'Title is required' }
         }
 
+        // Keyword-ownership gate: a topic whose cluster is owned by a money
+        // page or duplicates an existing post cannot enter the pipeline
+        const gate = await evaluateSingleTopic({
+            title: data.title,
+            primaryKeyword: data.primaryKeyword,
+            secondaryKeywords: data.secondaryKeywords,
+        })
+        if (gate.verdict === 'reject') {
+            return { success: false, error: `Topic rejected: ${gate.reason}` }
+        }
+        if (gate.verdict === 'refresh') {
+            return {
+                success: false,
+                error: `Topic refused: ${gate.reason}`,
+            }
+        }
+
+        const planningData: PlanningData = {
+            ...(data.planningData ?? {}),
+            ideationGate: {
+                verdict: gate.verdict,
+                reason: gate.reason,
+                owningUrl: gate.owningUrl,
+                claimedQueries: gate.claimedQueries,
+                checkedAt: new Date().toISOString(),
+            },
+        }
+
         const [newPost] = await db
             .insert(blogPost)
             .values({
@@ -423,7 +452,7 @@ export async function createPipelinePost(
                 secondaryKeywords: data.secondaryKeywords ?? null,
                 authorId: data.authorId ?? null,
                 priority: data.priority ?? 'medium',
-                planningData: data.planningData ?? null,
+                planningData,
                 status: 'ideation',
                 pipelineProcessingStatus: 'idle',
             })

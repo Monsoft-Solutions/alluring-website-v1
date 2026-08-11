@@ -5,6 +5,10 @@
  * Consumers: ideation gate (apps/admin), cannibalization-checker review
  * agent (packages/ai), batch skill.
  *
+ * The module-level functions operate on the checked-in registry. Callers
+ * that need to overlay live data (e.g. posts published after the registry
+ * was seeded) pass extra entries via the `entries` parameter variants.
+ *
  * @module @workspace/shared/seo/keyword-ownership.util
  */
 import { BLOG_POST_ENTRIES } from './keyword-ownership-blog.constant'
@@ -46,44 +50,11 @@ function ownedQueries(entry: OwnedPage): string[] {
     return [entry.primaryKeyword, ...entry.ownsQueries].map(normalizeQuery)
 }
 
-let urlIndex: Map<string, OwnedPage> | null = null
-let queryIndex: Map<string, { entry: OwnedPage; query: string }> | null = null
-
-function getUrlIndex(): Map<string, OwnedPage> {
-    if (!urlIndex) {
-        urlIndex = new Map(getKeywordRegistry().map((e) => [e.url, e]))
-    }
-    return urlIndex
-}
-
-/**
- * query -> owning entry. Retired entries never own queries. When two
- * entries claim the same query, the canonical owner (the duplicateOf
- * target, or the non-blog page under the intent split) wins.
- */
-function getQueryIndex(): Map<string, { entry: OwnedPage; query: string }> {
-    if (queryIndex) return queryIndex
-
-    queryIndex = new Map()
-    for (const entry of getKeywordRegistry()) {
-        if (entry.status === 'retired') continue
-        for (const query of ownedQueries(entry)) {
-            if (!query) continue
-            const existing = queryIndex.get(query)
-            if (!existing) {
-                queryIndex.set(query, { entry, query })
-                continue
-            }
-            // Collision: prefer the canonical owner
-            const winner = pickOwner(existing.entry, entry)
-            queryIndex.set(query, { entry: winner, query })
-        }
-    }
-    return queryIndex
-}
-
 /** Pick the canonical owner between two entries claiming the same query */
 function pickOwner(a: OwnedPage, b: OwnedPage): OwnedPage {
+    // Live/planned pages beat retired slugs
+    if (a.status !== 'retired' && b.status === 'retired') return a
+    if (b.status !== 'retired' && a.status === 'retired') return b
     if (a.duplicateOf === b.url) return b
     if (b.duplicateOf === a.url) return a
     // Intent split: money pages beat blog posts
@@ -92,10 +63,45 @@ function pickOwner(a: OwnedPage, b: OwnedPage): OwnedPage {
     return a
 }
 
+type OwnershipIndexes = {
+    byUrl: Map<string, OwnedPage>
+    byQuery: Map<string, { entry: OwnedPage; query: string }>
+}
+
+function buildIndexes(entries: OwnedPage[]): OwnershipIndexes {
+    const byUrl = new Map<string, OwnedPage>(entries.map((e) => [e.url, e]))
+
+    // Retired entries participate (so ideation can reject re-proposals of
+    // retired topics) but lose to any live/planned owner via pickOwner
+    const byQuery = new Map<string, { entry: OwnedPage; query: string }>()
+    for (const entry of entries) {
+        for (const query of ownedQueries(entry)) {
+            if (!query) continue
+            const existing = byQuery.get(query)
+            byQuery.set(query, {
+                entry: existing ? pickOwner(existing.entry, entry) : entry,
+                query,
+            })
+        }
+    }
+    return { byUrl, byQuery }
+}
+
+let defaultIndexes: OwnershipIndexes | null = null
+
+function getIndexes(entries?: OwnedPage[]): OwnershipIndexes {
+    if (entries) return buildIndexes([...getKeywordRegistry(), ...entries])
+    if (!defaultIndexes) defaultIndexes = buildIndexes(getKeywordRegistry())
+    return defaultIndexes
+}
+
 /** Follow duplicateOf to the cluster's canonical owner */
-export function resolveCanonicalOwner(entry: OwnedPage): OwnedPage {
+export function resolveCanonicalOwner(
+    entry: OwnedPage,
+    extraEntries?: OwnedPage[]
+): OwnedPage {
     if (!entry.duplicateOf) return entry
-    const canonical = getUrlIndex().get(entry.duplicateOf)
+    const canonical = getIndexes(extraEntries).byUrl.get(entry.duplicateOf)
     return canonical ?? entry
 }
 
@@ -104,21 +110,30 @@ export function resolveCanonicalOwner(entry: OwnedPage): OwnedPage {
  * unclaimed. Exact match on normalized query strings — use
  * findSimilarOwnedQueries for near-duplicate detection.
  *
+ * @param extraEntries - Live overlay entries (e.g. posts published after
+ *   the registry seed) considered alongside the checked-in registry
+ *
  * @example resolveQueryOwner('bbl cost miami')?.owner.url === '/bbl-cost-miami'
  */
-export function resolveQueryOwner(query: string): QueryOwnership | null {
-    const hit = getQueryIndex().get(normalizeQuery(query))
+export function resolveQueryOwner(
+    query: string,
+    extraEntries?: OwnedPage[]
+): QueryOwnership | null {
+    const hit = getIndexes(extraEntries).byQuery.get(normalizeQuery(query))
     if (!hit) return null
     return {
         owner: hit.entry,
-        canonicalOwner: resolveCanonicalOwner(hit.entry),
+        canonicalOwner: resolveCanonicalOwner(hit.entry, extraEntries),
         matchedQuery: hit.query,
     }
 }
 
 /** Look up the registry entry for a URL (or a blog post slug via its URL) */
-export function getOwnerForUrl(url: string): OwnedPage | null {
-    return getUrlIndex().get(url) ?? null
+export function getOwnerForUrl(
+    url: string,
+    extraEntries?: OwnedPage[]
+): OwnedPage | null {
+    return getIndexes(extraEntries).byUrl.get(url) ?? null
 }
 
 /**
@@ -129,14 +144,22 @@ export function getOwnerForUrl(url: string): OwnedPage | null {
  */
 export function findSimilarOwnedQueries(
     query: string,
-    options: { threshold?: number; limit?: number } = {}
+    options: {
+        threshold?: number
+        limit?: number
+        extraEntries?: OwnedPage[]
+    } = {}
 ): SimilarOwnedQuery[] {
-    const { threshold = 0.6, limit = 10 } = options
+    const { threshold = 0.6, limit = 10, extraEntries } = options
     const target = queryTokens(query)
     if (target.size === 0) return []
 
+    const entries = extraEntries
+        ? [...getKeywordRegistry(), ...extraEntries]
+        : getKeywordRegistry()
+
     const results: SimilarOwnedQuery[] = []
-    for (const entry of getKeywordRegistry()) {
+    for (const entry of entries) {
         if (entry.status === 'retired') continue
         let best: { query: string; score: number } | null = null
         for (const owned of ownedQueries(entry)) {

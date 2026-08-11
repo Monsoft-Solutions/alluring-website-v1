@@ -6,6 +6,7 @@ import { generateBlogTopics } from '@workspace/ai/functions'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { getProcedureContext } from '@/lib/data/procedure-context.data'
+import { evaluateTopicCandidates } from '@/lib/services/ideation-gate.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // Allow up to 60 seconds for AI generation
@@ -82,9 +83,14 @@ export async function POST(request: NextRequest) {
             procedureContext,
         })
 
+        // Ideation gate: every candidate gets a new/refresh/reject verdict
+        // against the keyword ownership registry + live posts
+        const gatedTopics = await evaluateTopicCandidates(result.topics)
+
         return NextResponse.json({
             success: true,
             ...result,
+            topics: gatedTopics,
         })
     } catch (error) {
         return handleApiError(
