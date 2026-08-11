@@ -3,7 +3,20 @@
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const querySpy = vi.fn()
+import type { SearchAnalyticsRow } from '@/lib/services/search-console/google-search-console-utils.service'
+
+type QueryCall = {
+    siteUrl: string
+    requestBody: {
+        rowLimit?: number
+        startRow?: number
+    }
+}
+
+const querySpy =
+    vi.fn<
+        (call: QueryCall) => Promise<{ data: { rows: SearchAnalyticsRow[] } }>
+    >()
 
 vi.mock(
     '@/lib/services/search-console/google-search-console-client.service',
@@ -46,14 +59,9 @@ describe('fetchSearchAnalytics', () => {
             startRow: 200,
         })
 
-        expect(querySpy).toHaveBeenCalledWith(
-            expect.objectContaining({
-                requestBody: expect.objectContaining({
-                    rowLimit: 100,
-                    startRow: 200,
-                }),
-            })
-        )
+        const call = querySpy.mock.calls[0]![0]
+        expect(call.requestBody.rowLimit).toBe(100)
+        expect(call.requestBody.startRow).toBe(200)
     })
 
     it('omits startRow when not set', async () => {
