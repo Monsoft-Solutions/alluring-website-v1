@@ -12,7 +12,12 @@
 
 import { generateImageWithFal } from '@/lib/services/fal-image-generation.service'
 import type { ImageModelId } from '@/lib/services/fal-image-generation.service'
-import type { InlineImageTypeValue } from '@workspace/ai'
+import {
+    generateImageAlt,
+    getInlineImageTypeById,
+    type ArtisticImageAspectRatio,
+    type InlineImageTypeValue,
+} from '@workspace/ai'
 
 export type GenerateImageStepInput = {
     postId: string
@@ -22,6 +27,10 @@ export type GenerateImageStepInput = {
     photoStyle?: string
     insertAfterText: string
     altText: string
+    /** Blog post slug, for SEO-friendly blob storage paths */
+    slug?: string
+    /** Primary keyword, woven into the generated alt text where it fits */
+    primaryKeyword?: string
 }
 
 export type GenerateImageStepResult = {
@@ -31,6 +40,8 @@ export type GenerateImageStepResult = {
     insertAfterText: string
     altText: string
     imageType: InlineImageTypeValue
+    /** The prompt that produced the image, for the `generationPrompt` column */
+    prompt: string
     error?: string
 }
 
@@ -41,7 +52,19 @@ function getModelForImageType(imageType: string): ImageModelId {
     if (imageType === 'infographic' || imageType === 'illustration') {
         return 'nano-banana-pro'
     }
-    return 'gpt-image-1.5'
+    return 'gpt-image-2'
+}
+
+/**
+ * Get the aspect ratio declared for an inline image type.
+ *
+ * Until now every inline image was rendered at the featured-image ratio; the
+ * per-type ratios in the AI constants were declared but never used.
+ */
+function getAspectRatioForImageType(
+    imageType: InlineImageTypeValue
+): ArtisticImageAspectRatio {
+    return getInlineImageTypeById(imageType).aspectRatio
 }
 
 /**
@@ -61,6 +84,8 @@ export async function generateImageStep(
         imageType,
         insertAfterText,
         altText,
+        slug,
+        primaryKeyword,
     } = input
 
     console.log(
@@ -75,6 +100,9 @@ export async function generateImageStep(
             blogPostId: postId,
             model,
             numImages: 1,
+            aspectRatio: getAspectRatioForImageType(imageType),
+            slug,
+            descriptor: altText,
         })
 
         if (!images.length || !images[0]?.blobUrl) {
@@ -84,6 +112,7 @@ export async function generateImageStep(
                 insertAfterText,
                 altText,
                 imageType,
+                prompt,
                 error: 'No image returned from FAL.ai',
             }
         }
@@ -92,13 +121,32 @@ export async function generateImageStep(
             `[Workflow Step] Generated image for ${opportunityId}: ${images[0].blobUrl}`
         )
 
+        // The analyzer's `altText` is a short subject label, not accessible alt
+        // text. Turn it into a real description; fall back to the label if the
+        // alt call fails, since a workable alt beats blocking the workflow.
+        let resolvedAltText = altText
+        try {
+            const altResult = await generateImageAlt({
+                prompt,
+                concept: altText,
+                primaryKeyword,
+            })
+            resolvedAltText = altResult.alt || altText
+        } catch (error) {
+            console.warn(
+                `[Workflow Step] Alt text generation failed for ${opportunityId}, using the subject label:`,
+                error instanceof Error ? error.message : 'Unknown error'
+            )
+        }
+
         return {
             success: true,
             opportunityId,
             imageUrl: images[0].blobUrl,
             insertAfterText,
-            altText,
+            altText: resolvedAltText,
             imageType,
+            prompt,
         }
     } catch (error) {
         console.error(
@@ -112,6 +160,7 @@ export async function generateImageStep(
             insertAfterText,
             altText,
             imageType,
+            prompt,
             error:
                 error instanceof Error
                     ? error.message

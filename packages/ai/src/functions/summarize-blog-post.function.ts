@@ -31,7 +31,7 @@ const blogSummarySchema = z.object({
  * Default model for text generation
  * Uses a cost-effective model since this is text-only
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Options for blog post summarization

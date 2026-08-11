@@ -41,8 +41,11 @@ export {
 } from './faq.schema'
 
 export {
+    ARTISTIC_IMAGE_STYLE_IDS,
     modelProfileSchema,
+    aiSelectedImageOptionsSchema,
     selectedImageOptionsSchema,
     type SelectedImageOptions,
     type ModelProfile,
+    type ArtisticImageStyleIdValue,
 } from './selected-image-options.schema'

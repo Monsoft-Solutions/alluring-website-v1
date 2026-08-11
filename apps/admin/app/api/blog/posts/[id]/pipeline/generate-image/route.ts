@@ -15,11 +15,16 @@ import { blogPost, images, blogPostImages } from '@workspace/db/schema/blog'
 import type { PipelineState } from '@workspace/db/types'
 import { runImageGenerationPhase } from '@workspace/ai/pipelines'
 import { generateImageAlt } from '@workspace/ai/functions'
+import { extractImageConcept } from '@workspace/ai/prompts'
 
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
-import { generateImageWithFal } from '@/lib/services/fal-image-generation.service'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
+import {
+    generateImageWithFal,
+    getFalModelId,
+} from '@/lib/services/fal-image-generation.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120 // 2 minutes for image generation
@@ -91,12 +96,51 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             })
             .where(eq(blogPost.id, id))
 
-        // Run image generation phase (AI operations only)
+        // Admin-configured image model and (optionally) a pinned artistic
+        // style. A null style means "auto" — the runner's AI picks per topic.
+        const aiConfig = await getBlogAiConfig()
+
+        // Run image generation phase. The fal.ai service is injected as the
+        // renderer so the AI package stays free of environment dependencies,
+        // and so the no-people QA gate can regenerate through the same path.
         const phaseResult = await runImageGenerationPhase({
             title: post.title,
             content: post.content,
             primaryKeyword: post.primaryKeyword || undefined,
             aiSummary: post.aiSummary || undefined,
+            imageModel: aiConfig.imageModelId,
+            ...(aiConfig.artisticStyleId
+                ? { forcedArtisticStyleId: aiConfig.artisticStyleId }
+                : {}),
+            imageAdapter: async ({
+                prompt,
+                aspectRatio,
+                model,
+                descriptor,
+                attempt,
+            }) => {
+                console.log(
+                    `[Image Generation API] Rendering with fal.ai (${model}, ${aspectRatio}, attempt ${attempt})...`
+                )
+
+                const [rendered] = await generateImageWithFal({
+                    prompt,
+                    blogPostId: id,
+                    model,
+                    numImages: 1,
+                    aspectRatio,
+                    slug: post.slug || undefined,
+                    descriptor,
+                })
+
+                return rendered
+                    ? {
+                          url: rendered.blobUrl,
+                          width: rendered.width,
+                          height: rendered.height,
+                      }
+                    : null
+            },
         })
 
         if (!phaseResult.success || !phaseResult.prompt) {
@@ -123,16 +167,8 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        // Generate image using fal.ai
-        console.log('[Image Generation API] Generating image with fal.ai...')
-        const generatedImages = await generateImageWithFal({
-            prompt: phaseResult.prompt,
-            blogPostId: id,
-            model: 'gpt-image-1.5',
-            numImages: 1,
-        })
-
-        if (generatedImages.length === 0) {
+        const generatedImage = phaseResult.image
+        if (!generatedImage) {
             await db
                 .update(blogPost)
                 .set({
@@ -147,15 +183,18 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        const generatedImage = generatedImages[0]
-        if (!generatedImage) {
-            throw new Error('No image generated')
+        if (phaseResult.peopleDetected) {
+            console.warn(
+                `[Image Generation API] Image for post ${id} may contain a person and needs human review`
+            )
         }
 
-        // Generate alt text from prompt
+        // Generate alt text describing the image concept, not the raw brief
         console.log('[Image Generation API] Generating alt text...')
         const altResult = await generateImageAlt({
             prompt: phaseResult.prompt,
+            concept: extractImageConcept(phaseResult.prompt),
+            primaryKeyword: post.primaryKeyword || undefined,
         })
 
         // Create image record
@@ -163,14 +202,16 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
         const [imageRecord] = await db
             .insert(images)
             .values({
-                url: generatedImage.blobUrl,
+                url: generatedImage.url,
                 alt: altResult.alt,
                 title: post.title,
-                width: generatedImage.width || 1392,
-                height: generatedImage.height || 752,
+                width: generatedImage.width,
+                height: generatedImage.height,
                 mimeType: 'image/jpeg',
                 generationPrompt: phaseResult.prompt,
-                generatedBy: 'fal-ai',
+                generatedBy: getFalModelId(
+                    phaseResult.imageModel ?? 'gpt-image-2'
+                ),
             })
             .returning({ id: images.id })
 
@@ -200,8 +241,11 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
                 selectedOptions: phaseResult.selectedOptions,
                 prompt: phaseResult.prompt,
                 imageId: imageRecord.id,
-                imageUrl: generatedImage.blobUrl,
-                model: 'gpt-image-1.5',
+                imageUrl: generatedImage.url,
+                model: phaseResult.imageModel ?? 'gpt-image-2',
+                artisticStyleId: phaseResult.artisticStyleId,
+                peopleDetected: phaseResult.peopleDetected,
+                qaRegenerated: phaseResult.qaRegenerated,
             },
         }
 
@@ -224,9 +268,12 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
         return NextResponse.json({
             success: true,
             imageId: imageRecord.id,
-            imageUrl: generatedImage.blobUrl,
+            imageUrl: generatedImage.url,
             alt: altResult.alt,
             selectedOptions: phaseResult.selectedOptions,
+            artisticStyleId: phaseResult.artisticStyleId,
+            peopleDetected: phaseResult.peopleDetected ?? false,
+            qaRegenerated: phaseResult.qaRegenerated ?? false,
             timeMs: phaseResult.timeMs,
             nextStatus: 'draft',
         })

@@ -17,6 +17,7 @@ import { runReviewPhase } from '@workspace/ai/pipelines'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 import { runExtractPhaseForPost } from '@/lib/services/pipeline-phase.service'
 
 export const runtime = 'nodejs'
@@ -86,6 +87,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             })
             .where(eq(blogPost.id, id))
 
+        // Admin-configured model wins; the runner keeps its own default when
+        // no configuration row exists yet.
+        const aiConfig = await getBlogAiConfig()
+
         // Run review phase
         const planningData = post.planningData
         const result = await runReviewPhase({
@@ -96,6 +101,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             targetAudience: planningData?.targetAudience,
             contentType: planningData?.contentType,
             estimatedWordCount: planningData?.estimatedWordCount,
+            reviewModelId: aiConfig.reviewModelId,
         })
 
         if (!result.success) {

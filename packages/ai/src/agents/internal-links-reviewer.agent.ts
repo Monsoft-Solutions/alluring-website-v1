@@ -22,7 +22,7 @@ import type {
 /**
  * Default model for internal links review
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Schema for internal links review

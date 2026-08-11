@@ -52,6 +52,8 @@
                 "GOOGLE_CUSTOM_SEARCH_ENGINE_ID",
                 "PERPLEXITY_API_KEY",
                 "ANTHROPIC_API_KEY",
+                "OPENROUTER_API_KEY",
+                "SEED_CLEAR_BLOG",
                 "N8N_WEBHOOK_URL"
             ]
         },
@@ -120,6 +122,8 @@
                 "GOOGLE_CUSTOM_SEARCH_ENGINE_ID",
                 "PERPLEXITY_API_KEY",
                 "ANTHROPIC_API_KEY",
+                "OPENROUTER_API_KEY",
+                "SEED_CLEAR_BLOG",
                 "N8N_WEBHOOK_URL"
             ]
         },

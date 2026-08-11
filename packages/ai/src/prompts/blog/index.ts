@@ -26,6 +26,7 @@ export {
 export {
     FEATURED_IMAGE_PROMPT_SYSTEM,
     getFeaturedImagePrompt,
+    extractImageConcept,
     type FeaturedImagePromptInput,
 } from './featured-image-prompt.prompt'
 

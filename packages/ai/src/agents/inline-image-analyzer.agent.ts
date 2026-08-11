@@ -18,7 +18,7 @@ import type { InlineImageAnalysis } from '../schemas/inline-image-analysis.schem
 /**
  * Default model for content analysis
  */
-const DEFAULT_MODEL_ID = 'gpt-5.2'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Options for the inline image analyzer agent
@@ -30,7 +30,7 @@ export type InlineImageAnalyzerOptions = {
     title: string
     /** Maximum number of images to recommend (default: 5) */
     maxImages?: number
-    /** Model ID to use (default: gpt-5.2) */
+    /** Model ID to use (default: claude-opus-5) */
     modelId?: string
     /** Temperature for generation (default: 0.7) */
     temperature?: number

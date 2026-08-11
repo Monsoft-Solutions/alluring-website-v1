@@ -1,6 +1,12 @@
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema'
-import { summarizeBlogPost, generateFeaturedImagePrompt } from '@workspace/ai'
+import {
+    summarizeBlogPost,
+    generateFeaturedImagePrompt,
+    getArtisticStyleAspectRatio,
+    isArtisticImageStyleId,
+} from '@workspace/ai'
+import { ARTISTIC_IMAGE_STYLE_IDS } from '@workspace/shared/schemas/blog'
 import { eq } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
@@ -83,6 +89,9 @@ const modelProfileSchema = z.object({
 const requestSchema = z.object({
     blogPostId: z.string().uuid('Invalid blog post ID'),
     scene: z.enum([
+        // Artistic path
+        'material-study',
+        // Legacy photographic scenes
         'luxury-clinic',
         'miami-lifestyle',
         'abstract-wellness',
@@ -90,6 +99,9 @@ const requestSchema = z.object({
         'modern-minimalist',
     ]),
     subject: z.enum([
+        // Artistic path
+        'artistic-composition',
+        // Legacy subjects — 'patient-model' is the opt-in human path
         'patient-model',
         'luxury-space',
         'wellness-concept',
@@ -97,6 +109,9 @@ const requestSchema = z.object({
         'beauty-details',
     ]),
     style: z.enum([
+        // Artistic presets
+        ...ARTISTIC_IMAGE_STYLE_IDS,
+        // Legacy photographic styles
         'editorial-photo',
         'luxury-lifestyle',
         'clinical-clean',
@@ -258,30 +273,17 @@ export async function POST(
             )
         }
 
-        // Build model description for patient-model subject type
-        let modelDescription: string | undefined
-        if (subject === 'patient-model' && modelProfile) {
-            modelDescription = buildModelDescription(
-                modelProfile as ModelProfile
-            )
-        }
+        // The human-subject path is opt-in: it requires an admin to have picked
+        // the `patient-model` subject AND supplied a model profile. Everything
+        // else renders through the people-free artistic path.
+        const isHumanSubjectPath = subject === 'patient-model' && !!modelProfile
 
-        // Generate featured image prompt with customization
-        const result = await generateFeaturedImagePrompt({
-            title: blogPostData.title,
-            summary,
-            scene: {
-                id: sceneOption.id,
-                promptGuidelines: sceneOption.promptGuidelines,
-            },
-            subject: {
-                id: subjectOption.id,
-                promptGuidelines: subjectOption.promptGuidelines,
-            },
-            style: {
-                id: styleOption.id,
-                promptGuidelines: styleOption.promptGuidelines,
-            },
+        const modelDescription = isHumanSubjectPath
+            ? buildModelDescription(modelProfile as ModelProfile)
+            : undefined
+
+        // Art-direction modifiers honoured by both paths
+        const sharedModifiers = {
             lighting: {
                 id: lightingOption.id,
                 promptGuidelines: lightingOption.promptGuidelines,
@@ -294,9 +296,41 @@ export async function POST(
                 id: compositionOption.id,
                 promptGuidelines: compositionOption.promptGuidelines,
             },
-            modelDescription,
-            keywords: blogPostData.metaKeywords || undefined,
-        })
+        }
+
+        // Generate featured image prompt with customization
+        const result = await generateFeaturedImagePrompt(
+            isHumanSubjectPath
+                ? {
+                      title: blogPostData.title,
+                      summary,
+                      scene: {
+                          id: sceneOption.id,
+                          promptGuidelines: sceneOption.promptGuidelines,
+                      },
+                      subject: {
+                          id: subjectOption.id,
+                          promptGuidelines: subjectOption.promptGuidelines,
+                      },
+                      style: {
+                          id: styleOption.id,
+                          promptGuidelines: styleOption.promptGuidelines,
+                      },
+                      ...sharedModifiers,
+                      modelDescription,
+                      keywords: blogPostData.metaKeywords || undefined,
+                  }
+                : {
+                      title: blogPostData.title,
+                      summary,
+                      artisticStyleId: style,
+                      aspectRatio: isArtisticImageStyleId(style)
+                          ? getArtisticStyleAspectRatio(style, 'featured')
+                          : '16:9',
+                      ...sharedModifiers,
+                      keywords: blogPostData.metaKeywords || undefined,
+                  }
+        )
 
         return NextResponse.json({
             success: true,

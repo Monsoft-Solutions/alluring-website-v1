@@ -1,7 +1,5 @@
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc'
 import rehypeHighlight from 'rehype-highlight'
-import rehypeSanitize from 'rehype-sanitize'
-import { defaultSchema } from 'rehype-sanitize'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import 'server-only'
@@ -13,37 +11,10 @@ type PostMarkdownProps = {
     className?: string
 }
 
-// Extend sanitize schema to allow syntax highlighting classes and tel: links
-const sanitizeSchema = {
-    ...defaultSchema,
-    protocols: {
-        ...(defaultSchema.protocols || {}),
-        href: [
-            ...(defaultSchema.protocols?.href || ['http', 'https', 'mailto']),
-            'tel', // Allow tel: protocol for phone number links
-        ],
-    },
-    attributes: {
-        ...defaultSchema.attributes,
-        code: [...(defaultSchema.attributes?.code || []), 'className'],
-        pre: [...(defaultSchema.attributes?.pre || []), 'className'],
-        span: [...(defaultSchema.attributes?.span || []), 'className'],
-        div: [...(defaultSchema.attributes?.div || []), 'className'],
-        a: [...(defaultSchema.attributes?.a || []), 'className', 'href', 'id'],
-        h1: [...(defaultSchema.attributes?.h1 || []), 'id'],
-        h2: [...(defaultSchema.attributes?.h2 || []), 'id'],
-        h3: [...(defaultSchema.attributes?.h3 || []), 'id'],
-        h4: [...(defaultSchema.attributes?.h4 || []), 'id'],
-        h5: [...(defaultSchema.attributes?.h5 || []), 'id'],
-        h6: [...(defaultSchema.attributes?.h6 || []), 'id'],
-    },
-}
-
 /**
  * Server component that renders MDX to React components using next-mdx-remote.
- * Supports custom React components and syntax highlighting.
+ * Supports custom React components, GFM tables and syntax highlighting.
  * Headings have IDs (via rehypeSlug) for navigation, but are not rendered as links.
- * Content is sanitized using rehype-sanitize to prevent XSS attacks.
  */
 export function PostMarkdown({ content, className = '' }: PostMarkdownProps) {
     const normalizedContent = content?.trim()
@@ -56,7 +27,13 @@ export function PostMarkdown({ content, className = '' }: PostMarkdownProps) {
         mdxOptions: {
             remarkPlugins: [remarkGfm],
             rehypePlugins: [
-                [rehypeSanitize, sanitizeSchema],
+                // Note: We don't use rehype-sanitize here because:
+                // 1. Blog content is first-party — authored by our own AI
+                //    pipeline and reviewed by admins before publishing, the
+                //    same trust level as procedure content
+                // 2. Sanitization strips custom MDX components (<Figure />,
+                //    <QuickAnswer />, <CalloutBox />) and <figure>/<figcaption>,
+                //    which makes captions and rich blocks impossible
                 rehypeSlug, // Adds IDs to headings for scroll targeting
                 rehypeHighlight,
             ],

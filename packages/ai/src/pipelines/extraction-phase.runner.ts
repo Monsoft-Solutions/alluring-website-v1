@@ -25,6 +25,8 @@ export type ExtractionPhaseOptions = {
     title: string
     /** Primary SEO keyword */
     primaryKeyword?: string
+    /** Model for metadata + FAQ extraction (defaults per function) */
+    modelId?: string
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -37,6 +39,8 @@ export type ExtractionPhaseResult = {
     success: boolean
     /** Error message if failed */
     error?: string
+    /** SEO title tag (50-60 characters) */
+    metaTitle: string
     /** SEO meta description */
     metaDescription: string
     /** Short excerpt for previews */
@@ -85,7 +89,7 @@ export async function runExtractionPhase(
     options: ExtractionPhaseOptions
 ): Promise<ExtractionPhaseResult> {
     const startTime = Date.now()
-    const { content, title, primaryKeyword, onProgress } = options
+    const { content, title, primaryKeyword, modelId, onProgress } = options
 
     try {
         console.log('[Extraction Phase] Starting Extraction')
@@ -97,10 +101,12 @@ export async function runExtractionPhase(
                 content,
                 primaryKeyword: primaryKeyword || title,
                 title,
+                modelId,
             }),
             extractFaqs({
                 content,
                 primaryKeyword: primaryKeyword || title,
+                modelId,
             }),
         ])
 
@@ -119,6 +125,7 @@ export async function runExtractionPhase(
 
         return {
             success: true,
+            metaTitle: metadata.metaTitle,
             metaDescription: metadata.metaDescription,
             excerpt: metadata.excerpt,
             suggestedTags: metadata.suggestedTags,
@@ -138,6 +145,7 @@ export async function runExtractionPhase(
         return {
             success: false,
             error: errorMessage,
+            metaTitle: '',
             metaDescription: '',
             excerpt: '',
             suggestedTags: [],

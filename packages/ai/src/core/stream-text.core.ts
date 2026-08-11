@@ -10,7 +10,7 @@ import { streamText, smoothStream } from 'ai'
 
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -48,7 +48,7 @@ export function coreStreamText(
         temperature = 0.7,
         system,
         messages,
-        maxTokens,
+        maxTokens = 16000,
         smoothStreaming = false,
         onFinish,
     } = options
@@ -69,7 +69,7 @@ export function coreStreamText(
         model: getModel(modelId),
         system,
         messages,
-        temperature,
+        ...temperatureParam(modelId, temperature),
         experimental_telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
         ...(experimentalTransform && {

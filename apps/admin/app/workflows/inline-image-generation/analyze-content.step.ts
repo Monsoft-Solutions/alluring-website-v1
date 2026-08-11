@@ -28,6 +28,10 @@ export type AnalyzeContentStepInput = {
 export type AnalyzeContentStepResult = {
     success: boolean
     postTitle?: string
+    /** Post slug, forwarded so generated images get SEO-friendly storage paths */
+    postSlug?: string
+    /** Primary keyword, forwarded for alt text generation */
+    primaryKeyword?: string
     analysis?: InlineImageAnalysis
     opportunities: Array<{
         opportunityId: string
@@ -59,7 +63,9 @@ export async function analyzeContentStep(
         .select({
             id: blogPost.id,
             title: blogPost.title,
+            slug: blogPost.slug,
             content: blogPost.content,
+            primaryKeyword: blogPost.primaryKeyword,
         })
         .from(blogPost)
         .where(eq(blogPost.id, postId))
@@ -81,6 +87,9 @@ export async function analyzeContentStep(
             error: 'Post content too short (minimum 100 characters)',
         }
     }
+
+    const postSlug = post.slug || undefined
+    const primaryKeyword = post.primaryKeyword || undefined
 
     // Run the AI analysis pipeline
     const pipelineResult = await runAutoInlineImagePipeline({
@@ -109,6 +118,8 @@ export async function analyzeContentStep(
         return {
             success: true,
             postTitle: post.title,
+            postSlug,
+            primaryKeyword,
             analysis: pipelineResult.analysis,
             opportunities: [],
         }
@@ -131,6 +142,8 @@ export async function analyzeContentStep(
     return {
         success: true,
         postTitle: post.title,
+        postSlug,
+        primaryKeyword,
         analysis: pipelineResult.analysis,
         opportunities,
     }

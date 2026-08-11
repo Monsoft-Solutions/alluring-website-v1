@@ -8,7 +8,8 @@
  * @module @workspace/ai/functions/select-image-options
  */
 import {
-    selectedImageOptionsSchema,
+    ARTISTIC_IMAGE_STYLE_IDS,
+    aiSelectedImageOptionsSchema,
     type SelectedImageOptions,
     type ModelProfile,
 } from '@workspace/shared/schemas/blog'
@@ -17,12 +18,31 @@ import {
     SELECT_IMAGE_OPTIONS_SYSTEM,
     getSelectImageOptionsPrompt,
 } from '../prompts/blog/select-image-options.prompt'
+import {
+    DEFAULT_ARTISTIC_STYLE_ID,
+    isArtisticImageStyleId,
+    type ArtisticImageStyleId,
+} from '../constants/image-style.constant'
 import { coreGenerateObject } from '../core'
 
 /**
  * Default model for option selection (fast and accurate)
  */
 const DEFAULT_MODEL_ID = 'gpt-4.1-mini'
+
+/**
+ * The artistic preset IDs the schema accepts, typed against the registry.
+ *
+ * These IDs are declared twice: richly in `constants/image-style.constant.ts`
+ * and as a bare tuple in `@workspace/shared` (which cannot depend on this
+ * package, since the dependency runs the other way). Sourcing the list from
+ * shared while typing it as the registry union fails the build the moment
+ * shared gains an ID the registry does not define. The reverse direction is
+ * covered by assigning {@link DEFAULT_ARTISTIC_STYLE_ID} into a
+ * `SelectedImageOptions['style']` field below.
+ */
+const VALID_ARTISTIC_STYLE_IDS: readonly ArtisticImageStyleId[] =
+    ARTISTIC_IMAGE_STYLE_IDS
 
 /**
  * Options for selecting image options
@@ -50,9 +70,14 @@ export type { SelectedImageOptions, ModelProfile }
 /**
  * Select optimal featured image options based on blog post content
  *
- * Analyzes the blog post and returns the best combination of scene, subject,
- * style, lighting, color palette, and composition for generating the featured image.
- * If 'patient-model' is selected as subject, includes a complete model profile.
+ * Analyzes the blog post and returns an artistic (people-free) configuration:
+ * one artistic style preset plus lighting, colour palette and composition
+ * leanings.
+ *
+ * The result is normalised onto the artistic path. The schema still accepts the
+ * legacy photographic values so previously stored pipeline state keeps parsing,
+ * but anything the model returns from that legacy vocabulary is coerced here —
+ * the automated pipeline never produces imagery with a person in it.
  *
  * @param options - Selection options including blog post content
  * @returns Selected image options with reasoning
@@ -65,9 +90,8 @@ export type { SelectedImageOptions, ModelProfile }
  *   primaryKeyword: 'bbl recovery',
  * })
  *
- * console.log(options.scene)      // 'spa-retreat'
- * console.log(options.subject)    // 'patient-model'
- * console.log(options.modelProfile) // { age: 'mid-adult', ... }
+ * console.log(options.style)   // 'botanical-still-life'
+ * console.log(options.subject) // 'artistic-composition'
  * ```
  */
 export async function selectImageOptions(
@@ -84,7 +108,7 @@ export async function selectImageOptions(
 
     const result = (await coreGenerateObject({
         modelId,
-        schema: selectedImageOptionsSchema,
+        schema: aiSelectedImageOptionsSchema,
         system: SELECT_IMAGE_OPTIONS_SYSTEM,
         prompt: getSelectImageOptionsPrompt({
             title,
@@ -95,24 +119,40 @@ export async function selectImageOptions(
         temperature,
     })) as { object: SelectedImageOptions }
 
-    // If patient-model was selected but no model profile, add defaults
-    if (
-        result.object.subject === 'patient-model' &&
-        !result.object.modelProfile
-    ) {
-        result.object.modelProfile = {
-            age: 'mid-adult',
-            ethnicity: 'latina-hispanic',
-            bodyType: 'athletic',
-            hairColor: 'brunette',
-            hairLength: 'medium',
-            hairStyle: 'wavy',
-            skinTone: 'olive',
-            expression: 'confident-smile',
-            pose: 'three-quarter',
-            attire: 'casual-elegant',
-        }
+    return normalizeToArtisticPath(result.object)
+}
+
+/**
+ * Force a selection onto the people-free artistic path.
+ *
+ * Guards against the model reaching for the legacy photographic vocabulary that
+ * the schema still permits for backward compatibility.
+ */
+function normalizeToArtisticPath(
+    selected: SelectedImageOptions
+): SelectedImageOptions {
+    const normalized: SelectedImageOptions = { ...selected }
+
+    if (!isArtisticImageStyleId(normalized.style)) {
+        console.warn(
+            `[Select Image Options] Legacy style "${normalized.style}" selected; falling back to "${DEFAULT_ARTISTIC_STYLE_ID}" (valid presets: ${VALID_ARTISTIC_STYLE_IDS.join(', ')})`
+        )
+        normalized.style = DEFAULT_ARTISTIC_STYLE_ID
     }
 
-    return result.object
+    if (normalized.subject !== 'artistic-composition') {
+        console.warn(
+            `[Select Image Options] Legacy subject "${normalized.subject}" selected; forcing "artistic-composition"`
+        )
+        normalized.subject = 'artistic-composition'
+    }
+
+    if (normalized.scene !== 'material-study') {
+        normalized.scene = 'material-study'
+    }
+
+    // The artistic path never renders a person, so a model profile is noise.
+    delete normalized.modelProfile
+
+    return normalized
 }

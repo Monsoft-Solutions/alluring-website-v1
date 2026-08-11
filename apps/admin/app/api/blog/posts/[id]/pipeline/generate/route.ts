@@ -17,6 +17,7 @@ import { runGenerationPhase } from '@workspace/ai/pipelines'
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 import { runReviewPhaseForPost } from '@/lib/services/pipeline-phase.service'
 
 export const runtime = 'nodejs'
@@ -87,8 +88,13 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             })
             .where(eq(blogPost.id, id))
 
+        // Admin-configured model wins; the runner keeps its own default when
+        // no configuration row exists yet.
+        const aiConfig = await getBlogAiConfig()
+
         // Run generation phase
         const result = await runGenerationPhase({
+            contentModelId: aiConfig.contentModelId,
             input: {
                 title: post.title,
                 topic: planningData.topic,

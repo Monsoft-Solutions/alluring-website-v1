@@ -23,4 +23,8 @@ export {
     type ModelTier,
 } from './available-models.constant'
 
-export { getModel } from './model-resolver.util'
+export {
+    getModel,
+    supportsTemperature,
+    temperatureParam,
+} from './model-resolver.util'

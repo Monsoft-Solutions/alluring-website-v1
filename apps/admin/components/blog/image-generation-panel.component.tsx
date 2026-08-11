@@ -56,7 +56,7 @@ export function ImageGenerationPanel({
     const [summary, setSummary] = useState(initialSummary || '')
     const [prompt, setPrompt] = useState('')
     const [selectedModel, setSelectedModel] =
-        useState<ImageModelId>('gpt-image-1.5')
+        useState<ImageModelId>('gpt-image-2')
     const [numImages, setNumImages] = useState<ImageCount>(1)
     const [isGeneratingSummary, setIsGeneratingSummary] = useState(false)
     const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)

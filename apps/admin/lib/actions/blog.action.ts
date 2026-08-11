@@ -484,6 +484,17 @@ export async function updatePipelineStatus(
             }
         }
 
+        // A post without a slug is unreachable on the site — block go-live
+        if (
+            (status === 'published' || status === 'scheduled') &&
+            !existingPost.slug
+        ) {
+            return {
+                success: false,
+                error: 'Cannot publish a post without a slug. Set a slug first.',
+            }
+        }
+
         // Determine if this is a publish action
         const wasPublished = existingPost.status === 'published'
         const isNowPublished = status === 'published'

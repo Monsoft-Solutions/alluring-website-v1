@@ -11,6 +11,7 @@ import {
     INLINE_IMAGE_PROMPT_SYSTEM,
     getInlineImagePrompt,
 } from '../prompts/blog/inline-image-prompt.prompt'
+import type { ArtisticImageStyleId } from '../constants/image-style.constant'
 import { coreGenerateText } from '../core'
 
 /**
@@ -48,6 +49,11 @@ export type GenerateInlineImagePromptOptions = {
     blogPostTopic?: string
     /** Optional photo style (only applicable when imageType is 'photo') */
     photoStyle?: PhotoStyle
+    /**
+     * Artistic preset steering `marketing` and `illustration` images.
+     * Unknown or missing values resolve to the default preset.
+     */
+    artisticStyleId?: ArtisticImageStyleId
     /** Model ID to use (defaults to gpt-5.2) */
     modelId?: string
     /** Temperature for generation (defaults to 0.8) */
@@ -94,6 +100,7 @@ export async function generateInlineImagePrompt(
         blogPostTitle,
         blogPostTopic,
         photoStyle,
+        artisticStyleId,
         modelId = DEFAULT_MODEL_ID,
         temperature = 0.8,
     } = options
@@ -108,6 +115,7 @@ export async function generateInlineImagePrompt(
             blogPostTitle,
             blogPostTopic,
             photoStyle,
+            artisticStyleId,
         }),
         temperature,
     })

@@ -76,7 +76,7 @@ export type AutoInlineImagePipelineOptions = {
     /** Maximum number of images to generate (default: 5) */
     maxImages?: number
     /** Image model to use (default: 'gpt-image-1.5') */
-    imageModel?: 'gpt-image-1.5' | 'nano-banana-pro'
+    imageModel?: 'gpt-image-2' | 'gpt-image-1.5' | 'nano-banana-pro'
     /** Progress callback for streaming updates */
     onProgress?: AutoInlineImageProgressCallback
     /** Abort signal for cancellation */

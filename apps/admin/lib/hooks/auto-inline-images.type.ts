@@ -45,7 +45,7 @@ export type GenerateAutoInlineImagesOptions = {
     title: string
     blogPostId: string
     maxImages?: number
-    imageModel?: 'gpt-image-1.5' | 'nano-banana-pro'
+    imageModel?: 'gpt-image-2' | 'gpt-image-1.5' | 'nano-banana-pro'
 }
 
 /**

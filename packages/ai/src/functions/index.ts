@@ -96,6 +96,12 @@ export {
 } from './generate-image-alt.function'
 
 export {
+    detectPeopleInImage,
+    type DetectPeopleInImageOptions,
+    type PeopleDetectionResult,
+} from './detect-people-in-image.function'
+
+export {
     generateFeaturedImagePrompt,
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,

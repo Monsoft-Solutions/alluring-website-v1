@@ -10,7 +10,7 @@
 import { generateText, Output, stepCountIs } from 'ai'
 import { z } from 'zod'
 
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import {
     createSourceCollector,
     createPerplexitySearchTool,
@@ -27,7 +27,7 @@ import type {
 /**
  * Default model for fact verification
  */
-const DEFAULT_MODEL_ID = 'claude-sonnet-4-5'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Maximum number of search steps allowed
@@ -284,7 +284,8 @@ Begin by using the think tool to identify all claims and plan your search querie
         output: Output.object({ schema: verificationResultSchema }),
         system: UNIFIED_FACT_VERIFICATION_PROMPT,
         prompt: userPrompt,
-        temperature,
+        ...temperatureParam(modelId, temperature),
+        maxOutputTokens: 16000,
         stopWhen: stepCountIs(MAX_SEARCH_STEPS),
         tools: {
             perplexity_search: perplexitySearchTool,

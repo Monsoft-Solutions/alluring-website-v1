@@ -48,9 +48,20 @@ export {
 
 export {
     runImageGenerationPhase,
+    buildImageDescriptor,
     type ImageGenerationPhaseOptions,
     type ImageGenerationPhaseResult,
+    type ImageGenerationPhaseImage,
+    type ImageGenerationAdapter,
 } from './image-generation-phase.runner'
+
+// No-people QA gate for artistic image presets
+export {
+    runNoPeopleQaGate,
+    type NoPeopleQaGateOptions,
+    type NoPeopleQaGateResult,
+    type QaGateImage,
+} from './no-people-image-qa.gate'
 
 // Auto Inline Image Pipeline
 export {

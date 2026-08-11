@@ -21,9 +21,14 @@ import {
     runImageGenerationPhase,
 } from '@workspace/ai/pipelines'
 import { generateImageAlt } from '@workspace/ai/functions'
+import { extractImageConcept } from '@workspace/ai/prompts'
 
 import { calculateDuration } from '@/lib/utils/time.util'
-import { generateImageWithFal } from './fal-image-generation.service'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
+import {
+    generateImageWithFal,
+    getFalModelId,
+} from './fal-image-generation.service'
 
 // ============================================
 // Shared Helper Functions
@@ -175,6 +180,10 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
         // Set processing status
         await setProcessingStatus(postId)
 
+        // Admin-configured model wins; the runner keeps its own default when
+        // no configuration row exists yet.
+        const aiConfig = await getBlogAiConfig()
+
         // Run review phase
         const planningData = post.planningData
         const result = await runReviewPhase({
@@ -185,6 +194,7 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
             targetAudience: planningData?.targetAudience,
             contentType: planningData?.contentType,
             estimatedWordCount: planningData?.estimatedWordCount,
+            reviewModelId: aiConfig.reviewModelId,
         })
 
         if (!result.success) {
@@ -281,11 +291,15 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
         // Set processing status
         await setProcessingStatus(postId)
 
+        // Admin-configured extraction model wins over the code default
+        const aiConfig = await getBlogAiConfig()
+
         // Run extraction phase
         const result = await runExtractionPhase({
             content: post.content!,
             title: post.title,
             primaryKeyword: post.primaryKeyword || undefined,
+            modelId: aiConfig.extractionModelId,
         })
 
         if (!result.success) {
@@ -340,6 +354,7 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
             .update(blogPost)
             .set({
                 slug,
+                metaTitle: result.metaTitle,
                 metaDescription: result.metaDescription,
                 excerpt: result.excerpt,
                 readingTime: result.readingTimeMinutes,
@@ -396,12 +411,51 @@ export async function runImageGenerationPhaseForPost(
         // Set processing status
         await setProcessingStatus(postId)
 
-        // Run image generation phase (AI operations only)
+        // Admin-configured image model and (optionally) a pinned artistic
+        // style. A null style means "auto" — the runner's AI picks per topic.
+        const aiConfig = await getBlogAiConfig()
+
+        // Run image generation phase. The fal.ai service is injected as the
+        // renderer so the AI package stays free of environment dependencies,
+        // and so the no-people QA gate can regenerate through the same path.
         const phaseResult = await runImageGenerationPhase({
             title: post.title,
             content: post.content!,
             primaryKeyword: post.primaryKeyword || undefined,
             aiSummary: post.aiSummary || undefined,
+            imageModel: aiConfig.imageModelId,
+            ...(aiConfig.artisticStyleId
+                ? { forcedArtisticStyleId: aiConfig.artisticStyleId }
+                : {}),
+            imageAdapter: async ({
+                prompt,
+                aspectRatio,
+                model,
+                descriptor,
+                attempt,
+            }) => {
+                console.log(
+                    `[Pipeline Service] Rendering image for post ${postId} (${model}, ${aspectRatio}, attempt ${attempt})...`
+                )
+
+                const [rendered] = await generateImageWithFal({
+                    prompt,
+                    blogPostId: postId,
+                    model,
+                    numImages: 1,
+                    aspectRatio,
+                    slug: post.slug || undefined,
+                    descriptor,
+                })
+
+                return rendered
+                    ? {
+                          url: rendered.blobUrl,
+                          width: rendered.width,
+                          height: rendered.height,
+                      }
+                    : null
+            },
         })
 
         if (!phaseResult.success || !phaseResult.prompt) {
@@ -413,18 +467,8 @@ export async function runImageGenerationPhaseForPost(
             return
         }
 
-        // Generate image using fal.ai
-        console.log(
-            `[Pipeline Service] Generating image with fal.ai for post ${postId}...`
-        )
-        const generatedImages = await generateImageWithFal({
-            prompt: phaseResult.prompt,
-            blogPostId: postId,
-            model: 'gpt-image-1.5',
-            numImages: 1,
-        })
-
-        if (generatedImages.length === 0) {
+        const generatedImage = phaseResult.image
+        if (!generatedImage) {
             await setPhaseResultError(
                 postId,
                 'Failed to generate image with fal.ai',
@@ -433,22 +477,20 @@ export async function runImageGenerationPhaseForPost(
             return
         }
 
-        const generatedImage = generatedImages[0]
-        if (!generatedImage) {
-            await setPhaseResultError(
-                postId,
-                'No image generated',
-                'ImageGeneration'
+        if (phaseResult.peopleDetected) {
+            console.warn(
+                `[Pipeline Service] Image for post ${postId} may contain a person and needs human review`
             )
-            return
         }
 
-        // Generate alt text from prompt
+        // Generate alt text describing the image concept, not the raw brief
         console.log(
             `[Pipeline Service] Generating alt text for post ${postId}...`
         )
         const altResult = await generateImageAlt({
             prompt: phaseResult.prompt,
+            concept: extractImageConcept(phaseResult.prompt),
+            primaryKeyword: post.primaryKeyword || undefined,
         })
 
         // Create image record
@@ -458,14 +500,16 @@ export async function runImageGenerationPhaseForPost(
         const [imageRecord] = await db
             .insert(images)
             .values({
-                url: generatedImage.blobUrl,
+                url: generatedImage.url,
                 alt: altResult.alt,
                 title: post.title,
-                width: generatedImage.width || 1392,
-                height: generatedImage.height || 752,
+                width: generatedImage.width,
+                height: generatedImage.height,
                 mimeType: 'image/jpeg',
                 generationPrompt: phaseResult.prompt,
-                generatedBy: 'fal-ai',
+                generatedBy: getFalModelId(
+                    phaseResult.imageModel ?? 'gpt-image-2'
+                ),
             })
             .returning({ id: images.id })
 
@@ -497,8 +541,11 @@ export async function runImageGenerationPhaseForPost(
                 selectedOptions: phaseResult.selectedOptions,
                 prompt: phaseResult.prompt,
                 imageId: imageRecord.id,
-                imageUrl: generatedImage.blobUrl,
-                model: 'gpt-image-1.5',
+                imageUrl: generatedImage.url,
+                model: phaseResult.imageModel ?? 'gpt-image-2',
+                artisticStyleId: phaseResult.artisticStyleId,
+                peopleDetected: phaseResult.peopleDetected,
+                qaRegenerated: phaseResult.qaRegenerated,
             },
         }
 

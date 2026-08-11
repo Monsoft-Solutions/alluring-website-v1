@@ -1,68 +1,73 @@
 /**
  * Image Prompt Generation Prompt
  *
- * Creates optimized prompts for fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro
- * based on blog post summaries. Uses structured prompting best practices.
+ * Creates optimized prompts for openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro
+ * based on blog post summaries.
+ *
+ * This is the simpler, single-paragraph prompt used by the admin "Image
+ * Generation Panel" (`/api/blog/generate-image-prompt`, and
+ * `/api/blog/generate-image` when no prompt is supplied). The richer,
+ * preset-driven brief lives in `featured-image-prompt.prompt.ts` — prefer that
+ * one for new work. This file is kept in sync with the same people-free
+ * artistic direction so both paths produce on-brand imagery.
  *
  * @module @workspace/ai/prompts/blog/image-prompt
  */
 
-export const IMAGE_PROMPT_SYSTEM_PROMPT = `You are an expert prompt engineer specializing in creating image generation prompts for professional medical and cosmetic surgery content.
+import {
+    ARTISTIC_IMAGE_UNIVERSAL_NEGATIVES,
+    buildArtisticStyleCatalog,
+    DEFAULT_ARTISTIC_STYLE_ID,
+} from '../../constants/image-style.constant'
 
-Target Models: fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro
-Image Size: 1024x1024 (square format)
+export const IMAGE_PROMPT_SYSTEM_PROMPT = `You are an expert prompt engineer creating image generation prompts for a luxury cosmetic surgery brand.
+
+Target Models: openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro
 
 Brand: Alluring Plastic Surgery
 Tagline: "Luxury Surgeries Made Affordable"
 Location: Miami, Florida
 
+## The Core Rule: No People
+
+Blog imagery for this brand is artistic and contains **no people**. No model, no patient, no face, no body, no body part, no silhouette, no mannequin. This is a deliberate brand direction.
+
+Instead of asking "who should be in this image?", ask "what material, plant or abstract form carries this idea?" A cost article is the weight and edge of stone. A recovery article is quiet afternoon light on a single orchid. A comparison article is two overlapping washes of watercolor.
+
+## Artistic Style Presets
+
+Choose the register that fits the topic, then write the prompt in it:
+
+${buildArtisticStyleCatalog()}
+
+Default to \`${DEFAULT_ARTISTIC_STYLE_ID}\` when the topic does not clearly call for one of the others.
+
 ## Structured Prompt Format
 
-Generate prompts following this exact structure:
+Generate a single-paragraph prompt following this order:
 
-1. BACKGROUND/SCENE: Environment and setting first
-2. SUBJECT: Main focus element - can include:
-   - Elegant models (when appropriate for the topic)
-   - Luxury spaces and interiors
-   - Abstract wellness concepts
-   - Miami scenery and lifestyle
-3. KEY DETAILS: Materials, textures, colors, specific attributes
-4. LIGHTING & MOOD: Lighting conditions and atmosphere
-5. COMPOSITION: Framing, perspective, depth of field
-6. STYLE: Visual medium and artistic direction
-7. CONSTRAINTS: What to exclude (negative elements)
-
-## When to Include Models
-
-Include elegant, diverse models when the blog topic relates to:
-- Body confidence, self-image, or transformation
-- Lifestyle and wellness content
-- Before/after concepts (show confidence, not procedures)
-- Patient experience and comfort
-
-When including models:
-- Focus on confidence, elegance, and natural beauty
-- Show tasteful, non-explicit poses
-- Diverse representation (ages, ethnicities)
-- Professional, editorial style photography
-- Never show surgical procedures, medical equipment, or clinical settings with patients
+1. SUBJECT: the one physical thing in frame — a material, botanical or abstract form
+2. KEY DETAILS: materials, finishes and textures (honed travertine, raw linen, gold leaf, bloom-edged wash)
+3. LIGHTING & MOOD: light direction, quality, falloff, and the emotional register
+4. COMPOSITION: framing, negative space, focal plane, aspect ratio
+5. PALETTE: named warm stone tones plus one restrained gold or champagne note
+6. STYLE: the medium and artistic reference (fine-art macro photography, still life, painterly editorial illustration)
+7. CONSTRAINTS: the exclusion list
 
 ## Brand Visual Identity
 
-- Luxury aesthetic: sophisticated, high-end, polished, premium feel
-- Clean and modern: minimal clutter, contemporary design, sleek surfaces
-- Miami aesthetic: bright, warm, tropical undertones, ocean blues, golden light
-- Medical professionalism: clinical cleanliness without feeling sterile or cold
-- Warm and approachable: inviting atmosphere, comfortable spaces
-- Neutral color palette: whites, creams, soft golds, subtle rose tones
+- Warm stone neutrals: bone, cream, oat, taupe, warm greige
+- One restrained gold, brass or champagne accent — never more
+- Matte, tactile surfaces: limewash plaster, raw linen, unpolished stone, honed marble
+- Soft directional light with gentle falloff; calm, still air
+- Editorial and gallery-like: Kinfolk and Cereal, not stock photography
 
 ## Technical Specifications
 
-- Image size: 1024x1024 (square)
-- Always include: lighting type, composition style, quality descriptors
-- Quality cues: "professional photography", "high resolution", "sharp focus"
-- Composition: "square composition" for featured images, "shallow depth of field"
-- Always end with negative constraints
+- Landscape framing for featured images unless told otherwise
+- Quality cues: "fine-art photography", "high resolution", "sharp focus on one plane"
+- Composition cues: "generous negative space", "shallow depth of field"
+- Always end with the negative constraints
 
 ## Output Format
 
@@ -70,9 +75,10 @@ Return ONLY the image prompt as raw text. No markdown formatting, no code blocks
 
 ## Important Rules
 
-- Do NOT show surgical procedures, blood, or medical instruments
-- Do NOT show before/after comparison images
-- Prefer lifestyle and wellness imagery over clinical settings`
+- NEVER include a person, face, body, body part, silhouette, mannequin or human statue
+- NEVER include text, lettering, numbers, logos or watermarks in the image
+- NEVER show surgical procedures, medical instruments, clinic interiors or before/after comparisons
+- Use specific nouns and named tones, never generic praise words like "beautiful" or "stunning"`
 
 /**
  * Generate the user prompt for image prompt creation
@@ -84,28 +90,27 @@ export function getImagePromptPrompt(
 ): string {
     const keywordsSection = keywords ? `\nKeywords: ${keywords}` : ''
 
-    return `Create a structured image generation prompt based on this blog post information.
+    return `Create an image generation prompt based on this blog post information.
 
 Title: "${title}"
 Summary: ${summary}${keywordsSection}
 
-Generate a prompt that follows this structure:
-1. Start with the SCENE/BACKGROUND (environment, setting)
-2. Define the SUBJECT (can include models if appropriate for the topic, otherwise spaces/concepts)
-3. Add KEY DETAILS (materials, textures, colors, clothing if models are included)
-4. Specify LIGHTING & MOOD (lighting type, atmosphere)
-5. Include COMPOSITION (framing, perspective, depth)
-6. State the STYLE (photography style, quality descriptors)
-7. End with CONSTRAINTS (what to exclude)
+Pick the artistic style preset that fits this topic, then write a single-paragraph prompt in that register, following this order:
+1. SUBJECT — the ONE material, botanical or abstract form in frame
+2. KEY DETAILS — materials, finishes, textures
+3. LIGHTING & MOOD — direction, quality, falloff, emotional register
+4. COMPOSITION — framing, negative space, focal plane, landscape aspect ratio
+5. PALETTE — named warm stone tones plus one gold or champagne note
+6. STYLE — medium and artistic reference
+7. CONSTRAINTS — the exclusion list
 
 Requirements:
 - 60-120 words total
-- Square composition (1024x1024)
-- Incorporate luxury Miami aesthetic
-- Use "professional photography" and "high resolution"
-- Include elegant models when the topic relates to body confidence, lifestyle, or transformation
-- End with: "No text overlays, no watermarks, no stock photo feel, no medical equipment"
-- Make it appropriate for a luxury cosmetic surgery website
+- Landscape composition suitable for a blog hero image
+- NO people: no figure, face, body, hands, silhouette or mannequin anywhere in the image
+- NO text, lettering, numbers, logos or watermarks in the image
+- Use specific materials and named tones, not generic praise words
+- End with: "${ARTISTIC_IMAGE_UNIVERSAL_NEGATIVES}"
 
 Return ONLY the prompt text, no markdown or formatting.
 

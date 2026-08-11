@@ -21,7 +21,7 @@ import {
     type AgentReview,
     type OrchestratorResult,
 } from '../agents'
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import {
     createResearchTools,
@@ -47,8 +47,8 @@ import type { AgenticContentPipelineResult } from '../types/pipeline/agentic-con
  * Default configuration
  */
 const DEFAULTS = {
-    CONTENT_MODEL: 'gpt-4.1',
-    REVIEW_MODEL: 'claude-sonnet-4-5',
+    CONTENT_MODEL: 'claude-opus-5',
+    REVIEW_MODEL: 'claude-opus-5',
     TEMPERATURE: 0.7,
     MAX_STEPS: 25,
     MIN_QUALITY_SCORE: 70,
@@ -132,7 +132,8 @@ async function runGenerationPhase(
         model,
         system: systemPrompt,
         prompt: userPrompt,
-        temperature,
+        ...temperatureParam(contentModelId, temperature),
+        maxOutputTokens: 16000,
         tools,
         stopWhen: stepCountIs(maxSteps),
         experimental_telemetry: telemetryConfig,
