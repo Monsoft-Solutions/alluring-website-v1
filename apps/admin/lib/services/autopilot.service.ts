@@ -261,8 +261,11 @@ export async function getApprovedIdeaQueue() {
 }
 
 /**
- * Titles/keywords the ideation prompt must not re-propose: every ideation
- * card still on the board (pending, approved, legacy) plus rejected ideas.
+ * Titles/keywords the ideation prompt must not re-propose: every idea on
+ * the board (pending, approved, legacy, rejected) AND every post still in
+ * flight through the pipeline. Published/scheduled posts are covered by the
+ * ownership gate's live overlay instead — but a post sitting in generate or
+ * draft claims nothing there yet, so it must be excluded here.
  */
 async function getIdeaTitlesForDedupe(): Promise<
     Array<{ title: string; primaryKeyword: string | null; rejected: boolean }>
@@ -275,17 +278,15 @@ async function getIdeaTitlesForDedupe(): Promise<
         })
         .from(blogPost)
         .where(
-            and(
-                eq(blogPost.status, 'ideation'),
-                or(
-                    isNull(blogPost.ideaApproval),
-                    inArray(blogPost.ideaApproval, [
-                        'pending',
-                        'approved',
-                        'rejected',
-                    ])
-                )
-            )
+            inArray(blogPost.status, [
+                'ideation',
+                'generate',
+                'ai_review',
+                'generate_metadata',
+                'generate_image',
+                'draft',
+                'ready_to_publish',
+            ])
         )
     return rows.map((row) => ({
         title: row.title,
@@ -457,7 +458,20 @@ export async function runAutopilotIdeationJob(
 
         const slots = Math.max(0, target - pendingCount)
         const created: string[] = []
-        for (const topic of candidates.fresh.slice(0, slots)) {
+        // Intra-batch dedupe: candidates were checked against the board, but
+        // not against each other (two GSC queries can yield sibling topics).
+        const createdThisRun: Array<{
+            title: string
+            primaryKeyword?: string | null
+        }> = []
+        for (const topic of candidates.fresh) {
+            if (created.length >= slots) break
+            if (isNearDuplicateTopic(topic, createdThisRun)) {
+                console.log(
+                    `[Autopilot] Skipping intra-batch near-duplicate "${topic.title}"`
+                )
+                continue
+            }
             const result = await createPipelinePostInternal({
                 title: topic.title,
                 primaryKeyword: topic.primaryKeyword ?? null,
@@ -467,6 +481,10 @@ export async function runAutopilotIdeationJob(
             })
             if (result.success) {
                 created.push(topic.title)
+                createdThisRun.push({
+                    title: topic.title,
+                    primaryKeyword: topic.primaryKeyword,
+                })
             } else {
                 // Gate re-check can refuse a topic the panel proposed; log
                 // and move on — never fail the run for one bad candidate.
