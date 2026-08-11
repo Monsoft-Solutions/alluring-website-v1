@@ -15,7 +15,14 @@ export {
 } from './cache'
 
 // Utilities
-export { runWithConcurrency } from './utils'
+export {
+    runWithConcurrency,
+    BLOG_PREFIX_CUTOFF,
+    getBlogPostUrl,
+    getBlogPostAbsoluteUrl,
+    usesBlogPrefix,
+    resolveBlogPathToSlug,
+} from './utils'
 
 // Site Pages and Procedures
 export {

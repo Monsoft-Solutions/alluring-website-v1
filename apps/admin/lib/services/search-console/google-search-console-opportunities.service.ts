@@ -13,6 +13,7 @@ import type {
 import { isSearchConsoleConfigured } from './google-search-console-client.service'
 import {
     fetchSearchAnalytics,
+    fetchAllSearchAnalytics,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
     BENCHMARK_CTR,
@@ -111,10 +112,9 @@ export async function getContentGaps(
     }
 
     try {
-        // Fetch queries with their associated pages
-        const rows = await fetchSearchAnalytics({
+        // Site-wide query×page pull — paginated so large sites aren't truncated
+        const rows = await fetchAllSearchAnalytics({
             dimensions: ['query', 'page'],
-            rowLimit: 1000, // Fetch more to analyze
             days,
         })
 

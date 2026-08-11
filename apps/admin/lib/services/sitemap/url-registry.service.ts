@@ -4,8 +4,9 @@
  * Uses sitemap-based data sources to accurately classify pages from
  * Google Search Console into content types (blog, procedure, pages, etc).
  *
- * This solves the problem of blog posts being at root level (e.g., /best-plastic-surgeon-miami)
- * rather than under /blog/, which makes path-based classification unreliable.
+ * This solves the problem of blog posts living at root level (pre-2026,
+ * e.g. /best-plastic-surgeon-miami) or under /blog/ (2026+), which makes
+ * path-based classification unreliable.
  *
  * Uses `unstable_cache` for Vercel-compatible cross-request caching.
  *
@@ -21,6 +22,7 @@ import { and, eq, isNotNull } from 'drizzle-orm'
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema/blog'
 import { CACHE_TAGS } from '@workspace/shared/cache'
+import { getBlogPostUrl } from '@workspace/shared'
 
 import { STATIC_PAGES, SURGEON_SLUGS } from '@/lib/data/sitemap-pages.data'
 import { PROCEDURE_SLUGS } from '@/lib/data/procedures.data'
@@ -47,7 +49,7 @@ type SerializableUrlRegistry = {
  * URL registry with Sets for O(1) lookups.
  * Created from SerializableUrlRegistry after cache retrieval.
  */
-type UrlRegistry = {
+export type UrlRegistry = {
     blogPosts: Set<string>
     blogListing: Set<string>
     procedures: Set<string>
@@ -67,7 +69,7 @@ type UrlRegistry = {
 async function buildUrlRegistry(): Promise<SerializableUrlRegistry> {
     // Fetch published blog post slugs from database
     const posts = await db
-        .select({ slug: blogPost.slug })
+        .select({ slug: blogPost.slug, publishedAt: blogPost.publishedAt })
         .from(blogPost)
         .where(
             and(
@@ -76,8 +78,11 @@ async function buildUrlRegistry(): Promise<SerializableUrlRegistry> {
             )
         )
 
-    // Build blog post paths (root-level URLs)
-    const blogPostPaths = posts.map((p) => `/${p.slug}`)
+    // Blog post paths follow the publish-date rule: root /{slug} before the
+    // 2026 cutoff, /blog/{slug} after
+    const blogPostPaths = posts.map((p) =>
+        getBlogPostUrl(p.slug ?? '', p.publishedAt)
+    )
 
     // Build procedure paths
     const procedurePaths = [
@@ -108,7 +113,8 @@ async function buildUrlRegistry(): Promise<SerializableUrlRegistry> {
  */
 const getCachedUrlRegistry = unstable_cache(
     buildUrlRegistry,
-    ['sitemap-url-registry'],
+    // v2: cached shape changed when blog paths became publish-date-aware
+    ['sitemap-url-registry-v2'],
     {
         tags: [CACHE_TAGS.SITEMAP_URLS],
         revalidate: 3600, // 1 hour
@@ -158,6 +164,40 @@ function extractPath(url: string): string {
 }
 
 /**
+ * Classify a single path against a registry.
+ *
+ * Exported for testing; use classifyPageBySitemap / classifyPagesBySitemap,
+ * which resolve the cached registry.
+ */
+export function classifyPath(registry: UrlRegistry, path: string): PageType {
+    // Check exact matches first
+    if (registry.blogPosts.has(path)) return 'blog'
+    if (registry.blogListing.has(path)) return 'blog-listing'
+    if (registry.procedures.has(path)) return 'procedure'
+    if (registry.pages.has(path)) return 'pages'
+    if (registry.gallery.has(path)) return 'gallery'
+    if (registry.promotions.has(path)) return 'promotion'
+
+    // Prefix patterns for paths not in the registry.
+    // /blog/categories/* and /blog/tags/* are listings; any other single
+    // segment under /blog/ is a post URL (e.g. one published after the
+    // cached registry was built), not a listing.
+    if (
+        path.startsWith('/blog/categories') ||
+        path.startsWith('/blog/tags') ||
+        path.startsWith('/blog/authors')
+    ) {
+        return 'blog-listing'
+    }
+    if (/^\/blog\/[^/]+$/.test(path)) return 'blog'
+    if (path.startsWith('/blog/')) return 'blog-listing'
+    if (path.startsWith('/gallery/')) return 'gallery'
+    if (path.startsWith('/procedures/')) return 'procedure'
+
+    return 'other'
+}
+
+/**
  * Classify a page URL into a sitemap type category.
  *
  * Uses the cached URL registry to determine the page type based on
@@ -175,22 +215,7 @@ function extractPath(url: string): string {
  */
 export async function classifyPageBySitemap(url: string): Promise<PageType> {
     const registry = await getUrlRegistry()
-    const path = extractPath(url)
-
-    // Check exact matches first
-    if (registry.blogPosts.has(path)) return 'blog'
-    if (registry.blogListing.has(path)) return 'blog-listing'
-    if (registry.procedures.has(path)) return 'procedure'
-    if (registry.pages.has(path)) return 'pages'
-    if (registry.gallery.has(path)) return 'gallery'
-    if (registry.promotions.has(path)) return 'promotion'
-
-    // Check prefix patterns for nested paths
-    if (path.startsWith('/blog/')) return 'blog-listing'
-    if (path.startsWith('/gallery/')) return 'gallery'
-    if (path.startsWith('/procedures/')) return 'procedure'
-
-    return 'other'
+    return classifyPath(registry, extractPath(url))
 }
 
 /**
@@ -205,21 +230,5 @@ export async function classifyPagesBySitemap(
     urls: string[]
 ): Promise<PageType[]> {
     const registry = await getUrlRegistry()
-
-    return urls.map((url) => {
-        const path = extractPath(url)
-
-        if (registry.blogPosts.has(path)) return 'blog'
-        if (registry.blogListing.has(path)) return 'blog-listing'
-        if (registry.procedures.has(path)) return 'procedure'
-        if (registry.pages.has(path)) return 'pages'
-        if (registry.gallery.has(path)) return 'gallery'
-        if (registry.promotions.has(path)) return 'promotion'
-
-        if (path.startsWith('/blog/')) return 'blog-listing'
-        if (path.startsWith('/gallery/')) return 'gallery'
-        if (path.startsWith('/procedures/')) return 'procedure'
-
-        return 'other'
-    })
+    return urls.map((url) => classifyPath(registry, extractPath(url)))
 }

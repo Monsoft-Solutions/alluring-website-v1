@@ -10,6 +10,20 @@
 // Client & Configuration
 export { isSearchConsoleConfigured } from './google-search-console-client.service'
 
+// Low-level fetch + shared utilities
+export {
+    fetchSearchAnalytics,
+    fetchAllSearchAnalytics,
+    getDateRange,
+    DEFAULT_DAYS,
+    DEFAULT_LIMIT,
+    BENCHMARK_CTR,
+    MIN_IMPRESSIONS_FOR_OPPORTUNITY,
+    GSC_MAX_ROW_LIMIT,
+    type SearchAnalyticsRow,
+    type SearchAnalyticsOptions,
+} from './google-search-console-utils.service'
+
 // Summary
 export { getSearchConsoleSummary } from './google-search-console-summary.service'
 

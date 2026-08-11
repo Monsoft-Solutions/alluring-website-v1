@@ -19,6 +19,7 @@ import type {
 import { isSearchConsoleConfigured } from './google-search-console-client.service'
 import {
     fetchSearchAnalytics,
+    fetchAllSearchAnalytics,
     sortRowsByField,
     sortByClicksDesc,
     sortByDateAsc,
@@ -176,8 +177,9 @@ export async function getPagesForQuery(
 /**
  * Search pages with optional filtering by term and page type
  *
- * Uses sitemap-based classification for accurate page type detection,
- * especially for blog posts that live at root level (e.g., /best-plastic-surgeon-miami).
+ * Uses sitemap-based classification for accurate page type detection —
+ * blog posts live at root level (pre-2026, e.g. /best-plastic-surgeon-miami)
+ * or under /blog/ (2026+), so path patterns alone are unreliable.
  *
  * @param term - Optional search term to filter pages by path
  * @param pageType - Optional page type filter
@@ -199,10 +201,9 @@ export async function searchPages(
     }
 
     try {
-        // Fetch more rows to allow for filtering and sorting
-        const rows = await fetchSearchAnalytics({
+        // Site-wide page pull — paginated so filtering sees every page
+        const rows = await fetchAllSearchAnalytics({
             dimensions: ['page'],
-            rowLimit: 500,
             days,
         })
 

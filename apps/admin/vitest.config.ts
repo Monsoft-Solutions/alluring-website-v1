@@ -7,6 +7,15 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './'),
+            // Resolve workspace source directly so tests don't need a dist build
+            '@workspace/shared/cache': path.resolve(
+                __dirname,
+                '../../packages/shared/src/cache'
+            ),
+            '@workspace/shared': path.resolve(
+                __dirname,
+                '../../packages/shared/src'
+            ),
         },
     },
     test: {
