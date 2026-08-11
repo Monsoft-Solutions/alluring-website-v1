@@ -12,10 +12,12 @@
  * @module @/lib/services/topic-sourcing
  */
 import type { GscTopicSeed } from '@workspace/ai/functions'
+import type { RankingPage } from '@workspace/ai/agents'
 
 import {
     getContentGaps,
     getContentOpportunities,
+    getPagesForQuery,
     getPositionChanges,
     isSearchConsoleConfigured,
 } from '@/lib/services/search-console'
@@ -87,4 +89,25 @@ export async function getGscTopicSeeds(
     }
 
     return [...seeds.values()].slice(0, MAX_SEEDS)
+}
+
+/**
+ * Live-ranking lookup for the cannibalization checker: which URLs
+ * currently rank for a query. Returns undefined when Search Console is
+ * not configured so the agent runs registry-only.
+ */
+export function createPagesForQueryAdapter():
+    | ((query: string) => Promise<RankingPage[]>)
+    | undefined {
+    if (!isSearchConsoleConfigured()) return undefined
+
+    return async (query: string) => {
+        const pages = await getPagesForQuery(query, DEFAULT_DAYS, 5)
+        return pages.map((p) => ({
+            page: p.page,
+            clicks: p.clicks,
+            impressions: p.impressions,
+            position: p.position,
+        }))
+    }
 }

@@ -27,6 +27,11 @@ export { runExternalLinksReviewer } from './external-links-reviewer.agent'
 export { runWritingQualityReviewer } from './writing-quality-reviewer.agent'
 export { runAISlopDetector } from './ai-slop-detector.agent'
 export { runFactSourceVerifier } from './fact-source-verifier.agent'
+export {
+    runCannibalizationChecker,
+    type CannibalizationCheckerOptions,
+    type RankingPage,
+} from './cannibalization-checker.agent'
 
 // Orchestrator
 export { runOrchestrator, type OrchestratorOptions } from './orchestrator.agent'
@@ -41,12 +46,13 @@ export {
 /**
  * Run all review agents in parallel
  *
- * Runs all 5 review agents:
+ * Runs all 6 review agents:
  * 1. Internal Links Reviewer
  * 2. External Links Reviewer
  * 3. Writing Quality Reviewer
  * 4. AI Slop Detector
  * 5. Fact & Source Verifier
+ * 6. Cannibalization Checker
  */
 export async function runAllReviewAgents(
     options: ReviewAgentOptions
@@ -57,12 +63,14 @@ export async function runAllReviewAgents(
         { runWritingQualityReviewer },
         { runAISlopDetector },
         { runFactSourceVerifier },
+        { runCannibalizationChecker },
     ] = await Promise.all([
         import('./internal-links-reviewer.agent'),
         import('./external-links-reviewer.agent'),
         import('./writing-quality-reviewer.agent'),
         import('./ai-slop-detector.agent'),
         import('./fact-source-verifier.agent'),
+        import('./cannibalization-checker.agent'),
     ])
 
     const results = await Promise.all([
@@ -71,6 +79,7 @@ export async function runAllReviewAgents(
         runWritingQualityReviewer(options),
         runAISlopDetector(options),
         runFactSourceVerifier(options),
+        runCannibalizationChecker(options),
     ])
 
     return results

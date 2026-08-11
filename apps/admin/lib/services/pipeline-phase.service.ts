@@ -25,6 +25,7 @@ import { extractImageConcept } from '@workspace/ai/prompts'
 
 import { calculateDuration } from '@/lib/utils/time.util'
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
+import { createPagesForQueryAdapter } from '@/lib/services/topic-sourcing.service'
 import {
     generateImageWithFal,
     getFalModelId,
@@ -195,6 +196,8 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
             contentType: planningData?.contentType,
             estimatedWordCount: planningData?.estimatedWordCount,
             reviewModelId: aiConfig.reviewModelId,
+            currentPostSlug: post.slug || undefined,
+            pagesForQuery: createPagesForQueryAdapter(),
         })
 
         if (!result.success) {

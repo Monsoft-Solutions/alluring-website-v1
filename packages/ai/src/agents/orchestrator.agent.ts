@@ -125,6 +125,12 @@ When analyzing reviews from specialized agents, you will follow this protocol:
    - Prioritize Tier 1 sources over Tier 2/3
    - Each external link MUST have descriptive anchor text (not "click here", "source", or bare URLs)
 
+6. Cannibalization (cannibalization-checker):
+   - Every query cluster has exactly ONE owning page site-wide; the draft must not compete with an owned cluster
+   - Re-angle any section flagged as competing with another page's cluster so it covers the topic from this post's unique angle
+   - Where the draft needs to reference an owned topic (e.g. cost, a procedure overview), LINK to the owning URL named in the issue instead of covering it in depth
+   - Remove or replace flagged keywords from headings; never add content that targets a query owned by another page
+
 Your prioritization of these fixes should be based on their impact on the SEO score, user experience, compliance with facts and claims, and the resolution of AI-related issues.
 </review_processing_protocol>
 
@@ -222,10 +228,11 @@ function prioritizeIssues(reviews: AgentReview[]): IssueWithAgent[] {
     const severityOrder = { critical: 0, warning: 1, suggestion: 2 }
     const agentPriority: Record<string, number> = {
         'fact-source-verifier': 0, // Highest priority - medical accuracy
-        'ai-slop-detector': 1, // Brand voice
-        'writing-quality-reviewer': 2,
-        'internal-links-reviewer': 3,
-        'external-links-reviewer': 4,
+        'cannibalization-checker': 1, // Structural SEO - one owner per cluster
+        'ai-slop-detector': 2, // Brand voice
+        'writing-quality-reviewer': 3,
+        'internal-links-reviewer': 4,
+        'external-links-reviewer': 5,
     }
 
     return allIssues.sort((a, b) => {
@@ -234,8 +241,8 @@ function prioritizeIssues(reviews: AgentReview[]): IssueWithAgent[] {
         if (severityDiff !== 0) return severityDiff
         // Within same severity, prioritize by agent importance
         return (
-            (agentPriority[a.agentName] ?? 5) -
-            (agentPriority[b.agentName] ?? 5)
+            (agentPriority[a.agentName] ?? 6) -
+            (agentPriority[b.agentName] ?? 6)
         )
     })
 }
@@ -346,6 +353,7 @@ function buildUserPrompt(options: {
     const factIssues = groupedIssues['fact-source-verifier'] ?? []
     const internalLinkIssues = groupedIssues['internal-links-reviewer'] ?? []
     const externalLinkIssues = groupedIssues['external-links-reviewer'] ?? []
+    const cannibalizationIssues = groupedIssues['cannibalization-checker'] ?? []
 
     // Get summaries and scores from reviews
     const getReviewData = (agentName: string) => {
@@ -360,6 +368,7 @@ function buildUserPrompt(options: {
     const factReview = getReviewData('fact-source-verifier')
     const internalLinksReview = getReviewData('internal-links-reviewer')
     const externalLinksReview = getReviewData('external-links-reviewer')
+    const cannibalizationReview = getReviewData('cannibalization-checker')
 
     return `## Content Analysis Request
 
@@ -394,6 +403,12 @@ Summary: ${factReview.summary}
 
 Issues:
 ${formatIssuesForAgent(factIssues)}
+
+### Cannibalization Check (Score: ${cannibalizationReview.score}/100)
+Summary: ${cannibalizationReview.summary}
+
+Issues:
+${formatIssuesForAgent(cannibalizationIssues)}
 
 ### Link Validation
 
