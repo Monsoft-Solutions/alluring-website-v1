@@ -11,7 +11,7 @@ import type { z } from 'zod'
 
 import type { CoreGenerateObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -79,7 +79,8 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
             ...(isPromptFormat
                 ? { prompt: options.prompt }
                 : { messages: options.messages }),
-            temperature,
+            ...temperatureParam(modelId, temperature),
+            maxOutputTokens: 16000,
             experimental_telemetry: telemetryConfig,
         })
 

@@ -4,7 +4,9 @@ import {
     summarizeBlogPost,
     generateImagePrompt,
     generateImageAlt,
+    extractImageConcept,
 } from '@workspace/ai'
+import { buildImageDescriptor } from '@workspace/ai/pipelines'
 import { eq } from 'drizzle-orm'
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
@@ -25,9 +27,9 @@ const requestSchema = z.object({
     blogPostId: z.string().uuid('Invalid blog post ID'),
     prompt: z.string().optional(), // Optional - will generate if not provided
     model: z
-        .enum(['gpt-image-1.5', 'nano-banana-pro'])
+        .enum(['gpt-image-2', 'gpt-image-1.5', 'nano-banana-pro'])
         .optional()
-        .default('gpt-image-1.5'),
+        .default('gpt-image-2'),
     numImages: z
         .union([z.literal(1), z.literal(2), z.literal(3)])
         .optional()
@@ -100,9 +102,11 @@ export async function POST(
         const [blogPostData] = await db
             .select({
                 title: blogPost.title,
+                slug: blogPost.slug,
                 content: blogPost.content,
                 aiSummary: blogPost.aiSummary,
                 metaKeywords: blogPost.metaKeywords,
+                primaryKeyword: blogPost.primaryKeyword,
             })
             .from(blogPost)
             .where(eq(blogPost.id, blogPostId))
@@ -177,16 +181,23 @@ export async function POST(
             blogPostId,
             model,
             numImages,
+            slug: blogPostData.slug || undefined,
+            descriptor: buildImageDescriptor(
+                blogPostData.primaryKeyword || undefined,
+                blogPostData.title
+            ),
         })
 
         console.log(
             `${generatedImages.length} image(s) generated successfully, creating database records...`
         )
 
-        // Generate base alt text from prompt using AI
-        console.log('Generating base alt text from prompt...')
+        // Generate base alt text describing the image concept, not the raw brief
+        console.log('Generating base alt text...')
         const altTextResult = await generateImageAlt({
             prompt: finalPrompt,
+            concept: extractImageConcept(finalPrompt),
+            primaryKeyword: blogPostData.primaryKeyword || undefined,
         })
         const baseAltText = altTextResult.alt
 

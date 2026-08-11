@@ -22,7 +22,7 @@ import { coreGenerateObject } from '../core'
  * Default model for content brief generation
  * Uses GPT-4 for comprehensive, high-quality briefs
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Options for content brief generation

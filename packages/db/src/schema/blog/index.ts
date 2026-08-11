@@ -43,6 +43,12 @@ export {
 } from './blog-post-analysis.table'
 
 export {
+    blogAiConfig,
+    type BlogAiConfig,
+    type InsertBlogAiConfig,
+} from './blog-ai-config.table'
+
+export {
     blogPostTagsRelations,
     blogPostCategoriesRelations,
     blogPostsRelations,

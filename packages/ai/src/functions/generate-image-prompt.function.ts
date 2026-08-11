@@ -1,7 +1,7 @@
 /**
  * Generate Image Prompt Function
  *
- * AI-powered image prompt generation for fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro.
+ * AI-powered image prompt generation for openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro.
  * Creates structured prompts based on blog post summaries using best practices.
  *
  * @module @workspace/ai/functions/generate-image-prompt
@@ -45,7 +45,7 @@ export type ImagePromptResult = {
  * Generate an optimized image prompt for fal-ai image models
  *
  * Creates a structured prompt based on blog post summary using best practices
- * for gpt-image-1.5 and nano-banana-pro. Follows the format:
+ * for gpt-image-2, gpt-image-1.5 and nano-banana-pro. Follows the format:
  * Scene → Subject → Details → Lighting → Composition → Style → Constraints
  *
  * @param options - Generation options including summary and title

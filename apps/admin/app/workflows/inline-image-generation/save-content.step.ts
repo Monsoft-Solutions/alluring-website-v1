@@ -27,6 +27,8 @@ export type SaveContentStepInput = {
         insertAfterText: string
         altText: string
         imageType: InlineImageTypeValue
+        /** The prompt that produced the image */
+        prompt?: string
     }>
 }
 
@@ -118,7 +120,9 @@ export async function saveContentStep(
                         url: img.imageUrl,
                         alt: img.altText,
                         generatedBy: 'fal-ai',
-                        generationPrompt: img.altText,
+                        // The raw generation prompt belongs here; `alt` carries
+                        // the accessible description generated alongside it.
+                        generationPrompt: img.prompt ?? img.altText,
                     })
                     .onConflictDoUpdate({
                         target: imagesTable.url,
@@ -139,7 +143,7 @@ export async function saveContentStep(
                     .values({
                         blogPostId: postId,
                         imageId: imageRecord.id,
-                        prompt: img.altText,
+                        prompt: img.prompt ?? img.altText,
                         imageType: 'inline',
                     })
                     .onConflictDoNothing()

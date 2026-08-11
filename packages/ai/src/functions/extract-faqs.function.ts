@@ -118,7 +118,7 @@ async function generateFaqsFromContent(
         content,
         primaryKeyword,
         maxFaqs = 8,
-        modelId = 'gpt-4.1',
+        modelId = 'claude-opus-5',
     } = options
 
     const prompt = `Generate FAQ items for this blog post:
@@ -186,7 +186,7 @@ export async function extractFaqs(
         content,
         primaryKeyword,
         maxFaqs = 10,
-        modelId = 'gpt-4.1',
+        modelId = 'claude-opus-5',
         generateIfMissing = true,
     } = options
 

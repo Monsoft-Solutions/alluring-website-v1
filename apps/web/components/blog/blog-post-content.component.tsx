@@ -13,7 +13,11 @@
  *
  * SSR-compatible with CSS animations.
  */
-import { ArticleSchema, FAQSchema } from '@workspace/seo/react'
+import {
+    ArticleSchema,
+    BreadcrumbSchema,
+    FAQSchema,
+} from '@workspace/seo/react'
 
 import { BlogPostImagesSchema } from '@/components/blog/blog-post-images-schema.component'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
@@ -24,6 +28,7 @@ import { Button } from '@workspace/ui/components/button'
 
 import { BlogCTA } from '@/components/blog/blog-cta.component'
 import { BlogViewTracker } from '@/components/blog/blog-view-tracker.component'
+import { MedicalWebPageSchema } from '@/components/blog/medical-web-page-schema.component'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import { PostNavigation } from '@/components/blog/post-navigation.component'
 import { ReadingProgress } from '@/components/blog/reading-progress.component'
@@ -32,6 +37,7 @@ import { RelatedProcedures } from '@/components/blog/related-procedures.componen
 import { SocialShare } from '@/components/blog/social-share.component'
 import { TableOfContents } from '@/components/blog/table-of-contents.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
+import { LastUpdated } from '@/components/shared/last-updated.component'
 import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
@@ -41,6 +47,9 @@ import {
     getBlogPostUrl,
     getBlogPostAbsoluteUrl,
 } from '@/lib/utils/blog-url.util'
+import { filterImagesPresentInBody } from '@/lib/utils/body-images.util'
+import { getMeaningfulUpdateDate } from '@/lib/utils/content-freshness.util'
+import { countMarkdownWords } from '@/lib/utils/word-count.util'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
 import type { TOCHeading } from '@/lib/types/blog/toc.type'
@@ -92,6 +101,39 @@ export function BlogPostContent({
     )
 
     const primaryCategory = post.categories[0]
+
+    /** Absolute canonical URL — respects the pre/post-2026 URL split */
+    const postUrl = getBlogPostAbsoluteUrl(
+        seoConfig.siteUrl,
+        post.slug,
+        post.publishedAt
+    )
+
+    /** Author entity, kept distinct from the organization node in the layout */
+    const authorProfileUrl = `${seoConfig.siteUrl}/blog/authors/editorial-team`
+
+    /** Real word count from the body, not an estimate derived from reading time */
+    const wordCount = countMarkdownWords(post.content)
+
+    /**
+     * Only images rendered in the body may claim an ImageObject — the junction
+     * table associates images that the article may never display.
+     */
+    const bodyImages = inlineImages
+        ? filterImagesPresentInBody(inlineImages, post.content)
+        : []
+
+    /** Shown only when the post was genuinely revised after publication */
+    const meaningfulUpdateDate = getMeaningfulUpdateDate(
+        post.publishedAt,
+        post.updatedAt
+    )
+
+    const breadcrumbItems = [
+        { name: 'Home', item: seoConfig.siteUrl },
+        { name: 'Blog', item: `${seoConfig.siteUrl}/blog` },
+        { name: post.title, item: postUrl },
+    ]
 
     return (
         <article className='relative'>
@@ -188,6 +230,13 @@ export function BlogPostContent({
                                         {post.readingTime} min
                                     </span>
                                 )}
+                                {meaningfulUpdateDate && (
+                                    <LastUpdated
+                                        date={meaningfulUpdateDate}
+                                        variant='subtle'
+                                        className='text-sm text-stone-300'
+                                    />
+                                )}
                             </div>
                         </div>
 
@@ -236,6 +285,13 @@ export function BlogPostContent({
                                         <Calendar className='h-4 w-4' />
                                         {publishedDate}
                                     </span>
+                                    {meaningfulUpdateDate && (
+                                        <LastUpdated
+                                            date={meaningfulUpdateDate}
+                                            variant='subtle'
+                                            className='text-sm text-stone-300/80'
+                                        />
+                                    )}
                                 </div>
 
                                 <Button
@@ -302,6 +358,23 @@ export function BlogPostContent({
                                 </div>
                             )}
 
+                            {/* Breadcrumb trail: Home > Blog > this post */}
+                            <BreadcrumbSchema items={breadcrumbItems} />
+
+                            {/* MedicalWebPage - topical signal for YMYL content */}
+                            <MedicalWebPageSchema
+                                id={`${postUrl}#webpage`}
+                                url={postUrl}
+                                name={post.title}
+                                description={post.excerpt ?? undefined}
+                                datePublished={post.publishedAt}
+                                dateModified={
+                                    post.updatedAt ?? post.publishedAt
+                                }
+                                about={primaryCategory?.name}
+                                publisherId={`${seoConfig.siteUrl}/#organization`}
+                            />
+
                             {/* Schema markup - Enhanced with E-E-A-T signals */}
                             <ArticleSchema
                                 type='BlogPosting'
@@ -311,32 +384,27 @@ export function BlogPostContent({
                                     post.author
                                         ? {
                                               name: post.author.name,
+                                              // Own entity ID so the author never
+                                              // collides with the organization node
+                                              '@id': `${authorProfileUrl}#author`,
                                               // Link to author profile for E-E-A-T
-                                              url: `${seoConfig.siteUrl}/blog/authors/editorial-team`,
+                                              url: authorProfileUrl,
                                               // Job title adds authority signal
                                               jobTitle: 'Medical Content Team',
                                           }
                                         : (seoConfig.organization?.name ??
                                           seoConfig.siteName)
                                 }
-                                // Medical content reviewed by surgeon team (E-E-A-T)
-                                reviewedBy={{
-                                    name: 'Alluring Plastic Surgery Medical Team',
-                                    url: `${seoConfig.siteUrl}/about`,
-                                    '@id': `${seoConfig.siteUrl}/#organization`,
-                                    jobTitle:
-                                        'Board-Certified Plastic Surgeons',
-                                }}
+                                // NOTE: no `reviewedBy` on purpose. Blog content has
+                                // no named medical reviewer yet, and structured data
+                                // must not assert a review that never happened. Add
+                                // it back only when a real physician signs off.
                                 datePublished={post.publishedAt}
                                 dateModified={
                                     post.updatedAt ?? post.publishedAt
                                 }
                                 image={post.featuredImage?.url}
-                                mainEntityOfPage={getBlogPostAbsoluteUrl(
-                                    seoConfig.siteUrl,
-                                    post.slug,
-                                    post.publishedAt
-                                )}
+                                mainEntityOfPage={postUrl}
                                 publisher={{
                                     name:
                                         seoConfig.organization?.name ??
@@ -346,11 +414,7 @@ export function BlogPostContent({
                                         seoConfig.organization?.url ??
                                         seoConfig.siteUrl,
                                 }}
-                                wordCount={
-                                    post.readingTime
-                                        ? Math.round(post.readingTime * 200)
-                                        : undefined
-                                }
+                                wordCount={wordCount || undefined}
                                 articleSection={primaryCategory?.name}
                                 keywords={
                                     post.tags.length > 0
@@ -370,23 +434,15 @@ export function BlogPostContent({
                                         question: faq.question,
                                         answer: faq.answer,
                                     }))}
-                                    mainEntityOfPage={getBlogPostAbsoluteUrl(
-                                        seoConfig.siteUrl,
-                                        post.slug,
-                                        post.publishedAt
-                                    )}
+                                    mainEntityOfPage={postUrl}
                                 />
                             )}
 
-                            {/* ImageObject schemas for inline images */}
-                            {inlineImages && inlineImages.length > 0 && (
+                            {/* ImageObject schemas for images rendered in the body */}
+                            {bodyImages.length > 0 && (
                                 <BlogPostImagesSchema
-                                    images={inlineImages}
-                                    postUrl={getBlogPostAbsoluteUrl(
-                                        seoConfig.siteUrl,
-                                        post.slug,
-                                        post.publishedAt
-                                    )}
+                                    images={bodyImages}
+                                    postUrl={postUrl}
                                     postTitle={post.title}
                                     authorName={post.author?.name}
                                     datePublished={

@@ -39,3 +39,6 @@ npm-debug.log*
 packages/db/.env.development
 packages/db/.env.production
 .mcp.json
+
+# Playwright MCP artifacts (screenshots, console logs)
+.playwright-mcp/

@@ -19,10 +19,11 @@ import {
     type AutoInlineImagePipelineStep,
     type AutoInlineImageProgressData,
 } from '@workspace/ai/pipelines'
-import type {
-    GeneratedInlineImage,
-    InlineImageAnalysis,
-    PipelineMetrics,
+import {
+    getInlineImageTypeById,
+    type GeneratedInlineImage,
+    type InlineImageAnalysis,
+    type PipelineMetrics,
 } from '@workspace/ai'
 
 import { requireAuth } from '@/lib/utils/auth.util'
@@ -43,9 +44,9 @@ const requestSchema = z.object({
     blogPostId: z.string().uuid('Invalid blog post ID'),
     maxImages: z.number().int().min(1).max(7).optional().default(5),
     imageModel: z
-        .enum(['gpt-image-1.5', 'nano-banana-pro'])
+        .enum(['gpt-image-2', 'gpt-image-1.5', 'nano-banana-pro'])
         .optional()
-        .default('gpt-image-1.5'),
+        .default('gpt-image-2'),
 })
 
 type ValidatedRequest = z.infer<typeof requestSchema>
@@ -100,15 +101,15 @@ type SseEventType = keyof SseEventPayloadMap
 /**
  * Determine the appropriate image model based on image type
  * - Infographic and Illustration: nano-banana-pro (better for diagrams/graphics)
- * - Marketing and Photo: gpt-image-1.5 (better for realistic/lifestyle images)
+ * - Marketing and Photo: gpt-image-2 (better for realistic/lifestyle images)
  */
 function getModelForImageType(
     imageType: string
-): 'gpt-image-1.5' | 'nano-banana-pro' {
+): 'gpt-image-2' | 'gpt-image-1.5' | 'nano-banana-pro' {
     if (imageType === 'infographic' || imageType === 'illustration') {
         return 'nano-banana-pro'
     }
-    return 'gpt-image-1.5'
+    return 'gpt-image-2'
 }
 
 /**
@@ -117,7 +118,7 @@ function getModelForImageType(
 async function generateImagesForOpportunities(
     images: GeneratedInlineImage[],
     blogPostId: string,
-    _defaultModel: 'gpt-image-1.5' | 'nano-banana-pro', // Kept for API compatibility, but model is now determined per image type
+    _defaultModel: 'gpt-image-2' | 'gpt-image-1.5' | 'nano-banana-pro', // Kept for API compatibility, but model is now determined per image type
     send: <E extends SseEventType>(
         event: E,
         data: SseEventPayloadMap[E]
@@ -173,6 +174,8 @@ async function generateImagesForOpportunities(
                 blogPostId,
                 model: modelForImage,
                 numImages: 1,
+                aspectRatio: getInlineImageTypeById(image.imageType)
+                    .aspectRatio,
             })
 
             if (!generatedImages.length || !generatedImages[0]) {
@@ -363,7 +366,7 @@ async function runPipelineWithStreaming(
  *   "title": "BBL Recovery Guide: Week by Week",
  *   "blogPostId": "abc-123-456",
  *   "maxImages": 5,
- *   "imageModel": "gpt-image-1.5"
+ *   "imageModel": "gpt-image-2"
  * }
  * ```
  */

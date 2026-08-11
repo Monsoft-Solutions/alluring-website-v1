@@ -23,7 +23,7 @@ import type {
 /**
  * Default model for AI slop detection
  */
-const DEFAULT_MODEL_ID = 'claude-opus-4-5'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Schema for AI slop detection review

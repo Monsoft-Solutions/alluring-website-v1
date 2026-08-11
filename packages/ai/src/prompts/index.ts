@@ -65,6 +65,7 @@ export {
     // Featured Image Prompt Generation
     FEATURED_IMAGE_PROMPT_SYSTEM,
     getFeaturedImagePrompt,
+    extractImageConcept,
     type FeaturedImagePromptInput,
 } from './blog'
 

@@ -164,7 +164,7 @@ export function FeaturedImageDialog({
 
     // Generation settings
     const [selectedModel, setSelectedModel] =
-        useState<ImageModelId>('gpt-image-1.5')
+        useState<ImageModelId>('gpt-image-2')
     const [numImages, setNumImages] = useState<ImageCount>(1)
 
     // Loading states

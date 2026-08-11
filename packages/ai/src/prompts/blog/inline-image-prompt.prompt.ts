@@ -11,6 +11,11 @@ import {
     getPhotoStyleLabel,
     type PhotoStyleId,
 } from '../../constants/photo-style.constant'
+import {
+    ARTISTIC_IMAGE_UNIVERSAL_NEGATIVES,
+    resolveArtisticStyle,
+    type ArtisticImageStyleId,
+} from '../../constants/image-style.constant'
 
 export const INLINE_IMAGE_PROMPT_SYSTEM = `You are an expert AI image prompt engineer specializing in medical and cosmetic surgery content.
 You are working for Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
@@ -42,6 +47,10 @@ Prompt Engineering Best Practices:
 - Avoid contradictions and unnecessary words
 - Use proper grammar and punctuation
 
+The No-People Default:
+Every image type except **Photorealistic** is people-free. No person, face, body, body part, silhouette or mannequin appears in an infographic, marketing or illustration image. When a concept seems to need a person, reach for the material, botanical or abstract metaphor instead — folded silk, stone, gold leaf, an orchid stem, a contour line, a wash of watercolor.
+The Photorealistic type is the one deliberate exception: it is chosen by a human editor, and only then when a Photo Style is supplied.
+
 Image Type Guidelines:
 
 **Infographic:**
@@ -50,28 +59,33 @@ Image Type Guidelines:
 - Text: MUST include text and data tables - keep all text as short as possible
 - Colors: Professional palette, high contrast for readability
 - Purpose: Educate, compare, visualize data or processes
+- People: none - use icons and abstract glyphs, never figures or avatars
 - Keywords: "infographic design, clean layout, professional data visualization, modern flat design, easy to read, well-organized"
 
 **Marketing:**
-- Style: Aspirational lifestyle photography, emotional appeal
-- Elements: People, settings, before/after concepts, luxury environments
-- Mood: Confident, warm, inviting, premium, transformative
-- Purpose: Inspire, connect emotionally, show outcomes
-- Keywords: "professional lifestyle photography, aspirational, warm lighting, premium aesthetic, emotional appeal, high-end"
+- Style: Artistic still life and material study in a luxury-editorial register
+- Elements: Luxurious materials and organic forms - marble veining, silk and linen drape, gold leaf, water and light refraction, orchid stems, palm shadows, stone vessels
+- Mood: Calm, expensive, tactile, aspirational, quietly transformative
+- Purpose: Carry the idea through material metaphor, not through a depicted outcome
+- Composition: One subject, generous negative space, soft directional light
+- People: none - no figures, faces, bodies, hands or silhouettes
+- Keywords: "fine-art still life, macro material study, warm stone palette, gold accent, soft directional light, generous negative space, editorial luxury"
 
 **Illustration:**
-- Style: Medical-grade educational diagrams, anatomical accuracy
-- Elements: Clear diagrams, procedure steps, anatomical features
-- Purpose: Educate, explain procedures, show technical details
-- Colors: Clean, clinical, professional medical textbook style
-- Keywords: "professional medical illustration, anatomical accuracy, educational diagram, clinical style, detailed and precise"
+- Style: Painterly editorial illustration - watercolor and ink washes, single-weight contour line, soft gradient fields
+- Elements: Abstract diagrammatic forms - nested arcs for stages, overlapping translucent fields for comparisons, flowing contour lines that suggest form without depicting a body
+- Purpose: Explain a concept, process or relationship through abstraction
+- Colors: Warm paper white and bone ground, oat and clay washes, one muted accent, restrained gold line
+- People: none - no anatomical rendering of bodies, organs or faces; suggest, never depict
+- Keywords: "painterly editorial illustration, watercolor wash, contour line study, abstract diagram, warm paper palette, generous white space"
 
 **Photorealistic:**
 - Style: High-quality professional photography
 - Elements: Real-world settings, natural lighting, authentic scenarios
-- Purpose: Show real clinic environments, procedures, results
+- Purpose: Show real environments and results
 - Quality: Sharp focus, proper exposure, professional composition
-- Keywords: "professional photography, photorealistic, natural lighting, high resolution, clinical setting, modern medical facility"
+- People: permitted ONLY on this type, and only when a Photo Style is specified
+- Keywords: "professional photography, photorealistic, natural lighting, high resolution, premium aesthetic"
 
 **Photo Sub-Styles (when photo type with specific style):**
 
@@ -107,6 +121,10 @@ Output Requirements:
 
 /**
  * Generate the user prompt for inline image generation
+ *
+ * Every type except `photo` renders people-free. Non-photo types additionally
+ * receive art direction from an artistic style preset so inline imagery sits in
+ * the same visual world as featured images.
  */
 export function getInlineImagePrompt(input: {
     selectedText: string
@@ -115,6 +133,11 @@ export function getInlineImagePrompt(input: {
     blogPostTitle?: string
     blogPostTopic?: string
     photoStyle?: PhotoStyleId
+    /**
+     * Artistic preset steering non-photo, non-infographic imagery.
+     * Unknown or missing values resolve to the default preset.
+     */
+    artisticStyleId?: ArtisticImageStyleId
 }): string {
     const {
         selectedText,
@@ -123,6 +146,7 @@ export function getInlineImagePrompt(input: {
         blogPostTitle,
         blogPostTopic,
         photoStyle,
+        artisticStyleId,
     } = input
 
     // Build photo style section if applicable
@@ -130,6 +154,27 @@ export function getInlineImagePrompt(input: {
         imageType === 'photo' && photoStyle
             ? `\n**Photo Style:** ${getPhotoStyleLabel(photoStyle)}`
             : ''
+
+    // Infographics keep their own flat-vector system; photos are the opt-in
+    // human path. Everything else inherits the artistic art direction.
+    const usesArtisticDirection =
+        imageType === 'marketing' || imageType === 'illustration'
+
+    const artisticStyle = resolveArtisticStyle(artisticStyleId)
+
+    const artisticSection = usesArtisticDirection
+        ? `\n\n**Art Direction — ${artisticStyle.name}:**\n${artisticStyle.promptBlock}`
+        : ''
+
+    // The photo type is the deliberate exception where people are allowed.
+    const noPeopleSection =
+        imageType === 'photo'
+            ? ''
+            : `\n\n**Required Exclusions (include these in the prompt):**\n${ARTISTIC_IMAGE_UNIVERSAL_NEGATIVES}${
+                  imageType === 'infographic'
+                      ? '\nException: this is an infographic, so short text labels and data values ARE required. Everything else in the exclusion list still applies.'
+                      : `, ${artisticStyle.negativeBlock}`
+              }`
 
     return `Generate an optimized AI image generation prompt for the following context:
 
@@ -143,7 +188,7 @@ ${blogPostTopic ? `Topic: ${blogPostTopic}` : ''}
 **Image Type Requested:** ${imageType.charAt(0).toUpperCase() + imageType.slice(1)}${photoStyleSection}
 
 **Type-Specific Guidelines:**
-${imageTypeGuidelines}
+${imageTypeGuidelines}${artisticSection}${noPeopleSection}
 
 **Your Task:**
 Create a detailed, specific prompt (150-500 words) that will generate a high-quality ${imageType}${photoStyle ? ` (${getPhotoStyleLabel(photoStyle)} style)` : ''} image related to the selected text. The prompt should:
@@ -167,7 +212,13 @@ Create a detailed, specific prompt (150-500 words) that will generate a high-qua
 - Prioritize key elements at the beginning
 - Include quality modifiers appropriate to ${imageType}${photoStyle ? ` ${photoStyle}` : ''} style
 - Ensure medical/procedural accuracy
-- Include text naturally when it enhances the image - keep all text as short as possible
+${
+    imageType === 'infographic'
+        ? '- Include text naturally when it enhances the image - keep all text as short as possible'
+        : imageType === 'photo'
+          ? '- Do not request any text, lettering or watermarks in the image'
+          : '- Do not request any text, lettering or watermarks in the image\n- The image contains NO people: no figure, face, body, hands, silhouette or mannequin. Use material, botanical or abstract form to carry the idea.'
+}
 
 Generate the optimized image prompt now:`
 }

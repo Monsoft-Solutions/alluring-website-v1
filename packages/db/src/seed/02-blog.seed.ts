@@ -77,35 +77,28 @@ export async function run({ db }: RunProps) {
     console.log('Seeding blog posts, categories, and tags...')
 
     const isDevelopment = env.NODE_ENV === 'development'
-    const shouldClearData = isDevelopment
+    // Destructive clear requires development mode AND an explicit opt-in flag.
+    // Blog posts in the database include admin-pipeline posts that do not
+    // exist as seed files — clearing without the flag destroys them.
+    const shouldClearData =
+        // eslint-disable-next-line no-restricted-properties -- explicit destructive-clear opt-in flag, deliberately not part of validated env
+        isDevelopment && process.env.SEED_CLEAR_BLOG === 'true'
 
     // Check if blog posts exist
     const existingPosts = await db.select().from(blogPost).limit(1)
 
     if (shouldClearData && existingPosts.length > 0) {
-        console.log('🗑️  Clearing existing blog data (development mode)...')
+        console.log('🗑️  Clearing existing blog data (SEED_CLEAR_BLOG=true)...')
         await db.delete(blogPostTag)
         await db.delete(blogPostCategory)
         await db.delete(blogPost)
         await db.delete(blogCategory)
         await db.delete(blogTag)
-        await db.delete(images)
-        // Delete authors after blog posts are deleted (due to FK constraint)
-        await db.delete(author)
-        console.log('🗑️  Cleared authors to refresh with new team author')
-
-        // Re-insert the team author
-        await db.insert(author).values({
-            name: 'Alluring Editorial Team',
-            email: 'editorial@alluringplasticsurgery.com',
-            bio: 'Expert insights from our team of board-certified surgeons and medical professionals at Alluring Plastic Surgery in Miami, FL.',
-            avatarUrl: '/logo.png',
-            website: 'https://alluringplasticsurgery.com',
-            socialLinks: {
-                instagram: 'https://instagram.com/alluringplasticsurgery',
-            },
-        })
-        console.log('✅ Inserted Alluring Editorial Team author')
+        // The `images` and `author` tables are intentionally NOT cleared:
+        // `images` is shared with the admin pipeline (AI-generated featured and
+        // inline images) and Instagram posts — deleting it cascades into
+        // blog_post_images and instagram links. Authors are owned by
+        // 01-users.seed.ts.
     }
 
     // Re-fetch authors after potential cleanup

@@ -2,7 +2,14 @@
 
 **Completed:** October 19, 2025  
 **Version:** 1.0  
-**Status:** ✅ Production Ready
+**Status:** ⚠️ DEPRECATED (2026-08-11) — legacy migration tooling only
+
+> **Do not use this system to create new blog posts.** Blog content is created
+> through the admin panel pipeline (`apps/admin` → Blog → Pipeline, powered by
+> `packages/ai`) — see `implementation-plans/2026-08-11-blog-content-pipeline-v2.md`.
+> The seed files under `packages/db/src/seed/posts/` are a snapshot of the 2025
+> WordPress migration; most live posts exist only in the database. The seeder's
+> destructive dev-mode clear now requires `SEED_CLEAR_BLOG=true`.
 
 ---
 

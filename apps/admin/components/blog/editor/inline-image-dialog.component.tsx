@@ -73,7 +73,7 @@ export function InlineImageDialog({
     >(undefined)
     const [prompt, setPrompt] = useState('')
     const [selectedModel, setSelectedModel] =
-        useState<ImageModelId>('gpt-image-1.5')
+        useState<ImageModelId>('gpt-image-2')
     const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
     const [isGeneratingImage, setIsGeneratingImage] = useState(false)
 

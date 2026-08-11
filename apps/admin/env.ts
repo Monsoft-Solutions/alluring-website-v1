@@ -39,6 +39,13 @@ export const env = createEnv({
         // OpenAI API key for chat testing
         OPENAI_API_KEY: z.string().min(1).optional(),
 
+        // Anthropic API key for Claude models (blog pipeline defaults)
+        ANTHROPIC_API_KEY: z.string().min(1).optional(),
+
+        // OpenRouter API key — unlocks any OpenRouter model id (vendor/model
+        // convention, e.g. "google/gemini-3.6-flash") in the AI model pickers
+        OPENROUTER_API_KEY: z.string().min(1).optional(),
+
         // ScrapeSocial API key for Instagram scraping (optional - can be stored in DB)
         SCRAPE_SOCIAL_API_KEY: z.string().optional(),
 

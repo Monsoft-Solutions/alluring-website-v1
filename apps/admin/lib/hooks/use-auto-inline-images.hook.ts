@@ -121,7 +121,7 @@ export function useAutoInlineImages(): UseAutoInlineImagesReturn {
                             title: options.title,
                             blogPostId: options.blogPostId,
                             maxImages: options.maxImages ?? 5,
-                            imageModel: options.imageModel ?? 'gpt-image-1.5',
+                            imageModel: options.imageModel ?? 'gpt-image-2',
                         }),
                         signal: abortControllerRef.current.signal,
                     }

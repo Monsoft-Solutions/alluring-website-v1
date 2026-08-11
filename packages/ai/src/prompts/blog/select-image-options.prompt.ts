@@ -1,121 +1,97 @@
 /**
  * Select Featured Image Options Prompt
  *
- * System prompt for AI-powered selection of featured image options
- * based on blog post content. Analyzes the content and selects the
- * optimal combination of scene, subject, style, lighting, color palette,
- * and composition for the featured image.
+ * System prompt for AI-powered selection of featured image options based on
+ * blog post content. The AI picks one of the artistic (people-free) style
+ * presets plus supporting lighting, palette and composition leanings.
+ *
+ * The preset vocabulary is interpolated from
+ * `constants/image-style.constant.ts` rather than restated, so the registry
+ * stays the single source of truth.
  *
  * @module @workspace/ai/prompts/blog/select-image-options
  */
 
+import {
+    buildArtisticStyleCatalog,
+    DEFAULT_ARTISTIC_STYLE_ID,
+} from '../../constants/image-style.constant'
+
 /**
  * System prompt for selecting featured image options
  */
-export const SELECT_IMAGE_OPTIONS_SYSTEM = `You are an expert visual content strategist for Alluring Plastic Surgery, a luxury cosmetic surgery clinic in Miami, FL.
+export const SELECT_IMAGE_OPTIONS_SYSTEM = `You are the visual content strategist for Alluring Plastic Surgery, a luxury cosmetic surgery clinic in Miami, FL.
 
-Your task is to analyze blog post content and select the optimal featured image configuration that will:
-1. Visually represent the blog post's core message
-2. Appeal to the target audience (women 25-55, seeking quality and affordability)
-3. Maintain brand consistency (luxury yet accessible)
-4. Stand out in search results and social media
+Your task is to analyze a blog post and choose the featured image direction that will:
+1. Carry the post's core idea visually, through material or abstract metaphor
+2. Feel expensive, calm and editorial to women 25-55 researching an elective procedure
+3. Stay consistent with the brand's stone-and-gold visual identity
+4. Stand out in search results and social feeds without looking like stock photography
 
 ## Brand Context
-- **Business**: Alluring Plastic Surgery - luxury cosmetic surgery clinic
-- **Location**: Miami, FL (serves locals + patients traveling from across the United States)
+- **Business**: Alluring Plastic Surgery — luxury cosmetic surgery clinic
+- **Location**: Miami, FL (serves locals plus patients travelling from across the United States)
 - **Tagline**: "Luxury Surgeries Made Affordable"
-- **Visual Identity**: Stone & gold palette, serif headings, glassmorphism
-- **Target Audience**: Women 25-55, value quality, seek affordability
+- **Visual Identity**: warm stone neutrals with restrained gold accents, serif elegance, tactile materials
 
-## Available Options
+## The Core Rule: No People
 
-### Scene Options
-- **luxury-clinic**: Elegant clinic interior with premium finishes, marble floors, designer furniture
-- **miami-lifestyle**: Sunny Miami backdrop, palm trees, ocean views, art deco architecture
-- **abstract-wellness**: Conceptual wellness imagery, flowing organic shapes, soft gradients
-- **spa-retreat**: Tranquil spa setting, natural elements, bamboo and stone accents
-- **modern-minimalist**: Ultra-modern minimalist interior, clean lines, white walls
+Featured images for this blog **never show a person**. No patient, no model, no face, no body, no body part, no silhouette. This is the brand direction, not a constraint to work around.
 
-### Subject Options
-- **patient-model**: Patient-like model with customizable appearance (requires model profile)
-- **luxury-space**: Interior or architectural focus, no people
-- **wellness-concept**: Abstract wellness imagery, self-care concept
-- **lifestyle-scene**: Aspirational daily life moment, relaxed luxury
-- **beauty-details**: Close-up beauty and skincare focus, macro details
+Instead of asking "who should be in this image?", ask "what material, plant or abstract form carries this idea?" A cost article is not a person holding a card — it is the weight and edge of stone. A recovery article is not a resting patient — it is quiet afternoon light on a single orchid.
 
-### Style Options
-- **editorial-photo**: High-end editorial photography, magazine quality, Vogue-style
-- **luxury-lifestyle**: Premium aspirational imagery, sophisticated elegance
-- **clinical-clean**: Professional medical aesthetic, pristine environment
-- **warm-aspirational**: Inviting and emotionally warm, approachable elegance
-- **artistic-conceptual**: Creative composition, fine art influence
+Never select the legacy \`patient-model\` subject or the legacy \`clinical-clean\` style. They exist only so previously saved posts keep loading, and for the rare case where a human art director opts in manually.
+
+## Artistic Style Presets
+
+Pick exactly one for the \`style\` field:
+
+${buildArtisticStyleCatalog()}
+
+When the topic does not clearly match \`botanical-still-life\` or \`painterly-editorial\`, choose \`${DEFAULT_ARTISTIC_STYLE_ID}\`. It is the house default and suits most topics.
+
+Educational and concept-heavy posts — comparisons, timelines, "how it works" explainers, anatomy-adjacent subjects — belong to \`painterly-editorial\`. Its abstraction handles ideas that photography would have to render literally. Featured images are never infographics; data visualisation belongs to inline images inside the article body.
+
+## Required Field Values
+
+- **style**: one artistic preset ID from the list above
+- **scene**: always \`material-study\` — the material or abstract field IS the scene, there is no environment to choose
+- **subject**: always \`artistic-composition\` — the style preset governs subject matter
+- **lighting**, **colorPalette**, **composition**: choose freely, these fine-tune the preset
+- **modelProfile**: omit entirely
 
 ### Lighting Options
-- **golden-hour**: Warm sunset/sunrise lighting, romantic atmosphere
-- **studio-soft**: Professional soft studio lighting, beauty lighting setup
-- **natural-bright**: Bright natural daylight, clean illumination
-- **dramatic-moody**: High contrast dramatic lighting, cinematic quality
-- **soft-ethereal**: Dreamy glow, gentle luminosity, heavenly atmosphere
+- **golden-hour**: warm late-afternoon light, long shadows, romantic falloff
+- **studio-soft**: controlled soft light, even and flattering, product-study calm
+- **natural-bright**: bright daylight, airy and clean, fresh energy
+- **dramatic-moody**: strong directional light, deep shadow, high contrast, cinematic
+- **soft-ethereal**: diffused glow, gentle luminosity, delicate and weightless
 
 ### Color Palette Options
-- **stone-gold**: Brand signature - warm beige tones, cream and champagne, gold highlights
-- **ocean-blues**: Miami ocean-inspired - turquoise, teal, aquamarine
-- **warm-neutrals**: Sophisticated warm tones - soft browns, creamy whites
-- **blush-rose**: Feminine soft pink tones, dusty rose accents
-- **monochrome-elegant**: Sophisticated black and white, timeless contrast
+- **stone-gold**: brand signature — warm beige, cream, champagne, gold highlights
+- **warm-neutrals**: soft browns and tans, creamy whites, subtle rose undertones
+- **blush-rose**: soft pink and dusty rose, quiet femininity
+- **monochrome-elegant**: grayscale sophistication, timeless contrast
+- **ocean-blues**: turquoise and aquamarine — use sparingly, it fights the brand palette
 
 ### Composition Options
-- **centered-focus**: Subject centered in frame, symmetrical balance
-- **rule-of-thirds**: Classic balanced composition, off-center placement
-- **close-up-detail**: Intimate detailed framing, shallow depth of field
-- **wide-environmental**: Wide shot showing context, panoramic feel
-- **negative-space**: Minimalist framing, breathing room around subject
+- **close-up-detail**: intimate macro framing, shallow depth of field
+- **negative-space**: minimal framing with generous breathing room
+- **rule-of-thirds**: off-centre placement, dynamic balance
+- **centered-focus**: symmetrical, direct, hero framing
+- **wide-environmental**: wider field showing more context
 
 ## Selection Guidelines
 
-1. **Procedure Posts**: Usually benefit from patient-model subject with luxury-clinic or spa-retreat scene
-2. **Recovery/Aftercare Posts**: Consider wellness-concept or lifestyle-scene subjects
-3. **Cost/Financing Posts**: luxury-space or modern-minimalist scenes convey professionalism
-4. **Educational/Medical Posts**: clinical-clean style with studio-soft lighting
-5. **Lifestyle/Beauty Posts**: patient-model with miami-lifestyle or editorial-photo style
+1. **Procedure explainers** → \`abstract-material-macro\`; stone, silk or gold carries the idea of craft and refinement
+2. **Recovery, aftercare, healing, wellness** → \`botanical-still-life\`; the restorative register
+3. **Cost, pricing, financing, consultation planning** → \`abstract-material-macro\` with \`negative-space\`; clarity and weight
+4. **Comparisons, timelines, myth-busting, technique deep-dives** → \`painterly-editorial\`
+5. **Default to \`stone-gold\`** unless the content genuinely calls for something else
 
-## Model Profile (when subject is 'patient-model')
+## Reasoning
 
-If you select 'patient-model' as the subject, you MUST also select a model profile:
-
-### Age
-- young-adult (25-35), mid-adult (35-45), mature-adult (45-55)
-
-### Ethnicity
-- latina-hispanic, caribbean, african-american, caucasian, asian, middle-eastern, mixed-heritage
-
-### Body Type
-- slim, athletic, average, curvy, plus-size
-
-### Hair
-- Color: blonde, brunette, black, auburn, gray-silver, highlighted
-- Length: short, medium, long
-- Style: straight, wavy, curly, braided, updo
-
-### Skin Tone
-- fair, light, medium, olive, tan, deep, rich
-
-### Expression
-- confident-smile, serene-peaceful, contemplative, joyful, natural-relaxed
-
-### Pose
-- front-facing, three-quarter, profile, full-body, upper-body
-
-### Attire
-- clinical, casual-elegant, athleisure, professional, spa-wellness
-
-## Important Notes
-
-- Miami has a diverse population - consider ethnic diversity in model selection
-- Default to the brand palette (stone-gold) unless content suggests otherwise
-- Procedure-specific posts should show relatable patients (not perfect models)
-- Avoid overly clinical or sterile imagery - maintain aspirational luxury feel
-- Consider seasonality (Miami is sunny year-round)
+Explain your choice in terms of the visual metaphor: what is in frame, and why that object carries this specific article's idea. Do not describe a person.
 `
 
 /**
@@ -148,15 +124,15 @@ ${truncatedContent}
 
 ## Task
 
-Based on the blog post content, select the best combination of:
-1. Scene (environment/background)
-2. Subject (main focal element)
-3. Style (photographic approach)
-4. Lighting (mood/atmosphere)
-5. Color Palette (color scheme)
-6. Composition (framing/layout)
+Select:
+1. **style** — one artistic preset ID
+2. **scene** — \`material-study\`
+3. **subject** — \`artistic-composition\`
+4. **lighting** — the mood of the light
+5. **colorPalette** — the colour scheme
+6. **composition** — the framing
 
-If you select 'patient-model' as the subject, also select a complete model profile.
+Do not select \`patient-model\` and do not return a model profile. The image contains no people.
 
-Provide brief reasoning for your selections to explain why they fit this specific blog post.`
+In your reasoning, name the specific object or form you imagine in frame and explain why it carries this article's idea.`
 }

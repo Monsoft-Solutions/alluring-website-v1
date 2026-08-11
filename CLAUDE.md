@@ -150,12 +150,13 @@ pnpm dlx shadcn@latest add <name> -c apps/web  # Add shadcn component
 
 ## Specialized Agents
 
-| Task        | Agent                             |
-| ----------- | --------------------------------- |
-| UI/Design   | `@agent-ui-ux-designer`           |
-| SEO Content | `@agent-seo-content-expert`       |
-| Engineering | `@agent-software-engineer`        |
-| TypeScript  | `@agent-typescript`               |
-| Testing     | `@agent-unit-testing-agent`       |
-| Images      | `@agent-image-creator-expert`     |
-| Blog Posts  | `@agent-blog-post-creator-expert` |
+| Task        | Agent                         |
+| ----------- | ----------------------------- |
+| UI/Design   | `@agent-ui-ux-designer`       |
+| SEO Content | `@agent-seo-content-expert`   |
+| Engineering | `@agent-software-engineer`    |
+| TypeScript  | `@agent-typescript`           |
+| Testing     | `@agent-unit-testing-agent`   |
+| Images      | `@agent-image-creator-expert` |
+
+**Blog posts are NOT created via agents or seed files.** The blog content pipeline lives in the admin panel (`apps/admin` → Blog → Pipeline), powered by `packages/ai`. See `implementation-plans/2026-08-11-blog-content-pipeline-v2.md` for the pipeline architecture and roadmap. Never run `pnpm db:seed` against a database containing real blog posts.

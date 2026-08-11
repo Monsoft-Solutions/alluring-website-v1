@@ -1,8 +1,25 @@
+/**
+ * Blog MDX Components
+ *
+ * Component map handed to MDXRemote for blog post content. Beyond the plain
+ * markdown overrides (links, images, GFM tables) it exposes the rich blocks
+ * content writers can drop into a post: <Figure />, <QuickAnswer /> and
+ * <CalloutBox />.
+ */
 import type { ComponentPropsWithoutRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { QuickAnswer } from '@/components/shared/quick-answer.component'
+import {
+    CONTENT_IMAGE_SIZES,
+    DEFAULT_CONTENT_IMAGE_HEIGHT,
+    DEFAULT_CONTENT_IMAGE_WIDTH,
+    toImageDimension,
+} from '@/lib/utils/image-dimension.util'
+
 import { CalloutBox } from './callout-box.component'
+import { Figure } from './figure.component'
 
 type MDXComponents = {
     [key: string]: React.ElementType
@@ -29,12 +46,15 @@ export function getMDXComponents(): MDXComponents {
             return <Link href={href || '#'}>{children}</Link>
         },
 
-        // Custom Image component using Next.js Image (optional)
+        // Custom Image component using Next.js Image.
+        // Honors width/height/sizes when the source declares them, so images
+        // that ship real dimensions are not forced into the 800x400 default.
         img: ({
             src,
             alt,
             width,
             height,
+            sizes,
             ...props
         }: ComponentPropsWithoutRef<'img'>) => {
             if (!src || typeof src !== 'string') return null
@@ -43,28 +63,61 @@ export function getMDXComponents(): MDXComponents {
                 <Image
                     src={src}
                     alt={alt || 'Blog post image'}
-                    width={
-                        typeof width === 'number'
-                            ? width
-                            : typeof width === 'string'
-                              ? parseInt(width, 10)
-                              : 800
-                    }
-                    height={
-                        typeof height === 'number'
-                            ? height
-                            : typeof height === 'string'
-                              ? parseInt(height, 10)
-                              : 400
-                    }
+                    width={toImageDimension(width, DEFAULT_CONTENT_IMAGE_WIDTH)}
+                    height={toImageDimension(
+                        height,
+                        DEFAULT_CONTENT_IMAGE_HEIGHT
+                    )}
+                    sizes={sizes || CONTENT_IMAGE_SIZES}
                     className='rounded-lg'
+                    loading='lazy'
                     {...props}
                 />
             )
         },
 
+        // GFM tables — wrapped so wide comparison tables scroll on mobile
+        // instead of collapsing into unreadable one-word columns.
+        table: (props: ComponentPropsWithoutRef<'table'>) => (
+            <div className='my-8 overflow-x-auto rounded-xl border border-stone-200'>
+                <table
+                    className='w-full min-w-[30rem] border-collapse text-left text-sm'
+                    {...props}
+                />
+            </div>
+        ),
+
+        thead: (props: ComponentPropsWithoutRef<'thead'>) => (
+            <thead className='bg-stone-50' {...props} />
+        ),
+
+        tr: (props: ComponentPropsWithoutRef<'tr'>) => (
+            <tr
+                className='border-b border-stone-100 last:border-b-0'
+                {...props}
+            />
+        ),
+
+        th: (props: ComponentPropsWithoutRef<'th'>) => (
+            <th
+                className='border-b border-stone-200 px-4 py-3 font-sans text-xs font-bold tracking-[0.12em] text-stone-500 uppercase md:px-5 md:py-3.5'
+                {...props}
+            />
+        ),
+
+        td: (props: ComponentPropsWithoutRef<'td'>) => (
+            <td
+                className='px-4 py-3 align-top leading-relaxed text-stone-700 md:px-5 md:py-4'
+                {...props}
+            />
+        ),
+
         // Custom components available in markdown
-        // Example: <CalloutBox type="info">content</CalloutBox>
+        // <CalloutBox type="info">content</CalloutBox>
         CalloutBox,
+        // <Figure src="..." alt="..." width={1200} height={800} caption="..." />
+        Figure,
+        // <QuickAnswer question="..." answer="..." details="..." />
+        QuickAnswer,
     }
 }

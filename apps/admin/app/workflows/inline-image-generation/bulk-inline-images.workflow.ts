@@ -123,6 +123,7 @@ async function processSinglePost(
             insertAfterText: string
             altText: string
             imageType: InlineImageTypeValue
+            prompt: string
         }> = []
 
         for (const opportunity of analysisResult.opportunities) {
@@ -134,6 +135,8 @@ async function processSinglePost(
                 photoStyle: opportunity.photoStyle,
                 insertAfterText: opportunity.insertAfterText,
                 altText: opportunity.altText,
+                slug: analysisResult.postSlug,
+                primaryKeyword: analysisResult.primaryKeyword,
             })
 
             if (imageResult.success && imageResult.imageUrl) {
@@ -142,6 +145,7 @@ async function processSinglePost(
                     insertAfterText: imageResult.insertAfterText,
                     altText: imageResult.altText,
                     imageType: imageResult.imageType,
+                    prompt: imageResult.prompt,
                 })
             }
         }

@@ -2,7 +2,7 @@
  * Extract Metadata Function
  *
  * Fast metadata extraction from generated blog content.
- * Uses gpt-4.1-mini for speed and efficiency.
+ * Model is configurable via options (admin Blog AI Settings).
  *
  * @module @workspace/ai/functions/extract-metadata
  */
@@ -14,6 +14,14 @@ import { coreGenerateObject } from '../core'
  * Extracted metadata schema
  */
 export const contentMetadataSchema = z.object({
+    /** SEO title tag (50-60 characters ideal) */
+    metaTitle: z
+        .string()
+        .min(30)
+        .max(70)
+        .describe(
+            'SEO title tag, 50-60 characters, primary keyword at or near the front'
+        ),
     /** SEO meta description (150-160 characters) */
     metaDescription: z
         .string()
@@ -67,6 +75,12 @@ const METADATA_EXTRACTOR_SYSTEM_PROMPT = `You are an SEO metadata expert for a l
 
 Extract optimized metadata from blog post content:
 
+**Meta Title Guidelines:**
+- 50-60 characters (never exceed 70)
+- Primary keyword at or near the front
+- Benefit- or answer-oriented, never clickbait
+- No brand suffix (the site appends branding) and no year unless the content is year-specific
+
 **Meta Description Guidelines:**
 - 150-160 characters (critical for SEO)
 - Include the primary keyword naturally
@@ -113,7 +127,12 @@ Extract optimized metadata from blog post content:
 export async function extractMetadata(
     options: ExtractMetadataOptions
 ): Promise<ContentMetadata> {
-    const { content, primaryKeyword, title, modelId = 'gpt-4.1-mini' } = options
+    const {
+        content,
+        primaryKeyword,
+        title,
+        modelId = 'claude-opus-5',
+    } = options
 
     // Calculate word count for reading time hint
     const wordCount = content.split(/\s+/).length
@@ -131,7 +150,7 @@ ${content.slice(0, 3000)}${content.length > 3000 ? '\n\n[Content truncated for e
 
 ---
 
-Extract the metadata following the guidelines. Ensure meta description is 150-160 characters and includes "${primaryKeyword}" naturally.`
+Extract the metadata following the guidelines. Ensure the meta title is 50-60 characters with "${primaryKeyword}" near the front, and the meta description is 150-160 characters and includes "${primaryKeyword}" naturally.`
 
     const result = await coreGenerateObject({
         modelId,

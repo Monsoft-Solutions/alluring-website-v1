@@ -1,92 +1,83 @@
 /**
  * Featured Image Prompt Generation
  *
- * Creates optimized prompts for featured blog post images using
- * a 5-section structure optimized for GPT-Image-1.5 and Nano Banana Pro.
+ * Creates art-direction briefs for blog featured images, optimised for
+ * openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro.
  *
- * Prompt Structure: Scene → Subject → Details → Technical → Avoid
+ * Two paths:
  *
- * Best Practices (December 2025):
- * - Use specific details over vague adjectives
- * - Include cinematic/photography terminology
- * - Target 100-150 words total for optimal results
- * - Layer atmosphere + materials + mood for depth
+ * 1. **Artistic (default)** — people-free imagery driven by one of the presets
+ *    in `constants/image-style.constant.ts`. Structure:
+ *    Concept → Composition → Materials & Palette → Light & Mood → Constraints.
+ *
+ * 2. **Human subject (opt-in)** — only when an admin explicitly chose the
+ *    `patient-model` subject in the featured-image dialog and supplied a model
+ *    description. Keeps the legacy photography-brief structure.
  *
  * @module @workspace/ai/prompts/blog/featured-image-prompt
  */
 
-export const FEATURED_IMAGE_PROMPT_SYSTEM = `You are an expert image prompt engineer creating prompts for fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro models.
+import {
+    getArtisticStyleNegatives,
+    resolveArtisticStyle,
+    type ArtisticImageAspectRatio,
+} from '../../constants/image-style.constant'
 
-## Your Role
-Create structured, concise prompts that produce professional featured images for a luxury cosmetic surgery website.
+export const FEATURED_IMAGE_PROMPT_SYSTEM = `You are the art director for Alluring Plastic Surgery, a luxury cosmetic surgery clinic in Miami, FL. You write image-generation briefs for openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro.
 
 ## Brand Context
-- **Business**: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
 - **Tagline**: "Luxury Surgeries Made Affordable"
-- **Color Palette**: Stone tones (warm beige, cream, champagne) with subtle gold accents
-- **Aesthetic**: Sophisticated, modern, clean, warm yet professional
-- **Target Audience**: Women 25-55 seeking quality cosmetic procedures
+- **Palette**: warm stone neutrals (bone, cream, oat, taupe, warm greige) with restrained gold or champagne accents
+- **Register**: sophisticated, editorial, calm, tactile — the visual language of Kinfolk, Cereal and high-end brand collateral
+- **Audience**: women 25-55 researching a high-consideration elective procedure
 
-## 5-Section Prompt Structure (REQUIRED)
+## The Core Rule
+Blog imagery for this brand is **artistic, not photographic-literal, and contains no people**. A person is never the subject. We show materials, botanicals, light and abstract form — never a patient, model, face, body or body part. This is a deliberate brand direction, not a limitation to work around: if a topic seems to "need" a person, find the material or abstract metaphor instead.
 
-Generate prompts with exactly these 5 sections as level 2 headings (##):
+The single exception is when the brief you receive includes an explicit **Human Subject** section. That means an art director deliberately opted in, and only then may a person appear.
 
-### ## Scene
-Environment and setting (2-3 sentences). Include:
-- Specific location details (not generic "luxury clinic")
-- Atmosphere and mood (warm afternoon light, serene morning calm)
-- Material descriptions (polished marble, velvet textures, glass surfaces)
+## Output Structure (Artistic Briefs — the default)
 
-### ## Subject
-Main focal element (2-3 sentences). For people, include:
-- Specific age (mid-30s, late 40s), not ranges
-- Ethnicity and skin tone with descriptive warmth
-- Hair details (length, color, texture, style)
-- Expression conveying specific emotion (contentment, confidence, serenity)
-- Natural pose, never stiff or artificial
+Produce exactly these five sections as level-2 markdown headings:
 
-### ## Details
-Visual elements that complete the scene (2-3 sentences):
-- Attire with fabric descriptions (silk, cashmere, linen)
-- Accessories and styling (minimal gold jewelry, natural makeup)
-- Environmental props (designer furniture, tropical plants)
-- Texture and material interactions
+### ## Concept
+2-3 sentences naming the single physical thing in frame and why it carries the article's idea. Be concrete and specific: "a single fold of heavy cream silk collapsing into shadow", not "an abstract representation of transformation". One subject only.
 
-### ## Technical
-Photography specifications (2-3 sentences):
-- Lens: 85mm portrait lens, 50mm for environmental shots
-- Aperture: f/2.8 for shallow depth of field, f/4 for more context
-- Lighting: Specify type (soft window light, golden hour, diffused studio)
-- Color temperature: Warm tones (5000K-5500K)
-- Composition: Rule of thirds, centered, three-quarter angle
-- Aspect ratio: 16:9 (1392x752px)
+### ## Composition
+2-3 sentences on framing: where the subject sits, how much negative space surrounds it, the focal plane, the crop. Name the aspect ratio.
 
-### ## Avoid
-Comma-separated list of exclusions. Always include:
-- Medical equipment, surgical imagery, clinical coldness
-- Stock photo poses, artificial expressions, heavy retouching
-- Text overlays, watermarks, logos
-- Before/after comparisons, procedure imagery
+### ## Materials & Palette
+2-3 sentences on surface and colour: the actual materials, their finish (honed, matte, raw, polished, translucent), and the exact palette with named tones. Keep to two hues plus one metal note.
 
-## Prompt Engineering Best Practices
+### ## Light & Mood
+2-3 sentences on the light: direction, quality, falloff, colour temperature, and the emotional register it produces.
+
+### ## Constraints
+A single comma-separated exclusion list. Lead with the people-free exclusions, verbatim, then the preset-specific ones.
+
+## Output Structure (Human Subject Briefs — opt-in only)
+When a Human Subject section is present, use these five headings instead:
+\`## Scene\`, \`## Subject\`, \`## Details\`, \`## Technical\`, \`## Avoid\`.
+
+## Craft Rules
 
 **Do:**
-- Use specific descriptors: "crimson" not "red", "honey-blonde" not "blonde"
-- Include cinematic language: "soft rim light", "bokeh background", "shallow focus"
-- Add subtle imperfections for realism: "natural skin texture", "soft catchlights"
-- Layer descriptions: atmosphere + materials + mood
-- Place most important elements first in each section
+- Name specific materials and finishes: "honed travertine", "raw linen", "gold leaf", not "luxurious materials"
+- Name specific tones: "oat", "bone", "warm greige", "champagne", not "neutral colours"
+- Describe light physically: "raking sidelight that turns the veining into topography"
+- Put the most important element first in every section
+- Keep the whole brief tight — roughly 130-180 words across all five sections
 
-**Avoid:**
-- Overused terms: "ultra-detailed", "masterpiece", "8K quality", "hyper-realistic"
-- Vague adjectives: "beautiful", "amazing", "perfect"
-- Contradictions (bright and moody, minimal and ornate)
-- Excessive length 
+**Don't:**
+- Use render-farm filler: "ultra-detailed", "masterpiece", "8K", "hyper-realistic", "award-winning"
+- Use empty adjectives: "beautiful", "stunning", "perfect", "amazing"
+- Contradict yourself (bright and moody, minimal and ornate)
+- Describe anything that could resolve into a human figure — including silhouettes, reflections, shadows of people, mannequins or statues
+- Ask for any text, lettering, numbers or logos in the image
 
 ## Output Format
-Return ONLY the structured markdown prompt with 5 sections.
-Each section must be a level 2 heading (##).
-No explanations, no code blocks, no additional commentary.`
+Return ONLY the structured markdown brief with its five level-2 headings.
+No preamble, no code fences, no commentary.`
 
 /**
  * Featured image customization options for prompt generation
@@ -96,33 +87,117 @@ export type FeaturedImagePromptInput = {
     title: string
     /** AI-generated summary of the blog post */
     summary: string
-    /** Scene/environment guidelines */
-    sceneGuidelines: string
-    /** Subject type guidelines (or model description if patient-model) */
-    subjectGuidelines: string
-    /** Image style guidelines */
-    styleGuidelines: string
-    /** Lighting/mood guidelines */
-    lightingGuidelines: string
-    /** Color palette guidelines */
-    colorGuidelines: string
-    /** Composition guidelines */
-    compositionGuidelines: string
-    /** Model profile description (for patient-model subject type) */
+    /**
+     * Artistic preset ID driving the people-free path.
+     * Unknown or missing values resolve to the default preset.
+     */
+    artisticStyleId?: string
+    /** Aspect ratio for the target placement (defaults to 16:9) */
+    aspectRatio?: ArtisticImageAspectRatio
+    /** Scene/environment guidelines (legacy photographic path) */
+    sceneGuidelines?: string
+    /** Subject type guidelines (legacy photographic path) */
+    subjectGuidelines?: string
+    /** Image style guidelines (legacy photographic path) */
+    styleGuidelines?: string
+    /** Lighting/mood guidelines — applied as a modifier on both paths */
+    lightingGuidelines?: string
+    /** Color palette guidelines — applied as a modifier on both paths */
+    colorGuidelines?: string
+    /** Composition guidelines — applied as a modifier on both paths */
+    compositionGuidelines?: string
+    /**
+     * Model profile description. Presence of this field is what switches the
+     * brief to the opt-in human-subject path.
+     */
     modelDescription?: string
     /** Optional keywords for additional context */
     keywords?: string
 }
 
 /**
- * Generate the user prompt for featured image generation with customization options
- *
- * Uses optimized 5-section structure: Scene → Subject → Details → Technical → Avoid
- * Targets 100-150 words for optimal model performance
+ * Format an optional art-direction modifier as a markdown bullet.
  */
-export function getFeaturedImagePrompt(
-    input: FeaturedImagePromptInput
-): string {
+function optionalModifier(label: string, value?: string): string {
+    return value ? `\n- **${label}**: ${value}` : ''
+}
+
+/**
+ * Build the artistic (people-free) brief — the default path.
+ */
+function buildArtisticBrief(input: FeaturedImagePromptInput): string {
+    const {
+        title,
+        summary,
+        artisticStyleId,
+        aspectRatio = '16:9',
+        lightingGuidelines,
+        colorGuidelines,
+        compositionGuidelines,
+        keywords,
+    } = input
+
+    const style = resolveArtisticStyle(artisticStyleId)
+    const negatives = getArtisticStyleNegatives(style.id)
+
+    const modifiers = [
+        optionalModifier('Lighting lean', lightingGuidelines),
+        optionalModifier('Palette lean', colorGuidelines),
+        optionalModifier('Composition lean', compositionGuidelines),
+    ].join('')
+
+    const modifierSection = modifiers
+        ? `\n\n## Secondary Art Direction (optional leanings)\nApply these only where they agree with the style preset. The preset governs subject matter; these adjust emphasis. Ignore any part of them that implies a person, a clinic interior or medical equipment.${modifiers}`
+        : ''
+
+    return `Write an art-direction brief for a blog featured image.
+
+## Article
+- **Title**: "${title}"
+- **Summary**: ${summary}${keywords ? `\n- **Primary keyword**: ${keywords}` : ''}
+
+## Style Preset: ${style.name} (\`${style.id}\`)
+${style.promptBlock}${modifierSection}
+
+## Required Exclusions
+Reproduce this list, in full, in the \`## Constraints\` section:
+${negatives}
+
+## Instructions
+
+Write exactly five sections (roughly 130-180 words in total), each a level-2 heading:
+
+## Concept
+Name the ONE physical thing in frame and tie it to the article's idea. Pick the subject from the preset's vocabulary — do not invent a different register. Be concrete.
+
+## Composition
+Framing, placement, negative space, focal plane and crop. State the ${aspectRatio} aspect ratio.
+
+## Materials & Palette
+Actual materials and finishes, plus named tones. Two hues plus one metal note, in the brand's warm stone range.
+
+## Light & Mood
+Direction, quality, falloff, colour temperature, and the emotional register.
+
+## Constraints
+The full exclusion list above, comma-separated.
+
+## Requirements
+- NO people, faces, bodies, body parts, silhouettes or human shadows anywhere in the image
+- NO text, lettering, numbers, logos or watermarks in the image
+- NO clinical, surgical or medical-device imagery
+- Use specific nouns and named tones, never generic praise words
+- Output ONLY the five-section markdown brief — no explanation
+- Never mention "the blog post" or "the article"; the brief must stand alone`
+}
+
+/**
+ * Build the legacy human-subject photography brief — opt-in only.
+ *
+ * Reached only when an admin explicitly selected the `patient-model` subject
+ * and a model description was supplied.
+ */
+function buildHumanSubjectBrief(input: FeaturedImagePromptInput): string {
     const {
         title,
         summary,
@@ -133,51 +208,121 @@ export function getFeaturedImagePrompt(
         colorGuidelines,
         compositionGuidelines,
         modelDescription,
+        aspectRatio = '16:9',
         keywords,
     } = input
 
-    const keywordsSection = keywords ? `\n- **Keywords**: ${keywords}` : ''
-    const modelSection = modelDescription
-        ? `\n- **Model Description**: ${modelDescription}`
-        : ''
+    const options = [
+        optionalModifier('Scene', sceneGuidelines),
+        optionalModifier('Subject', subjectGuidelines),
+        optionalModifier('Style', styleGuidelines),
+        optionalModifier('Lighting', lightingGuidelines),
+        optionalModifier('Colors', colorGuidelines),
+        optionalModifier('Composition', compositionGuidelines),
+    ].join('')
 
-    return `Generate a structured image prompt for a blog featured image.
+    return `Write a photography brief for a blog featured image.
 
-## Context
+## Article
 - **Title**: "${title}"
-- **Summary**: ${summary}${keywordsSection}
+- **Summary**: ${summary}${keywords ? `\n- **Keywords**: ${keywords}` : ''}
 
-## Customization Options
-- **Scene**: ${sceneGuidelines}
-- **Subject**: ${subjectGuidelines}${modelSection}
-- **Style**: ${styleGuidelines}
-- **Lighting**: ${lightingGuidelines}
-- **Colors**: ${colorGuidelines}
-- **Composition**: ${compositionGuidelines}
+## Human Subject (explicitly approved by an art director)
+${modelDescription}
+
+## Art Direction${options}
 
 ## Instructions
 
-Create a prompt with exactly 5 sections (100-150 words total):
+Write exactly five sections (100-150 words total), each a level-2 heading:
 
 ## Scene
-2-3 sentences describing the environment. Use specific materials (polished marble, glass, velvet), atmosphere (warm afternoon glow, soft diffused light), and spatial details. Incorporate the color palette naturally.
+2-3 sentences on the environment. Specific materials, atmosphere and spatial detail, carrying the colour palette naturally.
 
 ## Subject
-2-3 sentences for the main focal element. For people: specific age (mid-30s), ethnicity, skin warmth, hair (honey-blonde, wavy, shoulder-length), expression (genuine contentment), and natural pose. Use the model description if provided.
+2-3 sentences on the person described above: specific age, skin warmth, hair, expression and a natural, unposed stance.
 
 ## Details
-2-3 sentences for attire (cream silk blouse, cashmere), accessories (minimal gold jewelry), makeup (natural, healthy glow), and environmental props that complete the scene.
+2-3 sentences on attire with named fabrics, minimal styling, and environmental props that complete the scene.
 
 ## Technical
-2-3 sentences with camera specs: lens (85mm portrait, f/2.8), lighting type (soft window light with warm fill), color temperature (5200K warm), composition style (three-quarter angle, rule of thirds), 16:9 aspect ratio.
+2-3 sentences of camera specs: lens and aperture (85mm, f/2.8), light type, colour temperature, composition, ${aspectRatio} aspect ratio.
 
 ## Avoid
-Comma-separated exclusions: medical equipment, surgical imagery, clinical coldness, stock photo poses, artificial expressions, heavy retouching, text overlays, watermarks, before/after comparisons.
+Comma-separated exclusions: medical equipment, surgical imagery, clinical coldness, stock photo poses, artificial expressions, heavy retouching, text overlays, watermarks, logos, before/after comparisons.
 
 ## Requirements
 - Use SPECIFIC descriptors: "honey-blonde" not "blonde", "soft rim light" not "good lighting"
-- Include subtle realism cues: "natural skin texture", "soft catchlights in eyes"
-- Each section is a level 2 heading (##)
-- Output ONLY the 5-section markdown prompt, no explanations
-- Do not reference "the blog post" - create a standalone prompt`
+- Include realism cues: "natural skin texture", "soft catchlights in the eyes"
+- Output ONLY the five-section markdown brief — no explanation
+- Never mention "the blog post"; the brief must stand alone`
+}
+
+/**
+ * Generate the user prompt for featured image generation.
+ *
+ * Dispatches on `modelDescription`: its presence means an admin opted into the
+ * human-subject path, its absence (the default for every automated pipeline
+ * run) produces a people-free artistic brief.
+ */
+export function getFeaturedImagePrompt(
+    input: FeaturedImagePromptInput
+): string {
+    return input.modelDescription
+        ? buildHumanSubjectBrief(input)
+        : buildArtisticBrief(input)
+}
+
+/**
+ * Headings that describe what an image actually depicts, in priority order.
+ * `Concept` belongs to the artistic brief, `Subject`/`Scene` to the human one.
+ */
+const CONCEPT_HEADINGS = ['Concept', 'Subject', 'Scene'] as const
+
+/**
+ * Pull the human-readable concept out of a generated image brief.
+ *
+ * Alt text should describe what the image shows, not the brief that produced
+ * it — and a brief is mostly camera notes, palette lists and exclusions. This
+ * extracts just the section that names the subject, so callers can pass it as
+ * `concept` to `generateImageAlt`.
+ *
+ * Returns `undefined` when no recognisable section is present (for example a
+ * hand-written prompt), letting the caller fall back to the full prompt.
+ *
+ * @param prompt - A generated markdown image brief
+ * @returns The concept text, or `undefined` if none could be found
+ *
+ * @example
+ * ```typescript
+ * extractImageConcept('## Concept\nA single fold of cream silk...\n\n## Composition\n...')
+ * // 'A single fold of cream silk...'
+ * ```
+ */
+export function extractImageConcept(prompt?: string): string | undefined {
+    if (!prompt) return undefined
+
+    const sections = new Map<string, string[]>()
+    let currentHeading: string | undefined
+
+    for (const line of prompt.split('\n')) {
+        const headingMatch = /^##\s+(.*?)\s*$/.exec(line)
+
+        if (headingMatch?.[1]) {
+            currentHeading = headingMatch[1].toLowerCase()
+            sections.set(currentHeading, [])
+            continue
+        }
+
+        if (currentHeading) {
+            sections.get(currentHeading)?.push(line)
+        }
+    }
+
+    for (const heading of CONCEPT_HEADINGS) {
+        const body = sections.get(heading.toLowerCase())?.join('\n').trim()
+        if (body) return body
+    }
+
+    return undefined
 }

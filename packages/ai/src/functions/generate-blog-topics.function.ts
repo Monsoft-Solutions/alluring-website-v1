@@ -12,8 +12,22 @@ import {
     GENERATE_TOPICS_SYSTEM_PROMPT,
     getGenerateTopicsPrompt,
 } from '../prompts/blog/generate-topics.prompt'
-import { generateText, Output } from 'ai'
-import { getModel } from '../models'
+import { generateText, NoObjectGeneratedError, Output } from 'ai'
+import { getModel, temperatureParam } from '../models'
+
+/**
+ * Enum that tolerates stray markup or whitespace the model occasionally
+ * appends to values (e.g. "how_to</br>"). The wire schema sent to the model
+ * stays a plain enum; only runtime validation applies the cleanup.
+ */
+const cleanedEnum = <T extends [string, ...string[]]>(values: T) =>
+    z.preprocess(
+        (value) =>
+            typeof value === 'string'
+                ? value.replace(/<[^>]*>/g, '').trim()
+                : value,
+        z.enum(values)
+    )
 
 /**
  * Schema for a single topic suggestion
@@ -23,9 +37,11 @@ const topicSuggestionSchema = z.object({
         .string()
         .describe('SEO-friendly blog post title (50-60 characters ideal)'),
     primaryKeyword: z.string().describe('Main keyword to target for SEO'),
-    searchIntent: z
-        .enum(['informational', 'commercial', 'transactional'])
-        .describe('The search intent this topic addresses'),
+    searchIntent: cleanedEnum([
+        'informational',
+        'commercial',
+        'transactional',
+    ]).describe('The search intent this topic addresses'),
     description: z
         .string()
         .describe('Brief 1-2 sentence description of what the post will cover'),
@@ -49,19 +65,17 @@ const topicSuggestionSchema = z.object({
         .describe(
             'Suggested word count for the post. ALWAYS include a word count.'
         ),
-    suggestedContentType: z
-        .enum([
-            'tutorial',
-            'guide',
-            'how_to',
-            'case_study',
-            'comparison',
-            'faq',
-            'listicle',
-            'announcement',
-            'thought_leadership',
-        ])
-        .describe('Recommended content type for this topic'),
+    suggestedContentType: cleanedEnum([
+        'tutorial',
+        'guide',
+        'how_to',
+        'case_study',
+        'comparison',
+        'faq',
+        'listicle',
+        'announcement',
+        'thought_leadership',
+    ]).describe('Recommended content type for this topic'),
 })
 
 /**
@@ -81,7 +95,7 @@ const generateTopicsResponseSchema = z.object({
 /**
  * Default model for topic generation
  */
-const DEFAULT_MODEL_ID = 'gpt-4.1'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Selected keywords from Google Search Console
@@ -206,22 +220,49 @@ export async function generateBlogTopics(
         temperature = 0.8, // Higher temperature for creativity
     } = options
 
-    const result = await generateText({
-        model: getModel(modelId),
-        output: Output.object({ schema: generateTopicsResponseSchema }),
-        system: GENERATE_TOPICS_SYSTEM_PROMPT,
-        prompt: getGenerateTopicsPrompt({
-            procedureFocus,
-            contentType,
-            targetAudience,
-            existingTopics,
-            additionalContext,
-            selectedKeywords,
-            contextHints,
-            procedureContext,
-        }),
-        temperature,
+    const prompt = getGenerateTopicsPrompt({
+        procedureFocus,
+        contentType,
+        targetAudience,
+        existingTopics,
+        additionalContext,
+        selectedKeywords,
+        contextHints,
+        procedureContext,
     })
 
-    return result.output
+    // Models occasionally emit stray tokens that fail schema validation —
+    // one retry converts those flakes into latency instead of a 500.
+    const MAX_ATTEMPTS = 2
+    let lastError: unknown
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        try {
+            const result = await generateText({
+                model: getModel(modelId),
+                output: Output.object({
+                    schema: generateTopicsResponseSchema,
+                }),
+                system: GENERATE_TOPICS_SYSTEM_PROMPT,
+                prompt,
+                ...temperatureParam(modelId, temperature),
+                maxOutputTokens: 16000,
+            })
+
+            return result.output
+        } catch (error) {
+            lastError = error
+            if (
+                attempt < MAX_ATTEMPTS &&
+                NoObjectGeneratedError.isInstance(error)
+            ) {
+                console.warn(
+                    `[generateBlogTopics] Schema validation failed (attempt ${attempt}/${MAX_ATTEMPTS}), retrying...`
+                )
+                continue
+            }
+            throw error
+        }
+    }
+
+    throw lastError
 }

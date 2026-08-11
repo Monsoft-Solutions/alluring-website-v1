@@ -3,13 +3,41 @@
  *
  * Defines configurable options for generating featured blog post images
  * across 6 categories: Scene, Subject, Style, Lighting, Color Palette, and Composition.
+ *
+ * The default direction is ARTISTIC and people-free: the `Style` axis carries
+ * one of the artistic presets defined in
+ * `packages/ai/src/constants/image-style.constant.ts`, and Scene/Subject are set
+ * to their artistic bridge values. The rich art direction (prompt blocks,
+ * exclusions, aspect ratios, preferred models) lives in that registry — this
+ * file only carries what the admin UI needs to render pickers.
+ *
+ * The human-subject options (`patient-model` plus the MODEL_* profile axes)
+ * remain here as a deliberate OPT-IN: an admin can still choose them in the
+ * featured-image dialog, and only then does a person appear in an image. The
+ * automated pipeline never selects them.
  */
+import { ARTISTIC_IMAGE_STYLES } from '@workspace/ai'
+
+/**
+ * Re-export of the canonical artistic style registry, for admin UI that wants
+ * to show preset descriptions. Single source of truth is `@workspace/ai`.
+ */
+export { ARTISTIC_IMAGE_STYLES }
 
 // =============================================================================
 // SCENE / ENVIRONMENT OPTIONS
 // =============================================================================
 
 export const SCENE_OPTIONS = [
+    {
+        id: 'material-study',
+        name: 'Material Study',
+        icon: 'Gem',
+        description:
+            'No environment — the material or abstract field is the scene',
+        promptGuidelines:
+            'No depicted environment: the material, botanical or abstract field fills the frame and is the scene, surrounded by generous negative space',
+    },
     {
         id: 'luxury-clinic',
         name: 'Luxury Clinic',
@@ -60,10 +88,20 @@ export type SceneId = (typeof SCENE_OPTIONS)[number]['id']
 
 export const SUBJECT_OPTIONS = [
     {
+        id: 'artistic-composition',
+        name: 'Artistic Composition',
+        icon: 'Sparkles',
+        description:
+            'People-free artistic subject governed by the selected style preset',
+        promptGuidelines:
+            'Artistic composition with no people: the selected style preset governs the subject matter — materials, botanicals or abstract form',
+    },
+    {
         id: 'patient-model',
-        name: 'Patient Model',
+        name: 'Patient Model (opt-in)',
         icon: 'User',
-        description: 'Customizable patient-like person as focal point',
+        description:
+            'Customizable patient-like person as focal point — the only option that renders a person',
         promptGuidelines:
             'Patient-like model with customizable appearance (see model profile options below)',
     },
@@ -550,6 +588,31 @@ export function buildModelDescription(profile: ModelProfile): string {
 
 export const STYLE_OPTIONS = [
     {
+        id: 'abstract-material-macro',
+        name: 'Abstract Material Macro',
+        icon: 'ZoomIn',
+        description:
+            'Macro studies of marble, silk, gold leaf, water and light',
+        promptGuidelines:
+            'Extreme-macro fine-art study of luxurious inert materials — marble veining, silk drape, gold leaf, water refraction — one dominant gesture, generous negative space, warm stone palette with a single gold note, raking directional light, no people',
+    },
+    {
+        id: 'botanical-still-life',
+        name: 'Botanical Still Life',
+        icon: 'Flower2',
+        description: 'Orchids, palm shadows and stone vessels in natural light',
+        promptGuidelines:
+            'Quiet botanical still life in natural light — orchid stems, palm shadows on plaster, stone vessels, folded linen — asymmetric placement, shadow as a second subject, warm stone palette, soft late-afternoon light, no people',
+    },
+    {
+        id: 'painterly-editorial',
+        name: 'Painterly Editorial',
+        icon: 'Paintbrush',
+        description: 'Watercolor washes, contour lines and gradient fields',
+        promptGuidelines:
+            'Abstract editorial illustration — watercolor and ink washes, single-weight contour line, soft gradient fields, torn-paper shapes, gold leaf as one deliberate stroke, warm paper palette, generous white space, no people and no lettering',
+    },
+    {
         id: 'editorial-photo',
         name: 'Editorial Photography',
         icon: 'Camera',
@@ -796,19 +859,23 @@ export type FeaturedImageOptions = {
     lighting: LightingId
     colorPalette: ColorPaletteId
     composition: CompositionId
-    /** Model profile for patient-model subject type */
+    /** Model profile — only used when subject is `patient-model` */
     modelProfile: ModelProfile
 }
 
 /**
  * Default featured image options
+ *
+ * Points at the artistic, people-free path. `modelProfile` is retained so the
+ * dialog has something to render if an admin switches the subject to
+ * `patient-model`, but it is ignored on every other subject.
  */
 export const DEFAULT_FEATURED_IMAGE_OPTIONS: FeaturedImageOptions = {
-    scene: 'luxury-clinic',
-    subject: 'patient-model',
-    style: 'luxury-lifestyle',
-    lighting: 'golden-hour',
+    scene: 'material-study',
+    subject: 'artistic-composition',
+    style: 'abstract-material-macro',
+    lighting: 'soft-ethereal',
     colorPalette: 'stone-gold',
-    composition: 'centered-focus',
+    composition: 'close-up-detail',
     modelProfile: DEFAULT_MODEL_PROFILE,
 }

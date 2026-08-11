@@ -145,6 +145,16 @@ export type PipelineState = {
         imageId?: string
         imageUrl?: string
         model?: string
+        /** Artistic style preset the image was generated from */
+        artisticStyleId?: string
+        /**
+         * True when the no-people QA gate still detected a person in the kept
+         * image. Advisory: the phase succeeds either way, this flag exists so
+         * the admin UI can surface the image for human review.
+         */
+        peopleDetected?: boolean
+        /** True when the QA gate regenerated the image with reinforced negatives */
+        qaRegenerated?: boolean
     }
     /** Overall pipeline metrics */
     metrics?: PipelineMetrics

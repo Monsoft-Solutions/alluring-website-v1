@@ -8,7 +8,7 @@
  */
 import { generateText, stepCountIs } from 'ai'
 
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import {
     createResearchTools,
     createSourceCollector,
@@ -27,7 +27,7 @@ import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-
  * Default configuration for generation phase
  */
 const DEFAULTS = {
-    CONTENT_MODEL: 'gpt-4.1',
+    CONTENT_MODEL: 'claude-opus-5',
     TEMPERATURE: 0.7,
     MAX_STEPS: 25,
     MIN_WORD_COUNT: 200,
@@ -217,7 +217,8 @@ export async function runGenerationPhase(
             model,
             system: systemPrompt,
             prompt: userPrompt,
-            temperature,
+            ...temperatureParam(contentModelId, temperature),
+            maxOutputTokens: 16000,
             tools,
             stopWhen: stepCountIs(maxSteps),
             experimental_telemetry: telemetryConfig,

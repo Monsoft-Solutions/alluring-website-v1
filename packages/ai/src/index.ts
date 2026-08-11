@@ -71,6 +71,7 @@ export {
     generateImagePrompt,
     generateInlineImagePrompt,
     generateImageAlt,
+    detectPeopleInImage,
     analyzeBlogPost,
     generateFeaturedImagePrompt,
     // SEO functions
@@ -98,6 +99,8 @@ export {
     type PhotoStyle,
     type GenerateImageAltOptions,
     type ImageAltResult,
+    type DetectPeopleInImageOptions,
+    type PeopleDetectionResult,
     type AnalyzeBlogPostOptions,
     type GenerateFeaturedImagePromptOptions,
     type FeaturedImagePromptResult,
@@ -165,6 +168,26 @@ export {
     type InlineImageAspectRatio,
 } from './constants/inline-image-type.constant'
 
+export {
+    ARTISTIC_IMAGE_STYLE_IDS,
+    ARTISTIC_IMAGE_STYLES,
+    ARTISTIC_IMAGE_SLOTS,
+    ARTISTIC_IMAGE_UNIVERSAL_NEGATIVES,
+    DEFAULT_ARTISTIC_STYLE_ID,
+    buildArtisticStyleCatalog,
+    buildReinforcedNegativePrompt,
+    getArtisticStyleAspectRatio,
+    getArtisticStyleById,
+    getArtisticStyleNegatives,
+    isArtisticImageStyleId,
+    resolveArtisticStyle,
+    type ArtisticImageAspectRatio,
+    type ArtisticImagePreferredModel,
+    type ArtisticImageSlot,
+    type ArtisticImageStyleDefinition,
+    type ArtisticImageStyleId,
+} from './constants/image-style.constant'
+
 // Model definitions
 export {
     AVAILABLE_MODELS,
@@ -218,6 +241,7 @@ export {
     getBlogAnalysisPrompt,
     FEATURED_IMAGE_PROMPT_SYSTEM,
     getFeaturedImagePrompt,
+    extractImageConcept,
     type FeaturedImagePromptInput,
     // SEO prompts
     CONTENT_BRIEF_SYSTEM_PROMPT,

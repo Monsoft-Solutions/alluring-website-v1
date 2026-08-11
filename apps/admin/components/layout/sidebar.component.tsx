@@ -99,6 +99,7 @@ const navItems: NavItem[] = [
             { title: 'Authors', href: '/blog/authors' },
             { title: 'Categories', href: '/blog/categories' },
             { title: 'Tags', href: '/blog/tags' },
+            { title: 'Settings', href: '/blog/settings' },
         ],
     },
     {

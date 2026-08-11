@@ -18,6 +18,7 @@ export {
     images,
     blogPostImages,
     blogPostAnalysis,
+    blogAiConfig,
     blogPostTagsRelations,
     blogPostCategoriesRelations,
     blogPostsRelations,
@@ -43,6 +44,8 @@ export {
     type BlogPostAnalysis,
     type InsertBlogPostAnalysis,
     type BlogPostAnalysisDetails,
+    type BlogAiConfig,
+    type InsertBlogAiConfig,
     type CreateResourceInput,
 } from './blog'
 

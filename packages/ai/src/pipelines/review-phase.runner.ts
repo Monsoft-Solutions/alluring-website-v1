@@ -22,7 +22,7 @@ import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-
  * Default configuration for review phase
  */
 const DEFAULTS = {
-    REVIEW_MODEL: 'claude-sonnet-4-5',
+    REVIEW_MODEL: 'claude-opus-5',
 } as const
 
 /**

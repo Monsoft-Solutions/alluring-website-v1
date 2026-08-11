@@ -54,7 +54,17 @@ Output Requirements:
 export type GenerateImageAltOptions = {
     /** The image generation prompt */
     prompt: string
-    /** Model ID to use (defaults to gpt-5.2) */
+    /**
+     * Short description of what the image actually depicts.
+     *
+     * Prefer this over the raw prompt: generation prompts are long
+     * art-direction briefs full of camera and exclusion language that has no
+     * place in alt text. When supplied it becomes the primary source.
+     */
+    concept?: string
+    /** Primary SEO keyword to weave in naturally, when it fits */
+    primaryKeyword?: string
+    /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
     /** Temperature for generation (defaults to 0.3 for consistency) */
     temperature?: number
@@ -69,22 +79,26 @@ export type ImageAltResult = {
 }
 
 /**
- * Generate concise alt text for an image from its generation prompt
+ * Generate concise alt text describing an image
  *
- * Takes a detailed image generation prompt and creates a concise,
- * accessible alt text description following WCAG guidelines.
+ * Describes what the image DEPICTS, never the brief that produced it. Pass
+ * `concept` (and ideally `primaryKeyword`) whenever the caller knows what the
+ * image is of — the raw generation prompt is a noisy fallback because it is
+ * full of camera specs, palette notes and exclusion lists.
  *
- * @param options - Generation options including the image prompt
+ * @param options - Generation options including the image prompt and concept
  * @returns The generated alt text
  *
  * @example
  * ```typescript
  * const result = await generateImageAlt({
- *   prompt: "Professional medical illustration showing facial muscle anatomy and Botox injection sites, detailed diagram with clear labels, clinical style, anatomical accuracy"
+ *   prompt: featuredImageBrief,
+ *   concept: 'Macro study of folded cream silk catching raking light',
+ *   primaryKeyword: 'bbl recovery',
  * })
  *
  * console.log(result.alt)
- * // "Facial anatomy diagram showing Botox injection sites with muscle detail"
+ * // "Folded cream silk in raking light, evoking calm BBL recovery"
  * ```
  */
 export async function generateImageAlt(
@@ -92,21 +106,31 @@ export async function generateImageAlt(
 ): Promise<ImageAltResult> {
     const {
         prompt,
+        concept,
+        primaryKeyword,
         modelId = MODEL_FOR_IMAGE_ALT_TEXT_GENERATION,
         temperature = 0.3,
     } = options
 
-    const userPrompt = `Generate concise, accessible alt text (max 125 characters) for an image created with this prompt:
+    const sourceSection = concept
+        ? `The image depicts:\n"${concept}"\n\nFull art-direction brief for reference only (do NOT describe the brief itself, its camera notes or its exclusion list):\n"${prompt}"`
+        : `The image was created with this prompt:\n"${prompt}"`
 
-"${prompt}"
+    const keywordLine = primaryKeyword
+        ? `\n- Work the phrase "${primaryKeyword}" in naturally ONLY if it genuinely describes the image; never force it`
+        : ''
+
+    const userPrompt = `Generate concise, accessible alt text (max 125 characters) for an image.
+
+${sourceSection}
 
 Requirements:
 - Maximum 125 characters
-- Describe what's in the image, not the prompt itself
-- Be specific and descriptive
-- Use proper terminology
+- Describe what a sighted reader would SEE, not the prompt or the brief
+- Be specific and concrete about subject, material and light
 - No quotation marks or prefix
-- Professional tone for medical content
+- Never mention "image of", "photo of", "AI", "prompt" or "render"
+- Professional tone${keywordLine}
 
 Generate the alt text now:`
 

@@ -18,6 +18,8 @@ import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
 import { calculateDuration } from '@/lib/utils/time.util'
+import { runImageGenerationPhaseForPost } from '@/lib/services/pipeline-phase.service'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // 1 minute for extraction
@@ -86,11 +88,15 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             })
             .where(eq(blogPost.id, id))
 
+        // Admin-configured extraction model wins over the code default
+        const aiConfig = await getBlogAiConfig()
+
         // Run extraction phase
         const result = await runExtractionPhase({
             content: post.content,
             title: post.title,
             primaryKeyword: post.primaryKeyword || undefined,
+            modelId: aiConfig.extractionModelId,
         })
 
         // Flush telemetry
@@ -155,6 +161,7 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             .update(blogPost)
             .set({
                 slug,
+                metaTitle: result.metaTitle,
                 metaDescription: result.metaDescription,
                 excerpt: result.excerpt,
                 readingTime: result.readingTimeMinutes,
@@ -166,6 +173,12 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
                 status: 'generate_image', // Auto-advance to image generation
             })
             .where(eq(blogPost.id, id))
+
+        // Chain to image generation phase after response is sent (non-blocking),
+        // matching the service-driven chain in pipeline-phase.service.ts
+        after(async () => {
+            await runImageGenerationPhaseForPost(id)
+        })
 
         return NextResponse.json({
             success: true,

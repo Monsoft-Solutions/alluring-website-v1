@@ -11,7 +11,7 @@ import type { z } from 'zod'
 
 import type { CoreStreamObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -57,7 +57,8 @@ export function coreStreamObject<TSchema extends z.ZodType>(
         schema,
         system,
         prompt,
-        temperature,
+        ...temperatureParam(modelId, temperature),
+        maxOutputTokens: 16000,
         experimental_telemetry: telemetryConfig,
     })
 

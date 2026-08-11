@@ -11,7 +11,7 @@
  */
 import { generateText, stepCountIs } from 'ai'
 
-import { getModel } from '../models/model-resolver.util'
+import { getModel, temperatureParam } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 import type {
     AgentReview,
@@ -23,7 +23,7 @@ import { createThinkTool } from '../tools'
 /**
  * Default model for orchestration (using a more capable model for complex revisions)
  */
-const DEFAULT_MODEL_ID = 'claude-opus-4-5'
+const DEFAULT_MODEL_ID = 'claude-opus-5'
 
 /**
  * Default blog domain for internal link detection
@@ -500,7 +500,8 @@ export async function runOrchestrator(
         model: getModel(modelId),
         system: systemPrompt,
         prompt: userPrompt,
-        temperature,
+        ...temperatureParam(modelId, temperature),
+        maxOutputTokens: 16000,
         experimental_telemetry: telemetryConfig,
         tools: {
             think: createThinkTool(),
