@@ -7,6 +7,7 @@ import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { getProcedureContext } from '@/lib/data/procedure-context.data'
 import { evaluateTopicCandidates } from '@/lib/services/ideation-gate.service'
+import { getGscTopicSeeds } from '@/lib/services/topic-sourcing.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // Allow up to 60 seconds for AI generation
@@ -30,6 +31,9 @@ const contextHintsSchema = z.object({
 })
 
 const requestSchema = z.object({
+    // Sourcing mode: 'search-console' seeds topics from live GSC demand
+    // (opportunities, gaps, decaying queries) instead of picked keywords
+    mode: z.enum(['keywords', 'search-console']).optional(),
     // NEW: Structured context hints for enhanced generation
     contextHints: contextHintsSchema.optional(),
     // GSC keyword integration
@@ -69,18 +73,32 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const { contextHints, ...restData } = validationResult.data
+        const { mode, contextHints, ...restData } = validationResult.data
 
         // Look up procedure context if procedureSlug provided
         const procedureContext = contextHints?.procedureSlug
             ? getProcedureContext(contextHints.procedureSlug)
             : undefined
 
+        // Search Console mode: seed generation from live demand data
+        const gscSeeds =
+            mode === 'search-console' ? await getGscTopicSeeds() : undefined
+        if (mode === 'search-console' && (!gscSeeds || gscSeeds.length === 0)) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'No Search Console data available — check the integration configuration',
+                },
+                { status: 400 }
+            )
+        }
+
         // Build enriched options for AI generation
         const result = await generateBlogTopics({
             ...restData,
             contextHints,
             procedureContext,
+            gscSeeds,
         })
 
         // Ideation gate: every candidate gets a new/refresh/reject verdict
@@ -91,6 +109,8 @@ export async function POST(request: NextRequest) {
             success: true,
             ...result,
             topics: gatedTopics,
+            // Seeds echoed back so idea cards can show sourcing metrics
+            gscSeeds,
         })
     } catch (error) {
         return handleApiError(

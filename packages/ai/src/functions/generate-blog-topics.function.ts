@@ -76,6 +76,13 @@ const topicSuggestionSchema = z.object({
         'announcement',
         'thought_leadership',
     ]).describe('Recommended content type for this topic'),
+    sourceQuery: z
+        .string()
+        .nullable()
+        .optional()
+        .describe(
+            'When this topic was derived from one of the provided Search Console seed queries, the EXACT seed query string; otherwise null'
+        ),
 })
 
 /**
@@ -140,6 +147,27 @@ export type ProcedureContext = {
 }
 
 /**
+ * A live Search Console query seeding topic generation
+ */
+export type GscTopicSeed = {
+    /** The search query as typed by users */
+    query: string
+    impressions: number
+    clicks: number
+    /** Click-through rate in [0, 1] */
+    ctr: number
+    /** Average ranking position */
+    position: number
+    /**
+     * Why this query is a candidate:
+     * - opportunity: high impressions, low CTR
+     * - gap: no dedicated page ranks for it
+     * - decay: rankings recently dropped
+     */
+    source: 'opportunity' | 'gap' | 'decay'
+}
+
+/**
  * Options for topic generation
  */
 export type GenerateBlogTopicsOptions = {
@@ -155,6 +183,8 @@ export type GenerateBlogTopicsOptions = {
     additionalContext?: string
     /** Selected keywords from Google Search Console */
     selectedKeywords?: SelectedKeywords
+    /** Live Search Console demand seeds (headless/autopilot sourcing) */
+    gscSeeds?: GscTopicSeed[]
     /** Structured context hints for enhanced generation */
     contextHints?: ContextHints
     /** Procedure-specific context (injected by API route) */
@@ -214,6 +244,7 @@ export async function generateBlogTopics(
         existingTopics,
         additionalContext,
         selectedKeywords,
+        gscSeeds,
         contextHints,
         procedureContext,
         modelId = DEFAULT_MODEL_ID,
@@ -227,6 +258,7 @@ export async function generateBlogTopics(
         existingTopics,
         additionalContext,
         selectedKeywords,
+        gscSeeds,
         contextHints,
         procedureContext,
     })

@@ -28,6 +28,7 @@ import {
 } from '@workspace/ui/components/collapsible'
 import { ChevronDown, Sparkles, X } from 'lucide-react'
 
+import type { GscTopicSeed } from '@workspace/ai/functions'
 import {
     SEARCH_INTENTS,
     type SearchIntent,
@@ -60,6 +61,8 @@ type SelectedKeywords = {
 type GenerateTopicsResponse = {
     success: boolean
     topics?: GatedTopicSuggestion[]
+    /** Seeds used in 'search-console' mode, for sourcing-metric display */
+    gscSeeds?: GscTopicSeed[]
     error?: string
 }
 
@@ -92,6 +95,7 @@ export function PipelinePostFormDialog({
 
     // Generation state
     const [ideas, setIdeas] = useState<GatedTopicSuggestion[]>([])
+    const [gscSeeds, setGscSeeds] = useState<GscTopicSeed[]>([])
     const [isGenerating, setIsGenerating] = useState(false)
     const [hasGenerated, setHasGenerated] = useState(false)
 
@@ -115,59 +119,77 @@ export function PipelinePostFormDialog({
         setContextHints(initialContextHints)
         setAdvancedOpen(false)
         setIdeas([])
+        setGscSeeds([])
         setHasGenerated(false)
     }, [])
 
-    // Generate ideas from selected keywords and context
-    const handleGenerate = useCallback(async () => {
-        if (!primaryKeyword && secondaryKeywords.length === 0) {
-            toast.error('Please enter a keyword or select from Search Console')
-            return
-        }
+    // Generate ideas from selected keywords and context, or headlessly
+    // from live Search Console demand ('search-console' mode)
+    const handleGenerate = useCallback(
+        async (mode: 'keywords' | 'search-console' = 'keywords') => {
+            if (
+                mode === 'keywords' &&
+                !primaryKeyword &&
+                secondaryKeywords.length === 0
+            ) {
+                toast.error(
+                    'Please enter a keyword or select from Search Console'
+                )
+                return
+            }
 
-        setIsGenerating(true)
-        setHasGenerated(true)
+            setIsGenerating(true)
+            setHasGenerated(true)
 
-        try {
-            const data = await fetchApi<GenerateTopicsResponse>(
-                buildUrl('/api/blog/generate-topics'),
-                {
-                    method: 'POST',
-                    body: {
-                        selectedKeywords: {
-                            primary: primaryKeyword || null,
-                            secondary: secondaryKeywords,
+            try {
+                const data = await fetchApi<GenerateTopicsResponse>(
+                    buildUrl('/api/blog/generate-topics'),
+                    {
+                        method: 'POST',
+                        body: {
+                            mode,
+                            ...(mode === 'keywords'
+                                ? {
+                                      selectedKeywords: {
+                                          primary: primaryKeyword || null,
+                                          secondary: secondaryKeywords,
+                                      },
+                                  }
+                                : {}),
+                            contextHints: {
+                                procedureSlug:
+                                    contextHints.procedureSlug || undefined,
+                                searchIntent:
+                                    contextHints.searchIntent || undefined,
+                                targetAudience:
+                                    contextHints.targetAudience || undefined,
+                                uniqueAngle:
+                                    contextHints.uniqueAngle || undefined,
+                            },
                         },
-                        contextHints: {
-                            procedureSlug:
-                                contextHints.procedureSlug || undefined,
-                            searchIntent:
-                                contextHints.searchIntent || undefined,
-                            targetAudience:
-                                contextHints.targetAudience || undefined,
-                            uniqueAngle: contextHints.uniqueAngle || undefined,
-                        },
-                    },
+                    }
+                )
+
+                if (data.success && data.topics) {
+                    setIdeas(data.topics)
+                    setGscSeeds(data.gscSeeds ?? [])
+                } else {
+                    toast.error(data.error || 'Failed to generate ideas')
+                    setIdeas([])
                 }
-            )
-
-            if (data.success && data.topics) {
-                setIdeas(data.topics)
-            } else {
-                toast.error(data.error || 'Failed to generate ideas')
+            } catch (error) {
+                if (error instanceof ApiError) {
+                    toast.error(error.message || 'Failed to generate ideas')
+                } else {
+                    toast.error('Failed to connect to AI service')
+                }
                 setIdeas([])
+            } finally {
+                setIsGenerating(false)
             }
-        } catch (error) {
-            if (error instanceof ApiError) {
-                toast.error(error.message || 'Failed to generate ideas')
-            } else {
-                toast.error('Failed to connect to AI service')
-            }
-            setIdeas([])
-        } finally {
-            setIsGenerating(false)
-        }
-    }, [primaryKeyword, secondaryKeywords, contextHints])
+        },
+        [primaryKeyword, secondaryKeywords, contextHints]
+    )
 
     // Reset state when dialog closes
     const handleOpenChange = useCallback(
@@ -407,8 +429,12 @@ export function PipelinePostFormDialog({
                         <GeneratedIdeasPanel
                             selectedKeywords={selectedKeywords}
                             ideas={ideas}
+                            gscSeeds={gscSeeds}
                             isGenerating={isGenerating}
-                            onGenerate={handleGenerate}
+                            onGenerate={() => handleGenerate('keywords')}
+                            onGenerateFromGsc={() =>
+                                handleGenerate('search-console')
+                            }
                             hasGenerated={hasGenerated}
                         />
                     </div>

@@ -23,10 +23,11 @@ import {
     ShieldCheck,
     ShieldAlert,
     RefreshCw,
+    Search,
 } from 'lucide-react'
 
 import { useCreatePipelinePost } from '@/hooks/use-pipeline.hook'
-import type { TopicSuggestion } from '@workspace/ai/functions'
+import type { TopicSuggestion, GscTopicSeed } from '@workspace/ai/functions'
 import type { TopicVerdict } from '@workspace/shared/seo'
 import { CONTENT_TYPE_LABELS } from '@/lib/constants/blog-content.constant'
 
@@ -43,9 +44,37 @@ export type GatedTopicSuggestion = TopicSuggestion & {
 type GeneratedIdeasPanelProps = {
     selectedKeywords: SelectedKeywords
     ideas: GatedTopicSuggestion[]
+    /** Seeds used in Search Console mode — keyed back via idea.sourceQuery */
+    gscSeeds?: GscTopicSeed[]
     isGenerating: boolean
     onGenerate: () => void
+    /** Generate headlessly from live Search Console demand */
+    onGenerateFromGsc?: () => void
     hasGenerated: boolean
+}
+
+/** "1.2k impressions · CTR 0.8% · position 14" sourcing line */
+function SeedMetrics({ seed }: { seed: GscTopicSeed }) {
+    const impressions =
+        seed.impressions >= 1000
+            ? `${(seed.impressions / 1000).toFixed(1)}k`
+            : String(seed.impressions)
+    const label =
+        seed.source === 'gap'
+            ? 'no owning page'
+            : seed.source === 'decay'
+              ? 'position dropping'
+              : 'low CTR'
+    return (
+        <p className='mt-2 flex items-center gap-1.5 text-xs text-stone-500'>
+            <Search className='h-3 w-3 shrink-0' />
+            <span>
+                &ldquo;{seed.query}&rdquo; — {impressions} impressions · CTR{' '}
+                {(seed.ctr * 100).toFixed(1)}% · position{' '}
+                {seed.position.toFixed(0)} · {label}
+            </span>
+        </p>
+    )
 }
 
 /** Verdict badge + reason line for an idea card */
@@ -83,12 +112,18 @@ function GateVerdictBadge({ gate }: { gate: TopicVerdict }) {
 export function GeneratedIdeasPanel({
     selectedKeywords,
     ideas,
+    gscSeeds,
     isGenerating,
     onGenerate,
+    onGenerateFromGsc,
     hasGenerated,
 }: GeneratedIdeasPanelProps) {
     const createPipelinePost = useCreatePipelinePost()
     const [addedIds, setAddedIds] = useState<Set<number>>(new Set())
+
+    const seedsByQuery = new Map(
+        (gscSeeds ?? []).map((seed) => [seed.query, seed])
+    )
 
     const hasSelectedKeywords =
         selectedKeywords.primary !== null ||
@@ -143,14 +178,27 @@ export function GeneratedIdeasPanel({
                         AI-powered blog post suggestions based on your keywords
                     </p>
                 </div>
-                <Button
-                    onClick={onGenerate}
-                    disabled={!hasSelectedKeywords || isGenerating}
-                    className='gap-2'
-                >
-                    <Sparkles className='h-4 w-4' />
-                    {isGenerating ? 'Generating...' : 'Generate Ideas'}
-                </Button>
+                <div className='flex items-center gap-2'>
+                    {onGenerateFromGsc && (
+                        <Button
+                            variant='outline'
+                            onClick={onGenerateFromGsc}
+                            disabled={isGenerating}
+                            className='gap-2'
+                        >
+                            <Search className='h-4 w-4' />
+                            From Search Console
+                        </Button>
+                    )}
+                    <Button
+                        onClick={onGenerate}
+                        disabled={!hasSelectedKeywords || isGenerating}
+                        className='gap-2'
+                    >
+                        <Sparkles className='h-4 w-4' />
+                        {isGenerating ? 'Generating...' : 'Generate Ideas'}
+                    </Button>
+                </div>
             </div>
 
             <div className='flex-1 overflow-y-auto'>
@@ -162,8 +210,10 @@ export function GeneratedIdeasPanel({
                         </h4>
                         <p className='text-muted-foreground max-w-sm text-sm'>
                             Choose keywords from the Search Console data on the
-                            left, then click &quot;Generate Ideas&quot; to get
-                            AI-powered blog post suggestions.
+                            left, then click &quot;Generate Ideas&quot; — or use
+                            &quot;From Search Console&quot; to propose topics
+                            straight from live demand data (opportunities, gaps
+                            and dropping rankings).
                         </p>
                     </div>
                 ) : isGenerating ? (
@@ -191,6 +241,9 @@ export function GeneratedIdeasPanel({
                             const isBlocked =
                                 idea.gate !== undefined &&
                                 idea.gate.verdict !== 'new'
+                            const seed = idea.sourceQuery
+                                ? seedsByQuery.get(idea.sourceQuery)
+                                : undefined
 
                             return (
                                 <Card
@@ -282,6 +335,7 @@ export function GeneratedIdeasPanel({
                                                 </Badge>
                                             )}
                                         </div>
+                                        {seed && <SeedMetrics seed={seed} />}
                                         {idea.targetAudience && (
                                             <p className='mt-3 flex items-start gap-1.5 text-xs text-stone-600'>
                                                 <Users className='mt-0.5 h-3 w-3 shrink-0' />
