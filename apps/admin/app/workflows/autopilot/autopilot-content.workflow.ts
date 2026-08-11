@@ -51,7 +51,7 @@ export async function autopilotContentWorkflow(
         // Re-check the draft cap between posts — the first post of this very
         // run may have filled the review queue.
         if (postIndex > 0) {
-            const cap = await checkDraftCapStep({})
+            const cap = await checkDraftCapStep()
             if (!cap.ok) {
                 console.log(
                     `[Autopilot Workflow] Draft cap reached mid-run (${cap.draftCount}); stopping at ${written.length} post(s)`

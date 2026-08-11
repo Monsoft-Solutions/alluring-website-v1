@@ -625,8 +625,11 @@ export async function runExtractPhaseForPost(
  */
 export async function runImageGenerationPhaseForPost(
     postId: string,
-    _options: PhaseRunOptions = {}
+    options: PhaseRunOptions = {}
 ): Promise<PhaseRunResult> {
+    // Terminal phase — nothing to chain into; the option exists for
+    // signature symmetry with the other runners.
+    void options
     console.log(
         `[Pipeline Service] Starting image generation phase for post ${postId}`
     )

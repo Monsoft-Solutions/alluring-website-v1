@@ -24,6 +24,10 @@ import { PipelineCardThumbnail } from './pipeline-card-thumbnail.component'
 import { PipelineCardQuickActions } from './pipeline-card-quick-actions.component'
 import { PipelineCardInfo } from './pipeline-card-info.component'
 import { PipelineCardDeleteDialog } from './pipeline-card-delete-dialog.component'
+import {
+    IdeaApprovalActions,
+    IdeaGateBadge,
+} from './idea-approval-actions.component'
 
 type PipelineCardProps = {
     post: PipelinePostItem
@@ -183,6 +187,17 @@ export function PipelineCard({
                                         </span>
                                     </Badge>
                                 )}
+
+                                {post.status === 'ideation' && (
+                                    <IdeaGateBadge post={post} />
+                                )}
+
+                                {post.status === 'ideation' &&
+                                    post.ideaApproval === 'pending' && (
+                                        <Badge className='bg-amber-100 px-1.5 py-0 text-[10px] text-amber-800 hover:bg-amber-100'>
+                                            Awaiting approval
+                                        </Badge>
+                                    )}
                             </div>
                         </div>
                     </div>
@@ -193,6 +208,9 @@ export function PipelineCard({
                         wordCount={wordCount}
                         contentType={post.planningData?.contentType}
                     />
+
+                    {/* Approve/Reject for pending autopilot ideas */}
+                    <IdeaApprovalActions post={post} />
 
                     {/* Quick Actions Bar - appears on hover */}
                     <PipelineCardQuickActions

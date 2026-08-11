@@ -25,6 +25,8 @@ import {
     duplicateBlogPost,
     deleteBlogPost,
     resetProcessingStatus,
+    approveIdea,
+    rejectIdea,
 } from '@/lib/actions/blog.action'
 import type {
     CreatePipelinePostData,
@@ -640,6 +642,60 @@ export function useRetryProcessing() {
                     queryKey: pipelineKeys.stats(),
                 }),
             ])
+        },
+    })
+}
+
+/**
+ * Hook to approve a pending autopilot idea (joins the writing queue)
+ */
+export function useApproveIdea() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (id: string) => approveIdea(id),
+        onSuccess: async (result) => {
+            if (result.success) {
+                toast.success('Idea approved — queued for writing')
+            } else {
+                toast.error(result.error ?? 'Failed to approve idea')
+            }
+            await queryClient.invalidateQueries({
+                queryKey: pipelineKeys.kanban(),
+            })
+        },
+        onError: () => {
+            toast.error('Failed to approve idea')
+        },
+    })
+}
+
+/**
+ * Hook to reject an idea (leaves the board, never re-proposed)
+ */
+export function useRejectIdea() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
+            rejectIdea(id, reason),
+        onSuccess: async (result) => {
+            if (result.success) {
+                toast.success('Idea rejected')
+            } else {
+                toast.error(result.error ?? 'Failed to reject idea')
+            }
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.kanban(),
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: pipelineKeys.stats(),
+                }),
+            ])
+        },
+        onError: () => {
+            toast.error('Failed to reject idea')
         },
     })
 }

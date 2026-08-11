@@ -446,6 +446,112 @@ export async function createPipelinePost(
 }
 
 /**
+ * Approve a pending autopilot idea — it joins the writing queue.
+ */
+export async function approveIdea(id: string): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const [idea] = await db
+            .select({ status: blogPost.status })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!idea) {
+            return { success: false, error: 'Idea not found' }
+        }
+        if (idea.status !== 'ideation') {
+            return {
+                success: false,
+                error: 'Only ideation cards can be approved',
+            }
+        }
+
+        await db
+            .update(blogPost)
+            .set({ ideaApproval: 'approved' })
+            .where(eq(blogPost.id, id))
+
+        revalidatePath('/blog/pipeline')
+        return { success: true, id }
+    } catch (error) {
+        console.error('Error approving idea:', error)
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to approve idea',
+        }
+    }
+}
+
+/**
+ * Reject an idea. The card leaves the board but the row is kept so
+ * ideation never re-proposes the topic.
+ */
+export async function rejectIdea(
+    id: string,
+    reason?: string
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+
+        const [idea] = await db
+            .select({
+                status: blogPost.status,
+                planningData: blogPost.planningData,
+            })
+            .from(blogPost)
+            .where(eq(blogPost.id, id))
+            .limit(1)
+
+        if (!idea) {
+            return { success: false, error: 'Idea not found' }
+        }
+        if (idea.status !== 'ideation') {
+            return {
+                success: false,
+                error: 'Only ideation cards can be rejected',
+            }
+        }
+
+        const planningData: PlanningData = {
+            ...(idea.planningData ?? {}),
+            ideaRejection: {
+                reason: reason?.trim() || undefined,
+                rejectedAt: new Date().toISOString(),
+                rejectedBy: 'admin',
+            },
+        }
+
+        await db
+            .update(blogPost)
+            .set({ ideaApproval: 'rejected', planningData })
+            .where(eq(blogPost.id, id))
+
+        revalidatePath('/blog/pipeline')
+        return { success: true, id }
+    } catch (error) {
+        console.error('Error rejecting idea:', error)
+        if (error instanceof UnauthorizedError) {
+            return { success: false, error: 'Unauthorized' }
+        }
+        return {
+            success: false,
+            error:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to reject idea',
+        }
+    }
+}
+
+/**
  * Update a blog post's pipeline status
  * This is used by the Kanban board for drag-and-drop
  */

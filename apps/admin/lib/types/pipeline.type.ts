@@ -37,6 +37,7 @@ export type PipelinePostItem = {
     pipelineProcessingStatus: ProcessingStatus
     processingError: string | null
     primaryKeyword: string | null
+    ideaApproval: 'pending' | 'approved' | 'rejected' | null
     authorName: string | null
     featuredImageUrl: string | null
     planningData: PlanningData | null

@@ -35,7 +35,7 @@ type CronJobResult = { outcome: string } & Record<string, unknown>
 
 const JOBS: Record<string, () => Promise<CronJobResult>> = {
     /** No-op job proving schedule + auth + middleware carve-out end-to-end. */
-    heartbeat: async () => ({ outcome: 'ok' }),
+    heartbeat: () => Promise.resolve({ outcome: 'ok' }),
 
     /** Tops up the idea approval queue on its configured cadence. */
     'autopilot-ideation': async () => {

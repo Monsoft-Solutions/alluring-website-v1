@@ -9,9 +9,7 @@
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 import { countDraftsAwaitingReview } from '@/lib/services/autopilot.service'
 
-export async function checkDraftCapStep(
-    _input: Record<string, never>
-): Promise<{
+export async function checkDraftCapStep(): Promise<{
     ok: boolean
     draftCount: number
     cap: number
