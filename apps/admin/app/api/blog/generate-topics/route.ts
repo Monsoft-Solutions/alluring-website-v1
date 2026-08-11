@@ -8,6 +8,7 @@ import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { getProcedureContext } from '@/lib/data/procedure-context.data'
 import { evaluateTopicCandidates } from '@/lib/services/ideation-gate.service'
 import { getGscTopicSeeds } from '@/lib/services/topic-sourcing.service'
+import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // Allow up to 60 seconds for AI generation
@@ -93,12 +94,17 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // Admin-configured ideation model wins; the function keeps its own
+        // default when no configuration row exists yet
+        const aiConfig = await getBlogAiConfig()
+
         // Build enriched options for AI generation
         const result = await generateBlogTopics({
             ...restData,
             contextHints,
             procedureContext,
             gscSeeds,
+            modelId: aiConfig.ideationModelId,
         })
 
         // Ideation gate: every candidate gets a new/refresh/reject verdict

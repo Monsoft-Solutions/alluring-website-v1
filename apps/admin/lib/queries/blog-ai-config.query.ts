@@ -21,6 +21,8 @@ import type { ImageModelId } from '@/lib/services/fal-image-generation.service'
  * exists yet, so callers never deal with `null`.
  */
 export type BlogAiConfig = {
+    /** Model driving the ideation phase (topic generation) */
+    ideationModelId: string
     /** Model driving the content generation phase */
     contentModelId: string
     /** Model driving the review / orchestration phase */
@@ -40,6 +42,7 @@ export type BlogAiConfig = {
  * in `@workspace/ai/pipelines`.
  */
 export const DEFAULT_BLOG_AI_CONFIG: BlogAiConfig = {
+    ideationModelId: 'claude-opus-5',
     contentModelId: 'claude-opus-5',
     reviewModelId: 'claude-opus-5',
     extractionModelId: 'claude-opus-5',
@@ -86,6 +89,7 @@ export async function getBlogAiConfig(): Promise<BlogAiConfig> {
     }
 
     return {
+        ideationModelId: config.ideationModelId,
         contentModelId: config.contentModelId,
         reviewModelId: config.reviewModelId,
         extractionModelId: config.extractionModelId,

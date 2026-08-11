@@ -398,6 +398,8 @@ type OrchestrationPhaseOptions = {
     contentType?: string
     estimatedWordCount?: number
     reviews: AgentReview[]
+    /** Model for the orchestrator (defaults to the agent's own) */
+    modelId?: string
     onProgress?: AgenticPipelineProgressCallback
 }
 
@@ -419,6 +421,7 @@ async function runOrchestrationPhase(
         contentType,
         estimatedWordCount,
         reviews,
+        modelId,
         onProgress,
     } = options
 
@@ -434,6 +437,7 @@ async function runOrchestrationPhase(
         contentType,
         estimatedWordCount,
         reviews,
+        modelId,
     })
 
     const timeMs = Date.now() - startTime
@@ -614,6 +618,8 @@ export async function runAgenticContentPipeline(
                     contentType: idea.contentType,
                     estimatedWordCount: idea.estimatedWordCount,
                     reviews,
+                    // Configured review model drives the orchestrator too
+                    modelId: options.reviewModelId,
                     onProgress,
                 })
                 orchestratorResult = orchestrationResult.result

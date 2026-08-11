@@ -302,6 +302,8 @@ export async function runReviewPhase(
                 contentType,
                 estimatedWordCount,
                 reviews,
+                // Configured review model drives the orchestrator too
+                modelId: reviewModelId,
             })
 
             revisedContent = orchestratorResult.revisedContent
