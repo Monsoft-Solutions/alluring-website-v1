@@ -12,6 +12,10 @@ export default defineConfig({
                 __dirname,
                 '../../packages/shared/src/cache'
             ),
+            '@workspace/shared/seo': path.resolve(
+                __dirname,
+                '../../packages/shared/src/seo'
+            ),
             '@workspace/shared': path.resolve(
                 __dirname,
                 '../../packages/shared/src'
