@@ -43,5 +43,6 @@ export type AutopilotSkipReason =
     | 'draft-cap'
     | 'locked'
     | 'queue-empty'
+    | 'queue-full'
     | 'gate-rejected-all'
     | 'unacknowledged-failure'

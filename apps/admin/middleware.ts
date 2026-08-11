@@ -4,7 +4,11 @@ import type { NextRequest } from 'next/server'
 import { env } from '@/env'
 import { verifyToken } from '@/lib/utils/crypto.util'
 
-const PUBLIC_PATHS = ['/login', '/api/auth']
+// /api/cron is excluded from cookie auth: scheduled invocations carry no
+// session. The route authenticates itself via the CRON_SECRET bearer header
+// (timing-safe check in cron-auth.util) — without this carve-out a cron
+// request would be 307-redirected to /login and silently never run.
+const PUBLIC_PATHS = ['/login', '/api/auth', '/api/cron']
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl

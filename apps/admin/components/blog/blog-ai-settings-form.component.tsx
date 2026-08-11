@@ -25,6 +25,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@workspace/ui/components/card'
+import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
 import {
     Select,
@@ -39,7 +40,11 @@ import {
     isOpenRouterModelId,
 } from '@/components/blog/blog-ai-model-field.component'
 import { updateBlogAiConfig } from '@/lib/actions/blog-ai-config.action'
-import type { BlogAiConfig } from '@/lib/queries/blog-ai-config.query'
+import type {
+    AutopilotCadence,
+    AutopilotMode,
+    BlogAiConfig,
+} from '@/lib/queries/blog-ai-config.query'
 import {
     IMAGE_MODELS,
     type ImageModelId,
@@ -114,6 +119,22 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
     )
     const [artisticStyleId, setArtisticStyleId] =
         useState<ArtisticImageStyleId | null>(initialData.artisticStyleId)
+    const [autopilotMode, setAutopilotMode] = useState<AutopilotMode>(
+        initialData.autopilotMode
+    )
+    const [autopilotIdeationCadence, setAutopilotIdeationCadence] =
+        useState<AutopilotCadence>(initialData.autopilotIdeationCadence)
+    const [autopilotContentCadence, setAutopilotContentCadence] =
+        useState<AutopilotCadence>(initialData.autopilotContentCadence)
+    const [autopilotPostsPerRun, setAutopilotPostsPerRun] = useState(
+        initialData.autopilotPostsPerRun
+    )
+    const [autopilotDraftCap, setAutopilotDraftCap] = useState(
+        initialData.autopilotDraftCap
+    )
+    const [autopilotIdeasPerRun, setAutopilotIdeasPerRun] = useState(
+        initialData.autopilotIdeasPerRun
+    )
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const trimmedIdeationCustom = customIdeationModelId.trim()
@@ -156,6 +177,12 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
                 extractionModelId: effectiveExtractionModelId,
                 imageModelId,
                 artisticStyleId,
+                autopilotMode,
+                autopilotIdeationCadence,
+                autopilotContentCadence,
+                autopilotPostsPerRun,
+                autopilotDraftCap,
+                autopilotIdeasPerRun,
             })
 
             if (result.success) {
@@ -321,6 +348,202 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
                                 ))}
                             </SelectContent>
                         </Select>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Autopilot */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Autopilot</CardTitle>
+                    <CardDescription>
+                        Scheduled content loop: ideas are generated on one
+                        schedule, posts are written on another. Publishing
+                        always stays manual.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className='space-y-6'>
+                    <div className='space-y-2'>
+                        <div>
+                            <Label htmlFor='autopilot-mode'>Mode</Label>
+                            <p className='text-muted-foreground text-xs'>
+                                Off disables both schedules. Ideas mode is the
+                                recommended starting point.
+                            </p>
+                        </div>
+                        <Select
+                            value={autopilotMode}
+                            onValueChange={(value) =>
+                                setAutopilotMode(value as AutopilotMode)
+                            }
+                        >
+                            <SelectTrigger
+                                id='autopilot-mode'
+                                className='w-full'
+                            >
+                                <SelectValue placeholder='Select a mode' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='off'>
+                                    <span className='flex flex-col items-start'>
+                                        <span>Off</span>
+                                        <span className='text-muted-foreground text-xs'>
+                                            Nothing runs on a schedule.
+                                        </span>
+                                    </span>
+                                </SelectItem>
+                                <SelectItem value='ideas'>
+                                    <span className='flex flex-col items-start'>
+                                        <span>Ideas — approve topics</span>
+                                        <span className='text-muted-foreground text-xs'>
+                                            Autopilot proposes ideas; only
+                                            topics you approve get written.
+                                        </span>
+                                    </span>
+                                </SelectItem>
+                                <SelectItem value='full'>
+                                    <span className='flex flex-col items-start'>
+                                        <span>Full — review drafts</span>
+                                        <span className='text-muted-foreground text-xs'>
+                                            Autopilot also writes unapproved
+                                            topics; you review finished drafts.
+                                        </span>
+                                    </span>
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className='grid gap-6 sm:grid-cols-2'>
+                        <div className='space-y-2'>
+                            <div>
+                                <Label htmlFor='ideation-cadence'>
+                                    Idea generation schedule
+                                </Label>
+                                <p className='text-muted-foreground text-xs'>
+                                    How often new topic ideas are proposed.
+                                </p>
+                            </div>
+                            <Select
+                                value={autopilotIdeationCadence}
+                                onValueChange={(value) =>
+                                    setAutopilotIdeationCadence(
+                                        value as AutopilotCadence
+                                    )
+                                }
+                            >
+                                <SelectTrigger
+                                    id='ideation-cadence'
+                                    className='w-full'
+                                >
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value='daily'>Daily</SelectItem>
+                                    <SelectItem value='weekdays'>
+                                        Weekdays
+                                    </SelectItem>
+                                    <SelectItem value='weekly'>
+                                        Weekly
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className='space-y-2'>
+                            <div>
+                                <Label htmlFor='content-cadence'>
+                                    Writing schedule
+                                </Label>
+                                <p className='text-muted-foreground text-xs'>
+                                    How often a queued topic is written.
+                                </p>
+                            </div>
+                            <Select
+                                value={autopilotContentCadence}
+                                onValueChange={(value) =>
+                                    setAutopilotContentCadence(
+                                        value as AutopilotCadence
+                                    )
+                                }
+                            >
+                                <SelectTrigger
+                                    id='content-cadence'
+                                    className='w-full'
+                                >
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value='daily'>Daily</SelectItem>
+                                    <SelectItem value='weekdays'>
+                                        Weekdays
+                                    </SelectItem>
+                                    <SelectItem value='weekly'>
+                                        Weekly
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    <div className='grid gap-6 sm:grid-cols-3'>
+                        <div className='space-y-2'>
+                            <Label htmlFor='posts-per-run'>Posts per run</Label>
+                            <Input
+                                id='posts-per-run'
+                                type='number'
+                                min={1}
+                                max={3}
+                                value={autopilotPostsPerRun}
+                                onChange={(event) =>
+                                    setAutopilotPostsPerRun(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                1–3 posts per writing run.
+                            </p>
+                        </div>
+                        <div className='space-y-2'>
+                            <Label htmlFor='draft-cap'>Draft cap</Label>
+                            <Input
+                                id='draft-cap'
+                                type='number'
+                                min={1}
+                                max={20}
+                                value={autopilotDraftCap}
+                                onChange={(event) =>
+                                    setAutopilotDraftCap(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                Writing pauses while this many drafts await
+                                review.
+                            </p>
+                        </div>
+                        <div className='space-y-2'>
+                            <Label htmlFor='ideas-per-run'>
+                                Idea queue size
+                            </Label>
+                            <Input
+                                id='ideas-per-run'
+                                type='number'
+                                min={3}
+                                max={10}
+                                value={autopilotIdeasPerRun}
+                                onChange={(event) =>
+                                    setAutopilotIdeasPerRun(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                Ideas are topped up to this many pending.
+                            </p>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
