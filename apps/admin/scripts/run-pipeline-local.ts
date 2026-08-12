@@ -279,6 +279,7 @@ async function runOne(topic: TestTopic): Promise<void> {
     console.log(
         `  CTA markers    ${analysis.ctaMarkers.length}${analysis.ctaId ? ` (${analysis.ctaId})` : ''}`
     )
+    console.log(`  internal links ${analysis.internalLinkCount}`)
     console.log(`  external links ${analysis.externalLinkCount}`)
     console.log(`  quick answer   ${post.quickAnswer ? 'yes' : 'NO'}`)
     console.log(`  review agents  ${reviews.length}`)

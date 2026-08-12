@@ -85,7 +85,7 @@ async function main() {
         return
     }
 
-    console.log(`\n  ${'slug'.padEnd(46)} QA  tbl  Q-hdg  CTA  links`)
+    console.log(`\n  ${'slug'.padEnd(46)} QA  tbl  Q-hdg  CTA  int  ext`)
     console.log(`  ${'-'.repeat(74)}`)
 
     let passing = 0
@@ -105,9 +105,12 @@ async function main() {
                 6
             )
         const cta = mark(analysis.ctaMarkers.length === 1).padEnd(4)
-        const links = String(analysis.externalLinkCount).padStart(4)
+        const internal = String(analysis.internalLinkCount).padStart(3)
+        const external = String(analysis.externalLinkCount).padStart(4)
 
-        console.log(`  ${slug} ${qa} ${table} ${headings} ${cta} ${links}`)
+        console.log(
+            `  ${slug} ${qa} ${table} ${headings} ${cta} ${internal} ${external}`
+        )
 
         if (failures.length > 0) {
             console.log(`  ${' '.repeat(46)} ${failures.join('; ')}`)
@@ -126,30 +129,42 @@ async function main() {
                 tables: acc.tables + (analysis.tableCount > 0 ? 1 : 0),
                 ctaMarkers:
                     acc.ctaMarkers + (analysis.ctaMarkers.length === 1 ? 1 : 0),
-                questionH2s: acc.questionH2s + analysis.questionHeadings.length,
-                allH2s: acc.allH2s + analysis.headings.length,
+                questionHeadings:
+                    acc.questionHeadings + analysis.questionHeadings.length,
+                allHeadings: acc.allHeadings + analysis.headings.length,
+                internalLinks: acc.internalLinks + analysis.internalLinkCount,
+                externalLinks: acc.externalLinks + analysis.externalLinkCount,
             }
         },
         {
             quickAnswers: 0,
             tables: 0,
             ctaMarkers: 0,
-            questionH2s: 0,
-            allH2s: 0,
+            questionHeadings: 0,
+            allHeadings: 0,
+            internalLinks: 0,
+            externalLinks: 0,
         }
     )
 
     const questionShare =
-        totals.allH2s === 0
+        totals.allHeadings === 0
             ? 0
-            : Math.round((totals.questionH2s / totals.allH2s) * 100)
+            : Math.round((totals.questionHeadings / totals.allHeadings) * 100)
+    const avg = (total: number) => (total / posts.length).toFixed(1)
 
     console.log(`\n  ${posts.length} post(s): ${passing} passing all gates`)
     console.log(
         `  Quick Answers ${totals.quickAnswers}/${posts.length} · tables ${totals.tables}/${posts.length} · CTA markers ${totals.ctaMarkers}/${posts.length} · question headings ${questionShare}%`
     )
     console.log(
-        `\n  Baseline before this epic (2026-08-12, 154 published posts):\n  Quick Answers 0 · tables 13 · CTA markers 0 · question H2s 34% on pipeline-era posts (H2 only)\n`
+        `  links: ${avg(totals.internalLinks)} internal · ${avg(totals.externalLinks)} external per post`
+    )
+    console.log(
+        `\n  Baseline before this epic (2026-08-12, 154 published posts):
+  Quick Answers 0 · tables 13 · CTA markers 0 · question H2s 34% (H2 only)
+  links: 6.2 internal · 8.7 external per pipeline-era post — internal links were
+  written as absolute URLs, so a naive count read them as third-party citations\n`
     )
 
     // Non-zero exit when nothing passes, so this is usable as a CI gate.

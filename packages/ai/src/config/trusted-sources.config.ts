@@ -9,8 +9,14 @@
 
 /**
  * Business domain for Alluring Plastic Surgery
+ *
+ * Re-exported from the shared content module, which also uses it to tell our
+ * own links from third-party ones — the two must agree or a post's internal
+ * links get counted as external citations.
  */
-export const BUSINESS_DOMAIN = 'alluringplasticsurgery.com'
+import { BUSINESS_DOMAIN } from '@workspace/shared/content'
+
+export { BUSINESS_DOMAIN }
 
 /**
  * Source credibility tier

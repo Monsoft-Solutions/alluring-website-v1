@@ -118,12 +118,37 @@ describe('analyzeGeoStructure', () => {
         })
     })
 
-    it('counts only off-site links', () => {
-        const analysis = analyzeGeoStructure(
-            '[asps](https://plasticsurgery.org) and [ours](/procedures/bbl-miami)'
-        )
+    describe('links', () => {
+        it('separates our own links from third-party ones', () => {
+            const analysis = analyzeGeoStructure(
+                '[asps](https://plasticsurgery.org) and [ours](/procedures/bbl-miami)'
+            )
 
-        expect(analysis.externalLinkCount).toBe(1)
+            expect(analysis.internalLinkCount).toBe(1)
+            expect(analysis.externalLinkCount).toBe(1)
+        })
+
+        it('counts an absolute link to our own domain as internal', () => {
+            // Regression: posts written before Aug 2026 link internally with
+            // absolute URLs, and a naive `](http` count read ~6 of our own
+            // links per post as third-party citations — inflating the external
+            // count past its ceiling and failing posts that were fine.
+            const analysis = analyzeGeoStructure(
+                '[financing](https://alluringplasticsurgery.com/plastic-surgery-financing-miami)'
+            )
+
+            expect(analysis.internalLinkCount).toBe(1)
+            expect(analysis.externalLinkCount).toBe(0)
+        })
+
+        it('handles a post that mixes both internal link styles', () => {
+            const analysis = analyzeGeoStructure(
+                '[a](/procedures/bbl-miami) [b](https://alluringplasticsurgery.com/contact-us) [c](https://mayoclinic.org/x)'
+            )
+
+            expect(analysis.internalLinkCount).toBe(2)
+            expect(analysis.externalLinkCount).toBe(1)
+        })
     })
 })
 
@@ -150,7 +175,7 @@ Fat embolism is the serious one.
 
 ## Can you fly home afterward?
 
-Most patients fly at 10 days.`
+Most patients fly at 10 days. See our [BBL procedure page](/procedures/brazilian-butt-lift-bbl-miami), [financing options](/plastic-surgery-financing-miami), and [book a consultation](/contact-us).`
 
     it('passes a post that meets every gate', () => {
         const result = runGeoAuditGate(goodPost, {
@@ -231,6 +256,32 @@ text`
         })
 
         expect(result.failures).toContain('2 CTA markers (must be exactly 1)')
+    })
+
+    /** The same post with its closing internal links stripped out. */
+    const deadEndPost = goodPost.replace(
+        / See our \[BBL procedure page\].*$/s,
+        ''
+    )
+
+    it('fails a post that leaves the reader nowhere to go', () => {
+        const result = runGeoAuditGate(deadEndPost, {
+            quickAnswer: 'x\n\ny',
+        })
+
+        expect(result.failures).toContain('0 internal links (need 3)')
+    })
+
+    it('accepts internal links written as absolute URLs', () => {
+        // Pre-Aug-2026 posts link internally this way; counting them as
+        // external both failed the ceiling and hid the internal-link floor.
+        const withAbsolute = `${deadEndPost}\n\n[a](https://alluringplasticsurgery.com/procedures/bbl-miami) [b](https://alluringplasticsurgery.com/contact-us) [c](https://alluringplasticsurgery.com/plastic-surgery-financing-miami)`
+
+        const result = runGeoAuditGate(withAbsolute, {
+            quickAnswer: 'x\n\ny',
+        })
+
+        expect(result.failures).toEqual([])
     })
 
     it('fails a post that blows past the external link ceiling', () => {

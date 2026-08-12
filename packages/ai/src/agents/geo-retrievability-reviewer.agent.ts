@@ -200,6 +200,7 @@ function buildStructuralContext(content: string): string {
     return `- Section headings: ${analysis.headings.length} (${analysis.questionHeadings.length} phrased as questions)
 - Markdown tables present: ${analysis.tableCount}
 - CTA markers: ${analysis.ctaMarkers.length}${analysis.ctaMarkers.length > 0 ? ` (${analysis.ctaMarkers.join(', ')})` : ''}
+- Internal links: ${analysis.internalLinkCount} (the internal-links reviewer owns these — do not duplicate its findings)
 - External links: ${analysis.externalLinkCount}
 
 Headings in order:

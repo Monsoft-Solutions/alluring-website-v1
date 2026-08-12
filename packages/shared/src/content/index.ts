@@ -34,7 +34,9 @@ export {
 export {
     analyzeGeoStructure,
     runGeoAuditGate,
+    BUSINESS_DOMAIN,
     GEO_AUDIT_THRESHOLDS,
     type GeoStructureAnalysis,
     type GeoAuditGateResult,
+    type SectionHeading,
 } from './geo-audit.util'

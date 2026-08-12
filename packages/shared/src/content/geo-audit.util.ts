@@ -42,8 +42,28 @@ const CTA_MARKER_PATTERN = /<!--\s*CTA(?::(\w+))?\s*-->/g
  */
 const SECTION_HEADING_PATTERN = /^(#{2,3}) (.+)$/gm
 
-/** A markdown link to an off-site URL. */
-const EXTERNAL_LINK_PATTERN = /\]\(https?:\/\//g
+/**
+ * The site's own domain, for telling our links from everyone else's.
+ *
+ * Posts written before August 2026 link internally with absolute URLs
+ * (`https://alluringplasticsurgery.com/procedures/...`) rather than
+ * root-relative paths, so a naive `](http` count reads roughly six of our own
+ * links per post as third-party citations.
+ */
+export const BUSINESS_DOMAIN = 'alluringplasticsurgery.com'
+
+/** Any markdown link with an href. */
+const MARKDOWN_LINK_PATTERN = /\]\(([^)\s]+)/g
+
+/**
+ * Whether an href points somewhere on this site.
+ *
+ * Matches the classification the internal- and external-links reviewers already
+ * use: a root-relative path, or an absolute URL on our own domain.
+ */
+function isInternalHref(href: string): boolean {
+    return href.startsWith('/') || href.includes(BUSINESS_DOMAIN)
+}
 
 /** A section heading and the level it sits at. */
 export type SectionHeading = {
@@ -67,7 +87,15 @@ export type GeoStructureAnalysis = {
     ctaMarkers: string[]
     /** The id named by the first marker, or null for a bare `<!-- CTA -->` */
     ctaId: string | null
-    /** Off-site markdown links */
+    /**
+     * Links to our own pages, whether root-relative or absolute on our domain.
+     *
+     * This is the path from an informational post to a procedure, cost or
+     * consultation page — the reason a blog post earns its place commercially,
+     * and a signal search engines read as topical structure.
+     */
+    internalLinkCount: number
+    /** Links to third-party sites */
     externalLinkCount: number
     /** Rough word count, matching how the pipeline counts elsewhere */
     wordCount: number
@@ -88,6 +116,11 @@ export function analyzeGeoStructure(content: string): GeoStructureAnalysis {
     )
     const ctaMatches = [...content.matchAll(CTA_MARKER_PATTERN)]
 
+    const hrefs = [...content.matchAll(MARKDOWN_LINK_PATTERN)].map(
+        (match) => match[1] ?? ''
+    )
+    const internalLinkCount = hrefs.filter(isInternalHref).length
+
     return {
         headings,
         questionHeadings,
@@ -98,7 +131,8 @@ export function analyzeGeoStructure(content: string): GeoStructureAnalysis {
         tableCount: (content.match(TABLE_SEPARATOR_LINE) ?? []).length,
         ctaMarkers: ctaMatches.map((match) => match[0]),
         ctaId: ctaMatches[0]?.[1] ?? null,
-        externalLinkCount: (content.match(EXTERNAL_LINK_PATTERN) ?? []).length,
+        internalLinkCount,
+        externalLinkCount: hrefs.length - internalLinkCount,
         wordCount: content.split(/\s+/).filter((word) => word.length > 0)
             .length,
     }
@@ -114,6 +148,13 @@ export function analyzeGeoStructure(content: string): GeoStructureAnalysis {
  */
 export const GEO_AUDIT_THRESHOLDS = {
     minQuestionHeadingRatio: 0.6,
+    /**
+     * The writer prompt asks for 3–5 internal links and the corpus averages
+     * around six, so this is a floor for the dead-end case rather than a
+     * stretch target. A post that answers a question and offers the reader
+     * nowhere to go next has done half its job.
+     */
+    minInternalLinks: 3,
     maxExternalLinks: 6,
 } as const
 
@@ -165,6 +206,12 @@ export function runGeoAuditGate(
     } else if (analysis.ctaMarkers.length > 1) {
         failures.push(
             `${analysis.ctaMarkers.length} CTA markers (must be exactly 1)`
+        )
+    }
+
+    if (analysis.internalLinkCount < GEO_AUDIT_THRESHOLDS.minInternalLinks) {
+        failures.push(
+            `${analysis.internalLinkCount} internal links (need ${GEO_AUDIT_THRESHOLDS.minInternalLinks})`
         )
     }
 
