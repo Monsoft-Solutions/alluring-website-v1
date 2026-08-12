@@ -6,6 +6,8 @@
 export type {
     PlanningData,
     PipelineState,
+    PipelinePhaseKey,
+    PhaseAutoRetry,
     OutlineSection,
     CollectedSource,
     ReviewIssue,

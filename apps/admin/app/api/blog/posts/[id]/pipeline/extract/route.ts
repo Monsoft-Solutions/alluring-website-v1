@@ -4,6 +4,10 @@
  * Triggers the metadata and FAQ extraction phase for a blog post.
  * Extracts SEO metadata and FAQ items from the content.
  *
+ * The phase logic lives in pipeline-phase.service.ts (shared with the
+ * autopilot workflow and the retry route); this route adds cookie auth,
+ * HTTP status mapping, and the after() chain into the image phase.
+ *
  * @route POST /api/blog/posts/[id]/pipeline/extract
  */
 import type { NextRequest } from 'next/server'
@@ -11,15 +15,14 @@ import { after, NextResponse } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema/blog'
-import type { PipelineState, PipelineMetrics } from '@workspace/db/types'
-import { runExtractionPhase } from '@workspace/ai/pipelines'
 
 import { requireAuth } from '@/lib/utils/auth.util'
 import { handleApiError } from '@/lib/utils/api-error-handler.util'
 import { langfuseSpanProcessor } from '@/instrumentation'
-import { calculateDuration } from '@/lib/utils/time.util'
-import { runImageGenerationPhaseForPost } from '@/lib/services/pipeline-phase.service'
-import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
+import {
+    runExtractPhaseForPost,
+    runImageGenerationPhaseForPost,
+} from '@/lib/services/pipeline-phase.service'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60 // 1 minute for extraction
@@ -34,9 +37,15 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
     try {
         await requireAuth()
 
-        // Fetch the blog post
+        // Pre-validate here so HTTP callers get precise status codes; the
+        // service re-validates before doing any work.
         const [post] = await db
-            .select()
+            .select({
+                id: blogPost.id,
+                status: blogPost.status,
+                pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
+                content: blogPost.content,
+            })
             .from(blogPost)
             .where(eq(blogPost.id, id))
             .limit(1)
@@ -48,7 +57,6 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        // Validate post is in correct stage
         if (post.status !== 'generate_metadata') {
             return NextResponse.json(
                 {
@@ -59,7 +67,6 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        // Check if already processing
         if (post.pipelineProcessingStatus === 'processing') {
             return NextResponse.json(
                 { success: false, error: 'Extraction already in progress' },
@@ -67,7 +74,6 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        // Validate content exists
         if (!post.content) {
             return NextResponse.json(
                 {
@@ -78,130 +84,28 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
             )
         }
 
-        // Set processing status
-        await db
-            .update(blogPost)
-            .set({
-                pipelineProcessingStatus: 'processing',
-                processingStartedAt: new Date(),
-                processingError: null,
-            })
-            .where(eq(blogPost.id, id))
-
-        // Admin-configured extraction model wins over the code default
-        const aiConfig = await getBlogAiConfig()
-
-        // Run extraction phase
-        const result = await runExtractionPhase({
-            content: post.content,
-            title: post.title,
-            primaryKeyword: post.primaryKeyword || undefined,
-            modelId: aiConfig.extractionModelId,
-        })
-
-        // Flush telemetry
-        after(async () => await langfuseSpanProcessor.forceFlush())
+        // Run extraction inline; the image phase chains after the response
+        // is sent so the client isn't held for the full pipeline.
+        const result = await runExtractPhaseForPost(id, { chain: false })
 
         if (!result.success) {
-            // Update with error
-            await db
-                .update(blogPost)
-                .set({
-                    pipelineProcessingStatus: 'error',
-                    processingError: result.error,
-                })
-                .where(eq(blogPost.id, id))
-
             return NextResponse.json(
-                { success: false, error: result.error },
-                { status: 500 }
+                { success: false, error: result.error ?? 'Extraction failed' },
+                { status: result.skipped ? 409 : 500 }
             )
         }
 
-        // Build pipeline state update with metrics
-        const existingPipelineState = post.pipelineState || {}
-        const metrics: PipelineMetrics = {
-            totalTimeMs:
-                (existingPipelineState.generationPhase
-                    ? calculateDuration(
-                          existingPipelineState.generationPhase.startedAt,
-                          existingPipelineState.generationPhase.completedAt
-                      )
-                    : 0) + result.timeMs,
-            generationTimeMs: 0, // Already captured
-            reviewTimeMs: 0, // Already captured
-            orchestrationTimeMs: 0, // Already captured
-            extractionTimeMs: result.timeMs,
-            toolCallCount:
-                existingPipelineState.generationPhase?.toolCallCount || 0,
-            stepCount: existingPipelineState.generationPhase?.stepCount || 0,
-        }
-
-        const updatedPipelineState: PipelineState = {
-            ...existingPipelineState,
-            extractionPhase: {
-                startedAt:
-                    post.processingStartedAt?.toISOString() ||
-                    new Date().toISOString(),
-                completedAt: new Date().toISOString(),
-            },
-            metrics,
-        }
-
-        // Generate slug if not set
-        const slug =
-            post.slug ||
-            post.title
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)/g, '')
-
-        // Update post with extracted metadata and advance to generate_image
-        await db
-            .update(blogPost)
-            .set({
-                slug,
-                metaTitle: result.metaTitle,
-                metaDescription: result.metaDescription,
-                excerpt: result.excerpt,
-                readingTime: result.readingTimeMinutes,
-                faqs: result.faqs,
-                pipelineProcessingStatus: 'idle',
-                processingError: null,
-                processingStartedAt: null,
-                pipelineState: updatedPipelineState,
-                status: 'generate_image', // Auto-advance to image generation
-            })
-            .where(eq(blogPost.id, id))
-
-        // Chain to image generation phase after response is sent (non-blocking),
-        // matching the service-driven chain in pipeline-phase.service.ts
+        // Chain to image generation phase after response is sent (non-blocking)
         after(async () => {
+            await langfuseSpanProcessor.forceFlush()
             await runImageGenerationPhaseForPost(id)
         })
 
         return NextResponse.json({
             success: true,
-            metaDescription: result.metaDescription,
-            excerpt: result.excerpt,
-            faqCount: result.faqs.length,
-            readingTimeMinutes: result.readingTimeMinutes,
-            suggestedCategory: result.suggestedCategory,
-            suggestedTags: result.suggestedTags,
-            timeMs: result.timeMs,
             nextStatus: 'generate_image',
         })
     } catch (error) {
-        // Reset processing status on error
-        await db
-            .update(blogPost)
-            .set({
-                pipelineProcessingStatus: 'error',
-                processingError:
-                    error instanceof Error ? error.message : 'Unknown error',
-            })
-            .where(eq(blogPost.id, id))
-
         return handleApiError(error, 'Failed to run extraction phase')
     }
 }

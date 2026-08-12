@@ -24,7 +24,6 @@ import {
     updatePipelinePost,
     duplicateBlogPost,
     deleteBlogPost,
-    resetProcessingStatus,
     approveIdea,
     rejectIdea,
 } from '@/lib/actions/blog.action'
@@ -518,7 +517,7 @@ export function useDeletePipelinePost() {
 }
 
 /**
- * Auto-processing stages that should trigger retry after reset
+ * Auto-processing stages (shown as "processing" while a retry is in flight)
  */
 const AUTO_PROCESS_STAGES = [
     'generate',
@@ -533,37 +532,18 @@ function isAutoProcessStage(status: string): status is AutoProcessStage {
 }
 
 /**
- * Hook to retry a stuck pipeline post
- * Resets processing status and automatically re-triggers the pipeline for auto-processing stages
+ * Hook to retry an errored or stuck pipeline post
+ * One server-side call frees the processing flag, re-runs the failed phase,
+ * and chains the rest of the pipeline
  */
 export function useRetryProcessing() {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (id: string) => {
-            // First reset the processing status
-            const result = await resetProcessingStatus(id)
-
-            if (!result.success) {
-                throw new Error(
-                    result.error || 'Failed to reset processing status'
-                )
-            }
-
-            // If the post is in an auto-processing stage, trigger the pipeline
-            if (result.status && isAutoProcessStage(result.status)) {
-                const endpoint = {
-                    generate: `/api/blog/posts/${id}/pipeline/generate`,
-                    ai_review: `/api/blog/posts/${id}/pipeline/review`,
-                    generate_metadata: `/api/blog/posts/${id}/pipeline/extract`,
-                    generate_image: `/api/blog/posts/${id}/pipeline/generate-image`,
-                }[result.status]
-
-                await fetchApi(endpoint, { method: 'POST' })
-            }
-
-            return result
-        },
+        mutationFn: (id: string) =>
+            fetchApi(`/api/blog/posts/${id}/pipeline/retry`, {
+                method: 'POST',
+            }),
         onMutate: async (id) => {
             // Cancel any outgoing refetches
             await queryClient.cancelQueries({ queryKey: pipelineKeys.kanban() })
