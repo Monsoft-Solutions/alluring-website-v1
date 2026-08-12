@@ -2,7 +2,7 @@
  * GEO Audit
  *
  * Turns the epic's acceptance criterion — "three consecutive posts contain
- * question H2s, a table, cited stats and an explicit CTA marker" — into a
+ * question headings, a table, cited stats and an explicit CTA marker" — into a
  * command, so it stops being an eyeball check.
  *
  * Reports only what can be counted. Whether the sentence under a heading
@@ -85,7 +85,7 @@ async function main() {
         return
     }
 
-    console.log(`\n  ${'slug'.padEnd(46)} QA  tbl  Q-H2   CTA  links`)
+    console.log(`\n  ${'slug'.padEnd(46)} QA  tbl  Q-hdg  CTA  links`)
     console.log(`  ${'-'.repeat(74)}`)
 
     let passing = 0
@@ -146,10 +146,10 @@ async function main() {
 
     console.log(`\n  ${posts.length} post(s): ${passing} passing all gates`)
     console.log(
-        `  Quick Answers ${totals.quickAnswers}/${posts.length} · tables ${totals.tables}/${posts.length} · CTA markers ${totals.ctaMarkers}/${posts.length} · question H2s ${questionShare}%`
+        `  Quick Answers ${totals.quickAnswers}/${posts.length} · tables ${totals.tables}/${posts.length} · CTA markers ${totals.ctaMarkers}/${posts.length} · question headings ${questionShare}%`
     )
     console.log(
-        `\n  Baseline before this epic (2026-08-12, 154 published posts):\n  Quick Answers 0 · tables 13 · CTA markers 0 · question H2s 34% on pipeline-era posts\n`
+        `\n  Baseline before this epic (2026-08-12, 154 published posts):\n  Quick Answers 0 · tables 13 · CTA markers 0 · question H2s 34% on pipeline-era posts (H2 only)\n`
     )
 
     // Non-zero exit when nothing passes, so this is usable as a CI gate.

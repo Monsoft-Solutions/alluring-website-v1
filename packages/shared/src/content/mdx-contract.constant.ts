@@ -21,6 +21,33 @@
  */
 
 /**
+ * The `src` a writer leaves on a `<Figure>` for the inline-image phase to fill.
+ *
+ * It is not a URL, so anything rendering a Figure has to treat it as "no image
+ * yet" rather than passing it through — `next/image` throws on an unparseable
+ * src, which takes the whole post down. `isResolvedImageSrc` is the guard.
+ */
+export const FIGURE_SRC_PLACEHOLDER = 'PENDING'
+
+/**
+ * Whether a Figure's `src` is something an image component can actually load.
+ *
+ * True only for a root-relative path or an absolute URL. Covers the unfilled
+ * placeholder, an empty string, and anything else a model might invent.
+ */
+export function isResolvedImageSrc(src: string | undefined | null): boolean {
+    if (!src) return false
+    const trimmed = src.trim()
+    if (!trimmed || trimmed === FIGURE_SRC_PLACEHOLDER) return false
+
+    return (
+        trimmed.startsWith('/') ||
+        trimmed.startsWith('http://') ||
+        trimmed.startsWith('https://')
+    )
+}
+
+/**
  * Components the blog renderer can resolve.
  *
  * Order is the order they appear in the writer prompt.
@@ -83,8 +110,7 @@ export const MDX_COMPONENT_SPECS: Readonly<
                 name: 'src',
                 type: 'string',
                 required: true,
-                description:
-                    'Image URL. Use the literal placeholder "PENDING" — the inline-image phase replaces it.',
+                description: `Image URL. Use the literal placeholder "${FIGURE_SRC_PLACEHOLDER}" — the inline-image phase replaces it.`,
             },
             {
                 name: 'alt',

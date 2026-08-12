@@ -25,19 +25,40 @@ describe('analyzeGeoStructure', () => {
             )
 
             expect(analysis.headings).toEqual([
-                'How long is recovery?',
-                'Week by Week',
+                { level: 2, text: 'How long is recovery?' },
+                { level: 2, text: 'Week by Week' },
             ])
-            expect(analysis.questionHeadings).toEqual(['How long is recovery?'])
+            expect(analysis.questionHeadings).toEqual([
+                { level: 2, text: 'How long is recovery?' },
+            ])
             expect(analysis.questionHeadingRatio).toBe(0.5)
         })
 
-        it('ignores H3s and deeper', () => {
+        it('counts H3s, which is where an FAQ post puts its questions', () => {
+            // Regression: counting only H2s failed a real generated FAQ post
+            // whose 12 questions all sat at H3 under 4 topical H2s, while the
+            // reviewer agent — which sees the whole document — scored it 94/100.
+            const analysis = analyzeGeoStructure(
+                '## Causes and Candidacy\n\n### Is it gynecomastia or chest fat?\n\n### Can exercise fix it?\n\n## Recovery\n\n### Does it hurt?'
+            )
+
+            expect(analysis.headings).toHaveLength(5)
+            expect(analysis.questionHeadings).toHaveLength(3)
+            expect(analysis.questionHeadingRatio).toBeCloseTo(0.6)
+        })
+
+        it('records the level of each heading', () => {
+            const analysis = analyzeGeoStructure('## Top?\n\n### Nested?')
+
+            expect(analysis.headings.map((h) => h.level)).toEqual([2, 3])
+        })
+
+        it('ignores H4 and deeper', () => {
             const analysis = analyzeGeoStructure(
                 '## Real heading?\n\n### Sub heading?\n\n#### Deeper?'
             )
 
-            expect(analysis.headings).toHaveLength(1)
+            expect(analysis.headings).toHaveLength(2)
         })
 
         it('reports a zero ratio rather than dividing by zero', () => {
@@ -190,9 +211,9 @@ text`
             expectTable: false,
         })
 
-        expect(result.failures.some((f) => f.includes('question H2s'))).toBe(
-            true
-        )
+        expect(
+            result.failures.some((f) => f.includes('question headings'))
+        ).toBe(true)
     })
 
     it('fails a post with no CTA marker', () => {

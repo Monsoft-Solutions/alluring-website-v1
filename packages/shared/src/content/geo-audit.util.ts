@@ -9,7 +9,7 @@
  * `geo-retrievability-reviewer` agent feeds these counts to the model so it
  * grades what is actually on the page rather than what it thinks it counted,
  * and the `geo-audit` script uses them to turn "three consecutive posts contain
- * question H2s, a table and a CTA marker" from an eyeball check into a command.
+ * question headings, a table and a CTA marker" from an eyeball check into a command.
  *
  * What this cannot measure is the half that matters most — whether the first
  * sentence under a heading actually answers it, and whether a table helps a
@@ -32,18 +32,34 @@ const TABLE_SEPARATOR_LINE = /^[ \t]*\|[ \t|:-]*-{3,}[ \t|:-]*$/gm
 /** Matches `<!-- CTA -->` and `<!-- CTA:type -->`. */
 const CTA_MARKER_PATTERN = /<!--\s*CTA(?::(\w+))?\s*-->/g
 
-/** An H2 line. */
-const H2_PATTERN = /^## (.+)$/gm
+/**
+ * An H2 or H3 line.
+ *
+ * Both levels count. The standard is about the headings a reader scans on the
+ * way to their answer, and an FAQ-shaped post legitimately puts its questions
+ * at H3 under a few topical H2s — counting only H2s failed exactly that shape
+ * while the reviewer agent, which sees the whole document, scored it 94/100.
+ */
+const SECTION_HEADING_PATTERN = /^(#{2,3}) (.+)$/gm
 
 /** A markdown link to an off-site URL. */
 const EXTERNAL_LINK_PATTERN = /\]\(https?:\/\//g
 
+/** A section heading and the level it sits at. */
+export type SectionHeading = {
+    level: 2 | 3
+    text: string
+}
+
 export type GeoStructureAnalysis = {
-    /** Every H2, in document order */
-    headings: string[]
+    /** Every H2 and H3, in document order */
+    headings: SectionHeading[]
     /** The subset phrased as questions */
-    questionHeadings: string[]
-    /** Share of H2s that are questions, 0–1. Zero when there are no headings. */
+    questionHeadings: SectionHeading[]
+    /**
+     * Share of section headings that are questions, 0–1. Zero when there are
+     * no headings.
+     */
     questionHeadingRatio: number
     /** Count of real GFM tables */
     tableCount: number
@@ -61,11 +77,14 @@ export type GeoStructureAnalysis = {
  * Analyse a post body against the mechanically checkable parts of the standard.
  */
 export function analyzeGeoStructure(content: string): GeoStructureAnalysis {
-    const headings = [...content.matchAll(H2_PATTERN)].map((match) =>
-        (match[1] ?? '').trim()
-    )
+    const headings: SectionHeading[] = [
+        ...content.matchAll(SECTION_HEADING_PATTERN),
+    ].map((match) => ({
+        level: (match[1] ?? '##').length as 2 | 3,
+        text: (match[2] ?? '').trim(),
+    }))
     const questionHeadings = headings.filter((heading) =>
-        heading.trim().endsWith('?')
+        heading.text.endsWith('?')
     )
     const ctaMatches = [...content.matchAll(CTA_MARKER_PATTERN)]
 
@@ -137,7 +156,7 @@ export function runGeoAuditGate(
         GEO_AUDIT_THRESHOLDS.minQuestionHeadingRatio
     ) {
         failures.push(
-            `${analysis.questionHeadings.length}/${analysis.headings.length} question H2s (need ${Math.round(GEO_AUDIT_THRESHOLDS.minQuestionHeadingRatio * 100)}%)`
+            `${analysis.questionHeadings.length}/${analysis.headings.length} question headings (need ${Math.round(GEO_AUDIT_THRESHOLDS.minQuestionHeadingRatio * 100)}%)`
         )
     }
 

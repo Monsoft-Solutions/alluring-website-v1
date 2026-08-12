@@ -10,7 +10,10 @@ import type { ComponentPropsWithoutRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { MDX_RENDERER_COMPONENTS } from '@workspace/shared/content'
+import {
+    isResolvedImageSrc,
+    type MDX_RENDERER_COMPONENTS,
+} from '@workspace/shared/content'
 
 import { QuickAnswer } from '@/components/shared/quick-answer.component'
 import {
@@ -83,7 +86,10 @@ export function getMDXComponents(): MDXComponents {
             sizes,
             ...props
         }: ComponentPropsWithoutRef<'img'>) => {
-            if (!src || typeof src !== 'string') return null
+            // Same guard as <Figure>: next/image throws on an src it cannot
+            // parse, and one unresolved placeholder would take down the post
+            // instead of dropping a single image.
+            if (typeof src !== 'string' || !isResolvedImageSrc(src)) return null
 
             return (
                 <Image

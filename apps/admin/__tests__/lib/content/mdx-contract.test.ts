@@ -13,6 +13,7 @@ import { describe, expect, it } from 'vitest'
 import {
     BLOG_CTA_IDS,
     DEFAULT_BLOG_CTA_ID,
+    FIGURE_SRC_PLACEHOLDER,
     MDX_COMPONENT_SPECS,
     MDX_RENDERER_COMPONENTS,
     MDX_WRITER_COMPONENTS,
@@ -20,6 +21,7 @@ import {
     buildMdxComponentReference,
     isBlogCtaId,
     isRenderableComponent,
+    isResolvedImageSrc,
     isWriterComponent,
 } from '@workspace/shared/content'
 
@@ -81,6 +83,38 @@ describe('MDX contract', () => {
         it('never shows a QuickAnswer example the writer could copy', () => {
             expect(reference).not.toContain(
                 MDX_COMPONENT_SPECS.QuickAnswer.example
+            )
+        })
+    })
+
+    describe('image src resolution', () => {
+        // Regression: a generated post reached the renderer with the writer's
+        // unfilled `src="PENDING"`, and next/image threw "Failed to parse src",
+        // 500-ing the whole page over one missing image.
+        it('rejects the unfilled placeholder', () => {
+            expect(isResolvedImageSrc(FIGURE_SRC_PLACEHOLDER)).toBe(false)
+        })
+
+        it('rejects empty and missing values', () => {
+            expect(isResolvedImageSrc('')).toBe(false)
+            expect(isResolvedImageSrc('   ')).toBe(false)
+            expect(isResolvedImageSrc(null)).toBe(false)
+            expect(isResolvedImageSrc(undefined)).toBe(false)
+        })
+
+        it('rejects anything next/image could not parse', () => {
+            expect(isResolvedImageSrc('image.webp')).toBe(false)
+            expect(isResolvedImageSrc('TODO')).toBe(false)
+            expect(isResolvedImageSrc('blog/photo.jpg')).toBe(false)
+        })
+
+        it('accepts root-relative paths and absolute URLs', () => {
+            expect(isResolvedImageSrc('/blog/photo.webp')).toBe(true)
+            expect(isResolvedImageSrc('https://cdn.example.com/a.webp')).toBe(
+                true
+            )
+            expect(isResolvedImageSrc('http://cdn.example.com/a.webp')).toBe(
+                true
             )
         })
     })

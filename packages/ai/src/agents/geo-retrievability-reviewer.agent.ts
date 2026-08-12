@@ -197,13 +197,20 @@ You MUST provide valid JSON matching the expected schema.
 function buildStructuralContext(content: string): string {
     const analysis = analyzeGeoStructure(content)
 
-    return `- H2 headings: ${analysis.headings.length} (${analysis.questionHeadings.length} phrased as questions)
+    return `- Section headings: ${analysis.headings.length} (${analysis.questionHeadings.length} phrased as questions)
 - Markdown tables present: ${analysis.tableCount}
 - CTA markers: ${analysis.ctaMarkers.length}${analysis.ctaMarkers.length > 0 ? ` (${analysis.ctaMarkers.join(', ')})` : ''}
 - External links: ${analysis.externalLinkCount}
 
 Headings in order:
-${analysis.headings.map((heading) => `  - ${heading}`).join('\n') || '  (none)'}`
+${
+    analysis.headings
+        .map(
+            (heading) =>
+                `  ${'  '.repeat(heading.level - 2)}- H${heading.level}: ${heading.text}`
+        )
+        .join('\n') || '  (none)'
+}`
 }
 
 /**
