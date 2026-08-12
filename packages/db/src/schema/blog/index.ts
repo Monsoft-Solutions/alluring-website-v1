@@ -55,10 +55,24 @@ export {
 export {
     autopilotMode,
     autopilotCadence,
+    refreshMode,
     blogAiConfig,
     type BlogAiConfig,
     type InsertBlogAiConfig,
 } from './blog-ai-config.table'
+
+export {
+    contentRefreshStatus,
+    contentRefresh,
+    type ContentRefresh,
+    type InsertContentRefresh,
+} from './content-refresh.table'
+
+export {
+    blogPostRevision,
+    type BlogPostRevision,
+    type InsertBlogPostRevision,
+} from './blog-post-revision.table'
 
 export {
     blogPostTagsRelations,

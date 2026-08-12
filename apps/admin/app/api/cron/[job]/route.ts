@@ -22,6 +22,8 @@ import {
     startAutopilotContentJob,
 } from '@/lib/services/autopilot.service'
 import { reapStuckPosts } from '@/lib/services/stuck-post-reaper.service'
+import { runGscSnapshotJob } from '@/lib/services/gsc-snapshot.service'
+import { runCannibalizationReportJob } from '@/lib/services/cannibalization-report.service'
 
 export const runtime = 'nodejs'
 // Ideation runs inline in this invocation (one model call + gate + inserts);
@@ -58,6 +60,23 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
             reaped: reaped.length,
             postIds: reaped.map((post) => post.id),
         }
+    },
+
+    /** Catches gsc_query_page_daily up to the newest final GSC date (#145). */
+    'gsc-snapshot': async () => {
+        const result = await runGscSnapshotJob('cron')
+        return {
+            outcome: result.outcome,
+            datesPulled: result.datesPulled.length,
+            rowsUpserted: result.rowsUpserted,
+            ...(result.error ? { error: result.error } : {}),
+        }
+    },
+
+    /** Weekly cannibalization findings + the SEO digest email (#146). */
+    'cannibalization-report': async () => {
+        const result = await runCannibalizationReportJob('cron')
+        return { ...result }
     },
 }
 

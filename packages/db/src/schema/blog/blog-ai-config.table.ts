@@ -13,6 +13,7 @@
  * @module packages/db/src/schema/blog/blog-ai-config.table
  */
 import {
+    doublePrecision,
     integer,
     pgEnum,
     pgTable,
@@ -41,6 +42,16 @@ export const autopilotCadence = pgEnum('autopilot_cadence', [
     'weekdays',
     'weekly',
 ])
+
+/**
+ * Refresh loop autonomy mode (epic #144).
+ *
+ * - `off`: decay detection still snapshots GSC data but queues nothing.
+ * - `suggest`: detection fills the refresh queue; an admin starts each run.
+ * - `auto`: the autopilot-refresh job also executes queued candidates; the
+ *   apply (merge onto the live post) always stays human-gated.
+ */
+export const refreshMode = pgEnum('refresh_mode', ['off', 'suggest', 'auto'])
 
 /**
  * Blog AI configuration table.
@@ -126,6 +137,32 @@ export const blogAiConfig = pgTable('blog_ai_config', {
     autopilotIdeasPerRun: integer('autopilot_ideas_per_run')
         .notNull()
         .default(5),
+
+    // ------------------------------------------------------------------
+    // Refresh loop (epic #144) — decay detection + in-place refresh
+    // ------------------------------------------------------------------
+
+    /** Refresh autonomy mode; `off` disables detection queueing. */
+    refreshMode: refreshMode('refresh_mode').notNull().default('off'),
+
+    /** Posts older than this many months are flagged stale (rule R3). */
+    refreshStaleMonths: integer('refresh_stale_months').notNull().default(6),
+
+    /**
+     * Drift-adjusted position drop (28d vs prior 28d) that flags decay
+     * (rule R1).
+     */
+    refreshPositionDropThreshold: doublePrecision(
+        'refresh_position_drop_threshold'
+    )
+        .notNull()
+        .default(3),
+
+    /** Days after an applied/dismissed refresh before a post can re-queue. */
+    refreshCooldownDays: integer('refresh_cooldown_days').notNull().default(60),
+
+    /** Auto mode pauses while this many refresh drafts await review. */
+    refreshDraftCap: integer('refresh_draft_cap').notNull().default(2),
 
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')

@@ -16,7 +16,8 @@
         "test:watch": "vitest",
         "geo:audit": "tsx scripts/geo-audit.ts",
         "geo:backfill": "tsx scripts/backfill-quick-answers.ts",
-        "pipeline:local": "tsx scripts/run-pipeline-local.ts"
+        "pipeline:local": "tsx scripts/run-pipeline-local.ts",
+        "backfill:gsc": "tsx scripts/backfill-gsc-snapshots.ts"
     },
     "dependencies": {
         "@ai-sdk/react": "^3.0.11",

@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm'
 import {
     boolean,
     foreignKey,
@@ -141,6 +142,14 @@ export const blogPost = pgTable(
 
         // Pipeline state (intermediate results, reviews, sources)
         pipelineState: jsonb('pipeline_state').$type<PipelineState>(),
+
+        /**
+         * Set ⇒ this row is a hidden refresh working copy of another post
+         * (epic #144). Working copies move through the pipeline like normal
+         * posts but must never be published directly — their content is
+         * merged back onto the original and the copy is deleted.
+         */
+        refreshOfPostId: uuid('refresh_of_post_id'),
     },
     (table) => [
         // Foreign Keys
@@ -154,6 +163,12 @@ export const blogPost = pgTable(
             foreignColumns: [images.id],
             name: 'blog_post_featured_image_id_fk',
         }).onDelete('set null'),
+        // A refresh working copy dies with its original.
+        foreignKey({
+            columns: [table.refreshOfPostId],
+            foreignColumns: [table.id],
+            name: 'blog_post_refresh_of_post_id_fk',
+        }).onDelete('cascade'),
 
         // Performance Indexes
         index('blog_post_status_idx').on(table.status),
@@ -178,6 +193,9 @@ export const blogPost = pgTable(
             table.status,
             table.ideaApproval
         ),
+        index('blog_post_refresh_of_idx')
+            .on(table.refreshOfPostId)
+            .where(sql`${table.refreshOfPostId} IS NOT NULL`),
     ]
 )
 

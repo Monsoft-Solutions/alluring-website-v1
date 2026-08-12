@@ -36,10 +36,13 @@ import { blogPost } from './blog-post.table'
  * Which scheduled job produced this run.
  * - `ideation`: tops up the idea approval queue.
  * - `content`: writes a post from the queue through the pipeline to Draft.
+ * - `refresh`: runs a queued refresh candidate through the pipeline on a
+ *   working copy (epic #144).
  */
 export const autopilotRunKind = pgEnum('autopilot_run_kind', [
     'ideation',
     'content',
+    'refresh',
 ])
 
 /** How the run was started. */
