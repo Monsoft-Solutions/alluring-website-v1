@@ -109,3 +109,35 @@ describe('evaluateTopicCandidate', () => {
         expect(verdict.owningUrl).toBe('/blog/brand-new-post')
     })
 })
+
+describe('gate regressions — synonym-titled and containment matches (prod 2026-08-12)', () => {
+    // /why-do-bbl-stink is titled "BBL Smell Explained: Why Do BBL Stink…"
+    // but its slug carries only "stink". These candidates sailed through as
+    // 'new' in production before title queries + containment scoring.
+    it("routes 'bbl smell' to the existing stink post as refresh", () => {
+        const verdict = evaluateTopicCandidate({
+            title: "BBL Smell After Surgery: What's Normal & What's Not",
+            primaryKeyword: 'bbl smell',
+        })
+        expect(verdict.verdict).toBe('refresh')
+        expect(verdict.owningSlug).toBe('why-do-bbl-stink')
+    })
+
+    it('folds plurals: "do bbls smell" also resolves to the stink post', () => {
+        const verdict = evaluateTopicCandidate({
+            title: "Do BBLs Really Smell? The Truth Surgeons Won't Tell You",
+            primaryKeyword: 'do bbls smell',
+        })
+        expect(verdict.verdict).toBe('refresh')
+        expect(verdict.owningSlug).toBe('why-do-bbl-stink')
+    })
+
+    it('rejects a surgeon-profile topic that competes with the surgeon page', () => {
+        const verdict = evaluateTopicCandidate({
+            title: "Meet Dr. Karlinsky: Miami's Trusted Plastic Surgeon",
+            primaryKeyword: 'dr. karlinsky',
+        })
+        expect(verdict.verdict).toBe('reject')
+        expect(verdict.owningUrl).toBe('/dr-karlinsky')
+    })
+})

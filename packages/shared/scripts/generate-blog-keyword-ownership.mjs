@@ -156,6 +156,23 @@ for (const post of posts) {
             owns.add(cleaned)
         }
     }
+    // Title vocabulary: a post can rank for words its slug never carries
+    // ("BBL Smell Explained: Why Do BBL Stink…" at /why-do-bbl-stink). The
+    // normalized title enters ownsQueries so the gate's similarity check
+    // sees that vocabulary; without it, synonym-titled candidates score
+    // as unclaimed clusters.
+    const titleQuery = String(post.title ?? '')
+        .toLowerCase()
+        .replace(/[^a-z0-9áéíóúñü\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    if (
+        titleQuery &&
+        titleQuery !== primaryKeyword &&
+        titleQuery !== slugQuery
+    ) {
+        owns.add(titleQuery)
+    }
 
     const duplicateOf = DUPLICATE_OF[post.slug]
     const notes = []

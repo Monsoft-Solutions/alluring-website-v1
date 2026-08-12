@@ -36,12 +36,20 @@ export function normalizeQuery(query: string): string {
         .trim()
 }
 
-/** Tokens for similarity scoring (drops 1–2 char noise words) */
+/** Tokens for similarity scoring (drops 1–2 char noise words).
+ * Trailing-s plurals fold to singular ("bbls" ⇒ "bbl") so pluralized
+ * candidates still match owned vocabulary; both sides tokenize through
+ * here, so the folding is always symmetric. */
 function queryTokens(query: string): Set<string> {
     return new Set(
         normalizeQuery(query)
             .split(' ')
             .filter((t) => t.length > 2)
+            .map((t) =>
+                t.length >= 4 && t.endsWith('s') && !t.endsWith('ss')
+                    ? t.slice(0, -1)
+                    : t
+            )
     )
 }
 
@@ -168,7 +176,16 @@ export function findSimilarOwnedQueries(
             let intersection = 0
             for (const t of target) if (tokens.has(t)) intersection++
             const union = target.size + tokens.size - intersection
-            const score = union === 0 ? 0 : intersection / union
+            const jaccard = union === 0 ? 0 : intersection / union
+            // Jaccard punishes length mismatch: "bbl smell" scores 0.29
+            // against a 7-token title query that fully contains it. When one
+            // side is contained in the other, that IS the same cluster, so
+            // the overlap coefficient (intersection over the smaller set)
+            // also counts — guarded to sets of 2+ tokens so a single shared
+            // word can never claim a match on its own.
+            const smaller = Math.min(target.size, tokens.size)
+            const overlap = smaller >= 2 ? intersection / smaller : 0
+            const score = Math.max(jaccard, overlap)
             if (score >= threshold && (!best || score > best.score)) {
                 best = { query: owned, score }
             }
