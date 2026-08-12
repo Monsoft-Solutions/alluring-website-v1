@@ -35,6 +35,8 @@ import { SearchTrendsChartCard } from '@/components/seo/search-trends-chart.comp
 import { SearchQueriesCard } from '@/components/seo/search-queries-card.component'
 import { SearchPagesCard } from '@/components/seo/search-pages-card.component'
 import { ContentOpportunitiesCard } from '@/components/seo/content-opportunities-card.component'
+import { GscSnapshotStatusCard } from '@/components/seo/gsc-snapshot-status-card.component'
+import { CannibalizationReportCard } from '@/components/seo/cannibalization-report-card.component'
 
 // Position Tracking tab components
 import { PositionChangesCard } from '@/components/seo/position-changes-card.component'
@@ -167,6 +169,10 @@ export function SeoDashboard() {
 
                     {/* Content Opportunities */}
                     <ContentOpportunitiesCard days={days} />
+
+                    {/* Refresh loop (epic #144): snapshot health + cannibalization */}
+                    <GscSnapshotStatusCard />
+                    <CannibalizationReportCard />
 
                     {/* Queries & Pages Tables */}
                     <div className='grid gap-6 lg:grid-cols-2'>

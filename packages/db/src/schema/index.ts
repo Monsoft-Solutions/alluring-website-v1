@@ -12,10 +12,14 @@ export {
     ideaApprovalStatus,
     autopilotMode,
     autopilotCadence,
+    refreshMode,
     autopilotRunKind,
     autopilotTrigger,
     autopilotRunStatus,
     autopilotRun,
+    contentRefreshStatus,
+    contentRefresh,
+    blogPostRevision,
     blogPost,
     blogCategory,
     blogPostCategory,
@@ -55,8 +59,27 @@ export {
     type InsertBlogAiConfig,
     type AutopilotRun,
     type InsertAutopilotRun,
+    type ContentRefresh,
+    type InsertContentRefresh,
+    type BlogPostRevision,
+    type InsertBlogPostRevision,
     type CreateResourceInput,
 } from './blog'
+
+// GSC schema
+export {
+    gscQueryPageDaily,
+    gscSyncTrigger,
+    gscSyncStatus,
+    gscSyncRun,
+    cannibalizationReport,
+    type GscQueryPageDaily,
+    type InsertGscQueryPageDaily,
+    type GscSyncRun,
+    type InsertGscSyncRun,
+    type CannibalizationReport,
+    type InsertCannibalizationReport,
+} from './gsc'
 
 // Chat schema
 export {

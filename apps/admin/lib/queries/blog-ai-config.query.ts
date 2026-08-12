@@ -45,6 +45,16 @@ export type BlogAiConfig = {
     autopilotDraftCap: number
     /** Ideation runs top the pending-idea queue up to this size */
     autopilotIdeasPerRun: number
+    /** Refresh loop autonomy mode (epic #144; `off` queues nothing) */
+    refreshMode: RefreshMode
+    /** Posts older than this many months are flagged stale (rule R3) */
+    refreshStaleMonths: number
+    /** Drift-adjusted 28d position drop that flags decay (rule R1) */
+    refreshPositionDropThreshold: number
+    /** Days after an applied/dismissed refresh before a post re-queues */
+    refreshCooldownDays: number
+    /** Auto mode pauses while this many refresh drafts await review */
+    refreshDraftCap: number
 }
 
 /** Autopilot autonomy modes (mirrors the `autopilot_mode` pg enum) */
@@ -52,6 +62,9 @@ export type AutopilotMode = 'off' | 'ideas' | 'full'
 
 /** Autopilot cadence presets (mirrors the `autopilot_cadence` pg enum) */
 export type AutopilotCadence = 'daily' | 'weekdays' | 'weekly'
+
+/** Refresh loop autonomy modes (mirrors the `refresh_mode` pg enum) */
+export type RefreshMode = 'off' | 'suggest' | 'auto'
 
 /**
  * Code defaults used until an admin saves a configuration.
@@ -72,6 +85,11 @@ export const DEFAULT_BLOG_AI_CONFIG: BlogAiConfig = {
     autopilotPostsPerRun: 1,
     autopilotDraftCap: 3,
     autopilotIdeasPerRun: 5,
+    refreshMode: 'off',
+    refreshStaleMonths: 6,
+    refreshPositionDropThreshold: 3,
+    refreshCooldownDays: 60,
+    refreshDraftCap: 2,
 }
 
 /**
@@ -127,5 +145,10 @@ export async function getBlogAiConfig(): Promise<BlogAiConfig> {
         autopilotPostsPerRun: config.autopilotPostsPerRun,
         autopilotDraftCap: config.autopilotDraftCap,
         autopilotIdeasPerRun: config.autopilotIdeasPerRun,
+        refreshMode: config.refreshMode,
+        refreshStaleMonths: config.refreshStaleMonths,
+        refreshPositionDropThreshold: config.refreshPositionDropThreshold,
+        refreshCooldownDays: config.refreshCooldownDays,
+        refreshDraftCap: config.refreshDraftCap,
     }
 }

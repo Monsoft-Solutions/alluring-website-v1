@@ -21,3 +21,15 @@ export type {
     RefreshCandidate,
     AutopilotSkipReason,
 } from './autopilot.type'
+
+export type {
+    CannibalizationFinding,
+    CannibalizationFindingPage,
+} from './gsc.type'
+
+export type {
+    RefreshSignal,
+    RefreshSignalSource,
+    RefreshBrief,
+    RefreshOutcome,
+} from './content-refresh.type'
