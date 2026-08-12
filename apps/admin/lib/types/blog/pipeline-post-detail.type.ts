@@ -6,6 +6,8 @@
  * @module @/lib/types/blog/pipeline-post-detail
  */
 
+import type { PipelineState, PipelinePhaseKey } from '@workspace/db/types'
+
 import type { PipelineStatus } from '@/lib/types/blog/blog-action.type'
 
 /**
@@ -58,6 +60,10 @@ export type PipelinePostDetail = {
     // Processing
     pipelineProcessingStatus: 'idle' | 'processing' | 'error'
     processingError: string | null
+    // Pipeline telemetry (per-phase timings, models, QA flags)
+    pipelineState: PipelineState | null
+    /** Langfuse trace URL per phase; null when deep-linking isn't configured */
+    phaseTraceUrls: Record<PipelinePhaseKey, string | null>
     // Timestamps
     createdAt: string | null
     updatedAt: string | null

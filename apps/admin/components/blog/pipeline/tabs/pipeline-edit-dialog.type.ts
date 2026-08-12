@@ -147,6 +147,11 @@ export type MediaTabProps = {
     setFeaturedImageDialogOpen: (value: boolean) => void
     markDirty: () => void
     blogPostId?: string
+    /** Image QA outcomes from the pipeline's no-people gate */
+    imageQa?: {
+        peopleDetected?: boolean
+        qaRegenerated?: boolean
+    }
 }
 
 /**

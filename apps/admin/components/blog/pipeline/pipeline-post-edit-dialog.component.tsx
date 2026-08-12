@@ -25,6 +25,7 @@ import {
     ExternalLink,
     ArrowUpRight,
     Lightbulb,
+    Activity,
 } from 'lucide-react'
 
 import type { PipelinePostItem } from '@/lib/types/pipeline.type'
@@ -85,6 +86,7 @@ import { DetailsTab } from './tabs/details-tab.component'
 import { SeoTab } from './tabs/seo-tab.component'
 import { MediaTab } from './tabs/media-tab.component'
 import { PlanningTab } from './tabs/planning-tab.component'
+import { PipelineTab } from './tabs/pipeline-tab.component'
 
 type PipelinePostEditDialogProps = {
     post: PipelinePostItem | null
@@ -567,6 +569,13 @@ export function PipelinePostEditDialog({
                                     <Lightbulb className='mr-2 h-4 w-4' />
                                     Planning
                                 </TabsTrigger>
+                                <TabsTrigger
+                                    value='pipeline'
+                                    className='rounded-none data-[state=active]:border-b-2 data-[state=active]:border-stone-900'
+                                >
+                                    <Activity className='mr-2 h-4 w-4' />
+                                    Pipeline
+                                </TabsTrigger>
                             </TabsList>
                         </div>
 
@@ -631,6 +640,12 @@ export function PipelinePostEditDialog({
                                 }
                                 markDirty={markDirty}
                                 blogPostId={post?.id}
+                                imageQa={
+                                    (
+                                        postDetail?.pipelineState ??
+                                        post?.pipelineState
+                                    )?.imageGenerationPhase
+                                }
                             />
 
                             <PlanningTab
@@ -640,6 +655,15 @@ export function PipelinePostEditDialog({
                                 handleAddFaq={handleAddFaq}
                                 handleRemoveFaq={handleRemoveFaq}
                                 handleUpdateFaq={handleUpdateFaq}
+                            />
+
+                            <PipelineTab
+                                pipelineState={
+                                    postDetail?.pipelineState ??
+                                    post?.pipelineState
+                                }
+                                phaseTraceUrls={postDetail?.phaseTraceUrls}
+                                isLoadingDetail={isLoadingDetail}
                             />
                         </div>
                     </Tabs>

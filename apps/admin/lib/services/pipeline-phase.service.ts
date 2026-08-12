@@ -7,6 +7,7 @@
  * @module @admin/lib/services/pipeline-phase
  */
 import { eq } from 'drizzle-orm'
+import { SpanStatusCode, trace } from '@opentelemetry/api'
 import { db } from '@workspace/db/client'
 import {
     blogPost,
@@ -212,6 +213,39 @@ async function recordAutoRetry(
 }
 
 /**
+ * Tracer for pipeline phase spans; exported spans land in Langfuse via the
+ * globally registered provider in instrumentation.ts.
+ */
+const pipelineTracer = trace.getTracer('pipeline-phase')
+
+/**
+ * Run a phase inside a root span so every AI SDK call it makes joins one
+ * trace, and hand back that trace's id for pipelineState — this is what the
+ * admin's "open in Langfuse" link points at.
+ */
+async function withPhaseSpan<T>(
+    spanName: string,
+    postId: string,
+    fn: () => Promise<T>
+): Promise<{ result: T; traceId: string }> {
+    return pipelineTracer.startActiveSpan(
+        spanName,
+        { attributes: { 'blog.post.id': postId } },
+        async (span) => {
+            try {
+                const result = await fn()
+                return { result, traceId: span.spanContext().traceId }
+            } catch (error) {
+                span.setStatus({ code: SpanStatusCode.ERROR })
+                throw error
+            } finally {
+                span.end()
+            }
+        }
+    )
+}
+
+/**
  * Fail a phase — or, once per phase, re-run it when the failure looks like
  * a transient provider error (rate limit, 5xx, network drop). `isAutoRetry`
  * on the re-run guards the recursion to a single attempt.
@@ -323,19 +357,24 @@ export async function runGenerationPhaseForPost(
         // no configuration row exists yet.
         const aiConfig = await getBlogAiConfig()
 
-        const result = await runGenerationPhase({
-            contentModelId: aiConfig.contentModelId,
-            input: {
-                title: post.title,
-                topic: planningData.topic,
-                primaryKeyword: post.primaryKeyword || undefined,
-                secondaryKeywords: post.secondaryKeywords || undefined,
-                targetAudience: planningData.targetAudience,
-                uniqueAngle: planningData.uniqueAngle,
-                contentType: planningData.contentType,
-                estimatedWordCount: planningData.estimatedWordCount,
-            },
-        })
+        const { result, traceId } = await withPhaseSpan(
+            'pipeline.generation',
+            postId,
+            () =>
+                runGenerationPhase({
+                    contentModelId: aiConfig.contentModelId,
+                    input: {
+                        title: post.title,
+                        topic: planningData.topic,
+                        primaryKeyword: post.primaryKeyword || undefined,
+                        secondaryKeywords: post.secondaryKeywords || undefined,
+                        targetAudience: planningData.targetAudience,
+                        uniqueAngle: planningData.uniqueAngle,
+                        contentType: planningData.contentType,
+                        estimatedWordCount: planningData.estimatedWordCount,
+                    },
+                })
+        )
 
         if (!result.success) {
             return failPhaseOrAutoRetry({
@@ -365,6 +404,8 @@ export async function runGenerationPhaseForPost(
                 initialWordCount: result.wordCount,
                 toolCallCount: result.toolCallCount,
                 stepCount: result.stepCount,
+                model: result.modelId,
+                traceId,
             },
         }
 
@@ -453,18 +494,23 @@ export async function runReviewPhaseForPost(
 
         // Run review phase
         const planningData = post.planningData
-        const result = await runReviewPhase({
-            content: post.content!,
-            title: post.title,
-            primaryKeyword: post.primaryKeyword || undefined,
-            secondaryKeywords: post.secondaryKeywords || undefined,
-            targetAudience: planningData?.targetAudience,
-            contentType: planningData?.contentType,
-            estimatedWordCount: planningData?.estimatedWordCount,
-            reviewModelId: aiConfig.reviewModelId,
-            currentPostSlug: post.slug || undefined,
-            pagesForQuery: createPagesForQueryAdapter(),
-        })
+        const { result, traceId } = await withPhaseSpan(
+            'pipeline.review',
+            postId,
+            () =>
+                runReviewPhase({
+                    content: post.content!,
+                    title: post.title,
+                    primaryKeyword: post.primaryKeyword || undefined,
+                    secondaryKeywords: post.secondaryKeywords || undefined,
+                    targetAudience: planningData?.targetAudience,
+                    contentType: planningData?.contentType,
+                    estimatedWordCount: planningData?.estimatedWordCount,
+                    reviewModelId: aiConfig.reviewModelId,
+                    currentPostSlug: post.slug || undefined,
+                    pagesForQuery: createPagesForQueryAdapter(),
+                })
+        )
 
         if (!result.success) {
             return failPhaseOrAutoRetry({
@@ -491,6 +537,8 @@ export async function runReviewPhaseForPost(
                     new Date().toISOString(),
                 completedAt: new Date().toISOString(),
                 reviews: result.reviews,
+                model: result.modelId,
+                traceId,
             },
             orchestrationPhase: result.orchestratorResult
                 ? {
@@ -591,12 +639,17 @@ export async function runExtractPhaseForPost(
         const aiConfig = await getBlogAiConfig()
 
         // Run extraction phase
-        const result = await runExtractionPhase({
-            content: post.content!,
-            title: post.title,
-            primaryKeyword: post.primaryKeyword || undefined,
-            modelId: aiConfig.extractionModelId,
-        })
+        const { result, traceId } = await withPhaseSpan(
+            'pipeline.extraction',
+            postId,
+            () =>
+                runExtractionPhase({
+                    content: post.content!,
+                    title: post.title,
+                    primaryKeyword: post.primaryKeyword || undefined,
+                    modelId: aiConfig.extractionModelId,
+                })
+        )
 
         if (!result.success) {
             return failPhaseOrAutoRetry({
@@ -613,19 +666,26 @@ export async function runExtractPhaseForPost(
             })
         }
 
-        // Build pipeline state update with metrics
+        // Build pipeline state update with metrics. Phase times are derived
+        // from each phase's own start/complete timestamps; review time spans
+        // review + orchestration (they run as one phase).
         const existingPipelineState: PipelineState = post.pipelineState ?? {}
+        const generationTimeMs = calculateDuration(
+            existingPipelineState.generationPhase?.startedAt,
+            existingPipelineState.generationPhase?.completedAt
+        )
+        const reviewTimeMs = calculateDuration(
+            existingPipelineState.reviewPhase?.startedAt,
+            existingPipelineState.reviewPhase?.completedAt
+        )
+        const orchestrationTimeMs =
+            existingPipelineState.orchestrationPhase?.result
+                ?.processingTimeMs ?? 0
         const metrics: PipelineMetrics = {
-            totalTimeMs:
-                (existingPipelineState.generationPhase
-                    ? calculateDuration(
-                          existingPipelineState.generationPhase.startedAt,
-                          existingPipelineState.generationPhase.completedAt
-                      )
-                    : 0) + result.timeMs,
-            generationTimeMs: 0,
-            reviewTimeMs: 0,
-            orchestrationTimeMs: 0,
+            totalTimeMs: generationTimeMs + reviewTimeMs + result.timeMs,
+            generationTimeMs,
+            reviewTimeMs,
+            orchestrationTimeMs,
             extractionTimeMs: result.timeMs,
             toolCallCount:
                 existingPipelineState.generationPhase?.toolCallCount || 0,
@@ -639,6 +699,8 @@ export async function runExtractPhaseForPost(
                     post.processingStartedAt?.toISOString() ||
                     new Date().toISOString(),
                 completedAt: new Date().toISOString(),
+                model: result.modelId,
+                traceId,
             },
             metrics,
         }
@@ -740,45 +802,50 @@ export async function runImageGenerationPhaseForPost(
         // Run image generation phase. The fal.ai service is injected as the
         // renderer so the AI package stays free of environment dependencies,
         // and so the no-people QA gate can regenerate through the same path.
-        const phaseResult = await runImageGenerationPhase({
-            title: post.title,
-            content: post.content!,
-            primaryKeyword: post.primaryKeyword || undefined,
-            aiSummary: post.aiSummary || undefined,
-            imageModel: aiConfig.imageModelId,
-            ...(aiConfig.artisticStyleId
-                ? { forcedArtisticStyleId: aiConfig.artisticStyleId }
-                : {}),
-            imageAdapter: async ({
-                prompt,
-                aspectRatio,
-                model,
-                descriptor,
-                attempt,
-            }) => {
-                console.log(
-                    `[Pipeline Service] Rendering image for post ${postId} (${model}, ${aspectRatio}, attempt ${attempt})...`
-                )
+        const { result: phaseResult, traceId } = await withPhaseSpan(
+            'pipeline.image-generation',
+            postId,
+            () =>
+                runImageGenerationPhase({
+                    title: post.title,
+                    content: post.content!,
+                    primaryKeyword: post.primaryKeyword || undefined,
+                    aiSummary: post.aiSummary || undefined,
+                    imageModel: aiConfig.imageModelId,
+                    ...(aiConfig.artisticStyleId
+                        ? { forcedArtisticStyleId: aiConfig.artisticStyleId }
+                        : {}),
+                    imageAdapter: async ({
+                        prompt,
+                        aspectRatio,
+                        model,
+                        descriptor,
+                        attempt,
+                    }) => {
+                        console.log(
+                            `[Pipeline Service] Rendering image for post ${postId} (${model}, ${aspectRatio}, attempt ${attempt})...`
+                        )
 
-                const [rendered] = await generateImageWithFal({
-                    prompt,
-                    blogPostId: postId,
-                    model,
-                    numImages: 1,
-                    aspectRatio,
-                    slug: post.slug || undefined,
-                    descriptor,
+                        const [rendered] = await generateImageWithFal({
+                            prompt,
+                            blogPostId: postId,
+                            model,
+                            numImages: 1,
+                            aspectRatio,
+                            slug: post.slug || undefined,
+                            descriptor,
+                        })
+
+                        return rendered
+                            ? {
+                                  url: rendered.blobUrl,
+                                  width: rendered.width,
+                                  height: rendered.height,
+                              }
+                            : null
+                    },
                 })
-
-                return rendered
-                    ? {
-                          url: rendered.blobUrl,
-                          width: rendered.width,
-                          height: rendered.height,
-                      }
-                    : null
-            },
-        })
+        )
 
         if (!phaseResult.success || !phaseResult.prompt) {
             return failPhaseOrAutoRetry({
@@ -880,6 +947,7 @@ export async function runImageGenerationPhaseForPost(
                 artisticStyleId: phaseResult.artisticStyleId,
                 peopleDetected: phaseResult.peopleDetected,
                 qaRegenerated: phaseResult.qaRegenerated,
+                traceId,
             },
         }
 

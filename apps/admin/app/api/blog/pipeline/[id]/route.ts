@@ -5,6 +5,7 @@ import { blogPost, author, images } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 
 import { requireAuth } from '@/lib/utils/auth.util'
+import { buildLangfuseTraceUrl } from '@/lib/utils/langfuse.util'
 
 export const runtime = 'nodejs'
 
@@ -50,6 +51,7 @@ export async function GET(
                 // Processing status
                 pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
                 processingError: blogPost.processingError,
+                pipelineState: blogPost.pipelineState,
                 // Timestamps
                 createdAt: blogPost.createdAt,
                 updatedAt: blogPost.updatedAt,
@@ -70,7 +72,19 @@ export async function GET(
             )
         }
 
-        return NextResponse.json(post)
+        // Trace links are computed here because the Langfuse base URL and
+        // project id are server-only env vars.
+        const state = post.pipelineState
+        const phaseTraceUrls = {
+            generation: buildLangfuseTraceUrl(state?.generationPhase?.traceId),
+            review: buildLangfuseTraceUrl(state?.reviewPhase?.traceId),
+            extraction: buildLangfuseTraceUrl(state?.extractionPhase?.traceId),
+            imageGeneration: buildLangfuseTraceUrl(
+                state?.imageGenerationPhase?.traceId
+            ),
+        }
+
+        return NextResponse.json({ ...post, phaseTraceUrls })
     } catch (error) {
         console.error('Error fetching pipeline post:', error)
 

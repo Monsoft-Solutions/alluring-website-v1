@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@workspace/ui/components/card'
 import { Badge } from '@workspace/ui/components/badge'
-import { AlertCircle, Loader2, Tag } from 'lucide-react'
+import { AlertCircle, Loader2, RefreshCw, Tag, UserRound } from 'lucide-react'
 import {
     Tooltip,
     TooltipContent,
@@ -61,6 +61,9 @@ export function PipelineCard({
 
     // Calculate word count from pipeline state if available
     const wordCount = post.pipelineState?.generationPhase?.initialWordCount
+
+    // Image QA outcomes recorded by the no-people gate
+    const imageQa = post.pipelineState?.imageGenerationPhase
 
     const handleClick = (e: React.MouseEvent) => {
         // Don't open dialog if the event was from dragging or menu is open
@@ -198,6 +201,38 @@ export function PipelineCard({
                                             Awaiting approval
                                         </Badge>
                                     )}
+
+                                {imageQa?.peopleDetected && (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Badge className='flex items-center gap-0.5 bg-red-100 px-1.5 py-0 text-[10px] text-red-800 hover:bg-red-100'>
+                                                <UserRound className='h-2.5 w-2.5' />
+                                                People
+                                            </Badge>
+                                        </TooltipTrigger>
+                                        <TooltipContent className='max-w-xs'>
+                                            Image QA detected a person in the
+                                            featured image — review it before
+                                            publishing
+                                        </TooltipContent>
+                                    </Tooltip>
+                                )}
+
+                                {imageQa?.qaRegenerated && (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Badge className='flex items-center gap-0.5 bg-blue-100 px-1.5 py-0 text-[10px] text-blue-800 hover:bg-blue-100'>
+                                                <RefreshCw className='h-2.5 w-2.5' />
+                                                QA redo
+                                            </Badge>
+                                        </TooltipTrigger>
+                                        <TooltipContent className='max-w-xs'>
+                                            The no-people QA gate regenerated
+                                            this featured image with reinforced
+                                            negatives
+                                        </TooltipContent>
+                                    </Tooltip>
+                                )}
                             </div>
                         </div>
                     </div>

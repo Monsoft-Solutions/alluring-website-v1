@@ -80,6 +80,8 @@ export type ReviewPhaseResult = {
     orchestrationTimeMs: number
     /** Total processing time in ms */
     totalTimeMs: number
+    /** Model the review agents ran on (resolved after defaults) */
+    modelId: string
 }
 
 /**
@@ -329,6 +331,7 @@ export async function runReviewPhase(
             reviewTimeMs,
             orchestrationTimeMs,
             totalTimeMs,
+            modelId: reviewModelId,
         }
     } catch (error) {
         const errorMessage =
@@ -346,6 +349,7 @@ export async function runReviewPhase(
             reviewTimeMs: 0,
             orchestrationTimeMs: 0,
             totalTimeMs: Date.now() - startTime,
+            modelId: reviewModelId,
         }
     }
 }

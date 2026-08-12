@@ -156,12 +156,20 @@ export type PipelineState = {
         initialWordCount?: number
         toolCallCount?: number
         stepCount?: number
+        /** Model the phase ran on (resolved after defaults) */
+        model?: string
+        /** OTEL/Langfuse trace id of the phase run */
+        traceId?: string
     }
     /** Review phase results */
     reviewPhase?: {
         startedAt: string
         completedAt?: string
         reviews?: AgentReview[]
+        /** Model the review agents ran on (resolved after defaults) */
+        model?: string
+        /** OTEL/Langfuse trace id covering review + orchestration */
+        traceId?: string
     }
     /** Orchestration phase results */
     orchestrationPhase?: {
@@ -173,6 +181,10 @@ export type PipelineState = {
     extractionPhase?: {
         startedAt: string
         completedAt?: string
+        /** Model the phase ran on (resolved after defaults) */
+        model?: string
+        /** OTEL/Langfuse trace id of the phase run */
+        traceId?: string
     }
     /** Image generation phase results */
     imageGenerationPhase?: {
@@ -193,6 +205,8 @@ export type PipelineState = {
         peopleDetected?: boolean
         /** True when the QA gate regenerated the image with reinforced negatives */
         qaRegenerated?: boolean
+        /** OTEL/Langfuse trace id of the phase run */
+        traceId?: string
     }
     /** Overall pipeline metrics */
     metrics?: PipelineMetrics

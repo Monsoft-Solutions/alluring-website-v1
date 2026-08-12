@@ -69,6 +69,9 @@ export const env = createEnv({
         LANGFUSE_PUBLIC_KEY: z.string().optional(),
         LANGFUSE_BASE_URL: z.string().url().optional(),
         LANGFUSE_ENABLED: z.enum(['true', 'false']).optional(),
+        // Project id from the Langfuse project URL; with LANGFUSE_BASE_URL it
+        // lets the admin deep-link pipeline phases to their traces
+        LANGFUSE_PROJECT_ID: z.string().optional(),
 
         // fal.ai for AI image generation
         FAL_KEY: z.string().min(1),

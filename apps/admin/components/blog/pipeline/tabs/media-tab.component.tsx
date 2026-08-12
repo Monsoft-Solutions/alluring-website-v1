@@ -1,7 +1,14 @@
 'use client'
 
 import Image from 'next/image'
-import { Image as ImageIcon, Sparkles, Trash2 } from 'lucide-react'
+import {
+    Image as ImageIcon,
+    RefreshCw,
+    Sparkles,
+    Trash2,
+    UserRound,
+} from 'lucide-react'
+import { Badge } from '@workspace/ui/components/badge'
 import { Button } from '@workspace/ui/components/button'
 import { Label } from '@workspace/ui/components/label'
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
@@ -23,6 +30,7 @@ export function MediaTab({
     setFeaturedImageDialogOpen,
     markDirty,
     blogPostId,
+    imageQa,
 }: MediaTabProps) {
     return (
         <TabsContent value='media' className='m-0 h-full'>
@@ -30,9 +38,23 @@ export function MediaTab({
                 <div className='space-y-6 p-6'>
                     {/* Current Featured Image */}
                     <div>
-                        <Label className='text-xs font-medium text-stone-500'>
-                            Featured Image
-                        </Label>
+                        <div className='flex items-center gap-2'>
+                            <Label className='text-xs font-medium text-stone-500'>
+                                Featured Image
+                            </Label>
+                            {imageQa?.peopleDetected && (
+                                <Badge className='flex items-center gap-1 bg-red-100 px-1.5 py-0 text-[10px] text-red-800 hover:bg-red-100'>
+                                    <UserRound className='h-2.5 w-2.5' />
+                                    People detected — review before publishing
+                                </Badge>
+                            )}
+                            {imageQa?.qaRegenerated && (
+                                <Badge className='flex items-center gap-1 bg-blue-100 px-1.5 py-0 text-[10px] text-blue-800 hover:bg-blue-100'>
+                                    <RefreshCw className='h-2.5 w-2.5' />
+                                    QA regenerated
+                                </Badge>
+                            )}
+                        </div>
                         <div className='mt-2 flex items-start gap-4'>
                             {featuredImageUrl ? (
                                 <div className='relative h-32 w-48 overflow-hidden rounded-lg border bg-stone-100'>
