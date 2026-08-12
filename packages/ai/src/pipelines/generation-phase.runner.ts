@@ -18,7 +18,10 @@ import {
     createSourceCollector,
     type CollectedSource,
 } from '../tools/research-tools.tool'
-import { getInternalPagesContext } from '../data/internal-pages.data'
+import {
+    getInternalPagesContext,
+    type LinkableBlogPost,
+} from '../data/internal-pages.data'
 import { telemetryConfig } from '../telemetry'
 import {
     buildAgenticSystemPrompt,
@@ -97,6 +100,13 @@ export type GenerationPhaseOptions = {
     temperature?: number
     /** Maximum tool call steps */
     maxSteps?: number
+    /**
+     * Published posts this article may link to, supplied by the caller because
+     * this package has no database access. Without them the writer sees only
+     * the static marketing pages, cannot build blog-to-blog links, and invents
+     * URLs when asked for a related article.
+     */
+    linkableBlogPosts?: LinkableBlogPost[]
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -175,6 +185,7 @@ export async function runGenerationPhase(
         contentModelId = DEFAULTS.CONTENT_MODEL,
         temperature = DEFAULTS.TEMPERATURE,
         maxSteps = DEFAULTS.MAX_STEPS,
+        linkableBlogPosts,
         onProgress,
     } = options
 
@@ -185,8 +196,9 @@ export async function runGenerationPhase(
         const sourceContext = createSourceCollector()
         const tools = createResearchTools(sourceContext)
 
-        // Get internal pages context
-        const internalPagesContext = getInternalPagesContext()
+        // Get internal pages context, including the published posts this
+        // article may link to
+        const internalPagesContext = getInternalPagesContext(linkableBlogPosts)
 
         // Build prompts using modular prompt system
         const contentType = input.contentType as ContentType | undefined

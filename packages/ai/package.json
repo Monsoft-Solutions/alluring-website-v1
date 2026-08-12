@@ -74,6 +74,16 @@
             "types": "./dist/functions/validate-generated-mdx.function.d.ts",
             "import": "./dist/functions/validate-generated-mdx.function.js",
             "default": "./dist/functions/validate-generated-mdx.function.js"
+        },
+        "./functions/validate-internal-links.function": {
+            "types": "./dist/functions/validate-internal-links.function.d.ts",
+            "import": "./dist/functions/validate-internal-links.function.js",
+            "default": "./dist/functions/validate-internal-links.function.js"
+        },
+        "./data/internal-pages.data": {
+            "types": "./dist/data/internal-pages.data.d.ts",
+            "import": "./dist/data/internal-pages.data.js",
+            "default": "./dist/data/internal-pages.data.js"
         }
     },
     "scripts": {

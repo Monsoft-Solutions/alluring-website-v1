@@ -176,3 +176,9 @@ export {
     type MdxValidationResult,
     type MdxSanitizationAction,
 } from './validate-generated-mdx.function'
+
+export {
+    validateInternalLinks,
+    type InternalLinkValidationResult,
+    type BrokenInternalLink,
+} from './validate-internal-links.function'

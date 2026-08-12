@@ -118,6 +118,10 @@ export type MdxSanitizationAction = {
         | 'duplicate-cta-marker'
         | 'invalid-cta-id'
         | 'stray-expression'
+        // Not an MDX hazard — a link to one of our own pages that does not
+        // exist. Recorded alongside the rest so the admin card shows every
+        // change made to the generated body in one place.
+        | 'broken-internal-link'
     detail: string
 }
 
