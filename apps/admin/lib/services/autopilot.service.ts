@@ -400,10 +400,21 @@ export async function runAutopilotIdeationJob(
             await getLastCompletedAt('ideation')
         )
     ) {
+        // Manual runs reset the cadence clock, so an invisible cron skip
+        // here reads as "the schedule never fired" — record it.
+        await recordSkippedRun('ideation', trigger, mode, 'cadence-not-due')
         return { outcome: 'skipped', detail: { reason: 'cadence-not-due' } }
     }
 
     if (await hasUnacknowledgedFailure('ideation')) {
+        if (trigger === 'cron') {
+            await recordSkippedRun(
+                'ideation',
+                trigger,
+                mode,
+                'unacknowledged-failure'
+            )
+        }
         return {
             outcome: 'skipped',
             detail: { reason: 'unacknowledged-failure' },
@@ -555,10 +566,21 @@ export async function startAutopilotContentJob(
             await getLastCompletedAt('content')
         )
     ) {
+        // Consecutive identical skips collapse into one row, so a weekly
+        // cadence checked by a daily cron stays one row, not six.
+        await recordSkippedRun('content', trigger, mode, 'cadence-not-due')
         return { outcome: 'skipped', detail: { reason: 'cadence-not-due' } }
     }
 
     if (await hasUnacknowledgedFailure('content')) {
+        if (trigger === 'cron') {
+            await recordSkippedRun(
+                'content',
+                trigger,
+                mode,
+                'unacknowledged-failure'
+            )
+        }
         return {
             outcome: 'skipped',
             detail: { reason: 'unacknowledged-failure' },
