@@ -86,6 +86,29 @@ const blogAiConfigSchema = z.object({
         .int()
         .min(3, 'At least 3 ideas per run')
         .max(10, 'At most 10 ideas per run'),
+    // Refresh loop (epic #144)
+    refreshMode: z.enum(['off', 'suggest', 'auto'], {
+        message: 'Select a refresh mode',
+    }),
+    refreshStaleMonths: z
+        .number()
+        .int()
+        .min(1, 'Stale age must be at least 1 month')
+        .max(24, 'Stale age must be 24 months or less'),
+    refreshPositionDropThreshold: z
+        .number()
+        .min(0.5, 'Position drop threshold must be at least 0.5')
+        .max(20, 'Position drop threshold must be 20 or less'),
+    refreshCooldownDays: z
+        .number()
+        .int()
+        .min(7, 'Cooldown must be at least 7 days')
+        .max(365, 'Cooldown must be 365 days or less'),
+    refreshDraftCap: z
+        .number()
+        .int()
+        .min(1, 'Refresh draft cap must be at least 1')
+        .max(10, 'Refresh draft cap must be 10 or less'),
 })
 
 export type BlogAiConfigInput = z.infer<typeof blogAiConfigSchema>
@@ -122,6 +145,12 @@ export async function updateBlogAiConfig(
             autopilotPostsPerRun: validated.autopilotPostsPerRun,
             autopilotDraftCap: validated.autopilotDraftCap,
             autopilotIdeasPerRun: validated.autopilotIdeasPerRun,
+            refreshMode: validated.refreshMode,
+            refreshStaleMonths: validated.refreshStaleMonths,
+            refreshPositionDropThreshold:
+                validated.refreshPositionDropThreshold,
+            refreshCooldownDays: validated.refreshCooldownDays,
+            refreshDraftCap: validated.refreshDraftCap,
         }
 
         if (existing) {

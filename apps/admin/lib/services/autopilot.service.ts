@@ -41,6 +41,7 @@ import {
 } from '@/lib/services/ideation-gate.service'
 import { getGscTopicSeeds } from '@/lib/services/topic-sourcing.service'
 import { createPipelinePostInternal } from '@/lib/services/pipeline-post.service'
+import { enqueueIdeationGateSignal } from '@/lib/services/content-refresh.service'
 import {
     notifyAutopilotDraftCap,
     notifyAutopilotFailure,
@@ -442,6 +443,25 @@ export async function runAutopilotIdeationJob(
 
     try {
         const candidates = await sourceGatedTopicCandidates(config)
+
+        // Refresh-verdict topics feed the refresh queue (#147); the run
+        // keeps its refreshCandidates record either way, and the queue's
+        // merge semantics absorb re-detections.
+        for (const candidate of candidates.refreshCandidates) {
+            try {
+                await enqueueIdeationGateSignal({
+                    owningUrl: candidate.owningUrl,
+                    topicTitle: candidate.title,
+                    primaryKeyword: candidate.primaryKeyword,
+                    reason: candidate.reason,
+                })
+            } catch (error) {
+                console.warn(
+                    `[Autopilot] Failed to queue refresh for "${candidate.title}":`,
+                    error
+                )
+            }
+        }
 
         if (candidates.fresh.length === 0) {
             await db

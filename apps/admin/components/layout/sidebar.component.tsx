@@ -95,6 +95,7 @@ const navItems: NavItem[] = [
         icon: FileText,
         children: [
             { title: 'Pipeline', href: '/blog/pipeline', icon: Workflow },
+            { title: 'Refresh Queue', href: '/blog/refresh' },
             { title: 'Posts', href: '/blog/posts' },
             { title: 'Authors', href: '/blog/authors' },
             { title: 'Categories', href: '/blog/categories' },

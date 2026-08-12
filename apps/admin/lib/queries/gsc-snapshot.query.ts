@@ -10,7 +10,7 @@
  *
  * @module @/lib/queries/gsc-snapshot.query
  */
-import { desc, eq, sql } from 'drizzle-orm'
+import { desc, eq, isNotNull, sql } from 'drizzle-orm'
 
 import { db } from '@workspace/db/client'
 import { gscQueryPageDaily, gscSyncRun } from '@workspace/db/schema/gsc'
@@ -38,6 +38,31 @@ export type QueryPageAggregate = {
     impressions: number
     /** Impression-weighted average position over the window. */
     position: number
+}
+
+/** One post's totals over a date window (input to the decay rules). */
+export type PostWindowAggregate = {
+    blogPostId: string
+    clicks: number
+    impressions: number
+    /** Impression-weighted average position (null when no impressions). */
+    position: number | null
+}
+
+/** One page's totals over a date window (input to the site-drift median). */
+export type PageWindowAggregate = {
+    page: string
+    impressions: number
+    /** Impression-weighted average position (null when no impressions). */
+    position: number | null
+}
+
+/** Aggregated CTR sample for one rounded position (benchmark input). */
+export type CtrBucket = {
+    /** round(position), 1-based. */
+    positionBucket: number
+    clicks: number
+    impressions: number
 }
 
 /** Snapshot coverage + last sync, for the dashboard health card. */
@@ -128,6 +153,94 @@ export async function getQueryPageAggregatesForWindow(
         ...row,
         position: Number(row.position),
     }))
+}
+
+/**
+ * Per-post totals over an inclusive date window — one row per post that had
+ * any snapshot rows resolved to it. The decay rules (R1/R2) compare two of
+ * these windows.
+ */
+export async function getPostWindowAggregates(
+    startDate: string,
+    endDate: string
+): Promise<PostWindowAggregate[]> {
+    const rows = await db
+        .select({
+            blogPostId: sql<string>`${gscQueryPageDaily.blogPostId}::text`,
+            clicks: sql<number>`sum(${gscQueryPageDaily.clicks})::int`,
+            impressions: sql<number>`sum(${gscQueryPageDaily.impressions})::int`,
+            position: sql<number | null>`
+                sum(${gscQueryPageDaily.position} * ${gscQueryPageDaily.impressions})
+                / nullif(sum(${gscQueryPageDaily.impressions}), 0)
+            `,
+        })
+        .from(gscQueryPageDaily)
+        .where(
+            sql`${gscQueryPageDaily.date} BETWEEN ${startDate} AND ${endDate}
+                AND ${isNotNull(gscQueryPageDaily.blogPostId)}`
+        )
+        .groupBy(gscQueryPageDaily.blogPostId)
+
+    return rows.map((row) => ({
+        ...row,
+        position: row.position === null ? null : Number(row.position),
+    }))
+}
+
+/**
+ * Per-page totals over an inclusive date window — every page, not just blog
+ * posts. The site-median position delta (R1's drift guard) is computed over
+ * these, so a core update that moves the whole site doesn't read as per-post
+ * decay.
+ */
+export async function getPageWindowAggregates(
+    startDate: string,
+    endDate: string
+): Promise<PageWindowAggregate[]> {
+    const rows = await db
+        .select({
+            page: gscQueryPageDaily.page,
+            impressions: sql<number>`sum(${gscQueryPageDaily.impressions})::int`,
+            position: sql<number | null>`
+                sum(${gscQueryPageDaily.position} * ${gscQueryPageDaily.impressions})
+                / nullif(sum(${gscQueryPageDaily.impressions}), 0)
+            `,
+        })
+        .from(gscQueryPageDaily)
+        .where(
+            sql`${gscQueryPageDaily.date} BETWEEN ${startDate} AND ${endDate}`
+        )
+        .groupBy(gscQueryPageDaily.page)
+
+    return rows.map((row) => ({
+        ...row,
+        position: row.position === null ? null : Number(row.position),
+    }))
+}
+
+/**
+ * Site-wide CTR samples grouped by rounded position over a window —
+ * the raw material for the CTR benchmark curve (R2). Positions beyond 20
+ * are collapsed into one bucket; their CTRs are noise-level anyway.
+ */
+export async function getCtrBuckets(
+    startDate: string,
+    endDate: string
+): Promise<CtrBucket[]> {
+    const bucket = sql<number>`least(round(${gscQueryPageDaily.position})::int, 21)`
+    const rows = await db
+        .select({
+            positionBucket: bucket,
+            clicks: sql<number>`sum(${gscQueryPageDaily.clicks})::int`,
+            impressions: sql<number>`sum(${gscQueryPageDaily.impressions})::int`,
+        })
+        .from(gscQueryPageDaily)
+        .where(
+            sql`${gscQueryPageDaily.date} BETWEEN ${startDate} AND ${endDate}`
+        )
+        .groupBy(bucket)
+
+    return rows
 }
 
 /**
