@@ -102,12 +102,37 @@ export type AgentReview = {
 }
 
 /**
+ * A hazard the MDX validator had to strip from generated content.
+ *
+ * Mirrors `MdxSanitizationAction` in
+ * `packages/ai/src/functions/validate-generated-mdx.function.ts` — kept
+ * structurally rather than imported so `@workspace/db` does not depend on
+ * `@workspace/ai`.
+ */
+export type MdxSanitizationAction = {
+    kind:
+        | 'unknown-component'
+        | 'renderer-owned-component'
+        | 'unbalanced-component'
+        | 'stray-html-comment'
+        | 'duplicate-cta-marker'
+        | 'invalid-cta-id'
+        | 'stray-expression'
+        // Not an MDX hazard — a link to one of our own pages that does not
+        // exist. Recorded alongside the rest so the admin card shows every
+        // change made to the generated body in one place.
+        | 'broken-internal-link'
+    detail: string
+}
+
+/**
  * Result from the orchestrator
  */
 export type OrchestratorResult = {
     revisedContent: string
     agentReviews: AgentReview[]
     processingTimeMs: number
+    sanitizationActions?: MdxSanitizationAction[]
 }
 
 /**
@@ -160,6 +185,12 @@ export type PipelineState = {
         model?: string
         /** OTEL/Langfuse trace id of the phase run */
         traceId?: string
+        /**
+         * MDX hazards the validator stripped before persisting. Present and
+         * non-empty means the writer produced something unrenderable — the post
+         * still shipped, but the prompt needs looking at.
+         */
+        sanitizationActions?: MdxSanitizationAction[]
     }
     /** Review phase results */
     reviewPhase?: {

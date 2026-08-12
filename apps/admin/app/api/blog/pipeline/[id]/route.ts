@@ -38,6 +38,7 @@ export async function GET(
                 metaDescription: blogPost.metaDescription,
                 metaKeywords: blogPost.metaKeywords,
                 excerpt: blogPost.excerpt,
+                quickAnswer: blogPost.quickAnswer,
                 // Author
                 authorId: blogPost.authorId,
                 authorName: author.name,

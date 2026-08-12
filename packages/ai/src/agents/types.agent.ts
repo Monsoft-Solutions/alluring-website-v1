@@ -7,6 +7,8 @@
  */
 import { z } from 'zod'
 
+import type { MdxSanitizationAction } from '../functions/validate-generated-mdx.function'
+
 /**
  * Issue severity levels
  */
@@ -113,6 +115,12 @@ export type OrchestratorResult = {
     agentReviews: AgentReview[]
     /** Processing time for orchestration */
     processingTimeMs: number
+    /**
+     * MDX hazards stripped from the revision before it was returned. Empty on a
+     * clean revision; entries here mean the orchestrator produced something the
+     * renderer could not have rendered.
+     */
+    sanitizationActions?: MdxSanitizationAction[]
 }
 
 /**
@@ -128,6 +136,7 @@ export type PipelineStep =
     | 'review-ai-slop'
     | 'review-fact-source'
     | 'review-cannibalization'
+    | 'review-geo-retrievability'
     | 'orchestration'
     | 'complete'
 

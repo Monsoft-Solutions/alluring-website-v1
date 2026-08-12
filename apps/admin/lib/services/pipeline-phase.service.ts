@@ -27,11 +27,16 @@ import {
     runImageGenerationPhase,
 } from '@workspace/ai/pipelines'
 import { generateImageAlt } from '@workspace/ai/functions'
+import { validateInternalLinks } from '@workspace/ai/functions/validate-internal-links.function'
 import { extractImageConcept } from '@workspace/ai/prompts'
 
 import { calculateDuration } from '@/lib/utils/time.util'
 import { isTransientProviderError } from '@/lib/utils/transient-error.util'
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
+import {
+    getKnownInternalUrls,
+    getLinkableBlogPosts,
+} from '@/lib/services/linkable-pages.service'
 import { createPagesForQueryAdapter } from '@/lib/services/topic-sourcing.service'
 import {
     generateImageWithFal,
@@ -365,12 +370,18 @@ export async function runGenerationPhaseForPost(
         // no configuration row exists yet.
         const aiConfig = await getBlogAiConfig()
 
+        // The writer can only link to posts it has been told exist. Without
+        // this it sees the static marketing pages alone, builds no
+        // blog-to-blog links, and invents plausible URLs when it wants one.
+        const linkableBlogPosts = await getLinkableBlogPosts(postId)
+
         const { result, traceId } = await withPhaseSpan(
             'pipeline.generation',
             postId,
             () =>
                 runGenerationPhase({
                     contentModelId: aiConfig.contentModelId,
+                    linkableBlogPosts,
                     input: {
                         title: post.title,
                         topic: planningData.topic,
@@ -399,6 +410,29 @@ export async function runGenerationPhaseForPost(
             })
         }
 
+        // A prompt instruction is a request; this is the guard behind it. An
+        // invented internal link is a 404 on a live page, so any link whose
+        // target does not exist is flattened back to plain anchor text.
+        const knownUrls = await getKnownInternalUrls()
+        const linkCheck = validateInternalLinks(result.content, knownUrls)
+
+        if (linkCheck.removed.length > 0) {
+            console.warn(
+                `[Pipeline Service] Removed ${linkCheck.removed.length} internal link(s) to pages that do not exist:`
+            )
+            for (const link of linkCheck.removed) {
+                console.warn(`[Pipeline Service]   ${link.url}`)
+            }
+        }
+
+        const sanitizationActions = [
+            ...result.sanitizationActions,
+            ...linkCheck.removed.map((link) => ({
+                kind: 'broken-internal-link' as const,
+                detail: `Removed a link to ${link.url}, which does not exist — kept the words "${link.anchorText}".`,
+            })),
+        ]
+
         const existingPipelineState: PipelineState = post.pipelineState ?? {}
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
@@ -406,19 +440,22 @@ export async function runGenerationPhaseForPost(
                 startedAt: phaseStartedAt.toISOString(),
                 completedAt: new Date().toISOString(),
                 sources: result.sources,
-                initialContent: result.content,
+                initialContent: linkCheck.content,
                 initialWordCount: result.wordCount,
                 toolCallCount: result.toolCallCount,
                 stepCount: result.stepCount,
                 model: result.modelId,
                 traceId,
+                // Only recorded when something had to be changed, so a clean
+                // run leaves no noise in pipelineState.
+                ...(sanitizationActions.length > 0 && { sanitizationActions }),
             },
         }
 
         await db
             .update(blogPost)
             .set({
-                content: result.content,
+                content: linkCheck.content,
                 pipelineProcessingStatus: 'idle',
                 processingError: null,
                 processingStartedAt: null,
@@ -553,8 +590,21 @@ export async function runReviewPhaseForPost(
                 : undefined,
         }
 
-        // Update post with revised content and advance to next stage
-        const finalContent = result.revisedContent || post.content
+        // The orchestrator rewrites the whole body and can reintroduce a link
+        // the generation pass already had stripped, so re-check before saving.
+        const revised = result.revisedContent || post.content
+        const linkCheck = validateInternalLinks(
+            revised ?? '',
+            await getKnownInternalUrls()
+        )
+        const finalContent = linkCheck.content
+
+        if (linkCheck.removed.length > 0) {
+            console.warn(
+                `[Pipeline Service] Orchestrator reintroduced ${linkCheck.removed.length} link(s) to pages that do not exist; removed.`
+            )
+        }
+
         await db
             .update(blogPost)
             .set({
@@ -723,6 +773,9 @@ export async function runExtractPhaseForPost(
                 excerpt: result.excerpt,
                 readingTime: result.readingTimeMinutes,
                 faqs: result.faqs,
+                // Null on a failed Quick Answer extraction, which leaves the
+                // post rendering exactly as posts do today.
+                quickAnswer: result.quickAnswer,
                 pipelineProcessingStatus: 'idle',
                 processingError: null,
                 processingStartedAt: null,
@@ -732,7 +785,7 @@ export async function runExtractPhaseForPost(
             .where(eq(blogPost.id, postId))
 
         console.log(
-            `[Pipeline Service] Extraction phase complete for post ${postId} - ${result.faqs.length} FAQs, Time: ${result.timeMs}ms`
+            `[Pipeline Service] Extraction phase complete for post ${postId} - ${result.faqs.length} FAQs, Quick Answer: ${result.quickAnswer ? 'yes' : 'no'}, Time: ${result.timeMs}ms`
         )
 
         if (chain) {

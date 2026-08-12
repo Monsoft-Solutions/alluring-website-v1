@@ -23,6 +23,8 @@ coverage
 
 # Build Outputs
 .next/
+# Alternate build dirs from NEXT_DIST_DIR (parallel dev servers)
+.next-*/
 out/
 build
 dist

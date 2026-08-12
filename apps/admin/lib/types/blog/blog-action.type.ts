@@ -71,6 +71,8 @@ export type UpdatePipelinePostData = {
     metaDescription?: string | null
     metaKeywords?: string | null
     excerpt?: string | null
+    /** Serialized Quick Answer: the question, a blank line, then the answer */
+    quickAnswer?: string | null
     // Author
     authorId?: string | null
     // Media

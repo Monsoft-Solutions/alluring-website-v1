@@ -103,6 +103,17 @@ export const blogPost = pgTable(
         readingTime: integer('reading_time'), // in minutes
         content: text('content'),
         aiSummary: text('ai_summary'), // AI-generated summary for image generation
+        /**
+         * 40–70 word answer to the post's head query, written to stand alone
+         * when lifted out of context. Rendered above the article body inside
+         * `.quick-answer`, which `Speakable` schema points at.
+         *
+         * Stored as a column rather than in the markdown body so it is
+         * structurally guaranteed, editable as a discrete field, and unaffected
+         * by the CTA content split. The writer must never emit its own
+         * `<QuickAnswer>` block — see MDX_WRITER_COMPONENTS.
+         */
+        quickAnswer: text('quick_answer'),
         faqs: jsonb('faqs').$type<FaqItem[]>(), // Extracted FAQ items for FAQ Schema
         status: blogPostStatus('status').default('ideation'),
         views: integer('views').default(0).notNull(),

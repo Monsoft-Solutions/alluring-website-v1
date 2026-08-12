@@ -10,11 +10,18 @@ import { generateText, stepCountIs } from 'ai'
 
 import { getModel, temperatureParam } from '../models/model-resolver.util'
 import {
+    validateGeneratedMdx,
+    type MdxSanitizationAction,
+} from '../functions/validate-generated-mdx.function'
+import {
     createResearchTools,
     createSourceCollector,
     type CollectedSource,
 } from '../tools/research-tools.tool'
-import { getInternalPagesContext } from '../data/internal-pages.data'
+import {
+    getInternalPagesContext,
+    type LinkableBlogPost,
+} from '../data/internal-pages.data'
 import { telemetryConfig } from '../telemetry'
 import {
     buildAgenticSystemPrompt,
@@ -93,6 +100,13 @@ export type GenerationPhaseOptions = {
     temperature?: number
     /** Maximum tool call steps */
     maxSteps?: number
+    /**
+     * Published posts this article may link to, supplied by the caller because
+     * this package has no database access. Without them the writer sees only
+     * the static marketing pages, cannot build blog-to-blog links, and invents
+     * URLs when asked for a related article.
+     */
+    linkableBlogPosts?: LinkableBlogPost[]
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -119,6 +133,12 @@ export type GenerationPhaseResult = {
     timeMs: number
     /** Model that generated the content (resolved after defaults) */
     modelId: string
+    /**
+     * MDX hazards the validator had to neutralise before the content could be
+     * persisted. Empty on a clean generation; a non-empty list means the writer
+     * prompt produced something the renderer could not have rendered.
+     */
+    sanitizationActions: MdxSanitizationAction[]
 }
 
 /**
@@ -165,6 +185,7 @@ export async function runGenerationPhase(
         contentModelId = DEFAULTS.CONTENT_MODEL,
         temperature = DEFAULTS.TEMPERATURE,
         maxSteps = DEFAULTS.MAX_STEPS,
+        linkableBlogPosts,
         onProgress,
     } = options
 
@@ -175,8 +196,9 @@ export async function runGenerationPhase(
         const sourceContext = createSourceCollector()
         const tools = createResearchTools(sourceContext)
 
-        // Get internal pages context
-        const internalPagesContext = getInternalPagesContext()
+        // Get internal pages context, including the published posts this
+        // article may link to
+        const internalPagesContext = getInternalPagesContext(linkableBlogPosts)
 
         // Build prompts using modular prompt system
         const contentType = input.contentType as ContentType | undefined
@@ -266,7 +288,10 @@ export async function runGenerationPhase(
             },
         })
 
-        const content = result.text
+        // Neutralise anything the blog renderer could not survive before the
+        // content is allowed anywhere near the database.
+        const validation = validateGeneratedMdx(result.text)
+        const content = validation.content
         const wordCount = countWords(content)
         const timeMs = Date.now() - startTime
 
@@ -281,6 +306,15 @@ export async function runGenerationPhase(
             `[Generation Phase] Sources: ${sourceContext.sources.length}`
         )
         console.log(`[Generation Phase] Time: ${timeMs}ms`)
+
+        if (!validation.clean) {
+            console.warn(
+                `[Generation Phase] Sanitised ${validation.actions.length} MDX hazard(s):`
+            )
+            for (const action of validation.actions) {
+                console.warn(`[Generation Phase]   ${action.detail}`)
+            }
+        }
 
         // Validate content
         if (!content || content.trim().length === 0) {
@@ -310,6 +344,7 @@ export async function runGenerationPhase(
             stepCount,
             timeMs,
             modelId: contentModelId,
+            sanitizationActions: validation.actions,
         }
     } catch (error) {
         const errorMessage =
@@ -328,6 +363,7 @@ export async function runGenerationPhase(
             stepCount: 0,
             timeMs: Date.now() - startTime,
             modelId: contentModelId,
+            sanitizationActions: [],
         }
     }
 }

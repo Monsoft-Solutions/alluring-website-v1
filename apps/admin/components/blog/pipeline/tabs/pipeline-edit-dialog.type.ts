@@ -132,6 +132,9 @@ export type SeoTabProps = {
     setMetaKeywords: (value: string) => void
     excerpt: string
     setExcerpt: (value: string) => void
+    /** Serialized Quick Answer: the question, a blank line, then the answer */
+    quickAnswer: string
+    setQuickAnswer: (value: string) => void
     markDirty: () => void
 }
 

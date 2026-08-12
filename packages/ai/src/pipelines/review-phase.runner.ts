@@ -2,7 +2,7 @@
  * Review Phase Runner
  *
  * Standalone runner for the review and orchestration phases.
- * Runs 6 review agents in parallel and then orchestrates content revision.
+ * Runs 7 review agents in parallel and then orchestrates content revision.
  *
  * @module @workspace/ai/pipelines/review-phase
  */
@@ -12,6 +12,7 @@ import {
     runWritingQualityReviewer,
     runAISlopDetector,
     runCannibalizationChecker,
+    runGeoRetrievabilityReviewer,
     runOrchestrator,
     type AgentReview,
     type OrchestratorResult,
@@ -68,7 +69,7 @@ export type ReviewPhaseResult = {
     success: boolean
     /** Error message if failed */
     error?: string
-    /** Reviews from all 5 agents */
+    /** Reviews from all 7 agents */
     reviews: AgentReview[]
     /** Revised content after orchestration (null if skipped) */
     revisedContent: string | null
@@ -87,13 +88,14 @@ export type ReviewPhaseResult = {
 /**
  * Run the review phase standalone
  *
- * Runs 6 review agents in parallel:
+ * Runs 7 review agents in parallel:
  * 1. Internal Links Reviewer
  * 2. External Links Reviewer
  * 3. Writing Quality Reviewer
  * 4. AI Slop Detector
  * 5. Fact & Source Verifier
  * 6. Cannibalization Checker
+ * 7. GEO Retrievability Reviewer
  *
  * Then runs orchestration to revise content based on feedback.
  *
@@ -108,7 +110,7 @@ export type ReviewPhaseResult = {
  *   primaryKeyword: 'bbl recovery',
  * })
  *
- * console.log(result.reviews) // 6 agent reviews
+ * console.log(result.reviews) // 7 agent reviews
  * console.log(result.revisedContent) // Improved content
  * ```
  */
@@ -132,8 +134,8 @@ export async function runReviewPhase(
     } = options
 
     try {
-        // Phase 1: Run all 6 reviews in parallel
-        console.log('[Review Phase] Starting Review (6 agents)')
+        // Phase 1: Run all 7 reviews in parallel
+        console.log('[Review Phase] Starting Review (7 agents)')
         const reviewStartTime = Date.now()
 
         const reviewOptions = {
@@ -151,7 +153,9 @@ export async function runReviewPhase(
             aiSlopReview,
             factSourceReview,
             cannibalizationReview,
+            geoRetrievabilityReview,
         ]: [
+            AgentReview,
             AgentReview,
             AgentReview,
             AgentReview,
@@ -271,6 +275,24 @@ export async function runReviewPhase(
                 )
                 return result
             }),
+            runGeoRetrievabilityReviewer(reviewOptions).then((result) => {
+                onProgress?.(
+                    'review-geo-retrievability',
+                    100,
+                    'Answer-first structure review complete',
+                    {
+                        type: 'review-result',
+                        agentName: result.agentName,
+                        score: result.score,
+                        summary: result.summary,
+                        issueCount: result.issues.length,
+                    }
+                )
+                console.log(
+                    `[Review Phase] GEO retrievability: ${result.score}/100 (${result.issues.length} issues)`
+                )
+                return result
+            }),
         ])
 
         const reviews = [
@@ -280,6 +302,7 @@ export async function runReviewPhase(
             aiSlopReview,
             factSourceReview,
             cannibalizationReview,
+            geoRetrievabilityReview,
         ]
 
         const reviewTimeMs = Date.now() - reviewStartTime

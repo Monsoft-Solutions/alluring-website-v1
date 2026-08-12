@@ -138,6 +138,17 @@ export {
     type ExtractFaqsResult,
 } from './extract-faqs.function'
 
+export {
+    extractQuickAnswer,
+    serializeQuickAnswer,
+    parseQuickAnswer,
+    quickAnswerSchema,
+    QUICK_ANSWER_MIN_WORDS,
+    QUICK_ANSWER_MAX_WORDS,
+    type QuickAnswerResult,
+    type ExtractQuickAnswerOptions,
+} from './extract-quick-answer.function'
+
 // SEO Content Brief
 export {
     generateContentBrief,
@@ -158,3 +169,16 @@ export {
     type GenerateInstagramSeoTitleOptions,
     type GenerateInstagramSeoTitleResult,
 } from './generate-instagram-seo-title.function'
+
+// Generated MDX Safety
+export {
+    validateGeneratedMdx,
+    type MdxValidationResult,
+    type MdxSanitizationAction,
+} from './validate-generated-mdx.function'
+
+export {
+    validateInternalLinks,
+    type InternalLinkValidationResult,
+    type BrokenInternalLink,
+} from './validate-internal-links.function'

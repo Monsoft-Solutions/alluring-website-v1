@@ -31,15 +31,19 @@
  * Your content after the CTA...
  * ```
  *
- * Available CTA IDs: default, consultation, bbl, breast, body, facial
+ * The available CTA IDs are defined once in `@workspace/shared/content`
+ * (`BLOG_CTA_IDS`) so the AI writer, the marker validator and this file cannot
+ * drift apart — an id the writer invents renders no CTA at all.
  */
+import type { BlogCtaId } from '@workspace/shared/content'
+
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import type { BlogCTAContent } from '@/lib/types/blog/blog-cta.type'
 
 /**
  * Available CTA content variants - Branded for Alluring Plastic Surgery
  */
-export const blogCTAContents: readonly BlogCTAContent[] = [
+export const blogCTAContents = [
     {
         id: 'default',
         heading: 'Considering Your Transformation?',
@@ -143,7 +147,20 @@ export const blogCTAContents: readonly BlogCTAContent[] = [
             variant: 'outline',
         },
     },
-] as const
+] as const satisfies readonly BlogCTAContent[]
+
+/**
+ * Compile-time proof that every id the pipeline may write has a variant here.
+ *
+ * `BlogCTA` renders nothing when it cannot resolve an id, so a marker naming a
+ * variant nobody defined is a silently missing conversion point. Adding an id
+ * to `BLOG_CTA_IDS` without adding a variant below breaks the build here rather
+ * than dropping a CTA in production.
+ */
+type DefinedCtaId = (typeof blogCTAContents)[number]['id']
+const _everyCtaIdHasContent: BlogCtaId extends DefinedCtaId ? true : never =
+    true
+void _everyCtaIdHasContent
 
 /**
  * Footer CTA configuration for lead capture form
@@ -160,8 +177,11 @@ export const footerCTAConfig = {
 
 /**
  * Default CTA content to use when no ctaId or content is provided
+ *
+ * Widened to `BlogCTAContent`: the array keeps literal types so the id coverage
+ * check above can work, but consumers read optional fields off this value.
  */
-export const defaultCTAContent = blogCTAContents[0]
+export const defaultCTAContent: BlogCTAContent = blogCTAContents[0]
 
 /**
  * Get CTA content by ID

@@ -22,6 +22,11 @@
             "import": "./dist/seo/index.js",
             "default": "./dist/seo/index.js"
         },
+        "./content": {
+            "types": "./dist/content/index.d.ts",
+            "import": "./dist/content/index.js",
+            "default": "./dist/content/index.js"
+        },
         "./schemas/gallery": {
             "types": "./dist/schemas/gallery/index.d.ts",
             "import": "./dist/schemas/gallery/index.js",

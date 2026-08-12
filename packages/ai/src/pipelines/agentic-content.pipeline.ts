@@ -3,7 +3,7 @@
  *
  * Single source of truth for blog content generation with 4 phases:
  * 1. Agentic Content Generation (with on-demand research tools)
- * 2. Review (parallel - all 5 agents)
+ * 2. Review (parallel - all 7 agents)
  * 3. Orchestration (revise based on reviews)
  * 4. Extraction (parallel - FAQ + Metadata)
  *
@@ -18,11 +18,13 @@ import {
     runWritingQualityReviewer,
     runAISlopDetector,
     runCannibalizationChecker,
+    runGeoRetrievabilityReviewer,
     runOrchestrator,
     type AgentReview,
     type OrchestratorResult,
 } from '../agents'
 import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { validateGeneratedMdx } from '../functions/validate-generated-mdx.function'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import {
     createResearchTools,
@@ -35,6 +37,10 @@ import {
     extractFaqs,
     generateFaqSchema,
 } from '../functions/extract-faqs.function'
+import {
+    extractQuickAnswer,
+    serializeQuickAnswer,
+} from '../functions/extract-quick-answer.function'
 import { telemetryConfig } from '../telemetry'
 import {
     buildAgenticSystemPrompt,
@@ -180,7 +186,9 @@ async function runGenerationPhase(
         },
     })
 
-    const content = result.text
+    // Strip anything the blog renderer could not survive before it goes further.
+    const validation = validateGeneratedMdx(result.text)
+    const content = validation.content
     const wordCount = countWords(content)
     const timeMs = Date.now() - startTime
 
@@ -189,6 +197,15 @@ async function runGenerationPhase(
     console.log(`[Agentic Pipeline] Tool calls: ${toolCallCount}`)
     console.log(`[Agentic Pipeline] Sources: ${sourceContext.sources.length}`)
     console.log(`[Agentic Pipeline] Time: ${timeMs}ms`)
+
+    if (!validation.clean) {
+        console.warn(
+            `[Agentic Pipeline] Sanitised ${validation.actions.length} MDX hazard(s):`
+        )
+        for (const action of validation.actions) {
+            console.warn(`[Agentic Pipeline]   ${action.detail}`)
+        }
+    }
 
     // Validate content
     if (!content || content.trim().length === 0) {
@@ -222,13 +239,14 @@ async function runGenerationPhase(
 /**
  * Phase 2: Review Phase
  *
- * Runs all 5 review agents in parallel:
+ * Runs all 7 review agents in parallel:
  * 1. Internal Links Reviewer
  * 2. External Links Reviewer
  * 3. Writing Quality Reviewer
  * 4. AI Slop Detector
  * 5. Fact & Source Verifier
  * 6. Cannibalization Checker (registry-only in this path)
+ * 7. GEO Retrievability Reviewer
  */
 async function runReviewPhase(
     content: string,
@@ -240,7 +258,7 @@ async function runReviewPhase(
 ): Promise<{ reviews: AgentReview[]; timeMs: number }> {
     const startTime = Date.now()
 
-    console.log('[Agentic Pipeline] Starting Phase 2: Review (6 agents)')
+    console.log('[Agentic Pipeline] Starting Phase 2: Review (7 agents)')
 
     const reviewOptions = {
         content,
@@ -250,7 +268,7 @@ async function runReviewPhase(
         modelId: reviewModelId,
     }
 
-    // Run all 6 reviews in parallel
+    // Run all 7 reviews in parallel
     const [
         internalLinksReview,
         externalLinksReview,
@@ -258,7 +276,9 @@ async function runReviewPhase(
         aiSlopReview,
         factSourceReview,
         cannibalizationReview,
+        geoRetrievabilityReview,
     ]: [
+        AgentReview,
         AgentReview,
         AgentReview,
         AgentReview,
@@ -369,6 +389,24 @@ async function runReviewPhase(
             )
             return result
         }),
+        runGeoRetrievabilityReviewer(reviewOptions).then((result) => {
+            onProgress?.(
+                'review-geo-retrievability',
+                100,
+                'Answer-first structure review complete',
+                {
+                    type: 'review-result',
+                    agentName: result.agentName,
+                    score: result.score,
+                    summary: result.summary,
+                    issueCount: result.issues.length,
+                }
+            )
+            console.log(
+                `[Agentic Pipeline] GEO retrievability: ${result.score}/100 (${result.issues.length} issues)`
+            )
+            return result
+        }),
     ])
 
     const reviews = [
@@ -378,6 +416,7 @@ async function runReviewPhase(
         aiSlopReview,
         factSourceReview,
         cannibalizationReview,
+        geoRetrievabilityReview,
     ]
 
     const timeMs = Date.now() - startTime
@@ -470,14 +509,21 @@ async function runExtractionPhase(
     suggestedCategory: string
     faqs: FaqItem[]
     faqSchema: object | null
+    quickAnswer: string | null
     timeMs: number
 }> {
     const startTime = Date.now()
 
     console.log('[Agentic Pipeline] Starting Phase 4: Extraction')
-    onProgress?.('extraction', 10, 'Extracting metadata and FAQs...')
+    onProgress?.(
+        'extraction',
+        10,
+        'Extracting metadata, FAQs and Quick Answer...'
+    )
 
-    const [metadata, faqResult] = await Promise.all([
+    // Quick Answer is settled rather than awaited: it is the least essential of
+    // the three, and a failure there must not take the metadata down with it.
+    const [metadata, faqResult, quickAnswerOutcome] = await Promise.all([
         extractMetadata({
             content,
             primaryKeyword: primaryKeyword || title,
@@ -487,7 +533,24 @@ async function runExtractionPhase(
             content,
             primaryKeyword: primaryKeyword || title,
         }),
+        extractQuickAnswer({ content, title, primaryKeyword }).then(
+            (value) => ({ ok: true as const, value }),
+            (error: unknown) => ({ ok: false as const, error })
+        ),
     ])
+
+    const quickAnswer = quickAnswerOutcome.ok
+        ? serializeQuickAnswer(quickAnswerOutcome.value)
+        : null
+
+    if (!quickAnswerOutcome.ok) {
+        console.warn(
+            '[Agentic Pipeline] Quick Answer extraction failed, continuing without one:',
+            quickAnswerOutcome.error instanceof Error
+                ? quickAnswerOutcome.error.message
+                : quickAnswerOutcome.error
+        )
+    }
 
     const faqSchema = generateFaqSchema(faqResult.faqs)
     const timeMs = Date.now() - startTime
@@ -510,6 +573,7 @@ async function runExtractionPhase(
         suggestedCategory: metadata.suggestedCategory,
         faqs: faqResult.faqs,
         faqSchema,
+        quickAnswer,
         timeMs,
     }
 }
@@ -519,7 +583,7 @@ async function runExtractionPhase(
  *
  * Single entry point for all blog content generation with 4 phases:
  * 1. Agentic Generation (with on-demand research)
- * 2. Review (parallel - 5 agents including fact verification)
+ * 2. Review (parallel - 7 agents including fact verification and structure)
  * 3. Orchestration (revise based on reviews)
  * 4. Extraction (FAQ + Metadata)
  *
@@ -547,7 +611,7 @@ async function runExtractionPhase(
  * })
  *
  * console.log(result.content) // Final revised content
- * console.log(result.reviews) // Review agent results (5 agents)
+ * console.log(result.reviews) // Review agent results (7 agents)
  * console.log(result.sources) // All sources used
  * ```
  */
@@ -664,6 +728,7 @@ export async function runAgenticContentPipeline(
             suggestedCategory: extractionResult.suggestedCategory,
             faqs: extractionResult.faqs,
             faqSchema: extractionResult.faqSchema,
+            quickAnswer: extractionResult.quickAnswer,
             sources: generationResult.sources,
             reviews,
             orchestratorResult,
@@ -691,6 +756,7 @@ export async function runAgenticContentPipeline(
             suggestedCategory: '',
             faqs: [],
             faqSchema: null,
+            quickAnswer: null,
             sources: [],
             reviews: [],
             orchestratorResult: null,

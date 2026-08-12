@@ -12,6 +12,18 @@ import type { SeoTabProps } from './pipeline-edit-dialog.type'
  * SEO tab for the pipeline post edit dialog
  * Handles meta title, description, keywords, and excerpt
  */
+/** Matches the 40–70 word target the extraction prompt is held to. */
+const QUICK_ANSWER_MIN_WORDS = 40
+const QUICK_ANSWER_MAX_WORDS = 70
+
+/** Counts words in the answer half only — the question is not part of the budget. */
+function countAnswerWords(quickAnswer: string): number {
+    const [first, ...rest] = quickAnswer.trim().split(/\n\s*\n/)
+    const answer = rest.length > 0 ? rest.join('\n\n') : (first ?? '')
+
+    return answer.split(/\s+/).filter((word) => word.length > 0).length
+}
+
 export function SeoTab({
     title,
     metaTitle,
@@ -22,8 +34,16 @@ export function SeoTab({
     setMetaKeywords,
     excerpt,
     setExcerpt,
+    quickAnswer,
+    setQuickAnswer,
     markDirty,
 }: SeoTabProps) {
+    const answerWords = countAnswerWords(quickAnswer)
+    const answerWordsOffTarget =
+        answerWords > 0 &&
+        (answerWords < QUICK_ANSWER_MIN_WORDS ||
+            answerWords > QUICK_ANSWER_MAX_WORDS)
+
     return (
         <TabsContent value='seo' className='m-0 h-full'>
             <ScrollArea className='h-full'>
@@ -100,6 +120,45 @@ export function SeoTab({
                             rows={3}
                             className='mt-1'
                         />
+                    </div>
+
+                    {/* Quick Answer */}
+                    <div>
+                        <Label className='text-xs font-medium text-stone-500'>
+                            Quick Answer
+                        </Label>
+                        <Textarea
+                            value={quickAnswer}
+                            onChange={(e) => {
+                                setQuickAnswer(e.target.value)
+                                markDirty()
+                            }}
+                            placeholder={
+                                'How long do tummy tuck drains stay in?\n\nMost tummy tuck drains come out 7 to 14 days after surgery, once output falls below about 30 ml a day...'
+                            }
+                            rows={6}
+                            className='mt-1'
+                        />
+                        <div className='mt-1 flex flex-wrap items-center gap-x-3 gap-y-1'>
+                            <p className='text-xs text-stone-400'>
+                                First line is the question, then a blank line,
+                                then the answer. Shown above the article and
+                                read aloud by voice search.
+                            </p>
+                            {answerWords > 0 && (
+                                <p
+                                    className={
+                                        answerWordsOffTarget
+                                            ? 'text-xs font-medium text-amber-600'
+                                            : 'text-xs text-stone-400'
+                                    }
+                                >
+                                    {answerWords} words in the answer (target{' '}
+                                    {QUICK_ANSWER_MIN_WORDS}–
+                                    {QUICK_ANSWER_MAX_WORDS})
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </ScrollArea>

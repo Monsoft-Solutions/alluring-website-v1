@@ -16,6 +16,7 @@ export type AgenticPipelineStep =
     | 'review-ai-slop'
     | 'review-fact-source'
     | 'review-cannibalization'
+    | 'review-geo-retrievability'
     | 'orchestration'
     | 'extraction'
     | 'image-generation'

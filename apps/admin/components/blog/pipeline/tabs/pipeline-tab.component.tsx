@@ -174,6 +174,48 @@ export function PipelineTab({
                                                 </p>
                                             )}
 
+                                        {/* Only present when the writer produced
+                                            something the renderer could not have
+                                            rendered. The post still shipped —
+                                            this is the signal that the prompt
+                                            needs looking at. */}
+                                        {key === 'generation' &&
+                                            (state.generationPhase
+                                                ?.sanitizationActions?.length ??
+                                                0) > 0 && (
+                                                <div className='mt-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2'>
+                                                    <p className='text-xs font-medium text-amber-800'>
+                                                        {
+                                                            state
+                                                                .generationPhase!
+                                                                .sanitizationActions!
+                                                                .length
+                                                        }{' '}
+                                                        unrenderable construct
+                                                        {state.generationPhase!
+                                                            .sanitizationActions!
+                                                            .length === 1
+                                                            ? ''
+                                                            : 's'}{' '}
+                                                        removed before saving
+                                                    </p>
+                                                    <ul className='mt-1 space-y-0.5'>
+                                                        {state.generationPhase!.sanitizationActions!.map(
+                                                            (action, index) => (
+                                                                <li
+                                                                    key={`${action.kind}-${index}`}
+                                                                    className='text-xs text-amber-700'
+                                                                >
+                                                                    {
+                                                                        action.detail
+                                                                    }
+                                                                </li>
+                                                            )
+                                                        )}
+                                                    </ul>
+                                                </div>
+                                            )}
+
                                         {key === 'review' &&
                                             (state.reviewPhase?.reviews
                                                 ?.length ?? 0) > 0 && (

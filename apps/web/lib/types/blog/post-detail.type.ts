@@ -16,4 +16,10 @@ export type BlogPostDetail = BlogPostCard & {
         slug: string
     }>
     faqs?: FaqItem[] | null
+    /**
+     * Serialized Quick Answer (`question\n\nanswer`), rendered above the article
+     * body and pointed at by the Speakable schema. Null on posts written before
+     * the pipeline produced one, and on posts where extraction failed.
+     */
+    quickAnswer?: string | null
 }

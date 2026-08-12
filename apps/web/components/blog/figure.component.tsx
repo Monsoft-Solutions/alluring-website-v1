@@ -12,6 +12,8 @@
  */
 import Image from 'next/image'
 
+import { isResolvedImageSrc } from '@workspace/shared/content'
+
 import {
     CONTENT_IMAGE_SIZES,
     DEFAULT_CONTENT_IMAGE_HEIGHT,
@@ -48,7 +50,12 @@ export function Figure({
     priority = false,
     className,
 }: FigureProps) {
-    if (!src) return null
+    // The content writer leaves `src="PENDING"` for the inline-image phase to
+    // fill. If that phase hasn't run, failed, or missed one, the placeholder is
+    // still here — and handing it to next/image throws "Failed to parse src",
+    // which takes down the whole post rather than dropping one image. Render
+    // nothing instead: a figure with no image is not a figure.
+    if (!isResolvedImageSrc(src)) return null
 
     return (
         <figure className={className ? `my-10 ${className}` : 'my-10'}>
