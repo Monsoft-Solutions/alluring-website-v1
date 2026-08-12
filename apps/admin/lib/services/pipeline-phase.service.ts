@@ -14,7 +14,11 @@ import {
     blogPostImages,
     type BlogPost,
 } from '@workspace/db/schema/blog'
-import type { PipelineState, PipelineMetrics } from '@workspace/db/types'
+import type {
+    PipelineState,
+    PipelineMetrics,
+    PipelinePhaseKey,
+} from '@workspace/db/types'
 import {
     runGenerationPhase,
     runReviewPhase,
@@ -25,6 +29,7 @@ import { generateImageAlt } from '@workspace/ai/functions'
 import { extractImageConcept } from '@workspace/ai/prompts'
 
 import { calculateDuration } from '@/lib/utils/time.util'
+import { isTransientProviderError } from '@/lib/utils/transient-error.util'
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 import { createPagesForQueryAdapter } from '@/lib/services/topic-sourcing.service'
 import {
@@ -46,6 +51,11 @@ import {
  */
 export type PhaseRunOptions = {
     chain?: boolean
+    /**
+     * Internal: marks the one-shot re-run a phase gets after a transient
+     * provider error, so a retried phase can never retry again.
+     */
+    isAutoRetry?: boolean
 }
 
 /**
@@ -147,30 +157,6 @@ async function setProcessingStatus(postId: string): Promise<void> {
 }
 
 /**
- * Handle a phase error by logging and updating the post status
- */
-async function handlePhaseError(
-    postId: string,
-    error: unknown,
-    phaseName: string
-): Promise<void> {
-    const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error'
-    console.error(
-        `[Pipeline Service] ${phaseName} phase error for post ${postId}:`,
-        errorMessage
-    )
-
-    await db
-        .update(blogPost)
-        .set({
-            pipelineProcessingStatus: 'error',
-            processingError: errorMessage,
-        })
-        .where(eq(blogPost.id, postId))
-}
-
-/**
  * Set a phase result error in the database
  */
 async function setPhaseResultError(
@@ -188,6 +174,74 @@ async function setPhaseResultError(
             processingError: errorMessage,
         })
         .where(eq(blogPost.id, postId))
+}
+
+/**
+ * Free the processing flag and record the auto-retry in pipelineState so
+ * the admin can see the phase was silently re-run and why.
+ */
+async function recordAutoRetry(
+    postId: string,
+    phaseKey: PipelinePhaseKey,
+    reason: string
+): Promise<void> {
+    const [post] = await db
+        .select({ pipelineState: blogPost.pipelineState })
+        .from(blogPost)
+        .where(eq(blogPost.id, postId))
+        .limit(1)
+
+    const existingState: PipelineState = post?.pipelineState ?? {}
+    await db
+        .update(blogPost)
+        .set({
+            pipelineProcessingStatus: 'idle',
+            processingError: null,
+            pipelineState: {
+                ...existingState,
+                autoRetries: {
+                    ...existingState.autoRetries,
+                    [phaseKey]: {
+                        attemptedAt: new Date().toISOString(),
+                        reason,
+                    },
+                },
+            },
+        })
+        .where(eq(blogPost.id, postId))
+}
+
+/**
+ * Fail a phase — or, once per phase, re-run it when the failure looks like
+ * a transient provider error (rate limit, 5xx, network drop). `isAutoRetry`
+ * on the re-run guards the recursion to a single attempt.
+ */
+async function failPhaseOrAutoRetry(args: {
+    postId: string
+    phaseKey: PipelinePhaseKey
+    phaseName: string
+    error: unknown
+    options: PhaseRunOptions
+    rerun: () => Promise<PhaseRunResult>
+}): Promise<PhaseRunResult> {
+    const { postId, phaseKey, phaseName, error, options, rerun } = args
+    const errorMessage =
+        error instanceof Error
+            ? error.message
+            : typeof error === 'string'
+              ? error
+              : 'Unknown error'
+
+    if (!options.isAutoRetry && isTransientProviderError(error)) {
+        console.warn(
+            `[Pipeline Service] ${phaseName} phase hit a transient provider error for post ${postId}; retrying once: ${errorMessage}`
+        )
+        await recordAutoRetry(postId, phaseKey, errorMessage)
+        return rerun()
+    }
+
+    await setPhaseResultError(postId, errorMessage, phaseName)
+    return { success: false, error: errorMessage }
 }
 
 // ============================================
@@ -284,15 +338,18 @@ export async function runGenerationPhaseForPost(
         })
 
         if (!result.success) {
-            await setPhaseResultError(
+            return failPhaseOrAutoRetry({
                 postId,
-                result.error ?? 'Generation phase failed',
-                'Generation'
-            )
-            return {
-                success: false,
+                phaseKey: 'generation',
+                phaseName: 'Generation',
                 error: result.error ?? 'Generation phase failed',
-            }
+                options,
+                rerun: () =>
+                    runGenerationPhaseForPost(postId, {
+                        ...options,
+                        isAutoRetry: true,
+                    }),
+            })
         }
 
         const existingPipelineState: PipelineState = post.pipelineState ?? {}
@@ -344,11 +401,18 @@ export async function runGenerationPhaseForPost(
             },
         }
     } catch (error) {
-        await handlePhaseError(postId, error, 'Generation')
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Unknown error',
-        }
+        return failPhaseOrAutoRetry({
+            postId,
+            phaseKey: 'generation',
+            phaseName: 'Generation',
+            error,
+            options,
+            rerun: () =>
+                runGenerationPhaseForPost(postId, {
+                    ...options,
+                    isAutoRetry: true,
+                }),
+        })
     }
 }
 
@@ -403,15 +467,18 @@ export async function runReviewPhaseForPost(
         })
 
         if (!result.success) {
-            await setPhaseResultError(
+            return failPhaseOrAutoRetry({
                 postId,
-                result.error ?? 'Review phase failed',
-                'Review'
-            )
-            return {
-                success: false,
+                phaseKey: 'review',
+                phaseName: 'Review',
                 error: result.error ?? 'Review phase failed',
-            }
+                options,
+                rerun: () =>
+                    runReviewPhaseForPost(postId, {
+                        ...options,
+                        isAutoRetry: true,
+                    }),
+            })
         }
 
         // Build pipeline state update
@@ -472,11 +539,18 @@ export async function runReviewPhaseForPost(
 
         return { success: true }
     } catch (error) {
-        await handlePhaseError(postId, error, 'Review')
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Unknown error',
-        }
+        return failPhaseOrAutoRetry({
+            postId,
+            phaseKey: 'review',
+            phaseName: 'Review',
+            error,
+            options,
+            rerun: () =>
+                runReviewPhaseForPost(postId, {
+                    ...options,
+                    isAutoRetry: true,
+                }),
+        })
     }
 }
 
@@ -525,15 +599,18 @@ export async function runExtractPhaseForPost(
         })
 
         if (!result.success) {
-            await setPhaseResultError(
+            return failPhaseOrAutoRetry({
                 postId,
-                result.error ?? 'Extraction phase failed',
-                'Extraction'
-            )
-            return {
-                success: false,
+                phaseKey: 'extraction',
+                phaseName: 'Extraction',
                 error: result.error ?? 'Extraction phase failed',
-            }
+                options,
+                rerun: () =>
+                    runExtractPhaseForPost(postId, {
+                        ...options,
+                        isAutoRetry: true,
+                    }),
+            })
         }
 
         // Build pipeline state update with metrics
@@ -606,11 +683,18 @@ export async function runExtractPhaseForPost(
 
         return { success: true }
     } catch (error) {
-        await handlePhaseError(postId, error, 'Extraction')
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Unknown error',
-        }
+        return failPhaseOrAutoRetry({
+            postId,
+            phaseKey: 'extraction',
+            phaseName: 'Extraction',
+            error,
+            options,
+            rerun: () =>
+                runExtractPhaseForPost(postId, {
+                    ...options,
+                    isAutoRetry: true,
+                }),
+        })
     }
 }
 
@@ -627,9 +711,8 @@ export async function runImageGenerationPhaseForPost(
     postId: string,
     options: PhaseRunOptions = {}
 ): Promise<PhaseRunResult> {
-    // Terminal phase — nothing to chain into; the option exists for
-    // signature symmetry with the other runners.
-    void options
+    // Terminal phase — `chain` has nothing to flow into; only the
+    // auto-retry marker in `options` is meaningful here.
     console.log(
         `[Pipeline Service] Starting image generation phase for post ${postId}`
     )
@@ -698,23 +781,34 @@ export async function runImageGenerationPhaseForPost(
         })
 
         if (!phaseResult.success || !phaseResult.prompt) {
-            const errorMessage =
-                phaseResult.error || 'Failed to generate image prompt'
-            await setPhaseResultError(postId, errorMessage, 'ImageGeneration')
-            return { success: false, error: errorMessage }
+            return failPhaseOrAutoRetry({
+                postId,
+                phaseKey: 'imageGeneration',
+                phaseName: 'ImageGeneration',
+                error: phaseResult.error || 'Failed to generate image prompt',
+                options,
+                rerun: () =>
+                    runImageGenerationPhaseForPost(postId, {
+                        ...options,
+                        isAutoRetry: true,
+                    }),
+            })
         }
 
         const generatedImage = phaseResult.image
         if (!generatedImage) {
-            await setPhaseResultError(
+            return failPhaseOrAutoRetry({
                 postId,
-                'Failed to generate image with fal.ai',
-                'ImageGeneration'
-            )
-            return {
-                success: false,
+                phaseKey: 'imageGeneration',
+                phaseName: 'ImageGeneration',
                 error: 'Failed to generate image with fal.ai',
-            }
+                options,
+                rerun: () =>
+                    runImageGenerationPhaseForPost(postId, {
+                        ...options,
+                        isAutoRetry: true,
+                    }),
+            })
         }
 
         if (phaseResult.peopleDetected) {
@@ -812,10 +906,17 @@ export async function runImageGenerationPhaseForPost(
 
         return { success: true }
     } catch (error) {
-        await handlePhaseError(postId, error, 'ImageGeneration')
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Unknown error',
-        }
+        return failPhaseOrAutoRetry({
+            postId,
+            phaseKey: 'imageGeneration',
+            phaseName: 'ImageGeneration',
+            error,
+            options,
+            rerun: () =>
+                runImageGenerationPhaseForPost(postId, {
+                    ...options,
+                    isAutoRetry: true,
+                }),
+        })
     }
 }

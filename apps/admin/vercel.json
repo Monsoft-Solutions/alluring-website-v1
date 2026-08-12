@@ -3,6 +3,7 @@
     "crons": [
         { "path": "/api/cron/heartbeat", "schedule": "0 8 * * *" },
         { "path": "/api/cron/autopilot-ideation", "schedule": "0 9 * * *" },
-        { "path": "/api/cron/autopilot-content", "schedule": "0 11 * * *" }
+        { "path": "/api/cron/autopilot-content", "schedule": "0 11 * * *" },
+        { "path": "/api/cron/reap-stuck-posts", "schedule": "*/10 * * * *" }
     ]
 }

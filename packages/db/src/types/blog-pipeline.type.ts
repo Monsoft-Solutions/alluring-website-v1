@@ -111,6 +111,25 @@ export type OrchestratorResult = {
 }
 
 /**
+ * Phase keys for per-phase bookkeeping inside PipelineState
+ */
+export type PipelinePhaseKey =
+    | 'generation'
+    | 'review'
+    | 'extraction'
+    | 'imageGeneration'
+
+/**
+ * Record of the one-shot automatic re-run a phase gets after failing with
+ * a transient provider error (rate limit, 5xx, network).
+ */
+export type PhaseAutoRetry = {
+    attemptedAt: string
+    /** The transient error message that triggered the retry */
+    reason: string
+}
+
+/**
  * Pipeline metrics for tracking performance
  */
 export type PipelineMetrics = {
@@ -177,6 +196,8 @@ export type PipelineState = {
     }
     /** Overall pipeline metrics */
     metrics?: PipelineMetrics
+    /** One-shot automatic retries after transient provider errors, keyed by phase */
+    autoRetries?: Partial<Record<PipelinePhaseKey, PhaseAutoRetry>>
     /** Error message if pipeline failed */
     error?: string
 }

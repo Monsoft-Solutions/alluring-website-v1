@@ -114,16 +114,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             nextStatus: 'ai_review',
         })
     } catch (error) {
-        // Reset processing status on error
-        await db
-            .update(blogPost)
-            .set({
-                pipelineProcessingStatus: 'error',
-                processingError:
-                    error instanceof Error ? error.message : 'Unknown error',
-            })
-            .where(eq(blogPost.id, id))
-
+        // The service marks the post errored for phase failures; anything
+        // reaching here failed before the phase ran (auth, DB read).
         return handleApiError(error, 'Failed to run generation phase')
     }
 }

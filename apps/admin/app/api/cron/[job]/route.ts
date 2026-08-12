@@ -21,6 +21,7 @@ import {
     runAutopilotIdeationJob,
     startAutopilotContentJob,
 } from '@/lib/services/autopilot.service'
+import { reapStuckPosts } from '@/lib/services/stuck-post-reaper.service'
 
 export const runtime = 'nodejs'
 // Ideation runs inline in this invocation (one model call + gate + inserts);
@@ -47,6 +48,16 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
     'autopilot-content': async () => {
         const result = await startAutopilotContentJob('cron')
         return { outcome: result.outcome, ...result.detail }
+    },
+
+    /** Flips posts stuck in 'processing' (dead invocation) to a retryable error. */
+    'reap-stuck-posts': async () => {
+        const reaped = await reapStuckPosts()
+        return {
+            outcome: reaped.length > 0 ? 'reaped' : 'clean',
+            reaped: reaped.length,
+            postIds: reaped.map((post) => post.id),
+        }
     },
 }
 
