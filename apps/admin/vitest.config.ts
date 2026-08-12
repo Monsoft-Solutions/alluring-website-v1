@@ -20,6 +20,7 @@ export default defineConfig({
                 __dirname,
                 '../../packages/shared/src'
             ),
+            '@workspace/ai': path.resolve(__dirname, '../../packages/ai/src'),
         },
     },
     test: {

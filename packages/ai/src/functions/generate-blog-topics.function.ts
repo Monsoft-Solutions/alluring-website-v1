@@ -6,98 +6,22 @@
  *
  * @module @workspace/ai/functions/generate-blog-topics
  */
-import { z } from 'zod'
-
 import {
     GENERATE_TOPICS_SYSTEM_PROMPT,
     getGenerateTopicsPrompt,
 } from '../prompts/blog/generate-topics.prompt'
 import { generateText, NoObjectGeneratedError, Output } from 'ai'
 import { getModel, temperatureParam } from '../models'
+import {
+    generateTopicsResponseSchema,
+    salvageTopicsResponse,
+} from './generate-blog-topics.schema'
+import type {
+    GenerateBlogTopicsResult,
+    TopicSuggestion,
+} from './generate-blog-topics.schema'
 
-/**
- * Enum that tolerates stray markup or whitespace the model occasionally
- * appends to values (e.g. "how_to</br>"). The wire schema sent to the model
- * stays a plain enum; only runtime validation applies the cleanup.
- */
-const cleanedEnum = <T extends [string, ...string[]]>(values: T) =>
-    z.preprocess(
-        (value) =>
-            typeof value === 'string'
-                ? value.replace(/<[^>]*>/g, '').trim()
-                : value,
-        z.enum(values)
-    )
-
-/**
- * Schema for a single topic suggestion
- */
-const topicSuggestionSchema = z.object({
-    title: z
-        .string()
-        .describe('SEO-friendly blog post title (50-60 characters ideal)'),
-    primaryKeyword: z.string().describe('Main keyword to target for SEO'),
-    searchIntent: cleanedEnum([
-        'informational',
-        'commercial',
-        'transactional',
-    ]).describe('The search intent this topic addresses'),
-    description: z
-        .string()
-        .describe('Brief 1-2 sentence description of what the post will cover'),
-    uniqueAngle: z
-        .string()
-        .describe(
-            'What makes this perspective different from existing content'
-        ),
-    targetAudience: z
-        .string()
-        .describe(
-            'Specific target audience for this topic (e.g., "Women 30-45 considering BBL surgery in Miami")'
-        ),
-    painPoints: z
-        .array(z.string())
-        .describe(
-            'Key pain points, concerns, or questions this topic addresses. ALWAYS include at least 2-4 pain points.'
-        ),
-    estimatedWordCount: z
-        .number()
-        .describe(
-            'Suggested word count for the post. ALWAYS include a word count.'
-        ),
-    suggestedContentType: cleanedEnum([
-        'tutorial',
-        'guide',
-        'how_to',
-        'case_study',
-        'comparison',
-        'faq',
-        'listicle',
-        'announcement',
-        'thought_leadership',
-    ]).describe('Recommended content type for this topic'),
-    sourceQuery: z
-        .string()
-        .nullable()
-        .optional()
-        .describe(
-            'When this topic was derived from one of the provided Search Console seed queries, the EXACT seed query string; otherwise null'
-        ),
-})
-
-/**
- * Schema for the full topics response
- */
-const generateTopicsResponseSchema = z.object({
-    topics: z
-        .array(topicSuggestionSchema)
-        .min(3)
-        .max(10)
-        .describe('Array of topic suggestions'),
-    reasoning: z
-        .string()
-        .describe('Brief explanation of why these topics were selected'),
-})
+export type { GenerateBlogTopicsResult, TopicSuggestion }
 
 /**
  * Default model for topic generation
@@ -196,18 +120,6 @@ export type GenerateBlogTopicsOptions = {
 }
 
 /**
- * Single topic suggestion type
- */
-export type TopicSuggestion = z.infer<typeof topicSuggestionSchema>
-
-/**
- * Full response type
- */
-export type GenerateBlogTopicsResult = z.infer<
-    typeof generateTopicsResponseSchema
->
-
-/**
  * Generate blog topic suggestions using AI
  *
  * Creates SEO-optimized topic ideas based on procedure focus,
@@ -263,9 +175,12 @@ export async function generateBlogTopics(
         procedureContext,
     })
 
-    // Models occasionally emit stray tokens that fail schema validation —
-    // one retry converts those flakes into latency instead of a 500.
-    const MAX_ATTEMPTS = 2
+    // Models occasionally emit payloads that fail whole-response validation
+    // (a stray field, a word count as prose, fewer topics than the schema
+    // minimum). Retry converts one-off flakes into latency; salvage recovers
+    // the individually valid topics when retrying doesn't help — a partial
+    // batch beats a failed run, since callers gate and cap topics anyway.
+    const MAX_ATTEMPTS = 3
     let lastError: unknown
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {
@@ -283,18 +198,36 @@ export async function generateBlogTopics(
             return result.output
         } catch (error) {
             lastError = error
+            if (!NoObjectGeneratedError.isInstance(error)) throw error
+
+            console.warn(
+                `[generateBlogTopics] Invalid topics payload (attempt ${attempt}/${MAX_ATTEMPTS}): ${error.message}`
+            )
+            if (error.text) {
+                console.warn(
+                    `[generateBlogTopics] Raw model output (first 600 chars): ${error.text.slice(0, 600)}`
+                )
+            }
+
+            // A healthy salvage (full minimum batch) is accepted right away;
+            // a thin one only when no retries remain.
+            const salvaged = salvageTopicsResponse(error.text)
             if (
-                attempt < MAX_ATTEMPTS &&
-                NoObjectGeneratedError.isInstance(error)
+                salvaged &&
+                (salvaged.topics.length >= 3 || attempt === MAX_ATTEMPTS)
             ) {
                 console.warn(
-                    `[generateBlogTopics] Schema validation failed (attempt ${attempt}/${MAX_ATTEMPTS}), retrying...`
+                    `[generateBlogTopics] Salvaged ${salvaged.topics.length} valid topic(s) from the invalid payload`
                 )
-                continue
+                return salvaged
             }
-            throw error
         }
     }
 
-    throw lastError
+    throw new Error(
+        `Topic generation produced no valid topics after ${MAX_ATTEMPTS} attempts: ${
+            lastError instanceof Error ? lastError.message : 'unknown error'
+        }`,
+        { cause: lastError }
+    )
 }

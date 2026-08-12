@@ -64,6 +64,11 @@
             "types": "./dist/pipelines/index.d.ts",
             "import": "./dist/pipelines/index.js",
             "default": "./dist/pipelines/index.js"
+        },
+        "./functions/generate-blog-topics.schema": {
+            "types": "./dist/functions/generate-blog-topics.schema.d.ts",
+            "import": "./dist/functions/generate-blog-topics.schema.js",
+            "default": "./dist/functions/generate-blog-topics.schema.js"
         }
     },
     "scripts": {
