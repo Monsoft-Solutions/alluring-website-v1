@@ -144,17 +144,25 @@ async function fetchAndValidatePostForPhase(
 }
 
 /**
- * Set a post's processing status to 'processing'
+ * Set a post's processing status to 'processing'.
+ *
+ * Returns the start timestamp it wrote: the `post` snapshot every runner
+ * holds was fetched before this update, so reading
+ * `post.processingStartedAt` after the phase gives the previous run's
+ * value (or null, collapsing recorded durations to zero). Use the returned
+ * Date for the phase's `startedAt` in pipelineState.
  */
-async function setProcessingStatus(postId: string): Promise<void> {
+async function setProcessingStatus(postId: string): Promise<Date> {
+    const startedAt = new Date()
     await db
         .update(blogPost)
         .set({
             pipelineProcessingStatus: 'processing',
-            processingStartedAt: new Date(),
+            processingStartedAt: startedAt,
             processingError: null,
         })
         .where(eq(blogPost.id, postId))
+    return startedAt
 }
 
 /**
@@ -351,7 +359,7 @@ export async function runGenerationPhaseForPost(
             }
         }
 
-        await setProcessingStatus(postId)
+        const phaseStartedAt = await setProcessingStatus(postId)
 
         // Admin-configured model wins; the runner keeps its own default when
         // no configuration row exists yet.
@@ -395,9 +403,7 @@ export async function runGenerationPhaseForPost(
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
             generationPhase: {
-                startedAt:
-                    post.processingStartedAt?.toISOString() ||
-                    new Date().toISOString(),
+                startedAt: phaseStartedAt.toISOString(),
                 completedAt: new Date().toISOString(),
                 sources: result.sources,
                 initialContent: result.content,
@@ -486,7 +492,7 @@ export async function runReviewPhaseForPost(
         const { post } = validation
 
         // Set processing status
-        await setProcessingStatus(postId)
+        const phaseStartedAt = await setProcessingStatus(postId)
 
         // Admin-configured model wins; the runner keeps its own default when
         // no configuration row exists yet.
@@ -532,9 +538,7 @@ export async function runReviewPhaseForPost(
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
             reviewPhase: {
-                startedAt:
-                    post.processingStartedAt?.toISOString() ||
-                    new Date().toISOString(),
+                startedAt: phaseStartedAt.toISOString(),
                 completedAt: new Date().toISOString(),
                 reviews: result.reviews,
                 model: result.modelId,
@@ -542,9 +546,7 @@ export async function runReviewPhaseForPost(
             },
             orchestrationPhase: result.orchestratorResult
                 ? {
-                      startedAt:
-                          post.processingStartedAt?.toISOString() ||
-                          new Date().toISOString(),
+                      startedAt: phaseStartedAt.toISOString(),
                       completedAt: new Date().toISOString(),
                       result: result.orchestratorResult,
                   }
@@ -633,7 +635,7 @@ export async function runExtractPhaseForPost(
         const { post } = validation
 
         // Set processing status
-        await setProcessingStatus(postId)
+        const phaseStartedAt = await setProcessingStatus(postId)
 
         // Admin-configured extraction model wins over the code default
         const aiConfig = await getBlogAiConfig()
@@ -695,9 +697,7 @@ export async function runExtractPhaseForPost(
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
             extractionPhase: {
-                startedAt:
-                    post.processingStartedAt?.toISOString() ||
-                    new Date().toISOString(),
+                startedAt: phaseStartedAt.toISOString(),
                 completedAt: new Date().toISOString(),
                 model: result.modelId,
                 traceId,
@@ -793,7 +793,7 @@ export async function runImageGenerationPhaseForPost(
         const { post } = validation
 
         // Set processing status
-        await setProcessingStatus(postId)
+        const phaseStartedAt = await setProcessingStatus(postId)
 
         // Admin-configured image model and (optionally) a pinned artistic
         // style. A null style means "auto" — the runner's AI picks per topic.
@@ -935,9 +935,7 @@ export async function runImageGenerationPhaseForPost(
         const updatedPipelineState: PipelineState = {
             ...existingPipelineState,
             imageGenerationPhase: {
-                startedAt:
-                    post.processingStartedAt?.toISOString() ||
-                    new Date().toISOString(),
+                startedAt: phaseStartedAt.toISOString(),
                 completedAt: new Date().toISOString(),
                 selectedOptions: phaseResult.selectedOptions,
                 prompt: phaseResult.prompt,

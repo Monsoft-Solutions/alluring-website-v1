@@ -116,9 +116,13 @@ export function PipelineTab({
                                                 </span>
                                                 {phase?.completedAt ? (
                                                     <Badge className='bg-emerald-100 px-1.5 py-0 text-[10px] text-emerald-800 hover:bg-emerald-100'>
-                                                        {formatDurationMs(
-                                                            durationMs
-                                                        )}
+                                                        {durationMs > 0
+                                                            ? formatDurationMs(
+                                                                  durationMs
+                                                              )
+                                                            : // Rows written before phase
+                                                              // durations were recorded
+                                                              'Done'}
                                                     </Badge>
                                                 ) : phase ? (
                                                     <Badge className='bg-stone-100 px-1.5 py-0 text-[10px] text-stone-600 hover:bg-stone-100'>
