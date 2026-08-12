@@ -16,6 +16,7 @@ import type { PlanningData } from '@workspace/db/types'
 import type { TopicVerdict } from '@workspace/shared/seo'
 
 import { evaluateSingleTopic } from '@/lib/services/ideation-gate.service'
+import { enqueueIdeationGateSignal } from '@/lib/services/content-refresh.service'
 import type { CreatePipelinePostData } from '@/lib/types/blog/blog-action.type'
 
 export type CreatePipelinePostInternalData = CreatePipelinePostData & {
@@ -53,9 +54,29 @@ export async function createPipelinePostInternal(
         }
     }
     if (gate.verdict === 'refresh') {
+        // The topic's demand belongs to an existing post — route it into
+        // the refresh queue (#147) instead of writing a competing article.
+        let queued = false
+        try {
+            const result = await enqueueIdeationGateSignal({
+                owningUrl: gate.owningUrl,
+                topicTitle: data.title,
+                primaryKeyword: data.primaryKeyword,
+                reason: gate.reason,
+            })
+            queued =
+                result?.outcome === 'created' || result?.outcome === 'merged'
+        } catch (error) {
+            console.warn(
+                `[Pipeline] Failed to queue refresh for "${data.title}":`,
+                error
+            )
+        }
         return {
             success: false,
-            error: `Topic refused: ${gate.reason}`,
+            error: queued
+                ? `Topic refused: ${gate.reason} — the owning post was queued for a refresh instead`
+                : `Topic refused: ${gate.reason}`,
             gate,
         }
     }

@@ -44,6 +44,7 @@ import type {
     AutopilotCadence,
     AutopilotMode,
     BlogAiConfig,
+    RefreshMode,
 } from '@/lib/queries/blog-ai-config.query'
 import {
     IMAGE_MODELS,
@@ -135,6 +136,20 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
     const [autopilotIdeasPerRun, setAutopilotIdeasPerRun] = useState(
         initialData.autopilotIdeasPerRun
     )
+    const [refreshMode, setRefreshMode] = useState<RefreshMode>(
+        initialData.refreshMode
+    )
+    const [refreshStaleMonths, setRefreshStaleMonths] = useState(
+        initialData.refreshStaleMonths
+    )
+    const [refreshPositionDropThreshold, setRefreshPositionDropThreshold] =
+        useState(initialData.refreshPositionDropThreshold)
+    const [refreshCooldownDays, setRefreshCooldownDays] = useState(
+        initialData.refreshCooldownDays
+    )
+    const [refreshDraftCap, setRefreshDraftCap] = useState(
+        initialData.refreshDraftCap
+    )
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const trimmedIdeationCustom = customIdeationModelId.trim()
@@ -183,6 +198,11 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
                 autopilotPostsPerRun,
                 autopilotDraftCap,
                 autopilotIdeasPerRun,
+                refreshMode,
+                refreshStaleMonths,
+                refreshPositionDropThreshold,
+                refreshCooldownDays,
+                refreshDraftCap,
             })
 
             if (result.success) {
@@ -542,6 +562,156 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
                             />
                             <p className='text-muted-foreground text-xs'>
                                 Ideas are topped up to this many pending.
+                            </p>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Content refresh */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Content Refresh</CardTitle>
+                    <CardDescription>
+                        Scheduled decay detection for published posts: ranking
+                        drops, CTR gaps, stale age and cannibalization feed a
+                        refresh queue. Applying a refresh always stays behind a
+                        review.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className='space-y-6'>
+                    <div className='space-y-2'>
+                        <div>
+                            <Label htmlFor='refresh-mode'>Mode</Label>
+                            <p className='text-muted-foreground text-xs'>
+                                Off queues nothing. Suggest is the recommended
+                                starting point.
+                            </p>
+                        </div>
+                        <Select
+                            value={refreshMode}
+                            onValueChange={(value) =>
+                                setRefreshMode(value as RefreshMode)
+                            }
+                        >
+                            <SelectTrigger id='refresh-mode' className='w-full'>
+                                <SelectValue placeholder='Select a mode' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='off'>
+                                    <span className='flex flex-col items-start'>
+                                        <span>Off</span>
+                                        <span className='text-muted-foreground text-xs'>
+                                            No detection, no queue.
+                                        </span>
+                                    </span>
+                                </SelectItem>
+                                <SelectItem value='suggest'>
+                                    <span className='flex flex-col items-start'>
+                                        <span>Suggest — approve refreshes</span>
+                                        <span className='text-muted-foreground text-xs'>
+                                            Decaying posts are queued; you start
+                                            each refresh yourself.
+                                        </span>
+                                    </span>
+                                </SelectItem>
+                                <SelectItem value='auto'>
+                                    <span className='flex flex-col items-start'>
+                                        <span>Auto — review diffs</span>
+                                        <span className='text-muted-foreground text-xs'>
+                                            Top candidates are refreshed on a
+                                            schedule; you review the diff before
+                                            it applies.
+                                        </span>
+                                    </span>
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className='grid gap-6 sm:grid-cols-2'>
+                        <div className='space-y-2'>
+                            <Label htmlFor='refresh-stale-months'>
+                                Stale after (months)
+                            </Label>
+                            <Input
+                                id='refresh-stale-months'
+                                type='number'
+                                min={1}
+                                max={24}
+                                value={refreshStaleMonths}
+                                onChange={(event) =>
+                                    setRefreshStaleMonths(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                Posts untouched this long are flagged stale.
+                            </p>
+                        </div>
+                        <div className='space-y-2'>
+                            <Label htmlFor='refresh-drop-threshold'>
+                                Position drop threshold
+                            </Label>
+                            <Input
+                                id='refresh-drop-threshold'
+                                type='number'
+                                min={0.5}
+                                max={20}
+                                step={0.5}
+                                value={refreshPositionDropThreshold}
+                                onChange={(event) =>
+                                    setRefreshPositionDropThreshold(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                28-day ranking drop (site drift subtracted) that
+                                flags decay.
+                            </p>
+                        </div>
+                        <div className='space-y-2'>
+                            <Label htmlFor='refresh-cooldown'>
+                                Cooldown (days)
+                            </Label>
+                            <Input
+                                id='refresh-cooldown'
+                                type='number'
+                                min={7}
+                                max={365}
+                                value={refreshCooldownDays}
+                                onChange={(event) =>
+                                    setRefreshCooldownDays(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                A refreshed or dismissed post cannot re-queue
+                                for this long.
+                            </p>
+                        </div>
+                        <div className='space-y-2'>
+                            <Label htmlFor='refresh-draft-cap'>
+                                Refresh draft cap
+                            </Label>
+                            <Input
+                                id='refresh-draft-cap'
+                                type='number'
+                                min={1}
+                                max={10}
+                                value={refreshDraftCap}
+                                onChange={(event) =>
+                                    setRefreshDraftCap(
+                                        Number(event.target.value)
+                                    )
+                                }
+                            />
+                            <p className='text-muted-foreground text-xs'>
+                                Auto mode pauses while this many refresh drafts
+                                await review.
                             </p>
                         </div>
                     </div>

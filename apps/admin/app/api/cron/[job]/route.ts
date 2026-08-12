@@ -24,6 +24,7 @@ import {
 import { reapStuckPosts } from '@/lib/services/stuck-post-reaper.service'
 import { runGscSnapshotJob } from '@/lib/services/gsc-snapshot.service'
 import { runCannibalizationReportJob } from '@/lib/services/cannibalization-report.service'
+import { runDecayDetectionJob } from '@/lib/services/decay-detection.service'
 
 export const runtime = 'nodejs'
 // Ideation runs inline in this invocation (one model call + gate + inserts);
@@ -76,6 +77,12 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
     /** Weekly cannibalization findings + the SEO digest email (#146). */
     'cannibalization-report': async () => {
         const result = await runCannibalizationReportJob('cron')
+        return { ...result }
+    },
+
+    /** Runs the decay rules and feeds the refresh queue (#147). */
+    'detect-decay': async () => {
+        const result = await runDecayDetectionJob('cron')
         return { ...result }
     },
 }

@@ -37,6 +37,7 @@ import { SearchPagesCard } from '@/components/seo/search-pages-card.component'
 import { ContentOpportunitiesCard } from '@/components/seo/content-opportunities-card.component'
 import { GscSnapshotStatusCard } from '@/components/seo/gsc-snapshot-status-card.component'
 import { CannibalizationReportCard } from '@/components/seo/cannibalization-report-card.component'
+import { RefreshQueueCard } from '@/components/seo/refresh-queue-card.component'
 
 // Position Tracking tab components
 import { PositionChangesCard } from '@/components/seo/position-changes-card.component'
@@ -172,7 +173,10 @@ export function SeoDashboard() {
 
                     {/* Refresh loop (epic #144): snapshot health + cannibalization */}
                     <GscSnapshotStatusCard />
-                    <CannibalizationReportCard />
+                    <div className='grid gap-6 lg:grid-cols-2'>
+                        <CannibalizationReportCard />
+                        <RefreshQueueCard />
+                    </div>
 
                     {/* Queries & Pages Tables */}
                     <div className='grid gap-6 lg:grid-cols-2'>
