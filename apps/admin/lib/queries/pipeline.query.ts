@@ -6,7 +6,7 @@
 import { cache } from 'react'
 import { db } from '@workspace/db/client'
 import { blogPost, author, images } from '@workspace/db/schema/blog'
-import { eq, desc, sql } from 'drizzle-orm'
+import { eq, ne, desc, isNull, or, sql } from 'drizzle-orm'
 
 import { isPipelineStatus } from '@/lib/types/pipeline.type'
 import type {
@@ -29,6 +29,7 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
             pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
             processingError: blogPost.processingError,
             primaryKeyword: blogPost.primaryKeyword,
+            ideaApproval: blogPost.ideaApproval,
             authorName: author.name,
             featuredImageUrl: images.url,
             planningData: blogPost.planningData,
@@ -39,6 +40,14 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
         .from(blogPost)
         .leftJoin(author, eq(blogPost.authorId, author.id))
         .leftJoin(images, eq(blogPost.featuredImageId, images.id))
+        // Rejected ideas stay in the DB (ideation dedupe reads them) but
+        // leave the board
+        .where(
+            or(
+                isNull(blogPost.ideaApproval),
+                ne(blogPost.ideaApproval, 'rejected')
+            )
+        )
         .orderBy(desc(blogPost.updatedAt))
 
     // Initialize empty arrays for each status

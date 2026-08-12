@@ -61,6 +61,31 @@ const blogAiConfigSchema = z.object({
             message: 'Select a supported artistic style',
         })
         .nullable(),
+    // Autopilot (epic #122)
+    autopilotMode: z.enum(['off', 'ideas', 'full'], {
+        message: 'Select an autopilot mode',
+    }),
+    autopilotIdeationCadence: z.enum(['daily', 'weekdays', 'weekly'], {
+        message: 'Select an ideation cadence',
+    }),
+    autopilotContentCadence: z.enum(['daily', 'weekdays', 'weekly'], {
+        message: 'Select a content cadence',
+    }),
+    autopilotPostsPerRun: z
+        .number()
+        .int()
+        .min(1, 'At least 1 post per run')
+        .max(3, 'At most 3 posts per run'),
+    autopilotDraftCap: z
+        .number()
+        .int()
+        .min(1, 'Draft cap must be at least 1')
+        .max(20, 'Draft cap must be 20 or less'),
+    autopilotIdeasPerRun: z
+        .number()
+        .int()
+        .min(3, 'At least 3 ideas per run')
+        .max(10, 'At most 10 ideas per run'),
 })
 
 export type BlogAiConfigInput = z.infer<typeof blogAiConfigSchema>
@@ -84,27 +109,28 @@ export async function updateBlogAiConfig(
             .from(blogAiConfig)
             .limit(1)
 
+        const values = {
+            ideationModelId: validated.ideationModelId,
+            contentModelId: validated.contentModelId,
+            reviewModelId: validated.reviewModelId,
+            extractionModelId: validated.extractionModelId,
+            imageModelId: validated.imageModelId,
+            artisticStyleId: validated.artisticStyleId,
+            autopilotMode: validated.autopilotMode,
+            autopilotIdeationCadence: validated.autopilotIdeationCadence,
+            autopilotContentCadence: validated.autopilotContentCadence,
+            autopilotPostsPerRun: validated.autopilotPostsPerRun,
+            autopilotDraftCap: validated.autopilotDraftCap,
+            autopilotIdeasPerRun: validated.autopilotIdeasPerRun,
+        }
+
         if (existing) {
             await db
                 .update(blogAiConfig)
-                .set({
-                    ideationModelId: validated.ideationModelId,
-                    contentModelId: validated.contentModelId,
-                    reviewModelId: validated.reviewModelId,
-                    extractionModelId: validated.extractionModelId,
-                    imageModelId: validated.imageModelId,
-                    artisticStyleId: validated.artisticStyleId,
-                })
+                .set(values)
                 .where(eq(blogAiConfig.id, existing.id))
         } else {
-            await db.insert(blogAiConfig).values({
-                ideationModelId: validated.ideationModelId,
-                contentModelId: validated.contentModelId,
-                reviewModelId: validated.reviewModelId,
-                extractionModelId: validated.extractionModelId,
-                imageModelId: validated.imageModelId,
-                artisticStyleId: validated.artisticStyleId,
-            })
+            await db.insert(blogAiConfig).values(values)
         }
 
         revalidatePath('/blog/settings')

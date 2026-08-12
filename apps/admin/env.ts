@@ -36,6 +36,20 @@ export const env = createEnv({
         // Cache revalidation secret for invalidating web app cache
         REVALIDATION_SECRET: z.string().min(32),
 
+        // Shared secret authenticating scheduled (cron) requests. Optional so
+        // builds don't fail before the Vercel env var exists — the cron route
+        // returns 503 while unset. Vercel automatically sends it as a Bearer
+        // header on cron invocations when set on the project.
+        CRON_SECRET: z.string().min(32).optional(),
+
+        // Autopilot notification emails (all optional — the notification
+        // service no-ops with a log line when any is missing)
+        RESEND_API_KEY: z.string().min(1).optional(),
+        RESEND_FROM_EMAIL: z.string().email().optional(),
+        OWNER_EMAIL: z.string().email().optional(),
+        // Absolute admin URL used in notification email links
+        ADMIN_BASE_URL: z.string().url().optional(),
+
         // OpenAI API key for chat testing
         OPENAI_API_KEY: z.string().min(1).optional(),
 

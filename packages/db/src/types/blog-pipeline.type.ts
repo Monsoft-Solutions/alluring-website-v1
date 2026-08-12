@@ -48,6 +48,14 @@ export type PlanningData = {
     aiGeneratedScore?: number
     /** AI-generated suggestions for improvement */
     aiSuggestions?: string
+    /** Rejection details when an idea is declined (by an admin or by the
+     * autopilot write-time re-gate). Rejected ideas stay in the DB so
+     * ideation never re-proposes them. */
+    ideaRejection?: {
+        reason?: string
+        rejectedAt?: string
+        rejectedBy?: 'admin' | 'autopilot'
+    }
     /** Keyword-ownership gate verdict recorded when the post was created */
     ideationGate?: {
         verdict: 'new' | 'refresh' | 'reject'

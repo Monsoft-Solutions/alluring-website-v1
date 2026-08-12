@@ -16,6 +16,7 @@ import {
 } from '@workspace/db/schema/blog'
 import type { PipelineState, PipelineMetrics } from '@workspace/db/types'
 import {
+    runGenerationPhase,
     runReviewPhase,
     runExtractionPhase,
     runImageGenerationPhase,
@@ -35,9 +36,38 @@ import {
 // Shared Helper Functions
 // ============================================
 
+/**
+ * Options accepted by every phase runner.
+ *
+ * `chain` (default true) controls whether the runner invokes the next phase
+ * when it completes. The Kanban/HTTP path keeps the default so the pipeline
+ * flows end-to-end; the autopilot workflow passes `chain: false` and owns
+ * sequencing itself, one budgeted step per phase.
+ */
+export type PhaseRunOptions = {
+    chain?: boolean
+}
+
+/**
+ * Outcome of a phase runner. `skipped` marks validation-level no-ops (wrong
+ * status, already processing, post missing) as opposed to real phase errors.
+ */
+export type PhaseRunResult = {
+    success: boolean
+    skipped?: boolean
+    error?: string
+    /** Generation-only response metadata (word count etc.) for HTTP callers */
+    meta?: {
+        wordCount: number
+        sourcesCount: number
+        toolCallCount: number
+        timeMs: number
+    }
+}
+
 type PhaseValidationResult =
     | { valid: true; post: BlogPost }
-    | { valid: false; post: null }
+    | { valid: false; post: null; reason: string }
 
 /**
  * Fetch and validate a post for a pipeline phase
@@ -60,21 +90,25 @@ async function fetchAndValidatePostForPhase(
         console.error(
             `[Pipeline Service] Post ${postId} not found for ${phaseName}`
         )
-        return { valid: false, post: null }
+        return { valid: false, post: null, reason: 'Post not found' }
     }
 
     if (post.status !== expectedStatus) {
         console.log(
             `[Pipeline Service] Post ${postId} not in ${expectedStatus} status (${post.status}), skipping`
         )
-        return { valid: false, post: null }
+        return {
+            valid: false,
+            post: null,
+            reason: `Post not in ${expectedStatus} status (${post.status})`,
+        }
     }
 
     if (post.pipelineProcessingStatus === 'processing') {
         console.log(
             `[Pipeline Service] Post ${postId} already processing, skipping`
         )
-        return { valid: false, post: null }
+        return { valid: false, post: null, reason: 'Post already processing' }
     }
 
     if (!post.content) {
@@ -88,7 +122,11 @@ async function fetchAndValidatePostForPhase(
                 processingError: `Content is required for ${phaseName} phase`,
             })
             .where(eq(blogPost.id, postId))
-        return { valid: false, post: null }
+        return {
+            valid: false,
+            post: null,
+            reason: `Content is required for ${phaseName} phase`,
+        }
     }
 
     return { valid: true, post }
@@ -157,6 +195,164 @@ async function setPhaseResultError(
 // ============================================
 
 /**
+ * Run the content generation phase for a post.
+ *
+ * Extracted from the pipeline/generate HTTP route so headless callers
+ * (autopilot) can drive generation without cookie auth. Handles its own DB
+ * reads/writes and error handling; on success advances the post to
+ * `ai_review` and, unless `chain: false`, continues into the review phase.
+ *
+ * Unlike the later phases, generation runs before content exists — it
+ * validates `planningData` instead of `content`.
+ */
+export async function runGenerationPhaseForPost(
+    postId: string,
+    options: PhaseRunOptions = {}
+): Promise<PhaseRunResult> {
+    const chain = options.chain ?? true
+    console.log(
+        `[Pipeline Service] Starting generation phase for post ${postId}`
+    )
+
+    try {
+        const [post] = await db
+            .select()
+            .from(blogPost)
+            .where(eq(blogPost.id, postId))
+            .limit(1)
+
+        if (!post) {
+            console.error(
+                `[Pipeline Service] Post ${postId} not found for generation`
+            )
+            return { success: false, skipped: true, error: 'Post not found' }
+        }
+
+        if (post.status !== 'generate') {
+            console.log(
+                `[Pipeline Service] Post ${postId} not in generate status (${post.status}), skipping`
+            )
+            return {
+                success: false,
+                skipped: true,
+                error: `Post not in generate status (${post.status})`,
+            }
+        }
+
+        if (post.pipelineProcessingStatus === 'processing') {
+            console.log(
+                `[Pipeline Service] Post ${postId} already processing, skipping`
+            )
+            return {
+                success: false,
+                skipped: true,
+                error: 'Post already processing',
+            }
+        }
+
+        const planningData = post.planningData
+        if (!planningData) {
+            await setPhaseResultError(
+                postId,
+                'Planning data with outline is required for generation',
+                'Generation'
+            )
+            return {
+                success: false,
+                error: 'Planning data with outline is required for generation',
+            }
+        }
+
+        await setProcessingStatus(postId)
+
+        // Admin-configured model wins; the runner keeps its own default when
+        // no configuration row exists yet.
+        const aiConfig = await getBlogAiConfig()
+
+        const result = await runGenerationPhase({
+            contentModelId: aiConfig.contentModelId,
+            input: {
+                title: post.title,
+                topic: planningData.topic,
+                primaryKeyword: post.primaryKeyword || undefined,
+                secondaryKeywords: post.secondaryKeywords || undefined,
+                targetAudience: planningData.targetAudience,
+                uniqueAngle: planningData.uniqueAngle,
+                contentType: planningData.contentType,
+                estimatedWordCount: planningData.estimatedWordCount,
+            },
+        })
+
+        if (!result.success) {
+            await setPhaseResultError(
+                postId,
+                result.error ?? 'Generation phase failed',
+                'Generation'
+            )
+            return {
+                success: false,
+                error: result.error ?? 'Generation phase failed',
+            }
+        }
+
+        const existingPipelineState: PipelineState = post.pipelineState ?? {}
+        const updatedPipelineState: PipelineState = {
+            ...existingPipelineState,
+            generationPhase: {
+                startedAt:
+                    post.processingStartedAt?.toISOString() ||
+                    new Date().toISOString(),
+                completedAt: new Date().toISOString(),
+                sources: result.sources,
+                initialContent: result.content,
+                initialWordCount: result.wordCount,
+                toolCallCount: result.toolCallCount,
+                stepCount: result.stepCount,
+            },
+        }
+
+        await db
+            .update(blogPost)
+            .set({
+                content: result.content,
+                pipelineProcessingStatus: 'idle',
+                processingError: null,
+                processingStartedAt: null,
+                pipelineState: updatedPipelineState,
+                status: 'ai_review',
+            })
+            .where(eq(blogPost.id, postId))
+
+        console.log(
+            `[Pipeline Service] Generation phase complete for post ${postId} - ${result.wordCount} words, Time: ${result.timeMs}ms`
+        )
+
+        if (chain) {
+            console.log(
+                `[Pipeline Service] Chaining to review phase for post ${postId}`
+            )
+            await runReviewPhaseForPost(postId)
+        }
+
+        return {
+            success: true,
+            meta: {
+                wordCount: result.wordCount,
+                sourcesCount: result.sources.length,
+                toolCallCount: result.toolCallCount,
+                timeMs: result.timeMs,
+            },
+        }
+    } catch (error) {
+        await handlePhaseError(postId, error, 'Generation')
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        }
+    }
+}
+
+/**
  * Run review phase for a post (called internally after generation)
  *
  * Handles its own DB reads/writes and error handling.
@@ -164,7 +360,11 @@ async function setPhaseResultError(
  *
  * @param postId - The blog post ID to run review for
  */
-export async function runReviewPhaseForPost(postId: string): Promise<void> {
+export async function runReviewPhaseForPost(
+    postId: string,
+    options: PhaseRunOptions = {}
+): Promise<PhaseRunResult> {
+    const chain = options.chain ?? true
     console.log(`[Pipeline Service] Starting review phase for post ${postId}`)
 
     try {
@@ -174,7 +374,9 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
             'ai_review',
             'review'
         )
-        if (!validation.valid) return
+        if (!validation.valid) {
+            return { success: false, skipped: true, error: validation.reason }
+        }
 
         const { post } = validation
 
@@ -206,7 +408,10 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
                 result.error ?? 'Review phase failed',
                 'Review'
             )
-            return
+            return {
+                success: false,
+                error: result.error ?? 'Review phase failed',
+            }
         }
 
         // Build pipeline state update
@@ -257,13 +462,21 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
             `[Pipeline Service] Review phase complete for post ${postId} - Avg score: ${avgScore}, Time: ${result.totalTimeMs}ms`
         )
 
-        // Chain to extraction phase
-        console.log(
-            `[Pipeline Service] Chaining to extraction phase for post ${postId}`
-        )
-        await runExtractPhaseForPost(postId)
+        if (chain) {
+            // Chain to extraction phase
+            console.log(
+                `[Pipeline Service] Chaining to extraction phase for post ${postId}`
+            )
+            await runExtractPhaseForPost(postId)
+        }
+
+        return { success: true }
     } catch (error) {
         await handlePhaseError(postId, error, 'Review')
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        }
     }
 }
 
@@ -275,7 +488,11 @@ export async function runReviewPhaseForPost(postId: string): Promise<void> {
  *
  * @param postId - The blog post ID to run extraction for
  */
-export async function runExtractPhaseForPost(postId: string): Promise<void> {
+export async function runExtractPhaseForPost(
+    postId: string,
+    options: PhaseRunOptions = {}
+): Promise<PhaseRunResult> {
+    const chain = options.chain ?? true
     console.log(
         `[Pipeline Service] Starting extraction phase for post ${postId}`
     )
@@ -287,7 +504,9 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
             'generate_metadata',
             'extraction'
         )
-        if (!validation.valid) return
+        if (!validation.valid) {
+            return { success: false, skipped: true, error: validation.reason }
+        }
 
         const { post } = validation
 
@@ -311,7 +530,10 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
                 result.error ?? 'Extraction phase failed',
                 'Extraction'
             )
-            return
+            return {
+                success: false,
+                error: result.error ?? 'Extraction phase failed',
+            }
         }
 
         // Build pipeline state update with metrics
@@ -374,13 +596,21 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
             `[Pipeline Service] Extraction phase complete for post ${postId} - ${result.faqs.length} FAQs, Time: ${result.timeMs}ms`
         )
 
-        // Chain to image generation phase
-        console.log(
-            `[Pipeline Service] Chaining to image generation phase for post ${postId}`
-        )
-        await runImageGenerationPhaseForPost(postId)
+        if (chain) {
+            // Chain to image generation phase
+            console.log(
+                `[Pipeline Service] Chaining to image generation phase for post ${postId}`
+            )
+            await runImageGenerationPhaseForPost(postId)
+        }
+
+        return { success: true }
     } catch (error) {
         await handlePhaseError(postId, error, 'Extraction')
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        }
     }
 }
 
@@ -394,8 +624,12 @@ export async function runExtractPhaseForPost(postId: string): Promise<void> {
  * @param postId - The blog post ID to run image generation for
  */
 export async function runImageGenerationPhaseForPost(
-    postId: string
-): Promise<void> {
+    postId: string,
+    options: PhaseRunOptions = {}
+): Promise<PhaseRunResult> {
+    // Terminal phase — nothing to chain into; the option exists for
+    // signature symmetry with the other runners.
+    void options
     console.log(
         `[Pipeline Service] Starting image generation phase for post ${postId}`
     )
@@ -407,7 +641,9 @@ export async function runImageGenerationPhaseForPost(
             'generate_image',
             'image-generation'
         )
-        if (!validation.valid) return
+        if (!validation.valid) {
+            return { success: false, skipped: true, error: validation.reason }
+        }
 
         const { post } = validation
 
@@ -462,12 +698,10 @@ export async function runImageGenerationPhaseForPost(
         })
 
         if (!phaseResult.success || !phaseResult.prompt) {
-            await setPhaseResultError(
-                postId,
-                phaseResult.error || 'Failed to generate image prompt',
-                'ImageGeneration'
-            )
-            return
+            const errorMessage =
+                phaseResult.error || 'Failed to generate image prompt'
+            await setPhaseResultError(postId, errorMessage, 'ImageGeneration')
+            return { success: false, error: errorMessage }
         }
 
         const generatedImage = phaseResult.image
@@ -477,7 +711,10 @@ export async function runImageGenerationPhaseForPost(
                 'Failed to generate image with fal.ai',
                 'ImageGeneration'
             )
-            return
+            return {
+                success: false,
+                error: 'Failed to generate image with fal.ai',
+            }
         }
 
         if (phaseResult.peopleDetected) {
@@ -522,7 +759,7 @@ export async function runImageGenerationPhaseForPost(
                 'Failed to create image record',
                 'ImageGeneration'
             )
-            return
+            return { success: false, error: 'Failed to create image record' }
         }
 
         // Link image to blog post via junction table
@@ -572,7 +809,13 @@ export async function runImageGenerationPhaseForPost(
         console.log(
             `[Pipeline Service] Pipeline complete! Post ${postId} is now in draft status`
         )
+
+        return { success: true }
     } catch (error) {
         await handlePhaseError(postId, error, 'ImageGeneration')
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        }
     }
 }

@@ -7,6 +7,7 @@
  */
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
 import { BlogAiSettingsForm } from '@/components/blog/blog-ai-settings-form.component'
+import { AutopilotStatusCard } from '@/components/blog/autopilot-status-card.component'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -24,6 +25,8 @@ export default async function BlogAiSettingsPage() {
                     and illustrate posts.
                 </p>
             </div>
+
+            <AutopilotStatusCard />
 
             <BlogAiSettingsForm initialData={config} />
         </div>

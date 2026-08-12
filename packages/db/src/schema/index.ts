@@ -9,6 +9,13 @@ export {
 // Blog schema
 export {
     blogPostStatus,
+    ideaApprovalStatus,
+    autopilotMode,
+    autopilotCadence,
+    autopilotRunKind,
+    autopilotTrigger,
+    autopilotRunStatus,
+    autopilotRun,
     blogPost,
     blogCategory,
     blogPostCategory,
@@ -46,6 +53,8 @@ export {
     type BlogPostAnalysisDetails,
     type BlogAiConfig,
     type InsertBlogAiConfig,
+    type AutopilotRun,
+    type InsertAutopilotRun,
     type CreateResourceInput,
 } from './blog'
 

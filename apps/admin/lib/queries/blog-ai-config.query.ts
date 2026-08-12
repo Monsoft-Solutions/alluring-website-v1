@@ -33,7 +33,25 @@ export type BlogAiConfig = {
     imageModelId: ImageModelId
     /** Pinned artistic preset, or `null` to let the AI pick per topic */
     artisticStyleId: ArtisticImageStyleId | null
+    /** Autopilot autonomy mode (`off` disables both scheduled jobs) */
+    autopilotMode: AutopilotMode
+    /** Cadence of the scheduled ideation job (queue top-up) */
+    autopilotIdeationCadence: AutopilotCadence
+    /** Cadence of the scheduled content job (writes posts) */
+    autopilotContentCadence: AutopilotCadence
+    /** Posts written per content run (1–3) */
+    autopilotPostsPerRun: number
+    /** Content runs pause while this many posts sit in Draft */
+    autopilotDraftCap: number
+    /** Ideation runs top the pending-idea queue up to this size */
+    autopilotIdeasPerRun: number
 }
+
+/** Autopilot autonomy modes (mirrors the `autopilot_mode` pg enum) */
+export type AutopilotMode = 'off' | 'ideas' | 'full'
+
+/** Autopilot cadence presets (mirrors the `autopilot_cadence` pg enum) */
+export type AutopilotCadence = 'daily' | 'weekdays' | 'weekly'
 
 /**
  * Code defaults used until an admin saves a configuration.
@@ -48,6 +66,12 @@ export const DEFAULT_BLOG_AI_CONFIG: BlogAiConfig = {
     extractionModelId: 'claude-opus-5',
     imageModelId: 'gpt-image-2',
     artisticStyleId: null,
+    autopilotMode: 'off',
+    autopilotIdeationCadence: 'weekly',
+    autopilotContentCadence: 'weekly',
+    autopilotPostsPerRun: 1,
+    autopilotDraftCap: 3,
+    autopilotIdeasPerRun: 5,
 }
 
 /**
@@ -97,5 +121,11 @@ export async function getBlogAiConfig(): Promise<BlogAiConfig> {
         artisticStyleId: isArtisticImageStyleId(config.artisticStyleId)
             ? config.artisticStyleId
             : null,
+        autopilotMode: config.autopilotMode,
+        autopilotIdeationCadence: config.autopilotIdeationCadence,
+        autopilotContentCadence: config.autopilotContentCadence,
+        autopilotPostsPerRun: config.autopilotPostsPerRun,
+        autopilotDraftCap: config.autopilotDraftCap,
+        autopilotIdeasPerRun: config.autopilotIdeasPerRun,
     }
 }
