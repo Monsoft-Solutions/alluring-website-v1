@@ -57,7 +57,15 @@ export type ExtractionPhaseResult = {
     faqSchema: object | null
     /** Processing time in ms */
     timeMs: number
+    /** Model the extraction ran on (resolved after defaults) */
+    modelId: string
 }
+
+/**
+ * Default extraction model, mirrored from extract-metadata / extract-faqs so
+ * the runner can report which model actually ran when none is configured.
+ */
+const DEFAULT_EXTRACTION_MODEL = 'claude-opus-5'
 
 /**
  * Run the extraction phase standalone
@@ -89,7 +97,8 @@ export async function runExtractionPhase(
     options: ExtractionPhaseOptions
 ): Promise<ExtractionPhaseResult> {
     const startTime = Date.now()
-    const { content, title, primaryKeyword, modelId, onProgress } = options
+    const { content, title, primaryKeyword, onProgress } = options
+    const modelId = options.modelId ?? DEFAULT_EXTRACTION_MODEL
 
     try {
         console.log('[Extraction Phase] Starting Extraction')
@@ -134,6 +143,7 @@ export async function runExtractionPhase(
             faqs: faqResult.faqs,
             faqSchema,
             timeMs,
+            modelId,
         }
     } catch (error) {
         const errorMessage =
@@ -154,6 +164,7 @@ export async function runExtractionPhase(
             faqs: [],
             faqSchema: null,
             timeMs: Date.now() - startTime,
+            modelId,
         }
     }
 }

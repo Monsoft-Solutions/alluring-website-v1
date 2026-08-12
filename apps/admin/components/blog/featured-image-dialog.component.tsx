@@ -441,13 +441,35 @@ export function FeaturedImageDialog({
                                         </Label>
                                         <p className='text-xs text-stone-500'>
                                             Choose the main focus of your image.
-                                            Select &quot;Patient Model&quot; for
-                                            customizable person.
+                                            The default direction is artistic
+                                            and people-free; &quot;Patient
+                                            Model&quot; is the exceptional
+                                            opt-in path.
                                         </p>
                                         {renderOptionCards(
                                             SUBJECT_OPTIONS,
                                             options.subject,
                                             (v) => updateOption('subject', v)
+                                        )}
+                                        {showModelProfile && (
+                                            <div className='rounded-lg border border-amber-200 bg-amber-50 p-3'>
+                                                <p className='text-xs font-medium text-amber-800'>
+                                                    Exceptional path: this is
+                                                    the only subject that
+                                                    renders a person.
+                                                </p>
+                                                <p className='mt-1 text-xs text-amber-800'>
+                                                    The automated pipeline never
+                                                    selects it, and generated
+                                                    images will be flagged by
+                                                    the people-detection QA
+                                                    gate. Continue only if this
+                                                    post specifically needs a
+                                                    patient model — then
+                                                    configure the appearance in
+                                                    the Model tab.
+                                                </p>
+                                            </div>
                                         )}
                                     </div>
                                 </TabsContent>

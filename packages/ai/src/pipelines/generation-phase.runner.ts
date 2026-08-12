@@ -117,6 +117,8 @@ export type GenerationPhaseResult = {
     stepCount: number
     /** Processing time in ms */
     timeMs: number
+    /** Model that generated the content (resolved after defaults) */
+    modelId: string
 }
 
 /**
@@ -307,6 +309,7 @@ export async function runGenerationPhase(
             toolCallCount,
             stepCount,
             timeMs,
+            modelId: contentModelId,
         }
     } catch (error) {
         const errorMessage =
@@ -324,6 +327,7 @@ export async function runGenerationPhase(
             toolCallCount: 0,
             stepCount: 0,
             timeMs: Date.now() - startTime,
+            modelId: contentModelId,
         }
     }
 }

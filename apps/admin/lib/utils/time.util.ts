@@ -17,3 +17,20 @@ export function calculateDuration(
 
     return Math.max(0, end - start)
 }
+
+/**
+ * Format a millisecond duration for display ("45s", "2m 5s", "—" for none)
+ * @param ms Duration in milliseconds
+ * @returns Human-readable duration
+ */
+export function formatDurationMs(ms: number): string {
+    if (ms <= 0) return '—'
+
+    const totalSeconds = Math.round(ms / 1000)
+    if (totalSeconds < 1) return '<1s'
+    if (totalSeconds < 60) return `${totalSeconds}s`
+
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`
+}
