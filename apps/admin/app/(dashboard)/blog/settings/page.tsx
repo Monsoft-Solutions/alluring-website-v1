@@ -10,7 +10,10 @@ import { BlogAiSettingsForm } from '@/components/blog/blog-ai-settings-form.comp
 import { AutopilotStatusCard } from '@/components/blog/autopilot-status-card.component'
 
 export const dynamic = 'force-dynamic'
-export const maxDuration = 30
+// The Run-now server actions execute on this page's route segment; the
+// manual ideation run needs ~60s (model call + gate), so the budget must
+// comfortably exceed it — 30s killed manual runs mid-flight in production.
+export const maxDuration = 300
 
 export default async function BlogAiSettingsPage() {
     const config = await getBlogAiConfig()
