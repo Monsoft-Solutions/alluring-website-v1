@@ -28,6 +28,7 @@ import {
     buildAgenticUserPrompt,
     type ContentType,
 } from '../prompts/blog/agentic-writer.prompt'
+import type { RefreshBriefInput } from '../prompts/blog/refresh-writer.prompt'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
 
 /**
@@ -60,6 +61,11 @@ export type GenerationPhaseInput = {
     contentType?: string
     /** Estimated word count target */
     estimatedWordCount?: number
+    /**
+     * Refresh mode (epic #144): the brief + the existing article. When set,
+     * the writer improves the article in place instead of writing anew.
+     */
+    refresh?: RefreshBriefInput
 }
 
 /**
@@ -202,7 +208,10 @@ export async function runGenerationPhase(
 
         // Build prompts using modular prompt system
         const contentType = input.contentType as ContentType | undefined
-        const systemPrompt = buildAgenticSystemPrompt(contentType)
+        const systemPrompt = buildAgenticSystemPrompt(
+            contentType,
+            input.refresh
+        )
         const userPrompt = buildAgenticUserPrompt({
             title: input.title,
             topic: input.topic || input.title,
@@ -214,6 +223,7 @@ export async function runGenerationPhase(
             outline,
             estimatedWordCount: input.estimatedWordCount,
             internalPagesContext,
+            refresh: input.refresh,
         })
 
         // Track progress

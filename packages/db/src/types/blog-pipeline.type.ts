@@ -9,6 +9,8 @@
 
 import type { SelectedImageOptions } from '@workspace/shared/schemas/blog'
 
+import type { RefreshBrief } from './content-refresh.type'
+
 /**
  * Outline section for structured blog outlines
  */
@@ -66,6 +68,15 @@ export type PlanningData = {
         claimedQueries?: string[]
         /** ISO timestamp of the gate check */
         checkedAt?: string
+    }
+    /**
+     * Present ⇒ this post is a hidden refresh working copy (epic #144).
+     * Carries the data-driven brief the writer runs in refresh mode with.
+     */
+    refresh?: {
+        /** The live post this working copy will be merged back onto. */
+        originalPostId: string
+        brief: RefreshBrief
     }
 }
 

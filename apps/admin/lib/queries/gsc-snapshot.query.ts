@@ -57,6 +57,22 @@ export type PageWindowAggregate = {
     position: number | null
 }
 
+/** One query's performance on a post, current window vs the prior one. */
+export type PostQueryWindow = {
+    query: string
+    current: {
+        clicks: number
+        impressions: number
+        /** Impression-weighted average position (null when absent). */
+        position: number | null
+    }
+    previous: {
+        clicks: number
+        impressions: number
+        position: number | null
+    }
+}
+
 /** Aggregated CTR sample for one rounded position (benchmark input). */
 export type CtrBucket = {
     /** round(position), 1-based. */
@@ -215,6 +231,73 @@ export async function getPageWindowAggregates(
     return rows.map((row) => ({
         ...row,
         position: row.position === null ? null : Number(row.position),
+    }))
+}
+
+/**
+ * Per-query windows for one post: each query's clicks/impressions/weighted
+ * position in the current window vs the prior one. The refresh brief builder
+ * reads these to name the queries that decayed, rose, or stayed put.
+ *
+ * Both windows are fetched in one scan using FILTER clauses; queries with
+ * rows in either window appear (zeros in the other).
+ */
+export async function getPostQueryWindows(
+    blogPostId: string,
+    windows: {
+        currentStart: string
+        currentEnd: string
+        previousStart: string
+        previousEnd: string
+    }
+): Promise<PostQueryWindow[]> {
+    const { currentStart, currentEnd, previousStart, previousEnd } = windows
+    const inCurrent = sql`${gscQueryPageDaily.date} BETWEEN ${currentStart} AND ${currentEnd}`
+    const inPrevious = sql`${gscQueryPageDaily.date} BETWEEN ${previousStart} AND ${previousEnd}`
+
+    const rows = await db
+        .select({
+            query: gscQueryPageDaily.query,
+            currentClicks: sql<number>`coalesce(sum(${gscQueryPageDaily.clicks}) filter (where ${inCurrent}), 0)::int`,
+            currentImpressions: sql<number>`coalesce(sum(${gscQueryPageDaily.impressions}) filter (where ${inCurrent}), 0)::int`,
+            currentPosition: sql<number | null>`
+                sum(${gscQueryPageDaily.position} * ${gscQueryPageDaily.impressions})
+                    filter (where ${inCurrent})
+                / nullif(sum(${gscQueryPageDaily.impressions}) filter (where ${inCurrent}), 0)
+            `,
+            previousClicks: sql<number>`coalesce(sum(${gscQueryPageDaily.clicks}) filter (where ${inPrevious}), 0)::int`,
+            previousImpressions: sql<number>`coalesce(sum(${gscQueryPageDaily.impressions}) filter (where ${inPrevious}), 0)::int`,
+            previousPosition: sql<number | null>`
+                sum(${gscQueryPageDaily.position} * ${gscQueryPageDaily.impressions})
+                    filter (where ${inPrevious})
+                / nullif(sum(${gscQueryPageDaily.impressions}) filter (where ${inPrevious}), 0)
+            `,
+        })
+        .from(gscQueryPageDaily)
+        .where(
+            sql`${eq(gscQueryPageDaily.blogPostId, blogPostId)}
+                AND ${gscQueryPageDaily.date} BETWEEN ${previousStart} AND ${currentEnd}`
+        )
+        .groupBy(gscQueryPageDaily.query)
+
+    return rows.map((row) => ({
+        query: row.query,
+        current: {
+            clicks: row.currentClicks,
+            impressions: row.currentImpressions,
+            position:
+                row.currentPosition === null
+                    ? null
+                    : Number(row.currentPosition),
+        },
+        previous: {
+            clicks: row.previousClicks,
+            impressions: row.previousImpressions,
+            position:
+                row.previousPosition === null
+                    ? null
+                    : Number(row.previousPosition),
+        },
     }))
 }
 

@@ -64,3 +64,14 @@ export {
     type BuildAgenticUserPromptOptions,
     type ContentType,
 } from './agentic-writer.prompt'
+
+// Refresh Writer Prompts (epic #144)
+export {
+    REFRESH_MODE_RULES,
+    buildRefreshBriefSection,
+    type RefreshBriefInput,
+} from './refresh-writer.prompt'
+export {
+    REFRESH_CHANGE_SUMMARY_SYSTEM_PROMPT,
+    getRefreshChangeSummaryPrompt,
+} from './refresh-change-summary.prompt'

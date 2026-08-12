@@ -38,6 +38,8 @@ export type PipelinePostItem = {
     processingError: string | null
     primaryKeyword: string | null
     ideaApproval: 'pending' | 'approved' | 'rejected' | null
+    /** Set ⇒ this is a hidden refresh working copy (epic #144). */
+    refreshOfPostId?: string | null
     authorName: string | null
     featuredImageUrl: string | null
     planningData: PlanningData | null

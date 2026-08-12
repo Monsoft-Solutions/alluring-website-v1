@@ -11,7 +11,7 @@ import { and, desc, eq, inArray, isNull, notExists, sql } from 'drizzle-orm'
 
 import { db } from '@workspace/db/client'
 import { blogPost, contentRefresh } from '@workspace/db/schema/blog'
-import type { ContentRefresh } from '@workspace/db/schema/blog'
+import type { BlogPost, ContentRefresh } from '@workspace/db/schema/blog'
 import type { RefreshSignal } from '@workspace/db/types'
 
 import {
@@ -102,6 +102,115 @@ export async function getRefreshQueueSummary(): Promise<RefreshQueueSummary> {
             score: entry.score,
             sources: entry.sources,
         })),
+    }
+}
+
+// ============================================
+// Review screen (#148)
+// ============================================
+
+/** The reader-facing fields the diff screen compares side by side. */
+export type RefreshComparablePost = {
+    id: string
+    title: string
+    slug: string | null
+    content: string | null
+    metaTitle: string | null
+    metaDescription: string | null
+    excerpt: string | null
+    quickAnswer: string | null
+    faqs: BlogPost['faqs']
+    readingTime: number | null
+    updatedAt: Date | null
+    pipelineState: BlogPost['pipelineState']
+}
+
+export type RefreshCandidateDetail = {
+    id: string
+    status: ContentRefresh['status']
+    sources: RefreshSignal[]
+    score: number
+    brief: ContentRefresh['brief']
+    changeSummary: string | null
+    error: string | null
+    revisionId: string | null
+    appliedAt: Date | null
+    createdAt: Date
+    original: RefreshComparablePost
+    /** Null until the run has created it (or after apply/dismiss). */
+    workingCopy: RefreshComparablePost | null
+}
+
+const COMPARABLE_POST_FIELDS = {
+    id: blogPost.id,
+    title: blogPost.title,
+    slug: blogPost.slug,
+    content: blogPost.content,
+    metaTitle: blogPost.metaTitle,
+    metaDescription: blogPost.metaDescription,
+    excerpt: blogPost.excerpt,
+    quickAnswer: blogPost.quickAnswer,
+    faqs: blogPost.faqs,
+    readingTime: blogPost.readingTime,
+    updatedAt: blogPost.updatedAt,
+    pipelineState: blogPost.pipelineState,
+} as const
+
+/** Everything the diff review screen needs, or null when the id is unknown. */
+export async function getRefreshCandidateDetail(
+    id: string
+): Promise<RefreshCandidateDetail | null> {
+    const [candidate] = await db
+        .select({
+            id: contentRefresh.id,
+            status: contentRefresh.status,
+            sources: contentRefresh.sources,
+            score: contentRefresh.score,
+            brief: contentRefresh.brief,
+            changeSummary: contentRefresh.changeSummary,
+            error: contentRefresh.error,
+            blogPostId: contentRefresh.blogPostId,
+            workingPostId: contentRefresh.workingPostId,
+            revisionId: contentRefresh.revisionId,
+            appliedAt: contentRefresh.appliedAt,
+            createdAt: contentRefresh.createdAt,
+        })
+        .from(contentRefresh)
+        .where(eq(contentRefresh.id, id))
+        .limit(1)
+
+    if (!candidate) return null
+
+    const [original] = await db
+        .select(COMPARABLE_POST_FIELDS)
+        .from(blogPost)
+        .where(eq(blogPost.id, candidate.blogPostId))
+        .limit(1)
+    if (!original) return null
+
+    let workingCopy: RefreshComparablePost | null = null
+    if (candidate.workingPostId) {
+        const [copy] = await db
+            .select(COMPARABLE_POST_FIELDS)
+            .from(blogPost)
+            .where(eq(blogPost.id, candidate.workingPostId))
+            .limit(1)
+        workingCopy = copy ?? null
+    }
+
+    return {
+        id: candidate.id,
+        status: candidate.status,
+        sources: candidate.sources,
+        score: candidate.score,
+        brief: candidate.brief,
+        changeSummary: candidate.changeSummary,
+        error: candidate.error,
+        revisionId: candidate.revisionId,
+        appliedAt: candidate.appliedAt,
+        createdAt: candidate.createdAt,
+        original,
+        workingCopy,
     }
 }
 

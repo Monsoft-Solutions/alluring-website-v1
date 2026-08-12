@@ -30,6 +30,7 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
             processingError: blogPost.processingError,
             primaryKeyword: blogPost.primaryKeyword,
             ideaApproval: blogPost.ideaApproval,
+            refreshOfPostId: blogPost.refreshOfPostId,
             authorName: author.name,
             featuredImageUrl: images.url,
             planningData: blogPost.planningData,
@@ -81,16 +82,19 @@ export const getPostsByStatus = cache(async (): Promise<PostsByStatus> => {
  * Get pipeline stats (counts per status)
  */
 export const getPipelineStats = cache(async (): Promise<PipelineStats> => {
+    // Refresh working copies (epic #144) are excluded — they'd double-count
+    // their original's topic and inflate the draft column.
     const result = await db.execute<{
         status: string
         processing_status: string
         count: number
     }>(sql`
-        SELECT 
+        SELECT
             status,
             processing_status,
             COUNT(*)::int as count
         FROM blog_post
+        WHERE refresh_of_post_id IS NULL
         GROUP BY status, processing_status
     `)
 
@@ -142,6 +146,7 @@ export const getPipelinePostById = cache(
                 pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
                 processingError: blogPost.processingError,
                 primaryKeyword: blogPost.primaryKeyword,
+                refreshOfPostId: blogPost.refreshOfPostId,
                 authorName: author.name,
                 featuredImageUrl: images.url,
                 planningData: blogPost.planningData,

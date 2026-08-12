@@ -11,6 +11,12 @@ import {
     buildMdxComponentReference,
 } from '@workspace/shared/content'
 
+import {
+    buildRefreshBriefSection,
+    REFRESH_MODE_RULES,
+    type RefreshBriefInput,
+} from './refresh-writer.prompt'
+
 /**
  * Content types for blog posts
  */
@@ -365,16 +371,21 @@ Adapt these guidelines to your specific topic - don't copy heading names verbati
  * Consolidated from 12 sections to 5 for clarity and focus.
  *
  * @param contentType - Optional content type for specialized guidance
+ * @param refresh - When present, the writer runs in refresh mode: the
+ *   refresh rules are injected right after the role section (epic #144)
  * @returns Complete system prompt for agentic content generation
  */
-export function buildAgenticSystemPrompt(contentType?: ContentType): string {
+export function buildAgenticSystemPrompt(
+    contentType?: ContentType,
+    refresh?: RefreshBriefInput
+): string {
     const contentTypeInstructions = contentType
         ? getContentTypeInstructions(contentType)
         : ''
 
     return `${ROLE_AND_CONTEXT}
 
-${WRITING_STYLE_PRINCIPLES}
+${refresh ? `${REFRESH_MODE_RULES}\n\n` : ''}${WRITING_STYLE_PRINCIPLES}
 
 ${WRITING_EXAMPLES}
 
@@ -421,6 +432,8 @@ export type BuildAgenticUserPromptOptions = {
     estimatedWordCount?: number
     /** Internal pages context for linking */
     internalPagesContext: string
+    /** Refresh mode: the brief + the existing article to improve in place */
+    refresh?: RefreshBriefInput
 }
 
 /**
@@ -443,9 +456,14 @@ export function buildAgenticUserPrompt(
         estimatedWordCount = 1500,
         internalPagesContext,
         outline,
+        refresh,
     } = options
 
-    return `Write a complete blog post based on the following brief.
+    const task = refresh
+        ? 'Update the existing blog post below according to its refresh brief.'
+        : 'Write a complete blog post based on the following brief.'
+
+    return `${task}
 
 ## Post Details
 
@@ -459,12 +477,12 @@ export function buildAgenticUserPrompt(
 **Target Word Count:** ${estimatedWordCount} words
 **Outline:** ${outline || 'No outline provided'}
 
-## Internal Linking Resources
+${refresh ? `${buildRefreshBriefSection(refresh)}\n\n` : ''}## Internal Linking Resources
 
 ${internalPagesContext}
 
 
 ## Output
 
-Write the complete blog post now. Output ONLY the markdown content - no preambles, explanations, or wrapper text.`
+Write the complete ${refresh ? 'updated ' : ''}blog post now. Output ONLY the markdown content - no preambles, explanations, or wrapper text.`
 }

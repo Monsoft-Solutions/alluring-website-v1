@@ -210,12 +210,18 @@ async function recordSkippedRun(
     })
 }
 
-/** Posts currently sitting in Draft awaiting human review. */
+/**
+ * Posts currently sitting in Draft awaiting human review. Refresh working
+ * copies are excluded — they have their own cap (`refresh_draft_cap`) and
+ * must not starve new content (epic #144).
+ */
 export async function countDraftsAwaitingReview(): Promise<number> {
     const [row] = await db
         .select({ value: count() })
         .from(blogPost)
-        .where(eq(blogPost.status, 'draft'))
+        .where(
+            and(eq(blogPost.status, 'draft'), isNull(blogPost.refreshOfPostId))
+        )
     return row?.value ?? 0
 }
 
@@ -279,15 +285,21 @@ async function getIdeaTitlesForDedupe(): Promise<
         })
         .from(blogPost)
         .where(
-            inArray(blogPost.status, [
-                'ideation',
-                'generate',
-                'ai_review',
-                'generate_metadata',
-                'generate_image',
-                'draft',
-                'ready_to_publish',
-            ])
+            and(
+                inArray(blogPost.status, [
+                    'ideation',
+                    'generate',
+                    'ai_review',
+                    'generate_metadata',
+                    'generate_image',
+                    'draft',
+                    'ready_to_publish',
+                ]),
+                // A refresh working copy shares its original's title — it
+                // must not make ideation think the topic is already taken
+                // twice (epic #144).
+                isNull(blogPost.refreshOfPostId)
+            )
         )
     return rows.map((row) => ({
         title: row.title,

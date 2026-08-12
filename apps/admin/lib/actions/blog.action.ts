@@ -13,6 +13,7 @@ import { CACHE_TAGS } from '@workspace/shared/cache'
 
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
+import { isGoLiveStatusForWorkingCopy } from '@/lib/utils/refresh-merge.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 import { createPipelinePostInternal } from '@/lib/services/pipeline-post.service'
 import type {
@@ -343,13 +344,29 @@ export async function updateBlogPostStatus(
         await requireAuth()
 
         const currentPost = await db
-            .select({ status: blogPost.status, slug: blogPost.slug })
+            .select({
+                status: blogPost.status,
+                slug: blogPost.slug,
+                refreshOfPostId: blogPost.refreshOfPostId,
+            })
             .from(blogPost)
             .where(eq(blogPost.id, id))
             .limit(1)
 
         if (!currentPost.length) {
             return { success: false, error: 'Post not found' }
+        }
+
+        // Refresh working copies never go live themselves — their content
+        // reaches the site by being merged onto the original (epic #144).
+        if (
+            currentPost[0]?.refreshOfPostId &&
+            isGoLiveStatusForWorkingCopy(status)
+        ) {
+            return {
+                success: false,
+                error: 'This is a refresh working copy — apply the refresh from the review screen instead',
+            }
         }
 
         const wasAlreadyPublished = currentPost[0]?.status === 'published'
@@ -568,6 +585,7 @@ export async function updatePipelineStatus(
                 status: blogPost.status,
                 slug: blogPost.slug,
                 pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
+                refreshOfPostId: blogPost.refreshOfPostId,
             })
             .from(blogPost)
             .where(eq(blogPost.id, id))
@@ -593,6 +611,18 @@ export async function updatePipelineStatus(
             return {
                 success: false,
                 error: 'Cannot publish a post without a slug. Set a slug first.',
+            }
+        }
+
+        // Refresh working copies never go live themselves — their content
+        // reaches the site by being merged onto the original (epic #144).
+        if (
+            existingPost.refreshOfPostId &&
+            isGoLiveStatusForWorkingCopy(status)
+        ) {
+            return {
+                success: false,
+                error: 'This is a refresh working copy — apply the refresh from the review screen instead',
             }
         }
 
@@ -814,6 +844,7 @@ export async function updatePipelinePost(
                 status: blogPost.status,
                 slug: blogPost.slug,
                 pipelineProcessingStatus: blogPost.pipelineProcessingStatus,
+                refreshOfPostId: blogPost.refreshOfPostId,
             })
             .from(blogPost)
             .where(eq(blogPost.id, id))
@@ -844,6 +875,18 @@ export async function updatePipelinePost(
                     success: false,
                     error: 'A post with this slug already exists',
                 }
+            }
+        }
+
+        // Refresh working copies never go live themselves — their content
+        // reaches the site by being merged onto the original (epic #144).
+        if (
+            existingPost.refreshOfPostId &&
+            isGoLiveStatusForWorkingCopy(data.status)
+        ) {
+            return {
+                success: false,
+                error: 'This is a refresh working copy — apply the refresh from the review screen instead',
             }
         }
 

@@ -71,6 +71,12 @@ export {
 } from './summarize-blog-post.function'
 
 export {
+    summarizeRefreshChanges,
+    type SummarizeRefreshChangesOptions,
+    type RefreshChangeSummary,
+} from './summarize-refresh-changes.function'
+
+export {
     generateImagePrompt,
     type GenerateImagePromptOptions,
     type ImagePromptResult,
