@@ -48,6 +48,7 @@ type FormState = {
     metaDescription: string
     metaKeywords: string
     excerpt: string
+    quickAnswer: string
     featuredImageId: string | null
     featuredImageUrl: string | null
     aiSummary: string
@@ -68,6 +69,7 @@ const initialFormState: FormState = {
     metaDescription: '',
     metaKeywords: '',
     excerpt: '',
+    quickAnswer: '',
     featuredImageId: null,
     featuredImageUrl: null,
     aiSummary: '',
@@ -133,6 +135,7 @@ export function PipelinePostEditDialog({
         metaDescription,
         metaKeywords,
         excerpt,
+        quickAnswer,
         featuredImageId,
         featuredImageUrl,
         aiSummary,
@@ -189,6 +192,11 @@ export function PipelinePostEditDialog({
             setFormState((prev) => ({ ...prev, excerpt: value })),
         []
     )
+    const setQuickAnswer = useCallback(
+        (value: string) =>
+            setFormState((prev) => ({ ...prev, quickAnswer: value })),
+        []
+    )
     const setFeaturedImageId = useCallback(
         (value: string | null) =>
             setFormState((prev) => ({ ...prev, featuredImageId: value })),
@@ -220,6 +228,7 @@ export function PipelinePostEditDialog({
                 metaDescription: postDetail.metaDescription || '',
                 metaKeywords: postDetail.metaKeywords || '',
                 excerpt: postDetail.excerpt || '',
+                quickAnswer: postDetail.quickAnswer || '',
                 featuredImageId: postDetail.featuredImageId,
                 featuredImageUrl: postDetail.featuredImageUrl,
                 aiSummary: postDetail.aiSummary || '',
@@ -372,6 +381,7 @@ export function PipelinePostEditDialog({
                     metaDescription: metaDescription || null,
                     metaKeywords: metaKeywords || null,
                     excerpt: excerpt || null,
+                    quickAnswer: quickAnswer || null,
                     featuredImageId: featuredImageId || null,
                     aiSummary: aiSummary || null,
                     planningData:
@@ -406,6 +416,7 @@ export function PipelinePostEditDialog({
         metaDescription,
         metaKeywords,
         excerpt,
+        quickAnswer,
         featuredImageId,
         aiSummary,
         planningData,
@@ -624,6 +635,8 @@ export function PipelinePostEditDialog({
                                 setMetaKeywords={setMetaKeywords}
                                 excerpt={excerpt}
                                 setExcerpt={setExcerpt}
+                                quickAnswer={quickAnswer}
+                                setQuickAnswer={setQuickAnswer}
                                 markDirty={markDirty}
                             />
 

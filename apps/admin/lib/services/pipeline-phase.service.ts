@@ -412,6 +412,11 @@ export async function runGenerationPhaseForPost(
                 stepCount: result.stepCount,
                 model: result.modelId,
                 traceId,
+                // Only recorded when the writer produced something unrenderable,
+                // so an empty run leaves no noise in pipelineState.
+                ...(result.sanitizationActions.length > 0 && {
+                    sanitizationActions: result.sanitizationActions,
+                }),
             },
         }
 
@@ -723,6 +728,9 @@ export async function runExtractPhaseForPost(
                 excerpt: result.excerpt,
                 readingTime: result.readingTimeMinutes,
                 faqs: result.faqs,
+                // Null on a failed Quick Answer extraction, which leaves the
+                // post rendering exactly as posts do today.
+                quickAnswer: result.quickAnswer,
                 pipelineProcessingStatus: 'idle',
                 processingError: null,
                 processingStartedAt: null,
@@ -732,7 +740,7 @@ export async function runExtractPhaseForPost(
             .where(eq(blogPost.id, postId))
 
         console.log(
-            `[Pipeline Service] Extraction phase complete for post ${postId} - ${result.faqs.length} FAQs, Time: ${result.timeMs}ms`
+            `[Pipeline Service] Extraction phase complete for post ${postId} - ${result.faqs.length} FAQs, Quick Answer: ${result.quickAnswer ? 'yes' : 'no'}, Time: ${result.timeMs}ms`
         )
 
         if (chain) {

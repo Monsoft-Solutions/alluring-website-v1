@@ -13,6 +13,10 @@ import {
     extractFaqs,
     generateFaqSchema,
 } from '../functions/extract-faqs.function'
+import {
+    extractQuickAnswer,
+    serializeQuickAnswer,
+} from '../functions/extract-quick-answer.function'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
 
 /**
@@ -55,6 +59,14 @@ export type ExtractionPhaseResult = {
     faqs: FaqItem[]
     /** FAQ Schema JSON-LD (null if no FAQs) */
     faqSchema: object | null
+    /**
+     * Serialized Quick Answer (`question\n\nanswer`) for `blog_post.quick_answer`.
+     *
+     * Null when extraction of this one part failed — the phase still succeeds,
+     * because a post without a Quick Answer is exactly what ships today, while
+     * a failed phase costs the whole post.
+     */
+    quickAnswer: string | null
     /** Processing time in ms */
     timeMs: number
     /** Model the extraction ran on (resolved after defaults) */
@@ -104,8 +116,11 @@ export async function runExtractionPhase(
         console.log('[Extraction Phase] Starting Extraction')
         onProgress?.('extraction', 10, 'Extracting metadata and FAQs...')
 
-        // Run metadata and FAQ extraction in parallel
-        const [metadata, faqResult] = await Promise.all([
+        // Run metadata, FAQ and Quick Answer extraction in parallel.
+        // The Quick Answer is settled rather than awaited outright: it is the
+        // newest of the three and the least essential, so a failure there must
+        // not cost the metadata and FAQs alongside it.
+        const [metadata, faqResult, quickAnswerOutcome] = await Promise.all([
             extractMetadata({
                 content,
                 primaryKeyword: primaryKeyword || title,
@@ -117,7 +132,29 @@ export async function runExtractionPhase(
                 primaryKeyword: primaryKeyword || title,
                 modelId,
             }),
+            extractQuickAnswer({
+                content,
+                title,
+                primaryKeyword,
+                modelId,
+            }).then(
+                (value) => ({ ok: true as const, value }),
+                (error: unknown) => ({ ok: false as const, error })
+            ),
         ])
+
+        const quickAnswer = quickAnswerOutcome.ok
+            ? serializeQuickAnswer(quickAnswerOutcome.value)
+            : null
+
+        if (!quickAnswerOutcome.ok) {
+            console.warn(
+                '[Extraction Phase] Quick Answer extraction failed, continuing without one:',
+                quickAnswerOutcome.error instanceof Error
+                    ? quickAnswerOutcome.error.message
+                    : quickAnswerOutcome.error
+            )
+        }
 
         const faqSchema = generateFaqSchema(faqResult.faqs)
         const timeMs = Date.now() - startTime
@@ -128,7 +165,7 @@ export async function runExtractionPhase(
         })
 
         console.log(
-            `[Extraction Phase] Extraction complete: ${faqResult.faqs.length} FAQs`
+            `[Extraction Phase] Extraction complete: ${faqResult.faqs.length} FAQs, Quick Answer: ${quickAnswer ? 'yes' : 'no'}`
         )
         console.log(`[Extraction Phase] Time: ${timeMs}ms`)
 
@@ -142,6 +179,7 @@ export async function runExtractionPhase(
             suggestedCategory: metadata.suggestedCategory,
             faqs: faqResult.faqs,
             faqSchema,
+            quickAnswer,
             timeMs,
             modelId,
         }
@@ -163,6 +201,7 @@ export async function runExtractionPhase(
             suggestedCategory: '',
             faqs: [],
             faqSchema: null,
+            quickAnswer: null,
             timeMs: Date.now() - startTime,
             modelId,
         }

@@ -6,6 +6,10 @@
  *
  * @module @workspace/ai/prompts/blog/agentic-writer
  */
+import {
+    BLOG_CTA_IDS,
+    buildMdxComponentReference,
+} from '@workspace/shared/content'
 
 /**
  * Content types for blog posts
@@ -94,6 +98,75 @@ export const WRITING_EXAMPLES = `## Writing Examples
 // =============================================================================
 
 /**
+ * The answer-first standard.
+ *
+ * This is the section that carries the epic. Written as reasons rather than
+ * rules because the failure mode of a checklist is a post that satisfies every
+ * item and helps nobody — a two-column glossary that technically counts as a
+ * table, a question heading followed by three sentences of preamble.
+ *
+ * Grounded in what the corpus actually looks like: as of 2026-08, pipeline
+ * posts averaged 2.6 question-shaped H2s out of 7.8, while the older
+ * hand-written posts managed 5.7 of 7.2. The structure below is a return to
+ * something the content used to do, not a new imposition.
+ */
+export const ANSWER_FIRST_STANDARD = `## Structure: Answer First
+
+Someone searched a question and landed on this page. They will decide within a few seconds whether it answers them. Everything below follows from that.
+
+### Headings are the questions people actually ask
+
+Write H2s the way a patient types into a search box.
+
+✅ "How long do tummy tuck drains stay in?"
+❌ "Understanding Your Post-Operative Drainage Timeline"
+
+✅ "Can I fly home after a mommy makeover?"
+❌ "Travel Considerations Following Surgery"
+
+Aim for most of your H2s to be real questions. Some sections genuinely aren't questions — a week-by-week timeline, a stage-by-stage guide — and forcing those into question form is worse than leaving them alone. Use judgment, but the default is the question.
+
+### The first sentence under a heading answers the heading
+
+This is the part that matters most and the part most easily faked.
+
+✅ **"How long do drains stay in?"** → "Most drains come out 7 to 14 days after surgery, once daily output drops below about 30 ml."
+❌ **"How long do drains stay in?"** → "Drain duration is one of the most common questions patients ask, and the answer depends on several factors."
+
+The second version promises an answer and withholds it. A heading that asks a question and then stalls is worse than a heading that never asked.
+
+Answer, then elaborate. Never elaborate toward an answer.
+
+### Sections have to survive being read alone
+
+Assume each section will be lifted out and read with nothing around it — that is how both a skimming reader and an AI engine consume this page. So inside any given section: name the procedure rather than saying "this procedure", restate the number rather than saying "as noted above", and don't lean on a definition three sections back.
+
+A small amount of repetition across sections is correct here. It reads slightly redundant top-to-bottom and is far more useful in every other way people actually read.
+
+### Use a real table where a reader has a decision to make
+
+A table earns its place when someone is comparing options along more than one axis — cost against recovery time, one procedure against another, what's included against what costs extra, week one against week six.
+
+Write it as a genuine markdown table:
+
+| Option | Cost | Recovery | Best for |
+| --- | --- | --- | --- |
+| Mini tummy tuck | $6,500 | 2 weeks | Loose skin below the navel only |
+| Full tummy tuck | $9,500 | 4–6 weeks | Muscle separation and skin above the navel |
+
+**A table that does not help someone decide should not exist.** Do not build a two-column glossary of terms you already defined in the prose. Do not tabulate a list. If the topic genuinely has nothing to compare — a single-procedure recovery narrative, for example — write no table and spend the space on something useful. An empty gesture toward a format costs the reader attention and gains nothing.
+
+### Say who should not do this
+
+The strongest thing you can write is the part that might talk someone out of it. Who is not a candidate. When a cheaper or simpler option is the better call. What the real risks are. When the honest answer is "wait six months".
+
+Write it so it is useful even to someone who will end up choosing a different clinic. That is what makes it trustworthy — and a reader who trusts the page is the one who books.
+
+### Numbers, not adjectives
+
+"Board-certified surgeons with 15+ years and 5,000+ procedures" says something. "World-class expertise" says nothing. If a sentence has no number and no specific detail, ask what it is doing there.` as const
+
+/**
  * Content structure and SEO requirements
  */
 export const CONTENT_REQUIREMENTS = `## Content Requirements
@@ -103,7 +176,6 @@ export const CONTENT_REQUIREMENTS = `## Content Requirements
 - Primary keyword in at least one H2 heading
 - Natural keyword usage (1-2% density max - write for humans first)
 - Secondary keywords woven naturally throughout
-- Question-based headings where appropriate (for featured snippets)
 
 ### Structure Guidelines
 - Start with value - no lengthy preambles
@@ -119,8 +191,9 @@ export const CONTENT_REQUIREMENTS = `## Content Requirements
 - Use natural, descriptive anchor text (not "click here")
 - Spread links throughout the content
 
-**External Links (2-4 per post):**
+**External Links (2-4 per post — this is a hard ceiling, not a target):**
 - Cite authoritative sources: ASPS, Mayo Clinic, Cleveland Clinic, medical journals
+- One link per source; don't cite the same page twice
 - Never link to competitor plastic surgery practices
 - Use descriptive anchor text that includes the source name
 
@@ -132,30 +205,66 @@ export const CONTENT_REQUIREMENTS = `## Content Requirements
 - Don't make guarantees - acknowledge individual results vary` as const
 
 /**
+ * Where the mid-article CTA goes, and the closed set of ids it may name.
+ *
+ * Without a marker the renderer falls back to splitting the body at roughly the
+ * 40% line, which lands the CTA wherever the maths says rather than where the
+ * argument has actually finished. Every published post today takes that
+ * fallback.
+ *
+ * The id list is generated from the shared contract rather than typed out here:
+ * `BlogCTA` renders nothing at all for an id it cannot resolve, so an invented
+ * one is a silently missing conversion point.
+ */
+export const CTA_PLACEMENT = `## CTA Placement
+
+Place exactly one marker on its own line, at the point where a reader has learned enough to want to talk to someone — usually after the main question is answered and before the deeper detail:
+
+<!-- CTA:consultation -->
+
+Choose the id that matches the topic: ${BLOG_CTA_IDS.join(', ')}.
+
+Exactly one marker. Not zero — without it the CTA lands at an arbitrary point in the article. Not two — a second marker breaks the page. Any other id renders no CTA at all, so use only the ones listed.` as const
+
+/**
+ * Component vocabulary, generated from the shared MDX contract.
+ *
+ * Built rather than written so the prompt can never describe a component the
+ * renderer lacks, or miss one it has.
+ */
+export const COMPONENT_VOCABULARY = `## Components
+
+Beyond markdown you may use these, and only these:
+
+${buildMdxComponentReference()}` as const
+
+/**
  * Content type specific structure templates
  */
 export const CONTENT_TYPE_TEMPLATES = {
     tutorial: `### Tutorial Format
-- Open with "What You'll Learn" or prerequisites
+- Open with what the reader needs before they start
 - Use numbered steps: "Step 1:", "Step 2:", etc.
 - Include expected outcomes after key steps
+- A table works well for "step / how long it takes / what to watch for"
 - Close with "What to Try Next" or advanced tips`,
 
     guide: `### Guide Format
-- Open with "Quick Summary" bullets or direct hook
-- Use logical topic flow with descriptive H2 headings
+- Open directly on the reader's question — no summary section, the Quick Answer above the article already covers that ground
+- Question-shaped H2s in the order someone would think of them
 - Mix information with practical advice
 - Close with "Your Next Steps" or key takeaway`,
 
     comparison: `### Comparison Format
-- Open with "The Quick Answer" - recommendation upfront
-- Cover each option with overview and benefits
-- Include comparison table if helpful
-- Close with "Our Recommendation" for specific scenarios`,
+- A decision table is mandatory here: the options against cost, recovery, longevity, ideal candidate and risks
+- Cover each option on its own terms before comparing
+- Include an explicit "choose A if… / choose B if…" block
+- Say which is more common and why
+- Close with the scenarios where each one wins`,
 
     faq: `### FAQ Format
 - Brief intro (2-3 sentences max)
-- Use H2 for each question
+- Use H2 for each question, phrased as the reader would ask it
 - Answer directly in first sentence, then elaborate
 - Order from most to least common questions`,
 
@@ -214,17 +323,21 @@ Your output must be ONLY the complete blog post in markdown format.
 **Include:**
 - Complete blog post starting with the first H2 heading
 - All sections, paragraphs, lists, and properly formatted links
+- Markdown tables where a reader has something to compare
+- Exactly one \`<!-- CTA:id -->\` marker
 - FAQ section with 3-5 Q&A pairs
 - Publication-ready markdown throughout
 
 **Do NOT Include:**
 - Preambles ("Here's the blog post...", "I've written...")
 - The title (H1) - handled separately
+- A summary or "Quick Answer" section of your own - one is generated separately and placed above your first heading
 - JSON wrappers or metadata
 - Thinking explanations or reasoning
 - Code block wrappers around the entire content
 - Sign-offs ("I hope this helps...")
-- Section dividers (---) between content sections
+- Horizontal rules (a \`---\` line on its own) between sections — note this does not apply to the \`| --- |\` separator row inside a markdown table, which is required
+- HTML comments other than the single CTA marker — they break the page
 - Any commentary about what you wrote
 
 The content should be immediately ready for publication.` as const
@@ -265,9 +378,15 @@ ${WRITING_STYLE_PRINCIPLES}
 
 ${WRITING_EXAMPLES}
 
+${ANSWER_FIRST_STANDARD}
+
 ${contentTypeInstructions}
 
 ${CONTENT_REQUIREMENTS}
+
+${COMPONENT_VOCABULARY}
+
+${CTA_PLACEMENT}
 
 ${RESEARCH_GUIDELINES}
 

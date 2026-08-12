@@ -873,6 +873,8 @@ export async function updatePipelinePost(
         if (data.metaKeywords !== undefined)
             updateData.metaKeywords = data.metaKeywords
         if (data.excerpt !== undefined) updateData.excerpt = data.excerpt
+        if (data.quickAnswer !== undefined)
+            updateData.quickAnswer = data.quickAnswer
         if (data.authorId !== undefined) updateData.authorId = data.authorId
         if (data.featuredImageId !== undefined)
             updateData.featuredImageId = data.featuredImageId

@@ -6,13 +6,20 @@
  * and lead capture forms.
  */
 
+import type { BlogCtaId } from '@workspace/shared/content'
+
 export type CTAColorScheme = 'blue' | 'green' | 'orange' | 'gold' | 'default'
 
 export type BlogCTAContent = {
     /**
-     * Unique identifier for this CTA content
+     * Unique identifier for this CTA content.
+     *
+     * Constrained to the shared contract's id set: the content pipeline writes
+     * `<!-- CTA:id -->` markers from that same list, and `BlogCTA` renders
+     * nothing for an id it cannot resolve. Adding a variant here means adding
+     * it to `BLOG_CTA_IDS` first.
      */
-    readonly id: string
+    readonly id: BlogCtaId
 
     /**
      * Main heading text for the CTA

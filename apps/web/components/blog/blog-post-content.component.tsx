@@ -18,6 +18,9 @@ import {
     BreadcrumbSchema,
     FAQSchema,
 } from '@workspace/seo/react'
+import { parseQuickAnswer } from '@workspace/shared/content'
+
+import { QuickAnswer } from '@/components/shared/quick-answer.component'
 
 import { BlogPostImagesSchema } from '@/components/blog/blog-post-images-schema.component'
 import { Calendar, Clock, User, ChevronDown } from 'lucide-react'
@@ -128,6 +131,16 @@ export function BlogPostContent({
         post.publishedAt,
         post.updatedAt
     )
+
+    /**
+     * The 40–70 word answer to the post's head query, placed above the body.
+     *
+     * Null on every post written before the pipeline produced one, which is why
+     * the block and its Speakable selector are both conditional — pointing
+     * `speakable` at `.quick-answer` on a page that has no such element would
+     * describe markup that isn't there.
+     */
+    const quickAnswer = parseQuickAnswer(post.quickAnswer)
 
     const breadcrumbItems = [
         { name: 'Home', item: seoConfig.siteUrl },
@@ -336,6 +349,23 @@ export function BlogPostContent({
                     <div className='grid grid-cols-1 gap-12 lg:grid-cols-[1fr_300px] xl:gap-16'>
                         {/* Main content column */}
                         <div className='min-w-0'>
+                            {/* Quick Answer — the first thing a reader who came
+                                from a search query should see, and the block
+                                Speakable points at */}
+                            {quickAnswer && (
+                                <div className='mb-12 border-b border-stone-200 pb-12'>
+                                    <QuickAnswer
+                                        id='quick-answer'
+                                        question={
+                                            quickAnswer.question ?? post.title
+                                        }
+                                        answer={quickAnswer.answer}
+                                        variant='featured'
+                                        headingLevel='h2'
+                                    />
+                                </div>
+                            )}
+
                             {/* Article content */}
                             <div className='prose prose-lg prose-stone prose-headings:font-serif prose-headings:font-medium prose-headings:tracking-tight prose-headings:text-stone-900 prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-stone-200 prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4 prose-p:text-stone-700 prose-p:leading-relaxed prose-p:mb-6 prose-li:text-stone-700 prose-li:mb-2 prose-strong:text-stone-900 prose-strong:font-semibold prose-a:text-gold-600 prose-a:no-underline prose-a:font-medium hover:prose-a:text-gold-700 hover:prose-a:underline prose-blockquote:border-l-4 prose-blockquote:border-gold-500 prose-blockquote:bg-stone-50 prose-blockquote:pl-6 prose-blockquote:pr-6 prose-blockquote:py-4 prose-blockquote:rounded-r-xl prose-blockquote:not-italic prose-blockquote:text-stone-700 prose-code:bg-stone-100 prose-code:text-stone-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:bg-stone-900 prose-pre:border-0 prose-pre:rounded-xl prose-img:rounded-xl prose-img:shadow-lg max-w-none'>
                                 <PostMarkdown content={beforeCTA} />
@@ -421,9 +451,14 @@ export function BlogPostContent({
                                         ? post.tags.map((t) => t.name)
                                         : undefined
                                 }
-                                // Speakable for voice search optimization
+                                // Speakable for voice search optimization.
+                                // `.quick-answer` is only claimed when the post
+                                // actually renders one — schema must not point
+                                // at markup that isn't on the page.
                                 speakable={{
-                                    cssSelector: ['h1'],
+                                    cssSelector: quickAnswer
+                                        ? ['h1', '.quick-answer']
+                                        : ['h1'],
                                 }}
                             />
 

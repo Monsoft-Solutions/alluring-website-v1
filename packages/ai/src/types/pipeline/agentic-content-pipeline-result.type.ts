@@ -33,6 +33,11 @@ export type AgenticContentPipelineResult = {
     faqs: FaqItem[]
     /** FAQ Schema JSON-LD (null if no FAQs) */
     faqSchema: object | null
+    /**
+     * Serialized Quick Answer (`question\n\nanswer`) for `blog_post.quick_answer`.
+     * Null when that one extraction failed — the rest of the phase still succeeds.
+     */
+    quickAnswer: string | null
     /** All sources used during generation */
     sources: CollectedSource[]
     /** Reviews from all agents (empty if skipped) */

@@ -8,6 +8,10 @@ jiti('./env')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // A second dev server in this directory otherwise fails on the .next/dev
+    // lock. Set NEXT_DIST_DIR to run one alongside an existing server — useful
+    // for pointing a throwaway instance at a different database.
+    ...(process.env.NEXT_DIST_DIR && { distDir: process.env.NEXT_DIST_DIR }),
     // Acknowledge Turbopack usage (silences webpack plugin warnings)
     turbopack: {},
     transpilePackages: ['@workspace/ui', '@workspace/db', '@workspace/seo'],

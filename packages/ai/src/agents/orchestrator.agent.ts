@@ -12,6 +12,7 @@
 import { generateText, stepCountIs } from 'ai'
 
 import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { validateGeneratedMdx } from '../functions/validate-generated-mdx.function'
 import { telemetryConfig } from '../telemetry'
 import type {
     AgentReview,
@@ -70,7 +71,8 @@ Your objective is to enhance the content's quality and search engine performance
 
 <core_principles>
 - Preserve Original Intent: You must never introduce new claims, facts, or substantive content that was not present in the original piece. If the fact-checker provides corrective feedback, you are to implement the suggested changes.
-- Focused Editing: Your edits should only address clarity, SEO optimization, and the specific issues identified by the reviewers.
+- Restructuring Is Allowed, Inventing Is Not: Reorganising facts that are already in the draft is editing, not new information. Building a comparison table out of prices and recovery times already stated in the prose is permitted and expected. Moving an answer to the front of its section is permitted. Rewriting a heading as a question is permitted. Adding a section on who is not a candidate, assembled from candidacy facts already stated, is permitted. What remains forbidden is a number, price, statistic, claim, source or link that does not already appear in the draft or in a reviewer's suggestedFix. If a structural fix would require a fact you do not have, do not invent it — make the smaller change the available facts support.
+- Focused Editing: Your edits should only address clarity, SEO optimization, structure, and the specific issues identified by the reviewers.
 - Maintain Authorial Voice: The original author's tone and style must be maintained throughout the edited content.
 - Balance SEO and Readability: While prioritizing SEO performance, ensure the content remains natural and easy for the target audience to read. A Flesch reading score of 60 or higher is desired, with sentences averaging under 20 words and paragraphs between 2-4 sentences.
 - Address Feedback: All feedback from the Fact Checker Reviewer must be addressed.
@@ -85,11 +87,11 @@ Issue Priority System:
 - Low Priority: Implement minor optimizations and stylistic improvements.
 
 Editing Constraints:
-- No New Information: Do not add any new information, statistics, or examples that are not in the original content or provided by the Fact Reviewer.
-- No New Links: Do not add any new links that are not contained in the original post or specified by the Fact Reviewer and Link Validation.
+- No New Facts: Do not add any statistic, price, timeframe, claim or example that is not in the original content or provided by a reviewer. Reformatting facts that ARE present — into a table, a reordered section, a question heading — is not adding information and is encouraged.
+- No New Links: Do not add any links that are not contained in the original post or specified by the Fact Reviewer and Link Validation.
 - Preserve Core Message: Do not alter the fundamental message of the content.
 - Essential Content: Do not remove essential content unless it has been explicitly flagged as problematic.
-- Word Count: Maintain the target word count range within ±10%.
+- Word Count: Maintain the target word count range within ±10%, **excluding structural additions requested by the geo-retrievability reviewer**. A comparison table, a relocated answer sentence, or a "who is not a candidate" section may take the post above the range — that is expected and is not a reason to cut prose elsewhere. Never delete useful content to make room for structure.
 </editing_framework>
 
 <review_processing_protocol>
@@ -125,7 +127,16 @@ When analyzing reviews from specialized agents, you will follow this protocol:
    - Prioritize Tier 1 sources over Tier 2/3
    - Each external link MUST have descriptive anchor text (not "click here", "source", or bare URLs)
 
-6. Cannibalization (cannibalization-checker):
+6. Answer-First Structure (geo-retrievability-reviewer):
+   - Apply these fixes using ONLY facts already present in the draft — this is the reviewer whose fixes are structural, and the restructuring allowance in core_principles exists for it
+   - Move the answer to the front: where a section's first sentence stalls, replace it with the direct answer drawn from later in that same section
+   - Rewrite headings into the question a reader would type, when the reviewer supplies the wording
+   - Build the comparison table the reviewer specifies from figures already in the prose. If the draft lacks a figure the table needs, build the table with the columns you can fill honestly rather than inventing the missing cell, or leave the table out and say nothing false
+   - Add the CTA marker where the reviewer indicates, using one of the ids it names. Exactly one marker in the whole post
+   - Remove a table the reviewer flagged as decorative; a glossary table costs the reader attention and returns nothing
+   - Do not pad citations here — this reviewer does not ask for more sources, and the fact-verifier owns that ground
+
+7. Cannibalization (cannibalization-checker):
    - Every query cluster has exactly ONE owning page site-wide; the draft must not compete with an owned cluster
    - Re-angle any section flagged as competing with another page's cluster so it covers the topic from this post's unique angle
    - Where the draft needs to reference an owned topic (e.g. cost, a procedure overview), LINK to the owning URL named in the issue instead of covering it in depth
@@ -179,7 +190,8 @@ DO NOT include:
 - Code block wrappers (triple backticks) around the entire content
 - Annotations about what was changed
 - Sign-offs or closing remarks ("I hope this helps...", "Let me know if...")
-- Section dividers (---) between content sections
+- Horizontal rules (a --- line on its own) between sections — this does NOT apply to the | --- | separator row inside a markdown table, which is required and must be preserved
+- HTML comments other than the single <!-- CTA:id --> marker — MDX cannot compile them and the page will fail to render
 - A # header or the title within the body
 - Any text that is not part of the actual blog post
 
@@ -195,7 +207,11 @@ Before producing output, verify:
 - [ ] All problematic Facts and Claims have been corrected
 - [ ] AI-generated patterns have been fixed
 - [ ] All broken links have been resolved
-- [ ] The word count is within the target range (±10%)
+- [ ] Every question heading is answered by its own first sentence
+- [ ] Any table requested by the structure reviewer is built only from figures already in the draft
+- [ ] Exactly one <!-- CTA:id --> marker is present, using a valid id
+- [ ] No fact, number, price or source appears that was not in the draft or a reviewer's fix
+- [ ] The word count is within the target range (±10%), excluding structural additions
 - [ ] The content meets readability standards (Flesch ≥60, sentences <20 words, paragraphs 2-4 sentences)
 - [ ] The primary keyword is distributed correctly (first 100 words, at least 2 H2s, final paragraph)
 - [ ] The content flows in a natural and logical manner
@@ -229,10 +245,11 @@ function prioritizeIssues(reviews: AgentReview[]): IssueWithAgent[] {
     const agentPriority: Record<string, number> = {
         'fact-source-verifier': 0, // Highest priority - medical accuracy
         'cannibalization-checker': 1, // Structural SEO - one owner per cluster
-        'ai-slop-detector': 2, // Brand voice
-        'writing-quality-reviewer': 3,
-        'internal-links-reviewer': 4,
-        'external-links-reviewer': 5,
+        'geo-retrievability-reviewer': 2, // Answer-first structure
+        'ai-slop-detector': 3, // Brand voice
+        'writing-quality-reviewer': 4,
+        'internal-links-reviewer': 5,
+        'external-links-reviewer': 6,
     }
 
     return allIssues.sort((a, b) => {
@@ -354,6 +371,7 @@ function buildUserPrompt(options: {
     const internalLinkIssues = groupedIssues['internal-links-reviewer'] ?? []
     const externalLinkIssues = groupedIssues['external-links-reviewer'] ?? []
     const cannibalizationIssues = groupedIssues['cannibalization-checker'] ?? []
+    const geoIssues = groupedIssues['geo-retrievability-reviewer'] ?? []
 
     // Get summaries and scores from reviews
     const getReviewData = (agentName: string) => {
@@ -369,6 +387,7 @@ function buildUserPrompt(options: {
     const internalLinksReview = getReviewData('internal-links-reviewer')
     const externalLinksReview = getReviewData('external-links-reviewer')
     const cannibalizationReview = getReviewData('cannibalization-checker')
+    const geoReview = getReviewData('geo-retrievability-reviewer')
 
     return `## Content Analysis Request
 
@@ -403,6 +422,14 @@ Summary: ${factReview.summary}
 
 Issues:
 ${formatIssuesForAgent(factIssues)}
+
+### Answer-First Structure (Score: ${geoReview.score}/100)
+Summary: ${geoReview.summary}
+
+These fixes are structural. Apply them by reorganising facts already in the draft — never by inventing one. Structural additions are exempt from the word count range.
+
+Issues:
+${formatIssuesForAgent(geoIssues)}
 
 ### Cannibalization Check (Score: ${cannibalizationReview.score}/100)
 Summary: ${cannibalizationReview.summary}
@@ -441,7 +468,8 @@ DO NOT include:
 - Code block wrappers (triple backticks) around the entire content
 - Annotations about what was changed
 - Sign-offs or closing remarks ("I hope this helps...", "Let me know if...")
-- Section dividers (---) between content sections
+- Horizontal rules (a --- line on its own) between sections — this does NOT apply to the | --- | separator row inside a markdown table, which is required and must be preserved
+- HTML comments other than the single <!-- CTA:id --> marker — MDX cannot compile them and the page will fail to render
 - A # header or the title within the body
 - Any text that is not part of the actual blog post
 `
@@ -535,15 +563,28 @@ export async function runOrchestrator(
         },
     })
 
+    // The orchestrator rewrites the whole body, so it can reintroduce a hazard
+    // the generation phase already cleared. Validate its output too.
+    const validation = validateGeneratedMdx(result.text)
     const processingTimeMs = Date.now() - startTime
+
+    if (!validation.clean) {
+        console.warn(
+            `[Orchestrator] Sanitised ${validation.actions.length} MDX hazard(s) from the revision:`
+        )
+        for (const action of validation.actions) {
+            console.warn(`[Orchestrator]   ${action.detail}`)
+        }
+    }
 
     console.log(
         `[Orchestrator] Revision complete in ${processingTimeMs}ms (${result.usage?.totalTokens ?? 0} tokens)`
     )
 
     return {
-        revisedContent: result.text,
+        revisedContent: validation.content,
         agentReviews: reviews,
         processingTimeMs,
+        sanitizationActions: validation.actions,
     }
 }

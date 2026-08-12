@@ -32,6 +32,7 @@ async function fetchPublishedPostBySlug(
             updatedAt: blogPost.updatedAt,
             readingTime: blogPost.readingTime,
             faqs: blogPost.faqs,
+            quickAnswer: blogPost.quickAnswer,
             authorName: author.name,
             imageUrl: images.url,
             imageAlt: images.alt,
@@ -84,6 +85,7 @@ async function fetchPublishedPostBySlug(
         updatedAt: row.updatedAt ? row.updatedAt.toISOString() : null,
         readingTime: row.readingTime,
         faqs: row.faqs,
+        quickAnswer: row.quickAnswer,
         featuredImage: row.imageUrl
             ? {
                   url: row.imageUrl,
