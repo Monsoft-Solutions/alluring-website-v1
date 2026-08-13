@@ -156,23 +156,44 @@ export default async function RefreshReviewPage({
                 </section>
             ) : null}
 
-            {/* Review scores of the refreshed draft */}
+            {/* Review verdicts of the refreshed draft */}
             {reviews.length > 0 ? (
                 <section className='space-y-2'>
-                    <h2 className='text-lg font-medium'>Review scores</h2>
-                    <div className='flex flex-wrap gap-2'>
-                        {reviews.map((review) => (
-                            <Badge
-                                key={review.agentName}
-                                variant='outline'
-                                className='gap-1'
-                            >
-                                {review.agentName}
-                                <span className='font-mono'>
-                                    {review.score}
-                                </span>
-                            </Badge>
-                        ))}
+                    <h2 className='text-lg font-medium'>Review verdicts</h2>
+                    <div className='space-y-2'>
+                        {[...reviews]
+                            .sort((a, b) => a.score - b.score)
+                            .map((review) => (
+                                <div
+                                    key={review.agentName}
+                                    className={`rounded-md border px-4 py-2.5 ${
+                                        review.score < 60
+                                            ? 'border-red-200 bg-red-50/50 dark:border-red-900 dark:bg-red-950/40'
+                                            : ''
+                                    }`}
+                                >
+                                    <div className='flex items-center gap-2'>
+                                        <Badge
+                                            variant={
+                                                review.score < 60
+                                                    ? 'destructive'
+                                                    : 'outline'
+                                            }
+                                            className='font-mono'
+                                        >
+                                            {review.score}
+                                        </Badge>
+                                        <span className='text-sm font-medium'>
+                                            {review.agentName}
+                                        </span>
+                                    </div>
+                                    {review.summary ? (
+                                        <p className='text-muted-foreground mt-1 text-sm'>
+                                            {review.summary}
+                                        </p>
+                                    ) : null}
+                                </div>
+                            ))}
                     </div>
                 </section>
             ) : null}

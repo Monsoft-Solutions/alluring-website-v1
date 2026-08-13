@@ -59,7 +59,8 @@ You are UPDATING an existing published article, not writing a new one. The curre
 3. **Keep everything that works.** Sections with no reason to change are carried over as they are, lightly polished at most. A refresh that rewrites every paragraph destroys the ranking history it was meant to protect.
 4. **Update what aged.** Verify dated facts, statistics, prices, and recovery timelines with the research tools and correct anything stale. Remove claims that are no longer true.
 5. **Fill the gaps the data names.** Add sections or FAQ entries for the uncovered rising queries in the brief — those searchers are already arriving; give them their answer.
-6. **Same output contract.** The full MDX component vocabulary, CTA placement, and linking rules apply to the finished article exactly as they would to a new one.
+6. **Never expand into another page's territory.** The marketing pages in your linking list each OWN their subject — pricing hubs own cost tables, the financing page owns plan comparisons, procedure pages own procedure depth. A blog article may mention a price or a financing fact in passing, but comprehensive treatments of those subjects (comparison tables, full plan breakdowns, per-procedure cost sections) belong on the owning page: summarize in a sentence or two and link to it. An article that replicates a money page's content competes with it in search and hurts both.
+7. **Same output contract.** The full MDX component vocabulary, CTA placement, and linking rules apply to the finished article exactly as they would to a new one.
 
 Output the COMPLETE updated article — every section, not just the changed ones.` as const
 

@@ -196,6 +196,7 @@ export const CONTENT_REQUIREMENTS = `## Content Requirements
 - Link to relevant procedure pages and related blog posts
 - Use natural, descriptive anchor text (not "click here")
 - Spread links throughout the content
+- The marketing pages own their subjects (pricing hubs own cost tables, the financing page owns plan comparisons, procedure pages own procedure depth). Mention such facts briefly and link to the owning page — never replicate its comprehensive treatment, or the two pages compete in search
 
 **External Links (2-4 per post — this is a hard ceiling, not a target):**
 - Cite authoritative sources: ASPS, Mayo Clinic, Cleveland Clinic, medical journals
