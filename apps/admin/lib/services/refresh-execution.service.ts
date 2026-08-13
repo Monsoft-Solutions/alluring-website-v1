@@ -18,7 +18,7 @@
  */
 import { revalidateTag } from 'next/cache'
 
-import { and, eq } from 'drizzle-orm'
+import { and, eq, lt } from 'drizzle-orm'
 
 import { db } from '@workspace/db/client'
 import {
@@ -269,6 +269,58 @@ export async function runRefreshForCandidate(
             .where(eq(contentRefresh.id, candidateId))
         return { success: false, error: message }
     }
+}
+
+// ============================================
+// Stale-run recovery
+// ============================================
+
+/**
+ * How long an in_progress candidate may sit untouched before it is
+ * presumed dead. A healthy run only takes minutes; the margin covers the
+ * slowest observed reviews with room to spare.
+ */
+const STALE_REFRESH_RUN_HOURS = 2
+
+/**
+ * Fail in_progress candidates whose run evidently died (platform killed
+ * the request, server restarted). Without this the active-row unique
+ * index would block the post's queue slot forever — in_progress can't be
+ * dismissed and never re-detects. The working copy is kept for
+ * inspection; dismissing the failed candidate later has nothing to clean
+ * because failed rows keep their workingPostId reference.
+ *
+ * Called from the daily detect-decay tick (and its manual button), the
+ * same self-healing cadence the other job locks use.
+ */
+export async function reapStaleRefreshRuns(
+    now: Date = new Date()
+): Promise<number> {
+    const cutoff = new Date(
+        now.getTime() - STALE_REFRESH_RUN_HOURS * 60 * 60 * 1000
+    )
+    const reaped = await db
+        .update(contentRefresh)
+        .set({
+            status: 'failed',
+            error: `Run went stale (no progress for over ${STALE_REFRESH_RUN_HOURS}h) — the server likely restarted or the request was killed mid-run`,
+        })
+        .where(
+            and(
+                eq(contentRefresh.status, 'in_progress'),
+                lt(contentRefresh.updatedAt, cutoff)
+            )
+        )
+        .returning({ id: contentRefresh.id })
+
+    if (reaped.length > 0) {
+        console.warn(
+            `[Refresh] Reaped ${reaped.length} stale in_progress run(s): ${reaped
+                .map((row) => row.id)
+                .join(', ')}`
+        )
+    }
+    return reaped.length
 }
 
 // ============================================

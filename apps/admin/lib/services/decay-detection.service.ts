@@ -46,6 +46,7 @@ import {
     enqueueSignal,
     type EnqueueOutcome,
 } from '@/lib/services/content-refresh.service'
+import { reapStaleRefreshRuns } from '@/lib/services/refresh-execution.service'
 
 // ============================================
 // Constants
@@ -100,6 +101,10 @@ export async function runDecayDetectionJob(
     if (config.refreshMode === 'off') {
         return { outcome: 'skipped-mode-off' }
     }
+
+    // Recover candidates whose run died mid-flight (#148) — before the
+    // due-check, so every daily tick sweeps even when detection is not due.
+    await reapStaleRefreshRuns(now)
 
     if (trigger === 'cron' && !(await isDetectionDue(now))) {
         return { outcome: 'skipped-not-due' }
