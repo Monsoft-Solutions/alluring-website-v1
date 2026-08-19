@@ -3,13 +3,15 @@
  *
  * Active refresh candidates (epic #144, #147): which published posts are
  * decaying, why (each signal with its triggering metric), and in what
- * priority order. Running a refresh from here arrives with Phase 4 (#148);
- * until then the queue supports manual queueing, dismissal, and on-demand
- * detection.
+ * priority order. Each candidate opens its review screen (#148), where the
+ * refresh is run, diffed, and applied.
  *
  * @module app/(dashboard)/blog/refresh/page
  */
+import Link from 'next/link'
+
 import { Badge } from '@workspace/ui/components/badge'
+import { buttonVariants } from '@workspace/ui/components/button'
 import {
     Table,
     TableBody,
@@ -113,9 +115,12 @@ export default async function RefreshQueuePage() {
                                 return (
                                     <TableRow key={entry.id}>
                                         <TableCell className='align-top'>
-                                            <p className='font-medium'>
+                                            <Link
+                                                href={`/blog/refresh/${entry.id}`}
+                                                className='font-medium hover:underline'
+                                            >
                                                 {entry.postTitle}
-                                            </p>
+                                            </Link>
                                             {entry.postSlug ? (
                                                 <p className='text-muted-foreground text-xs'>
                                                     /{entry.postSlug}
@@ -146,11 +151,29 @@ export default async function RefreshQueuePage() {
                                             </Badge>
                                         </TableCell>
                                         <TableCell className='text-right align-top'>
-                                            {entry.status === 'pending' ? (
-                                                <DismissCandidateButton
-                                                    id={entry.id}
-                                                />
-                                            ) : null}
+                                            <div className='flex items-center justify-end gap-1'>
+                                                <Link
+                                                    href={`/blog/refresh/${entry.id}`}
+                                                    className={buttonVariants({
+                                                        size: 'sm',
+                                                        variant:
+                                                            entry.status ===
+                                                            'ready_for_review'
+                                                                ? 'default'
+                                                                : 'outline',
+                                                    })}
+                                                >
+                                                    {entry.status ===
+                                                    'ready_for_review'
+                                                        ? 'Review'
+                                                        : 'Open'}
+                                                </Link>
+                                                {entry.status === 'pending' ? (
+                                                    <DismissCandidateButton
+                                                        id={entry.id}
+                                                    />
+                                                ) : null}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )

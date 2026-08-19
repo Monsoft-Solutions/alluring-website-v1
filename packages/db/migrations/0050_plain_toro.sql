@@ -1,0 +1,1 @@
+ALTER TABLE "blog_post_revision" ADD COLUMN "secondary_keywords" json;

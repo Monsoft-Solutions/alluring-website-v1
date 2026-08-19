@@ -21,6 +21,10 @@ import {
     runDecayDetectionJob,
     type DecayDetectionResult,
 } from '@/lib/services/decay-detection.service'
+import {
+    applyRefresh,
+    rollbackRevision,
+} from '@/lib/services/refresh-execution.service'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 const REFRESH_QUEUE_PATH = '/blog/refresh'
@@ -68,6 +72,42 @@ export async function runDecayDetectionNowAction(): Promise<
         return { success: true, result }
     } catch (error) {
         return toActionError(error, 'Failed to run detection')
+    }
+}
+
+/**
+ * Merge an approved refresh onto the live post (epic #144, #148). The
+ * service snapshots the original first and never touches slug, publishedAt,
+ * status, or the featured image.
+ */
+export async function applyRefreshAction(id: string): Promise<ActionResult> {
+    try {
+        await requireAuth()
+        const result = await applyRefresh(idSchema.parse(id))
+        if (result.success) {
+            revalidatePath(REFRESH_QUEUE_PATH)
+            revalidatePath('/blog/posts')
+            revalidatePath('/blog/pipeline')
+        }
+        return result
+    } catch (error) {
+        return toActionError(error, 'Failed to apply the refresh')
+    }
+}
+
+/** Restore a pre-refresh revision onto its post (undo an applied refresh). */
+export async function rollbackRevisionAction(
+    revisionId: string
+): Promise<ActionResult> {
+    try {
+        await requireAuth()
+        const result = await rollbackRevision(idSchema.parse(revisionId))
+        if (result.success) {
+            revalidatePath('/blog/posts')
+        }
+        return result
+    } catch (error) {
+        return toActionError(error, 'Failed to roll back')
     }
 }
 

@@ -180,3 +180,35 @@ export async function notifySeoWeeklyDigest(input: {
     await sendAndLog(subject, html)
     return true
 }
+
+/**
+ * Tell the admin a refreshed draft is waiting on the diff review screen
+ * (epic #144, #148). Not throttled — each refresh is one actionable event.
+ */
+export async function notifyRefreshReadyForReview(input: {
+    candidateId: string
+    postTitle: string
+    changeSummary: string | null
+}): Promise<void> {
+    const subject = `${SUBJECT_PREFIX} Refresh ready for review: ${input.postTitle}`
+
+    const summaryHtml = input.changeSummary
+        ? `<ul style="margin:0 0 20px;padding-left:18px;">${input.changeSummary
+              .split('\n')
+              .filter((line) => line.trim().length > 0)
+              .map(
+                  (line) =>
+                      `<li style="margin:4px 0;font-size:14px;line-height:1.5;color:#44403c;">${line.replace(/^[-•]\s*/, '')}</li>`
+              )
+              .join('')}</ul>`
+        : `<p style="margin:0 0 20px;font-size:14px;color:#78716c;">Open the review screen for the full diff.</p>`
+
+    const html = emailShell(
+        'A refreshed draft is ready',
+        `<p style="margin:0 0 16px;font-size:15px;line-height:1.6;"><strong>${input.postTitle}</strong> has been refreshed and awaits your review. Nothing changes on the live site until you apply it.</p>
+         ${summaryHtml}
+         <a href="${adminLink(`/blog/refresh/${input.candidateId}`)}" style="display:inline-block;background:#1c1917;color:#fafaf9;text-decoration:none;font-size:14px;padding:10px 20px;border-radius:6px;">Review the changes</a>`
+    )
+
+    await sendAndLog(subject, html)
+}

@@ -191,6 +191,24 @@ export function PipelineCard({
                                     </Badge>
                                 )}
 
+                                {post.refreshOfPostId && (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Badge className='flex items-center gap-0.5 border border-amber-300 bg-amber-50 px-1.5 py-0 text-[10px] text-amber-900 hover:bg-amber-50'>
+                                                <RefreshCw className='h-2.5 w-2.5' />
+                                                Refresh
+                                            </Badge>
+                                        </TooltipTrigger>
+                                        <TooltipContent className='max-w-xs'>
+                                            Hidden working copy of a published
+                                            post — it merges back onto the
+                                            original from the refresh review
+                                            screen and is never published
+                                            directly
+                                        </TooltipContent>
+                                    </Tooltip>
+                                )}
+
                                 {post.status === 'ideation' && (
                                     <IdeaGateBadge post={post} />
                                 )}

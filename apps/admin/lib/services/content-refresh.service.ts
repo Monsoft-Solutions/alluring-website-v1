@@ -199,7 +199,9 @@ export async function queueManualRefresh(
  * re-queues only after `refresh_cooldown_days` (or a manual request).
  *
  * Only pending and ready_for_review candidates can be dismissed — an
- * in_progress run must finish or fail first.
+ * in_progress run must finish or fail first. Dismissing a reviewed
+ * candidate also deletes its working copy, so no orphaned hidden draft
+ * lingers on the Kanban.
  */
 export async function dismissRefreshCandidate(
     id: string
@@ -213,7 +215,10 @@ export async function dismissRefreshCandidate(
                 inArray(contentRefresh.status, ['pending', 'ready_for_review'])
             )
         )
-        .returning({ id: contentRefresh.id })
+        .returning({
+            id: contentRefresh.id,
+            workingPostId: contentRefresh.workingPostId,
+        })
 
     if (!updated) {
         return {
@@ -221,6 +226,11 @@ export async function dismissRefreshCandidate(
             error: 'Candidate not found, already closed, or currently running',
         }
     }
+
+    if (updated.workingPostId) {
+        await db.delete(blogPost).where(eq(blogPost.id, updated.workingPostId))
+    }
+
     return { success: true }
 }
 

@@ -33,6 +33,7 @@ export {
     type GenerationPhaseOptions,
     type GenerationPhaseResult,
 } from './generation-phase.runner'
+export type { RefreshBriefInput } from '../prompts/blog/refresh-writer.prompt'
 
 export {
     runReviewPhase,

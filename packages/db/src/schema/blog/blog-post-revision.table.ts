@@ -12,6 +12,7 @@
 import {
     index,
     integer,
+    json,
     jsonb,
     pgTable,
     text,
@@ -46,6 +47,7 @@ export const blogPostRevision = pgTable(
         quickAnswer: text('quick_answer'),
         aiSummary: text('ai_summary'),
         readingTime: integer('reading_time'),
+        secondaryKeywords: json('secondary_keywords').$type<string[]>(),
 
         createdAt: timestamp('created_at').notNull().defaultNow(),
     },

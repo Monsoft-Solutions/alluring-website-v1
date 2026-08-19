@@ -85,6 +85,11 @@ type PhaseValidationResult =
     | { valid: true; post: BlogPost }
     | { valid: false; post: null; reason: string }
 
+/** Word count of a markdown body (refresh mode's length target). */
+function countContentWords(content: string): number {
+    return content.split(/\s+/).filter((word) => word.length > 0).length
+}
+
 /**
  * Fetch and validate a post for a pipeline phase
  *
@@ -373,7 +378,23 @@ export async function runGenerationPhaseForPost(
         // The writer can only link to posts it has been told exist. Without
         // this it sees the static marketing pages alone, builds no
         // blog-to-blog links, and invents plausible URLs when it wants one.
-        const linkableBlogPosts = await getLinkableBlogPosts(postId)
+        // For a refresh working copy, exclude the ORIGINAL post — a link to
+        // it becomes a self-link the moment the refresh is applied.
+        const linkableBlogPosts = await getLinkableBlogPosts(
+            post.refreshOfPostId ?? postId
+        )
+
+        // Refresh working copies (epic #144) carry the brief in planningData
+        // and their own content as the base article; the writer then updates
+        // in place instead of writing from scratch. The word-count target is
+        // the existing article's length, not the (possibly stale) plan's.
+        const refresh =
+            planningData.refresh && post.content
+                ? {
+                      ...planningData.refresh.brief,
+                      existingContent: post.content,
+                  }
+                : undefined
 
         const { result, traceId } = await withPhaseSpan(
             'pipeline.generation',
@@ -390,7 +411,10 @@ export async function runGenerationPhaseForPost(
                         targetAudience: planningData.targetAudience,
                         uniqueAngle: planningData.uniqueAngle,
                         contentType: planningData.contentType,
-                        estimatedWordCount: planningData.estimatedWordCount,
+                        estimatedWordCount: refresh
+                            ? countContentWords(post.content!)
+                            : planningData.estimatedWordCount,
+                        refresh,
                     },
                 })
         )
@@ -537,6 +561,20 @@ export async function runReviewPhaseForPost(
 
         // Run review phase
         const planningData = post.planningData
+
+        // A refresh working copy has no slug of its own yet — the
+        // cannibalization self-match guard must use the ORIGINAL's slug, or
+        // the checker flags the very post being refreshed as a competitor.
+        let currentPostSlug = post.slug || undefined
+        if (post.refreshOfPostId) {
+            const [original] = await db
+                .select({ slug: blogPost.slug })
+                .from(blogPost)
+                .where(eq(blogPost.id, post.refreshOfPostId))
+                .limit(1)
+            currentPostSlug = original?.slug || currentPostSlug
+        }
+
         const { result, traceId } = await withPhaseSpan(
             'pipeline.review',
             postId,
@@ -550,7 +588,7 @@ export async function runReviewPhaseForPost(
                     contentType: planningData?.contentType,
                     estimatedWordCount: planningData?.estimatedWordCount,
                     reviewModelId: aiConfig.reviewModelId,
-                    currentPostSlug: post.slug || undefined,
+                    currentPostSlug,
                     pagesForQuery: createPagesForQueryAdapter(),
                 })
         )
@@ -755,13 +793,18 @@ export async function runExtractPhaseForPost(
             metrics,
         }
 
-        // Generate slug if not set
+        // Generate slug if not set. A refresh working copy shares its title
+        // with the original, whose slug is usually the same derivation — the
+        // `-refresh` suffix keeps the unique index happy and makes the copy
+        // recognizable in admin lists. (The merge never copies slugs, so the
+        // suffix never reaches the live post.)
+        const derivedSlug = post.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '')
         const slug =
             post.slug ||
-            post.title
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)/g, '')
+            (post.refreshOfPostId ? `${derivedSlug}-refresh` : derivedSlug)
 
         // Update post with extracted metadata and advance to generate_image
         await db

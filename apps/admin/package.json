@@ -48,6 +48,7 @@
         "@workspace/shared": "workspace:*",
         "@workspace/ui": "workspace:*",
         "date-fns": "^4.1.0",
+        "diff": "^9.0.0",
         "drizzle-orm": "^0.44.7",
         "googleapis": "^169.0.0",
         "jiti": "^2.6.1",
