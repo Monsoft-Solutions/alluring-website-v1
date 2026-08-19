@@ -112,14 +112,20 @@ export async function notifyAutopilotDraftReady(input: {
     await sendAndLog(subject, html)
 }
 
+const FAILURE_KIND_LABELS = {
+    ideation: 'Ideation',
+    content: 'Content',
+    refresh: 'Refresh',
+} as const
+
 /** A run failed; autopilot pauses that job until acknowledged in settings. */
 export async function notifyAutopilotFailure(input: {
     runId: string
-    kind: 'ideation' | 'content'
+    kind: keyof typeof FAILURE_KIND_LABELS
     topicTitle?: string
     error: string
 }): Promise<void> {
-    const subject = `${SUBJECT_PREFIX} ${input.kind === 'content' ? 'Content' : 'Ideation'} run failed`
+    const subject = `${SUBJECT_PREFIX} ${FAILURE_KIND_LABELS[input.kind]} run failed`
     const html = emailShell(
         `The ${input.kind} run failed`,
         `${

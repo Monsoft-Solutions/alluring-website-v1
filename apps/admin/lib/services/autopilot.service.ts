@@ -10,6 +10,9 @@
  * - **Content job** (`startAutopilotContentJob`): pre-flights, acquires the
  *   run lock, and starts the durable content workflow that drives one post
  *   through generate → review → extract → images to Draft.
+ * - **Refresh job** (`startRefreshRunJob`, epic #144 Phase 5): pre-flights
+ *   and starts the durable refresh workflow — the auto-mode cron picks the
+ *   top queue candidate, the queue UI's Run refresh button names one.
  *
  * Due-checks are interval-based and self-healing: the cron ticks daily and
  * each job decides whether its cadence is satisfied, so a failed or missed
@@ -24,7 +27,11 @@ import { and, count, desc, eq, inArray, isNull, or } from 'drizzle-orm'
 import { getRun, start } from 'workflow/api'
 
 import { db } from '@workspace/db/client'
-import { autopilotRun, blogPost } from '@workspace/db/schema/blog'
+import {
+    autopilotRun,
+    blogPost,
+    contentRefresh,
+} from '@workspace/db/schema/blog'
 import type { AutopilotRun } from '@workspace/db/schema/blog'
 import type { AutopilotSkipReason, RefreshCandidate } from '@workspace/db/types'
 import { generateBlogTopics } from '@workspace/ai/functions'
@@ -42,6 +49,8 @@ import {
 import { getGscTopicSeeds } from '@/lib/services/topic-sourcing.service'
 import { createPipelinePostInternal } from '@/lib/services/pipeline-post.service'
 import { enqueueIdeationGateSignal } from '@/lib/services/content-refresh.service'
+import { claimRefreshCandidate } from '@/lib/services/refresh-execution.service'
+import { countActiveRefreshRuns } from '@/lib/queries/content-refresh.query'
 import {
     notifyAutopilotDraftCap,
     notifyAutopilotFailure,
@@ -65,7 +74,7 @@ export type AutopilotJobOutcome = {
     detail: Record<string, unknown>
 }
 
-type RunKind = 'ideation' | 'content'
+type RunKind = 'ideation' | 'content' | 'refresh'
 
 async function getLatestRun(kind: RunKind): Promise<AutopilotRun | null> {
     const [run] = await db
@@ -691,6 +700,172 @@ export async function startAutopilotContentJob(
             runId,
             kind: 'content',
             error: `Failed to start content workflow: ${message}`,
+        })
+        return { outcome: 'failed', detail: { error: message } }
+    }
+}
+
+// ============================================
+// Refresh job (pre-flight + durable workflow start, epic #144 Phase 5)
+// ============================================
+
+/**
+ * Pre-flight and start one durable refresh run.
+ *
+ * Called by the daily `autopilot-refresh` cron (acts only in `auto` mode)
+ * and by the queue UI's Run refresh button (`trigger='manual'`, works in
+ * `suggest` and `auto`). Mirrors the content job rail for rail; executions
+ * record `autopilot_run` rows with `kind='refresh'`, so the run-history
+ * card and the unacknowledged-failure pause cover refreshes too.
+ *
+ * @param candidateId - Manual runs name their candidate; the cron picks
+ *   the top pending candidate by score.
+ */
+export async function startRefreshRunJob(
+    trigger: AutopilotTriggerSource,
+    candidateId?: string
+): Promise<AutopilotJobOutcome> {
+    const config = await getBlogAiConfig()
+    const mode = config.refreshMode
+
+    // `off` disables the loop for both triggers; in `suggest` the cron is
+    // a no-op — execution stays human-initiated from the queue UI.
+    if (mode === 'off' || (trigger === 'cron' && mode !== 'auto')) {
+        return { outcome: 'skipped', detail: { reason: 'mode-off' } }
+    }
+
+    if (
+        trigger === 'cron' &&
+        !isCadenceDue('daily', await getLastCompletedAt('refresh'))
+    ) {
+        await recordSkippedRun('refresh', trigger, mode, 'cadence-not-due')
+        return { outcome: 'skipped', detail: { reason: 'cadence-not-due' } }
+    }
+
+    if (await hasUnacknowledgedFailure('refresh')) {
+        if (trigger === 'cron') {
+            await recordSkippedRun(
+                'refresh',
+                trigger,
+                mode,
+                'unacknowledged-failure'
+            )
+        }
+        return {
+            outcome: 'skipped',
+            detail: { reason: 'unacknowledged-failure' },
+        }
+    }
+
+    if (await isLockHeldAfterStaleCheck('refresh')) {
+        return { outcome: 'skipped', detail: { reason: 'locked' } }
+    }
+
+    // The cap bounds work in flight or awaiting review — not the pending
+    // queue, which is supposed to hold candidates.
+    const activeRuns = await countActiveRefreshRuns()
+    if (activeRuns >= config.refreshDraftCap) {
+        await recordSkippedRun('refresh', trigger, mode, 'draft-cap')
+        return {
+            outcome: 'skipped',
+            detail: {
+                reason: 'draft-cap',
+                activeRuns,
+                cap: config.refreshDraftCap,
+            },
+        }
+    }
+
+    let targetCandidateId = candidateId ?? null
+    if (!targetCandidateId) {
+        const [next] = await db
+            .select({ id: contentRefresh.id })
+            .from(contentRefresh)
+            .where(eq(contentRefresh.status, 'pending'))
+            .orderBy(desc(contentRefresh.score), contentRefresh.createdAt)
+            .limit(1)
+        targetCandidateId = next?.id ?? null
+    }
+    if (!targetCandidateId) {
+        await recordSkippedRun('refresh', trigger, mode, 'queue-empty')
+        return { outcome: 'skipped', detail: { reason: 'queue-empty' } }
+    }
+
+    const runId = await acquireRunLock('refresh', trigger, mode)
+    if (!runId) {
+        return { outcome: 'skipped', detail: { reason: 'locked' } }
+    }
+
+    // Claim under the lock. A lost claim means the candidate stopped being
+    // pending between pick and claim (or the manual id never was pending).
+    const claimed = await claimRefreshCandidate(targetCandidateId)
+    if (!claimed) {
+        await db
+            .update(autopilotRun)
+            .set({
+                status: 'skipped',
+                skipReason: 'candidate-not-pending',
+                finishedAt: new Date(),
+            })
+            .where(eq(autopilotRun.id, runId))
+        return {
+            outcome: 'skipped',
+            detail: { reason: 'candidate-not-pending' },
+        }
+    }
+
+    try {
+        // Deferred import: the workflow module is compiled by the workflow
+        // bundler; importing it lazily keeps this service testable.
+        const { refreshContentWorkflow } = await import(
+            '@/app/workflows/refresh/refresh-content.workflow'
+        )
+        const run = await start(refreshContentWorkflow, [
+            { runId, candidateId: targetCandidateId },
+        ])
+
+        await db
+            .update(autopilotRun)
+            .set({ workflowRunId: run.runId })
+            .where(eq(autopilotRun.id, runId))
+        // Also on the candidate — the stale-run reaper cross-checks it.
+        await db
+            .update(contentRefresh)
+            .set({ workflowRunId: run.runId })
+            .where(eq(contentRefresh.id, targetCandidateId))
+
+        console.log(
+            `[Autopilot] Refresh workflow started (run ${runId}, workflow ${run.runId})`
+        )
+        return {
+            outcome: 'started',
+            detail: {
+                runId,
+                workflowRunId: run.runId,
+                candidateId: targetCandidateId,
+            },
+        }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error'
+        await db
+            .update(contentRefresh)
+            .set({
+                status: 'failed',
+                error: `Failed to start refresh workflow: ${message}`,
+            })
+            .where(eq(contentRefresh.id, targetCandidateId))
+        await db
+            .update(autopilotRun)
+            .set({
+                status: 'failed',
+                error: `Failed to start refresh workflow: ${message}`,
+                finishedAt: new Date(),
+            })
+            .where(eq(autopilotRun.id, runId))
+        await notifyAutopilotFailure({
+            runId,
+            kind: 'refresh',
+            error: `Failed to start refresh workflow: ${message}`,
         })
         return { outcome: 'failed', detail: { error: message } }
     }
