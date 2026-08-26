@@ -321,7 +321,7 @@ export function createServer(): McpServer {
         {
             title: 'Pages ranking for a query',
             description:
-                'Every page that ranked for one exact query. Two or more pages sharing a query is keyword cannibalization — check this before writing another page on a topic the site already covers. Also the way to verify a content_gaps result: if a page already ranks here, there is no gap.',
+                'Every page that ranked for one exact query. Two or more pages sharing a query is keyword cannibalization — check this before writing another page on a topic the site already covers.',
             inputSchema: z.object({
                 query: z.string().min(1).describe('Exact query string'),
                 days: daysSchema,
@@ -377,9 +377,9 @@ export function createServer(): McpServer {
     server.registerTool(
         'content_gaps',
         {
-            title: 'Content gaps (candidates)',
+            title: 'Content gaps',
             description:
-                'Candidate queries that may have no page dedicated to them, ranked by impressions. HEURISTIC, NOT A FACT: a query is flagged when the URL of its best-ranking page contains none of the query words longer than 3 characters, so a page that covers the topic in different words is reported as a gap anyway (e.g. "bbl smell" flags even though /why-do-bbl-stink ranks for it). ALWAYS confirm with pages_for_query before concluding a page does not exist — if one does, the finding is a CTR or ranking problem, not a gap.',
+                'Queries with real impression volume that the site may not cover well, ranked by impressions. Read the `coverage` field before acting: "none" means nothing ranks for it — write a new page; "weak" means the page in `topPage` already ranks for it under different wording — retitle that page instead, because a new one would compete with it. Each result carries a `recommendation` saying which. Queries whose ranking page URL already carries their vocabulary are omitted entirely.',
             inputSchema: z.object({
                 days: daysSchema,
                 limit: limitSchema(25),

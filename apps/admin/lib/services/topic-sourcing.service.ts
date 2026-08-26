@@ -31,9 +31,13 @@ const MAX_SEEDS = 24
 /**
  * Fetch and label topic seeds from Search Console.
  *
- * Gap queries rank first (unclaimed demand — the strongest "write new
- * content" signal), then opportunities, then decaying queries. Duplicates
+ * Uncovered gap queries rank first (unclaimed demand — the strongest "write
+ * new content" signal), then opportunities, then decaying queries. Duplicates
  * across sources keep their highest-priority label.
+ *
+ * Gaps whose coverage is `weak` — a page ranks for the query but uses
+ * different wording — are seeded as opportunities, not gaps, so the pipeline
+ * is told to retitle that page rather than write a competing one.
  *
  * Returns [] when Search Console is not configured.
  */
@@ -53,7 +57,15 @@ export async function getGscTopicSeeds(
 
     const seeds = new Map<string, GscTopicSeed>()
 
-    for (const gap of gaps) {
+    // Only genuinely uncovered queries seed "write something new". A gap marked
+    // `weak` has a page already ranking for it under different wording — seeding
+    // that as a gap is how the pipeline ends up commissioning a post that
+    // competes with a page the site already ranks with (issue #204). Those go in
+    // as optimization work instead.
+    const uncovered = gaps.filter((gap) => gap.coverage === 'none')
+    const weaklyCovered = gaps.filter((gap) => gap.coverage === 'weak')
+
+    for (const gap of uncovered) {
         seeds.set(gap.query, {
             query: gap.query,
             impressions: gap.impressions,
@@ -61,6 +73,18 @@ export async function getGscTopicSeeds(
             ctr: gap.ctr,
             position: gap.position,
             source: 'gap',
+        })
+    }
+
+    for (const gap of weaklyCovered) {
+        if (seeds.has(gap.query)) continue
+        seeds.set(gap.query, {
+            query: gap.query,
+            impressions: gap.impressions,
+            clicks: gap.clicks,
+            ctr: gap.ctr,
+            position: gap.position,
+            source: 'opportunity',
         })
     }
 

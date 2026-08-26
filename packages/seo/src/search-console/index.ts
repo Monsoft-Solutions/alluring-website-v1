@@ -76,11 +76,20 @@ export {
 // Trends
 export { getPerformanceTrend } from './search-console-trends.service.js'
 
-// Opportunities
+// Opportunities & gaps
 export {
     getContentOpportunities,
     getContentGaps,
+    buildContentGaps,
 } from './search-console-opportunities.service.js'
+
+// Query coverage (how getContentGaps decides what counts as a gap)
+export {
+    classifyQueryCoverage,
+    urlCoversQuery,
+    queryTerms,
+    COVERAGE_POSITION_THRESHOLD,
+} from './query-coverage.util.js'
 
 // Position changes
 export { getPositionChanges } from './search-console-position-changes.service.js'

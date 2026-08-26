@@ -15,6 +15,7 @@ type MetricRow = {
     position?: number
     currentPosition?: number
     previousPosition?: number
+    topPagePosition?: number
     positionDelta?: number
     avgCtr?: number
     avgPosition?: number
@@ -47,6 +48,7 @@ function roundMetrics<T>(row: T): T {
         'avgPosition',
         'currentPosition',
         'previousPosition',
+        'topPagePosition',
         'positionDelta',
     ] as const) {
         const value = source[key]

@@ -55,23 +55,23 @@ Registered under the `search-console` server (so
 `mcp__search-console__content_gaps`, and so on). Read-only throughout —
 `submitSitemap` exists in the service layer but is deliberately not exposed.
 
-| Tool                    | Answers                                                                            |
-| ----------------------- | ---------------------------------------------------------------------------------- |
-| `summary`               | Site-wide clicks, impressions, CTR, average position, top query                    |
-| `top_queries`           | Which queries bring the most traffic                                               |
-| `search_queries`        | Every query containing a term, with metrics                                        |
-| `query_trend`           | Is one query gaining or slipping, day by day                                       |
-| `top_pages`             | Which pages earn the most search traffic                                           |
-| `search_pages`          | Performance for a path substring or content type                                   |
-| `queries_for_page`      | What a specific page is already found for                                          |
-| `pages_for_query`       | Which pages compete for one query (cannibalization)                                |
-| `page_trend`            | Did a rewrite move anything                                                        |
-| `content_opportunities` | High impressions, weak CTR, and what to do                                         |
-| `content_gaps`          | Candidate topics with demand and seemingly no page (verify with `pages_for_query`) |
-| `position_changes`      | Ranking winners and losers between two periods                                     |
-| `performance_trend`     | Site-wide daily traffic shape                                                      |
-| `inspect_url`           | Live index status for one URL (2,000/day quota)                                    |
-| `list_sitemaps`         | Submitted sitemaps, warnings, errors, indexed counts                               |
+| Tool                    | Answers                                                                                               |
+| ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| `summary`               | Site-wide clicks, impressions, CTR, average position, top query                                       |
+| `top_queries`           | Which queries bring the most traffic                                                                  |
+| `search_queries`        | Every query containing a term, with metrics                                                           |
+| `query_trend`           | Is one query gaining or slipping, day by day                                                          |
+| `top_pages`             | Which pages earn the most search traffic                                                              |
+| `search_pages`          | Performance for a path substring or content type                                                      |
+| `queries_for_page`      | What a specific page is already found for                                                             |
+| `pages_for_query`       | Which pages compete for one query (cannibalization)                                                   |
+| `page_trend`            | Did a rewrite move anything                                                                           |
+| `content_opportunities` | High impressions, weak CTR, and what to do                                                            |
+| `content_gaps`          | Queries the site may not cover, each labelled `none` (write one) or `weak` (retitle the ranking page) |
+| `position_changes`      | Ranking winners and losers between two periods                                                        |
+| `performance_trend`     | Site-wide daily traffic shape                                                                         |
+| `inspect_url`           | Live index status for one URL (2,000/day quota)                                                       |
+| `list_sitemaps`         | Submitted sitemaps, warnings, errors, indexed counts                                                  |
 
 Every date-ranged result is wrapped with the `window` it covers. Search Console
 data lags about three days, so windows end three days before today.
@@ -79,15 +79,21 @@ data lags about three days, so windows end three days before today.
 When credentials are missing, tools return an explanatory error rather than
 empty data, so an agent can tell "nothing ranks" from "nothing is wired up."
 
-### `content_gaps` is a heuristic
+### `content_gaps` returns a verdict, not a guess
 
-It flags a query when the URL of its best-ranking page contains none of the
-query's words longer than three characters, so a page covering the topic in
-different words reads as a gap — `bbl smell` flags despite `/why-do-bbl-stink`
-ranking for it at position 10. Verify with `pages_for_query` before treating a
-result as a gap; if a page already ranks, it is a CTR problem, not a gap.
+Each result carries a `coverage` field and a `recommendation`:
 
-Tracked in [#204](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/204).
+- `none` — nothing ranks for the query. Write a new page.
+- `weak` — the page in `topPage` ranks within position 15 but uses different
+  wording. Retitle it; a new page would compete with it.
+
+Queries whose ranking page URL already carries their vocabulary are omitted.
+
+The distinction exists because the original check — does the ranking page's URL
+contain any query word longer than three characters — reported `bbl smell` as
+uncovered while `/why-do-bbl-stink` ranked for all ~10,900 of its impressions at
+position 10. Coverage is now decided by vocabulary _and_ position, with plural
+tolerance so a singular slug matches a plural query ([#204](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/204)).
 
 ## Agent guidance
 

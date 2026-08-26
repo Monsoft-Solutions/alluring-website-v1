@@ -71,6 +71,33 @@ export type ContentOpportunity = {
 }
 
 /**
+ * How well the site covers a search query.
+ *
+ * - `covered` — a page's URL carries the query's vocabulary; built for it
+ * - `weak` — no URL match, but a page ranks well; covered in different words
+ * - `none` — nothing purpose-built and nothing ranking; a genuine gap
+ */
+export type QueryCoverage = 'covered' | 'weak' | 'none'
+
+/**
+ * A query the site may not adequately cover.
+ *
+ * `coverage` is the field that decides the action: `none` means write a new
+ * page, `weak` means fix the title and meta on the page named by `topPage`.
+ * Treating the two alike is how a site ends up competing with itself.
+ */
+export type ContentGap = SearchQuery & {
+    /** Whether a page already covers this, and how well */
+    coverage: Exclude<QueryCoverage, 'covered'>
+    /** Best-ranking page for the query, or null if none ranked */
+    topPage: string | null
+    /** That page's average position */
+    topPagePosition: number | null
+    /** What to do about it, given the coverage */
+    recommendation: string
+}
+
+/**
  * Sort field options for search console data
  */
 export type SortField = 'clicks' | 'impressions' | 'ctr' | 'position'
