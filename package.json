@@ -13,6 +13,11 @@
         "prepare": "husky",
         "db:generate": "turbo db:generate --filter=@workspace/db",
         "db:migrate": "turbo db:migrate --filter=@workspace/db",
+        "db:migrate:prod": "turbo db:migrate:prod --filter=@workspace/db",
+        "db:check": "turbo db:check --filter=@workspace/db",
+        "db:check:prod": "turbo db:check:prod --filter=@workspace/db",
+        "db:baseline": "turbo db:baseline --filter=@workspace/db",
+        "db:baseline:prod": "turbo db:baseline:prod --filter=@workspace/db",
         "db:push": "turbo db:push --filter=@workspace/db",
         "db:studio": "turbo db:studio --filter=@workspace/db",
         "db:seed": "turbo db:seed --filter=@workspace/db"

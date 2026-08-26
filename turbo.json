@@ -9,6 +9,7 @@
             "env": [
                 "NODE_ENV",
                 "POSTGRES_URL",
+                "POSTGRES_URL_PROD",
                 "ADMIN_PASSWORD",
                 "BLOG_API_KEY",
                 "BLOB_READ_WRITE_TOKEN",
@@ -80,6 +81,7 @@
             "env": [
                 "NODE_ENV",
                 "POSTGRES_URL",
+                "POSTGRES_URL_PROD",
                 "ADMIN_PASSWORD",
                 "BLOG_API_KEY",
                 "BLOB_READ_WRITE_TOKEN",
@@ -135,6 +137,29 @@
         },
         "db:migrate": {
             "cache": false,
+            "outputs": []
+        },
+        "db:migrate:prod": {
+            "cache": false,
+            "interactive": true,
+            "outputs": []
+        },
+        "db:check": {
+            "cache": false,
+            "outputs": []
+        },
+        "db:check:prod": {
+            "cache": false,
+            "outputs": []
+        },
+        "db:baseline": {
+            "cache": false,
+            "interactive": true,
+            "outputs": []
+        },
+        "db:baseline:prod": {
+            "cache": false,
+            "interactive": true,
             "outputs": []
         },
         "db:push": {

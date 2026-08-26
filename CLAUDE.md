@@ -148,6 +148,26 @@ pnpm dlx shadcn@latest add <name> -c apps/web  # Add shadcn component
 
 ---
 
+## Database & Migrations
+
+Local is the default target; production is always an explicit, separate
+command (issue #186).
+
+```bash
+pnpm db:generate       # after editing a schema file
+pnpm db:migrate        # apply to the LOCAL database
+pnpm db:check:prod     # is production behind?
+pnpm db:migrate:prod   # apply to Supabase (confirms the host first)
+```
+
+**Migrations go through the tool.** Applying schema changes by hand with
+psql is what left production seven migrations behind its journal; that
+workaround is retired. `db:seed` and `db:push` are hard-blocked from any
+non-localhost database. The DigitalOcean database is retired — do not
+reintroduce it. See `packages/db/README.md`.
+
+---
+
 ## Specialized Agents
 
 | Task        | Agent                         |
