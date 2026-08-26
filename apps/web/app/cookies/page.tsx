@@ -3,7 +3,7 @@ import { cookiePolicyContent } from '@/lib/data/legal/cookie-policy.content'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
-const pageTitle = 'Cookie Policy'
+const pageTitle = 'Cookie Policy | Alluring Plastic Surgery'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/cookies',

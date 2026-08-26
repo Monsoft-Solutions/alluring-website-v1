@@ -3,7 +3,7 @@ import { privacyPolicyContent } from '@/lib/data/legal/privacy-policy.content'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
-const pageTitle = 'Privacy Policy'
+const pageTitle = 'Privacy Policy | Alluring Plastic Surgery'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/privacy',

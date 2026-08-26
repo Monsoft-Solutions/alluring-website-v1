@@ -28,7 +28,7 @@ const STATS = [
     },
     {
         icon: Star,
-        value: siteConfig.trustStats?.rating ?? '4.9',
+        value: siteConfig.trustStats?.rating ?? '4.7',
         label: 'Star Rating',
     },
     {

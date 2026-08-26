@@ -43,7 +43,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
  * - Twitter Card configuration
  * - Canonical URL
  */
-const pageTitle = 'Free Consultation | Miami Plastic Surgery | Book Today'
+const pageTitle = 'Contact Us | Free Consultation | Alluring Plastic Surgery'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',

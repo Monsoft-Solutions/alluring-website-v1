@@ -47,7 +47,7 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
  */
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/',
-    title: 'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+    title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
     description:
         "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Free consultation.",
 
@@ -55,7 +55,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     openGraph: {
         type: 'website',
         url: siteUrl,
-        title: 'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+        title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
         description:
             "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Free consultation.",
         siteName: siteConfig.business.name,
@@ -73,7 +73,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Twitter Card tags
     twitter: {
         card: 'summary_large_image',
-        title: 'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
+        title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
         description:
             "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons.",
         images: [`${siteUrl}/og-image.jpg`],

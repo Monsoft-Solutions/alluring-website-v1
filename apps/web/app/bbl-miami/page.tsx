@@ -48,12 +48,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/bbl-miami',
-    title: 'BBL Miami | Brazilian Butt Lift | Natural Results | Free Consultation',
+    title: 'BBL Miami | Brazilian Butt Lift | Natural Results',
     description:
         'The Miami BBL: Natural curves with world-class safety. Board-certified surgeons, ultrasound-guided technique, AAAASF-accredited facility. Financing from $45/week. Free consultation.',
 
     openGraph: {
-        title: 'BBL Miami | Brazilian Butt Lift | Natural Results | Free Consultation',
+        title: 'BBL Miami | Brazilian Butt Lift | Natural Results',
         description:
             'The Miami BBL: Natural curves with world-class safety. Board-certified surgeons, ultrasound-guided technique, AAAASF-accredited facility.',
         url: `${seoConfig.siteUrl}/bbl-miami`,

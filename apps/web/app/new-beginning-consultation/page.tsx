@@ -47,12 +47,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/new-beginning-consultation',
-    title: 'New Beginning Plastic Surgery Miami | Rejuvenation | Free Consultation',
+    title: 'New Beginning Plastic Surgery Miami | Rejuvenation',
     description:
         'A new chapter deserves a new you. Natural rejuvenation for women ready to invest in themselves. Facelift, body contouring, breast procedures. Board-certified surgeons. Free consultation.',
 
     openGraph: {
-        title: 'New Beginning Plastic Surgery Miami | Rejuvenation | Free Consultation',
+        title: 'New Beginning Plastic Surgery Miami | Rejuvenation',
         description:
             'A new chapter deserves a new you. Natural rejuvenation for women ready to invest in themselves. Board-certified surgeons.',
         url: `${seoConfig.siteUrl}/new-beginning-consultation`,

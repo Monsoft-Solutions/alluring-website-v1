@@ -55,12 +55,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/fly-in-consultation',
-    title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Board-Certified',
+    title: 'Fly-In Plastic Surgery Miami | Virtual Consultation',
     description:
         'Board-certified plastic surgery in Miami for out-of-state patients. Start with a virtual consultation and get your surgery and follow-up dates in writing before you book travel. BBL, breast augmentation, mommy makeover. Financing available.',
 
     openGraph: {
-        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Board-Certified',
+        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation',
         description:
             'Board-certified plastic surgery in Miami for out-of-state patients. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
         url: `${seoConfig.siteUrl}/fly-in-consultation`,
@@ -79,7 +79,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation | Board-Certified',
+        title: 'Fly-In Plastic Surgery Miami | Virtual Consultation',
         description:
             'Board-certified plastic surgery in Miami for out-of-state patients. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],

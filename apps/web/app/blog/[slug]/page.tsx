@@ -43,7 +43,9 @@ export async function generateMetadata({
 
     return toNextMetadata(seoConfig, {
         title: post.title,
-        description: post.excerpt ?? undefined,
+        // metaDescription is authored for the SERP; excerpt is page copy and
+        // only stands in when the dedicated field is empty.
+        description: post.metaDescription || post.excerpt || undefined,
         openGraph: {
             type: 'article',
             images: post.featuredImage

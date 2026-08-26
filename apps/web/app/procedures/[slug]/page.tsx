@@ -35,6 +35,7 @@ import { ProcedureConsultationForm } from '@/components/procedures/procedure-con
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
+import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 import { env } from '@/env'
 
 /**
@@ -95,7 +96,9 @@ export async function generateMetadata(
     const pageTitle = generateProcedureTitle(procedure.title)
 
     // Generate CTR-optimized description
-    const metaDescription = generateProcedureDescription(procedure.title)
+    const metaDescription = clampMetaDescription(
+        generateProcedureDescription(procedure.title)
+    )
 
     return {
         title: pageTitle,

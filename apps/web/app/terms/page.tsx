@@ -3,7 +3,7 @@ import { termsOfServiceContent } from '@/lib/data/legal/terms-of-service.content
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
-const pageTitle = 'Terms of Service'
+const pageTitle = 'Terms of Service | Alluring Plastic Surgery'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/terms',

@@ -14,12 +14,12 @@ import { getActivePromotions } from '@/lib/queries/promotion.query'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 
-const pageTitle = 'Special Offers & Promotions'
+const pageTitle = 'Special Offers & Promotions | Alluring Plastic Surgery'
 
 export const metadata: Metadata = {
     title: pageTitle,
     description:
-        'Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.',
+        'Discover current special offers on cosmetic surgery in Miami. Limited-time discounts, seasonal specials and exclusive package deals.',
     openGraph: {
         title: pageTitle,
         description:

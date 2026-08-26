@@ -252,6 +252,15 @@ const nextConfig = {
                 destination: '/procedures/breast-lift-miami',
                 permanent: true,
             },
+
+            // Pricing URL referenced from published blog copy but never built.
+            // Kept as a redirect rather than a content edit so inbound links
+            // from anywhere else land somewhere useful too.
+            {
+                source: '/plastic-surgery-cost-miami',
+                destination: '/plastic-surgery-financing-miami',
+                permanent: true,
+            },
         ]
     },
 }

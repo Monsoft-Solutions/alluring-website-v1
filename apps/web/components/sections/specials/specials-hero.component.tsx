@@ -121,12 +121,14 @@ export function SpecialsHero({
                     <div className='mx-auto w-full max-w-2xl'>
                         {/* Emotional Headline */}
                         <div className='mb-6 text-center lg:text-left'>
-                            <h1 className='mb-3 font-serif text-3xl leading-tight text-white md:text-4xl'>
+                            {/* h2, not h1 — the page heading is the offer
+                                title in the left column. */}
+                            <h2 className='mb-3 font-serif text-3xl leading-tight text-white md:text-4xl'>
                                 Your Transformation,{' '}
                                 <span className='text-gold-400 italic'>
                                     On Your Terms
                                 </span>
-                            </h1>
+                            </h2>
                             <p className='text-lg leading-relaxed text-stone-300'>
                                 Exclusive savings on the procedures you&apos;ve
                                 been dreaming about. Lock in promotional pricing

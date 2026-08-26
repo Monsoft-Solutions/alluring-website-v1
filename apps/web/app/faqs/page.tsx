@@ -124,6 +124,7 @@ export default function FAQPage() {
                 {/* Categorized FAQ Section */}
                 <CategorizedFAQ
                     id='faq'
+                    as='h1'
                     categories={faqPageCategories}
                     faqData={faqPageData}
                     badge={faqPageConfig.badge}

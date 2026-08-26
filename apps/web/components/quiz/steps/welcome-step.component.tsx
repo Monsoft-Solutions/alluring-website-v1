@@ -149,7 +149,7 @@ export function WelcomeStep({ onStart, className }: WelcomeStepProps) {
                         </svg>
                     ))}
                     <span className='ml-2 text-sm font-medium text-stone-700'>
-                        {siteConfig.trustStats?.rating ?? '4.9'}/5 rating
+                        {siteConfig.trustStats?.rating ?? '4.7'}/5 rating
                     </span>
                 </div>
             </motion.div>

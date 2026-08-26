@@ -293,7 +293,7 @@ export function ConfirmationStep({
                 <div className='h-8 w-px bg-stone-200' />
                 <div className='text-center'>
                     <p className='text-2xl font-bold text-stone-800'>
-                        {siteConfig.trustStats?.rating ?? '4.9'}
+                        {siteConfig.trustStats?.rating ?? '4.7'}
                     </p>
                     <p className='text-xs text-stone-500'>Star Rating</p>
                 </div>

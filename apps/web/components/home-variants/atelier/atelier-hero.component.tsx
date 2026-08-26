@@ -72,7 +72,7 @@ export function AtelierHero() {
                                 'Patients',
                             ],
                             [
-                                `${siteConfig.trustStats?.rating ?? '4.9'} ★`,
+                                `${siteConfig.trustStats?.rating ?? '4.7'} ★`,
                                 'Google rating',
                             ],
                             [`$${LOWEST_WEEKLY_PAYMENT}`, 'From / week'],

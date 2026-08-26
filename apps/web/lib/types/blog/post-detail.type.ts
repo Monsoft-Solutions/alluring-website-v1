@@ -4,6 +4,12 @@ import type { BlogPostCard } from './post-card.type'
 
 export type BlogPostDetail = BlogPostCard & {
     content: string
+    /**
+     * Description written for search results. Preferred over `excerpt` for the
+     * meta tag: excerpts are page copy and run long, while this field is
+     * authored to fit the SERP. Null on posts predating the field.
+     */
+    metaDescription: string | null
     updatedAt: string | null
     categories: Array<{
         id: string

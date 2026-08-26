@@ -169,7 +169,7 @@ export const Hero = () => {
                                     className='text-gold-500 h-4 w-4 shrink-0 fill-current'
                                     aria-hidden='true'
                                 />
-                                {siteConfig.trustStats?.rating ?? '4.9'} Google
+                                {siteConfig.trustStats?.rating ?? '4.7'} Google
                                 Rating
                             </li>
                         </ul>
