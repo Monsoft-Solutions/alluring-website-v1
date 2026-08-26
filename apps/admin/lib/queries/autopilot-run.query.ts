@@ -11,7 +11,7 @@ import { db } from '@workspace/db/client'
 import { autopilotRun, blogPost } from '@workspace/db/schema/blog'
 import type { AutopilotRun } from '@workspace/db/schema/blog'
 
-/** Recent runs, newest first (both kinds interleaved). */
+/** Recent runs, newest first (all kinds interleaved). */
 export async function getRecentAutopilotRuns(
     limit = 10
 ): Promise<AutopilotRun[]> {
@@ -28,6 +28,7 @@ export type AutopilotStatusSummary = {
     approvedIdeas: number
     lastIdeationRun: AutopilotRun | null
     lastContentRun: AutopilotRun | null
+    lastRefreshRun: AutopilotRun | null
     unacknowledgedFailures: AutopilotRun[]
 }
 
@@ -72,6 +73,13 @@ export async function getAutopilotStatusSummary(): Promise<AutopilotStatusSummar
         .orderBy(desc(autopilotRun.startedAt))
         .limit(1)
 
+    const [lastRefresh] = await db
+        .select()
+        .from(autopilotRun)
+        .where(eq(autopilotRun.kind, 'refresh'))
+        .orderBy(desc(autopilotRun.startedAt))
+        .limit(1)
+
     const unacknowledgedFailures = await db
         .select()
         .from(autopilotRun)
@@ -89,6 +97,7 @@ export async function getAutopilotStatusSummary(): Promise<AutopilotStatusSummar
         approvedIdeas: approvedRow?.value ?? 0,
         lastIdeationRun: lastIdeation ?? null,
         lastContentRun: lastContent ?? null,
+        lastRefreshRun: lastRefresh ?? null,
         unacknowledgedFailures,
     }
 }

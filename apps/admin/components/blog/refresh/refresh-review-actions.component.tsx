@@ -5,8 +5,9 @@
  *
  * Client controls for the refresh review screen (epic #144, #148): run the
  * refresh on a pending candidate, apply a reviewed one, or dismiss. Apply
- * and dismiss are server actions; the run goes through the long-budget
- * route handler, mirroring the pipeline phase routes.
+ * and dismiss are server actions; the run route starts the durable refresh
+ * workflow and returns immediately — the email says when the draft is
+ * ready.
  *
  * @module components/blog/refresh/refresh-review-actions
  */
@@ -35,7 +36,6 @@ export function RunRefreshButton({
 
     const run = async () => {
         setIsRunning(true)
-        toast.info('Refresh started — this takes a few minutes')
         try {
             const response = await fetch(
                 `/api/admin/refresh/${candidateId}/run`,
@@ -46,12 +46,14 @@ export function RunRefreshButton({
                 error?: string
             }
             if (payload.success) {
-                toast.success('Refresh complete — the draft is ready to review')
+                toast.success(
+                    'Refresh started — you will get an email when the draft is ready to review'
+                )
             } else {
-                toast.error(payload.error ?? 'The refresh run failed')
+                toast.error(payload.error ?? 'Could not start the refresh')
             }
         } catch {
-            toast.error('The refresh run failed')
+            toast.error('Could not start the refresh')
         } finally {
             setIsRunning(false)
             router.refresh()
@@ -65,7 +67,7 @@ export function RunRefreshButton({
             ) : (
                 <Play className='h-3.5 w-3.5' />
             )}
-            {isRunning ? 'Refreshing…' : 'Run refresh'}
+            {isRunning ? 'Starting…' : 'Run refresh'}
         </Button>
     )
 }

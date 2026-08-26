@@ -1,10 +1,15 @@
 /**
  * Refresh Execution Service
  *
- * The in-place refresh flow (epic #144, #148): clone the live post into a
- * hidden working copy, run it through the existing pipeline phases in
- * refresh mode, and — after the admin's diff review — merge the allowlisted
- * fields back onto the original in one transaction.
+ * The in-place refresh flow (epic #144, #148/#Phase 5): clone the live post
+ * into a hidden working copy, run it through the existing pipeline phases
+ * in refresh mode, and — after the admin's diff review — merge the
+ * allowlisted fields back onto the original in one transaction.
+ *
+ * Execution itself lives in the durable refresh workflow
+ * (`@/app/workflows/refresh/refresh-content.workflow`); this service owns
+ * the building blocks the workflow and the pre-flight compose: the claim,
+ * the clone, the stale-run reaper, and the apply/rollback transactions.
  *
  * The working copy is a normal `blog_post` row with `refresh_of_post_id`
  * set: it rides the same Kanban, the same phase drivers, the same edit
@@ -19,6 +24,7 @@
 import { revalidateTag } from 'next/cache'
 
 import { and, eq, lt } from 'drizzle-orm'
+import { getRun } from 'workflow/api'
 
 import { db } from '@workspace/db/client'
 import {
@@ -27,8 +33,7 @@ import {
     blogPostRevision,
     contentRefresh,
 } from '@workspace/db/schema/blog'
-import type { RefreshBrief } from '@workspace/db/types'
-import { summarizeRefreshChanges } from '@workspace/ai/functions'
+import type { RefreshBrief, RefreshSignal } from '@workspace/db/types'
 
 import {
     buildMergeValues,
@@ -36,28 +41,10 @@ import {
     buildRevisionValues,
 } from '@/lib/utils/refresh-merge.util'
 
-import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
-import { buildRefreshBrief } from '@/lib/services/refresh-brief.service'
-import { notifyRefreshReadyForReview } from '@/lib/services/seo-digest-notification.service'
-import {
-    runExtractPhaseForPost,
-    runGenerationPhaseForPost,
-    runReviewPhaseForPost,
-} from '@/lib/services/pipeline-phase.service'
 import {
     CACHE_TAGS,
     revalidateWebAppCache,
 } from '@/lib/utils/revalidate-web.util'
-
-// ============================================
-// Types
-// ============================================
-
-export type RefreshRunResult = {
-    success: boolean
-    error?: string
-    workingPostId?: string
-}
 
 // ============================================
 // Clone
@@ -113,26 +100,27 @@ export async function duplicateForRefresh(
 }
 
 // ============================================
-// Execution driver
+// Claim
 // ============================================
 
+export type ClaimedRefreshCandidate = {
+    id: string
+    blogPostId: string
+    sources: RefreshSignal[]
+}
+
 /**
- * Run the full refresh for a pending candidate: claim it, build the brief,
- * clone, drive generate → review → extract in refresh mode, and leave the
- * working copy in `draft` with the candidate `ready_for_review`.
+ * Claim a pending candidate for execution: `pending → in_progress` as one
+ * conditional update, so of two concurrent starts exactly one wins. Called
+ * by the pre-flight (`startRefreshRunJob`) before the durable workflow is
+ * started — the workflow receives a candidate that is already claimed.
  *
- * The image phase is skipped on purpose — the clone carries the original's
- * `featuredImageId`, and the merge never touches images.
- *
- * Any phase failure marks the candidate `failed` (with the error) and keeps
- * the working copy for inspection; `failed` is terminal, so the post can be
- * re-queued later.
+ * @returns The claimed row, or null when the candidate is missing or not
+ *   pending (already running, reviewed, or closed).
  */
-export async function runRefreshForCandidate(
+export async function claimRefreshCandidate(
     candidateId: string
-): Promise<RefreshRunResult> {
-    // Claiming pending → in_progress is the lock: of two concurrent runs,
-    // one update wins.
+): Promise<ClaimedRefreshCandidate | null> {
     const [claimed] = await db
         .update(contentRefresh)
         .set({ status: 'in_progress', error: null })
@@ -148,127 +136,7 @@ export async function runRefreshForCandidate(
             sources: contentRefresh.sources,
         })
 
-    if (!claimed) {
-        return {
-            success: false,
-            error: 'Candidate not found or not pending',
-        }
-    }
-
-    try {
-        const [post] = await db
-            .select({
-                id: blogPost.id,
-                title: blogPost.title,
-                content: blogPost.content,
-                status: blogPost.status,
-            })
-            .from(blogPost)
-            .where(eq(blogPost.id, claimed.blogPostId))
-            .limit(1)
-
-        if (!post || post.status !== 'published' || !post.content) {
-            throw new Error('The post is no longer a published post')
-        }
-
-        // 1. Brief, stored on the candidate so the row self-describes.
-        const brief = await buildRefreshBrief(post.id, claimed.sources)
-        await db
-            .update(contentRefresh)
-            .set({ brief })
-            .where(eq(contentRefresh.id, candidateId))
-
-        // 2. Working copy.
-        const workingCopy = await duplicateForRefresh(post.id, brief)
-        if (!workingCopy) {
-            throw new Error('Could not create the refresh working copy')
-        }
-        await db
-            .update(contentRefresh)
-            .set({ workingPostId: workingCopy.id })
-            .where(eq(contentRefresh.id, candidateId))
-
-        // 3. The pipeline, phase by phase (chain:false — we own sequencing).
-        const generation = await runGenerationPhaseForPost(workingCopy.id, {
-            chain: false,
-        })
-        if (!generation.success) {
-            throw new Error(generation.error ?? 'Generation phase failed')
-        }
-
-        const review = await runReviewPhaseForPost(workingCopy.id, {
-            chain: false,
-        })
-        if (!review.success) {
-            throw new Error(review.error ?? 'Review phase failed')
-        }
-
-        const extraction = await runExtractPhaseForPost(workingCopy.id, {
-            chain: false,
-        })
-        if (!extraction.success) {
-            throw new Error(extraction.error ?? 'Extraction phase failed')
-        }
-
-        // 4. Skip the image phase; park the copy in draft for the Kanban.
-        await db
-            .update(blogPost)
-            .set({ status: 'draft' })
-            .where(eq(blogPost.id, workingCopy.id))
-
-        // 5. Change summary (best effort — the diff screen works without it).
-        let changeSummary: string | null = null
-        try {
-            const [refreshed] = await db
-                .select({ content: blogPost.content })
-                .from(blogPost)
-                .where(eq(blogPost.id, workingCopy.id))
-                .limit(1)
-            if (refreshed?.content) {
-                const aiConfig = await getBlogAiConfig()
-                const summary = await summarizeRefreshChanges({
-                    title: post.title,
-                    oldContent: post.content,
-                    newContent: refreshed.content,
-                    modelId: aiConfig.extractionModelId,
-                })
-                changeSummary = summary.changes
-                    .map((change) => `- ${change}`)
-                    .join('\n')
-            }
-        } catch (error) {
-            console.warn('[Refresh] Change summary failed:', error)
-        }
-
-        await db
-            .update(contentRefresh)
-            .set({ status: 'ready_for_review', changeSummary })
-            .where(eq(contentRefresh.id, candidateId))
-
-        try {
-            await notifyRefreshReadyForReview({
-                candidateId,
-                postTitle: post.title,
-                changeSummary,
-            })
-        } catch (error) {
-            console.warn('[Refresh] Notification failed:', error)
-        }
-
-        return { success: true, workingPostId: workingCopy.id }
-    } catch (error) {
-        const message =
-            error instanceof Error ? error.message : 'Refresh run failed'
-        console.error(
-            `[Refresh] Run failed for candidate ${candidateId}:`,
-            error
-        )
-        await db
-            .update(contentRefresh)
-            .set({ status: 'failed', error: message })
-            .where(eq(contentRefresh.id, candidateId))
-        return { success: false, error: message }
-    }
+    return claimed ?? null
 }
 
 // ============================================
@@ -283,12 +151,18 @@ export async function runRefreshForCandidate(
 const STALE_REFRESH_RUN_HOURS = 2
 
 /**
- * Fail in_progress candidates whose run evidently died (platform killed
- * the request, server restarted). Without this the active-row unique
- * index would block the post's queue slot forever — in_progress can't be
- * dismissed and never re-detects. The working copy is kept for
- * inspection; dismissing the failed candidate later has nothing to clean
- * because failed rows keep their workingPostId reference.
+ * Fail in_progress candidates whose run evidently died (workflow gone,
+ * server restarted). Without this the active-row unique index would block
+ * the post's queue slot forever — in_progress can't be dismissed and never
+ * re-detects. The working copy is kept for inspection; dismissing the
+ * failed candidate later has nothing to clean because failed rows keep
+ * their workingPostId reference.
+ *
+ * A candidate with a `workflowRunId` is cross-checked against the durable
+ * workflow first: the candidate row's `updatedAt` only moves on step
+ * boundaries, so a slow phase can legitimately exceed the age cutoff while
+ * the workflow is alive and well. Only a dead (or unrecorded) workflow gets
+ * reaped.
  *
  * Called from the daily detect-decay tick (and its manual button), the
  * same self-healing cadence the other job locks use.
@@ -299,25 +173,52 @@ export async function reapStaleRefreshRuns(
     const cutoff = new Date(
         now.getTime() - STALE_REFRESH_RUN_HOURS * 60 * 60 * 1000
     )
-    const reaped = await db
-        .update(contentRefresh)
-        .set({
-            status: 'failed',
-            error: `Run went stale (no progress for over ${STALE_REFRESH_RUN_HOURS}h) — the server likely restarted or the request was killed mid-run`,
+    const stale = await db
+        .select({
+            id: contentRefresh.id,
+            workflowRunId: contentRefresh.workflowRunId,
         })
+        .from(contentRefresh)
         .where(
             and(
                 eq(contentRefresh.status, 'in_progress'),
                 lt(contentRefresh.updatedAt, cutoff)
             )
         )
-        .returning({ id: contentRefresh.id })
+
+    const reaped: string[] = []
+    for (const candidate of stale) {
+        if (candidate.workflowRunId) {
+            try {
+                const workflowRun = getRun(candidate.workflowRunId)
+                const status = await workflowRun.status
+                if (status === 'pending' || status === 'running') continue
+            } catch (error) {
+                console.warn(
+                    `[Refresh] Could not read workflow ${candidate.workflowRunId} for stale check:`,
+                    error
+                )
+            }
+        }
+
+        await db
+            .update(contentRefresh)
+            .set({
+                status: 'failed',
+                error: `Run went stale (no progress for over ${STALE_REFRESH_RUN_HOURS}h) — the workflow died or was never recorded`,
+            })
+            .where(
+                and(
+                    eq(contentRefresh.id, candidate.id),
+                    eq(contentRefresh.status, 'in_progress')
+                )
+            )
+        reaped.push(candidate.id)
+    }
 
     if (reaped.length > 0) {
         console.warn(
-            `[Refresh] Reaped ${reaped.length} stale in_progress run(s): ${reaped
-                .map((row) => row.id)
-                .join(', ')}`
+            `[Refresh] Reaped ${reaped.length} stale in_progress run(s): ${reaped.join(', ')}`
         )
     }
     return reaped.length

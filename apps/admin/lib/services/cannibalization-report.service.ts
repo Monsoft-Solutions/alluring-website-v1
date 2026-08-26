@@ -22,6 +22,10 @@ import {
     getQueryPageAggregatesForWindow,
     getSnapshotStatus,
 } from '@/lib/queries/gsc-snapshot.query'
+import {
+    getOutcomesMeasuredSince,
+    getQueueEntriesSince,
+} from '@/lib/queries/content-refresh.query'
 import { detectCannibalization } from '@/lib/utils/cannibalization-detection.util'
 import { addDays } from '@/lib/utils/gsc-snapshot.util'
 import { notifySeoWeeklyDigest } from '@/lib/services/seo-digest-notification.service'
@@ -113,11 +117,22 @@ export async function runCannibalizationReportJob(
             },
         })
 
+    // Queue movement and measured outcomes report on calendar time (the
+    // last 7 days from now), not the snapshot-anchored analysis window —
+    // both happen in real time regardless of the GSC data delay.
+    const digestSince = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const [queueEntries, outcomes] = await Promise.all([
+        getQueueEntriesSince(digestSince),
+        getOutcomesMeasuredSince(digestSince),
+    ])
+
     const digestSent = await notifySeoWeeklyDigest({
         weekStart,
         weekEnd,
         findings,
         snapshot,
+        queueEntries,
+        outcomes,
     })
 
     return {

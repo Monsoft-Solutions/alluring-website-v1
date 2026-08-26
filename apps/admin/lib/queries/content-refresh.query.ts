@@ -7,12 +7,22 @@
  *
  * @module @/lib/queries/content-refresh.query
  */
-import { and, desc, eq, inArray, isNull, notExists, sql } from 'drizzle-orm'
+import {
+    and,
+    desc,
+    eq,
+    gte,
+    inArray,
+    isNotNull,
+    isNull,
+    notExists,
+    sql,
+} from 'drizzle-orm'
 
 import { db } from '@workspace/db/client'
 import { blogPost, contentRefresh } from '@workspace/db/schema/blog'
 import type { BlogPost, ContentRefresh } from '@workspace/db/schema/blog'
-import type { RefreshSignal } from '@workspace/db/types'
+import type { RefreshOutcome, RefreshSignal } from '@workspace/db/types'
 
 import {
     getBlogAiConfig,
@@ -75,6 +85,22 @@ export async function getRefreshQueueDepth(): Promise<number> {
         .select({ value: sql<number>`count(*)::int` })
         .from(contentRefresh)
         .where(inArray(contentRefresh.status, [...ACTIVE_REFRESH_STATUSES]))
+    return row?.value ?? 0
+}
+
+/**
+ * Refresh work in flight or awaiting the human: `in_progress` +
+ * `ready_for_review`. This — not the pending queue — is what the
+ * `refresh_draft_cap` bounds: the queue is supposed to hold pending rows,
+ * but every in-flight run inevitably becomes a draft awaiting review.
+ */
+export async function countActiveRefreshRuns(): Promise<number> {
+    const [row] = await db
+        .select({ value: sql<number>`count(*)::int` })
+        .from(contentRefresh)
+        .where(
+            inArray(contentRefresh.status, ['in_progress', 'ready_for_review'])
+        )
     return row?.value ?? 0
 }
 
@@ -244,4 +270,71 @@ export async function getPostsAvailableForRefresh(): Promise<
             )
         )
         .orderBy(blogPost.title)
+}
+
+// ============================================
+// Weekly digest (Phase 5)
+// ============================================
+
+/** A queue entry as the weekly digest reports it. */
+export type DigestQueueEntry = {
+    postTitle: string
+    status: ContentRefresh['status']
+    sources: RefreshSignal[]
+    score: number
+}
+
+/**
+ * Candidates created since `since`, regardless of where they are now — the
+ * digest reports queue movement, and a candidate that was detected and
+ * already applied within the week is movement twice over.
+ */
+export async function getQueueEntriesSince(
+    since: Date
+): Promise<DigestQueueEntry[]> {
+    return db
+        .select({
+            postTitle: blogPost.title,
+            status: contentRefresh.status,
+            sources: contentRefresh.sources,
+            score: contentRefresh.score,
+        })
+        .from(contentRefresh)
+        .innerJoin(blogPost, eq(contentRefresh.blogPostId, blogPost.id))
+        .where(gte(contentRefresh.createdAt, since))
+        .orderBy(desc(contentRefresh.score))
+}
+
+/** A measured 28-day outcome as the weekly digest reports it. */
+export type DigestRefreshOutcome = {
+    /** The candidate id — the digest links declined verdicts to its
+     * detail page, where the rollback button lives. */
+    candidateId: string
+    postTitle: string
+    outcome: RefreshOutcome
+}
+
+/** Outcomes measured since `since` (verdict + before/after numbers). */
+export async function getOutcomesMeasuredSince(
+    since: Date
+): Promise<DigestRefreshOutcome[]> {
+    const rows = await db
+        .select({
+            candidateId: contentRefresh.id,
+            postTitle: blogPost.title,
+            outcome: contentRefresh.outcome,
+        })
+        .from(contentRefresh)
+        .innerJoin(blogPost, eq(contentRefresh.blogPostId, blogPost.id))
+        .where(
+            and(
+                gte(contentRefresh.measuredAt, since),
+                isNotNull(contentRefresh.outcome)
+            )
+        )
+        .orderBy(desc(contentRefresh.measuredAt))
+
+    return rows.filter(
+        (row): row is DigestRefreshOutcome => row.outcome !== null
+    )
 }

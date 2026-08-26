@@ -23,6 +23,10 @@ import type { CannibalizationFinding } from '@workspace/db/types'
 
 import { env } from '@/env'
 import type { SnapshotStatus } from '@/lib/queries/gsc-snapshot.query'
+import type {
+    DigestQueueEntry,
+    DigestRefreshOutcome,
+} from '@/lib/queries/content-refresh.query'
 
 const SUBJECT_PREFIX = '[SEO]'
 
@@ -124,6 +128,43 @@ function findingRow(finding: CannibalizationFinding): string {
     </div>`
 }
 
+const QUEUE_STATUS_LABELS: Record<DigestQueueEntry['status'], string> = {
+    pending: 'pending',
+    in_progress: 'running',
+    ready_for_review: 'awaiting review',
+    applied: 'already applied',
+    dismissed: 'dismissed',
+    failed: 'failed',
+}
+
+function queueRow(entry: DigestQueueEntry): string {
+    const sources = [
+        ...new Set(entry.sources.map((signal) => signal.source)),
+    ].join(', ')
+    return `<li style="margin:2px 0;font-size:13px;line-height:1.5;color:#44403c;"><strong>${entry.postTitle}</strong> — ${sources} · score ${entry.score.toFixed(1)} · ${QUEUE_STATUS_LABELS[entry.status]}</li>`
+}
+
+const VERDICT_COLORS: Record<
+    DigestRefreshOutcome['outcome']['verdict'],
+    string
+> = {
+    improved: 'color:#065f46;',
+    flat: 'color:#57534e;',
+    declined: 'color:#b91c1c;',
+}
+
+function outcomeRow(entry: DigestRefreshOutcome): string {
+    const { before, after, verdict } = entry.outcome
+    const rollback =
+        verdict === 'declined'
+            ? `<p style="margin:2px 0 0;font-size:13px;color:#78716c;">Consider a rollback: <a href="${adminLink(`/blog/refresh/${entry.candidateId}`)}" style="color:#b91c1c;">review this refresh</a>.</p>`
+            : ''
+    return `<div style="margin:0 0 10px;">
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#44403c;"><strong>${entry.postTitle}</strong> — <strong style="${VERDICT_COLORS[verdict]}">${verdict}</strong> · clicks ${before.clicks} → ${after.clicks} · position ${before.avgPosition.toFixed(1)} → ${after.avgPosition.toFixed(1)}</p>
+        ${rollback}
+    </div>`
+}
+
 /**
  * Send the weekly SEO digest (throttled to one per 6 days).
  *
@@ -134,6 +175,10 @@ export async function notifySeoWeeklyDigest(input: {
     weekEnd: string
     findings: CannibalizationFinding[]
     snapshot: SnapshotStatus
+    /** Refresh candidates detected in the digest window (Phase 5). */
+    queueEntries: DigestQueueEntry[]
+    /** 28-day outcomes measured in the digest window (Phase 5). */
+    outcomes: DigestRefreshOutcome[]
 }): Promise<boolean> {
     const throttleCutoff = new Date(Date.now() - DIGEST_THROTTLE_MS)
     const [recent] = await db
@@ -164,6 +209,18 @@ export async function notifySeoWeeklyDigest(input: {
             ? `<p style="margin:0 0 12px;font-size:13px;color:#78716c;">…and ${input.findings.length - 10} more in the dashboard.</p>`
             : ''
 
+    const queueHtml =
+        input.queueEntries.length > 0
+            ? `<p style="margin:0 0 6px;font-size:14px;"><strong>Refresh queue this week</strong> — ${input.queueEntries.length} candidate${input.queueEntries.length === 1 ? '' : 's'}:</p>
+               <ul style="margin:0 0 16px;padding-left:18px;">${input.queueEntries.slice(0, 10).map(queueRow).join('')}</ul>`
+            : `<p style="margin:0 0 16px;font-size:13px;color:#78716c;">Refresh queue: no new candidates this week.</p>`
+
+    const outcomesHtml =
+        input.outcomes.length > 0
+            ? `<p style="margin:0 0 6px;font-size:14px;"><strong>Refresh outcomes</strong> — 28-day results measured this week:</p>
+               <div style="margin:0 0 16px;">${input.outcomes.map(outcomeRow).join('')}</div>`
+            : ''
+
     const syncLine = input.snapshot.lastRun
         ? `Snapshots: ${input.snapshot.coveredDays} days stored (${input.snapshot.earliestDate ?? '—'} → ${input.snapshot.latestDate ?? '—'}), last sync ${input.snapshot.lastRun.status}.`
         : `Snapshots: no sync has run yet.`
@@ -173,6 +230,8 @@ export async function notifySeoWeeklyDigest(input: {
         `<p style="margin:0 0 16px;font-size:15px;line-height:1.6;">Cannibalization check for <strong>${input.weekStart} → ${input.weekEnd}</strong>:</p>
          ${findingsHtml}
          ${truncated}
+         ${queueHtml}
+         ${outcomesHtml}
          <p style="margin:0 0 20px;font-size:13px;color:#78716c;">${syncLine}</p>
          <a href="${adminLink(`/seo`)}" style="display:inline-block;background:#1c1917;color:#fafaf9;text-decoration:none;font-size:14px;padding:10px 20px;border-radius:6px;">Open the SEO dashboard</a>`
     )

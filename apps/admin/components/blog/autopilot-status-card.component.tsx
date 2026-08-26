@@ -59,7 +59,14 @@ export async function AutopilotStatusCard() {
                 <CardDescription>
                     {config.autopilotMode === 'off'
                         ? 'Autopilot is off — nothing runs on a schedule.'
-                        : `Running in ${config.autopilotMode} mode. Ideas ${config.autopilotIdeationCadence}, writing ${config.autopilotContentCadence}.`}
+                        : `Running in ${config.autopilotMode} mode. Ideas ${config.autopilotIdeationCadence}, writing ${config.autopilotContentCadence}.`}{' '}
+                    {config.refreshMode === 'off'
+                        ? 'Refresh is off.'
+                        : `Refresh in ${config.refreshMode} mode${
+                              summary.lastRefreshRun
+                                  ? ` — last run ${formatWhen(summary.lastRefreshRun.startedAt)}`
+                                  : ''
+                          }.`}
                 </CardDescription>
             </CardHeader>
             <CardContent className='space-y-6'>

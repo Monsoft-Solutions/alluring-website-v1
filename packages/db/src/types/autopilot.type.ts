@@ -46,3 +46,4 @@ export type AutopilotSkipReason =
     | 'queue-full'
     | 'gate-rejected-all'
     | 'unacknowledged-failure'
+    | 'candidate-not-pending'

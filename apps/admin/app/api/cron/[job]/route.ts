@@ -20,11 +20,19 @@ import { verifyCronRequest } from '@/lib/utils/cron-auth.util'
 import {
     runAutopilotIdeationJob,
     startAutopilotContentJob,
+    startRefreshRunJob,
 } from '@/lib/services/autopilot.service'
 import { reapStuckPosts } from '@/lib/services/stuck-post-reaper.service'
 import { runGscSnapshotJob } from '@/lib/services/gsc-snapshot.service'
 import { runCannibalizationReportJob } from '@/lib/services/cannibalization-report.service'
 import { runDecayDetectionJob } from '@/lib/services/decay-detection.service'
+import { runRefreshOutcomesJob } from '@/lib/services/refresh-outcome.service'
+import { getSnapshotStatus } from '@/lib/queries/gsc-snapshot.query'
+import {
+    countActiveRefreshRuns,
+    getRefreshQueueDepth,
+} from '@/lib/queries/content-refresh.query'
+import { gscFinalDate } from '@/lib/utils/gsc-snapshot.util'
 
 export const runtime = 'nodejs'
 // Ideation runs inline in this invocation (one model call + gate + inserts);
@@ -38,8 +46,34 @@ export const maxDuration = 300
 type CronJobResult = { outcome: string } & Record<string, unknown>
 
 const JOBS: Record<string, () => Promise<CronJobResult>> = {
-    /** No-op job proving schedule + auth + middleware carve-out end-to-end. */
-    heartbeat: () => Promise.resolve({ outcome: 'ok' }),
+    /**
+     * Loop-health check: snapshot lag (days the newest snapshot trails the
+     * newest final GSC date; 0 = healthy) and refresh queue depth, one log
+     * line for ops.
+     */
+    heartbeat: async () => {
+        const [snapshot, queueDepth, activeRuns] = await Promise.all([
+            getSnapshotStatus(),
+            getRefreshQueueDepth(),
+            countActiveRefreshRuns(),
+        ])
+        const snapshotLagDays = snapshot.latestDate
+            ? Math.round(
+                  (new Date(`${gscFinalDate(new Date())}T00:00:00Z`).getTime() -
+                      new Date(`${snapshot.latestDate}T00:00:00Z`).getTime()) /
+                      (24 * 60 * 60 * 1000)
+              )
+            : null
+        console.log(
+            `[cron:heartbeat] snapshotLagDays=${snapshotLagDays ?? 'no-snapshots'} refreshQueueDepth=${queueDepth} activeRefreshRuns=${activeRuns}`
+        )
+        return {
+            outcome: 'ok',
+            snapshotLagDays,
+            refreshQueueDepth: queueDepth,
+            activeRefreshRuns: activeRuns,
+        }
+    },
 
     /** Tops up the idea approval queue on its configured cadence. */
     'autopilot-ideation': async () => {
@@ -84,6 +118,22 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
     'detect-decay': async () => {
         const result = await runDecayDetectionJob('cron')
         return { ...result }
+    },
+
+    /** Auto mode: starts a durable refresh run for the top candidate (#144). */
+    'autopilot-refresh': async () => {
+        const result = await startRefreshRunJob('cron')
+        return { outcome: result.outcome, ...result.detail }
+    },
+
+    /** Scores applied refreshes 28 days out from snapshots (#144). */
+    'refresh-outcomes': async () => {
+        const result = await runRefreshOutcomesJob()
+        return {
+            outcome: result.outcome,
+            measured: result.measured,
+            ...(result.verdicts ? { verdicts: result.verdicts } : {}),
+        }
     },
 }
 
