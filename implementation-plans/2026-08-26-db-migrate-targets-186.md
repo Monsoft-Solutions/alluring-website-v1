@@ -221,6 +221,10 @@ Expected insert set — the script derives these itself; the table is here so th
 
 Inserting rows into `drizzle.__drizzle_migrations` touches no application data, but it is a write to production: take the usual pre-write dump first, consistent with the `0049` procedure.
 
+**Executed 2026-08-26.** Both dumps taken (`supabase-drizzle-pre-baseline-20260826.dump`, `supabase-public-pre-baseline-20260826.dump`), all nine schema objects re-verified present, 7 rows recorded, `db:check:prod` reports `51 recorded, 51 in the journal`, 0 duplicate timestamps.
+
+The dry run earned its keep: it first proposed **9** rows, not 7. `0018_early_red_shift` and `0025_square_sentinel` were already recorded at their correct timestamps but under _different hashes_ — both `.sql` files were edited after they ran, in December 2025. Matching recorded rows by hash read them as unrecorded and would have inserted duplicates. A migration's identity is its timestamp (that is what the migrator's own resume rule compares), so `baseline.ts` now matches on `when` and reports hash drift as a warning instead of trying to "fix" it. The two drifted files are left exactly as they are: the database records what actually ran.
+
 ### 3.3 Retire the strays
 
 - Remove the DigitalOcean URL from every developer's `packages/db/.env.local` (the repo copy is gitignored, so this is a per-machine edit the README now documents).
