@@ -321,7 +321,7 @@ export function createServer(): McpServer {
         {
             title: 'Pages ranking for a query',
             description:
-                'Every page that ranked for one exact query. Two or more pages sharing a query is keyword cannibalization — check this before writing another page on a topic the site already covers.',
+                'Every page that ranked for one exact query. Two or more pages sharing a query is keyword cannibalization — check this before writing another page on a topic the site already covers. Also the way to verify a content_gaps result: if a page already ranks here, there is no gap.',
             inputSchema: z.object({
                 query: z.string().min(1).describe('Exact query string'),
                 days: daysSchema,
@@ -377,9 +377,9 @@ export function createServer(): McpServer {
     server.registerTool(
         'content_gaps',
         {
-            title: 'Content gaps',
+            title: 'Content gaps (candidates)',
             description:
-                'Queries the site gets impressions for with no page dedicated to them — the strongest signal for what to write next. Ranked by impressions.',
+                'Candidate queries that may have no page dedicated to them, ranked by impressions. HEURISTIC, NOT A FACT: a query is flagged when the URL of its best-ranking page contains none of the query words longer than 3 characters, so a page that covers the topic in different words is reported as a gap anyway (e.g. "bbl smell" flags even though /why-do-bbl-stink ranks for it). ALWAYS confirm with pages_for_query before concluding a page does not exist — if one does, the finding is a CTR or ranking problem, not a gap.',
             inputSchema: z.object({
                 days: daysSchema,
                 limit: limitSchema(25),

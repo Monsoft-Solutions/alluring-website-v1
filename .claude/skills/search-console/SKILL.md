@@ -20,6 +20,8 @@ anything to Google.
   return the exact `startDate`/`endDate` they used, so quote those, not "today."
 - **Never invent metrics.** If a tool returns nothing, say so. Absence of data
   for a query means Google recorded no impressions, which is itself a finding.
+- **`content_gaps` returns candidates, not facts.** Verify every one with
+  `pages_for_query` before saying a page doesn't exist — see below.
 - **Position is an average.** "Position 4.6" means the page averaged 4.6 across
   every impression, not that it sits at #4.
 - **Match strings exactly.** `query_trend`, `pages_for_query` and
@@ -40,11 +42,34 @@ anything to Google.
 
 ### Deciding what to write next
 
-1. `content_gaps` — demand with no dedicated page. The strongest "write this."
+1. `content_gaps` — candidate topics with demand and seemingly no page.
+   **Always verify each one with `pages_for_query` before acting.**
 2. `content_opportunities` — impressions with weak CTR, each with a suggested
    action and the clicks a benchmark CTR would recover.
 3. `search_queries` with a topic term — the vocabulary real visitors use. Prefer
    their phrasing over industry terms.
+
+#### Why `content_gaps` needs verifying
+
+It flags a query when the URL of its best-ranking page contains none of the
+query's words longer than three characters. A page that covers the topic using
+different words therefore looks like a gap.
+
+A real example: `bbl smell` was reported as a gap with ~10,800 impressions.
+`pages_for_query` showed `/why-do-bbl-stink` already ranking for all of them at
+position 10.1 — the slug says _stink_, the searchers say _smell_, so the
+substring check missed it.
+
+That flip matters. "No page exists" means write one. "A page exists at position
+10 with 0.2% CTR, using different vocabulary than searchers" means fix the title
+and meta on the page you already have. Recommending a new page there would have
+created cannibalization instead of traffic.
+
+So: for every gap you intend to act on, call `pages_for_query` with that exact
+query first. If a page ranks, treat it as a CTR or ranking problem and reach for
+`content_opportunities` and `page_trend` instead.
+
+Improving the heuristic so this step is unnecessary is tracked in issue #204.
 
 ### Diagnosing a drop
 
