@@ -94,12 +94,19 @@ async function main(): Promise<void> {
 
     try {
         const applied = await readAppliedMigrations(client)
-        const recordedHashes = new Set(applied.map((row) => row.hash))
+
+        // A migration's identity is its timestamp, not its hash — that is
+        // what the migrator's resume rule compares. Matching on hash instead
+        // would read a migration whose .sql was edited *after* it ran as
+        // unrecorded, and "fix" it by inserting a duplicate row.
+        const recordedAt = new Map(
+            applied.map((row) => [Number(row.created_at), row.hash])
+        )
 
         // A recorded migration past the boundary means the operator's
         // assertion contradicts the database. Stop rather than guess.
         const contradictions = beyond.filter((entry) =>
-            recordedHashes.has(entry.hash)
+            recordedAt.has(entry.when)
         )
         if (contradictions.length > 0) {
             fail(
@@ -109,9 +116,28 @@ async function main(): Promise<void> {
             )
         }
 
-        const missing = inScope.filter(
-            (entry) => !recordedHashes.has(entry.hash)
+        // Recorded, but the file has changed since it ran. Not something to
+        // fix here — re-recording it would misrepresent what was applied —
+        // but the operator should know the file and the database disagree.
+        const drifted = inScope.filter(
+            (entry) =>
+                recordedAt.has(entry.when) &&
+                recordedAt.get(entry.when) !== entry.hash
         )
+        if (drifted.length > 0) {
+            console.log(
+                `\n⚠ ${drifted.length} recorded migration(s) whose .sql has been edited since it ran:`
+            )
+            for (const entry of drifted) {
+                console.log(
+                    `    ${entry.tag} — recorded ${recordedAt.get(entry.when)?.slice(0, 12)}…, ` +
+                        `file now ${entry.hash.slice(0, 12)}…`
+                )
+            }
+            console.log('  Left as-is; the database records what actually ran.')
+        }
+
+        const missing = inScope.filter((entry) => !recordedAt.has(entry.when))
 
         if (missing.length === 0) {
             console.log(
