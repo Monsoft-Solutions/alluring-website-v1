@@ -47,12 +47,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/mens-plastic-surgery-miami',
-    title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring | Free Consultation",
+    title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
     description:
         "Look as strong as you feel. Men's cosmetic surgery in Miami: gynecomastia surgery, liposuction, facelift. Board-certified surgeons. Discreet, professional care. Financing available.",
 
     openGraph: {
-        title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring | Free Consultation",
+        title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
         description:
             "Look as strong as you feel. Men's cosmetic surgery in Miami: gynecomastia surgery, liposuction, facelift. Board-certified surgeons.",
         url: `${seoConfig.siteUrl}/mens-plastic-surgery-miami`,

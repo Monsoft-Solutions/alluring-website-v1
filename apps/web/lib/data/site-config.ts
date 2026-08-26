@@ -186,12 +186,18 @@ export const siteConfig: SiteConfig = {
     /**
      * Trust Statistics
      * Business credibility metrics displayed in CTA sections and trust badges
+     *
+     * `rating` must match the live Google Business Profile figure, which is
+     * synced into `google_reviews_settings` and is what /reviews renders in its
+     * AggregateRating schema. Keep the two in step — an advertised rating that
+     * the public profile does not support is a claim we cannot substantiate.
+     * Last reconciled 2026-08-26 against a synced value of 4.7 across 81 reviews.
      */
     trustStats: {
         patients: '5,000+',
         years: '15+',
         certified: '100%',
-        rating: '4.9',
+        rating: '4.7',
         accreditation: 'Double Board-Certified',
     },
 

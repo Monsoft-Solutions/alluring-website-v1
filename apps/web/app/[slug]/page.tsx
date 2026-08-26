@@ -26,6 +26,7 @@ import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
@@ -91,8 +92,11 @@ function generateSurgeonMetadata(
         ? surgeon.images.featured
         : `${siteUrl}${surgeon.images.featured}`
 
-    const pageTitle = `${surgeon.name}`
-    const pageDescription = surgeon.shortBio
+    // Brand the title: these are pages people reach by searching the surgeon's
+    // name alongside the practice, and the name alone is a thin <title>.
+    const pageTitle = `${surgeon.name} | ${siteConfig.business.name}`
+    // shortBio is written for the page, not the SERP, so it needs clamping.
+    const pageDescription = clampMetaDescription(surgeon.shortBio)
 
     return {
         title: pageTitle,
@@ -155,7 +159,9 @@ function generateBlogPostMetadata(
 
     return toNextMetadata(seoConfig, {
         title: post.title,
-        description: post.excerpt ?? undefined,
+        // metaDescription is authored for the SERP; excerpt is page copy and
+        // only stands in when the dedicated field is empty.
+        description: post.metaDescription || post.excerpt || undefined,
         openGraph: {
             type: 'article',
             images: post.featuredImage

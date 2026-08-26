@@ -8,6 +8,7 @@ import type { Metadata } from 'next'
 
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 import { siteConfig } from '@/lib/data/site-config'
+import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 
 function mapRobots(robots?: RobotsConfig): Metadata['robots'] {
     // If crawling is not allowed, force noindex, nofollow
@@ -134,6 +135,13 @@ export function toNextMetadata(
         ...overrides,
         // Handle title merging - support both string and template object
         title: overrides?.title ?? title,
+        // Clamped so Google doesn't cut it mid-word. Only the meta description
+        // is clamped — Open Graph descriptions get more room and keep theirs.
+        description: clampMetaDescription(
+            typeof overrides?.description === 'string'
+                ? overrides.description
+                : description
+        ),
         openGraph: {
             ...(base.openGraph ?? {}),
             ...(overrides?.openGraph ?? {}),

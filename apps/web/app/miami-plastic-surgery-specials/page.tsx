@@ -61,7 +61,7 @@ function getCurrentMonthYear(): string {
  * - Trust signals and clear value proposition
  */
 const monthYear = getCurrentMonthYear()
-const pageTitle = `Miami Plastic Surgery Specials ${monthYear} | Limited Time Offers`
+const pageTitle = `Miami Plastic Surgery Specials ${monthYear} | Alluring`
 
 /**
  * Generate dynamic metadata with featured promotion's OG image

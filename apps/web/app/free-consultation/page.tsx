@@ -46,12 +46,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/free-consultation',
-    title: 'Free Consultation | Miami Plastic Surgery | Alluring',
+    title: 'Free Consultation Miami | Alluring Plastic Surgery',
     description:
         'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Financing from $27/week.',
 
     openGraph: {
-        title: 'Free Consultation | Miami Plastic Surgery | Alluring',
+        title: 'Free Consultation Miami | Alluring Plastic Surgery',
         description:
             'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Financing from $27/week.',
         url: `${seoConfig.siteUrl}/free-consultation`,
@@ -69,7 +69,7 @@ export const metadata = toNextMetadata(seoConfig, {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Free Consultation | Miami Plastic Surgery | Alluring',
+        title: 'Free Consultation Miami | Alluring Plastic Surgery',
         description:
             'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. Financing from $27/week.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],

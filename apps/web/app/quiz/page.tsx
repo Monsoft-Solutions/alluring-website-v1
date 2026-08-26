@@ -29,8 +29,7 @@ const pageUrl = `${siteUrl}/quiz`
 /**
  * Page Metadata
  */
-const pageTitle =
-    'Find Your Perfect Procedure | Free Quiz | Alluring Plastic Surgery Miami'
+const pageTitle = 'Find Your Perfect Procedure | Free Cosmetic Surgery Quiz'
 const pageDescription =
     'Take our 2-minute quiz to discover which cosmetic procedure is right for you. Get personalized recommendations based on your goals, lifestyle, and budget. Free and confidential.'
 

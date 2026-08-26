@@ -4,10 +4,20 @@
  * Industry-optimized title patterns for plastic surgery local SEO in Miami.
  * These utilities help create consistent, SEO-friendly page titles that:
  * - Include location keywords (Miami) for local search optimization
- * - Keep titles under 60 characters (before brand suffix)
+ * - Stay within the ~65 characters Google renders before truncating
  * - Follow plastic surgery industry best practices
  * - Ensure consistent formatting across all pages
+ *
+ * Note: there is no global brand suffix. The root layout deliberately sets no
+ * title template — see the comment there — so what these helpers return is the
+ * complete title as rendered.
  */
+
+/**
+ * Characters Google renders before truncating a title in search results.
+ * Titles are built to fit this budget rather than being cut off mid-phrase.
+ */
+const TITLE_LIMIT = 65
 
 /**
  * Generate a page title with optional location optimization
@@ -51,41 +61,60 @@ export function generatePageTitle(
 }
 
 /**
+ * Trust signals appended to procedure titles, longest first. The first one
+ * that keeps the title inside {@link TITLE_LIMIT} wins — long procedure names
+ * like "Blepharoplasty (Eyelid Surgery)" cannot carry the full phrase without
+ * pushing the title past what Google renders.
+ */
+const PROCEDURE_TRUST_SIGNALS = [
+    ' | Board-Certified Surgeons',
+    ' | Board-Certified',
+    '',
+] as const
+
+/**
  * Generate a procedure page title optimized for local SEO and CTR
  *
- * Appends "Miami 2025 | Board-Certified Surgeons" to procedure titles for:
+ * Appends "Miami {year}" plus the longest trust signal that still fits for:
  * - Local search optimization (Miami)
- * - Freshness signals (2025)
+ * - Freshness signals (year)
  * - Trust signals (Board-Certified)
+ *
+ * The procedure name and location are never trimmed — they are the query
+ * terms. Only the trust signal shortens.
  *
  * @param procedureName - The name of the procedure
  * @returns Optimized procedure title with location, year, and trust signal
  *
  * @example
- * generateProcedureTitle('Brazilian Butt Lift (BBL)')
- * // Returns: "Brazilian Butt Lift (BBL) Miami 2025 | Board-Certified Surgeons"
+ * generateProcedureTitle('Breast Augmentation')
+ * // Returns: "Breast Augmentation Miami 2026 | Board-Certified Surgeons"
  *
  * @example
- * generateProcedureTitle('Breast Augmentation')
- * // Returns: "Breast Augmentation Miami 2025 | Board-Certified Surgeons"
+ * generateProcedureTitle('Blepharoplasty (Eyelid Surgery)')
+ * // Returns: "Blepharoplasty (Eyelid Surgery) Miami 2026 | Board-Certified"
  */
 export function generateProcedureTitle(procedureName: string): string {
     const currentYear = new Date().getFullYear()
 
-    // Check if procedure name already contains "Miami"
-    if (procedureName.toLowerCase().includes('miami')) {
-        return `${procedureName} ${currentYear} | Board-Certified Surgeons`
-    }
+    // Avoid duplicating the location when the procedure name already has it
+    const base = procedureName.toLowerCase().includes('miami')
+        ? `${procedureName} ${currentYear}`
+        : `${procedureName} Miami ${currentYear}`
 
-    // Append Miami, year, and trust signal for SEO + CTR
-    return `${procedureName} Miami ${currentYear} | Board-Certified Surgeons`
+    const signal =
+        PROCEDURE_TRUST_SIGNALS.find(
+            (candidate) => base.length + candidate.length <= TITLE_LIMIT
+        ) ?? ''
+
+    return `${base}${signal}`
 }
 
 /**
  * Generate a blog post title
  *
- * Returns the post title as-is since the global template will
- * automatically append "| Alluring Plastic Surgery".
+ * Returns the post title as-is. Posts carry no brand suffix — the subject of
+ * the post is what earns the click on an informational query.
  *
  * @param postTitle - The title of the blog post
  * @returns The post title unchanged
@@ -93,7 +122,6 @@ export function generateProcedureTitle(procedureName: string): string {
  * @example
  * generateBlogPostTitle('Recovery Tips After BBL Surgery')
  * // Returns: "Recovery Tips After BBL Surgery"
- * // Final rendered: "Recovery Tips After BBL Surgery | Alluring Plastic Surgery"
  */
 export function generateBlogPostTitle(postTitle: string): string {
     return postTitle
@@ -118,12 +146,8 @@ export function generateGalleryTitle(galleryName: string): string {
 }
 
 /**
- * Truncate title to fit within SEO best practices (60 characters)
- * while preserving complete words.
- *
- * Note: The brand suffix "| Alluring Plastic Surgery" (29 chars including separators)
- * will be added by the template, so keep titles under 60 chars to stay within
- * the recommended 60-70 character total title length.
+ * Truncate title to fit within SEO best practices while preserving complete
+ * words.
  *
  * @param title - The title to truncate
  * @param maxLength - Maximum length (default: 60)

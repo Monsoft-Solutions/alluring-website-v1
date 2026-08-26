@@ -50,55 +50,84 @@ const pageUrl = `${siteUrl}/reviews`
  * SEO-optimized for review-related searches and local SEO.
  * Includes trust signals and procedure keywords.
  */
-const pageTitle = 'Patient Reviews | 4.9 Stars | Alluring Plastic Surgery Miami'
-const pageDescription =
-    'Read real reviews from our patients on Google. 4.9-star rating with 100+ reviews. See why patients trust Alluring Plastic Surgery for BBL, breast augmentation, mommy makeover & more.'
+/**
+ * Title and description quote a rating and a review count, so they are built
+ * from the same synced Google figures the page renders in its AggregateRating
+ * schema rather than hardcoded. They previously claimed "4.9 stars / 100+
+ * reviews" against a live profile of 4.7 across 81 — a number a reader can
+ * check in one click.
+ */
+function buildReviewsCopy(averageRating: number | null, totalCount: number) {
+    const hasFigures = averageRating !== null && totalCount > 0
 
-export const metadata: Metadata = toNextMetadata(seoConfig, {
-    canonical: '/reviews',
-    title: pageTitle,
-    description: pageDescription,
+    const title = hasFigures
+        ? `Patient Reviews | ${averageRating.toFixed(1)} Stars | Alluring Plastic Surgery`
+        : 'Patient Reviews | Alluring Plastic Surgery Miami'
 
-    openGraph: {
-        type: 'website',
-        url: pageUrl,
-        title: pageTitle,
-        description: pageDescription,
-        siteName: siteConfig.business.name,
-        images: [
-            {
-                url: `${siteUrl}/og-image.jpg`,
-                width: 1200,
-                height: 630,
-                alt: `${siteConfig.business.name} - Patient Reviews`,
-            },
-        ],
-    },
+    const description = hasFigures
+        ? `Read real Google reviews from our patients. ${averageRating.toFixed(1)} stars across ${totalCount} reviews. See why patients trust Alluring Plastic Surgery for BBL, breast augmentation and more.`
+        : 'Read real Google reviews from our patients. See why patients trust Alluring Plastic Surgery for BBL, breast augmentation and mommy makeover.'
 
-    twitter: {
-        card: 'summary_large_image',
-        title: pageTitle,
-        description: pageDescription,
-        images: [`${siteUrl}/og-image.jpg`],
-    },
+    return { title, description }
+}
 
-    robots: {
-        index: true,
-        follow: true,
-        googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+    const { averageRating, totalCount } = await getPublishedGoogleReviews(1)
+    const { title, description } = buildReviewsCopy(averageRating, totalCount)
+
+    return toNextMetadata(seoConfig, {
+        canonical: '/reviews',
+        title,
+        description,
+
+        openGraph: {
+            type: 'website',
+            url: pageUrl,
+            title,
+            description,
+            siteName: siteConfig.business.name,
+            images: [
+                {
+                    url: `${siteUrl}/og-image.jpg`,
+                    width: 1200,
+                    height: 630,
+                    alt: `${siteConfig.business.name} - Patient Reviews`,
+                },
+            ],
+        },
+
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [`${siteUrl}/og-image.jpg`],
+        },
+
+        robots: {
             index: true,
             follow: true,
-            'max-video-preview': -1,
-            'max-image-preview': 'large',
-            'max-snippet': -1,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
         },
-    },
-})
+    })
+}
 
 export default async function ReviewsPage() {
     // Fetch ALL published reviews (high limit)
     const { reviews, averageRating, totalCount } =
         await getPublishedGoogleReviews(100, false)
+
+    // Same copy the metadata uses, from the same figures — the WebPage schema
+    // and the <title> must not disagree about the rating.
+    const { title: pageTitle, description: pageDescription } = buildReviewsCopy(
+        averageRating,
+        totalCount
+    )
 
     // Breadcrumb items for schema
     const breadcrumbItems = [
@@ -187,6 +216,7 @@ export default async function ReviewsPage() {
                     <ContentWrapper size='lg' paddingX='px-6 md:px-12'>
                         <div className='text-center'>
                             <SectionHeader
+                                as='h1'
                                 badge='Patient Reviews'
                                 title='What Our Patients Say'
                                 description='Real reviews from real patients who trusted us with their care. Read their stories and see why thousands choose Alluring Plastic Surgery.'

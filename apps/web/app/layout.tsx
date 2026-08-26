@@ -25,16 +25,21 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
 /**
- * Global metadata with title template for consistent branding
- * All child pages will automatically have "| Alluring" appended
- * Homepage uses custom default title with no suffix for maximum SEO impact
+ * Global metadata.
+ *
+ * There is deliberately no `template` here. Appending
+ * " | Alluring Plastic Surgery" (27 chars) to every page pushed 176 of 205
+ * titles past the ~65 characters Google renders, truncating the actual
+ * keywords mid-phrase on procedure and blog pages. The brand now lives in the
+ * titles of the pages people reach by searching the brand — home, about,
+ * contact, reviews, consultation and specials — and is left off the long tail,
+ * where the page's own subject matters more than repeating the practice name.
  */
 export const metadata = toNextMetadata(seoConfig, {
-    title: {
-        default:
-            'Miami Plastic Surgery | Board-Certified Surgeons | Financing Available',
-        template: '%s | Alluring Plastic Surgery',
-    },
+    // A plain string, not { default, template }: Next requires a template
+    // alongside a default, and a bare string already serves as the fallback
+    // title for any page that does not set its own.
+    title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
 })
 
 const fontLato = Lato({

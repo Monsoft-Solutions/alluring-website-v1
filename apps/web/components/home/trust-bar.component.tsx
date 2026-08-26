@@ -28,7 +28,7 @@ type TrustStatItem = {
  * - 5,000+ Happy Patients
  * - 15+ Years Experience
  * - Double Board-Certified
- * - 4.9★ Google Rating (linked to reviews)
+ * - Google rating (from siteConfig.trustStats, linked to reviews)
  * - Financing from $99/mo
  */
 export function TrustBar() {
@@ -69,7 +69,7 @@ export function TrustBar() {
             icon: <CreditCard className='h-5 w-5' />,
             value: 'From $99/mo',
             label: 'Financing',
-            href: '/financing',
+            href: '/plastic-surgery-financing-miami',
             ariaLabel: 'Financing available from $99 per month',
         },
     ]

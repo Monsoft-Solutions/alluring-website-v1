@@ -48,12 +48,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/after-weight-loss-consultation',
-    title: 'Body Contouring After Weight Loss Miami | Skin Removal | Free Consultation',
+    title: 'Body Contouring After Weight Loss Miami | Skin Removal',
     description:
         'Complete your weight loss transformation with body contouring in Miami. Tummy tuck, body lift, arm lift after bariatric surgery or major weight loss. Board-certified surgeons. Financing available.',
 
     openGraph: {
-        title: 'Body Contouring After Weight Loss Miami | Skin Removal | Free Consultation',
+        title: 'Body Contouring After Weight Loss Miami | Skin Removal',
         description:
             'Complete your weight loss transformation with body contouring in Miami. Tummy tuck, body lift, arm lift after bariatric surgery or major weight loss.',
         url: `${seoConfig.siteUrl}/after-weight-loss-consultation`,

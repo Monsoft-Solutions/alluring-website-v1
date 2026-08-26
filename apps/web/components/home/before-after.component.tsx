@@ -9,7 +9,7 @@ import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 const GalleryCard = ({ media }: { media: GalleryMediaCard }) => {
     return (
         <Link
-            href={`/gallery/${media.slug}`}
+            href={`/gallery/media/${media.slug}`}
             className='group relative block cursor-pointer'
         >
             <div className='relative aspect-[4/5] w-full overflow-hidden bg-stone-200 shadow-xl'>

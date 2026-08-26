@@ -54,12 +54,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/free-consultation/miami',
-    title: 'Miami Plastic Surgery | Board-Certified Local Surgeons | Free Consultation',
+    title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
     description:
         "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español. Free consultation.",
 
     openGraph: {
-        title: 'Miami Plastic Surgery | Board-Certified Local Surgeons | Free Consultation',
+        title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
         description:
             "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español.",
         url: `${seoConfig.siteUrl}/free-consultation/miami`,

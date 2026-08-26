@@ -104,7 +104,7 @@ export default async function SitemapPage() {
                 .split('-')
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' '),
-            href: `/blog/category/${category.slug}`,
+            href: `/blog/categories/${category.slug}`,
         })),
     }
 
@@ -115,7 +115,7 @@ export default async function SitemapPage() {
                 .split('-')
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' '),
-            href: `/blog/tag/${tag.slug}`,
+            href: `/blog/tags/${tag.slug}`,
         })),
     }
 

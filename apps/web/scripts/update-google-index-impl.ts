@@ -6,7 +6,7 @@
 import { parseString } from 'xml2js'
 import { GoogleIndexingClient } from '@monsoft/google-indexing'
 
-import sitemap from '@/app/sitemap'
+import { getSitemapChildUrls } from '@/lib/seo/sitemap-children'
 import { seoDefaults } from '@/lib/data/site-config'
 
 import type { ParsedSitemapXml } from './types/sitemap.types'
@@ -108,10 +108,7 @@ export async function main() {
 
         // Get child sitemap URLs from the sitemap index
         console.log('📋 Fetching sitemap index...')
-        const sitemapData = sitemap()
-        const childSitemapUrls = sitemapData.map(
-            (item: { url: string }): string => item.url.trim()
-        )
+        const childSitemapUrls = getSitemapChildUrls()
 
         if (childSitemapUrls.length === 0) {
             console.error('❌ No child sitemaps found in sitemap index!')

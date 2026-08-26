@@ -48,12 +48,12 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/mommy-makeover-consultation',
-    title: 'Mommy Makeover Miami | Post-Pregnancy Transformation | Free Consultation',
+    title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
     description:
         'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction. Board-certified surgeons. Financing from $67/week. Free consultation.',
 
     openGraph: {
-        title: 'Mommy Makeover Miami | Post-Pregnancy Transformation | Free Consultation',
+        title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
         description:
             'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction. Board-certified surgeons. Financing available.',
         url: `${seoConfig.siteUrl}/mommy-makeover-consultation`,

@@ -122,7 +122,7 @@ export function AboutHeroFullbleed() {
                                     <Star className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            4.9 Stars
+                                            4.7 Stars
                                         </div>
                                         <div className='text-xs text-stone-500'>
                                             Rating

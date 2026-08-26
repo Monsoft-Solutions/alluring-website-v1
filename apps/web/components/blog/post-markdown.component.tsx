@@ -4,6 +4,8 @@ import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import 'server-only'
 
+import { normalizeMdxSource } from '@/lib/utils/mdx-source.util'
+
 import { getMDXComponents } from './mdx-components'
 
 type PostMarkdownProps = {
@@ -17,11 +19,15 @@ type PostMarkdownProps = {
  * Headings have IDs (via rehypeSlug) for navigation, but are not rendered as links.
  */
 export function PostMarkdown({ content, className = '' }: PostMarkdownProps) {
-    const normalizedContent = content?.trim()
+    const trimmedContent = content?.trim()
 
-    if (!normalizedContent) {
+    if (!trimmedContent) {
         return null
     }
+
+    // A stray `<` in prose is a compile error that 500s the whole page, so the
+    // source is normalised before it reaches the compiler. See the util for why.
+    const normalizedContent = normalizeMdxSource(trimmedContent)
 
     const mdxOptions: MDXRemoteProps['options'] = {
         mdxOptions: {

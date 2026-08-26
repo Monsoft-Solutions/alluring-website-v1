@@ -75,6 +75,13 @@ export type CategorizedFAQProps = {
     readonly subtitle?: string
 
     /**
+     * Heading level for the title. Pages where this block is the main content
+     * (e.g. /faqs) pass 'h1' so the page has a top-level heading.
+     * @default "h2"
+     */
+    readonly as?: 'h1' | 'h2'
+
+    /**
      * Optional description text
      */
     readonly description?: string
@@ -135,6 +142,7 @@ export function CategorizedFAQ({
     faqData,
     title = 'Your Questions,',
     subtitle = 'Answered.',
+    as: Heading = 'h2',
     description,
     badge = 'FAQ',
     variant = 'default',
@@ -198,7 +206,7 @@ export function CategorizedFAQ({
                                         {badge}
                                     </span>
                                 )}
-                                <h2 className='mb-8 font-serif text-4xl leading-tight text-stone-900 md:text-5xl'>
+                                <Heading className='mb-8 font-serif text-4xl leading-tight text-stone-900 md:text-5xl'>
                                     {title}{' '}
                                     {subtitle && (
                                         <>
@@ -208,7 +216,7 @@ export function CategorizedFAQ({
                                             </span>
                                         </>
                                     )}
-                                </h2>
+                                </Heading>
                                 {description && (
                                     <p className='mb-12 text-lg leading-relaxed text-stone-600'>
                                         {description}
