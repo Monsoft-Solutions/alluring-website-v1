@@ -3,16 +3,16 @@
  *
  * Fetches performance trend data for charting.
  *
- * @module @/lib/services/search-console/google-search-console-trends
+ * @module @workspace/seo/search-console — trends
  */
-import type { SearchTrend } from '@/lib/types/search-console/search-console.type'
+import type { SearchTrend } from './search-console.type.js'
 
-import { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './search-console-client.service.js'
 import {
     fetchSearchAnalytics,
     sortByDateAsc,
     DEFAULT_DAYS,
-} from './google-search-console-utils.service'
+} from './search-console-analytics.util.js'
 
 /**
  * Get daily performance trend for charting

@@ -71,6 +71,10 @@
             "dependsOn": ["^build"],
             "outputs": ["*.tsbuildinfo"]
         },
+        "test": {
+            "dependsOn": ["^build"],
+            "outputs": []
+        },
         "check-types": {
             "dependsOn": ["^check-types"]
         },

@@ -12,6 +12,7 @@
         "worktree:db": "bash scripts/worktree-db.sh",
         "lint": "turbo lint",
         "typecheck": "turbo typecheck",
+        "test": "turbo test",
         "format": "prettier --cache --write .",
         "format:check": "prettier --cache --check .",
         "prepare": "husky",

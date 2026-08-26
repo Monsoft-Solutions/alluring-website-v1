@@ -3,14 +3,11 @@
  *
  * Identifies content opportunities and gaps for SEO improvement.
  *
- * @module @/lib/services/search-console/google-search-console-opportunities
+ * @module @workspace/seo/search-console — opportunities
  */
-import type {
-    ContentOpportunity,
-    SearchQuery,
-} from '@/lib/types/search-console/search-console.type'
+import type { ContentOpportunity, SearchQuery } from './search-console.type.js'
 
-import { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './search-console-client.service.js'
 import {
     fetchSearchAnalytics,
     fetchAllSearchAnalytics,
@@ -18,7 +15,7 @@ import {
     DEFAULT_LIMIT,
     BENCHMARK_CTR,
     MIN_IMPRESSIONS_FOR_OPPORTUNITY,
-} from './google-search-console-utils.service'
+} from './search-console-analytics.util.js'
 
 /**
  * Get content opportunities - queries with high impressions but low CTR

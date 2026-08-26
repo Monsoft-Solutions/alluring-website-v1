@@ -3,11 +3,11 @@
  *
  * Handles authentication and client creation for Google Search Console API.
  *
- * @module @/lib/services/search-console/google-search-console-client
+ * @module @workspace/seo/search-console — client
  */
 import { google } from 'googleapis'
 
-import { env } from '@/env'
+import { env } from '../env.js'
 
 /**
  * Check if Google Search Console credentials are configured

@@ -3,23 +3,23 @@
  *
  * Fetches query-related data from Search Console.
  *
- * @module @/lib/services/search-console/google-search-console-queries
+ * @module @workspace/seo/search-console — queries
  */
-import type { SortDirection } from '@/lib/types/shared/sorting.type'
+import type { SortDirection } from './search-console.type.js'
 import type {
     SearchQuery,
     SortField,
     QueryTrendData,
-} from '@/lib/types/search-console/search-console.type'
+} from './search-console.type.js'
 
-import { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './search-console-client.service.js'
 import {
     fetchSearchAnalytics,
     sortRowsByField,
     sortByDateAsc,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
-} from './google-search-console-utils.service'
+} from './search-console-analytics.util.js'
 
 /**
  * Get top search queries with performance metrics

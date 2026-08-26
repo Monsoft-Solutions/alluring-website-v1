@@ -3,10 +3,10 @@
  *
  * Fetches page-related data from Search Console.
  *
- * @module @/lib/services/search-console/google-search-console-pages
+ * @module @workspace/seo/search-console — pages
  */
-import type { SortDirection } from '@/lib/types/shared/sorting.type'
 import type {
+    SortDirection,
     SearchPage,
     SortField,
     PageQueryData,
@@ -14,9 +14,9 @@ import type {
     PageType,
     SearchPageWithType,
     PageTrendData,
-} from '@/lib/types/search-console/search-console.type'
+} from './search-console.type.js'
 
-import { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './search-console-client.service.js'
 import {
     fetchSearchAnalytics,
     fetchAllSearchAnalytics,
@@ -25,8 +25,9 @@ import {
     sortByDateAsc,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
-} from './google-search-console-utils.service'
-import { classifyPagesBySitemap } from '@/lib/services/sitemap/url-registry.service'
+} from './search-console-analytics.util.js'
+import type { PageClassifier } from './page-classification.util.js'
+import { classifyPathsHeuristic } from './page-classification.util.js'
 
 /**
  * Extract path from a full URL
@@ -174,28 +175,43 @@ export async function getPagesForQuery(
 // Page Search and Trend Functions
 // ============================================================================
 
+/** Options accepted by {@link searchPages}. */
+export type SearchPagesOptions = {
+    /** Search term matched against the page path */
+    term?: string
+    /** Restrict results to one page type */
+    pageType?: PageType | 'all'
+    /** Number of days to analyze (default: 28) */
+    days?: number
+    /** Maximum number of pages returned (default: 100) */
+    limit?: number
+    /** Sort field (default: 'clicks') */
+    orderBy?: SortField
+    /** Sort direction (default: 'desc') */
+    orderDirection?: SortDirection
+    /**
+     * How to classify page URLs into content types.
+     *
+     * Defaults to the path heuristic. Callers with database access should pass
+     * the sitemap-backed classifier instead: blog posts live at root level
+     * (pre-2026, e.g. /best-plastic-surgeon-miami) or under /blog/ (2026+), so
+     * path patterns alone cannot tell them apart from static pages.
+     */
+    classifyPages?: PageClassifier
+}
+
 /**
  * Search pages with optional filtering by term and page type
- *
- * Uses sitemap-based classification for accurate page type detection —
- * blog posts live at root level (pre-2026, e.g. /best-plastic-surgeon-miami)
- * or under /blog/ (2026+), so path patterns alone are unreliable.
- *
- * @param term - Optional search term to filter pages by path
- * @param pageType - Optional page type filter
- * @param days - Number of days to analyze (default: 28)
- * @param limit - Maximum number of pages (default: 100)
- * @param orderBy - Sort field (default: 'clicks')
- * @param orderDirection - Sort direction (default: 'desc')
  */
-export async function searchPages(
-    term: string = '',
-    pageType: PageType | 'all' = 'all',
-    days: number = DEFAULT_DAYS,
-    limit: number = 100,
-    orderBy: SortField = 'clicks',
-    orderDirection: SortDirection = 'desc'
-): Promise<SearchPageWithType[]> {
+export async function searchPages({
+    term = '',
+    pageType = 'all',
+    days = DEFAULT_DAYS,
+    limit = 100,
+    orderBy = 'clicks',
+    orderDirection = 'desc',
+    classifyPages = classifyPathsHeuristic,
+}: SearchPagesOptions = {}): Promise<SearchPageWithType[]> {
     if (!isSearchConsoleConfigured()) {
         return []
     }
@@ -211,7 +227,7 @@ export async function searchPages(
         const pageUrls = rows.map((row) => row.keys?.[0] ?? '')
 
         // Classify all pages in a single batch (more efficient than individual calls)
-        const pageTypes = await classifyPagesBySitemap(pageUrls)
+        const pageTypes = await classifyPages(pageUrls)
 
         // Map to SearchPageWithType with classified page types
         let pages: SearchPageWithType[] = rows.map((row, index) => {

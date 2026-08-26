@@ -90,10 +90,23 @@ Before writing, the agent:
 
 ### 2. Keyword Strategy
 
+Grounded in live Search Console data via the `search-console` MCP server — see
+`.claude/skills/search-console/SKILL.md` for which tool answers which question:
+
+- `queries_for_page` before revising a page: what it is already found for
+- `content_gaps` before proposing a new one: demand with no dedicated page
+- `search_queries` for the phrasing real visitors use
+- `pages_for_query` to catch cannibalization before targeting a term
+
+From there the agent:
+
 - Identifies primary keyword (main topic, high volume)
 - Selects secondary keywords (2-3 related terms)
 - Incorporates long-tail keywords (specific user questions)
 - Uses semantic variations naturally
+
+Query data supplies substance, not phrasing — the intent gets covered in the
+practice's own voice, never by pasting the keyword in verbatim.
 
 ### 3. Psychological Framing
 
@@ -301,6 +314,7 @@ The agent understands and uses:
 
 - `lib/data/site-config.ts` for business context
 - `lib/data/services-data.ts` for service information
+- The `search-console` MCP server for live query, page and ranking data
 - `components/shared/` layout components (SectionContainer, ContentWrapper, SectionHeader)
 - `components/shared/` content components (FeatureCard, IconCard, ImageSection, CTASection)
 - Project's TypeScript naming conventions

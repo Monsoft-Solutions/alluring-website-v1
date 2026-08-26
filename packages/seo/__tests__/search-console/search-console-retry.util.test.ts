@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 import {
     isTransientGscError,
     withGscRetry,
-} from '@/lib/services/search-console/gsc-retry.util'
+} from '../../src/search-console/search-console-retry.util.js'
 
 // Millisecond delays keep the retry path fast under test.
 const FAST_DELAYS = [1, 1, 1]

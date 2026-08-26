@@ -29,15 +29,12 @@ async function main() {
     const { gscQueryPageDaily, gscSyncRun } = await import(
         '@workspace/db/schema/gsc'
     )
-    const { isSearchConsoleConfigured } = await import(
-        '../lib/services/search-console/google-search-console-client.service'
-    )
-    const { fetchAllSearchAnalytics, GSC_MAX_ROW_LIMIT } = await import(
-        '../lib/services/search-console/google-search-console-utils.service'
-    )
-    const { withGscRetry } = await import(
-        '../lib/services/search-console/gsc-retry.util'
-    )
+    const {
+        isSearchConsoleConfigured,
+        fetchAllSearchAnalytics,
+        GSC_MAX_ROW_LIMIT,
+        withGscRetry,
+    } = await import('@workspace/seo/search-console')
     const { createBlogPostUrlResolver } = await import(
         '../lib/services/blog-post-resolver.service'
     )

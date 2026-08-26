@@ -90,10 +90,26 @@ import { siteConfig } from '@/lib/data/site-config'
 
 **Step 3: Keyword Strategy**
 
+Start from live Search Console data, not guesswork — the `search-console` MCP
+server exposes what the site actually ranks for. See
+`.claude/skills/search-console/SKILL.md` for which tool answers which question.
+
+- Revising a page? `queries_for_page` shows what it is already found for;
+  queries the copy never addresses are the highest-value additions.
+- New page? `content_gaps` names demand with no dedicated page, and
+  `search_queries` gives the phrasing real visitors use.
+- Before committing to a primary keyword, run `pages_for_query` — if an existing
+  page already ranks for it, fix the overlap rather than competing with yourself.
+
+Then build the strategy:
+
 - Primary keyword (main topic)
 - Secondary keywords (2-3 related)
 - Long-tail keywords (user questions)
 - Semantic variations
+
+Query data is a source of substance, not of phrasing: cover the intent behind a
+query in the practice's own voice, never paste the keyword in verbatim.
 
 **Step 4: Narrative Integration**
 

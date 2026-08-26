@@ -82,14 +82,14 @@ export async function GET(request: NextRequest) {
         const { term, pageType, days, limit, orderBy, orderDirection } =
             validationResult.data
 
-        const pages = await searchPages(
+        const pages = await searchPages({
             term,
             pageType,
             days,
             limit,
             orderBy,
-            orderDirection
-        )
+            orderDirection,
+        })
 
         return NextResponse.json({
             configured: true,

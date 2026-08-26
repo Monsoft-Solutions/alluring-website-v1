@@ -3,15 +3,15 @@
  *
  * Fetches aggregated summary statistics from Search Console.
  *
- * @module @/lib/services/search-console/google-search-console-summary
+ * @module @workspace/seo/search-console — summary
  */
-import type { SearchConsoleSummary } from '@/lib/types/search-console/search-console.type'
+import type { SearchConsoleSummary } from './search-console.type.js'
 
-import { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { isSearchConsoleConfigured } from './search-console-client.service.js'
 import {
     DEFAULT_DAYS,
     fetchSearchAnalytics,
-} from './google-search-console-utils.service'
+} from './search-console-analytics.util.js'
 
 /**
  * Get summary statistics from Search Console
