@@ -5,7 +5,11 @@
     "type": "module",
     "scripts": {
         "build": "turbo build",
-        "dev": "turbo dev",
+        "dev": "bash scripts/dev.sh",
+        "worktree": "bash scripts/worktree.sh",
+        "worktree:remove": "bash scripts/worktree-remove.sh",
+        "worktree:list": "bash scripts/worktree-list.sh",
+        "worktree:db": "bash scripts/worktree-db.sh",
         "lint": "turbo lint",
         "typecheck": "turbo typecheck",
         "format": "prettier --cache --write .",

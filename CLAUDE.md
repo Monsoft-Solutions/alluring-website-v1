@@ -168,6 +168,32 @@ reintroduce it. See `packages/db/README.md`.
 
 ---
 
+## Working an Issue (worktrees)
+
+One issue, one worktree. Each worktree is a sibling directory with its own
+branch, dev ports, env files, dependencies and — on request — its own database,
+so several issues can be built and run side by side without touching the main
+checkout.
+
+```bash
+pnpm worktree <branch-name> <issue-number>   # create (derive the branch from the issue title)
+pnpm worktree:list                           # branch, issue, ports, db, dirty state, PR
+pnpm worktree:remove <branch-name>           # safe removal, from the MAIN checkout
+```
+
+Then, inside the worktree: `pnpm dev` (it reads its own ports from
+`.worktree-meta`) and `/tackle` to work the issue end to end — issue context,
+plan, implement, verify, review, browser pass, commit + PR.
+
+Database: `--db reuse` (default) shares the local dev database; `--db clone`
+gives the worktree its own copy and points every app at it. **Use `--db clone`
+for anything touching schema, migrations, seeds or destructive queries** — the
+shared dev database holds real blog posts.
+
+Skills: `worktree` (create) and `tackle` (work it). Scripts live in `scripts/`.
+
+---
+
 ## Specialized Agents
 
 | Task        | Agent                         |

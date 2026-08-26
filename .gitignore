@@ -44,3 +44,7 @@ packages/db/.env.production
 
 # Playwright MCP artifacts (screenshots, console logs)
 .playwright-mcp/
+
+# Per-worktree state (scripts/worktree.sh)
+.worktree-meta
+.issue.md

@@ -128,7 +128,9 @@
                 "ANTHROPIC_API_KEY",
                 "OPENROUTER_API_KEY",
                 "SEED_CLEAR_BLOG",
-                "N8N_WEBHOOK_URL"
+                "N8N_WEBHOOK_URL",
+                "WEB_PORT",
+                "ADMIN_PORT"
             ]
         },
         "db:generate": {

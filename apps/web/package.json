@@ -4,10 +4,10 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev": "next dev --port 3100",
-        "dev:debug": "next dev --port 3100 --experimental-https",
+        "dev": "next dev --port ${WEB_PORT:-3100}",
+        "dev:debug": "next dev --port ${WEB_PORT:-3100} --experimental-https",
         "build": "next build",
-        "start": "next start --port 3100",
+        "start": "next start --port ${WEB_PORT:-3100}",
         "lint": "eslint . --max-warnings 0",
         "lint:fix": "eslint . --fix",
         "typecheck": "tsc --noEmit",
