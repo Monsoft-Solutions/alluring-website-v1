@@ -1,6 +1,6 @@
 'use client'
 
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 /**
  * Blog Post Scroll Tracker
  *
@@ -38,7 +38,7 @@ export function BlogPostScrollTracker({
         thresholds: [25, 50, 75, 100],
         onThresholdReached: (threshold) => {
             // Optional: Log scroll milestone in development
-            if (env.NODE_ENV === 'development') {
+            if (publicEnv.NODE_ENV === 'development') {
                 console.log(
                     `Blog post "${postTitle}" scrolled ${threshold}%`,
                     `(${postSlug})`

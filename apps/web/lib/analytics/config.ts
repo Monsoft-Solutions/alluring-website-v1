@@ -6,7 +6,7 @@
  *
  * @module analytics.config
  */
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 
 import type { AnalyticsConfig } from './analytics.types'
 
@@ -24,10 +24,10 @@ import type { AnalyticsConfig } from './analytics.types'
  * ```
  */
 export function getAnalyticsConfig(): AnalyticsConfig {
-    const gaMeasurementId = env.NEXT_PUBLIC_GA_MEASUREMENT_ID
-    const clarityProjectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID
-    const gtmId = env.NEXT_PUBLIC_GTM_ID
-    const facebookPixelId = env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID
+    const gaMeasurementId = publicEnv.NEXT_PUBLIC_GA_MEASUREMENT_ID
+    const clarityProjectId = publicEnv.NEXT_PUBLIC_CLARITY_PROJECT_ID
+    const gtmId = publicEnv.NEXT_PUBLIC_GTM_ID
+    const facebookPixelId = publicEnv.NEXT_PUBLIC_FACEBOOK_PIXEL_ID
 
     return {
         ga: gaMeasurementId

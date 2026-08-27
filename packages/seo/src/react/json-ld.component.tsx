@@ -1,6 +1,13 @@
 import type { Thing, WithContext } from 'schema-dts'
 
-import { sanitizeForJsonLd } from '../utils'
+// Deep import, not the `../utils` barrel — please keep it that way. Every
+// schema component in this package renders through JsonLd, and several of them
+// are used inside client components. The barrel re-exports
+// `robots-generator.util`, which imports this package's `env` module, which
+// calls `createEnv` and so pulls the whole of zod — 48.7 KiB brotli, all
+// locales included — into the browser for pages that only wanted a
+// `<script type="application/ld+json">` tag (issue #210).
+import { sanitizeForJsonLd } from '../utils/sanitize.util'
 
 type JsonLdProps<T extends Thing> = {
     data: WithContext<T>

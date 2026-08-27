@@ -18,7 +18,7 @@
 
 import Script from 'next/script'
 
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 
 interface GoogleAnalyticsProps {
     measurementId: string
@@ -38,7 +38,7 @@ interface GoogleAnalyticsProps {
  * ```
  */
 export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
-    const isDevelopment = env.NODE_ENV === 'development'
+    const isDevelopment = publicEnv.NODE_ENV === 'development'
 
     return (
         <>

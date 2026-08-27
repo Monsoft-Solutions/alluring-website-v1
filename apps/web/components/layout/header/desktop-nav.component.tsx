@@ -9,7 +9,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
-import { procedures } from '@/lib/data/procedures.data'
+import { procedureNavItems } from '@/lib/data/procedure-nav.data'
 import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
 import { NavDropdown } from './nav-dropdown.component'
 import type { NavLink } from './header.type'
@@ -36,7 +36,7 @@ export function DesktopNav() {
             label: 'View All Procedures',
             href: '/procedures',
         },
-        ...procedures.map((procedure) => ({
+        ...procedureNavItems.map((procedure) => ({
             label: procedure.title,
             href: `/procedures/${procedure.slug}`,
         })),

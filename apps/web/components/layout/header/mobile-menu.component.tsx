@@ -12,7 +12,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
-import { procedures } from '@/lib/data/procedures.data'
+import { procedureNavItems } from '@/lib/data/procedure-nav.data'
 import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
@@ -28,7 +28,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     const { track } = useAnalyticsEvent()
 
     // Generate links dynamically
-    const procedureLinks = procedures.map((procedure) => ({
+    const procedureLinks = procedureNavItems.map((procedure) => ({
         label: procedure.title,
         href: `/procedures/${procedure.slug}`,
     }))

@@ -18,7 +18,7 @@ import React, {
     useTransition,
 } from 'react'
 
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 
 import type { ConsentState } from './analytics.types'
 import {
@@ -120,7 +120,7 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
             setIsInitialized(true)
         })
 
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: ConsentProvider initialized')
         }
     }, [consentState, startTransition])
@@ -134,7 +134,7 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
         setConsentState('granted')
         setHasConsented(true)
 
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: User accepted all cookies')
         }
     }, [])
@@ -148,7 +148,7 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
         setConsentState('denied')
         setHasConsented(true)
 
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: User accepted essential cookies only')
         }
     }, [])
@@ -162,7 +162,7 @@ export function ConsentProvider({ children }: ConsentProviderProps) {
         setConsentState(null)
         setHasConsented(false)
 
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: User revoked consent')
         }
     }, [])

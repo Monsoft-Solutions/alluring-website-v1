@@ -12,7 +12,7 @@
  * - Social media links
  * - Structured data (Schema.org)
  */
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 import type { SiteConfig } from '@/lib/types/site-config.type'
 
 /**
@@ -24,7 +24,7 @@ import type { SiteConfig } from '@/lib/types/site-config.type'
  */
 function getSiteUrl(): string {
     // Use NEXT_PUBLIC_SITE_URL or fallback to default
-    const url = env.NEXT_PUBLIC_SITE_URL?.trim()
+    const url = publicEnv.NEXT_PUBLIC_SITE_URL?.trim()
     if (url && url.length > 0) {
         // Validate URL format
         try {

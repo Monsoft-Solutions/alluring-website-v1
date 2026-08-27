@@ -14,7 +14,7 @@ import { Button } from '@workspace/ui/components/button'
 import { Info } from 'lucide-react'
 
 import { useConsent } from '@/lib/analytics/consent.context'
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 
 /**
  * Cookie Consent Banner
@@ -71,7 +71,7 @@ export function CookieBanner() {
                                     essential ones.
                                 </p>
                                 {/* Dev mode: Show current state */}
-                                {env.NODE_ENV === 'development' &&
+                                {publicEnv.NODE_ENV === 'development' &&
                                     consentState && (
                                         <p className='text-muted-foreground/60 mt-1 text-xs'>
                                             Dev: Current state = {consentState}
