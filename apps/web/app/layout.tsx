@@ -17,6 +17,7 @@ import { AnnouncementBar } from '@/components/promotions/announcement-bar.compon
 import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
 import { ScrollToTop } from '@/components/scroll-to-top.component'
+import { IconSprite } from '@/components/shared/icon-sprite.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { GoogleTranslateInit } from '@/components/google-translate-init.component'
 import { env } from '@/env'
@@ -94,13 +95,15 @@ export default function RootLayout({
     return (
         <html lang='en' className='scroll-smooth' suppressHydrationWarning>
             <head>
-                {/* Resource hints for external domains */}
-                <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
-                <link
-                    rel='preconnect'
-                    href='https://fonts.gstatic.com'
-                    crossOrigin='anonymous'
-                />
+                {/*
+                    No font resource hints here. `next/font/google` self-hosts
+                    every face at build time, so the old dns-prefetch to
+                    fonts.googleapis.com and preconnect to fonts.gstatic.com
+                    warmed connections nothing ever used — verified against
+                    production HTML, which fetches no font from either origin.
+                    The only thing that ever hit fonts.gstatic.com was the
+                    Google Translate widget, which now loads on demand.
+                */}
 
                 {/* Favicon and app icons */}
                 <link rel='icon' type='image/png' href='/favicon.png' />
@@ -120,6 +123,10 @@ export default function RootLayout({
                 className={`${fontLato.variable} ${fontMono.variable} ${fontPlayfair.variable} font-sans antialiased`}
                 suppressHydrationWarning
             >
+                {/* Symbol definitions for the repeated star / Google icons.
+                    Must live in the document that draws them, so it sits at
+                    the top of <body> ahead of any <use>. */}
+                <IconSprite />
                 {/* Google Translate - Client-side only to avoid hydration errors */}
                 <GoogleTranslateInit />
                 <ScrollToTop />

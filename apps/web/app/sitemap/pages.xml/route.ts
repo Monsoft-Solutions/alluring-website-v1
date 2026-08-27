@@ -11,6 +11,7 @@ export const revalidate = 10800
 
 import { seoDefaults } from '@/lib/data/site-config'
 import { pageLastModified } from '@/lib/data/page-metadata'
+import { getReviewsPageCount } from '@/lib/queries/reviews/google-reviews.query'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
@@ -94,7 +95,7 @@ const STATIC_PAGES: Array<{
 /**
  * GET handler for static pages and surgeon pages sitemap
  */
-export function GET(): NextResponse {
+export async function GET(): Promise<NextResponse> {
     // Return empty sitemap if crawling is not allowed
     if (!isCrawlingAllowed()) {
         return new NextResponse(
@@ -149,8 +150,42 @@ export function GET(): NextResponse {
             return entry
         })
 
+        // Reviews pages 2..N (`/reviews` itself is in STATIC_PAGES above).
+        // The pagination nav already links them, but listing them here is what
+        // gets the deeper pages crawled at a sensible rate rather than
+        // whenever a crawler happens to walk the chain. Lower priority than
+        // page 1 — the same set, further from the entry point.
+        //
+        // Isolated try/catch on purpose: this is the only database call in the
+        // route, and every other entry here is static. Letting an intermittent
+        // pooler timeout reach the outer handler would answer with an empty
+        // <urlset> and drop all ~60 static and surgeon URLs over a few
+        // paginated ones. Degrade to "no pagination entries" instead.
+        let reviewsPaginationEntries: SitemapEntry[] = []
+        try {
+            const reviewsPageCount = await getReviewsPageCount()
+            reviewsPaginationEntries = Array.from(
+                { length: Math.max(0, reviewsPageCount - 1) },
+                (_, i) => ({
+                    url: `${baseUrl}/reviews/page/${i + 2}`,
+                    lastModified: pageLastModified['/reviews'] ?? today,
+                    changeFrequency: 'weekly' as const,
+                    priority: 0.5,
+                })
+            )
+        } catch (error) {
+            console.error(
+                'Could not read the reviews page count; omitting reviews pagination from the sitemap:',
+                error
+            )
+        }
+
         // Combine all entries
-        const entries = [...staticEntries, ...surgeonEntries]
+        const entries = [
+            ...staticEntries,
+            ...reviewsPaginationEntries,
+            ...surgeonEntries,
+        ]
 
         const xml = generateSitemapXml(entries)
 

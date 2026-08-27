@@ -13,7 +13,7 @@ import { SectionContainer } from '@/components/shared/section-container.componen
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { InstagramGrid } from '@/components/instagram/instagram-grid.component'
 import { InstagramHero } from '@/components/instagram/instagram-hero.component'
-import { InstagramPagination } from '@/components/instagram/instagram-pagination.component'
+import { Pagination } from '@/components/shared/pagination.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import {
     getInstagramPosts,
@@ -178,9 +178,15 @@ export default async function InstagramPage({ searchParams }: PageProps) {
             <SectionContainer className='bg-white pb-8'>
                 <ContentWrapper size='lg'>
                     <InstagramGrid posts={posts} />
-                    <InstagramPagination
+                    <Pagination
                         currentPage={validPage}
                         totalPages={totalPages}
+                        hrefForPage={(page) =>
+                            page === 1
+                                ? '/instagram'
+                                : `/instagram?page=${page}`
+                        }
+                        label='Instagram posts pagination'
                     />
                 </ContentWrapper>
             </SectionContainer>
