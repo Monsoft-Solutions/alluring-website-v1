@@ -13,6 +13,7 @@ export {
     autopilotMode,
     autopilotCadence,
     refreshMode,
+    reasoningEffort,
     autopilotRunKind,
     autopilotTrigger,
     autopilotRunStatus,

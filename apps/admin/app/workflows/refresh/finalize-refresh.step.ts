@@ -89,6 +89,7 @@ async function buildChangeSummary(
             oldContent: original.content,
             newContent: refreshed.content,
             modelId: aiConfig.extractionModelId,
+            reasoningEffort: aiConfig.extractionEffort,
         })
         return summary.changes.map((change) => `- ${change}`).join('\n')
     } catch (error) {

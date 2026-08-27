@@ -14,6 +14,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for writing quality review
@@ -170,6 +171,7 @@ export async function runWritingQualityReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     // Calculate basic metrics
@@ -209,6 +211,7 @@ Review this content for writing quality, brand voice alignment, readability, and
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: writingQualityReviewSchema,
         system: WRITING_QUALITY_REVIEW_SYSTEM_PROMPT,
         prompt,
@@ -223,5 +226,6 @@ Review this content for writing quality, brand voice alignment, readability, and
         summary: result.object.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

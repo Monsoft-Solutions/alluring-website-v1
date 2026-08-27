@@ -9,6 +9,8 @@
 import { generateText, isStepCount } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 import {
     validateGeneratedMdx,
     type MdxSanitizationAction,
@@ -30,6 +32,7 @@ import {
 } from '../prompts/blog/agentic-writer.prompt'
 import type { RefreshBriefInput } from '../prompts/blog/refresh-writer.prompt'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default configuration for generation phase
@@ -101,6 +104,8 @@ export type GenerationPhaseOptions = {
     outline?: string
     /** Model ID for content generation */
     contentModelId?: string
+    /** How hard the content model should think (default: none) */
+    contentEffort?: ReasoningEffort
     /** Maximum tool call steps */
     maxSteps?: number
     /**
@@ -136,6 +141,8 @@ export type GenerationPhaseResult = {
     timeMs: number
     /** Model that generated the content (resolved after defaults) */
     modelId: string
+    /** What OpenRouter billed for the generation call, in USD */
+    costUsd?: number
     /**
      * MDX hazards the validator had to neutralise before the content could be
      * persisted. Empty on a clean generation; a non-empty list means the writer
@@ -186,6 +193,7 @@ export async function runGenerationPhase(
         input,
         outline,
         contentModelId = DEFAULTS.CONTENT_MODEL,
+        contentEffort,
         maxSteps = DEFAULTS.MAX_STEPS,
         linkableBlogPosts,
         onProgress,
@@ -250,6 +258,7 @@ export async function runGenerationPhase(
             maxOutputTokens: 16000,
             tools,
             stopWhen: isStepCount(maxSteps),
+            ...reasoningProviderOptions(contentEffort),
             telemetry: telemetryConfig,
             onStepEnd: (event) => {
                 stepCount++
@@ -350,6 +359,7 @@ export async function runGenerationPhase(
             timeMs,
             modelId: contentModelId,
             sanitizationActions: validation.actions,
+            ...readOpenRouterCost(result.providerMetadata),
         }
     } catch (error) {
         const errorMessage =

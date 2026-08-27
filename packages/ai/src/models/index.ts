@@ -29,3 +29,20 @@ export {
     LEGACY_MODEL_IDS,
     LEGACY_OPENROUTER_IDS,
 } from './model-resolver.util'
+
+export {
+    REASONING_EFFORTS,
+    DEFAULT_REASONING_EFFORT,
+    isReasoningEffort,
+    type ReasoningEffort,
+} from './reasoning-effort.constant'
+
+export { reasoningProviderOptions } from './reasoning.util'
+
+export {
+    readOpenRouterUsage,
+    readOpenRouterCost,
+    sumCosts,
+    type OpenRouterCallUsage,
+    type WithCallCost,
+} from './openrouter-usage.util'

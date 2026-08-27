@@ -12,6 +12,7 @@ import { generateText } from 'ai'
 import type { CoreGenerateTextOptions, CoreToolSet } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -97,6 +98,7 @@ export async function coreGenerateText(
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature,
+        reasoningEffort,
         system,
         maxTokens = 16000,
         tools,
@@ -114,6 +116,7 @@ export async function coreGenerateText(
         model,
         instructions: system,
         ...(temperature !== undefined && { temperature }),
+        ...reasoningProviderOptions(reasoningEffort),
         telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
         ...(aiSdkTools && { tools: aiSdkTools }),

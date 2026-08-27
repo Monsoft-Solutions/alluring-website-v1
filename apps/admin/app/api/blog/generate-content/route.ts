@@ -15,6 +15,7 @@
 import type { NextRequest } from 'next/server'
 import { after, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { REASONING_EFFORTS } from '@workspace/ai/models/reasoning-effort.constant'
 import {
     runAgenticContentPipeline,
     type AgenticContentPipelineResult,
@@ -54,8 +55,12 @@ const requestSchema = z.object({
             skipOrchestration: z.boolean().optional().default(false),
             /** Model ID for content generation */
             contentModelId: z.string().optional(),
+            /** How hard the content model should think (default: none) */
+            contentEffort: z.enum(REASONING_EFFORTS).optional(),
             /** Model ID for review agents */
             reviewModelId: z.string().optional(),
+            /** How hard the review agents should think (default: none) */
+            reviewEffort: z.enum(REASONING_EFFORTS).optional(),
             /** Temperature for content generation (0.0-1.0) */
             /** Maximum tool call steps */
             maxSteps: z.number().int().min(5).max(50).optional(),
@@ -135,7 +140,9 @@ async function runPipelineWithStreaming(
             skipReview: options?.skipReview ?? false,
             skipOrchestration: options?.skipOrchestration ?? false,
             contentModelId: options?.contentModelId,
+            contentEffort: options?.contentEffort,
             reviewModelId: options?.reviewModelId,
+            reviewEffort: options?.reviewEffort,
             maxSteps: options?.maxSteps,
             onProgress: (step, progress, message, data) => {
                 send('progress', { step, progress, message, data })
@@ -294,7 +301,9 @@ export async function POST(request: NextRequest) {
                 skipOrchestration:
                     validatedData.options?.skipOrchestration ?? false,
                 contentModelId: validatedData.options?.contentModelId,
+                contentEffort: validatedData.options?.contentEffort,
                 reviewModelId: validatedData.options?.reviewModelId,
+                reviewEffort: validatedData.options?.reviewEffort,
                 maxSteps: validatedData.options?.maxSteps,
             })
 

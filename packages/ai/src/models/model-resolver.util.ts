@@ -101,6 +101,10 @@ export function getModel(modelId: string): LanguageModel {
         // is what makes `generateObject` work for those models; it does not change
         // behaviour for models that already accepted the schema.
         structuredOutputs: { strict: false },
+        // Ask OpenRouter to report what the call actually cost. Without this
+        // the usage block carries token counts only, and there is no way to
+        // see what raising a phase's reasoning effort is worth (epic #194).
+        usage: { include: true },
     })
 }
 

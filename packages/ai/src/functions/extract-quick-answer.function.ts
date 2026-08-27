@@ -20,6 +20,7 @@
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 
 /**
  * Re-exported so pipeline code has one import for extraction and storage.
@@ -30,6 +31,10 @@ export {
     serializeQuickAnswer,
     parseQuickAnswer,
 } from '@workspace/shared/content'
+import {
+    readOpenRouterCost,
+    type WithCallCost,
+} from '../models/openrouter-usage.util'
 
 /**
  * Word bounds, per `docs/seo/geo-strategy-us-audience.md` §4.1.
@@ -73,6 +78,8 @@ export type ExtractQuickAnswerOptions = {
     primaryKeyword?: string
     /** Model ID to use */
     modelId?: string
+    /** How hard the model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
@@ -124,12 +131,13 @@ function countWords(text: string): number {
  */
 export async function extractQuickAnswer(
     options: ExtractQuickAnswerOptions
-): Promise<QuickAnswerResult> {
+): Promise<WithCallCost<QuickAnswerResult>> {
     const {
         content,
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const prompt = `Write the Quick Answer for this post.
@@ -149,6 +157,7 @@ Give the question in the reader's words, and a ${QUICK_ANSWER_MIN_WORDS}-${QUICK
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: quickAnswerSchema,
         system: QUICK_ANSWER_SYSTEM_PROMPT,
         prompt,
@@ -166,5 +175,5 @@ Give the question in the reader's words, and a ${QUICK_ANSWER_MIN_WORDS}-${QUICK
         )
     }
 
-    return result.object
+    return { ...result.object, ...readOpenRouterCost(result.providerMetadata) }
 }

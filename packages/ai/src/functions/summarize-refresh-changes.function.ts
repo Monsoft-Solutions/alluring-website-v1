@@ -13,6 +13,7 @@ import {
     REFRESH_CHANGE_SUMMARY_SYSTEM_PROMPT,
 } from '../prompts/blog/refresh-change-summary.prompt'
 import { coreGenerateObject } from '../core'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 
 const refreshChangeSummarySchema = z.object({
     changes: z
@@ -34,6 +35,8 @@ export type SummarizeRefreshChangesOptions = {
     /** The refreshed article. */
     newContent: string
     modelId?: string
+    /** How hard the model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 export type RefreshChangeSummary = z.infer<typeof refreshChangeSummarySchema>
@@ -49,10 +52,12 @@ export async function summarizeRefreshChanges(
         oldContent,
         newContent,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: refreshChangeSummarySchema,
         system: REFRESH_CHANGE_SUMMARY_SYSTEM_PROMPT,
         prompt: getRefreshChangeSummaryPrompt(title, oldContent, newContent),

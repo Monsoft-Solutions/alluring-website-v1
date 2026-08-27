@@ -359,6 +359,7 @@ export async function sourceGatedTopicCandidates(
         gscSeeds,
         existingTopics: existingIdeas.map((idea) => idea.title),
         modelId: config.ideationModelId,
+        reasoningEffort: config.ideationEffort,
     })
 
     const gated = await evaluateTopicCandidates(result.topics)

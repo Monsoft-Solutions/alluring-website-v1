@@ -73,6 +73,19 @@ pnpm db:migrate:prod      # ship it (confirms the host first)
 Nothing applies migrations automatically on deploy, so run
 `db:check:prod` before shipping a schema change.
 
+#### Adding a `pgEnum`: export it from **both** barrels
+
+`drizzle.config.ts` reads `src/schema/index.ts`, and both it and the per-domain
+barrel (e.g. `src/schema/blog/index.ts`) use explicit named export lists rather
+than `export *`. A new enum that is not in **both** lists still renders in the
+column DDL but never gets its `CREATE TYPE`, so `db:generate` emits a migration
+that fails on apply with `type "…" does not exist`.
+
+After `db:generate`, check the file: a migration adding an enum column must
+open with `CREATE TYPE`. If it does not, add the export and regenerate — do not
+hand-write the `CREATE TYPE`, or the snapshot stays wrong and the next
+`db:generate` tries to create it again.
+
 ### Baselining a database
 
 `db:baseline` records migrations that are **already physically applied** but

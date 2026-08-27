@@ -20,6 +20,8 @@ import {
 } from '../agents'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import { sumCosts } from '../models/openrouter-usage.util'
 
 /**
  * Default configuration for review phase
@@ -48,6 +50,18 @@ export type ReviewPhaseOptions = {
     estimatedWordCount?: number
     /** Model ID for review agents */
     reviewModelId?: string
+    /** How hard each review agent should think (default: none) */
+    reviewEffort?: ReasoningEffort
+    /**
+     * Model ID for the orchestrator / editor pass.
+     *
+     * Omit to reuse `reviewModelId`, which is what this runner did
+     * unconditionally before the orchestrator became separately configurable
+     * (epic #194).
+     */
+    orchestratorModelId?: string
+    /** How hard the orchestrator should think (default: none) */
+    orchestratorEffort?: ReasoningEffort
     /** Whether to skip orchestration (just return reviews) */
     skipOrchestration?: boolean
     /** Slug of the post under review (cannibalization self-match guard) */
@@ -83,6 +97,19 @@ export type ReviewPhaseResult = {
     totalTimeMs: number
     /** Model the review agents ran on (resolved after defaults) */
     modelId: string
+    /**
+     * Model the orchestrator ran on (resolved after the inherit fallback).
+     * Equal to `modelId` unless an orchestrator model was configured.
+     */
+    orchestratorModelId: string
+    /**
+     * What OpenRouter billed for this phase in total, in USD — all seven
+     * agents plus the orchestrator. Absent when nothing reported usage.
+     *
+     * This is the number that shows what raising `reviewEffort` costs, and it
+     * is the phase where effort multiplies hardest (epic #194, risk R7).
+     */
+    costUsd?: number
 }
 
 /**
@@ -127,16 +154,29 @@ export async function runReviewPhase(
         contentType,
         estimatedWordCount,
         reviewModelId = DEFAULTS.REVIEW_MODEL,
+        reviewEffort,
+        orchestratorModelId,
+        orchestratorEffort,
         skipOrchestration = false,
         currentPostSlug,
         pagesForQuery,
         onProgress,
     } = options
 
+    // Costs are accumulated outside the try on purpose. The failure this phase
+    // actually sees is the orchestrator throwing on malformed structured output
+    // (issue #191) *after* all seven agents have already billed — which is the
+    // single most expensive run there is, and the one most worth pricing.
+    const billedCosts: Array<number | undefined> = []
+
     try {
         // Phase 1: Run all 7 reviews in parallel
         console.log('[Review Phase] Starting Review (7 agents)')
         const reviewStartTime = Date.now()
+
+        // The orchestrator falls back to the review model, preserving the
+        // behaviour from before it had its own column.
+        const resolvedOrchestratorModelId = orchestratorModelId ?? reviewModelId
 
         const reviewOptions = {
             content,
@@ -144,6 +184,7 @@ export async function runReviewPhase(
             primaryKeyword,
             secondaryKeywords,
             modelId: reviewModelId,
+            reasoningEffort: reviewEffort,
         }
 
         const [
@@ -305,6 +346,8 @@ export async function runReviewPhase(
             geoRetrievabilityReview,
         ]
 
+        billedCosts.push(...reviews.map((review) => review.costUsd))
+
         const reviewTimeMs = Date.now() - reviewStartTime
         console.log(`[Review Phase] Review complete: ${reviewTimeMs}ms`)
 
@@ -327,10 +370,11 @@ export async function runReviewPhase(
                 contentType,
                 estimatedWordCount,
                 reviews,
-                // Configured review model drives the orchestrator too
-                modelId: reviewModelId,
+                modelId: resolvedOrchestratorModelId,
+                reasoningEffort: orchestratorEffort,
             })
 
+            billedCosts.push(orchestratorResult.costUsd)
             revisedContent = orchestratorResult.revisedContent
             orchestrationTimeMs = Date.now() - orchestrationStartTime
 
@@ -355,6 +399,8 @@ export async function runReviewPhase(
             orchestrationTimeMs,
             totalTimeMs,
             modelId: reviewModelId,
+            orchestratorModelId: resolvedOrchestratorModelId,
+            costUsd: sumCosts(billedCosts),
         }
     } catch (error) {
         const errorMessage =
@@ -373,6 +419,8 @@ export async function runReviewPhase(
             orchestrationTimeMs: 0,
             totalTimeMs: Date.now() - startTime,
             modelId: reviewModelId,
+            orchestratorModelId: orchestratorModelId ?? reviewModelId,
+            costUsd: sumCosts(billedCosts),
         }
     }
 }

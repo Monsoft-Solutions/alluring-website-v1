@@ -1,22 +1,20 @@
 /**
  * Blog AI Settings Form Component
  *
- * Edits the singleton blog pipeline model configuration: which models run
- * content generation, review/orchestration and image generation, plus the
- * default artistic image style.
+ * Edits the singleton blog pipeline configuration: which model runs each phase
+ * and how hard it thinks (epic #194), the fal.ai image model and art
+ * direction, plus the Autopilot and Content Refresh loops.
  *
  * @module components/blog/blog-ai-settings-form
  */
 'use client'
 
-import { useState } from 'react'
-import { Loader2, Save } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { Loader2, Save, TriangleAlert } from 'lucide-react'
 import { toast } from 'sonner'
-import {
-    ARTISTIC_IMAGE_STYLES,
-    AVAILABLE_MODELS,
-    type ArtisticImageStyleId,
-} from '@workspace/ai'
+import { ARTISTIC_IMAGE_STYLES, type ArtisticImageStyleId } from '@workspace/ai'
+import type { OpenRouterCatalogModel } from '@workspace/ai/models/openrouter-catalog'
+import type { ReasoningEffort } from '@workspace/ai/models/reasoning-effort.constant'
 import { Button } from '@workspace/ui/components/button'
 import {
     Card,
@@ -27,6 +25,7 @@ import {
 } from '@workspace/ui/components/card'
 import { Input } from '@workspace/ui/components/input'
 import { Label } from '@workspace/ui/components/label'
+import { Switch } from '@workspace/ui/components/switch'
 import {
     Select,
     SelectContent,
@@ -35,10 +34,12 @@ import {
     SelectValue,
 } from '@workspace/ui/components/select'
 
+import { EffortSelect } from '@/components/blog/effort-select.component'
 import {
-    BlogAiModelField,
+    ModelCombobox,
     isOpenRouterModelId,
-} from '@/components/blog/blog-ai-model-field.component'
+} from '@/components/blog/model-combobox.component'
+import { useOpenRouterCatalog } from '@/hooks/use-openrouter-catalog.hook'
 import { updateBlogAiConfig } from '@/lib/actions/blog-ai-config.action'
 import type {
     AutopilotCadence,
@@ -60,27 +61,125 @@ import {
 const AUTO_STYLE_VALUE = '__auto__'
 
 /**
- * Fallback shown in the select when the stored model is a custom OpenRouter id.
+ * The seven configurable slots, in pipeline order.
+ *
+ * Declarative because the grid renders straight from it — adding a slot is a
+ * row here plus a column in `blog_ai_config`, not another pair of `useState`
+ * calls and another block of JSX.
  */
-const FALLBACK_SELECT_MODEL_ID = 'claude-opus-5'
+const PHASE_FIELDS = [
+    {
+        key: 'ideation',
+        label: 'Ideation',
+        hint: 'Topic generation — keyword and Search Console modes.',
+        hasEffort: true,
+    },
+    {
+        key: 'content',
+        label: 'Content generation',
+        hint: 'Research and drafting the post.',
+        hasEffort: true,
+    },
+    {
+        key: 'review',
+        label: 'Reviews',
+        hint: 'Shared by all seven review agents.',
+        hasEffort: true,
+    },
+    {
+        key: 'orchestrator',
+        label: 'Orchestrator',
+        hint: 'The editor pass that merges review findings back in.',
+        hasEffort: true,
+        canInherit: true,
+    },
+    {
+        key: 'extraction',
+        label: 'Metadata extraction',
+        hint: 'SEO title, meta description, slug and FAQs.',
+        hasEffort: true,
+    },
+    {
+        key: 'imagePrompt',
+        label: 'Image prompt',
+        hint: 'Writes the featured-image concept and picks options.',
+        hasEffort: true,
+        isOptional: true,
+    },
+    {
+        key: 'imageAlt',
+        label: 'Image alt text',
+        hint: 'One line of accessibility copy — no thinking needed.',
+        hasEffort: false,
+        isOptional: true,
+    },
+] as const
+
+type PhaseKey = (typeof PHASE_FIELDS)[number]['key']
+
+/** Model id + effort for one slot. An empty id means "unset". */
+type PhaseSlot = { modelId: string; effort: ReasoningEffort }
 
 /**
- * Split a stored model id into select value + custom override.
+ * The effort that will actually be sent for a slot.
  *
- * A stored id that is not in the curated registry can only have come from the
- * custom field, so it is restored there.
+ * A model the catalog reports as non-reasoning gets `none` regardless of what
+ * is stored: the row's select is disabled and says so, and saving the stored
+ * value anyway would keep emitting `reasoning: { effort }` on a model that
+ * cannot use it. This keeps what the admin sees and what gets saved identical,
+ * including for a config written before the model lost support.
+ *
+ * **Never clamps against the fallback snapshot.** That snapshot is a small,
+ * hand-refreshed slice, so its capability flags go stale — clamping on them
+ * would quietly rewrite a perfectly good `high` to `none` the first time an
+ * admin saves during an OpenRouter outage, and the banner above the grid
+ * promises the opposite ("Choices still save").
  */
-function splitStoredModelId(storedModelId: string): {
-    selected: string
-    custom: string
-} {
-    const isCurated = AVAILABLE_MODELS.some(
-        (model) => model.id === storedModelId
-    )
+function effortFor(
+    slot: PhaseSlot,
+    supportsReasoning: boolean | undefined,
+    isCatalogStale: boolean
+): ReasoningEffort {
+    return supportsReasoning === false && !isCatalogStale ? 'none' : slot.effort
+}
 
-    return isCurated
-        ? { selected: storedModelId, custom: '' }
-        : { selected: FALLBACK_SELECT_MODEL_ID, custom: storedModelId }
+/** Every slot's current value, keyed by phase. */
+type PhaseSlots = Record<PhaseKey, PhaseSlot>
+
+/**
+ * Seed the grid from the stored configuration.
+ *
+ * The orchestrator reads its *override* rather than the resolved id, so an
+ * inherited slot stays inherited instead of being pinned on first save.
+ */
+function toPhaseSlots(config: BlogAiConfig): PhaseSlots {
+    return {
+        ideation: {
+            modelId: config.ideationModelId,
+            effort: config.ideationEffort,
+        },
+        content: {
+            modelId: config.contentModelId,
+            effort: config.contentEffort,
+        },
+        review: {
+            modelId: config.reviewModelId,
+            effort: config.reviewEffort,
+        },
+        orchestrator: {
+            modelId: config.orchestratorModelIdOverride ?? '',
+            effort: config.orchestratorEffort,
+        },
+        extraction: {
+            modelId: config.extractionModelId,
+            effort: config.extractionEffort,
+        },
+        imagePrompt: {
+            modelId: config.imagePromptModelId ?? '',
+            effort: config.imagePromptEffort,
+        },
+        imageAlt: { modelId: config.imageAltModelId ?? '', effort: 'none' },
+    }
 }
 
 type BlogAiSettingsFormProps = {
@@ -88,33 +187,18 @@ type BlogAiSettingsFormProps = {
 }
 
 export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
-    const initialIdeation = splitStoredModelId(initialData.ideationModelId)
-    const initialContent = splitStoredModelId(initialData.contentModelId)
-    const initialReview = splitStoredModelId(initialData.reviewModelId)
-    const initialExtraction = splitStoredModelId(initialData.extractionModelId)
+    const catalog = useOpenRouterCatalog()
+    const [slots, setSlots] = useState<PhaseSlots>(() =>
+        toPhaseSlots(initialData)
+    )
 
-    const [ideationModelId, setIdeationModelId] = useState(
-        initialIdeation.selected
-    )
-    const [customIdeationModelId, setCustomIdeationModelId] = useState(
-        initialIdeation.custom
-    )
-    const [contentModelId, setContentModelId] = useState(
-        initialContent.selected
-    )
-    const [customContentModelId, setCustomContentModelId] = useState(
-        initialContent.custom
-    )
-    const [reviewModelId, setReviewModelId] = useState(initialReview.selected)
-    const [customReviewModelId, setCustomReviewModelId] = useState(
-        initialReview.custom
-    )
-    const [extractionModelId, setExtractionModelId] = useState(
-        initialExtraction.selected
-    )
-    const [customExtractionModelId, setCustomExtractionModelId] = useState(
-        initialExtraction.custom
-    )
+    /** Patch one slot without disturbing the others. */
+    const patchSlot = (key: PhaseKey, patch: Partial<PhaseSlot>) =>
+        setSlots((current) => ({
+            ...current,
+            [key]: { ...current[key], ...patch },
+        }))
+
     const [imageModelId, setImageModelId] = useState<ImageModelId>(
         initialData.imageModelId
     )
@@ -152,33 +236,104 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
     )
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const trimmedIdeationCustom = customIdeationModelId.trim()
-    const trimmedContentCustom = customContentModelId.trim()
-    const trimmedReviewCustom = customReviewModelId.trim()
-    const trimmedExtractionCustom = customExtractionModelId.trim()
+    // A slot with an id that is neither in the catalog nor `vendor/model`
+    // shaped cannot be saved — the server action rejects it anyway, so say so
+    // here rather than round-tripping a failure.
+    const invalidSlots = useMemo(
+        () =>
+            PHASE_FIELDS.filter(({ key }) => {
+                const id = slots[key].modelId.trim()
+                if (!id) return false
+                return !catalog.byId.has(id) && !isOpenRouterModelId(id)
+            }).map(({ label }) => label),
+        [slots, catalog.byId]
+    )
 
-    // A non-empty custom field always wins over the select.
-    const effectiveIdeationModelId = trimmedIdeationCustom || ideationModelId
-    const effectiveContentModelId = trimmedContentCustom || contentModelId
-    const effectiveReviewModelId = trimmedReviewCustom || reviewModelId
-    const effectiveExtractionModelId =
-        trimmedExtractionCustom || extractionModelId
+    // Required slots must hold something; the optional ones fall through to
+    // their own code defaults when left empty.
+    const emptyRequiredSlots = useMemo(
+        () =>
+            PHASE_FIELDS.filter(
+                (field) =>
+                    !('isOptional' in field && field.isOptional) &&
+                    !('canInherit' in field && field.canInherit) &&
+                    !slots[field.key].modelId.trim()
+            ).map(({ label }) => label),
+        [slots]
+    )
 
-    const hasInvalidCustom =
-        (trimmedIdeationCustom.length > 0 &&
-            !isOpenRouterModelId(trimmedIdeationCustom)) ||
-        (trimmedContentCustom.length > 0 &&
-            !isOpenRouterModelId(trimmedContentCustom)) ||
-        (trimmedReviewCustom.length > 0 &&
-            !isOpenRouterModelId(trimmedReviewCustom)) ||
-        (trimmedExtractionCustom.length > 0 &&
-            !isOpenRouterModelId(trimmedExtractionCustom))
+    // What each slot will actually run with, after the orchestrator's inherit
+    // fallback and the non-reasoning clamp. Render, save and the cost hint all
+    // read this, so the three can never disagree.
+    const resolved = useMemo(() => {
+        const entries = PHASE_FIELDS.map((field) => {
+            const slot = slots[field.key]
+            const trimmed = slot.modelId.trim()
+            const canInherit = 'canInherit' in field && field.canInherit
+            const modelId =
+                canInherit && !trimmed ? slots.review.modelId.trim() : trimmed
+            const catalogEntry = catalog.byId.get(modelId)
+
+            // An unset optional slot falls through to the function's own code
+            // default. The catalog cannot speak for it, so leave the dial
+            // enabled but `undefined` — which renders the honest "unverified"
+            // note rather than a confident one about a model nobody picked.
+            const supportsReasoning = catalogEntry?.supportsReasoning
+
+            return [
+                field.key,
+                {
+                    modelId,
+                    catalogEntry,
+                    supportsReasoning,
+                    effort: effortFor(slot, supportsReasoning, catalog.isStale),
+                },
+            ] as const
+        })
+
+        return Object.fromEntries(entries) as Record<
+            PhaseKey,
+            {
+                modelId: string
+                catalogEntry: OpenRouterCatalogModel | undefined
+                supportsReasoning: boolean | undefined
+                effort: ReasoningEffort
+            }
+        >
+    }, [slots, catalog.byId, catalog.isStale])
+
+    // Input cost of one pass through the text phases, at list price. Counts the
+    // *resolved* model, so an inherited orchestrator contributes the review
+    // model's price rather than nothing. Effort raises *output* tokens, which
+    // this cannot know in advance — hence the note beside it.
+    const { inputCostPerM, pricedSlots, costedSlots } = useMemo(() => {
+        const withEffort = PHASE_FIELDS.filter((field) => field.hasEffort)
+        const prices = withEffort.map(
+            ({ key }) => resolved[key].catalogEntry?.promptPricePerM ?? null
+        )
+
+        return {
+            inputCostPerM: prices.reduce<number>(
+                (total, price) => total + (price ?? 0),
+                0
+            ),
+            pricedSlots: prices.filter((price) => price !== null).length,
+            costedSlots: withEffort.length,
+        }
+    }, [resolved])
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        if (hasInvalidCustom) {
-            toast.error('Fix the custom OpenRouter model id before saving')
+        if (invalidSlots.length > 0) {
+            toast.error(
+                `Fix the model id for ${invalidSlots.join(', ')} — use a listed model or a "vendor/model" id.`
+            )
+            return
+        }
+
+        if (emptyRequiredSlots.length > 0) {
+            toast.error(`Pick a model for ${emptyRequiredSlots.join(', ')}.`)
             return
         }
 
@@ -186,10 +341,21 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
 
         try {
             const result = await updateBlogAiConfig({
-                ideationModelId: effectiveIdeationModelId,
-                contentModelId: effectiveContentModelId,
-                reviewModelId: effectiveReviewModelId,
-                extractionModelId: effectiveExtractionModelId,
+                ideationModelId: slots.ideation.modelId.trim(),
+                ideationEffort: resolved.ideation.effort,
+                contentModelId: slots.content.modelId.trim(),
+                contentEffort: resolved.content.effort,
+                reviewModelId: slots.review.modelId.trim(),
+                reviewEffort: resolved.review.effort,
+                // Empty means "inherit Reviews"; the action normalizes to null.
+                orchestratorModelId: slots.orchestrator.modelId.trim(),
+                orchestratorEffort: resolved.orchestrator.effort,
+                extractionModelId: slots.extraction.modelId.trim(),
+                extractionEffort: resolved.extraction.effort,
+                // Empty means "use the function's own code default".
+                imagePromptModelId: slots.imagePrompt.modelId.trim(),
+                imagePromptEffort: resolved.imagePrompt.effort,
+                imageAltModelId: slots.imageAlt.modelId.trim(),
                 imageModelId,
                 artisticStyleId,
                 autopilotMode,
@@ -219,58 +385,174 @@ export function BlogAiSettingsForm({ initialData }: BlogAiSettingsFormProps) {
 
     return (
         <form onSubmit={handleSubmit} className='space-y-6'>
-            {/* Text models */}
+            {/* Models & thinking */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Text Models</CardTitle>
+                    <CardTitle>Models &amp; thinking</CardTitle>
                     <CardDescription>
-                        Models used by the blog pipeline for writing and
-                        reviewing posts.
+                        Which model runs each phase of the blog pipeline, and
+                        how hard it thinks. Every model on{' '}
+                        <a
+                            href='https://openrouter.ai/models'
+                            target='_blank'
+                            rel='noreferrer'
+                            className='underline underline-offset-2'
+                        >
+                            openrouter.ai/models
+                        </a>{' '}
+                        is available.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className='space-y-6'>
-                    <BlogAiModelField
-                        id='ideation-model'
-                        label='Ideation model'
-                        description='Generates blog topic ideas — both keyword-based and Search Console modes.'
-                        selectedModelId={ideationModelId}
-                        customModelId={customIdeationModelId}
-                        onSelectedModelIdChange={setIdeationModelId}
-                        onCustomModelIdChange={setCustomIdeationModelId}
-                    />
+                <CardContent className='space-y-4'>
+                    {catalog.isStale && !catalog.isLoading && (
+                        <p className='flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/5 px-3 py-2 text-xs text-amber-600'>
+                            <TriangleAlert className='mt-0.5 h-3.5 w-3.5 shrink-0' />
+                            <span>
+                                Showing a saved snapshot — the live OpenRouter
+                                catalog could not be reached. Choices still
+                                save; newly released models will not appear
+                                until it recovers.
+                            </span>
+                        </p>
+                    )}
 
-                    <BlogAiModelField
-                        id='content-model'
-                        label='Content model'
-                        description='Runs the generation phase — research and drafting the post.'
-                        selectedModelId={contentModelId}
-                        customModelId={customContentModelId}
-                        onSelectedModelIdChange={setContentModelId}
-                        onCustomModelIdChange={setCustomContentModelId}
-                    />
+                    <div
+                        className='text-muted-foreground hidden gap-3 border-b pb-2 text-xs font-medium tracking-wide uppercase md:grid'
+                        style={{
+                            gridTemplateColumns: '13rem minmax(0,1fr) 11rem',
+                        }}
+                    >
+                        <span>Phase</span>
+                        <span>Model</span>
+                        <span>Thinking</span>
+                    </div>
 
-                    <BlogAiModelField
-                        id='review-model'
-                        label='Review model'
-                        description='Runs the review and orchestration phase — the editing agents.'
-                        selectedModelId={reviewModelId}
-                        customModelId={customReviewModelId}
-                        onSelectedModelIdChange={setReviewModelId}
-                        onCustomModelIdChange={setCustomReviewModelId}
-                    />
+                    <div className='divide-y'>
+                        {PHASE_FIELDS.map((field) => {
+                            const slot = slots[field.key]
+                            const trimmedId = slot.modelId.trim()
+                            const canInherit =
+                                'canInherit' in field && field.canInherit
+                            const isInheriting = canInherit && !trimmedId
 
-                    <BlogAiModelField
-                        id='extraction-model'
-                        label='Metadata model'
-                        description='Runs the metadata phase — SEO title, meta description, slug and FAQs.'
-                        selectedModelId={extractionModelId}
-                        customModelId={customExtractionModelId}
-                        onSelectedModelIdChange={setExtractionModelId}
-                        onCustomModelIdChange={setCustomExtractionModelId}
-                    />
+                            // The orchestrator inherits Reviews when unset, so
+                            // its effort is judged against the model that will
+                            // actually run.
+                            const {
+                                modelId: resolvedId,
+                                supportsReasoning,
+                                effort: resolvedEffort,
+                            } = resolved[field.key]
 
-                    <p className='text-muted-foreground border-t pt-4 text-xs'>
-                        OpenRouter models require{' '}
+                            return (
+                                <div
+                                    key={field.key}
+                                    className='grid gap-3 py-3 md:grid-cols-[13rem_minmax(0,1fr)_11rem] md:items-start'
+                                >
+                                    <div className='pt-1.5'>
+                                        <Label
+                                            htmlFor={`${field.key}-model`}
+                                            className='text-sm font-medium'
+                                        >
+                                            {field.label}
+                                        </Label>
+                                        <p className='text-muted-foreground text-xs'>
+                                            {field.hint}
+                                        </p>
+                                    </div>
+
+                                    <div className='space-y-1.5'>
+                                        {canInherit && (
+                                            <label className='flex items-center gap-2 text-xs'>
+                                                <Switch
+                                                    checked={isInheriting}
+                                                    onCheckedChange={(
+                                                        checked
+                                                    ) =>
+                                                        patchSlot(field.key, {
+                                                            modelId: checked
+                                                                ? ''
+                                                                : slots.review
+                                                                      .modelId,
+                                                        })
+                                                    }
+                                                    aria-label='Inherit the review model'
+                                                />
+                                                <span className='text-muted-foreground'>
+                                                    Inherit from Reviews
+                                                    {isInheriting &&
+                                                        resolvedId && (
+                                                            <span className='ml-1 font-mono'>
+                                                                ({resolvedId})
+                                                            </span>
+                                                        )}
+                                                </span>
+                                            </label>
+                                        )}
+
+                                        {!isInheriting && (
+                                            <ModelCombobox
+                                                id={`${field.key}-model`}
+                                                ariaLabel={`${field.label} model`}
+                                                value={slot.modelId}
+                                                onChange={(modelId) =>
+                                                    patchSlot(field.key, {
+                                                        modelId,
+                                                    })
+                                                }
+                                                models={catalog.models}
+                                                isLoading={catalog.isLoading}
+                                                isCatalogStale={catalog.isStale}
+                                                placeholder={
+                                                    'isOptional' in field &&
+                                                    field.isOptional
+                                                        ? 'Code default'
+                                                        : 'Select a model'
+                                                }
+                                            />
+                                        )}
+                                    </div>
+
+                                    {field.hasEffort ? (
+                                        <EffortSelect
+                                            id={`${field.key}-effort`}
+                                            ariaLabel={`${field.label} reasoning effort`}
+                                            value={resolvedEffort}
+                                            onChange={(effort) =>
+                                                patchSlot(field.key, { effort })
+                                            }
+                                            supportsReasoning={
+                                                supportsReasoning
+                                            }
+                                        />
+                                    ) : (
+                                        <p className='text-muted-foreground pt-2 text-center text-xs'>
+                                            —
+                                        </p>
+                                    )}
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <div className='text-muted-foreground flex flex-wrap items-center gap-x-5 gap-y-1 border-t pt-3 text-xs'>
+                        <span>
+                            <span className='text-foreground font-medium tabular-nums'>
+                                ${inputCostPerM.toFixed(2)}
+                            </span>{' '}
+                            per 1M input tokens across {pricedSlots} of{' '}
+                            {costedSlots} text phases
+                            {pricedSlots < costedSlots &&
+                                ' — the rest run on a model the catalog has no price for'}
+                        </span>
+                        <span>
+                            Raising thinking bills reasoning tokens as output —
+                            the seven review agents multiply it.
+                        </span>
+                    </div>
+
+                    <p className='text-muted-foreground border-t pt-3 text-xs'>
+                        Every call routes through OpenRouter and needs{' '}
                         <code className='font-mono'>OPENROUTER_API_KEY</code> in
                         the environment.
                     </p>

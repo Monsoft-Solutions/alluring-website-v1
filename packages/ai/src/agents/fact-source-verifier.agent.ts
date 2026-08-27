@@ -11,6 +11,7 @@ import { generateText, Output, isStepCount } from 'ai'
 import { z } from 'zod'
 
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
 import {
     createSourceCollector,
     createPerplexitySearchTool,
@@ -23,6 +24,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for fact verification
@@ -234,6 +236,7 @@ export async function runFactSourceVerifier(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     console.log('[Fact Verifier] Starting fact and source verification...')
@@ -289,6 +292,7 @@ Begin by using the think tool to identify all claims and plan your search querie
             perplexity_search: perplexitySearchTool,
             think: thinkTool,
         },
+        ...reasoningProviderOptions(reasoningEffort),
         telemetry: telemetryConfig,
         onStepEnd: (event) => {
             if (event.toolCalls && event.toolCalls.length > 0) {
@@ -332,5 +336,6 @@ Begin by using the think tool to identify all claims and plan your search querie
         summary: result.output.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

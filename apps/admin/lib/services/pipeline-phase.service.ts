@@ -244,14 +244,37 @@ const pipelineTracer = trace.getTracer('pipeline-phase')
 async function withPhaseSpan<T>(
     spanName: string,
     postId: string,
-    fn: () => Promise<T>
+    fn: () => Promise<T>,
+    /**
+     * Which model the phase resolved to and how hard it was told to think.
+     * On the span so a Langfuse trace answers "what was this run configured
+     * with" without cross-referencing `blog_ai_config`, which may have changed
+     * since (epic #194).
+     */
+    config?: { model: string; effort: string }
 ): Promise<{ result: T; traceId: string }> {
     return pipelineTracer.startActiveSpan(
         spanName,
-        { attributes: { 'blog.post.id': postId } },
+        {
+            attributes: {
+                'blog.post.id': postId,
+                ...(config && {
+                    'blog.phase.model': config.model,
+                    'blog.phase.effort': config.effort,
+                }),
+            },
+        },
         async (span) => {
             try {
                 const result = await fn()
+
+                // Cost is only known after the calls have run, so it lands on
+                // the span here rather than in the initial attributes.
+                const costUsd = (result as { costUsd?: number } | null)?.costUsd
+                if (typeof costUsd === 'number') {
+                    span.setAttribute('blog.phase.cost_usd', costUsd)
+                }
+
                 return { result, traceId: span.spanContext().traceId }
             } catch (error) {
                 span.setStatus({ code: SpanStatusCode.ERROR })
@@ -402,6 +425,7 @@ export async function runGenerationPhaseForPost(
             () =>
                 runGenerationPhase({
                     contentModelId: aiConfig.contentModelId,
+                    contentEffort: aiConfig.contentEffort,
                     linkableBlogPosts,
                     input: {
                         title: post.title,
@@ -416,7 +440,8 @@ export async function runGenerationPhaseForPost(
                             : planningData.estimatedWordCount,
                         refresh,
                     },
-                })
+                }),
+            { model: aiConfig.contentModelId, effort: aiConfig.contentEffort }
         )
 
         if (!result.success) {
@@ -469,6 +494,8 @@ export async function runGenerationPhaseForPost(
                 toolCallCount: result.toolCallCount,
                 stepCount: result.stepCount,
                 model: result.modelId,
+                effort: aiConfig.contentEffort,
+                costUsd: result.costUsd,
                 traceId,
                 // Only recorded when something had to be changed, so a clean
                 // run leaves no noise in pipelineState.
@@ -588,9 +615,13 @@ export async function runReviewPhaseForPost(
                     contentType: planningData?.contentType,
                     estimatedWordCount: planningData?.estimatedWordCount,
                     reviewModelId: aiConfig.reviewModelId,
+                    reviewEffort: aiConfig.reviewEffort,
+                    orchestratorModelId: aiConfig.orchestratorModelId,
+                    orchestratorEffort: aiConfig.orchestratorEffort,
                     currentPostSlug,
                     pagesForQuery: createPagesForQueryAdapter(),
-                })
+                }),
+            { model: aiConfig.reviewModelId, effort: aiConfig.reviewEffort }
         )
 
         if (!result.success) {
@@ -617,6 +648,8 @@ export async function runReviewPhaseForPost(
                 completedAt: new Date().toISOString(),
                 reviews: result.reviews,
                 model: result.modelId,
+                effort: aiConfig.reviewEffort,
+                costUsd: result.costUsd,
                 traceId,
             },
             orchestrationPhase: result.orchestratorResult
@@ -624,6 +657,8 @@ export async function runReviewPhaseForPost(
                       startedAt: phaseStartedAt.toISOString(),
                       completedAt: new Date().toISOString(),
                       result: result.orchestratorResult,
+                      model: result.orchestratorModelId,
+                      effort: aiConfig.orchestratorEffort,
                   }
                 : undefined,
         }
@@ -738,7 +773,12 @@ export async function runExtractPhaseForPost(
                     title: post.title,
                     primaryKeyword: post.primaryKeyword || undefined,
                     modelId: aiConfig.extractionModelId,
-                })
+                    reasoningEffort: aiConfig.extractionEffort,
+                }),
+            {
+                model: aiConfig.extractionModelId,
+                effort: aiConfig.extractionEffort,
+            }
         )
 
         if (!result.success) {
@@ -788,6 +828,8 @@ export async function runExtractPhaseForPost(
                 startedAt: phaseStartedAt.toISOString(),
                 completedAt: new Date().toISOString(),
                 model: result.modelId,
+                effort: aiConfig.extractionEffort,
+                costUsd: result.costUsd,
                 traceId,
             },
             metrics,
@@ -908,6 +950,10 @@ export async function runImageGenerationPhaseForPost(
                     primaryKeyword: post.primaryKeyword || undefined,
                     aiSummary: post.aiSummary || undefined,
                     imageModel: aiConfig.imageModelId,
+                    ...(aiConfig.imagePromptModelId
+                        ? { promptModelId: aiConfig.imagePromptModelId }
+                        : {}),
+                    promptEffort: aiConfig.imagePromptEffort,
                     ...(aiConfig.artisticStyleId
                         ? { forcedArtisticStyleId: aiConfig.artisticStyleId }
                         : {}),
@@ -988,6 +1034,9 @@ export async function runImageGenerationPhaseForPost(
             prompt: phaseResult.prompt,
             concept: extractImageConcept(phaseResult.prompt),
             primaryKeyword: post.primaryKeyword || undefined,
+            ...(aiConfig.imageAltModelId
+                ? { modelId: aiConfig.imageAltModelId }
+                : {}),
         })
 
         // Create image record
@@ -1038,6 +1087,11 @@ export async function runImageGenerationPhaseForPost(
                 imageId: imageRecord.id,
                 imageUrl: generatedImage.url,
                 model: phaseResult.imageModel ?? 'gpt-image-2',
+                ...(aiConfig.imagePromptModelId
+                    ? { promptModel: aiConfig.imagePromptModelId }
+                    : {}),
+                promptEffort: aiConfig.imagePromptEffort,
+                costUsd: phaseResult.costUsd,
                 artisticStyleId: phaseResult.artisticStyleId,
                 peopleDetected: phaseResult.peopleDetected,
                 qaRegenerated: phaseResult.qaRegenerated,

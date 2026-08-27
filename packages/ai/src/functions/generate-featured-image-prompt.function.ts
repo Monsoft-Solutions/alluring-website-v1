@@ -19,6 +19,11 @@ import {
 } from '../prompts/blog/featured-image-prompt.prompt'
 import type { ArtisticImageAspectRatio } from '../constants/image-style.constant'
 import { coreGenerateText } from '../core'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import {
+    readOpenRouterCost,
+    type WithCallCost,
+} from '../models/openrouter-usage.util'
 
 /**
  * Default model for text generation
@@ -69,6 +74,8 @@ export type GenerateFeaturedImagePromptOptions = {
     keywords?: string
     /** Model ID to use (defaults to gpt-5.2) */
     modelId?: string
+    /** How hard the model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 /**
@@ -109,7 +116,7 @@ export type FeaturedImagePromptResult = {
  */
 export async function generateFeaturedImagePrompt(
     options: GenerateFeaturedImagePromptOptions
-): Promise<FeaturedImagePromptResult> {
+): Promise<WithCallCost<FeaturedImagePromptResult>> {
     const {
         title,
         summary,
@@ -124,10 +131,12 @@ export async function generateFeaturedImagePrompt(
         modelDescription,
         keywords,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const result = await coreGenerateText({
         modelId,
+        reasoningEffort,
         system: FEATURED_IMAGE_PROMPT_SYSTEM,
         prompt: getFeaturedImagePrompt({
             title,
@@ -154,5 +163,8 @@ export async function generateFeaturedImagePrompt(
         .replace(/\n```$/, '') // Remove closing code fence
         .trim()
 
-    return { prompt: cleanedPrompt }
+    return {
+        prompt: cleanedPrompt,
+        ...readOpenRouterCost(result.providerMetadata),
+    }
 }

@@ -194,6 +194,10 @@ export type PipelineState = {
         stepCount?: number
         /** Model the phase ran on (resolved after defaults) */
         model?: string
+        /** Reasoning effort the phase ran at (epic #194) */
+        effort?: string
+        /** What OpenRouter billed for this phase, in USD */
+        costUsd?: number
         /** OTEL/Langfuse trace id of the phase run */
         traceId?: string
         /**
@@ -210,6 +214,10 @@ export type PipelineState = {
         reviews?: AgentReview[]
         /** Model the review agents ran on (resolved after defaults) */
         model?: string
+        /** Reasoning effort the review agents ran at (epic #194) */
+        effort?: string
+        /** What OpenRouter billed for this phase, in USD */
+        costUsd?: number
         /** OTEL/Langfuse trace id covering review + orchestration */
         traceId?: string
     }
@@ -218,6 +226,14 @@ export type PipelineState = {
         startedAt: string
         completedAt?: string
         result?: OrchestratorResult
+        /**
+         * Model the orchestrator ran on, resolved after the inherit fallback.
+         * Separately configurable since epic #194 — before that it always
+         * reused the review model.
+         */
+        model?: string
+        /** Reasoning effort the orchestrator ran at */
+        effort?: string
     }
     /** Extraction phase results */
     extractionPhase?: {
@@ -225,6 +241,10 @@ export type PipelineState = {
         completedAt?: string
         /** Model the phase ran on (resolved after defaults) */
         model?: string
+        /** Reasoning effort the phase ran at (epic #194) */
+        effort?: string
+        /** What OpenRouter billed for this phase, in USD */
+        costUsd?: number
         /** OTEL/Langfuse trace id of the phase run */
         traceId?: string
     }
@@ -237,6 +257,15 @@ export type PipelineState = {
         imageId?: string
         imageUrl?: string
         model?: string
+        /** Language model that wrote the prompt (resolved after defaults) */
+        promptModel?: string
+        /** Reasoning effort the prompt model ran at (epic #194) */
+        promptEffort?: string
+        /**
+         * What OpenRouter billed for this phase's language-model calls, in USD.
+         * Excludes the fal.ai render, which bills separately.
+         */
+        costUsd?: number
         /** Artistic style preset the image was generated from */
         artisticStyleId?: string
         /**

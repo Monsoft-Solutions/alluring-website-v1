@@ -11,6 +11,7 @@ import { streamText, smoothStream } from 'ai'
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -46,6 +47,7 @@ export function coreStreamText(
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature,
+        reasoningEffort,
         system,
         messages,
         maxTokens = 16000,
@@ -70,6 +72,7 @@ export function coreStreamText(
         instructions: system,
         messages,
         ...(temperature !== undefined && { temperature }),
+        ...reasoningProviderOptions(reasoningEffort),
         telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
         ...(experimentalTransform && {

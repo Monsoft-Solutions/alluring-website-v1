@@ -18,6 +18,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for internal links review
@@ -185,6 +186,7 @@ export async function runInternalLinksReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     // Get available internal pages
@@ -229,6 +231,7 @@ Analyze the internal linking quality and provide your review.`
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: internalLinksReviewSchema,
         system: INTERNAL_LINKS_REVIEW_SYSTEM_PROMPT,
         prompt,
@@ -243,5 +246,6 @@ Analyze the internal linking quality and provide your review.`
         summary: result.object.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

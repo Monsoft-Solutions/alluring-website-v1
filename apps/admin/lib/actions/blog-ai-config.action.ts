@@ -13,7 +13,11 @@ import { blogAiConfig } from '@workspace/db/schema/blog'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { ARTISTIC_IMAGE_STYLE_IDS, isValidModelId } from '@workspace/ai'
+import {
+    ARTISTIC_IMAGE_STYLE_IDS,
+    REASONING_EFFORTS,
+    isValidModelId,
+} from '@workspace/ai'
 
 import { IMAGE_MODELS } from '@/lib/services/fal-image-generation.service'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
@@ -39,6 +43,23 @@ const modelIdSchema = z
             'Unknown model. Use a listed model, or an OpenRouter id in "vendor/model" form (e.g. google/gemini-3.6-flash).',
     })
 
+/**
+ * Optional model id: `null` means "inherit" for the orchestrator, or "use the
+ * function's own code default" for the image helpers. An empty string from the
+ * form is normalized to null rather than rejected.
+ */
+const optionalModelIdSchema = z
+    .union([z.literal(''), modelIdSchema])
+    .nullable()
+    .transform((value) => (value ? value : null))
+
+/**
+ * How hard a model should think. Mirrors the `reasoning_effort` pg enum.
+ */
+const effortSchema = z.enum(REASONING_EFFORTS, {
+    message: 'Select a supported reasoning effort',
+})
+
 const imageModelIds = IMAGE_MODELS.map((model) => model.id) as [
     string,
     ...string[],
@@ -49,9 +70,20 @@ const imageModelIds = IMAGE_MODELS.map((model) => model.id) as [
  */
 const blogAiConfigSchema = z.object({
     ideationModelId: modelIdSchema,
+    ideationEffort: effortSchema,
     contentModelId: modelIdSchema,
+    contentEffort: effortSchema,
     reviewModelId: modelIdSchema,
+    reviewEffort: effortSchema,
+    // null = inherit the review model
+    orchestratorModelId: optionalModelIdSchema,
+    orchestratorEffort: effortSchema,
     extractionModelId: modelIdSchema,
+    extractionEffort: effortSchema,
+    // null = each function's own code default
+    imagePromptModelId: optionalModelIdSchema,
+    imagePromptEffort: effortSchema,
+    imageAltModelId: optionalModelIdSchema,
     imageModelId: z.enum(imageModelIds, {
         message: 'Select a supported image model',
     }),
@@ -134,9 +166,18 @@ export async function updateBlogAiConfig(
 
         const values = {
             ideationModelId: validated.ideationModelId,
+            ideationEffort: validated.ideationEffort,
             contentModelId: validated.contentModelId,
+            contentEffort: validated.contentEffort,
             reviewModelId: validated.reviewModelId,
+            reviewEffort: validated.reviewEffort,
+            orchestratorModelId: validated.orchestratorModelId,
+            orchestratorEffort: validated.orchestratorEffort,
             extractionModelId: validated.extractionModelId,
+            extractionEffort: validated.extractionEffort,
+            imagePromptModelId: validated.imagePromptModelId,
+            imagePromptEffort: validated.imagePromptEffort,
+            imageAltModelId: validated.imageAltModelId,
             imageModelId: validated.imageModelId,
             artisticStyleId: validated.artisticStyleId,
             autopilotMode: validated.autopilotMode,
