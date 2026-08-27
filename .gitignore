@@ -45,6 +45,9 @@ packages/db/.env.production
 # Playwright MCP artifacts (screenshots, console logs)
 .playwright-mcp/
 
+# SWC plugin cache, regenerated whenever the vitest suite runs
+.swc/
+
 # Per-worktree state (scripts/worktree.sh)
 .worktree-meta
 .issue.md

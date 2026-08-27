@@ -31,6 +31,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for GEO retrievability review
@@ -226,6 +227,7 @@ export async function runGeoRetrievabilityReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const prompt = `Review this blog post for answer-first retrievability.
@@ -249,6 +251,7 @@ Score the seven dimensions. For each question heading, check its first sentence 
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: geoRetrievabilityReviewSchema,
         system: GEO_RETRIEVABILITY_SYSTEM_PROMPT,
         prompt,
@@ -263,5 +266,6 @@ Score the seven dimensions. For each question heading, check its first sentence 
         summary: result.object.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

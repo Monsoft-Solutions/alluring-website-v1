@@ -30,6 +30,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for cannibalization review
@@ -217,6 +218,7 @@ export async function runCannibalizationChecker(
         currentPostSlug,
         pagesForQuery,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const h2Headings = extractH2Headings(content)
@@ -308,6 +310,7 @@ Judge each registry finding against the actual content: true competition or acce
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: cannibalizationReviewSchema,
         system: CANNIBALIZATION_REVIEW_SYSTEM_PROMPT,
         prompt,
@@ -322,5 +325,6 @@ Judge each registry finding against the actual content: true competition or acce
         summary: result.object.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

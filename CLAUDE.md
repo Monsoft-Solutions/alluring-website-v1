@@ -206,6 +206,28 @@ Skills: `worktree` (create) and `tackle` (work it). Scripts live in `scripts/`.
 
 ---
 
+## AI Model Routing
+
+**All inference goes through OpenRouter** (issue #195) — one API key
+(`OPENROUTER_API_KEY`), one namespace, one billing surface. The direct
+`@ai-sdk/anthropic` / `@ai-sdk/openai` provider paths are retired; do not
+reintroduce them. `getModel` accepts any `vendor/model` id from
+https://openrouter.ai/models; bare legacy ids are translated by `LEGACY_ID_MAP`
+in `packages/ai/src/models/model-resolver.util.ts`.
+
+Each blog pipeline phase has its own model **and** its own reasoning effort,
+configured in the admin at **Blog → Settings** and stored in `blog_ai_config`
+(epic #194). Effort uses OpenRouter's own scale —
+`none · minimal · low · medium · high · xhigh`.
+
+`none` is the default everywhere and emits **no** `providerOptions` key at all.
+That is deliberate: sending `none` explicitly _disables_ reasoning on models
+that think by default, so omitting it is what keeps behaviour unchanged. Raise
+effort one phase at a time in production, extraction first and reviews last —
+the seven review agents multiply both cost and the #191 schema-failure risk.
+
+---
+
 ## Search Console Data
 
 Live Google Search Console data is available to agents through the

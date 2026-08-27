@@ -8,6 +8,7 @@
 import { z } from 'zod'
 
 import type { MdxSanitizationAction } from '../functions/validate-generated-mdx.function'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 
 /**
  * Issue severity levels
@@ -46,6 +47,12 @@ export type AgentReview = {
     processingTimeMs: number
     /** Model used for the review */
     modelId: string
+    /**
+     * What OpenRouter billed for this review, in USD. Absent when the provider
+     * did not report usage. Reasoning tokens bill as output, so this is what
+     * shows the price of raising a phase's effort (epic #194).
+     */
+    costUsd?: number
 }
 
 /**
@@ -101,6 +108,8 @@ export type ReviewAgentOptions = {
     secondaryKeywords?: string[]
     /** Model ID to use */
     modelId?: string
+    /** How hard the agent should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 /**
@@ -113,6 +122,8 @@ export type OrchestratorResult = {
     agentReviews: AgentReview[]
     /** Processing time for orchestration */
     processingTimeMs: number
+    /** What OpenRouter billed for the orchestration call, in USD */
+    costUsd?: number
     /**
      * MDX hazards stripped from the revision before it was returned. Empty on a
      * clean revision; entries here mean the orchestrator produced something the

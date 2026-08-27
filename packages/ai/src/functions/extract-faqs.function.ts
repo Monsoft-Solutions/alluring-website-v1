@@ -11,6 +11,11 @@ import { z } from 'zod'
 import { faqItemSchema, type FaqItem } from '@workspace/shared/schemas/blog'
 
 import { coreGenerateObject } from '../core'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import {
+    readOpenRouterCost,
+    type WithCallCost,
+} from '../models/openrouter-usage.util'
 
 /**
  * FAQ extraction response schema
@@ -41,6 +46,8 @@ export type ExtractFaqsOptions = {
     maxFaqs?: number
     /** Model ID to use (default: gpt-4.1) */
     modelId?: string
+    /** How hard the model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
     /** Generate FAQs from content analysis if no FAQ section exists (default: true) */
     generateIfMissing?: boolean
 }
@@ -113,12 +120,13 @@ Your task is to analyze blog content and generate FAQ items that readers commonl
  */
 async function generateFaqsFromContent(
     options: ExtractFaqsOptions
-): Promise<ExtractFaqsResult> {
+): Promise<WithCallCost<ExtractFaqsResult>> {
     const {
         content,
         primaryKeyword,
         maxFaqs = 8,
         modelId = 'x-ai/grok-4.6',
+        reasoningEffort,
     } = options
 
     const prompt = `Generate FAQ items for this blog post:
@@ -135,6 +143,7 @@ Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ item
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: extractFaqsResponseSchema,
         system: FAQ_GENERATOR_SYSTEM_PROMPT,
         prompt,
@@ -143,6 +152,7 @@ Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ item
     // Limit to maxFaqs
     return {
         faqs: result.object.faqs.slice(0, maxFaqs),
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }
 
@@ -180,12 +190,13 @@ Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ item
  */
 export async function extractFaqs(
     options: ExtractFaqsOptions
-): Promise<ExtractFaqsResult> {
+): Promise<WithCallCost<ExtractFaqsResult>> {
     const {
         content,
         primaryKeyword,
         maxFaqs = 10,
         modelId = 'x-ai/grok-4.6',
+        reasoningEffort,
         generateIfMissing = true,
     } = options
 
@@ -220,6 +231,7 @@ Find and extract all Q&A pairs. If no genuine FAQs exist, return empty array.`
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: extractFaqsResponseSchema,
         system: FAQ_EXTRACTOR_SYSTEM_PROMPT,
         prompt,
@@ -228,6 +240,7 @@ Find and extract all Q&A pairs. If no genuine FAQs exist, return empty array.`
     // Limit to maxFaqs
     return {
         faqs: result.object.faqs.slice(0, maxFaqs),
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }
 

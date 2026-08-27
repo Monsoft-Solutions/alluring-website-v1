@@ -54,6 +54,23 @@ export const autopilotCadence = pgEnum('autopilot_cadence', [
 export const refreshMode = pgEnum('refresh_mode', ['off', 'suggest', 'auto'])
 
 /**
+ * How hard a model should think before answering (epic #194).
+ *
+ * OpenRouter's own vocabulary, verbatim — every call goes through OpenRouter
+ * and it translates effort to each vendor's native knob server-side. `none`
+ * is the default everywhere and emits no provider option at all, so a model
+ * keeps whatever thinking behaviour it has by default.
+ */
+export const reasoningEffort = pgEnum('reasoning_effort', [
+    'none',
+    'minimal',
+    'low',
+    'medium',
+    'high',
+    'xhigh',
+])
+
+/**
  * Blog AI configuration table.
  *
  * Only one row is ever expected — the query layer reads the first row and the
@@ -67,21 +84,46 @@ export const blogAiConfig = pgTable('blog_ai_config', {
      */
     ideationModelId: varchar('ideation_model_id', { length: 120 })
         .notNull()
-        .default('claude-opus-5'),
+        .default('x-ai/grok-4.6'),
+
+    /** How hard the model runs the ideation phase (topic generation) should think. */
+    ideationEffort: reasoningEffort('ideation_effort')
+        .notNull()
+        .default('none'),
 
     /**
      * Model used for the content generation phase (research + drafting).
      */
     contentModelId: varchar('content_model_id', { length: 120 })
         .notNull()
-        .default('claude-opus-5'),
+        .default('x-ai/grok-4.6'),
+
+    /** How hard the model runs the content generation phase (research + drafting) should think. */
+    contentEffort: reasoningEffort('content_effort').notNull().default('none'),
 
     /**
      * Model used for the review/orchestration phase (review agents + editor).
      */
     reviewModelId: varchar('review_model_id', { length: 120 })
         .notNull()
-        .default('claude-opus-5'),
+        .default('x-ai/grok-4.6'),
+
+    /** How hard the model runs the seven review agents should think. */
+    reviewEffort: reasoningEffort('review_effort').notNull().default('none'),
+
+    /**
+     * Model used for the orchestrator / editor pass that merges the review
+     * agents' findings back into the draft.
+     *
+     * `null` means "inherit `review_model_id`", which is what the pipeline did
+     * unconditionally before this column existed.
+     */
+    orchestratorModelId: varchar('orchestrator_model_id', { length: 120 }),
+
+    /** How hard the orchestrator should think. */
+    orchestratorEffort: reasoningEffort('orchestrator_effort')
+        .notNull()
+        .default('none'),
 
     /**
      * Model used for the metadata extraction phase (SEO title, meta
@@ -89,7 +131,32 @@ export const blogAiConfig = pgTable('blog_ai_config', {
      */
     extractionModelId: varchar('extraction_model_id', { length: 120 })
         .notNull()
-        .default('claude-opus-5'),
+        .default('x-ai/grok-4.6'),
+
+    /** How hard the model runs the metadata extraction phase should think. */
+    extractionEffort: reasoningEffort('extraction_effort')
+        .notNull()
+        .default('none'),
+
+    /**
+     * Model used for the featured-image prompt, concept and option-selection
+     * calls. `null` means "use each function's own code default".
+     *
+     * Distinct from `image_model_id`: that is the fal.ai model that *renders*
+     * the image, this is the language model that writes the prompt for it.
+     */
+    imagePromptModelId: varchar('image_prompt_model_id', { length: 120 }),
+
+    /** How hard the image-prompt model should think. */
+    imagePromptEffort: reasoningEffort('image_prompt_effort')
+        .notNull()
+        .default('none'),
+
+    /**
+     * Model used to write image alt text. `null` means "use the function's own
+     * code default". No effort slot — alt text is a one-line description.
+     */
+    imageAltModelId: varchar('image_alt_model_id', { length: 120 }),
 
     /**
      * Image generation model id — one of `IMAGE_MODELS` in the admin fal

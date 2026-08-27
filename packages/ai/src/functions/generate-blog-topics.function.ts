@@ -12,6 +12,8 @@ import {
 } from '../prompts/blog/generate-topics.prompt'
 import { generateText, NoObjectGeneratedError, Output } from 'ai'
 import { getModel } from '../models'
+import { reasoningProviderOptions } from '../models/reasoning.util'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 import {
     generateTopicsResponseSchema,
     salvageTopicsResponse,
@@ -115,6 +117,8 @@ export type GenerateBlogTopicsOptions = {
     procedureContext?: ProcedureContext
     /** Model ID to use */
     modelId?: string
+    /** How hard the ideation model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 /**
@@ -158,6 +162,7 @@ export async function generateBlogTopics(
         contextHints,
         procedureContext,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const prompt = getGenerateTopicsPrompt({
@@ -189,6 +194,7 @@ export async function generateBlogTopics(
                 instructions: GENERATE_TOPICS_SYSTEM_PROMPT,
                 prompt,
                 maxOutputTokens: 16000,
+                ...reasoningProviderOptions(reasoningEffort),
             })
 
             return result.output

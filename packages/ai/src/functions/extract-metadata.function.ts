@@ -9,6 +9,11 @@
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import {
+    readOpenRouterCost,
+    type WithCallCost,
+} from '../models/openrouter-usage.util'
 
 /**
  * Extracted metadata schema
@@ -66,6 +71,8 @@ export type ExtractMetadataOptions = {
     title?: string
     /** Model ID to use (default: gpt-4.1-mini) */
     modelId?: string
+    /** How hard the model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 /**
@@ -126,12 +133,13 @@ Extract optimized metadata from blog post content:
  */
 export async function extractMetadata(
     options: ExtractMetadataOptions
-): Promise<ContentMetadata> {
+): Promise<WithCallCost<ContentMetadata>> {
     const {
         content,
         primaryKeyword,
         title,
         modelId = 'x-ai/grok-4.6',
+        reasoningEffort,
     } = options
 
     // Calculate word count for reading time hint
@@ -154,10 +162,11 @@ Extract the metadata following the guidelines. Ensure the meta title is 50-60 ch
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: contentMetadataSchema,
         system: METADATA_EXTRACTOR_SYSTEM_PROMPT,
         prompt,
     })
 
-    return result.object
+    return { ...result.object, ...readOpenRouterCost(result.providerMetadata) }
 }

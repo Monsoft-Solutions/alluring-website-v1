@@ -205,6 +205,19 @@ export {
     type ModelTier,
 } from './models'
 
+// Reasoning effort (epic #194)
+export {
+    REASONING_EFFORTS,
+    DEFAULT_REASONING_EFFORT,
+    isReasoningEffort,
+    reasoningProviderOptions,
+    readOpenRouterUsage,
+    readOpenRouterCost,
+    sumCosts,
+    type ReasoningEffort,
+    type OpenRouterCallUsage,
+} from './models'
+
 // Prompt templates
 export {
     INTENT_CLASSIFICATION_SYSTEM_PROMPT,

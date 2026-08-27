@@ -12,6 +12,8 @@
 import { generateText, isStepCount } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 import { validateGeneratedMdx } from '../functions/validate-generated-mdx.function'
 import { telemetryConfig } from '../telemetry'
 import type {
@@ -20,6 +22,7 @@ import type {
     ReviewIssue,
 } from './types.agent'
 import { createThinkTool } from '../tools'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for orchestration (using a more capable model for complex revisions)
@@ -47,6 +50,8 @@ export type OrchestratorOptions = {
     reviews: AgentReview[]
     /** Model ID to use */
     modelId?: string
+    /** How hard the orchestrator should think (default: none) */
+    reasoningEffort?: ReasoningEffort
     /** Target audience description */
     targetAudience?: string
     /** Content type (tutorial, guide, comparison, faq, case-study) */
@@ -487,6 +492,7 @@ export async function runOrchestrator(
         secondaryKeywords,
         reviews,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
         targetAudience,
         contentType,
         estimatedWordCount,
@@ -541,6 +547,7 @@ export async function runOrchestrator(
         instructions: systemPrompt,
         prompt: userPrompt,
         maxOutputTokens: 16000,
+        ...reasoningProviderOptions(reasoningEffort),
         telemetry: telemetryConfig,
         tools: {
             think: createThinkTool(),
@@ -582,5 +589,6 @@ export async function runOrchestrator(
         agentReviews: reviews,
         processingTimeMs,
         sanitizationActions: validation.actions,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

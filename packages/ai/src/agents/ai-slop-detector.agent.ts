@@ -19,6 +19,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for AI slop detection
@@ -148,7 +149,12 @@ export async function runAISlopDetector(
     options: ReviewAgentOptions
 ): Promise<AgentReview> {
     const startTime = Date.now()
-    const { content, title, modelId = DEFAULT_MODEL_ID } = options
+    const {
+        content,
+        title,
+        modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
+    } = options
 
     // Pre-analyze using the banned phrases list
     const bannedPhrasesFound = findBannedPhrases(content)
@@ -194,6 +200,7 @@ Provide a comprehensive review with specific fixes.`
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: aiSlopDetectionSchema,
         system: AI_SLOP_DETECTION_SYSTEM_PROMPT,
         prompt,
@@ -248,5 +255,6 @@ Provide a comprehensive review with specific fixes.`
         summary: result.object.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

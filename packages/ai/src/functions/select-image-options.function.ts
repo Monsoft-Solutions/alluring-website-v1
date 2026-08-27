@@ -24,6 +24,11 @@ import {
     type ArtisticImageStyleId,
 } from '../constants/image-style.constant'
 import { coreGenerateObject } from '../core'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import {
+    readOpenRouterCost,
+    type WithCallCost,
+} from '../models/openrouter-usage.util'
 
 /**
  * Default model for option selection (fast and accurate)
@@ -58,6 +63,8 @@ export type SelectImageOptionsOptions = {
     summary?: string
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
+    /** How hard the model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
 }
 
 /**
@@ -94,17 +101,19 @@ export type { SelectedImageOptions, ModelProfile }
  */
 export async function selectImageOptions(
     options: SelectImageOptionsOptions
-): Promise<SelectedImageOptions> {
+): Promise<WithCallCost<SelectedImageOptions>> {
     const {
         title,
         content,
         primaryKeyword,
         summary,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     const result = (await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: aiSelectedImageOptionsSchema,
         system: SELECT_IMAGE_OPTIONS_SYSTEM,
         prompt: getSelectImageOptionsPrompt({
@@ -113,9 +122,15 @@ export async function selectImageOptions(
             primaryKeyword,
             summary,
         }),
-    })) as { object: SelectedImageOptions }
+    })) as {
+        object: SelectedImageOptions
+        providerMetadata?: unknown
+    }
 
-    return normalizeToArtisticPath(result.object)
+    return {
+        ...normalizeToArtisticPath(result.object),
+        ...readOpenRouterCost(result.providerMetadata),
+    }
 }
 
 /**

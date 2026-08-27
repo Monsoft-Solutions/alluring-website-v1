@@ -12,6 +12,7 @@ import type { z } from 'zod'
 import type { CoreStreamObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -47,6 +48,7 @@ export function coreStreamObject<TSchema extends z.ZodType>(
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature,
+        reasoningEffort,
         schema,
         system,
         prompt,
@@ -58,6 +60,7 @@ export function coreStreamObject<TSchema extends z.ZodType>(
         instructions: system,
         prompt,
         ...(temperature !== undefined && { temperature }),
+        ...reasoningProviderOptions(reasoningEffort),
         maxOutputTokens: 16000,
         telemetry: telemetryConfig,
     })

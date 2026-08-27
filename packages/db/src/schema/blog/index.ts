@@ -56,6 +56,7 @@ export {
     autopilotMode,
     autopilotCadence,
     refreshMode,
+    reasoningEffort,
     blogAiConfig,
     type BlogAiConfig,
     type InsertBlogAiConfig,

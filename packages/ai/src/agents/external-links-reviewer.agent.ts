@@ -20,6 +20,7 @@ import type {
     ReviewAgentOptions,
     ReviewIssue,
 } from './types.agent'
+import { readOpenRouterCost } from '../models/openrouter-usage.util'
 
 /**
  * Default model for external links review
@@ -220,6 +221,7 @@ export async function runExternalLinksReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
+        reasoningEffort,
     } = options
 
     // Extract existing external links
@@ -284,6 +286,7 @@ Analyze the external linking quality and provide your review.`
 
     const result = await coreGenerateObject({
         modelId,
+        reasoningEffort,
         schema: externalLinksReviewSchema,
         system: EXTERNAL_LINKS_REVIEW_SYSTEM_PROMPT,
         prompt,
@@ -298,5 +301,6 @@ Analyze the external linking quality and provide your review.`
         summary: result.object.summary,
         processingTimeMs,
         modelId,
+        ...readOpenRouterCost(result.providerMetadata),
     }
 }

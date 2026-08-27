@@ -12,6 +12,7 @@ import type { z } from 'zod'
 import type { CoreGenerateObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -64,6 +65,7 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
         temperature,
+        reasoningEffort,
         schema,
         system,
     } = options
@@ -80,6 +82,7 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
                 ? { prompt: options.prompt }
                 : { messages: options.messages }),
             ...(temperature !== undefined && { temperature }),
+            ...reasoningProviderOptions(reasoningEffort),
             maxOutputTokens: 16000,
             telemetry: telemetryConfig,
         })

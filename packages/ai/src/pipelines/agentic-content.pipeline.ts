@@ -24,6 +24,7 @@ import {
     type OrchestratorResult,
 } from '../agents'
 import { getModel } from '../models/model-resolver.util'
+import { reasoningProviderOptions } from '../models/reasoning.util'
 import { validateGeneratedMdx } from '../functions/validate-generated-mdx.function'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import {
@@ -49,6 +50,7 @@ import {
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
 import type { AgenticContentPipelineOptions } from '../types/pipeline/agentic-content-pipeline-options.type'
 import type { AgenticContentPipelineResult } from '../types/pipeline/agentic-content-pipeline-result.type'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 
 /**
  * Default configuration
@@ -89,6 +91,7 @@ async function runGenerationPhase(
         idea,
         outline,
         contentModelId = DEFAULTS.CONTENT_MODEL,
+        contentEffort,
         maxSteps = DEFAULTS.MAX_STEPS,
     } = options
 
@@ -140,6 +143,7 @@ async function runGenerationPhase(
         maxOutputTokens: 16000,
         tools,
         stopWhen: isStepCount(maxSteps),
+        ...reasoningProviderOptions(contentEffort),
         telemetry: telemetryConfig,
         onStepEnd: (event) => {
             stepCount++
@@ -251,6 +255,7 @@ async function runReviewPhase(
     primaryKeyword?: string,
     secondaryKeywords?: string[],
     reviewModelId?: string,
+    reviewEffort?: ReasoningEffort,
     onProgress?: AgenticPipelineProgressCallback
 ): Promise<{ reviews: AgentReview[]; timeMs: number }> {
     const startTime = Date.now()
@@ -263,6 +268,7 @@ async function runReviewPhase(
         primaryKeyword,
         secondaryKeywords,
         modelId: reviewModelId,
+        reasoningEffort: reviewEffort,
     }
 
     // Run all 7 reviews in parallel
@@ -436,6 +442,8 @@ type OrchestrationPhaseOptions = {
     reviews: AgentReview[]
     /** Model for the orchestrator (defaults to the agent's own) */
     modelId?: string
+    /** How hard the orchestrator should think (default: none) */
+    reasoningEffort?: ReasoningEffort
     onProgress?: AgenticPipelineProgressCallback
 }
 
@@ -458,6 +466,7 @@ async function runOrchestrationPhase(
         estimatedWordCount,
         reviews,
         modelId,
+        reasoningEffort,
         onProgress,
     } = options
 
@@ -474,6 +483,7 @@ async function runOrchestrationPhase(
         estimatedWordCount,
         reviews,
         modelId,
+        reasoningEffort,
     })
 
     const timeMs = Date.now() - startTime
@@ -663,6 +673,7 @@ export async function runAgenticContentPipeline(
                 idea.primaryKeyword,
                 idea.secondaryKeywords,
                 options.reviewModelId,
+                options.reviewEffort,
                 onProgress
             )
             reviews = reviewResult.reviews
@@ -679,8 +690,11 @@ export async function runAgenticContentPipeline(
                     contentType: idea.contentType,
                     estimatedWordCount: idea.estimatedWordCount,
                     reviews,
-                    // Configured review model drives the orchestrator too
+                    // This entry point has no separate orchestrator slot — the
+                    // Kanban path (review-phase.runner) is where the two are
+                    // configured independently (epic #194).
                     modelId: options.reviewModelId,
+                    reasoningEffort: options.reviewEffort,
                     onProgress,
                 })
                 orchestratorResult = orchestrationResult.result

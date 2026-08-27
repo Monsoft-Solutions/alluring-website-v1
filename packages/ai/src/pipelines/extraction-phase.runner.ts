@@ -18,6 +18,8 @@ import {
     serializeQuickAnswer,
 } from '../functions/extract-quick-answer.function'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import { sumCosts } from '../models/openrouter-usage.util'
 
 /**
  * Options for running the extraction phase
@@ -31,6 +33,8 @@ export type ExtractionPhaseOptions = {
     primaryKeyword?: string
     /** Model for metadata + FAQ extraction (defaults per function) */
     modelId?: string
+    /** How hard the extraction model should think (default: none) */
+    reasoningEffort?: ReasoningEffort
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -71,6 +75,11 @@ export type ExtractionPhaseResult = {
     timeMs: number
     /** Model the extraction ran on (resolved after defaults) */
     modelId: string
+    /**
+     * What OpenRouter billed for this phase in total, in USD — metadata, FAQs
+     * and the Quick Answer. Absent when nothing reported usage.
+     */
+    costUsd?: number
 }
 
 /**
@@ -109,7 +118,8 @@ export async function runExtractionPhase(
     options: ExtractionPhaseOptions
 ): Promise<ExtractionPhaseResult> {
     const startTime = Date.now()
-    const { content, title, primaryKeyword, onProgress } = options
+    const { content, title, primaryKeyword, reasoningEffort, onProgress } =
+        options
     const modelId = options.modelId ?? DEFAULT_EXTRACTION_MODEL
 
     try {
@@ -126,17 +136,20 @@ export async function runExtractionPhase(
                 primaryKeyword: primaryKeyword || title,
                 title,
                 modelId,
+                reasoningEffort,
             }),
             extractFaqs({
                 content,
                 primaryKeyword: primaryKeyword || title,
                 modelId,
+                reasoningEffort,
             }),
             extractQuickAnswer({
                 content,
                 title,
                 primaryKeyword,
                 modelId,
+                reasoningEffort,
             }).then(
                 (value) => ({ ok: true as const, value }),
                 (error: unknown) => ({ ok: false as const, error })
@@ -182,6 +195,13 @@ export async function runExtractionPhase(
             quickAnswer,
             timeMs,
             modelId,
+            costUsd: sumCosts([
+                metadata.costUsd,
+                faqResult.costUsd,
+                quickAnswerOutcome.ok
+                    ? quickAnswerOutcome.value.costUsd
+                    : undefined,
+            ]),
         }
     } catch (error) {
         const errorMessage =

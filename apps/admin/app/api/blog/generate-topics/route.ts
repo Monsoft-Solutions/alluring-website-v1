@@ -105,6 +105,7 @@ export async function POST(request: NextRequest) {
             procedureContext,
             gscSeeds,
             modelId: aiConfig.ideationModelId,
+            reasoningEffort: aiConfig.ideationEffort,
         })
 
         // Ideation gate: every candidate gets a new/refresh/reject verdict

@@ -8,6 +8,8 @@
 import type { z } from 'zod'
 import type { ModelMessage as AISDKCoreMessage } from 'ai'
 
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+
 /**
  * Tool definition for AI agents
  * This is our simplified tool interface that gets converted to AI SDK format
@@ -77,6 +79,14 @@ export type CoreBaseOptions = {
      * ignore or reject it outright.
      */
     temperature?: number
+    /**
+     * How hard the model should think before answering.
+     *
+     * Opt-in in the same way as `temperature`: `none` and `undefined` emit no
+     * provider option at all, so a model keeps its default thinking behaviour.
+     * Set per phase from `blog_ai_config` (epic #194).
+     */
+    reasoningEffort?: ReasoningEffort
 }
 
 /**

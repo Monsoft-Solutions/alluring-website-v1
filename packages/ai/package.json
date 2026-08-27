@@ -84,6 +84,21 @@
             "types": "./dist/data/internal-pages.data.d.ts",
             "import": "./dist/data/internal-pages.data.js",
             "default": "./dist/data/internal-pages.data.js"
+        },
+        "./models/openrouter-catalog": {
+            "types": "./dist/models/openrouter-catalog.d.ts",
+            "import": "./dist/models/openrouter-catalog.js",
+            "default": "./dist/models/openrouter-catalog.js"
+        },
+        "./models/reasoning-effort.constant": {
+            "types": "./dist/models/reasoning-effort.constant.d.ts",
+            "import": "./dist/models/reasoning-effort.constant.js",
+            "default": "./dist/models/reasoning-effort.constant.js"
+        },
+        "./data/openrouter-catalog-fallback.data": {
+            "types": "./dist/data/openrouter-catalog-fallback.data.d.ts",
+            "import": "./dist/data/openrouter-catalog-fallback.data.js",
+            "default": "./dist/data/openrouter-catalog-fallback.data.js"
         }
     },
     "scripts": {

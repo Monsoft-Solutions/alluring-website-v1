@@ -27,6 +27,8 @@ import {
 } from '../constants/image-style.constant'
 import { runNoPeopleQaGate, type QaGateImage } from './no-people-image-qa.gate'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
+import type { ReasoningEffort } from '../models/reasoning-effort.constant'
+import { sumCosts } from '../models/openrouter-usage.util'
 
 /**
  * Prompt guidelines for the art-direction modifiers the artistic path still
@@ -128,6 +130,13 @@ export type ImageGenerationPhaseOptions = {
      */
     imageModel?: ArtisticImagePreferredModel
     /**
+     * Model that writes the featured-image concept and picks the style
+     * options. Omit to use each function's own code default.
+     */
+    promptModelId?: string
+    /** How hard the image-prompt model should think (default: none) */
+    promptEffort?: ReasoningEffort
+    /**
      * Pin the artistic preset instead of letting the AI pick one per topic.
      *
      * The AI still selects the lighting / palette / composition modifiers, so
@@ -170,6 +179,12 @@ export type ImageGenerationPhaseResult = {
     peopleDetected?: boolean
     /** True when the QA gate regenerated the image */
     qaRegenerated?: boolean
+    /**
+     * What OpenRouter billed for this phase's *language* model calls, in USD —
+     * the option selection plus the art-direction brief. Does not include the
+     * fal.ai render, which bills separately and is not an OpenRouter call.
+     */
+    costUsd?: number
     /** Processing time in ms */
     timeMs: number
 }
@@ -262,6 +277,8 @@ export async function runImageGenerationPhase(
         aiSummary,
         imageAdapter,
         imageModel,
+        promptModelId,
+        promptEffort,
         forcedArtisticStyleId,
         onProgress,
     } = options
@@ -296,6 +313,8 @@ export async function runImageGenerationPhase(
             content,
             primaryKeyword,
             summary,
+            ...(promptModelId ? { modelId: promptModelId } : {}),
+            reasoningEffort: promptEffort,
         })
 
         // A pinned preset wins over the AI selection. The selection is already
@@ -333,6 +352,8 @@ export async function runImageGenerationPhase(
                 selectedOptions.composition
             ),
             keywords: primaryKeyword,
+            ...(promptModelId ? { modelId: promptModelId } : {}),
+            reasoningEffort: promptEffort,
         })
 
         const baseResult: ImageGenerationPhaseResult = {
@@ -344,6 +365,7 @@ export async function runImageGenerationPhase(
             aspectRatio,
             imageModel: renderModel,
             descriptor,
+            costUsd: sumCosts([selectedOptions.costUsd, promptResult.costUsd]),
             timeMs: 0,
         }
 
