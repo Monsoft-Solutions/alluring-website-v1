@@ -17,9 +17,11 @@
  * outcome. Keep it that way — see the disclosure at the foot of the section.
  */
 import { ShieldCheck, Star, Phone } from 'lucide-react'
+import { preload } from 'react-dom'
 
 import { TrackedLink } from '@/components/analytics/tracked-link.component'
 import { HeroConsultationForm } from '@/components/home/hero-consultation-form.component'
+import { HeroVideo } from '@/components/home/hero-video.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 /**
@@ -31,6 +33,9 @@ import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
  * dissolving the final close-up back to that opening frame. 1.34 MB / 1.56 MB.
  * The posters carry each clip's first frame so the hero paints before the
  * video buffers.
+ *
+ * Exactly one cut and one poster are fetched per visit — see the video block
+ * below and `hero-video.component.tsx` for why that took work.
  */
 const HERO_VIDEO_DESKTOP =
     'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-desktop.mp4'
@@ -49,6 +54,30 @@ const HERO_TRUST_POINTS = [
 ] as const
 
 export const Hero = () => {
+    // Preload the poster this viewport will actually use, at high priority, in
+    // <head> ahead of the stylesheets.
+    //
+    // Range syntax, on the same 48rem line as the <picture> below and as
+    // Tailwind's `md:`. The `max-width: 767.98px` / `min-width: 768px` idiom
+    // would be wrong twice over: it leaves a gap that fractional viewport widths
+    // and non-integer zoom land in — matching neither query and preloading
+    // nothing — and 768px is not where `md:` flips unless the browser default
+    // font size is exactly 16px.
+    //
+    // Via react-dom's preload() rather than a rendered <link>: React registers a
+    // rendered preload element in its own resource table AND emits the element,
+    // so writing the markup by hand puts the same tag in <head> twice.
+    preload(HERO_POSTER_MOBILE, {
+        as: 'image',
+        media: '(width < 48rem)',
+        fetchPriority: 'high',
+    })
+    preload(HERO_POSTER_DESKTOP, {
+        as: 'image',
+        media: '(width >= 48rem)',
+        fetchPriority: 'high',
+    })
+
     return (
         <section
             className='relative w-full overflow-hidden bg-stone-950'
@@ -65,30 +94,31 @@ export const Hero = () => {
                 section's own stone-950 takes over, blended by the gradient at
                 the foot of this block. */}
             <div className='absolute inset-x-0 top-0 z-0 h-screen md:h-full'>
-                {/* Desktop — landscape cut, subject framed right of centre */}
-                <video
-                    src={HERO_VIDEO_DESKTOP}
-                    poster={HERO_POSTER_DESKTOP}
-                    className='pointer-events-none hidden h-full w-full object-cover md:block'
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload='metadata'
-                    aria-label='Lifestyle brand video — Alluring Plastic Surgery, Miami'
-                />
+                {/* The poster is what actually paints the hero, so it is a real
+                    <img> at high priority rather than a video `poster`
+                    attribute — the attribute cannot carry fetchpriority, and
+                    carrying it on two elements is what fetched two posters.
+                    <picture> lets the browser resolve the cut itself, in the
+                    server-rendered HTML, with no JavaScript. */}
+                <picture>
+                    <source
+                        media='(width >= 48rem)'
+                        srcSet={HERO_POSTER_DESKTOP}
+                    />
+                    <img
+                        src={HERO_POSTER_MOBILE}
+                        alt=''
+                        fetchPriority='high'
+                        decoding='async'
+                        className='pointer-events-none h-full w-full object-cover'
+                    />
+                </picture>
 
-                {/* Mobile — vertical cut */}
-                <video
-                    src={HERO_VIDEO_MOBILE}
-                    poster={HERO_POSTER_MOBILE}
-                    className='pointer-events-none h-full w-full object-cover md:hidden'
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload='metadata'
-                    aria-label='Lifestyle brand video — Alluring Plastic Surgery, Miami'
+                {/* The film itself — one element, attached after paint. */}
+                <HeroVideo
+                    desktopSrc={HERO_VIDEO_DESKTOP}
+                    mobileSrc={HERO_VIDEO_MOBILE}
+                    label='Lifestyle brand video — Alluring Plastic Surgery, Miami'
                 />
 
                 {/* Legibility scrims. Heavier on mobile, where copy and form
