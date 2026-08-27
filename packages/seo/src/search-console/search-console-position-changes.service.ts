@@ -3,12 +3,12 @@
  *
  * Tracks position changes (winners and losers) between periods.
  *
- * @module @/lib/services/search-console/google-search-console-position-changes
+ * @module @workspace/seo/search-console — position-changes
  */
-import type { PositionChange } from '@/lib/types/search-console/search-console.type'
+import type { PositionChange } from './search-console.type.js'
 
-import { isSearchConsoleConfigured } from './google-search-console-client.service'
-import { fetchSearchAnalytics } from './google-search-console-utils.service'
+import { isSearchConsoleConfigured } from './search-console-client.service.js'
+import { fetchSearchAnalytics } from './search-console-analytics.util.js'
 
 /**
  * Get position changes between two periods

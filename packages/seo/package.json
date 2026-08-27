@@ -20,6 +20,11 @@
             "import": "./dist/schemas/index.js",
             "default": "./dist/schemas/index.js"
         },
+        "./search-console": {
+            "types": "./dist/search-console/index.d.ts",
+            "import": "./dist/search-console/index.js",
+            "default": "./dist/search-console/index.js"
+        },
         "./types": {
             "types": "./dist/types/index.d.ts",
             "import": "./dist/types/index.js",
@@ -32,13 +37,16 @@
         }
     },
     "scripts": {
-        "build": "tsc",
+        "build": "tsc -p tsconfig.build.json",
         "lint": "eslint . --ext .ts,.tsx",
         "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest",
         "format": "pnpm -w format"
     },
     "dependencies": {
         "@t3-oss/env-core": "^0.13.8",
+        "googleapis": "^169.0.0",
         "schema-dts": "^1.1.5",
         "zod": "^4.3.5"
     },
@@ -51,6 +59,7 @@
         "@workspace/eslint-config": "workspace:*",
         "@workspace/typescript-config": "workspace:*",
         "next": "16.0.10",
-        "typescript": "^5.9.3"
+        "typescript": "^5.9.3",
+        "vitest": "^4.1.5"
     }
 }

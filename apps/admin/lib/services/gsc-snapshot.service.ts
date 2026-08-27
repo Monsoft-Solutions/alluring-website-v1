@@ -26,9 +26,9 @@ import type { InsertGscQueryPageDaily } from '@workspace/db/schema/gsc'
 import {
     fetchAllSearchAnalytics,
     GSC_MAX_ROW_LIMIT,
-} from '@/lib/services/search-console/google-search-console-utils.service'
-import { isSearchConsoleConfigured } from '@/lib/services/search-console/google-search-console-client.service'
-import { withGscRetry } from '@/lib/services/search-console/gsc-retry.util'
+    isSearchConsoleConfigured,
+    withGscRetry,
+} from '@workspace/seo/search-console'
 import {
     createBlogPostUrlResolver,
     type BlogPostUrlResolver,

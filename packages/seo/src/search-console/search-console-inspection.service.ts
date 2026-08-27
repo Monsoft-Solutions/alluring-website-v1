@@ -3,15 +3,15 @@
  *
  * Inspects URLs for indexing status and mobile usability.
  *
- * @module @/lib/services/search-console/google-search-console-inspection
+ * @module @workspace/seo/search-console — inspection
  */
-import type { UrlInspectionResult } from '@/lib/types/search-console/search-console.type'
+import type { UrlInspectionResult } from './search-console.type.js'
 
 import {
     isSearchConsoleConfigured,
     getSiteUrl,
     getSearchConsoleClient,
-} from './google-search-console-client.service'
+} from './search-console-client.service.js'
 
 /**
  * Inspect a URL using the URL Inspection API

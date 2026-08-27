@@ -12,6 +12,31 @@ This package provides a comprehensive SEO solution for Next.js 15 marketing webs
 - Utilities for generating metadata
 - Support for Open Graph and Twitter Cards
 - JSON-LD structured data support (coming soon)
+- A Google Search Console data layer (`@workspace/seo/search-console`)
+
+## Search Console
+
+`@workspace/seo/search-console` wraps the Search Console API behind
+task-shaped functions — `getTopQueries`, `getQueriesForPage`, `getPagesForQuery`
+(cannibalization), `getContentOpportunities`, `getContentGaps`,
+`getPositionChanges`, `inspectUrl` and friends — over the `fetchSearchAnalytics`
+primitive.
+
+It authenticates with a Google service account (`GOOGLE_CLIENT_EMAIL`,
+`GOOGLE_PRIVATE_KEY`, `GOOGLE_SEARCH_CONSOLE_SITE_URL`) and depends on nothing
+from Next.js, so it runs equally well in a route handler, a script, or a bare
+Node process. Read functions return empty data rather than throwing when
+credentials are absent; call `isSearchConsoleConfigured()` to tell "no data"
+from "not wired up."
+
+Two consumers share it: the admin app's `/api/admin/search-console/*` routes and
+the `@workspace/mcp-gsc` server that exposes the same data to Claude agents.
+
+One capability stays outside the package: classifying a page URL into a content
+type accurately needs the published blog posts from Postgres, because pre-2026
+posts live at root level. `searchPages` therefore accepts a `classifyPages`
+injection — the admin app passes its database-backed classifier, and everyone
+else falls back to the bundled path heuristic.
 
 ## Installation
 

@@ -194,6 +194,26 @@ Skills: `worktree` (create) and `tackle` (work it). Scripts live in `scripts/`.
 
 ---
 
+## Search Console Data
+
+Live Google Search Console data is available to agents through the
+`search-console` MCP server — what the site ranks for, which queries drive which
+pages, where CTR is weak, which topics have demand but no page.
+
+**Use it before writing or revising content.** Keyword choices should come from
+what the site is actually found for, not from guesswork.
+`.claude/skills/search-console/SKILL.md` maps questions to tools.
+
+The data layer is shared: `packages/seo/src/search-console` backs both this
+server (`packages/mcp-gsc`) and the admin dashboard's
+`/api/admin/search-console/*` routes, so both read the same numbers. The tools
+are read-only.
+
+Requires `pnpm build` — `.mcp.json` runs the compiled output, and a stale
+`dist/` keeps serving old tools.
+
+---
+
 ## Specialized Agents
 
 | Task        | Agent                         |

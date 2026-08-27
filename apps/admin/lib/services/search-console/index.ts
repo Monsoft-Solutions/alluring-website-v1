@@ -1,20 +1,37 @@
 /**
  * Google Search Console Service
  *
- * Public API for Search Console data fetching.
- * Import from this file for all Search Console functionality.
+ * Public API for Search Console data fetching inside the admin app.
+ *
+ * The data layer itself lives in `@workspace/seo/search-console` so that the
+ * MCP server (`packages/mcp-gsc`) can expose the same numbers to Claude agents.
+ * What stays here is the part that needs the admin app's database and Next.js
+ * caching: sitemap-backed page classification.
  *
  * @module @/lib/services/search-console
  */
+import { searchPages as searchPagesUnclassified } from '@workspace/seo/search-console'
+import type {
+    SearchPagesOptions,
+    SearchPageWithType,
+} from '@workspace/seo/search-console'
 
-// Client & Configuration
-export { isSearchConsoleConfigured } from './google-search-console-client.service'
+import { classifyPagesBySitemap } from '@/lib/services/sitemap/url-registry.service'
 
-// Low-level fetch + shared utilities
 export {
+    // Client & configuration
+    isSearchConsoleConfigured,
+    getSiteUrl,
+    getSearchConsoleClient,
+    getSearchConsoleWriteClient,
+
+    // Low-level fetch + shared utilities
     fetchSearchAnalytics,
     fetchAllSearchAnalytics,
     getDateRange,
+    sortRowsByField,
+    sortByClicksDesc,
+    sortByDateAsc,
     DEFAULT_DAYS,
     DEFAULT_LIMIT,
     BENCHMARK_CTR,
@@ -22,27 +39,44 @@ export {
     GSC_MAX_ROW_LIMIT,
     type SearchAnalyticsRow,
     type SearchAnalyticsOptions,
-} from './google-search-console-utils.service'
 
-// Summary
-export { getSearchConsoleSummary } from './google-search-console-summary.service'
+    // Retry
+    isTransientGscError,
+    withGscRetry,
 
-// Queries
-export {
+    // Summary
+    getSearchConsoleSummary,
+
+    // Queries
     getTopQueries,
     getQueriesByTerm,
     getQueryTrend,
-} from './google-search-console-queries.service'
 
-// Pages
-export {
+    // Pages
     getTopPages,
     getQueriesForPage,
     getPagesForQuery,
-    searchPages,
     getPageTrend,
     extractPath,
-} from './google-search-console-pages.service'
+
+    // Trends
+    getPerformanceTrend,
+
+    // Opportunities
+    getContentOpportunities,
+    getContentGaps,
+
+    // Position Changes
+    getPositionChanges,
+
+    // Sitemaps
+    getSitemaps,
+    submitSitemap,
+
+    // URL Inspection
+    inspectUrl,
+    inspectUrls,
+} from '@workspace/seo/search-console'
 
 // Page Classification
 export {
@@ -50,26 +84,18 @@ export {
     classifyPagesBySitemap,
 } from '@/lib/services/sitemap/url-registry.service'
 
-// Trends
-export { getPerformanceTrend } from './google-search-console-trends.service'
-
-// Opportunities
-export {
-    getContentOpportunities,
-    getContentGaps,
-} from './google-search-console-opportunities.service'
-
-// Position Changes
-export { getPositionChanges } from './google-search-console-position-changes.service'
-
-// Sitemaps
-export {
-    getSitemaps,
-    submitSitemap,
-} from './google-search-console-sitemaps.service'
-
-// URL Inspection
-export {
-    inspectUrl,
-    inspectUrls,
-} from './google-search-console-inspection.service'
+/**
+ * Search pages with sitemap-backed page-type classification.
+ *
+ * Wraps the shared `searchPages` with the admin app's database-backed
+ * classifier, which is the only one that recognises pre-2026 blog posts living
+ * at root level (e.g. /best-plastic-surgeon-miami).
+ */
+export async function searchPages(
+    options: Omit<SearchPagesOptions, 'classifyPages'> = {}
+): Promise<SearchPageWithType[]> {
+    return searchPagesUnclassified({
+        ...options,
+        classifyPages: classifyPagesBySitemap,
+    })
+}

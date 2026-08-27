@@ -3,17 +3,17 @@
  *
  * Shared utilities for date calculations, sorting, and data fetching.
  *
- * @module @/lib/services/search-console/google-search-console-utils
+ * @module @workspace/seo/search-console — utils
  */
 import type { searchconsole_v1 } from 'googleapis'
 
-import type { SortDirection } from '@/lib/types/shared/sorting.type'
-import type { SortField } from '@/lib/types/search-console/search-console.type'
+import type { SortDirection } from './search-console.type.js'
+import type { SortField } from './search-console.type.js'
 
 import {
     getSearchConsoleClient,
     getSiteUrl,
-} from './google-search-console-client.service'
+} from './search-console-client.service.js'
 
 /** Default number of days for queries */
 export const DEFAULT_DAYS = 28

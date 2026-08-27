@@ -9,7 +9,7 @@
  * Only transient failures retry (429 and 5xx); anything else — bad request,
  * auth, quota-exceeded-for-the-day — rethrows immediately.
  *
- * @module @/lib/services/search-console/gsc-retry.util
+ * @module @workspace/seo/search-console — retry
  */
 
 /** Backoff delays between attempts (attempt N waits RETRY_DELAYS_MS[N-1]). */

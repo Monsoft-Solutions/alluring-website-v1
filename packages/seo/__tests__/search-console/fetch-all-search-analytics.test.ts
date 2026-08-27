@@ -3,7 +3,7 @@
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { SearchAnalyticsRow } from '@/lib/services/search-console/google-search-console-utils.service'
+import type { SearchAnalyticsRow } from '../../src/search-console/search-console-analytics.util.js'
 
 type QueryCall = {
     siteUrl: string
@@ -18,21 +18,18 @@ const querySpy =
         (call: QueryCall) => Promise<{ data: { rows: SearchAnalyticsRow[] } }>
     >()
 
-vi.mock(
-    '@/lib/services/search-console/google-search-console-client.service',
-    () => ({
-        getSearchConsoleClient: () => ({
-            searchanalytics: { query: querySpy },
-        }),
-        getSiteUrl: () => 'https://example.com',
-        isSearchConsoleConfigured: () => true,
-    })
-)
+vi.mock('../../src/search-console/search-console-client.service.js', () => ({
+    getSearchConsoleClient: () => ({
+        searchanalytics: { query: querySpy },
+    }),
+    getSiteUrl: () => 'https://example.com',
+    isSearchConsoleConfigured: () => true,
+}))
 
 import {
     fetchAllSearchAnalytics,
     fetchSearchAnalytics,
-} from '@/lib/services/search-console/google-search-console-utils.service'
+} from '../../src/search-console/search-console-analytics.util.js'
 
 /** Build a page of n dummy rows */
 function rows(n: number, offset = 0) {

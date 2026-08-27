@@ -3,16 +3,16 @@
  *
  * Manages sitemap submissions and status.
  *
- * @module @/lib/services/search-console/google-search-console-sitemaps
+ * @module @workspace/seo/search-console — sitemaps
  */
-import type { SitemapInfo } from '@/lib/types/search-console/search-console.type'
+import type { SitemapInfo } from './search-console.type.js'
 
 import {
     isSearchConsoleConfigured,
     getSearchConsoleClient,
     getSearchConsoleWriteClient,
     getSiteUrl,
-} from './google-search-console-client.service'
+} from './search-console-client.service.js'
 
 /**
  * Get submitted sitemaps and their status
