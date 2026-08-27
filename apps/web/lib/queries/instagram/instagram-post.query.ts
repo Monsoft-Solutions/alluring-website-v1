@@ -138,29 +138,6 @@ export function getInstagramPostByCode(
 }
 
 /**
- * Get all Instagram post codes for static generation
- *
- * @returns Array of post codes
- */
-export async function getAllInstagramPostCodes(): Promise<string[]> {
-    return unstable_cache(
-        async () => {
-            const posts = await db
-                .select({ code: instagramPost.code })
-                .from(instagramPost)
-                .orderBy(desc(instagramPost.takenAt))
-
-            return posts.map((p) => p.code)
-        },
-        ['instagram-all-codes'],
-        {
-            tags: [CACHE_TAGS.INSTAGRAM_POSTS],
-            revalidate: CACHE_TTL,
-        }
-    )()
-}
-
-/**
  * Get more Instagram posts for related content
  * Excludes the specified post ID and returns most recent posts
  *

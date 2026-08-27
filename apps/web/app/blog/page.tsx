@@ -13,6 +13,7 @@
  */
 import { Award, Building2, Shield, Users } from 'lucide-react'
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import {
     BreadcrumbSchema,
@@ -22,7 +23,10 @@ import {
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogHeroSection } from '@/components/blog/blog-hero-section.component'
-import { BlogSearch } from '@/components/blog/blog-search.component'
+import {
+    BlogSearch,
+    BlogSearchFallback,
+} from '@/components/blog/blog-search.component'
 import { CategoryPills } from '@/components/blog/category-pills.component'
 import { FeaturedPost } from '@/components/blog/featured-post.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
@@ -99,16 +103,12 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     },
 })
 
-type BlogPageProps = {
-    searchParams?: Promise<{ q?: string }>
-}
+// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// is the safety net, not the mechanism.
+export const revalidate = 3600
 
-export default async function BlogPage({ searchParams }: BlogPageProps) {
+export default async function BlogPage() {
     const pageSize = 12
-
-    // Extract search query from URL params
-    const params = await searchParams
-    const searchQuery = params?.q
 
     // Fetch initial posts, categories, popular posts, and search index in parallel
     const [postsResult, categories, popularPosts, searchIndex] =
@@ -205,10 +205,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                                 <CategoryPills categories={categories} />
                             </div>
                             <div className='shrink-0 self-start sm:self-center'>
-                                <BlogSearch
-                                    searchIndex={searchIndex}
-                                    initialQuery={searchQuery}
-                                />
+                                {/* useSearchParams needs a Suspense boundary so
+                                    the rest of the page still prerenders. */}
+                                <Suspense fallback={<BlogSearchFallback />}>
+                                    <BlogSearch searchIndex={searchIndex} />
+                                </Suspense>
                             </div>
                         </div>
                     </div>

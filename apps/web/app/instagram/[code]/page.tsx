@@ -26,10 +26,7 @@ import {
 import { InstagramPostContent } from '@/components/instagram/instagram-post-content.component'
 import { MorePostsSection } from '@/components/instagram/more-posts-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import {
-    getInstagramPostByCode,
-    getAllInstagramPostCodes,
-} from '@/lib/queries/instagram/instagram-post.query'
+import { getInstagramPostByCode } from '@/lib/queries/instagram/instagram-post.query'
 import { getInstagramProfile } from '@/lib/queries/instagram/instagram-profile.query'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
@@ -43,6 +40,11 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 type PageProps = {
     params: Promise<{ code: string }>
 }
+
+// These 805 permalinks are Instagram mirrors, not pages we write. Prerendering
+// them cost 170 MB of build output for ~60 clicks a quarter, so they render on
+// demand and cache from there instead. Revalidate every hour (3600 seconds).
+export const revalidate = 3600
 
 const getCachedPostByCode = cache(async (code: string) =>
     getInstagramPostByCode(code)
@@ -70,14 +72,6 @@ function generateFallbackTitle(post: {
               ? 'Gallery'
               : 'Photo'
     return `${prefix} ${monthYear}`
-}
-
-/**
- * Generate static params for all Instagram posts
- */
-export async function generateStaticParams() {
-    const codes = await getAllInstagramPostCodes()
-    return codes.map((code) => ({ code }))
 }
 
 /**

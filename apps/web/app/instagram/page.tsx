@@ -30,6 +30,13 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 /** Number of posts per page */
 const PAGE_SIZE = 24
 
+// Inert while this page awaits searchParams — ?page=N drives real server-side
+// pagination with rel prev/next, so the route renders per request and the
+// unstable_cache TTLs inside the Instagram queries are what keep it fast.
+// Declared so the route already has its window the day pagination moves to a
+// path segment and the page can go static.
+export const revalidate = 3600
+
 type PageProps = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }

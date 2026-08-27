@@ -14,6 +14,7 @@
  */
 import { Search, X, FileText } from 'lucide-react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 
 import { cn } from '@workspace/ui/lib/utils'
@@ -23,8 +24,6 @@ import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type BlogSearchProps = {
     searchIndex: SearchIndexPost[]
-    /** Optional initial query to pre-populate and open the search modal */
-    initialQuery?: string
 }
 
 /**
@@ -75,10 +74,37 @@ function highlightMatch(text: string, query: string): string {
     return result
 }
 
-export function BlogSearch({ searchIndex, initialQuery }: BlogSearchProps) {
+/**
+ * Trigger button styling, shared with BlogSearchFallback so the Suspense
+ * placeholder occupies exactly the same box and nothing shifts on hydration.
+ */
+const TRIGGER_CLASSNAME =
+    'group flex items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-500 shadow-sm transition-all duration-200 hover:border-stone-300 hover:bg-stone-50 hover:shadow-md sm:px-4 sm:py-2'
+
+/**
+ * Placeholder rendered into the static HTML while BlogSearch waits on
+ * useSearchParams. Same box as the real trigger, inert until hydration.
+ */
+export function BlogSearchFallback() {
+    return (
+        <div className={TRIGGER_CLASSNAME} aria-hidden='true'>
+            <Search className='h-5 w-5 text-stone-400 sm:h-4 sm:w-4' />
+            <span className='hidden sm:inline'>Search articles...</span>
+            <kbd className='text-gold-600 hidden rounded border border-stone-200 bg-stone-50 px-1.5 py-0.5 text-xs font-medium md:inline'>
+                ⌘K
+            </kbd>
+        </div>
+    )
+}
+
+export function BlogSearch({ searchIndex }: BlogSearchProps) {
+    // ?q= is read here rather than on the server so /blog stays a static
+    // prerender — the page no longer touches searchParams at all.
+    const initialQuery = useSearchParams().get('q') ?? ''
+
     // Initialize state based on whether we have an initial query
     const [isOpen, setIsOpen] = useState(!!initialQuery)
-    const [query, setQuery] = useState(initialQuery ?? '')
+    const [query, setQuery] = useState(initialQuery)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const inputRef = useRef<HTMLInputElement>(null)
     const resultsRef = useRef<HTMLDivElement>(null)
@@ -174,7 +200,7 @@ export function BlogSearch({ searchIndex, initialQuery }: BlogSearchProps) {
             {/* Search trigger button */}
             <button
                 onClick={openModal}
-                className='group flex items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-500 shadow-sm transition-all duration-200 hover:border-stone-300 hover:bg-stone-50 hover:shadow-md sm:px-4 sm:py-2'
+                className={TRIGGER_CLASSNAME}
                 aria-label='Open search'
             >
                 <Search className='h-5 w-5 text-stone-400 transition-colors group-hover:text-stone-600 sm:h-4 sm:w-4' />

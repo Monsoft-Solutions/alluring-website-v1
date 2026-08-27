@@ -11,7 +11,27 @@ const nextConfig = {
     // Acknowledge Turbopack usage (silences webpack plugin warnings)
     turbopack: {},
     transpilePackages: ['@workspace/ui', '@workspace/db', '@workspace/seo'],
+    experimental: {
+        // Prerendering the 155 blog posts (issue #198) turned the build into a
+        // heavy database client: every post fires its detail, related, adjacent
+        // and inline-image queries, across 17 export workers each holding up to
+        // 5 pooled connections (packages/db `max: 5`), all aimed at the Supabase
+        // transaction pooler. That produced an intermittent `read ETIMEDOUT`
+        // mid-prerender — one failed build in five, measured on this branch.
+        // Next defaults to no retries, so a single transient pooler timeout
+        // failed the whole deploy. Three attempts per page covers it.
+        staticGenerationRetryCount: 3,
+    },
     images: {
+        // AVIF first — it was off entirely, so every optimized image was served
+        // as WebP even to browsers that would take a smaller AVIF.
+        formats: ['image/avif', 'image/webp'],
+        // 1 day. The floor the optimizer applies to its own cache entries; the
+        // default let /public-sourced images (the logo on every page) revalidate
+        // constantly. Kept to a day rather than a month because /public filenames
+        // are not fingerprinted — an image replaced in place has to reach people
+        // within a working day, and a day already removes the per-view revalidation.
+        minimumCacheTTL: 86400,
         remotePatterns: [
             {
                 protocol: 'https',
@@ -34,6 +54,37 @@ const nextConfig = {
                 hostname: 'lh3.googleusercontent.com',
             },
         ],
+    },
+    async headers() {
+        return [
+            {
+                // Everything under /public. Next serves these with `max-age=0` by
+                // default, so the logo revalidated on every page view and the image
+                // optimizer inherited that floor as its own ceiling.
+                // A day of freshness plus a week of background revalidation, rather
+                // than a flat month: these filenames are NOT fingerprinted, so an
+                // asset replaced in place is the realistic failure mode and it must
+                // not be able to stick around for weeks.
+                source: '/:path((?:images|videos|fonts)/.*|logo\\.png|logo-dark\\.png|icon\\.png|favicon\\.png|apple-touch-icon\\.png|og-image\\.jpg)',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=86400, stale-while-revalidate=604800',
+                    },
+                ],
+            },
+            // No Cache-Control rule for marketing HTML. Issue #198 asked for one,
+            // on the strength of production answering `max-age=0, must-revalidate`.
+            // Measured against `next start`, Next already emits
+            // `s-maxage=60, stale-while-revalidate=31535940` for every prerendered
+            // route — a shared cache is being told exactly the right thing, and
+            // production's `must-revalidate` is Vercel rewriting the browser-facing
+            // copy while its own edge serves from the ISR cache. Any rule here
+            // REPLACES that header, dropping `s-maxage` for anyone running behind a
+            // CDN other than Vercel's, which is the opposite of the intent. The
+            // browser-side win was marginal and cost up to an hour of stale HTML
+            // after a publish or a copy correction.
+        ]
     },
     async redirects() {
         return [

@@ -26,6 +26,10 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 
+// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// is the safety net, not the mechanism.
+export const revalidate = 3600
+
 type PageProps = {
     params: Promise<{ slug: string }>
 }
