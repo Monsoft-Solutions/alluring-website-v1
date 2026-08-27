@@ -7,6 +7,9 @@
  */
 import { NextResponse } from 'next/server'
 
+// Revalidate every 3 hours (10800 seconds), matching sitemap/blog.xml
+export const revalidate = 10800
+
 import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import { procedures } from '@/lib/data/procedures.data'

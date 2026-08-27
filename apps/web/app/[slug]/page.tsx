@@ -24,6 +24,7 @@ import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
+import { getBlogPrerenderSlugs } from '@/lib/queries/blog/prerender-slugs.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { clampMetaDescription } from '@/lib/seo/meta-description.util'
@@ -41,14 +42,32 @@ const getCachedPostBySlug = cache(async (slug: string) =>
     getPublishedPostBySlug(slug)
 )
 
+// Posts published after the build still resolve on first hit, then stay cached.
+export const dynamicParams = true
+
+// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// is the safety net, not the mechanism.
+export const revalidate = 3600
+
 /**
- * Generate static params for surgeon pages
- * Blog posts are fetched dynamically from the database
+ * Prerender the surgeon pages plus every pre-2026 blog post, which is the set
+ * that lives at the root. Post-2025 posts are prerendered by
+ * app/blog/[slug]/page.tsx and only redirect from here.
  */
-export function generateStaticParams() {
-    return surgeons.map((surgeon) => ({
-        slug: surgeon.slug,
-    }))
+export async function generateStaticParams() {
+    const posts = await getBlogPrerenderSlugs()
+
+    // Deduped: post slugs come from the database and nothing stops one matching
+    // a surgeon slug (or another post's), which would put the same path in the
+    // params list twice.
+    const slugs = new Set([
+        ...surgeons.map((surgeon) => surgeon.slug),
+        ...posts
+            .filter((post) => !usesBlogPrefix(post.publishedAt))
+            .map((post) => post.slug),
+    ])
+
+    return [...slugs].map((slug) => ({ slug }))
 }
 
 /**

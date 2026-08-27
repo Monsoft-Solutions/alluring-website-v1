@@ -7,6 +7,7 @@ import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
 import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
+import { getBlogPrerenderSlugs } from '@/lib/queries/blog/prerender-slugs.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
@@ -21,6 +22,25 @@ type PageProps = {
 const getCachedPostBySlug = cache(async (slug: string) =>
     getPublishedPostBySlug(slug)
 )
+
+// Posts published after the build still resolve on first hit, then stay cached.
+export const dynamicParams = true
+
+// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// is the safety net, not the mechanism.
+export const revalidate = 3600
+
+/**
+ * Prerender every post that lives at /blog/{slug} — the post-2025 set.
+ * Pre-2026 posts are prerendered by app/[slug]/page.tsx instead.
+ */
+export async function generateStaticParams() {
+    const posts = await getBlogPrerenderSlugs()
+
+    return posts
+        .filter((post) => usesBlogPrefix(post.publishedAt))
+        .map((post) => ({ slug: post.slug }))
+}
 
 /**
  * Generate metadata for blog posts served at /blog/[slug].

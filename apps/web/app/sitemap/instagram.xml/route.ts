@@ -15,6 +15,9 @@
  */
 import { NextResponse } from 'next/server'
 
+// Revalidate every 3 hours (10800 seconds), matching sitemap/blog.xml
+export const revalidate = 10800
+
 /**
  * GET handler — always returns an empty urlset
  */
