@@ -18,7 +18,7 @@ import type {
 /**
  * Default model for writing quality review
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Schema for writing quality review
@@ -170,7 +170,6 @@ export async function runWritingQualityReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     // Calculate basic metrics
@@ -213,7 +212,6 @@ Review this content for writing quality, brand voice alignment, readability, and
         schema: writingQualityReviewSchema,
         system: WRITING_QUALITY_REVIEW_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

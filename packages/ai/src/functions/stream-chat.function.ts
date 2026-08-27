@@ -32,8 +32,8 @@ export type StreamChatOptions = {
     maxTokens?: number
     /** Enable smooth streaming (word-by-word) */
     smoothStreaming?: boolean
-    /** Callback when streaming finishes */
-    onFinish?: (result: { text: string }) => void | Promise<void>
+    /** Callback when streaming ends */
+    onEnd?: (result: { text: string }) => void | Promise<void>
 }
 
 /**
@@ -50,7 +50,7 @@ export type StreamChatOptions = {
  * const result = streamChat({
  *   systemPrompt: 'You are a helpful assistant',
  *   messages: [{ role: 'user', content: 'Hello' }],
- *   onFinish: async ({ text }) => {
+ *   onEnd: async ({ text }) => {
  *     await saveMessage(text)
  *   },
  * })
@@ -67,7 +67,7 @@ export function streamChat(
         temperature = 0.7,
         maxTokens = 1000,
         smoothStreaming = true,
-        onFinish,
+        onEnd,
     } = options
 
     return coreStreamText({
@@ -79,7 +79,7 @@ export function streamChat(
         smoothStreaming: smoothStreaming
             ? { delayInMs: 20, chunking: 'line' }
             : false,
-        onFinish,
+        onEnd,
     })
 }
 
@@ -93,4 +93,3 @@ export {
     createUIMessageStreamResponse,
 } from 'ai'
 export type { UIMessageStreamWriter } from 'ai'
-export { openai } from '@ai-sdk/openai'

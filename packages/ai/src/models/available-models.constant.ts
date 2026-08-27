@@ -192,6 +192,22 @@ export const AVAILABLE_MODELS: AIModel[] = [
         recommended: false,
     },
     {
+        id: 'x-ai/grok-4.6',
+        name: 'Grok 4.6 (OpenRouter)',
+        provider: 'openrouter',
+        capabilities: [
+            'chat',
+            'function-calling',
+            'vision',
+            'structured-output',
+        ],
+        maxTokens: 500000,
+        tier: 'standard',
+        description:
+            'xAI flagship via OpenRouter — 500K context, reliable structured output',
+        recommended: true,
+    },
+    {
         id: 'x-ai/grok-4.5',
         name: 'Grok 4.5 (OpenRouter)',
         provider: 'openrouter',

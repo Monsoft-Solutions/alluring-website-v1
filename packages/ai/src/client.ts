@@ -27,7 +27,6 @@ export {
     createUIMessageStreamResponse,
 } from 'ai'
 export type { UIMessageStreamWriter } from 'ai'
-export { openai } from '@ai-sdk/openai'
 
 // Chat message types (no server dependencies)
 export type { ChatMessage } from './functions/stream-chat.function'

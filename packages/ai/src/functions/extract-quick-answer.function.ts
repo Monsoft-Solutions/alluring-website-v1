@@ -75,7 +75,7 @@ export type ExtractQuickAnswerOptions = {
     modelId?: string
 }
 
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 const QUICK_ANSWER_SYSTEM_PROMPT = `You write the Quick Answer that sits at the top of a blog post for Alluring Plastic Surgery, a cosmetic surgery clinic in Miami.
 
@@ -152,7 +152,6 @@ Give the question in the reader's words, and a ${QUICK_ANSWER_MIN_WORDS}-${QUICK
         schema: quickAnswerSchema,
         system: QUICK_ANSWER_SYSTEM_PROMPT,
         prompt,
-        temperature: 0.3,
     })
 
     const wordCount = countWords(result.object.answer)

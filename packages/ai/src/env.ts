@@ -35,12 +35,6 @@ const envSchema = z.object({
      * Get one at https://www.perplexity.ai/settings/api
      */
     PERPLEXITY_API_KEY: z.string().optional(),
-
-    /**
-     * Anthropic API key for Claude models
-     * Get one at https://console.anthropic.com
-     */
-    ANTHROPIC_API_KEY: z.string().optional(),
 })
 
 /**
@@ -51,7 +45,6 @@ export const env = envSchema.parse({
     GOOGLE_CUSTOM_SEARCH_API_KEY: process.env.GOOGLE_CUSTOM_SEARCH_API_KEY,
     GOOGLE_CUSTOM_SEARCH_ENGINE_ID: process.env.GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
     PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
-    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
 })
 
 /**
@@ -75,11 +68,4 @@ export function isGoogleSearchConfigured(): boolean {
  */
 export function isPerplexityConfigured(): boolean {
     return Boolean(env.PERPLEXITY_API_KEY)
-}
-
-/**
- * Check if Anthropic is configured
- */
-export function isAnthropicConfigured(): boolean {
-    return Boolean(env.ANTHROPIC_API_KEY)
 }

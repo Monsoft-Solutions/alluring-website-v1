@@ -7,3 +7,4 @@
  */
 
 export { telemetryConfig } from './telemetry.config'
+export { registerAiTelemetry } from './register-telemetry.util'

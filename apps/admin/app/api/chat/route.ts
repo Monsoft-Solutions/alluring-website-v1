@@ -6,7 +6,7 @@
  * @module app/api/chat/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
-import { openai, streamText } from '@workspace/ai'
+import { coreStreamText } from '@workspace/ai'
 
 import { env } from '@/env'
 import {
@@ -57,9 +57,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        if (!env.OPENAI_API_KEY) {
+        if (!env.OPENROUTER_API_KEY) {
             return NextResponse.json(
-                { error: 'OpenAI API key not configured' },
+                { error: 'OpenRouter API key not configured' },
                 { status: 503 }
             )
         }
@@ -107,20 +107,27 @@ export async function POST(request: NextRequest) {
         })
 
         // Get recent messages for context
+        // AI SDK 7 throws InvalidPromptError on a `system` role inside `messages`
+        // (`allowSystemInMessages` defaults to false); the system prompt goes
+        // through `system`/`instructions` instead. chat_message.role is a DB enum
+        // that permits 'system', so filter rather than trust the data.
         const dbMessages = await getRecentMessages(sessionId, 20)
-        const contextMessages = dbMessages.map((msg) => ({
-            role: msg.role as 'user' | 'assistant' | 'system',
-            content: msg.content,
-        }))
+        const contextMessages = dbMessages
+            .filter((msg) => msg.role !== 'system')
+            .map((msg) => ({
+                role: msg.role as 'user' | 'assistant',
+                content: msg.content,
+            }))
 
-        // Stream response
-        const result = streamText({
-            model: openai(config.modelId),
+        // Stream response through the shared core wrapper so this route picks
+        // up the same OpenRouter provider and telemetry as every other call.
+        const result = coreStreamText({
+            modelId: config.modelId,
             system: config.systemPrompt,
             messages: contextMessages,
             temperature: config.temperature,
-            maxOutputTokens: config.maxTokens,
-            onFinish: async ({ text }) => {
+            maxTokens: config.maxTokens,
+            onEnd: async ({ text }) => {
                 await saveChatMessage({
                     sessionId,
                     role: 'assistant',

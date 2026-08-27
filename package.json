@@ -49,10 +49,11 @@
     },
     "packageManager": "pnpm@10.4.1",
     "engines": {
-        "node": ">=20"
+        "node": ">=22"
     },
     "pnpm": {
         "overrides": {
+            "@opentelemetry/api": "1.9.1",
             "drizzle-orm": "0.44.7"
         }
     }

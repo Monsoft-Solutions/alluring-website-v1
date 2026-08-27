@@ -58,8 +58,6 @@ export type SelectImageOptionsOptions = {
     summary?: string
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.5 for balanced creativity) */
-    temperature?: number
 }
 
 /**
@@ -103,7 +101,6 @@ export async function selectImageOptions(
         primaryKeyword,
         summary,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.5,
     } = options
 
     const result = (await coreGenerateObject({
@@ -116,7 +113,6 @@ export async function selectImageOptions(
             primaryKeyword,
             summary,
         }),
-        temperature,
     })) as { object: SelectedImageOptions }
 
     return normalizeToArtisticPath(result.object)

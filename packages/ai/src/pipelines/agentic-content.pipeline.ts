@@ -9,7 +9,7 @@
  *
  * @module @workspace/ai/pipelines/agentic-content
  */
-import { generateText, stepCountIs } from 'ai'
+import { generateText, isStepCount } from 'ai'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 
 import {
@@ -23,7 +23,7 @@ import {
     type AgentReview,
     type OrchestratorResult,
 } from '../agents'
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import { validateGeneratedMdx } from '../functions/validate-generated-mdx.function'
 import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import {
@@ -56,7 +56,6 @@ import type { AgenticContentPipelineResult } from '../types/pipeline/agentic-con
 const DEFAULTS = {
     CONTENT_MODEL: 'claude-opus-5',
     REVIEW_MODEL: 'claude-opus-5',
-    TEMPERATURE: 0.7,
     MAX_STEPS: 25,
     MIN_QUALITY_SCORE: 70,
     MIN_WORD_COUNT: 200,
@@ -90,7 +89,6 @@ async function runGenerationPhase(
         idea,
         outline,
         contentModelId = DEFAULTS.CONTENT_MODEL,
-        temperature = DEFAULTS.TEMPERATURE,
         maxSteps = DEFAULTS.MAX_STEPS,
     } = options
 
@@ -137,14 +135,13 @@ async function runGenerationPhase(
     // Generate content with tools
     const result = await generateText({
         model,
-        system: systemPrompt,
+        instructions: systemPrompt,
         prompt: userPrompt,
-        ...temperatureParam(contentModelId, temperature),
         maxOutputTokens: 16000,
         tools,
-        stopWhen: stepCountIs(maxSteps),
-        experimental_telemetry: telemetryConfig,
-        onStepFinish: (event) => {
+        stopWhen: isStepCount(maxSteps),
+        telemetry: telemetryConfig,
+        onStepEnd: (event) => {
             stepCount++
             const hasToolCalls = (event.toolCalls?.length ?? 0) > 0
 

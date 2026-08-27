@@ -22,7 +22,7 @@ import { coreGenerateObject } from '../core'
  * Default model for content brief generation
  * Uses GPT-4 for comprehensive, high-quality briefs
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Options for content brief generation
@@ -30,8 +30,6 @@ const DEFAULT_MODEL_ID = 'claude-opus-5'
 export type GenerateContentBriefOptions = GenerateContentBriefInput & {
     /** Model ID to use (defaults to gpt-4o) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.5 for balanced creativity) */
-    temperature?: number
 }
 
 /**
@@ -73,7 +71,6 @@ export async function generateContentBrief(
         currentPosition,
         impressions,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.5,
     } = options
 
     const result = await coreGenerateObject({
@@ -85,7 +82,6 @@ export async function generateContentBrief(
             currentPosition,
             impressions,
         }),
-        temperature,
     })
 
     return {

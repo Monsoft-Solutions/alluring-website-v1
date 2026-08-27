@@ -73,10 +73,15 @@ export type RefreshMode = 'off' | 'suggest' | 'auto'
  * in `@workspace/ai/pipelines`.
  */
 export const DEFAULT_BLOG_AI_CONFIG: BlogAiConfig = {
-    ideationModelId: 'claude-opus-5',
-    contentModelId: 'claude-opus-5',
-    reviewModelId: 'claude-opus-5',
-    extractionModelId: 'claude-opus-5',
+    // Review and extraction run through `generateObject`, which reaches OpenRouter as
+    // `response_format: json_schema`. Anthropic models ignore that for large schemas and
+    // return prose, so a Claude default here would silently break both phases on a fresh
+    // install. Ideation and content are `generateText` and would be safe on Claude, but
+    // are kept aligned so every phase defaults to one verified model. See issue #195 §8.8.
+    ideationModelId: 'x-ai/grok-4.6',
+    contentModelId: 'x-ai/grok-4.6',
+    reviewModelId: 'x-ai/grok-4.6',
+    extractionModelId: 'x-ai/grok-4.6',
     imageModelId: 'gpt-image-2',
     artisticStyleId: null,
     autopilotMode: 'off',

@@ -7,10 +7,10 @@
  *
  * @module @workspace/ai/agents/fact-source-verifier
  */
-import { generateText, Output, stepCountIs } from 'ai'
+import { generateText, Output, isStepCount } from 'ai'
 import { z } from 'zod'
 
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import {
     createSourceCollector,
     createPerplexitySearchTool,
@@ -234,7 +234,6 @@ export async function runFactSourceVerifier(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     console.log('[Fact Verifier] Starting fact and source verification...')
@@ -282,17 +281,16 @@ Begin by using the think tool to identify all claims and plan your search querie
     const result = await generateText({
         model: getModel(modelId),
         output: Output.object({ schema: verificationResultSchema }),
-        system: UNIFIED_FACT_VERIFICATION_PROMPT,
+        instructions: UNIFIED_FACT_VERIFICATION_PROMPT,
         prompt: userPrompt,
-        ...temperatureParam(modelId, temperature),
         maxOutputTokens: 16000,
-        stopWhen: stepCountIs(MAX_SEARCH_STEPS),
+        stopWhen: isStepCount(MAX_SEARCH_STEPS),
         tools: {
             perplexity_search: perplexitySearchTool,
             think: thinkTool,
         },
-        experimental_telemetry: telemetryConfig,
-        onStepFinish: (event) => {
+        telemetry: telemetryConfig,
+        onStepEnd: (event) => {
             if (event.toolCalls && event.toolCalls.length > 0) {
                 for (const toolCall of event.toolCalls) {
                     if (toolCall.toolName === 'perplexity_search') {

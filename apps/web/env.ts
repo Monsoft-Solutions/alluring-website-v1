@@ -42,8 +42,10 @@ export const env = createEnv({
         // Cache revalidation (required for on-demand ISR from admin)
         REVALIDATION_SECRET: z.string().min(32),
 
-        // AI Chat (required for chat agent)
-        OPENAI_API_KEY: z.string().min(1).optional(),
+        // AI Chat — all inference routes through OpenRouter (issue #195).
+        // Only needed if the built-in chat widget is re-enabled; the live site
+        // serves chat through the Loquent widget instead.
+        OPENROUTER_API_KEY: z.string().min(1).optional(),
 
         // ElevenLabs Speech-to-Text (optional - enables voice input in chat)
         ELEVENLABS_API_KEY: z.string().min(1).optional(),

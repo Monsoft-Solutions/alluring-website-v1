@@ -8,6 +8,7 @@
  */
 import { LangfuseSpanProcessor, type ShouldExportSpan } from '@langfuse/otel'
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node'
+import { registerAiTelemetry } from '@workspace/ai/telemetry'
 
 /**
  * Filter out Next.js infrastructure spans to reduce noise.
@@ -27,3 +28,10 @@ const tracerProvider = new NodeTracerProvider({
 })
 
 tracerProvider.register()
+
+/**
+ * AI SDK 7 emits telemetry only when an integration is registered. Without this
+ * call every AI span silently stops reaching Langfuse — no error, no failing
+ * build. See `registerAiTelemetry` for why it is the *legacy* integration.
+ */
+registerAiTelemetry()

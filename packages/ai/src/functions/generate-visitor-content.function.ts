@@ -33,8 +33,6 @@ export type GenerateVisitorContentOptions = {
     currentTitle?: string
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.8 for creativity) */
-    temperature?: number
 }
 
 /**
@@ -61,7 +59,6 @@ export async function generateGalleryVisitorContent(
         aiAnalysis,
         currentTitle,
         modelId = DEFAULT_CONTENT_MODEL_ID,
-        temperature = 0.8,
     } = options
 
     const result = await coreGenerateObject({
@@ -69,7 +66,6 @@ export async function generateGalleryVisitorContent(
         schema: visitorContentSchema,
         system: VISITOR_CONTENT_SYSTEM_PROMPT,
         prompt: getVisitorContentPrompt(aiAnalysis, currentTitle),
-        temperature,
     })
 
     return result.object

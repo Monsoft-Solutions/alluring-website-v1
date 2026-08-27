@@ -72,8 +72,6 @@ export type DetectPeopleInImageOptions = {
     imageUrl: string
     /** Model ID to use (defaults to gpt-4.1 for vision) */
     modelId?: string
-    /** Temperature (defaults to 0 for a deterministic judgement) */
-    temperature?: number
 }
 
 /**
@@ -101,11 +99,7 @@ export type PeopleDetectionResult = z.infer<typeof peopleDetectionSchema>
 export async function detectPeopleInImage(
     options: DetectPeopleInImageOptions
 ): Promise<PeopleDetectionResult> {
-    const {
-        imageUrl,
-        modelId = DEFAULT_VISION_MODEL_ID,
-        temperature = 0,
-    } = options
+    const { imageUrl, modelId = DEFAULT_VISION_MODEL_ID } = options
 
     const result = await coreGenerateObject({
         modelId,
@@ -126,7 +120,6 @@ export async function detectPeopleInImage(
                 ],
             },
         ],
-        temperature,
     })
 
     return result.object

@@ -6,9 +6,9 @@
  *
  * @module @workspace/ai/pipelines/generation-phase
  */
-import { generateText, stepCountIs } from 'ai'
+import { generateText, isStepCount } from 'ai'
 
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import {
     validateGeneratedMdx,
     type MdxSanitizationAction,
@@ -36,7 +36,6 @@ import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-
  */
 const DEFAULTS = {
     CONTENT_MODEL: 'claude-opus-5',
-    TEMPERATURE: 0.7,
     MAX_STEPS: 25,
     MIN_WORD_COUNT: 200,
 } as const
@@ -102,8 +101,6 @@ export type GenerationPhaseOptions = {
     outline?: string
     /** Model ID for content generation */
     contentModelId?: string
-    /** Temperature for generation */
-    temperature?: number
     /** Maximum tool call steps */
     maxSteps?: number
     /**
@@ -189,7 +186,6 @@ export async function runGenerationPhase(
         input,
         outline,
         contentModelId = DEFAULTS.CONTENT_MODEL,
-        temperature = DEFAULTS.TEMPERATURE,
         maxSteps = DEFAULTS.MAX_STEPS,
         linkableBlogPosts,
         onProgress,
@@ -249,14 +245,13 @@ export async function runGenerationPhase(
         // Generate content with tools
         const result = await generateText({
             model,
-            system: systemPrompt,
+            instructions: systemPrompt,
             prompt: userPrompt,
-            ...temperatureParam(contentModelId, temperature),
             maxOutputTokens: 16000,
             tools,
-            stopWhen: stepCountIs(maxSteps),
-            experimental_telemetry: telemetryConfig,
-            onStepFinish: (event) => {
+            stopWhen: isStepCount(maxSteps),
+            telemetry: telemetryConfig,
+            onStepEnd: (event) => {
                 stepCount++
                 const hasToolCalls = (event.toolCalls?.length ?? 0) > 0
 

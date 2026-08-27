@@ -34,7 +34,7 @@ import type {
 /**
  * Default model for cannibalization review
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /** A page ranking for a query, from live Search Console data */
 export type RankingPage = {
@@ -217,7 +217,6 @@ export async function runCannibalizationChecker(
         currentPostSlug,
         pagesForQuery,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.2,
     } = options
 
     const h2Headings = extractH2Headings(content)
@@ -312,7 +311,6 @@ Judge each registry finding against the actual content: true competition or acce
         schema: cannibalizationReviewSchema,
         system: CANNIBALIZATION_REVIEW_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

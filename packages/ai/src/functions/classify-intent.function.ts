@@ -24,8 +24,6 @@ import { coreGenerateObject } from '../core'
 export type ClassifyIntentOptions = {
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.3 for consistent results) */
-    temperature?: number
 }
 
 /**
@@ -62,8 +60,7 @@ export async function classifyIntent(
     messages: ClassificationMessage[],
     options: ClassifyIntentOptions = {}
 ): Promise<IntentClassification> {
-    const { modelId = DEFAULT_CLASSIFICATION_MODEL_ID, temperature = 0.3 } =
-        options
+    const { modelId = DEFAULT_CLASSIFICATION_MODEL_ID } = options
 
     // Need at least 2 messages to classify meaningfully
     if (messages.length < 2) {
@@ -76,7 +73,6 @@ export async function classifyIntent(
             schema: intentClassificationSchema,
             system: INTENT_CLASSIFICATION_SYSTEM_PROMPT,
             prompt: getIntentClassificationPrompt(messages),
-            temperature,
         })
 
         return result.object

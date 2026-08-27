@@ -69,8 +69,6 @@ export type GenerateFeaturedImagePromptOptions = {
     keywords?: string
     /** Model ID to use (defaults to gpt-5.2) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.9 for creativity) */
-    temperature?: number
 }
 
 /**
@@ -126,7 +124,6 @@ export async function generateFeaturedImagePrompt(
         modelDescription,
         keywords,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.9,
     } = options
 
     const result = await coreGenerateText({
@@ -146,7 +143,6 @@ export async function generateFeaturedImagePrompt(
             modelDescription,
             keywords,
         }),
-        temperature,
     })
 
     // Keep the structured 5-section markdown format.

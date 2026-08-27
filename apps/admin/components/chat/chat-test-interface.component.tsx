@@ -146,11 +146,11 @@ export function ChatTestInterface({
                     <AlertCircle className='h-8 w-8 text-amber-600' />
                     <div>
                         <h3 className='font-semibold text-amber-900'>
-                            OpenAI API Key Required
+                            OpenRouter API Key Required
                         </h3>
                         <p className='text-sm text-amber-700'>
-                            Add OPENAI_API_KEY to your environment variables to
-                            test the chat.
+                            Add OPENROUTER_API_KEY to your environment variables
+                            to test the chat.
                         </p>
                     </div>
                 </CardContent>

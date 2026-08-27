@@ -131,7 +131,7 @@ export async function extractMetadata(
         content,
         primaryKeyword,
         title,
-        modelId = 'claude-opus-5',
+        modelId = 'x-ai/grok-4.6',
     } = options
 
     // Calculate word count for reading time hint
@@ -157,7 +157,6 @@ Extract the metadata following the guidelines. Ensure the meta title is 50-60 ch
         schema: contentMetadataSchema,
         system: METADATA_EXTRACTOR_SYSTEM_PROMPT,
         prompt,
-        temperature: 0.3,
     })
 
     return result.object

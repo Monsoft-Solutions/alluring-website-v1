@@ -11,7 +11,7 @@ import {
     getGenerateTopicsPrompt,
 } from '../prompts/blog/generate-topics.prompt'
 import { generateText, NoObjectGeneratedError, Output } from 'ai'
-import { getModel, temperatureParam } from '../models'
+import { getModel } from '../models'
 import {
     generateTopicsResponseSchema,
     salvageTopicsResponse,
@@ -115,8 +115,6 @@ export type GenerateBlogTopicsOptions = {
     procedureContext?: ProcedureContext
     /** Model ID to use */
     modelId?: string
-    /** Temperature for creativity (higher = more creative) */
-    temperature?: number
 }
 
 /**
@@ -160,7 +158,6 @@ export async function generateBlogTopics(
         contextHints,
         procedureContext,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.8, // Higher temperature for creativity
     } = options
 
     const prompt = getGenerateTopicsPrompt({
@@ -189,9 +186,8 @@ export async function generateBlogTopics(
                 output: Output.object({
                     schema: generateTopicsResponseSchema,
                 }),
-                system: GENERATE_TOPICS_SYSTEM_PROMPT,
+                instructions: GENERATE_TOPICS_SYSTEM_PROMPT,
                 prompt,
-                ...temperatureParam(modelId, temperature),
                 maxOutputTokens: 16000,
             })
 

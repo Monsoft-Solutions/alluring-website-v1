@@ -11,7 +11,7 @@ import type { z } from 'zod'
 
 import type { CoreGenerateObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -63,7 +63,7 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
 ) {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
-        temperature = 0.7,
+        temperature,
         schema,
         system,
     } = options
@@ -75,13 +75,13 @@ export async function coreGenerateObject<TSchema extends z.ZodType>(
         const result = await generateObject({
             model: getModel(modelId),
             schema,
-            system,
+            instructions: system,
             ...(isPromptFormat
                 ? { prompt: options.prompt }
                 : { messages: options.messages }),
-            ...temperatureParam(modelId, temperature),
+            ...(temperature !== undefined && { temperature }),
             maxOutputTokens: 16000,
-            experimental_telemetry: telemetryConfig,
+            telemetry: telemetryConfig,
         })
 
         return result

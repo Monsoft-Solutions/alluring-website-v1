@@ -16,7 +16,7 @@
         "validate:sitemap": "tsx scripts/validate-sitemap.ts"
     },
     "dependencies": {
-        "@ai-sdk/react": "^3.0.11",
+        "@ai-sdk/react": "^4.0.86",
         "@elevenlabs/react": "^0.12.1",
         "@hookform/resolvers": "^5.2.2",
         "@langfuse/otel": "^4.5.1",

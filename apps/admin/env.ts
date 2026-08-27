@@ -50,12 +50,6 @@ export const env = createEnv({
         // Absolute admin URL used in notification email links
         ADMIN_BASE_URL: z.string().url().optional(),
 
-        // OpenAI API key for chat testing
-        OPENAI_API_KEY: z.string().min(1).optional(),
-
-        // Anthropic API key for Claude models (blog pipeline defaults)
-        ANTHROPIC_API_KEY: z.string().min(1).optional(),
-
         // OpenRouter API key — unlocks any OpenRouter model id (vendor/model
         // convention, e.g. "google/gemini-3.6-flash") in the AI model pickers
         OPENROUTER_API_KEY: z.string().min(1).optional(),

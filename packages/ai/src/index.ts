@@ -9,7 +9,7 @@
  * @example
  * ```typescript
  * // Import AI functions
- * import { classifyIntent, streamChat, openai, streamText } from '@workspace/ai'
+ * import { classifyIntent, streamChat, streamText } from '@workspace/ai'
  *
  * // Import schemas
  * import { intentClassificationSchema, type IntentClassification } from '@workspace/ai/schemas'
@@ -51,7 +51,6 @@ export {
     streamChat,
     streamText,
     smoothStream,
-    openai,
     TextStreamChatTransport,
     DefaultChatTransport,
     createUIMessageStream,

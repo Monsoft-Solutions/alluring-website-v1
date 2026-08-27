@@ -23,7 +23,7 @@ import type {
 /**
  * Default model for AI slop detection
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Schema for AI slop detection review
@@ -148,12 +148,7 @@ export async function runAISlopDetector(
     options: ReviewAgentOptions
 ): Promise<AgentReview> {
     const startTime = Date.now()
-    const {
-        content,
-        title,
-        modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
-    } = options
+    const { content, title, modelId = DEFAULT_MODEL_ID } = options
 
     // Pre-analyze using the banned phrases list
     const bannedPhrasesFound = findBannedPhrases(content)
@@ -202,7 +197,6 @@ Provide a comprehensive review with specific fixes.`
         schema: aiSlopDetectionSchema,
         system: AI_SLOP_DETECTION_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

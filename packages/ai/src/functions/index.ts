@@ -15,7 +15,6 @@ export {
     streamChat,
     streamText,
     smoothStream,
-    openai,
     TextStreamChatTransport,
     DefaultChatTransport,
     createUIMessageStream,
