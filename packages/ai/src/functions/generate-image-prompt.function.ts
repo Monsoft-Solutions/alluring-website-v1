@@ -29,8 +29,6 @@ export type GenerateImagePromptOptions = {
     keywords?: string
     /** Model ID to use (defaults to gpt-5.2) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.9 for creativity) */
-    temperature?: number
 }
 
 /**
@@ -65,19 +63,12 @@ export type ImagePromptResult = {
 export async function generateImagePrompt(
     options: GenerateImagePromptOptions
 ): Promise<ImagePromptResult> {
-    const {
-        summary,
-        title,
-        keywords,
-        modelId = DEFAULT_MODEL_ID,
-        temperature = 0.9,
-    } = options
+    const { summary, title, keywords, modelId = DEFAULT_MODEL_ID } = options
 
     const result = await coreGenerateText({
         modelId,
         system: IMAGE_PROMPT_SYSTEM_PROMPT,
         prompt: getImagePromptPrompt(summary, title, keywords),
-        temperature,
     })
 
     // Clean up the response - remove any markdown formatting if present

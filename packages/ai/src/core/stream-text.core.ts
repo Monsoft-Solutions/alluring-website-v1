@@ -10,7 +10,7 @@ import { streamText, smoothStream } from 'ai'
 
 import type { CoreStreamTextOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -32,7 +32,7 @@ export type { StreamTextResult } from 'ai'
  *   messages: [{ role: 'user', content: 'Hello!' }],
  *   modelId: 'gpt-4.1',
  *   smoothStreaming: true,
- *   onFinish: async ({ text }) => {
+ *   onEnd: async ({ text }) => {
  *     await saveMessage(text)
  *   },
  * })
@@ -45,12 +45,12 @@ export function coreStreamText(
 ): ReturnType<typeof streamText> {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
-        temperature = 0.7,
+        temperature,
         system,
         messages,
         maxTokens = 16000,
         smoothStreaming = false,
-        onFinish,
+        onEnd,
     } = options
 
     // Build smooth stream transform if enabled
@@ -67,15 +67,15 @@ export function coreStreamText(
 
     const result = streamText({
         model: getModel(modelId),
-        system,
+        instructions: system,
         messages,
-        ...temperatureParam(modelId, temperature),
-        experimental_telemetry: telemetryConfig,
+        ...(temperature !== undefined && { temperature }),
+        telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
         ...(experimentalTransform && {
             experimental_transform: experimentalTransform,
         }),
-        onFinish,
+        onEnd,
     })
 
     return result

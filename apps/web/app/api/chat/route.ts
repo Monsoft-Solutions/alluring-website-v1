@@ -68,8 +68,8 @@ function extractMessageContent(message: AISDKMessage): string {
  */
 export async function POST(request: NextRequest) {
     try {
-        // Validate OpenAI API key
-        if (!env.OPENAI_API_KEY) {
+        // Validate OpenRouter API key — every model call routes through it
+        if (!env.OPENROUTER_API_KEY) {
             return NextResponse.json(
                 { error: 'Chat is not configured' },
                 { status: 503 }
@@ -136,12 +136,17 @@ export async function POST(request: NextRequest) {
             tokenCount: estimateTokenCount(sanitizedContent),
         })
 
-        // Get recent messages from DB for context (to prevent manipulation)
+        // Get recent messages from DB for context (to prevent manipulation).
+        // AI SDK 7 throws InvalidPromptError on a `system` role inside `messages`
+        // (`allowSystemInMessages` defaults to false); chat_message.role is a DB
+        // enum that permits 'system', so filter rather than trust the data.
         const dbMessages = await getRecentMessages(sessionId, 20)
-        const contextMessages: AIMessage[] = dbMessages.map((msg) => ({
-            role: msg.role as AIMessage['role'],
-            content: msg.content,
-        }))
+        const contextMessages: AIMessage[] = dbMessages
+            .filter((msg) => msg.role !== 'system')
+            .map((msg) => ({
+                role: msg.role as AIMessage['role'],
+                content: msg.content,
+            }))
 
         // Get detected procedures for quick questions context
         const detectedProcedures =
@@ -167,8 +172,8 @@ export async function POST(request: NextRequest) {
                     smoothStreaming: { chunking: 'word' },
                 })
 
-                // Iterate over the fullStream and convert to UI message chunks
-                for await (const part of result.fullStream) {
+                // Iterate over the full event stream and convert to UI message chunks
+                for await (const part of result.stream) {
                     if (part.type === 'text-delta') {
                         fullText += part.text
                         writer.write({

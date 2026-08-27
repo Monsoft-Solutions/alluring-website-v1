@@ -101,8 +101,6 @@ export type ReviewAgentOptions = {
     secondaryKeywords?: string[]
     /** Model ID to use */
     modelId?: string
-    /** Temperature for generation */
-    temperature?: number
 }
 
 /**

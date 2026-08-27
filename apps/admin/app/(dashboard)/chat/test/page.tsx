@@ -18,7 +18,7 @@ export const maxDuration = 30
 
 export default async function ChatTestPage() {
     const config = await getChatConfig()
-    const hasApiKey = Boolean(env.OPENAI_API_KEY)
+    const hasApiKey = Boolean(env.OPENROUTER_API_KEY)
 
     return (
         <div className='space-y-6'>

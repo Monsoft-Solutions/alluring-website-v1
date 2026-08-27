@@ -57,7 +57,6 @@ const requestSchema = z.object({
             /** Model ID for review agents */
             reviewModelId: z.string().optional(),
             /** Temperature for content generation (0.0-1.0) */
-            temperature: z.number().min(0).max(1).optional(),
             /** Maximum tool call steps */
             maxSteps: z.number().int().min(5).max(50).optional(),
         })
@@ -137,7 +136,6 @@ async function runPipelineWithStreaming(
             skipOrchestration: options?.skipOrchestration ?? false,
             contentModelId: options?.contentModelId,
             reviewModelId: options?.reviewModelId,
-            temperature: options?.temperature,
             maxSteps: options?.maxSteps,
             onProgress: (step, progress, message, data) => {
                 send('progress', { step, progress, message, data })
@@ -297,7 +295,6 @@ export async function POST(request: NextRequest) {
                     validatedData.options?.skipOrchestration ?? false,
                 contentModelId: validatedData.options?.contentModelId,
                 reviewModelId: validatedData.options?.reviewModelId,
-                temperature: validatedData.options?.temperature,
                 maxSteps: validatedData.options?.maxSteps,
             })
 

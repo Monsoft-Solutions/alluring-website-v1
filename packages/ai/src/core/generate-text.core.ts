@@ -11,7 +11,7 @@ import { generateText } from 'ai'
 
 import type { CoreGenerateTextOptions, CoreToolSet } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result type for consumers
@@ -87,7 +87,7 @@ function convertTools(coreTools?: CoreToolSet) {
  *     },
  *   },
  *   maxSteps: 10,
- *   onStepFinish: (step) => console.log('Step:', step),
+ *   onStepEnd: (step) => console.log('Step:', step),
  * })
  * ```
  */
@@ -96,12 +96,12 @@ export async function coreGenerateText(
 ): Promise<Awaited<ReturnType<typeof generateText>>> {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
-        temperature = 0.7,
+        temperature,
         system,
         maxTokens = 16000,
         tools,
         maxSteps,
-        onStepFinish,
+        onStepEnd,
     } = options
 
     // Convert our tool format to AI SDK format
@@ -109,17 +109,17 @@ export async function coreGenerateText(
 
     const model = getModel(modelId)
 
-    // Build base config - note: we pass onStepFinish directly as the AI SDK accepts any function
+    // Build base config - note: we pass onStepEnd directly as the AI SDK accepts any function
     const baseConfig = {
         model,
-        system,
-        ...temperatureParam(modelId, temperature),
-        experimental_telemetry: telemetryConfig,
+        instructions: system,
+        ...(temperature !== undefined && { temperature }),
+        telemetry: telemetryConfig,
         ...(maxTokens && { maxOutputTokens: maxTokens }),
         ...(aiSdkTools && { tools: aiSdkTools }),
         ...(maxSteps && { maxSteps }),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-        ...(onStepFinish && { onStepFinish: onStepFinish as any }),
+        ...(onStepEnd && { onStepEnd: onStepEnd as any }),
     }
 
     // Handle discriminated union - either prompt or messages

@@ -11,7 +11,7 @@ import type { z } from 'zod'
 
 import type { CoreStreamObjectOptions } from './types.core'
 import { DEFAULT_CHAT_MODEL_ID } from '../models/available-models.constant'
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import { telemetryConfig } from '../telemetry'
 
 // Re-export result types for consumers
@@ -46,7 +46,7 @@ export function coreStreamObject<TSchema extends z.ZodType>(
 ) {
     const {
         modelId = DEFAULT_CHAT_MODEL_ID,
-        temperature = 0.7,
+        temperature,
         schema,
         system,
         prompt,
@@ -55,11 +55,11 @@ export function coreStreamObject<TSchema extends z.ZodType>(
     const result = streamObject({
         model: getModel(modelId),
         schema,
-        system,
+        instructions: system,
         prompt,
-        ...temperatureParam(modelId, temperature),
+        ...(temperature !== undefined && { temperature }),
         maxOutputTokens: 16000,
-        experimental_telemetry: telemetryConfig,
+        telemetry: telemetryConfig,
     })
 
     return result

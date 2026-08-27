@@ -18,7 +18,7 @@ import type { InlineImageAnalysis } from '../schemas/inline-image-analysis.schem
 /**
  * Default model for content analysis
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Options for the inline image analyzer agent
@@ -32,8 +32,6 @@ export type InlineImageAnalyzerOptions = {
     maxImages?: number
     /** Model ID to use (default: claude-opus-5) */
     modelId?: string
-    /** Temperature for generation (default: 0.7) */
-    temperature?: number
 }
 
 /**
@@ -79,7 +77,6 @@ export async function runInlineImageAnalyzer(
         title,
         maxImages = 5,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.7,
     } = options
 
     console.log(
@@ -103,7 +100,6 @@ export async function runInlineImageAnalyzer(
         schema: inlineImageAnalysisSchema,
         system: INLINE_IMAGE_ANALYZER_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

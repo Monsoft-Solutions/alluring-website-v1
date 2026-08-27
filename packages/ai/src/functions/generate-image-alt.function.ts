@@ -66,8 +66,6 @@ export type GenerateImageAltOptions = {
     primaryKeyword?: string
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.3 for consistency) */
-    temperature?: number
 }
 
 /**
@@ -109,7 +107,6 @@ export async function generateImageAlt(
         concept,
         primaryKeyword,
         modelId = MODEL_FOR_IMAGE_ALT_TEXT_GENERATION,
-        temperature = 0.3,
     } = options
 
     const sourceSection = concept
@@ -138,7 +135,6 @@ Generate the alt text now:`
         modelId,
         system: ALT_TEXT_SYSTEM_PROMPT,
         prompt: userPrompt,
-        temperature,
         maxTokens: 50, // Keep it concise
     })
 

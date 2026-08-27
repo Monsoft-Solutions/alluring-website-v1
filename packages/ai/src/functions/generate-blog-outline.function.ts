@@ -88,7 +88,7 @@ const generateOutlineResponseSchema = z.object({
 /**
  * Default model for outline generation
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Options for outline generation
@@ -112,8 +112,6 @@ export type GenerateBlogOutlineOptions = {
     estimatedWordCount?: number
     /** Model ID to use */
     modelId?: string
-    /** Temperature */
-    temperature?: number
 }
 
 /**
@@ -169,7 +167,6 @@ export async function generateBlogOutline(
         uniqueAngle,
         estimatedWordCount,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.6,
     } = options
 
     const result = await coreGenerateObject({
@@ -186,7 +183,6 @@ export async function generateBlogOutline(
             uniqueAngle,
             estimatedWordCount,
         }),
-        temperature,
     })
 
     return result.object

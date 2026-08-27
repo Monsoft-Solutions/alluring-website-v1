@@ -25,6 +25,7 @@ export {
 
 export {
     getModel,
-    supportsTemperature,
-    temperatureParam,
+    toOpenRouterId,
+    LEGACY_MODEL_IDS,
+    LEGACY_OPENROUTER_IDS,
 } from './model-resolver.util'

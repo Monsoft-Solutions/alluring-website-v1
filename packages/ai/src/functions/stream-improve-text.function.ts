@@ -34,8 +34,6 @@ export type StreamImproveTextOptions = {
     customInstruction?: string
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.7) */
-    temperature?: number
 }
 
 /**
@@ -68,7 +66,6 @@ export function streamImproveText(
         fieldName,
         customInstruction,
         modelId = DEFAULT_TEXT_MODEL_ID,
-        temperature = 0.7,
     } = options
 
     // Validate input
@@ -87,7 +84,6 @@ export function streamImproveText(
     // Stream the improved text
     return coreStreamText({
         modelId,
-        temperature,
         system: TEXT_IMPROVEMENT_SYSTEM_PROMPT,
         messages: [{ role: 'user', content: prompt }],
         smoothStreaming: {

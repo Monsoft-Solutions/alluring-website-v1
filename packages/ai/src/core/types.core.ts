@@ -67,7 +67,15 @@ export type CoreAISDKMessage = AISDKCoreMessage
 export type CoreBaseOptions = {
     /** Model ID to use (e.g., 'gpt-4.1', 'gpt-4.1-mini') */
     modelId?: string
-    /** Temperature for generation (0-2, lower = more deterministic) */
+    /**
+     * Sampling temperature (0-2, lower = more deterministic).
+     *
+     * Opt-in: omitted from the request entirely unless a caller sets it, so each
+     * model uses its own default. Only the chat surfaces pass this, from the
+     * user-controlled `chat_config.temperature`. The blog pipeline deliberately
+     * does not — vendors differ on which values they honour, and reasoning models
+     * ignore or reject it outright.
+     */
     temperature?: number
 }
 
@@ -121,8 +129,8 @@ export type CoreGenerateTextToolOptions = {
     tools?: CoreToolSet
     /** Maximum number of agentic steps (tool calls + responses) */
     maxSteps?: number
-    /** Callback when each step finishes */
-    onStepFinish?: CoreStepFinishCallback
+    /** Callback when each step ends */
+    onStepEnd?: CoreStepFinishCallback
 }
 
 /**
@@ -190,6 +198,6 @@ export type CoreStreamTextOptions = CoreBaseOptions & {
               /** Chunking strategy */
               chunking?: 'word' | 'line'
           }
-    /** Callback when streaming finishes */
-    onFinish?: (result: { text: string }) => void | Promise<void>
+    /** Callback when streaming ends */
+    onEnd?: (result: { text: string }) => void | Promise<void>
 }

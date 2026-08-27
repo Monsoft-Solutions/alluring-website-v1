@@ -39,10 +39,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        // Check for OpenAI API key
-        if (!env.OPENAI_API_KEY) {
+        // Check for OpenRouter API key
+        if (!env.OPENROUTER_API_KEY) {
             return NextResponse.json(
-                { error: 'OpenAI API key not configured' },
+                { error: 'OpenRouter API key not configured' },
                 { status: 503 }
             )
         }

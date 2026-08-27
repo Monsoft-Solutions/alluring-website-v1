@@ -26,8 +26,6 @@ export type AnalyzeImageOptions = {
     imageUrl: string
     /** Model ID to use (defaults to gpt-4.1 for vision) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.3 for consistent results) */
-    temperature?: number
 }
 
 /**
@@ -51,11 +49,7 @@ export type AnalyzeImageOptions = {
 export async function analyzeGalleryImage(
     options: AnalyzeImageOptions
 ): Promise<GalleryMediaAIAnalysis> {
-    const {
-        imageUrl,
-        modelId = DEFAULT_VISION_MODEL_ID,
-        temperature = 0.3,
-    } = options
+    const { imageUrl, modelId = DEFAULT_VISION_MODEL_ID } = options
 
     const result = await coreGenerateObject({
         modelId,
@@ -76,7 +70,6 @@ export async function analyzeGalleryImage(
                 ],
             },
         ],
-        temperature,
     })
 
     // Add metadata to the analysis result

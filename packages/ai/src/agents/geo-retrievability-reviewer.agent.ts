@@ -35,7 +35,7 @@ import type {
 /**
  * Default model for GEO retrievability review
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Schema for the retrievability review
@@ -226,7 +226,6 @@ export async function runGeoRetrievabilityReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     const prompt = `Review this blog post for answer-first retrievability.
@@ -253,7 +252,6 @@ Score the seven dimensions. For each question heading, check its first sentence 
         schema: geoRetrievabilityReviewSchema,
         system: GEO_RETRIEVABILITY_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

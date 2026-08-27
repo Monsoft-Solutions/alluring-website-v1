@@ -23,8 +23,6 @@ import { coreGenerateObject } from '../core'
 export type GenerateQuickQuestionsOptions = {
     /** Model ID to use (defaults to gpt-4.1-mini for speed) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.7 for variety) */
-    temperature?: number
 }
 
 /**
@@ -59,8 +57,7 @@ export async function generateQuickQuestions(
     params: GenerateQuickQuestionsParams,
     options: GenerateQuickQuestionsOptions = {}
 ): Promise<string[]> {
-    const { modelId = DEFAULT_QUICK_QUESTIONS_MODEL_ID, temperature = 0.7 } =
-        options
+    const { modelId = DEFAULT_QUICK_QUESTIONS_MODEL_ID } = options
 
     // Need at least 1 message to generate meaningful questions
     if (params.messages.length < 1 || !params.lastResponse) {
@@ -81,7 +78,6 @@ export async function generateQuickQuestions(
             schema: quickQuestionsSchema,
             system: QUICK_QUESTIONS_SYSTEM_PROMPT,
             prompt: getQuickQuestionsPrompt(params),
-            temperature,
         })
 
         console.log('[AI:QuickQuestions] Success:', result.object.questions)

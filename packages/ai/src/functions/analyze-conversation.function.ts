@@ -26,8 +26,6 @@ import { coreGenerateObject } from '../core'
 export type AnalyzeConversationOptions = {
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.3 for consistent results) */
-    temperature?: number
     /** Minimum messages required for analysis (defaults to 2) */
     minMessages?: number
 }
@@ -62,7 +60,6 @@ export async function analyzeConversation(
 ): Promise<ConversationAnalysis> {
     const {
         modelId = DEFAULT_CONVERSATION_ANALYSIS_MODEL_ID,
-        temperature = 0.3,
         minMessages = 2,
     } = options
 
@@ -77,7 +74,6 @@ export async function analyzeConversation(
             schema: conversationAnalysisSchema,
             system: CONVERSATION_ANALYSIS_SYSTEM_PROMPT,
             prompt: getConversationAnalysisPrompt(messages),
-            temperature,
         })
 
         return result.object

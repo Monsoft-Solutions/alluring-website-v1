@@ -25,7 +25,7 @@ import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-
  * Default configuration for review phase
  */
 const DEFAULTS = {
-    REVIEW_MODEL: 'claude-opus-5',
+    REVIEW_MODEL: 'x-ai/grok-4.6',
 } as const
 
 /**

@@ -33,8 +33,6 @@ export type GenerateSEOContentOptions = {
     currentTitle?: string
     /** Model ID to use (defaults to gpt-4.1-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.7 for creativity) */
-    temperature?: number
 }
 
 /**
@@ -62,7 +60,6 @@ export async function generateGallerySEOContent(
         aiAnalysis,
         currentTitle,
         modelId = DEFAULT_CONTENT_MODEL_ID,
-        temperature = 0.7,
     } = options
 
     const result = await coreGenerateObject({
@@ -70,7 +67,6 @@ export async function generateGallerySEOContent(
         schema: seoContentSchema,
         system: SEO_CONTENT_SYSTEM_PROMPT,
         prompt: getSEOContentPrompt(aiAnalysis, currentTitle),
-        temperature,
     })
 
     return result.object

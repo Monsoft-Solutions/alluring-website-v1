@@ -56,8 +56,6 @@ export type GenerateInlineImagePromptOptions = {
     artisticStyleId?: ArtisticImageStyleId
     /** Model ID to use (defaults to gpt-5.2) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.8) */
-    temperature?: number
 }
 
 /**
@@ -102,7 +100,6 @@ export async function generateInlineImagePrompt(
         photoStyle,
         artisticStyleId,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.8,
     } = options
 
     const result = await coreGenerateText({
@@ -117,7 +114,6 @@ export async function generateInlineImagePrompt(
             photoStyle,
             artisticStyleId,
         }),
-        temperature,
     })
 
     return {

@@ -24,7 +24,7 @@ const refreshChangeSummarySchema = z.object({
         ),
 })
 
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 export type SummarizeRefreshChangesOptions = {
     /** Post title, for context. */
@@ -34,7 +34,6 @@ export type SummarizeRefreshChangesOptions = {
     /** The refreshed article. */
     newContent: string
     modelId?: string
-    temperature?: number
 }
 
 export type RefreshChangeSummary = z.infer<typeof refreshChangeSummarySchema>
@@ -50,7 +49,6 @@ export async function summarizeRefreshChanges(
         oldContent,
         newContent,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     const result = await coreGenerateObject({
@@ -58,7 +56,6 @@ export async function summarizeRefreshChanges(
         schema: refreshChangeSummarySchema,
         system: REFRESH_CHANGE_SUMMARY_SYSTEM_PROMPT,
         prompt: getRefreshChangeSummaryPrompt(title, oldContent, newContent),
-        temperature,
     })
 
     return result.object

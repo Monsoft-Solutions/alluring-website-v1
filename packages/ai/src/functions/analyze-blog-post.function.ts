@@ -23,7 +23,7 @@ import { coreGenerateObject } from '../core'
  * Default model for blog post analysis
  * Uses Claude Opus 4.5 for comprehensive analysis requiring nuanced evaluation
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Options for blog post analysis
@@ -31,8 +31,6 @@ const DEFAULT_MODEL_ID = 'claude-opus-5'
 export type AnalyzeBlogPostOptions = AnalyzeBlogPostInput & {
     /** Model ID to use (defaults to gpt-4o) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.3 for consistency) */
-    temperature?: number
 }
 
 /**
@@ -88,7 +86,6 @@ export async function analyzeBlogPost(
         excerpt,
         hasFeaturedImage,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     const result = await coreGenerateObject({
@@ -103,7 +100,6 @@ export async function analyzeBlogPost(
             excerpt,
             hasFeaturedImage,
         }),
-        temperature,
     })
 
     return {

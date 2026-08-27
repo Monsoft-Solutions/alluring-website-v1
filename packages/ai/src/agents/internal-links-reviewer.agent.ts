@@ -22,7 +22,7 @@ import type {
 /**
  * Default model for internal links review
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Schema for internal links review
@@ -185,7 +185,6 @@ export async function runInternalLinksReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     // Get available internal pages
@@ -233,7 +232,6 @@ Analyze the internal linking quality and provide your review.`
         schema: internalLinksReviewSchema,
         system: INTERNAL_LINKS_REVIEW_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

@@ -8,23 +8,33 @@
  */
 
 /**
- * Telemetry configuration for AI SDK experimental_telemetry
+ * Telemetry options passed to every AI SDK call.
  *
- * When LANGFUSE_ENABLED is 'true', telemetry will be sent to Langfuse.
- * The OpenTelemetry instrumentation in the Next.js apps will process these spans.
+ * **AI SDK 7 emits nothing unless an integration is registered.** `isEnabled`
+ * is an opt-_out_ switch for an already-registered integration, not the thing
+ * that turns telemetry on. Each Next.js app calls
+ * `registerTelemetry(new LegacyOpenTelemetry())` in its `instrumentation.ts`;
+ * without that call every span silently disappears from Langfuse — no error,
+ * no type error, no failing build.
+ *
+ * `LegacyOpenTelemetry` (not `OpenTelemetry`) is deliberate: it emits the
+ * `ai.*` span attributes that `@langfuse/otel@4` parses. The newer
+ * `OpenTelemetry` integration emits GenAI SemConv (`gen_ai.input.messages`),
+ * which Langfuse only understands from v5 — spans would still arrive, but
+ * without prompt or response bodies.
  *
  * @example
  * ```typescript
  * import { telemetryConfig } from '@workspace/ai/telemetry'
  *
  * const result = await generateText({
- *   model: openai('gpt-4.1'),
+ *   model,
  *   prompt: 'Hello',
- *   experimental_telemetry: telemetryConfig,
+ *   telemetry: telemetryConfig,
  * })
  * ```
  */
 export const telemetryConfig = {
-    /** Enable telemetry when LANGFUSE_ENABLED env var is 'true' */
+    /** Opt-out switch; the registered integration is what enables emission */
     isEnabled: true,
 }

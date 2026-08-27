@@ -24,8 +24,6 @@ export type AgenticContentPipelineOptions = {
     contentModelId?: string
     /** Model ID for review agents (default: gpt-5.2) */
     reviewModelId?: string
-    /** Temperature for content generation (default: 0.7) */
-    temperature?: number
     /** Maximum tool call steps (default: 25) */
     maxSteps?: number
     /** Minimum acceptable quality score (default: 70) */

@@ -9,9 +9,9 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
-import { generateText, stepCountIs } from 'ai'
+import { generateText, isStepCount } from 'ai'
 
-import { getModel, temperatureParam } from '../models/model-resolver.util'
+import { getModel } from '../models/model-resolver.util'
 import { validateGeneratedMdx } from '../functions/validate-generated-mdx.function'
 import { telemetryConfig } from '../telemetry'
 import type {
@@ -47,8 +47,6 @@ export type OrchestratorOptions = {
     reviews: AgentReview[]
     /** Model ID to use */
     modelId?: string
-    /** Temperature for generation */
-    temperature?: number
     /** Target audience description */
     targetAudience?: string
     /** Content type (tutorial, guide, comparison, faq, case-study) */
@@ -489,7 +487,6 @@ export async function runOrchestrator(
         secondaryKeywords,
         reviews,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.4,
         targetAudience,
         contentType,
         estimatedWordCount,
@@ -541,16 +538,15 @@ export async function runOrchestrator(
 
     const result = await generateText({
         model: getModel(modelId),
-        system: systemPrompt,
+        instructions: systemPrompt,
         prompt: userPrompt,
-        ...temperatureParam(modelId, temperature),
         maxOutputTokens: 16000,
-        experimental_telemetry: telemetryConfig,
+        telemetry: telemetryConfig,
         tools: {
             think: createThinkTool(),
         },
-        stopWhen: stepCountIs(5),
-        onStepFinish({ text, toolCalls, toolResults, finishReason, usage }) {
+        stopWhen: isStepCount(5),
+        onStepEnd({ text, toolCalls, toolResults, finishReason, usage }) {
             console.log(`[Orchestrator] Step ${text}`)
             console.log(
                 `[Orchestrator] Tool calls: ${toolCalls.map((c) => c.toolName).join(', ')}`

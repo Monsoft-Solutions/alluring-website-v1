@@ -31,7 +31,7 @@ const blogSummarySchema = z.object({
  * Default model for text generation
  * Uses a cost-effective model since this is text-only
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Options for blog post summarization
@@ -43,8 +43,6 @@ export type SummarizeBlogPostOptions = {
     content: string
     /** Model ID to use (defaults to gpt-4o-mini) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.5 for consistency) */
-    temperature?: number
 }
 
 /**
@@ -75,19 +73,13 @@ export type BlogPostSummary = z.infer<typeof blogSummarySchema>
 export async function summarizeBlogPost(
     options: SummarizeBlogPostOptions
 ): Promise<BlogPostSummary> {
-    const {
-        title,
-        content,
-        modelId = DEFAULT_MODEL_ID,
-        temperature = 0.5,
-    } = options
+    const { title, content, modelId = DEFAULT_MODEL_ID } = options
 
     const result = await coreGenerateObject({
         modelId,
         schema: blogSummarySchema,
         system: BLOG_SUMMARY_SYSTEM_PROMPT,
         prompt: getBlogSummaryPrompt(title, content),
-        temperature,
     })
 
     return result.object

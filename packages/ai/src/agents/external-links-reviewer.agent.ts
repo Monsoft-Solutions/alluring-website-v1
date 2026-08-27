@@ -24,7 +24,7 @@ import type {
 /**
  * Default model for external links review
  */
-const DEFAULT_MODEL_ID = 'claude-opus-5'
+const DEFAULT_MODEL_ID = 'x-ai/grok-4.6'
 
 /**
  * Schema for external links review
@@ -220,7 +220,6 @@ export async function runExternalLinksReviewer(
         title,
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     // Extract existing external links
@@ -288,7 +287,6 @@ Analyze the external linking quality and provide your review.`
         schema: externalLinksReviewSchema,
         system: EXTERNAL_LINKS_REVIEW_SYSTEM_PROMPT,
         prompt,
-        temperature,
     })
 
     const processingTimeMs = Date.now() - startTime

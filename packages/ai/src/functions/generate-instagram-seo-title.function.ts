@@ -114,8 +114,6 @@ export type GenerateInstagramSeoTitleOptions = {
     } | null
     /** Model ID override */
     modelId?: string
-    /** Temperature for generation */
-    temperature?: number
 }
 
 /**
@@ -165,7 +163,6 @@ export async function generateInstagramSeoTitle(
         takenAt,
         aiAnalysis,
         modelId = MODEL_FOR_SEO_GENERATION,
-        temperature = 0.4,
     } = options
 
     // Build context for the AI
@@ -230,7 +227,6 @@ Requirements:
         schema: seoMetadataSchema,
         system: SEO_METADATA_SYSTEM_PROMPT,
         prompt: userPrompt,
-        temperature,
     })
 
     let seoTitle = result.object.title

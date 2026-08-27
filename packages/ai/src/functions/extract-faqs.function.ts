@@ -118,7 +118,7 @@ async function generateFaqsFromContent(
         content,
         primaryKeyword,
         maxFaqs = 8,
-        modelId = 'claude-opus-5',
+        modelId = 'x-ai/grok-4.6',
     } = options
 
     const prompt = `Generate FAQ items for this blog post:
@@ -138,7 +138,6 @@ Analyze the content above and generate ${Math.min(maxFaqs, 8)} relevant FAQ item
         schema: extractFaqsResponseSchema,
         system: FAQ_GENERATOR_SYSTEM_PROMPT,
         prompt,
-        temperature: 0.7, // Higher for creative generation
     })
 
     // Limit to maxFaqs
@@ -186,7 +185,7 @@ export async function extractFaqs(
         content,
         primaryKeyword,
         maxFaqs = 10,
-        modelId = 'claude-opus-5',
+        modelId = 'x-ai/grok-4.6',
         generateIfMissing = true,
     } = options
 
@@ -224,7 +223,6 @@ Find and extract all Q&A pairs. If no genuine FAQs exist, return empty array.`
         schema: extractFaqsResponseSchema,
         system: FAQ_EXTRACTOR_SYSTEM_PROMPT,
         prompt,
-        temperature: 0.2, // Very low for accurate extraction
     })
 
     // Limit to maxFaqs

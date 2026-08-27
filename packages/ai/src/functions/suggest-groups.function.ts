@@ -34,8 +34,6 @@ export type SuggestGroupsOptions = {
     availableGroups: AvailableGroup[]
     /** Model ID to use (defaults to gpt-4.1) */
     modelId?: string
-    /** Temperature for generation (defaults to 0.3 for consistent results) */
-    temperature?: number
 }
 
 /**
@@ -66,7 +64,6 @@ export async function suggestGalleryGroups(
         aiAnalysis,
         availableGroups,
         modelId = DEFAULT_SUGGESTION_MODEL_ID,
-        temperature = 0.3,
     } = options
 
     // If no groups available, return empty suggestion
@@ -82,7 +79,6 @@ export async function suggestGalleryGroups(
         schema: groupSuggestionSchema,
         system: GROUP_SUGGESTION_SYSTEM_PROMPT,
         prompt: getGroupSuggestionPrompt(aiAnalysis, availableGroups),
-        temperature,
     })
 
     return result.object
