@@ -1,8 +1,5 @@
-'use client'
-
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
-import { motion } from 'framer-motion'
 import { Button } from '@workspace/ui/components/button'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -22,6 +19,12 @@ type CredentialStat = {
     readonly value: string
     readonly label: string
 }
+
+/**
+ * Staggered reveal for the credential stats. Spelled out rather than computed
+ * so Tailwind's scanner can see each class.
+ */
+const STAT_DELAY = ['animate-delay-0', 'animate-delay-100', 'animate-delay-200']
 
 export const Surgeons = () => {
     const credentialStats: CredentialStat[] = [
@@ -57,12 +60,7 @@ export const Surgeons = () => {
                 <div className='flex flex-col items-center gap-16 lg:flex-row lg:items-stretch'>
                     {/* Image Stack */}
                     <div className='relative flex min-h-[400px] w-full justify-center lg:block lg:w-1/2'>
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            className='relative aspect-[3/4] w-full max-w-md'
-                        >
+                        <div className='animate-fade-in-up relative aspect-[3/4] w-full max-w-md'>
                             <Image
                                 src='/images/surgeons/dr-karlinsky.webp'
                                 alt='Dr. Victoria Karlinsky - Double Board-Certified Cosmetic Surgeon specializing in BBL, breast augmentation, and mommy makeover at Alluring Plastic Surgery Miami'
@@ -76,13 +74,9 @@ export const Surgeons = () => {
                             {/* Credential Stats Overlay */}
                             <div className='absolute right-4 -bottom-4 left-4 flex gap-2 md:right-auto md:-bottom-12 md:left-0 md:gap-3'>
                                 {credentialStats.map((stat, index) => (
-                                    <motion.div
+                                    <div
                                         key={index}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className='flex flex-1 flex-col items-center gap-1 border border-stone-700 bg-stone-900/95 p-3 backdrop-blur-sm md:p-4'
+                                        className={`animate-fade-in-up flex flex-1 flex-col items-center gap-1 border border-stone-700 bg-stone-900/95 p-3 backdrop-blur-sm md:p-4 ${STAT_DELAY[index] ?? ''}`}
                                     >
                                         <div className='text-gold-400'>
                                             {stat.icon}
@@ -93,10 +87,10 @@ export const Surgeons = () => {
                                         <span className='text-center text-[10px] text-stone-400 uppercase md:text-xs'>
                                             {stat.label}
                                         </span>
-                                    </motion.div>
+                                    </div>
                                 ))}
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
 
                     {/* Content */}

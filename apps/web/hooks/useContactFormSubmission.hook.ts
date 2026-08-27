@@ -13,17 +13,14 @@ import { useRouter } from 'next/navigation'
 
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { useUTMTracking } from '@/lib/analytics/utm-tracking.context'
-import { dispatchFormSubmitted } from '@/lib/events/form-events'
+import {
+    dispatchFormSubmitted,
+    FORM_SUBMITTED_KEY,
+} from '@/lib/events/form-events'
 import {
     type ContactFormResponse,
     type ContactSource,
 } from '@/lib/types/forms/contact-form.type'
-
-/**
- * SessionStorage key to track if user has submitted any form
- * Used to prevent showing additional lead capture popups/modals
- */
-export const FORM_SUBMITTED_KEY = 'alluring_form_submitted'
 
 /**
  * Submission state for the form

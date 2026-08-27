@@ -1,8 +1,12 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
+
+/**
+ * Staggered reveal for the three steps. Written out rather than computed so
+ * Tailwind's scanner can see each class; `animate-delay-*` utilities live in
+ * `packages/ui/src/styles/globals.css`.
+ */
+const STEP_DELAY = ['animate-delay-0', 'animate-delay-100', 'animate-delay-200']
 
 export const Journey = () => {
     const steps = [
@@ -34,23 +38,15 @@ export const Journey = () => {
                 <div className='grid items-start gap-16 lg:grid-cols-2 lg:gap-24'>
                     {/* Left: Sticky Content */}
                     <div className='lg:sticky lg:top-32'>
-                        <motion.span
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            className='text-gold-500 mb-4 block text-sm font-bold tracking-widest uppercase'
-                        >
+                        <span className='text-gold-500 animate-fade-in mb-4 block text-sm font-bold tracking-widest uppercase'>
                             Your Journey
-                        </motion.span>
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            className='mb-8 font-serif text-4xl leading-tight text-stone-900 md:text-5xl lg:text-6xl'
-                        >
+                        </span>
+                        <h2 className='animate-fade-in-up mb-8 font-serif text-4xl leading-tight text-stone-900 md:text-5xl lg:text-6xl'>
                             Designed for Women Who Are Done{' '}
                             <span className='text-stone-400 italic'>
                                 &quot;Just Dealing With It.&quot;
                             </span>
-                        </motion.h2>
+                        </h2>
                         <p className='max-w-md text-xl leading-relaxed text-stone-600'>
                             At Alluring Plastic Surgery, we don&apos;t just
                             change how you look. We protect your health, respect
@@ -63,16 +59,9 @@ export const Journey = () => {
                     <div className='relative border-l border-stone-200 pl-8 lg:border-none lg:pl-0'>
                         <div className='space-y-16'>
                             {steps.map((step, idx) => (
-                                <motion.div
+                                <div
                                     key={idx}
-                                    className='group relative'
-                                    initial={{ opacity: 0, x: 20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true, margin: '-100px' }}
-                                    transition={{
-                                        duration: 0.6,
-                                        delay: idx * 0.1,
-                                    }}
+                                    className={`group animate-fade-in-up relative ${STEP_DELAY[idx] ?? ''}`}
                                 >
                                     {/* Number for Desktop */}
                                     <span className='group-hover:text-gold-300 absolute top-0 -left-24 hidden font-serif text-6xl text-stone-200 transition-colors duration-500 lg:block'>
@@ -88,7 +77,7 @@ export const Journey = () => {
                                     <p className='max-w-md text-lg leading-relaxed text-stone-500'>
                                         {step.desc}
                                     </p>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </div>
