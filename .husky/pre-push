@@ -4,3 +4,7 @@ pnpm lint
 pnpm typecheck
 pnpm build
 
+# Reads the build that just ran, so it costs ~2s. CI enforces this too, but
+# finding out here beats finding out after the push (issue #202).
+pnpm size:check
+

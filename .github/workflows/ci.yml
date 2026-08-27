@@ -101,6 +101,83 @@ jobs:
             - name: Run typecheck
               run: pnpm typecheck
 
+    size-budget:
+        name: Bundle Size Budget
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        # Phase 2 of epic #197 cut the homepage from 688.6 KB of wire JavaScript to
+        # under 300 KB. Nothing measured bundle size, so nothing would have noticed
+        # it climbing back. This job is that gate — see apps/web/size-budget.json.
+        #
+        # It needs a real `next build`, which needs a database, so it brings its own
+        # rather than reaching for production. An empty database prerenders zero blog
+        # posts, which does not affect the numbers: the client bundle graph is built
+        # from imports, not content.
+        services:
+            postgres:
+                image: postgres:16
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: alluring_ci
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        env:
+            # `local` is db-target.ts's default target and it rejects a non-local
+            # host, which is exactly what we want here.
+            POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/alluring_ci
+            # Required by apps/web/env.ts, which validates shape at build time.
+            # Nothing is sent or fetched during a build, so placeholders are honest:
+            # a real key here would be a credential leak waiting to happen.
+            BLOG_API_KEY: ci-not-a-real-key
+            RESEND_API_KEY: ci-not-a-real-key
+            RESEND_FROM_EMAIL: ci@example.com
+            OWNER_EMAIL: ci@example.com
+            REVALIDATION_SECRET: ci-placeholder-secret-at-least-32-chars
+            NEXT_PUBLIC_SITE_URL: https://www.alluringplasticsurgery.com
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10.4.1
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '24'
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Apply migrations
+              run: pnpm db:migrate
+
+            # An empty database prerenders no blog posts, which would leave the
+            # blog template — 104 live routes — outside the measurement entirely.
+            # One synthetic post brings it back in. See the file's header.
+            - name: Seed size-budget fixtures
+              run: psql "$POSTGRES_URL" -v ON_ERROR_STOP=1 -f .github/fixtures/size-budget-seed.sql
+
+            - name: Build web
+              run: pnpm build --filter=web
+
+            - name: Check first-load JS against budget
+              run: pnpm size:check
+
     # Placeholder for when tests are added
     # test:
     #     name: Test

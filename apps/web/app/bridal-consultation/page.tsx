@@ -163,7 +163,7 @@ export default async function BridalConsultationPage() {
                     }}
                     eyebrow='Your Perfect Day Awaits'
                     size='lg'
-                    backgroundImage='/images/landing/bridal-cta-bg.png'
+                    backgroundImage='/images/landing/bridal-cta-bg.webp'
                 />
             </ContainerLayout>
 

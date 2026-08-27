@@ -13,6 +13,8 @@
         "lint": "turbo lint",
         "typecheck": "turbo typecheck",
         "test": "turbo test",
+        "size:check": "node scripts/size-budget.mjs",
+        "analyze": "turbo analyze --filter=web",
         "format": "prettier --cache --write .",
         "format:check": "prettier --cache --check .",
         "prepare": "husky",

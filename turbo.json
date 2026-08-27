@@ -57,6 +57,12 @@
                 "N8N_WEBHOOK_URL"
             ]
         },
+        "analyze": {
+            "dependsOn": ["^build"],
+            "cache": false,
+            "outputs": [],
+            "passThroughEnv": ["*"]
+        },
         "lint": {
             "dependsOn": ["^build"]
         },
@@ -140,20 +146,24 @@
         },
         "db:migrate": {
             "cache": false,
-            "outputs": []
+            "outputs": [],
+            "env": ["POSTGRES_URL"]
         },
         "db:migrate:prod": {
             "cache": false,
             "interactive": true,
-            "outputs": []
+            "outputs": [],
+            "env": ["POSTGRES_URL_PROD"]
         },
         "db:check": {
             "cache": false,
-            "outputs": []
+            "outputs": [],
+            "env": ["POSTGRES_URL"]
         },
         "db:check:prod": {
             "cache": false,
-            "outputs": []
+            "outputs": [],
+            "env": ["POSTGRES_URL_PROD"]
         },
         "db:baseline": {
             "cache": false,

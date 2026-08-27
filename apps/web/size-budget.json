@@ -1,0 +1,24 @@
+{
+    "$comment": [
+        "First-load JavaScript budgets in brotli KB, enforced by scripts/size-budget.mjs.",
+        "Baseline measured on perf/build-hygiene-dead-assets-202 (issue #202) after epic #197",
+        "phases 1-4: shared floor 144.0 across 8 chunks, heaviest route 340.1",
+        "(/mens-plastic-surgery-miami), homepage 299.4. These three are content-independent -",
+        "they came out identical against a full database and an empty one. The route count and",
+        "median are not, and move with how much content the build could see.",
+        "Each budget is the baseline plus roughly 5% of headroom. Raising one is allowed and",
+        "sometimes correct - say why in the PR, so the number keeps meaning something.",
+        "minSharedKb is the opposite direction: a shared floor BELOW it means the measurement",
+        "broke, not that the bundle shrank. Set well under the baseline so a genuine win",
+        "does not trip it."
+    ],
+    "sharedKb": 152,
+    "maxRouteKb": 355,
+    "minSharedKb": 100,
+    "routes": {
+        "/": 315
+    },
+    "ciRoutes": {
+        "/blog/ci-size-budget-fixture": 300
+    }
+}

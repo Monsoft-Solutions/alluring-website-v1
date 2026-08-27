@@ -163,7 +163,6 @@ export default async function MensPlasticSurgeryMiamiPage() {
                     }}
                     eyebrow="Men's Cosmetic Surgery"
                     size='lg'
-                    backgroundImage='/images/landing/mens-surgery-cta-bg.png'
                 />
             </ContainerLayout>
 

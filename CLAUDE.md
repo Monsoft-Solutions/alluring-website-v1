@@ -143,8 +143,20 @@ import { CTASection, SectionHeader } from '@/components/shared'
 ```bash
 pnpm dev          # Start dev server
 pnpm build        # Production build
+pnpm size:check   # First-load JS vs apps/web/size-budget.json (run after a build)
+pnpm analyze      # Per-route module graphs -> apps/web/.next/diagnostics/analyze/
 pnpm dlx shadcn@latest add <name> -c apps/web  # Add shadcn component
 ```
+
+**Bundle size is a CI gate** (issue #202). `size:check` reads the prerendered
+HTML and fails on a first-load JS regression past `apps/web/size-budget.json`.
+Raising a budget is allowed when justified — say why in the PR.
+
+`analyze` runs `next build --experimental-analyze`, Turbopack's own analyzer. On
+Next 16.0.10 it writes machine-readable `analyze.data` per route rather than a
+browsable report — there is no HTML viewer yet. Do **not** reach for
+`@next/bundle-analyzer` instead: it is a webpack plugin, and on a Turbopack build
+it prints a warning and generates nothing.
 
 ---
 
