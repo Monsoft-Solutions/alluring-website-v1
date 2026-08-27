@@ -16,6 +16,17 @@ import { useEffect } from 'react'
 export const FORM_SUBMITTED_EVENT = 'alluring:form-submitted'
 
 /**
+ * SessionStorage key to track if user has submitted any form.
+ * Used to prevent showing additional lead capture popups/modals.
+ *
+ * It lives here rather than beside the submission hook so that the popup
+ * trigger shims can read it without importing the hook — which would pull
+ * `contact-form.type`, and with it zod, back into the root layout's bundle
+ * (issue #199).
+ */
+export const FORM_SUBMITTED_KEY = 'alluring_form_submitted'
+
+/**
  * Dispatches a custom event to notify all listeners that a form has been submitted.
  * Call this after setting sessionStorage to ensure all modals are notified immediately.
  */

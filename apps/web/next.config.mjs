@@ -21,6 +21,12 @@ const nextConfig = {
         // Next defaults to no retries, so a single transient pooler timeout
         // failed the whole deploy. Three attempts per page covers it.
         staticGenerationRetryCount: 3,
+        // Next 16 ships a 75-entry default list (lucide-react and date-fns are
+        // both on it) and framer-motion is not among them. The 17 components
+        // that still legitimately need AnimatePresence / useScroll now sit
+        // behind route-level code splitting rather than the root layout, so
+        // this mostly helps the pages that still import it directly.
+        optimizePackageImports: ['framer-motion'],
     },
     images: {
         // AVIF first — it was off entirely, so every optimized image was served

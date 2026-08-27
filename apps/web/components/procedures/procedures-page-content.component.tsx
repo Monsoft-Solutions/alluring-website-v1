@@ -131,9 +131,6 @@ export function ProceduresPageContent({
                                         key={procedure.slug}
                                         procedure={procedure}
                                         index={idx}
-                                        containerRef={
-                                            targetRef as React.RefObject<HTMLDivElement>
-                                        }
                                     />
                                 ))}
                             </motion.div>

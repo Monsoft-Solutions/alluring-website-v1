@@ -35,7 +35,6 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { FAQSchema } from '@workspace/seo/react'
@@ -247,12 +246,9 @@ export function CategorizedFAQ({
 
                         {/* Right Column: Accordion */}
                         <div className='lg:col-span-8'>
-                            <motion.div
+                            <div
                                 key={activeCategory}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className='space-y-4'
+                                className='animate-fade-in-up space-y-4'
                             >
                                 {faqData[activeCategory]?.map((item, index) => (
                                     <div
@@ -271,6 +267,9 @@ export function CategorizedFAQ({
                                                         : index
                                                 )
                                             }
+                                            id={`faq-trigger-${activeCategory}-${index}`}
+                                            aria-expanded={openIndex === index}
+                                            aria-controls={`faq-${activeCategory}-${index}`}
                                             className='flex w-full items-center justify-between p-6 text-left focus:outline-none md:p-8'
                                         >
                                             <span
@@ -297,38 +296,28 @@ export function CategorizedFAQ({
                                             </span>
                                         </button>
 
-                                        <AnimatePresence>
-                                            {openIndex === index && (
-                                                <motion.div
-                                                    initial={{
-                                                        height: 0,
-                                                        opacity: 0,
-                                                    }}
-                                                    animate={{
-                                                        height: 'auto',
-                                                        opacity: 1,
-                                                    }}
-                                                    exit={{
-                                                        height: 0,
-                                                        opacity: 0,
-                                                    }}
-                                                    transition={{
-                                                        duration: 0.3,
-                                                        ease: 'easeInOut',
-                                                    }}
-                                                    className='overflow-hidden'
-                                                >
-                                                    <div className='px-6 pt-0 pb-8 md:px-8'>
-                                                        <p className='border-t border-stone-100 pt-6 text-lg leading-relaxed text-stone-500'>
-                                                            {item.answer}
-                                                        </p>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
+                                        <div
+                                            id={`faq-${activeCategory}-${index}`}
+                                            role='region'
+                                            aria-labelledby={`faq-trigger-${activeCategory}-${index}`}
+                                            aria-hidden={openIndex !== index}
+                                            className={`grid overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out ${
+                                                openIndex === index
+                                                    ? 'grid-rows-[1fr]'
+                                                    : 'grid-rows-[0fr]'
+                                            }`}
+                                        >
+                                            <div className='overflow-hidden'>
+                                                <div className='px-6 pt-0 pb-8 md:px-8'>
+                                                    <p className='border-t border-stone-100 pt-6 text-lg leading-relaxed text-stone-500'>
+                                                        {item.answer}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
-                            </motion.div>
+                            </div>
 
                             {/* Optional CTA Section */}
                             {ctaConfig && (

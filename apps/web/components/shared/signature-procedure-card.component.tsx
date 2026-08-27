@@ -1,9 +1,5 @@
-'use client'
-
 import { ImageObjectSchema, ServiceSchema } from '@workspace/seo/react'
 import type { Procedure } from '@/lib/types/procedure.type'
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,9 +9,20 @@ import { siteConfig } from '@/lib/data/site-config'
 interface SignatureProcedureCardProps {
     procedure: Procedure
     index: number
-    containerRef?: React.RefObject<HTMLDivElement>
     includeSchema?: boolean
 }
+
+/**
+ * Staggered reveal for the carousel cards. Spelled out rather than computed so
+ * Tailwind's scanner can see each class, and applied modulo its length — the
+ * procedures page renders a whole category, which is well past four cards.
+ */
+const CARD_DELAY = [
+    'animate-delay-0',
+    'animate-delay-100',
+    'animate-delay-200',
+    'animate-delay-300',
+]
 
 /**
  * Maps category values to display text for stat badges
@@ -36,31 +43,12 @@ const getCategoryDisplayName = (
 export function SignatureProcedureCard({
     procedure,
     index,
-    containerRef,
     includeSchema = true,
 }: SignatureProcedureCardProps) {
-    const cardRef = useRef<HTMLDivElement>(null)
-
     const defaultAuthor = {
         '@type': 'Organization' as const,
         name: siteConfig.business.name,
     }
-
-    // Track the card's horizontal position within the scroll container
-    // Only if containerRef is provided (for parallax effect)
-    const { scrollXProgress } = useScroll({
-        container: containerRef || undefined,
-        target: cardRef,
-        axis: 'x',
-        offset: ['start end', 'end start'],
-    })
-
-    // Parallax effect: move image horizontally as card scrolls
-    // Range is -10% to 10% to create a subtle depth effect
-    // Only apply parallax if containerRef is provided
-    const staticX = useMotionValue('0%')
-    const parallaxX = useTransform(scrollXProgress, [0, 1], ['-10%', '10%'])
-    const x = containerRef ? parallaxX : staticX
 
     const categoryDisplay = getCategoryDisplayName(procedure.category)
     const imageSrc = procedure.image || '/images/placeholder.jpg'
@@ -68,17 +56,8 @@ export function SignatureProcedureCard({
         procedure.shortDescription || procedure.description || ''
 
     return (
-        <motion.div
-            ref={cardRef}
-            className='group relative h-[600px] min-w-[85vw] cursor-pointer snap-center overflow-hidden md:min-w-[450px]'
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.6 }}
-            viewport={{
-                root: containerRef || undefined,
-                once: true,
-                margin: '0px -10% 0px 0px',
-            }}
+        <div
+            className={`group animate-fade-in-up relative h-[600px] min-w-[85vw] cursor-pointer snap-center overflow-hidden md:min-w-[450px] ${CARD_DELAY[index % CARD_DELAY.length]}`}
         >
             <Link
                 href={`/procedures/${procedure.slug}`}
@@ -113,12 +92,7 @@ export function SignatureProcedureCard({
                 </>
             )}
             <div className='absolute inset-0 h-full w-full overflow-hidden bg-stone-800'>
-                <motion.div
-                    style={{ x, scale: 1.25 }}
-                    whileHover={{ scale: 1.35 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className='relative h-full w-full'
-                >
+                <div className='relative h-full w-full scale-125 transition-transform duration-700 ease-out group-hover:scale-[1.35]'>
                     <Image
                         src={imageSrc}
                         alt={procedure.title}
@@ -126,7 +100,7 @@ export function SignatureProcedureCard({
                         className='object-cover opacity-60 transition-opacity duration-500 group-hover:opacity-40'
                         sizes='(max-width: 768px) 85vw, 450px'
                     />
-                </motion.div>
+                </div>
             </div>
 
             {/* Gradient */}
@@ -148,6 +122,6 @@ export function SignatureProcedureCard({
                     <ArrowRight className='h-5 w-5' />
                 </div>
             </div>
-        </motion.div>
+        </div>
     )
 }

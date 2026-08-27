@@ -1,6 +1,6 @@
 import { OrganizationSchema, WebSiteSchema } from '@workspace/seo/react'
 import '@workspace/ui/globals.css'
-import { Geist, Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
+import { Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
 import Script from 'next/script'
 
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
@@ -8,8 +8,8 @@ import { InternalPageViewTracker } from '@/components/analytics/internal-page-vi
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
 import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
-import { FloatingChatButton } from '@/components/chat/floating-chat-button.component'
-import { FloatingFeedbackButton } from '@/components/feedback/floating-feedback-button.component'
+import { FloatingChatButtonLazy } from '@/components/chat/floating-chat-button-lazy.component'
+import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedback-button-lazy.component'
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
 import { NonStandaloneOnly } from '@/components/layout/non-standalone-only.component'
@@ -18,7 +18,6 @@ import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.c
 import { Providers } from '@/components/providers'
 import { ScrollToTop } from '@/components/scroll-to-top.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
-import { WebVitals } from '@/components/web-vitals.component'
 import { GoogleTranslateInit } from '@/components/google-translate-init.component'
 import { env } from '@/env'
 import { seoConfig } from '@/lib/seo-config'
@@ -50,17 +49,14 @@ const fontLato = Lato({
     preload: true,
 })
 
+// Geist Mono is used by exactly four <kbd> elements in the blog search modal
+// (components/blog/blog-search.component.tsx). `preload: false` keeps it
+// available without spending 22.6 KB of preload on every route in the site.
 const fontMono = Geist_Mono({
     subsets: ['latin'],
     variable: '--font-mono',
     display: 'swap',
-})
-
-// Geist kept for potential future use, but Lato is the primary sans-serif
-const fontGeist = Geist({
-    subsets: ['latin'],
-    variable: '--font-geist',
-    display: 'swap',
+    preload: false,
 })
 
 const fontPlayfair = Playfair_Display({
@@ -121,12 +117,11 @@ export default function RootLayout({
                 )}
             </head>
             <body
-                className={`${fontLato.variable} ${fontMono.variable} ${fontGeist.variable} ${fontPlayfair.variable} font-sans antialiased`}
+                className={`${fontLato.variable} ${fontMono.variable} ${fontPlayfair.variable} font-sans antialiased`}
                 suppressHydrationWarning
             >
                 {/* Google Translate - Client-side only to avoid hydration errors */}
                 <GoogleTranslateInit />
-                <WebVitals />
                 <ScrollToTop />
                 <InternalPageViewTracker />
                 <PageViewTracker />
@@ -173,9 +168,9 @@ export default function RootLayout({
                         </NonStandaloneOnly>
                     )}
                     {/* Beta Feedback Button - visible during beta testing */}
-                    {isBetaMode && <FloatingFeedbackButton />}
+                    {isBetaMode && <FloatingFeedbackButtonLazy />}
                     {/* Chat Widget - AI chat assistant */}
-                    {isChatEnabled && <FloatingChatButton />}
+                    {isChatEnabled && <FloatingChatButtonLazy />}
                 </Providers>
             </body>
         </html>

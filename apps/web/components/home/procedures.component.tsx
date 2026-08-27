@@ -165,9 +165,6 @@ export const Procedures = () => {
                             key={procedure.slug}
                             procedure={procedure}
                             index={idx}
-                            containerRef={
-                                scrollContainerRef as React.RefObject<HTMLDivElement>
-                            }
                         />
                     ))}
                 </div>
