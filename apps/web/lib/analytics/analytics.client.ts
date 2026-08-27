@@ -6,7 +6,7 @@
  *
  * @module analytics.client
  */
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 
 import type {
     EventParams,
@@ -52,7 +52,7 @@ export function trackEvent(eventName: string, params?: EventParams): void {
     try {
         window.gtag!('event', eventName, params ?? {})
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track event', error)
         }
     }
@@ -83,7 +83,7 @@ export function trackPageView(params?: PageViewParams): void {
             page_path: params?.page_path ?? window.location.pathname,
         })
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track page view', error)
         }
     }
@@ -107,11 +107,11 @@ export function trackScrollDepth(params: ScrollDepthParams): void {
             percent: params.percent,
             page_path: params.page_path ?? window.location.pathname,
         })
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: Tracked scroll depth', params)
         }
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track scroll depth', error)
         }
     }
@@ -141,7 +141,7 @@ export function trackClarityEvent(
             window.clarity!('event', eventName)
         }
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track Clarity event', error)
         }
     }
@@ -170,7 +170,7 @@ export function identifyClarityUser(
     try {
         window.clarity!('identify', userId, sessionId, pageId)
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to identify Clarity user', error)
         }
     }
@@ -191,7 +191,7 @@ export function upgradeClaritySession(): void {
     try {
         window.clarity!('upgrade', 'high')
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to upgrade Clarity session', error)
         }
     }

@@ -1,6 +1,6 @@
 import type { WebSite, WithContext } from 'schema-dts'
 
-import { SEARCH_INPUT_ENCODING } from '../config'
+import { SEARCH_INPUT_ENCODING } from '../config/schema-org.constant'
 import type { WebSiteSchemaProps } from '../types/schema/website.type'
 import { withContext } from './_internal'
 

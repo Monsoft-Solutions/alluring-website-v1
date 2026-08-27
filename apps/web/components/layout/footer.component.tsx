@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
-import { procedures } from '@/lib/data/procedures.data'
+import { procedureNavItems } from '@/lib/data/procedure-nav.data'
 import { footerSections } from '@/lib/data/footer'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
@@ -111,7 +111,7 @@ export const Footer = () => {
                             Procedures
                         </h4>
                         <ul className='space-y-4 text-base text-stone-400'>
-                            {procedures.map((procedure) => (
+                            {procedureNavItems.map((procedure) => (
                                 <li key={procedure.slug}>
                                     <Link
                                         href={`/procedures/${procedure.slug}`}

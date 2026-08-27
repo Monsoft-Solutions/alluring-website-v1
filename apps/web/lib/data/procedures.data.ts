@@ -1,5 +1,7 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { procedureSchema } from '@/lib/types/procedure.type'
+import type { ProcedureNavItem } from './procedure-nav.data'
+import { procedureNavItems } from './procedure-nav.data'
 import { env } from '@/env'
 
 // Import individual procedure data files
@@ -66,6 +68,66 @@ export const procedures: Procedure[] = rawProcedures.map((procedure) => {
 
     return result.data as Procedure
 })
+
+/** One comparable line per procedure: what navigation renders, in order. */
+const navSignature = (item: ProcedureNavItem): string =>
+    `${item.slug}|${item.title}|${item.category ?? ''}`
+
+/**
+ * Reports the first way `procedure-nav.data.ts` disagrees with this barrel, or
+ * `null` if the two are in step.
+ */
+function findNavDrift(): string | null {
+    const expected = procedures.map(({ title, slug, category }) =>
+        navSignature({ title, slug, category })
+    )
+    const actual = procedureNavItems.map(navSignature)
+
+    if (expected.length !== actual.length) {
+        return `expected ${expected.length} entries, found ${actual.length}`
+    }
+
+    const index = expected.findIndex((signature, i) => signature !== actual[i])
+
+    return index === -1
+        ? null
+        : `entry ${index} is "${actual[index] ?? ''}", expected "${expected[index] ?? ''}"`
+}
+
+/**
+ * Keeps the navigation list honest.
+ *
+ * The header, mobile menu and footer read their nine links from
+ * `procedure-nav.data.ts` rather than from this barrel, so that the catalog —
+ * full copy, benefits, surgical steps, anaesthesia notes — never reaches the
+ * browser (issue #210). The price of that split is a second list, and this is
+ * what stops it drifting: add a procedure here without adding it there and the
+ * dev server refuses to start, and CI fails, rather than the nav quietly
+ * dropping it.
+ *
+ * It lives in the barrel, which only the server graph imports, so it costs the
+ * client nothing.
+ *
+ * Note the two-tier failure policy. `NODE_ENV` is 'production' during
+ * `next build` as well as at runtime, so it cannot tell a pipeline apart from a
+ * live server on its own — hence the explicit `CI` check, without which a drift
+ * introduced in a pull request would be one line in a green build log. On a
+ * running production server it stays a log: a wrong nav link is worse than a
+ * missing one, but neither is worth taking the site down for.
+ */
+const navDrift = findNavDrift()
+
+if (navDrift) {
+    console.error(
+        `lib/data/procedure-nav.data.ts is out of step with the procedures barrel: ${navDrift}`
+    )
+
+    if (env.NODE_ENV === 'development' || env.CI) {
+        throw new Error(
+            `Procedure navigation data is out of step with the procedures barrel: ${navDrift}`
+        )
+    }
+}
 
 export const getProcedureBySlug = (slug: string): Procedure | undefined => {
     return procedures.find((procedure) => procedure.slug === slug)

@@ -7,7 +7,7 @@
  * @see https://developers.google.com/tag-platform/devguides/consent
  * @module consent.util
  */
-import { env } from '@/env'
+import { publicEnv } from '@/lib/env/public-env'
 
 import type { ConsentConfig, ConsentState } from './analytics.types'
 
@@ -71,7 +71,7 @@ export function initializeConsent(): void {
     // Early return if gtag not available yet
     // This is safe because consent is initialized inline in GoogleAnalytics component
     if (!window.gtag) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log(
                 'Analytics: gtag not yet available (consent already set inline)'
             )
@@ -84,11 +84,11 @@ export function initializeConsent(): void {
         // But we call it anyway for safety in case GA script loads late
         window.gtag('consent', 'default', DEFAULT_CONSENT_CONFIG)
 
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: Consent mode re-initialized (safety check)')
         }
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to initialize consent', error)
         }
     }
@@ -122,11 +122,11 @@ export function updateConsent(config: Partial<ConsentConfig>): void {
     try {
         window.gtag('consent', 'update', config)
 
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.log('Analytics: Consent updated', config)
         }
     } catch (error) {
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to update consent', error)
         }
     }
@@ -209,7 +209,7 @@ export function storeConsentState(state: ConsentState): void {
         localStorage.setItem('analytics_consent', state)
     } catch {
         // localStorage might be unavailable
-        if (env.NODE_ENV === 'development') {
+        if (publicEnv.NODE_ENV === 'development') {
             console.warn('Analytics: Failed to store consent state')
         }
     }

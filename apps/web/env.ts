@@ -1,6 +1,10 @@
-/* eslint-disable no-restricted-properties */
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
+
+// Relative, not `@/lib/...`: next.config.mjs loads this file through jiti to
+// validate the environment during the build, and jiti resolves without the
+// TypeScript path aliases.
+import { publicEnv } from './lib/env/public-env'
 
 // Only load dotenv in server-side environments
 // When this module is imported client-side, skip dotenv loading
@@ -60,6 +64,11 @@ export const env = createEnv({
         GOOGLE_PRIVATE_KEY: z.string().optional(),
         // N8N Webhook Integration (optional - enables lead sync to CRM)
         N8N_WEBHOOK_URL: z.url().optional(),
+
+        // Set by CI providers. Read by data-consistency assertions that should
+        // fail a pipeline rather than only log — `NODE_ENV` is 'production'
+        // during `next build`, so it cannot tell CI apart on its own.
+        CI: z.string().optional(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)
@@ -108,33 +117,14 @@ export const env = createEnv({
             .default('development'),
     },
     // Use experimental__runtimeEnv to let Next.js handle bundling automatically
-    // This prevents server-side variables from being exposed to client code
-    experimental__runtimeEnv: {
-        NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
-        NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
-        NEXT_PUBLIC_SITE_DESCRIPTION: process.env.NEXT_PUBLIC_SITE_DESCRIPTION,
-        NEXT_PUBLIC_TWITTER_HANDLE: process.env.NEXT_PUBLIC_TWITTER_HANDLE,
-        NEXT_PUBLIC_FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
-        NEXT_PUBLIC_LOCALE: process.env.NEXT_PUBLIC_LOCALE,
-        NEXT_PUBLIC_ENABLE_INDEXING: process.env.NEXT_PUBLIC_ENABLE_INDEXING,
-        NEXT_PUBLIC_GA_MEASUREMENT_ID:
-            process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-        NEXT_PUBLIC_CLARITY_PROJECT_ID:
-            process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
-        NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
-        NEXT_PUBLIC_FACEBOOK_PIXEL_ID:
-            process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID,
-        NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON:
-            process.env.NEXT_PUBLIC_ENABLE_MOBILE_CALL_BUTTON,
-        NEXT_PUBLIC_ALLOW_CRAWLING: process.env.NEXT_PUBLIC_ALLOW_CRAWLING,
-        NEXT_PUBLIC_BETA_MODE: process.env.NEXT_PUBLIC_BETA_MODE,
-        NEXT_PUBLIC_CHAT_ENABLED: process.env.NEXT_PUBLIC_CHAT_ENABLED,
-        NEXT_PUBLIC_LOQUENT_CHAT_ENABLED:
-            process.env.NEXT_PUBLIC_LOQUENT_CHAT_ENABLED,
-        NEXT_PUBLIC_ENABLE_COOKIE_BANNER:
-            process.env.NEXT_PUBLIC_ENABLE_COOKIE_BANNER,
-        NODE_ENV: process.env.NODE_ENV,
-    },
+    // This prevents server-side variables from being exposed to client code.
+    //
+    // The values come from `publicEnv` rather than being spelled out again
+    // here. That keeps one list of public variables instead of two, and makes
+    // drift a compile error: this field is typed as exactly the `client` plus
+    // `shared` keys, so adding a variable above without adding it to
+    // `publicEnv` fails typecheck.
+    experimental__runtimeEnv: publicEnv,
 
     // Called when server variables are accessed on the client.
     onInvalidAccess: (variable: string) => {

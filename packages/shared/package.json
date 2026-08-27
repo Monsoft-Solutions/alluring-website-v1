@@ -17,6 +17,11 @@
             "import": "./dist/cache/index.js",
             "default": "./dist/cache/index.js"
         },
+        "./utils": {
+            "types": "./dist/utils/index.d.ts",
+            "import": "./dist/utils/index.js",
+            "default": "./dist/utils/index.js"
+        },
         "./seo": {
             "types": "./dist/seo/index.d.ts",
             "import": "./dist/seo/index.js",
