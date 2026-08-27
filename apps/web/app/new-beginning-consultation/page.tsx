@@ -163,7 +163,7 @@ export default async function NewBeginningConsultationPage() {
                     }}
                     eyebrow='Your New Beginning Awaits'
                     size='lg'
-                    backgroundImage='/images/landing/new-beginning-cta-bg.png'
+                    backgroundImage='/images/landing/new-beginning-cta-bg.webp'
                 />
             </ContainerLayout>
 

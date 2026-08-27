@@ -223,7 +223,7 @@ export default async function ConsultaGratisPage() {
                     }}
                     eyebrow='Hablamos Tu Idioma'
                     size='lg'
-                    backgroundImage='/images/landing/spanish-cta-bg.png'
+                    backgroundImage='/images/landing/spanish-cta-bg.webp'
                 />
             </ContainerLayout>
 

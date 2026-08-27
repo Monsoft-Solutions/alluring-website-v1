@@ -164,7 +164,7 @@ export default async function BBLMiamiPage() {
                     }}
                     eyebrow='The Miami BBL'
                     size='lg'
-                    backgroundImage='/images/landing/bbl-miami-cta-bg.png'
+                    backgroundImage='/images/landing/bbl-miami-cta-bg.webp'
                 />
             </ContainerLayout>
 

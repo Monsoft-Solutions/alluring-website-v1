@@ -1,4 +1,5 @@
 import { createJiti } from 'jiti'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import workflowNext from 'workflow/next'
 
@@ -9,10 +10,15 @@ const jiti = createJiti(fileURLToPath(import.meta.url))
 // Import env here to validate during build
 jiti('./env')
 
+const appDir = dirname(fileURLToPath(import.meta.url))
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Acknowledge Turbopack usage (silences webpack plugin warnings)
-    turbopack: {},
+    turbopack: {
+        // The monorepo root, stated rather than inferred — see the matching
+        // setting in apps/web/next.config.mjs for why the inference goes wrong.
+        root: join(appDir, '..', '..'),
+    },
     transpilePackages: ['@workspace/ui', '@workspace/db'],
     images: {
         remotePatterns: [

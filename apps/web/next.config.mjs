@@ -1,4 +1,5 @@
 import { createJiti } from 'jiti'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const jiti = createJiti(fileURLToPath(import.meta.url))
@@ -6,10 +7,20 @@ const jiti = createJiti(fileURLToPath(import.meta.url))
 // Import env here to validate during build. Using jiti@^1 we can import .ts files :)
 jiti('./env')
 
+const appDir = dirname(fileURLToPath(import.meta.url))
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Acknowledge Turbopack usage (silences webpack plugin warnings)
-    turbopack: {},
+    turbopack: {
+        // The monorepo root, stated rather than inferred. Next finds the
+        // workspace root by walking up for a lockfile, and on a machine that
+        // keeps its projects under one parent a stray `package-lock.json` up
+        // there wins — the build then warned about multiple lockfiles and
+        // picked an unrelated directory. Next assigns the same value to
+        // `outputFileTracingRoot`, so that inference also decided what the
+        // serverless bundle traces. Setting it makes local, CI and Vercel agree.
+        root: join(appDir, '..', '..'),
+    },
     transpilePackages: ['@workspace/ui', '@workspace/db', '@workspace/seo'],
     experimental: {
         // Prerendering the 155 blog posts (issue #198) turned the build into a

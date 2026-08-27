@@ -436,12 +436,14 @@ All features gracefully degrade on older browsers.
 
 ## Examples in Codebase
 
-See these files for working examples:
+1. **Stacking Section:** `apps/web/components/sections/home/stacking-features-section.component.tsx`
+2. **Type Definitions:** `apps/web/lib/types/sections/stacking.type.ts`
 
-1. **Home Page:** `apps/web/app/page.tsx` (lines 122-129)
-2. **Stacking Section:** `apps/web/components/sections/home/StackingFeaturesSection.component.tsx`
-3. **Type Definitions:** `apps/web/lib/types/sections/stacking.type.ts`
-4. **Feature Data:** `apps/web/lib/data/webpages/home.ts` (keyFeaturesData)
+> **Status:** this component has no callers. The data the examples above were
+> written against — `keyFeaturesData` in `apps/web/lib/data/webpages/home.ts` —
+> was another company's website content left over from the monorepo template,
+> and issue #202 deleted it along with the 49 MB of stock photography it pointed
+> at. Treat the usage examples here as illustrative rather than as live code.
 
 ---
 

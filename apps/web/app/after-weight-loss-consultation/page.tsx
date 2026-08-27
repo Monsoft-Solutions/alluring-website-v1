@@ -164,7 +164,7 @@ export default async function AfterWeightLossConsultationPage() {
                     }}
                     eyebrow='Complete Your Transformation'
                     size='lg'
-                    backgroundImage='/images/landing/weight-loss-cta-bg.png'
+                    backgroundImage='/images/landing/weight-loss-cta-bg.webp'
                 />
             </ContainerLayout>
 
