@@ -13,6 +13,7 @@ import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedb
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
 import { NonStandaloneOnly } from '@/components/layout/non-standalone-only.component'
+import { NO_PROMO_BAR_ROUTES } from '@/lib/constants/standalone-routes'
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
 import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
@@ -154,17 +155,28 @@ export default function RootLayout({
                     <AnalyticsProvider />
                     {/* Cookie Consent Banner */}
                     {isCookieBannerEnabled && <CookieBanner />}
-                    {/* Promotion Announcement Bar */}
-                    <AnnouncementBar />
+                    {/* Promotion Announcement Bar. Kept on /landing/*, which
+                        redirects its CTA to the hero form; dropped on /lp/*,
+                        which runs its own palette and its own offer. */}
+                    <NonStandaloneOnly routes={NO_PROMO_BAR_ROUTES}>
+                        <AnnouncementBar />
+                    </NonStandaloneOnly>
                     {/* Conditional Layout - Header/Footer hidden on standalone pages */}
                     <ConditionalLayout>{children}</ConditionalLayout>
-                    {/* Exit Intent Popup - Only on homepage */}
-                    <ExitIntentPopup />
-                    {/* Promotion Modal - Timed popup with lead capture */}
-                    <PromoModalWrapper />
+                    {/*
+                        Exit intent and the timed promotion modal are suppressed
+                        on standalone routes (/lp, /landing, /links): a modal
+                        over the form is the fastest way to lose a paid click.
+                    */}
+                    <NonStandaloneOnly>
+                        <ExitIntentPopup />
+                    </NonStandaloneOnly>
+                    <NonStandaloneOnly>
+                        <PromoModalWrapper />
+                    </NonStandaloneOnly>
                     {/* Mobile Call Button - visible on mobile devices only.
-                        Suppressed on standalone routes (/landing, /links) so
-                        ad/IG landing pages can ship their own chrome. */}
+                        Suppressed on standalone routes so ad/IG landing pages
+                        can ship their own chrome. */}
                     {isMobileCallButtonEnabled && (
                         <NonStandaloneOnly>
                             <MobileCallButton

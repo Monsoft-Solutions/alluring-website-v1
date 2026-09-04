@@ -1,0 +1,337 @@
+/**
+ * Google Ads thank-you page — /lp/request-consultation/thank-you
+ *
+ * Scoped under `.aps-ty` for the same reasons as the landing page's sheet:
+ * specificity above Tailwind preflight, and no chance of leaking sitewide.
+ * See `../landing.css` for the full rationale.
+ *
+ * One deliberate difference from the standalone prototype: the display serif
+ * is Playfair Display, the same face the landing page uses, instead of the
+ * system `ui-serif` the older thank-you shipped. It costs nothing here — the
+ * root layout already loads it — and the two pages are one funnel.
+ */
+
+.aps-ty {
+    --gold-400: #bfaf79;
+    --gold-500: #a59557;
+    --gold-600: #8f8049;
+    --gold-700: #7f7341;
+    --stone-950: #0c0a09;
+    --stone-900: #1c1917;
+    --stone-600: #57534d;
+    --stone-500: #79716b;
+    --stone-400: #a6a09b;
+    --stone-300: #d6d3d1;
+    --stone-200: #e7e5e4;
+    --stone-100: #f5f5f4;
+    --stone-50: #fbfbfa;
+    --white: #fff;
+    --radius: 12px;
+    --serif: var(--font-playfair), Georgia, Cambria, 'Times New Roman', serif;
+
+    /* The original set these on <body>; the page root carries them instead. */
+    box-sizing: border-box;
+    background: var(--white);
+    color: var(--stone-900);
+    font-family: var(--font-lato), Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.aps-ty *,
+.aps-ty *::before,
+.aps-ty *::after {
+    box-sizing: border-box;
+}
+@media (prefers-reduced-motion: reduce) {
+    .aps-ty * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+.aps-ty img {
+    max-width: 100%;
+    display: block;
+}
+.aps-ty a {
+    color: inherit;
+}
+.aps-ty :focus-visible {
+    outline: 2px solid var(--gold-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+.aps-ty .wrap {
+    width: min(1280px, 100% - 48px);
+    margin-inline: auto;
+}
+@media (max-width: 640px) {
+    .aps-ty .wrap {
+        width: min(1280px, 100% - 32px);
+    }
+}
+.aps-ty .topbar {
+    background: var(--stone-950);
+    color: var(--stone-300);
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+}
+.aps-ty .topbar b {
+    color: var(--gold-400);
+    font-weight: 700;
+}
+.aps-ty header {
+    background: var(--white);
+    border-bottom: 1px solid var(--stone-200);
+}
+.aps-ty .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 80px;
+}
+.aps-ty .brand img {
+    width: 186px;
+    height: auto;
+}
+.aps-ty .tel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone-900);
+    text-decoration: none;
+}
+.aps-ty .tel svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    color: var(--gold-600);
+}
+.aps-ty .tel span {
+    border-bottom: 1px solid var(--stone-300);
+    padding-bottom: 2px;
+}
+.aps-ty .tel:hover span {
+    border-color: var(--gold-500);
+}
+@media (max-width: 640px) {
+    .aps-ty .header-in {
+        height: 66px;
+    }
+    .aps-ty .brand img {
+        width: 142px;
+    }
+    .aps-ty .tel {
+        font-size: 12px;
+        letter-spacing: 0.06em;
+    }
+    .aps-ty .tel .tel-word {
+        display: none;
+    }
+}
+.aps-ty main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 72px 0;
+}
+@media (max-width: 768px) {
+    .aps-ty main {
+        padding: 48px 0;
+    }
+}
+.aps-ty .panel {
+    max-width: 46rem;
+    margin-inline: auto;
+    text-align: center;
+}
+.aps-ty .seal {
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--stone-950);
+    color: var(--gold-400);
+}
+.aps-ty .seal svg {
+    width: 30px;
+    height: 30px;
+}
+.aps-ty .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-700);
+    margin: 0 0 16px;
+}
+.aps-ty h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+}
+@media (min-width: 768px) {
+    .aps-ty h1 {
+        font-size: 48px;
+    }
+}
+.aps-ty .lede {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--stone-600);
+    margin: 0 auto 38px;
+    max-width: 38rem;
+}
+.aps-ty .next {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--stone-200);
+    border: 1px solid var(--stone-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-align: left;
+    margin: 0 0 40px;
+}
+.aps-ty .next div {
+    background: var(--white);
+    padding: 22px 20px;
+}
+.aps-ty .next .n {
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-700);
+    margin: 0 0 8px;
+}
+.aps-ty .next h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--stone-900);
+}
+.aps-ty .next p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--stone-600);
+}
+@media (max-width: 768px) {
+    .aps-ty .next {
+        grid-template-columns: 1fr;
+    }
+}
+.aps-ty .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin: 0 0 26px;
+}
+.aps-ty .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 19px 36px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background-color 0.5s,
+        border-color 0.5s,
+        color 0.5s,
+        transform 0.2s;
+}
+.aps-ty .btn:active {
+    transform: scale(0.98);
+}
+/* Same AA correction as the landing page: gold-400 with a stone-900 label is 8.01:1,
+   where the site's white label measures 2.18:1. */
+.aps-ty .btn-primary {
+    background: var(--gold-400);
+    border-color: var(--gold-400);
+    color: var(--stone-900);
+}
+.aps-ty .btn-primary:hover {
+    background: var(--gold-500);
+    border-color: var(--gold-500);
+}
+.aps-ty .btn-ghost {
+    background: transparent;
+    border-color: var(--stone-300);
+    color: var(--stone-900);
+}
+.aps-ty .btn-ghost:hover {
+    border-color: var(--stone-900);
+}
+@media (max-width: 640px) {
+    .aps-ty .actions {
+        flex-direction: column;
+    }
+    .aps-ty .btn {
+        width: 100%;
+    }
+}
+.aps-ty .callnow {
+    font-size: 14px;
+    color: var(--stone-500);
+    margin: 0;
+}
+.aps-ty .callnow a {
+    color: var(--stone-900);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.aps-ty footer.site {
+    padding: 30px 0;
+    background: var(--white);
+    border-top: 1px solid var(--stone-200);
+}
+.aps-ty .foot-in {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px 26px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--stone-500);
+}
+.aps-ty .foot-in nav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+.aps-ty .foot-in a {
+    color: var(--stone-500);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.aps-ty .foot-in a:hover {
+    color: var(--stone-900);
+}
