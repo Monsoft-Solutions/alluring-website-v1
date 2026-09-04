@@ -6,9 +6,13 @@
  * ask, which also puts the form title on the first screen of a phone without
  * any scrolling.
  *
- * The seven children of `.hero-copy` are staggered by `:nth-child` in
+ * The six children of `.hero-copy` are staggered by `:nth-child` in
  * landing.css — adding or reordering one changes the animation, so keep the
- * order: eyebrow, headline, lede, trust, financing, nudge, badges.
+ * order: eyebrow, headline, lede, trust, nudge, badges.
+ *
+ * There is no financing chip. A weekly payment is the one element that told
+ * this audience the page was selling on price; see the REGISTER note in
+ * `lp-copy.ts`.
  */
 
 import Image from 'next/image'
@@ -63,10 +67,6 @@ export function LpHero({
                             <span>{copy.trustAaaasf}</span>
                         </li>
                     </ul>
-                    <p className='fin'>
-                        <b>{copy.financingLabel}</b>
-                        <span>{variant.financing}</span>
-                    </p>
                     <p className='nudge'>
                         {copy.nudge.question}{' '}
                         <button

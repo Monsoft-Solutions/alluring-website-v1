@@ -4,9 +4,9 @@
  * "In writing" — the signature section.
  *
  * The right-hand card is laid out as the written summary a patient actually
- * leaves the free consultation with: candidacy, all-inclusive price, monthly
- * payment, recovery plan, dates, surgeon. Every line is a claim already
- * published on the site; nothing here was invented for the ad.
+ * leaves the consultation with: candidacy, all-inclusive price, facility,
+ * recovery plan, dates, surgeon. Every line is a claim already published on
+ * the site; nothing here was invented for the ad.
  */
 
 import Image from 'next/image'

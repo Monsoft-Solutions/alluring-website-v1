@@ -5,12 +5,39 @@
  * landing page: the argument, the ordering and the disclaimers were written
  * for ad traffic and are not shared with any indexed route.
  *
+ * ---------------------------------------------------------------------
+ * REGISTER
+ * ---------------------------------------------------------------------
+ * This page is written for the top decile of the market, and the register is
+ * load-bearing rather than decorative. Three rules:
+ *
+ *   1. No price anxiety. There is no weekly payment, no APR and no
+ *      "affordable" anywhere on this page. What stays is the *service* claim
+ *      — an all-inclusive figure, in writing, before anything is decided —
+ *      because that reads as competence where "from $27/week" reads as a
+ *      discount, and a discount is not what this audience is shopping for.
+ *   2. Declarative, not persuasive. Short sentences, no exclamation marks, no
+ *      superlatives we would have to defend. Confidence is quieter than
+ *      enthusiasm.
+ *   3. "Private", not "free". The consultation still costs nothing and still
+ *      carries no obligation, and both are still said plainly — but the word
+ *      leading every heading is discretion, not price.
+ *
  * Spanish exists for Spanish speakers inside the US, not for cross-border
  * patients — nothing here offers travel coordination.
  *
- * Copy marked "verbatim" is unchanged from the approved v3 deck, which in turn
- * takes it from the live site: consent wording, reviews, FAQ answers, fly-in
- * bullets, the surgeon quote and the disclaimer. Do not paraphrase those.
+ * ---------------------------------------------------------------------
+ * CLAIMS
+ * ---------------------------------------------------------------------
+ * Every factual claim here is already published on the site: double board
+ * certification, the AAAASF-accredited facility, board-certified
+ * anesthesiologists, the 4.7 Google rating, the procedure counts, the written
+ * recovery plan, the confirmed dates, and that nobody here earns a commission.
+ * Raising the register does not license a new one — reword freely, invent
+ * nothing.
+ *
+ * Verbatim and not to be paraphrased: the consent wording, the reviews, and
+ * the footer disclaimer.
  */
 
 export type LpLang = 'en' | 'es'
@@ -22,7 +49,7 @@ export const LP_LANGUAGES: readonly LpLang[] = ['en', 'es'] as const
  *
  * The original page shipped these as HTML strings and wrote them in with
  * `innerHTML`; here they are data, so the same sentence can be rendered
- * without handing user-invisible markup to `dangerouslySetInnerHTML`.
+ * through JSX and nothing on this page is ever handed to the DOM as markup.
  */
 export type RichSegment =
     | string
@@ -73,7 +100,6 @@ export interface LpDictionary {
         readonly trustGoogle: RichText
         readonly trustBoard: string
         readonly trustAaaasf: string
-        readonly financingLabel: string
         readonly badgesLabel: string
         /** The "prefer the other language?" nudge under the trust row. */
         readonly nudge: { readonly question: string; readonly action: string }
@@ -177,21 +203,20 @@ export const LP_LINKS = {
 
 const en: LpDictionary = {
     meta: {
-        title: 'Free Plastic Surgery Consultation in Miami | Alluring Plastic Surgery',
+        title: 'Private Plastic Surgery Consultation in Miami | Alluring Plastic Surgery',
         description:
-            'Free, confidential consultation with double board-certified surgeons in Miami. Real before-and-after results, your all-inclusive price in writing, financing from $27/week. Hablamos Español.',
+            'A private consultation with a double board-certified surgeon in Miami. Real before-and-after results, an AAAASF-accredited facility, and your all-inclusive figure in writing before you decide anything. Hablamos Español.',
     },
     header: {
         langLabel: 'Language / Idioma',
         callWord: 'Call ',
-        cta: 'Free consultation',
+        cta: 'Request consultation',
     },
     hero: {
-        eyebrow: 'Free consultation · Miami, FL',
+        eyebrow: 'Private consultation · Miami, FL',
         trustGoogle: [{ b: '4.7' }, ' on Google · 80+ reviews'],
         trustBoard: 'Double board-certified',
         trustAaaasf: 'AAAASF-accredited facility',
-        financingLabel: 'Financing',
         badgesLabel: 'Board certifications',
         nudge: {
             question: '¿Prefieres español?',
@@ -199,10 +224,10 @@ const en: LpDictionary = {
         },
     },
     form: {
-        eyebrow: 'Free · Private · No obligation',
-        title: 'Your free consultation',
+        eyebrow: 'Private · Discreet · No obligation',
+        title: 'Request a consultation',
         subtitle:
-            'Under a minute to complete. A patient coordinator calls you within 24 hours.',
+            'Less than a minute. A patient coordinator calls you within 24 hours.',
         consent: [
             'I have read and understood the ',
             { link: { label: 'Privacy Policy', href: LP_LINKS.privacy } },
@@ -213,8 +238,8 @@ const en: LpDictionary = {
         consentError: 'Please tick the consent box below the form to continue.',
         reassure:
             'Private & secure. A patient coordinator calls you, never a sales team.',
-        micro: ['Free', 'No obligation', 'English & Spanish'],
-        submitLabel: 'Get my free consultation',
+        micro: ['Private', 'No obligation', 'English & Spanish'],
+        submitLabel: 'Request my consultation',
         fieldFirstName: 'First name',
         fieldLastName: 'Last name',
         fieldPhone: 'Phone',
@@ -239,14 +264,14 @@ const en: LpDictionary = {
             'Fellowship Director, American Board of Cosmetic Surgery',
             'Operates in an AAAASF-accredited facility with board-certified anesthesiologists',
         ],
-        cta: 'Book my consultation with Dr. Karlinsky',
+        cta: 'Request a consultation with Dr. Karlinsky',
         portraitAlt: 'Dr. Victoria Karlinsky',
     },
     results: {
-        eyebrow: 'Real patients. Real results.',
-        heading: ['See it for ', { em: 'yourself' }],
+        eyebrow: 'Dr. Karlinsky’s patients',
+        heading: ['See the ', { em: 'work' }],
         subtitle:
-            'Before and after photos of actual patients of Dr. Karlinsky at Alluring Plastic Surgery.',
+            'Before and after photographs of actual patients of Dr. Karlinsky at Alluring Plastic Surgery.',
         beforeAfterTag: 'Before · After',
         captions: {
             bbl: {
@@ -271,14 +296,14 @@ const en: LpDictionary = {
             },
         },
         note: 'Individual results vary.',
-        cta: 'Get my free consultation',
+        cta: 'Request a consultation',
         link: 'See more results in the gallery',
     },
     writing: {
         eyebrow: 'What you leave with',
         heading: ['Answers, not a pitch. ', { em: 'In writing.' }],
-        body: 'Most consultations end with a sales pitch. Yours ends with a straight answer on candidacy, your all-inclusive price and your real monthly payment, put in writing so you can take it home, compare it and sleep on it. Nobody here earns a commission.',
-        cta: 'Request my free consultation',
+        body: 'Most consultations end in a sales pitch. Yours ends with a straight answer on candidacy and your all-inclusive figure, put in writing so you can take it home, weigh it and decide in your own time. Nobody here earns a commission.',
+        cta: 'Request a consultation',
         sheetLabel: 'Consultation summary',
         sheetTitle: 'Consultation summary',
         sheetSubtitle: 'What every patient leaves with',
@@ -304,8 +329,10 @@ const en: LpDictionary = {
                 ],
             },
             {
-                term: 'Monthly payment',
-                value: ['Real numbers and financing options, from $27/week*'],
+                term: 'Facility',
+                value: [
+                    'AAAASF-accredited, with board-certified anesthesiologists.',
+                ],
             },
             {
                 term: 'Recovery',
@@ -324,7 +351,7 @@ const en: LpDictionary = {
                 ],
             },
         ],
-        sheetFootLeft: 'Free · No obligation · No commission',
+        sheetFootLeft: 'Private · No obligation · No commission',
         sheetFootRight: 'Alluring Plastic Surgery',
     },
     reviews: {
@@ -352,7 +379,7 @@ const en: LpDictionary = {
         heading: 'Over 40% of our patients travel to Miami for surgery',
         subtitle:
             'Meet your surgeon by video first. Book flights only once your dates are confirmed in writing.',
-        cta: 'Book a virtual consultation',
+        cta: 'Request a virtual consultation',
         bullets: [
             'Virtual consultation from anywhere in the U.S.',
             'Surgery, pre-op and follow-up dates in writing before you book travel',
@@ -371,20 +398,20 @@ const en: LpDictionary = {
             },
             {
                 question: '“How long is recovery?”',
-                answer: 'Most patients are back at a desk in one to two weeks and at the gym in four to six. You get a written week-by-week recovery plan before you book, so you can plan childcare, work and travel.',
+                answer: 'Most patients are back at a desk in one to two weeks and at the gym in four to six. You get a written week-by-week recovery plan before you book, so you can plan work, childcare and travel around it.',
                 tag: 'Written recovery plan up front',
             },
             {
                 question: '“What if I’m not ready?”',
-                answer: 'Then don’t book. The consultation is free, and you can leave with a price, a plan and no appointment. Nobody here earns a commission for closing you.',
-                tag: 'Free · No obligation · No commission',
+                answer: 'Then don’t book. The consultation carries no obligation, and you can leave with a price, a plan and no appointment. Nobody here earns a commission for closing you.',
+                tag: 'No obligation · No commission',
             },
         ],
     },
     closing: {
         heading: ['Ready for a real ', { em: 'answer?' }],
-        body: 'Free, confidential, no obligation. We call within 24 hours.',
-        cta: 'Request my free consultation',
+        body: 'Private, confidential, no obligation. We call within 24 hours.',
+        cta: 'Request a consultation',
         or: 'or call',
     },
     footer: {
@@ -392,28 +419,27 @@ const en: LpDictionary = {
         terms: 'Terms',
         cookies: 'Cookies',
         disclaimer:
-            '*Financing subject to credit approval. Rates and terms vary by lender and by procedure. Before-and-after photos show actual patients of Dr. Karlinsky; individual results vary. All surgical procedures carry risk. This page is for general information and is not medical advice.',
+            '*Before-and-after photographs show actual patients of Dr. Karlinsky; individual results vary. All surgical procedures carry risk. This page is for general information and is not medical advice.',
     },
-    sticky: { call: 'Call', cta: 'Free consultation' },
+    sticky: { call: 'Call', cta: 'Request consultation' },
 }
 
 const es: LpDictionary = {
     meta: {
-        title: 'Consulta gratis de cirugía plástica en Miami | Alluring Plastic Surgery',
+        title: 'Consulta privada de cirugía plástica en Miami | Alluring Plastic Surgery',
         description:
-            'Consulta gratis y confidencial con cirujanos con doble certificación en Miami. Resultados reales de antes y después, precio todo incluido por escrito, financiamiento desde $27/semana.',
+            'Una consulta privada con una cirujana con doble certificación en Miami. Resultados reales de antes y después, una clínica acreditada AAAASF y tu cifra todo incluido por escrito antes de decidir nada.',
     },
     header: {
         langLabel: 'Idioma / Language',
         callWord: 'Llama ',
-        cta: 'Consulta gratis',
+        cta: 'Pedir consulta',
     },
     hero: {
-        eyebrow: 'Consulta gratis · Miami, FL',
+        eyebrow: 'Consulta privada · Miami, FL',
         trustGoogle: [{ b: '4.7' }, ' en Google · Más de 80 reseñas'],
         trustBoard: 'Doble certificación',
         trustAaaasf: 'Clínica acreditada AAAASF',
-        financingLabel: 'Financiamiento',
         badgesLabel: 'Certificaciones',
         nudge: {
             question: 'Prefer English?',
@@ -421,10 +447,10 @@ const es: LpDictionary = {
         },
     },
     form: {
-        eyebrow: 'Gratis · Privada · Sin compromiso',
-        title: 'Tu consulta gratis',
+        eyebrow: 'Privada · Discreta · Sin compromiso',
+        title: 'Pide tu consulta',
         subtitle:
-            'Toma menos de un minuto. Una coordinadora de pacientes te llama en 24 horas.',
+            'Menos de un minuto. Una coordinadora de pacientes te llama en 24 horas.',
         consent: [
             'He leído y entiendo la ',
             {
@@ -441,8 +467,8 @@ const es: LpDictionary = {
             'Marca la casilla de consentimiento debajo del formulario para continuar.',
         reassure:
             'Privado y seguro. Te llama una coordinadora de pacientes, nunca un vendedor.',
-        micro: ['Gratis', 'Sin compromiso', 'En español'],
-        submitLabel: 'Quiero mi consulta gratis',
+        micro: ['Privada', 'Sin compromiso', 'En español'],
+        submitLabel: 'Pedir mi consulta',
         fieldFirstName: 'Nombre',
         fieldLastName: 'Apellido',
         fieldPhone: 'Teléfono',
@@ -471,14 +497,14 @@ const es: LpDictionary = {
             'Directora de Fellowship, American Board of Cosmetic Surgery',
             'Opera en una clínica acreditada AAAASF con anestesiólogos certificados',
         ],
-        cta: 'Pedir mi consulta con la Dra. Karlinsky',
+        cta: 'Pedir una consulta con la Dra. Karlinsky',
         portraitAlt: 'Dra. Victoria Karlinsky',
     },
     results: {
-        eyebrow: 'Pacientes reales. Resultados reales.',
-        heading: ['Míralo con tus ', { em: 'propios ojos' }],
+        eyebrow: 'Pacientes de la Dra. Karlinsky',
+        heading: ['Mira el ', { em: 'trabajo' }],
         subtitle:
-            'Fotos de antes y después de pacientes reales de la Dra. Karlinsky en Alluring Plastic Surgery.',
+            'Fotografías de antes y después de pacientes reales de la Dra. Karlinsky en Alluring Plastic Surgery.',
         beforeAfterTag: 'Antes · Después',
         captions: {
             bbl: {
@@ -503,7 +529,7 @@ const es: LpDictionary = {
             },
         },
         note: 'Los resultados varían según la persona.',
-        cta: 'Quiero mi consulta gratis',
+        cta: 'Pedir una consulta',
         link: 'Ver más resultados en la galería',
     },
     writing: {
@@ -512,8 +538,8 @@ const es: LpDictionary = {
             'Respuestas, no un discurso de venta. ',
             { em: 'Por escrito.' },
         ],
-        body: 'La mayoría de las consultas terminan en una venta. La tuya termina con una respuesta clara sobre si eres candidata, tu precio todo incluido y tu pago mensual real, por escrito, para que te lo lleves a casa, lo compares y lo pienses con calma. Aquí nadie gana comisión.',
-        cta: 'Pedir mi consulta gratis',
+        body: 'La mayoría de las consultas terminan en una venta. La tuya termina con una respuesta clara sobre si eres candidata y tu cifra todo incluido, por escrito, para que te la lleves a casa, la valores y decidas con calma. Aquí nadie gana comisión.',
+        cta: 'Pedir una consulta',
         sheetLabel: 'Resumen de tu consulta',
         sheetTitle: 'Resumen de tu consulta',
         sheetSubtitle: 'Con qué sale cada paciente',
@@ -539,9 +565,9 @@ const es: LpDictionary = {
                 ],
             },
             {
-                term: 'Pago mensual',
+                term: 'Clínica',
                 value: [
-                    'Cifras reales y opciones de financiamiento, desde $27/semana*',
+                    'Acreditada por la AAAASF, con anestesiólogos certificados.',
                 ],
             },
             {
@@ -563,7 +589,7 @@ const es: LpDictionary = {
                 ],
             },
         ],
-        sheetFootLeft: 'Gratis · Sin compromiso · Sin comisiones',
+        sheetFootLeft: 'Privada · Sin compromiso · Sin comisiones',
         sheetFootRight: 'Alluring Plastic Surgery',
     },
     reviews: {
@@ -616,15 +642,15 @@ const es: LpDictionary = {
             },
             {
                 question: '“¿Y si aún no estoy lista?”',
-                answer: 'Entonces no reserves. La consulta es gratis y puedes irte con un precio, un plan y sin cita programada. Aquí nadie gana comisión por convencerte.',
-                tag: 'Gratis · Sin compromiso · Sin comisiones',
+                answer: 'Entonces no reserves. La consulta no tiene ningún compromiso y puedes irte con un precio, un plan y sin cita programada. Aquí nadie gana comisión por convencerte.',
+                tag: 'Sin compromiso · Sin comisiones',
             },
         ],
     },
     closing: {
         heading: ['¿Lista para una respuesta ', { em: 'de verdad?' }],
-        body: 'Gratis, confidencial y sin compromiso. Te llamamos en 24 horas.',
-        cta: 'Pedir mi consulta gratis',
+        body: 'Privada, confidencial y sin compromiso. Te llamamos en 24 horas.',
+        cta: 'Pedir una consulta',
         or: 'o llama al',
     },
     footer: {
@@ -632,9 +658,9 @@ const es: LpDictionary = {
         terms: 'Términos',
         cookies: 'Cookies',
         disclaimer:
-            '*Financiamiento sujeto a aprobación de crédito. Las tasas y condiciones varían según el prestamista y el procedimiento. Las fotos de antes y después muestran pacientes reales de la Dra. Karlinsky; los resultados varían según la persona. Toda cirugía conlleva riesgos. Esta página es informativa y no constituye consejo médico.',
+            '*Las fotografías de antes y después muestran pacientes reales de la Dra. Karlinsky; los resultados varían según la persona. Toda cirugía conlleva riesgos. Esta página es informativa y no constituye consejo médico.',
     },
-    sticky: { call: 'Llamar', cta: 'Consulta gratis' },
+    sticky: { call: 'Llamar', cta: 'Pedir consulta' },
 }
 
 export const LP_COPY: Readonly<Record<LpLang, LpDictionary>> = { en, es }

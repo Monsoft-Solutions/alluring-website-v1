@@ -2,12 +2,14 @@
  * Ad-group variants for /lp/request-consultation.
  *
  * One landing page serves every ad group; `?p=<variant>` swaps the headline,
- * the lede, the financing line, the procedure preselected in the form, and
- * which before/after pair leads the results grid.
+ * the lede, the procedure preselected in the form, and which before/after pair
+ * leads the results grid.
  *
- * The hero photograph is NOT part of a variant any more. The page ships one
- * commissioned hero (the champagne/penthouse frame) for every ad group, so the
- * crop lives in landing.css rather than being written onto the element here.
+ * The hero photograph is not part of a variant — there is no hero photograph.
+ * Neither is a price: no variant carries a weekly payment, an APR or a "from"
+ * figure. See the REGISTER note in `lp-copy.ts`; the argument every variant
+ * makes is the surgeon's judgment and an accredited facility, not the cost of
+ * entry.
  */
 
 import type { LpLang } from './lp-copy'
@@ -78,85 +80,71 @@ export interface VariantCopy {
     /** Second line, set in italic display type. */
     readonly headlineEm: string
     readonly lede: string
-    /** The financing chip beside the trust row. */
-    readonly financing: string
 }
 
 const en: Record<AdVariant, VariantCopy> = {
     default: {
-        headline: 'Feel like yourself again.',
-        headlineEm: 'Start with a free consultation.',
-        lede: 'Join 5,000+ women who chose Alluring. Double board-certified surgeons, your all-inclusive price in writing, financing from $27/week.',
-        financing: 'From $27/week · 0% APR available*',
+        headline: 'Refined. Never obvious.',
+        headlineEm: 'Begin with a private consultation.',
+        lede: 'A double board-certified surgeon, an accredited operating facility, and every figure and date in writing before you decide anything.',
     },
     bbl: {
-        headline: 'The Miami BBL, done safely.',
-        headlineEm: '1,500+ BBLs by Dr. Karlinsky.',
-        lede: 'Ultrasound-guided technique, AAAASF-accredited facility, board-certified anesthesiologists. Free consultation, financing from $45/week.',
-        financing: 'From $45/week · 0% APR available*',
+        headline: 'The Miami BBL, done properly.',
+        headlineEm: '1,500+ performed by Dr. Karlinsky.',
+        lede: 'Ultrasound-guided technique, in an AAAASF-accredited facility, with board-certified anesthesiologists. Nothing about it is improvised.',
     },
     'mommy-makeover': {
-        headline: 'Get your body back after kids.',
+        headline: 'Your body, after children.',
         headlineEm: 'One surgery. One recovery. One plan.',
-        lede: 'Tummy tuck, breast lift or augmentation, and lipo, planned together by a double board-certified surgeon. Free consultation, financing from $27/week.',
-        financing: 'From $27/week · 0% APR available*',
+        lede: 'Tummy tuck, breast lift or augmentation, and liposuction, planned as a single operation by a double board-certified surgeon.',
     },
     'breast-augmentation': {
-        headline: 'Breast augmentation that still looks like you.',
-        headlineEm: 'Just fuller.',
-        lede: 'Silicone, saline or fat transfer. You choose the size with your surgeon, not a salesperson. Free consultation, financing from $27/week.',
-        financing: 'From $27/week · 0% APR available*',
+        headline: 'Fuller. Still unmistakably you.',
+        headlineEm: 'Nothing that announces itself.',
+        lede: 'Silicone, saline or fat transfer. You settle the size with the surgeon who operates, not with a salesperson.',
     },
     'tummy-tuck': {
-        headline: 'A flat, tight tummy.',
-        headlineEm: 'Loose skin gone for good.',
-        lede: 'Tummy tuck by a double board-certified surgeon, with a written week-by-week recovery plan before you book. Free consultation, financing from $27/week.',
-        financing: 'From $27/week · 0% APR available*',
+        headline: 'A flat, considered result.',
+        headlineEm: 'Loose skin, resolved.',
+        lede: 'A tummy tuck by a double board-certified surgeon, with a written week-by-week recovery plan before you commit to a date.',
     },
     liposuction: {
-        headline: 'Lipo 360 in Miami.',
-        headlineEm: 'The waist the gym won’t give you.',
-        lede: 'Stubborn fat removed and curves defined by a double board-certified surgeon. Free consultation, financing from $27/week.',
-        financing: 'From $27/week · 0% APR available*',
+        headline: 'Lipo 360, in Miami.',
+        headlineEm: 'The waist training won’t give you.',
+        lede: 'Stubborn fat removed and the waist defined, by a double board-certified surgeon in an accredited facility.',
     },
 }
 
 const es: Record<AdVariant, VariantCopy> = {
     default: {
-        headline: 'Vuelve a sentirte tú.',
-        headlineEm: 'Empieza con una consulta gratis.',
-        lede: 'Más de 5,000 mujeres eligieron Alluring. Cirujanos con doble certificación, precio todo incluido por escrito y financiamiento desde $27/semana.',
-        financing: 'Desde $27/semana · 0% APR disponible*',
+        headline: 'Refinado. Nunca evidente.',
+        headlineEm: 'Empieza con una consulta privada.',
+        lede: 'Una cirujana con doble certificación, una clínica acreditada y cada cifra y cada fecha por escrito antes de que decidas nada.',
     },
     bbl: {
-        headline: 'El BBL de Miami, hecho con seguridad.',
-        headlineEm: 'Más de 1,500 BBL por la Dra. Karlinsky.',
-        lede: 'Técnica guiada por ultrasonido, clínica acreditada AAAASF y anestesiólogos certificados. Consulta gratis, financiamiento desde $45/semana.',
-        financing: 'Desde $45/semana · 0% APR disponible*',
+        headline: 'El BBL de Miami, bien hecho.',
+        headlineEm: 'Más de 1,500 por la Dra. Karlinsky.',
+        lede: 'Técnica guiada por ultrasonido, en una clínica acreditada AAAASF y con anestesiólogos certificados. Aquí nada se improvisa.',
     },
     'mommy-makeover': {
-        headline: 'Recupera tu cuerpo después de los hijos.',
+        headline: 'Tu cuerpo, después de los hijos.',
         headlineEm: 'Una cirugía. Una recuperación. Un plan.',
-        lede: 'Abdominoplastia, levantamiento o aumento de senos y lipo, planificados juntos por una cirujana con doble certificación. Consulta gratis, financiamiento desde $27/semana.',
-        financing: 'Desde $27/semana · 0% APR disponible*',
+        lede: 'Abdominoplastia, levantamiento o aumento de senos y lipo, planificados como una sola operación por una cirujana con doble certificación.',
     },
     'breast-augmentation': {
-        headline: 'Aumento de senos que sigue pareciendo tú.',
-        headlineEm: 'Solo con más volumen.',
-        lede: 'Silicona, solución salina o transferencia de grasa. Eliges el tamaño con tu cirujana, no con un vendedor. Consulta gratis, financiamiento desde $27/semana.',
-        financing: 'Desde $27/semana · 0% APR disponible*',
+        headline: 'Con más volumen. Inconfundiblemente tú.',
+        headlineEm: 'Nada que se anuncie solo.',
+        lede: 'Silicona, solución salina o transferencia de grasa. El tamaño lo defines con la cirujana que opera, no con un vendedor.',
     },
     'tummy-tuck': {
-        headline: 'Un abdomen plano y firme.',
-        headlineEm: 'Adiós a la piel suelta.',
-        lede: 'Abdominoplastia por una cirujana con doble certificación, con un plan de recuperación semana a semana por escrito antes de reservar. Consulta gratis, financiamiento desde $27/semana.',
-        financing: 'Desde $27/semana · 0% APR disponible*',
+        headline: 'Un abdomen plano y definido.',
+        headlineEm: 'La piel suelta, resuelta.',
+        lede: 'Abdominoplastia por una cirujana con doble certificación, con un plan de recuperación semana a semana por escrito antes de fijar la fecha.',
     },
     liposuction: {
-        headline: 'Lipo 360 en Miami.',
+        headline: 'Lipo 360, en Miami.',
         headlineEm: 'La cintura que el gimnasio no te da.',
-        lede: 'Grasa localizada eliminada y curvas definidas por una cirujana con doble certificación. Consulta gratis, financiamiento desde $27/semana.',
-        financing: 'Desde $27/semana · 0% APR disponible*',
+        lede: 'Grasa localizada eliminada y la cintura definida, por una cirujana con doble certificación en una clínica acreditada.',
     },
 }
 

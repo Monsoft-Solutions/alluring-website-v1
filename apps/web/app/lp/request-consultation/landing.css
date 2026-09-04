@@ -378,10 +378,15 @@
     z-index: 1;
     max-width: 44rem;
 }
+/*
+ * Larger than the original's 58px ceiling: with no photograph and no financing
+ * chip, the headline is the only thing carrying the left column, and at this
+ * price point it should be the first thing read, not one element among six.
+ */
 .aps-lp h1 {
     font-family: var(--display);
     font-weight: 400;
-    font-size: clamp(38px, 4.1vw, 58px);
+    font-size: clamp(38px, 4.5vw, 64px);
     line-height: 1.04;
     letter-spacing: -0.02em;
     margin: 0 0 20px;
@@ -397,12 +402,17 @@
     margin-top: 10px;
     letter-spacing: -0.01em;
 }
+/*
+ * Wider and a step larger than the original. It sits under a 64px headline
+ * now, and a 30rem column of 17px there read as an afterthought rather than
+ * the sentence that carries the whole argument.
+ */
 .aps-lp .lede {
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.6;
     color: var(--s600);
-    margin: 0 0 24px;
-    max-width: 30rem;
+    margin: 0 0 28px;
+    max-width: 34rem;
 }
 .aps-lp .trust {
     display: flex;
@@ -439,25 +449,6 @@
 .aps-lp .trust .g {
     width: 16px;
     height: 16px;
-}
-.aps-lp .fin {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    border: 1px solid var(--gold-line);
-    background: rgba(255, 255, 255, 0.55);
-    padding: 11px 16px;
-    font-size: 13.5px;
-    color: var(--s600);
-    border-radius: 4px;
-}
-.aps-lp .fin b {
-    color: var(--gold-800);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-size: 11px;
-    font-weight: 700;
 }
 .aps-lp .nudge {
     margin: 18px 0 0;
@@ -526,10 +517,6 @@
 @media (max-width: 640px) {
     .aps-lp .hero-in {
         padding: 32px 0 44px;
-    }
-    /* The lede already carries the financing line; dropping the chip lifts the form ~70px on phones. */
-    .aps-lp .fin {
-        display: none;
     }
     .aps-lp h1 {
         font-size: 36px;
@@ -1473,9 +1460,6 @@
 }
 .aps-lp .hero-copy > :nth-child(6) {
     animation-delay: 0.4s;
-}
-.aps-lp .hero-copy > :nth-child(7) {
-    animation-delay: 0.46s;
 }
 .aps-lp .card {
     animation: aps-rise 1s 0.3s var(--ease) both;
