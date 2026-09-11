@@ -365,6 +365,13 @@
       "when": 1787836031380,
       "tag": "0051_sparkling_wallow",
       "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "7",
+      "when": 1789150734844,
+      "tag": "0052_abandoned_lady_mastermind",
+      "breakpoints": true
     }
   ]
 }

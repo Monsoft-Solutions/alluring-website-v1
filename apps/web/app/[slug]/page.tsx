@@ -27,6 +27,7 @@ import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
 import { getBlogPrerenderSlugs } from '@/lib/queries/blog/prerender-slugs.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getContentModifiedDate } from '@/lib/utils/content-freshness.util'
 import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
@@ -193,7 +194,12 @@ function generateBlogPostMetadata(
                 : undefined,
             // Enhanced OG article fields for better SEO
             publishedTime: post.publishedAt ?? undefined,
-            modifiedTime: post.updatedAt ?? post.publishedAt ?? undefined,
+            modifiedTime: post.publishedAt
+                ? getContentModifiedDate(
+                      post.publishedAt,
+                      post.contentUpdatedAt
+                  )
+                : undefined,
             authors: post.author?.name ? [post.author.name] : undefined,
             section: primaryCategory?.name,
             tags:

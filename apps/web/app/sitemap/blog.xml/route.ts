@@ -106,7 +106,7 @@ export async function GET(): Promise<NextResponse> {
                     post.slug,
                     post.publishedAt
                 ),
-                lastModified: post.updatedAt.toISOString().slice(0, 10),
+                lastModified: post.lastModified.toISOString().slice(0, 10),
                 changeFrequency: 'weekly',
                 priority: 0.7,
             }

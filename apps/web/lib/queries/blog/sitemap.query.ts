@@ -22,7 +22,12 @@ import { cache } from 'react'
  */
 export type BlogPostSitemapEntry = {
     slug: string
-    updatedAt: Date
+    /**
+     * Sitemap `lastmod`: the later of publication and the last reader-visible
+     * edit (`content_updated_at`, trigger-maintained). Never the row's
+     * `updated_at`, which every page view rewrites.
+     */
+    lastModified: Date
     publishedAt: Date
     featuredImageUrl: string | null
     featuredImageTitle: string | null
@@ -46,6 +51,11 @@ export type BlogTagSitemapEntry = {
     createdAt: Date
 }
 
+/** The later of two dates; the second may be missing. */
+function laterOf(a: Date, b: Date | null): Date {
+    return b && b > a ? b : a
+}
+
 /**
  * Get all published blog post slugs with their last modified dates and featured images
  */
@@ -54,7 +64,7 @@ export const getPublishedPostSlugs = cache(
         const rows = await db
             .select({
                 slug: blogPost.slug,
-                updatedAt: blogPost.updatedAt,
+                contentUpdatedAt: blogPost.contentUpdatedAt,
                 publishedAt: blogPost.publishedAt,
                 featuredImageUrl: images.url,
                 featuredImageTitle: images.title,
@@ -74,8 +84,7 @@ export const getPublishedPostSlugs = cache(
             .filter((r) => r.slug !== null)
             .map((r) => ({
                 slug: r.slug!,
-                // Use updatedAt if available, otherwise fallback to publishedAt
-                updatedAt: r.updatedAt ?? r.publishedAt!,
+                lastModified: laterOf(r.publishedAt!, r.contentUpdatedAt),
                 publishedAt: r.publishedAt!,
                 featuredImageUrl: r.featuredImageUrl,
                 featuredImageTitle: r.featuredImageTitle,

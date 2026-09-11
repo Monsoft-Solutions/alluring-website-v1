@@ -30,7 +30,7 @@ async function fetchPublishedPostBySlug(
             metaDescription: blogPost.metaDescription,
             content: blogPost.content,
             publishedAt: blogPost.publishedAt,
-            updatedAt: blogPost.updatedAt,
+            contentUpdatedAt: blogPost.contentUpdatedAt,
             readingTime: blogPost.readingTime,
             faqs: blogPost.faqs,
             quickAnswer: blogPost.quickAnswer,
@@ -84,7 +84,9 @@ async function fetchPublishedPostBySlug(
         metaDescription: row.metaDescription,
         content: row.content,
         publishedAt: row.publishedAt ? row.publishedAt.toISOString() : null,
-        updatedAt: row.updatedAt ? row.updatedAt.toISOString() : null,
+        contentUpdatedAt: row.contentUpdatedAt
+            ? row.contentUpdatedAt.toISOString()
+            : null,
         readingTime: row.readingTime,
         faqs: row.faqs,
         quickAnswer: row.quickAnswer,

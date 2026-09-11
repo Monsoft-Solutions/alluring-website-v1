@@ -126,11 +126,16 @@ export function BlogPostContent({
         ? filterImagesPresentInBody(inlineImages, post.content)
         : []
 
-    /** Shown only when the post was genuinely revised after publication */
+    /**
+     * Shown only when the post was genuinely revised after publication.
+     * Structured data below reports the same date, so what a crawler is told
+     * and what a reader sees never disagree.
+     */
     const meaningfulUpdateDate = getMeaningfulUpdateDate(
         post.publishedAt,
-        post.updatedAt
+        post.contentUpdatedAt
     )
+    const dateModified = meaningfulUpdateDate?.toISOString() ?? post.publishedAt
 
     /**
      * The 40–70 word answer to the post's head query, placed above the body.
@@ -398,9 +403,7 @@ export function BlogPostContent({
                                 name={post.title}
                                 description={post.excerpt ?? undefined}
                                 datePublished={post.publishedAt}
-                                dateModified={
-                                    post.updatedAt ?? post.publishedAt
-                                }
+                                dateModified={dateModified}
                                 about={primaryCategory?.name}
                                 publisherId={`${seoConfig.siteUrl}/#organization`}
                             />
@@ -430,9 +433,7 @@ export function BlogPostContent({
                                 // must not assert a review that never happened. Add
                                 // it back only when a real physician signs off.
                                 datePublished={post.publishedAt}
-                                dateModified={
-                                    post.updatedAt ?? post.publishedAt
-                                }
+                                dateModified={dateModified}
                                 image={post.featuredImage?.url}
                                 mainEntityOfPage={postUrl}
                                 publisher={{

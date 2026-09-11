@@ -86,6 +86,19 @@ open with `CREATE TYPE`. If it does not, add the export and regenerate — do no
 hand-write the `CREATE TYPE`, or the snapshot stays wrong and the next
 `db:generate` tries to create it again.
 
+#### Triggers are hand-written into the migration
+
+`drizzle-kit generate` only diffs tables, columns, enums and indexes. Anything
+else lives as SQL appended to the generated file, separated with
+`--> statement-breakpoint`, and is documented on the column it maintains.
+
+There is one today: `blog_post_content_updated_at` (migration 0052) stamps
+`blog_post.content_updated_at` when a reader-visible column changes and leaves
+it alone for bookkeeping writes (`views`, pipeline state, approvals). That is
+the column the web app's sitemap `lastmod`, `dateModified` and the refresh
+loop's staleness read; `updated_at` is row bookkeeping and is bumped by
+everything. Do not add a code path that sets `content_updated_at` by hand.
+
 ### Baselining a database
 
 `db:baseline` records migrations that are **already physically applied** but
