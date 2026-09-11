@@ -10,7 +10,13 @@
  * - `shared-impressions`: ≥2 of our URLs each hold ≥30% of a query's
  *   impressions over the analyzed week — Google can't pick a winner.
  * - `flip-flop`: the query's top URL by impressions changed between the two
- *   most recent weekly windows — rankings are trading places.
+ *   most recent weekly windows — rankings are trading places. Both weeks
+ *   need a real leader (≥20% share): a query spread thinly over dozens of
+ *   URLs changes "leader" by chance.
+ *
+ * Search operators (`site:`) and brand/navigational queries are left out
+ * entirely — Google answers those with every page on the site, which is
+ * sitelinks, not two pages fighting (issue #221).
  *
  * @module @/lib/utils/cannibalization-detection.util
  */
@@ -39,6 +45,48 @@ export const SHARE_THRESHOLD = 0.3
 
 /** Flip-flop needs this many impressions across both weeks to matter. */
 export const FLIP_FLOP_MIN_IMPRESSIONS = 100
+
+/**
+ * Flip-flop needs a real leader in both weeks. With the top URL under this
+ * share the query is spread over many pages and the "leader" is noise.
+ */
+export const FLIP_FLOP_MIN_TOP_SHARE = 0.2
+
+/**
+ * Brand and staff names. Navigational queries legitimately surface many of
+ * our own pages (home, doctor, gallery, reviews) — that is sitelinks, not
+ * cannibalization. Matched as whole tokens of the normalized query.
+ */
+export const BRAND_QUERY_TOKENS = ['alluring', 'allure', 'karlinsky', 'shats']
+
+/**
+ * Search operators are not queries anyone types with intent; Google
+ * answers them with every indexed page of the site.
+ */
+const SEARCH_OPERATOR_PATTERN =
+    /^\s*(site|inurl|intitle|allintitle|allinurl|inanchor|allinanchor|intext|allintext|filetype|related|cache|info|link)\s*:/i
+
+// ============================================
+// Query filter
+// ============================================
+
+/**
+ * Whether a query must stay out of cannibalization analysis: a search
+ * operator, a brand/staff-name query, or a query the ownership registry
+ * files under navigational intent. Shared with R4 and the queue prune
+ * script so every consumer agrees on what counts as noise.
+ */
+export function isIgnorableCannibalizationQuery(query: string): boolean {
+    if (SEARCH_OPERATOR_PATTERN.test(query)) return true
+
+    const normalized = normalizeQuery(query)
+    const tokens = new Set(normalized.split(' '))
+    if (BRAND_QUERY_TOKENS.some((token) => tokens.has(token))) return true
+
+    return (
+        resolveQueryOwner(normalized)?.canonicalOwner.intent === 'navigational'
+    )
+}
 
 // ============================================
 // Helpers
@@ -133,6 +181,7 @@ export function detectCannibalization(
 
     for (const [query, group] of current) {
         if (group.totalImpressions < MIN_WEEKLY_IMPRESSIONS) continue
+        if (isIgnorableCannibalizationQuery(query)) continue
 
         const holders = group.pages.filter(
             (page) => page.share >= SHARE_THRESHOLD
@@ -157,9 +206,17 @@ export function detectCannibalization(
             continue
         }
 
-        const topNow = group.pages[0]?.page
-        const topBefore = previousGroup.pages[0]?.page
-        if (topNow && topBefore && topNow !== topBefore) {
+        const topNow = group.pages[0]
+        const topBefore = previousGroup.pages[0]
+        if (!topNow || !topBefore) continue
+        // A flip only means something when each week had a clear leader.
+        if (
+            topNow.share < FLIP_FLOP_MIN_TOP_SHARE ||
+            topBefore.share < FLIP_FLOP_MIN_TOP_SHARE
+        ) {
+            continue
+        }
+        if (topNow.page !== topBefore.page) {
             findings.push({
                 query,
                 totalImpressions: group.totalImpressions,

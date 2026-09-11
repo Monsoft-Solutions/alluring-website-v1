@@ -8,6 +8,8 @@ import { describe, expect, it } from 'vitest'
 
 import {
     detectCannibalization,
+    FLIP_FLOP_MIN_TOP_SHARE,
+    isIgnorableCannibalizationQuery,
     MIN_WEEKLY_IMPRESSIONS,
     SHARE_THRESHOLD,
 } from '@/lib/utils/cannibalization-detection.util'
@@ -154,5 +156,92 @@ describe('detectCannibalization — flip-flop', () => {
             'zz-big',
             'zz-small',
         ])
+    })
+})
+
+describe('detectCannibalization — ignored queries (issue #221)', () => {
+    it('skips search-operator queries even when many pages share them', () => {
+        // The production case: `site:` surfaces every page, two of them
+        // above the share threshold by chance.
+        const currentWeek = [
+            row({
+                query: 'site:www.alluringplasticsurgery.com',
+                page: 'https://example.com/faqs',
+                impressions: 40,
+            }),
+            row({
+                query: 'site:www.alluringplasticsurgery.com',
+                page: 'https://example.com/blog/post-b',
+                impressions: 40,
+            }),
+        ]
+        expect(detectCannibalization(currentWeek, [])).toEqual([])
+    })
+
+    it('skips brand and staff-name queries', () => {
+        const currentWeek = [
+            row({
+                query: 'alluring plastic surgery reviews',
+                page: 'https://example.com/',
+                impressions: 60,
+            }),
+            row({
+                query: 'alluring plastic surgery reviews',
+                page: 'https://example.com/reviews',
+                impressions: 40,
+            }),
+        ]
+        expect(detectCannibalization(currentWeek, [])).toEqual([])
+    })
+
+    it('needs a clear leader in both weeks for a flip-flop', () => {
+        // Six pages at 16–18% each: the leader changes, but no page ever
+        // holds FLIP_FLOP_MIN_TOP_SHARE, so nothing really flipped.
+        const spread = (leader: string, runnerUp: string) => [
+            row({ page: leader, impressions: 18 }),
+            row({ page: runnerUp, impressions: 17 }),
+            row({ page: 'https://example.com/blog/post-c', impressions: 17 }),
+            row({ page: 'https://example.com/blog/post-d', impressions: 16 }),
+            row({ page: 'https://example.com/blog/post-e', impressions: 16 }),
+            row({ page: 'https://example.com/blog/post-f', impressions: 16 }),
+        ]
+        const currentWeek = spread(
+            'https://example.com/blog/post-a',
+            'https://example.com/blog/post-b'
+        )
+        const previousWeek = spread(
+            'https://example.com/blog/post-b',
+            'https://example.com/blog/post-a'
+        )
+        expect(0.18).toBeLessThan(FLIP_FLOP_MIN_TOP_SHARE)
+        expect(detectCannibalization(currentWeek, previousWeek)).toEqual([])
+    })
+})
+
+describe('isIgnorableCannibalizationQuery', () => {
+    it('recognises search operators', () => {
+        expect(
+            isIgnorableCannibalizationQuery(
+                'site:www.alluringplasticsurgery.com'
+            )
+        ).toBe(true)
+        expect(isIgnorableCannibalizationQuery('inurl:blog bbl')).toBe(true)
+    })
+
+    it('recognises brand and staff names as whole tokens', () => {
+        expect(
+            isIgnorableCannibalizationQuery('alluring plastic surgery')
+        ).toBe(true)
+        expect(isIgnorableCannibalizationQuery('dr karlinsky miami')).toBe(true)
+        expect(
+            isIgnorableCannibalizationQuery('allure plastic surgery miami')
+        ).toBe(true)
+    })
+
+    it('keeps ordinary informational queries', () => {
+        expect(isIgnorableCannibalizationQuery('bbl smell')).toBe(false)
+        expect(
+            isIgnorableCannibalizationQuery('mommy makeover checklist')
+        ).toBe(false)
     })
 })

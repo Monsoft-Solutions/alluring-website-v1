@@ -180,8 +180,14 @@ export function describeSignalsAsReasons(signals: RefreshSignal[]): string[] {
         switch (signal.source) {
             case 'position-drop':
                 return `Ranking dropped ${metrics.driftAdjustedDrop} spots over 28 days (${metrics.impressions} impressions).`
-            case 'ctr-gap':
-                return `CTR is ${(Number(metrics.ctr) * 100).toFixed(1)}% where ${(Number(metrics.expectedCtr) * 100).toFixed(1)}% is expected at position ${metrics.position}.`
+            case 'ctr-gap': {
+                const clickGap = Number(metrics.clickGap) || 0
+                const gap =
+                    clickGap > 0
+                        ? ` That snippet leaves about ${clickGap} clicks a month on the table — the title and meta description are the lever.`
+                        : ''
+                return `CTR is ${(Number(metrics.ctr) * 100).toFixed(1)}% where ${(Number(metrics.expectedCtr) * 100).toFixed(1)}% is expected at position ${metrics.position}.${gap}`
+            }
             case 'stale-age':
                 return `Content is ${metrics.ageMonths} months old without an update.`
             case 'cannibalization':

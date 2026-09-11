@@ -17,7 +17,8 @@
         "geo:audit": "tsx scripts/geo-audit.ts",
         "geo:backfill": "tsx scripts/backfill-quick-answers.ts",
         "pipeline:local": "tsx scripts/run-pipeline-local.ts",
-        "backfill:gsc": "tsx scripts/backfill-gsc-snapshots.ts"
+        "backfill:gsc": "tsx scripts/backfill-gsc-snapshots.ts",
+        "refresh:prune": "tsx scripts/prune-refresh-noise.ts"
     },
     "dependencies": {
         "@ai-sdk/react": "^4.0.86",

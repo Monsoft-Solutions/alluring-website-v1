@@ -8,6 +8,9 @@
  * @module @/lib/utils/autopilot.util
  */
 import type { AutopilotCadence } from '@/lib/queries/blog-ai-config.query'
+import type { GscTopicSeed } from '@workspace/ai/functions'
+import type { RefreshCandidate } from '@workspace/db/types'
+import type { TopicVerdict } from '@workspace/shared/seo'
 
 /** Interval thresholds per cadence (hours). Slightly under the nominal
  * period so daily ticks with minor timing jitter still qualify. */
@@ -123,4 +126,60 @@ export function isNearDuplicateTopic(
         }
     }
     return false
+}
+
+// ============================================
+// Demand-seed gating (issue #221)
+// ============================================
+
+/** A Search Console seed decorated with its ownership-gate verdict. */
+export type GatedSeed = GscTopicSeed & { gate: TopicVerdict }
+
+export type PartitionedSeeds = {
+    /** Unclaimed demand the model may turn into new topics. */
+    fresh: GscTopicSeed[]
+    /** Demand a live blog post already owns — refresh work, not a new URL. */
+    refreshCandidates: RefreshCandidate[]
+    /** Seeds owned by a money page or a retired URL: dropped. */
+    rejected: number
+}
+
+/**
+ * Split gated seeds by verdict BEFORE topic generation. A query the site
+ * already ranks for with a blog post can only ever come back from the
+ * model as a `refresh` verdict; feeding it in as a "write something new"
+ * seed is how ideation re-proposed the same six topics every day.
+ */
+export function partitionGatedSeeds(seeds: GatedSeed[]): PartitionedSeeds {
+    const fresh: GscTopicSeed[] = []
+    const refreshCandidates: RefreshCandidate[] = []
+    let rejected = 0
+
+    for (const seed of seeds) {
+        switch (seed.gate.verdict) {
+            case 'new':
+                fresh.push({
+                    query: seed.query,
+                    impressions: seed.impressions,
+                    clicks: seed.clicks,
+                    ctr: seed.ctr,
+                    position: seed.position,
+                    source: seed.source,
+                })
+                break
+            case 'refresh':
+                refreshCandidates.push({
+                    title: seed.query,
+                    primaryKeyword: seed.query,
+                    owningUrl: seed.gate.owningUrl,
+                    reason: seed.gate.reason,
+                })
+                break
+            case 'reject':
+                rejected++
+                break
+        }
+    }
+
+    return { fresh, refreshCandidates, rejected }
 }
