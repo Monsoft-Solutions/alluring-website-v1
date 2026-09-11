@@ -75,6 +75,51 @@ function transient(statusCode = 429) {
     })
 }
 
+type MockRequest = {
+    onStepEnd?: (step: { providerMetadata?: unknown }) => void
+}
+
+function billed(cost: number) {
+    return { openrouter: { usage: { cost } } }
+}
+
+/** A result shaped like the SDK's: own data fields plus a prototype method. */
+class FakeResult {
+    readonly object: unknown
+    readonly providerMetadata: unknown
+    constructor(object: unknown, providerMetadata: unknown) {
+        this.object = object
+        this.providerMetadata = providerMetadata
+    }
+    toJsonResponse() {
+        return this.object
+    }
+}
+
+/** A model response the SDK prices (onStepEnd) and then rejects. */
+function rejectsAfterBilling(error: Error, cost: number) {
+    return (request: MockRequest) => {
+        request.onStepEnd?.({ providerMetadata: billed(cost) })
+        return Promise.reject(error)
+    }
+}
+
+/** A model response the SDK prices (onStepEnd) and then accepts. */
+function resolvesAfterBilling(result: FakeResult, cost: number) {
+    return (request: MockRequest) => {
+        request.onStepEnd?.({ providerMetadata: billed(cost) })
+        return Promise.resolve(result)
+    }
+}
+
+function reportedCost(providerMetadata: unknown): number | undefined {
+    return (
+        providerMetadata as
+            | { openrouter?: { usage?: { cost?: number } } }
+            | undefined
+    )?.openrouter?.usage?.cost
+}
+
 beforeEach(() => {
     mockedGenerateObject.mockReset()
     vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -238,5 +283,189 @@ describe('coreGenerateObject', () => {
             coreGenerateObject({ schema, prompt: 'p' })
         ).rejects.toBeInstanceOf(APICallError)
         expect(mockedGenerateObject).toHaveBeenCalledTimes(1)
+    })
+
+    describe('soft length caps', () => {
+        const longAnswer = { score: 3, excerpt: 'still much too long' }
+
+        it('trims a second miss to fit when the caller has no salvage hook', async () => {
+            mockedGenerateObject
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(result.object).toEqual({ score: 3, excerpt: 'still much' })
+            expect(mockedGenerateObject).toHaveBeenCalledTimes(2)
+        })
+
+        it('still trims when the caller salvage declines', async () => {
+            mockedGenerateObject
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+            const salvage = vi.fn(() => null)
+
+            const result = await coreGenerateObject({
+                schema,
+                prompt: 'p',
+                salvage,
+            })
+
+            expect(salvage).toHaveBeenCalled()
+            expect(result.object).toEqual({ score: 3, excerpt: 'still much' })
+        })
+
+        it('trims the first answer when the repair answer is unusable', async () => {
+            mockedGenerateObject
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+                .mockRejectedValueOnce(
+                    schemaMiss({ score: 'x' }, 'I cannot return JSON.')
+                )
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(result.object).toEqual({ score: 3, excerpt: 'still much' })
+        })
+    })
+
+    describe('when the repair request itself fails at the provider', () => {
+        const longAnswer = { score: 3, excerpt: 'still much too long' }
+        const rejected400 = () =>
+            new APICallError({
+                message: 'HTTP 400: context length exceeded',
+                url: 'u',
+                requestBodyValues: {},
+                statusCode: 400,
+                isRetryable: false,
+            })
+
+        it('trims the first answer instead of throwing the fatal error', async () => {
+            mockedGenerateObject
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+                .mockRejectedValueOnce(rejected400())
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(result.object).toEqual({ score: 3, excerpt: 'still much' })
+            expect(mockedGenerateObject).toHaveBeenCalledTimes(2)
+        })
+
+        it('trims the first answer once the transient retries run out', async () => {
+            vi.useFakeTimers()
+            mockedGenerateObject
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+                .mockRejectedValue(transient(429))
+
+            const pending = coreGenerateObject({ schema, prompt: 'p' })
+            await vi.advanceTimersByTimeAsync(totalBackoffMs + 10)
+
+            const result = await pending
+            expect(result.object).toEqual({ score: 3, excerpt: 'still much' })
+            expect(mockedGenerateObject).toHaveBeenCalledTimes(
+                TRANSIENT_RETRY_DELAYS_MS.length + 2
+            )
+        })
+
+        it('offers the first answer to the caller salvage first', async () => {
+            mockedGenerateObject
+                .mockRejectedValueOnce(schemaMiss(longAnswer))
+                .mockRejectedValueOnce(rejected400())
+            const salvage = vi.fn(() => ({ score: 3, excerpt: 'salvaged' }))
+
+            const result = await coreGenerateObject({
+                schema,
+                prompt: 'p',
+                salvage,
+            })
+
+            expect(salvage).toHaveBeenCalledWith(JSON.stringify(longAnswer))
+            expect(result.object).toEqual({ score: 3, excerpt: 'salvaged' })
+        })
+
+        it('rethrows the provider error when the first answer cannot be trimmed', async () => {
+            mockedGenerateObject
+                .mockRejectedValueOnce(
+                    schemaMiss({ score: 'x', excerpt: 'ok' })
+                )
+                .mockRejectedValueOnce(rejected400())
+
+            await expect(
+                coreGenerateObject({ schema, prompt: 'p' })
+            ).rejects.toBeInstanceOf(APICallError)
+        })
+    })
+
+    describe('cost across requests', () => {
+        it('returns the SDK result itself when one request sufficed', async () => {
+            const sdkResult = new FakeResult(
+                { score: 1, excerpt: 'ok' },
+                billed(0.01)
+            )
+            mockedGenerateObject.mockImplementationOnce(
+                resolvesAfterBilling(sdkResult, 0.01)
+            )
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(result).toBe(sdkResult)
+        })
+
+        it('reports what every request cost after a repair', async () => {
+            const repaired = new FakeResult(
+                { score: 1, excerpt: 'short' },
+                billed(0.01)
+            )
+            mockedGenerateObject
+                .mockImplementationOnce(
+                    rejectsAfterBilling(
+                        schemaMiss({
+                            score: 1,
+                            excerpt: 'this is far too long',
+                        }),
+                        0.02
+                    )
+                )
+                .mockImplementationOnce(resolvesAfterBilling(repaired, 0.01))
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(result.object).toEqual({ score: 1, excerpt: 'short' })
+            expect(reportedCost(result.providerMetadata)).toBeCloseTo(0.03)
+            // A copy, not a mutation — and prototype methods survive it.
+            expect(reportedCost(repaired.providerMetadata)).toBe(0.01)
+            expect(result.toJsonResponse()).toEqual({
+                score: 1,
+                excerpt: 'short',
+            })
+        })
+
+        it('reports what every request cost when the answer is trimmed', async () => {
+            const longAnswer = { score: 3, excerpt: 'still much too long' }
+            mockedGenerateObject
+                .mockImplementationOnce(
+                    rejectsAfterBilling(schemaMiss(longAnswer), 0.02)
+                )
+                .mockImplementationOnce(
+                    rejectsAfterBilling(schemaMiss(longAnswer), 0.01)
+                )
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(reportedCost(result.providerMetadata)).toBeCloseTo(0.03)
+        })
+
+        it('reports the cost of an answer recovered by unwrapping', async () => {
+            mockedGenerateObject.mockImplementationOnce(
+                rejectsAfterBilling(
+                    schemaMiss({ config: { score: 88, excerpt: 'fine' } }),
+                    0.02
+                )
+            )
+
+            const result = await coreGenerateObject({ schema, prompt: 'p' })
+
+            expect(result.object).toEqual({ score: 88, excerpt: 'fine' })
+            expect(reportedCost(result.providerMetadata)).toBeCloseTo(0.02)
+        })
     })
 })

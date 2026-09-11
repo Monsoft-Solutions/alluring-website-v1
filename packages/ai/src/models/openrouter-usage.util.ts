@@ -7,6 +7,7 @@
  *
  * @module @workspace/ai/models/openrouter-usage
  */
+import type { ProviderMetadata } from 'ai'
 
 /**
  * A result plus what the call that produced it cost.
@@ -105,4 +106,33 @@ export function sumCosts(
     return reported.length > 0
         ? reported.reduce((total, cost) => total + cost, 0)
         : undefined
+}
+
+/**
+ * Set the OpenRouter cost on a result's provider metadata.
+ *
+ * For calls that took more than one request — a repair retry after a
+ * rejected answer (issue #223) — so the result reports what the whole call
+ * billed, not only its last request. Every other key is kept; the path is
+ * built when the metadata has none.
+ *
+ * @param providerMetadata - The metadata to copy (not mutated)
+ * @param costUsd - The total to report, in USD
+ * @returns New metadata that {@link readOpenRouterCost} reads as `costUsd`
+ */
+export function withOpenRouterCost(
+    providerMetadata: ProviderMetadata | undefined,
+    costUsd: number
+): ProviderMetadata {
+    const openrouter = providerMetadata?.openrouter ?? {}
+    const usage = openrouter.usage
+    const usageFields =
+        typeof usage === 'object' && usage !== null && !Array.isArray(usage)
+            ? usage
+            : {}
+
+    return {
+        ...providerMetadata,
+        openrouter: { ...openrouter, usage: { ...usageFields, cost: costUsd } },
+    }
 }

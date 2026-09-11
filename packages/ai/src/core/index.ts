@@ -46,6 +46,11 @@ export {
     TRANSIENT_RETRY_DELAYS_MS,
     type ObjectGenerationErrorClass,
 } from './generate-object-repair.util'
+export {
+    coerceToSchema,
+    truncateAtWordBoundary,
+    type SoftCapCoercion,
+} from './soft-caps.util'
 
 // The SDK's error classes, so callers can classify failures without
 // depending on the 'ai' package themselves.

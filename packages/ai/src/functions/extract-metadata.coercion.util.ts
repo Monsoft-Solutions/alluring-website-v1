@@ -19,6 +19,12 @@
  */
 import { z } from 'zod'
 
+import { truncateAtWordBoundary } from '../core/soft-caps.util'
+
+// The cut lives in core now, where every schema's soft caps use it;
+// re-exported so existing imports from this module keep working.
+export { truncateAtWordBoundary }
+
 // ============================================
 // Limits
 // ============================================
@@ -32,9 +38,6 @@ export const METADATA_LIMITS = {
     readingTimeMin: 1,
     readingTimeMax: 30,
 } as const
-
-/** A cut is allowed no earlier than this share of the cap, else hard-cut. */
-const MIN_CUT_RATIO = 0.6
 
 // ============================================
 // Shapes
@@ -51,37 +54,6 @@ const lenientMetadataSchema = z.object({
 })
 
 export type LenientMetadata = z.infer<typeof lenientMetadataSchema>
-
-// ============================================
-// Truncation
-// ============================================
-
-/**
- * Cut text to `max` characters without splitting a word: at the last sentence
- * end if one sits past 60% of the cap, else at the last space, else hard.
- * Trailing punctuation left dangling by a mid-clause cut is dropped.
- */
-export function truncateAtWordBoundary(text: string, max: number): string {
-    const trimmed = text.trim()
-    if (trimmed.length <= max) return trimmed
-
-    const window = trimmed.slice(0, max)
-    const floor = Math.floor(max * MIN_CUT_RATIO)
-
-    const lastSentenceEnd = Math.max(
-        window.lastIndexOf('. '),
-        window.lastIndexOf('! '),
-        window.lastIndexOf('? '),
-        window.endsWith('.') || window.endsWith('!') || window.endsWith('?')
-            ? window.length - 1
-            : -1
-    )
-    if (lastSentenceEnd >= floor) return window.slice(0, lastSentenceEnd + 1)
-
-    const lastSpace = window.lastIndexOf(' ')
-    const cut = lastSpace >= floor ? window.slice(0, lastSpace) : window
-    return cut.replace(/[\s,;:—–-]+$/u, '')
-}
 
 // ============================================
 // Coercion + salvage
