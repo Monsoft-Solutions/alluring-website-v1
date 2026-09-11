@@ -114,7 +114,7 @@ export async function runDecayDetectionJob(
         .select({
             id: blogPost.id,
             publishedAt: blogPost.publishedAt,
-            updatedAt: blogPost.updatedAt,
+            contentUpdatedAt: blogPost.contentUpdatedAt,
         })
         .from(blogPost)
         .where(
@@ -132,7 +132,7 @@ export async function runDecayDetectionJob(
         if (!post.publishedAt) continue
         const signal = evaluateStaleAge({
             publishedAt: post.publishedAt,
-            updatedAt: post.updatedAt,
+            contentUpdatedAt: post.contentUpdatedAt,
             staleMonths: config.refreshStaleMonths,
             now,
         })

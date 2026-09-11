@@ -304,7 +304,8 @@ export function evaluateCtrGap(input: CtrGapInput): RefreshSignal | null {
 
 export type StaleAgeInput = {
     publishedAt: Date
-    updatedAt: Date | null
+    /** Last reader-visible edit (`content_updated_at`), never `updated_at`. */
+    contentUpdatedAt: Date | null
     /** `blog_ai_config.refresh_stale_months`. */
     staleMonths: number
     now: Date
@@ -313,8 +314,8 @@ export type StaleAgeInput = {
 /** R3: nothing touched the post for `staleMonths` months. */
 export function evaluateStaleAge(input: StaleAgeInput): RefreshSignal | null {
     const lastTouched =
-        input.updatedAt && input.updatedAt > input.publishedAt
-            ? input.updatedAt
+        input.contentUpdatedAt && input.contentUpdatedAt > input.publishedAt
+            ? input.contentUpdatedAt
             : input.publishedAt
 
     const ageMonths = monthsBetween(lastTouched, input.now)

@@ -63,6 +63,10 @@ export async function POST(
                     .update(blogPost)
                     .set({
                         views: sql`${blogPost.views} + 1`,
+                        // A page view is not an edit. Naming the column keeps
+                        // the schema's $onUpdate from stamping updated_at, so
+                        // public traffic stops churning the row timestamp.
+                        updatedAt: blogPost.updatedAt,
                     })
                     .where(eq(blogPost.id, id))
             } catch (error) {

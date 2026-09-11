@@ -125,9 +125,26 @@ export const blogPost = pgTable(
         authorId: uuid('author_id'),
         featuredImageId: uuid('featured_image_id'),
         createdAt: timestamp('created_at').defaultNow(),
+        /**
+         * Row bookkeeping: bumped by every write, including view counts and
+         * pipeline state. Never a signal that the article changed — use
+         * `contentUpdatedAt` for anything a reader or a crawler sees.
+         */
         updatedAt: timestamp('updated_at')
             .defaultNow()
             .$onUpdate(() => new Date()),
+        /**
+         * When a reader-visible field last changed: title, content, meta
+         * title/description, excerpt, quick answer, FAQs, featured image or
+         * slug. Maintained by the `blog_post_content_updated_at` trigger
+         * (migration 0052), not by application code, so none of the many
+         * `update(blogPost)` call sites can get it wrong. Feeds sitemap
+         * `lastmod`, `dateModified` and the refresh loop's staleness.
+         *
+         * Compare against `publishedAt` with GREATEST: a draft is edited before
+         * it is published, so this can legitimately predate publication.
+         */
+        contentUpdatedAt: timestamp('content_updated_at'),
 
         // Pipeline management
         priority: blogPostPriority('priority').default('medium'),

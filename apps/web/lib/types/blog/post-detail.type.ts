@@ -10,7 +10,12 @@ export type BlogPostDetail = BlogPostCard & {
      * authored to fit the SERP. Null on posts predating the field.
      */
     metaDescription: string | null
-    updatedAt: string | null
+    /**
+     * ISO date of the last reader-visible edit (trigger-maintained
+     * `content_updated_at`). May predate `publishedAt` for posts edited as
+     * drafts; compare before displaying.
+     */
+    contentUpdatedAt: string | null
     categories: Array<{
         id: string
         name: string

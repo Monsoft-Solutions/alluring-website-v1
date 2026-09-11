@@ -55,7 +55,8 @@ export async function buildRefreshBrief(
             content: blogPost.content,
             faqs: blogPost.faqs,
             publishedAt: blogPost.publishedAt,
-            updatedAt: blogPost.updatedAt,
+            // Last reader-visible edit — not updated_at, which page views bump.
+            contentUpdatedAt: blogPost.contentUpdatedAt,
         })
         .from(blogPost)
         .where(eq(blogPost.id, blogPostId))
@@ -105,7 +106,7 @@ export async function buildRefreshBrief(
         ? `This post splits the query "${cannibalizationSignal.metrics.query}" with ${cannibalizationSignal.metrics.ownerUrl} (the stronger page). Sharpen this post's distinct angle so the two pages stop competing.`
         : undefined
 
-    const lastTouch = maxDate(post.publishedAt, post.updatedAt)
+    const lastTouch = maxDate(post.publishedAt, post.contentUpdatedAt)
 
     return {
         reasons: describeSignalsAsReasons(signals),
@@ -115,7 +116,7 @@ export async function buildRefreshBrief(
         ...(cannibalizationContext ? { cannibalizationContext } : {}),
         staleness: {
             publishedAt: post.publishedAt?.toISOString() ?? null,
-            lastUpdatedAt: post.updatedAt?.toISOString() ?? null,
+            lastUpdatedAt: lastTouch?.toISOString() ?? null,
             ageMonths: lastTouch
                 ? Math.round(monthsBetween(lastTouch, now) * 10) / 10
                 : 0,

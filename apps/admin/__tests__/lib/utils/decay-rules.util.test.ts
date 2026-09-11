@@ -183,7 +183,7 @@ describe('evaluateStaleAge (R3)', () => {
     it('fires once nothing touched the post for the configured months', () => {
         const signal = evaluateStaleAge({
             publishedAt: new Date('2025-11-01T00:00:00Z'),
-            updatedAt: null,
+            contentUpdatedAt: null,
             staleMonths: 6,
             now: NOW,
         })
@@ -196,7 +196,7 @@ describe('evaluateStaleAge (R3)', () => {
     it('counts from the update, not the publish, when the post was touched', () => {
         const signal = evaluateStaleAge({
             publishedAt: new Date('2025-01-01T00:00:00Z'),
-            updatedAt: new Date('2026-06-01T00:00:00Z'),
+            contentUpdatedAt: new Date('2026-06-01T00:00:00Z'),
             staleMonths: 6,
             now: NOW,
         })
@@ -206,7 +206,7 @@ describe('evaluateStaleAge (R3)', () => {
     it('stays quiet for a fresh post', () => {
         const signal = evaluateStaleAge({
             publishedAt: new Date('2026-05-01T00:00:00Z'),
-            updatedAt: null,
+            contentUpdatedAt: null,
             staleMonths: 6,
             now: NOW,
         })
