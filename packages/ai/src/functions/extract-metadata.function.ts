@@ -9,6 +9,7 @@
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
+import { createMetadataSalvage } from './extract-metadata.coercion.util'
 import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 import {
     readOpenRouterCost,
@@ -166,6 +167,8 @@ Extract the metadata following the guidelines. Ensure the meta title is 50-60 ch
         schema: contentMetadataSchema,
         system: METADATA_EXTRACTOR_SYSTEM_PROMPT,
         prompt,
+        // Length caps are soft: after the repair retry, trim rather than fail.
+        salvage: createMetadataSalvage(contentMetadataSchema),
     })
 
     return { ...result.object, ...readOpenRouterCost(result.providerMetadata) }

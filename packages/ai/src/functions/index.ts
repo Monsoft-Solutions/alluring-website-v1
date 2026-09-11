@@ -133,8 +133,16 @@ export {
 export {
     extractMetadata,
     type ExtractMetadataOptions,
+    contentMetadataSchema,
     type ContentMetadata,
 } from './extract-metadata.function'
+export {
+    coerceContentMetadata,
+    createMetadataSalvage,
+    METADATA_LIMITS,
+    truncateAtWordBoundary,
+    type LenientMetadata,
+} from './extract-metadata.coercion.util'
 
 export {
     extractFaqs,

@@ -43,6 +43,7 @@ export {
     readOpenRouterUsage,
     readOpenRouterCost,
     sumCosts,
+    withOpenRouterCost,
     type OpenRouterCallUsage,
     type WithCallCost,
 } from './openrouter-usage.util'

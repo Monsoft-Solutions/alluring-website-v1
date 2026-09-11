@@ -98,14 +98,28 @@ export type ModelMessage = {
 }
 
 /**
- * Options for generateObject core function with prompt
+ * Options every generateObject call shares, whichever input format it uses
  */
-export type CoreGenerateObjectPromptOptions<TSchema extends z.ZodType> =
+export type CoreGenerateObjectSharedOptions<TSchema extends z.ZodType> =
     CoreBaseOptions & {
         /** Zod schema for structured output */
         schema: TSchema
         /** System prompt for the AI */
         system?: string
+        /**
+         * Last-resort recovery when the model's answer still fails validation
+         * after the repair retry (issue #223): turn the raw rejected text into
+         * a valid object — say, by trimming an over-long field — or return
+         * null to let the error propagate. Only called with non-empty text.
+         */
+        salvage?: (rejectedText: string) => z.infer<TSchema> | null
+    }
+
+/**
+ * Options for generateObject core function with prompt
+ */
+export type CoreGenerateObjectPromptOptions<TSchema extends z.ZodType> =
+    CoreGenerateObjectSharedOptions<TSchema> & {
         /** User prompt for the AI */
         prompt: string
     }
@@ -115,11 +129,7 @@ export type CoreGenerateObjectPromptOptions<TSchema extends z.ZodType> =
  * Supports multimodal content including images for vision capabilities
  */
 export type CoreGenerateObjectMessagesOptions<TSchema extends z.ZodType> =
-    CoreBaseOptions & {
-        /** Zod schema for structured output */
-        schema: TSchema
-        /** System prompt for the AI */
-        system?: string
+    CoreGenerateObjectSharedOptions<TSchema> & {
         /** Messages for multimodal generation (supports images) */
         messages: CoreAISDKMessage[]
     }
