@@ -38,6 +38,24 @@ export {
     type FlexibleSchema,
     type InferSchema,
 } from './generate-object.core'
+export {
+    buildRepairInstruction,
+    classifyObjectGenerationError,
+    describeValidationFailure,
+    unwrapSingleKeyObject,
+    TRANSIENT_RETRY_DELAYS_MS,
+    type ObjectGenerationErrorClass,
+} from './generate-object-repair.util'
+
+// The SDK's error classes, so callers can classify failures without
+// depending on the 'ai' package themselves.
+export {
+    APICallError,
+    JSONParseError,
+    NoObjectGeneratedError,
+    RetryError,
+    TypeValidationError,
+} from 'ai'
 export { coreGenerateText, type GenerateTextResult } from './generate-text.core'
 export {
     coreStreamObject,
@@ -53,6 +71,7 @@ export type {
     CoreMessageContentPart,
     CoreAISDKMessage,
     CoreGenerateObjectOptions,
+    CoreGenerateObjectSharedOptions,
     CoreGenerateObjectPromptOptions,
     CoreGenerateObjectMessagesOptions,
     CoreGenerateTextOptions,

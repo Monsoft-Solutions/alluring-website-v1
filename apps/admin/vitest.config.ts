@@ -25,6 +25,10 @@ export default defineConfig({
                 '../../packages/shared/src'
             ),
             '@workspace/ai': path.resolve(__dirname, '../../packages/ai/src'),
+            // The AI SDK is a dependency of packages/ai, not of the admin app.
+            // Tests that build SDK error objects resolve it from there so the
+            // module identity matches what @workspace/ai itself imports.
+            ai: path.resolve(__dirname, '../../packages/ai/node_modules/ai'),
         },
     },
     test: {

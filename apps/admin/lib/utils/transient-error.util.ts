@@ -33,6 +33,13 @@ const TRANSIENT_PATTERNS: RegExp[] = [
     /network error/i,
     /overloaded/i,
     /internal server error/i,
+    // A structured answer that missed its schema (issue #223). The core
+    // wrapper already unwraps, repairs and salvages; when it still throws,
+    // one fresh phase run is cheap next to a parked post.
+    /no object generated/i,
+    /no output generated/i,
+    /response did not match schema/i,
+    /could not parse the response/i,
 ]
 
 const MAX_CAUSE_DEPTH = 5
