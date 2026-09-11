@@ -32,6 +32,7 @@ import { ProcedureIntro } from '@/components/procedures/procedure-intro.componen
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
 import { ProcedureContentImagesSection } from '@/components/procedures/procedure-content-images-section.component'
 import { ProcedureConsultationForm } from '@/components/procedures/procedure-consultation-form.component'
+import { ProcedurePricing } from '@/components/procedures/procedure-pricing.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
@@ -92,12 +93,18 @@ export async function generateMetadata(
         ? `${siteUrl}${procedure.image}`
         : `${siteUrl}/og-image.jpg`
 
-    // Generate SEO-optimized title with Miami location, year, and trust signal
-    const pageTitle = generateProcedureTitle(procedure.title)
+    // A hand-written title always wins. The generated pattern is a floor for
+    // pages nobody has written metadata for, not something to override an
+    // author who picked the head term deliberately.
+    const pageTitle =
+        procedure.seoTitle ?? generateProcedureTitle(procedure.title)
 
-    // Generate CTR-optimized description
+    // Same for the description. Clamping still applies either way — it is a
+    // safety net against overrun, and a hand-written one under the limit
+    // passes through untouched.
     const metaDescription = clampMetaDescription(
-        generateProcedureDescription(procedure.title)
+        procedure.metaDescription ??
+            generateProcedureDescription(procedure.title)
     )
 
     return {
@@ -270,6 +277,16 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 image={
                     procedure.image ? `${siteUrl}${procedure.image}` : undefined
                 }
+                offers={
+                    procedure.pricing
+                        ? {
+                              price: procedure.pricing.startingAt,
+                              priceCurrency: 'USD',
+                              availability: 'InStock',
+                              url: pageUrl,
+                          }
+                        : undefined
+                }
             />
 
             {/* Structured Data - Offer Schema for related promotion */}
@@ -379,6 +396,16 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     </div>
                 </ContainerLayout>
             </div>
+
+            {/* Pricing — cost is the highest-intent question a procedure query
+                carries, so it sits above the fold-adjacent content rather than
+                inside the markdown body. */}
+            {procedure.pricing && (
+                <ProcedurePricing
+                    procedureTitle={procedure.title}
+                    pricing={procedure.pricing}
+                />
+            )}
 
             {/* Benefits Section */}
             {procedure.benefits && (

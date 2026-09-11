@@ -38,7 +38,7 @@ export const footerSections: NavigationSection[] = [
             },
             {
                 label: 'BBL Miami',
-                href: '/bbl-miami',
+                href: '/procedures/brazilian-butt-lift-bbl-miami',
                 external: false,
             },
             {

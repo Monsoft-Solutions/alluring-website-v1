@@ -65,7 +65,6 @@ const STATIC_PAGES: Array<{
         priority: 0.9,
     },
     { path: '/consulta-gratis', changeFrequency: 'weekly', priority: 0.9 },
-    { path: '/bbl-miami', changeFrequency: 'weekly', priority: 0.85 },
     { path: '/bridal-consultation', changeFrequency: 'weekly', priority: 0.9 },
     {
         path: '/new-beginning-consultation',

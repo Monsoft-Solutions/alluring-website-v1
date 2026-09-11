@@ -57,6 +57,40 @@ export interface ProcedureContentImage {
     variant?: 'full-width' | 'half' | 'float-right' | 'float-left'
 }
 
+/**
+ * One driver of price variation inside a procedure's published range.
+ */
+export interface ProcedurePriceFactor {
+    /** Short name of the factor, e.g. "Volume of fat transfer" */
+    label: string
+    /** Why it moves the price */
+    description: string
+}
+
+/**
+ * Published pricing for a procedure page.
+ *
+ * Figures are stored as numbers rather than pre-formatted strings so the same
+ * value can drive the visible price table and the `Offer` in structured data
+ * without the two drifting apart.
+ *
+ * `weeklyFrom` restates this procedure's entry in `WEEKLY_PAYMENT_OPTIONS`
+ * (`lib/data/weekly-payments.data.ts`), which remains the source of truth for
+ * every weekly figure on the site. Keep the two in step.
+ */
+export interface ProcedurePricing {
+    /** Lowest advertised all-inclusive price, in USD */
+    startingAt: number
+    /** Top of the typical range, in USD. Omit when there is no real spread. */
+    upTo?: number
+    /** Illustrative financed weekly payment, in USD */
+    weeklyFrom?: number
+    /** What the quoted price covers */
+    includes: string[]
+    /** What moves the price inside the range */
+    factors: ProcedurePriceFactor[]
+}
+
 export interface Procedure {
     title: string
     slug: string
@@ -68,6 +102,18 @@ export interface Procedure {
     category?: 'face' | 'breast' | 'body' | 'combined'
     faqs?: ProcedureFAQ[]
     content?: string // Markdown content for the main procedure description
+
+    // SEO overrides. Unset, the procedure page derives both from the title via
+    // `generateProcedureTitle` / `generateProcedureDescription`, which is why
+    // the whole directory reads identically in the SERP. Set them on any page
+    // competing for a head term.
+    /** Hand-written <title>, used verbatim instead of the generated pattern */
+    seoTitle?: string
+    /** Hand-written meta description, used instead of the generated one */
+    metaDescription?: string
+
+    /** Published price table. Renders a pricing section and an Offer in JSON-LD. */
+    pricing?: ProcedurePricing
 
     // Structured content for redesign
     quickStats?: ProcedureStats
@@ -136,6 +182,28 @@ export const procedureSchema = z.object({
         )
         .optional(),
     content: z.string().optional(),
+    seoTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
+    pricing: z
+        .object({
+            startingAt: z.number().positive(),
+            upTo: z.number().positive().optional(),
+            weeklyFrom: z.number().positive().optional(),
+            includes: z.array(z.string()),
+            factors: z.array(
+                z.object({
+                    label: z.string(),
+                    description: z.string(),
+                })
+            ),
+        })
+        .refine(
+            (pricing) =>
+                pricing.upTo === undefined ||
+                pricing.upTo >= pricing.startingAt,
+            { message: 'pricing.upTo must not be below pricing.startingAt' }
+        )
+        .optional(),
 
     // Structured content
     quickStats: z

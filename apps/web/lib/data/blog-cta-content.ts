@@ -84,7 +84,7 @@ export const blogCTAContents = [
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
             text: 'Explore BBL Options',
-            href: '/procedures/bbl-miami',
+            href: '/procedures/brazilian-butt-lift-bbl-miami',
             iconName: 'arrow-right',
         },
         secondaryButton: {
