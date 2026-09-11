@@ -10,22 +10,29 @@
  * - R1 position drop: impression-weighted position worsened by at least the
  *   configured threshold AFTER subtracting the site-median delta, so a core
  *   update that moves the whole site doesn't read as per-post decay.
- * - R2 CTR gap: position is stable but CTR runs below half the site's own
- *   benchmark for that position — the snippet, not the ranking, is the
- *   problem.
+ * - R2 CTR gap: position is stable but CTR runs below half the positional
+ *   benchmark — the snippet, not the ranking, is the problem. The benchmark
+ *   is the better of our own measured CTR and the industry curve, so a
+ *   site-wide snippet problem can never lower the bar (#221).
  * - R3 stale age: nothing touched the post for longer than the configured
  *   number of months (needs no snapshots).
  * - R4 cannibalization: a weekly report finding where ≥2 of our own blog
- *   posts split one query — every non-owner post gets a signal.
+ *   posts each hold a real stake in one query — every non-owner post with
+ *   a stake gets a signal. Operator/brand queries are ignored (#221).
  *
  * @module @/lib/utils/decay-rules.util
  */
-import type { CannibalizationFinding, RefreshSignal } from '@workspace/db/types'
+import type {
+    CannibalizationFinding,
+    CannibalizationFindingPage,
+    RefreshSignal,
+} from '@workspace/db/types'
 
 import type {
     CtrBucket,
     PageWindowAggregate,
 } from '@/lib/queries/gsc-snapshot.query'
+import { isIgnorableCannibalizationQuery } from '@/lib/utils/cannibalization-detection.util'
 
 // ============================================
 // Constants
@@ -52,6 +59,19 @@ export const CTR_BENCHMARK_MIN_BUCKET_IMPRESSIONS = 1000
 /** Pages must have at least this many impressions in BOTH windows to vote
  * in the site-median drift. */
 export const DRIFT_PAGE_MIN_IMPRESSIONS = 50
+
+/** R4 only signals a post holding at least this share of the query... */
+export const CANNIBALIZATION_MIN_PAGE_SHARE = 0.1
+
+/** ...and at least this many impressions on it in the analyzed week. */
+export const CANNIBALIZATION_MIN_PAGE_IMPRESSIONS = 5
+
+/**
+ * R2 score weight over log10(clickGap + 1). Calibrated so a snippet leaving
+ * ~20 clicks/month on the table scores like a 4-spot drop on a
+ * 500-impression page (both ≈ 10.7).
+ */
+export const CTR_GAP_SCORE_WEIGHT = 8
 
 /** Average Gregorian month, in days — good enough for staleness ages. */
 const DAYS_PER_MONTH = 30.44
@@ -154,10 +174,21 @@ export function computeSiteMedianPositionDelta(
     return computeMedian(deltas)
 }
 
+/** Industry CTR for a position bucket (1–21). */
+function staticCtrForBucket(bucket: number): number {
+    if (bucket <= 10) return STATIC_CTR_BY_POSITION[bucket]!
+    if (bucket <= 20) return STATIC_CTR_PAGE_TWO
+    return STATIC_CTR_DEEP
+}
+
 /**
- * Build the positional CTR benchmark from our own trailing snapshot data,
- * falling back to the static curve for thin buckets. Positions round to
- * their bucket; everything past 20 shares one deep bucket.
+ * Build the positional CTR benchmark: the better of our own trailing CTR
+ * per bucket and the static industry curve. Positions round to their
+ * bucket; everything past 20 shares one deep bucket.
+ *
+ * Measured CTR only ever RAISES the bar. In production one page held half
+ * of every bucket from position 6 to 12 with a 0.1% CTR, so "the site's
+ * benchmark" was that page's own failure and R2 could never flag it.
  */
 export function buildCtrBenchmark(buckets: CtrBucket[]): CtrBenchmark {
     const ctrByBucket = new Map<number, number>()
@@ -171,11 +202,9 @@ export function buildCtrBenchmark(buckets: CtrBucket[]): CtrBenchmark {
 
     return (position: number) => {
         const bucket = Math.min(Math.max(Math.round(position), 1), 21)
+        const curve = staticCtrForBucket(bucket)
         const measured = ctrByBucket.get(bucket)
-        if (measured !== undefined) return measured
-        if (bucket <= 10) return STATIC_CTR_BY_POSITION[bucket]!
-        if (bucket <= 20) return STATIC_CTR_PAGE_TWO
-        return STATIC_CTR_DEEP
+        return measured !== undefined ? Math.max(measured, curve) : curve
     }
 }
 
@@ -258,6 +287,9 @@ export function evaluateCtrGap(input: CtrGapInput): RefreshSignal | null {
             ctr: round(ctr, 4),
             expectedCtr: round(expectedCtr, 4),
             ctrRatio: round(expectedCtr > 0 ? ctr / expectedCtr : 0, 2),
+            // Clicks per window the snippet leaves on the table — what the
+            // queue score and the brief lead with.
+            clickGap: Math.round(current.impressions * (expectedCtr - ctr)),
             position: round(current.position, 2),
             impressions: current.impressions,
             windowStart: input.windowStart,
@@ -305,15 +337,51 @@ export function evaluateStaleAge(input: StaleAgeInput): RefreshSignal | null {
 // ============================================
 
 /**
+ * Whether a page in a finding actually competes for the query, rather than
+ * merely appearing in the long tail of a spread-out result set.
+ */
+export function hasMeaningfulStake(
+    page: Pick<CannibalizationFindingPage, 'share' | 'impressions'>
+): boolean {
+    return (
+        page.share >= CANNIBALIZATION_MIN_PAGE_SHARE &&
+        page.impressions >= CANNIBALIZATION_MIN_PAGE_IMPRESSIONS
+    )
+}
+
+/**
+ * Whether a stored `cannibalization` signal would still be produced by R4
+ * today. Non-cannibalization signals are always actionable. Used by the
+ * queue prune script to strip signals detected before the #221 filters.
+ */
+export function isActionableCannibalizationSignal(
+    signal: RefreshSignal
+): boolean {
+    if (signal.source !== 'cannibalization') return true
+    if (isIgnorableCannibalizationQuery(String(signal.metrics.query ?? ''))) {
+        return false
+    }
+    return hasMeaningfulStake({
+        share: Number(signal.metrics.share) || 0,
+        impressions: Number(signal.metrics.impressions) || 0,
+    })
+}
+
+/**
  * R4: signals from one weekly cannibalization finding. Only fires when at
- * least two of the competing pages are our blog posts, and only on the
- * NON-owner posts — the owner is where the query should consolidate.
+ * least two of the competing pages are our blog posts with a real stake in
+ * the query, and only on the NON-owner posts — the owner is where the
+ * query should consolidate. Operator and brand queries never signal.
  */
 export function signalsFromCannibalizationFinding(
     finding: CannibalizationFinding,
     now: Date
 ): Array<{ blogPostId: string; signal: RefreshSignal }> {
-    const blogPages = finding.pages.filter((page) => page.blogPostId)
+    if (isIgnorableCannibalizationQuery(finding.query)) return []
+
+    const blogPages = finding.pages.filter(
+        (page) => page.blogPostId && hasMeaningfulStake(page)
+    )
     if (blogPages.length < 2) return []
 
     const ownerUrl =
@@ -349,10 +417,26 @@ export function signalsFromCannibalizationFinding(
 // ============================================
 
 /**
+ * Clicks per window a CTR-gap signal leaves on the table. Read from the
+ * recorded metric; derived from CTR and impressions for signals stored
+ * before the metric existed.
+ */
+function ctrGapClicks(metrics: RefreshSignal['metrics']): number {
+    const recorded = Number(metrics.clickGap)
+    if (Number.isFinite(recorded) && recorded > 0) return recorded
+
+    const impressions = Number(metrics.impressions) || 0
+    const expectedCtr = Number(metrics.expectedCtr) || 0
+    const ctr = Number(metrics.ctr) || 0
+    return Math.max(0, Math.round(impressions * (expectedCtr - ctr)))
+}
+
+/**
  * Queue priority from a candidate's accumulated signals (plan §0):
- * `log10(impressions₂₈d + 10) × max(driftAdjustedDrop, 0) + ctrGapBonus +
- * staleBonus`, extended with flat bonuses for the non-metric sources.
- * Manual requests always outrank detected decay.
+ * `log10(impressions₂₈d + 10) × max(driftAdjustedDrop, 0)` for a position
+ * drop, `log10(clickGap + 1) × CTR_GAP_SCORE_WEIGHT` for a CTR gap, a
+ * staleness bonus, and flat bonuses for the non-metric sources. Manual
+ * requests always outrank detected decay.
  */
 export function computeRefreshScore(signals: RefreshSignal[]): number {
     let score = 0
@@ -365,7 +449,9 @@ export function computeRefreshScore(signals: RefreshSignal[]): number {
                 break
             }
             case 'ctr-gap':
-                score += Math.log10(impressions + 10)
+                score +=
+                    Math.log10(ctrGapClicks(signal.metrics) + 1) *
+                    CTR_GAP_SCORE_WEIGHT
                 break
             case 'stale-age': {
                 const ageMonths = Number(signal.metrics.ageMonths) || 0

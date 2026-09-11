@@ -9,13 +9,18 @@ import { describe, expect, it } from 'vitest'
 
 import {
     buildCtrBenchmark,
+    CANNIBALIZATION_MIN_PAGE_IMPRESSIONS,
+    CANNIBALIZATION_MIN_PAGE_SHARE,
     computeMedian,
     computeRefreshScore,
     computeSiteMedianPositionDelta,
     CTR_GAP_MIN_IMPRESSIONS,
+    CTR_GAP_SCORE_WEIGHT,
     evaluateCtrGap,
     evaluatePositionDrop,
     evaluateStaleAge,
+    hasMeaningfulStake,
+    isActionableCannibalizationSignal,
     monthsBetween,
     POSITION_DROP_MIN_IMPRESSIONS,
     signalsFromCannibalizationFinding,
@@ -134,6 +139,8 @@ describe('evaluateCtrGap (R2)', () => {
         expect(signal!.source).toBe('ctr-gap')
         expect(signal!.metrics.ctr).toBe(0.02)
         expect(signal!.metrics.expectedCtr).toBe(0.1)
+        // 1000 × (10% − 2%) = 80 clicks the snippet leaves on the table.
+        expect(signal!.metrics.clickGap).toBe(80)
     })
 
     it('stays quiet at exactly half the benchmark', () => {
@@ -293,6 +300,111 @@ describe('signalsFromCannibalizationFinding (R4)', () => {
         expect(signals).toHaveLength(1)
         expect(signals[0]!.blogPostId).toBe('post-b')
     })
+
+    it('ignores pages without a real stake in the query', () => {
+        // The production failure mode: a spread-out finding where dozens of
+        // posts each appear with one impression and a ~0 share.
+        const tail = {
+            page: 'https://example.com/blog/post-tail',
+            blogPostId: 'post-tail',
+            impressions: 1,
+            share: 0.002,
+            clicks: 0,
+            position: 40,
+        }
+        const signals = signalsFromCannibalizationFinding(
+            finding({
+                pages: [pageA, tail],
+                owner: { url: pageA.page, source: 'top-performer' },
+            }),
+            NOW
+        )
+        expect(signals).toHaveLength(0)
+    })
+
+    it('never signals an operator or brand query', () => {
+        for (const query of [
+            'site:www.alluringplasticsurgery.com',
+            'alluring plastic surgery',
+        ]) {
+            const signals = signalsFromCannibalizationFinding(
+                finding({
+                    query,
+                    pages: [pageA, pageB],
+                    owner: { url: '/', source: 'registry' },
+                }),
+                NOW
+            )
+            expect(signals).toHaveLength(0)
+        }
+    })
+})
+
+describe('hasMeaningfulStake', () => {
+    it('needs both the share and the impression floor', () => {
+        expect(
+            hasMeaningfulStake({
+                share: CANNIBALIZATION_MIN_PAGE_SHARE,
+                impressions: CANNIBALIZATION_MIN_PAGE_IMPRESSIONS,
+            })
+        ).toBe(true)
+        expect(
+            hasMeaningfulStake({
+                share: CANNIBALIZATION_MIN_PAGE_SHARE - 0.01,
+                impressions: 500,
+            })
+        ).toBe(false)
+        expect(
+            hasMeaningfulStake({
+                share: 0.5,
+                impressions: CANNIBALIZATION_MIN_PAGE_IMPRESSIONS - 1,
+            })
+        ).toBe(false)
+    })
+})
+
+describe('isActionableCannibalizationSignal', () => {
+    it('keeps every non-cannibalization signal', () => {
+        expect(
+            isActionableCannibalizationSignal(
+                signal('position-drop', { impressions: 300 })
+            )
+        ).toBe(true)
+        expect(isActionableCannibalizationSignal(signal('manual'))).toBe(true)
+    })
+
+    it('drops the stored site: and brand signals', () => {
+        expect(
+            isActionableCannibalizationSignal(
+                signal('cannibalization', {
+                    query: 'site:www.alluringplasticsurgery.com',
+                    share: 0,
+                    impressions: 1,
+                })
+            )
+        ).toBe(false)
+        expect(
+            isActionableCannibalizationSignal(
+                signal('cannibalization', {
+                    query: 'alluring plastic surgery',
+                    share: 0.3,
+                    impressions: 40,
+                })
+            )
+        ).toBe(false)
+    })
+
+    it('keeps a real split', () => {
+        expect(
+            isActionableCannibalizationSignal(
+                signal('cannibalization', {
+                    query: 'mommy makeover checklist',
+                    share: 0.45,
+                    impressions: 59,
+                })
+            )
+        ).toBe(true)
+    })
 })
 
 // ============================================
@@ -300,11 +412,19 @@ describe('signalsFromCannibalizationFinding (R4)', () => {
 // ============================================
 
 describe('buildCtrBenchmark', () => {
-    it('uses measured CTR when a bucket has enough volume', () => {
+    it('uses measured CTR when a bucket has enough volume and beats the curve', () => {
         const buckets: CtrBucket[] = [
-            { positionBucket: 3, clicks: 90, impressions: 1000 },
+            { positionBucket: 3, clicks: 120, impressions: 1000 },
         ]
-        expect(buildCtrBenchmark(buckets)(3.4)).toBe(0.09)
+        expect(buildCtrBenchmark(buckets)(3.4)).toBe(0.12)
+    })
+
+    it('never lets a poor site-wide CTR lower the bar below the curve', () => {
+        // Position 9 in production: one page held half the bucket at 0.1%.
+        const buckets: CtrBucket[] = [
+            { positionBucket: 9, clicks: 8, impressions: 7000 },
+        ]
+        expect(buildCtrBenchmark(buckets)(9)).toBe(0.02)
     })
 
     it('falls back to the static curve for thin buckets', () => {
@@ -394,6 +514,39 @@ describe('computeRefreshScore', () => {
         ])
         // log10(1000) = 3, × 4 = 12.
         expect(score).toBe(12)
+    })
+
+    it('scores a CTR gap by the clicks it leaves on the table', () => {
+        const score = computeRefreshScore([
+            signal('ctr-gap', { clickGap: 99, impressions: 5000 }),
+        ])
+        // log10(100) = 2, × weight.
+        expect(score).toBe(2 * CTR_GAP_SCORE_WEIGHT)
+    })
+
+    it('derives the click gap for signals recorded before the metric existed', () => {
+        const score = computeRefreshScore([
+            signal('ctr-gap', {
+                impressions: 1000,
+                expectedCtr: 0.1,
+                ctr: 0.001,
+            }),
+        ])
+        // 1000 × (0.1 − 0.001) = 99 → log10(100) × weight.
+        expect(score).toBe(2 * CTR_GAP_SCORE_WEIGHT)
+    })
+
+    it('ranks a big snippet gap above a small page that slipped a few spots', () => {
+        const bigGap = computeRefreshScore([
+            signal('ctr-gap', { clickGap: 380, impressions: 20000 }),
+        ])
+        const smallDrop = computeRefreshScore([
+            signal('position-drop', {
+                impressions: 274,
+                driftAdjustedDrop: 4,
+            }),
+        ])
+        expect(bigGap).toBeGreaterThan(smallDrop)
     })
 
     it('clamps a negative drop to zero contribution', () => {

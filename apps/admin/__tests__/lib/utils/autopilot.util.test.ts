@@ -11,7 +11,9 @@ import {
     easternWeekday,
     isCadenceDue,
     isNearDuplicateTopic,
+    partitionGatedSeeds,
     topicSimilarity,
+    type GatedSeed,
 } from '@/lib/utils/autopilot.util'
 
 // Fixed reference times (UTC). 2026-08-11 is a Tuesday; 15:00 UTC = 11:00 ET.
@@ -129,5 +131,67 @@ describe('topicSimilarity / isNearDuplicateTopic', () => {
                 existing
             )
         ).toBe(false)
+    })
+})
+
+describe('partitionGatedSeeds (issue #221)', () => {
+    const seed = (
+        query: string,
+        verdict: GatedSeed['gate']['verdict'],
+        owningUrl?: string
+    ): GatedSeed => ({
+        query,
+        impressions: 1000,
+        clicks: 5,
+        ctr: 0.005,
+        position: 8,
+        source: 'opportunity',
+        gate: {
+            verdict,
+            reason: `${verdict} because test`,
+            owningUrl,
+            claimedQueries: [],
+            warnings: [],
+        },
+    })
+
+    it('routes owned demand to the refresh queue and keeps only unclaimed seeds', () => {
+        const result = partitionGatedSeeds([
+            seed('bbl smell', 'refresh', '/why-do-bbl-stink'),
+            seed('lipo foam', 'refresh', '/what-is-lipo-foam'),
+            seed('tummy tuck cost miami', 'reject', '/tummy-tuck-cost-miami'),
+            seed('bbl at 50 years old', 'new'),
+        ])
+
+        expect(result.fresh.map((s) => s.query)).toEqual([
+            'bbl at 50 years old',
+        ])
+        expect(result.refreshCandidates).toEqual([
+            {
+                title: 'bbl smell',
+                primaryKeyword: 'bbl smell',
+                owningUrl: '/why-do-bbl-stink',
+                reason: 'refresh because test',
+            },
+            {
+                title: 'lipo foam',
+                primaryKeyword: 'lipo foam',
+                owningUrl: '/what-is-lipo-foam',
+                reason: 'refresh because test',
+            },
+        ])
+        expect(result.rejected).toBe(1)
+    })
+
+    it('hands the model plain seeds without the gate decoration', () => {
+        const [fresh] = partitionGatedSeeds([seed('bbl at 50', 'new')]).fresh
+        expect(fresh).toEqual({
+            query: 'bbl at 50',
+            impressions: 1000,
+            clicks: 5,
+            ctr: 0.005,
+            position: 8,
+            source: 'opportunity',
+        })
     })
 })

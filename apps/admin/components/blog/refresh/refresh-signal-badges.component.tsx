@@ -25,8 +25,14 @@ function describeSignal(signal: RefreshSignal): string {
     switch (signal.source) {
         case 'position-drop':
             return `−${metrics.driftAdjustedDrop} spots over 28d (${Number(metrics.impressions).toLocaleString()} impressions, ${metrics.windowStart} → ${metrics.windowEnd})`
-        case 'ctr-gap':
-            return `CTR ${(Number(metrics.ctr) * 100).toFixed(1)}% vs ${(Number(metrics.expectedCtr) * 100).toFixed(1)}% expected at position ${metrics.position}`
+        case 'ctr-gap': {
+            const clickGap = Number(metrics.clickGap) || 0
+            const gap =
+                clickGap > 0
+                    ? ` — ≈${clickGap.toLocaleString()} clicks/month left on the table`
+                    : ''
+            return `CTR ${(Number(metrics.ctr) * 100).toFixed(1)}% vs ${(Number(metrics.expectedCtr) * 100).toFixed(1)}% expected at position ${metrics.position}${gap}`
+        }
         case 'stale-age':
             return `${metrics.ageMonths} months since the last touch`
         case 'cannibalization':

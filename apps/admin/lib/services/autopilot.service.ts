@@ -23,7 +23,17 @@
  *
  * @module @/lib/services/autopilot.service
  */
-import { and, count, desc, eq, inArray, isNull, or } from 'drizzle-orm'
+import {
+    and,
+    count,
+    desc,
+    eq,
+    gte,
+    inArray,
+    isNotNull,
+    isNull,
+    or,
+} from 'drizzle-orm'
 import { getRun, start } from 'workflow/api'
 
 import { db } from '@workspace/db/client'
@@ -41,7 +51,11 @@ import {
     getBlogAiConfig,
     type BlogAiConfig,
 } from '@/lib/queries/blog-ai-config.query'
-import { isCadenceDue, isNearDuplicateTopic } from '@/lib/utils/autopilot.util'
+import {
+    isCadenceDue,
+    isNearDuplicateTopic,
+    partitionGatedSeeds,
+} from '@/lib/utils/autopilot.util'
 import {
     evaluateTopicCandidates,
     type GatedTopic,
@@ -317,6 +331,40 @@ async function getIdeaTitlesForDedupe(): Promise<
     }))
 }
 
+/** How far back gate `refresh` verdicts count as "already proposed". */
+const REFRESH_VERDICT_MEMORY_DAYS = 14
+
+/**
+ * Titles the ownership gate has recently judged `refresh` (recorded on
+ * ideation runs). Fed back to the model as topics to avoid, so a verdict
+ * that never became an idea row still isn't re-proposed tomorrow (#221).
+ */
+async function getRecentRefreshVerdictTitles(
+    now: Date = new Date()
+): Promise<string[]> {
+    const since = new Date(
+        now.getTime() - REFRESH_VERDICT_MEMORY_DAYS * 24 * 60 * 60 * 1000
+    )
+    const rows = await db
+        .select({ refreshCandidates: autopilotRun.refreshCandidates })
+        .from(autopilotRun)
+        .where(
+            and(
+                eq(autopilotRun.kind, 'ideation'),
+                gte(autopilotRun.startedAt, since),
+                isNotNull(autopilotRun.refreshCandidates)
+            )
+        )
+
+    const titles = new Set<string>()
+    for (const row of rows) {
+        for (const candidate of row.refreshCandidates ?? []) {
+            titles.add(candidate.title)
+        }
+    }
+    return [...titles]
+}
+
 // ============================================
 // Topic sourcing (shared by ideation job and full-mode content run)
 // ============================================
@@ -344,10 +392,30 @@ export async function sourceGatedTopicCandidates(
 ): Promise<TopicCandidateResult> {
     const existingIdeas = await getIdeaTitlesForDedupe()
 
+    // Gate the demand seeds BEFORE the model sees them (#221). A query the
+    // site already ranks for with a blog post can only ever come back as a
+    // `refresh` verdict — seeding it as "write something new" is how
+    // ideation re-proposed the same six topics every day. Owned queries go
+    // straight to the refresh queue; money-page queries are dropped.
     let gscSeeds: GscTopicSeed[] | undefined
+    const seedRefreshCandidates: RefreshCandidate[] = []
     try {
         const seeds = await getGscTopicSeeds()
-        gscSeeds = seeds.length > 0 ? seeds : undefined
+        const gatedSeeds = await evaluateTopicCandidates(
+            seeds.map((seed) => ({
+                ...seed,
+                title: seed.query,
+                primaryKeyword: seed.query,
+            }))
+        )
+        const partitioned = partitionGatedSeeds(gatedSeeds)
+        seedRefreshCandidates.push(...partitioned.refreshCandidates)
+        gscSeeds = partitioned.fresh.length > 0 ? partitioned.fresh : undefined
+        if (seeds.length > 0) {
+            console.log(
+                `[Autopilot] Seeds gated: ${partitioned.fresh.length} new, ${partitioned.refreshCandidates.length} refresh, ${partitioned.rejected} rejected`
+            )
+        }
     } catch (error) {
         console.warn(
             '[Autopilot] GSC seeds unavailable, falling back to model ideation:',
@@ -355,23 +423,38 @@ export async function sourceGatedTopicCandidates(
         )
     }
 
+    // Everything the model must not propose again: live ideas, the seeds
+    // just routed to the refresh queue, and the refresh verdicts of the
+    // last two weeks of runs.
+    const recentRefreshTitles = await getRecentRefreshVerdictTitles()
+    const existingTopics = [
+        ...new Set([
+            ...existingIdeas.map((idea) => idea.title),
+            ...seedRefreshCandidates.map((candidate) => candidate.title),
+            ...recentRefreshTitles,
+        ]),
+    ]
+
     const result = await generateBlogTopics({
         gscSeeds,
-        existingTopics: existingIdeas.map((idea) => idea.title),
+        existingTopics,
         modelId: config.ideationModelId,
         reasoningEffort: config.ideationEffort,
     })
 
     const gated = await evaluateTopicCandidates(result.topics)
 
-    const refreshCandidates: RefreshCandidate[] = gated
-        .filter((topic) => topic.gate.verdict === 'refresh')
-        .map((topic) => ({
-            title: topic.title,
-            primaryKeyword: topic.primaryKeyword ?? undefined,
-            owningUrl: topic.gate.owningUrl,
-            reason: topic.gate.reason,
-        }))
+    const refreshCandidates: RefreshCandidate[] = [
+        ...seedRefreshCandidates,
+        ...gated
+            .filter((topic) => topic.gate.verdict === 'refresh')
+            .map((topic) => ({
+                title: topic.title,
+                primaryKeyword: topic.primaryKeyword ?? undefined,
+                owningUrl: topic.gate.owningUrl,
+                reason: topic.gate.reason,
+            })),
+    ]
 
     const fresh = gated
         .filter((topic) => topic.gate.verdict === 'new')
