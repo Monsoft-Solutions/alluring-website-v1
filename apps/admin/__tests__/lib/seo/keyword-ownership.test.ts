@@ -21,11 +21,12 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (156 posts as of seed)', () => {
+    it('contains every published post exactly once (154 posts as of seed)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
-        expect(liveBlog.length).toBe(156)
+        // 156 at seed, less the two BBL recovery posts retired in #229.
+        expect(liveBlog.length).toBe(154)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -72,7 +73,9 @@ describe('resolveQueryOwner', () => {
     it('follows duplicateOf to the canonical cluster owner', () => {
         const result = resolveQueryOwner('bbl recovery mistakes miami')
         expect(result?.owner.slug).toBe('bbl-recovery-mistakes-miami')
-        expect(result?.canonicalOwner.url).toBe('/blog/bbl-recovery-time-miami')
+        expect(result?.canonicalOwner.url).toBe(
+            '/blog/miami-bbl-recovery-guide'
+        )
     })
 
     it('gives money pages precedence over blog posts on shared queries', () => {

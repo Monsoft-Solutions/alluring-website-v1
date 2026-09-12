@@ -1,0 +1,2209 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Alluring Search Console Audit</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&family=Geist+Mono:wght@400;500&display=swap"
+        />
+        <style>
+            :root {
+                --paper: #faf8f4;
+                --panel: #f2eee6;
+                --ink: #1c1917;
+                --muted: #6f685f;
+                --line: #e3dcd0;
+                --line-strong: #cfc5b4;
+                --accent: #b07f18;
+                --accent-ink: #8a6413;
+                --accent-soft: #f3e9cd;
+                --critical: #a83a32;
+                --critical-soft: #f6e3e0;
+                --warn: #a8680c;
+                --warn-soft: #f7ebd2;
+                --good: #2f7a5a;
+                --good-soft: #dfeee6;
+                --series: #b07f18;
+                --area: rgba(176, 127, 24, 0.12);
+                --code-bg: #efeae0;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root:not([data-theme='light']) {
+                    --paper: #16140f;
+                    --panel: #1f1b15;
+                    --ink: #ede7db;
+                    --muted: #a69d8e;
+                    --line: #2e2921;
+                    --line-strong: #463e31;
+                    --accent: #b8943a;
+                    --accent-ink: #d8b65a;
+                    --accent-soft: #33290f;
+                    --critical: #e2837a;
+                    --critical-soft: #3a1e1b;
+                    --warn: #dfa244;
+                    --warn-soft: #3a2c12;
+                    --good: #75c39a;
+                    --good-soft: #173125;
+                    --series: #a8862f;
+                    --area: rgba(168, 134, 47, 0.18);
+                    --code-bg: #252017;
+                }
+            }
+            :root[data-theme='dark'] {
+                --paper: #16140f;
+                --panel: #1f1b15;
+                --ink: #ede7db;
+                --muted: #a69d8e;
+                --line: #2e2921;
+                --line-strong: #463e31;
+                --accent: #b8943a;
+                --accent-ink: #d8b65a;
+                --accent-soft: #33290f;
+                --critical: #e2837a;
+                --critical-soft: #3a1e1b;
+                --warn: #dfa244;
+                --warn-soft: #3a2c12;
+                --good: #75c39a;
+                --good-soft: #173125;
+                --series: #a8862f;
+                --area: rgba(168, 134, 47, 0.18);
+                --code-bg: #252017;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--paper);
+                color: var(--ink);
+                font-family: Lato, 'Helvetica Neue', Arial, sans-serif;
+                font-size: 16.5px;
+                line-height: 1.6;
+                padding-inline: 20px;
+                padding-block: 40px 80px;
+                -webkit-font-smoothing: antialiased;
+            }
+            .wrap {
+                max-width: 960px;
+                margin: 0 auto;
+            }
+            h1,
+            h2,
+            h3 {
+                font-family:
+                    'Playfair Display', Georgia, 'Times New Roman', serif;
+                font-weight: 600;
+                line-height: 1.15;
+                text-wrap: balance;
+                margin: 0;
+            }
+            h1 {
+                font-size: clamp(2rem, 4.5vw, 3rem);
+                margin: 0.35em 0 0.5em;
+            }
+            h2 {
+                font-size: 1.7rem;
+                margin: 2.6em 0 0.6em;
+                padding-top: 0.6em;
+                border-top: 1px solid var(--line);
+            }
+            h3 {
+                font-size: 1.2rem;
+                margin: 1.6em 0 0.3em;
+            }
+            p {
+                max-width: 68ch;
+                margin: 0 0 1em;
+            }
+            .eyebrow {
+                font-family:
+                    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+                font-size: 0.72rem;
+                letter-spacing: 0.09em;
+                text-transform: uppercase;
+                color: var(--muted);
+            }
+            .lede {
+                font-size: 1.15rem;
+                max-width: 62ch;
+            }
+            code {
+                font-family:
+                    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+                font-size: 0.82em;
+                background: var(--code-bg);
+                padding: 0.1em 0.35em;
+                border-radius: 3px;
+                word-break: break-all;
+            }
+            strong {
+                font-weight: 700;
+            }
+            .tiles {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+                margin: 1.6em 0 0;
+            }
+            .tile {
+                border-top: 2px solid var(--accent);
+                padding-top: 12px;
+            }
+            .tile .v {
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-size: 1.9rem;
+                font-weight: 500;
+                letter-spacing: -0.02em;
+                line-height: 1.1;
+                font-variant-numeric: tabular-nums;
+            }
+            .tile .l {
+                font-size: 0.86rem;
+                color: var(--muted);
+                margin-top: 4px;
+            }
+            .tile .d {
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-size: 0.8rem;
+                margin-top: 6px;
+                color: var(--muted);
+            }
+            .tile .d.down {
+                color: var(--critical);
+            }
+            .tw {
+                overflow-x: auto;
+                margin: 0.8em 0 1.2em;
+                border: 1px solid var(--line);
+                border-radius: 6px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 0.9rem;
+                min-width: 520px;
+            }
+            th,
+            td {
+                padding: 8px 12px;
+                border-bottom: 1px solid var(--line);
+                text-align: left;
+                vertical-align: top;
+            }
+            th {
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-size: 0.7rem;
+                letter-spacing: 0.07em;
+                text-transform: uppercase;
+                color: var(--muted);
+                font-weight: 500;
+                background: var(--panel);
+            }
+            tbody tr:last-child td {
+                border-bottom: 0;
+            }
+            td.num,
+            th.num {
+                text-align: right;
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-variant-numeric: tabular-nums;
+                white-space: nowrap;
+            }
+            .two {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            .two h3 {
+                margin-top: 0.6em;
+            }
+            figure {
+                margin: 1.2em 0 0.4em;
+                position: relative;
+            }
+            figcaption {
+                font-size: 0.86rem;
+                color: var(--muted);
+                margin-top: 6px;
+                max-width: 68ch;
+            }
+            .chart {
+                width: 100%;
+                height: auto;
+                display: block;
+                font-family: 'Geist Mono', ui-monospace, monospace;
+            }
+            .chart .grid {
+                stroke: var(--line);
+                stroke-width: 1;
+            }
+            .chart .tick {
+                fill: var(--muted);
+                font-size: 11px;
+            }
+            .chart .line {
+                fill: none;
+                stroke: var(--series);
+                stroke-width: 2;
+                stroke-linejoin: round;
+            }
+            .chart .area {
+                fill: var(--area);
+            }
+            .chart .marker {
+                stroke: var(--line-strong);
+                stroke-dasharray: 3 4;
+            }
+            .chart .end {
+                fill: var(--series);
+                stroke: var(--paper);
+                stroke-width: 2;
+            }
+            .chart .xhair {
+                stroke: var(--line-strong);
+            }
+            .chart .xdot {
+                fill: var(--series);
+                stroke: var(--paper);
+                stroke-width: 2;
+            }
+            .tip {
+                position: absolute;
+                pointer-events: none;
+                background: var(--ink);
+                color: var(--paper);
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-size: 0.75rem;
+                padding: 6px 8px;
+                border-radius: 4px;
+                white-space: nowrap;
+                transform: translate(-50%, -120%);
+            }
+            details {
+                margin: 0.4em 0 1em;
+                font-size: 0.9rem;
+            }
+            summary {
+                cursor: pointer;
+                color: var(--muted);
+            }
+            .cluster {
+                margin: 1.8em 0;
+                padding: 0 0 1.4em;
+                border-bottom: 1px solid var(--line);
+            }
+            .cluster:last-child {
+                border-bottom: 0;
+            }
+            .cluster .sub {
+                color: var(--muted);
+                margin: 0.1em 0 0.6em;
+                font-size: 0.95rem;
+            }
+            .cluster .fix {
+                padding-left: 14px;
+                border-left: 3px solid var(--accent);
+            }
+            .chip {
+                display: inline-block;
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-size: 0.68rem;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                padding: 2px 8px;
+                border-radius: 999px;
+                vertical-align: middle;
+                margin-right: 6px;
+            }
+            .chip.critical {
+                background: var(--critical-soft);
+                color: var(--critical);
+            }
+            .chip.warn {
+                background: var(--warn-soft);
+                color: var(--warn);
+            }
+            .chip.good {
+                background: var(--good-soft);
+                color: var(--good);
+            }
+            .chip.code {
+                background: var(--panel);
+                color: var(--muted);
+            }
+            .findings {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .findings li {
+                padding: 14px 0;
+                border-bottom: 1px solid var(--line);
+                max-width: none;
+            }
+            .findings li:last-child {
+                border-bottom: 0;
+            }
+            .findings p {
+                margin: 0.3em 0 0;
+            }
+            .phases {
+                counter-reset: ph;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .phases > li {
+                display: grid;
+                grid-template-columns: 64px 1fr;
+                gap: 12px;
+                padding: 20px 0;
+                border-bottom: 1px solid var(--line);
+            }
+            .phases > li::before {
+                counter-increment: ph;
+                content: '0' counter(ph);
+                font-family: 'Playfair Display', Georgia, serif;
+                font-size: 2.2rem;
+                line-height: 1;
+                color: var(--accent-ink);
+            }
+            .phases h3 {
+                margin: 0 0 0.2em;
+            }
+            .phases .when {
+                font-family: 'Geist Mono', ui-monospace, monospace;
+                font-size: 0.75rem;
+                color: var(--muted);
+                letter-spacing: 0.05em;
+            }
+            .phases ul {
+                padding-left: 18px;
+                margin: 0.6em 0 0;
+            }
+            .phases li li {
+                margin: 0.35em 0;
+            }
+            .aside {
+                background: var(--panel);
+                border-left: 3px solid var(--accent);
+                padding: 14px 18px;
+                margin: 1.2em 0;
+                border-radius: 0 6px 6px 0;
+            }
+            .aside p:last-child {
+                margin-bottom: 0;
+            }
+            .decisions li {
+                margin: 0.5em 0;
+            }
+            footer {
+                margin-top: 4em;
+                padding-top: 1.2em;
+                border-top: 1px solid var(--line);
+                font-size: 0.86rem;
+                color: var(--muted);
+            }
+            footer p {
+                max-width: none;
+            }
+            a {
+                color: var(--accent-ink);
+            }
+            :focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: 2px;
+            }
+            @media (max-width: 760px) {
+                .tiles {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .two {
+                    grid-template-columns: 1fr;
+                }
+                .phases > li {
+                    grid-template-columns: 44px 1fr;
+                }
+                .phases > li::before {
+                    font-size: 1.6rem;
+                }
+            }
+            @media (max-width: 420px) {
+                .tiles {
+                    grid-template-columns: 1fr;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    transition: none !important;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <header>
+                <div class="eyebrow">
+                    Alluring Plastic Surgery · Google Search Console · Aug 11 –
+                    Sep 8, 2026 · data lags three days
+                </div>
+                <h1>Alluring Search Console Audit</h1>
+                <p class="lede">
+                    Organic search brings the site about 2,400 clicks a month,
+                    and nearly all of them land on two-year-old recovery
+                    questions. The nine procedure pages that book consultations
+                    get nine clicks a month between them. Traffic is drifting
+                    down, the blog has been writing the same articles more than
+                    once, and the procedure pages are being outranked by the
+                    practice's own posts on the queries that matter most.
+                </p>
+                <div class="tiles">
+                    <div class="tile">
+                        <div class="v">2,431</div>
+                        <div class="l">Clicks, 28 days</div>
+                        <div class="d down">-12% vs prior 28 days</div>
+                    </div>
+                    <div class="tile">
+                        <div class="v">260,598</div>
+                        <div class="l">Impressions, 28 days</div>
+                        <div class="d down">-10% vs prior 28 days</div>
+                    </div>
+                    <div class="tile">
+                        <div class="v">0.93%</div>
+                        <div class="l">Click-through rate</div>
+                        <div class="d">avg position 10.1</div>
+                    </div>
+                    <div class="tile">
+                        <div class="v">9</div>
+                        <div class="l">Clicks on all 9 procedure pages</div>
+                        <div class="d down">
+                            12,519 impressions · avg position 25–65
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <h2>The last 90 days</h2>
+            <p>
+                Impressions ran at 9,000–10,500 a day through July, climbed to
+                11,000–12,500 in mid-August, then stepped down around August 20
+                and have settled at 7,200–8,000. Clicks followed, from roughly
+                95 a day to 75. Average position barely moved, so this is demand
+                and result-page layout, not a ranking penalty: the pages are
+                still shown, in the same slots, less often and with fewer clicks
+                per impression.
+            </p>
+            <figure>
+                <svg
+                    viewBox="0 0 900 300"
+                    class="chart"
+                    role="img"
+                    aria-label="Daily search impressions, June 10 to September 8, 2026"
+                >
+                    <line x1="56" x2="876" y1="260.0" y2="260.0" class="grid" />
+                    <text x="48" y="264.0" class="tick" text-anchor="end">
+                        0k
+                    </text>
+                    <line x1="56" x2="876" y1="191.4" y2="191.4" class="grid" />
+                    <text x="48" y="195.4" class="tick" text-anchor="end">
+                        4k
+                    </text>
+                    <line x1="56" x2="876" y1="122.9" y2="122.9" class="grid" />
+                    <text x="48" y="126.9" class="tick" text-anchor="end">
+                        8k
+                    </text>
+                    <line x1="56" x2="876" y1="54.3" y2="54.3" class="grid" />
+                    <text x="48" y="58.3" class="tick" text-anchor="end">
+                        12k
+                    </text>
+                    <text x="56.0" y="286" class="tick" text-anchor="middle">
+                        Jun 10
+                    </text>
+                    <text x="247.3" y="286" class="tick" text-anchor="middle">
+                        Jul 1
+                    </text>
+                    <text x="529.8" y="286" class="tick" text-anchor="middle">
+                        Aug 1
+                    </text>
+                    <text x="812.2" y="286" class="tick" text-anchor="middle">
+                        Sep 1
+                    </text>
+                    <path
+                        d="M56.0,260.0 L56.0,86.1 L65.1,104.8 L74.2,106.7 L83.3,102.6 L92.4,97.1 L101.6,93.5 L110.7,86.5 L119.8,85.8 L128.9,87.9 L138.0,91.2 L147.1,94.1 L156.2,92.6 L165.3,82.0 L174.4,83.3 L183.6,81.8 L192.7,87.1 L201.8,85.5 L210.9,81.0 L220.0,80.2 L229.1,83.9 L238.2,92.6 L247.3,92.7 L256.4,89.2 L265.6,108.8 L274.7,115.1 L283.8,93.3 L292.9,88.1 L302.0,80.7 L311.1,85.2 L320.2,84.5 L329.3,91.7 L338.4,91.1 L347.6,86.5 L356.7,89.4 L365.8,77.5 L374.9,87.6 L384.0,95.7 L393.1,96.0 L402.2,104.6 L411.3,90.9 L420.4,74.8 L429.6,48.6 L438.7,63.3 L447.8,87.6 L456.9,89.2 L466.0,97.6 L475.1,89.5 L484.2,73.2 L493.3,84.8 L502.4,86.2 L511.6,88.9 L520.7,95.5 L529.8,106.4 L538.9,90.8 L548.0,33.1 L557.1,94.8 L566.2,87.9 L575.3,77.4 L584.4,89.3 L593.6,70.8 L602.7,64.7 L611.8,55.5 L620.9,67.5 L630.0,61.7 L639.1,44.8 L648.2,70.5 L657.3,90.3 L666.4,80.4 L675.6,70.8 L684.7,84.2 L693.8,91.6 L702.9,106.7 L712.0,124.2 L721.1,127.3 L730.2,105.9 L739.3,114.6 L748.4,116.0 L757.6,100.5 L766.7,112.0 L775.8,113.7 L784.9,119.1 L794.0,113.3 L803.1,116.8 L812.2,122.8 L821.3,120.6 L830.4,134.1 L839.6,136.1 L848.7,137.0 L857.8,129.9 L866.9,125.4 L876.0,134.9 L876.0,260.0 Z"
+                        class="area"
+                    />
+                    <polyline
+                        points="56.0,86.1 65.1,104.8 74.2,106.7 83.3,102.6 92.4,97.1 101.6,93.5 110.7,86.5 119.8,85.8 128.9,87.9 138.0,91.2 147.1,94.1 156.2,92.6 165.3,82.0 174.4,83.3 183.6,81.8 192.7,87.1 201.8,85.5 210.9,81.0 220.0,80.2 229.1,83.9 238.2,92.6 247.3,92.7 256.4,89.2 265.6,108.8 274.7,115.1 283.8,93.3 292.9,88.1 302.0,80.7 311.1,85.2 320.2,84.5 329.3,91.7 338.4,91.1 347.6,86.5 356.7,89.4 365.8,77.5 374.9,87.6 384.0,95.7 393.1,96.0 402.2,104.6 411.3,90.9 420.4,74.8 429.6,48.6 438.7,63.3 447.8,87.6 456.9,89.2 466.0,97.6 475.1,89.5 484.2,73.2 493.3,84.8 502.4,86.2 511.6,88.9 520.7,95.5 529.8,106.4 538.9,90.8 548.0,33.1 557.1,94.8 566.2,87.9 575.3,77.4 584.4,89.3 593.6,70.8 602.7,64.7 611.8,55.5 620.9,67.5 630.0,61.7 639.1,44.8 648.2,70.5 657.3,90.3 666.4,80.4 675.6,70.8 684.7,84.2 693.8,91.6 702.9,106.7 712.0,124.2 721.1,127.3 730.2,105.9 739.3,114.6 748.4,116.0 757.6,100.5 766.7,112.0 775.8,113.7 784.9,119.1 794.0,113.3 803.1,116.8 812.2,122.8 821.3,120.6 830.4,134.1 839.6,136.1 848.7,137.0 857.8,129.9 866.9,125.4 876.0,134.9"
+                        class="line"
+                    />
+                    <line
+                        x1="702.9"
+                        x2="702.9"
+                        y1="20"
+                        y2="260"
+                        class="marker"
+                    />
+                    <text x="708.9" y="32" class="tick">
+                        Aug 20 · step down
+                    </text>
+                    <circle cx="876.0" cy="134.9" r="4" class="end" />
+                    <text x="874.0" y="156.9" class="tick" text-anchor="end">
+                        7,298 on Sep 8
+                    </text>
+                    <line
+                        class="xhair"
+                        x1="0"
+                        x2="0"
+                        y1="20"
+                        y2="260"
+                        style="opacity: 0"
+                    />
+                    <circle class="xdot" r="4" style="opacity: 0" />
+                    <rect
+                        x="56"
+                        y="20"
+                        width="820"
+                        height="240"
+                        fill="transparent"
+                        class="hit"
+                    />
+                </svg>
+                <div class="tip" id="tip" hidden></div>
+                <figcaption>
+                    Daily search impressions, June 10 to September 8, 2026.
+                    Hover for the day's figures. The August 20 step coincides
+                    with no deploy of the public site; the drop is concentrated
+                    in the older recovery posts below.
+                </figcaption>
+            </figure>
+            <details>
+                <summary>Daily figures as a table</summary>
+                <div class="tw">
+                    <table id="trendTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th class="num">Impressions</th>
+                                <th class="num">Clicks</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </details>
+            <div class="two">
+                <div>
+                    <h3>Biggest impression losses</h3>
+                    <p class="eyebrow">Jul 14 – Aug 10 vs Aug 11 – Sep 8</p>
+                    <div class="tw">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Page</th>
+                                    <th class="num">Before</th>
+                                    <th class="num">After</th>
+                                    <th class="num">Δ impr.</th>
+                                    <th class="num">Δ clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>/why-do-bbl-stink</code></td>
+                                    <td class="num">40,266</td>
+                                    <td class="num">29,769</td>
+                                    <td class="num">-10,497</td>
+                                    <td class="num">-27</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/how-to-reduce-pubic-swelling-after-tummy-tuck</code
+                                        >
+                                    </td>
+                                    <td class="num">15,230</td>
+                                    <td class="num">8,218</td>
+                                    <td class="num">-7,012</td>
+                                    <td class="num">-18</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/what-is-more-painful-bbl-or-tummy-tuck</code
+                                        >
+                                    </td>
+                                    <td class="num">7,283</td>
+                                    <td class="num">3,653</td>
+                                    <td class="num">-3,630</td>
+                                    <td class="num">-27</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>/what-age-can-you-get-a-bbl</code>
+                                    </td>
+                                    <td class="num">8,496</td>
+                                    <td class="num">5,726</td>
+                                    <td class="num">-2,770</td>
+                                    <td class="num">-5</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/what-to-wear-to-breast-reduction-surgery</code
+                                        >
+                                    </td>
+                                    <td class="num">4,758</td>
+                                    <td class="num">2,364</td>
+                                    <td class="num">-2,394</td>
+                                    <td class="num">-7</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/blog/breast-implant-size-guide</code
+                                        >
+                                    </td>
+                                    <td class="num">15,788</td>
+                                    <td class="num">13,480</td>
+                                    <td class="num">-2,308</td>
+                                    <td class="num">-16</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/weeks-post-op-breast-augmentation-what-to-expect</code
+                                        >
+                                    </td>
+                                    <td class="num">4,737</td>
+                                    <td class="num">2,470</td>
+                                    <td class="num">-2,267</td>
+                                    <td class="num">-31</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/when-can-i-sleep-on-my-side-after-breast-reduction</code
+                                        >
+                                    </td>
+                                    <td class="num">6,645</td>
+                                    <td class="num">4,421</td>
+                                    <td class="num">-2,224</td>
+                                    <td class="num">-20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <h3>Biggest gains</h3>
+                    <p class="eyebrow">Same windows</p>
+                    <div class="tw">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Page</th>
+                                    <th class="num">Before</th>
+                                    <th class="num">After</th>
+                                    <th class="num">Δ impr.</th>
+                                    <th class="num">Δ clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code>/blog/flying-after-bbl-tips</code>
+                                    </td>
+                                    <td class="num">358</td>
+                                    <td class="num">3,422</td>
+                                    <td class="num">+3,064</td>
+                                    <td class="num">+37</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/blog/tummy-tuck-mommy-makeover-miami</code
+                                        >
+                                    </td>
+                                    <td class="num">3,729</td>
+                                    <td class="num">6,744</td>
+                                    <td class="num">+3,015</td>
+                                    <td class="num">+2</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/blog/breast-implants-drop-fluff-timeline</code
+                                        >
+                                    </td>
+                                    <td class="num">2,159</td>
+                                    <td class="num">4,170</td>
+                                    <td class="num">+2,011</td>
+                                    <td class="num">+34</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/blog/swelling-and-asymmetry-after-breast-augmentation-faq</code
+                                        >
+                                    </td>
+                                    <td class="num">0</td>
+                                    <td class="num">1,845</td>
+                                    <td class="num">+1,845</td>
+                                    <td class="num">+25</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/when-can-i-sleep-without-a-bra-after-breast-augmentation</code
+                                        >
+                                    </td>
+                                    <td class="num">3,908</td>
+                                    <td class="num">5,584</td>
+                                    <td class="num">+1,676</td>
+                                    <td class="num">-5</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >/blog/miami-bbl-recovery-guide</code
+                                        >
+                                    </td>
+                                    <td class="num">0</td>
+                                    <td class="num">1,546</td>
+                                    <td class="num">+1,546</td>
+                                    <td class="num">+4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <p>
+                Site-wide the two windows compare as 306,031 → 274,627
+                impressions and 2,786 → 2,448 clicks. The losers are the 2025
+                question posts whose positions held at 7–9 while impressions
+                fell by a third. That pattern, stable rank and falling
+                impressions and clicks, is what AI Overviews and “People also
+                ask” expansion look like from inside Search Console. The gainers
+                are the newer posts, and two of them are the ones that now
+                compete with older pages (see the map below).
+            </p>
+
+            <h2>Where the clicks come from</h2>
+            <div class="tw">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Page group</th>
+                            <th class="num">Pages shown</th>
+                            <th class="num">Clicks</th>
+                            <th class="num">Share</th>
+                            <th class="num">Impressions</th>
+                            <th class="num">CTR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Question posts published 2025 (root URLs)</td>
+                            <td class="num">47</td>
+                            <td class="num">1,523</td>
+                            <td class="num">62%</td>
+                            <td class="num">174,017</td>
+                            <td class="num">0.88%</td>
+                        </tr>
+                        <tr>
+                            <td>Blog posts published 2026 (/blog/…)</td>
+                            <td class="num">96</td>
+                            <td class="num">482</td>
+                            <td class="num">20%</td>
+                            <td class="num">71,171</td>
+                            <td class="num">0.68%</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Homepage (incl. Google Business Profile link)
+                            </td>
+                            <td class="num">1</td>
+                            <td class="num">203</td>
+                            <td class="num">8%</td>
+                            <td class="num">3,052</td>
+                            <td class="num">6.65%</td>
+                        </tr>
+                        <tr>
+                            <td>Surgeon pages</td>
+                            <td class="num">2</td>
+                            <td class="num">139</td>
+                            <td class="num">6%</td>
+                            <td class="num">2,036</td>
+                            <td class="num">6.83%</td>
+                        </tr>
+                        <tr>
+                            <td>Procedure pages (9 + hub)</td>
+                            <td class="num">10</td>
+                            <td class="num">9</td>
+                            <td class="num">0%</td>
+                            <td class="num">13,124</td>
+                            <td class="num">0.07%</td>
+                        </tr>
+                        <tr>
+                            <td>Gallery &amp; Instagram</td>
+                            <td class="num">135</td>
+                            <td class="num">32</td>
+                            <td class="num">1%</td>
+                            <td class="num">3,555</td>
+                            <td class="num">0.90%</td>
+                        </tr>
+                        <tr>
+                            <td>Other static pages</td>
+                            <td class="num">40</td>
+                            <td class="num">60</td>
+                            <td class="num">2%</td>
+                            <td class="num">7,572</td>
+                            <td class="num">0.79%</td>
+                        </tr>
+                        <tr>
+                            <td>Blog listing &amp; categories</td>
+                            <td class="num">6</td>
+                            <td class="num">0</td>
+                            <td class="num">0%</td>
+                            <td class="num">100</td>
+                            <td class="num">0.00%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                Fifty question posts from 2025, living at root URLs like
+                <code>/how-to-reduce-pubic-swelling-after-tummy-tuck</code>,
+                carry the site. The 106 posts published in 2026 under
+                <code>/blog/</code> earn a fraction of that on twice the page
+                count. The homepage's clicks are almost entirely brand searches
+                and the Google Business Profile link. Procedure pages, the only
+                pages built to convert, are last.
+            </p>
+
+            <h2>The nine money pages are invisible</h2>
+            <p>
+                Every procedure page is indexed, crawled recently, linked from
+                the header, footer and homepage, and 2,000–4,500 words long with
+                cost sections, FAQs and schema. They still average position
+                54–65 for their own head terms. For the queries a Miami patient
+                actually types, the site's blog posts rank and the procedure
+                pages do not.
+            </p>
+            <div class="tw">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Procedure page</th>
+                            <th class="num">Impr.</th>
+                            <th class="num">Clicks</th>
+                            <th class="num">Avg pos.</th>
+                            <th>Head term measured</th>
+                            <th class="num">Pos.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/procedures/facelift-miami</code></td>
+                            <td class="num">2,704</td>
+                            <td class="num">1</td>
+                            <td class="num">63.1</td>
+                            <td>facelift miami</td>
+                            <td class="num">68.4</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code
+                                    >/procedures/brazilian-butt-lift-bbl-miami</code
+                                >
+                            </td>
+                            <td class="num">2,145</td>
+                            <td class="num">3</td>
+                            <td class="num">25.7</td>
+                            <td>bbl miami</td>
+                            <td class="num">45.8</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>/procedures/blepharoplasty-miami</code>
+                            </td>
+                            <td class="num">1,700</td>
+                            <td class="num">0</td>
+                            <td class="num">57.9</td>
+                            <td>blepharoplasty miami</td>
+                            <td class="num">58.8</td>
+                        </tr>
+                        <tr>
+                            <td><code>/procedures/liposuction-miami</code></td>
+                            <td class="num">1,335</td>
+                            <td class="num">0</td>
+                            <td class="num">60.3</td>
+                            <td>liposuction miami</td>
+                            <td class="num">63.7</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>/procedures/mommy-makeover-miami</code>
+                            </td>
+                            <td class="num">1,311</td>
+                            <td class="num">0</td>
+                            <td class="num">60.0</td>
+                            <td>mommy makeover miami</td>
+                            <td class="num">48.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>/procedures/tummy-tuck-miami</code></td>
+                            <td class="num">1,257</td>
+                            <td class="num">0</td>
+                            <td class="num">61.0</td>
+                            <td>tummy tuck miami</td>
+                            <td class="num">74.6</td>
+                        </tr>
+                        <tr>
+                            <td><code>/procedures/breast-lift-miami</code></td>
+                            <td class="num">713</td>
+                            <td class="num">1</td>
+                            <td class="num">65.1</td>
+                            <td>breast lift miami</td>
+                            <td class="num">63.7</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code
+                                    >/procedures/breast-augmentation-miami</code
+                                >
+                            </td>
+                            <td class="num">711</td>
+                            <td class="num">4</td>
+                            <td class="num">54.0</td>
+                            <td>breast augmentation cost in miami</td>
+                            <td class="num">32.3</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>/procedures/breast-reduction-miami</code>
+                            </td>
+                            <td class="num">643</td>
+                            <td class="num">0</td>
+                            <td class="num">60.5</td>
+                            <td>best breast reduction miami</td>
+                            <td class="num">40.4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                Three things on the pages themselves work against them. Every
+                one of the nine carries the same generated meta description,
+                “Get exceptional tummy tuck miami results with Miami's top
+                surgeons…”, with the procedure name dropped in lowercase. The
+                site tells two different price stories: the tummy tuck page says
+                from $3,500 and the mommy makeover page $7,000–$20,000, while
+                the blog post that outranks both says $8,000–$12,000 and
+                $15,000–$25,000. And the largest commercial query on the site,
+                “tummy tuck cost miami” with 3,322 impressions in 28 days, is
+                answered by a blog post about combining a tummy tuck with a
+                mommy makeover, at position 8, with one click.
+            </p>
+
+            <h2>Cannibalization map</h2>
+            <p>
+                Method: every query-by-page row for the 28 days (3,000+ rows),
+                grouped by query; a query is flagged when two or more of the
+                site's pages each hold at least 10% of its impressions.
+                Sixty-five non-brand queries with 7,162 impressions are split
+                that way. Grouped by topic they fall into eleven clusters. The
+                first four are commercial and cost the practice consultations;
+                the rest are informational and cost it rankings.
+            </p>
+            <article class="cluster">
+                <h3>Mommy makeover · Miami (commercial)</h3>
+                <p class="sub">procedure page vs two blog posts</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/procedures/mommy-makeover-miami</code
+                                    >
+                                </td>
+                                <td class="num">1,311</td>
+                                <td class="num">0</td>
+                                <td class="num">60–76</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/tummy-tuck-mommy-makeover-miami</code
+                                    >
+                                </td>
+                                <td class="num">6,744</td>
+                                <td class="num">12</td>
+                                <td class="num">8–27</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/affordable-plastic-surgery-miami</code
+                                    >
+                                </td>
+                                <td class="num">4,241</td>
+                                <td class="num">21</td>
+                                <td class="num">28–40</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “mommy makeover miami” 653
+                    impressions split 348 / 251; “mommy makeover cost miami”
+                    210; “mommy makeover miami price” 99 across all three;
+                    “miami mommy makeover” 91 split 46 / 45. Eight queries,
+                    about 1,700 impressions, 2 clicks. The blog post ranks
+                    (position 8 for cost queries) while the procedure page sits
+                    at 60+.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> The procedure page owns cost. Add a
+                    real “Mommy Makeover Cost in Miami” section with the same
+                    numbers the blog quotes, link to it from both posts with
+                    that anchor, and retitle the tummy-tuck-plus-mommy-makeover
+                    post to the combination decision it is actually about.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Tummy tuck cost · Miami (commercial)</h3>
+                <p class="sub">
+                    blog post holds the biggest commercial query on the site
+                </p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/tummy-tuck-mommy-makeover-miami</code
+                                    >
+                                </td>
+                                <td class="num">3,295</td>
+                                <td class="num">1</td>
+                                <td class="num">8.2</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>/procedures/tummy-tuck-miami</code>
+                                </td>
+                                <td class="num">14</td>
+                                <td class="num">0</td>
+                                <td class="num">88</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “tummy tuck cost miami” is the
+                    single largest non-brand query: 3,322 impressions in 28
+                    days, one click. The page Google shows is the combo blog
+                    post, whose title and snippet are not about tummy tuck cost,
+                    so CTR is 0.03%. It also quotes $8,000–$12,000 while the
+                    procedure page says from $3,500.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> Same fix as above, plus one price
+                    story site-wide. Until the procedure page moves, give the
+                    blog post a title and meta that answer the cost question
+                    directly so the 3,300 impressions stop going to waste.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>BBL · Miami (commercial)</h3>
+                <p class="sub">
+                    procedure page vs a landing page with the same targets vs
+                    two comparison posts
+                </p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/procedures/brazilian-butt-lift-bbl-miami</code
+                                    >
+                                </td>
+                                <td class="num">2,145</td>
+                                <td class="num">3</td>
+                                <td class="num">25.7</td>
+                            </tr>
+                            <tr>
+                                <td><code>/bbl-miami</code></td>
+                                <td class="num">309</td>
+                                <td class="num">0</td>
+                                <td class="num">31.7</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/bbl-vs-butt-implants-miami</code
+                                    >
+                                </td>
+                                <td class="num">609</td>
+                                <td class="num">2</td>
+                                <td class="num">36.5</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>/blog/liposuction-vs-bbl-miami</code>
+                                </td>
+                                <td class="num">921</td>
+                                <td class="num">0</td>
+                                <td class="num">10.1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “bbl miami” 311 impressions split
+                    202 / 72 / 29; “bbl consultation” 161 split between an old
+                    recovery post and the landing page; “bbl in miami”, “miami
+                    bbl”, “bbl surgery miami” all split. The landing page
+                    declares the exact same keywords as the procedure page in
+                    its own source comments.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> One BBL page. Redirect /bbl-miami to
+                    the procedure page unless a live ad campaign points at it
+                    (then noindex it). Comparison posts keep their “vs” intent
+                    and link to the procedure page.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Breast lift · Miami (commercial)</h3>
+                <p class="sub">procedure page vs blog</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code>/procedures/breast-lift-miami</code>
+                                </td>
+                                <td class="num">713</td>
+                                <td class="num">1</td>
+                                <td class="num">65.1</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/breast-lift-implants-miami</code
+                                    >
+                                </td>
+                                <td class="num">89</td>
+                                <td class="num">0</td>
+                                <td class="num">75.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “breast lift miami” 409
+                    impressions, 358 to the procedure page at 63.7 and 39 to the
+                    blog post at 94.7. “mastopexy miami” 109, also split.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> Low volume, easy fix: the blog post is
+                    about lift-with-implants; retitle it so it stops carrying
+                    the head term, link it to the procedure page.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>BBL recovery (informational)</h3>
+                <p class="sub">seven posts, three of them a timeline</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/exercises-after-bbl-timeline</code
+                                    >
+                                </td>
+                                <td class="num">4,989</td>
+                                <td class="num">41</td>
+                                <td class="num">6.7</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/bbl-compression-garment-timeline</code
+                                    >
+                                </td>
+                                <td class="num">2,474</td>
+                                <td class="num">22</td>
+                                <td class="num">6.5</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>/blog/miami-bbl-recovery-guide</code>
+                                </td>
+                                <td class="num">1,546</td>
+                                <td class="num">4</td>
+                                <td class="num">22.3</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>/how-long-to-recover-from-bbl</code>
+                                </td>
+                                <td class="num">1,220</td>
+                                <td class="num">5</td>
+                                <td class="num">29.4</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>/blog/bbl-recovery-time-miami</code>
+                                </td>
+                                <td class="num">461</td>
+                                <td class="num">4</td>
+                                <td class="num">11.0</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/bbl-miami-results-timeline</code
+                                    >
+                                </td>
+                                <td class="num">420</td>
+                                <td class="num">1</td>
+                                <td class="num">17.6</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/bbl-recovery-mistakes-miami</code
+                                    >
+                                </td>
+                                <td class="num">40</td>
+                                <td class="num">0</td>
+                                <td class="num">16.1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “bbl recovery” 323 impressions
+                    split 172 / 149, both around position 55–60. “bbl recovery
+                    timeline” 71 split 45 / 24. “awake bbl recovery” 187 split
+                    140 / 47. The exercise and garment posts are distinct
+                    intents and are fine; the other five are the same article
+                    five times.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> Keep exercises and garments. Merge the
+                    guide, recovery-time, results-timeline and mistakes posts
+                    into the root recovery post (or the strongest of them), with
+                    redirects.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Mommy makeover recovery (informational)</h3>
+                <p class="sub">three posts</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/mommy-makeover-recovery-exercises</code
+                                    >
+                                </td>
+                                <td class="num">2,593</td>
+                                <td class="num">37</td>
+                                <td class="num">7.4</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/mommy-makeover-recovery-signs</code
+                                    >
+                                </td>
+                                <td class="num">1,709</td>
+                                <td class="num">8</td>
+                                <td class="num">9.3</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/mommy-makeover-recovery-timeline-miami</code
+                                    >
+                                </td>
+                                <td class="num">660</td>
+                                <td class="num">1</td>
+                                <td class="num">14.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “mommy makeover checklist” 645
+                    impressions split 414 at 10.3 / 231 at 21.2. Neither page is
+                    titled “checklist”.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> Merge signs + timeline into one
+                    recovery timeline with a real checklist section; keep
+                    exercises.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Tummy tuck recovery (informational)</h3>
+                <p class="sub">five posts</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/exercises-after-tummy-tuck-miami</code
+                                    >
+                                </td>
+                                <td class="num">2,970</td>
+                                <td class="num">20</td>
+                                <td class="num">9.7</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>/how-long-to-recover-tummy-tuck</code>
+                                </td>
+                                <td class="num">1,551</td>
+                                <td class="num">0</td>
+                                <td class="num">60.2</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/tummy-tuck-recovery-time-miami</code
+                                    >
+                                </td>
+                                <td class="num">87</td>
+                                <td class="num">0</td>
+                                <td class="num">12.3</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/tummy-tuck-recovery-myths-miami-moms</code
+                                    >
+                                </td>
+                                <td class="num">16</td>
+                                <td class="num">0</td>
+                                <td class="num">13.9</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/tummy-tuck-recovery-ozempic-miami</code
+                                    >
+                                </td>
+                                <td class="num">13</td>
+                                <td class="num">0</td>
+                                <td class="num">16.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> The root “how long to recover”
+                    post gets 1,551 impressions at position 60 and zero clicks:
+                    it is being shown and ignored. Three thin /blog/ variants
+                    sit beside it.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> One tummy tuck recovery timeline.
+                    Merge recovery-time, myths and ozempic into the root post
+                    and rewrite it; keep exercises.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Breast augmentation exercise (informational)</h3>
+                <p class="sub">three posts</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/when-can-i-do-push-ups-after-breast-augmentation</code
+                                    >
+                                </td>
+                                <td class="num">2,150</td>
+                                <td class="num">28</td>
+                                <td class="num">7.3</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/when-can-you-work-out-after-breast-augmentation</code
+                                    >
+                                </td>
+                                <td class="num">504</td>
+                                <td class="num">1</td>
+                                <td class="num">8.2</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/breast-augmentation-recovery-exercises</code
+                                    >
+                                </td>
+                                <td class="num">309</td>
+                                <td class="num">0</td>
+                                <td class="num">11.4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> The work-out post was published
+                    Aug 11 by the pipeline next to two existing pages on the
+                    same question.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> Broaden the push-ups post to “work
+                    out” and merge the other two into it.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Liposuction recovery (informational)</h3>
+                <p class="sub">three posts</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/how-long-does-it-take-to-recover-from-chin-lipo</code
+                                    >
+                                </td>
+                                <td class="num">1,660</td>
+                                <td class="num">4</td>
+                                <td class="num">11.7</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/liposuction-recovery-ozempic-miami</code
+                                    >
+                                </td>
+                                <td class="num">343</td>
+                                <td class="num">1</td>
+                                <td class="num">12.8</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/liposuction-recovery-time-miami</code
+                                    >
+                                </td>
+                                <td class="num">179</td>
+                                <td class="num">0</td>
+                                <td class="num">14.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “liposuction recovery timeline”
+                    137 impressions split between a swelling post at 9.2 and the
+                    chin-lipo post at 25.2; the actual recovery-time post is not
+                    the one shown.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> One liposuction recovery timeline that
+                    the swelling, bruising and chin-lipo posts link to.
+                </p>
+            </article>
+            <article class="cluster">
+                <h3>Board-certified surgeon · Miami</h3>
+                <p class="sub">three posts on one topic</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/board-certified-plastic-surgeon-miami</code
+                                    >
+                                </td>
+                                <td class="num">756</td>
+                                <td class="num">0</td>
+                                <td class="num">12.8</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/best-board-certified-plastic-surgeons-miami</code
+                                    >
+                                </td>
+                                <td class="num">491</td>
+                                <td class="num">2</td>
+                                <td class="num">14.7</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code
+                                        >/blog/choose-plastic-surgeons-miami</code
+                                    >
+                                </td>
+                                <td class="num">20</td>
+                                <td class="num">0</td>
+                                <td class="num">11.2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> Two titles that differ by the
+                    word “best”, plus a “how to choose” post.
+                </p>
+                <p class="fix"><strong>Fix.</strong> Merge into one.</p>
+            </article>
+            <article class="cluster">
+                <h3>Specials and reviews (brand pages)</h3>
+                <p class="sub">two pages each</p>
+                <div class="tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Page</th>
+                                <th class="num">Impr.</th>
+                                <th class="num">Clicks</th>
+                                <th class="num">Avg pos.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code>/miami-plastic-surgery-specials</code>
+                                </td>
+                                <td class="num">881</td>
+                                <td class="num">11</td>
+                                <td class="num">9.9</td>
+                            </tr>
+                            <tr>
+                                <td><code>/promotions</code></td>
+                                <td class="num">0</td>
+                                <td class="num">0</td>
+                                <td class="num">9.7</td>
+                            </tr>
+                            <tr>
+                                <td><code>/reviews</code></td>
+                                <td class="num">774</td>
+                                <td class="num">16</td>
+                                <td class="num">6.5</td>
+                            </tr>
+                            <tr>
+                                <td><code>/about</code></td>
+                                <td class="num">451</td>
+                                <td class="num">3</td>
+                                <td class="num">8.4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <strong>Evidence.</strong> “miami tummy tuck specials”
+                    splits 35 / 32 between /promotions and the specials page.
+                    “alluring plastic surgery reviews” (340 impressions) shows
+                    the homepage and /about ahead of /reviews, and /reviews fell
+                    from position 2 to 7 in the last two weeks, right after it
+                    was paginated.
+                </p>
+                <p class="fix">
+                    <strong>Fix.</strong> Pick one specials URL. Make /reviews
+                    the only page titled “Alluring Plastic Surgery Reviews” and
+                    link to it with that anchor from the homepage and footer.
+                </p>
+            </article>
+            <div class="aside">
+                <p>
+                    <strong>Looks like cannibalization, is not.</strong> The BBL
+                    smell cluster (“bbl smell”, “do bbls stink”, “what is bbl
+                    smell”, about 11,000 impressions) sits 99.6% on
+                    <code>/why-do-bbl-stink</code>; the other pages listed by
+                    the gap tool have one to six impressions each. Its problem
+                    is different: position 8 with 0.19% CTR and impressions
+                    halved since June. The title was already changed to lead
+                    with “smell”. What is left is answering the question in the
+                    first two sentences so the page is quoted by the AI Overview
+                    rather than buried under it. Likewise “bbl”, “what is a
+                    bbl”, “bbl cost” and “how much is a bbl” show three old
+                    posts at position 2.5 with zero clicks: those are AI
+                    Overview citations, not competing results.
+                </p>
+            </div>
+
+            <h2>Technical findings</h2>
+            <ul class="findings">
+                <li>
+                    <span class="chip critical">fix first</span
+                    ><span class="chip code">code</span
+                    ><strong
+                        >The blog sitemap's modified dates are driven by the
+                        page-view counter.</strong
+                    >
+                    <p>
+                        <code>blog_post.updated_at</code> is set on every row
+                        update, the views endpoint increments
+                        <code>views</code> on the same row, and
+                        <code>sitemap/blog.xml</code> uses
+                        <code>updatedAt</code> as <code>lastmod</code>. Result:
+                        the most-read posts report a fresh modification every
+                        day (25 posts “modified” in the last 7 days, 115 in the
+                        second half of August, zero content revisions in the
+                        database). Google learns to ignore a lastmod that lies,
+                        which removes the one signal that would get a genuinely
+                        refreshed post recrawled. Move view counts off the post
+                        row or preserve <code>updatedAt</code> in that write,
+                        and derive lastmod from content changes.
+                    </p>
+                </li>
+                <li>
+                    <span class="chip critical">fix first</span
+                    ><span class="chip code">code</span
+                    ><strong
+                        ><code>/bbl-miami</code> duplicates the BBL procedure
+                        page.</strong
+                    >
+                    <p>
+                        A lead-gen landing page, indexed, with the same declared
+                        targets (“bbl miami”, “brazilian butt lift miami”, “best
+                        bbl surgeon miami”). Redirect it to
+                        <code>/procedures/brazilian-butt-lift-bbl-miami</code>,
+                        or noindex it if a paid campaign still lands there.
+                    </p>
+                </li>
+                <li>
+                    <span class="chip warn">quick</span
+                    ><span class="chip code">code</span
+                    ><strong
+                        >Four URLs that still earn impressions return
+                        404.</strong
+                    >
+                    <p>
+                        Two legacy slugs,
+                        <code
+                            >/blog/breast-implants-drop-fluff-timeline-what-to-expect-month-by-month-after-breast-augmentation</code
+                        >
+                        and
+                        <code
+                            >/blog/breast-implants-drop-implant-timeline-tips</code
+                        >, and two near-miss slugs,
+                        <code
+                            >/blog/swelling-and-asymmetry-after-augmentation-faq</code
+                        >
+                        and
+                        <code
+                            >/blog/when-can-you-workout-after-breast-augmentation</code
+                        >. Each has a live twin; add permanent redirects.
+                    </p>
+                </li>
+                <li>
+                    <span class="chip warn">quick</span
+                    ><span class="chip code">code</span
+                    ><strong
+                        >Procedure meta descriptions are one template.</strong
+                    >
+                    <p>
+                        Write nine descriptions that say what the page says: the
+                        starting price, the technique, the surgeon, the free
+                        consultation.
+                    </p>
+                </li>
+                <li>
+                    <span class="chip warn">quick</span
+                    ><span class="chip code">code</span
+                    ><strong>Two specials pages, two reviews targets.</strong>
+                    <p>
+                        <code>/promotions</code> and
+                        <code>/miami-plastic-surgery-specials</code> split
+                        “specials” queries; the homepage and
+                        <code>/about</code> outrank <code>/reviews</code> for
+                        “alluring plastic surgery reviews”, and
+                        <code>/reviews</code> lost five positions in the two
+                        weeks after it was paginated. One canonical URL per
+                        intent, titled for it, linked with that anchor.
+                    </p>
+                </li>
+                <li>
+                    <span class="chip good">housekeeping</span
+                    ><strong
+                        >Instagram sitemap shows an error in Search
+                        Console.</strong
+                    >
+                    <p>
+                        Intentional: the route returns an empty list because the
+                        800 Instagram pages were noindexed. Remove the
+                        submission in Search Console, then delete the route as
+                        its own comment suggests.
+                    </p>
+                </li>
+                <li>
+                    <span class="chip good">housekeeping</span
+                    ><strong
+                        >The Google Business Profile link shows up as a separate
+                        page.</strong
+                    >
+                    <p>
+                        <code>/?utm_source=google…gbp-listing</code> is credited
+                        with 125 clicks. The canonical is clean, so nothing to
+                        fix; just read it as the homepage when comparing pages.
+                    </p>
+                </li>
+            </ul>
+
+            <h2>Why it keeps happening</h2>
+            <p>
+                Of the four posts the pipeline published in the last 45 days,
+                two landed on questions the site already ranked for: the
+                work-out-after-augmentation post beside the push-ups post, and
+                the swelling FAQ beside an existing asymmetry page (that one, at
+                least, is winning). The review board does include a
+                cannibalization checker, but it compares a draft against a
+                static keyword-ownership registry, not against the live list of
+                published posts and what Search Console says already ranks. Feed
+                it both: the published slugs, titles and primary keywords, plus
+                the pages-for-query lookup for the draft's head terms, and block
+                a draft outright when an existing page is already in the top 20.
+                The same lookup belongs in the ideation gate, so the topic is
+                rejected before a draft costs anything.
+            </p>
+
+            <h2>Plan</h2>
+            <ol class="phases">
+                <li>
+                    <div>
+                        <h3>Stop the bleeding</h3>
+                        <div class="when">
+                            This week · code only · no content decisions needed
+                        </div>
+                        <ul>
+                            <li>
+                                Fix sitemap lastmod (view counter off the post
+                                row; lastmod from content changes).
+                            </li>
+                            <li>
+                                Permanent redirects for the four 404 URLs;
+                                redirect or noindex <code>/bbl-miami</code>;
+                                pick one specials URL and redirect the other.
+                            </li>
+                            <li>
+                                Nine hand-written procedure meta descriptions;
+                                titles that name the head term first (“Tummy
+                                Tuck in Miami”, not “Tummy Tuck Miami 2026”).
+                            </li>
+                            <li>
+                                One price table per procedure, sourced from the
+                                procedure data, reused by every blog post that
+                                quotes a price.
+                            </li>
+                            <li>
+                                Remove the Instagram sitemap submission in
+                                Search Console.
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h3>Give the money pages their queries back</h3>
+                        <div class="when">
+                            Weeks 2–3 · content + internal links
+                        </div>
+                        <ul>
+                            <li>
+                                Each procedure page gets a “Cost in Miami”
+                                section that answers the query in its first
+                                sentence, an FAQ item for it, and the head-term
+                                anchor in the first screen of every related blog
+                                post.
+                            </li>
+                            <li>
+                                The cost-intent blog posts
+                                (<code>tummy-tuck-mommy-makeover-miami</code>,
+                                <code>affordable-plastic-surgery-miami</code>)
+                                are retitled to the decision they actually help
+                                with and link up, not sideways.
+                            </li>
+                            <li>
+                                Consolidate the informational clusters: BBL
+                                recovery 7→3, tummy tuck recovery 5→2, mommy
+                                makeover recovery 3→2, breast augmentation
+                                exercise 3→1, liposuction recovery 3→2,
+                                board-certified 3→1. Each merge keeps the
+                                strongest URL, folds the others' unique content
+                                in, and redirects.
+                            </li>
+                            <li>
+                                Rewrite the top five decaying question posts
+                                (BBL smell, pubic swelling, BBL vs tummy tuck
+                                pain, sleeping after reduction, stitches)
+                                answer-first, so the AI Overview quotes them
+                                instead of replacing them.
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h3>Make it stay fixed</h3>
+                        <div class="when">
+                            Week 4 onward · pipeline + measurement
+                        </div>
+                        <ul>
+                            <li>
+                                Cannibalization checker and ideation gate read
+                                the live corpus and Search Console before a
+                                topic is approved.
+                            </li>
+                            <li>
+                                Re-run the query-by-page sweep monthly (the
+                                script exists; it belongs in the Search Console
+                                MCP server as a
+                                <code>cannibalization</code> tool next to
+                                <code>pages_for_query</code>).
+                            </li>
+                            <li>
+                                Four weeks after phase 2, if a procedure page
+                                still trails its own blog post for the cost
+                                query, redirect the post into the page.
+                            </li>
+                            <li>
+                                Track one number per procedure: clicks on the
+                                procedure page for its head term and cost term.
+                                Today that number is zero for six of nine.
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ol>
+
+            <h2>Decisions needed</h2>
+            <ul class="decisions">
+                <li>
+                    <strong
+                        >Is <code>/bbl-miami</code> the landing page for any
+                        live ad?</strong
+                    >
+                    If not, it gets redirected in phase 1.
+                </li>
+                <li>
+                    <strong>Approve the merge list.</strong> The map above names
+                    the surviving URL per cluster; say if any post should
+                    survive for a reason Search Console can't see.
+                </li>
+                <li>
+                    <strong>Price policy.</strong> Which numbers are right: the
+                    procedure pages' or the blog's? Everything downstream copies
+                    one source.
+                </li>
+            </ul>
+
+            <footer>
+                <p>
+                    Sources: Search Console Performance API via the site's
+                    <code>search-console</code> MCP server and data layer
+                    (query, page, date and query-by-page dimensions), URL
+                    Inspection API for index status, the production database
+                    (read-only) for post update history, and the live site for
+                    titles, canonicals, redirects and sitemaps. Windows: Aug 11
+                    – Sep 8, 2026 (28 days) and Jul 14 – Aug 10 for comparison;
+                    Jun 10 – Sep 8 for the trend. Positions are
+                    impression-weighted averages, never a single rank. Split
+                    threshold: two or more pages each holding ≥10% and ≥10
+                    impressions of a query with ≥30 impressions.
+                </p>
+            </footer>
+        </div>
+        <script>
+            ;(function () {
+                var data = [
+                    ['2026-06-10', 10145, 101],
+                    ['2026-06-11', 9052, 92],
+                    ['2026-06-12', 8944, 99],
+                    ['2026-06-13', 9183, 82],
+                    ['2026-06-14', 9503, 87],
+                    ['2026-06-15', 9712, 93],
+                    ['2026-06-16', 10123, 80],
+                    ['2026-06-17', 10161, 87],
+                    ['2026-06-18', 10037, 94],
+                    ['2026-06-19', 9849, 86],
+                    ['2026-06-20', 9680, 75],
+                    ['2026-06-21', 9765, 93],
+                    ['2026-06-22', 10386, 103],
+                    ['2026-06-23', 10310, 88],
+                    ['2026-06-24', 10393, 97],
+                    ['2026-06-25', 10087, 83],
+                    ['2026-06-26', 10178, 96],
+                    ['2026-06-27', 10442, 77],
+                    ['2026-06-28', 10486, 96],
+                    ['2026-06-29', 10275, 102],
+                    ['2026-06-30', 9767, 88],
+                    ['2026-07-01', 9761, 99],
+                    ['2026-07-02', 9962, 89],
+                    ['2026-07-03', 8819, 96],
+                    ['2026-07-04', 8452, 75],
+                    ['2026-07-05', 9723, 85],
+                    ['2026-07-06', 10026, 95],
+                    ['2026-07-07', 10460, 122],
+                    ['2026-07-08', 10198, 98],
+                    ['2026-07-09', 10239, 86],
+                    ['2026-07-10', 9817, 85],
+                    ['2026-07-11', 9855, 75],
+                    ['2026-07-12', 10120, 84],
+                    ['2026-07-13', 9950, 95],
+                    ['2026-07-14', 10644, 107],
+                    ['2026-07-15', 10054, 74],
+                    ['2026-07-16', 9583, 112],
+                    ['2026-07-17', 9565, 92],
+                    ['2026-07-18', 9066, 92],
+                    ['2026-07-19', 9865, 100],
+                    ['2026-07-20', 10801, 110],
+                    ['2026-07-21', 12333, 98],
+                    ['2026-07-22', 11477, 129],
+                    ['2026-07-23', 10054, 89],
+                    ['2026-07-24', 9966, 101],
+                    ['2026-07-25', 9472, 86],
+                    ['2026-07-26', 9944, 91],
+                    ['2026-07-27', 10899, 122],
+                    ['2026-07-28', 10222, 113],
+                    ['2026-07-29', 10140, 101],
+                    ['2026-07-30', 9980, 117],
+                    ['2026-07-31', 9593, 108],
+                    ['2026-08-01', 8962, 86],
+                    ['2026-08-02', 9870, 85],
+                    ['2026-08-03', 13234, 114],
+                    ['2026-08-04', 9637, 93],
+                    ['2026-08-05', 10041, 98],
+                    ['2026-08-06', 10650, 95],
+                    ['2026-08-07', 9955, 82],
+                    ['2026-08-08', 11038, 83],
+                    ['2026-08-09', 11392, 89],
+                    ['2026-08-10', 11929, 98],
+                    ['2026-08-11', 11230, 91],
+                    ['2026-08-12', 11570, 85],
+                    ['2026-08-13', 12556, 81],
+                    ['2026-08-14', 11053, 81],
+                    ['2026-08-15', 9897, 82],
+                    ['2026-08-16', 10478, 95],
+                    ['2026-08-17', 11034, 91],
+                    ['2026-08-18', 10256, 77],
+                    ['2026-08-19', 9825, 93],
+                    ['2026-08-20', 8942, 98],
+                    ['2026-08-21', 7923, 84],
+                    ['2026-08-22', 7739, 82],
+                    ['2026-08-23', 8991, 83],
+                    ['2026-08-24', 8481, 93],
+                    ['2026-08-25', 8398, 84],
+                    ['2026-08-26', 9305, 91],
+                    ['2026-08-27', 8634, 79],
+                    ['2026-08-28', 8533, 89],
+                    ['2026-08-29', 8221, 76],
+                    ['2026-08-30', 8557, 89],
+                    ['2026-08-31', 8356, 84],
+                    ['2026-09-01', 8002, 77],
+                    ['2026-09-02', 8129, 80],
+                    ['2026-09-03', 7346, 81],
+                    ['2026-09-04', 7228, 79],
+                    ['2026-09-05', 7174, 74],
+                    ['2026-09-06', 7588, 71],
+                    ['2026-09-07', 7854, 72],
+                    ['2026-09-08', 7298, 89],
+                ]
+                var svg = document.querySelector('.chart')
+                if (!svg) return
+                var hit = svg.querySelector('.hit'),
+                    xh = svg.querySelector('.xhair'),
+                    xd = svg.querySelector('.xdot'),
+                    tip = document.getElementById('tip')
+                var W = 900,
+                    H = 300,
+                    PL = 56,
+                    PR = 24,
+                    PT = 20,
+                    PB = 40,
+                    ymax = 14000
+                function X(i) {
+                    return PL + (i * (W - PL - PR)) / (data.length - 1)
+                }
+                function Y(v) {
+                    return PT + (H - PT - PB) * (1 - v / ymax)
+                }
+                function fmt(d) {
+                    var p = d.split('-')
+                    return (
+                        [
+                            'Jan',
+                            'Feb',
+                            'Mar',
+                            'Apr',
+                            'May',
+                            'Jun',
+                            'Jul',
+                            'Aug',
+                            'Sep',
+                            'Oct',
+                            'Nov',
+                            'Dec',
+                        ][+p[1] - 1] +
+                        ' ' +
+                        +p[2]
+                    )
+                }
+                function show(e) {
+                    var r = svg.getBoundingClientRect()
+                    var x = ((e.clientX - r.left) * W) / r.width
+                    var i = Math.round(
+                        (x - PL) / ((W - PL - PR) / (data.length - 1))
+                    )
+                    i = Math.max(0, Math.min(data.length - 1, i))
+                    var d = data[i]
+                    xh.setAttribute('x1', X(i))
+                    xh.setAttribute('x2', X(i))
+                    xh.style.opacity = 1
+                    xd.setAttribute('cx', X(i))
+                    xd.setAttribute('cy', Y(d[1]))
+                    xd.style.opacity = 1
+                    tip.hidden = false
+                    tip.textContent =
+                        fmt(d[0]) +
+                        ' · ' +
+                        d[1].toLocaleString() +
+                        ' impr · ' +
+                        d[2] +
+                        ' clicks'
+                    tip.style.left = (X(i) * r.width) / W + 'px'
+                    tip.style.top = (Y(d[1]) * r.height) / H + 'px'
+                }
+                function hide() {
+                    xh.style.opacity = 0
+                    xd.style.opacity = 0
+                    tip.hidden = true
+                }
+                hit.addEventListener('mousemove', show)
+                hit.addEventListener('mouseleave', hide)
+                hit.addEventListener(
+                    'touchstart',
+                    function (e) {
+                        show(e.touches[0])
+                    },
+                    { passive: true }
+                )
+                hit.addEventListener(
+                    'touchmove',
+                    function (e) {
+                        show(e.touches[0])
+                    },
+                    { passive: true }
+                )
+                var tb = document.querySelector('#trendTable tbody')
+                if (tb) {
+                    tb.innerHTML = data
+                        .map(function (d) {
+                            return (
+                                '<tr><td>' +
+                                d[0] +
+                                '</td><td class="num">' +
+                                d[1].toLocaleString() +
+                                '</td><td class="num">' +
+                                d[2] +
+                                '</td></tr>'
+                            )
+                        })
+                        .join('')
+                }
+            })()
+        </script>
+    </body>
+</html>

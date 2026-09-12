@@ -34,7 +34,10 @@ export const staticSitemapCategories: SitemapCategory[] = [
                 label: 'After Weight Loss',
                 href: '/after-weight-loss-consultation',
             },
-            { label: 'BBL Miami', href: '/bbl-miami' },
+            {
+                label: 'BBL Miami',
+                href: '/procedures/brazilian-butt-lift-bbl-miami',
+            },
             { label: 'Bridal', href: '/bridal-consultation' },
             { label: 'New Beginning', href: '/new-beginning-consultation' },
             {

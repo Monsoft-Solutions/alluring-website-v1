@@ -43,6 +43,9 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'liposuction-candidate-checklist-miami',
     'liposuction-miami-moms-faq',
     'breast-reduction-miami-recovery-candidates',
+    // BBL recovery consolidation (#229)
+    'bbl-recovery-miami-moms-guide',
+    'bbl-miami-recovery-faq',
     // Anti-cannibalization redirects (blog → procedure pages)
     'what-is-the-mommy-makeover-procedure',
     'liposuction-cost-miami',

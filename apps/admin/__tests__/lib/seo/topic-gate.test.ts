@@ -32,7 +32,7 @@ describe('evaluateTopicCandidate', () => {
             primaryKeyword: 'bbl recovery mistakes miami',
         })
         expect(verdict.verdict).toBe('refresh')
-        expect(verdict.owningUrl).toBe('/blog/bbl-recovery-time-miami')
+        expect(verdict.owningUrl).toBe('/blog/miami-bbl-recovery-guide')
     })
 
     it('rejects retired topics', () => {

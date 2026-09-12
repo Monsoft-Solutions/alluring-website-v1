@@ -70,7 +70,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
     financing: [
         {
             question: 'How much does a BBL cost in Miami?',
-            answer: 'BBL pricing at our Miami clinic starts at $6,500, which includes surgeon fees, anesthesia, facility fees, and all pre/post-op appointments. Final cost depends on the amount of liposuction needed and whether additional procedures are combined. We offer financing starting at $99/month.',
+            answer: 'BBL pricing at our Miami clinic starts at $3,500, which includes surgeon fees, anesthesia, facility fees, and all pre/post-op appointments. Final cost depends on the amount of liposuction needed and whether additional procedures are combined. We offer financing from $34/week.',
         },
         {
             question: 'How much does a mommy makeover cost?',

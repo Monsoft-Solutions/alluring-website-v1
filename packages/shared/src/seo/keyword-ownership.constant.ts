@@ -415,16 +415,11 @@ const LANDING_ENTRIES: OwnedPage[] = [
         url: '/bbl-miami',
         kind: 'landing',
         intent: 'consultation',
-        status: 'live',
+        status: 'retired',
         primaryKeyword: 'bbl specials miami',
-        ownsQueries: ['bbl deals miami'],
-        notes: 'Conversion lander. The "bbl miami" head term belongs to the procedure page.',
-        mustNotTarget: [
-            {
-                query: 'bbl miami',
-                ownedBy: '/procedures/brazilian-butt-lift-bbl-miami',
-            },
-        ],
+        ownsQueries: [],
+        redirectsTo: '/procedures/brazilian-butt-lift-bbl-miami',
+        notes: 'Retired in #229. It duplicated the procedure page on every Miami BBL term and took 309 impressions / 0 clicks in the 28 days to 2026-09-08. Not a paid-ads lander — those run on the book. subdomain.',
     },
     {
         url: '/mens-plastic-surgery-miami',

@@ -34,7 +34,6 @@ export const pageLastModified: Record<string, string> = {
     '/bridal-consultation': '2026-01-26',
     '/after-weight-loss-consultation': '2026-01-26',
     '/new-beginning-consultation': '2026-01-26',
-    '/bbl-miami': '2026-01-26',
     '/mens-plastic-surgery-miami': '2026-01-26',
 
     // Gallery pages

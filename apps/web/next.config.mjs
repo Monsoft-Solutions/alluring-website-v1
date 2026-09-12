@@ -284,6 +284,38 @@ const nextConfig = {
                 permanent: true,
             },
 
+            // BBL cluster consolidation (#229).
+            //
+            // /bbl-miami was a lead-gen landing page targeting "bbl miami",
+            // "brazilian butt lift miami" and "best bbl surgeon miami" — the
+            // exact terms /procedures/brazilian-butt-lift-bbl-miami is built
+            // for. It took 309 impressions and 0 clicks in 28 days while
+            // outranking the procedure page on "bbl consultation". It is not
+            // used by paid ads (those run on the book. subdomain), so the
+            // route is retired rather than noindexed.
+            {
+                source: '/bbl-miami',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+
+            // BBL recovery consolidation (#229). Only the two posts with zero
+            // impressions over the 28 days to 2026-09-08 fold now; the rest of
+            // the seven-way split waits until the canonical guide at
+            // /blog/miami-bbl-recovery-guide has absorbed their content
+            // through the admin pipeline, so nothing that currently ranks goes
+            // dark in the meantime.
+            {
+                source: '/blog/bbl-recovery-miami-moms-guide',
+                destination: '/blog/miami-bbl-recovery-guide',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-miami-recovery-faq',
+                destination: '/blog/miami-bbl-recovery-guide',
+                permanent: true,
+            },
+
             // Anti-cannibalization redirects — blog posts → procedure pages
             {
                 source: '/what-is-the-mommy-makeover-procedure',
