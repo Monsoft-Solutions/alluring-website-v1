@@ -26,7 +26,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
     category: 'body',
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/hero.webp',
-    dateModified: '2026-01-29T00:00:00.000Z',
+    dateModified: '2026-09-11T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing — sourced from the public WeeklyPayments table
@@ -549,6 +549,19 @@ Your journey to a more sculpted, confident you starts with a single conversation
         {
             question: 'What percentage of the transferred fat survives?',
             answer: "Typically 60-80% of the transferred fat survives permanently. We account for this by initially transferring more than the final desired volume. Survival depends on technique — our ultrasound-guided approach optimizes it — your body's response, and how closely you follow post-op instructions.",
+        },
+        // Complication rates and a surgeon-vetting checklist, folded in from
+        // the retired /blog/bbl-safety-miami post (#231). "How much" is a
+        // pricing term for the paid landing page's FAQ filter, so the answer
+        // says "what volume" instead.
+        {
+            question:
+                'What are the real risks of a BBL, and how do you reduce them?',
+            answer: 'The serious risk is fat embolism, where fat injected into or below the gluteal muscle enters a blood vessel. Florida now requires real-time ultrasound guidance for exactly this reason, and it is our standard on every case. The common complications are minor and manageable: seroma in roughly 3-5% of cases, infection in about 2% with proper sterile protocol, and some fat reabsorption, typically 20-40%, which we plan for when deciding what volume to transfer. A BMI over 30 and smoking raise every one of these risks, which is why the consultation includes a full health screening.',
+        },
+        {
+            question: 'How should I vet a BBL surgeon in Miami?',
+            answer: "Start with board certification from the American Board of Plastic Surgery and verify it on the board's own directory, not the clinic's website. Ask how many BBLs the surgeon performs, whether ultrasound guidance is used on every case, and what their complication rate is. Confirm the facility is accredited and who manages your anesthesia. Red flags: providers who are not plastic surgeons, high-volume clinics scheduling several BBLs a day per surgeon, and anyone guaranteeing a specific result.",
         },
         {
             question: 'What is a Brazilian Butt Lift (BBL)?',
