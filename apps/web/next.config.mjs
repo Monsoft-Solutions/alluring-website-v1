@@ -316,6 +316,74 @@ const nextConfig = {
                 permanent: true,
             },
 
+            // BBL January batch consolidation (#231).
+            //
+            // Twelve posts written in one batch over nine days in January
+            // 2026 earned 10 clicks between them in the 28 days to
+            // 2026-09-09; three had zero impressions. Only
+            // /blog/tummy-tuck-vs-bbl-miami holds a real ranking (position 6
+            // on "bbl vs tummy tuck"), so it stays as the single comparison
+            // post and the other comparison posts fold into it. Combination
+            // and "breast aug vs BBL" queries already resolve to it in GSC,
+            // which is why those two land here rather than on the procedure
+            // page. The Miami "mom" posts targeted phrases nobody searches;
+            // the procedure page owns their safety and results intent.
+            {
+                source: '/blog/liposuction-vs-bbl-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-vs-butt-implants-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-vs-bbl-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/combine-bbl-tummy-tuck-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-aug-vs-bbl-miami-moms',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-miami-results-timeline',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-myths-miami-moms',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-before-after-miami-mom',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-miami-post-pregnancy-guide',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-safety-miami',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-miami-post-pregnancy-quiz',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+
             // Anti-cannibalization redirects — blog posts → procedure pages
             {
                 source: '/what-is-the-mommy-makeover-procedure',

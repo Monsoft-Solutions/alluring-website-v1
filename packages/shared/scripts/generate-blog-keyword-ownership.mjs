@@ -11,9 +11,16 @@
  *   node scripts/generate-blog-keyword-ownership.mjs /tmp/published-posts.json
  *
  * The duplicate-cluster map below encodes the consolidation decisions of
- * implementation-plans/2026-08-11-blog-content-pipeline-v2.md §6: each
- * merge candidate points at its cluster's proposed owner via duplicateOf.
- * Retired slugs mirror the blog-related 301s in apps/web/next.config.mjs.
+ * implementation-plans/2026-08-11-blog-content-pipeline-v2.md §6, as
+ * corrected on GSC evidence by #229 and #231: each merge candidate points at
+ * its cluster's proposed owner via duplicateOf. Retired URLs mirror the
+ * blog-related 308s in apps/web/next.config.mjs.
+ *
+ * This script overwrites the constant. The checked-in file carries
+ * hand-written `notes` and GSC-derived `ownsQueries` on a few entries (the
+ * #229 recovery owner, the #231 comparison owner and procedure-page
+ * absorptions) that cannot be reproduced from the database, so after a
+ * regeneration restore those from `git diff` before committing.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -23,21 +30,17 @@ const BLOG_PREFIX_CUTOFF = new Date('2026-01-01T00:00:00Z')
 
 /** slug -> proposed owner URL (plan doc §6). */
 const DUPLICATE_OF = {
-    // BBL recovery — owner /blog/bbl-recovery-time-miami
-    'miami-bbl-recovery-guide': '/blog/bbl-recovery-time-miami',
-    'bbl-miami-recovery-faq': '/blog/bbl-recovery-time-miami',
-    'bbl-recovery-mistakes-miami': '/blog/bbl-recovery-time-miami',
-    'bbl-recovery-miami-moms-guide': '/blog/bbl-recovery-time-miami',
-    'how-long-to-recover-from-bbl': '/blog/bbl-recovery-time-miami',
+    // BBL recovery — owner /blog/miami-bbl-recovery-guide (#229, chosen on
+    // GSC evidence over the plan doc's /blog/bbl-recovery-time-miami)
+    'bbl-recovery-time-miami': '/blog/miami-bbl-recovery-guide',
+    'bbl-recovery-mistakes-miami': '/blog/miami-bbl-recovery-guide',
+    'how-long-to-recover-from-bbl': '/blog/miami-bbl-recovery-guide',
     // Surgeon selection — how-to intent owner
     'choose-plastic-surgeons-miami':
         '/how-to-choose-the-best-plastic-surgeon-in-miami-10-things-to-look-for',
     // Surgeon selection — credential intent owner
     'best-board-certified-plastic-surgeons-miami':
         '/blog/board-certified-plastic-surgeon-miami',
-    // BBL post-pregnancy — owner /blog/bbl-miami-post-pregnancy-guide
-    'bbl-miami-post-pregnancy-quiz': '/blog/bbl-miami-post-pregnancy-guide',
-    'bbl-before-after-miami-mom': '/blog/bbl-miami-post-pregnancy-guide',
     // Tummy tuck × Ozempic
     'ozempic-tummy-tuck-myths-miami': '/blog/tummy-tuck-recovery-ozempic-miami',
     // Tummy tuck myths
@@ -83,43 +86,66 @@ const GSC_CHECK_FIRST = new Set([
     'what-is-the-difference-between-tummy-tuck-and-liposuction',
 ])
 
-/** Retired blog slugs (301 sources in apps/web/next.config.mjs). */
+/**
+ * Retired blog URLs (308 sources in apps/web/next.config.mjs), keyed by the
+ * URL path as served: pre-2026 posts at the root, 2026 posts under /blog/.
+ * The slug is the last path segment.
+ */
 const RETIRED = {
-    'mommy-makeover-miami-guide': '/procedures/mommy-makeover-miami',
-    'prepare-mommy-makeover-miami': '/procedures/mommy-makeover-miami',
-    'mommy-makeover-myths-miami': '/procedures/mommy-makeover-miami',
-    'mommy-makeover-recovery-timeline':
+    '/mommy-makeover-miami-guide': '/procedures/mommy-makeover-miami',
+    '/prepare-mommy-makeover-miami': '/procedures/mommy-makeover-miami',
+    '/mommy-makeover-myths-miami': '/procedures/mommy-makeover-miami',
+    '/mommy-makeover-recovery-timeline':
         '/blog/mommy-makeover-recovery-timeline-miami',
-    'mommy-makeover-recovery-guide':
+    '/mommy-makeover-recovery-guide':
         '/blog/mommy-makeover-recovery-timeline-miami',
-    'mommy-makeover-recovery-time-miami':
+    '/mommy-makeover-recovery-time-miami':
         '/blog/mommy-makeover-recovery-timeline-miami',
-    'mommy-makeover-recovery-pain-management':
+    '/mommy-makeover-recovery-pain-management':
         '/blog/mommy-makeover-recovery-timeline-miami',
-    'mommy-makeover-recovery-pain-guide':
+    '/mommy-makeover-recovery-pain-guide':
         '/blog/mommy-makeover-recovery-timeline-miami',
-    'miami-liposuction-cost': '/blog/liposuction-cost-miami',
-    'blepharoplasty-candidate-checklist':
+    '/miami-liposuction-cost': '/blog/liposuction-cost-miami',
+    '/blepharoplasty-candidate-checklist':
         '/blog/blepharoplasty-candidate-miami-checklist',
-    'blepharoplasty-miami-candidate':
+    '/blepharoplasty-miami-candidate':
         '/blog/blepharoplasty-candidate-miami-checklist',
-    'best-blepharoplasty-age-miami':
+    '/best-blepharoplasty-age-miami':
         '/blog/best-blepharoplasty-age-miami-checklist',
-    'liposuction-candidate-checklist-miami':
+    '/liposuction-candidate-checklist-miami':
         '/blog/liposuction-candidate-miami',
-    'liposuction-miami-moms-faq': '/blog/liposuction-miami-moms-tips',
-    'breast-reduction-miami-recovery-candidates':
+    '/liposuction-miami-moms-faq': '/blog/liposuction-miami-moms-tips',
+    '/breast-reduction-miami-recovery-candidates':
         '/blog/breast-reduction-candidate-miami',
-    'what-is-the-mommy-makeover-procedure': '/procedures/mommy-makeover-miami',
+    '/what-is-the-mommy-makeover-procedure': '/procedures/mommy-makeover-miami',
     // NOTE: 'liposuction-cost-miami' (301 → /procedures/liposuction-miami) is
     // deliberately NOT listed: the same URL is the planned cost page in
     // keyword-ownership.constant.ts, whose entry documents the conflict.
-    'breast-reduction-cost-miami': '/procedures/breast-reduction-miami',
-    'miami-breast-reduction-cost-weight-loss':
+    '/breast-reduction-cost-miami': '/procedures/breast-reduction-miami',
+    '/miami-breast-reduction-cost-weight-loss':
         '/procedures/breast-reduction-miami',
-    'facelift-cost-miami': '/procedures/facelift-miami',
-    'breast-reduction-surgeons-miami': '/procedures/breast-reduction-miami',
-    'best-breast-lift-surgeons-miami': '/procedures/breast-lift-miami',
+    '/facelift-cost-miami': '/procedures/facelift-miami',
+    '/breast-reduction-surgeons-miami': '/procedures/breast-reduction-miami',
+    '/best-breast-lift-surgeons-miami': '/procedures/breast-lift-miami',
+    // BBL recovery consolidation (#229)
+    '/blog/bbl-recovery-miami-moms-guide': '/blog/miami-bbl-recovery-guide',
+    '/blog/bbl-miami-recovery-faq': '/blog/miami-bbl-recovery-guide',
+    // BBL January batch consolidation (#231)
+    '/blog/liposuction-vs-bbl-miami': '/blog/tummy-tuck-vs-bbl-miami',
+    '/blog/bbl-vs-butt-implants-miami': '/blog/tummy-tuck-vs-bbl-miami',
+    '/blog/mommy-makeover-vs-bbl-miami': '/blog/tummy-tuck-vs-bbl-miami',
+    '/blog/combine-bbl-tummy-tuck-miami': '/blog/tummy-tuck-vs-bbl-miami',
+    '/blog/breast-aug-vs-bbl-miami-moms': '/blog/tummy-tuck-vs-bbl-miami',
+    '/blog/bbl-miami-results-timeline':
+        '/procedures/brazilian-butt-lift-bbl-miami',
+    '/blog/bbl-myths-miami-moms': '/procedures/brazilian-butt-lift-bbl-miami',
+    '/blog/bbl-before-after-miami-mom':
+        '/procedures/brazilian-butt-lift-bbl-miami',
+    '/blog/bbl-miami-post-pregnancy-guide':
+        '/procedures/brazilian-butt-lift-bbl-miami',
+    '/blog/bbl-safety-miami': '/procedures/brazilian-butt-lift-bbl-miami',
+    '/blog/bbl-miami-post-pregnancy-quiz':
+        '/procedures/brazilian-butt-lift-bbl-miami',
 }
 
 const inputPath = process.argv[2]
@@ -145,6 +171,11 @@ const q = (s) => `'${String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
 const entries = []
 
 for (const post of posts) {
+    // A folded post stays `published` until the redirect has deployed and
+    // someone sets it to draft in the admin; in that window it is both in
+    // the export and in RETIRED. The retired entry wins.
+    if (RETIRED[blogUrl(post.slug, post.published_at)]) continue
+
     const slugQuery = post.slug.replace(/-/g, ' ')
     const primaryKeyword = post.primary_keyword?.trim() || slugQuery
     const stripped = new Set(STRIP_QUERIES[post.slug] ?? [])
@@ -198,11 +229,12 @@ for (const post of posts) {
     entries.push(lines.join('\n'))
 }
 
-for (const [slug, redirectsTo] of Object.entries(RETIRED)) {
+for (const [url, redirectsTo] of Object.entries(RETIRED)) {
+    const slug = url.slice(url.lastIndexOf('/') + 1)
     entries.push(
         [
             `    {`,
-            `        url: ${q('/' + slug)},`,
+            `        url: ${q(url)},`,
             `        slug: ${q(slug)},`,
             `        kind: 'blog',`,
             `        intent: 'informational',`,
@@ -219,9 +251,10 @@ const header = `/**
  * Keyword Ownership Registry — blog posts
  *
  * GENERATED FILE — regenerate with scripts/generate-blog-keyword-ownership.mjs
- * (see its header for the psql export command). Hand-edits are allowed for
- * cluster corrections but will be overwritten on the next regeneration, so
- * fold them into the generator's maps instead.
+ * (see its header for the psql export command). Regeneration overwrites this
+ * file. Cluster decisions (duplicateOf, retirements) live in the generator's
+ * maps; hand-written notes and GSC-derived ownsQueries do not, so restore
+ * them from the diff after regenerating.
  *
  * Seeded from the live blog_post table on ${new Date().toISOString().slice(0, 10)}:
  * every published/scheduled post appears exactly once. Posts in a known

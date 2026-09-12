@@ -46,6 +46,18 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     // BBL recovery consolidation (#229)
     'bbl-recovery-miami-moms-guide',
     'bbl-miami-recovery-faq',
+    // BBL January batch consolidation (#231)
+    'liposuction-vs-bbl-miami',
+    'bbl-vs-butt-implants-miami',
+    'mommy-makeover-vs-bbl-miami',
+    'combine-bbl-tummy-tuck-miami',
+    'breast-aug-vs-bbl-miami-moms',
+    'bbl-miami-results-timeline',
+    'bbl-myths-miami-moms',
+    'bbl-before-after-miami-mom',
+    'bbl-miami-post-pregnancy-guide',
+    'bbl-safety-miami',
+    'bbl-miami-post-pregnancy-quiz',
     // Anti-cannibalization redirects (blog → procedure pages)
     'what-is-the-mommy-makeover-procedure',
     'liposuction-cost-miami',

@@ -21,12 +21,15 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (154 posts as of seed)', () => {
+    it('contains every published post exactly once (143 posts as of seed)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
-        // 156 at seed, less the two BBL recovery posts retired in #229.
-        expect(liveBlog.length).toBe(154)
+        // 156 at seed, less the two BBL recovery posts retired in #229 and
+        // the eleven January-batch BBL posts folded in #231 (five comparison
+        // posts into /blog/tummy-tuck-vs-bbl-miami, six "mom" posts into the
+        // procedure page).
+        expect(liveBlog.length).toBe(143)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -76,6 +79,55 @@ describe('resolveQueryOwner', () => {
         expect(result?.canonicalOwner.url).toBe(
             '/blog/miami-bbl-recovery-guide'
         )
+    })
+
+    it('routes every BBL comparison query to the single comparison post (#231)', () => {
+        for (const query of [
+            'bbl vs tummy tuck',
+            'liposuction vs bbl',
+            'bbl vs butt implants',
+            'bbl vs mommy makeover',
+        ]) {
+            expect(resolveQueryOwner(query)?.owner.slug).toBe(
+                'tummy-tuck-vs-bbl-miami'
+            )
+        }
+    })
+
+    it('marks the folded January-batch posts retired with their 308 target (#231)', () => {
+        const carrier = '/blog/tummy-tuck-vs-bbl-miami'
+        const procedure = '/procedures/brazilian-butt-lift-bbl-miami'
+        const folded: Array<[string, string]> = [
+            ['liposuction-vs-bbl-miami', carrier],
+            ['bbl-vs-butt-implants-miami', carrier],
+            ['mommy-makeover-vs-bbl-miami', carrier],
+            ['combine-bbl-tummy-tuck-miami', carrier],
+            ['breast-aug-vs-bbl-miami-moms', carrier],
+            ['bbl-miami-results-timeline', procedure],
+            ['bbl-myths-miami-moms', procedure],
+            ['bbl-before-after-miami-mom', procedure],
+            ['bbl-miami-post-pregnancy-guide', procedure],
+            ['bbl-safety-miami', procedure],
+            ['bbl-miami-post-pregnancy-quiz', procedure],
+        ]
+        for (const [slug, redirectsTo] of folded) {
+            const entry = BLOG_POST_ENTRIES.find((e) => e.slug === slug)
+            expect(entry?.status, slug).toBe('retired')
+            expect(entry?.redirectsTo, slug).toBe(redirectsTo)
+        }
+    })
+
+    it('keeps the folded safety and results intent on the procedure page (#231)', () => {
+        for (const query of [
+            'bbl safety',
+            'bbl risks',
+            'bbl results',
+            'am i a candidate for a bbl',
+        ]) {
+            expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
+                '/procedures/brazilian-butt-lift-bbl-miami'
+            )
+        }
     })
 
     it('gives money pages precedence over blog posts on shared queries', () => {

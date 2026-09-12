@@ -34,6 +34,21 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'brazilian butt lift procedure',
             'fat transfer to buttocks',
             'skinny bbl miami',
+            // Safety, results and candidacy intent absorbed from the six
+            // January-batch "mom" posts folded here in #231. Held on the
+            // procedure page so ideation does not recreate them as posts.
+            'is a bbl safe',
+            'bbl safety',
+            'bbl safety miami',
+            'bbl risks',
+            'bbl complications',
+            'bbl myths',
+            'bbl results',
+            'how long do bbl results last',
+            'bbl survival rate',
+            'am i a candidate for a bbl',
+            'bbl after pregnancy',
+            'bbl before and after miami',
         ],
         mustNotTarget: [
             { query: 'bbl cost miami', ownedBy: '/bbl-cost-miami' },
