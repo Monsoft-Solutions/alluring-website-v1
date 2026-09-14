@@ -3,15 +3,10 @@
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 
+import { isStandaloneRoute } from '@/lib/constants/standalone-routes'
+
 import { Footer } from './footer.component'
 import { Header } from './header.component'
-
-/**
- * Routes that should not have header/footer
- * These are standalone pages like link-in-bio (/links) and paid ad landing
- * pages under /landing/*, which ship with their own minimal chrome.
- */
-const STANDALONE_ROUTES = ['/links', '/landing']
 
 interface ConditionalLayoutProps {
     children: ReactNode
@@ -21,15 +16,13 @@ interface ConditionalLayoutProps {
  * ConditionalLayout Component
  *
  * Conditionally renders the site header and footer based on the current route.
- * Standalone pages (like /links) will not have header/footer for a cleaner experience.
+ * Standalone pages (link-in-bio, paid landing pages) will not have header or
+ * footer for a cleaner experience — see `lib/constants/standalone-routes`.
  */
 export function ConditionalLayout({ children }: ConditionalLayoutProps) {
     const pathname = usePathname()
-    const isStandalone = STANDALONE_ROUTES.some((route) =>
-        pathname.startsWith(route)
-    )
 
-    if (isStandalone) {
+    if (isStandaloneRoute(pathname)) {
         return <>{children}</>
     }
 
