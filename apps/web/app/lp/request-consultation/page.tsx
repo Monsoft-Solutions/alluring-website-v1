@@ -29,7 +29,6 @@ import {
     resolveLpLanguage,
     type ResolvedLpLanguage,
 } from '@/components/landing-pages/request-consultation/lp-language'
-import { LOQUENT_SHADOW_PATCH } from '@/components/landing-pages/request-consultation/lp-shadow-patch'
 import { resolveAdVariant } from '@/components/landing-pages/request-consultation/lp-variants'
 
 import './landing.css'
@@ -82,23 +81,10 @@ export default async function RequestConsultationLandingPage({
     )
 
     return (
-        <>
-            {/*
-                Opens the Loquent embed's shadow root as it is created. This has
-                to execute before the site tag mounts the form — earlier than
-                any React effect — so it is emitted inline here rather than run
-                from a component. The content is a module constant compiled into
-                the bundle; nothing from the request reaches it.
-            */}
-            <script
-                id='loquent-shadow-patch'
-                dangerouslySetInnerHTML={{ __html: LOQUENT_SHADOW_PATCH }}
-            />
-            <LpLanding
-                initialLang={lang}
-                langPinnedByUrl={pinned}
-                adVariant={adVariant}
-            />
-        </>
+        <LpLanding
+            initialLang={lang}
+            langPinnedByUrl={pinned}
+            adVariant={adVariant}
+        />
     )
 }

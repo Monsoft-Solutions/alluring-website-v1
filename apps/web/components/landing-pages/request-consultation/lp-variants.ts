@@ -12,6 +12,8 @@
  * entry.
  */
 
+import type { PROCEDURE_OPTIONS } from '@/lib/types/forms/contact-form.type'
+
 import type { LpLang } from './lp-copy'
 
 export const AD_VARIANTS = [
@@ -59,19 +61,29 @@ export function resolveAdVariant(raw: string | null | undefined): AdVariant {
 }
 
 /**
- * The value written into the form's "Procedure of Interest" select.
- *
- * These are Loquent option values, not display copy — they stay in English in
- * both languages because that is how the form is configured. Changing one here
- * without changing it in Loquent silently stops the preselect from matching.
+ * A procedure value the site's contact system stores — the same slugs every
+ * other consultation form writes to `contact_submission.procedure`.
  */
-export const VARIANT_PROCEDURE: Readonly<Record<AdVariant, string>> = {
+export type LpProcedureValue = Exclude<
+    (typeof PROCEDURE_OPTIONS)[number]['value'],
+    ''
+>
+
+/**
+ * The procedure preselected in the form for each ad group. `''` leaves the
+ * select on its placeholder. Typed against the site's procedure slugs, so a
+ * value the contact system does not know fails the typecheck instead of
+ * silently not preselecting.
+ */
+export const VARIANT_PROCEDURE: Readonly<
+    Record<AdVariant, LpProcedureValue | ''>
+> = {
     default: '',
-    bbl: 'Brazilian Butt Lift (BBL)',
-    'mommy-makeover': 'Mommy Makeover',
-    'breast-augmentation': 'Breast Augmentation',
-    'tummy-tuck': 'Tummy Tuck',
-    liposuction: 'Liposuction / Lipo 360',
+    bbl: 'bbl',
+    'mommy-makeover': 'mommy-makeover',
+    'breast-augmentation': 'breast-augmentation',
+    'tummy-tuck': 'tummy-tuck',
+    liposuction: 'liposuction',
 }
 
 export interface VariantCopy {

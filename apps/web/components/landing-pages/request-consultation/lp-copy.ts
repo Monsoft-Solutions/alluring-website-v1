@@ -40,6 +40,8 @@
  * the footer disclaimer.
  */
 
+import type { LpProcedureValue } from './lp-variants'
+
 export type LpLang = 'en' | 'es'
 
 export const LP_LANGUAGES: readonly LpLang[] = ['en', 'es'] as const
@@ -118,6 +120,23 @@ export interface LpDictionary {
         readonly fieldPhone: string
         readonly fieldEmail: string
         readonly fieldProcedure: string
+        readonly procedurePlaceholder: string
+        /** Every procedure the form offers, as the contact system stores it. */
+        readonly procedureOptions: readonly {
+            readonly value: LpProcedureValue
+            readonly label: string
+        }[]
+        /** Button label while the request is in flight. */
+        readonly submitting: string
+        /** One message per field, shown in place of the schema's own. */
+        readonly errors: {
+            readonly firstName: string
+            readonly lastName: string
+            readonly phone: string
+            readonly email: string
+            /** The request failed: network, server, or a rejected payload. */
+            readonly submit: string
+        }
     }
     readonly surgeon: {
         readonly eyebrow: string
@@ -245,6 +264,31 @@ const en: LpDictionary = {
         fieldPhone: 'Phone',
         fieldEmail: 'Email',
         fieldProcedure: 'Procedure of Interest',
+        procedurePlaceholder: 'Select a procedure',
+        procedureOptions: [
+            { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
+            { value: 'mommy-makeover', label: 'Mommy Makeover' },
+            { value: 'breast-augmentation', label: 'Breast Augmentation' },
+            { value: 'breast-lift', label: 'Breast Lift' },
+            { value: 'breast-reduction', label: 'Breast Reduction' },
+            { value: 'tummy-tuck', label: 'Tummy Tuck' },
+            { value: 'liposuction', label: 'Liposuction / Lipo 360' },
+            { value: 'facelift', label: 'Facelift' },
+            {
+                value: 'blepharoplasty',
+                label: 'Eyelid Surgery (Blepharoplasty)',
+            },
+            { value: 'multiple', label: 'Multiple Procedures' },
+            { value: 'other', label: 'Other / Not Sure Yet' },
+        ],
+        submitting: 'Sending…',
+        errors: {
+            firstName: 'Enter your first name.',
+            lastName: 'Enter your last name.',
+            phone: 'Enter a valid US phone number, with area code.',
+            email: 'Enter a valid email address, or leave it blank.',
+            submit: 'Your request did not go through. Please try again, or call us.',
+        },
     },
     surgeon: {
         eyebrow: 'Your surgeon',
@@ -474,6 +518,31 @@ const es: LpDictionary = {
         fieldPhone: 'Teléfono',
         fieldEmail: 'Correo electrónico',
         fieldProcedure: 'Procedimiento de interés',
+        procedurePlaceholder: 'Elige un procedimiento',
+        procedureOptions: [
+            { value: 'bbl', label: 'Levantamiento de glúteos (BBL)' },
+            { value: 'mommy-makeover', label: 'Mommy Makeover' },
+            { value: 'breast-augmentation', label: 'Aumento de senos' },
+            { value: 'breast-lift', label: 'Levantamiento de senos' },
+            { value: 'breast-reduction', label: 'Reducción de senos' },
+            { value: 'tummy-tuck', label: 'Abdominoplastia' },
+            { value: 'liposuction', label: 'Liposucción / Lipo 360' },
+            { value: 'facelift', label: 'Lifting facial' },
+            {
+                value: 'blepharoplasty',
+                label: 'Cirugía de párpados (blefaroplastia)',
+            },
+            { value: 'multiple', label: 'Varios procedimientos' },
+            { value: 'other', label: 'Otro / aún no lo sé' },
+        ],
+        submitting: 'Enviando…',
+        errors: {
+            firstName: 'Escribe tu nombre.',
+            lastName: 'Escribe tu apellido.',
+            phone: 'Escribe un teléfono válido de EE. UU., con código de área.',
+            email: 'Escribe un correo válido, o déjalo en blanco.',
+            submit: 'Tu solicitud no se envió. Inténtalo de nuevo o llámanos.',
+        },
     },
     surgeon: {
         eyebrow: 'Tu cirujana',
