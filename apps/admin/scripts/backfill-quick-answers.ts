@@ -24,7 +24,7 @@
  *   pnpm --filter @workspace/admin geo:backfill                    # dry run, 5 posts
  *   pnpm --filter @workspace/admin geo:backfill -- --limit 20
  *   pnpm --filter @workspace/admin geo:backfill -- --limit 20 --write
- *   pnpm --filter @workspace/admin geo:backfill -- --slug bbl-cost-miami --write
+ *   pnpm --filter @workspace/admin geo:backfill -- --slug why-do-bbl-stink --write
  *   pnpm --filter @workspace/admin geo:backfill -- --overwrite --write   # redo existing
  */
 import { config } from 'dotenv'
