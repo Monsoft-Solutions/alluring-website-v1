@@ -48,14 +48,16 @@ describe('registry integrity', () => {
 })
 
 describe('resolveQueryOwner', () => {
-    it("resolves 'bbl cost miami' to /bbl-cost-miami (issue #129 acceptance)", () => {
+    it("resolves 'bbl cost miami' to the BBL procedure page (issue #129 acceptance)", () => {
         const result = resolveQueryOwner('bbl cost miami')
-        expect(result?.owner.url).toBe('/bbl-cost-miami')
+        expect(result?.owner.url).toBe(
+            '/procedures/brazilian-butt-lift-bbl-miami'
+        )
     })
 
     it('is normalization-insensitive', () => {
         expect(resolveQueryOwner('  BBL Cost, Miami? ')?.owner.url).toBe(
-            '/bbl-cost-miami'
+            '/procedures/brazilian-butt-lift-bbl-miami'
         )
     })
 

@@ -17,6 +17,7 @@ import type { OwnedPage } from './keyword-ownership.type'
 /**
  * Procedure pages — procedure intent. Their cost sections stay (they earn
  * the cost FAQ snippet), but price-intent clusters belong to cost pages.
+ * The exception is BBL, whose procedure page owns its price cluster.
  */
 const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
     {
@@ -49,11 +50,25 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'am i a candidate for a bbl',
             'bbl after pregnancy',
             'bbl before and after miami',
-        ],
-        mustNotTarget: [
-            { query: 'bbl cost miami', ownedBy: '/bbl-cost-miami' },
-            { query: 'how much does a bbl cost', ownedBy: '/bbl-cost-miami' },
-            { query: 'bbl miami prices', ownedBy: '/bbl-cost-miami' },
+            // Price intent. Unlike the other procedures, BBL has no cost
+            // page: the planned /bbl-cost-miami was dropped (BBL cluster
+            // plan D2, 2026-09-15) because Google already sends the Miami
+            // cost searches here — "bbl cost in miami" 135 of 139
+            // impressions, "bbl cost miami" 115 of 140, 90 days to
+            // 2026-09-12 — and the page carries the confirmed price table.
+            'bbl cost miami',
+            'bbl cost in miami',
+            'how much does a bbl cost in miami',
+            'miami bbl cost',
+            'bbl miami cost',
+            'cost of bbl in miami',
+            'brazilian butt lift cost miami',
+            'bbl price miami',
+            'bbl miami prices',
+            'skinny bbl cost miami',
+            'how much does a bbl cost',
+            'bbl price',
+            'average cost of bbl in florida',
         ],
     },
     {
@@ -246,29 +261,6 @@ const COST_PAGE_ENTRIES: OwnedPage[] = [
             'affordable plastic surgery miami',
         ],
         notes: 'Hub page. Single-procedure cost queries belong to the sub-pages it links to.',
-    },
-    {
-        url: '/bbl-cost-miami',
-        kind: 'cost',
-        intent: 'price',
-        status: 'planned',
-        primaryKeyword: 'bbl cost miami',
-        ownsQueries: [
-            'how much does a bbl cost',
-            'bbl price',
-            'bbl miami prices',
-            'average cost of bbl in florida',
-        ],
-        mustNotTarget: [
-            {
-                query: 'bbl miami',
-                ownedBy: '/procedures/brazilian-butt-lift-bbl-miami',
-            },
-            {
-                query: 'brazilian butt lift miami',
-                ownedBy: '/procedures/brazilian-butt-lift-bbl-miami',
-            },
-        ],
     },
     {
         url: '/tummy-tuck-cost-miami',

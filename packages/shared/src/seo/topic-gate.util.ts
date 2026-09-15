@@ -64,7 +64,7 @@ export type EvaluateTopicOptions = {
  *
  * @example
  * evaluateTopicCandidate({ title: 'BBL Cost in Miami', primaryKeyword: 'bbl cost miami' })
- * // → { verdict: 'reject', owningUrl: '/bbl-cost-miami', ... }
+ * // → { verdict: 'reject', owningUrl: '/procedures/brazilian-butt-lift-bbl-miami', ... }
  */
 export function evaluateTopicCandidate(
     candidate: TopicCandidate,

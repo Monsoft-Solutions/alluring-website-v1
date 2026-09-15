@@ -121,7 +121,7 @@ export function resolveCanonicalOwner(
  * @param extraEntries - Live overlay entries (e.g. posts published after
  *   the registry seed) considered alongside the checked-in registry
  *
- * @example resolveQueryOwner('bbl cost miami')?.owner.url === '/bbl-cost-miami'
+ * @example resolveQueryOwner('tummy tuck cost miami')?.owner.url === '/tummy-tuck-cost-miami'
  */
 export function resolveQueryOwner(
     query: string,

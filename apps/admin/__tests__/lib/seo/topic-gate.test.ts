@@ -6,13 +6,15 @@ import { describe, expect, it } from 'vitest'
 import { evaluateTopicCandidate, type OwnedPage } from '@workspace/shared/seo'
 
 describe('evaluateTopicCandidate', () => {
-    it("rejects 'bbl cost miami' as owned by /bbl-cost-miami (acceptance)", () => {
+    it("rejects 'bbl cost miami' as owned by the BBL procedure page (acceptance)", () => {
         const verdict = evaluateTopicCandidate({
             title: 'BBL Cost in Miami: Complete 2026 Guide',
             primaryKeyword: 'bbl cost miami',
         })
         expect(verdict.verdict).toBe('reject')
-        expect(verdict.owningUrl).toBe('/bbl-cost-miami')
+        expect(verdict.owningUrl).toBe(
+            '/procedures/brazilian-butt-lift-bbl-miami'
+        )
     })
 
     it("yields 'refresh' pointing at the post for an existing post's topic (acceptance)", () => {
@@ -99,7 +101,9 @@ describe('evaluateTopicCandidate', () => {
         })
         expect(verdict.verdict).toBe('new')
         expect(verdict.warnings.length).toBe(1)
-        expect(verdict.warnings[0]).toContain('/bbl-cost-miami')
+        expect(verdict.warnings[0]).toContain(
+            '/procedures/brazilian-butt-lift-bbl-miami'
+        )
         expect(verdict.claimedQueries).not.toContain('bbl cost miami')
     })
 
@@ -108,7 +112,9 @@ describe('evaluateTopicCandidate', () => {
             title: 'bbl cost miami',
         })
         expect(verdict.verdict).toBe('reject')
-        expect(verdict.owningUrl).toBe('/bbl-cost-miami')
+        expect(verdict.owningUrl).toBe(
+            '/procedures/brazilian-butt-lift-bbl-miami'
+        )
     })
 
     it('considers live overlay entries not in the checked-in registry', () => {

@@ -12,12 +12,12 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // the generated pattern that gives the whole procedure directory an
     // identical SERP snippet (issue #229).
     //
-    // The title deliberately stops short of "cost": the keyword registry
-    // assigns the price cluster to /bbl-cost-miami and lists it under this
-    // entry's mustNotTarget. The price table below is still fair game — the
-    // registry's rule is that procedure pages keep their cost sections, only
-    // the price-intent cluster belongs elsewhere. The $3,500 in the title is
-    // a CTR hook, not a bid for "bbl cost miami".
+    // The keyword registry assigns the BBL price cluster ("bbl cost miami",
+    // "how much does a bbl cost" …) to this page: the planned /bbl-cost-miami
+    // was dropped because Google already ranks this page for those searches.
+    // The title still leads with the procedure, with $3,500 as the price
+    // hook. Whether it should name "cost" waits for 28 days of data on the
+    // #229 title (about 2026-10-09).
     seoTitle: 'BBL Miami | Brazilian Butt Lift From $3,500 | Board-Certified',
     metaDescription:
         'A BBL transfers your own fat to add lift and fullness — no implants. Board-certified surgeons in Miami, from $3,500 or $34/week. Free consultation.',
