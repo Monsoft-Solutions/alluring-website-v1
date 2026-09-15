@@ -120,12 +120,15 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Enhance your curves with natural fat transfer to the buttocks',
         slug: 'brazilian-butt-lift-bbl-miami',
         category: 'body',
+        // Matches `pricing` in brazilian-butt-lift-bbl-miami.data.ts (not
+        // imported: that file carries the page's whole markdown body).
         priceRange: {
-            min: 6000,
+            min: 5500,
             max: 10000,
         },
+        // priceRange over 36 months, like the other rows
         monthlyPayment: {
-            min: 167,
+            min: 153,
             max: 278,
         },
         recoveryWeeks: 3,

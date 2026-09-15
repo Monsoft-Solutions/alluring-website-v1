@@ -100,6 +100,19 @@ export function buildServiceJsonLd(
                     priceCurrency: props.offers.priceCurrency,
                 },
             }),
+            ...((props.offers.minPrice !== undefined ||
+                props.offers.maxPrice !== undefined) && {
+                priceSpecification: {
+                    '@type': 'PriceSpecification',
+                    priceCurrency: props.offers.priceCurrency,
+                    ...(props.offers.minPrice !== undefined && {
+                        minPrice: props.offers.minPrice.toString(),
+                    }),
+                    ...(props.offers.maxPrice !== undefined && {
+                        maxPrice: props.offers.maxPrice.toString(),
+                    }),
+                },
+            }),
         }
     }
 

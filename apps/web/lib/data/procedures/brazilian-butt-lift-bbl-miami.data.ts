@@ -5,7 +5,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     title: 'Brazilian Butt Lift (BBL) Miami',
     slug: 'brazilian-butt-lift-bbl-miami',
     description:
-        'BBL Miami starting at $3,500 with financing from $34/week. Board-certified surgeons, 5,000+ procedures. Natural fat transfer results. Free consultation.',
+        'BBL Miami starting at $5,500, priced for each patient, with financing available. Board-certified surgeons, 5,000+ procedures. Free consultation.',
 
     // Hand-written metadata. This page competes for "bbl miami" and the
     // generic "bbl" / "brazilian butt lift" head terms, so it cannot run on
@@ -15,12 +15,13 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // The keyword registry assigns the BBL price cluster ("bbl cost miami",
     // "how much does a bbl cost" …) to this page: the planned /bbl-cost-miami
     // was dropped because Google already ranks this page for those searches.
-    // The title still leads with the procedure, with $3,500 as the price
-    // hook. Whether it should name "cost" waits for 28 days of data on the
-    // #229 title (about 2026-10-09).
-    seoTitle: 'BBL Miami | Brazilian Butt Lift From $3,500 | Board-Certified',
+    // The title still leads with the procedure, with the starting price as
+    // the hook. Whether it should name "cost" waits for 28 days of data on
+    // the #229 title (about 2026-10-09) — which the 2026-09-15 price change
+    // restarts.
+    seoTitle: 'BBL Miami | Brazilian Butt Lift Starting at $5,500',
     metaDescription:
-        'A BBL transfers your own fat to add lift and fullness — no implants. Board-certified surgeons in Miami, from $3,500 or $34/week. Free consultation.',
+        'A BBL transfers your own fat to add lift and fullness, no implants. Board-certified Miami surgeons. Starting at $5,500, priced per patient. Financing available.',
     shortDescription:
         'Sculpt your curves with precision. Our BBL procedure enhances the natural shape of your body by redistributing fat for a fuller, more lifted look.',
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
@@ -29,18 +30,18 @@ export const brazilianButtLiftBblMiami: Procedure = {
     dateModified: '2026-09-11T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing — sourced from the public WeeklyPayments table
-    priceFrom: '$3,500',
-    weeklyPaymentFrom: '$34/week with approved credit',
+    // Paid-LP hero pricing. No weekly figure: BBL financing is offered but
+    // never quoted as a number.
+    priceFrom: '$5,500',
 
-    // Published price table. Before #229 this page carried four disagreeing
-    // BBL figures ($3,500, $5,500, $6,500 and a $7,000 floor) and two weekly
-    // payments ($34 and $67). These are the confirmed ones; every other
-    // mention on the site now derives from or matches them.
+    // Published price table. Set 2026-09-15: starting at $5,500, most
+    // patients $5,500–$10,000, every price personalized and subject to
+    // change, financing available with no figure. This replaces the $3,500 /
+    // $15,000 / $34-a-week set from #229. Every BBL price on the site — blog
+    // posts, home FAQ, quiz — must match these.
     pricing: {
-        startingAt: 3500,
-        upTo: 15000,
-        weeklyFrom: 34,
+        startingAt: 5500,
+        upTo: 10000,
         includes: [
             'Pre-operative consultations and surgical planning',
             'Surgeon fees for the complete procedure',
@@ -257,7 +258,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         question: 'What is a Brazilian Butt Lift (BBL)?',
         answer: 'A Brazilian Butt Lift is a cosmetic procedure that uses fat transfer to enhance the size and shape of the buttocks naturally, without implants.',
         details:
-            'The BBL procedure typically takes 3-5 hours under general anesthesia. Unlike butt implants, BBL uses your own tissue for natural-feeling results. Most patients see final results in 3-6 months. BBL cost in Miami starts at $3,500 and runs to about $15,000, with financing from $34/week.',
+            'The BBL procedure typically takes 3-5 hours under general anesthesia. Unlike butt implants, BBL uses your own tissue for natural-feeling results. Most patients see final results in 3-6 months. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
     },
     content: `## Brazilian Butt Lift Miami Florida: Expert Fat Transfer for Lasting Curves
 
@@ -325,15 +326,15 @@ Both **liposuction** and **fat** injection use tiny incisions—often just a few
 
 ## Paying for Your BBL
 
-A **BBL in Miami** at Alluring Plastic Surgery starts at **$3,500**. What the price covers and what moves it within the range is set out in the [price table above](#pricing) — this section is about how to pay for it.
+A **BBL in Miami** at Alluring Plastic Surgery starts at **$5,500**, and most patients pay between $5,500 and $10,000. Every BBL is priced for the patient, so your number depends on your body and your goals. What the price covers and what moves it within the range is set out in the [price table above](#pricing) — this section is about how to pay for it.
 
 We believe everyone deserves access to the curves they've always wanted, so we partner with leading financing providers to make your **BBL in Miami** affordable:
 
-- **Cherry Financing:** from **$34/week** with flexible terms
+- **Cherry Financing:** flexible payment plans
 - **CareCredit:** special financing with promotional periods
 - **United Medical Credit:** multiple payment plan options
 
-Weekly figures are illustrative examples for qualified applicants and depend on approved credit, term length and deposit. During your free consultation, our patient coordinators will review every option and give you an exact, all-inclusive price.
+Financing depends on approved credit, term length and deposit. Price ranges are estimates and may change. During your free consultation, our patient coordinators will review every option and give you an exact, all-inclusive price.
 
 ## Skinny BBL Miami: Enhancement for Petite Frames
 
@@ -573,15 +574,15 @@ Your journey to a more sculpted, confident you starts with a single conversation
         },
         {
             question: 'How much is a BBL in Miami?',
-            answer: 'BBL cost in Miami starts at $3,500 at Alluring Plastic Surgery and runs to around $15,000, depending on the volume of fat transferred, the number of donor sites, and surgical complexity. Financing starts from $34/week through Cherry, CareCredit, and United Medical Credit.',
+            answer: 'A BBL at Alluring Plastic Surgery starts at $5,500, and most patients pay between $5,500 and $10,000. Your price is personalized: it depends on the volume of fat transferred, the number of donor sites and surgical complexity, and your surgeon confirms it at your consultation. Financing is available through Cherry, CareCredit and United Medical Credit.',
         },
         {
             question: 'What is the average cost of a BBL in Miami Florida?',
-            answer: "A BBL in Miami Florida runs from about $3,500 to $15,000. That price typically includes surgeon fees, anesthesia, facility costs, compression garments, and all follow-up appointments. What moves it is the volume of fat transferred, the number of donor sites, and the surgeon's experience level.",
+            answer: "At Alluring, most BBL patients pay between $5,500 and $10,000. That price typically includes surgeon fees, anesthesia, facility costs, compression garments, and all follow-up appointments. What moves it is the volume of fat transferred, the number of donor sites, and the surgeon's experience level. Price ranges are estimates and may change.",
         },
         {
             question: 'Does insurance cover a Brazilian Butt Lift?',
-            answer: 'No, insurance does not cover a Brazilian Butt Lift because it is considered an elective cosmetic procedure. However, we offer flexible financing options through Cherry, CareCredit, and United Medical Credit with payment plans starting as low as $34/week to help make your BBL affordable.',
+            answer: 'No, insurance does not cover a Brazilian Butt Lift because it is considered an elective cosmetic procedure. However, we offer flexible financing options through Cherry, CareCredit, and United Medical Credit to help make your BBL affordable.',
         },
         {
             question: 'Can I get a BBL if I am skinny?',
