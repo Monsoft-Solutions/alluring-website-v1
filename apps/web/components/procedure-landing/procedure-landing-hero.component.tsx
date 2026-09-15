@@ -143,7 +143,7 @@ export function ProcedureLandingHero({
                                 <>
                                     <div className='flex flex-col items-start'>
                                         <dt className='font-sans text-[10px] tracking-[0.28em] text-amber-200/70 uppercase'>
-                                            From
+                                            Starting at
                                         </dt>
                                         <dd className='font-serif text-3xl leading-none text-white tabular-nums'>
                                             {procedure.priceFrom}
@@ -174,8 +174,9 @@ export function ProcedureLandingHero({
                                 </div>
                             )}
                             <p className='col-span-3 mt-1 text-[11px] tracking-wide text-stone-500'>
-                                Subject to credit approval · Cherry, CareCredit,
-                                United Credit
+                                {procedure.weeklyPaymentFrom
+                                    ? 'Subject to credit approval · Cherry, CareCredit, United Credit'
+                                    : 'Priced per patient · Financing available with approved credit'}
                             </p>
                         </dl>
                     )}

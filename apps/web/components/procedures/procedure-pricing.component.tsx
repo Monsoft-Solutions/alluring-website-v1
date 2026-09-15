@@ -59,8 +59,8 @@ export function ProcedurePricing({
     // Built as one string so JSX line breaks cannot introduce a stray space
     // before the comma.
     const summary = upTo
-        ? `A ${noun} at Alluring Plastic Surgery starts at ${formatProcedurePrice(startingAt)}, with most plans landing between ${formatProcedurePrice(startingAt)} and ${formatProcedurePrice(upTo)} depending on the scope of your procedure.`
-        : `A ${noun} at Alluring Plastic Surgery starts at ${formatProcedurePrice(startingAt)}.`
+        ? `A ${noun} at Alluring Plastic Surgery starts at ${formatProcedurePrice(startingAt)}, with most patients paying between ${formatProcedurePrice(startingAt)} and ${formatProcedurePrice(upTo)}. Every price is personalized to your body and your goals.`
+        : `A ${noun} at Alluring Plastic Surgery starts at ${formatProcedurePrice(startingAt)}. Every price is personalized to your body and your goals.`
 
     return (
         <section
@@ -100,7 +100,7 @@ export function ProcedurePricing({
                                 {range}
                             </dd>
                         </div>
-                        {weeklyFrom !== undefined && (
+                        {weeklyFrom !== undefined ? (
                             <div className='bg-stone-50 p-6 text-center'>
                                 <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
                                     Financing from
@@ -110,6 +110,15 @@ export function ProcedurePricing({
                                     <span className='text-lg text-stone-500'>
                                         /week
                                     </span>
+                                </dd>
+                            </div>
+                        ) : (
+                            <div className='bg-stone-50 p-6 text-center'>
+                                <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
+                                    Financing
+                                </dt>
+                                <dd className='mt-2 font-serif text-2xl font-medium tracking-tight text-stone-900'>
+                                    Available
                                 </dd>
                             </div>
                         )}
@@ -165,7 +174,7 @@ export function ProcedurePricing({
                     <p className='mt-10 border-t border-stone-200 pt-6 text-sm font-light text-stone-500'>
                         {weeklyFrom !== undefined
                             ? WEEKLY_PAYMENT_DISCLAIMER
-                            : 'Prices are a guide, not a quote. Your surgeon gives you an exact all-inclusive price in consultation.'}
+                            : 'Prices are a guide, not a quote. Every price is personalized, and ranges are estimates that may change. Your surgeon gives you an exact all-inclusive price in consultation. Financing is subject to credit approval.'}
                     </p>
                 </div>
             </ContainerLayout>

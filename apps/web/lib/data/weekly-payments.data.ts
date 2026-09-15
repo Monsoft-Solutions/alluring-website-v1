@@ -27,7 +27,6 @@ export const WEEKLY_PAYMENT_OPTIONS: readonly WeeklyPaymentOption[] = [
         highlight: 'Most Popular',
     },
     { procedure: 'Liposuction 360', weeklyPayment: 27 },
-    { procedure: 'Brazilian Butt Lift (BBL)', weeklyPayment: 34 },
     { procedure: 'Extended Tummy Tuck', weeklyPayment: 34 },
     { procedure: 'Breast Lift with Silicone', weeklyPayment: 41 },
     { procedure: 'Breast Reduction', weeklyPayment: 41 },

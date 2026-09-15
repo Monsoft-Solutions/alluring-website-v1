@@ -115,7 +115,7 @@ const PROCEDURE_MONTHLY_RANGES: Record<
     'breast-lift': { min: 120, max: 220 },
     'breast-reduction': { min: 130, max: 230 },
     liposuction: { min: 80, max: 180 },
-    bbl: { min: 150, max: 280 },
+    bbl: { min: 153, max: 333 }, // $5,500–$12,000 over 36 months
     'tummy-tuck': { min: 140, max: 260 },
     'mommy-makeover': { min: 250, max: 450 },
     facelift: { min: 180, max: 350 },

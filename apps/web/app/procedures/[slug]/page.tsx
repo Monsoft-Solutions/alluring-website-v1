@@ -282,6 +282,9 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                         ? {
                               price: procedure.pricing.startingAt,
                               priceCurrency: 'USD',
+                              // A personalized range, not a fixed price
+                              minPrice: procedure.pricing.startingAt,
+                              maxPrice: procedure.pricing.upTo,
                               availability: 'InStock',
                               url: pageUrl,
                           }

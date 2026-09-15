@@ -73,6 +73,14 @@ export type ServiceOffer = {
     /** Price specification (e.g., "Free", "Starting at $X") */
     priceSpecification?: string
 
+    /**
+     * Lower and upper bound of a personalized price range. Emitted as a
+     * `PriceSpecification` with `minPrice` / `maxPrice`, so a "starting at"
+     * price is not read as a fixed one.
+     */
+    minPrice?: number
+    maxPrice?: number
+
     /** Availability status */
     availability?:
         | 'InStock'
