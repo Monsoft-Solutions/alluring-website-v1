@@ -28,11 +28,21 @@ export type BrokenInternalLink = {
     anchorText: string
 }
 
+/** A link to a real page rewritten to that page's canonical path. */
+export type RewrittenInternalLink = {
+    /** The href as written */
+    from: string
+    /** The root-relative href it became, query and fragment kept */
+    to: string
+}
+
 export type InternalLinkValidationResult = {
     /** Content with unresolvable internal links reduced to plain text */
     content: string
     /** Every link removed, for the pipeline record */
     removed: BrokenInternalLink[]
+    /** Every link pointed at its canonical path instead of a redirect */
+    rewritten: RewrittenInternalLink[]
 }
 
 /**
@@ -72,12 +82,55 @@ function normalizePath(path: string): string {
 }
 
 /**
- * Strip internal links whose target is not in the known set.
+ * Whether an href addresses the main site itself: root-relative, or on the bare
+ * or www host. `toInternalPath` also accepts any href that merely contains the
+ * domain (the book. subdomain, a maps query), which is right for spotting
+ * invented URLs but must never be rewritten onto the main site.
+ */
+function isMainSiteHref(href: string): boolean {
+    if (href.startsWith('/')) return !href.startsWith('//')
+
+    const bare = (host: string) => host.toLowerCase().replace(/^www\./, '')
+    try {
+        return bare(new URL(href).hostname) === bare(BUSINESS_DOMAIN)
+    } catch {
+        return false
+    }
+}
+
+/** The `?query#fragment` part of a path, kept when the path is rewritten. */
+function pathSuffix(path: string): string {
+    const index = path.search(/[?#]/)
+    return index === -1 ? '' : path.slice(index)
+}
+
+/**
+ * The known URL a link is aiming at, or null if there is none.
+ *
+ * A link can name a real page and still cost the reader a redirect: a trailing
+ * slash, our own domain written out, or a 2026 post linked at `/{slug}`, which
+ * `app/[slug]/page.tsx` 308s to `/blog/{slug}`. In September 2026, 62 link
+ * targets in 106 published posts took that extra hop.
+ */
+function canonicalPath(path: string, known: Set<string>): string | null {
+    const normalized = normalizePath(path)
+    if (known.has(normalized)) return normalized
+
+    const underBlog = `/blog${normalized}`
+    if (normalized !== '/' && known.has(underBlog)) return underBlog
+
+    return null
+}
+
+/**
+ * Strip internal links whose target is not in the known set, and write the
+ * rest at their canonical, root-relative path.
  *
  * @param content - Markdown to check
  * @param knownUrls - Every site path that resolves — marketing pages plus
  *   published posts, at their real URLs
- * @returns Content with broken links flattened to their anchor text
+ * @returns Content with broken links flattened to their anchor text and known
+ *   links pointed straight at their page
  *
  * @example
  * ```typescript
@@ -98,9 +151,10 @@ export function validateInternalLinks(
     }
 
     // With nothing to check against, changing the content would be guesswork.
-    if (known.size === 0) return { content, removed: [] }
+    if (known.size === 0) return { content, removed: [], rewritten: [] }
 
     const removed: BrokenInternalLink[] = []
+    const rewritten: RewrittenInternalLink[] = []
 
     const next = content.replace(
         MARKDOWN_LINK,
@@ -108,12 +162,23 @@ export function validateInternalLinks(
             const path = toInternalPath(href)
             if (!path) return whole
 
-            if (known.has(normalizePath(path))) return whole
+            const canonical = canonicalPath(path, known)
+            if (canonical && !isMainSiteHref(href)) return whole
+            if (canonical) {
+                // Root-relative, so the renderer links it in place rather
+                // than opening our own page in a new tab as if it were
+                // external.
+                const target = canonical + pathSuffix(path)
+                if (target === href) return whole
+
+                rewritten.push({ from: href, to: target })
+                return `[${anchorText}](${target})`
+            }
 
             removed.push({ url: href, anchorText })
             return anchorText
         }
     )
 
-    return { content: next, removed }
+    return { content: next, removed, rewritten }
 }

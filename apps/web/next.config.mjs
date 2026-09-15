@@ -396,8 +396,20 @@ const nextConfig = {
             // which is why those two land here rather than on the procedure
             // page. The Miami "mom" posts targeted phrases nobody searches;
             // the procedure page owns their safety and results intent.
+            //
+            // Each post is redirected at both /blog/slug and /slug (#241).
+            // #231 shipped only the /blog/ form. The root form is served by
+            // app/[slug]/page.tsx, which 308s to /blog/slug only while the
+            // post is published, so every root URL 404'd from the day the
+            // posts were drafted; Search Console kept requesting
+            // /mommy-makeover-vs-bbl-miami.
             {
                 source: '/blog/liposuction-vs-bbl-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-vs-bbl-miami',
                 destination: '/blog/tummy-tuck-vs-bbl-miami',
                 permanent: true,
             },
@@ -407,7 +419,17 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/bbl-vs-butt-implants-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
                 source: '/blog/mommy-makeover-vs-bbl-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-vs-bbl-miami',
                 destination: '/blog/tummy-tuck-vs-bbl-miami',
                 permanent: true,
             },
@@ -417,7 +439,17 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/combine-bbl-tummy-tuck-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
                 source: '/blog/breast-aug-vs-bbl-miami-moms',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/breast-aug-vs-bbl-miami-moms',
                 destination: '/blog/tummy-tuck-vs-bbl-miami',
                 permanent: true,
             },
@@ -427,7 +459,17 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/bbl-miami-results-timeline',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
                 source: '/blog/bbl-myths-miami-moms',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/bbl-myths-miami-moms',
                 destination: '/procedures/brazilian-butt-lift-bbl-miami',
                 permanent: true,
             },
@@ -437,7 +479,17 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/bbl-before-after-miami-mom',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
                 source: '/blog/bbl-miami-post-pregnancy-guide',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/bbl-miami-post-pregnancy-guide',
                 destination: '/procedures/brazilian-butt-lift-bbl-miami',
                 permanent: true,
             },
@@ -447,8 +499,31 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/bbl-safety-miami',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
                 source: '/blog/bbl-miami-post-pregnancy-quiz',
                 destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/bbl-miami-post-pregnancy-quiz',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            // Older slugs of the BBL exercise post that Search Console still
+            // requests; both 404. They point at the /blog/ URL directly,
+            // because its root form redirects too and would chain.
+            {
+                source: '/exercises-after-bbl-recovery-timeline',
+                destination: '/blog/exercises-after-bbl-timeline',
+                permanent: true,
+            },
+            {
+                source: '/blog/exercises-after-bbl-safe-recovery-timeline',
+                destination: '/blog/exercises-after-bbl-timeline',
                 permanent: true,
             },
 
@@ -495,6 +570,118 @@ const nextConfig = {
             {
                 source: '/plastic-surgery-cost-miami',
                 destination: '/plastic-surgery-financing-miami',
+                permanent: true,
+            },
+
+            // URLs Search Console still requests that 404 (#241). Checked
+            // 2026-09-15: every source returned 404 and every destination
+            // answered 200 without a redirect of its own. /alluringplasticsurgery
+            // is also requested but has no honest destination, so it stays a 404.
+            //
+            // An expired promotion and deleted gallery media: the listing and
+            // gallery groups they belonged to still exist.
+            {
+                source: '/promotions/back-to-me-body-breast-special',
+                destination: '/promotions',
+                permanent: true,
+            },
+            {
+                source: '/gallery/media/breast-reduction-before-after-miami-patient-08',
+                destination: '/gallery/breast-reduction',
+                permanent: true,
+            },
+            {
+                source: '/gallery/media/breast-augmentation-before-after-miami-natural-results',
+                destination: '/gallery/breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/gallery/media/breast-augmentation-before-after-miami-implant-results-2',
+                destination: '/gallery/breast-augmentation',
+                permanent: true,
+            },
+            // Old and misspelled /blog/ slugs.
+            {
+                source: '/blog/breast-implants-drop-implant-timeline-tips',
+                destination: '/blog/breast-implants-drop-fluff-timeline',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-implants-drop-fluff-timeline-what-to-expect-month-by-month-after-breast-augmentation',
+                destination: '/blog/breast-implants-drop-fluff-timeline',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-implant-drop-fluff-timeline',
+                destination: '/blog/breast-implants-drop-fluff-timeline',
+                permanent: true,
+            },
+            {
+                source: '/blog/drop-and-fluff-timeline',
+                destination: '/blog/breast-implants-drop-fluff-timeline',
+                permanent: true,
+            },
+            {
+                source: '/blog/swelling-and-asymmetry-after-augmentation-faq',
+                destination:
+                    '/blog/swelling-and-asymmetry-after-breast-augmentation-faq',
+                permanent: true,
+            },
+            {
+                source: '/blog/when-can-you-workout-after-breast-augmentation',
+                destination:
+                    '/blog/when-can-you-work-out-after-breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/blog/mummy-makeover-compression-garments-guide',
+                destination: '/blog/mommy-makeover-compression-garments-guide',
+                permanent: true,
+            },
+            {
+                source: '/blog/exercises-after-tummy-tuck',
+                destination: '/blog/exercises-after-tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/exercises-after-mommy-makeover-safe-recovery-guide',
+                destination: '/blog/mommy-makeover-recovery-exercises',
+                permanent: true,
+            },
+            // Old root slugs, and malformed paths left by the WordPress era.
+            {
+                source: '/how-to-reduce-tummy-tuck-tightness',
+                destination: '/how-to-reduce-tightness-after-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/how-to-reduce-tightness-after-a-tummy-tuck',
+                destination: '/how-to-reduce-tightness-after-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/how-to-massage-your-breast-implants',
+                destination: '/how-often-to-massage-breast-after-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/how-to-massage-breast-after-augmentation',
+                destination: '/how-often-to-massage-breast-after-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/how-long-after-breast-augmentation---drive',
+                destination: '/how-long-after-breast-augmentation-can-i-drive',
+                permanent: true,
+            },
+            {
+                source: '/alluring-plastic-surgery-blog/how-many-times-can-you-get-liposuction',
+                destination: '/how-many-times-can-you-get-liposuction',
+                permanent: true,
+            },
+            {
+                source: '/blog/alluringplasticsurgery.com/blog/breast-augmentation-pain-management',
+                destination: '/blog/breast-augmentation-pain-management',
                 permanent: true,
             },
         ]
