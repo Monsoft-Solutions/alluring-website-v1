@@ -35,13 +35,13 @@ export const brazilianButtLiftBblMiami: Procedure = {
     priceFrom: '$5,500',
 
     // Published price table. Set 2026-09-15: starting at $5,500, most
-    // patients $5,500–$12,000, every price personalized and subject to
+    // patients $5,500–$10,000, every price personalized and subject to
     // change, financing available with no figure. This replaces the $3,500 /
     // $15,000 / $34-a-week set from #229. Every BBL price on the site — blog
     // posts, home FAQ, quiz — must match these.
     pricing: {
         startingAt: 5500,
-        upTo: 12000,
+        upTo: 10000,
         includes: [
             'Pre-operative consultations and surgical planning',
             'Surgeon fees for the complete procedure',
@@ -258,7 +258,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         question: 'What is a Brazilian Butt Lift (BBL)?',
         answer: 'A Brazilian Butt Lift is a cosmetic procedure that uses fat transfer to enhance the size and shape of the buttocks naturally, without implants.',
         details:
-            'The BBL procedure typically takes 3-5 hours under general anesthesia. Unlike butt implants, BBL uses your own tissue for natural-feeling results. Most patients see final results in 3-6 months. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $12,000. Every price is personalized, and financing is available.',
+            'The BBL procedure typically takes 3-5 hours under general anesthesia. Unlike butt implants, BBL uses your own tissue for natural-feeling results. Most patients see final results in 3-6 months. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
     },
     content: `## Brazilian Butt Lift Miami Florida: Expert Fat Transfer for Lasting Curves
 
@@ -326,7 +326,7 @@ Both **liposuction** and **fat** injection use tiny incisions—often just a few
 
 ## Paying for Your BBL
 
-A **BBL in Miami** at Alluring Plastic Surgery starts at **$5,500**, and most patients pay between $5,500 and $12,000. Every BBL is priced for the patient, so your number depends on your body and your goals. What the price covers and what moves it within the range is set out in the [price table above](#pricing) — this section is about how to pay for it.
+A **BBL in Miami** at Alluring Plastic Surgery starts at **$5,500**, and most patients pay between $5,500 and $10,000. Every BBL is priced for the patient, so your number depends on your body and your goals. What the price covers and what moves it within the range is set out in the [price table above](#pricing) — this section is about how to pay for it.
 
 We believe everyone deserves access to the curves they've always wanted, so we partner with leading financing providers to make your **BBL in Miami** affordable:
 
@@ -574,11 +574,11 @@ Your journey to a more sculpted, confident you starts with a single conversation
         },
         {
             question: 'How much is a BBL in Miami?',
-            answer: 'A BBL at Alluring Plastic Surgery starts at $5,500, and most patients pay between $5,500 and $12,000. Your price is personalized: it depends on the volume of fat transferred, the number of donor sites and surgical complexity, and your surgeon confirms it at your consultation. Financing is available through Cherry, CareCredit and United Medical Credit.',
+            answer: 'A BBL at Alluring Plastic Surgery starts at $5,500, and most patients pay between $5,500 and $10,000. Your price is personalized: it depends on the volume of fat transferred, the number of donor sites and surgical complexity, and your surgeon confirms it at your consultation. Financing is available through Cherry, CareCredit and United Medical Credit.',
         },
         {
             question: 'What is the average cost of a BBL in Miami Florida?',
-            answer: "At Alluring, most BBL patients pay between $5,500 and $12,000. That price typically includes surgeon fees, anesthesia, facility costs, compression garments, and all follow-up appointments. What moves it is the volume of fat transferred, the number of donor sites, and the surgeon's experience level. Price ranges are estimates and may change.",
+            answer: "At Alluring, most BBL patients pay between $5,500 and $10,000. That price typically includes surgeon fees, anesthesia, facility costs, compression garments, and all follow-up appointments. What moves it is the volume of fat transferred, the number of donor sites, and the surgeon's experience level. Price ranges are estimates and may change.",
         },
         {
             question: 'Does insurance cover a Brazilian Butt Lift?',

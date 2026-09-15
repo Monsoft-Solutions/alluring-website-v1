@@ -124,12 +124,12 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         // imported: that file carries the page's whole markdown body).
         priceRange: {
             min: 5500,
-            max: 12000,
+            max: 10000,
         },
         // priceRange over 36 months, like the other rows
         monthlyPayment: {
             min: 153,
-            max: 333,
+            max: 278,
         },
         recoveryWeeks: 3,
         benefits: [
