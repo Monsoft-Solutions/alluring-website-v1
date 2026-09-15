@@ -10,7 +10,10 @@ workstream the parent plan deferred.
 - Note for anyone re-running the Search Console checks: **GSC reports URLs on the `www.` host**
   (`https://www.alluringplasticsurgery.com/…`). `queries_for_page` against the bare host returns
   an empty set rather than an error.
-- Status: plan only. Nothing edited.
+- Status: **source code shipped** on branch `fix/bbl-figures-and-travel-claims` (commit `99e640a5`)
+  — typecheck 13/13, lint 15/15, tests 474 passed. The blog-post half is authored as
+  `part1-figures-and-claims.sql` (§J + §L, 30 literals verified against production) and
+  `part2-travel-claims.sql` (§K), both pending your run against production.
 
 ---
 
