@@ -60,11 +60,19 @@ export async function generateMetadata({
 
     const title = categoryDescription?.title || `${category.name} Articles`
 
-    return toNextMetadata(seoConfig, {
-        title,
-        description,
-        canonical: `/blog/categories/${category.slug}`,
-    })
+    // noindex, follow, matching the tag pages (#241). Category archives list the
+    // same posts the procedure pages and the posts themselves rank for; seven of
+    // them took 123 impressions and no clicks in 90 days. Set after the spread
+    // rather than passed to toNextMetadata, whose one-level robots merge would
+    // keep a base googleBot `index: true` beside it.
+    return {
+        ...toNextMetadata(seoConfig, {
+            title,
+            description,
+            canonical: `/blog/categories/${category.slug}`,
+        }),
+        robots: { index: false, follow: true },
+    }
 }
 
 export default async function CategoryDetailPage({ params }: PageProps) {

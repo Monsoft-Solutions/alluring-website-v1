@@ -29,18 +29,14 @@ describe('validateInternalLinks', () => {
             expect(result.removed).toEqual([])
         })
 
-        it('leaves a known link written as an absolute URL alone', () => {
-            const content =
-                'See [financing](https://alluringplasticsurgery.com/plastic-surgery-financing-miami).'
-
-            expect(validateInternalLinks(content, KNOWN).removed).toEqual([])
-        })
-
         it('matches a known page carrying a fragment or query', () => {
             const content =
                 '[costs](/procedures/bbl-miami#pricing) and [more](/procedures/bbl-miami?utm=x)'
 
-            expect(validateInternalLinks(content, KNOWN).removed).toEqual([])
+            const result = validateInternalLinks(content, KNOWN)
+
+            expect(result.removed).toEqual([])
+            expect(result.content).toBe(content)
         })
 
         it('respects the pre-2026 URL split', () => {
@@ -56,6 +52,87 @@ describe('validateInternalLinks', () => {
                 'Per the [ASPS](https://plasticsurgery.org/statistics).'
 
             expect(validateInternalLinks(content, KNOWN).content).toBe(content)
+        })
+    })
+
+    describe('links to a real page through a redirect', () => {
+        // Measured September 2026 (#241): 62 link targets in 106 published
+        // posts landed on their page only after a 308, and 601 links spelled
+        // out our own domain, which the renderer opens in a new tab.
+        it('writes an absolute URL to our own domain as a root-relative path', () => {
+            const content =
+                'See [financing](https://www.alluringplasticsurgery.com/plastic-surgery-financing-miami).'
+
+            const result = validateInternalLinks(content, KNOWN)
+
+            expect(result.content).toBe(
+                'See [financing](/plastic-surgery-financing-miami).'
+            )
+            expect(result.removed).toEqual([])
+            expect(result.rewritten).toEqual([
+                {
+                    from: 'https://www.alluringplasticsurgery.com/plastic-surgery-financing-miami',
+                    to: '/plastic-surgery-financing-miami',
+                },
+            ])
+        })
+
+        it('drops a trailing slash', () => {
+            const content = 'See our [BBL page](/procedures/bbl-miami/).'
+
+            expect(validateInternalLinks(content, KNOWN).content).toBe(
+                'See our [BBL page](/procedures/bbl-miami).'
+            )
+        })
+
+        it('points the root form of a 2026 post at its /blog/ URL', () => {
+            // app/[slug]/page.tsx 308s /bbl-recovery-time-miami to /blog/…,
+            // and 404s it once the post is unpublished.
+            const content = '[recovery time](/bbl-recovery-time-miami)'
+
+            const result = validateInternalLinks(content, KNOWN)
+
+            expect(result.content).toBe(
+                '[recovery time](/blog/bbl-recovery-time-miami)'
+            )
+            expect(result.removed).toEqual([])
+        })
+
+        it('keeps the fragment and query of a rewritten link', () => {
+            const content =
+                '[pricing](https://www.alluringplasticsurgery.com/procedures/bbl-miami/#pricing) [more](/procedures/bbl-miami/?utm=x)'
+
+            expect(validateInternalLinks(content, KNOWN).content).toBe(
+                '[pricing](/procedures/bbl-miami#pricing) [more](/procedures/bbl-miami?utm=x)'
+            )
+        })
+
+        it('reports nothing for a link that is already canonical', () => {
+            const content =
+                '[old](/how-long-to-recover-from-bbl) [new](/blog/bbl-recovery-time-miami)'
+
+            expect(validateInternalLinks(content, KNOWN).rewritten).toEqual([])
+        })
+
+        it('never moves a link on another host onto the main site', () => {
+            // The booking landing page lives on book.alluringplasticsurgery.com;
+            // stripping its host would send the reader somewhere else.
+            const content =
+                '[book](https://book.alluringplasticsurgery.com/procedures/bbl-miami) [map](https://maps.google.com/?q=alluringplasticsurgery.com/procedures/bbl-miami)'
+
+            const result = validateInternalLinks(content, KNOWN)
+
+            expect(result.content).toBe(content)
+            expect(result.rewritten).toEqual([])
+        })
+
+        it('does not invent a /blog/ URL for an unknown root path', () => {
+            const content = '[made up](/not-a-post)'
+
+            const result = validateInternalLinks(content, KNOWN)
+
+            expect(result.content).toBe('made up')
+            expect(result.rewritten).toEqual([])
         })
     })
 
@@ -113,13 +190,15 @@ describe('validateInternalLinks', () => {
         })
 
         it('is idempotent', () => {
-            const content = 'Read [the guide](/blog/facelift-cost-miami).'
+            const content =
+                'Read [the guide](/blog/facelift-cost-miami), [BBL](/procedures/bbl-miami/) and [time](/bbl-recovery-time-miami).'
 
             const once = validateInternalLinks(content, KNOWN)
             const twice = validateInternalLinks(once.content, KNOWN)
 
             expect(twice.content).toBe(once.content)
             expect(twice.removed).toEqual([])
+            expect(twice.rewritten).toEqual([])
         })
 
         it('leaves image syntax alone', () => {
