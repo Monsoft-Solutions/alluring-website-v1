@@ -136,9 +136,10 @@ describe('evaluateTopicCandidate', () => {
 })
 
 describe('gate regressions — synonym-titled and containment matches (prod 2026-08-12)', () => {
-    // /why-do-bbl-stink is titled "BBL Smell Explained: Why Do BBL Stink…"
-    // but its slug carries only "stink". These candidates sailed through as
-    // 'new' in production before title queries + containment scoring.
+    // /why-do-bbl-stink ranks for "bbl smell" but its slug carries only
+    // "stink". These candidates sailed through as 'new' in production before
+    // title queries + containment scoring; its registry entry now also owns
+    // the smell queries outright.
     it("routes 'bbl smell' to the existing stink post as refresh", () => {
         const verdict = evaluateTopicCandidate({
             title: "BBL Smell After Surgery: What's Normal & What's Not",

@@ -376,6 +376,13 @@ const nextConfig = {
                 destination: '/how-long-to-recover-from-bbl',
                 permanent: true,
             },
+            // WordPress-era path for the BBL smell post; Search Console still
+            // requests it and it 404s.
+            {
+                source: '/alluring-plasticsurgery/blog/bbl-smell-is-it-real-causes-how-to-prevent-it',
+                destination: '/why-do-bbl-stink',
+                permanent: true,
+            },
 
             // BBL January batch consolidation (#231).
             //
