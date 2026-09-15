@@ -60,8 +60,8 @@ export const WhyUs = () => {
                             Why Women Fly to Miami for Alluring
                         </h2>
                         <p className='mb-8 text-xl leading-relaxed font-light text-stone-600'>
-                            Locals trust us, and patients fly in from around the
-                            world. We blend a luxury vacation feel with
+                            Locals trust us, and patients fly in from across the
+                            United States. We blend a luxury feel with
                             hospital-grade safety standards to create an
                             experience that puts you at ease.
                         </p>

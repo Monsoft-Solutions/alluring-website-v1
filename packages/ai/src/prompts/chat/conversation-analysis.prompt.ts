@@ -56,7 +56,7 @@ Use ONLY these exact tag values where applicable (do not create new tags):
 - research_phase: Just gathering information
 - post_op_concern: Has concerns about recovery
 - travel_domestic: Traveling from elsewhere in US
-- travel_international: Coming from another country
+- travel_international: Coming from outside the US. Tag it so staff can set expectations, but the practice markets to US patients only and offers no travel coordination.
 - unknown: Cannot determine tags
 
 ### 4. LEAD PROFILE
@@ -87,7 +87,7 @@ Use ONLY these exact tag values where applicable (do not create new tags):
 **Patient Type** - Local or traveling:
 - local: Lives in Miami/South Florida area
 - travel_domestic: Traveling from elsewhere in US
-- travel_international: Coming from another country
+- travel_international: Coming from outside the US. Record it, but never offer travel coordination or describe the practice as serving international patients.
 - unknown: Location not mentioned
 
 ### 5. PSYCHOGRAPHIC DATA

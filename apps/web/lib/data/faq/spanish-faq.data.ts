@@ -92,7 +92,7 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: '¿Cuánto tiempo necesito quedarme en Miami?',
-            answer: `El tiempo recomendado varía según el procedimiento. Para un BBL, recomendamos 10-14 días en Miami. Para procedimientos más pequeños como aumento de senos, 5-7 días puede ser suficiente. Te daremos recomendaciones específicas durante tu consulta.`,
+            answer: `El tiempo recomendado varía según el procedimiento. Para un BBL, recomendamos 7-10 días en Miami. Para procedimientos más pequeños como aumento de senos, 5-7 días puede ser suficiente. Te daremos recomendaciones específicas durante tu consulta.`,
         },
         {
             question: '¿Ofrecen consultas virtuales antes de viajar?',

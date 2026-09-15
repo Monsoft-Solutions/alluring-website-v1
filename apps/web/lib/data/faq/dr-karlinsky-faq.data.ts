@@ -35,7 +35,7 @@ export const drKarlinskyFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long is recovery?',
-            answer: `Most patients are back at desk work in 1–2 weeks and at full activity in 4–6 weeks. You'll get a procedure-specific timeline at your consult, plus 24/7 post-op concierge contact.`,
+            answer: `Most patients are back at desk work in 1–2 weeks and at full activity in 4–6 weeks. You'll get a procedure-specific timeline at your consult, plus a direct number to call after surgery.`,
         },
         {
             question: '¿Hablan español?',

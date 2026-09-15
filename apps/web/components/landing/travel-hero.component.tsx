@@ -1,26 +1,26 @@
 /**
  * TravelHero Component
  *
- * A travel/medical tourism focused hero section for out-of-town patients:
+ * Hero section for patients travelling in from other US states:
  * - Virtual consultation first approach
  * - Confirmed surgery and follow-up dates before travel is booked
  * - Bilingual care
  *
  * SCOPE: the practice does not book flights, lodging or transport and is
  * not partnered with any recovery house. Do not reintroduce claims about
- * arranging accommodation or "concierge" travel services here.
+ * arranging accommodation, recovery stays, or "concierge" travel services
+ * here — the FAQ on this same page explicitly denies all three.
  *
- * Optimized for patients traveling from other states or countries.
+ * US-only: patients travel in from other states, not other countries.
  */
 import {
     ShieldCheck,
-    Clock,
     CreditCard,
     Quote,
     Plane,
     Video,
-    Building,
-    Palmtree,
+    CalendarCheck,
+    PhoneCall,
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -66,7 +66,7 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                                 <div className='flex items-center gap-2 text-white'>
                                     <Plane className='text-gold-400 h-4 w-4' />
                                     <span className='text-sm font-medium'>
-                                        Fly-In Concierge Service
+                                        Out-of-State Patients Welcome
                                     </span>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                             </span>
                             <span className='text-gold-400'>|</span>
                             <span className='text-sm font-medium text-stone-400'>
-                                We Guide Your Journey
+                                Dates Confirmed in Writing
                             </span>
                         </div>
 
@@ -98,9 +98,10 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                                 </span>
                             </h1>
                             <p className='text-lg leading-relaxed text-stone-300'>
-                                World-class results in sunny Miami. Our
-                                specialists guide you through every step—from
-                                your first call to recovery recommendations.
+                                Meet your surgeon by video first. You get your
+                                surgery, pre-op and follow-up dates in writing —
+                                and how many nights you need in Miami — before
+                                you book a flight.
                             </p>
                         </div>
 
@@ -113,9 +114,9 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                                 </span>
                             </div>
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
-                                <Building className='text-gold-400 h-4 w-4' />
+                                <CalendarCheck className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    Recovery Stay Recommendations
+                                    Dates Before You Book
                                 </span>
                             </div>
                         </div>
@@ -137,7 +138,7 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                         >
                             <ConsultationForm
                                 title='Speak with Our Specialists'
-                                subtitle='Free Consultation • Travel Guidance • Hablamos Español'
+                                subtitle='Free Consultation • Dates in Writing • Hablamos Español'
                                 source={CONTACT_SOURCES.LANDING_PAGE}
                                 analyticsFormName='travel_landing_hero_form'
                                 enableAnalytics
@@ -167,9 +168,9 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                    <Palmtree className='text-gold-400 h-5 w-5' />
+                                    <CalendarCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Recovery in Paradise
+                                        Follow-Up Before You Fly
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
@@ -179,17 +180,17 @@ export function TravelHero({ id = 'hero' }: TravelHeroProps) {
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                    <Clock className='text-gold-400 h-5 w-5' />
+                                    <PhoneCall className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        24/7 Concierge Support
+                                        Direct Post-Op Line
                                     </span>
                                 </div>
                             </div>
 
                             {/* Risk Reversal Message */}
                             <p className='text-center text-sm text-stone-500 lg:text-left'>
-                                ✓ Free consultation • ✓ Recovery stay
-                                recommendations • ✓ No hidden fees
+                                ✓ Free consultation • ✓ Surgery and follow-up
+                                dates in writing • ✓ No hidden fees
                             </p>
                         </div>
                     </div>

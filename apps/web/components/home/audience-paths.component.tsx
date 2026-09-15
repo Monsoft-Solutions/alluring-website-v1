@@ -46,8 +46,7 @@ const AUDIENCE_PATHS: readonly AudiencePath[] = [
     },
     {
         icon: <Plane className='h-5 w-5' />,
-        situation:
-            '“I’d be flying in from out of state — or out of the country.”',
+        situation: '“I’d be flying in from another state.”',
         answer: 'Meet your surgeon by video first, then get your dates in writing so you can book travel around a confirmed schedule. Hablamos Español.',
         label: 'Flying In',
         href: '/fly-in-consultation',

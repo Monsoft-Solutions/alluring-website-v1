@@ -86,7 +86,7 @@ export const landingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Will I have support during recovery?',
-            answer: `Absolutely. Your dedicated concierge team is available 24/7 during your recovery. We provide detailed post-operative instructions, schedule follow-up appointments, and are just a phone call away if you have any concerns.`,
+            answer: `Absolutely. We provide detailed post-operative instructions, schedule your follow-up appointments, and give you a direct number to call if something does not look right during your recovery.`,
         },
         {
             question: 'What if I am traveling from out of state?',

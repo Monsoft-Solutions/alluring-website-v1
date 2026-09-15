@@ -3,7 +3,7 @@
  *
  * A travel-focused mid-page lead capture form emphasizing:
  * - Virtual consultation convenience
- * - Concierge service
+ * - Surgery and follow-up dates in writing before travel is booked
  * - No commitment to travel yet
  *
  * Uses the shared leadCaptureSchema for validation.

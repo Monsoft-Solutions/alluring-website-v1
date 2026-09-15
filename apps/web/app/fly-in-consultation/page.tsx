@@ -1,7 +1,7 @@
 /**
  * Travel/Out-of-Town Lead Generation Landing Page
  *
- * Landing page targeting out-of-town and medical tourism patients.
+ * Landing page targeting patients travelling in from other US states.
  * Emphasizes virtual consultations and getting confirmed surgical dates
  * before a patient books travel.
  *
@@ -20,7 +20,7 @@
  *
  * SEO-optimized for:
  * - "fly in plastic surgery miami"
- * - "medical tourism miami plastic surgery"
+ * - "traveling to miami for plastic surgery"
  * - "virtual plastic surgery consultation"
  * - "plastic surgery for out of state patients"
  */
@@ -51,7 +51,7 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
 /**
  * Travel Landing Page Metadata
  *
- * SEO-optimized for medical tourism and fly-in surgery searches.
+ * SEO-optimized for out-of-state and fly-in surgery searches.
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/fly-in-consultation',
@@ -150,8 +150,8 @@ export default async function FlyInConsultationPage() {
                     ctaConfig={{
                         title: 'Have more questions about traveling?',
                         description:
-                            'Our concierge team specializes in fly-in patients.',
-                        buttonText: 'Call Our Concierge',
+                            'Our patient coordinators can walk you through the schedule.',
+                        buttonText: 'Call Our Team',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,
                             ''
@@ -167,16 +167,16 @@ export default async function FlyInConsultationPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Your Miami Transformation Awaits'
-                    description="Start with a virtual consultation from anywhere in the world. When you're ready, our specialists will guide you through every step of planning your trip—so you can focus on becoming the best version of yourself."
+                    description='Start with a virtual consultation from wherever you are in the US. You will have your surgery, pre-op and follow-up dates — and the number of nights you need in Miami — in writing before you book a flight.'
                     primaryButton={{
                         text: 'Schedule Virtual Consultation',
                         href: '#hero-form',
                     }}
                     secondaryButton={{
-                        text: 'Call Our Concierge Team',
+                        text: 'Call Our Team',
                         href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
                     }}
-                    eyebrow='Fly-In Concierge Service'
+                    eyebrow='Out-of-State Patients'
                     size='lg'
                 />
             </ContainerLayout>
