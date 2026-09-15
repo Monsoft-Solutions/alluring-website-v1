@@ -43,9 +43,12 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'liposuction-candidate-checklist-miami',
     'liposuction-miami-moms-faq',
     'breast-reduction-miami-recovery-candidates',
-    // BBL recovery consolidation (#229)
+    // BBL recovery consolidation (#229, finished by the recovery fold)
     'bbl-recovery-miami-moms-guide',
     'bbl-miami-recovery-faq',
+    'miami-bbl-recovery-guide',
+    'bbl-recovery-time-miami',
+    'bbl-recovery-mistakes-miami',
     // BBL January batch consolidation (#231)
     'liposuction-vs-bbl-miami',
     'bbl-vs-butt-implants-miami',

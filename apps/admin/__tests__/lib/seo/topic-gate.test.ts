@@ -28,11 +28,11 @@ describe('evaluateTopicCandidate', () => {
 
     it('follows duplicate clusters to the canonical owner on refresh', () => {
         const verdict = evaluateTopicCandidate({
-            title: 'BBL Recovery Mistakes to Avoid',
-            primaryKeyword: 'bbl recovery mistakes miami',
+            title: 'Tummy Tuck Recovery Myths for Miami Moms',
+            primaryKeyword: 'tummy tuck recovery myths miami moms',
         })
         expect(verdict.verdict).toBe('refresh')
-        expect(verdict.owningUrl).toBe('/blog/miami-bbl-recovery-guide')
+        expect(verdict.owningUrl).toBe('/blog/tummy-tuck-myths-miami-moms')
     })
 
     it('rejects retired topics', () => {
@@ -43,12 +43,37 @@ describe('evaluateTopicCandidate', () => {
         expect(verdict.verdict).toBe('reject')
     })
 
-    it('rejects near-duplicates of owned queries by similarity', () => {
-        // 'bbl recovery time' is a strict token-subset of the owned
-        // 'bbl recovery time miami' — no exact match, high overlap
+    it('sends BBL recovery topics to the one recovery page as refresh', () => {
+        for (const primaryKeyword of [
+            'bbl recovery timeline',
+            '6 weeks post op bbl',
+        ]) {
+            const verdict = evaluateTopicCandidate({
+                title: 'BBL Recovery Week by Week',
+                primaryKeyword,
+            })
+            expect(verdict.verdict, primaryKeyword).toBe('refresh')
+            expect(verdict.owningUrl, primaryKeyword).toBe(
+                '/how-long-to-recover-from-bbl'
+            )
+        }
+    })
+
+    it('rejects a folded recovery post and points at the page it redirects to', () => {
         const verdict = evaluateTopicCandidate({
-            title: 'BBL Recovery Time',
-            primaryKeyword: 'bbl recovery time',
+            title: 'BBL Recovery Mistakes to Avoid',
+            primaryKeyword: 'bbl recovery mistakes miami',
+        })
+        expect(verdict.verdict).toBe('reject')
+        expect(verdict.owningUrl).toBe('/how-long-to-recover-from-bbl')
+    })
+
+    it('rejects near-duplicates of owned queries by similarity', () => {
+        // 'tummy tuck recovery time' is a strict token-subset of the owned
+        // 'tummy tuck recovery time miami' — no exact match, high overlap
+        const verdict = evaluateTopicCandidate({
+            title: 'Tummy Tuck Recovery Time',
+            primaryKeyword: 'tummy tuck recovery time',
         })
         expect(verdict.verdict).not.toBe('new')
         expect(verdict.owningUrl).toBeDefined()

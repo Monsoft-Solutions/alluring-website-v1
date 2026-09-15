@@ -299,20 +299,81 @@ const nextConfig = {
                 permanent: true,
             },
 
-            // BBL recovery consolidation (#229). Only the two posts with zero
-            // impressions over the 28 days to 2026-09-08 fold now; the rest of
-            // the seven-way split waits until the canonical guide at
-            // /blog/miami-bbl-recovery-guide has absorbed their content
-            // through the admin pipeline, so nothing that currently ranks goes
-            // dark in the meantime.
+            // BBL recovery consolidation (#229, finished by the recovery fold).
+            //
+            // Four posts answered "how long is BBL recovery" with three
+            // different compression-garment schedules. They are now one page,
+            // /how-long-to-recover-from-bbl: over the 90 days to 2026-09-11 it
+            // had twice the impressions of /blog/miami-bbl-recovery-guide
+            // (3,760 vs 1,863) and six times the page views (264 vs 45), and
+            // its URL matches how people phrase the search. The guide, the
+            // recovery-time post and the mistakes post fold into it, and
+            // #229's two earlier folds are repointed so neither chains through
+            // the guide.
+            //
+            // Each 2026 post is redirected at both /blog/slug and /slug. The
+            // root form is served by app/[slug]/page.tsx, which 308s to
+            // /blog/slug only while the post is published, so once a folded
+            // post is drafted its root URL would otherwise 404.
             {
                 source: '/blog/bbl-recovery-miami-moms-guide',
-                destination: '/blog/miami-bbl-recovery-guide',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/bbl-recovery-miami-moms-guide',
+                destination: '/how-long-to-recover-from-bbl',
                 permanent: true,
             },
             {
                 source: '/blog/bbl-miami-recovery-faq',
-                destination: '/blog/miami-bbl-recovery-guide',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/bbl-miami-recovery-faq',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/blog/miami-bbl-recovery-guide',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/miami-bbl-recovery-guide',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-recovery-time-miami',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/bbl-recovery-time-miami',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-recovery-mistakes-miami',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/bbl-recovery-mistakes-miami',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            // Older recovery URLs Search Console still requests; both 404.
+            {
+                source: '/how-to-recover-from-bbl',
+                destination: '/how-long-to-recover-from-bbl',
+                permanent: true,
+            },
+            {
+                source: '/how-long-does-it-take-to-recover-from-bbl',
+                destination: '/how-long-to-recover-from-bbl',
                 permanent: true,
             },
 

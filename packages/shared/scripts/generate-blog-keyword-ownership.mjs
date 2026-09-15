@@ -18,9 +18,10 @@
  *
  * This script overwrites the constant. The checked-in file carries
  * hand-written `notes` and GSC-derived `ownsQueries` on a few entries (the
- * #229 recovery owner, the #231 comparison owner and procedure-page
- * absorptions) that cannot be reproduced from the database, so after a
- * regeneration restore those from `git diff` before committing.
+ * BBL recovery owner /how-long-to-recover-from-bbl, the #231 comparison owner,
+ * procedure-page absorptions and the notes on retired entries) that cannot be
+ * reproduced from the database, so after a regeneration restore those from
+ * `git diff` before committing.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -30,11 +31,6 @@ const BLOG_PREFIX_CUTOFF = new Date('2026-01-01T00:00:00Z')
 
 /** slug -> proposed owner URL (plan doc §6). */
 const DUPLICATE_OF = {
-    // BBL recovery — owner /blog/miami-bbl-recovery-guide (#229, chosen on
-    // GSC evidence over the plan doc's /blog/bbl-recovery-time-miami)
-    'bbl-recovery-time-miami': '/blog/miami-bbl-recovery-guide',
-    'bbl-recovery-mistakes-miami': '/blog/miami-bbl-recovery-guide',
-    'how-long-to-recover-from-bbl': '/blog/miami-bbl-recovery-guide',
     // Surgeon selection — how-to intent owner
     'choose-plastic-surgeons-miami':
         '/how-to-choose-the-best-plastic-surgeon-in-miami-10-things-to-look-for',
@@ -81,7 +77,6 @@ const STRIP_QUERIES = {
 
 /** Legacy root posts in a duplicate cluster: GSC evidence required before any 301. */
 const GSC_CHECK_FIRST = new Set([
-    'how-long-to-recover-from-bbl',
     'how-long-to-recover-from-mommy-makeover',
     'what-is-the-difference-between-tummy-tuck-and-liposuction',
 ])
@@ -127,9 +122,13 @@ const RETIRED = {
     '/facelift-cost-miami': '/procedures/facelift-miami',
     '/breast-reduction-surgeons-miami': '/procedures/breast-reduction-miami',
     '/best-breast-lift-surgeons-miami': '/procedures/breast-lift-miami',
-    // BBL recovery consolidation (#229)
-    '/blog/bbl-recovery-miami-moms-guide': '/blog/miami-bbl-recovery-guide',
-    '/blog/bbl-miami-recovery-faq': '/blog/miami-bbl-recovery-guide',
+    // BBL recovery consolidation (#229, finished by the recovery fold): one
+    // recovery page, /how-long-to-recover-from-bbl
+    '/blog/bbl-recovery-miami-moms-guide': '/how-long-to-recover-from-bbl',
+    '/blog/bbl-miami-recovery-faq': '/how-long-to-recover-from-bbl',
+    '/blog/miami-bbl-recovery-guide': '/how-long-to-recover-from-bbl',
+    '/blog/bbl-recovery-time-miami': '/how-long-to-recover-from-bbl',
+    '/blog/bbl-recovery-mistakes-miami': '/how-long-to-recover-from-bbl',
     // BBL January batch consolidation (#231)
     '/blog/liposuction-vs-bbl-miami': '/blog/tummy-tuck-vs-bbl-miami',
     '/blog/bbl-vs-butt-implants-miami': '/blog/tummy-tuck-vs-bbl-miami',

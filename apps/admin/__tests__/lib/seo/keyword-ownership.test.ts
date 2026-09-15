@@ -21,15 +21,17 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (143 posts as of seed)', () => {
+    it('contains every published post exactly once (140 posts as of seed)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
-        // 156 at seed, less the two BBL recovery posts retired in #229 and
-        // the eleven January-batch BBL posts folded in #231 (five comparison
+        // 156 at seed, less the two BBL recovery posts retired in #229, the
+        // eleven January-batch BBL posts folded in #231 (five comparison
         // posts into /blog/tummy-tuck-vs-bbl-miami, six "mom" posts into the
-        // procedure page).
-        expect(liveBlog.length).toBe(143)
+        // procedure page), and the three recovery posts folded into
+        // /how-long-to-recover-from-bbl (miami-bbl-recovery-guide,
+        // bbl-recovery-time-miami, bbl-recovery-mistakes-miami).
+        expect(liveBlog.length).toBe(140)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -74,11 +76,42 @@ describe('resolveQueryOwner', () => {
     })
 
     it('follows duplicateOf to the canonical cluster owner', () => {
-        const result = resolveQueryOwner('bbl recovery mistakes miami')
-        expect(result?.owner.slug).toBe('bbl-recovery-mistakes-miami')
+        const result = resolveQueryOwner('tummy tuck recovery myths miami moms')
+        expect(result?.owner.slug).toBe('tummy-tuck-recovery-myths-miami-moms')
         expect(result?.canonicalOwner.url).toBe(
-            '/blog/miami-bbl-recovery-guide'
+            '/blog/tummy-tuck-myths-miami-moms'
         )
+    })
+
+    it('gives every BBL recovery query to the one recovery page', () => {
+        for (const query of [
+            'bbl recovery',
+            'bbl recovery time',
+            'bbl recovery timeline',
+            'how long is bbl recovery',
+            '6 weeks post op bbl',
+            'bbl aftercare list',
+        ]) {
+            expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
+                '/how-long-to-recover-from-bbl'
+            )
+        }
+    })
+
+    it('marks the folded recovery posts retired with their 308 target', () => {
+        for (const slug of [
+            'miami-bbl-recovery-guide',
+            'bbl-recovery-time-miami',
+            'bbl-recovery-mistakes-miami',
+            'bbl-miami-recovery-faq',
+            'bbl-recovery-miami-moms-guide',
+        ]) {
+            const entry = BLOG_POST_ENTRIES.find((e) => e.slug === slug)
+            expect(entry?.status, slug).toBe('retired')
+            expect(entry?.redirectsTo, slug).toBe(
+                '/how-long-to-recover-from-bbl'
+            )
+        }
     })
 
     it('routes every BBL comparison query to the single comparison post (#231)', () => {
@@ -144,11 +177,13 @@ describe('resolveQueryOwner', () => {
 
 describe('findSimilarOwnedQueries', () => {
     it('catches persona-variants of an owned query', () => {
-        const matches = findSimilarOwnedQueries('bbl recovery time', {
+        const matches = findSimilarOwnedQueries('tummy tuck recovery time', {
             threshold: 0.5,
         })
         expect(
-            matches.some((m) => m.owner.slug === 'bbl-recovery-time-miami')
+            matches.some(
+                (m) => m.owner.slug === 'tummy-tuck-recovery-time-miami'
+            )
         ).toBe(true)
     })
 
