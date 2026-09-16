@@ -148,7 +148,7 @@ export type MedicalClinicSchemaProps = {
 
     /**
      * Geographic area(s) served by the clinic
-     * Useful for local SEO and medical tourism targeting
+     * Useful for local SEO. Keep values US-scoped.
      * @see https://schema.org/areaServed
      */
     areaServed?: string | string[]

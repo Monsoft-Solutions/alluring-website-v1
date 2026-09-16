@@ -130,7 +130,7 @@ const PROCEDURE_RECOVERY_WEEKS: Record<ProcedureId, number> = {
     'breast-lift': 2,
     'breast-reduction': 2,
     liposuction: 1,
-    bbl: 3,
+    bbl: 2,
     'tummy-tuck': 3,
     'mommy-makeover': 4,
     facelift: 2,

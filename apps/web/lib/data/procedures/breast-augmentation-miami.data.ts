@@ -264,7 +264,7 @@ For women seeking enhancement without implants, **fat transfer breast augmentati
 ### Fat Transfer Limitations
 
 - Cannot achieve dramatic size increases
-- Not all transferred fat survives (typically 60-80%)
+- Not all transferred fat survives (about 50-80%, with surgeons interviewed by ASPS putting the average take near 60%)
 - May require multiple sessions
 - Not suitable for women wanting significant enlargement
 

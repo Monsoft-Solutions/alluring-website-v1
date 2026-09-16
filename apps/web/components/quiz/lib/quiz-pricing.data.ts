@@ -131,7 +131,7 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             min: 153,
             max: 278,
         },
-        recoveryWeeks: 3,
+        recoveryWeeks: 2,
         benefits: [
             'Natural enhancement using your own fat',
             'Improved body proportions',

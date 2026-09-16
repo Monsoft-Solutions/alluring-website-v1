@@ -213,7 +213,7 @@ export const featuredFaqs: Array<{
     },
     {
         question: 'What is the recovery time for plastic surgery?',
-        answer: 'Recovery varies by procedure: 1-2 weeks for breast augmentation, 2-3 weeks for BBL, and 2-4 weeks for tummy tuck before returning to normal activities.',
+        answer: 'Recovery varies by procedure: 1-2 weeks for breast augmentation, about 2 weeks off work for a BBL with normal activities at about 8 weeks, and 2-4 weeks for tummy tuck before returning to normal activities.',
         details:
             'Our team provides detailed post-operative instructions and 24/7 support during your recovery.',
     },

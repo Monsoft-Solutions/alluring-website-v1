@@ -163,7 +163,7 @@ export function SpanishHero({ id = 'hero' }: SpanishHeroProps) {
                                         expectativas.&rdquo;
                                     </p>
                                     <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Gabriela M., Venezuela
+                                        — Gabriela M.
                                     </p>
                                 </div>
                             </div>

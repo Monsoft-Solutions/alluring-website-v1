@@ -37,7 +37,7 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How far in advance should I book?',
-            answer: `We recommend booking 4-6 weeks in advance to allow time for your consultation, pre-operative planning, and travel arrangements. However, we can often accommodate shorter timelines for patients with flexible schedules. Our team will work with you to find the best dates.`,
+            answer: `We recommend booking 4-6 weeks in advance to allow time for your consultation and pre-operative planning, and to give you room to make your own travel arrangements once your dates are confirmed. However, we can often accommodate shorter timelines for patients with flexible schedules. Our team will work with you to find the best dates.`,
         },
         {
             question: 'What if I need to reschedule my trip?',
@@ -99,7 +99,7 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'What follow-up care will I need after returning home?',
-            answer: `We'll schedule virtual follow-up appointments to monitor your healing after you return home. We can also coordinate with a local physician if needed. Most patients only need virtual check-ins, but we're always available if you need to return to Miami for any reason.`,
+            answer: `We'll schedule virtual follow-up appointments to monitor your healing after you return home. If you need to be seen in person, we can send your operative details to a physician you choose. Most patients only need virtual check-ins, but we're always available if you need to return to Miami for any reason.`,
         },
     ],
 }
@@ -110,7 +110,7 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
 export const travelLandingFaqConfig = {
     title: 'Questions from',
     subtitle: 'Traveling Patients',
-    badge: 'Fly-In Concierge',
+    badge: 'Out-of-State Patients',
     description:
         'Everything you need to know about planning your surgical trip to Miami.',
 }

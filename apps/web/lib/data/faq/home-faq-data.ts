@@ -41,7 +41,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long does BBL recovery take?',
-            answer: 'BBL recovery typically requires 2 weeks off work and avoiding sitting directly on your buttocks for 6-8 weeks. Most patients see initial results immediately, with final results visible at 3-6 months once swelling subsides. We provide detailed post-op care instructions and recovery supplies.',
+            answer: 'BBL recovery typically requires 10-14 days off work. Avoid sitting directly on your buttocks for at least 2 weeks, then sit only on a BBL pillow until about week 8. Most patients see initial results immediately, with final results visible at 3-6 months once swelling subsides. We provide detailed post-op care instructions and recovery supplies.',
         },
         {
             question: 'Do you serve patients from outside Miami?',

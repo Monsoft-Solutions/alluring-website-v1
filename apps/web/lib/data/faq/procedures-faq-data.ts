@@ -9,7 +9,7 @@
  * - Address pain points: safety, cost, recovery, results
  * - Reinforce "Luxury Made Affordable" positioning
  * - Guide toward booking a consultation
- * - Support out-of-town/medical tourism visitors
+ * - Support patients travelling in from other US states
  */
 
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'

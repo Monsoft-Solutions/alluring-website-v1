@@ -144,7 +144,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/bbl-recovery-timeline.webp',
             alt: 'Week-by-week BBL recovery timeline infographic from surgery to final results',
             caption:
-                'Most patients return to normal activities within 6-8 weeks',
+                'Most patients sit normally and exercise again at about 8 weeks',
             section: 'recovery',
             variant: 'full-width',
         },
@@ -196,7 +196,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     quickStats: {
         duration: '3 to 5 Hours',
         anesthesia: 'General Anesthesia',
-        recovery: '1-2 Weeks Initial',
+        recovery: '10-14 Days Off Work',
         results: 'Long-lasting',
         inpatientOutpatient: 'Outpatient',
     },
@@ -417,9 +417,9 @@ Understanding **BBL recovery Miami** expectations helps you prepare for a smooth
 - Fatigue from anesthesia
 
 **What to Do:**
-- Rest in prone (stomach) position or on your side
+- Rest on your stomach or on your side
 - **Absolutely no sitting directly on your buttocks**
-- Wear compression garments 24/7
+- Wear your compression garment 24/7, except in the shower
 - Take short walks every few hours to promote circulation
 - Stay hydrated and follow a light, nutritious diet
 
@@ -432,9 +432,9 @@ Understanding **BBL recovery Miami** expectations helps you prepare for a smooth
 - Some numbness in treated areas (normal)
 
 **What to Do:**
-- Continue avoiding sitting on your buttocks
+- Continue avoiding sitting directly on your buttocks for at least the first 2 weeks
 - Use a BBL pillow when you must sit
-- Keep wearing compression garments
+- Keep the garment on 24/7 through the first month, except in the shower
 - Attend your first follow-up appointment
 - Shower carefully as instructed
 - Begin light walking for 10-15 minutes daily
@@ -444,28 +444,29 @@ Understanding **BBL recovery Miami** expectations helps you prepare for a smooth
 ### Week 2-4: Progressive Healing
 
 **What to Expect:**
-- Most patients can return to desk work with a BBL pillow
+- Most patients return to desk work at 10-14 days, sitting on a BBL pillow
 - Swelling continues to decrease
 - Incisions healing well
 - Shape becoming more visible
 
 **What to Do:**
-- You may sit with a BBL pillow for short periods
-- Continue compression wear as directed
-- Avoid strenuous exercise
+- Sit only on a BBL pillow, and only briefly — about 10 minutes at a time
+- Keep the garment on 24/7 through the end of the first month
+- Avoid strenuous exercise and heavy lifting
 - Sleep on your stomach or side
 - Stay at a stable weight
 
 ### Week 4-6: Returning to Normal
 
 **What to Expect:**
-- Most swelling resolved
+- Swelling keeps easing, though your final shape takes 3-6 months
 - Results taking shape
 - Comfort levels much improved
 
 **What to Do:**
-- Gradually resume sitting without pillow (around week 6)
-- Begin light exercise (walking, light cardio)
+- Keep sitting only on a BBL pillow until about week 8
+- Wear the garment at least 12 hours a day through the second month, or as your surgeon directs
+- Add light activity such as brisk walking after about a month
 - Follow surgeon's guidance on resuming activities
 - Continue healthy diet for optimal fat survival
 
@@ -487,7 +488,7 @@ Understanding **BBL recovery Miami** expectations helps you prepare for a smooth
 
 Maximizing fat survival is crucial for the best **BBL results Miami** patients desire:
 
-1. **No Direct Sitting:** Avoid sitting directly on your buttocks for 2-3 weeks
+1. **No Direct Sitting:** Avoid sitting directly on your buttocks for at least 2 weeks, then sit only on a BBL pillow until about week 8
 2. **Use a BBL Pillow:** When sitting is necessary, use a specialized pillow
 3. **Don't Smoke:** Smoking severely restricts blood flow to transferred fat
 4. **Maintain Weight:** Losing weight will shrink your results; gaining too much can distort them
@@ -516,11 +517,11 @@ Our approach prioritizes safety, natural-looking results, and open communication
 
 **Miami** has become the undisputed capital for **Brazilian Butt Lifts** in the United States, and for good reason:
 
-**Experience & Volume:** Miami surgeons perform more BBLs than anywhere else in the country, building unmatched expertise.
+**Board-Certified Surgeons:** What matters is not how many BBLs a city performs but who performs yours. Look for certification by the American Board of Plastic Surgery and an accredited facility. The South Florida mortality review found 92% of BBL deaths occurred at high-volume budget clinics, so volume alone is not a reason to choose a surgeon.
+
+**Florida's Safety Law:** Florida requires that gluteal fat be injected only into the subcutaneous layer, never crossing the gluteal fascia, under real-time ultrasound guidance, with one physician devoted to one patient throughout. It is the strictest BBL law in the country, and it is our standard on every case.
 
 **Innovation:** Miami's competitive market drives adoption of the latest, safest techniques.
-
-**Medical Tourism Infrastructure:** As a city, Miami is set up for patients travelling in — accredited surgical facilities, plentiful short-stay accommodation and easy flight connections. (Alluring is not affiliated with any recovery house; patients arrange their own stay.)
 
 **Results-Driven Culture:** Miami's beach lifestyle demands natural-looking results that look amazing in swimwear.
 
@@ -549,7 +550,7 @@ Your journey to a more sculpted, confident you starts with a single conversation
         },
         {
             question: 'What percentage of the transferred fat survives?',
-            answer: "Typically 60-80% of the transferred fat survives permanently. We account for this by initially transferring more than the final desired volume. Survival depends on technique — our ultrasound-guided approach optimizes it — your body's response, and how closely you follow post-op instructions.",
+            answer: "About 50-80% of the transferred fat survives permanently, and surgeons interviewed by the American Society of Plastic Surgeons put the average take near 60%. We account for this by initially transferring more than the final desired volume. Survival depends on technique, your body's response, and how closely you follow post-op instructions. Florida law requires ultrasound guidance so the fat is placed above the muscle, where it is safe.",
         },
         // Complication rates and a surgeon-vetting checklist, folded in from
         // the retired /blog/bbl-safety-miami post (#231). "How much" is a
@@ -558,7 +559,7 @@ Your journey to a more sculpted, confident you starts with a single conversation
         {
             question:
                 'What are the real risks of a BBL, and how do you reduce them?',
-            answer: 'The serious risk is fat embolism, where fat injected into or below the gluteal muscle enters a blood vessel. Florida now requires real-time ultrasound guidance for exactly this reason, and it is our standard on every case. The common complications are minor and manageable: seroma in roughly 3-5% of cases, infection in about 2% with proper sterile protocol, and some fat reabsorption, typically 20-40%, which we plan for when deciding what volume to transfer. A BMI over 30 and smoking raise every one of these risks, which is why the consultation includes a full health screening.',
+            answer: 'The serious risk is fat embolism, where fat injected into or below the gluteal muscle enters a blood vessel. Florida now requires real-time ultrasound guidance for exactly this reason, and it is our standard on every case. The common complications are minor and manageable: seroma in roughly 3-5% of cases, infection in about 2% with proper sterile protocol, and some fat reabsorption — a 2020 review in Seminars in Plastic Surgery estimates 20-50% is reabsorbed — which we plan for when deciding what volume to transfer. A BMI over 30 and smoking raise every one of these risks, which is why the consultation includes a full health screening.',
         },
         {
             question: 'How should I vet a BBL surgeon in Miami?',
@@ -594,11 +595,11 @@ Your journey to a more sculpted, confident you starts with a single conversation
         },
         {
             question: 'How long is BBL recovery?',
-            answer: 'Full BBL recovery takes about 6-8 weeks. During the first 2-3 weeks, you must avoid sitting directly on your buttocks. Most patients return to desk work with a BBL pillow by week 2-3, resume light exercise around week 4-6, and see final results emerge between months 3-6 as swelling fully resolves.',
+            answer: 'Most patients take 10-14 days off work, sit normally and exercise again at about 8 weeks, feel fully recovered at 2-3 months, and see final results at 3-6 months. For the first 2 weeks you must avoid sitting directly on your buttocks, then sit only on a BBL pillow until about week 8.',
         },
         {
             question: 'How long after BBL can I sit down?',
-            answer: 'You should avoid sitting directly on your buttocks for 2-3 weeks after your BBL to protect the newly transferred fat. During weeks 2-6, you can sit using a BBL pillow that keeps pressure off your buttocks. Most patients can resume normal sitting without a pillow around week 6, though your surgeon will provide personalized guidance.',
+            answer: 'You should avoid sitting directly on your buttocks for at least 2 weeks after your BBL to protect the newly transferred fat. After that, sit only on a BBL pillow that keeps pressure off your buttocks, briefly at first — about 10 minutes at a time through week 6. Most patients can resume normal sitting at about week 8, though your surgeon will provide personalized guidance.',
         },
         {
             question: 'How long does BBL surgery take?',
@@ -610,11 +611,11 @@ Your journey to a more sculpted, confident you starts with a single conversation
         },
         {
             question: 'Why is Miami the best place for a BBL?',
-            answer: 'Miami is considered the BBL capital of the United States because surgeons here perform more BBLs than anywhere else, building unmatched expertise. Miami offers world-class surgical facilities, medical tourism infrastructure, diverse patient experience across all body types, and a results-driven culture where natural-looking, beach-ready curves are the standard.',
+            answer: 'Miami has a deep concentration of board-certified plastic surgeons, accredited surgical facilities, and experience across every body type. Florida also has the strictest BBL safety law in the country: fat may be injected only above the muscle, under real-time ultrasound guidance, with one physician devoted to one patient. What makes a BBL safe is the surgeon and the facility you choose, not the city.',
         },
         {
             question: 'Is the recovery painful?',
-            answer: 'Most patients experience some discomfort, swelling, and bruising after a BBL, but pain can be managed with prescribed medications. You will need to avoid sitting directly on your buttocks for about two to three weeks to aid recovery and maximize fat survival.',
+            answer: 'Most patients experience some discomfort, swelling, and bruising after a BBL, but pain can be managed with prescribed medications. Most people need some pain medication for the first four to five days, and pain eases after one to two weeks. You will need to avoid sitting directly on your buttocks for at least two weeks to aid recovery and maximize fat survival.',
         },
         {
             question: 'When will I see the final results?',

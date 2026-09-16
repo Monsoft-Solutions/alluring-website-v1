@@ -4,8 +4,12 @@
  * A section highlighting why patients travel to Miami for plastic surgery:
  * - World-class surgeons at competitive prices
  * - Recovery in a beautiful destination
- * - Full concierge support
+ * - Surgery and follow-up dates confirmed before travel is booked
  * - Privacy away from home
+ *
+ * SCOPE: the practice coordinates no travel — no flights, lodging or
+ * transport, and no recovery-house affiliation. Do not add "concierge"
+ * support claims here.
  *
  * Server component for SEO optimization.
  */
@@ -19,7 +23,7 @@ const TRAVEL_BENEFITS = [
         icon: Shield,
         title: 'World-Class Surgeons, Better Value',
         description:
-            'Miami is a global hub for cosmetic surgery. Our board-certified surgeons perform thousands of procedures yearly—expertise that often costs 30-50% more in other major cities.',
+            'Miami has a deep concentration of board-certified plastic surgeons and accredited surgical facilities. You get that experience without the premium the same care carries in many other major cities.',
         highlight: 'Premium Results',
     },
     {
