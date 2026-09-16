@@ -51,3 +51,8 @@ packages/db/.env.production
 # Per-worktree state (scripts/worktree.sh)
 .worktree-meta
 .issue.md
+
+# Local operational artifacts: one-off production SQL, database dumps,
+# generated reports, scratch. Plans stay tracked in implementation-plans/.
+# See .local/README.md
+.local/
