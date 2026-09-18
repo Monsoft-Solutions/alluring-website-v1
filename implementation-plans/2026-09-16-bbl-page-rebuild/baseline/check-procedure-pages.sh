@@ -27,8 +27,8 @@ SLUGS=(
   tummy-tuck-miami
 )
 
-printf '%-32s %8s %7s %9s %8s %10s\n' page html_kb ld+json h1_hidden dup_imgs og:image
-printf '%-32s %8s %7s %9s %8s %10s\n' '--------------------------------' -------- ------- --------- -------- ----------
+printf '%-32s %8s %7s %9s %7s %8s %9s\n' page html_kb ld+json h1_hidden hidden dup_imgs og:image
+printf '%-32s %8s %7s %9s %7s %8s %9s\n' '--------------------------------' -------- ------- --------- ------- -------- ---------
 
 fail=0
 for slug in "${SLUGS[@]}"; do
@@ -38,10 +38,13 @@ for slug in "${SLUGS[@]}"; do
   kb=$(( $(wc -c < "$html") / 1024 ))
   ld=$(grep -o 'application/ld+json' "$html" | wc -l | tr -d ' ')
 
-  # The hero H1 ships inside a framer-motion wrapper that server-renders
-  # style="opacity:0;transform:...". Any hit means content is invisible until
-  # hydration.
-  if grep -q 'opacity:0' "$html"; then h1_hidden=yes; else h1_hidden=no; fi
+  # Does the H1 ship invisible? An element's ancestors all open before it, so
+  # if no opacity:0 appears anywhere before the first <h1, the H1 has no hidden
+  # ancestor. (A hidden earlier *sibling* also trips this — deliberately
+  # conservative.) `hidden` counts what is left elsewhere on the page.
+  if head -c "$(grep -bo '<h1' "$html" | head -1 | cut -d: -f1)" "$html" \
+     | grep -q 'opacity:0'; then h1_hidden=yes; else h1_hidden=no; fi
+  hidden=$(grep -o 'opacity:0' "$html" | wc -l | tr -d ' ')
 
   # Every <img src> on the page; a URL appearing twice is an image rendered
   # twice (the contentImages grids repeat the markdown's inline images).
@@ -59,7 +62,7 @@ for slug in "${SLUGS[@]}"; do
     status=none
   fi
 
-  printf '%-32s %8s %7s %9s %8s %10s\n' "$slug" "$kb" "$ld" "$h1_hidden" "$dup" "$status"
+  printf '%-32s %8s %7s %9s %7s %8s %9s\n' "$slug" "$kb" "$ld" "$h1_hidden" "$hidden" "$dup" "$status"
 
   [[ "$status" == "200" ]] || { fail=1; echo "    og:image -> $og"; }
   [[ "$h1_hidden" == "no" ]] || fail=1

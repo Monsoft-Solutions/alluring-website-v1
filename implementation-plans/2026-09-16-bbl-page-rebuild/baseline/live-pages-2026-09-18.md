@@ -5,17 +5,17 @@ production; run the same script after the deploy and the table must come back
 all-green.
 
 ```
-page                              html_kb ld+json h1_hidden dup_imgs   og:image
--------------------------------- -------- ------- --------- -------- ----------
-blepharoplasty-miami                  278      27       yes        1        200
-brazilian-butt-lift-bbl-miami         480      28       yes       11        000
-breast-augmentation-miami             394      28       yes        8        200
-breast-lift-miami                     316      28       yes        1        200
-breast-reduction-miami                320      28       yes        1        200
-facelift-miami                        281      27       yes        1        200
-liposuction-miami                     346      28       yes        1        200
-mommy-makeover-miami                  311      26       yes        6        000
-tummy-tuck-miami                      401      28       yes        7        200*
+page                              html_kb ld+json h1_hidden  hidden dup_imgs  og:image
+-------------------------------- -------- ------- --------- ------- -------- ---------
+blepharoplasty-miami                  278      27       yes      23        1       200
+brazilian-butt-lift-bbl-miami         480      28       yes      23       11       000
+breast-augmentation-miami             394      28       yes      23        8       200
+breast-lift-miami                     316      28       yes      23        1       200
+breast-reduction-miami                320      28       yes      23        1       200
+facelift-miami                        281      27       yes      23        1       200
+liposuction-miami                     346      28       yes      23        1       200
+mommy-makeover-miami                  311      26       yes      23        6       000
+tummy-tuck-miami                      401      28       yes      23        7       200*
 ```
 
 ## What each column says
@@ -26,8 +26,14 @@ gate is "well under 200 KB".
 **ld+json** — 26 to 28 separate `<script type="application/ld+json">` blocks per
 page. #250 item 9 folds them into one `@graph`.
 
-**h1_hidden** — every page server-renders `opacity:0` (23 occurrences each). The
-hero card is wrapped in framer-motion, so the H1 is invisible until hydration.
+**h1_hidden** — whether any `opacity:0` appears before the first `<h1`. An
+element's ancestors all open before it, so a clean prefix means the H1 has no
+hidden ancestor. Today every page fails: the hero card is wrapped in
+framer-motion, so the H1 is invisible until hydration.
+
+**hidden** — `opacity:0` occurrences anywhere on the page, 23 per page. Most sit
+below the fold, in the intro, process, why-choose and CTA sections. #250 fixes
+the hero; the rest is a follow-up, and this column is how it gets tracked.
 
 **dup_imgs** — distinct image URLs rendered more than once. The three
 `contentImages` grids repeat what the markdown already places, so the BBL page
