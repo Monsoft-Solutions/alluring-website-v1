@@ -24,9 +24,8 @@ import { ProcedureConsultationForm } from '@/components/procedures/procedure-con
 import { ProcedurePricing } from '@/components/procedures/procedure-pricing.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
-import { buildProcedureGraph } from '@/lib/seo/procedure-graph.util'
 import {
-    procedureBodyLocation,
+    buildProcedureGraph,
     procedureImageUrl,
     toAbsoluteUrl,
 } from '@/lib/seo/procedure-graph.util'

@@ -32,8 +32,9 @@ type JsonLdGraphProps = {
 
 /** `@context` belongs to the graph, not to the nodes inside it. */
 function stripContext(node: JsonLdGraphNode): Record<string, unknown> {
-    const { '@context': _context, ...rest } = node
-    return rest
+    const copy: Record<string, unknown> = { ...node }
+    delete copy['@context']
+    return copy
 }
 
 /**
