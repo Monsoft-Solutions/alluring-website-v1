@@ -1,0 +1,246 @@
+[
+ {
+  "env": "before",
+  "vp": "390",
+  "page": "home",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "390",
+  "page": "procedure",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "390",
+  "page": "blog",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "390",
+  "page": "about",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "1440",
+  "page": "home",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "1440",
+  "page": "procedure",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "1440",
+  "page": "blog",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "before",
+  "vp": "1440",
+  "page": "about",
+  "h1": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "h2": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "390",
+  "page": "home",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 italic",
+   "Playfair Display 400 normal",
+   "Playfair Display 500 normal",
+   "Playfair Display 600 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "390",
+  "page": "procedure",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 italic",
+   "Playfair Display 500 italic",
+   "Playfair Display 400 normal",
+   "Playfair Display 500 normal",
+   "Playfair Display 600 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "390",
+  "page": "blog",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 normal",
+   "Playfair Display 500 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "390",
+  "page": "about",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 italic",
+   "Playfair Display 400 normal",
+   "Playfair Display 600 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "1440",
+  "page": "home",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 italic",
+   "Playfair Display 400 normal",
+   "Playfair Display 500 normal",
+   "Playfair Display 600 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "1440",
+  "page": "procedure",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 italic",
+   "Playfair Display 500 italic",
+   "Playfair Display 400 normal",
+   "Playfair Display 500 normal",
+   "Playfair Display 600 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "1440",
+  "page": "blog",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 normal",
+   "Playfair Display 500 normal",
+   "Playfair Display 700 normal"
+  ]
+ },
+ {
+  "env": "after",
+  "vp": "1440",
+  "page": "about",
+  "h1": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "h2": "\"Playfair Display\", \"Playfair Display Fallback\", serif",
+  "loaded": [
+   "Lato 300 normal",
+   "Lato 400 normal",
+   "Lato 700 normal",
+   "Lato Fallback normal normal",
+   "Playfair Display 400 italic",
+   "Playfair Display 400 normal",
+   "Playfair Display 600 normal",
+   "Playfair Display 700 normal"
+  ]
+ }
+]
