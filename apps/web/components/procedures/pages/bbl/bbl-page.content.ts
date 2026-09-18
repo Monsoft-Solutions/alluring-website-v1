@@ -45,6 +45,11 @@ export interface BblImageSlot {
      */
     status: 'live' | 'pending-254' | 'after-launch'
     src?: string
+    /**
+     * A 16:9 version of the same picture, for the places that need a wide
+     * crop: og:image, the home signature card and the paid landing hero.
+     */
+    wideSrc?: string
     aspect: '3:2' | '4:5' | '16:9'
     /** Describes the picture. No keyword lists. */
     alt: string
@@ -101,18 +106,21 @@ export const bblImages = {
     hero: {
         id: 'hero',
         // #254 shot 1, moved before launch on 2026-09-18: the live hero is a
-        // rear-view swimwear shot, which the imagery rules exclude. Alt text
-        // is finalised against the chosen render.
-        status: 'pending-254',
+        // rear-view swimwear shot, which the imagery rules exclude.
+        status: 'live',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09/hero-alluring-plastic-surgery-miami.jpg',
+        wideSrc:
+            'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09/hero-wide-alluring-plastic-surgery-miami.jpg',
         aspect: '4:5',
-        alt: 'Woman in a tailored sand midi dress standing at an arched window in morning light',
+        alt: 'Woman in a sand linen midi dress with one hand on the window frame, looking out over the bay in morning light',
         label: AI_MODEL_LABEL,
     },
     consultation: {
         id: 'consultation',
-        status: 'pending-254',
+        status: 'live',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09/consultation-alluring-plastic-surgery-miami.jpg',
         aspect: '3:2',
-        alt: "Patient at a marble table reviewing a body-contour sketch on a tablet, with only the clinician's hands and white sleeve in view",
+        alt: "Patient reviewing a body-contour sketch on a tablet at a marble table, with only the clinician's hand and white sleeve in view",
         label: AI_MODEL_LABEL,
     },
     ultrasound: {

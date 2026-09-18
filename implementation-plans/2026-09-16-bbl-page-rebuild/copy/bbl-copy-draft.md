@@ -43,7 +43,7 @@ Nothing here renders yet. The live page is unchanged until #256.
 6. **FAQ set.** Removed "How long is BBL recovery?" and "When can I sit after a BBL?": their queries belong to `/how-long-to-recover-from-bbl` and `/how-long-after-bbl-can-i-sit`, and the recovery H2 already answers them with links. Added "Can I get a BBL after pregnancy?", a query the registry assigns to this page. 11 FAQs, 10 of them clear of pricing terms, so the paid landing page keeps them.
 7. **Safety H2 is "Is a BBL safe in Miami?"**, not "…in Florida?". Search Console has "is it safe to get a bbl in miami?" and "safe brazilian butt lift miami"; the answer covers Florida law.
 8. **Cost H2 is "How much is a BBL in Miami?"**, the page's best query (160 impressions, position 9.7, 2 clicks in 90 days); "bbl cost miami" is in the first line of the answer.
-9. **Hero image.** The live hero is a 3:2 swimwear shot, rear three-quarter view, which breaks #254's editorial rules. Decided 2026-09-18: #254 shot 1 (woman in a tailored sand midi dress at an arched window) moves before launch. The slot is `pending-254`; alt text is finalised against the chosen render, with the "Model shown. Not a patient." label.
+9. **Hero image.** The live hero is a 3:2 swimwear shot, rear three-quarter view, which breaks #254's editorial rules. Decided 2026-09-18: #254 shot 1 moves before launch. Option 2 was chosen and is on Blob as a 4:5 master and a 16:9 wide version (for og:image, the home card and the landing hero), with the "Model shown. Not a patient." label.
 10. **Pazmiño & Garcia (2023) and Elsaftawy et al. (2026)** were verified in PubMed on 2026-09-18 (35959568; 41051287, Plast Reconstr Surg 2026;157(3):381e–393e) and now carry their titles and DOIs.
 
 ## Search Console queries behind the headings (90 days to 2026-09-15)
@@ -73,7 +73,7 @@ A Brazilian butt lift moves your own fat from areas such as the abdomen, flanks 
 
 Chips: Starting at $5,500 · 3–5 hour outpatient surgery · Ultrasound-guided, as Florida law requires
 CTAs: Book a free consultation · Call us
-Image (#254 shot 1, labeled "Model shown. Not a patient."): Woman in a tailored sand midi dress standing at an arched window in morning light
+Image (#254 shot 1, labeled "Model shown. Not a patient."): Woman in a sand linen midi dress with one hand on the window frame, looking out over the bay in morning light
 
 Jump links: Cost (#pricing) · Results (#results) · Safety (#safety) · Surgeon (#surgeon) · Recovery (#recovery) · FAQ (#faq)
 
@@ -97,7 +97,7 @@ A Brazilian butt lift (BBL) is a fat transfer to the buttocks. A surgeon uses li
 | Flying in from another state | Plan on 7 to 10 days in Miami                                                         |
 | Final shape                  | 3 to 6 months after surgery                                                           |
 
-Image (#254 shot 2, labeled): Patient at a marble table reviewing a body-contour sketch on a tablet, with only the clinician's hands and white sleeve in view
+Image (#254 shot 2, labeled): Patient reviewing a body-contour sketch on a tablet at a marble table, with only the clinician's hand and white sleeve in view
 
 ## How much is a BBL in Miami? `#pricing`
 

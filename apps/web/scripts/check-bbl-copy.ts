@@ -55,6 +55,7 @@ const NON_COPY_KEYS = new Set([
     'id',
     'href',
     'src',
+    'wideSrc',
     'status',
     'aspect',
     'topic',
