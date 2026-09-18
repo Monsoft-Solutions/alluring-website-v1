@@ -1,0 +1,3868 @@
+{
+ "pulledAt": "2026-09-18T19:23:15.632Z",
+ "property": "sc-domain:alluringplasticsurgery.com",
+ "range": {
+  "start": "2025-12-01",
+  "end": "2026-09-13"
+ },
+ "windows": {
+  "last90": {
+   "startDate": "2026-06-16",
+   "endDate": "2026-09-13"
+  },
+  "last180": {
+   "startDate": "2026-03-18",
+   "endDate": "2026-09-13"
+  }
+ },
+ "targets": {
+  "bblPage": "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami",
+  "bblLandingPage": "https://www.alluringplasticsurgery.com/bbl-miami",
+  "headQueries": [
+   "bbl miami",
+   "brazilian butt lift miami"
+  ],
+  "procedurePages": [
+   "https://www.alluringplasticsurgery.com/procedures/blepharoplasty-miami",
+   "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami",
+   "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami",
+   "https://www.alluringplasticsurgery.com/procedures/breast-lift-miami",
+   "https://www.alluringplasticsurgery.com/procedures/breast-reduction-miami",
+   "https://www.alluringplasticsurgery.com/procedures/facelift-miami",
+   "https://www.alluringplasticsurgery.com/procedures/liposuction-miami",
+   "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami",
+   "https://www.alluringplasticsurgery.com/procedures/rhinoplasty-miami",
+   "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami"
+  ],
+  "controlPages": [
+   "https://www.alluringplasticsurgery.com/procedures/blepharoplasty-miami",
+   "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami",
+   "https://www.alluringplasticsurgery.com/procedures/breast-lift-miami",
+   "https://www.alluringplasticsurgery.com/procedures/breast-reduction-miami",
+   "https://www.alluringplasticsurgery.com/procedures/facelift-miami",
+   "https://www.alluringplasticsurgery.com/procedures/liposuction-miami",
+   "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami",
+   "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami"
+  ],
+  "deadPages": [
+   "https://www.alluringplasticsurgery.com/procedures/rhinoplasty-miami"
+  ]
+ },
+ "weekly": {
+  "bblPage": [
+   {
+    "week": "2025-12-01",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2025-12-08",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2025-12-15",
+    "clicks": 2,
+    "impressions": 467,
+    "position": 20.5
+   },
+   {
+    "week": "2025-12-22",
+    "clicks": 3,
+    "impressions": 1044,
+    "position": 18.4
+   },
+   {
+    "week": "2025-12-29",
+    "clicks": 3,
+    "impressions": 1202,
+    "position": 18
+   },
+   {
+    "week": "2026-01-05",
+    "clicks": 3,
+    "impressions": 1575,
+    "position": 16.7
+   },
+   {
+    "week": "2026-01-12",
+    "clicks": 2,
+    "impressions": 1593,
+    "position": 13.9
+   },
+   {
+    "week": "2026-01-19",
+    "clicks": 2,
+    "impressions": 1051,
+    "position": 17.1
+   },
+   {
+    "week": "2026-01-26",
+    "clicks": 1,
+    "impressions": 1079,
+    "position": 16.3
+   },
+   {
+    "week": "2026-02-02",
+    "clicks": 3,
+    "impressions": 887,
+    "position": 15.9
+   },
+   {
+    "week": "2026-02-09",
+    "clicks": 2,
+    "impressions": 355,
+    "position": 43
+   },
+   {
+    "week": "2026-02-16",
+    "clicks": 1,
+    "impressions": 323,
+    "position": 39.1
+   },
+   {
+    "week": "2026-02-23",
+    "clicks": 1,
+    "impressions": 407,
+    "position": 40.6
+   },
+   {
+    "week": "2026-03-02",
+    "clicks": 0,
+    "impressions": 548,
+    "position": 41.4
+   },
+   {
+    "week": "2026-03-09",
+    "clicks": 0,
+    "impressions": 367,
+    "position": 38.4
+   },
+   {
+    "week": "2026-03-16",
+    "clicks": 1,
+    "impressions": 712,
+    "position": 27.7
+   },
+   {
+    "week": "2026-03-23",
+    "clicks": 1,
+    "impressions": 1131,
+    "position": 14.1
+   },
+   {
+    "week": "2026-03-30",
+    "clicks": 3,
+    "impressions": 787,
+    "position": 17.9
+   },
+   {
+    "week": "2026-04-06",
+    "clicks": 2,
+    "impressions": 667,
+    "position": 20.9
+   },
+   {
+    "week": "2026-04-13",
+    "clicks": 1,
+    "impressions": 681,
+    "position": 24.1
+   },
+   {
+    "week": "2026-04-20",
+    "clicks": 2,
+    "impressions": 580,
+    "position": 26.6
+   },
+   {
+    "week": "2026-04-27",
+    "clicks": 2,
+    "impressions": 711,
+    "position": 23.3
+   },
+   {
+    "week": "2026-05-04",
+    "clicks": 0,
+    "impressions": 731,
+    "position": 21.9
+   },
+   {
+    "week": "2026-05-11",
+    "clicks": 1,
+    "impressions": 755,
+    "position": 19.8
+   },
+   {
+    "week": "2026-05-18",
+    "clicks": 0,
+    "impressions": 809,
+    "position": 20.9
+   },
+   {
+    "week": "2026-05-25",
+    "clicks": 0,
+    "impressions": 484,
+    "position": 37.8
+   },
+   {
+    "week": "2026-06-01",
+    "clicks": 1,
+    "impressions": 459,
+    "position": 30.2
+   },
+   {
+    "week": "2026-06-08",
+    "clicks": 1,
+    "impressions": 559,
+    "position": 28.6
+   },
+   {
+    "week": "2026-06-15",
+    "clicks": 1,
+    "impressions": 737,
+    "position": 23
+   },
+   {
+    "week": "2026-06-22",
+    "clicks": 0,
+    "impressions": 687,
+    "position": 22.8
+   },
+   {
+    "week": "2026-06-29",
+    "clicks": 0,
+    "impressions": 495,
+    "position": 25.5
+   },
+   {
+    "week": "2026-07-06",
+    "clicks": 1,
+    "impressions": 364,
+    "position": 31.8
+   },
+   {
+    "week": "2026-07-13",
+    "clicks": 1,
+    "impressions": 353,
+    "position": 29.5
+   },
+   {
+    "week": "2026-07-20",
+    "clicks": 2,
+    "impressions": 258,
+    "position": 33.1
+   },
+   {
+    "week": "2026-07-27",
+    "clicks": 0,
+    "impressions": 378,
+    "position": 36
+   },
+   {
+    "week": "2026-08-03",
+    "clicks": 2,
+    "impressions": 340,
+    "position": 30.6
+   },
+   {
+    "week": "2026-08-10",
+    "clicks": 0,
+    "impressions": 372,
+    "position": 30.4
+   },
+   {
+    "week": "2026-08-17",
+    "clicks": 1,
+    "impressions": 490,
+    "position": 23
+   },
+   {
+    "week": "2026-08-24",
+    "clicks": 0,
+    "impressions": 619,
+    "position": 23.3
+   },
+   {
+    "week": "2026-08-31",
+    "clicks": 2,
+    "impressions": 556,
+    "position": 28.4
+   },
+   {
+    "week": "2026-09-07",
+    "clicks": 1,
+    "impressions": 435,
+    "position": 26.3
+   }
+  ],
+  "bblLandingPage": [
+   {
+    "week": "2025-12-01",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2025-12-08",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2025-12-15",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2025-12-22",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2025-12-29",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-01-05",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-01-12",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-01-19",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-01-26",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-02-02",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-02-09",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-02-16",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-02-23",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-03-02",
+    "clicks": 0,
+    "impressions": 0,
+    "position": null
+   },
+   {
+    "week": "2026-03-09",
+    "clicks": 0,
+    "impressions": 50,
+    "position": 35.8
+   },
+   {
+    "week": "2026-03-16",
+    "clicks": 0,
+    "impressions": 194,
+    "position": 39.5
+   },
+   {
+    "week": "2026-03-23",
+    "clicks": 0,
+    "impressions": 159,
+    "position": 46
+   },
+   {
+    "week": "2026-03-30",
+    "clicks": 0,
+    "impressions": 213,
+    "position": 47
+   },
+   {
+    "week": "2026-04-06",
+    "clicks": 1,
+    "impressions": 73,
+    "position": 32.6
+   },
+   {
+    "week": "2026-04-13",
+    "clicks": 0,
+    "impressions": 91,
+    "position": 35.1
+   },
+   {
+    "week": "2026-04-20",
+    "clicks": 1,
+    "impressions": 77,
+    "position": 41.9
+   },
+   {
+    "week": "2026-04-27",
+    "clicks": 3,
+    "impressions": 89,
+    "position": 54.7
+   },
+   {
+    "week": "2026-05-04",
+    "clicks": 1,
+    "impressions": 86,
+    "position": 40.1
+   },
+   {
+    "week": "2026-05-11",
+    "clicks": 0,
+    "impressions": 117,
+    "position": 34
+   },
+   {
+    "week": "2026-05-18",
+    "clicks": 0,
+    "impressions": 56,
+    "position": 19.3
+   },
+   {
+    "week": "2026-05-25",
+    "clicks": 0,
+    "impressions": 36,
+    "position": 28.6
+   },
+   {
+    "week": "2026-06-01",
+    "clicks": 0,
+    "impressions": 43,
+    "position": 23.7
+   },
+   {
+    "week": "2026-06-08",
+    "clicks": 0,
+    "impressions": 54,
+    "position": 32.7
+   },
+   {
+    "week": "2026-06-15",
+    "clicks": 0,
+    "impressions": 68,
+    "position": 31.9
+   },
+   {
+    "week": "2026-06-22",
+    "clicks": 0,
+    "impressions": 52,
+    "position": 29.7
+   },
+   {
+    "week": "2026-06-29",
+    "clicks": 0,
+    "impressions": 67,
+    "position": 23.7
+   },
+   {
+    "week": "2026-07-06",
+    "clicks": 0,
+    "impressions": 70,
+    "position": 36.1
+   },
+   {
+    "week": "2026-07-13",
+    "clicks": 0,
+    "impressions": 55,
+    "position": 43.7
+   },
+   {
+    "week": "2026-07-20",
+    "clicks": 0,
+    "impressions": 137,
+    "position": 37
+   },
+   {
+    "week": "2026-07-27",
+    "clicks": 2,
+    "impressions": 181,
+    "position": 37.7
+   },
+   {
+    "week": "2026-08-03",
+    "clicks": 0,
+    "impressions": 160,
+    "position": 36.7
+   },
+   {
+    "week": "2026-08-10",
+    "clicks": 0,
+    "impressions": 136,
+    "position": 30
+   },
+   {
+    "week": "2026-08-17",
+    "clicks": 0,
+    "impressions": 32,
+    "position": 26.2
+   },
+   {
+    "week": "2026-08-24",
+    "clicks": 0,
+    "impressions": 94,
+    "position": 35.4
+   },
+   {
+    "week": "2026-08-31",
+    "clicks": 0,
+    "impressions": 64,
+    "position": 28.9
+   },
+   {
+    "week": "2026-09-07",
+    "clicks": 0,
+    "impressions": 44,
+    "position": 30.8
+   }
+  ],
+  "controlPages": [
+   {
+    "week": "2025-12-15",
+    "clicks": 1,
+    "impressions": 2715,
+    "position": 30.4
+   },
+   {
+    "week": "2025-12-22",
+    "clicks": 5,
+    "impressions": 4862,
+    "position": 35.4
+   },
+   {
+    "week": "2025-12-29",
+    "clicks": 10,
+    "impressions": 5041,
+    "position": 34.5
+   },
+   {
+    "week": "2026-01-05",
+    "clicks": 13,
+    "impressions": 6427,
+    "position": 33.7
+   },
+   {
+    "week": "2026-01-12",
+    "clicks": 7,
+    "impressions": 5649,
+    "position": 30.2
+   },
+   {
+    "week": "2026-01-19",
+    "clicks": 6,
+    "impressions": 4868,
+    "position": 34.1
+   },
+   {
+    "week": "2026-01-26",
+    "clicks": 11,
+    "impressions": 3776,
+    "position": 36
+   },
+   {
+    "week": "2026-02-02",
+    "clicks": 3,
+    "impressions": 1994,
+    "position": 44.4
+   },
+   {
+    "week": "2026-02-09",
+    "clicks": 1,
+    "impressions": 1629,
+    "position": 59.9
+   },
+   {
+    "week": "2026-02-16",
+    "clicks": 4,
+    "impressions": 1700,
+    "position": 60.2
+   },
+   {
+    "week": "2026-02-23",
+    "clicks": 1,
+    "impressions": 1823,
+    "position": 62.6
+   },
+   {
+    "week": "2026-03-02",
+    "clicks": 0,
+    "impressions": 2645,
+    "position": 56.9
+   },
+   {
+    "week": "2026-03-09",
+    "clicks": 1,
+    "impressions": 2140,
+    "position": 55.8
+   },
+   {
+    "week": "2026-03-16",
+    "clicks": 2,
+    "impressions": 2577,
+    "position": 44.4
+   },
+   {
+    "week": "2026-03-23",
+    "clicks": 3,
+    "impressions": 2464,
+    "position": 44.9
+   },
+   {
+    "week": "2026-03-30",
+    "clicks": 1,
+    "impressions": 2140,
+    "position": 49.3
+   },
+   {
+    "week": "2026-04-06",
+    "clicks": 3,
+    "impressions": 2249,
+    "position": 47.4
+   },
+   {
+    "week": "2026-04-13",
+    "clicks": 0,
+    "impressions": 2013,
+    "position": 51.8
+   },
+   {
+    "week": "2026-04-20",
+    "clicks": 1,
+    "impressions": 1650,
+    "position": 54.6
+   },
+   {
+    "week": "2026-04-27",
+    "clicks": 1,
+    "impressions": 1632,
+    "position": 53.3
+   },
+   {
+    "week": "2026-05-04",
+    "clicks": 1,
+    "impressions": 1748,
+    "position": 51.8
+   },
+   {
+    "week": "2026-05-11",
+    "clicks": 1,
+    "impressions": 1965,
+    "position": 54.1
+   },
+   {
+    "week": "2026-05-18",
+    "clicks": 3,
+    "impressions": 2321,
+    "position": 54.2
+   },
+   {
+    "week": "2026-05-25",
+    "clicks": 3,
+    "impressions": 2309,
+    "position": 59.3
+   },
+   {
+    "week": "2026-06-01",
+    "clicks": 0,
+    "impressions": 2069,
+    "position": 61.5
+   },
+   {
+    "week": "2026-06-08",
+    "clicks": 2,
+    "impressions": 2443,
+    "position": 62.9
+   },
+   {
+    "week": "2026-06-15",
+    "clicks": 1,
+    "impressions": 2583,
+    "position": 57.7
+   },
+   {
+    "week": "2026-06-22",
+    "clicks": 2,
+    "impressions": 2727,
+    "position": 58.3
+   },
+   {
+    "week": "2026-06-29",
+    "clicks": 0,
+    "impressions": 2600,
+    "position": 59.5
+   },
+   {
+    "week": "2026-07-06",
+    "clicks": 1,
+    "impressions": 2275,
+    "position": 61.6
+   },
+   {
+    "week": "2026-07-13",
+    "clicks": 1,
+    "impressions": 2028,
+    "position": 60.8
+   },
+   {
+    "week": "2026-07-20",
+    "clicks": 2,
+    "impressions": 1758,
+    "position": 59.2
+   },
+   {
+    "week": "2026-07-27",
+    "clicks": 1,
+    "impressions": 2264,
+    "position": 62.4
+   },
+   {
+    "week": "2026-08-03",
+    "clicks": 0,
+    "impressions": 2092,
+    "position": 62.7
+   },
+   {
+    "week": "2026-08-10",
+    "clicks": 1,
+    "impressions": 2322,
+    "position": 59.8
+   },
+   {
+    "week": "2026-08-17",
+    "clicks": 1,
+    "impressions": 2373,
+    "position": 61.4
+   },
+   {
+    "week": "2026-08-24",
+    "clicks": 2,
+    "impressions": 2866,
+    "position": 60.4
+   },
+   {
+    "week": "2026-08-31",
+    "clicks": 2,
+    "impressions": 2448,
+    "position": 61.3
+   },
+   {
+    "week": "2026-09-07",
+    "clicks": 0,
+    "impressions": 1867,
+    "position": 60.9
+   }
+  ],
+  "perProcedurePage": {
+   "https://www.alluringplasticsurgery.com/procedures/blepharoplasty-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 391,
+     "position": 27.3
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 600,
+     "position": 27.1
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 0,
+     "impressions": 575,
+     "position": 30.1
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 0,
+     "impressions": 865,
+     "position": 30.9
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 744,
+     "position": 29.3
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 554,
+     "position": 41.3
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 1,
+     "impressions": 530,
+     "position": 47.3
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 396,
+     "position": 46.6
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 239,
+     "position": 67.9
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 1,
+     "impressions": 207,
+     "position": 74.6
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 248,
+     "position": 75.7
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 423,
+     "position": 62.8
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 388,
+     "position": 64.4
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 368,
+     "position": 58
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 275,
+     "position": 60.1
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 302,
+     "position": 58.6
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 309,
+     "position": 56.3
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 290,
+     "position": 59.7
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 267,
+     "position": 56.3
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 257,
+     "position": 56.9
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 304,
+     "position": 55.6
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 254,
+     "position": 61.9
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 229,
+     "position": 58.4
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 284,
+     "position": 57.8
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 244,
+     "position": 61.7
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 267,
+     "position": 59.9
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 276,
+     "position": 59.2
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 326,
+     "position": 56.7
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 335,
+     "position": 57
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 329,
+     "position": 58.3
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 305,
+     "position": 57.2
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 228,
+     "position": 56.5
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 296,
+     "position": 58
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 316,
+     "position": 56.3
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 382,
+     "position": 54.1
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 401,
+     "position": 60.4
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 412,
+     "position": 61.1
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 411,
+     "position": 58.3
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 360,
+     "position": 51.4
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 2,
+     "impressions": 467,
+     "position": 20.5
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 3,
+     "impressions": 1044,
+     "position": 18.4
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 3,
+     "impressions": 1202,
+     "position": 18
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 3,
+     "impressions": 1575,
+     "position": 16.7
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 2,
+     "impressions": 1593,
+     "position": 13.9
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 2,
+     "impressions": 1051,
+     "position": 17.1
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 1,
+     "impressions": 1079,
+     "position": 16.3
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 3,
+     "impressions": 887,
+     "position": 15.9
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 2,
+     "impressions": 355,
+     "position": 43
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 1,
+     "impressions": 323,
+     "position": 39.1
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 1,
+     "impressions": 407,
+     "position": 40.6
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 548,
+     "position": 41.4
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 367,
+     "position": 38.4
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 1,
+     "impressions": 712,
+     "position": 27.7
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 1,
+     "impressions": 1131,
+     "position": 14.1
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 3,
+     "impressions": 787,
+     "position": 17.9
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 2,
+     "impressions": 667,
+     "position": 20.9
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 1,
+     "impressions": 681,
+     "position": 24.1
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 2,
+     "impressions": 580,
+     "position": 26.6
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 2,
+     "impressions": 711,
+     "position": 23.3
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 731,
+     "position": 21.9
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 1,
+     "impressions": 755,
+     "position": 19.8
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 809,
+     "position": 20.9
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 484,
+     "position": 37.8
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 1,
+     "impressions": 459,
+     "position": 30.2
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 1,
+     "impressions": 559,
+     "position": 28.6
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 1,
+     "impressions": 737,
+     "position": 23
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 687,
+     "position": 22.8
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 495,
+     "position": 25.5
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 1,
+     "impressions": 364,
+     "position": 31.8
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 1,
+     "impressions": 353,
+     "position": 29.5
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 2,
+     "impressions": 258,
+     "position": 33.1
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 378,
+     "position": 36
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 2,
+     "impressions": 340,
+     "position": 30.6
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 372,
+     "position": 30.4
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 1,
+     "impressions": 490,
+     "position": 23
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 619,
+     "position": 23.3
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 2,
+     "impressions": 556,
+     "position": 28.4
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 1,
+     "impressions": 435,
+     "position": 26.3
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 196,
+     "position": 42.3
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 1,
+     "impressions": 500,
+     "position": 47.1
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 1,
+     "impressions": 521,
+     "position": 46.8
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 1,
+     "impressions": 582,
+     "position": 40.7
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 489,
+     "position": 43.9
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 408,
+     "position": 47
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 0,
+     "impressions": 349,
+     "position": 48.3
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 1,
+     "impressions": 177,
+     "position": 56.4
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 1,
+     "impressions": 276,
+     "position": 56.9
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 2,
+     "impressions": 343,
+     "position": 49
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 1,
+     "impressions": 335,
+     "position": 55.9
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 515,
+     "position": 52
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 1,
+     "impressions": 400,
+     "position": 45.1
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 1,
+     "impressions": 364,
+     "position": 53.1
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 1,
+     "impressions": 405,
+     "position": 46.9
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 245,
+     "position": 41.4
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 2,
+     "impressions": 255,
+     "position": 35.9
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 237,
+     "position": 47.2
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 1,
+     "impressions": 257,
+     "position": 47.4
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 344,
+     "position": 44
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 360,
+     "position": 43.1
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 235,
+     "position": 45.2
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 436,
+     "position": 39.5
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 343,
+     "position": 53.5
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 271,
+     "position": 53.4
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 323,
+     "position": 55
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 279,
+     "position": 59.8
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 295,
+     "position": 58.1
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 285,
+     "position": 53.7
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 189,
+     "position": 48.9
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 1,
+     "impressions": 134,
+     "position": 54.5
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 141,
+     "position": 53.6
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 118,
+     "position": 55
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 178,
+     "position": 57.5
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 1,
+     "impressions": 112,
+     "position": 55.7
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 1,
+     "impressions": 197,
+     "position": 52.7
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 2,
+     "impressions": 303,
+     "position": 55.4
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 113,
+     "position": 55.3
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 82,
+     "position": 54.9
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/breast-lift-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 31,
+     "position": 85.5
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 133,
+     "position": 82.6
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 0,
+     "impressions": 277,
+     "position": 37.1
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 1,
+     "impressions": 370,
+     "position": 24.7
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 338,
+     "position": 22.8
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 256,
+     "position": 39.8
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 0,
+     "impressions": 82,
+     "position": 45.9
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 84,
+     "position": 56.1
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 33,
+     "position": 70.6
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 24,
+     "position": 86.7
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 62,
+     "position": 72.6
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 92,
+     "position": 72.8
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 137,
+     "position": 81.7
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 1,
+     "impressions": 156,
+     "position": 76
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 147,
+     "position": 66.9
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 119,
+     "position": 68.5
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 88,
+     "position": 66.4
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 91,
+     "position": 66.3
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 121,
+     "position": 68.2
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 90,
+     "position": 73
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 86,
+     "position": 68.9
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 63,
+     "position": 64.8
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 1,
+     "impressions": 55,
+     "position": 55.7
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 52,
+     "position": 56.1
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 138,
+     "position": 63
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 133,
+     "position": 59.2
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 87,
+     "position": 63.1
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 124,
+     "position": 61.7
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 137,
+     "position": 60.3
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 123,
+     "position": 59.5
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 123,
+     "position": 61
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 99,
+     "position": 58.6
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 75,
+     "position": 51.9
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 43,
+     "position": 53.7
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 139,
+     "position": 69.9
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 168,
+     "position": 64.3
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 179,
+     "position": 62.1
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 1,
+     "impressions": 195,
+     "position": 64.2
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 116,
+     "position": 66.1
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/breast-reduction-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 351,
+     "position": 19.2
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 3,
+     "impressions": 403,
+     "position": 25.6
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 3,
+     "impressions": 417,
+     "position": 24.5
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 0,
+     "impressions": 595,
+     "position": 21
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 596,
+     "position": 19.7
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 1,
+     "impressions": 535,
+     "position": 20.3
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 2,
+     "impressions": 399,
+     "position": 21.3
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 282,
+     "position": 27.1
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 127,
+     "position": 57.2
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 110,
+     "position": 62.8
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 128,
+     "position": 61.2
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 160,
+     "position": 62
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 127,
+     "position": 60.3
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 199,
+     "position": 39.5
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 151,
+     "position": 47.6
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 108,
+     "position": 54
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 102,
+     "position": 51.6
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 85,
+     "position": 62.4
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 84,
+     "position": 67.6
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 80,
+     "position": 64.3
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 83,
+     "position": 61.3
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 89,
+     "position": 49.7
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 93,
+     "position": 51.9
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 111,
+     "position": 58
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 106,
+     "position": 57.1
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 102,
+     "position": 54.4
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 1,
+     "impressions": 132,
+     "position": 46.5
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 89,
+     "position": 60.5
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 109,
+     "position": 57.1
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 100,
+     "position": 60.3
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 87,
+     "position": 58.5
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 1,
+     "impressions": 70,
+     "position": 59.6
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 79,
+     "position": 59
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 92,
+     "position": 54.9
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 165,
+     "position": 49.9
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 158,
+     "position": 61.9
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 159,
+     "position": 66
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 132,
+     "position": 64.6
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 108,
+     "position": 59.5
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/facelift-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 264,
+     "position": 49.8
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 726,
+     "position": 48.9
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 0,
+     "impressions": 798,
+     "position": 46.1
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 1,
+     "impressions": 863,
+     "position": 53.5
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 850,
+     "position": 50.3
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 813,
+     "position": 49.7
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 0,
+     "impressions": 730,
+     "position": 51.1
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 344,
+     "position": 55.5
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 214,
+     "position": 71.3
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 304,
+     "position": 70.9
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 287,
+     "position": 74.2
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 291,
+     "position": 65.7
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 204,
+     "position": 65.3
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 106,
+     "position": 63.7
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 232,
+     "position": 59.1
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 466,
+     "position": 56.5
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 724,
+     "position": 53.6
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 434,
+     "position": 54.8
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 326,
+     "position": 54.4
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 249,
+     "position": 63.2
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 267,
+     "position": 64.4
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 1,
+     "impressions": 483,
+     "position": 57.4
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 1,
+     "impressions": 562,
+     "position": 58.7
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 1,
+     "impressions": 533,
+     "position": 62.2
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 496,
+     "position": 59.3
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 648,
+     "position": 64.2
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 665,
+     "position": 63.1
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 696,
+     "position": 64.5
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 757,
+     "position": 64.1
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 627,
+     "position": 64.9
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 641,
+     "position": 59.8
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 560,
+     "position": 61.4
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 737,
+     "position": 63.4
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 548,
+     "position": 67.6
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 572,
+     "position": 65.3
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 611,
+     "position": 62.2
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 723,
+     "position": 60.9
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 1,
+     "impressions": 694,
+     "position": 64.2
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 478,
+     "position": 67
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/liposuction-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 476,
+     "position": 36.7
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 724,
+     "position": 39.1
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 0,
+     "impressions": 581,
+     "position": 41.6
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 0,
+     "impressions": 754,
+     "position": 46.2
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 539,
+     "position": 42.7
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 440,
+     "position": 45.1
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 2,
+     "impressions": 225,
+     "position": 50.5
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 93,
+     "position": 57.2
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 165,
+     "position": 70.5
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 179,
+     "position": 72.3
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 204,
+     "position": 73.2
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 248,
+     "position": 74.1
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 207,
+     "position": 71.4
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 264,
+     "position": 53.7
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 249,
+     "position": 59.9
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 197,
+     "position": 59.8
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 206,
+     "position": 49.8
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 277,
+     "position": 50.8
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 114,
+     "position": 66.2
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 103,
+     "position": 67.4
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 113,
+     "position": 72.4
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 149,
+     "position": 73.1
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 258,
+     "position": 65.8
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 339,
+     "position": 63.9
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 301,
+     "position": 69.2
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 362,
+     "position": 68.9
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 370,
+     "position": 69.3
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 429,
+     "position": 63.6
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 332,
+     "position": 63.6
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 343,
+     "position": 64.1
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 292,
+     "position": 62.8
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 239,
+     "position": 61.5
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 324,
+     "position": 63.3
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 280,
+     "position": 65
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 288,
+     "position": 61.4
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 316,
+     "position": 59.3
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 367,
+     "position": 59.2
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 311,
+     "position": 60.8
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 249,
+     "position": 65
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 718,
+     "position": 24.3
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 1,
+     "impressions": 1188,
+     "position": 29.7
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 5,
+     "impressions": 1366,
+     "position": 27.6
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 8,
+     "impressions": 1852,
+     "position": 25.5
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 6,
+     "impressions": 1575,
+     "position": 18.1
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 5,
+     "impressions": 1345,
+     "position": 18.8
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 5,
+     "impressions": 1056,
+     "position": 17.2
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 2,
+     "impressions": 295,
+     "position": 40.8
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 249,
+     "position": 40.4
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 1,
+     "impressions": 239,
+     "position": 39.4
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 253,
+     "position": 39.8
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 319,
+     "position": 42.9
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 316,
+     "position": 42.8
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 609,
+     "position": 23.7
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 2,
+     "impressions": 690,
+     "position": 22.5
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 459,
+     "position": 23.8
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 1,
+     "impressions": 375,
+     "position": 28.2
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 329,
+     "position": 39.6
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 319,
+     "position": 44.1
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 1,
+     "impressions": 396,
+     "position": 40.2
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 375,
+     "position": 35.6
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 462,
+     "position": 41.4
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 1,
+     "impressions": 447,
+     "position": 48.6
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 2,
+     "impressions": 392,
+     "position": 51.9
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 293,
+     "position": 59
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 2,
+     "impressions": 326,
+     "position": 64.9
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 289,
+     "position": 59
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 2,
+     "impressions": 275,
+     "position": 64
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 292,
+     "position": 61.3
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 310,
+     "position": 59.7
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 244,
+     "position": 61.2
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 1,
+     "impressions": 268,
+     "position": 52.8
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 322,
+     "position": 66.3
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 330,
+     "position": 64
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 359,
+     "position": 57.5
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 260,
+     "position": 63.9
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 381,
+     "position": 62.2
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 289,
+     "position": 60.2
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 264,
+     "position": 54.2
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/rhinoplasty-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 322,
+     "position": 33.7
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 450,
+     "position": 36.9
+    }
+   ],
+   "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami": [
+    {
+     "week": "2025-12-15",
+     "clicks": 1,
+     "impressions": 288,
+     "position": 21.3
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 588,
+     "position": 20
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 1,
+     "impressions": 506,
+     "position": 26.1
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 2,
+     "impressions": 546,
+     "position": 29.1
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 1,
+     "impressions": 518,
+     "position": 26.3
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 517,
+     "position": 33.8
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 1,
+     "impressions": 405,
+     "position": 37.4
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 323,
+     "position": 34.8
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 326,
+     "position": 58.4
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 294,
+     "position": 58.7
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 306,
+     "position": 58.7
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 597,
+     "position": 49.1
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 361,
+     "position": 43.9
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 511,
+     "position": 36.2
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 315,
+     "position": 43.9
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 1,
+     "impressions": 244,
+     "position": 60.3
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 190,
+     "position": 49.3
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 270,
+     "position": 50.2
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 162,
+     "position": 59.1
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 113,
+     "position": 60.9
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 1,
+     "impressions": 160,
+     "position": 52.1
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 230,
+     "position": 59.4
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 241,
+     "position": 65.2
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 255,
+     "position": 69.7
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 220,
+     "position": 69.9
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 282,
+     "position": 66.8
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 485,
+     "position": 40.5
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 493,
+     "position": 41.6
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 353,
+     "position": 51.4
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 1,
+     "impressions": 254,
+     "position": 67.8
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 202,
+     "position": 70.8
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 153,
+     "position": 67.7
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 1,
+     "impressions": 313,
+     "position": 65.5
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 305,
+     "position": 63.6
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 305,
+     "position": 60
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 262,
+     "position": 65.1
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 342,
+     "position": 58.2
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 303,
+     "position": 59.6
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 210,
+     "position": 67.2
+    }
+   ]
+  },
+  "headQueries": {
+   "bbl miami": [
+    {
+     "week": "2025-12-01",
+     "clicks": 0,
+     "impressions": 40,
+     "position": 48.5
+    },
+    {
+     "week": "2025-12-08",
+     "clicks": 0,
+     "impressions": 54,
+     "position": 36.9
+    },
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 104,
+     "position": 26
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 205,
+     "position": 12.9
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 3,
+     "impressions": 224,
+     "position": 12.1
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 0,
+     "impressions": 273,
+     "position": 11.9
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 235,
+     "position": 11.1
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 200,
+     "position": 19.7
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 0,
+     "impressions": 201,
+     "position": 19.9
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 2,
+     "impressions": 200,
+     "position": 21.8
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 50,
+     "position": 52.7
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 42,
+     "position": 44.7
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 66,
+     "position": 62.4
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 71,
+     "position": 49.6
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 43,
+     "position": 51.4
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 92,
+     "position": 45.3
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 69,
+     "position": 26.7
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 57,
+     "position": 39.5
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 44,
+     "position": 54.5
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 45,
+     "position": 67.4
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 38,
+     "position": 55.2
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 76,
+     "position": 36
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 79,
+     "position": 38.5
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 74,
+     "position": 35.9
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 75,
+     "position": 26
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 57,
+     "position": 47.8
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 63,
+     "position": 41.4
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 1,
+     "impressions": 70,
+     "position": 46
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 73,
+     "position": 40.5
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 78,
+     "position": 36.9
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 102,
+     "position": 55.7
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 69,
+     "position": 59
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 73,
+     "position": 60.5
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 64,
+     "position": 44.6
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 86,
+     "position": 46.9
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 85,
+     "position": 44.6
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 68,
+     "position": 39.4
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 65,
+     "position": 49.3
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 80,
+     "position": 37.4
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 57,
+     "position": 58.9
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 22,
+     "position": 50.1
+    }
+   ],
+   "brazilian butt lift miami": [
+    {
+     "week": "2025-12-01",
+     "clicks": 0,
+     "impressions": 59,
+     "position": 34.6
+    },
+    {
+     "week": "2025-12-08",
+     "clicks": 0,
+     "impressions": 93,
+     "position": 20.5
+    },
+    {
+     "week": "2025-12-15",
+     "clicks": 0,
+     "impressions": 109,
+     "position": 14.6
+    },
+    {
+     "week": "2025-12-22",
+     "clicks": 0,
+     "impressions": 116,
+     "position": 13.2
+    },
+    {
+     "week": "2025-12-29",
+     "clicks": 0,
+     "impressions": 103,
+     "position": 13.5
+    },
+    {
+     "week": "2026-01-05",
+     "clicks": 0,
+     "impressions": 119,
+     "position": 13.1
+    },
+    {
+     "week": "2026-01-12",
+     "clicks": 0,
+     "impressions": 126,
+     "position": 14.2
+    },
+    {
+     "week": "2026-01-19",
+     "clicks": 0,
+     "impressions": 103,
+     "position": 22.5
+    },
+    {
+     "week": "2026-01-26",
+     "clicks": 0,
+     "impressions": 117,
+     "position": 16.8
+    },
+    {
+     "week": "2026-02-02",
+     "clicks": 0,
+     "impressions": 89,
+     "position": 22.4
+    },
+    {
+     "week": "2026-02-09",
+     "clicks": 0,
+     "impressions": 53,
+     "position": 55.7
+    },
+    {
+     "week": "2026-02-16",
+     "clicks": 0,
+     "impressions": 44,
+     "position": 56.6
+    },
+    {
+     "week": "2026-02-23",
+     "clicks": 0,
+     "impressions": 56,
+     "position": 56.6
+    },
+    {
+     "week": "2026-03-02",
+     "clicks": 0,
+     "impressions": 93,
+     "position": 52.3
+    },
+    {
+     "week": "2026-03-09",
+     "clicks": 0,
+     "impressions": 56,
+     "position": 54.9
+    },
+    {
+     "week": "2026-03-16",
+     "clicks": 0,
+     "impressions": 74,
+     "position": 50.1
+    },
+    {
+     "week": "2026-03-23",
+     "clicks": 0,
+     "impressions": 71,
+     "position": 40.2
+    },
+    {
+     "week": "2026-03-30",
+     "clicks": 0,
+     "impressions": 62,
+     "position": 44.7
+    },
+    {
+     "week": "2026-04-06",
+     "clicks": 0,
+     "impressions": 46,
+     "position": 51.6
+    },
+    {
+     "week": "2026-04-13",
+     "clicks": 0,
+     "impressions": 45,
+     "position": 55.2
+    },
+    {
+     "week": "2026-04-20",
+     "clicks": 0,
+     "impressions": 52,
+     "position": 54.8
+    },
+    {
+     "week": "2026-04-27",
+     "clicks": 0,
+     "impressions": 84,
+     "position": 50.2
+    },
+    {
+     "week": "2026-05-04",
+     "clicks": 0,
+     "impressions": 79,
+     "position": 43.5
+    },
+    {
+     "week": "2026-05-11",
+     "clicks": 0,
+     "impressions": 100,
+     "position": 42.6
+    },
+    {
+     "week": "2026-05-18",
+     "clicks": 0,
+     "impressions": 117,
+     "position": 42.8
+    },
+    {
+     "week": "2026-05-25",
+     "clicks": 0,
+     "impressions": 70,
+     "position": 55.2
+    },
+    {
+     "week": "2026-06-01",
+     "clicks": 0,
+     "impressions": 72,
+     "position": 47.9
+    },
+    {
+     "week": "2026-06-08",
+     "clicks": 0,
+     "impressions": 91,
+     "position": 32.8
+    },
+    {
+     "week": "2026-06-15",
+     "clicks": 0,
+     "impressions": 114,
+     "position": 29.1
+    },
+    {
+     "week": "2026-06-22",
+     "clicks": 0,
+     "impressions": 116,
+     "position": 24.9
+    },
+    {
+     "week": "2026-06-29",
+     "clicks": 0,
+     "impressions": 120,
+     "position": 35.4
+    },
+    {
+     "week": "2026-07-06",
+     "clicks": 0,
+     "impressions": 78,
+     "position": 42
+    },
+    {
+     "week": "2026-07-13",
+     "clicks": 0,
+     "impressions": 74,
+     "position": 38.6
+    },
+    {
+     "week": "2026-07-20",
+     "clicks": 0,
+     "impressions": 49,
+     "position": 46.5
+    },
+    {
+     "week": "2026-07-27",
+     "clicks": 0,
+     "impressions": 64,
+     "position": 48.6
+    },
+    {
+     "week": "2026-08-03",
+     "clicks": 0,
+     "impressions": 59,
+     "position": 47.8
+    },
+    {
+     "week": "2026-08-10",
+     "clicks": 0,
+     "impressions": 76,
+     "position": 48.3
+    },
+    {
+     "week": "2026-08-17",
+     "clicks": 0,
+     "impressions": 102,
+     "position": 28.1
+    },
+    {
+     "week": "2026-08-24",
+     "clicks": 0,
+     "impressions": 129,
+     "position": 21.2
+    },
+    {
+     "week": "2026-08-31",
+     "clicks": 0,
+     "impressions": 98,
+     "position": 27.1
+    },
+    {
+     "week": "2026-09-07",
+     "clicks": 0,
+     "impressions": 70,
+     "position": 28.2
+    }
+   ]
+  }
+ },
+ "totals": {
+  "last90": {
+   "bblPage": {
+    "clicks": 11,
+    "impressions": 5955,
+    "position": 27,
+    "ctr": 0.18
+   },
+   "controlPages": {
+    "clicks": 14,
+    "impressions": 29784,
+    "position": 60.4,
+    "ctr": 0.05
+   },
+   "perProcedurePage": {
+    "https://www.alluringplasticsurgery.com/procedures/blepharoplasty-miami": {
+     "clicks": 0,
+     "impressions": 4334,
+     "position": 57.3,
+     "ctr": 0
+    },
+    "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami": {
+     "clicks": 11,
+     "impressions": 5955,
+     "position": 27,
+     "ctr": 0.18
+    },
+    "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami": {
+     "clicks": 5,
+     "impressions": 2383,
+     "position": 55.2,
+     "ctr": 0.21
+    },
+    "https://www.alluringplasticsurgery.com/procedures/breast-lift-miami": {
+     "clicks": 1,
+     "impressions": 1602,
+     "position": 62.2,
+     "ctr": 0.06
+    },
+    "https://www.alluringplasticsurgery.com/procedures/breast-reduction-miami": {
+     "clicks": 2,
+     "impressions": 1459,
+     "position": 58.5,
+     "ctr": 0.14
+    },
+    "https://www.alluringplasticsurgery.com/procedures/facelift-miami": {
+     "clicks": 1,
+     "impressions": 8185,
+     "position": 63.7,
+     "ctr": 0.01
+    },
+    "https://www.alluringplasticsurgery.com/procedures/liposuction-miami": {
+     "clicks": 0,
+     "impressions": 4086,
+     "position": 63,
+     "ctr": 0
+    },
+    "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami": {
+     "clicks": 3,
+     "impressions": 3835,
+     "position": 60.6,
+     "ctr": 0.08
+    },
+    "https://www.alluringplasticsurgery.com/procedures/rhinoplasty-miami": {
+     "clicks": 0,
+     "impressions": 0,
+     "position": null,
+     "ctr": null
+    },
+    "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami": {
+     "clicks": 2,
+     "impressions": 3900,
+     "position": 57.5,
+     "ctr": 0.05
+    }
+   }
+  },
+  "last180": {
+   "bblPage": {
+    "clicks": 26,
+    "impressions": 15010,
+    "position": 24.3,
+    "ctr": 0.17
+   },
+   "controlPages": {
+    "clicks": 35,
+    "impressions": 57019,
+    "position": 56.9,
+    "ctr": 0.06
+   },
+   "perProcedurePage": {
+    "https://www.alluringplasticsurgery.com/procedures/blepharoplasty-miami": {
+     "clicks": 0,
+     "impressions": 7887,
+     "position": 57.8,
+     "ctr": 0
+    },
+    "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami": {
+     "clicks": 26,
+     "impressions": 15010,
+     "position": 24.3,
+     "ctr": 0.17
+    },
+    "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami": {
+     "clicks": 10,
+     "impressions": 6373,
+     "position": 49.8,
+     "ctr": 0.16
+    },
+    "https://www.alluringplasticsurgery.com/procedures/breast-lift-miami": {
+     "clicks": 3,
+     "impressions": 2882,
+     "position": 63.8,
+     "ctr": 0.1
+    },
+    "https://www.alluringplasticsurgery.com/procedures/breast-reduction-miami": {
+     "clicks": 2,
+     "impressions": 2825,
+     "position": 56.2,
+     "ctr": 0.07
+    },
+    "https://www.alluringplasticsurgery.com/procedures/facelift-miami": {
+     "clicks": 4,
+     "impressions": 13787,
+     "position": 61.7,
+     "ctr": 0.03
+    },
+    "https://www.alluringplasticsurgery.com/procedures/liposuction-miami": {
+     "clicks": 0,
+     "impressions": 6980,
+     "position": 62.8,
+     "ctr": 0
+    },
+    "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami": {
+     "clicks": 12,
+     "impressions": 9271,
+     "position": 47.4,
+     "ctr": 0.13
+    },
+    "https://www.alluringplasticsurgery.com/procedures/rhinoplasty-miami": {
+     "clicks": 0,
+     "impressions": 0,
+     "position": null,
+     "ctr": null
+    },
+    "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami": {
+     "clicks": 4,
+     "impressions": 7014,
+     "position": 56.8,
+     "ctr": 0.06
+    }
+   }
+  }
+ },
+ "clusters": {
+  "definition": {
+   "cost": "\\b(cost|price|prices|how much|average cost|payment plan|financing|affordable|cheap|specials)\\b",
+   "surgeon": "\\b(surgeon|surgeons|doctor|doctors|dr|best)\\b",
+   "safety": "\\b(safe|safety|ultrasound|risk|risks|death|bbl law)\\b",
+   "skinny": "\\bskinny\\b",
+   "revision": "\\brevision\\b",
+   "head": "^(?=.*\\b(miami|florida|fl|south miami|coral gables|miami beach)\\b).*\\b(bbl|butt lift|buttock lift|butt|brazilian lift)\\b"
+  },
+  "last90": {
+   "head": {
+    "clicks": 0,
+    "impressions": 3070,
+    "position": 37.7,
+    "ctr": 0,
+    "queries": 65,
+    "topQueries": [
+     "brazilian butt lift miami — 1104 impr, 0 clicks, pos 32.7",
+     "bbl miami — 619 impr, 0 clicks, pos 48.4",
+     "bbl in miami — 170 impr, 0 clicks, pos 44.3",
+     "bbl surgery miami — 137 impr, 0 clicks, pos 28.8",
+     "bbl surgery in miami — 127 impr, 0 clicks, pos 32.8",
+     "miami bbl — 121 impr, 0 clicks, pos 36.4",
+     "brazilian butt lift in miami — 83 impr, 0 clicks, pos 50.4",
+     "brazilian butt lift miami fl — 75 impr, 0 clicks, pos 41.1",
+     "miami brazilian butt lift — 69 impr, 0 clicks, pos 44.1",
+     "miami plastic surgery bbl — 60 impr, 0 clicks, pos 19.3",
+     "miami bbl surgery — 46 impr, 0 clicks, pos 22.8",
+     "bbl miami fl — 37 impr, 0 clicks, pos 37.0",
+     "bbl florida — 33 impr, 0 clicks, pos 65.3",
+     "bbl procedure process miami — 29 impr, 0 clicks, pos 22.4",
+     "bbl sagging miami — 27 impr, 0 clicks, pos 64.9"
+    ]
+   },
+   "cost": {
+    "clicks": 4,
+    "impressions": 909,
+    "position": 15.1,
+    "ctr": 0.44,
+    "queries": 65,
+    "topQueries": [
+     "how much is a bbl in miami — 162 impr, 2 clicks, pos 9.2",
+     "bbl cost in miami — 132 impr, 0 clicks, pos 18.1",
+     "bbl cost miami — 112 impr, 0 clicks, pos 12.9",
+     "how much does a bbl cost in miami — 75 impr, 1 clicks, pos 14.4",
+     "miami bbl cost — 41 impr, 0 clicks, pos 11.0",
+     "bbl price miami — 36 impr, 0 clicks, pos 12.1",
+     "bbl revision cost in miami — 30 impr, 0 clicks, pos 30.7",
+     "brazilian butt lift cost in miami — 30 impr, 0 clicks, pos 27.9",
+     "brazilian butt lift cost miami — 29 impr, 0 clicks, pos 26.6",
+     "skinny bbl cost miami — 26 impr, 0 clicks, pos 10.2",
+     "what is the cost of a bbl in miami? — 20 impr, 0 clicks, pos 15.1",
+     "how much is bbl in miami — 18 impr, 0 clicks, pos 13.8",
+     "bbl miami cost — 17 impr, 0 clicks, pos 14.9",
+     "cost of bbl in miami — 16 impr, 0 clicks, pos 18.6",
+     "bbl surgery cost miami — 14 impr, 0 clicks, pos 12.0"
+    ]
+   },
+   "surgeon": {
+    "clicks": 0,
+    "impressions": 177,
+    "position": 35.7,
+    "ctr": 0,
+    "queries": 41,
+    "topQueries": [
+     "top-rated brazilian butt lift surgeons in miami — 24 impr, 0 clicks, pos 44.0",
+     "bbl surgeons in miami — 23 impr, 0 clicks, pos 45.7",
+     "best bbl surgeon in miami — 17 impr, 0 clicks, pos 31.9",
+     "where can i find miami bbl surgeon who specializes in athletic, proportional curves instead of exaggerated results? — 16 impr, 0 clicks, pos 35.4",
+     "best bbl in miami — 13 impr, 0 clicks, pos 25.6",
+     "best brazilian butt lift miami — 9 impr, 0 clicks, pos 31.2",
+     "bbl surgeons miami — 7 impr, 0 clicks, pos 39.6",
+     "best bbl miami — 7 impr, 0 clicks, pos 25.1",
+     "best bbl in miami fl — 5 impr, 0 clicks, pos 44.6",
+     "best bbl doctor in miami — 4 impr, 0 clicks, pos 51.0",
+     "best bbl in florida — 4 impr, 0 clicks, pos 29.8",
+     "best brazilian butt lift surgeon miami — 4 impr, 0 clicks, pos 26.8",
+     "bbl doctors in miami florida — 3 impr, 0 clicks, pos 69.3",
+     "best bbl dr in miami — 3 impr, 0 clicks, pos 41.7",
+     "best bbl surgeons in miami — 3 impr, 0 clicks, pos 33.3"
+    ]
+   },
+   "other": {
+    "clicks": 1,
+    "impressions": 161,
+    "position": 25,
+    "ctr": 0.62,
+    "queries": 69,
+    "topQueries": [
+     "brazilian but lift miami — 15 impr, 0 clicks, pos 29.9",
+     "brazilian buttocks lift miami — 11 impr, 0 clicks, pos 23.0",
+     "south beach butt lift — 11 impr, 0 clicks, pos 26.9",
+     "miami but lift — 9 impr, 0 clicks, pos 22.4",
+     "what is a bbl — 8 impr, 0 clicks, pos 2.1",
+     "bbl packages — 7 impr, 0 clicks, pos 33.0",
+     "bbl surgery boca raton — 6 impr, 0 clicks, pos 62.3",
+     "brazilian butt lift sunny isles beach — 6 impr, 0 clicks, pos 20.5",
+     "miami — 5 impr, 0 clicks, pos 3.0",
+     "what is a bbl surgery — 5 impr, 0 clicks, pos 2.4",
+     "bbl curves — 4 impr, 0 clicks, pos 1.3",
+     "bbls in miami — 4 impr, 0 clicks, pos 14.0",
+     "brazilian butt lift miramar — 4 impr, 0 clicks, pos 51.5",
+     "300cc bbl — 3 impr, 0 clicks, pos 11.3",
+     "miami bbls — 3 impr, 0 clicks, pos 26.0"
+    ]
+   },
+   "safety": {
+    "clicks": 0,
+    "impressions": 68,
+    "position": 53.9,
+    "ctr": 0,
+    "queries": 5,
+    "topQueries": [
+     "safe brazilian butt lift miami — 24 impr, 0 clicks, pos 24.6",
+     "is it safe to get a bbl in miami? — 18 impr, 0 clicks, pos 71.1",
+     "ultrasound guided brazilian butt lift miami — 15 impr, 0 clicks, pos 77.1",
+     "ultrasound guided bbl miami — 8 impr, 0 clicks, pos 65.9",
+     "safe bbl miami — 3 impr, 0 clicks, pos 37.3"
+    ]
+   },
+   "skinny": {
+    "clicks": 0,
+    "impressions": 48,
+    "position": 22.3,
+    "ctr": 0,
+    "queries": 6,
+    "topQueries": [
+     "skinny bbl miami — 29 impr, 0 clicks, pos 24.8",
+     "skinny bbl in miami — 7 impr, 0 clicks, pos 26.7",
+     "skinny bbl — 5 impr, 0 clicks, pos 3.0",
+     "skinny bbl florida — 3 impr, 0 clicks, pos 32.3",
+     "miami skinny bbl — 2 impr, 0 clicks, pos 21.5",
+     "skinny bbl before and after — 2 impr, 0 clicks, pos 4.0"
+    ]
+   },
+   "revision": {
+    "clicks": 0,
+    "impressions": 8,
+    "position": 42.4,
+    "ctr": 0,
+    "queries": 1,
+    "topQueries": [
+     "brazilian butt lift revision miami — 8 impr, 0 clicks, pos 42.4"
+    ]
+   }
+  },
+  "last180": {
+   "head": {
+    "clicks": 2,
+    "impressions": 6435,
+    "position": 37.8,
+    "ctr": 0.03,
+    "queries": 74,
+    "topQueries": [
+     "brazilian butt lift miami — 1941 impr, 0 clicks, pos 36.5",
+     "bbl miami — 1313 impr, 1 clicks, pos 43.3",
+     "bbl in miami — 405 impr, 1 clicks, pos 33.6",
+     "brazilian butt lift in miami — 307 impr, 0 clicks, pos 40.0",
+     "miami bbl — 253 impr, 0 clicks, pos 34.1",
+     "bbl surgery miami — 234 impr, 0 clicks, pos 31.6",
+     "bbl surgery in miami — 198 impr, 0 clicks, pos 33.4",
+     "brazilian butt lift miami fl — 184 impr, 0 clicks, pos 42.1",
+     "miami brazilian butt lift — 168 impr, 0 clicks, pos 34.9",
+     "miami plastic surgery bbl — 143 impr, 0 clicks, pos 17.9",
+     "butt lift miami — 118 impr, 0 clicks, pos 72.3",
+     "brazilian butt lift miami beach — 110 impr, 0 clicks, pos 21.8",
+     "bbl miami fl — 84 impr, 0 clicks, pos 29.8",
+     "miami bbl surgery — 79 impr, 0 clicks, pos 24.8",
+     "bbl florida — 66 impr, 0 clicks, pos 65.2"
+    ]
+   },
+   "cost": {
+    "clicks": 4,
+    "impressions": 2522,
+    "position": 14.1,
+    "ctr": 0.16,
+    "queries": 87,
+    "topQueries": [
+     "bbl cost in miami — 342 impr, 0 clicks, pos 16.4",
+     "bbl cost miami — 314 impr, 0 clicks, pos 12.8",
+     "how much is a bbl in miami — 279 impr, 2 clicks, pos 12.4",
+     "how much does a bbl cost in miami — 197 impr, 1 clicks, pos 13.3",
+     "miami bbl cost — 155 impr, 0 clicks, pos 11.3",
+     "bbl price miami — 135 impr, 0 clicks, pos 11.5",
+     "brazilian butt lift cost miami — 75 impr, 0 clicks, pos 22.7",
+     "bbl miami cost — 73 impr, 0 clicks, pos 11.9",
+     "bbl in miami cost — 65 impr, 1 clicks, pos 11.5",
+     "skinny bbl cost miami — 61 impr, 0 clicks, pos 9.0",
+     "brazilian butt lift cost in miami — 60 impr, 0 clicks, pos 26.8",
+     "how much are bbls in miami — 59 impr, 0 clicks, pos 10.9",
+     "how much for a bbl in miami — 58 impr, 0 clicks, pos 11.1",
+     "how much is bbl in miami — 57 impr, 0 clicks, pos 14.8",
+     "how much is a skinny bbl in miami — 54 impr, 0 clicks, pos 10.2"
+    ]
+   },
+   "surgeon": {
+    "clicks": 1,
+    "impressions": 379,
+    "position": 36.2,
+    "ctr": 0.26,
+    "queries": 52,
+    "topQueries": [
+     "best bbl in miami — 60 impr, 0 clicks, pos 29.8",
+     "bbl surgeons in miami — 33 impr, 0 clicks, pos 46.9",
+     "top-rated brazilian butt lift surgeons in miami — 31 impr, 0 clicks, pos 44.7",
+     "best bbl surgeon in miami — 29 impr, 1 clicks, pos 35.0",
+     "best brazilian butt lift miami — 19 impr, 0 clicks, pos 32.1",
+     "miami bbl surgeons — 19 impr, 0 clicks, pos 22.7",
+     "bbl surgeons miami — 16 impr, 0 clicks, pos 46.1",
+     "best bbl doctor in miami — 16 impr, 0 clicks, pos 44.4",
+     "best bbl miami — 16 impr, 0 clicks, pos 28.4",
+     "where can i find miami bbl surgeon who specializes in athletic, proportional curves instead of exaggerated results? — 16 impr, 0 clicks, pos 35.4",
+     "best bbl surgeons in miami — 11 impr, 0 clicks, pos 36.9",
+     "best bbl in miami fl — 10 impr, 0 clicks, pos 46.2",
+     "best bbl doctors in miami — 9 impr, 0 clicks, pos 38.3",
+     "best bbl doctors in miami florida — 9 impr, 0 clicks, pos 36.0",
+     "best brazilian butt lift surgeon miami — 9 impr, 0 clicks, pos 34.2"
+    ]
+   },
+   "other": {
+    "clicks": 2,
+    "impressions": 349,
+    "position": 30.3,
+    "ctr": 0.57,
+    "queries": 115,
+    "topQueries": [
+     "south beach butt lift — 34 impr, 0 clicks, pos 24.6",
+     "brazilian buttocks lift miami — 33 impr, 0 clicks, pos 17.4",
+     "brazilian but lift miami — 19 impr, 0 clicks, pos 29.6",
+     "bbl surgery — 18 impr, 0 clicks, pos 22.5",
+     "miami but lift — 13 impr, 0 clicks, pos 37.5",
+     "bbls in miami — 11 impr, 0 clicks, pos 15.6",
+     "brazilian butt lift centennial — 11 impr, 0 clicks, pos 58.3",
+     "bbl capital of the world — 8 impr, 0 clicks, pos 10.0",
+     "bbl packages — 8 impr, 0 clicks, pos 33.0",
+     "naturally enhanced bbl — 8 impr, 0 clicks, pos 38.3",
+     "what is a bbl — 8 impr, 0 clicks, pos 2.1",
+     "miami bbls — 7 impr, 0 clicks, pos 37.4",
+     "300cc bbl — 6 impr, 1 clicks, pos 16.5",
+     "bbl curves — 6 impr, 0 clicks, pos 1.3",
+     "bbl plastic surgery — 6 impr, 0 clicks, pos 43.8"
+    ]
+   },
+   "safety": {
+    "clicks": 0,
+    "impressions": 141,
+    "position": 49.8,
+    "ctr": 0,
+    "queries": 7,
+    "topQueries": [
+     "safe brazilian butt lift miami — 50 impr, 0 clicks, pos 30.5",
+     "ultrasound guided brazilian butt lift miami — 28 impr, 0 clicks, pos 75.7",
+     "is it safe to get a bbl in miami? — 18 impr, 0 clicks, pos 71.1",
+     "safe bbl miami — 18 impr, 0 clicks, pos 32.9",
+     "ultrasound guided bbl miami — 15 impr, 0 clicks, pos 65.2",
+     "safe bbl surgery florida — 8 impr, 0 clicks, pos 46.4",
+     "safe bbl florida — 4 impr, 0 clicks, pos 38.0"
+    ]
+   },
+   "skinny": {
+    "clicks": 0,
+    "impressions": 96,
+    "position": 29.8,
+    "ctr": 0,
+    "queries": 7,
+    "topQueries": [
+     "skinny bbl miami — 51 impr, 0 clicks, pos 30.1",
+     "skinny bbl in miami — 16 impr, 0 clicks, pos 27.0",
+     "miami skinny bbl — 11 impr, 0 clicks, pos 21.8",
+     "skinny bbl florida — 6 impr, 0 clicks, pos 31.3",
+     "skinny bbl — 5 impr, 0 clicks, pos 3.0",
+     "skinny bbl coral gables — 5 impr, 0 clicks, pos 88.0",
+     "skinny bbl before and after — 2 impr, 0 clicks, pos 4.0"
+    ]
+   },
+   "revision": {
+    "clicks": 0,
+    "impressions": 26,
+    "position": 46.5,
+    "ctr": 0,
+    "queries": 5,
+    "topQueries": [
+     "brazilian butt lift revision miami — 20 impr, 0 clicks, pos 43.8",
+     "bbl revision surgery miami — 3 impr, 0 clicks, pos 55.3",
+     "bbl revision in miami — 1 impr, 0 clicks, pos 49.0",
+     "bbl revision miami — 1 impr, 0 clicks, pos 70.0",
+     "brazilian butt lift revision in miami — 1 impr, 0 clicks, pos 49.0"
+    ]
+   }
+  }
+ }
+}
