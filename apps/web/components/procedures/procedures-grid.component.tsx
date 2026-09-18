@@ -1,11 +1,11 @@
 'use client'
 
-import type { Procedure } from '@/lib/types/procedure.type'
+import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ProcedureCard } from './procedure-card.component'
 
 interface ProceduresGridProps {
-    procedures: Procedure[]
+    procedures: ProcedureSummary[]
     activeCategory: string
 }
 
@@ -25,11 +25,10 @@ export function ProceduresGrid({
                 className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'
             >
                 <AnimatePresence mode='popLayout'>
-                    {filteredProcedures.map((procedure, index) => (
+                    {filteredProcedures.map((procedure) => (
                         <ProcedureCard
                             key={procedure.slug}
                             procedure={procedure}
-                            index={index}
                         />
                     ))}
                 </AnimatePresence>

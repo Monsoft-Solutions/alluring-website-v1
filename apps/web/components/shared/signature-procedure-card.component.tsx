@@ -1,5 +1,5 @@
 import { ImageObjectSchema, ServiceSchema } from '@workspace/seo/react'
-import type { Procedure } from '@/lib/types/procedure.type'
+import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site-config'
 
 interface SignatureProcedureCardProps {
-    procedure: Procedure
+    procedure: ProcedureSummary
     index: number
     includeSchema?: boolean
 }
@@ -30,7 +30,10 @@ const CARD_DELAY = [
 const getCategoryDisplayName = (
     category?: 'face' | 'breast' | 'body' | 'combined'
 ): string => {
-    const categoryMap: Record<NonNullable<Procedure['category']>, string> = {
+    const categoryMap: Record<
+        NonNullable<ProcedureSummary['category']>,
+        string
+    > = {
         breast: 'Breast Procedures',
         body: 'Body Contouring',
         face: 'Facial Rejuvenation',
@@ -52,8 +55,7 @@ export function SignatureProcedureCard({
 
     const categoryDisplay = getCategoryDisplayName(procedure.category)
     const imageSrc = procedure.image || '/images/placeholder.jpg'
-    const description =
-        procedure.shortDescription || procedure.description || ''
+    const description = procedure.shortDescription ?? ''
 
     return (
         <div

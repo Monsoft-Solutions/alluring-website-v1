@@ -1,7 +1,7 @@
 'use client'
 
 import { ImageObjectSchema } from '@workspace/seo/react'
-import type { Procedure } from '@/lib/types/procedure.type'
+import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,8 +10,7 @@ import { siteConfig } from '@/lib/data/site-config'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 interface ProcedureCardProps {
-    procedure: Procedure
-    index: number
+    procedure: ProcedureSummary
     includeSchema?: boolean
 }
 
@@ -21,7 +20,10 @@ interface ProcedureCardProps {
 const getCategoryDisplayName = (
     category?: 'face' | 'breast' | 'body' | 'combined'
 ): string => {
-    const categoryMap: Record<NonNullable<Procedure['category']>, string> = {
+    const categoryMap: Record<
+        NonNullable<ProcedureSummary['category']>,
+        string
+    > = {
         breast: 'Breast',
         body: 'Body',
         face: 'Face',
@@ -52,9 +54,6 @@ export function ProcedureCard({
         '@type': 'Organization' as const,
         name: siteConfig.business.name,
     }
-
-    const description =
-        procedure.shortDescription || procedure.description || ''
 
     const handleClick = () => {
         track('content_click', {
@@ -114,7 +113,7 @@ export function ProcedureCard({
 
                 {/* Description */}
                 <p className='mb-6 line-clamp-2 text-base leading-relaxed font-light text-stone-300'>
-                    {description}
+                    {procedure.shortDescription}
                 </p>
 
                 {/* CTA Button */}

@@ -100,6 +100,14 @@ export interface Procedure {
     image?: string
     keywords?: string[]
     category?: 'face' | 'breast' | 'body' | 'combined'
+    /**
+     * Where the procedure is performed, for `SurgicalProcedure.bodyLocation`.
+     * Set it on anything the category cannot describe: `category: 'body'` used
+     * to emit "abdomen" for everything in it, so the BBL page claimed the
+     * abdomen (#250). Unset, `procedureBodyLocation` omits the field rather
+     * than guessing.
+     */
+    bodyLocation?: string
     faqs?: ProcedureFAQ[]
     content?: string // Markdown content for the main procedure description
 
@@ -173,6 +181,7 @@ export const procedureSchema = z.object({
     image: z.string().optional(),
     keywords: z.array(z.string()).optional(),
     category: z.enum(['face', 'breast', 'body', 'combined']).optional(),
+    bodyLocation: z.string().min(1).optional(),
     faqs: z
         .array(
             z.object({

@@ -11,6 +11,7 @@ export const breastAugmentationMiami: Procedure = {
     heroSubtitle:
         "Enhance Your Natural Beauty with Miami's Premier Breast Augmentation Specialists",
     category: 'breast',
+    bodyLocation: 'Breast',
     image: '/images/procedures/breast-augmentation.jpg',
     dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

@@ -684,6 +684,17 @@ const nextConfig = {
                 destination: '/blog/breast-augmentation-pain-management',
                 permanent: true,
             },
+
+            // A procedure page that was never built but is still requested and
+            // still collecting Search Console impressions (#250). There is no
+            // rhinoplasty page, so the directory is the closest live
+            // destination. If the practice confirms it offers rhinoplasty,
+            // build the page and drop this redirect.
+            {
+                source: '/procedures/rhinoplasty-miami',
+                destination: '/procedures',
+                permanent: true,
+            },
         ]
     },
 }

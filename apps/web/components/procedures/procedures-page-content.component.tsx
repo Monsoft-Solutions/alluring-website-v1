@@ -1,6 +1,6 @@
 'use client'
 
-import type { Procedure } from '@/lib/types/procedure.type'
+import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { useState, useRef } from 'react'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SignatureProcedureCard } from '@/components/shared/signature-procedure-card.component'
@@ -19,7 +19,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { Shield, Award, Users, Building2 } from 'lucide-react'
 
 interface ProceduresPageContentProps {
-    procedures: Procedure[]
+    procedures: ProcedureSummary[]
 }
 
 export function ProceduresPageContent({
@@ -69,11 +69,10 @@ export function ProceduresPageContent({
 
                 {/* Mobile Grid - Edge-to-edge cinematic cards */}
                 <div className='flex flex-col gap-4 pb-16'>
-                    {procedures.map((procedure, idx) => (
+                    {procedures.map((procedure) => (
                         <ProcedureCard
                             key={procedure.slug}
                             procedure={procedure}
-                            index={idx}
                         />
                     ))}
                 </div>

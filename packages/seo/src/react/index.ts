@@ -1,4 +1,5 @@
 export { JsonLd } from './json-ld.component'
+export { JsonLdGraph, type JsonLdGraphNode } from './json-ld-graph.component'
 export { OrganizationSchema } from './organization/organization-schema.component'
 export { WebSiteSchema } from './website/web-site-schema.component'
 export { WebPageSchema } from './webpage/web-page-schema.component'

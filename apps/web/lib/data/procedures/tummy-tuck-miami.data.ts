@@ -11,6 +11,7 @@ export const tummyTuckMiami: Procedure = {
     heroSubtitle:
         "Achieve the Flat, Toned Abdomen You've Always Wanted with Miami's Most Trusted Abdominoplasty Specialists",
     category: 'body',
+    bodyLocation: 'Abdomen',
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/hero.webp',
     dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

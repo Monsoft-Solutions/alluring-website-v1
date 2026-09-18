@@ -6,6 +6,8 @@ import {
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { procedures } from '@/lib/data/procedures.data'
+import { toProcedureSummary } from '@/lib/data/procedure-summary.util'
+import { toAbsoluteUrl } from '@/lib/seo/procedure-graph.util'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -86,7 +88,7 @@ export default function ProceduresPage() {
         position: index + 1,
         name: procedure.title,
         url: `${siteUrl}/procedures/${procedure.slug}`,
-        image: procedure.image ? `${siteUrl}${procedure.image}` : undefined,
+        image: toAbsoluteUrl(procedure.image, siteUrl),
         description: procedure.shortDescription || procedure.description,
     }))
 
@@ -113,7 +115,9 @@ export default function ProceduresPage() {
             />
 
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
-                <ProceduresPageContent procedures={procedures} />
+                <ProceduresPageContent
+                    procedures={procedures.map(toProcedureSummary)}
+                />
             </ContainerLayout>
         </>
     )

@@ -36,6 +36,18 @@ async function generateLlmsFullTxt(): Promise<string> {
         // Blog posts fetch failed, continue without them
     }
 
+    // The newest real date across the content this file describes. It used to
+    // print the request date, which made every fetch look like a fresh edit
+    // (#250). No dates at all means no claim: the line is omitted.
+    const lastUpdated = [
+        ...procedures.map((p) => p.dateModified),
+        ...recentPosts.map((p) => p.publishedAt),
+    ]
+        .filter((date): date is string => Boolean(date))
+        .map((date) => date.slice(0, 10))
+        .sort()
+        .at(-1)
+
     const content = `# ${siteConfig.business.name} - Comprehensive Information Guide
 
 > ${siteConfig.business.description}
@@ -251,8 +263,7 @@ ${siteConfig.social.map((s) => `- ${s.label ?? s.platform}: ${s.url}`).join('\n'
 
 ---
 
-*Last updated: ${new Date().toISOString().split('T')[0]}*
-*This content is generated dynamically from ${siteConfig.business.name} website data.*
+${lastUpdated ? `*Last updated: ${lastUpdated}*\n` : ''}*This content is generated dynamically from ${siteConfig.business.name} website data.*
 `
 
     return content
