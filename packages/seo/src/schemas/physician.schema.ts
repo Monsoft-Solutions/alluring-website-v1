@@ -76,7 +76,7 @@ export function buildPhysicianJsonLd(
     // Handle worksFor organization
     if (props.worksFor) {
         const worksForOrg: Record<string, unknown> = {
-            '@type': 'Organization',
+            '@type': props.worksFor.type ?? 'Organization',
             ...(props.worksFor['@id'] && { '@id': props.worksFor['@id'] }),
             name: props.worksFor.name,
             ...(props.worksFor.url && { url: props.worksFor.url }),

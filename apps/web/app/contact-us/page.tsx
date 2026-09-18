@@ -32,6 +32,7 @@ import { siteConfig } from '@/lib/data/site-config'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 /**
  * Contact Page Metadata
@@ -101,8 +102,9 @@ export default async function ContactPage() {
                 ]}
             />
 
-            {/* MedicalBusiness Schema - Healthcare-specific LocalBusiness for local SEO */}
+            {/* The practice as a MedicalClinic - a healthcare LocalBusiness, for local SEO */}
             <MedicalClinicSchema
+                schemaType={ORGANIZATION_SCHEMA_TYPE}
                 name={siteConfig.business.name}
                 id={`${seoConfig.siteUrl}/#organization`}
                 url={seoConfig.siteUrl}
@@ -154,7 +156,7 @@ export default async function ContactPage() {
                 provider={{
                     '@id': `${seoConfig.siteUrl}/#organization`,
                     name: siteConfig.business.name,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                 }}
                 areaServed={['Miami', 'Florida', 'United States']}
                 availableLanguage={['English', 'Spanish']}

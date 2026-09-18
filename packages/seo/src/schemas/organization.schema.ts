@@ -8,7 +8,7 @@ export function buildOrganizationJsonLd(
 ): WithContext<Organization> {
     // Build organization with @id for Knowledge Graph entity linking
     const organization: Record<string, unknown> = {
-        '@type': 'Organization',
+        '@type': props.type ?? 'Organization',
         // Include @id for entity identification and cross-page linking
         ...(props.id && { '@id': props.id }),
         name: props.name,

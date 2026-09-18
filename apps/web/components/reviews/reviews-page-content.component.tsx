@@ -49,6 +49,7 @@ import {
     reviewsPageUrl,
 } from '@/lib/seo/reviews-page'
 import { env } from '@/env'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/reviews`
@@ -118,7 +119,7 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                     reviewBody={review.comment ?? ''}
                     itemReviewed={{
                         '@id': `${siteUrl}/#organization`,
-                        type: 'MedicalBusiness',
+                        type: ORGANIZATION_SCHEMA_TYPE,
                         name: siteConfig.business.name,
                         url: siteConfig.seo.siteUrl,
                     }}
@@ -136,9 +137,10 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                 <FAQSchema items={faqSchemaItems} />
             )}
 
-            {/* Structured Data - LocalBusiness with AggregateRating for LLM search */}
+            {/* Structured Data - the practice (a LocalBusiness subtype) with AggregateRating for LLM search */}
             {averageRating && totalCount > 0 && (
                 <LocalBusinessSchema
+                    type={ORGANIZATION_SCHEMA_TYPE}
                     id={`${siteUrl}/#organization`}
                     name={siteConfig.business.name}
                     url={siteUrl}

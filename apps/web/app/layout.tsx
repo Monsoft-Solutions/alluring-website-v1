@@ -22,8 +22,10 @@ import { IconSprite } from '@/components/shared/icon-sprite.component'
 import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
 import { GoogleTranslateInit } from '@/components/google-translate-init.component'
 import { env } from '@/env'
+import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 /**
  * Global metadata.
@@ -136,8 +138,19 @@ export default function RootLayout({
                 <ScrollDepthTracker />
                 <OrganizationSchema
                     id={`${seoConfig.siteUrl}/#organization`}
+                    type={ORGANIZATION_SCHEMA_TYPE}
                     name={seoConfig.siteName}
                     url={seoConfig.siteUrl}
+                    // A MedicalClinic is a LocalBusiness, and Google treats
+                    // one without an address as an incomplete item. Every
+                    // page publishes this node, so it carries its own.
+                    address={{
+                        streetAddress: siteConfig.contact.address,
+                        addressLocality: siteConfig.contact.city,
+                        addressRegion: siteConfig.contact.state,
+                        postalCode: siteConfig.contact.postalCode,
+                        addressCountry: 'US',
+                    }}
                     logo={seoConfig.organization?.logo}
                     legalName={seoConfig.organization?.legalName}
                     founders={seoConfig.organization?.founders}

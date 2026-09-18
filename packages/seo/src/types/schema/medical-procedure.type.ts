@@ -83,5 +83,10 @@ export type MedicalProcedurePerformer = {
     name: string
 
     /** Type of performer */
-    type?: 'MedicalBusiness' | 'Hospital' | 'Physician' | 'Organization'
+    type?:
+        | 'MedicalBusiness'
+        | 'MedicalClinic'
+        | 'Hospital'
+        | 'Physician'
+        | 'Organization'
 }

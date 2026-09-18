@@ -37,6 +37,7 @@ import {
 } from '@/lib/queries/promotion.query'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 import { env } from '@/env'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
@@ -146,8 +147,9 @@ export default async function Page() {
                 }}
             />
 
-            {/* Structured Data - MedicalBusiness Schema for healthcare SEO */}
+            {/* Structured Data - the practice as a MedicalClinic (see ORGANIZATION_SCHEMA_TYPE) */}
             <MedicalClinicSchema
+                schemaType={ORGANIZATION_SCHEMA_TYPE}
                 name={siteConfig.business.name}
                 id={`${siteUrl}/#organization`}
                 url={siteUrl}
@@ -223,7 +225,7 @@ export default async function Page() {
             <PhysicianSchema
                 id={`${siteUrl}/#physician-dr-karlinsky`}
                 name='Dr. Victoria Karlinsky'
-                url={`${siteUrl}/about`}
+                url={`${siteUrl}/dr-karlinsky`}
                 image={`${siteUrl}/images/surgeons/dr-karlinsky.webp`}
                 description='Double Board-Certified Cosmetic Surgeon specializing in Brazilian Butt Lift (BBL), breast augmentation, mommy makeover, and body contouring procedures at Alluring Plastic Surgery in Miami, FL.'
                 jobTitle='Double Board-Certified Cosmetic Surgeon'
@@ -238,6 +240,7 @@ export default async function Page() {
                 }}
                 worksFor={{
                     '@id': `${siteUrl}/#organization`,
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     name: siteConfig.business.name,
                     url: siteUrl,
                 }}
@@ -328,7 +331,7 @@ export default async function Page() {
                     }
                     offeredBy={{
                         '@id': `${siteUrl}/#organization`,
-                        type: 'MedicalBusiness',
+                        type: ORGANIZATION_SCHEMA_TYPE,
                         name: siteConfig.business.name,
                         url: siteUrl,
                     }}

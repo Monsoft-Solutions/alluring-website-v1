@@ -41,6 +41,7 @@ import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 const HERO_FORM_ANCHOR = '#hero-form'
 const PAGE_PATH = '/landing/dr-victoria-karlinsky'
@@ -123,7 +124,7 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     '@id': `${seoConfig.siteUrl}/#organization`,
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     logo: seoConfig.organization?.logo,
                 }}
                 areaServed={['Miami', 'Florida', 'United States']}
@@ -142,7 +143,9 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                 <PhysicianSchema
                     id={`${seoConfig.siteUrl}/#physician-${surgeon.slug}`}
                     name={surgeon.name}
-                    url={PAGE_URL}
+                    // The profile page, as on every other page that publishes
+                    // this @id — one entity, one url.
+                    url={`${seoConfig.siteUrl}/${surgeon.slug}`}
                     image={
                         surgeon.images.featured.startsWith('http')
                             ? surgeon.images.featured
@@ -155,6 +158,7 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
                     worksFor={{
                         '@id': `${seoConfig.siteUrl}/#organization`,
+                        type: ORGANIZATION_SCHEMA_TYPE,
                         name: siteConfig.business.name,
                         url: seoConfig.siteUrl,
                         address: {
@@ -162,7 +166,7 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                             addressLocality: siteConfig.contact.city,
                             addressRegion: siteConfig.contact.state,
                             postalCode: siteConfig.contact.postalCode,
-                            addressCountry: siteConfig.contact.country,
+                            addressCountry: 'US',
                         },
                     }}
                     address={{

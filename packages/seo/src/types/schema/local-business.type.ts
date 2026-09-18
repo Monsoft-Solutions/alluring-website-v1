@@ -25,6 +25,8 @@ export type LocalBusinessAggregateRating = {
 }
 
 export type LocalBusinessSchemaProps = {
+    /** A more specific LocalBusiness subtype. Default: `LocalBusiness`. */
+    type?: 'LocalBusiness' | 'MedicalBusiness' | 'MedicalClinic'
     /**
      * Entity identifier for Knowledge Graph linking.
      * When provided, creates an identifiable entity that can be referenced

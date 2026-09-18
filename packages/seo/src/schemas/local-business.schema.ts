@@ -14,7 +14,7 @@ export function buildLocalBusinessJsonLd(
 ): WithContext<LocalBusiness> {
     // Build with @id for Knowledge Graph entity linking
     const lb: Record<string, unknown> = {
-        '@type': 'LocalBusiness',
+        '@type': props.type ?? 'LocalBusiness',
         // Include @id for entity identification and cross-page linking
         ...(props.id && { '@id': props.id }),
         name: props.name,

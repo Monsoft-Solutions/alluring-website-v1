@@ -47,6 +47,8 @@ export type PhysicianSchemaProps = {
     worksFor?: {
         /** Reference to organization entity via @id (instead of embedding full org) */
         '@id'?: string
+        /** Keep it the type the `@id` is published with elsewhere. Default: `Organization`. */
+        type?: 'Organization' | 'MedicalBusiness' | 'MedicalClinic'
         name: string
         url?: string
         /** Organization address (recommended for rich results eligibility) */

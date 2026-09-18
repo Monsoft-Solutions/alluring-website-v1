@@ -40,6 +40,7 @@ import {
     getRemainingDays,
     isExpiringSoon,
 } from '@/lib/queries/promotion.query'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 /**
  * Generate dynamic month/year for specials page title
@@ -194,7 +195,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 numberOfItems={promotions.length}
                 offeredBy={{
                     '@id': `${seoConfig.siteUrl}/#organization`,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
                 }}

@@ -50,7 +50,7 @@ export function buildServiceJsonLd(
     if (props.category) service.category = props.category
     if (props.brand) service.brand = props.brand
 
-    // Handle provider (Organization, Person, or MedicalBusiness)
+    // Handle provider (a Person, or an Organization or one of its subtypes)
     if (props.provider) {
         const providerType = props.provider.type ?? 'Organization'
         service.provider = {
@@ -59,9 +59,9 @@ export function buildServiceJsonLd(
             ...(props.provider['@id'] && { '@id': props.provider['@id'] }),
             name: props.provider.name,
             ...(props.provider.url && { url: props.provider.url }),
+            // `logo` is an Organization property; a Person has none.
             ...(props.provider.logo &&
-                (providerType === 'Organization' ||
-                    providerType === 'MedicalBusiness') && {
+                providerType !== 'Person' && {
                     logo: props.provider.logo,
                 }),
         }

@@ -33,6 +33,7 @@ import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.quer
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
 import { usesBlogPrefix, getBlogPostUrl } from '@/lib/utils/blog-url.util'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 type PageProps = {
     params: Promise<{ slug: string }>
@@ -360,6 +361,7 @@ function SurgeonContent({
                 alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
                 worksFor={{
                     '@id': `${siteUrl}/#organization`,
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     name: siteConfig.business.name,
                     url: siteUrl,
                     address: {
@@ -367,7 +369,7 @@ function SurgeonContent({
                         addressLocality: siteConfig.contact.city,
                         addressRegion: siteConfig.contact.state,
                         postalCode: siteConfig.contact.postalCode,
-                        addressCountry: siteConfig.contact.country,
+                        addressCountry: 'US',
                     },
                 }}
                 address={{

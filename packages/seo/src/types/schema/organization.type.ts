@@ -10,6 +10,12 @@ export type OrganizationSchemaProps = {
      * Format: "https://www.example.com/#organization"
      */
     id?: string
+    /**
+     * A more specific schema.org type for the same entity. Every page that
+     * publishes this `@id` must use the same one, or the entity reads as
+     * several different kinds of thing. Default: `Organization`.
+     */
+    type?: 'Organization' | 'MedicalBusiness' | 'MedicalClinic'
     name: string
     url: string
     logo?: string

@@ -10,6 +10,7 @@ import type { JsonLdGraphNode } from '@workspace/seo/react'
 
 import { siteConfig } from '@/lib/data/site-config'
 import type { Procedure } from '@/lib/types/procedure.type'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 /** `http://…`, `https://…` or a protocol-relative `//…`. */
 const ABSOLUTE_URL = /^(https?:)?\/\//i
@@ -219,7 +220,7 @@ export function buildProcedureGraph({
     // Name and address make the node a complete local business on its own
     // rather than relying on a merge with the root layout's Organization.
     const clinic = {
-        '@type': 'MedicalClinic',
+        '@type': ORGANIZATION_SCHEMA_TYPE,
         '@id': organizationId,
         name: siteConfig.business.name,
         url: siteUrl,

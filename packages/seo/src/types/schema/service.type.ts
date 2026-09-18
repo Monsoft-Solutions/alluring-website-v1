@@ -57,7 +57,7 @@ export type ServiceProvider = {
     url?: string
 
     /** Type of provider */
-    type?: 'Organization' | 'Person' | 'MedicalBusiness'
+    type?: 'Organization' | 'Person' | 'MedicalBusiness' | 'MedicalClinic'
 
     /** Logo URL for organization */
     logo?: string

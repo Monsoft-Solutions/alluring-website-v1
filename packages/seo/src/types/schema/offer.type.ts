@@ -72,7 +72,7 @@ export type OfferProvider = {
     '@id'?: string
 
     /** Type of provider */
-    type: 'LocalBusiness' | 'Organization' | 'MedicalBusiness'
+    type: 'LocalBusiness' | 'Organization' | 'MedicalBusiness' | 'MedicalClinic'
 
     /** Name of the provider */
     name: string

@@ -25,6 +25,7 @@ import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
@@ -113,6 +114,7 @@ export default function AboutPage() {
                     award={surgeon.certifications}
                     worksFor={{
                         '@id': `${siteUrl}/#organization`,
+                        type: ORGANIZATION_SCHEMA_TYPE,
                         name: siteConfig.business.name,
                         url: siteUrl,
                         address: {
@@ -120,7 +122,7 @@ export default function AboutPage() {
                             addressLocality: siteConfig.contact.city,
                             addressRegion: siteConfig.contact.state,
                             postalCode: siteConfig.contact.postalCode,
-                            addressCountry: siteConfig.contact.country,
+                            addressCountry: 'US',
                         },
                     }}
                     knowsAbout={surgeon.specialties}

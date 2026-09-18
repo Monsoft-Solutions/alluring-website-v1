@@ -13,6 +13,7 @@ import { PromotionCard } from '@/components/promotions/promotion-card.component'
 import { getActivePromotions } from '@/lib/queries/promotion.query'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 const pageTitle = 'Special Offers & Promotions | Alluring Plastic Surgery'
 
@@ -59,7 +60,7 @@ export default async function PromotionsPage() {
                 numberOfItems={promotions.length}
                 offeredBy={{
                     '@id': `${seoConfig.siteUrl}/#organization`,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
                 }}

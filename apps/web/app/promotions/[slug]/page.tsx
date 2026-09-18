@@ -18,6 +18,7 @@ import { PromotionViewTracker } from '@/components/promotions/promotion-view-tra
 import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 // 10 minutes, not the hour the other content routes use. Promotion *writes* fire
 // revalidateTag, but a promotion expiring is not a write — nothing invalidates
@@ -120,7 +121,7 @@ export default async function PromotionDetailPage({
                 discountDescription={discountDescription}
                 offeredBy={{
                     '@id': `${seoConfig.siteUrl}/#organization`,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
                 }}

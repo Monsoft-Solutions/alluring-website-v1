@@ -54,6 +54,7 @@ import { siteConfig } from '@/lib/data/site-config'
 import { getActivePromotionByProcedure } from '@/lib/queries/promotion.query'
 import { seoConfig } from '@/lib/seo-config'
 import type { ProcedureFAQ } from '@/lib/types/procedure.type'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 const HERO_FORM_ANCHOR = '#hero-form'
 
@@ -226,7 +227,7 @@ export default async function ProcedureLandingPage(
                 performedBy={{
                     '@id': `${siteUrl}/#organization`,
                     name: siteConfig.business.name,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                 }}
             />
 
@@ -238,7 +239,7 @@ export default async function ProcedureLandingPage(
                 provider={{
                     '@id': `${siteUrl}/#organization`,
                     name: siteConfig.business.name,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                 }}
                 areaServed={['Miami', 'Florida', 'United States']}
                 availableLanguage={['English', 'Spanish']}

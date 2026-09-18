@@ -37,6 +37,7 @@ import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
+import { ORGANIZATION_SCHEMA_TYPE } from '@/lib/seo/organization-schema.constant'
 
 /**
  * Landing Page Metadata
@@ -117,7 +118,7 @@ export default async function FreeConsultationPage() {
                     '@id': `${seoConfig.siteUrl}/#organization`,
                     name: siteConfig.business.name,
                     url: seoConfig.siteUrl,
-                    type: 'MedicalBusiness',
+                    type: ORGANIZATION_SCHEMA_TYPE,
                     logo: seoConfig.organization?.logo,
                 }}
                 areaServed={['Miami', 'Florida', 'United States']}
