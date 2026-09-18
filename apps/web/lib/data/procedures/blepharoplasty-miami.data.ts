@@ -11,6 +11,7 @@ export const blepharoplastyMiami: Procedure = {
     heroSubtitle:
         'Restore a Youthful, Refreshed Look with Expert Eyelid Cosmetic Surgery',
     category: 'face',
+    bodyLocation: 'Eyelid',
     image: '/images/procedures/blepharoplasty.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

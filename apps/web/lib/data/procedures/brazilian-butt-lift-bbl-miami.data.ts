@@ -26,6 +26,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         'Sculpt your curves with precision. Our BBL procedure enhances the natural shape of your body by redistributing fat for a fuller, more lifted look.',
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
     category: 'body',
+    bodyLocation: 'Buttocks',
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/hero.webp',
     dateModified: '2026-09-11T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

@@ -10,6 +10,7 @@ export const breastLiftMiami: Procedure = {
         'Lift and reshape your breasts to restore a more youthful, perky appearance without implants using advanced mastopexy techniques.',
     heroSubtitle: 'Enhance Your Confidence with a Natural-Looking Breast Lift',
     category: 'breast',
+    bodyLocation: 'Breast',
     image: '/images/procedures/breast-lift.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

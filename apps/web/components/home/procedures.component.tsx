@@ -16,6 +16,7 @@
 import { procedures } from '@/lib/data/procedures.data'
 
 import { SignatureProcedureCard } from '../shared/signature-procedure-card.component'
+import { toProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { ProceduresCarousel } from './procedures-carousel.component'
 
 /**
@@ -41,7 +42,7 @@ export const Procedures = () => (
         {signatureProcedures.map((procedure, idx) => (
             <SignatureProcedureCard
                 key={procedure.slug}
-                procedure={procedure}
+                procedure={toProcedureSummary(procedure)}
                 index={idx}
             />
         ))}

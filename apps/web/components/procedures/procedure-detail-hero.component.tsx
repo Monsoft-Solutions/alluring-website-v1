@@ -13,6 +13,16 @@ interface ProcedureDetailHeroProps {
     image?: string
 }
 
+/**
+ * The hero card animates in CSS, not framer-motion: `initial={{ opacity: 0 }}`
+ * server-renders `style="opacity:0"`, so the H1 — the page's single most
+ * important element — was invisible to anything that does not hydrate,
+ * crawlers included (#250). `animate-fade-in-up` has `backwards` fill and a
+ * `prefers-reduced-motion` guard, and the markup ships visible.
+ *
+ * The parallax below still uses framer-motion: it starts at its natural
+ * position, so it renders nothing hidden.
+ */
 export function ProcedureDetailHero({
     title,
     subtitle,
@@ -39,7 +49,6 @@ export function ProcedureDetailHero({
                         fill
                         className='object-cover'
                         priority
-                        quality={90}
                     />
                     <div className='absolute inset-0 bg-gradient-to-b from-stone-900/30 via-stone-900/10 to-stone-900/80' />
                     <div className='absolute inset-0 bg-stone-900/20 backdrop-blur-[1px]' />
@@ -53,31 +62,18 @@ export function ProcedureDetailHero({
 
                 <div className='pointer-events-none container mx-auto px-4 pb-24 md:px-12 lg:pb-32'>
                     <div className='pointer-events-auto max-w-3xl md:ml-0'>
-                        <motion.div
-                            initial={{ opacity: 0, y: 120 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                                duration: 1.4,
-                                ease: [0.19, 1, 0.22, 1],
-                            }}
-                            className='relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md sm:p-10 md:p-14'
-                        >
+                        <div className='animate-fade-in-up relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md sm:p-10 md:p-14'>
                             {/* Decorative elements */}
                             <div className='bg-gold-400/20 absolute top-0 right-0 -mt-24 -mr-24 h-80 w-80 rounded-full blur-3xl' />
                             <div className='absolute bottom-0 left-0 -mb-24 -ml-24 h-80 w-80 rounded-full bg-stone-500/20 blur-3xl' />
 
                             <div className='relative z-10'>
-                                <motion.div
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.4, duration: 0.8 }}
-                                    className='mb-6 flex items-center gap-4'
-                                >
+                                <div className='animate-fade-in-up animate-delay-300 mb-6 flex items-center gap-4'>
                                     <span className='bg-gold-400 h-[1px] w-12 shadow-[0_0_10px_rgba(234,179,8,0.5)]'></span>
                                     <span className='text-gold-400 text-xs font-bold tracking-[0.3em] uppercase drop-shadow-sm'>
                                         Premium Procedure
                                     </span>
-                                </motion.div>
+                                </div>
 
                                 <h1 className='font-serif text-4xl leading-[1.1] font-medium text-white drop-shadow-lg sm:text-5xl md:text-6xl lg:text-7xl'>
                                     {title}
@@ -89,12 +85,7 @@ export function ProcedureDetailHero({
                                     </p>
                                 )}
 
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.6, duration: 0.8 }}
-                                    className='mt-10 flex flex-col gap-4 sm:flex-row'
-                                >
+                                <div className='animate-fade-in-up animate-delay-500 mt-10 flex flex-col gap-4 sm:flex-row'>
                                     <Button
                                         asChild
                                         variant='gold'
@@ -116,9 +107,9 @@ export function ProcedureDetailHero({
                                             Call Us Now
                                         </Link>
                                     </Button>
-                                </motion.div>
+                                </div>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
 

@@ -5,10 +5,10 @@
  * and improved E-E-A-T signals.
  */
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
-import type { Procedure } from '@/lib/types/procedure.type'
+import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 
 type RelatedProceduresProps = {
-    readonly procedures: Procedure[]
+    readonly procedures: ProcedureSummary[]
     readonly title?: string
     readonly description?: string
 }
@@ -32,12 +32,8 @@ export function RelatedProcedures({
             </div>
 
             <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-                {procedures.map((procedure, index) => (
-                    <ProcedureCard
-                        key={procedure.slug}
-                        procedure={procedure}
-                        index={index}
-                    />
+                {procedures.map((procedure) => (
+                    <ProcedureCard key={procedure.slug} procedure={procedure} />
                 ))}
             </div>
         </section>

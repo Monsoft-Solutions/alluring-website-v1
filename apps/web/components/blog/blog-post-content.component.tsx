@@ -56,12 +56,12 @@ import { countMarkdownWords } from '@/lib/utils/word-count.util'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
 import type { TOCHeading } from '@/lib/types/blog/toc.type'
-import type { Procedure } from '@/lib/types/procedure.type'
+import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 
 type BlogPostContentProps = {
     post: BlogPostDetail
     relatedPosts: BlogPostCard[]
-    relatedProcedures?: Procedure[]
+    relatedProcedures?: ProcedureSummary[]
     tableOfContents: TOCHeading[]
     beforeCTA: string
     afterCTA: string | null

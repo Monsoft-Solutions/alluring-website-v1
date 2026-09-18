@@ -11,6 +11,7 @@ export const liposuctionMiami: Procedure = {
     heroSubtitle:
         'Achieve a Slimmer, More Defined Shape with Expert Liposuction Techniques',
     category: 'body',
+    bodyLocation: 'Abdomen, flanks, thighs, arms and back',
     image: '/images/procedures/liposuction.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

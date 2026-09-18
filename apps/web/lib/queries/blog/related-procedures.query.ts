@@ -9,7 +9,10 @@
 import type { BlogPostDetail } from '@/lib/types/blog/post-detail.type'
 
 import { getProceduresByCategory, procedures } from '@/lib/data/procedures.data'
-import type { Procedure } from '@/lib/types/procedure.type'
+import {
+    toProcedureSummary,
+    type ProcedureSummary,
+} from '@/lib/data/procedure-summary.util'
 
 /**
  * Procedure keyword mappings for matching blog content
@@ -67,9 +70,9 @@ const KEYWORD_TO_PROCEDURE: Record<string, string[]> = {
 export function getRelatedProcedures(
     post: BlogPostDetail,
     limit = 3
-): Procedure[] {
+): ProcedureSummary[] {
     const matchedSlugs = new Set<string>()
-    const result: Procedure[] = []
+    const result: ProcedureSummary[] = []
 
     // Helper to add procedure by slug
     const addProcedure = (slug: string) => {
@@ -77,7 +80,7 @@ export function getRelatedProcedures(
         const procedure = procedures.find((p) => p.slug === slug)
         if (procedure) {
             matchedSlugs.add(slug)
-            result.push(procedure)
+            result.push(toProcedureSummary(procedure))
         }
     }
 

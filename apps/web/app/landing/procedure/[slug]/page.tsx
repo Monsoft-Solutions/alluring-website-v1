@@ -46,6 +46,10 @@ import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-befor
 import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { env } from '@/env'
 import { getProcedureBySlug, procedures } from '@/lib/data/procedures.data'
+import {
+    procedureBodyLocation,
+    procedureImageUrl,
+} from '@/lib/seo/procedure-graph.util'
 import { siteConfig } from '@/lib/data/site-config'
 import { getActivePromotionByProcedure } from '@/lib/queries/promotion.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -114,9 +118,7 @@ export async function generateMetadata(
     const pageUrl = `${siteUrl}${pagePath}`
     const cleanTitle = procedure.title.replace(/\s*Miami\s*$/i, '')
 
-    const ogImage = procedure.image
-        ? `${siteUrl}${procedure.image}`
-        : `${siteUrl}/og-image.jpg`
+    const ogImage = procedureImageUrl(procedure, siteUrl)
 
     const title = `Get Your ${cleanTitle} Quote · Free Consult · Miami`
     const description = `Free ${cleanTitle.toLowerCase()} quote in Miami. Board-certified surgeons, honest pricing, financing available. We'll text you within 24 hours — no pressure.`
@@ -216,20 +218,8 @@ export default async function ProcedureLandingPage(
                 name={procedure.title}
                 description={procedure.description}
                 url={pageUrl}
-                image={
-                    procedure.image
-                        ? `${siteUrl}${procedure.image}`
-                        : `${siteUrl}/og-image.jpg`
-                }
-                bodyLocation={
-                    procedure.category === 'face'
-                        ? 'face'
-                        : procedure.category === 'breast'
-                          ? 'breast'
-                          : procedure.category === 'body'
-                            ? 'abdomen'
-                            : undefined
-                }
+                image={procedureImageUrl(procedure, siteUrl)}
+                bodyLocation={procedureBodyLocation(procedure)}
                 procedureType='Surgical'
                 schemaType='SurgicalProcedure'
                 dateModified={procedure.dateModified ?? undefined}
@@ -259,11 +249,7 @@ export default async function ProcedureLandingPage(
                     availability: 'InStock',
                     url: pageUrl,
                 }}
-                image={
-                    procedure.image
-                        ? `${siteUrl}${procedure.image}`
-                        : `${siteUrl}/og-image.jpg`
-                }
+                image={procedureImageUrl(procedure, siteUrl)}
             />
 
             {/* Stripped chrome — only one path forward */}

@@ -172,12 +172,13 @@
     --color-blush-50: var(--blush-50);
     --color-blush-100: var(--blush-100);
 
-    /* Font Families - Tailwind v4 uses these for font utilities */
-    --font-family-sans: var(--font-lato), sans-serif;
-    --font-family-serif: var(--font-playfair), serif;
-
-    /* Alias --font-sans to --font-lato for Tailwind v4 compatibility */
-    --font-sans: var(--font-lato);
+    /* Font families. Tailwind v4 builds the `font-sans` / `font-serif`
+       utilities from `--font-sans` / `--font-serif`. They were named
+       `--font-family-*` until #251, which is why every `font-serif` heading on
+       the site fell through to the ui-serif stack and rendered in Georgia
+       while Playfair downloaded and went unused. Nothing reads the old names. */
+    --font-sans: var(--font-lato), sans-serif;
+    --font-serif: var(--font-playfair), serif;
 }
 
 @layer base {

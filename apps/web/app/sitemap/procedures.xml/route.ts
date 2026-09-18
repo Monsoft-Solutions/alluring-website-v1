@@ -13,6 +13,7 @@ export const revalidate = 10800
 import { pageLastModified } from '@/lib/data/page-metadata'
 import { seoDefaults } from '@/lib/data/site-config'
 import { procedures } from '@/lib/data/procedures.data'
+import { toAbsoluteUrl } from '@/lib/seo/procedure-graph.util'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 import type { SitemapEntry } from '@workspace/seo/types/sitemap/sitemap-entry.type'
 import { generateSitemapXml } from '@workspace/seo/utils'
@@ -89,10 +90,7 @@ export function GET(): NextResponse {
 
             // Add procedure image if available
             if (procedure.image) {
-                // Handle both relative and absolute URLs
-                const imageUrl = procedure.image.startsWith('http')
-                    ? procedure.image
-                    : `${baseUrl}${procedure.image}`
+                const imageUrl = toAbsoluteUrl(procedure.image, baseUrl)!
 
                 entry.images = [
                     {

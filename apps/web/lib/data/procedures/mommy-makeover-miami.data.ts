@@ -11,6 +11,7 @@ export const mommyMakeoverMiami: Procedure = {
     heroSubtitle:
         "Reclaim Your Pre-Baby Body with Miami's Premier Post-Pregnancy Transformation",
     category: 'combined',
+    bodyLocation: 'Abdomen and breast',
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/hero.webp',
     dateModified: '2026-01-29T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',

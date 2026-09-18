@@ -1,13 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import {
-    BreadcrumbSchema,
-    FAQSchema,
-    MedicalProcedureSchema,
-    OfferSchema,
-    ServiceSchema,
-    WebPageSchema,
-} from '@workspace/seo/react'
+import { JsonLdGraph } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
@@ -19,10 +12,7 @@ import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-befor
 import { ProcedureMarkdown } from '@/components/procedures/procedure-markdown.component'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
-import {
-    formatDiscount,
-    getActivePromotionByProcedure,
-} from '@/lib/queries/promotion.query'
+import { getActivePromotionByProcedure } from '@/lib/queries/promotion.query'
 import { ProcedureDetailHero } from '@/components/procedures/procedure-detail-hero.component'
 import { ProcedureStats } from '@/components/procedures/procedure-stats.component'
 import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.component'
@@ -30,12 +20,17 @@ import { ProcedureProcess } from '@/components/procedures/procedure-process.comp
 import { ProcedureCard } from '@/components/procedures/procedure-card.component'
 import { ProcedureIntro } from '@/components/procedures/procedure-intro.component'
 import { ProcedureGallerySection } from '@/components/procedures/procedure-gallery-section.component'
-import { ProcedureContentImagesSection } from '@/components/procedures/procedure-content-images-section.component'
 import { ProcedureConsultationForm } from '@/components/procedures/procedure-consultation-form.component'
 import { ProcedurePricing } from '@/components/procedures/procedure-pricing.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
-import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
+import { buildProcedureGraph } from '@/lib/seo/procedure-graph.util'
+import {
+    procedureBodyLocation,
+    procedureImageUrl,
+    toAbsoluteUrl,
+} from '@/lib/seo/procedure-graph.util'
+import { toProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 import { env } from '@/env'
 
@@ -89,9 +84,7 @@ export async function generateMetadata(
 
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
     const pageUrl = `${siteUrl}/procedures/${params.slug}`
-    const ogImage = procedure.image
-        ? `${siteUrl}${procedure.image}`
-        : `${siteUrl}/og-image.jpg`
+    const ogImage = procedureImageUrl(procedure, siteUrl)
 
     // A hand-written title always wins. The generated pattern is a floor for
     // pages nobody has written metadata for, not something to override an
@@ -169,22 +162,47 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
     const pageUrl = `${siteUrl}/procedures/${params.slug}`
 
-    // Filter out the current procedure from related procedures
+    // Related procedures, projected to what the card renders. The cards are
+    // client components, so whatever they receive is serialized into the RSC
+    // payload — passing whole procedures put three other procedures' markdown
+    // and FAQs on this page (#250).
     const relatedProcedures = procedures
         .filter(
             (p) =>
                 p.category === procedure.category && p.slug !== procedure.slug
         )
         .slice(0, 3)
+        .map(toProcedureSummary)
 
     // Fetch related promotion for this procedure (for structured data)
     const relatedPromotion = await getActivePromotionByProcedure(params.slug)
 
-    // Prepare FAQ items for schema (if FAQs exist)
-    const faqSchemaItems = procedure.faqs?.map((faq) => ({
-        question: faq.question,
-        answer: faq.answer,
-    }))
+    // The promotion, as a graph node. `offeredBy` is a reference rather than a
+    // second copy of the business's address and phone number.
+    const promotionOfferNode = relatedPromotion && {
+        '@type': 'Offer' as const,
+        '@id': `${siteUrl}/promotions/${relatedPromotion.slug}#offer`,
+        name: relatedPromotion.title,
+        description:
+            relatedPromotion.excerpt ??
+            relatedPromotion.description ??
+            undefined,
+        url: `${siteUrl}/promotions/${relatedPromotion.slug}`,
+        availability: 'https://schema.org/LimitedAvailability',
+        category: relatedPromotion.type ?? undefined,
+        offeredBy: { '@id': `${siteUrl}/#organization` },
+        itemOffered: { '@id': `${pageUrl}#procedure` },
+        ...(relatedPromotion.startsAt && {
+            validFrom: new Date(relatedPromotion.startsAt).toISOString(),
+        }),
+        ...(relatedPromotion.endsAt && {
+            validThrough: new Date(relatedPromotion.endsAt).toISOString(),
+            priceValidUntil: new Date(relatedPromotion.endsAt).toISOString(),
+        }),
+        ...(relatedPromotion.imageUrl && {
+            image: toAbsoluteUrl(relatedPromotion.imageUrl, siteUrl),
+        }),
+    }
 
     // Breadcrumb items for schema
     const breadcrumbItems = [
@@ -195,158 +213,19 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
 
     return (
         <>
-            {/* Structured Data - WebPage Schema with freshness signals */}
-            <WebPageSchema
-                name={procedure.title}
-                url={pageUrl}
-                description={procedure.description}
-                dateModified={
-                    procedure.dateModified || new Date().toISOString()
-                }
-                speakable={{
-                    cssSelector: ['h1', '.procedure-intro', '.quick-answer'],
-                }}
+            {/* One structured-data graph, not one script per entity. The
+                nodes reference each other and the site-wide #organization by
+                @id, so the page describes a single subject (#250, #255). */}
+            <JsonLdGraph
+                nodes={buildProcedureGraph({
+                    procedure,
+                    pageUrl,
+                    siteUrl,
+                    faqs: procedure.faqs,
+                    breadcrumbs: breadcrumbItems,
+                    offer: promotionOfferNode,
+                })}
             />
-
-            {/* Structured Data - Breadcrumb Schema */}
-            <BreadcrumbSchema items={breadcrumbItems} />
-
-            {/* Structured Data - FAQ Schema (only if FAQs exist) */}
-            {faqSchemaItems && faqSchemaItems.length > 0 && (
-                <FAQSchema items={faqSchemaItems} />
-            )}
-
-            {/* Structured Data - SurgicalProcedure Schema (more specific than MedicalProcedure) */}
-            <MedicalProcedureSchema
-                name={procedure.title}
-                description={procedure.description}
-                url={pageUrl}
-                mainEntityOfPage={pageUrl}
-                image={
-                    procedure.image
-                        ? `${siteUrl}${procedure.image}`
-                        : `${siteUrl}/og-image.jpg`
-                }
-                bodyLocation={
-                    procedure.category === 'face'
-                        ? 'face'
-                        : procedure.category === 'breast'
-                          ? 'breast'
-                          : procedure.category === 'body'
-                            ? 'abdomen'
-                            : undefined
-                }
-                howPerformed={
-                    procedure.process
-                        ? procedure.process
-                              .map(
-                                  (step) => `${step.title}: ${step.description}`
-                              )
-                              .join('. ')
-                        : undefined
-                }
-                followup={
-                    procedure.quickStats?.recovery
-                        ? `Recovery time: ${procedure.quickStats.recovery}`
-                        : undefined
-                }
-                procedureType='Surgical'
-                schemaType='SurgicalProcedure'
-                dateModified={procedure.dateModified ?? undefined}
-                datePublished={procedure.datePublished ?? undefined}
-                performedBy={{
-                    '@id': `${siteUrl}/#organization`,
-                    name: siteConfig.business.name,
-                    type: 'MedicalBusiness',
-                }}
-            />
-
-            {/* Structured Data - Service Schema for SEO Rich Results */}
-            <ServiceSchema
-                name={`${procedure.title} in Miami`}
-                description={procedure.description}
-                url={pageUrl}
-                serviceType='Cosmetic Surgery'
-                provider={{
-                    '@id': `${siteUrl}/#organization`,
-                    name: siteConfig.business.name,
-                    type: 'MedicalBusiness',
-                }}
-                areaServed={['Miami', 'Florida', 'United States']}
-                availableLanguage={['English', 'Spanish']}
-                image={
-                    procedure.image ? `${siteUrl}${procedure.image}` : undefined
-                }
-                offers={
-                    procedure.pricing
-                        ? {
-                              price: procedure.pricing.startingAt,
-                              priceCurrency: 'USD',
-                              // A personalized range, not a fixed price
-                              minPrice: procedure.pricing.startingAt,
-                              maxPrice: procedure.pricing.upTo,
-                              availability: 'InStock',
-                              url: pageUrl,
-                          }
-                        : undefined
-                }
-            />
-
-            {/* Structured Data - Offer Schema for related promotion */}
-            {relatedPromotion && (
-                <OfferSchema
-                    name={relatedPromotion.title}
-                    description={
-                        relatedPromotion.excerpt ?? relatedPromotion.description
-                    }
-                    url={`${siteUrl}/promotions/${relatedPromotion.slug}`}
-                    validFrom={
-                        relatedPromotion.startsAt
-                            ? new Date(relatedPromotion.startsAt).toISOString()
-                            : undefined
-                    }
-                    validThrough={
-                        relatedPromotion.endsAt
-                            ? new Date(relatedPromotion.endsAt).toISOString()
-                            : undefined
-                    }
-                    priceValidUntil={
-                        relatedPromotion.endsAt
-                            ? new Date(relatedPromotion.endsAt).toISOString()
-                            : undefined
-                    }
-                    availability='LimitedAvailability'
-                    category={relatedPromotion.type}
-                    image={relatedPromotion.imageUrl ?? undefined}
-                    discount={formatDiscount(relatedPromotion) ?? undefined}
-                    discountDescription={
-                        formatDiscount(relatedPromotion)
-                            ? `${formatDiscount(relatedPromotion)} - ${relatedPromotion.title}`
-                            : undefined
-                    }
-                    offeredBy={{
-                        '@id': `${siteUrl}/#organization`,
-                        type: 'MedicalBusiness',
-                        name: siteConfig.business.name,
-                        url: siteUrl,
-                        image: `${siteUrl}${siteConfig.brand.logo}`,
-                        telephone: siteConfig.contact.phone,
-                        priceRange: '$2500-$25000',
-                        address: {
-                            streetAddress: siteConfig.contact.address,
-                            addressLocality: siteConfig.contact.city ?? '',
-                            addressRegion: siteConfig.contact.state ?? '',
-                            postalCode: siteConfig.contact.postalCode ?? '',
-                            addressCountry: siteConfig.contact.country ?? '',
-                        },
-                    }}
-                    itemOffered={{
-                        type: 'MedicalProcedure',
-                        name: procedure.title,
-                        url: pageUrl,
-                    }}
-                />
-            )}
 
             {/* Hero Section */}
             <ProcedureDetailHero
@@ -385,20 +264,21 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 </section>
             )}
 
-            {/* Freshness Signal */}
-            <div className='bg-stone-50 py-4'>
-                <ContainerLayout>
-                    <div className='flex justify-center'>
-                        <LastUpdated
-                            date={
-                                procedure.dateModified ||
-                                new Date().toISOString()
-                            }
-                            variant='badge'
-                        />
-                    </div>
-                </ContainerLayout>
-            </div>
+            {/* Freshness signal. Only when there is a real date to show — it
+                printed today's date for any procedure without one, which is a
+                freshness claim the content does not support (#250). */}
+            {procedure.dateModified && (
+                <div className='bg-stone-50 py-4'>
+                    <ContainerLayout>
+                        <div className='flex justify-center'>
+                            <LastUpdated
+                                date={procedure.dateModified}
+                                variant='badge'
+                            />
+                        </div>
+                    </ContainerLayout>
+                </div>
+            )}
 
             {/* Pricing — cost is the highest-intent question a procedure query
                 carries, so it sits above the fold-adjacent content rather than
@@ -438,23 +318,9 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 includeSchema={true}
             />
 
-            {/* Quiz CTA - Procedure Finder */}
-            <QuizCTA variant='banner' trackingRef='procedure-page' />
-
             {/* Process Section */}
             {procedure.process && (
                 <ProcedureProcess steps={procedure.process} />
-            )}
-
-            {/* Process Images Section */}
-            {procedure.contentImages && procedure.contentImages.length > 0 && (
-                <ProcedureContentImagesSection
-                    images={procedure.contentImages}
-                    section='process'
-                    title='Your Journey With Us'
-                    description='Experience personalized care from consultation to recovery'
-                    variant='muted'
-                />
             )}
 
             {/* Lead Capture Form */}
@@ -497,28 +363,6 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 </section>
             )}
 
-            {/* Content Images Section - Procedure Components */}
-            {procedure.contentImages && procedure.contentImages.length > 0 && (
-                <ProcedureContentImagesSection
-                    images={procedure.contentImages}
-                    section='content'
-                    title='What Your Transformation Includes'
-                    description='Each procedure is customized to address your unique concerns and goals'
-                    variant='default'
-                />
-            )}
-
-            {/* Recovery Lifestyle Section */}
-            {procedure.contentImages && procedure.contentImages.length > 0 && (
-                <ProcedureContentImagesSection
-                    images={procedure.contentImages}
-                    section='recovery'
-                    title='Embrace Your New Life'
-                    description='Our patients enjoy lasting confidence and renewed vitality'
-                    variant='muted'
-                />
-            )}
-
             {/* FAQs Section */}
             {procedure.faqs && procedure.faqs.length > 0 && (
                 <FAQComponent
@@ -536,7 +380,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 description={`Expert advice, recovery tips, and patient stories about ${procedure.title.toLowerCase()}`}
                 badge='From Our Blog'
                 variant='default'
-                limit={6}
+                limit={3}
                 columns={3}
             />
 
@@ -548,15 +392,13 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                             Explore Other Procedures
                         </h2>
                         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                            {relatedProcedures.map(
-                                (relatedProcedure, index) => (
-                                    <ProcedureCard
-                                        key={relatedProcedure.slug}
-                                        procedure={relatedProcedure}
-                                        index={index}
-                                    />
-                                )
-                            )}
+                            {relatedProcedures.map((relatedProcedure) => (
+                                <ProcedureCard
+                                    key={relatedProcedure.slug}
+                                    procedure={relatedProcedure}
+                                    includeSchema={false}
+                                />
+                            ))}
                         </div>
                     </ContainerLayout>
                 </section>
