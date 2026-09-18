@@ -16,6 +16,7 @@ price change are still settling; a later snapshot mixes their effect in.
 | `baseline-2026-09-13.json`           | Weekly series, page totals, cluster cut.                                                           |
 | `baseline-2026-09-13-query-page.csv` | Every query × page row for `/procedures/*`, 90 and 180 days.                                       |
 | `lead-definition.md`                 | What counts as a BBL lead, and the count today. #260 reuses it.                                    |
+| `ai-citation-panel-2026-09-18.md` | 4 engines x 8 prompts. Cited on the brand query, nothing else. |
 | `live-pages-2026-09-18.md`           | HTML weight, og:image, JSON-LD and hidden-H1 measurements per page — the "before" for #250's gate. |
 
 ## Re-running
@@ -82,8 +83,8 @@ procedure page for "bbl miami" right up to the redirect.
 
 ## Still open on #249
 
-- **AI citation panel** (8 prompts × 2 engines, monthly). Needs signed-in
-  ChatGPT and Google AI Mode sessions; not run yet. Record the result as a
-  comment on #249, not here.
+- **AI citation panel**: 23 of 32 runs done (see
+  `ai-citation-panel-2026-09-18.md`). Gemini prompts 5–7 and Claude prompts
+  2, 4–8 still to run; their composers stopped accepting input mid-session.
 - **Lighthouse** mobile and desktop on production. `live-pages-2026-09-18.md`
   carries the HTML weight and the DOM-level defects; the lab run is pending.
