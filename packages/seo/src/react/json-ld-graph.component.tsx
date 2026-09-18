@@ -41,7 +41,7 @@ function stripContext(node: JsonLdGraphNode): Record<string, unknown> {
  * Renders several schema.org entities as **one** `@graph` script tag.
  *
  * A page that emits one `<script type="application/ld+json">` per entity —
- * the procedure pages emitted 26 to 28 of them — repeats `@context` and the
+ * the procedure pages emitted 16 to 18 of them — repeats `@context` and the
  * business's identity in every block, and leaves the entities unrelated:
  * nothing says the `SurgicalProcedure` and the `WebPage` are the same subject.
  * A graph states the context once and lets nodes reference each other by

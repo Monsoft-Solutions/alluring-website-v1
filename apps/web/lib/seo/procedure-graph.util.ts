@@ -8,6 +8,7 @@
  */
 import type { JsonLdGraphNode } from '@workspace/seo/react'
 
+import { siteConfig } from '@/lib/data/site-config'
 import type { Procedure } from '@/lib/types/procedure.type'
 
 /** `http://…`, `https://…` or a protocol-relative `//…`. */
@@ -84,13 +85,12 @@ export function procedureBodyLocation(
 /**
  * Every node a procedure page publishes, as one `@graph`.
  *
- * The page used to emit six standalone JSON-LD blocks plus a Review block per
- * Google review and an ImageObject per related card — 26 to 28 scripts, each
- * repeating `@context`, each describing the business again, and none of them
- * saying that the `SurgicalProcedure`, the `Service` and the `WebPage` are the
- * same subject (#250). Here they are one graph with stable `@id`s, so the
- * relationships are explicit and the business is named once by reference to
- * the site-wide `#organization` node that the root layout already publishes.
+ * The page used to emit six standalone JSON-LD blocks for the procedure alone,
+ * each repeating `@context`, several describing the business again, and none
+ * of them saying that the `SurgicalProcedure`, the `Service` and the `WebPage`
+ * are the same subject (#250). Here they are one graph with stable `@id`s, so
+ * the relationships are explicit. The business is one node, sharing its `@id`
+ * with the `#organization` the root layout publishes, so the two merge.
  *
  * `#255` consumes this: a per-procedure module supplies the nodes, this
  * assembles them.
@@ -170,8 +170,6 @@ export function buildProcedureGraph({
         url: pageUrl,
         mainEntityOfPage: { '@id': webPageId },
         image,
-        procedureType: 'https://schema.org/SurgicalProcedure',
-        performedBy: { '@id': organizationId },
         ...(procedureBodyLocation(procedure) && {
             bodyLocation: procedureBodyLocation(procedure),
         }),
@@ -196,7 +194,6 @@ export function buildProcedureGraph({
         // The practice serves the United States. Not Latin America, not the
         // Caribbean — see CLAUDE.md.
         areaServed: ['Miami', 'Florida', 'United States'],
-        availableLanguage: ['English', 'Spanish'],
         image,
         ...(procedure.pricing && {
             offers: {
@@ -216,12 +213,38 @@ export function buildProcedureGraph({
         }),
     }
 
+    // The practice, as the clinic that offers this procedure. schema.org links
+    // a clinic to a procedure through `availableService`; there is no
+    // `performedBy` on MedicalProcedure, so that property linked nothing.
+    // Name and address make the node a complete local business on its own
+    // rather than relying on a merge with the root layout's Organization.
+    const clinic = {
+        '@type': 'MedicalClinic',
+        '@id': organizationId,
+        name: siteConfig.business.name,
+        url: siteUrl,
+        telephone: siteConfig.contact.phone,
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: siteConfig.contact.address,
+            addressLocality: siteConfig.contact.city,
+            addressRegion: siteConfig.contact.state,
+            postalCode: siteConfig.contact.postalCode,
+            addressCountry: 'US',
+        },
+        // On the clinic, not the Service: schema.org has no
+        // `availableLanguage` on Service.
+        knowsLanguage: ['English', 'Spanish'],
+        availableService: { '@id': procedureId },
+    }
+
     return [
         webPage,
         breadcrumbList,
         faqPage,
         surgicalProcedure,
         service,
+        clinic,
         offer || undefined,
     ].filter((node): node is JsonLdGraphNode => Boolean(node))
 }

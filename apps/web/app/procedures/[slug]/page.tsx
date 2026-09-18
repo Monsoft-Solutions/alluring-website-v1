@@ -190,7 +190,9 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
         availability: 'https://schema.org/LimitedAvailability',
         category: relatedPromotion.type ?? undefined,
         offeredBy: { '@id': `${siteUrl}/#organization` },
-        itemOffered: { '@id': `${pageUrl}#procedure` },
+        // The Service, not the SurgicalProcedure: `itemOffered` takes a
+        // Product or Service, and a MedicalProcedure is neither.
+        itemOffered: { '@id': `${pageUrl}#service` },
         ...(relatedPromotion.startsAt && {
             validFrom: new Date(relatedPromotion.startsAt).toISOString(),
         }),

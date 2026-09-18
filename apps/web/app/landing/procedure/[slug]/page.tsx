@@ -205,9 +205,8 @@ export default async function ProcedureLandingPage(
                 name={procedure.title}
                 url={pageUrl}
                 description={procedure.description}
-                dateModified={
-                    procedure.dateModified || new Date().toISOString()
-                }
+                // No request-date fallback: an unknown date is omitted (#250).
+                dateModified={procedure.dateModified ?? undefined}
             />
 
             <BreadcrumbSchema items={breadcrumbItems} />
