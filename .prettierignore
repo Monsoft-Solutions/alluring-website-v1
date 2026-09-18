@@ -48,3 +48,5 @@ next-env.d.ts
  
 # PR review artifacts (excluded from formatting checks)
 pr-reviews/
+# Generated Search Console snapshots (data, not source)
+implementation-plans/**/baseline/*.json
