@@ -14,7 +14,8 @@
         "typecheck": "tsc --noEmit",
         "format": "pnpm -w format",
         "google:index": "node scripts/update-google-index.cjs",
-        "validate:sitemap": "tsx scripts/validate-sitemap.ts"
+        "validate:sitemap": "tsx scripts/validate-sitemap.ts",
+        "check:bbl-copy": "tsx scripts/check-bbl-copy.ts"
     },
     "dependencies": {
         "@ai-sdk/react": "^4.0.86",
