@@ -15,6 +15,9 @@ import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
  * A minimalistic, mobile-only call button that's always visible at the bottom of the screen.
  * Can appear as a floating button or a full-width banner.
  *
+ * `data-mobile-call-button` lets a page with its own bottom bar hide it from
+ * CSS (the BBL page module, #256) without a client-side route check.
+ *
  * @example
  * // Floating button (default)
  * ```tsx
@@ -135,6 +138,7 @@ export function MobileCallButton({
     if (isBanner) {
         return (
             <div
+                data-mobile-call-button=''
                 className={cn(
                     // Base styles - fixed positioning at bottom
                     'fixed right-0 bottom-0 left-0 z-50',
@@ -189,6 +193,7 @@ export function MobileCallButton({
     // Non-banner mode (floating button) with glassmorphism
     return (
         <Link
+            data-mobile-call-button=''
             ref={buttonRef}
             href={phoneLink}
             onClick={handlePhoneClick}

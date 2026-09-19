@@ -19,6 +19,7 @@ import 'server-only'
 
 import { createElement, type ReactNode } from 'react'
 
+import { BblPage } from '@/components/procedures/pages/bbl/bbl-page.component'
 import { ProcedureTemplatePage } from '@/components/procedures/template/procedure-template-page.component'
 import type {
     ProcedurePageModule,
@@ -26,12 +27,14 @@ import type {
 } from '@/lib/types/procedure-page-module.type'
 
 /**
- * Procedures with a page module of their own, by slug. Empty until the BBL
- * module (#256) registers `brazilian-butt-lift-bbl-miami`.
+ * Procedures with a page module of their own, by slug. Every other procedure
+ * renders the shared template.
  */
 const procedurePageModules: Readonly<
     Partial<Record<string, ProcedurePageModule>>
-> = {}
+> = {
+    'brazilian-butt-lift-bbl-miami': BblPage,
+}
 
 /**
  * Render a procedure's page body with its own module, or with the shared
