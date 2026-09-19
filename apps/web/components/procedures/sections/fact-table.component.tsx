@@ -25,7 +25,10 @@ type FactTableProps = {
  *
  * A real `<table>` with row headers rather than styled divs: it is the shape
  * AI engines and screen readers both read as label → value, and figures line
- * up with tabular numerals. Server component; no client JavaScript.
+ * up with tabular numerals. Below `sm` each row stacks, label over value.
+ * Rows are keyed by label, so labels must be unique within a table.
+ *
+ * Server component; no client JavaScript.
  */
 export function FactTable({ facts, caption, className }: FactTableProps) {
     if (facts.length === 0) return null
@@ -33,12 +36,12 @@ export function FactTable({ facts, caption, className }: FactTableProps) {
     return (
         <table
             className={cn(
-                'w-full border-collapse text-left text-base tabular-nums',
+                'w-full border-collapse text-left tabular-nums',
                 className
             )}
         >
             {caption && (
-                <caption className='mb-3 text-left text-xs font-bold tracking-[0.14em] text-stone-500 uppercase'>
+                <caption className='pb-4 text-left font-serif text-xl leading-[1.3] text-stone-900 md:text-2xl'>
                     {caption}
                 </caption>
             )}
@@ -46,15 +49,15 @@ export function FactTable({ facts, caption, className }: FactTableProps) {
                 {facts.map((fact) => (
                     <tr
                         key={fact.label}
-                        className='border-b border-stone-200 last:border-b-0'
+                        className='border-t border-stone-200 last:border-b'
                     >
                         <th
                             scope='row'
-                            className='w-2/5 py-3 pr-4 align-top text-sm font-bold text-stone-900'
+                            className='block pt-3 text-[0.9375rem] leading-[1.45] font-bold text-stone-900 sm:table-cell sm:w-[13.75rem] sm:py-3.5 sm:pr-6 sm:align-top sm:text-base sm:leading-[1.55]'
                         >
                             {fact.label}
                         </th>
-                        <td className='py-3 align-top text-stone-700'>
+                        <td className='block pt-1 pb-3 text-[1.0625rem] leading-normal text-stone-700 sm:table-cell sm:py-3.5 sm:align-top sm:leading-[1.55]'>
                             {fact.value}
                             <CitationLinks citations={fact.citations} />
                         </td>

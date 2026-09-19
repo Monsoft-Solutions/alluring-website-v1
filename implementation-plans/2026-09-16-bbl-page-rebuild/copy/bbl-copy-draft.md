@@ -1,14 +1,13 @@
 # BBL page copy — draft for review (#252)
 
-Draft of 2026-09-18 for epic #246. Source files, on branch `feat/bbl-page-copy-252`:
+Draft of 2026-09-18 for epic #246. Where the copy lives since #256:
 
-- `apps/web/components/procedures/pages/bbl/bbl-page.content.ts`: the copy, in the #256 section order
+- `apps/web/components/procedures/pages/bbl/*.component.tsx`: each section's copy, in the component that lays it out. The first draft kept it in one `bbl-page.content.ts` object; #256 moved it into the sections so each can be designed on its own terms.
+- `apps/web/lib/data/procedures/brazilian-butt-lift-bbl-miami.data.ts`: the FAQs and the price table, which the page, its structured data and the paid landing page all read
 - `apps/web/lib/data/procedures/facts/bbl.facts.ts`: every figure the page may state, one statement each, with its source and attribution
-- `apps/web/scripts/check-bbl-copy.ts`: the sweep (`pnpm --filter web check:bbl-copy`, `--launch` for #256, `--map` for the table below)
+- `apps/web/scripts/check-bbl-copy.ts`: the sweep. It reads the built page (`pnpm --filter web build`, then `pnpm --filter web check:bbl-copy`; `--launch` for the #256 gate, `--map` for the table below, `--url` to check a running server).
 
-Nothing here renders yet. The live page is unchanged until #256.
-
-**Placeholders.** `{{BBL_SURGEON}}` and `{{CREDENTIALS}}` wait on #247's two blocking answers. `{{CREDENTIALS}}` takes the exact approved sentence, e.g. _"Dr. Victoria Karlinsky is board certified by the American Board of Cosmetic Surgery."_ The sweep warns on them now and fails on them with `--launch`.
+**Placeholders (resolved 2026-09-19).** The practice confirmed Dr. Karlinsky performs every BBL and is its only surgeon. Her credentials were checked against each issuing body's own record and live in `apps/web/lib/data/surgeons/karlinsky-credentials.constant.ts`: board certified in general surgery (American Board of Surgery), FACS, Florida license, and ABCS certification carried with the Florida Rule 64B8-11.001(2)(f) statement. She is not ABPS-certified. The draft text below keeps the original `{{BBL_SURGEON}}` / `{{CREDENTIALS}}` markers; the built page is the source of truth.
 
 ## Size
 
