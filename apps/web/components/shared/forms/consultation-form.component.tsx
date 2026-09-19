@@ -393,12 +393,14 @@ export function ConsultationForm({
                             />
                         )}
 
-                        {/* Submit Button */}
+                        {/* Submit Button: stone-900 text, since the gold
+                            variant's white on gold-400 is 2.2:1 */}
                         <div className={compact ? '' : 'pt-4'}>
                             <SubmitButton
                                 isSubmitting={isSubmitting}
                                 size='lg'
                                 variant='gold'
+                                className='text-stone-900'
                                 fullWidth
                                 showSendIcon
                                 showSparkles
