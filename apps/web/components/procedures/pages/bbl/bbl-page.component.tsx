@@ -79,7 +79,10 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
             <BblHero title={procedure.title} rating={rating} />
             <BblJumpNav links={jumpLinks} />
 
-            <BblBand updatedOn={procedure.dateModified}>
+            <BblBand
+                railLabel='BBL at Alluring, key facts'
+                updatedOn={procedure.dateModified}
+            >
                 <BblAtAGlance />
                 {procedure.pricing && <BblCost pricing={procedure.pricing} />}
             </BblBand>
@@ -91,7 +94,10 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
             />
             <BblSafety />
 
-            <BblBand updatedOn={procedure.dateModified}>
+            <BblBand
+                railLabel='BBL at Alluring, key facts, repeated'
+                updatedOn={procedure.dateModified}
+            >
                 <BblSurgeon />
                 <BblOptions />
                 <BblProcedureSteps />

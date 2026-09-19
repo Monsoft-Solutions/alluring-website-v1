@@ -35,7 +35,7 @@ export function BblBook({ procedureSlug }: { procedureSlug: string }) {
                 question='How do I book a BBL consultation in Miami?'
                 className={cn(
                     bblContainer,
-                    'grid py-12 md:py-24 lg:grid-cols-[minmax(0,32.5rem)_minmax(0,35rem)] lg:grid-rows-[auto_auto_1fr] lg:justify-between lg:gap-x-16 lg:[&>h2]:col-start-1 lg:[&>p]:col-start-1'
+                    'grid grid-cols-[minmax(0,1fr)] py-12 md:py-24 lg:grid-cols-[minmax(0,32.5rem)_minmax(0,35rem)] lg:grid-rows-[auto_auto_1fr] lg:justify-between lg:gap-x-16 lg:[&>h2]:col-start-1 lg:[&>p]:col-start-1'
                 )}
                 answer='Send the form below or call us. A patient coordinator contacts you to set a time, and at the consultation your surgeon examines you, talks through your goals, recommends a type of BBL and confirms your price. If you go ahead, your surgery, pre-op and follow-up dates are confirmed in writing.'
             >

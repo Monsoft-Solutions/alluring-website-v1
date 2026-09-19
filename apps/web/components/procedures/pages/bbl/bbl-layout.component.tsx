@@ -48,10 +48,16 @@ export function BblJumpNav({ links }: { links: BblJumpLink[] }) {
  * last update, pinned beside the reading column. Phones get the sticky bar
  * instead, so the rail is not rendered visible below `lg`.
  */
-function BblFactRail({ updatedOn }: { updatedOn?: string }) {
+function BblFactRail({
+    label,
+    updatedOn,
+}: {
+    label: string
+    updatedOn?: string
+}) {
     return (
         <aside
-            aria-label='BBL at Alluring, key facts'
+            aria-label={label}
             className='border-t-gold-400 sticky top-40 flex flex-col gap-5.5 border border-t-[3px] border-stone-200 bg-white px-7 pt-7 pb-6'
         >
             <div className='flex flex-col gap-2'>
@@ -95,14 +101,17 @@ function BblFactRail({ updatedOn }: { updatedOn?: string }) {
 /**
  * A white band of sections read in one column, with the fact rail beside
  * them from `lg`. The rail's column stretches to the band's height, so the
- * rail stays pinned for as long as the band is on screen.
+ * rail stays pinned for as long as the band is on screen. Each band's rail is
+ * its own landmark, so each needs its own `railLabel`.
  */
 export function BblBand({
     children,
+    railLabel,
     updatedOn,
     className,
 }: {
     children: ReactNode
+    railLabel: string
     updatedOn?: string
     className?: string
 }) {
@@ -118,7 +127,7 @@ export function BblBand({
                     {children}
                 </div>
                 <div className='hidden py-20 lg:block'>
-                    <BblFactRail updatedOn={updatedOn} />
+                    <BblFactRail label={railLabel} updatedOn={updatedOn} />
                 </div>
             </div>
         </div>
