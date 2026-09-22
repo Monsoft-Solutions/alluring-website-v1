@@ -28,8 +28,14 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // the #229 title (about 2026-10-09) — which the 2026-09-15 price change
     // restarts.
     seoTitle: 'BBL Miami | Brazilian Butt Lift Starting at $5,500',
-    metaDescription:
-        'A BBL transfers your own fat to add lift and fullness, no implants. Board-certified Miami surgeons. Starting at $5,500, priced per patient. Financing available.',
+    //
+    // The snippet used to say "Board-certified Miami surgeons": plural, and a
+    // certification claim naming no board, which Florida Rule
+    // 64B8-11.001(2)(j) does not allow. It now names the one surgeon, as an
+    // MD, which is what (7) asks for. Naming her costs 30 characters, so
+    // "priced per patient" goes: at 160 `clampMetaDescription` would cut the
+    // snippet back to her name and drop the price entirely.
+    metaDescription: `A BBL transfers your own fat to add lift and fullness, no implants. Performed by Dr. ${KARLINSKY_NAME}. Starting at $5,500. Financing available.`,
     shortDescription:
         'Sculpt your curves with precision. Our BBL procedure enhances the natural shape of your body by redistributing fat for a fuller, more lifted look.',
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
