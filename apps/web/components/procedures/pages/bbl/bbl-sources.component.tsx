@@ -57,7 +57,7 @@ export function BblSources({ updatedOn }: { updatedOn?: string }) {
                 id='sources'
                 question='Where do these figures come from?'
                 className={cn(bblContainer, 'py-12 md:py-24')}
-                answer="Every recovery, results and safety figure on this page comes from the sources below, checked in September 2026. Where a figure is one surgeon's advice rather than a society's guidance, we say so. Your own surgeon's instructions always come first, and they may differ from these general ranges."
+                answer="Every recovery, results and safety figure on this page, and the national average cost, comes from the sources below, checked in September 2026. Where a figure is one surgeon's advice rather than a society's guidance, we say so. Your own surgeon's instructions always come first, and they may differ from these general ranges."
             >
                 <ol
                     data-copy-check='data'

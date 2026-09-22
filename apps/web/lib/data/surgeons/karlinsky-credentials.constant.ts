@@ -30,6 +30,16 @@ export const KARLINSKY_SHORT_NAME = 'Dr. Karlinsky'
 export const KARLINSKY_CREDENTIALS =
     'She is board certified in general surgery by the American Board of Surgery and is a Fellow of the American College of Surgeons.'
 
+/**
+ * The date on her American Board of Surgery record: board certified in
+ * general surgery since 27 October 2008. The BBL page states the year, and
+ * `check:bbl-copy` accepts that year because it is declared here.
+ */
+export const KARLINSKY_ABS_CERTIFIED_ON = '2008-10-27'
+
+/** Her Florida medical license, clear and active on the Department of Health's record. */
+export const KARLINSKY_FLORIDA_LICENSE = 'ME130613'
+
 /** Rule 64B8-11.001(2)(f), verbatim. */
 export const FLORIDA_UNAPPROVED_BOARD_STATEMENT =
     'The specialty recognition identified herein has been received from a private organization not affiliated with or recognized by the Florida Board of Medicine.'

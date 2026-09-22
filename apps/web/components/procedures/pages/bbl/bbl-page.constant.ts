@@ -29,7 +29,9 @@ const HERO_ALT =
 
 /**
  * The #254 renders. Prompts, job ids and picks are recorded in
- * `implementation-plans/2026-09-16-bbl-page-rebuild/images/README.md`.
+ * `implementation-plans/2026-09-16-bbl-page-rebuild/images/README.md`. Shot 2,
+ * the consultation render, stays on Blob but is off the page: it carried no
+ * information, and a real photo will replace it.
  */
 export const bblImages = {
     /** Shot 1, 4:5. The page hero. */
@@ -48,12 +50,5 @@ export const bblImages = {
         width: 2000,
         height: 1116,
         alt: HERO_ALT,
-    },
-    /** Shot 2, 3:2. */
-    consultation: {
-        src: `${BLOB}/consultation-alluring-plastic-surgery-miami.jpg`,
-        width: 2000,
-        height: 1328,
-        alt: "Patient reviewing a body-contour sketch on a tablet at a marble table, with only the clinician's hand and white sleeve in view",
     },
 } as const satisfies Record<string, BblImage>

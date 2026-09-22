@@ -5,7 +5,10 @@ import { JsonLdGraph } from '@workspace/seo/react'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { getActivePromotionByProcedure } from '@/lib/queries/promotion.query'
-import { renderProcedurePage } from '@/lib/procedures/procedure-page-registry'
+import {
+    getProcedureSurgeonNode,
+    renderProcedurePage,
+} from '@/lib/procedures/procedure-page-registry'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import {
     buildProcedureGraph,
@@ -85,12 +88,13 @@ export async function generateMetadata(
             description: metaDescription,
             siteName: siteConfig.business.name,
             locale: 'en_US',
+            // No width or height: the procedure images come in several
+            // sizes, and declaring 1200×630 for all of them was wrong for
+            // most. Every title already ends in "Miami".
             images: [
                 {
                     url: ogImage,
-                    width: 1200,
-                    height: 630,
-                    alt: `${procedure.title} Miami - ${siteConfig.business.name}`,
+                    alt: `${procedure.title} - ${siteConfig.business.name}`,
                 },
             ],
         },
@@ -193,6 +197,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     faqs: procedure.faqs,
                     breadcrumbs: breadcrumbItems,
                     offer: promotionOfferNode,
+                    surgeon: getProcedureSurgeonNode(procedure.slug, siteUrl),
                 })}
             />
 

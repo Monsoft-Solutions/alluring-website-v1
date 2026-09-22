@@ -17,6 +17,7 @@
  */
 
 export type BblSourceId =
+    | 'asps-bbl-cost'
     | 'asps-bbl-recovery-2022'
     | 'asps-blog-azad-2016'
     | 'asps-bbl-travel-2023'
@@ -45,6 +46,14 @@ export interface BblSource {
 }
 
 export const bblSources: readonly BblSource[] = [
+    {
+        id: 'asps-bbl-cost',
+        publisher: 'American Society of Plastic Surgeons (ASPS)',
+        title: 'How much does buttock enhancement cost?',
+        url: 'https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/cost',
+        attribution:
+            'Read on 2026-09-22. "The average cost of buttock augmentation with fat grafting (Brazilian butt lift) is $7,264" and "it does not include anesthesia, operating room facilities or other related expenses." The page gives no year, so neither does the copy: never "in 2024" or "2025".',
+    },
     {
         id: 'asps-bbl-recovery-2022',
         publisher: 'American Society of Plastic Surgeons (ASPS)',
@@ -542,6 +551,16 @@ export const bblFacts = [
     },
 
     // ── Price (decision of 2026-09-15) ───────────────────────────────────
+    {
+        id: 'asps-average-cost',
+        topic: 'price',
+        concepts: ['average'],
+        figures: [{ value: 7264, unit: 'usd' }],
+        statement:
+            'The American Society of Plastic Surgeons puts the average cost of a BBL at $7,264, a figure that does not include anesthesia, operating room facilities or other related expenses.',
+        sourceIds: ['asps-bbl-cost'],
+        caveat: 'A national surgeon-fee average, not a Miami price and not an all-in price: always say what it leaves out. No year.',
+    },
     {
         id: 'price-starting-at',
         topic: 'price',

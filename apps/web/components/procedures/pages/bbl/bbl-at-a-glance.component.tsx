@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import {
     FactTable,
@@ -8,13 +6,16 @@ import {
 import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
-import { AI_MODEL_LABEL, bblImages } from './bbl-page.constant'
 import { bblSectionPad } from './bbl-ui.constant'
 
 /**
  * "What is a BBL?" and the at-a-glance table: every figure a reader
  * scans for, as label → value rows. Each figure is declared in
  * `bbl.facts.ts`; the copy sweep fails the build output if one drifts.
+ *
+ * No photograph: the #254 consultation render was scroll with no
+ * information and a "Model shown" label. A real photo of the surgeon with a
+ * patient belongs here when the practice has one.
  */
 export function BblAtAGlance() {
     const facts: Fact[] = [
@@ -68,21 +69,6 @@ export function BblAtAGlance() {
                 facts={facts}
                 className='mt-10 md:mt-11'
             />
-            <figure className='mt-10 md:mt-12'>
-                <div className='bbl-unveil overflow-hidden bg-stone-200'>
-                    <Image
-                        src={bblImages.consultation.src}
-                        alt={bblImages.consultation.alt}
-                        width={bblImages.consultation.width}
-                        height={bblImages.consultation.height}
-                        sizes='(min-width: 1024px) 720px, calc(100vw - 40px)'
-                        className='block h-auto w-full'
-                    />
-                </div>
-                <figcaption className='mt-2.5 text-[0.8125rem] leading-[1.4] text-stone-500'>
-                    {AI_MODEL_LABEL}
-                </figcaption>
-            </figure>
         </AnswerBlock>
     )
 }

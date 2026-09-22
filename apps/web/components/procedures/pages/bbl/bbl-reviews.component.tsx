@@ -28,8 +28,13 @@ export function selectBblReviews(
 }
 
 /**
- * "What do BBL patients say about Alluring?" Reviews from the practice's
- * public Google Business Profile, as synced into the database. No Review
+ * "What Alluring patients say on Google." Reviews from the practice's public
+ * Google Business Profile, as synced into the database.
+ *
+ * The heading does not say "BBL patients": none of the synced reviews
+ * mentions a BBL yet, and a heading its reviews don't back reads as bait. Put
+ * the BBL wording back once #258 brings BBL reviews in; `selectBblReviews`
+ * already lists them first. No Review
  * JSON-LD: reviews a business publishes about itself are not eligible for
  * review rich results, and the markup would only add weight.
  *
@@ -43,7 +48,7 @@ export function BblReviews({ reviews }: { reviews: GoogleReviewPublic[] }) {
         <div className='bbl-defer bg-stone-50'>
             <AnswerBlock
                 id='reviews'
-                question='What do BBL patients say about Alluring?'
+                question='What Alluring patients say on Google'
                 className={cn(bblContainer, 'py-12 md:py-24')}
                 answer="These reviews come from Alluring's public Google Business Profile. Reviews that mention a BBL appear first, followed by recent featured reviews from patients who had other procedures with us. You can read every review, and see the overall rating, on Google at any time."
             >

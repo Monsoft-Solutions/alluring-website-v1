@@ -15,6 +15,7 @@ import { BblHero } from './bbl-hero.component'
 import { BblBand, BblJumpNav, type BblJumpLink } from './bbl-layout.component'
 import { BblOptions } from './bbl-options.component'
 import { BblProcedureSteps } from './bbl-procedure-steps.component'
+import { BblQuickQuote } from './bbl-quick-quote.component'
 import { BblRecoveryTimeline } from './bbl-recovery-timeline.component'
 import { BblResults, selectBblPhotos } from './bbl-results.component'
 import { BblReviews, selectBblReviews } from './bbl-reviews.component'
@@ -33,13 +34,16 @@ const REVIEW_POOL = 40
  * The BBL page body (#256), registered for `brazilian-butt-lift-bbl-miami`.
  *
  * The route keeps the metadata, the H1 text, the canonical URL and the
- * structured-data graph; this module lays out everything else in the
- * approved #253 order. Each section holds its own copy next to its markup.
+ * structured-data graph; this module lays out everything else. The order is
+ * #253's with the 2026-09-22 review's changes: real results straight after
+ * the hero, a two-field form after them, and the booking form ahead of the
+ * source list. Each section holds its own copy next to its markup.
  * Figures come from `bbl.facts.ts`; FAQs and the price table come from the
  * procedure data file, which the graph and the paid landing page also read.
  *
  * Server components throughout. The client code is the before/after slider,
- * the results rail's two buttons and the consultation form. Motion is CSS
+ * the results rail's two buttons and the consultation form, rendered twice
+ * (compact after the results, in full at the end). Motion is CSS
  * (`bbl-page.css`).
  */
 export async function BblPage({ procedure }: ProcedurePageModuleProps) {
@@ -61,12 +65,13 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
         count: reviewData.totalCount,
     }
     const reviews = selectBblReviews(reviewData.reviews)
+    const hasResults = Boolean(pair) || photos.length > 0
 
     const jumpLinks: BblJumpLink[] = [
-        { label: 'Cost', href: '#pricing' },
-        ...(pair || photos.length > 0
+        ...(hasResults
             ? [{ label: 'Results', href: '#results' } as const]
             : []),
+        { label: 'Cost', href: '#pricing' },
         { label: 'Safety', href: '#safety' },
         { label: 'Surgeon', href: '#surgeon' },
         { label: 'Recovery', href: '#recovery' },
@@ -79,6 +84,16 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
             <BblHero title={procedure.title} rating={rating} />
             <BblJumpNav links={jumpLinks} />
 
+            <BblResults
+                pair={pair}
+                photos={photos}
+                gallerySlug={gallery.groupSlug}
+            />
+            <BblQuickQuote
+                procedureSlug={procedure.slug}
+                className={hasResults ? undefined : 'pt-12 md:pt-24'}
+            />
+
             <BblBand
                 railLabel='BBL at Alluring, key facts'
                 updatedOn={procedure.dateModified}
@@ -87,11 +102,6 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
                 {procedure.pricing && <BblCost pricing={procedure.pricing} />}
             </BblBand>
 
-            <BblResults
-                pair={pair}
-                photos={photos}
-                gallerySlug={gallery.groupSlug}
-            />
             <BblSafety />
 
             <BblBand
@@ -106,8 +116,8 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
 
             <BblReviews reviews={reviews} />
             <BblFaq faqs={procedure.faqs ?? []} />
-            <BblSources updatedOn={procedure.dateModified} />
             <BblBook procedureSlug={procedure.slug} />
+            <BblSources updatedOn={procedure.dateModified} />
 
             {/* Right padding keeps the bar clear of the chat launcher, which
                 lives in a closed shadow root and cannot be moved from here. */}
