@@ -18,9 +18,11 @@
 import 'server-only'
 
 import { createElement, type ReactNode } from 'react'
+import type { JsonLdGraphNode } from '@workspace/seo/react'
 
 import { BblPage } from '@/components/procedures/pages/bbl/bbl-page.component'
 import { ProcedureTemplatePage } from '@/components/procedures/template/procedure-template-page.component'
+import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
 import type {
     ProcedurePageModule,
     ProcedurePageModuleProps,
@@ -51,4 +53,25 @@ export function renderProcedurePage(
         procedurePageModules[props.procedure.slug] ?? ProcedureTemplatePage
 
     return createElement(pageModule, props)
+}
+
+/**
+ * The surgeon a module's page names as performing the procedure, as the graph
+ * node the route adds to the page's structured data. The template pages name
+ * no surgeon, so they have none: the graph never says more than the page.
+ */
+const procedureSurgeons: Readonly<
+    Partial<
+        Record<string, (siteUrl: string) => JsonLdGraphNode & { '@id': string }>
+    >
+> = {
+    'brazilian-butt-lift-bbl-miami': karlinskyPersonNode,
+}
+
+/** The surgeon node for a procedure's page, when its module names one. */
+export function getProcedureSurgeonNode(
+    slug: string,
+    siteUrl: string
+): (JsonLdGraphNode & { '@id': string }) | undefined {
+    return procedureSurgeons[slug]?.(siteUrl)
 }

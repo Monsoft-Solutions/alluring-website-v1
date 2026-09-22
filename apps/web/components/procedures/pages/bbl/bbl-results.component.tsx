@@ -58,6 +58,10 @@ function captionOf(photo: GalleryMediaCard): string {
  *
  * Renders nothing when the gallery has neither, and the page drops its jump
  * link, so the section never promises photos it doesn't show.
+ *
+ * It follows the hero, so it renders straight away: `content-visibility`
+ * only pays off below the fold, and this near the top it would only shift
+ * the layout.
  */
 export function BblResults({
     pair,
@@ -71,11 +75,11 @@ export function BblResults({
     if (!pair && photos.length === 0) return null
 
     return (
-        <div className='bbl-defer bg-stone-50'>
+        <div className='bg-stone-50'>
             <AnswerBlock
                 id='results'
                 question='BBL before and after: what do real results look like?'
-                className={cn(bblContainer, 'py-12 md:py-24')}
+                className={cn(bblContainer, 'pt-12 pb-10 md:pt-24 md:pb-14')}
                 answer='These are photos of real Alluring patients, shared with their consent. Results differ from person to person, and your final shape shows 3 to 6 months after surgery, once swelling settles and the grafted fat that will survive has taken hold.'
             >
                 <div

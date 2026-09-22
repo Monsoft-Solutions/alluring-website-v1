@@ -113,6 +113,16 @@ export function BblRecoveryTimeline() {
                 5 days, because an infection typically shows up 3 to 5 days
                 after surgery.
             </p>
+            <p className={cn(bblBody, 'mt-4')}>
+                You don&apos;t have to fly in to get started.{' '}
+                <Link
+                    href='/fly-in-consultation'
+                    className={cn(bblLink, 'font-bold')}
+                >
+                    Start with a virtual consultation
+                </Link>{' '}
+                and have your dates in writing before you book a flight.
+            </p>
 
             <div className='mt-10 border-t border-stone-200 pt-7'>
                 <Link

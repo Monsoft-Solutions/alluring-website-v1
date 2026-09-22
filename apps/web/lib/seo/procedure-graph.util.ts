@@ -82,6 +82,20 @@ export function procedureBodyLocation(
     }
 }
 
+/** A step description as a sentence: with its own full stop, never two. */
+function asSentence(text: string): string {
+    const trimmed = text.trim()
+    return /[.!?]$/.test(trimmed) ? trimmed : `${trimmed}.`
+}
+
+/**
+ * The procedure's name with its city. Every procedure title already ends in
+ * "Miami", and appending the city again published "… Miami in Miami".
+ */
+export function procedureNameInMiami(title: string): string {
+    return /\bmiami\b/i.test(title) ? title : `${title} in Miami`
+}
+
 /**
  * Every node a procedure page publishes, as one `@graph`.
  *
@@ -102,6 +116,7 @@ export function buildProcedureGraph({
     faqs,
     breadcrumbs,
     offer,
+    surgeon,
 }: {
     procedure: Procedure
     pageUrl: string
@@ -109,6 +124,12 @@ export function buildProcedureGraph({
     faqs?: { question: string; answer: string }[]
     breadcrumbs: { name: string; item: string }[]
     offer?: JsonLdGraphNode | false | null
+    /**
+     * The surgeon the page names as performing the procedure, as a `Person`
+     * with an `@id`. Only pages whose copy names one pass it; the graph never
+     * says more than the page.
+     */
+    surgeon?: JsonLdGraphNode & { '@id': string }
 }): JsonLdGraphNode[] {
     const organizationId = `${siteUrl}/#organization`
     const webPageId = `${pageUrl}#webpage`
@@ -174,9 +195,11 @@ export function buildProcedureGraph({
             bodyLocation: procedureBodyLocation(procedure),
         }),
         ...(procedure.process?.length && {
+            // Each description is a sentence already; joining with ". " put a
+            // second full stop after every step.
             howPerformed: procedure.process
-                .map((step) => `${step.title}: ${step.description}`)
-                .join('. '),
+                .map((step) => `${step.title}: ${asSentence(step.description)}`)
+                .join(' '),
         }),
         ...(procedure.quickStats?.recovery && {
             followup: `Recovery time: ${procedure.quickStats.recovery}`,
@@ -186,11 +209,14 @@ export function buildProcedureGraph({
     const service = {
         '@type': 'Service',
         '@id': `${pageUrl}#service`,
-        name: `${procedure.title} in Miami`,
+        name: procedureNameInMiami(procedure.title),
         description: procedure.description,
         url: pageUrl,
         serviceType: 'Cosmetic Surgery',
-        provider: { '@id': organizationId },
+        // `provider` covers the service performer as well as the operator.
+        provider: surgeon
+            ? [{ '@id': organizationId }, { '@id': surgeon['@id'] }]
+            : { '@id': organizationId },
         // The practice serves the United States. Not Latin America, not the
         // Caribbean — see CLAUDE.md.
         areaServed: ['Miami', 'Florida', 'United States'],
@@ -236,6 +262,7 @@ export function buildProcedureGraph({
         // `availableLanguage` on Service.
         knowsLanguage: ['English', 'Spanish'],
         availableService: { '@id': procedureId },
+        ...(surgeon && { employee: { '@id': surgeon['@id'] } }),
     }
 
     return [
@@ -245,6 +272,7 @@ export function buildProcedureGraph({
         surgicalProcedure,
         service,
         clinic,
+        surgeon,
         offer || undefined,
     ].filter((node): node is JsonLdGraphNode => Boolean(node))
 }

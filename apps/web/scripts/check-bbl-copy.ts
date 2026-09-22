@@ -50,7 +50,10 @@ import {
     bblSources,
     type BblFigure,
 } from '../lib/data/procedures/facts/bbl.facts'
-import { FLORIDA_UNAPPROVED_BOARD_STATEMENT } from '../lib/data/surgeons/karlinsky-credentials.constant'
+import {
+    FLORIDA_UNAPPROVED_BOARD_STATEMENT,
+    KARLINSKY_ABS_CERTIFIED_ON,
+} from '../lib/data/surgeons/karlinsky-credentials.constant'
 
 const LAUNCH = process.argv.includes('--launch')
 // Print every licensed figure with the fact and sources behind it (markdown).
@@ -624,6 +627,8 @@ const declaredYears = new Set<number>([
     ...bblSources.flatMap((source) =>
         source.date ? [Number(source.date.slice(0, 4))] : []
     ),
+    // "Board certified … since 2008", from her record.
+    Number(KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)),
 ])
 
 function checkFigures({ path, text, siblings }: CopyString): void {

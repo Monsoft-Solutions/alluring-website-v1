@@ -5,6 +5,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import {
     FLORIDA_UNAPPROVED_BOARD_STATEMENT,
+    KARLINSKY_ABS_CERTIFIED_ON,
     KARLINSKY_CREDENTIALS,
     KARLINSKY_NAME,
     KARLINSKY_SHORT_NAME,
@@ -12,10 +13,19 @@ import {
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 
-import { bblBody, bblH3, bblLink, bblSectionPad } from './bbl-ui.constant'
+import {
+    bblBody,
+    bblButtonPrimary,
+    bblH3,
+    bblLink,
+    bblSectionPad,
+} from './bbl-ui.constant'
 
 const portrait = surgeons.find((surgeon) => surgeon.id === 'dr-karlinsky')
     ?.images.portrait
+
+/** The year on her American Board of Surgery record. */
+const certifiedSince = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
 
 const credential = 'text-[1.0625rem] leading-[1.6] text-stone-700'
 
@@ -93,8 +103,8 @@ export function BblSurgeon() {
                                     className={bblLink}
                                 >
                                     American Board of Surgery
-                                </a>
-                                .
+                                </a>{' '}
+                                since {certifiedSince}.
                             </p>
                         </li>
                         <li className='py-4'>
@@ -135,14 +145,17 @@ export function BblSurgeon() {
                 your body and your goals, including when a BBL is not the right
                 choice.
             </p>
-            <p className='mt-8 border-t border-stone-200 pt-6'>
+            <div className='mt-8 flex flex-col items-start gap-5 border-t border-stone-200 pt-6 sm:flex-row sm:items-center sm:gap-8'>
+                <a href='#book' className={bblButtonPrimary}>
+                    Book with {KARLINSKY_SHORT_NAME}
+                </a>
                 <Link
                     href='/dr-karlinsky'
                     className={cn(bblLink, 'text-[1.0625rem] font-bold')}
                 >
                     Meet {KARLINSKY_SHORT_NAME}
                 </Link>
-            </p>
+            </div>
         </AnswerBlock>
     )
 }
