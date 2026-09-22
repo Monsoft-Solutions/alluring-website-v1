@@ -1,11 +1,19 @@
 import type { Procedure } from '@/lib/types/procedure.type'
-import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import { getFinancingPartnersString } from '@/lib/data/site-config'
+import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const brazilianButtLiftBblMiami: Procedure = {
     title: 'Brazilian Butt Lift (BBL) Miami',
     slug: 'brazilian-butt-lift-bbl-miami',
+    // Also the description in the page graph, `llms-full.txt` and the paid
+    // landing page. The "board-certified surgeons, 5,000+ procedures" claims
+    // it carried wait on the owner (#247), so they are out until confirmed.
     description:
-        'BBL Miami starting at $5,500, priced for each patient, with financing available. Board-certified surgeons, 5,000+ procedures. Free consultation.',
+        'BBL Miami starting at $5,500, priced for each patient, with financing available. Fat stays under the skin, placed with ultrasound guidance as Florida law requires. Free consultation.',
 
     // Hand-written metadata. This page competes for "bbl miami" and the
     // generic "bbl" / "brazilian butt lift" head terms, so it cannot run on
@@ -20,15 +28,29 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // the #229 title (about 2026-10-09) — which the 2026-09-15 price change
     // restarts.
     seoTitle: 'BBL Miami | Brazilian Butt Lift Starting at $5,500',
-    metaDescription:
-        'A BBL transfers your own fat to add lift and fullness, no implants. Board-certified Miami surgeons. Starting at $5,500, priced per patient. Financing available.',
-    shortDescription:
-        'Sculpt your curves with precision. Our BBL procedure enhances the natural shape of your body by redistributing fat for a fuller, more lifted look.',
+    //
+    // The snippet used to say "Board-certified Miami surgeons": plural, and a
+    // certification claim naming no board, which Florida Rule
+    // 64B8-11.001(2)(j) does not allow. It names the one surgeon, as an MD,
+    // which is what (7) asks for.
+    //
+    // Written for the searches the page already ranks for: the cost cluster
+    // sits at positions 10–18 with almost no clicks (Search Console, 90 days
+    // to 2026-09-19). Those searchers know what a BBL is, so the snippet
+    // spends its characters on the price, the surgeon and the law, the three
+    // things a discount clinic can't match. 151 characters, under the 160
+    // `clampMetaDescription` limit.
+    metaDescription: `BBL in Miami starting at $5,500, performed by one surgeon: ${KARLINSKY_NAME}. Ultrasound-guided, as Florida law requires. Free consultation.`,
+    // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
+    // says what the page says.
+    shortDescription: `BBL in Miami starting at $5,500. Every BBL at Alluring is performed by ${KARLINSKY_NAME}, who places the fat under the skin with ultrasound guidance, as Florida law requires.`,
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
     category: 'body',
     bodyLocation: 'Buttocks',
-    image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/hero.webp',
-    dateModified: '2026-09-11T00:00:00.000Z',
+    // og:image, the home signature card, procedure cards and the sitemap.
+    // #254 shot 1 in its 16:9 crop; the page hero uses the 4:5 master.
+    image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09/hero-wide-alluring-plastic-surgery-miami.jpg',
+    dateModified: '2026-09-22T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing. No weekly figure: BBL financing is offered but
@@ -43,137 +65,50 @@ export const brazilianButtLiftBblMiami: Procedure = {
     pricing: {
         startingAt: 5500,
         upTo: 10000,
+        // Rendered by the BBL page's cost section. Only what the practice has
+        // confirmed: the anesthesiologist, facility accreditation and 24/7
+        // access claims wait on the owner (#247 item 3).
         includes: [
-            'Pre-operative consultations and surgical planning',
-            'Surgeon fees for the complete procedure',
-            'Board-certified anesthesiologist',
-            'AAAASF-accredited surgical facility',
-            'Compression garment and BBL pillow',
-            'All post-operative follow-up appointments',
-            '24/7 surgeon access during recovery',
+            'Your consultations before surgery and your surgical plan',
+            "The surgeon's fee for the complete procedure",
+            'Anesthesia',
+            'The surgical facility',
+            'Your compression garment and BBL pillow',
+            'Every follow-up appointment after surgery',
         ],
         factors: [
             {
                 label: 'Volume of fat transferred',
                 description:
-                    'Larger transfers need more liposuction and more time in theatre than a smaller, subtler enhancement.',
+                    'A larger transfer needs more liposuction and more time in surgery than a subtle one.',
             },
             {
-                label: 'Number of donor sites',
+                label: 'Number of donor areas',
                 description:
-                    'Harvesting from the abdomen alone costs less than contouring the flanks, back and thighs in the same procedure.',
+                    'Taking fat from the abdomen alone is a smaller job than contouring the flanks, back and thighs in the same surgery.',
             },
             {
-                label: 'Surgical complexity',
+                label: 'Revision work',
                 description:
-                    'Revision work, or a BBL combined with another procedure such as a tummy tuck, extends the scope.',
+                    'Correcting an earlier BBL takes more planning and more time than a first BBL.',
             },
             {
-                label: 'Surgeon experience',
+                label: 'Combined procedures',
                 description:
-                    'Board-certified surgeons with high BBL volume price accordingly. It is the variable most worth paying for.',
+                    'Adding a tummy tuck or another procedure to the same surgery changes the scope, and the price with it.',
             },
         ],
     },
 
-    // Inline content images for enhanced engagement
+    // The paid landing page's hero reads the `hero` entry; nothing else here
+    // is rendered since the BBL page module (#256) retired the markdown body.
+    // #254 shot 1, the 16:9 crop, with the model label on the page itself.
     contentImages: [
-        // Existing generated images
         {
             id: 'hero',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/hero.webp',
-            alt: 'Confident woman showcasing enhanced curves after Brazilian Butt Lift at Alluring Plastic Surgery Miami',
+            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09/hero-wide-alluring-plastic-surgery-miami.jpg',
+            alt: 'Woman in a sand linen midi dress with one hand on the window frame, looking out over the bay in morning light',
             section: 'hero',
-            variant: 'full-width',
-        },
-        {
-            id: 'curve-enhancement',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/curve-enhancement.webp',
-            alt: 'Elegant silhouette showing natural curve enhancement from BBL procedure',
-            caption:
-                'Achieve naturally enhanced curves with expert fat transfer techniques',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'body-contouring',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/body-contouring.webp',
-            alt: 'Woman with sculpted hourglass figure showing dual body contouring results',
-            caption:
-                'Slim your waist while enhancing your curves with dual body contouring',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'miami-lifestyle',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/miami-lifestyle.webp',
-            alt: 'Confident woman enjoying Miami beach lifestyle after BBL transformation',
-            caption:
-                'Embrace the Miami lifestyle with newfound confidence in your curves',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'consultation',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/consultation.webp',
-            alt: 'Patient consultation with plastic surgeon at Alluring Plastic Surgery Miami',
-            caption:
-                'Your transformation begins with a personalized consultation',
-            section: 'process',
-            variant: 'full-width',
-        },
-        {
-            id: 'recovery-lifestyle',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/recovery-lifestyle.webp',
-            alt: 'Happy woman enjoying active lifestyle after BBL recovery',
-            caption: 'Embrace your new confidence and live life to the fullest',
-            section: 'recovery',
-            variant: 'full-width',
-        },
-        // New infographic images
-        {
-            id: 'bbl-vs-implants-infographic',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/bbl-vs-implants-infographic.webp',
-            alt: 'Infographic comparing Brazilian Butt Lift vs Butt Implants - natural fat transfer vs silicone',
-            caption:
-                'BBL uses your natural fat for softer, more natural results than implants',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'bbl-recovery-timeline',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/bbl-recovery-timeline.webp',
-            alt: 'Week-by-week BBL recovery timeline infographic from surgery to final results',
-            caption:
-                'Most patients sit normally and exercise again at about 8 weeks',
-            section: 'recovery',
-            variant: 'full-width',
-        },
-        // New lifestyle/editorial images
-        {
-            id: 'skinny-bbl',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/skinny-bbl.webp',
-            alt: 'Petite woman with naturally enhanced curves from skinny BBL procedure in Miami',
-            caption:
-                'Skinny BBL achieves beautiful, proportionate results for leaner body types',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'bbl-results',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/bbl-results.webp',
-            alt: 'Confident woman showcasing natural BBL results enjoying Miami lifestyle',
-            caption: 'Natural-looking curves that enhance your confidence',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'bbl-recovery-pillow',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/bbl-recovery-pillow.webp',
-            alt: 'Woman comfortably positioned using BBL recovery pillow after surgery',
-            caption:
-                'Proper recovery positioning protects your fat graft for optimal results',
-            section: 'recovery',
             variant: 'full-width',
         },
     ],
@@ -198,453 +133,144 @@ export const brazilianButtLiftBblMiami: Procedure = {
         duration: '3 to 5 Hours',
         anesthesia: 'General Anesthesia',
         recovery: '10-14 Days Off Work',
-        results: 'Long-lasting',
+        // `bbl.facts.ts` final-shape-3-6-months. Also the paid landing
+        // page's "Results" stat and `/llms-full.txt`.
+        results: 'Final Shape at 3 to 6 Months',
         inpatientOutpatient: 'Outpatient',
     },
+    // The paid landing page and `/llms-full.txt` read these. Each one is a
+    // claim the BBL page itself makes: no scarring or outcome promises.
     benefits: [
         {
-            title: 'Natural Enhancement',
+            title: 'Your own fat, no implant',
             description:
-                'Uses your own fat rather than synthetic implants for results that move naturally and feel authentic.',
+                'Fat from areas such as the abdomen, flanks or back adds shape and fullness to your buttocks.',
         },
         {
-            title: 'Dual Body Contouring',
+            title: 'Two areas in one surgery',
             description:
-                'Slims your waist, abdomen, or thighs via liposuction while simultaneously enhancing your buttocks.',
+                'The areas the fat is taken from are slimmed with liposuction in the same operation.',
         },
         {
-            title: 'Customizable Outcomes',
-            description:
-                'Tailored to your unique anatomy and goals, from subtle fullness to dramatic transformation.',
+            title: 'One surgeon, start to finish',
+            description: `${KARLINSKY_NAME} examines you before surgery, removes and injects the fat herself and stays with you throughout.`,
         },
         {
-            title: 'Minimal Scarring',
+            title: 'Placed as Florida law requires',
             description:
-                'Uses tiny incisions for liposuction and injection that heal into nearly invisible marks.',
+                'The fat goes only into the layer under the skin, placed with ultrasound guidance.',
         },
     ],
+    // Also the SurgicalProcedure's `howPerformed` in the page graph, so it
+    // follows the page: fat goes under the skin only, never "at various
+    // depths" (Florida Statutes §458.328).
     process: [
         {
             step: 1,
-            title: 'Consultation & Plan',
+            title: 'Exam and plan',
             description:
-                'Your surgeon assesses your anatomy, discusses your goals, and creates a personalized surgical plan.',
+                'Before surgery day, your surgeon examines you in person, reviews your health history and medications, and plans where fat will be taken from and where it will go.',
         },
         {
             step: 2,
             title: 'Liposuction',
             description:
-                'Excess fat is gently harvested from donor areas (abdomen, flanks, thighs) to contour your figure.',
+                'Through small incisions, the surgeon removes fat from the donor areas with a thin cannula, shaping your waist at the same time.',
         },
         {
             step: 3,
-            title: 'Purification',
+            title: 'Preparing the fat',
             description:
-                'Harvested fat is carefully processed to isolate the healthiest cells for transfer.',
+                'The fat is separated from fluid and blood, so only usable fat is transferred.',
         },
         {
             step: 4,
-            title: 'Strategic Injection',
+            title: 'Placing the fat',
             description:
-                'Purified fat is injected into the buttocks at various depths to create lift, volume, and shape.',
+                'The surgeon injects the fat into the layer under the skin of the buttocks, watching the cannula on ultrasound so it never passes into the muscle.',
         },
         {
             step: 5,
-            title: 'Recovery & Reveal',
+            title: 'Closing and compression',
             description:
-                'Follow post-op care instructions to protect the fat grafts. Final results emerge as swelling subsides.',
+                'The small incisions are closed and you are fitted with a compression garment, worn 24/7 for the first month, or as your surgeon directs.',
         },
     ],
+    // The same definition as the page's "What is a BBL?" answer, so the site
+    // defines a BBL one way.
     quickAnswer: {
         question: 'What is a Brazilian Butt Lift (BBL)?',
-        answer: 'A Brazilian Butt Lift is a cosmetic procedure that uses fat transfer to enhance the size and shape of the buttocks naturally, without implants.',
+        answer: 'A Brazilian butt lift (BBL) is a fat transfer to the buttocks. A surgeon uses liposuction to remove fat from areas such as the abdomen, flanks or back, processes it, and injects it under the skin of the buttocks to add volume and shape. Because it uses your own fat, there is no implant.',
         details:
-            'The BBL procedure typically takes 3-5 hours under general anesthesia. Unlike butt implants, BBL uses your own tissue for natural-feeling results. Most patients see final results in 3-6 months. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
+            'A BBL at Alluring takes 3 to 5 hours under general anesthesia, and you go home the same day. Your final shape shows 3 to 6 months after surgery. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
     },
-    content: `## Brazilian Butt Lift Miami Florida: Expert Fat Transfer for Lasting Curves
-
-If you've been dreaming of a fuller, more sculpted silhouette that turns heads on South Beach or fits your favorite swimwear with newfound confidence, a **Brazilian Butt Lift** in Miami might be the transformative solution you're seeking. This **Brazilian butt lift procedure** has become one of the most popular **body contouring** options for **patients** who want natural-looking curves without implants—using your own **fat** to enhance and reshape your **buttocks** while slimming areas like your abdomen, thighs, or flanks.
-
-Miami has earned its reputation as a premier destination for **cosmetic surgery**, and **BBL surgery Miami** is no exception. With year-round beach culture and a lifestyle that celebrates confidence and body positivity, it's no wonder so many **patients** choose South Florida for this life-changing **procedure**. At **Alluring Plastic Surgery**, our board-certified **plastic surgeons** combine artistry with precision to deliver **BBL results Miami** patients love—results that look and feel authentically you.
-
-<ProcedureImage id="hero" />
-
-## How a Brazilian Butt Lift Works
-
-A **Brazilian Butt Lift** is a specialized **body contouring procedure** that uses **liposuction** to harvest excess **fat** from donor areas—typically the abdomen, love handles, lower back, or thighs—and strategically transfers it to your **buttocks**. Unlike implants, the **BBL** creates enhancement through your **body's** own tissue, resulting in a softer, more natural appearance and feel.
-
-The **procedure** accomplishes two major goals: removing unwanted **fat** from problem areas while adding volume and shape to your backside. This dual benefit creates a more balanced, hourglass figure that many **patients** find incredibly satisfying. Because the **fat** comes from your own **body**, there's no risk of rejection, and results integrate seamlessly with your existing contours.
-
-The **BBL** technique was pioneered in Brazil—hence the name—and has been refined over decades to prioritize both aesthetic outcomes and patient safety. Today's **surgeons** use advanced methods like VASER **liposuction** for gentler **fat** removal and carefully calculated injection techniques to maximize **fat** survival and minimize complications.
-
-<ProcedureImage id="curve-enhancement" />
-
-## BBL vs Butt Implants: Which Is Right for You?
-
-When considering buttock enhancement, **patients** often wonder whether to choose a **BBL** or **butt implants**. Here's how these two popular options compare:
-
-| Factor | Brazilian Butt Lift (BBL) | Butt Implants |
-|--------|---------------------------|---------------|
-| **Material** | Your own natural fat | Silicone implants |
-| **Feel** | Soft, natural movement | Firmer, less natural |
-| **Dual Benefit** | Yes—slims donor areas | No body contouring |
-| **Scarring** | Minimal tiny incisions | Larger incision required |
-| **Risk of Rejection** | None (your own tissue) | Possible capsular contracture |
-| **Maintenance** | None with stable weight | May need replacement |
-| **Ideal Candidate** | Has adequate fat reserves | Very lean patients |
-
-<ProcedureImage id="bbl-vs-implants-infographic" />
-
-### Why Most Miami Patients Choose BBL
-
-The overwhelming majority of **patients** seeking buttock enhancement in **Miami** choose the **Brazilian Butt Lift** over **butt implants**. The reasons are clear: **BBL** offers natural-feeling results, the bonus of body contouring through **liposuction**, minimal scarring, and no risk of implant complications. For **patients** with sufficient fat reserves, **BBL** is the gold standard for achieving beautiful, lasting curves.
-
-However, **butt implants** may be appropriate for very lean individuals who lack adequate donor fat. During your **consultation**, your **surgeon** will evaluate your anatomy and recommend the best approach for your goals.
-
-## Benefits of Choosing Miami's BBL Experts
-
-### Natural Enhancement Without Implants
-
-One of the most appealing aspects of the **Brazilian Butt Lift** is that it uses your own **fat** rather than synthetic implants. This means your results will move naturally with your **body**, feel authentic to the touch, and avoid the potential complications associated with foreign materials.
-
-### Dual Body Contouring
-
-You're not just enhancing your **buttocks**—you're simultaneously slimming and sculpting donor areas. **Patients** often love how **liposuction** refines their waistline, smooths their thighs, or eliminates stubborn love handles, creating a more proportionate overall figure.
-
-### Long-Lasting Results
-
-Once the transferred **fat** cells establish a blood supply in their new location (typically within a few months), they behave like any other **fat** in your **body**. With stable weight maintenance, your results can last for years. Many **patients** enjoy their new curves for a decade or more.
-
-### Customizable Outcomes
-
-Every **BBL** is tailored to your unique anatomy and aesthetic goals. Whether you're seeking subtle fullness or dramatic transformation, your **surgeon** can adjust the amount and placement of **fat** to match your vision while maintaining natural proportions.
-
-### Minimal Scarring
-
-Both **liposuction** and **fat** injection use tiny incisions—often just a few millimeters long—that heal into nearly invisible marks. Most **patients** find their scars fade significantly over time and are easily concealed.
-
-<ProcedureImage id="body-contouring" />
-
-## Paying for Your BBL
-
-A **BBL in Miami** at Alluring Plastic Surgery starts at **$5,500**, and most patients pay between $5,500 and $10,000. Every BBL is priced for the patient, so your number depends on your body and your goals. What the price covers and what moves it within the range is set out in the [price table above](#pricing) — this section is about how to pay for it.
-
-We believe everyone deserves access to the curves they've always wanted, so we partner with leading financing providers to make your **BBL in Miami** affordable:
-
-- **Cherry Financing:** flexible payment plans
-- **CareCredit:** special financing with promotional periods
-- **United Medical Credit:** multiple payment plan options
-
-Financing depends on approved credit, term length and deposit. Price ranges are estimates and may change. During your free consultation, our patient coordinators will review every option and give you an exact, all-inclusive price.
-
-## Skinny BBL Miami: Enhancement for Petite Frames
-
-Not everyone seeking a **Brazilian Butt Lift** has significant fat reserves to harvest—and that's where the **skinny BBL Miami** comes in. This specialized technique is designed for patients with leaner body types who still want natural buttock enhancement.
-
-### What Is a Skinny BBL?
-
-A **skinny BBL** uses the same fat transfer principles as a traditional **BBL** but is specifically tailored for patients with a lower BMI and limited donor fat. The procedure requires exceptional skill to harvest enough viable fat for meaningful enhancement while maintaining the patient's naturally slim physique.
-
-### Am I a Candidate for a Skinny BBL?
-
-You may be an ideal **skinny BBL** candidate if you:
-
-- Have a BMI between 18-23
-- Want subtle, natural-looking enhancement (100-300cc per side)
-- Have some fat in the abdomen, flanks, inner thighs, or bra roll areas
-- Prefer a proportionate look that maintains your slim figure
-- Understand that results will be more subtle than traditional BBL
-
-<ProcedureImage id="skinny-bbl" />
-
-### Skinny BBL Technique Differences
-
-**Micro-Fat Transfer:** Smaller quantities of fat are carefully harvested and processed to maximize cell viability.
-
-**Multiple Donor Sites:** Your surgeon may harvest from several areas—abdomen, flanks, inner thighs, bra roll, and back—to collect sufficient fat.
-
-**Precision Placement:** Every cc of fat is strategically placed for maximum aesthetic impact and survival.
-
-**Expected Results:** Most **skinny BBL** patients achieve 100-300cc of enhancement per side, creating a noticeable but proportionate improvement.
-
-If you're unsure whether you have enough fat for a **BBL**, schedule a consultation. Many patients are surprised to learn they're candidates for this transformative procedure.
-
-## Am I a Candidate for a BBL Miami?
-
-The **BBL** ideal candidate typically meets these criteria:
-
-**Adequate Fat Reserves:** You need enough excess **fat** in donor areas to harvest and transfer. **Patients** with very low **body** fat may consider a **skinny BBL** if they have some harvestable fat, or they may explore butt implants as an alternative.
-
-**Realistic Expectations:** Understanding what the **procedure** can and cannot achieve is crucial. A **BBL** enhances your natural shape—it won't completely change your **body** type or guarantee a specific look.
-
-**Good Overall Health:** You should be free from conditions that impair healing or increase surgical risks, such as uncontrolled diabetes, heart disease, or bleeding disorders.
-
-**Stable Weight:** Significant weight fluctuations after **surgery** can alter your results. Candidates should be at or near their goal weight before the **procedure**.
-
-**Non-Smoker:** Smoking restricts blood flow and dramatically increases complication risks. You'll need to quit at least four weeks before and after **surgery**.
-
-During your **consultation** at Alluring **Plastic Surgery**, your **plastic surgeon** will evaluate your anatomy, discuss your goals, and determine if a **BBL** is the right choice for you. Some **patients** benefit from combining their **BBL** with other procedures like a tummy tuck or breast augmentation for comprehensive transformation—often called a "Mommy Makeover" when addressing post-pregnancy changes.
-
-<ProcedureImage id="consultation" />
-
-## The BBL Procedure: What to Expect
-
-### Pre-Operative Preparation
-
-Your journey begins with a detailed **consultation** where your **surgeon** will assess your **body**, take measurements, and discuss your desired outcome. You'll receive specific instructions about medications to avoid, fasting requirements, and arranging for someone to drive you home after **surgery**.
-
-Most **surgeons** recommend stopping blood-thinning medications (like aspirin or ibuprofen) and certain supplements two weeks before your **procedure** to minimize bleeding risks. You'll also want to prepare your **recovery** space with comfortable pillows, prescribed medications, and loose-fitting clothing.
-
-### Surgery Day
-
-A **BBL surgery** is typically performed under general anesthesia and takes three to five hours, depending on the amount of **fat** being transferred and the number of donor sites. Here's the step-by-step process:
-
-**Liposuction:** Small incisions are made in donor areas, and a tumescent solution (containing saline, lidocaine, and epinephrine) is injected to minimize bleeding and discomfort. Your **surgeon** then uses a thin cannula to carefully extract excess **fat**.
-
-**Fat Purification:** The harvested **fat** undergoes processing to separate healthy, viable cells from fluids and damaged tissue. This step is critical for maximizing **fat** survival after transfer.
-
-**Fat Injection:** Using specialized cannulas, your **surgeon** injects small amounts of purified **fat** into multiple layers of your **buttocks** at strategic depths and locations. This technique, called "microdroplet injection," ensures even distribution and better blood supply to the transferred tissue.
-
-## BBL Recovery: Complete Post-Surgery Guide
-
-Understanding **BBL recovery Miami** expectations helps you prepare for a smooth healing journey. Here's your complete week-by-week guide to recovery after your **Brazilian Butt Lift**.
-
-### Days 1-3: Immediate Recovery
-
-**What to Expect:**
-- Moderate discomfort managed with prescribed pain medication
-- Significant swelling and bruising in treated areas
-- Drainage from liposuction incision sites
-- Fatigue from anesthesia
-
-**What to Do:**
-- Rest on your stomach or on your side
-- **Absolutely no sitting directly on your buttocks**
-- Wear your compression garment 24/7, except in the shower
-- Take short walks every few hours to promote circulation
-- Stay hydrated and follow a light, nutritious diet
-
-### Week 1-2: Early Recovery
-
-**What to Expect:**
-- Swelling peaks around day 3-5, then gradually decreases
-- Bruising begins to fade
-- Energy levels slowly improve
-- Some numbness in treated areas (normal)
-
-**What to Do:**
-- Continue avoiding sitting directly on your buttocks for at least the first 2 weeks
-- Use a BBL pillow when you must sit
-- Keep the garment on 24/7 through the first month, except in the shower
-- Attend your first follow-up appointment
-- Shower carefully as instructed
-- Begin light walking for 10-15 minutes daily
-
-<ProcedureImage id="bbl-recovery-timeline" />
-
-### Week 2-4: Progressive Healing
-
-**What to Expect:**
-- Most patients return to desk work at 10-14 days, sitting on a BBL pillow
-- Swelling continues to decrease
-- Incisions healing well
-- Shape becoming more visible
-
-**What to Do:**
-- Sit only on a BBL pillow, and only briefly — about 10 minutes at a time
-- Keep the garment on 24/7 through the end of the first month
-- Avoid strenuous exercise and heavy lifting
-- Sleep on your stomach or side
-- Stay at a stable weight
-
-### Week 4-6: Returning to Normal
-
-**What to Expect:**
-- Swelling keeps easing, though your final shape takes 3-6 months
-- Results taking shape
-- Comfort levels much improved
-
-**What to Do:**
-- Keep sitting only on a BBL pillow until about week 8
-- Wear the garment at least 12 hours a day through the second month, or as your surgeon directs
-- Add light activity such as brisk walking after about a month
-- Follow surgeon's guidance on resuming activities
-- Continue healthy diet for optimal fat survival
-
-<ProcedureImage id="bbl-recovery-pillow" />
-
-### Month 3-6: Final Results Emerge
-
-**What to Expect:**
-- Final results visible as remaining swelling resolves
-- Transferred fat stabilized in new location
-- Shape and volume settled into final form
-
-**Long-Term Care:**
-- Maintain stable weight to preserve results
-- Stay active with regular exercise
-- Attend follow-up appointments as scheduled
-
-### How to Protect Your Fat Graft
-
-Maximizing fat survival is crucial for the best **BBL results Miami** patients desire:
-
-1. **No Direct Sitting:** Avoid sitting directly on your buttocks for at least 2 weeks, then sit only on a BBL pillow until about week 8
-2. **Use a BBL Pillow:** When sitting is necessary, use a specialized pillow
-3. **Don't Smoke:** Smoking severely restricts blood flow to transferred fat
-4. **Maintain Weight:** Losing weight will shrink your results; gaining too much can distort them
-5. **Follow Instructions:** Your surgeon's post-op guidelines are designed to maximize fat survival
-
-### Warning Signs to Watch
-
-Contact your surgeon immediately if you experience:
-
-- Fever over 101°F
-- Sudden severe pain
-- Excessive bleeding
-- Signs of infection (increased redness, warmth, pus)
-- Shortness of breath or chest pain
-- Severe asymmetry or hard lumps
-
-## Why Choose Alluring Plastic Surgery for Your BBL
-
-At Alluring **Plastic Surgery**, we're committed to delivering exceptional **BBL results Miami** patients love. We understand that this **procedure** is deeply personal—it's about feeling comfortable and confident in your own skin, whether you're strolling along Ocean Drive or living your everyday life.
-
-Our approach prioritizes safety, natural-looking results, and open communication throughout your journey. From your initial **consultation** through **recovery** and beyond, we're committed to providing the personalized care that turns aesthetic goals into reality. Our **Miami** location offers state-of-the-art facilities, compassionate staff, and a track record of satisfied **patients** who've achieved the curves they've always wanted.
-
-<ProcedureImage id="miami-lifestyle" />
-
-### Why Miami Is the Best Place for a BBL
-
-**Miami** has become the undisputed capital for **Brazilian Butt Lifts** in the United States, and for good reason:
-
-**Board-Certified Surgeons:** What matters is not how many BBLs a city performs but who performs yours. Look for certification by the American Board of Plastic Surgery and an accredited facility. The South Florida mortality review found 92% of BBL deaths occurred at high-volume budget clinics, so volume alone is not a reason to choose a surgeon.
-
-**Florida's Safety Law:** Florida requires that gluteal fat be injected only into the subcutaneous layer, never crossing the gluteal fascia, under real-time ultrasound guidance, with one physician devoted to one patient throughout. It is the strictest BBL law in the country, and it is our standard on every case.
-
-**Innovation:** Miami's competitive market drives adoption of the latest, safest techniques.
-
-**Results-Driven Culture:** Miami's beach lifestyle demands natural-looking results that look amazing in swimwear.
-
-**Diverse Patient Experience:** Our surgeons have enhanced every body type, skin tone, and aesthetic goal.
-
-<ProcedureImage id="bbl-results" />
-
-## Take the First Step Toward Your Transformation
-
-If you're ready to explore how a **Brazilian Butt Lift** can enhance your natural beauty and boost your confidence, we'd love to hear from you. **Schedule a consultation with Alluring Plastic Surgery today** by calling [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}). During your visit, we'll discuss your goals, answer all your questions, and create a personalized plan that brings your vision to life.
-
-Your journey to a more sculpted, confident you starts with a single conversation. Let's make it happen together.
-
-<ProcedureImage id="recovery-lifestyle" />`,
+    // The page's FAQ, its FAQPage node and the paid landing page all read
+    // this list. Copy from #252; every figure is declared in `bbl.facts.ts`
+    // and `check:bbl-copy` checks them in the built page. Only the two price
+    // questions use pricing terms, so they are the ones the landing page
+    // drops.
     faqs: [
-        // Safety leads. It is the first objection in this category, and these
-        // three answers were the only unique content on the retired
-        // /bbl-miami landing page (#229).
         {
-            question: 'Is a BBL safe?',
-            answer: 'BBL safety depends entirely on the surgeon and the facility. At Alluring we use ultrasound-guided fat injection, the gold standard for safe BBL technique, which helps ensure fat is placed in the subcutaneous layer rather than in or below the muscle. Our facility is AAAASF-accredited and our surgeons follow all current safety protocols.',
+            question: 'Who performs BBLs at Alluring?',
+            answer: `Every BBL at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} Florida law requires the operating surgeon to examine you in person no later than the day before surgery and to remove and inject the fat personally.`,
+        },
+        // The cost cluster is the only group of searches this page ranks for
+        // on Google's first two pages, and the FAQ had no plain price
+        // question.
+        {
+            question: 'How much does a BBL cost in Miami?',
+            answer: `A BBL at Alluring starts at ${bblFigure('price-starting-at')}, and most patients pay between $5,500 and $10,000. Your price is set after an exam, because it depends on how much fat is moved, how many areas are treated and what else is done. It includes anesthesia, the surgical facility, your garment and your follow-up visits. Financing is available.`,
         },
         {
-            question: 'What safety measures do you take during BBL surgery?',
-            answer: 'Our protocols include ultrasound guidance during fat injection, limiting the total volume of fat transferred, specialized cannulas designed for safe injection depth, board-certified anesthesiologists, an AAAASF-accredited surgical facility, and comprehensive pre-operative health screening.',
+            question: 'What does Florida law require for a BBL?',
+            answer: 'Florida Statutes §458.328 requires the surgeon to inject fat only into the layer under the skin, never crossing the fascia over the gluteal muscle, and to use ultrasound guidance while moving the cannula. The surgeon must also stay with one patient for the whole procedure, examine you in person no later than the day before, and do the fat removal and injection personally.',
         },
         {
-            question: 'What percentage of the transferred fat survives?',
-            answer: "About 50-80% of the transferred fat survives permanently, and surgeons interviewed by the American Society of Plastic Surgeons put the average take near 60%. We account for this by initially transferring more than the final desired volume. Survival depends on technique, your body's response, and how closely you follow post-op instructions. Florida law requires ultrasound guidance so the fat is placed above the muscle, where it is safe.",
-        },
-        // Complication rates and a surgeon-vetting checklist, folded in from
-        // the retired /blog/bbl-safety-miami post (#231). "How much" is a
-        // pricing term for the paid landing page's FAQ filter, so the answer
-        // says "what volume" instead.
-        {
-            question:
-                'What are the real risks of a BBL, and how do you reduce them?',
-            answer: 'The serious risk is fat embolism, where fat injected into or below the gluteal muscle enters a blood vessel. Florida now requires real-time ultrasound guidance for exactly this reason, and it is our standard on every case. The common complications are minor and manageable: seroma in roughly 3-5% of cases, infection in about 2% with proper sterile protocol, and some fat reabsorption — a 2020 review in Seminars in Plastic Surgery estimates 20-50% is reabsorbed — which we plan for when deciding what volume to transfer. A BMI over 30 and smoking raise every one of these risks, which is why the consultation includes a full health screening.',
-        },
-        {
-            question: 'How should I vet a BBL surgeon in Miami?',
-            answer: "Start with board certification from the American Board of Plastic Surgery and verify it on the board's own directory, not the clinic's website. Ask how many BBLs the surgeon performs, whether ultrasound guidance is used on every case, and what their complication rate is. Confirm the facility is accredited and who manages your anesthesia. Red flags: providers who are not plastic surgeons, high-volume clinics scheduling several BBLs a day per surgeon, and anyone guaranteeing a specific result.",
-        },
-        {
-            question: 'What is a Brazilian Butt Lift (BBL)?',
-            answer: 'A Brazilian Butt Lift (BBL) is a cosmetic procedure that enhances the size and shape of your buttocks by transferring fat from other areas of your body, like the abdomen or thighs, to create a fuller, more contoured look.',
-        },
-        {
-            question: 'What does BBL mean?',
-            answer: 'BBL stands for Brazilian Butt Lift, a popular procedure designed to enhance the buttocks by using fat transfer instead of implants, giving a natural look and feel.',
-        },
-        {
-            question: 'How much is a BBL in Miami?',
-            answer: 'A BBL at Alluring Plastic Surgery starts at $5,500, and most patients pay between $5,500 and $10,000. Your price is personalized: it depends on the volume of fat transferred, the number of donor sites and surgical complexity, and your surgeon confirms it at your consultation. Financing is available through Cherry, CareCredit and United Medical Credit.',
-        },
-        {
-            question: 'What is the average cost of a BBL in Miami Florida?',
-            answer: "At Alluring, most BBL patients pay between $5,500 and $10,000. That price typically includes surgeon fees, anesthesia, facility costs, compression garments, and all follow-up appointments. What moves it is the volume of fat transferred, the number of donor sites, and the surgeon's experience level. Price ranges are estimates and may change.",
-        },
-        {
-            question: 'Does insurance cover a Brazilian Butt Lift?',
-            answer: 'No, insurance does not cover a Brazilian Butt Lift because it is considered an elective cosmetic procedure. However, we offer flexible financing options through Cherry, CareCredit, and United Medical Credit to help make your BBL affordable.',
-        },
-        {
-            question: 'Can I get a BBL if I am skinny?',
-            answer: 'Yes, a "skinny BBL" is specifically designed for patients with leaner body types (BMI 18-23). This specialized technique harvests fat from multiple donor sites—including the abdomen, flanks, inner thighs, and bra roll—to achieve natural-looking enhancement of 100-300cc per side while maintaining your slim figure.',
-        },
-        {
-            question: 'What is the difference between a BBL and butt implants?',
-            answer: 'A BBL uses your own natural fat for enhancement, while butt implants use silicone devices. BBL offers a softer, more natural feel, provides dual body contouring benefits through liposuction, leaves minimal scarring, and has no risk of implant rejection. Most Miami patients prefer BBL for these reasons, though implants may be recommended for very lean patients without adequate fat reserves.',
-        },
-        {
-            question: 'How long is BBL recovery?',
-            answer: 'Most patients take 10-14 days off work, sit normally and exercise again at about 8 weeks, feel fully recovered at 2-3 months, and see final results at 3-6 months. For the first 2 weeks you must avoid sitting directly on your buttocks, then sit only on a BBL pillow until about week 8.',
-        },
-        {
-            question: 'How long after BBL can I sit down?',
-            answer: 'You should avoid sitting directly on your buttocks for at least 2 weeks after your BBL to protect the newly transferred fat. After that, sit only on a BBL pillow that keeps pressure off your buttocks, briefly at first — about 10 minutes at a time through week 6. Most patients can resume normal sitting at about week 8, though your surgeon will provide personalized guidance.',
+            question: 'What are the risks of a BBL?',
+            answer: 'The most serious risk is a fat embolism, which is why Florida requires the fat to stay under the skin. Common complications are minor: a 2026 meta-analysis found minor complications in 3.58% of patients, most often a seroma, a pocket of fluid, in 2.03%. Other risks include infection, loss of grafted fat, unevenness and firm lumps of hardened fat.',
         },
         {
             question: 'How long does BBL surgery take?',
-            answer: 'A Brazilian Butt Lift typically takes 3 to 5 hours to complete. The duration depends on the amount of fat being transferred and the number of donor sites being treated. The procedure is performed under general anesthesia as an outpatient surgery, meaning you go home the same day.',
-        },
-        {
-            question: 'How much fat do you need for a BBL?',
-            answer: 'A traditional BBL typically requires enough fat to transfer 500-1000cc or more per buttock for noticeable enhancement. However, a "skinny BBL" can achieve beautiful results with just 100-300cc per side. During your consultation, your surgeon will assess your donor areas and recommend whether you have adequate fat reserves for your desired outcome.',
-        },
-        {
-            question: 'Why is Miami the best place for a BBL?',
-            answer: 'Miami has a deep concentration of board-certified plastic surgeons, accredited surgical facilities, and experience across every body type. Florida also has the strictest BBL safety law in the country: fat may be injected only above the muscle, under real-time ultrasound guidance, with one physician devoted to one patient. What makes a BBL safe is the surgeon and the facility you choose, not the city.',
-        },
-        {
-            question: 'Is the recovery painful?',
-            answer: 'Most patients experience some discomfort, swelling, and bruising after a BBL, but pain can be managed with prescribed medications. Most people need some pain medication for the first four to five days, and pain eases after one to two weeks. You will need to avoid sitting directly on your buttocks for at least two weeks to aid recovery and maximize fat survival.',
-        },
-        {
-            question: 'When will I see the final results?',
-            answer: 'While you will notice an immediate change in the shape of your buttocks, the final results will become more visible after about 3 to 6 months, once the swelling subsides and the transferred fat stabilizes in its new location.',
-        },
-        {
-            question: 'Are the results of a Brazilian Butt Lift permanent?',
-            answer: 'Yes, the results can be long-lasting. Once the transferred fat establishes blood supply (typically within a few months), it behaves like any other fat in your body. Maintaining a stable weight is important to preserve your new shape. Significant weight fluctuations can affect the outcome.',
-        },
-        {
-            question: 'What is a BBL?',
-            answer: 'A BBL, or Brazilian Butt Lift, is a procedure that uses fat from other parts of your body to reshape and enhance the buttocks, offering natural and long-lasting results without implants.',
+            answer: 'A BBL takes 3 to 5 hours under general anesthesia, depending on the volume of fat moved and the number of areas treated. It is outpatient surgery, so you go home the same day, with someone to drive you and stay with you for the first days.',
         },
         {
             question: 'Am I a good candidate for a BBL?',
-            answer: 'Ideal candidates for a BBL have adequate fat reserves in donor areas (abdomen, thighs, or flanks), are in good overall health, maintain a stable weight, are non-smokers, and have realistic expectations about the procedure outcomes. Leaner patients may be candidates for a skinny BBL.',
+            answer: 'You may be a good candidate if you are in good general health, at a weight you can keep stable, a non-smoker or willing to stop, and carry enough fat in areas such as the abdomen, flanks or back to move. Realistic expectations matter too: a BBL reshapes your figure, but it does not change your body type.',
         },
         {
-            question: 'What areas can be used as donor sites for fat transfer?',
-            answer: 'Common donor areas for BBL include the abdomen, love handles (flanks), lower back, thighs, and bra roll area. Your surgeon will evaluate your body to determine the best donor sites during your consultation.',
+            question: "Can I get a BBL if I'm thin?",
+            answer: 'Often, yes. A skinny BBL moves a smaller volume of fat, usually gathered from several areas, for a subtle and proportionate change. Whether you have enough fat for the result you want is something only an exam can tell, so bring your goals, and photos of shapes you like, to your consultation.',
         },
         {
-            question: 'Will I have scars after a BBL?',
-            answer: 'Both liposuction and fat injection use tiny incisions that heal into nearly invisible marks. Most patients find their scars fade significantly over time and are easily concealed.',
+            question: 'Can I get a BBL after pregnancy?',
+            answer: 'Yes, once you have finished breastfeeding and your weight has settled where you can keep it. At the exam your surgeon also looks at your abdomen: if pregnancy stretched the skin or separated the muscles, liposuction alone will not fix that, and a tummy tuck in the same surgery may be the better plan.',
         },
         {
-            question: 'Can I combine a BBL with other procedures?',
-            answer: 'Yes, many patients combine their BBL with other procedures like a tummy tuck or breast augmentation for comprehensive transformation. This combination is often called a "Mommy Makeover" when addressing post-pregnancy changes.',
+            question: 'When can I sit after a BBL?',
+            answer: 'Not on your buttocks for at least 2 weeks, according to Cleveland Clinic. After that, sit only briefly on a BBL pillow, about 10 minutes at a time through week 6, as a plastic surgeon interviewed by ASPS advises. Most people sit without a pillow at about 8 weeks, once their surgeon clears them.',
+        },
+        {
+            question: 'What share of the transferred fat survives?',
+            answer: 'About 50% to 80% of grafted fat survives a BBL. Plastic surgeons interviewed by ASPS put the average "take" around 60%, and a 2020 review in Seminars in Plastic Surgery estimates that 20% to 50% is reabsorbed. Keeping pressure off your buttocks for the first 8 weeks protects the fat that is taking hold.',
+        },
+        {
+            question: 'When will I see my final results, and do they last?',
+            answer: 'Your final shape shows 3 to 6 months after surgery, once swelling settles. The fat that survives stays where it was placed and changes with your weight like the rest of your body fat, so the result lasts as long as your weight stays steady. Cleveland Clinic advises keeping your weight consistent to preserve it.',
+        },
+        // What `/fly-in-consultation` offers, and the law that still applies.
+        {
+            question:
+                'Can I start with a virtual consultation if I live in another state?',
+            answer: 'Yes. You can start with a virtual consultation and have your surgery, pre-op and follow-up dates in writing before you book a flight. Florida law still requires your surgeon to examine you in person no later than the day before surgery, so your plan is confirmed at that exam.',
+        },
+        {
+            question:
+                'How long should I stay in Miami after a BBL if I am flying in?',
+            answer: "Plan on 7 to 10 days in Miami, so you can be seen at follow-up and cleared before you fly. We confirm your surgery, pre-op and follow-up dates in writing and tell you how many nights to stay; you arrange your own travel. ASPS's article on traveling after a BBL advises staying near your surgeon for at least 4 to 5 days.",
+        },
+        {
+            question: 'Does insurance cover a BBL, and can I finance it?',
+            answer: `No. Insurance does not cover a BBL, because it is a cosmetic procedure. Financing is available through ${getFinancingPartnersString()}, subject to credit approval, and we can go through the options with you at your consultation. A BBL at Alluring starts at ${bblFigure('price-starting-at')}.`,
         },
     ],
 }

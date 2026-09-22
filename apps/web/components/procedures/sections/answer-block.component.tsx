@@ -7,9 +7,13 @@ type AnswerBlockProps = {
     /** The heading, phrased as the question people search. */
     question: string
     /** The direct answer: 40–60 words, first under the heading. */
-    answer: string
-    /** Supporting content after the answer. */
+    answer: ReactNode
+    /** Supporting content after the answer, laid out by the caller. */
     children?: ReactNode
+    /** `dark` for a section on stone-900. */
+    tone?: 'light' | 'dark'
+    /** Extra classes for the answer paragraph, e.g. a `speakable` hook. */
+    answerClassName?: string
     className?: string
 }
 
@@ -18,8 +22,9 @@ type AnswerBlockProps = {
  *
  * The heading is the query; the first paragraph under it is the complete
  * answer, so a reader — or an AI engine lifting one passage — gets it without
- * reading on. Everything else follows as `children`. The answer paragraph
- * carries `answer-block__answer` so a `speakable` selector can target it.
+ * reading on. Everything else follows as `children`, which the caller lays
+ * out. The answer paragraph carries `answer-block__answer` so a `speakable`
+ * selector can target it.
  *
  * Server component; no client JavaScript.
  */
@@ -28,30 +33,41 @@ export function AnswerBlock({
     question,
     answer,
     children,
+    tone = 'light',
+    answerClassName,
     className,
 }: AnswerBlockProps) {
     const headingId = `${id}-heading`
+    const dark = tone === 'dark'
 
     return (
         <section
             id={id}
             aria-labelledby={headingId}
-            className={cn('answer-block scroll-mt-24', className)}
+            className={cn(
+                'answer-block scroll-mt-32 lg:scroll-mt-40',
+                className
+            )}
         >
             <h2
                 id={headingId}
-                className='mb-5 font-serif text-3xl text-balance text-stone-900 md:text-4xl'
+                className={cn(
+                    'font-serif text-[1.75rem] leading-[1.2] font-medium text-balance md:text-[2.375rem] md:leading-[1.15]',
+                    dark ? 'text-stone-50' : 'text-stone-900'
+                )}
             >
                 {question}
             </h2>
-            <p className='answer-block__answer mb-6 max-w-[68ch] text-lg leading-relaxed text-stone-700'>
+            <p
+                className={cn(
+                    'answer-block__answer mt-4 max-w-[41.25rem] text-[1.0625rem] leading-[1.6] tabular-nums md:mt-5 md:text-lg md:leading-[1.65]',
+                    dark ? 'text-stone-200' : 'text-stone-700',
+                    answerClassName
+                )}
+            >
                 {answer}
             </p>
-            {children && (
-                <div className='max-w-[68ch] text-base leading-relaxed text-stone-700 md:text-lg'>
-                    {children}
-                </div>
-            )}
+            {children}
         </section>
     )
 }

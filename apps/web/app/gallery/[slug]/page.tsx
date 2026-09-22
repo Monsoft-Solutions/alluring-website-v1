@@ -4,6 +4,7 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import { Award, Shield, Users, Building2 } from 'lucide-react'
@@ -27,6 +28,18 @@ type PageProps = {
 }
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
+
+/**
+ * Gallery groups with a procedure page to link back to. The procedure page
+ * links to its gallery; this link closes the loop, so a reader who arrives on
+ * the photos can reach the page that answers cost, safety and recovery (#256).
+ */
+const procedurePageByGroup: Record<string, { href: string; label: string }> = {
+    'brazilian-butt-lift': {
+        href: '/procedures/brazilian-butt-lift-bbl-miami',
+        label: 'BBL in Miami: cost, safety and recovery',
+    },
+}
 
 const getCachedGroupBySlug = cache(async (slug: string) =>
     getGalleryGroupBySlug(slug)
@@ -93,6 +106,8 @@ export default async function GalleryGroupPage({ params }: PageProps) {
 
     const pageUrl = `${siteUrl}/gallery/${group.slug}`
 
+    const procedurePage = procedurePageByGroup[group.slug]
+
     // Breadcrumb items
     const breadcrumbItems = [
         { name: 'Home', item: siteUrl },
@@ -156,6 +171,17 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                                 {group.media.length === 1 ? 'photo' : 'photos'}{' '}
                                 in this collection
                             </p>
+
+                            {procedurePage && (
+                                <p className='mt-6 text-base'>
+                                    <Link
+                                        href={procedurePage.href}
+                                        className='decoration-gold-500 text-stone-900 underline underline-offset-4 hover:decoration-stone-900'
+                                    >
+                                        {procedurePage.label}
+                                    </Link>
+                                </p>
+                            )}
                         </div>
                     </ContentWrapper>
                 </SectionContainer>
