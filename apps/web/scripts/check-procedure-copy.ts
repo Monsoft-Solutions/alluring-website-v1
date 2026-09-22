@@ -1,5 +1,7 @@
 /**
- * BBL copy sweep (#252, #256): the launch gate for the BBL page.
+ * Procedure copy sweep (#252, #256): the launch gate for a procedure page
+ * module. `scripts/procedure-copy.config.ts` names each page's facts file and
+ * its own rules; the BBL page was the first.
  *
  * Reads the page as built — the prerendered HTML, or a running server with
  * `--url` — and checks what readers, crawlers and AI engines actually get:
@@ -8,18 +10,22 @@
  * the structured-data graph. It fails on:
  *
  *   - any %, cc, BMI, $, minute, hour, day, week, month, year or count figure
- *     that `bbl.facts.ts` does not declare, and any number it cannot classify;
+ *     that the page's facts file does not declare, and any number it cannot
+ *     classify;
  *   - board-certification wording other than the credentials checked in
  *     `karlinsky-credentials.constant.ts`, and a board Florida does not
  *     approve named without Rule 64B8-11.001's statement beside it;
- *   - the six practice claims still waiting on the owner (#247 item 3);
+ *   - the practice claims still waiting on the owner (#247 item 3);
  *   - travel-coordination or non-US wording (CLAUDE.md);
  *   - "best", "safest", guarantees and keyword bolding;
+ *   - the page's own rules from its config (the BBL page allows no volume
+ *     or BMI figure at all);
  *   - an FAQ answer with pricing terms under a question that isn't about
  *     price, which `/landing/procedure/[slug]` would silently drop;
  *   - FAQPage structured data that differs from the visible FAQ;
  *   - a question-phrased H2 whose direct answer is not 40–60 words;
- *   - an in-page link to an anchor that doesn't exist, or a lost `#pricing`.
+ *   - an in-page link to an anchor that doesn't exist, or a lost required
+ *     anchor (`#pricing` by default).
  *
  * It also checks that every fact statement uses only its own figures, so the
  * facts file cannot drift from itself.
@@ -36,8 +42,9 @@
  * Placeholders are a warning by default and a failure with `--launch`.
  *
  * Usage:
- *   pnpm --filter web build && pnpm --filter web check:bbl-copy [--launch] [--map]
- *   pnpm --filter web check:bbl-copy --url http://localhost:3100/procedures/brazilian-butt-lift-bbl-miami
+ *   pnpm --filter web build && pnpm --filter web check:procedure-copy --slug <slug> [--launch] [--map]
+ *   pnpm --filter web check:procedure-copy --slug <slug> --url http://localhost:3100/procedures/<slug>
+ *   pnpm --filter web check:bbl-copy   (the BBL page, same flags)
  */
 
 import { existsSync, readFileSync } from 'node:fs'
@@ -45,15 +52,16 @@ import { fileURLToPath } from 'node:url'
 
 import { parse, type DefaultTreeAdapterMap } from 'parse5'
 
-import {
-    bblFacts,
-    bblSources,
-    type BblFigure,
-} from '../lib/data/procedures/facts/bbl.facts'
+import type { ProcedureFigure } from '../lib/data/procedures/facts/procedure-facts'
 import {
     FLORIDA_UNAPPROVED_BOARD_STATEMENT,
     KARLINSKY_ABS_CERTIFIED_ON,
 } from '../lib/data/surgeons/karlinsky-credentials.constant'
+import {
+    procedureCopyConfigs,
+    type ProcedureCopyConfig,
+    type WordingRule,
+} from './procedure-copy.config'
 
 const LAUNCH = process.argv.includes('--launch')
 // Print every licensed figure with the fact and sources behind it (markdown).
@@ -61,14 +69,30 @@ const MAP = process.argv.includes('--map')
 const URL_ARG = process.argv[process.argv.indexOf('--url') + 1]
 const URL_FLAG = process.argv.includes('--url') ? URL_ARG : undefined
 
-const SLUG = 'brazilian-butt-lift-bbl-miami'
+const SLUG_FLAG = process.argv.includes('--slug')
+    ? process.argv[process.argv.indexOf('--slug') + 1]
+    : undefined
+
+function readConfig(): ProcedureCopyConfig {
+    const config = SLUG_FLAG ? procedureCopyConfigs[SLUG_FLAG] : undefined
+    if (!config) {
+        console.error(
+            `${SLUG_FLAG ? `No copy config for "${SLUG_FLAG}"` : 'Pass --slug <procedure slug>'}. Configured: ${Object.keys(procedureCopyConfigs).join(', ')}. Add one to scripts/procedure-copy.config.ts.`
+        )
+        process.exit(2)
+    }
+    return config
+}
+
+const CONFIG = readConfig()
+const SLUG = CONFIG.slug
 const BUILT_HTML = fileURLToPath(
     new URL(`../.next/server/app/procedures/${SLUG}.html`, import.meta.url)
 )
 
-// Expected length in words, for the 40–60 word answer check. None are left:
-// #247's surgeon and credentials answers were filled on 2026-09-19.
-const KNOWN_PLACEHOLDERS: Record<string, number> = {}
+// Expected length in words, for the 40–60 word answer check.
+const KNOWN_PLACEHOLDERS: Readonly<Record<string, number>> =
+    CONFIG.placeholders ?? {}
 
 interface CopyString {
     /** Where it is: the nearest section id, the element and the opening words. */
@@ -334,7 +358,7 @@ function ldNodes(document: ParentNode): LdNode[] {
 
 // ─── Figures ────────────────────────────────────────────────────────────────
 
-type Unit = BblFigure['unit'] | 'cc' | 'bmi' | 'ratio' | 'temperature'
+type Unit = ProcedureFigure['unit'] | 'ratio' | 'temperature'
 
 interface Extracted {
     unit: Unit
@@ -393,9 +417,11 @@ const JOINER = '(?:-|to|or|and)'
 function normalize(text: string): string {
     let t = ` ${text.toLowerCase()} `
     t = t.replace(/[–—−]/g, '-')
-    // Identifiers that contain digits but are not figures.
-    t = t.replace(/§\s*458\.328/g, ' statute ')
-    t = t.replace(/\b458\.328\b/g, ' statute ')
+    // Identifiers that contain digits but are not figures: the page's own
+    // (a statute number), then the ones every page may use.
+    for (const [pattern, replacement] of CONFIG.identifiers ?? []) {
+        t = t.replace(pattern, replacement)
+    }
     t = t.replace(/\blipo\s*360\b/g, ' lipo-all-round ')
     t = t.replace(/\b24\s*\/\s*7\b/g, ' around-the-clock ')
     t = t.replace(/\bpercent\b/g, '%')
@@ -599,19 +625,22 @@ function figureKey(unit: string, min: number, max: number): string {
     return `${unit}:${min}-${max}`
 }
 
-function declaredKey(figure: BblFigure): string {
+function declaredKey(figure: ProcedureFigure): string {
     return 'value' in figure
         ? figureKey(figure.unit, figure.value, figure.value)
         : figureKey(figure.unit, figure.min, figure.max)
 }
 
+const FACTS = CONFIG.facts
+const SOURCES = CONFIG.sources
+
 const declaredFigures = new Set(
-    bblFacts.flatMap((fact) => fact.figures.map(declaredKey))
+    FACTS.flatMap((fact) => fact.figures.map(declaredKey))
 )
 
 /** Which facts license a figure, for the context check. */
-const factsByFigure = new Map<string, (typeof bblFacts)[number][]>()
-for (const fact of bblFacts) {
+const factsByFigure = new Map<string, (typeof FACTS)[number][]>()
+for (const fact of FACTS) {
     for (const key of fact.figures.map(declaredKey)) {
         factsByFigure.set(key, [...(factsByFigure.get(key) ?? []), fact])
     }
@@ -621,14 +650,13 @@ function sentences(text: string): string[] {
     return text.split(/(?<=[.;?!])\s+(?=[A-Z0-9({$])/)
 }
 const declaredYears = new Set<number>([
-    ...bblFacts.flatMap((fact) =>
-        'years' in fact ? (fact.years as readonly number[]) : []
-    ),
-    ...bblSources.flatMap((source) =>
+    ...FACTS.flatMap((fact) => fact.years ?? []),
+    ...SOURCES.flatMap((source) =>
         source.date ? [Number(source.date.slice(0, 4))] : []
     ),
     // "Board certified … since 2008", from her record.
     Number(KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)),
+    ...(CONFIG.extraYears ?? []),
 ])
 
 function checkFigures({ path, text, siblings }: CopyString): void {
@@ -645,7 +673,7 @@ function checkFigures({ path, text, siblings }: CopyString): void {
                 failures.push({
                     path,
                     rule: 'undeclared-figure',
-                    detail: `"${figure.raw}" (${key}) is not declared in bbl.facts.ts`,
+                    detail: `"${figure.raw}" (${key}) is not declared in ${CONFIG.factsFile}`,
                 })
             } else if (
                 licensing.some((fact) =>
@@ -701,17 +729,11 @@ const NEUTRAL_NAMES = [
     /alluring plastic surgery/g,
     // Attribution of a quoted figure, which the standard requires.
     /plastic surgeons? (?:interviewed|quoted) by asps/g,
-    /by plastic surgeon kamran azad/g,
-    /a plastic surgeon gives in asps/g,
+    // The page's own attributions, e.g. a named ASPS author.
+    ...(CONFIG.neutralNames ?? []),
 ]
 
-interface Rule {
-    rule: string
-    re: RegExp
-    why: string
-}
-
-const WORDING_RULES: Rule[] = [
+const WORDING_RULES: WordingRule[] = [
     {
         rule: 'certification',
         re: /\babps\b|american board of plastic surgery|(?:double|triple)[\s-]board|board[\s-]certified(?! in general surgery by the american board of surgery)|plastic surg\w*[^.]{0,40}\bboard\b|\bboard\b[^.]{0,40}plastic surg|\bplastic surgeons?\b/,
@@ -733,15 +755,12 @@ const WORDING_RULES: Rule[] = [
         why: 'no superlatives or guarantees (#252)',
     },
     {
-        rule: 'volume-figure',
-        re: /\bcc\b|\bml\b|cubic centimet|\bbmi\b/,
-        why: 'no fat volume or BMI figure is in the sourced standard (#252)',
-    },
-    {
         rule: 'keyword-bolding',
         re: /\*\*|__/,
         why: 'no keyword bolding (#252)',
     },
+    // The page's own rules.
+    ...(CONFIG.rules ?? []),
 ]
 
 /** Boards the Florida Board of Medicine does not approve (Rule 64B8-11.001(8)). */
@@ -782,7 +801,7 @@ function checkPlaceholders({ path, text }: CopyString): void {
             ;(LAUNCH ? failures : warnings).push({
                 path,
                 rule: 'placeholder',
-                detail: `${placeholder} still waits on #247`,
+                detail: `${placeholder} still waits on the owner`,
             })
         }
     }
@@ -913,11 +932,12 @@ function checkFaqs(page: Element, nodes: LdNode[]): Faq[] {
             detail: `the FAQPage node (${structured.length} questions) does not match the visible FAQ (${visible.length})`,
         })
     }
-    if (visible.length < 10 || visible.length > 14) {
+    const [minFaqs, maxFaqs] = CONFIG.faqCount ?? [10, 14]
+    if (visible.length < minFaqs || visible.length > maxFaqs) {
         warnings.push({
             path: '#faq',
             rule: 'faq-count',
-            detail: `${visible.length} FAQs; #252 asks for about 12`,
+            detail: `${visible.length} FAQs; aim for ${minFaqs}–${maxFaqs} distinct questions`,
         })
     }
     return visible
@@ -939,28 +959,28 @@ function checkAnchors(document: ParentNode, page: Element): void {
             })
         }
     }
-    if (!ids.has('pricing')) {
-        failures.push({
-            path: '#pricing',
-            rule: 'pricing-anchor',
-            detail: 'the #pricing anchor must be kept',
-        })
+    for (const anchor of CONFIG.requiredAnchors ?? ['pricing']) {
+        if (!ids.has(anchor)) {
+            failures.push({
+                path: `#${anchor}`,
+                rule: 'required-anchor',
+                detail: `the #${anchor} anchor must be kept: other pages and posts link to it`,
+            })
+        }
     }
 }
 
 function checkFactsFile(): void {
-    const sourceIds = new Set(bblSources.map((source) => source.id))
-    for (const fact of bblFacts) {
+    const sourceIds = new Set(SOURCES.map((source) => source.id))
+    for (const fact of FACTS) {
         const own = new Set(fact.figures.map(declaredKey))
-        const ownYears = new Set<number>(
-            'years' in fact ? (fact.years as readonly number[]) : []
-        )
+        const ownYears = new Set<number>(fact.years ?? [])
         const { figures, years, stray } = extractFigures(fact.statement)
         for (const figure of figures) {
             const key = figureKey(figure.unit, figure.min, figure.max)
             if (!own.has(key)) {
                 failures.push({
-                    path: `bbl.facts.ts ${fact.id}`,
+                    path: `${CONFIG.factsFile} ${fact.id}`,
                     rule: 'fact-statement-drift',
                     detail: `statement says "${figure.raw}" (${key}), which the fact does not declare`,
                 })
@@ -969,7 +989,7 @@ function checkFactsFile(): void {
         for (const year of years) {
             if (!ownYears.has(year) && !declaredYears.has(year)) {
                 failures.push({
-                    path: `bbl.facts.ts ${fact.id}`,
+                    path: `${CONFIG.factsFile} ${fact.id}`,
                     rule: 'fact-statement-drift',
                     detail: `statement names ${year}, which no source or fact declares`,
                 })
@@ -977,7 +997,7 @@ function checkFactsFile(): void {
         }
         for (const raw of stray) {
             failures.push({
-                path: `bbl.facts.ts ${fact.id}`,
+                path: `${CONFIG.factsFile} ${fact.id}`,
                 rule: 'unclassified-number',
                 detail: `"${raw}" in the statement has no unit`,
             })
@@ -985,7 +1005,7 @@ function checkFactsFile(): void {
         const statement = fact.statement.toLowerCase()
         if (!fact.concepts.some((concept) => statement.includes(concept))) {
             failures.push({
-                path: `bbl.facts.ts ${fact.id}`,
+                path: `${CONFIG.factsFile} ${fact.id}`,
                 rule: 'fact-concepts',
                 detail: `the statement contains none of its concepts (${fact.concepts.join(', ')})`,
             })
@@ -993,7 +1013,7 @@ function checkFactsFile(): void {
         for (const id of fact.sourceIds) {
             if (!sourceIds.has(id)) {
                 failures.push({
-                    path: `bbl.facts.ts ${fact.id}`,
+                    path: `${CONFIG.factsFile} ${fact.id}`,
                     rule: 'unknown-source',
                     detail: id,
                 })
@@ -1007,10 +1027,10 @@ function checkFactsFile(): void {
 async function main(): Promise<void> {
     const { html, from } = await readPage()
     const document = parse(html)
-    const page = find(document, (el) => hasClass(el, 'bbl-page'))
+    const page = find(document, (el) => hasClass(el, CONFIG.rootClass))
     if (!page) {
         throw new Error(
-            `${from} has no .bbl-page element: is the BBL module registered?`
+            `${from} has no .${CONFIG.rootClass} element: is the ${CONFIG.name} module registered?`
         )
     }
 
@@ -1082,9 +1102,11 @@ async function main(): Promise<void> {
         ).values(),
     ]
 
-    console.log(`BBL copy sweep${LAUNCH ? ' (launch)' : ''}: ${from}`)
     console.log(
-        `  ${copy.length} strings (${body.length} body, ${alts.length} alt, ${head.length} head, ${structured.length} structured data) · ${totalWords} words on the page · ${faqs.length} FAQs · ${bblFacts.length} facts · ${declaredFigures.size} declared figures`
+        `${CONFIG.name} copy sweep${LAUNCH ? ' (launch)' : ''}: ${from}`
+    )
+    console.log(
+        `  ${copy.length} strings (${body.length} body, ${alts.length} alt, ${head.length} head, ${structured.length} structured data) · ${totalWords} words on the page · ${faqs.length} FAQs · ${FACTS.length} facts · ${declaredFigures.size} declared figures`
     )
     console.log(
         `  words by section: ${[...sectionWords].map(([s, n]) => `${s} ${n}`).join(' · ')}`
@@ -1097,8 +1119,7 @@ async function main(): Promise<void> {
     }
     if (MAP) {
         const sourcesOf = (factId: string) =>
-            bblFacts.find((fact) => fact.id === factId)?.sourceIds.join(', ') ??
-            ''
+            FACTS.find((fact) => fact.id === factId)?.sourceIds.join(', ') ?? ''
         console.log(
             '\n| Where | Figure | Fact | Sources |\n| --- | --- | --- | --- |'
         )

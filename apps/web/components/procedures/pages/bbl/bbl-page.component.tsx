@@ -27,8 +27,13 @@ import { BblSurgeon } from './bbl-surgeon.component'
 /** Gallery items read for the results rail; the gallery link has the rest. */
 const GALLERY_POOL = 24
 
-/** Reviews read to find the ones that mention a BBL. */
-const REVIEW_POOL = 40
+/**
+ * Reviews read to find the ones that mention a BBL: all of them. The query
+ * lists featured reviews first, and on 2026-09-22 the three that name a BBL
+ * sat at positions 58, 62 and 69 of 75, past the 40 this used to read, so
+ * the page showed none of them. Only the three picked are rendered.
+ */
+const REVIEW_POOL = 500
 
 /**
  * The BBL page body (#256), registered for `brazilian-butt-lift-bbl-miami`.
