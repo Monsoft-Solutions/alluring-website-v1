@@ -3,9 +3,9 @@
  *
  * This file is the machine-readable source for BBL recovery, results, safety,
  * law and price figures (#252). The page module, `llms-full.txt` (#257) and the
- * paid landing stats read from here, and `scripts/check-bbl-copy.ts` fails any
- * BBL copy that states a %, cc, BMI, $, minute, hour, day, week, month or year
- * figure that is not declared below.
+ * paid landing stats read from here, and `scripts/check-procedure-copy.ts`
+ * (`check:bbl-copy`) fails any BBL copy that states a %, cc, BMI, $, minute,
+ * hour, day, week, month or year figure that is not declared below.
  *
  * The recovery figures are the sourced standard approved on 2026-09-14 and
  * re-verified against the live source pages on 2026-09-15 (plan behind #243).
@@ -13,8 +13,21 @@
  * copy must use: several figures are one surgeon's advice quoted by ASPS, not
  * ASPS guidance, and the copy has to say so.
  *
+ * The shape is shared by every procedure's facts file
+ * (`procedure-facts.ts`); the copy sweep's BBL config reads this one.
+ *
  * Pure data: no imports from `@/env`, Next or React, so a tsx script can read it.
  */
+
+import {
+    createFactLookups,
+    formatProcedureFigure,
+    type FactTopic,
+    type FigureUnit,
+    type ProcedureFact,
+    type ProcedureFigure,
+    type ProcedureSource,
+} from './procedure-facts'
 
 export type BblSourceId =
     | 'asps-bbl-cost'
@@ -30,20 +43,7 @@ export type BblSourceId =
     | 'elsaftawy-meta-analysis-2026'
     | 'alluring-practice'
 
-export interface BblSource {
-    id: BblSourceId
-    /** Who published it, as the page names it inline. */
-    publisher: string
-    /** Title of the page or article, when verified. */
-    title?: string
-    /** Authors, for journal articles. */
-    authors?: string
-    /** Publication or review date (ISO, or a year when that is all we have). */
-    date?: string
-    url?: string
-    /** How the copy must attribute figures from this source. */
-    attribution: string
-}
+export type BblSource = ProcedureSource<BblSourceId>
 
 export const bblSources: readonly BblSource[] = [
     {
@@ -154,54 +154,10 @@ export const bblSources: readonly BblSource[] = [
     },
 ]
 
-export type BblFigureUnit =
-    | 'percent'
-    | 'usd'
-    | 'minute'
-    | 'hour'
-    | 'day'
-    | 'week'
-    | 'month'
-    | 'year'
-    | 'death'
-    | 'study'
-    | 'patient'
-
-/** One figure: a single value or an inclusive range, in one unit. */
-export type BblFigure =
-    | { value: number; unit: BblFigureUnit }
-    | { min: number; max: number; unit: BblFigureUnit }
-
-export type BblFactTopic =
-    | 'recovery'
-    | 'results'
-    | 'safety'
-    | 'law'
-    | 'procedure'
-    | 'price'
-
-export interface BblFact {
-    id: string
-    topic: BblFactTopic
-    /**
-     * Every figure the fact licenses the copy to state, in every form the copy
-     * uses. "Day 2" and "days 1–2" are different figures, so both are listed.
-     */
-    figures: readonly BblFigure[]
-    /**
-     * Words a sentence must contain for one of these figures to be read as
-     * this fact. "3–5 days" is licensed next to "infection", not next to
-     * "swelling". Lowercase stems, matched as substrings.
-     */
-    concepts: readonly string[]
-    /** Calendar years the statement names (study windows, report years). */
-    years?: readonly number[]
-    /** The sentence as it may be published, with its attribution. */
-    statement: string
-    sourceIds: readonly BblSourceId[]
-    /** What the copy must not say, or the caveat it must carry. */
-    caveat?: string
-}
+export type BblFigureUnit = FigureUnit
+export type BblFigure = ProcedureFigure
+export type BblFactTopic = FactTopic
+export type BblFact = ProcedureFact<BblSourceId>
 
 export const bblFacts = [
     // ── Recovery ─────────────────────────────────────────────────────────
@@ -584,56 +540,16 @@ export const bblFacts = [
 
 export type BblFactId = (typeof bblFacts)[number]['id']
 
-export function getBblFact(id: BblFactId): BblFact {
-    const fact = bblFacts.find((candidate) => candidate.id === id)
-    if (!fact) throw new Error(`Unknown BBL fact: ${id}`)
-    return fact
-}
+const bblLookups = createFactLookups(bblFacts, 'BBL')
 
-const UNIT_LABELS: Record<BblFigureUnit, [singular: string, plural: string]> = {
-    percent: ['%', '%'],
-    usd: ['', ''],
-    minute: ['minute', 'minutes'],
-    hour: ['hour', 'hours'],
-    day: ['day', 'days'],
-    week: ['week', 'weeks'],
-    month: ['month', 'months'],
-    year: ['year', 'years'],
-    death: ['death', 'deaths'],
-    study: ['study', 'studies'],
-    patient: ['patient', 'patients'],
-}
-
-function formatNumber(value: number, unit: BblFigureUnit): string {
-    const text = value.toLocaleString('en-US', { maximumFractionDigits: 2 })
-    return unit === 'usd' ? `$${text}` : text
-}
+export const getBblFact: (id: BblFactId) => BblFact = bblLookups.fact
 
 /**
  * A figure as copy writes it: "$5,500", "$5,500–$10,000", "10–14 days",
  * "50–80%", "8 weeks".
  */
-export function formatBblFigure(figure: BblFigure): string {
-    const [singular, plural] = UNIT_LABELS[figure.unit]
-    if (figure.unit === 'percent') {
-        return 'value' in figure
-            ? `${formatNumber(figure.value, 'percent')}%`
-            : `${formatNumber(figure.min, 'percent')}–${formatNumber(figure.max, 'percent')}%`
-    }
-    if (figure.unit === 'usd') {
-        return 'value' in figure
-            ? formatNumber(figure.value, 'usd')
-            : `${formatNumber(figure.min, 'usd')}–${formatNumber(figure.max, 'usd')}`
-    }
-    if ('value' in figure) {
-        return `${formatNumber(figure.value, figure.unit)} ${figure.value === 1 ? singular : plural}`
-    }
-    return `${formatNumber(figure.min, figure.unit)}–${formatNumber(figure.max, figure.unit)} ${plural}`
-}
+export const formatBblFigure = formatProcedureFigure
 
 /** The first figure of a fact, formatted. */
-export function bblFigure(id: BblFactId, index = 0): string {
-    const figure = getBblFact(id).figures[index]
-    if (!figure) throw new Error(`BBL fact ${id} has no figure ${index}`)
-    return formatBblFigure(figure)
-}
+export const bblFigure: (id: BblFactId, index?: number) => string =
+    bblLookups.figure

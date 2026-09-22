@@ -15,7 +15,9 @@
         "format": "pnpm -w format",
         "google:index": "node scripts/update-google-index.cjs",
         "validate:sitemap": "tsx scripts/validate-sitemap.ts",
-        "check:bbl-copy": "tsx scripts/check-bbl-copy.ts"
+        "check:bbl-copy": "tsx scripts/check-procedure-copy.ts --slug brazilian-butt-lift-bbl-miami",
+        "check:procedure-copy": "tsx scripts/check-procedure-copy.ts",
+        "audit:procedure-assets": "tsx scripts/audit-procedure-assets.ts"
     },
     "dependencies": {
         "@ai-sdk/react": "^4.0.86",

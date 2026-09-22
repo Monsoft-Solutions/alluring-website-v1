@@ -6,13 +6,14 @@ import { BeforeAfterSlider } from '@/components/gallery/before-after-slider.comp
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import type { BeforeAfterPairCard } from '@/lib/types/gallery/before-after.type'
 import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
+import { mentionsProcedure } from '@/lib/procedures/procedure-mentions'
 
 import { BblRailButtons } from './bbl-rail-buttons.component'
 import { bblContainer, bblLink } from './bbl-ui.constant'
 
 const RAIL_ID = 'bbl-results-rail'
+const BBL_SLUG = 'brazilian-butt-lift-bbl-miami'
 
-const NAMES_BBL = /\bbbl\b|brazilian butt/i
 const BEFORE_AND_AFTER = /before[\s-]and[\s-]after/i
 const WITH_ARMS = /\barms?\b[^.]*\blipo|\blipo\w*[^.]*\barms?\b/i
 
@@ -28,7 +29,9 @@ export function selectBblPhotos(media: GalleryMediaCard[]): GalleryMediaCard[] {
     const seen = new Set<string>()
     const photos = media.filter((item) => {
         if (item.type !== 'image') return false
-        if (!NAMES_BBL.test(`${item.title} ${item.alt}`)) return false
+        if (!mentionsProcedure(BBL_SLUG, `${item.title} ${item.alt}`)) {
+            return false
+        }
         const key = item.url.replace(/-carousel-0(\.\w+)$/, '-primary$1')
         if (seen.has(key)) return false
         seen.add(key)
