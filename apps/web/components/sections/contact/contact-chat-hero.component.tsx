@@ -14,6 +14,10 @@ import {
 } from '@/components/sections/lead-page/reach-us-card.component'
 import { SurgeonCredentialCard } from '@/components/sections/lead-page/surgeon-credential-card.component'
 import { SiteConsultChat } from '@/components/shared/consult-chat/site-consult-chat.component'
+import {
+    SITE_CHAT_LEAD_KEY,
+    SITE_CHAT_THANK_YOU_PATH,
+} from '@/components/shared/consult-chat/site-chat.constants'
 import { CONTACT_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
 import { LEAD_PAGE_CHAT_IDS } from '@/lib/constants/standalone-routes'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
@@ -65,8 +69,8 @@ export function ContactChatHero() {
                             staff={CONTACT_CHAT.staff}
                             source={CONTACT_SOURCES.CONTACT_PAGE}
                             formName='contact_chat'
-                            thankYouPath='/thank-you'
-                            leadStorageKey='cc_lead'
+                            thankYouPath={SITE_CHAT_THANK_YOU_PATH}
+                            leadStorageKey={SITE_CHAT_LEAD_KEY}
                             subjectPrefix='Contact page lead'
                             noteLines={['Page: /contact-us']}
                         />

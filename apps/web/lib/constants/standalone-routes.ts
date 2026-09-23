@@ -34,6 +34,7 @@ export const NO_PROMO_BAR_ROUTES = [
     '/landing/melissa-juvier',
     '/contact-us',
     '/miami-plastic-surgery-specials',
+    '/thank-you/consultation',
 ] as const
 
 /**
@@ -68,10 +69,17 @@ export function consultCtaHref(pathname: string | null): string {
     return chatId ? `#${chatId}` : '/contact-us'
 }
 
+/**
+ * Where the thread on those pages lands. It promises a text, so the global
+ * call button and the promotion bar stay off here too.
+ */
+export const LEAD_THANK_YOU_ROUTES = ['/thank-you/consultation'] as const
+
 /** Where exit-intent, the promotion modal and the call button stay off. */
 export const NO_FLOATING_WIDGET_ROUTES = [
     ...STANDALONE_ROUTES,
     ...LEAD_PAGE_ROUTES,
+    ...LEAD_THANK_YOU_ROUTES,
 ] as const
 
 export function isStandaloneRoute(pathname: string): boolean {

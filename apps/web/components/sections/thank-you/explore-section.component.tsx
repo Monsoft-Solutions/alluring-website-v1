@@ -62,7 +62,7 @@ const exploreLinks = [
     },
     {
         title: 'About Us',
-        description: 'Meet our team of board-certified surgeons',
+        description: 'Meet your surgeon and the team behind your care',
         href: '/about',
         icon: Users,
     },

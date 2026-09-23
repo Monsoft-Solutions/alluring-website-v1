@@ -10,6 +10,10 @@
  */
 
 import { SiteConsultChat } from '@/components/shared/consult-chat/site-consult-chat.component'
+import {
+    SITE_CHAT_LEAD_KEY,
+    SITE_CHAT_THANK_YOU_PATH,
+} from '@/components/shared/consult-chat/site-chat.constants'
 import { SPECIALS_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
 import { LEAD_PAGE_CHAT_IDS } from '@/lib/constants/standalone-routes'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
@@ -138,8 +142,8 @@ export function SpecialsChatHero({
                         staff={SPECIALS_CHAT.staff}
                         source={CONTACT_SOURCES.SPECIALS_PAGE}
                         formName='specials_chat'
-                        thankYouPath='/thank-you'
-                        leadStorageKey='cc_lead'
+                        thankYouPath={SITE_CHAT_THANK_YOU_PATH}
+                        leadStorageKey={SITE_CHAT_LEAD_KEY}
                         subjectPrefix='Specials lead'
                         noteLines={[
                             'Page: /miami-plastic-surgery-specials',
