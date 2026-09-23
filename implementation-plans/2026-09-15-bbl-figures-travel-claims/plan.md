@@ -10,10 +10,21 @@ workstream the parent plan deferred.
 - Note for anyone re-running the Search Console checks: **GSC reports URLs on the `www.` host**
   (`https://www.alluringplasticsurgery.com/…`). `queries_for_page` against the bare host returns
   an empty set rather than an error.
-- Status: **source code shipped** on branch `fix/bbl-figures-and-travel-claims` (commit `99e640a5`)
-  — typecheck 13/13, lint 15/15, tests 474 passed. The blog-post half is authored as
-  `part1-figures-and-claims.sql` (§J + §L, 30 literals verified against production) and
-  `part2-travel-claims.sql` (§K), both pending your run against production.
+- Status: **complete.** Source code shipped in PR #243 (typecheck 13/13, lint 15/15, tests 474
+  passed, build 9/9, size within budget). The blog-post half ran against production on
+  2026-09-15 in four count-asserted transactions, and all 30 cache tags were revalidated.
+  Final sweep across `content`, `excerpt`, `meta_description`, `faqs`, `quick_answer` and
+  `ai_summary` for all 139 published posts: zero §J/§L figure violations, zero §K travel
+  violations, confirmed again over HTTP on the affected pages.
+- **The SQL and the backup are not in this repo.** One-off production SQL and database dumps
+  live under `.local/`, which is gitignored — see `.local/README.md`:
+    - `.local/sql/2026-09-15-bbl-figures-travel-claims/part1…part4.sql`
+    - `.local/backups/2026-09-15-bbl-figures-travel-claims/backup.json` (all 28 affected posts
+      as they stood before any transaction)
+- Parts 3 and 4 existed because the first verification passes were wrong: they checked only the
+  `content` column, and only for the literal strings already being fixed. The same claims were
+  still live in `faqs`, which renders as FAQPage JSON-LD, and in markdown image alt text. Both
+  were caught by curling the rendered page, not by a query. Issue #245 generalises the fix.
 
 ---
 
