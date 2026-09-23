@@ -11,6 +11,7 @@
  */
 
 import { bblFacts, bblSources } from '../lib/data/procedures/facts/bbl.facts'
+import { lipoFacts, lipoSources } from '../lib/data/procedures/facts/lipo.facts'
 import type {
     ProcedureFact,
     ProcedureSource,
@@ -80,8 +81,38 @@ const bbl: ProcedureCopyConfig = {
     ],
 }
 
+const lipo: ProcedureCopyConfig = {
+    slug: 'liposuction-miami',
+    name: 'Liposuction',
+    rootClass: 'lipo-page',
+    factsFile: 'lipo.facts.ts',
+    facts: lipoFacts,
+    sources: lipoSources,
+    // The title carries the current year, as the generated procedure titles
+    // do (`seoTitle` in liposuction-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    identifiers: [
+        [/64b8-9\.009\d?/g, ' rule '],
+        [/§\s*458\.328/g, ' statute '],
+        [/\b458\.328\b/g, ' statute '],
+    ],
+    rules: [
+        {
+            rule: 'bmi-figure',
+            re: /\bbmi\b/,
+            why: "no BMI figure is in the sourced standard: ASPS gives none, and Cleveland Clinic's is an outlier",
+        },
+        {
+            rule: 'named-device',
+            re: /power[\s-]assisted|\bpal\b|smart ?lipo|j[\s-]?plasma|renuvion|bodytite|laser[\s-]assisted|ultrasound[\s-]assisted/,
+            why: 'device and technique names wait on the owner (compliance: owner claims)',
+        },
+    ],
+}
+
 export const procedureCopyConfigs: Readonly<
     Record<string, ProcedureCopyConfig>
 > = {
     [bbl.slug]: bbl,
+    [lipo.slug]: lipo,
 }

@@ -95,12 +95,17 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Remove stubborn fat and sculpt your ideal silhouette',
         slug: 'liposuction-miami',
         category: 'body',
+        // The minimum matches `pricing.startingAt` in
+        // liposuction-miami.data.ts (Lipo 360, the practice's price sheet of
+        // 2026-09-15). The maximum is the quiz's earlier figure: the practice
+        // has not confirmed a typical range yet.
         priceRange: {
-            min: 3000,
+            min: 4000,
             max: 7000,
         },
+        // priceRange over 36 months, like the other rows
         monthlyPayment: {
-            min: 83,
+            min: 111,
             max: 194,
         },
         recoveryWeeks: 1,

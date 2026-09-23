@@ -423,6 +423,9 @@ function normalize(text: string): string {
         t = t.replace(pattern, replacement)
     }
     t = t.replace(/\blipo\s*360\b/g, ' lipo-all-round ')
+    // "360-degree liposuction" is the same procedure's name, not a figure;
+    // the gallery's alt text uses it.
+    t = t.replace(/\b360[\s-]*degree\b/g, ' all-round ')
     t = t.replace(/\b24\s*\/\s*7\b/g, ' around-the-clock ')
     t = t.replace(/\bpercent\b/g, '%')
     t = t.replace(
