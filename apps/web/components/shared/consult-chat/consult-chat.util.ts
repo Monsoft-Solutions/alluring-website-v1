@@ -38,6 +38,27 @@ export function formatPhone(value: string): string {
     return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
 }
 
+/** The browser's time zone, e.g. `{ zone: 'America/Chicago', short: 'CDT' }`. */
+export function visitorTimeZone(): {
+    readonly zone: string
+    readonly short: string
+} | null {
+    try {
+        const zone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        if (!zone) return null
+        const short =
+            new Intl.DateTimeFormat('en-US', {
+                timeZone: zone,
+                timeZoneName: 'short',
+            })
+                .formatToParts(new Date())
+                .find((part) => part.type === 'timeZoneName')?.value ?? ''
+        return { zone, short }
+    } catch {
+        return null
+    }
+}
+
 export function prefersReducedMotion(): boolean {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }

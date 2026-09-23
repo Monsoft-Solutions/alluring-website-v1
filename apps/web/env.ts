@@ -66,6 +66,13 @@ export const env = createEnv({
         GOOGLE_PRIVATE_KEY: z.string().optional(),
         // N8N Webhook Integration (optional - enables lead sync to CRM)
         N8N_WEBHOOK_URL: z.url().optional(),
+        // Where `lead.updated` goes when the thank-you page adds answers to a
+        // lead (#274). Separate so the CRM workflow can upsert on
+        // `submission_id`; unset, updates are stored but not sent.
+        N8N_LEAD_UPDATE_WEBHOOK_URL: z.url().optional(),
+        // Signs the token that lets the thank-you page update the lead it
+        // just created (#274). Unset, the thank-you page asks no questions.
+        LEAD_UPDATE_SECRET: z.string().min(32).optional(),
 
         // Set by CI providers. Read by data-consistency assertions that should
         // fail a pipeline rather than only log — `NODE_ENV` is 'production'

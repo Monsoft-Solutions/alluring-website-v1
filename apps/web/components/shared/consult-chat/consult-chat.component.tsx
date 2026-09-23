@@ -53,6 +53,7 @@ import {
     labelOf,
     nationalDigits,
     prefersReducedMotion,
+    visitorTimeZone,
 } from './consult-chat.util'
 
 type Step = 0 | 1 | 2 | 3
@@ -88,6 +89,8 @@ export interface ConsultChatProps {
     readonly subject: (procedureLabel: string) => string
     /** Lines added to the top of the staff note (who, which page, offer). */
     readonly noteLines: readonly string[]
+    /** Title of the promotion shown with the thread, stored on the lead. */
+    readonly offer?: string
     /** Extra coordinator bubbles between the greeting and the first question. */
     readonly intro?: ReactNode
     /** Pre-selects a procedure chip (still one tap to confirm). */
@@ -113,6 +116,7 @@ export function ConsultChat({
     leadStorageKey,
     subject,
     noteLines,
+    offer,
     intro,
     defaultProcedure = '',
     classPrefix = 'cc',
@@ -292,6 +296,7 @@ export function ConsultChat({
 
         const procedureLabel = labelOf(staff.procedures, answers.procedure)
         const campaign = readAttribution()
+        const timeZone = visitorTimeZone()
 
         await submit({
             firstName: answers.firstName,
@@ -308,7 +313,17 @@ export function ConsultChat({
                 `Timeline: ${labelOf(staff.timelines, answers.timeline)}`,
                 `Prefers: ${method === 'text' ? 'Text' : 'Call'}`,
                 `Preferred language: ${lang === 'es' ? 'Spanish' : 'English'}`,
+                ...(timeZone
+                    ? [
+                          `Visitor time zone: ${timeZone.zone}${timeZone.short ? ` (${timeZone.short})` : ''}`,
+                      ]
+                    : []),
             ].join('\n'),
+            // Stored on the lead and sent to the CRM; never to analytics.
+            timeline: answers.timeline,
+            language: lang,
+            offer,
+            timeZone: timeZone?.zone,
             // The hook merges the site-wide attribution after these, so
             // these only fill what it did not capture.
             gclid: campaign.gclid || undefined,

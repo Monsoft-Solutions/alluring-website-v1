@@ -36,6 +36,8 @@ export interface SiteConsultChatProps {
     /** Staff subject line prefix, e.g. "Specials lead". */
     readonly subjectPrefix: string
     readonly noteLines: readonly string[]
+    /** Title of the promotion shown with the thread, stored on the lead. */
+    readonly offer?: string
     /** Extra bubble(s) between the greeting and the first question. */
     readonly intro?: Readonly<Partial<Record<ConsultChatLang, ReactNode>>>
     readonly defaultProcedure?: string
@@ -51,6 +53,7 @@ export function SiteConsultChat({
     leadStorageKey,
     subjectPrefix,
     noteLines,
+    offer,
     intro,
     defaultProcedure,
 }: SiteConsultChatProps) {
@@ -69,6 +72,7 @@ export function SiteConsultChat({
             leadStorageKey={leadStorageKey}
             subject={(procedure) => `${subjectPrefix}: ${procedure}`}
             noteLines={noteLines}
+            offer={offer}
             intro={intro?.[lang] ?? intro?.en}
             defaultProcedure={defaultProcedure}
         />

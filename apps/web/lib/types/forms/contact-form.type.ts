@@ -16,6 +16,14 @@
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
 
+import {
+    LEAD_CONSULT_TYPES,
+    LEAD_FINANCING_INTEREST,
+    LEAD_HEARD_FROM,
+    LEAD_LANGUAGES,
+    LEAD_TEXT_TIMES,
+} from '@/lib/constants/lead-fields'
+
 /**
  * Contact form sources - identifies which form submitted the data
  */
@@ -342,6 +350,10 @@ export const consentSchema = z.boolean().refine((val) => val === true, {
     message: 'You must agree to the terms to continue.',
 })
 
+/** Optional context that is stored when well formed and dropped otherwise. */
+const leadContext = <T extends z.ZodType>(schema: T) =>
+    schema.optional().catch(undefined)
+
 /**
  * Base contact form schema - all fields optional initially
  * Conditional requirements are applied in the API route based on source
@@ -380,6 +392,18 @@ export const contactFormSchema = z.object({
     submittedFromPath: z.string().max(512).optional(),
     gaClientId: z.string().max(64).optional(),
 
+    // Consultation thread context (#274). A malformed value is dropped
+    // rather than rejected: none of these is worth losing a lead over.
+    timeline: leadContext(z.string().trim().min(1).max(40)),
+    language: leadContext(z.enum(LEAD_LANGUAGES)),
+    offer: leadContext(z.string().trim().min(1).max(200)),
+    timeZone: leadContext(
+        z
+            .string()
+            .max(64)
+            .regex(/^[A-Za-z][A-Za-z0-9_+\-/]*$/)
+    ),
+
     // Anti-spam honeypot
     _website: z.string().optional(),
 })
@@ -403,7 +427,51 @@ export interface ContactFormResponse {
     readonly success: boolean
     readonly message: string
     readonly error?: string
+    /**
+     * The saved lead and a short-lived token that lets the thank-you page
+     * add optional answers to it (#274). Absent when updates are disabled.
+     */
+    readonly lead?: {
+        readonly id: string
+        readonly token: string
+    }
 }
+
+/**
+ * Optional answers the thank-you page adds to a lead it just created (#274).
+ * Each request carries one or more answers; the token proves the visitor
+ * is the one who sent the lead.
+ */
+export const leadUpdateSchema = z
+    .object({
+        id: z.uuid(),
+        token: z.string().min(1).max(200),
+        email: emailSchema,
+        consultType: z.enum(LEAD_CONSULT_TYPES).optional(),
+        financingInterest: z.enum(LEAD_FINANCING_INTEREST).optional(),
+        preferredContactTime: z.enum(LEAD_TEXT_TIMES).optional(),
+        heardFrom: z.enum(LEAD_HEARD_FROM).optional(),
+    })
+    .refine(
+        ({
+            email,
+            consultType,
+            financingInterest,
+            preferredContactTime,
+            heardFrom,
+        }) =>
+            Boolean(
+                email ||
+                    consultType ||
+                    financingInterest ||
+                    preferredContactTime ||
+                    heardFrom
+            ),
+        { message: 'Nothing to update.' }
+    )
+
+export type LeadUpdateInput = z.input<typeof leadUpdateSchema>
+export type LeadUpdateData = z.output<typeof leadUpdateSchema>
 
 /**
  * Procedure options for consultation forms

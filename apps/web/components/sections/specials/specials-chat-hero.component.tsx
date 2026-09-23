@@ -140,6 +140,7 @@ export function SpecialsChatHero({
                             'Page: /miami-plastic-surgery-specials',
                             `Offer: ${offer?.title ?? 'none active'}`,
                         ]}
+                        offer={offer?.title}
                         intro={intro}
                     />
                     <p className='mt-3 text-center text-xs text-stone-400 lg:hidden'>
