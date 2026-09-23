@@ -187,7 +187,7 @@ export async function LipoPage({ procedure }: ProcedurePageModuleProps) {
                 pair={pair}
                 photos={photos}
                 gallerySlug={gallery.groupSlug}
-                question='Liposuction before and after: what do real results look like?'
+                question='Liposuction and Lipo 360 before and after: what do real results look like?'
                 answer='These are photos of real Alluring patients, shared with their consent. Some had liposuction on its own and some combined it with another procedure, as each caption says. Results differ from person to person, and the final shape shows 3 to 6 months after surgery, once the swelling has gone.'
                 railId='lipo-results-rail'
                 railLabel='Liposuction before and after photos from the gallery'
