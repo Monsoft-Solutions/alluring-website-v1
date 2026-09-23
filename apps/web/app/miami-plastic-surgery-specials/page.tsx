@@ -20,27 +20,25 @@ import {
 
 import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
 import { ContainerLayout } from '@/components/container-layout.component'
-import { SpecialsHero } from '@/components/sections/specials/specials-hero.component'
-import { SpecialsHowItWorks } from '@/components/sections/specials/specials-how-it-works.component'
+import { LeadSteps } from '@/components/sections/lead-page/lead-steps.component'
+import { ResumeChatCta } from '@/components/sections/lead-page/resume-chat-cta.component'
+import {
+    SPECIALS_CHAT_ID,
+    SpecialsChatHero,
+    type SpecialsOffer,
+} from '@/components/sections/specials/specials-chat-hero.component'
+import { SpecialsOfferTerms } from '@/components/sections/specials/specials-offer-terms.component'
 import { SpecialsPromotionsGrid } from '@/components/sections/specials/specials-promotions-grid.component'
-import { SpecialsUrgencyStrip } from '@/components/sections/specials/specials-urgency-strip.component'
-import { CTASection } from '@/components/shared/cta-section.component'
+import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
 import { FAQComponent } from '@/components/shared/faq.component'
-import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
-import {
-    formatDiscount,
-    getActivePromotions,
-    getRemainingDays,
-    isExpiringSoon,
-} from '@/lib/queries/promotion.query'
+import { getActivePromotions } from '@/lib/queries/promotion.query'
 
 /**
  * Generate dynamic month/year for specials page title
@@ -91,12 +89,12 @@ export async function generateMetadata(): Promise<Metadata> {
         canonical: '/miami-plastic-surgery-specials',
         title: pageTitle,
         description:
-            'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
+            'Current specials on BBL, breast augmentation, mommy makeover & more at Alluring Plastic Surgery in Miami. Free consultation, your price in writing, financing available.',
 
         openGraph: {
             title: pageTitle,
             description:
-                'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Offers end soon. Book your free consultation.',
+                'Current specials on BBL, breast augmentation, mommy makeover & more at Alluring Plastic Surgery in Miami. Free consultation, your price in writing, financing available.',
             url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
             type: 'website',
             siteName: seoConfig.siteName,
@@ -107,58 +105,45 @@ export async function generateMetadata(): Promise<Metadata> {
             card: 'summary_large_image',
             title: pageTitle,
             description:
-                'Exclusive savings on BBL, breast augmentation, mommy makeover & more. Board-certified surgeons. Offers end soon.',
+                'Current specials on BBL, breast augmentation, mommy makeover & more in Miami. Free consultation, your price in writing.',
             images: [ogImage.url],
         },
     })
 }
 
-/**
- * Find the promotion with the nearest expiration date
- */
-function findNearestExpiringPromotion(
-    promotions: Awaited<ReturnType<typeof getActivePromotions>>
-) {
-    const promotionsWithDates = promotions.filter((p) => p.endsAt !== null)
-
-    if (promotionsWithDates.length === 0) {
-        return null
-    }
-
-    return promotionsWithDates.reduce((nearest, current) => {
-        if (!nearest.endsAt) return current
-        if (!current.endsAt) return nearest
-        return new Date(current.endsAt) < new Date(nearest.endsAt)
-            ? current
-            : nearest
+/** "September 30", in Miami time. */
+function formatEndsOn(endsAt: Date | null): string | null {
+    if (!endsAt) return null
+    return new Date(endsAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        timeZone: siteConfig.contact.timezone,
     })
 }
 
+/** Splits "September Sign & Save — Up to 20% Off" into its name and headline. */
+function toOffer(
+    promo: Awaited<ReturnType<typeof getActivePromotions>>[number]
+): SpecialsOffer {
+    const [name, ...rest] = promo.title.split(/\s+[—–-]\s+/)
+    const headline = rest.join(' — ').trim()
+    return {
+        title: promo.title,
+        name: (name ?? promo.title).trim(),
+        headline: headline || promo.title,
+        endsOn: formatEndsOn(promo.endsAt),
+        slug: promo.slug,
+    }
+}
+
 export default async function MiamiPlasticSurgerySpecialsPage() {
-    // Fetch promotions and gallery images in parallel
     const [promotions, galleryImages] = await Promise.all([
         getActivePromotions(),
         getSpecialsFeaturedGalleryImages(),
     ])
 
-    const rawFeaturedPromotion = promotions[0] ?? null
-    const nearestExpiringPromotion = findNearestExpiringPromotion(promotions)
-    const urgencyDaysRemaining = nearestExpiringPromotion
-        ? getRemainingDays(nearestExpiringPromotion)
-        : null
-
-    // Pre-process featured promotion for client component
-    const featuredPromotion = rawFeaturedPromotion
-        ? {
-              title: rawFeaturedPromotion.title,
-              excerpt: rawFeaturedPromotion.excerpt,
-              imageUrl: rawFeaturedPromotion.imageUrl,
-              imageAlt: rawFeaturedPromotion.imageAlt,
-              discount: formatDiscount(rawFeaturedPromotion),
-              daysRemaining: getRemainingDays(rawFeaturedPromotion),
-              expiringSoon: isExpiringSoon(rawFeaturedPromotion),
-          }
-        : null
+    const featured = promotions[0] ?? null
+    const offer = featured ? toOffer(featured) : null
 
     return (
         <>
@@ -166,7 +151,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
             <WebPageSchema
                 name={`Plastic Surgery Specials & Deals - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
-                description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
+                description='Current plastic surgery specials in Miami on BBL, breast augmentation, tummy tuck, liposuction and more. Free consultation and a personalized quote in writing.'
             />
 
             {/* SEO Schema - Breadcrumb */}
@@ -191,7 +176,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
             <OfferCatalogSchema
                 name={`Miami Plastic Surgery Specials - ${monthYear}`}
                 url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
-                description='Exclusive plastic surgery specials in Miami. Limited-time offers on BBL, breast augmentation, tummy tuck, liposuction and more. Board-certified surgeons, luxury results at promotional pricing.'
+                description='Current plastic surgery specials in Miami on BBL, breast augmentation, tummy tuck, liposuction and more.'
                 numberOfItems={promotions.length}
                 offeredBy={{
                     '@id': `${seoConfig.siteUrl}/#organization`,
@@ -211,91 +196,71 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 }))}
             />
 
-            {/* Main Content - Conversion-Optimized Flow */}
+            {/*
+                One ask, the consultation thread (#274). The thread sits on the
+                first screen; everything after it is short proof, and every
+                CTA leads back to it with the visitor's answers kept.
+            */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
-                {/* Section 1: Hero with Promotions + Form */}
-                <SpecialsHero
-                    id='specials-hero'
-                    featuredPromotion={featuredPromotion}
-                    totalPromotions={promotions.length}
-                />
+                <SpecialsChatHero offer={offer} monthYear={monthYear} />
 
-                {/* Section 2: Google Reviews - Immediate social proof */}
+                {featured && offer && (
+                    <SpecialsOfferTerms
+                        chatId={SPECIALS_CHAT_ID}
+                        title={featured.title}
+                        terms={featured.excerpt}
+                        endsOn={offer.endsOn}
+                        slug={featured.slug}
+                    />
+                )}
+
                 <GoogleReviews
                     title='What Our Patients Say'
                     subtitle='Real reviews from patients who trusted us with their transformation'
-                    limit={6}
+                    limit={3}
                 />
 
-                {/* Section 3: Fear Busters - Address objections */}
-                <FearBusters id='fear-busters' formAnchor='#specials-form' />
-
-                {/* Section 4: Weekly Payments - Reinforce affordability */}
-                <WeeklyPayments
-                    id='weekly-payments'
-                    formAnchor='#specials-form'
-                />
-
-                {/* Section 5: Gallery Carousel - Visual proof of results */}
                 <GalleryCarousel id='gallery-results' images={galleryImages} />
 
-                {/* Section 6: How It Works - Make the process feel easy */}
-                <SpecialsHowItWorks id='how-it-works' />
+                <LeadSteps />
 
-                {/* Section 7: All Promotions Grid - Additional offers */}
-                <SpecialsPromotionsGrid
-                    id='all-specials'
-                    promotions={promotions}
-                />
+                {promotions.length > 1 && (
+                    <SpecialsPromotionsGrid
+                        id='all-specials'
+                        promotions={promotions}
+                    />
+                )}
 
-                {/* Section 8: Urgency Strip - Gentle reminder */}
-                <SpecialsUrgencyStrip
-                    id='urgency'
-                    daysRemaining={urgencyDaysRemaining}
-                />
-
-                {/* Section 9: FAQ - Handle remaining questions */}
                 <FAQComponent
                     id='faq'
                     faqs={specialsFaqData}
                     title='Questions About Our Specials'
-                    description='Everything you need to know about claiming promotional offers at Alluring Plastic Surgery.'
+                    description='Everything you need to know about claiming an offer at Alluring Plastic Surgery.'
                     variant='muted'
                     includeSchema={false}
-                    ctaConfig={{
-                        title: 'Ready to start your transformation?',
-                        description:
-                            'Our patient concierge is ready to answer your questions — no pressure, just honest answers.',
-                        buttonText: 'Call Now',
-                        phoneNumber: siteConfig.contact.phone.replace(
-                            /\D/g,
-                            ''
-                        ),
-                    }}
                 />
 
-                {/* Section 10: Final CTA - Last chance to convert */}
-                <CTASection
-                    id='final-cta'
-                    variant='luxury'
-                    heading='Your Transformation Starts Today'
-                    description="You've researched, you've wondered, you've dreamed. Now it's your time. Board-certified surgeons, luxury care, and exclusive savings are waiting for you."
-                    primaryButton={{
-                        text: 'Yes, I Want My Free Consultation',
-                        href: '#specials-form',
-                    }}
-                    secondaryButton={{
-                        text: 'Call to Discuss Options',
-                        href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
-                    }}
-                    eyebrow='Take the First Step'
-                    size='lg'
+                <ResumeChatCta
+                    chatId={SPECIALS_CHAT_ID}
+                    eyebrow={
+                        offer?.endsOn
+                            ? `Ends ${offer.endsOn}`
+                            : 'Free consultation'
+                    }
+                    heading='Pick up where you left off'
+                    body='Your answers are saved in the thread at the top of the page. Four questions, under a minute, and a patient coordinator takes it from there.'
+                    buttonLabel='Finish my request'
                 />
             </ContainerLayout>
 
-            <SectionViewTracker />
+            <ConsultStickyBar
+                chatId={SPECIALS_CHAT_ID}
+                label={{ en: 'Claim the offer', es: 'Pedir la oferta' }}
+                phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
+                phoneLabel={`Call ${siteConfig.contact.phoneDisplay}`}
+            />
 
-            {/* Mobile Sticky CTA - Removed: handled by root layout */}
+            <SectionViewTracker />
         </>
     )
 }

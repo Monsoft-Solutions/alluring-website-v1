@@ -184,14 +184,17 @@ function validateBySource(data: ContactFormData): {
     const source = data.source || CONTACT_SOURCES.GENERAL
 
     switch (source) {
-        case CONTACT_SOURCES.CONTACT_PAGE:
         case CONTACT_SOURCES.CONTACT_HERO:
-            // Contact page and hero forms require email
+            // The home and Atelier hero forms still ask for email
             if (!data.email) {
                 return { valid: false, error: 'Email is required' }
             }
             break
 
+        // The contact and specials pages use the chat thread (#274), which
+        // asks for a mobile number only; email is optional afterwards.
+        case CONTACT_SOURCES.CONTACT_PAGE:
+        case CONTACT_SOURCES.SPECIALS_PAGE:
         case CONTACT_SOURCES.BLOG_LEAD:
         case CONTACT_SOURCES.EXIT_INTENT:
         case CONTACT_SOURCES.LEAD_FORM:

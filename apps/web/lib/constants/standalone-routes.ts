@@ -29,7 +29,31 @@ export const STANDALONE_ROUTES = ['/links', '/landing', '/lp'] as const
  * `/landing/melissa-juvier` is dropped for the same reason: its one ask is the
  * chat form (`#message-melissa`), and the bar's CTA has no form to land on.
  */
-export const NO_PROMO_BAR_ROUTES = ['/lp', '/landing/melissa-juvier'] as const
+export const NO_PROMO_BAR_ROUTES = [
+    '/lp',
+    '/landing/melissa-juvier',
+    '/contact-us',
+    '/miami-plastic-surgery-specials',
+] as const
+
+/**
+ * Site pages whose one job is the consultation thread (#274). They keep the
+ * site header and footer, but lose everything that competes with the form:
+ * the announcement bar (above), the exit-intent popup, the promotion modal,
+ * the global call button (their own sticky bar carries a call link) and the
+ * Loquent bubble (hidden in `consult-chat.css`). Specials showed exit-intent
+ * to 36% of its visitors, over the form.
+ */
+export const LEAD_PAGE_ROUTES = [
+    '/contact-us',
+    '/miami-plastic-surgery-specials',
+] as const
+
+/** Where exit-intent, the promotion modal and the call button stay off. */
+export const NO_FLOATING_WIDGET_ROUTES = [
+    ...STANDALONE_ROUTES,
+    ...LEAD_PAGE_ROUTES,
+] as const
 
 export function isStandaloneRoute(pathname: string): boolean {
     return matchesRoutePrefix(pathname, STANDALONE_ROUTES)
