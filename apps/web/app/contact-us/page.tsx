@@ -27,7 +27,7 @@ import { FAQComponent } from '@/components/shared/faq.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { contactPageFaqs } from '@/lib/data/faq/contact-faq-data'
-import { siteConfig } from '@/lib/data/site-config'
+import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -48,12 +48,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',
     title: pageTitle,
     description:
-        'Book your free, private consultation at Alluring Plastic Surgery in Miami. Four quick answers, a reply within 24 hours, your price in writing. Call, visit or message us.',
+        'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back within 24 hours, your price in writing. Call, visit or message us.',
 
     openGraph: {
         title: pageTitle,
         description:
-            'Book your free, private consultation at Alluring Plastic Surgery in Miami. Four quick answers, a reply within 24 hours, your price in writing. Call, visit or message us.',
+            'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back within 24 hours, your price in writing. Call, visit or message us.',
         url: `${seoConfig.siteUrl}/contact-us`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -203,9 +203,16 @@ export default async function ContactPage() {
                 <ResumeChatCta
                     chatId={CONTACT_CHAT_ID}
                     eyebrow='Free consultation'
-                    heading='Ready when you are'
-                    body='Four questions, under a minute. A patient coordinator texts or calls you within 24 hours to book your consultation.'
-                    buttonLabel='Start my request'
+                    fresh={{
+                        heading: 'Ready when you are',
+                        body: 'Three questions, under a minute. A patient coordinator texts you within 24 hours to book your free consultation.',
+                        buttonLabel: 'Start my request',
+                    }}
+                    resume={{
+                        heading: 'Pick up where you left off',
+                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you within 24 hours.',
+                        buttonLabel: 'Finish my request',
+                    }}
                 />
             </ContainerLayout>
 
@@ -217,6 +224,7 @@ export default async function ContactPage() {
                 }}
                 phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
                 phoneLabel={`Call ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}`}
+                smsLink={getSmsLink()}
             />
 
             <SectionViewTracker />

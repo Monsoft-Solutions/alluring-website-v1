@@ -10,13 +10,12 @@
  */
 
 import { SiteConsultChat } from '@/components/shared/consult-chat/site-consult-chat.component'
-import {
-    SITE_CHAT_COPY,
-    SITE_CHAT_STAFF,
-} from '@/components/shared/consult-chat/site-chat-copy'
+import { SPECIALS_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
+import { LEAD_PAGE_CHAT_IDS } from '@/lib/constants/standalone-routes'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
-export const SPECIALS_CHAT_ID = 'claim-offer'
+export const SPECIALS_CHAT_ID =
+    LEAD_PAGE_CHAT_IDS['/miami-plastic-surgery-specials']
 
 export interface SpecialsOffer {
     readonly title: string
@@ -26,6 +25,8 @@ export interface SpecialsOffer {
     readonly headline: string
     /** "September 30", in Miami time; null for an open-ended promotion. */
     readonly endsOn: string | null
+    /** The same date in Spanish ("30 de septiembre"), for the thread. */
+    readonly endsOnEs: string | null
     readonly slug: string
 }
 
@@ -61,9 +62,9 @@ export function SpecialsChatHero({
                   >
                       <p>
                           <strong>{offer.title}</strong>
-                          {offer.endsOn && (
+                          {offer.endsOnEs && (
                               <small>
-                                  Termina el {offer.endsOn}. Tu coordinadora
+                                  Termina el {offer.endsOnEs}. Tu coordinadora
                                   confirma cómo aplica a tu plan.
                               </small>
                           )}
@@ -113,10 +114,14 @@ export function SpecialsChatHero({
                             )}
                         </span>
                     </h1>
+                    {/* Four in five visitors are outside Florida. */}
+                    <p className='mt-3 text-sm text-stone-300 sm:hidden'>
+                        Video consultations from anywhere in the U.S.
+                    </p>
                     <p className='mt-4 hidden max-w-xl text-base leading-relaxed text-stone-300 sm:block sm:text-lg'>
                         {offer?.endsOn
-                            ? `The offer ends ${offer.endsOn}. Answer four quick questions and a patient coordinator texts or calls you within 24 hours.`
-                            : 'Answer four quick questions and a patient coordinator texts or calls you within 24 hours to book your free consultation.'}
+                            ? `The offer ends ${offer.endsOn}. Answer three quick questions and a patient coordinator texts you within 24 hours — in person in Miami, or by video from anywhere in the U.S.`
+                            : 'Answer three quick questions and a patient coordinator texts you within 24 hours to book your free consultation — in person in Miami, or by video from anywhere in the U.S.'}
                     </p>
                     <ul className='mt-5 hidden flex-wrap gap-x-5 gap-y-2 text-sm text-stone-400 lg:flex'>
                         <li>✓ Free consultation</li>
@@ -129,8 +134,8 @@ export function SpecialsChatHero({
                 <div>
                     <SiteConsultChat
                         id={SPECIALS_CHAT_ID}
-                        copy={SITE_CHAT_COPY}
-                        staff={SITE_CHAT_STAFF}
+                        copy={SPECIALS_CHAT.copy}
+                        staff={SPECIALS_CHAT.staff}
                         source={CONTACT_SOURCES.SPECIALS_PAGE}
                         formName='specials_chat'
                         thankYouPath='/thank-you'

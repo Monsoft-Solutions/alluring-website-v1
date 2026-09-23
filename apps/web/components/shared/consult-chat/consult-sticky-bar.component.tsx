@@ -5,14 +5,15 @@
  * thread once it has scrolled off screen. Hidden while the thread is in
  * view; after a first answer it says how many steps are left, and the
  * thread keeps those answers.
+ *
+ * Its second button texts the practice when a texting number is set
+ * (`siteConfig.contact.textPhone`) — these visitors text, and 0.4% ever
+ * tapped a call link — and calls the main line otherwise.
  */
 
 import { useEffect, useState } from 'react'
 
-import {
-    CONSULT_CHAT_PROGRESS_EVENT,
-    type ConsultChatProgressDetail,
-} from './consult-chat.types'
+import { useConsultChatProgress } from './consult-chat-progress'
 import { usePageLanguage } from './use-page-language.hook'
 
 export interface ConsultStickyBarProps {
@@ -22,6 +23,8 @@ export interface ConsultStickyBarProps {
     /** Digits only, for the `tel:` link. */
     readonly phoneDigits: string
     readonly phoneLabel: string
+    /** `sms:` link to the texting number; replaces the call button when set. */
+    readonly smsLink?: string | null
 }
 
 const RESUME = {
@@ -36,10 +39,15 @@ export function ConsultStickyBar({
     label,
     phoneDigits,
     phoneLabel,
+    smsLink,
 }: ConsultStickyBarProps) {
     const [visible, setVisible] = useState(false)
-    const [left, setLeft] = useState<number | null>(null)
     const lang = usePageLanguage()
+    const progress = useConsultChatProgress(chatId)
+    const left =
+        progress && progress.answered > 0
+            ? progress.total - progress.answered
+            : null
 
     useEffect(() => {
         const chat = document.getElementById(chatId)
@@ -54,18 +62,7 @@ export function ConsultStickyBar({
             )
         })
         observer.observe(chat)
-
-        const onProgress = (event: Event) => {
-            const { detail } = event as CustomEvent<ConsultChatProgressDetail>
-            if (detail.id !== chatId) return
-            setLeft(detail.answered > 0 ? detail.total - detail.answered : null)
-        }
-        window.addEventListener(CONSULT_CHAT_PROGRESS_EVENT, onProgress)
-
-        return () => {
-            observer.disconnect()
-            window.removeEventListener(CONSULT_CHAT_PROGRESS_EVENT, onProgress)
-        }
+        return () => observer.disconnect()
     }, [chatId])
 
     return (
@@ -86,13 +83,22 @@ export function ConsultStickyBar({
                 >
                     {left !== null ? RESUME[lang](left) : label[lang]} →
                 </a>
-                <a
-                    href={`tel:${phoneDigits}`}
-                    className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
-                    aria-label={phoneLabel}
-                >
-                    {lang === 'es' ? 'Llamar' : 'Call'}
-                </a>
+                {smsLink ? (
+                    <a
+                        href={smsLink}
+                        className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
+                    >
+                        {lang === 'es' ? 'Escríbenos' : 'Text us'}
+                    </a>
+                ) : (
+                    <a
+                        href={`tel:${phoneDigits}`}
+                        className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
+                        aria-label={phoneLabel}
+                    >
+                        {lang === 'es' ? 'Llamar' : 'Call'}
+                    </a>
+                )}
             </div>
         </div>
     )

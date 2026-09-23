@@ -49,6 +49,25 @@ export const LEAD_PAGE_ROUTES = [
     '/miami-plastic-surgery-specials',
 ] as const
 
+/**
+ * The consultation thread's section id on each lead page. The header's
+ * "Request Consult" jumps to it there instead of leaving for /contact-us,
+ * which would drop a specials visitor's offer and start a second thread.
+ */
+export const LEAD_PAGE_CHAT_IDS = {
+    '/contact-us': 'start-consultation',
+    '/miami-plastic-surgery-specials': 'claim-offer',
+} as const satisfies Record<(typeof LEAD_PAGE_ROUTES)[number], string>
+
+/** Where the header's consultation button leads from `pathname`. */
+export function consultCtaHref(pathname: string | null): string {
+    const chatId =
+        pathname && pathname in LEAD_PAGE_CHAT_IDS
+            ? LEAD_PAGE_CHAT_IDS[pathname as keyof typeof LEAD_PAGE_CHAT_IDS]
+            : null
+    return chatId ? `#${chatId}` : '/contact-us'
+}
+
 /** Where exit-intent, the promotion modal and the call button stay off. */
 export const NO_FLOATING_WIDGET_ROUTES = [
     ...STANDALONE_ROUTES,

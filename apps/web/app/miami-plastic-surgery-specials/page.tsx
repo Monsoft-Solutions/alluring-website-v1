@@ -34,7 +34,7 @@ import { FAQComponent } from '@/components/shared/faq.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
-import { siteConfig } from '@/lib/data/site-config'
+import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
@@ -111,10 +111,13 @@ export async function generateMetadata(): Promise<Metadata> {
     })
 }
 
-/** "September 30", in Miami time. */
-function formatEndsOn(endsAt: Date | null): string | null {
+/** "September 30" (or "30 de septiembre"), in Miami time. */
+function formatEndsOn(
+    endsAt: Date | null,
+    locale: 'en-US' | 'es-US' = 'en-US'
+): string | null {
     if (!endsAt) return null
-    return new Date(endsAt).toLocaleDateString('en-US', {
+    return new Date(endsAt).toLocaleDateString(locale, {
         month: 'long',
         day: 'numeric',
         timeZone: siteConfig.contact.timezone,
@@ -132,6 +135,7 @@ function toOffer(
         name: (name ?? promo.title).trim(),
         headline: headline || promo.title,
         endsOn: formatEndsOn(promo.endsAt),
+        endsOnEs: formatEndsOn(promo.endsAt, 'es-US'),
         slug: promo.slug,
     }
 }
@@ -247,9 +251,16 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                             ? `Ends ${offer.endsOn}`
                             : 'Free consultation'
                     }
-                    heading='Pick up where you left off'
-                    body='Your answers are saved in the thread at the top of the page. Four questions, under a minute, and a patient coordinator takes it from there.'
-                    buttonLabel='Finish my request'
+                    fresh={{
+                        heading: 'Ready when you are',
+                        body: 'Three quick questions, under a minute. A patient coordinator texts you within 24 hours and makes sure the offer is applied to your written quote.',
+                        buttonLabel: 'Start my request',
+                    }}
+                    resume={{
+                        heading: 'Pick up where you left off',
+                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you within 24 hours.',
+                        buttonLabel: 'Finish my request',
+                    }}
                 />
             </ContainerLayout>
 
@@ -258,6 +269,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 label={{ en: 'Claim the offer', es: 'Pedir la oferta' }}
                 phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
                 phoneLabel={`Call ${siteConfig.contact.phoneDisplay}`}
+                smsLink={getSmsLink()}
             />
 
             <SectionViewTracker />

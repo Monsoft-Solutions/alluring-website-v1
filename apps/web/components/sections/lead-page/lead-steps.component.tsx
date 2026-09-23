@@ -7,12 +7,12 @@ import { SurgeonCredentialCard } from './surgeon-credential-card.component'
 
 const STEPS = [
     {
-        title: 'You send four answers',
-        body: 'Procedure, timing, your name and your mobile number. It takes under a minute.',
+        title: 'You answer three quick questions',
+        body: 'The procedure, your timing, then your name and mobile number. It takes under a minute.',
     },
     {
-        title: 'A coordinator reaches out within 24 hours',
-        body: 'By text or by call, whichever you picked, to answer your first questions and book your free consultation — in person in Miami, or by video from anywhere in the U.S.',
+        title: 'A coordinator texts you within 24 hours',
+        body: 'To answer your first questions and book your free consultation — in person in Miami, or by video from anywhere in the U.S.',
     },
     {
         title: 'You get your plan in writing',

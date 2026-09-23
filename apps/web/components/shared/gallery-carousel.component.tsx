@@ -128,8 +128,8 @@ export function GalleryCarousel({
                         {/* Description */}
                         <p className='text-lg leading-relaxed font-light text-stone-600'>
                             Browse our gallery of real patient results. These
-                            authentic transformations showcase the precision and
-                            artistry of our board-certified surgeons.
+                            authentic transformations show the precision and
+                            artistry behind every procedure.
                         </p>
                     </div>
                 </div>

@@ -14,13 +14,11 @@ import {
 } from '@/components/sections/lead-page/reach-us-card.component'
 import { SurgeonCredentialCard } from '@/components/sections/lead-page/surgeon-credential-card.component'
 import { SiteConsultChat } from '@/components/shared/consult-chat/site-consult-chat.component'
-import {
-    SITE_CHAT_COPY,
-    SITE_CHAT_STAFF,
-} from '@/components/shared/consult-chat/site-chat-copy'
+import { CONTACT_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
+import { LEAD_PAGE_CHAT_IDS } from '@/lib/constants/standalone-routes'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
-export const CONTACT_CHAT_ID = 'start-consultation'
+export const CONTACT_CHAT_ID = LEAD_PAGE_CHAT_IDS['/contact-us']
 
 export function ContactChatHero() {
     return (
@@ -49,17 +47,22 @@ export function ContactChatHero() {
                         Tell us what you’re{' '}
                         <em className='text-gold-400'>thinking about</em>
                     </h1>
+                    {/* Most visitors are outside Florida. */}
+                    <p className='mt-3 text-sm text-stone-300 sm:hidden'>
+                        In person in Miami, or by video from anywhere in the
+                        U.S.
+                    </p>
                     <p className='mt-4 hidden max-w-lg text-base leading-relaxed text-stone-300 sm:block sm:text-lg'>
-                        Four quick answers and a patient coordinator texts or
-                        calls you back within 24 hours — in person in Miami, or
-                        by video from anywhere in the U.S.
+                        Three quick answers and a patient coordinator texts you
+                        back within 24 hours — in person in Miami, or by video
+                        from anywhere in the U.S.
                     </p>
 
                     <div className='mt-6'>
                         <SiteConsultChat
                             id={CONTACT_CHAT_ID}
-                            copy={SITE_CHAT_COPY}
-                            staff={SITE_CHAT_STAFF}
+                            copy={CONTACT_CHAT.copy}
+                            staff={CONTACT_CHAT.staff}
                             source={CONTACT_SOURCES.CONTACT_PAGE}
                             formName='contact_chat'
                             thankYouPath='/thank-you'

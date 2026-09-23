@@ -8,11 +8,20 @@
  * single tap. A tap is a cheaper first yes than a name, and by the time the
  * thread asks for a phone number the visitor has already answered twice.
  *
+ * Three steps: the procedure (answered with a useful reply, a price where
+ * one is settled), the timeline, then the name and mobile number together so
+ * one autofill pick fills both. The practice always answers by text, so the
+ * thread never asks how to reach the visitor.
+ *
+ * Answers are kept in `sessionStorage` for the tab — never the phone number
+ * — so a visitor who checks the gallery and comes back picks up where they
+ * left off.
+ *
  * Underneath it is an ordinary form posting through the site's contact
  * pipeline (`useContactFormSubmission` → `/api/contact`), so it reports the
  * shared lead funnel (#272) and every lead lands tagged with its page's
- * source. The procedure and timeline go into the staff note, never into
- * analytics.
+ * source. The procedure and timeline go into the staff note and the lead
+ * record, never into analytics.
  *
  * Styling is the page's job. Every class is `<prefix>-<name>`: Melissa's page
  * keeps its own `mj-*` sheet, and site pages use `consult-chat.css` (`cc-*`).
@@ -24,6 +33,7 @@ import {
     useEffect,
     useRef,
     useState,
+    useSyncExternalStore,
 } from 'react'
 
 import { Rich } from '@/components/landing-pages/request-consultation/lp-primitives.component'
@@ -38,36 +48,78 @@ import {
 } from '@/lib/analytics/lead-form-tracking'
 import type { ContactSource } from '@/lib/types/forms/contact-form.type'
 
-import {
-    CONSULT_CHAT_PROGRESS_EVENT,
-    type ConsultChatCopy,
-    type ConsultChatLang,
-    type ConsultChatLead,
-    type ConsultChatMethod,
-    type ConsultChatProgressDetail,
-    type ConsultChatStaffLabels,
+import { publishConsultChatProgress } from './consult-chat-progress'
+import type {
+    ConsultChatCopy,
+    ConsultChatLang,
+    ConsultChatLead,
+    ConsultChatStaffLabels,
 } from './consult-chat.types'
 import {
     fill,
     formatPhone,
     labelOf,
     nationalDigits,
+    parseSavedThread,
     prefersReducedMotion,
+    readSavedThreadRaw,
+    type SavedThread,
+    splitName,
     visitorTimeZone,
+    writeSavedThread,
 } from './consult-chat.util'
 
-type Step = 0 | 1 | 2 | 3
-type ErrorField = 'firstName' | 'lastName' | 'phone' | 'consent'
+type Step = 0 | 1 | 2
+type ErrorField = 'name' | 'phone' | 'consent'
 
-const STEP_NAMES = ['procedure', 'timeline', 'name', 'contact'] as const
+const STEP_NAMES = ['procedure', 'timeline', 'contact'] as const
 const TOTAL_STEPS = STEP_NAMES.length
+const LAST_STEP: Step = 2
 const TYPING_MS = 700
 
 interface Answers {
     readonly procedure: string
     readonly timeline: string
-    readonly firstName: string
-    readonly lastName: string
+}
+
+/** Everything the visitor has told the thread, and where they are in it. */
+interface Thread {
+    readonly step: Step
+    readonly answers: Answers
+    readonly name: string
+}
+
+const noSubscription = () => () => {}
+
+/** The first step after `from` still missing an answer. */
+function nextOpenStep(from: number, answers: Answers): Step {
+    const done = [Boolean(answers.procedure), Boolean(answers.timeline)]
+    for (let index = from + 1; index < LAST_STEP; index++) {
+        if (!done[index]) return index as Step
+    }
+    return LAST_STEP
+}
+
+/** A saved thread, with answers the current options no longer offer dropped. */
+function restoreThread(
+    saved: SavedThread | null,
+    copy: ConsultChatCopy
+): Thread | null {
+    if (!saved) return null
+    const offered = (options: ConsultChatCopy['procedures'], value: string) =>
+        options.some((option) => option.value === value) ? value : ''
+    const answers = {
+        procedure: offered(copy.procedures, saved.procedure),
+        timeline: offered(copy.timelines, saved.timeline),
+    }
+    if (!answers.procedure && !answers.timeline && !saved.name) return null
+    return { step: nextOpenStep(-1, answers), answers, name: saved.name }
+}
+
+const EMPTY_THREAD: Thread = {
+    step: 0,
+    answers: { procedure: '', timeline: '' },
+    name: '',
 }
 
 export interface ConsultChatProps {
@@ -83,7 +135,7 @@ export interface ConsultChatProps {
     readonly formName: string
     /** Full page load after success, so the tag container sees the page view. */
     readonly thankYouPath: string
-    /** `sessionStorage` key the thank-you page reads the first name from. */
+    /** `sessionStorage` key the thank-you page reads the lead from. */
     readonly leadStorageKey: string
     /** Subject line staff see, given the procedure's English label. */
     readonly subject: (procedureLabel: string) => string
@@ -126,29 +178,35 @@ export function ConsultChat({
     const titleId = `${id}-title`
     const qId = (step: Step) => `${id}-q-${STEP_NAMES[step]}`
     const fieldId = (name: string) => `${id}-${name}`
+    const threadKey = `consult-chat:${id}`
 
-    const [step, setStep] = useState<Step>(0)
+    // Until the visitor touches the thread, it shows what they told it
+    // earlier in this tab. The server always renders a fresh thread.
+    const savedRaw = useSyncExternalStore(
+        noSubscription,
+        () => readSavedThreadRaw(threadKey),
+        () => ''
+    )
+    const [touched, setTouched] = useState<Thread | null>(null)
+    const thread =
+        touched ??
+        restoreThread(parseSavedThread(savedRaw), copy) ??
+        EMPTY_THREAD
+    const { step, answers, name } = thread
+
     const [typing, setTyping] = useState(false)
-    const [answers, setAnswers] = useState<Answers>({
-        procedure: '',
-        timeline: '',
-        firstName: '',
-        lastName: '',
-    })
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
     const [phone, setPhone] = useState('')
-    const [method, setMethod] = useState<ConsultChatMethod>('text')
     const [consent, setConsent] = useState(false)
     const [errors, setErrors] = useState<ReadonlySet<ErrorField>>(new Set())
 
     const composerRef = useRef<HTMLDivElement>(null)
+    const phoneRef = useRef<HTMLInputElement>(null)
     const honeypotRef = useRef<HTMLInputElement>(null)
     const interacted = useRef(false)
     const typingTimer = useRef<number | undefined>(undefined)
 
     /** Read when the request resolves, not when it began. */
-    const leadRef = useRef<ConsultChatLead>({ firstName: '', method: 'text' })
+    const firstNameRef = useRef('')
 
     const {
         submit,
@@ -161,11 +219,16 @@ export function ConsultChat({
         source,
         enableAnalytics: true,
         analyticsFormName: formName,
-        onSuccess: () => {
+        onSuccess: (result) => {
+            writeSavedThread(threadKey, null)
+            const lead: ConsultChatLead = {
+                firstName: firstNameRef.current,
+                ...(result.lead && { lead: result.lead }),
+            }
             try {
                 window.sessionStorage.setItem(
                     leadStorageKey,
-                    JSON.stringify(leadRef.current)
+                    JSON.stringify(lead)
                 )
             } catch {
                 // The thank-you page falls back to a greeting without a name.
@@ -177,20 +240,13 @@ export function ConsultChat({
 
     useEffect(() => () => window.clearTimeout(typingTimer.current), [])
 
-    /** Sticky bars read how far the visitor has got. */
+    /** The sticky bar and the closing block read how far the visitor has got. */
+    const answered = [answers.procedure, answers.timeline].filter(
+        Boolean
+    ).length
     useEffect(() => {
-        const answered = [
-            answers.procedure,
-            answers.timeline,
-            answers.firstName && answers.lastName,
-        ].filter(Boolean).length
-        window.dispatchEvent(
-            new CustomEvent<ConsultChatProgressDetail>(
-                CONSULT_CHAT_PROGRESS_EVENT,
-                { detail: { id, answered, total: TOTAL_STEPS } }
-            )
-        )
-    }, [answers, id])
+        publishConsultChatProgress({ id, answered, total: TOTAL_STEPS })
+    }, [answered, id])
 
     /**
      * After the coordinator "sends" the next question, put the visitor's
@@ -211,22 +267,14 @@ export function ConsultChat({
             ?.focus({ preventScroll: true })
     }, [step, typing])
 
-    /** The first step after `from` still missing an answer. */
-    const nextOpenStep = (from: Step, next: Answers): Step => {
-        const done = [
-            Boolean(next.procedure),
-            Boolean(next.timeline),
-            Boolean(next.firstName && next.lastName),
-        ]
-        for (let index = from + 1; index < 3; index++) {
-            if (!done[index]) return index as Step
-        }
-        return 3
+    const update = (next: Thread) => {
+        setTouched(next)
+        writeSavedThread(threadKey, { ...next.answers, name: next.name })
     }
 
-    const goTo = (target: Step, withTyping: boolean) => {
+    const goTo = (target: Step, withTyping: boolean, next: Thread = thread) => {
         interacted.current = true
-        setStep(target)
+        update({ ...next, step: target })
         if (!withTyping || prefersReducedMotion()) return
         setTyping(true)
         window.clearTimeout(typingTimer.current)
@@ -237,8 +285,7 @@ export function ConsultChat({
     }
 
     const answer = (from: Step, patch: Partial<Answers>) => {
-        const next = { ...answers, ...patch }
-        setAnswers(next)
+        const next = { ...thread, answers: { ...answers, ...patch } }
         // Which step was answered is worth reporting; the answer is not.
         // Procedure interest and names stay out of the data layer, where
         // every tag in the container can read them (#272).
@@ -253,7 +300,7 @@ export function ConsultChat({
             step: STEP_NAMES[from],
             step_index: from + 1,
         })
-        goTo(nextOpenStep(from, next), true)
+        goTo(nextOpenStep(from, next.answers), true, next)
     }
 
     const invalid = (field: ErrorField) => errors.has(field)
@@ -266,21 +313,11 @@ export function ConsultChat({
         setErrors(next)
     }
 
-    const submitName = () => {
-        const nextErrors = new Set<ErrorField>()
-        if (!firstName.trim()) nextErrors.add('firstName')
-        if (!lastName.trim()) nextErrors.add('lastName')
-        setErrors(nextErrors)
-        if (nextErrors.size) {
-            trackValidationErrors([...nextErrors])
-            return
-        }
-        answer(2, { firstName: firstName.trim(), lastName: lastName.trim() })
-    }
-
     const submitLead = async () => {
+        const fullName = name.trim().replace(/\s+/g, ' ')
         const national = nationalDigits(phone)
         const nextErrors = new Set<ErrorField>()
+        if (fullName.length < 2) nextErrors.add('name')
         if (!national) nextErrors.add('phone')
         if (!consent) nextErrors.add('consent')
         setErrors(nextErrors)
@@ -289,9 +326,14 @@ export function ConsultChat({
             return
         }
 
-        leadRef.current = { firstName: answers.firstName, method }
+        const { firstName, lastName } = splitName(fullName)
+        firstNameRef.current = firstName
         if (dataLayerEvents) {
-            pushDataLayer({ event: dataLayerEvents.attempt, lang, method })
+            pushDataLayer({
+                event: dataLayerEvents.attempt,
+                lang,
+                method: 'text',
+            })
         }
 
         const procedureLabel = labelOf(staff.procedures, answers.procedure)
@@ -299,9 +341,9 @@ export function ConsultChat({
         const timeZone = visitorTimeZone()
 
         await submit({
-            firstName: answers.firstName,
-            lastName: answers.lastName,
-            name: `${answers.firstName} ${answers.lastName}`,
+            firstName,
+            lastName: lastName || undefined,
+            name: fullName,
             phone: formatPhone(national),
             procedure: answers.procedure,
             consentGiven: true,
@@ -311,7 +353,6 @@ export function ConsultChat({
                 ...noteLines,
                 `Procedure: ${procedureLabel}`,
                 `Timeline: ${labelOf(staff.timelines, answers.timeline)}`,
-                `Prefers: ${method === 'text' ? 'Text' : 'Call'}`,
                 `Preferred language: ${lang === 'es' ? 'Spanish' : 'English'}`,
                 ...(timeZone
                     ? [
@@ -339,14 +380,14 @@ export function ConsultChat({
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        if (step === 2) submitName()
-        else if (step === 3) void submitLead()
+        if (step === LAST_STEP) void submitLead()
     }
 
     const busy = isSubmitting || isSuccess
     const showQuestion = (index: Step) =>
         step > index || (step === index && !typing)
     const selectedProcedure = answers.procedure || defaultProcedure
+    const reply = procedureReply(copy, answers.procedure)
 
     // Melissa's sheet names the coordinator's bubbles after her.
     const theirs = `${c('bubble')} ${c(classPrefix === 'mj' ? 'bubble--melissa' : 'bubble--them')}`
@@ -404,9 +445,16 @@ export function ConsultChat({
                     </YouBubble>
                 )}
                 {step >= 1 && showQuestion(1) && (
-                    <li className={theirs}>
-                        <p id={qId(1)}>{copy.qTimeline}</p>
-                    </li>
+                    <>
+                        {reply && (
+                            <li className={theirs}>
+                                <p>{reply}</p>
+                            </li>
+                        )}
+                        <li className={theirs}>
+                            <p id={qId(1)}>{copy.qTimeline}</p>
+                        </li>
+                    </>
                 )}
 
                 {step > 1 && answers.timeline && (
@@ -420,24 +468,7 @@ export function ConsultChat({
                 )}
                 {step >= 2 && showQuestion(2) && (
                     <li className={theirs}>
-                        <p id={qId(2)}>{copy.qName}</p>
-                    </li>
-                )}
-
-                {step > 2 && answers.firstName && (
-                    <YouBubble
-                        c={c}
-                        changeLabel={copy.change}
-                        onChange={() => goTo(2, false)}
-                    >
-                        {answers.firstName} {answers.lastName}
-                    </YouBubble>
-                )}
-                {step >= 3 && showQuestion(3) && (
-                    <li className={theirs}>
-                        <p id={qId(3)}>
-                            {fill(copy.qContact, { name: answers.firstName })}
-                        </p>
+                        <p id={qId(2)}>{copy.qContact}</p>
                     </li>
                 )}
 
@@ -496,77 +527,52 @@ export function ConsultChat({
                         />
                     )}
 
-                    {step === 2 && (
+                    {step === LAST_STEP && (
                         <div className={c('fields')}>
-                            <div className={c('field')}>
-                                <label htmlFor={fieldId('first')}>
-                                    {copy.fieldFirstName}
+                            <div
+                                className={`${c('field')} ${c('field--wide')}`}
+                            >
+                                <label htmlFor={fieldId('name')}>
+                                    {copy.fieldName}
                                 </label>
                                 <input
-                                    id={fieldId('first')}
+                                    id={fieldId('name')}
                                     type='text'
-                                    autoComplete='given-name'
+                                    autoComplete='name'
+                                    autoCapitalize='words'
                                     enterKeyHint='next'
-                                    value={firstName}
+                                    value={name}
                                     onChange={(event) => {
-                                        setFirstName(event.target.value)
-                                        clearError('firstName')
+                                        update({
+                                            ...thread,
+                                            name: event.target.value,
+                                        })
+                                        clearError('name')
                                     }}
-                                    aria-invalid={invalid('firstName')}
+                                    onKeyDown={(event) => {
+                                        // Enter moves on to the number
+                                        // rather than sending half a form.
+                                        if (event.key !== 'Enter') return
+                                        event.preventDefault()
+                                        phoneRef.current?.focus()
+                                    }}
+                                    aria-invalid={invalid('name')}
                                     aria-describedby={
-                                        invalid('firstName')
-                                            ? fieldId('first-error')
+                                        invalid('name')
+                                            ? fieldId('name-error')
                                             : undefined
                                     }
                                 />
-                                {invalid('firstName') && (
+                                {invalid('name') && (
                                     <p
                                         className={c('error')}
-                                        id={fieldId('first-error')}
+                                        id={fieldId('name-error')}
                                     >
-                                        {copy.errors.firstName}
+                                        {copy.errors.name}
                                     </p>
                                 )}
                             </div>
-                            <div className={c('field')}>
-                                <label htmlFor={fieldId('last')}>
-                                    {copy.fieldLastName}
-                                </label>
-                                <input
-                                    id={fieldId('last')}
-                                    type='text'
-                                    autoComplete='family-name'
-                                    enterKeyHint='next'
-                                    value={lastName}
-                                    onChange={(event) => {
-                                        setLastName(event.target.value)
-                                        clearError('lastName')
-                                    }}
-                                    aria-invalid={invalid('lastName')}
-                                    aria-describedby={
-                                        invalid('lastName')
-                                            ? fieldId('last-error')
-                                            : undefined
-                                    }
-                                />
-                                {invalid('lastName') && (
-                                    <p
-                                        className={c('error')}
-                                        id={fieldId('last-error')}
-                                    >
-                                        {copy.errors.lastName}
-                                    </p>
-                                )}
-                            </div>
-                            <button type='submit' className={c('send')}>
-                                {copy.next}
-                                <ArrowIcon />
-                            </button>
-                        </div>
-                    )}
 
-                    {step === 3 && (
-                        <div className={c('fields')}>
                             <div
                                 className={`${c('field')} ${c('field--wide')}`}
                             >
@@ -575,9 +581,10 @@ export function ConsultChat({
                                 </label>
                                 <input
                                     id={fieldId('phone')}
+                                    ref={phoneRef}
                                     type='tel'
                                     inputMode='tel'
-                                    autoComplete='tel-national'
+                                    autoComplete='tel'
                                     enterKeyHint='send'
                                     placeholder='(305) 555-0123'
                                     value={phone}
@@ -603,26 +610,6 @@ export function ConsultChat({
                                     </p>
                                 )}
                             </div>
-
-                            <fieldset className={c('method')}>
-                                <legend>{copy.methodLegend}</legend>
-                                {copy.methods.map((option) => (
-                                    <label key={option.value}>
-                                        <input
-                                            type='radio'
-                                            name={fieldId('method')}
-                                            value={option.value}
-                                            checked={method === option.value}
-                                            onChange={() =>
-                                                setMethod(
-                                                    option.value as ConsultChatMethod
-                                                )
-                                            }
-                                        />
-                                        <span>{option.label}</span>
-                                    </label>
-                                ))}
-                            </fieldset>
 
                             <div
                                 className={`${c('consent')}${invalid('consent') ? ' is-invalid' : ''}`}
@@ -681,6 +668,24 @@ export function ConsultChat({
             </p>
         </section>
     )
+}
+
+/** The coordinator's answer to the procedure tap, or null when there is none. */
+function procedureReply(
+    copy: ConsultChatCopy,
+    procedure: string
+): string | null {
+    const reply = copy.procedureReply
+    if (!reply || !procedure) return null
+    const special = reply.byProcedure?.[procedure]
+    if (special) return special
+    const price = reply.prices[procedure]
+    return price
+        ? fill(reply.priced, {
+              procedure: labelOf(copy.procedures, procedure),
+              price,
+          })
+        : reply.standard
 }
 
 type ClassName = (name: string) => string

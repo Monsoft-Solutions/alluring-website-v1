@@ -654,15 +654,13 @@
 }
 
 .mj .mj-field--wide,
-.mj .mj-method,
 .mj .mj-consent,
 .mj .mj-fields > .mj-error,
 .mj .mj-send {
     grid-column: 1 / -1;
 }
 
-.mj .mj-field label,
-.mj .mj-method legend {
+.mj .mj-field label {
     color: var(--mute);
     font-size: 11.5px;
     font-weight: 700;
@@ -703,59 +701,6 @@
     color: var(--error);
     font-size: 12.5px;
     line-height: 1.4;
-}
-
-.mj .mj-method {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin: 2px 0 0;
-    padding: 0;
-    border: 0;
-}
-
-.mj .mj-method legend {
-    float: left;
-    margin-right: 6px;
-}
-
-.mj .mj-method label {
-    position: relative;
-    cursor: pointer;
-}
-
-.mj .mj-method input {
-    position: absolute;
-    opacity: 0;
-    inset: 0;
-    cursor: pointer;
-}
-
-.mj .mj-method span {
-    display: inline-flex;
-    align-items: center;
-    min-height: 40px;
-    padding: 0 18px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    color: #f5e8c9;
-    font-size: 14px;
-    font-weight: 700;
-    transition:
-        background 0.18s,
-        color 0.18s;
-}
-
-.mj .mj-method input:checked + span {
-    border-color: transparent;
-    background: linear-gradient(135deg, #f1dfae, #d3b36f);
-    color: #1a1209;
-}
-
-.mj .mj-method input:focus-visible + span {
-    outline: 2px solid var(--gold);
-    outline-offset: 3px;
 }
 
 .mj .mj-consent {

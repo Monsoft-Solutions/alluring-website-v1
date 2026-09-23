@@ -1,27 +1,44 @@
 /**
- * The last section of a lead page: back to the thread, answers kept. A link,
- * not a second form — one conversation per page.
+ * The last section of a lead page: back to the thread. A link, not a second
+ * form — one conversation per page. It invites a visitor who has not started
+ * and, once they have answered something, offers to pick up where they left
+ * off (the thread keeps their answers).
  */
 
+import { WhenChatStarted } from '@/components/shared/consult-chat/when-chat-started.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+
+interface ResumeChatCopy {
+    readonly heading: string
+    readonly body: string
+    readonly buttonLabel: string
+}
 
 interface ResumeChatCtaProps {
     readonly id?: string
     readonly chatId: string
     readonly eyebrow: string
-    readonly heading: string
-    readonly body: string
-    readonly buttonLabel: string
+    /** For a visitor who has not answered anything yet. */
+    readonly fresh: ResumeChatCopy
+    /** For a visitor with answers saved in the thread. */
+    readonly resume: ResumeChatCopy
 }
 
 export function ResumeChatCta({
     id = 'resume',
     chatId,
     eyebrow,
-    heading,
-    body,
-    buttonLabel,
+    fresh,
+    resume,
 }: ResumeChatCtaProps) {
+    const text = (part: keyof ResumeChatCopy) => (
+        <WhenChatStarted
+            chatId={chatId}
+            started={resume[part]}
+            notStarted={fresh[part]}
+        />
+    )
+
     return (
         <section
             id={id}
@@ -36,17 +53,17 @@ export function ResumeChatCta({
                     id={`${id}-title`}
                     className='mt-3 font-serif text-3xl text-balance text-stone-50 sm:text-4xl'
                 >
-                    {heading}
+                    {text('heading')}
                 </h2>
                 <p className='mt-4 text-base leading-relaxed text-stone-300'>
-                    {body}
+                    {text('body')}
                 </p>
                 <div className='mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row'>
                     <a
                         href={`#${chatId}`}
                         className='from-gold-300 via-gold-400 to-gold-500 shadow-gold-500/20 inline-flex min-h-13 items-center justify-center rounded-xl bg-gradient-to-br px-7 text-base font-bold text-stone-950 shadow-lg'
                     >
-                        {buttonLabel} →
+                        {text('buttonLabel')} →
                     </a>
                     <a
                         href={getPhoneLink()}

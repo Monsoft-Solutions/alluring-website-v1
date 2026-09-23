@@ -67,6 +67,11 @@ export const siteConfig: SiteConfig = {
     contact: {
         phone: '+1-786-305-8649',
         phoneDisplay: '+1 (786) 305-8649',
+        // The practice's texting number goes here, e.g. '+1-305-555-0123'
+        // with textPhoneDisplay '(305) 555-0123'. The main line above does
+        // not receive texts, so "Text us" stays hidden until this is set.
+        textPhone: undefined,
+        textPhoneDisplay: undefined,
         email: 'info@alluringplasticsurgery.com',
         supportEmail: 'info@alluringplasticsurgery.com',
         address: '8435 SW 24th St',
@@ -235,6 +240,15 @@ export function getFullAddress(): string {
  */
 export function getPhoneLink(): string {
     return `tel:${siteConfig.contact.phone.replace(/[\s()-]/g, '')}`
+}
+
+/**
+ * `sms:` link for the texting number, or null while it is not set — callers
+ * hide their "Text us" link then.
+ */
+export function getSmsLink(): string | null {
+    const { textPhone } = siteConfig.contact
+    return textPhone ? `sms:${textPhone.replace(/[\s()-]/g, '')}` : null
 }
 
 /**

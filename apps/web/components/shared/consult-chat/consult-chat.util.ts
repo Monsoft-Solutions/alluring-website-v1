@@ -38,6 +38,59 @@ export function formatPhone(value: string): string {
     return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
 }
 
+/** "Ana María Torres" → `{ firstName: 'Ana', lastName: 'María Torres' }`. */
+export function splitName(fullName: string): {
+    readonly firstName: string
+    readonly lastName: string
+} {
+    const [firstName = '', ...rest] = fullName.trim().split(/\s+/)
+    return { firstName, lastName: rest.join(' ') }
+}
+
+/**
+ * What a thread keeps in `sessionStorage` so a visitor who looks at the
+ * gallery and comes back finds their answers (#274). Never the phone number.
+ */
+export interface SavedThread {
+    readonly procedure: string
+    readonly timeline: string
+    readonly name: string
+}
+
+export function readSavedThreadRaw(key: string): string {
+    try {
+        return window.sessionStorage.getItem(key) ?? ''
+    } catch {
+        return ''
+    }
+}
+
+export function parseSavedThread(raw: string): SavedThread | null {
+    if (!raw) return null
+    try {
+        const value = JSON.parse(raw) as Partial<SavedThread>
+        const text = (field: unknown) =>
+            typeof field === 'string' ? field.slice(0, 120) : ''
+        return {
+            procedure: text(value.procedure),
+            timeline: text(value.timeline),
+            name: text(value.name),
+        }
+    } catch {
+        return null
+    }
+}
+
+export function writeSavedThread(key: string, thread: SavedThread | null) {
+    try {
+        if (thread) window.sessionStorage.setItem(key, JSON.stringify(thread))
+        else window.sessionStorage.removeItem(key)
+    } catch {
+        // Private mode or blocked storage: the thread still works, it just
+        // starts over on the next visit.
+    }
+}
+
 /** The browser's time zone, e.g. `{ zone: 'America/Chicago', short: 'CDT' }`. */
 export function visitorTimeZone(): {
     readonly zone: string

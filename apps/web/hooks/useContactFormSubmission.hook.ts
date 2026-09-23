@@ -46,8 +46,8 @@ export type SubmissionState = {
 export type UseContactFormSubmissionOptions = {
     /** The source identifier for this form (used for backend routing) */
     readonly source: ContactSource
-    /** Callback fired on successful submission */
-    readonly onSuccess?: () => void
+    /** Callback fired on successful submission, with the API's response */
+    readonly onSuccess?: (result: ContactFormResponse) => void
     /** Callback fired on submission error */
     readonly onError?: (error: string) => void
     /**
@@ -314,7 +314,7 @@ export function useContactFormSubmission(
                     }
 
                     // Call success callback first
-                    onSuccess?.()
+                    onSuccess?.(result)
 
                     // Redirect if specified
                     if (redirectOnSuccess) {
