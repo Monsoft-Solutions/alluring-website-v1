@@ -1,9 +1,17 @@
 import Link from 'next/link'
 import { cn } from '@workspace/ui/lib/utils'
 
+import {
+    ModuleGuideLinks,
+    ModuleTimeline,
+} from '@/components/procedures/module-kit/module-steps.component'
+import {
+    moduleBody,
+    moduleH3,
+    moduleLink,
+    moduleSectionPad,
+} from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
-
-import { bblBody, bblH3, bblLink, bblSectionPad } from './bbl-ui.constant'
 
 /**
  * The sourced recovery standard approved on 2026-09-14: every figure is a
@@ -70,41 +78,26 @@ const guides = [
 ]
 
 /**
- * "What does BBL recovery look like, week by week?" The timeline's rule and
- * dots are drawn by `bbl-page.css` from the list items: the rule draws down
- * and each dot fills as that stage reaches the middle of the screen.
+ * "What does BBL recovery look like, week by week?" The kit's timeline draws
+ * the rule and dots from the list items (`module-kit.css`).
  */
 export function BblRecoveryTimeline() {
     return (
         <AnswerBlock
             id='recovery'
             question='What does BBL recovery look like, week by week?'
-            className={bblSectionPad}
+            className={moduleSectionPad}
             answer="Most people return to a desk job 10 to 14 days after a BBL, sit normally and exercise again at about 8 weeks, and feel recovered at 2 to 3 months, though it can take up to 6 months. The final shape shows at 3 to 6 months. Your surgeon's instructions come first."
         >
-            <ol
-                aria-label='BBL recovery timeline'
-                className='mt-9 [--bbl-rail-x:0.625rem] md:mt-10 md:[--bbl-rail-x:9.625rem]'
-            >
-                {milestones.map((milestone) => (
-                    <li
-                        key={milestone.when}
-                        className='bbl-milestone grid pb-6 pl-8 tabular-nums md:grid-cols-[8rem_minmax(0,1fr)] md:gap-x-[3.25rem] md:pb-7 md:pl-0'
-                    >
-                        <p className='text-[0.9375rem] leading-normal font-bold text-stone-900 md:text-base md:leading-[1.6]'>
-                            {milestone.when}
-                        </p>
-                        <p className='mt-1 text-[1.0625rem] leading-[1.6] text-stone-700 md:mt-0 md:leading-[1.65]'>
-                            {milestone.body}
-                        </p>
-                    </li>
-                ))}
-            </ol>
+            <ModuleTimeline
+                label='BBL recovery timeline'
+                milestones={milestones}
+            />
 
-            <h3 className={cn(bblH3, 'mt-6')}>
+            <h3 className={cn(moduleH3, 'mt-6')}>
                 If you are flying in from another state
             </h3>
-            <p className={cn(bblBody, 'mt-3 tabular-nums')}>
+            <p className={cn(moduleBody, 'mt-3 tabular-nums')}>
                 Plan on 7 to 10 days in Miami, so you can be seen at follow-up
                 and cleared before you fly. We confirm your surgery, pre-op and
                 follow-up dates in writing and tell you how many nights to stay;
@@ -113,43 +106,24 @@ export function BblRecoveryTimeline() {
                 5 days, because an infection typically shows up 3 to 5 days
                 after surgery.
             </p>
-            <p className={cn(bblBody, 'mt-4')}>
+            <p className={cn(moduleBody, 'mt-4')}>
                 You don&apos;t have to fly in to get started.{' '}
                 <Link
                     href='/fly-in-consultation'
-                    className={cn(bblLink, 'font-bold')}
+                    className={cn(moduleLink, 'font-bold')}
                 >
                     Start with a virtual consultation
                 </Link>{' '}
                 and have your dates in writing before you book a flight.
             </p>
 
-            <div className='mt-10 border-t border-stone-200 pt-7'>
-                <Link
-                    href='/how-long-to-recover-from-bbl'
-                    className={cn(
-                        bblLink,
-                        'font-serif text-xl leading-[1.3] md:text-[1.375rem]'
-                    )}
-                >
-                    BBL recovery week by week
-                </Link>
-                <ul className='mt-3.5 grid gap-1 md:grid-cols-2 md:gap-x-8 md:gap-y-3'>
-                    {guides.map((guide) => (
-                        <li key={guide.href}>
-                            <Link
-                                href={guide.href}
-                                className={cn(
-                                    bblLink,
-                                    'inline-flex min-h-10 items-center text-base leading-[1.45] md:min-h-0'
-                                )}
-                            >
-                                {guide.label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <ModuleGuideLinks
+                main={{
+                    label: 'BBL recovery week by week',
+                    href: '/how-long-to-recover-from-bbl',
+                }}
+                guides={guides}
+            />
         </AnswerBlock>
     )
 }

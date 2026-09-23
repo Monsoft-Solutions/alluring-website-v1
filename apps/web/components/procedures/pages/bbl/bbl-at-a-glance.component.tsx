@@ -1,3 +1,4 @@
+import { moduleSectionPad } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import {
     FactTable,
@@ -5,8 +6,6 @@ import {
 } from '@/components/procedures/sections/fact-table.component'
 import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
-
-import { bblSectionPad } from './bbl-ui.constant'
 
 /**
  * "What is a BBL?" and the at-a-glance table: every figure a reader
@@ -61,7 +60,7 @@ export function BblAtAGlance() {
             id='what-is-a-bbl'
             question='What is a BBL?'
             answerClassName='quick-answer'
-            className={bblSectionPad}
+            className={moduleSectionPad}
             answer='A Brazilian butt lift (BBL) is a fat transfer to the buttocks. A surgeon uses liposuction to remove fat from areas such as the abdomen, flanks or back, processes it, and injects it under the skin of the buttocks to add volume and shape. Because it uses your own fat, there is no implant.'
         >
             <FactTable

@@ -12,7 +12,7 @@ const button =
  * swipe the rail itself. The rail and its photos are server-rendered; this is
  * only the two buttons.
  */
-export function BblRailButtons({
+export function ModuleRailButtons({
     railId,
     className,
 }: {

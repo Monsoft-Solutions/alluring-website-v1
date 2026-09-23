@@ -6,66 +6,80 @@ import { mentionsProcedure } from '@/lib/procedures/procedure-mentions'
 import type { GoogleReviewPublic } from '@/lib/queries/reviews/google-reviews.query'
 import { readGoogleReviewText } from '@/lib/utils/google-review-text.util'
 
-import { BblStars } from './bbl-stars.component'
-import { bblContainer, bblLink } from './bbl-ui.constant'
-
-const BBL_SLUG = 'brazilian-butt-lift-bbl-miami'
-
-const mentionsBbl = (review: GoogleReviewPublic) =>
-    mentionsProcedure(BBL_SLUG, review.comment)
+import { ModuleStars } from './module-stars.component'
+import { moduleContainer, moduleLink } from './module-ui.constant'
 
 /**
- * Up to `limit` reviews: those that mention a BBL first, then the rest in the
- * query's own order (featured, display order, newest). This is the order the
- * section's answer describes, so keep the two in step.
+ * Up to `limit` reviews: those that mention the procedure first, then the
+ * rest in the query's own order (featured, display order, newest). This is
+ * the order the section's answer describes, so keep the two in step.
+ *
+ * Pass every published review: the ones that name a procedure can sit far
+ * down the featured-first order (on 2026-09-22 the BBL ones were at
+ * positions 58, 62 and 69 of 75).
  */
-export function selectBblReviews(
+export function selectProcedureReviews(
     reviews: GoogleReviewPublic[],
+    procedureSlug: string,
     limit = 3
 ): GoogleReviewPublic[] {
     const withText = reviews.filter((review) => review.comment?.trim())
-    const bbl = withText.filter(mentionsBbl)
-    const rest = withText.filter((review) => !bbl.includes(review))
+    const named = withText.filter((review) =>
+        mentionsProcedure(procedureSlug, review.comment)
+    )
+    const rest = withText.filter((review) => !named.includes(review))
 
-    return [...bbl, ...rest].slice(0, limit)
+    return [...named, ...rest].slice(0, limit)
+}
+
+type ModuleReviewsProps = {
+    reviews: GoogleReviewPublic[]
+    procedureSlug: string
+    /** The heading and answer when every review shown names the procedure. */
+    named: { question: string; answer: string }
+    /** The answer under "What Alluring patients say on Google" otherwise. */
+    mixedAnswer: string
 }
 
 /**
  * What patients say, from the practice's public Google Business Profile as
  * synced into the database.
  *
- * The heading names BBL patients only when every review shown mentions a
- * BBL; otherwise it is "What Alluring patients say on Google", because a
- * heading its reviews don't back reads as bait. `selectBblReviews` lists the
- * BBL ones first. No Review JSON-LD: reviews a business publishes about
- * itself are not eligible for review rich results, and the markup would only
- * add weight.
+ * The heading names the procedure's patients only when every review shown
+ * mentions the procedure; otherwise it is "What Alluring patients say on
+ * Google", because a heading its reviews don't back reads as bait.
+ * `selectProcedureReviews` lists the named ones first. No Review JSON-LD:
+ * reviews a business publishes about itself are not eligible for review rich
+ * results, and the markup would only add weight.
  *
  * A review written in another language shows Google's translation, marked
  * as such, rather than the marker, the translation and the original run
  * together. Review text is the reviewer's, not ours, so it is marked
  * `data-copy-check="data"` and the copy sweep leaves its figures alone.
  */
-export function BblReviews({ reviews }: { reviews: GoogleReviewPublic[] }) {
+export function ModuleReviews({
+    reviews,
+    procedureSlug,
+    named,
+    mixedAnswer,
+}: ModuleReviewsProps) {
     if (reviews.length === 0) return null
 
-    const allBbl = reviews.every(mentionsBbl)
+    const allNamed = reviews.every((review) =>
+        mentionsProcedure(procedureSlug, review.comment)
+    )
 
     return (
-        <div className='bbl-defer bg-stone-50'>
+        <div className='pm-defer bg-stone-50'>
             <AnswerBlock
                 id='reviews'
                 question={
-                    allBbl
-                        ? 'What do BBL patients say about Alluring?'
+                    allNamed
+                        ? named.question
                         : 'What Alluring patients say on Google'
                 }
-                className={cn(bblContainer, 'py-12 md:py-24')}
-                answer={
-                    allBbl
-                        ? "These reviews come from Alluring's public Google Business Profile, and each one is from a patient who mentions a BBL in their own words. Reviews written in another language show Google's translation. You can read every review, and see the overall rating, on Google at any time."
-                        : "These reviews come from Alluring's public Google Business Profile. Reviews that mention a BBL appear first, followed by recent featured reviews from patients who had other procedures with us. You can read every review, and see the overall rating, on Google at any time."
-                }
+                className={cn(moduleContainer, 'py-12 md:py-24')}
+                answer={allNamed ? named.answer : mixedAnswer}
             >
                 <ul
                     data-copy-check='data'
@@ -77,7 +91,7 @@ export function BblReviews({ reviews }: { reviews: GoogleReviewPublic[] }) {
                         return (
                             <li key={review.id}>
                                 <figure className='flex h-full flex-col border-t border-stone-300 pt-5'>
-                                    <BblStars
+                                    <ModuleStars
                                         rating={review.rating}
                                         className='text-base'
                                     />
@@ -112,7 +126,7 @@ export function BblReviews({ reviews }: { reviews: GoogleReviewPublic[] }) {
                 <p className='mt-9'>
                     <Link
                         href='/reviews'
-                        className={cn(bblLink, 'text-base font-bold')}
+                        className={cn(moduleLink, 'text-base font-bold')}
                     >
                         Read every review
                     </Link>

@@ -3,13 +3,13 @@ import { cn } from '@workspace/ui/lib/utils'
 const STAR_PATH =
     'M12 2.6l2.84 5.9 6.46.86-4.72 4.5 1.18 6.42L12 17.2l-5.76 3.08 1.18-6.42-4.72-4.5 6.46-.86z'
 
-const STAR_ID = 'bbl-star'
+const STAR_ID = 'pm-star'
 
 /**
- * The star shape, defined once per page. Every `BblStars` row draws five
+ * The star shape, defined once per page. Every `ModuleStars` row draws five
  * `<use>` references to it rather than five copies of the path.
  */
-export function BblStarSprite() {
+export function ModuleStarSprite() {
     return (
         <svg aria-hidden='true' className='absolute size-0 overflow-hidden'>
             <defs>
@@ -38,10 +38,10 @@ function StarRow({ filled }: { filled: boolean }) {
 
 /**
  * A star rating out of five, filled to the exact value (4.7 fills 94%).
- * Needs `BblStarSprite` on the page. Sized by font size: five stars are 5em
+ * Needs `ModuleStarSprite` on the page. Sized by font size: five stars are 5em
  * wide and 1em tall.
  */
-export function BblStars({
+export function ModuleStars({
     rating,
     className,
 }: {
