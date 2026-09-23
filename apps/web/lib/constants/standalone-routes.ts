@@ -25,8 +25,11 @@ export const STANDALONE_ROUTES = ['/links', '/landing', '/lp'] as const
  * own champagne palette and its own offer, its form anchor is `#consultation`
  * rather than `#hero-form`, and a second promotion above the fold competes
  * with the one the ad was bought for.
+ *
+ * `/landing/melissa-juvier` is dropped for the same reason: its one ask is the
+ * chat form (`#message-melissa`), and the bar's CTA has no form to land on.
  */
-export const NO_PROMO_BAR_ROUTES = ['/lp'] as const
+export const NO_PROMO_BAR_ROUTES = ['/lp', '/landing/melissa-juvier'] as const
 
 export function isStandaloneRoute(pathname: string): boolean {
     return matchesRoutePrefix(pathname, STANDALONE_ROUTES)
