@@ -66,16 +66,8 @@ const guides: ModuleGuide[] = [
         href: '/what-is-lipo-foam',
     },
     {
-        label: 'Lymphatic massage after Lipo 360',
+        label: 'Lymphatic massage: when to start and how many',
         href: '/how-many-massages-after-lipo-360',
-    },
-    {
-        label: 'When to start lymphatic massage',
-        href: '/when-to-start-lymphatic-massage-after-lipo',
-    },
-    {
-        label: 'Swelling after liposuction',
-        href: '/how-to-reduce-swelling-after-liposuction',
     },
     {
         label: 'Bruising after liposuction',
@@ -123,13 +115,7 @@ export function LipoRecovery() {
                 Cleveland Clinic says the procedure permanently removes them.
                 The fat cells that remain can still grow if you gain weight, so
                 ASPS says results last as long as you keep a stable weight and
-                general fitness.{' '}
-                <Link
-                    href='/how-to-maintain-liposuction-results'
-                    className={moduleLink}
-                >
-                    How to keep your liposuction results
-                </Link>
+                general fitness.
             </p>
 
             <h3 className={cn(moduleH3, 'mt-8')}>
@@ -153,8 +139,8 @@ export function LipoRecovery() {
 
             <ModuleGuideLinks
                 main={{
-                    label: 'Liposuction recovery, week by week',
-                    href: '/blog/liposuction-recovery-time-miami',
+                    label: 'Liposuction swelling and recovery, week by week',
+                    href: '/how-to-reduce-swelling-after-liposuction',
                 }}
                 guides={guides}
             />

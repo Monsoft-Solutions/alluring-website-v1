@@ -115,17 +115,6 @@ export function LipoCandidate() {
             <ul className='mt-8 flex flex-col gap-1 border-t border-stone-200 pt-6'>
                 <li>
                     <Link
-                        href='/blog/liposuction-candidate-miami'
-                        className={cn(
-                            moduleLink,
-                            'inline-flex min-h-11 items-center text-base font-bold'
-                        )}
-                    >
-                        The full liposuction candidate checklist
-                    </Link>
-                </li>
-                <li>
-                    <Link
                         href='/blog/tummy-tuck-vs-liposuction'
                         className={cn(
                             moduleLink,

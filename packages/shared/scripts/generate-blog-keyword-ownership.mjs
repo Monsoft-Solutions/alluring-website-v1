@@ -19,7 +19,8 @@
  * This script overwrites the constant. The checked-in file carries
  * hand-written `notes` and GSC-derived `ownsQueries` on a few entries (the
  * BBL recovery owner /how-long-to-recover-from-bbl, the #231 comparison owner,
- * procedure-page absorptions and the notes on retired entries) that cannot be
+ * procedure-page absorptions, the liposuction posts' Search Console queries
+ * and combined BBL + liposuction rule, and the notes on retired entries) that cannot be
  * reproduced from the database, so after a regeneration restore those from
  * `git diff` before committing.
  */
@@ -53,9 +54,6 @@ const DUPLICATE_OF = {
         '/blog/breast-reduction-weight-loss-miami',
     // Facelift results
     'facelift-results-miami-tips': '/blog/facelift-results-longevity-miami',
-    // Tummy tuck vs liposuction — owner is the 2026 post
-    'what-is-the-difference-between-tummy-tuck-and-liposuction':
-        '/blog/tummy-tuck-vs-liposuction',
     // Commercial-intent query owned by the planned cost hub (intent split:
     // blog owns informational long-tail only)
     'affordable-plastic-surgery-miami': '/plastic-surgery-cost-miami',
@@ -76,10 +74,7 @@ const STRIP_QUERIES = {
 }
 
 /** Legacy root posts in a duplicate cluster: GSC evidence required before any 301. */
-const GSC_CHECK_FIRST = new Set([
-    'how-long-to-recover-from-mommy-makeover',
-    'what-is-the-difference-between-tummy-tuck-and-liposuction',
-])
+const GSC_CHECK_FIRST = new Set(['how-long-to-recover-from-mommy-makeover'])
 
 /**
  * Retired blog URLs (308 sources in apps/web/next.config.mjs), keyed by the
@@ -107,9 +102,8 @@ const RETIRED = {
         '/blog/blepharoplasty-candidate-miami-checklist',
     '/best-blepharoplasty-age-miami':
         '/blog/best-blepharoplasty-age-miami-checklist',
-    '/liposuction-candidate-checklist-miami':
-        '/blog/liposuction-candidate-miami',
-    '/liposuction-miami-moms-faq': '/blog/liposuction-miami-moms-tips',
+    '/liposuction-candidate-checklist-miami': '/procedures/liposuction-miami',
+    '/liposuction-miami-moms-faq': '/procedures/liposuction-miami',
     '/breast-reduction-miami-recovery-candidates':
         '/blog/breast-reduction-candidate-miami',
     '/what-is-the-mommy-makeover-procedure': '/procedures/mommy-makeover-miami',
@@ -146,6 +140,20 @@ const RETIRED = {
     '/blog/bbl-safety-miami': '/procedures/brazilian-butt-lift-bbl-miami',
     '/blog/bbl-miami-post-pregnancy-quiz':
         '/procedures/brazilian-butt-lift-bbl-miami',
+    // Liposuction blog consolidation (2026-09-22 blog review): 25 posts to 17
+    '/when-to-start-lymphatic-massage-after-lipo':
+        '/how-many-massages-after-lipo-360',
+    '/blog/liposuction-recovery-time-miami':
+        '/how-to-reduce-swelling-after-liposuction',
+    '/what-is-the-difference-between-tummy-tuck-and-liposuction':
+        '/blog/tummy-tuck-vs-liposuction',
+    '/blog/liposuction-candidate-miami': '/procedures/liposuction-miami',
+    '/blog/liposuction-miami-post-pregnancy-guide':
+        '/procedures/liposuction-miami',
+    '/blog/liposuction-miami-moms-tips': '/procedures/liposuction-miami',
+    '/how-to-maintain-liposuction-results': '/procedures/liposuction-miami',
+    '/blog/liposuction-vs-breast-augmentation-miami':
+        '/procedures/mommy-makeover-miami',
 }
 
 const inputPath = process.argv[2]
