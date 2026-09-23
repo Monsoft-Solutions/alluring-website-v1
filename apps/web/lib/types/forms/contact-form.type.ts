@@ -34,6 +34,7 @@ export const CONTACT_SOURCES = {
     PROCEDURE_PAGE: 'procedure-page',
     QUIZ: 'quiz',
     DR_KARLINSKY_LANDING: 'dr-karlinsky-landing',
+    MELISSA_JUVIER_LANDING: 'melissa-juvier-landing',
 } as const
 
 export type ContactSource =

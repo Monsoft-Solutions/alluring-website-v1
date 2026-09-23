@@ -167,6 +167,14 @@ const nextConfig = {
                     '/landing/dr-victoria-karlinsky?utm_source=doctor&utm_medium=dr-karlinsky',
                 permanent: true,
             },
+            // Melissa Juvier's bio link. Temporary, so the UTMs can change
+            // without browsers holding on to the old destination.
+            {
+                source: '/melissa',
+                destination:
+                    '/landing/melissa-juvier?utm_source=melissa-juvier&utm_medium=bio-link',
+                permanent: false,
+            },
             {
                 source: '/cosmetic-procedures-in-miami',
                 destination: '/procedures',
