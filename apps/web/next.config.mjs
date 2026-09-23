@@ -268,16 +268,18 @@ const nextConfig = {
                 destination: '/blog/best-blepharoplasty-age-miami-checklist',
                 permanent: true,
             },
-            // Liposuction Candidate (2 posts -> 1 canonical)
+            // Liposuction Candidate and Liposuction Moms (2 posts -> 1 each).
+            // Both canonicals were folded into the procedure page in the
+            // liposuction blog consolidation below, so these go straight
+            // there instead of chaining through a second 308.
             {
                 source: '/liposuction-candidate-checklist-miami',
-                destination: '/blog/liposuction-candidate-miami',
+                destination: '/procedures/liposuction-miami',
                 permanent: true,
             },
-            // Liposuction Moms (2 posts -> 1 canonical)
             {
                 source: '/liposuction-miami-moms-faq',
-                destination: '/blog/liposuction-miami-moms-tips',
+                destination: '/procedures/liposuction-miami',
                 permanent: true,
             },
             // Breast Reduction Candidate (2 posts -> 1 canonical)
@@ -708,6 +710,105 @@ const nextConfig = {
             {
                 source: '/procedures/liposuction-cosmetic-surgery-in-miami',
                 destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+
+            // Liposuction blog consolidation (2026-09-22 blog review):
+            // 25 liposuction posts become 17.
+            //
+            // - The two lymphatic massage posts shared 46 queries and gave
+            //   opposite protocols; the when-to-start post folds into the
+            //   massage guide.
+            // - The January week-by-week recovery post (428 impressions, 0
+            //   clicks in 90 days) folds into the swelling post, which now
+            //   carries the sourced timeline and already ranks 1.4 for it.
+            // - The 2025 tummy tuck vs liposuction post was "crawled, not
+            //   indexed"; its 2026 counterpart is the owner.
+            // - Candidate, post-pregnancy, moms-tips and maintain-results
+            //   posts (1 to 91 impressions each) are answered by the
+            //   procedure page's candidacy, results and recovery sections.
+            // - Liposuction vs breast augmentation is combination intent,
+            //   which belongs to the mommy makeover page.
+            //
+            // Both /slug and /blog/slug are redirected for every post (#241).
+            {
+                source: '/blog/when-to-start-lymphatic-massage-after-lipo',
+                destination: '/how-many-massages-after-lipo-360',
+                permanent: true,
+            },
+            {
+                source: '/when-to-start-lymphatic-massage-after-lipo',
+                destination: '/how-many-massages-after-lipo-360',
+                permanent: true,
+            },
+            {
+                source: '/blog/liposuction-recovery-time-miami',
+                destination: '/how-to-reduce-swelling-after-liposuction',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-recovery-time-miami',
+                destination: '/how-to-reduce-swelling-after-liposuction',
+                permanent: true,
+            },
+            {
+                source: '/blog/what-is-the-difference-between-tummy-tuck-and-liposuction',
+                destination: '/blog/tummy-tuck-vs-liposuction',
+                permanent: true,
+            },
+            {
+                source: '/what-is-the-difference-between-tummy-tuck-and-liposuction',
+                destination: '/blog/tummy-tuck-vs-liposuction',
+                permanent: true,
+            },
+            {
+                source: '/blog/liposuction-candidate-miami',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-candidate-miami',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/liposuction-miami-post-pregnancy-guide',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-miami-post-pregnancy-guide',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/liposuction-miami-moms-tips',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-miami-moms-tips',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/how-to-maintain-liposuction-results',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/how-to-maintain-liposuction-results',
+                destination: '/procedures/liposuction-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/liposuction-vs-breast-augmentation-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/liposuction-vs-breast-augmentation-miami',
+                destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
         ]

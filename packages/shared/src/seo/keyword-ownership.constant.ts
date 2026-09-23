@@ -193,6 +193,13 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'lipo 360 cost miami',
             'how much is lipo 360 in miami',
             'liposuction price per area',
+            // Intent of the four posts folded into this page in the
+            // 2026-09-22 liposuction blog review (candidate, post-pregnancy,
+            // moms tips, maintaining results).
+            'liposuction candidate miami',
+            'liposuction after pregnancy',
+            'how to maintain liposuction results',
+            'does fat come back after liposuction',
         ],
     },
     {
@@ -206,6 +213,9 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'post pregnancy surgery',
             'breast augmentation tummy tuck',
             'mommy makeover packages',
+            // /blog/liposuction-vs-breast-augmentation-miami folded here in
+            // the 2026-09-22 liposuction blog review: combination intent.
+            'liposuction and breast augmentation',
         ],
         mustNotTarget: [
             {

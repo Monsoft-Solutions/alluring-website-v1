@@ -61,6 +61,15 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'bbl-miami-post-pregnancy-guide',
     'bbl-safety-miami',
     'bbl-miami-post-pregnancy-quiz',
+    // Liposuction blog consolidation (2026-09-22 blog review)
+    'when-to-start-lymphatic-massage-after-lipo',
+    'liposuction-recovery-time-miami',
+    'what-is-the-difference-between-tummy-tuck-and-liposuction',
+    'liposuction-candidate-miami',
+    'liposuction-miami-post-pregnancy-guide',
+    'liposuction-miami-moms-tips',
+    'how-to-maintain-liposuction-results',
+    'liposuction-vs-breast-augmentation-miami',
     // Anti-cannibalization redirects (blog → procedure pages)
     'what-is-the-mommy-makeover-procedure',
     'liposuction-cost-miami',

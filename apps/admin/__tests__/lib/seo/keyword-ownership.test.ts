@@ -21,7 +21,7 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (140 posts as of seed)', () => {
+    it('contains every published post exactly once (132 posts as of seed)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
@@ -30,8 +30,9 @@ describe('registry integrity', () => {
         // posts into /blog/tummy-tuck-vs-bbl-miami, six "mom" posts into the
         // procedure page), and the three recovery posts folded into
         // /how-long-to-recover-from-bbl (miami-bbl-recovery-guide,
-        // bbl-recovery-time-miami, bbl-recovery-mistakes-miami).
-        expect(liveBlog.length).toBe(140)
+        // bbl-recovery-time-miami, bbl-recovery-mistakes-miami), and the
+        // eight liposuction posts folded in the 2026-09-22 blog review.
+        expect(liveBlog.length).toBe(132)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -162,6 +163,92 @@ describe('resolveQueryOwner', () => {
             expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
                 '/procedures/brazilian-butt-lift-bbl-miami'
             )
+        }
+    })
+
+    it('marks the folded liposuction posts retired with their 308 target', () => {
+        const page = '/procedures/liposuction-miami'
+        const folded: Array<[string, string]> = [
+            [
+                'when-to-start-lymphatic-massage-after-lipo',
+                '/how-many-massages-after-lipo-360',
+            ],
+            [
+                'liposuction-recovery-time-miami',
+                '/how-to-reduce-swelling-after-liposuction',
+            ],
+            [
+                'what-is-the-difference-between-tummy-tuck-and-liposuction',
+                '/blog/tummy-tuck-vs-liposuction',
+            ],
+            ['liposuction-candidate-miami', page],
+            ['liposuction-miami-post-pregnancy-guide', page],
+            ['liposuction-miami-moms-tips', page],
+            ['how-to-maintain-liposuction-results', page],
+            [
+                'liposuction-vs-breast-augmentation-miami',
+                '/procedures/mommy-makeover-miami',
+            ],
+            // Older aliases go straight to the page, not through a second 308
+            ['liposuction-candidate-checklist-miami', page],
+            ['liposuction-miami-moms-faq', page],
+        ]
+        for (const [slug, redirectsTo] of folded) {
+            const entry = BLOG_POST_ENTRIES.find((e) => e.slug === slug)
+            expect(entry?.status, slug).toBe('retired')
+            expect(entry?.redirectsTo, slug).toBe(redirectsTo)
+        }
+    })
+
+    it('gives each liposuction recovery question one owner', () => {
+        const owners: Array<[string, string]> = [
+            [
+                'liposuction recovery timeline',
+                '/how-to-reduce-swelling-after-liposuction',
+            ],
+            [
+                'lipo swelling timeline',
+                '/how-to-reduce-swelling-after-liposuction',
+            ],
+            [
+                'lymphatic massage after lipo',
+                '/how-many-massages-after-lipo-360',
+            ],
+            [
+                'when to start lymphatic massage after lipo',
+                '/how-many-massages-after-lipo-360',
+            ],
+            [
+                'what is the difference between tummy tuck and liposuction',
+                '/blog/tummy-tuck-vs-liposuction',
+            ],
+            ['lipo 360 cost', '/procedures/liposuction-miami'],
+            [
+                'am i a candidate for liposuction',
+                '/procedures/liposuction-miami',
+            ],
+        ]
+        for (const [query, url] of owners) {
+            expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
+                url
+            )
+        }
+    })
+
+    it('gives combined BBL + liposuction questions to the BBL post', () => {
+        const owners: Array<[string, string]> = [
+            ['how to sleep after bbl and lipo 360', '/how-to-sleep-after-bbl'],
+            [
+                'how many massages after lipo 360 and bbl',
+                '/how-many-massages-after-bbl',
+            ],
+            [
+                'what to eat after bbl and lipo',
+                '/how-to-feed-the-fat-after-bbl',
+            ],
+        ]
+        for (const [query, url] of owners) {
+            expect(resolveQueryOwner(query)?.owner.url, query).toBe(url)
         }
     })
 
