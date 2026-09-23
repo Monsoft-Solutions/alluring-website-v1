@@ -25,7 +25,10 @@ export const liposuctionMiami: Procedure = {
     // 64B8-11.001(2)(j) does not allow, so the rebuild had to change it.
     // Only that part changes: the head term and the year stay first, so the
     // day-28 read can tell a ranking change from a click-through change.
-    seoTitle: `Liposuction Miami ${new Date().getFullYear()} | ${KARLINSKY_NAME}`,
+    // After the "|": the Lipo 360 price, for the cost searches the page ranks
+    // best for, and financing, which the cost section offers without a
+    // figure. No surgeon's name, so a staffing change doesn't touch it.
+    seoTitle: `Liposuction Miami ${new Date().getFullYear()} | Lipo 360 From ${lipoFigure('price-starting-at')} + Financing`,
     //
     // Written for the cost cluster, where the page ranks best (positions
     // 45–50, Search Console, 180 days to 2026-09-19): the price, the one
