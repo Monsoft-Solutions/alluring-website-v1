@@ -35,6 +35,12 @@ export const contactSubmission = pgTable(
         ttclid: text('ttclid'),
         referrer: text('referrer'),
         landingPage: text('landing_page'),
+        // Where the form itself was submitted — `landing_page` is where the
+        // session started, and several pages share one source.
+        submittedFromPath: text('submitted_from_path'),
+        // GA4 client id from the `_ga` cookie: joins a lead to its GA4
+        // behaviour without sending anything about the lead to Google.
+        gaClientId: text('ga_client_id'),
 
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at')

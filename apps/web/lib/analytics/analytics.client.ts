@@ -8,11 +8,7 @@
  */
 import { publicEnv } from '@/lib/env/public-env'
 
-import type {
-    EventParams,
-    PageViewParams,
-    ScrollDepthParams,
-} from './analytics.types'
+import type { EventParams, PageViewParams } from './analytics.types'
 
 /**
  * Check if code is running in browser context
@@ -90,34 +86,6 @@ export function trackPageView(params?: PageViewParams): void {
 }
 
 /**
- * Track scroll depth milestone
- *
- * @param params - Scroll depth parameters
- *
- * @example
- * ```ts
- * trackScrollDepth({ percent: 75, page_path: '/blog/article' })
- * ```
- */
-export function trackScrollDepth(params: ScrollDepthParams): void {
-    if (!isGtagAvailable()) return
-
-    try {
-        trackEvent('scroll_depth', {
-            percent: params.percent,
-            page_path: params.page_path ?? window.location.pathname,
-        })
-        if (publicEnv.NODE_ENV === 'development') {
-            console.log('Analytics: Tracked scroll depth', params)
-        }
-    } catch (error) {
-        if (publicEnv.NODE_ENV === 'development') {
-            console.error('Analytics: Failed to track scroll depth', error)
-        }
-    }
-}
-
-/**
  * Track a custom event to Microsoft Clarity
  *
  * @param eventName - The event name
@@ -143,6 +111,25 @@ export function trackClarityEvent(
     } catch (error) {
         if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track Clarity event', error)
+        }
+    }
+}
+
+/**
+ * Set a custom tag on the current Clarity session, for filtering recordings
+ * and heatmaps (e.g. `lead_stage` = `lead_form_start`).
+ *
+ * @param key - Tag name
+ * @param value - Tag value (plain string, never PII)
+ */
+export function setClarityTag(key: string, value: string): void {
+    if (!isClarityAvailable()) return
+
+    try {
+        window.clarity!('set', key, value)
+    } catch (error) {
+        if (publicEnv.NODE_ENV === 'development') {
+            console.error('Analytics: Failed to set Clarity tag', error)
         }
     }
 }

@@ -72,15 +72,22 @@ export const ExitIntentDialog = ({
         },
     })
 
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.EXIT_INTENT,
-            redirectOnSuccess: '/thank-you',
-            onSuccess: () => {
-                form.reset()
-                onClose()
-            },
-        })
+    const {
+        submit,
+        state,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: CONTACT_SOURCES.EXIT_INTENT,
+        redirectOnSuccess: '/thank-you',
+        onSuccess: () => {
+            form.reset()
+            onClose()
+        },
+    })
 
     const onSubmit = async (data: LeadCaptureInput) => {
         await submit(data)
@@ -141,7 +148,11 @@ export const ExitIntentDialog = ({
                     ) : (
                         <Form {...form}>
                             <form
-                                onSubmit={form.handleSubmit(onSubmit)}
+                                ref={formRef}
+                                onSubmit={form.handleSubmit(
+                                    onSubmit,
+                                    trackValidationErrors
+                                )}
                                 className='space-y-3'
                             >
                                 {/* Honeypot field - hidden from real users */}

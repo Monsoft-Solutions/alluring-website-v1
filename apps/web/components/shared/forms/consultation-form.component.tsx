@@ -165,17 +165,24 @@ export function ConsultationForm({
         ? compactProcedureLabel
         : null
 
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source,
-            enableAnalytics,
-            analyticsFormName: analyticsFormName ?? source,
-            redirectOnSuccess,
-            onSuccess: () => {
-                form.reset()
-                onSuccess?.()
-            },
-        })
+    const {
+        submit,
+        state,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source,
+        enableAnalytics,
+        analyticsFormName: analyticsFormName ?? source,
+        redirectOnSuccess,
+        onSuccess: () => {
+            form.reset()
+            onSuccess?.()
+        },
+    })
 
     const handleSubmit = async (data: ConsultationFormInput) => {
         // Find the procedure label for the subject line
@@ -232,7 +239,11 @@ export function ConsultationForm({
             ) : (
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(handleSubmit)}
+                        ref={formRef}
+                        onSubmit={form.handleSubmit(
+                            handleSubmit,
+                            trackValidationErrors
+                        )}
                         className='space-y-6'
                     >
                         {/* Honeypot field - hidden from real users, bots will fill it */}

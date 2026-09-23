@@ -164,12 +164,19 @@ export function BlogCTA({
         },
     })
 
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.BLOG_LEAD,
-            redirectOnSuccess: '/thank-you',
-            onSuccess: () => form.reset(),
-        })
+    const {
+        submit,
+        state,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: CONTACT_SOURCES.BLOG_LEAD,
+        redirectOnSuccess: '/thank-you',
+        onSuccess: () => form.reset(),
+    })
 
     // Determine which content to use (priority: content prop > ctaId > default)
     const ctaContent =
@@ -343,7 +350,11 @@ export function BlogCTA({
                         /* Lead capture form */
                         <Form {...form}>
                             <form
-                                onSubmit={form.handleSubmit(onSubmit)}
+                                ref={formRef}
+                                onSubmit={form.handleSubmit(
+                                    onSubmit,
+                                    trackValidationErrors
+                                )}
                                 className='space-y-6'
                             >
                                 {/* Honeypot field - hidden from real users, bots will fill it */}

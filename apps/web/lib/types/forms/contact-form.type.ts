@@ -377,6 +377,8 @@ export const contactFormSchema = z.object({
     // Session context
     referrer: z.string().optional(),
     landingPage: z.string().optional(),
+    submittedFromPath: z.string().max(512).optional(),
+    gaClientId: z.string().max(64).optional(),
 
     // Anti-spam honeypot
     _website: z.string().optional(),

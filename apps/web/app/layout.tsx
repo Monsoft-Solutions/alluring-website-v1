@@ -6,7 +6,6 @@ import Script from 'next/script'
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
 import { InternalPageViewTracker } from '@/components/analytics/internal-page-view-tracker.component'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
-import { ScrollDepthTracker } from '@/components/analytics/scroll-depth-tracker.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
 import { FloatingChatButtonLazy } from '@/components/chat/floating-chat-button-lazy.component'
 import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedback-button-lazy.component'
@@ -133,7 +132,6 @@ export default function RootLayout({
                 <ScrollToTop />
                 <InternalPageViewTracker />
                 <PageViewTracker />
-                <ScrollDepthTracker />
                 <OrganizationSchema
                     id={`${seoConfig.siteUrl}/#organization`}
                     name={seoConfig.siteName}

@@ -13,6 +13,7 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
+import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ContactHeroForm } from '@/components/sections/contact/contact-hero-form.component'
 import { ContactStatsStrip } from '@/components/sections/contact/contact-stats-strip.component'
@@ -223,6 +224,8 @@ export default async function ContactPage() {
                 {/* Section 9: Alternative Contact Methods */}
                 <ContactAlternative id='location' />
             </ContainerLayout>
+
+            <SectionViewTracker />
 
             {/* Mobile Call Button - Always visible on contact page for conversion optimization */}
             <MobileCallButton position='bottom-right' style='icon-only' />
