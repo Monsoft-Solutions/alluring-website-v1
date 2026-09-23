@@ -31,6 +31,11 @@ Keep the numbers in the brief and the PR, so day 28/56 can be compared.
 - **H1** is `procedure.title`. **Title** (`seoTitle`) and H1 don't change in the
   same deploy as the redesign unless the data says they're wrong; if they
   must, say why in the PR, so the effects can be told apart.
+- **No surgeon's name in `seoTitle`.** A staffing change would break every
+  title that carries it. Head term first, then what wins the click for the
+  cluster the page ranks best for, usually the price (liposuction:
+  `Liposuction Miami {year} | Lipo 360 From $4,000 + Financing`, the price
+  read from the facts file). The name belongs in the meta description.
 - **Meta description** (`metaDescription`, ≤ 160 characters, clamped by
   `clampMetaDescription`): written for the click on the cluster the page is
   closest to page one for (for BBL, cost). Price, the named surgeon with MD,
