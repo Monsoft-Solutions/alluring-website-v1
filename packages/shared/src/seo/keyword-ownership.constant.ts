@@ -17,7 +17,8 @@ import type { OwnedPage } from './keyword-ownership.type'
 /**
  * Procedure pages — procedure intent. Their cost sections stay (they earn
  * the cost FAQ snippet), but price-intent clusters belong to cost pages.
- * The exception is BBL, whose procedure page owns its price cluster.
+ * The exceptions are BBL and liposuction, whose procedure pages own their
+ * price clusters.
  */
 const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
     {
@@ -174,14 +175,24 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'fat removal',
             'body sculpting',
             'lipo 360',
-            'power-assisted liposuction',
-        ],
-        mustNotTarget: [
-            {
-                query: 'liposuction cost miami',
-                ownedBy: '/liposuction-cost-miami',
-            },
-            { query: 'lipo cost', ownedBy: '/liposuction-cost-miami' },
+            'liposculpture miami',
+            'is liposuction safe',
+            'am i a candidate for liposuction',
+            'liposuction before and after miami',
+            // Price intent. Like BBL, liposuction has no cost page: the
+            // planned /liposuction-cost-miami was dropped in the 2026-09-22
+            // page rebuild. That URL already 308s here, the cost cluster is
+            // where this page ranks best (positions 45–54, 180 days to
+            // 2026-09-19), and the page carries the price table from the
+            // practice's 2026-09-15 price sheet.
+            'liposuction cost miami',
+            'liposuction miami cost',
+            'lipo cost miami',
+            'lipo cost',
+            'lipo 360 cost',
+            'lipo 360 cost miami',
+            'how much is lipo 360 in miami',
+            'liposuction price per area',
         ],
     },
     {
@@ -325,25 +336,6 @@ const COST_PAGE_ENTRIES: OwnedPage[] = [
                 ownedBy: '/mommy-makeover-consultation',
             },
         ],
-    },
-    {
-        url: '/liposuction-cost-miami',
-        kind: 'cost',
-        intent: 'price',
-        status: 'planned',
-        primaryKeyword: 'liposuction cost miami',
-        ownsQueries: [
-            'lipo cost',
-            'lipo 360 cost',
-            'liposuction price per area',
-        ],
-        mustNotTarget: [
-            {
-                query: 'liposuction miami',
-                ownedBy: '/procedures/liposuction-miami',
-            },
-        ],
-        notes: 'CONFLICT to resolve before building: next.config.mjs currently 301s /liposuction-cost-miami (a retired blog slug) to the procedure page. Remove that redirect when this page ships.',
     },
 ]
 

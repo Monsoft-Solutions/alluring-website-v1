@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import { cn } from '@workspace/ui/lib/utils'
 
+import {
+    moduleLink,
+    moduleSectionPad,
+} from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
-
-import { bblLink, bblSectionPad } from './bbl-ui.constant'
 
 type BblOption = {
     name: string
@@ -52,7 +54,7 @@ export function BblOptions() {
         <AnswerBlock
             id='options'
             question='Which BBL is right for you: traditional, skinny, lipo 360 or revision?'
-            className={bblSectionPad}
+            className={moduleSectionPad}
             answer='The right BBL depends on how much fat you have to move and what you want to change. A traditional BBL suits most people with fat to spare, a skinny BBL suits leaner bodies, lipo 360 reshapes the whole waist, and a revision corrects an earlier BBL. Your surgeon recommends one after an exam.'
         >
             <div className='mt-10 grid gap-x-10 gap-y-9 md:grid-cols-2'>
@@ -82,7 +84,7 @@ export function BblOptions() {
                             <Link
                                 href={option.link.href}
                                 className={cn(
-                                    bblLink,
+                                    moduleLink,
                                     'mt-3 inline-block text-base'
                                 )}
                             >
@@ -94,14 +96,14 @@ export function BblOptions() {
             </div>
             <ul className='mt-9 flex flex-col gap-2 text-base md:flex-row md:gap-8'>
                 <li>
-                    <Link href='/what-is-a-double-bbl' className={bblLink}>
+                    <Link href='/what-is-a-double-bbl' className={moduleLink}>
                         What a double BBL is
                     </Link>
                 </li>
                 <li>
                     <Link
                         href='/blog/tummy-tuck-vs-bbl-miami'
-                        className={bblLink}
+                        className={moduleLink}
                     >
                         BBL vs tummy tuck, liposuction and butt implants
                     </Link>

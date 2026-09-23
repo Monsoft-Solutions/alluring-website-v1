@@ -3,15 +3,12 @@ import { cn } from '@workspace/ui/lib/utils'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import { ReviewedBy } from '@/components/procedures/sections/reviewed-by.component'
 import { sourceAnchorId } from '@/components/procedures/sections/sources-list.component'
-import {
-    bblSources,
-    type BblSource,
-} from '@/lib/data/procedures/facts/bbl.facts'
+import type { ProcedureSource } from '@/lib/data/procedures/facts/procedure-facts'
 
-import { bblContainer } from './bbl-ui.constant'
+import { moduleContainer } from './module-ui.constant'
 
 /**
- * A source's date as the list prints it. The facts file holds full dates,
+ * A source's date as the list prints it. A facts file holds full dates,
  * year-months or bare years, depending on what the source states.
  */
 function sourceDate(date: string): string {
@@ -29,7 +26,7 @@ function sourceDate(date: string): string {
     )
 }
 
-function sourceByline(source: BblSource): string {
+function sourceByline(source: ProcedureSource): string {
     return [
         source.publisher,
         source.authors,
@@ -40,24 +37,34 @@ function sourceByline(source: BblSource): string {
 }
 
 /**
- * "Where do these figures come from?" Every published source in
- * `bbl.facts.ts`, in the order the facts file lists them. The practice's own
- * figures are stated as ours in the copy, not cited, so they are not listed.
+ * "Where do these figures come from?" Every published source in the page's
+ * facts file, in the order the file lists them. The practice's own figures
+ * are stated as ours in the copy, not cited, and have no URL, so they are not
+ * listed.
  *
- * Each item carries `#source-{id}`, which the safety section's citations and
- * the fact table's `CitationLinks` point at. There is no reviewer line until
- * #247 names one: the page shows "Last updated" only.
+ * Each item carries `#source-{id}`, which the page's citations and the fact
+ * table's `CitationLinks` point at. There is no reviewer line until a real
+ * medical review is recorded: the page shows "Last updated" only.
  */
-export function BblSources({ updatedOn }: { updatedOn?: string }) {
-    const cited = bblSources.filter((source) => source.url)
+export function ModuleSources({
+    sources,
+    answer,
+    updatedOn,
+}: {
+    sources: readonly ProcedureSource[]
+    /** The 40–60-word answer: what the sources cover and when they were read. */
+    answer: string
+    updatedOn?: string
+}) {
+    const cited = sources.filter((source) => source.url)
 
     return (
-        <div className='bbl-defer bg-stone-50'>
+        <div className='pm-defer bg-stone-50'>
             <AnswerBlock
                 id='sources'
                 question='Where do these figures come from?'
-                className={cn(bblContainer, 'py-12 md:py-24')}
-                answer="Every recovery, results and safety figure on this page, and the national average cost, comes from the sources below, checked in September 2026. Where a figure is one surgeon's advice rather than a society's guidance, we say so. Your own surgeon's instructions always come first, and they may differ from these general ranges."
+                className={cn(moduleContainer, 'py-12 md:py-24')}
+                answer={answer}
             >
                 <ol
                     data-copy-check='data'

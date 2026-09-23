@@ -1,12 +1,14 @@
 /*
- * BBL page module (#256): the page-level rules Tailwind utilities can't
- * express, and all of its motion.
+ * Procedure page module kit: the page-level rules Tailwind utilities can't
+ * express, and the motion every procedure page module shares (#256, first
+ * written for the BBL page). A module adds its own file only for what is
+ * truly its own, such as a diagram's motion.
  *
  * Motion is CSS only, with no client JavaScript and no motion library, and
  * follows three rules:
  *
  * 1. Text never animates in from hidden. Only photographs, rules and parts of
- *    the diagram move, so a crawler, a screenshot or a slow phone always gets
+ *    a diagram move, so a crawler, a screenshot or a slow phone always gets
  *    every word at its final position.
  * 2. It is progressive. Scroll-driven effects sit behind
  *    `@supports (animation-timeline: view())`; a browser without them shows
@@ -15,48 +17,49 @@
  *    not an override that has to win on specificity.
  * 3. Keyframes fill `both`, so nothing flashes its end state before it starts.
  *
- * Class names are prefixed `bbl-`: this file is global CSS scoped by naming,
- * and it loads with the `/procedures/[slug]` route.
+ * Class names are prefixed `pm-` (procedure module): this file is global CSS
+ * scoped by naming, and it loads with the `/procedures/[slug]` route. The
+ * module's root element carries `pm-page`.
  */
 
 /* The page has its own bottom bar on mobile. The root layout's floating call
    button would sit in the same corner. */
-body:has(.bbl-page) [data-mobile-call-button] {
+body:has(.pm-page) [data-mobile-call-button] {
     display: none;
 }
 
 /* The hero's view timeline is read by the sticky bar, which is not its
    descendant. */
-.bbl-page {
-    timeline-scope: --bbl-hero, --bbl-book;
+.pm-page {
+    timeline-scope: --pm-hero, --pm-book;
 }
 
-.bbl-hero {
-    view-timeline: --bbl-hero block;
+.pm-hero {
+    view-timeline: --pm-hero block;
 }
 
-.bbl-book {
-    view-timeline: --bbl-book block;
+.pm-book {
+    view-timeline: --pm-book block;
 }
 
 /* Below-the-fold sections skip rendering until they near the viewport. The
    text stays in the DOM, so find-in-page, anchors and crawlers all see it. */
-.bbl-defer {
+.pm-defer {
     content-visibility: auto;
     contain-intrinsic-size: auto 1200px;
 }
 
 /* Recovery timeline: the rule and the dots, drawn from the list items so
-   they add no markup. `--bbl-rail-x` is the rule's distance from the item's
+   they add no markup. `--pm-rail-x` is the rule's distance from the item's
    left edge. */
-.bbl-milestone {
+.pm-milestone {
     position: relative;
 }
 
-.bbl-milestone::before {
+.pm-milestone::before {
     content: '';
     position: absolute;
-    left: var(--bbl-rail-x);
+    left: var(--pm-rail-x);
     top: 0.875rem;
     bottom: -0.875rem;
     width: 2px;
@@ -65,14 +68,14 @@ body:has(.bbl-page) [data-mobile-call-button] {
     transform-origin: top;
 }
 
-.bbl-milestone:last-child::before {
+.pm-milestone:last-child::before {
     display: none;
 }
 
-.bbl-milestone::after {
+.pm-milestone::after {
     content: '';
     position: absolute;
-    left: var(--bbl-rail-x);
+    left: var(--pm-rail-x);
     top: 0.5rem;
     width: 0.75rem;
     height: 0.75rem;
@@ -84,88 +87,88 @@ body:has(.bbl-page) [data-mobile-call-button] {
 }
 
 /* FAQ disclosure: the plus becomes a minus when open. */
-.bbl-plus-v {
+.pm-plus-v {
     transform-box: fill-box;
     transform-origin: center;
 }
 
-.bbl-faq details[open] .bbl-plus-v {
+.pm-faq details[open] .pm-plus-v {
     scale: 1 0;
 }
 
-.bbl-faq summary {
+.pm-faq summary {
     list-style: none;
 }
 
-.bbl-faq summary::-webkit-details-marker {
+.pm-faq summary::-webkit-details-marker {
     display: none;
 }
 
 /* Results rail: a row of photos that runs to the edge of the screen. Phones
    swipe it; from `lg` it sits beside the slider and bleeds right only.
-   `--bbl-gutter` is the container's side padding. The links inside make it
+   `--pm-gutter` is the container's side padding. The links inside make it
    reachable by keyboard. */
-.bbl-rail {
-    --bbl-gutter: 1.25rem;
+.pm-rail {
+    --pm-gutter: 1.25rem;
     display: flex;
     gap: 1rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--bbl-gutter);
-    padding-inline: var(--bbl-gutter);
-    margin-inline: calc(-1 * var(--bbl-gutter));
+    scroll-padding-inline: var(--pm-gutter);
+    padding-inline: var(--pm-gutter);
+    margin-inline: calc(-1 * var(--pm-gutter));
     scrollbar-width: none;
 }
 
-.bbl-rail::-webkit-scrollbar {
+.pm-rail::-webkit-scrollbar {
     display: none;
 }
 
-.bbl-rail > li {
+.pm-rail > li {
     flex: none;
     scroll-snap-align: start;
 }
 
 @media (min-width: 48rem) {
-    .bbl-rail {
-        --bbl-gutter: 2rem;
+    .pm-rail {
+        --pm-gutter: 2rem;
         gap: 1.25rem;
     }
 }
 
 @media (min-width: 64rem) {
-    .bbl-rail {
+    .pm-rail {
         /* From the container's content edge to the edge of the screen. */
-        --bbl-bleed: calc(2rem + max(0px, (100vw - 75rem) / 2));
+        --pm-bleed: calc(2rem + max(0px, (100vw - 75rem) / 2));
         gap: 1.5rem;
         scroll-padding-inline: 0;
-        padding-inline: 0 var(--bbl-bleed);
-        margin-inline: 0 calc(-1 * var(--bbl-bleed));
+        padding-inline: 0 var(--pm-bleed);
+        margin-inline: 0 calc(-1 * var(--pm-bleed));
     }
 }
 
 @media (prefers-reduced-motion: no-preference) {
     /* The one orchestrated moment: on load, the hero photograph opens up and
        settles, and the rating card rises into place. The H1 does not move. */
-    .bbl-hero-frame {
-        animation: bbl-unveil 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    .pm-hero-frame {
+        animation: pm-unveil 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
     }
 
-    .bbl-hero-frame img {
-        animation: bbl-settle 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    .pm-hero-frame img {
+        animation: pm-settle 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
     }
 
-    .bbl-hero-card {
-        animation: bbl-rise 0.9s 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    .pm-hero-card {
+        animation: pm-rise 0.9s 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
     }
 
     /* FAQ answers open smoothly where the browser can size to `auto`. */
-    .bbl-faq {
+    .pm-faq {
         interpolate-size: allow-keywords;
     }
 
-    .bbl-faq details::details-content {
+    .pm-faq details::details-content {
         block-size: 0;
         overflow: clip;
         transition:
@@ -173,11 +176,11 @@ body:has(.bbl-page) [data-mobile-call-button] {
             content-visibility 0.35s allow-discrete;
     }
 
-    .bbl-faq details[open]::details-content {
+    .pm-faq details[open]::details-content {
         block-size: auto;
     }
 
-    .bbl-plus-v {
+    .pm-plus-v {
         transition: scale 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
 
@@ -185,58 +188,66 @@ body:has(.bbl-page) [data-mobile-call-button] {
         /* The hero photograph also drifts as the hero scrolls away. One
            declaration for both animations: a second `animation` would
            replace the load-time settle, not add to it. */
-        .bbl-hero-frame img {
+        .pm-hero-frame img {
             animation:
-                bbl-settle 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both,
-                bbl-drift linear both;
-            animation-timeline: auto, --bbl-hero;
+                pm-settle 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both,
+                pm-drift linear both;
+            animation-timeline: auto, --pm-hero;
             animation-range:
                 normal,
                 exit 0% exit 100%;
         }
 
         /* Other photographs open as they come into view. */
-        .bbl-unveil {
-            animation: bbl-unveil linear both;
+        .pm-unveil {
+            animation: pm-unveil linear both;
             animation-timeline: view();
             animation-range: entry 0% cover 35%;
         }
 
-        /* The safety band arrives as a change of scene: it opens from an
-           inset card to full width. The inset is narrower than the band's
-           padding, so no text is ever clipped. */
-        .bbl-scene {
-            animation: bbl-scene-open linear both;
+        /* The page's one dark band arrives as a change of scene: it opens
+           from an inset card to full width. The inset is narrower than the
+           band's padding, so no text is ever clipped. */
+        .pm-scene {
+            animation: pm-scene-open linear both;
             animation-timeline: view();
             animation-range: entry 0% entry 60%;
         }
 
         /* Results rail: a photo comes up to full size as it slides in. */
-        .bbl-rail-frame {
-            animation: bbl-card linear both;
+        .pm-rail-frame {
+            animation: pm-card linear both;
             animation-timeline: view(inline);
             animation-range: entry 0% entry 100%;
         }
 
-        /* Diagram: the cannula is drawn in, watched on ultrasound. */
-        .bbl-cannula {
+        /* A diagram line drawn across or down as it scrolls into view. A
+           module's own diagram uses these instead of new keyframes. */
+        .pm-draw-x {
             transform-origin: left center;
-            animation: bbl-draw-x linear both;
+            animation: pm-draw-x linear both;
             animation-timeline: view();
             animation-range: cover 25% cover 50%;
+        }
+
+        .pm-draw-y {
+            transform-origin: bottom center;
+            animation: pm-draw-y linear both;
+            animation-timeline: view();
+            animation-range: cover 20% cover 50%;
         }
 
         /* Recovery: the rule draws down and each dot fills as that stage
            reaches the middle of the screen, so the timeline follows the
            reader. */
-        .bbl-milestone::before {
-            animation: bbl-draw-y linear both;
+        .pm-milestone::before {
+            animation: pm-draw-y linear both;
             animation-timeline: view();
             animation-range: cover 35% cover 60%;
         }
 
-        .bbl-milestone::after {
-            animation: bbl-dot linear both;
+        .pm-milestone::after {
+            animation: pm-dot linear both;
             animation-timeline: view();
             animation-range: cover 38% cover 48%;
         }
@@ -244,11 +255,11 @@ body:has(.bbl-page) [data-mobile-call-button] {
         /* Mobile bar: off screen while the hero's own buttons are visible,
            in once the hero has gone, out again over the booking form. Two
            properties, so the two animations compose instead of fighting. */
-        .bbl-sticky-bar {
+        .pm-sticky-bar {
             animation:
-                bbl-bar-in linear both,
-                bbl-bar-out linear both;
-            animation-timeline: --bbl-hero, --bbl-book;
+                pm-bar-in linear both,
+                pm-bar-out linear both;
+            animation-timeline: --pm-hero, --pm-book;
             animation-range:
                 exit 40% exit 90%,
                 entry 10% entry 45%;
@@ -256,7 +267,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-card {
+@keyframes pm-card {
     from {
         scale: 0.9;
     }
@@ -265,7 +276,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-unveil {
+@keyframes pm-unveil {
     from {
         clip-path: inset(0 0 9% 0);
     }
@@ -274,7 +285,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-settle {
+@keyframes pm-settle {
     from {
         scale: 1.06;
     }
@@ -283,7 +294,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-rise {
+@keyframes pm-rise {
     from {
         translate: 0 1.25rem;
     }
@@ -292,7 +303,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-drift {
+@keyframes pm-drift {
     from {
         translate: 0 0;
     }
@@ -301,7 +312,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-scene-open {
+@keyframes pm-scene-open {
     from {
         clip-path: inset(0 3% round 1.75rem);
     }
@@ -310,7 +321,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-draw-x {
+@keyframes pm-draw-x {
     from {
         scale: 0 1;
     }
@@ -319,7 +330,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-draw-y {
+@keyframes pm-draw-y {
     from {
         scale: 1 0;
     }
@@ -328,7 +339,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-dot {
+@keyframes pm-dot {
     from {
         background: #fff;
     }
@@ -337,7 +348,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-bar-in {
+@keyframes pm-bar-in {
     from {
         translate: 0 110%;
     }
@@ -346,7 +357,7 @@ body:has(.bbl-page) [data-mobile-call-button] {
     }
 }
 
-@keyframes bbl-bar-out {
+@keyframes pm-bar-out {
     from {
         transform: none;
     }

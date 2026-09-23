@@ -1,6 +1,6 @@
 /**
- * The BBL page module's values that are not copy: the label every AI image of
- * a person carries, and the #254 renders.
+ * The BBL page module's values that are not copy: the #254 renders. The label
+ * every AI image of a person carries is the kit's `AI_MODEL_LABEL`.
  *
  * The copy itself lives in each section component, next to the markup that
  * lays it out. Figures come from `bbl.facts.ts`, and
@@ -9,20 +9,12 @@
  * @module
  */
 
-/** Required on every AI image of a person (#254). */
-export const AI_MODEL_LABEL = 'Model shown. Not a patient.'
+import type { ModuleImage } from '@/components/procedures/module-kit/module-ui.constant'
 
 const BLOB =
     'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09'
 
-/** A rendered image: dimensions are the file's, so the layout never shifts. */
-export type BblImage = {
-    src: string
-    width: number
-    height: number
-    /** Describes the picture. No keyword lists. */
-    alt: string
-}
+export type BblImage = ModuleImage
 
 const HERO_ALT =
     'Woman in a sand linen midi dress with one hand on the window frame, looking out over the bay in morning light'

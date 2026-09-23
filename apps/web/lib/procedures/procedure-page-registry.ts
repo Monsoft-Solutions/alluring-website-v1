@@ -21,6 +21,7 @@ import { createElement, type ReactNode } from 'react'
 import type { JsonLdGraphNode } from '@workspace/seo/react'
 
 import { BblPage } from '@/components/procedures/pages/bbl/bbl-page.component'
+import { LipoPage } from '@/components/procedures/pages/lipo/lipo-page.component'
 import { ProcedureTemplatePage } from '@/components/procedures/template/procedure-template-page.component'
 import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
 import type {
@@ -36,6 +37,7 @@ const procedurePageModules: Readonly<
     Partial<Record<string, ProcedurePageModule>>
 > = {
     'brazilian-butt-lift-bbl-miami': BblPage,
+    'liposuction-miami': LipoPage,
 }
 
 /**
@@ -66,6 +68,7 @@ const procedureSurgeons: Readonly<
     >
 > = {
     'brazilian-butt-lift-bbl-miami': karlinskyPersonNode,
+    'liposuction-miami': karlinskyPersonNode,
 }
 
 /** The surgeon node for a procedure's page, when its module names one. */

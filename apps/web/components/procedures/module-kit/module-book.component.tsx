@@ -16,11 +16,11 @@ import {
 import type { BusinessHours } from '@/lib/types/site-config.type'
 
 import {
-    bblButtonSecondary,
-    bblContainer,
-    bblH3,
-    bblLink,
-} from './bbl-ui.constant'
+    moduleButtonSecondary,
+    moduleContainer,
+    moduleH3,
+    moduleLink,
+} from './module-ui.constant'
 
 const { contact } = siteConfig
 
@@ -37,30 +37,40 @@ const nextSteps = [
 ]
 
 /**
- * "How do I book a BBL consultation in Miami?" The answer and the three
- * steps beside the site's consultation form.
+ * "How do I book a … consultation in Miami?" The answer and the three steps
+ * beside the site's consultation form.
  *
  * The form is the shared `ConsultationForm` with the same source, analytics
  * name and redirect the template's procedure form sends, so leads from this
  * page land and report exactly as before. It is built for dark backgrounds,
- * hence the stone-900 card. `bbl-book` names the view timeline the mobile
+ * hence the stone-900 card. `pm-book` names the view timeline the mobile
  * bar uses to step aside while the form is on screen. The optional contact
  * time field is off: one less field between the reader and sending.
  *
  * The body copy never said where the clinic is, so the address, the hours and
  * a directions link sit beside the form, read from `siteConfig`.
  */
-export function BblBook({ procedureSlug }: { procedureSlug: string }) {
+export function ModuleBook({
+    procedureSlug,
+    question,
+    answer,
+}: {
+    procedureSlug: string
+    /** e.g. "How do I book a BBL consultation in Miami?" */
+    question: string
+    /** The 40–60-word answer: send the form or call, then what happens. */
+    answer: string
+}) {
     return (
-        <div className='bbl-book bg-white'>
+        <div className='pm-book bg-white'>
             <AnswerBlock
                 id='book'
-                question='How do I book a BBL consultation in Miami?'
+                question={question}
                 className={cn(
-                    bblContainer,
+                    moduleContainer,
                     'grid grid-cols-[minmax(0,1fr)] py-12 md:py-24 lg:grid-cols-[minmax(0,32.5rem)_minmax(0,35rem)] lg:grid-rows-[auto_auto_auto_1fr] lg:justify-between lg:gap-x-16 lg:[&>h2]:col-start-1 lg:[&>p]:col-start-1'
                 )}
-                answer='Send the form below or call us. A patient coordinator contacts you to set a time, and at the consultation your surgeon examines you, talks through your goals, recommends a type of BBL and confirms your price. If you go ahead, your surgery, pre-op and follow-up dates are confirmed in writing.'
+                answer={answer}
             >
                 <div className='lg:col-start-1'>
                     <ol
@@ -87,7 +97,10 @@ export function BblBook({ procedureSlug }: { procedureSlug: string }) {
                     <a
                         href={getPhoneLink()}
                         data-copy-check='data'
-                        className={cn(bblButtonSecondary, 'mt-8 tabular-nums')}
+                        className={cn(
+                            moduleButtonSecondary,
+                            'mt-8 tabular-nums'
+                        )}
                     >
                         <Phone aria-hidden='true' className='size-[1.125rem]' />
                         Call {siteConfig.contact.phoneDisplay}
@@ -120,7 +133,7 @@ export function BblBook({ procedureSlug }: { procedureSlug: string }) {
                 {/* After the form in the markup, so a phone reaches the form
                     first; the grid puts it back under the steps from `lg`. */}
                 <div className='mt-10 border-t border-stone-200 pt-7 lg:col-start-1 lg:row-start-4'>
-                    <h3 className={bblH3}>Where you&apos;ll be seen</h3>
+                    <h3 className={moduleH3}>Where you&apos;ll be seen</h3>
                     <div
                         data-copy-check='data'
                         className='mt-3.5 flex gap-3 text-[1.0625rem] leading-[1.6] text-stone-700 tabular-nums'
@@ -152,7 +165,7 @@ export function BblBook({ procedureSlug }: { procedureSlug: string }) {
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 className={cn(
-                                    bblLink,
+                                    moduleLink,
                                     'inline-flex min-h-11 items-center text-base font-bold'
                                 )}
                             >
@@ -163,7 +176,7 @@ export function BblBook({ procedureSlug }: { procedureSlug: string }) {
                             <Link
                                 href='/fly-in-consultation'
                                 className={cn(
-                                    bblLink,
+                                    moduleLink,
                                     'inline-flex min-h-11 items-center text-base'
                                 )}
                             >

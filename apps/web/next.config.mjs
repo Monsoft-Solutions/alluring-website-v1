@@ -242,10 +242,13 @@ const nextConfig = {
                 destination: '/blog/mommy-makeover-recovery-timeline-miami',
                 permanent: true,
             },
-            // Liposuction Cost (duplicate keyword)
+            // Liposuction Cost (duplicate keyword). The post it pointed at,
+            // /blog/liposuction-cost-miami, no longer exists (it returned 404
+            // on 2026-09-22), so the old URL goes to the procedure page, whose
+            // #pricing section owns the cost cluster.
             {
                 source: '/miami-liposuction-cost',
-                destination: '/blog/liposuction-cost-miami',
+                destination: '/procedures/liposuction-miami',
                 permanent: true,
             },
             // Blepharoplasty Candidate (3 posts -> 1 canonical)
@@ -693,6 +696,18 @@ const nextConfig = {
             {
                 source: '/procedures/rhinoplasty-miami',
                 destination: '/procedures',
+                permanent: true,
+            },
+
+            // The WordPress-era procedure URL. It collected 11,370 Search
+            // Console impressions and 10 clicks in the 480 days to 2026-09-19,
+            // and has returned 404 since the move to this app: no redirect
+            // was ever added. The other eight procedures' old URLs 404 the
+            // same way; they are the #260 control group, so they get their
+            // redirects in a separate change.
+            {
+                source: '/procedures/liposuction-cosmetic-surgery-in-miami',
+                destination: '/procedures/liposuction-miami',
                 permanent: true,
             },
         ]
