@@ -41,9 +41,10 @@ and list the gap in your report. Don't invent the answer.
   client libraries.
 - Business facts from `siteConfig`. Credentials from
   `karlinsky-credentials.constant.ts`, never retyped.
-- Don't import from another procedure's module. Promote a shared piece to
-  `components/procedures/module-kit/` in its own commit, and prove the BBL
-  prerendered HTML is byte-identical before and after.
+- Build on `components/procedures/module-kit/` (import `module-kit.css`,
+  root class `<short>-page pm-page`, pass the page's copy as props). Don't
+  import from another procedure's module. A kit change goes in its own
+  commit, with every existing module's prerendered HTML proved unchanged.
 - Prefix builds with `env -u ANTHROPIC_API_KEY`.
 - Render in chrome-devtools with an `isolatedContext`; save screenshots only
   under the worktree's `.playwright-mcp/` and delete them when done.

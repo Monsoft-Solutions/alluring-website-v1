@@ -1640,7 +1640,7 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
         status: 'retired',
         primaryKeyword: 'miami liposuction cost',
         ownsQueries: [],
-        redirectsTo: '/blog/liposuction-cost-miami',
+        redirectsTo: '/procedures/liposuction-miami',
     },
     {
         url: '/blepharoplasty-candidate-checklist',

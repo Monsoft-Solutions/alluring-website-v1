@@ -12,9 +12,9 @@ feel like a well-run Miami clinic, not a nightclub flyer.
 
 ## Tokens
 
-Start from `components/procedures/pages/bbl/bbl-ui.constant.ts`. Promote it to
-`components/procedures/module-kit/` the first time a second page needs it
-(see SKILL.md, Phase 6).
+The tokens are `components/procedures/module-kit/module-ui.constant.ts`
+(`moduleContainer`, `moduleBody`, `moduleButtonPrimary`…). Use them; a
+section adds its own classes with `cn` (see SKILL.md, Phase 6).
 
 | Token            | Value                                                                              |
 | ---------------- | ---------------------------------------------------------------------------------- |
@@ -66,8 +66,9 @@ never nudity. Label it "not to scale" when it isn't.
 
 ## Motion (CSS only)
 
-Copy the rules and keyframes from `bbl-page.css`, renamed to the page's
-prefix:
+The rules and keyframes are in `components/procedures/module-kit/module-kit.css`
+(classes `pm-*`); every module imports it rather than copying it. They
+follow four rules:
 
 1. **Text never animates in from hidden.** Only photographs, rules, diagram
    parts and the sticky bar move.
@@ -84,7 +85,7 @@ The vocabulary, and where each is used:
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | Hero unveil + settle (clip-path opens, image scales 1.06 → 1) | The hero photograph on load; the page's one orchestrated moment                 |
 | Glass card rise                                               | The rating card over the hero photo                                             |
-| Drift (hero image translates as the hero exits)               | Hero only, via `view-timeline: --<prefix>-hero`                                 |
+| Drift (hero image translates as the hero exits)               | Hero only, via `view-timeline: --pm-hero`                                       |
 | Scene open (inset rounded card → full width)                  | The dark band arriving; the inset is narrower than its padding so no text clips |
 | Draw-x / draw-y (scale from 0)                                | Diagram lines, the recovery rule                                                |
 | Dot fill                                                      | Recovery milestones filling as they cross the middle of the screen              |
@@ -92,7 +93,7 @@ The vocabulary, and where each is used:
 | Bar in/out (two named timelines)                              | The mobile sticky bar: in after the hero, out over the form                     |
 | Details height (`interpolate-size`, `::details-content`)      | FAQ answers opening                                                             |
 
-`content-visibility: auto` (`<prefix>-defer`) only on sections well below the
+`content-visibility: auto` (`pm-defer`) only on sections well below the
 fold (reviews, FAQ, sources). Near the top it only shifts the layout.
 
 ## Glass

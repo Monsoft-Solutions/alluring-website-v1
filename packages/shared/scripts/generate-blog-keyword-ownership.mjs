@@ -100,7 +100,7 @@ const RETIRED = {
         '/blog/mommy-makeover-recovery-timeline-miami',
     '/mommy-makeover-recovery-pain-guide':
         '/blog/mommy-makeover-recovery-timeline-miami',
-    '/miami-liposuction-cost': '/blog/liposuction-cost-miami',
+    '/miami-liposuction-cost': '/procedures/liposuction-miami',
     '/blepharoplasty-candidate-checklist':
         '/blog/blepharoplasty-candidate-miami-checklist',
     '/blepharoplasty-miami-candidate':
@@ -114,8 +114,9 @@ const RETIRED = {
         '/blog/breast-reduction-candidate-miami',
     '/what-is-the-mommy-makeover-procedure': '/procedures/mommy-makeover-miami',
     // NOTE: 'liposuction-cost-miami' (301 → /procedures/liposuction-miami) is
-    // deliberately NOT listed: the same URL is the planned cost page in
-    // keyword-ownership.constant.ts, whose entry documents the conflict.
+    // not listed. It used to be the planned cost page in
+    // keyword-ownership.constant.ts; that plan was dropped on 2026-09-22 and
+    // the procedure page owns the liposuction price cluster, as BBL's does.
     '/breast-reduction-cost-miami': '/procedures/breast-reduction-miami',
     '/miami-breast-reduction-cost-weight-loss':
         '/procedures/breast-reduction-miami',
