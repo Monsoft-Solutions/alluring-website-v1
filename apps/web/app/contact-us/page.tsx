@@ -8,6 +8,7 @@
  */
 import {
     BreadcrumbSchema,
+    FAQSchema,
     MedicalClinicSchema,
     ServiceSchema,
     WebPageSchema,
@@ -15,21 +16,18 @@ import {
 
 import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
 import { ContainerLayout } from '@/components/container-layout.component'
-import { ContactHeroForm } from '@/components/sections/contact/contact-hero-form.component'
-import { ContactStatsStrip } from '@/components/sections/contact/contact-stats-strip.component'
-import { SurgeonPreview } from '@/components/sections/contact/surgeon-preview.component'
-import { ContactAlternative } from '@/components/sections/contact/contact-alternative.component'
-import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
-import { FearBusters } from '@/components/shared/fear-busters.component'
+import {
+    CONTACT_CHAT_ID,
+    ContactChatHero,
+} from '@/components/sections/contact/contact-chat-hero.component'
+import { LeadSteps } from '@/components/sections/lead-page/lead-steps.component'
+import { ResumeChatCta } from '@/components/sections/lead-page/resume-chat-cta.component'
+import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
+import { FAQComponent } from '@/components/shared/faq.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
-import { MobileCallButton } from '@/components/shared/mobile-call-button.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
-import {
-    faqCategoriesContact,
-    faqDataContact,
-} from '@/lib/data/faq/contact-faq-data'
-import { siteConfig } from '@/lib/data/site-config'
+import { contactPageFaqs } from '@/lib/data/faq/contact-faq-data'
+import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -50,12 +48,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',
     title: pageTitle,
     description:
-        'Schedule your free, private consultation with board-certified plastic surgeons. Discuss goals, see options, get pricing. No obligation. Same-week appointments.',
+        'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back within 24 hours, your price in writing. Call, visit or message us.',
 
     openGraph: {
         title: pageTitle,
         description:
-            'Schedule your free, private consultation with board-certified plastic surgeons. Discuss goals, see options, get pricing. No obligation. Same-week appointments.',
+            'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back within 24 hours, your price in writing. Call, visit or message us.',
         url: `${seoConfig.siteUrl}/contact-us`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -73,7 +71,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Schedule your free consultation with board-certified plastic surgeons. Discuss goals, see options, get pricing. No obligation.',
+            'Book your free consultation at Alluring Plastic Surgery in Miami. A reply within 24 hours and your price in writing.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
@@ -88,7 +86,7 @@ export default async function ContactPage() {
             <WebPageSchema
                 name={`Schedule Your Consultation - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/contact-us`}
-                description='Request your private consultation with board-certified plastic surgeons in Miami. Discuss your goals, explore your options, and start your transformation journey.'
+                description='Request your free, private consultation at Alluring Plastic Surgery in Miami, or call or visit the practice.'
             />
 
             {/* SEO Schema - Breadcrumb */}
@@ -149,7 +147,7 @@ export default async function ContactPage() {
             {/* Service Schema - Free Consultation offering */}
             <ServiceSchema
                 name='Free Plastic Surgery Consultation'
-                description='Complimentary consultation with board-certified plastic surgeons. Discuss your goals, explore your options, and receive personalized recommendations with no obligation.'
+                description='Free consultation with Dr. Victoria Karlinsky, MD, FACS. Discuss your goals and options and receive a personalized quote in writing, with no obligation.'
                 url={`${seoConfig.siteUrl}/contact-us`}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
@@ -168,21 +166,20 @@ export default async function ContactPage() {
                 image={`${seoConfig.siteUrl}/og-image.jpg`}
             />
 
-            {/* Main Content - Conversion-Optimized Flow */}
+            <FAQSchema
+                items={contactPageFaqs.map((faq) => ({
+                    question: faq.question,
+                    answer: faq.answer,
+                }))}
+            />
+
+            {/*
+                One ask, the consultation thread (#274), next to the phone
+                number and the address for visitors who came for those.
+            */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
-                {/* Section 1: Hero Contact Form */}
-                <ContactHeroForm id='contact-form' />
+                <ContactChatHero />
 
-                {/* Section 2: Fear Busters - Address objections immediately */}
-                <FearBusters id='fear-busters' formAnchor='#contact-form' />
-
-                {/* Section 3: Weekly Payments - Reinforce affordability */}
-                <WeeklyPayments
-                    id='weekly-payments'
-                    formAnchor='#contact-form'
-                />
-
-                {/* Section 4: Google Reviews - Real Google reviews for trust */}
                 <GoogleReviews
                     title='Verified Google Reviews'
                     subtitle='Real feedback from real patients'
@@ -190,45 +187,47 @@ export default async function ContactPage() {
                     includeSchema={false}
                 />
 
-                {/* Section 6: Gallery Carousel - Visual proof of results */}
+                <LeadSteps />
+
                 <GalleryCarousel id='gallery-results' images={galleryImages} />
 
-                {/* Section 6: Stats Strip */}
-                <ContactStatsStrip id='stats' />
-
-                {/* Section 7: Surgeon Preview */}
-                <SurgeonPreview id='surgeons' />
-
-                {/* Section 8: Categorized FAQ */}
-                <CategorizedFAQ
+                <FAQComponent
                     id='faq'
-                    categories={faqCategoriesContact}
-                    faqData={faqDataContact}
-                    badge='Common Questions'
-                    title='Before You Visit,'
-                    subtitle='Know This.'
-                    description='We believe in complete transparency. Here are answers to the most common questions patients ask before their consultation.'
-                    variant='default'
-                    showBackgroundDecoration={true}
-                    ctaConfig={{
-                        title: 'Have a specific question?',
-                        description: 'Our patient concierge is ready to help.',
-                        buttonText: 'Call Now',
-                        phoneNumber: siteConfig.contact.phone.replace(
-                            /\D/g,
-                            ''
-                        ),
-                    }}
+                    faqs={[...contactPageFaqs]}
+                    title='Before You Visit'
+                    description='Straight answers to what patients ask before their consultation.'
+                    variant='muted'
+                    includeSchema={false}
                 />
 
-                {/* Section 9: Alternative Contact Methods */}
-                <ContactAlternative id='location' />
+                <ResumeChatCta
+                    chatId={CONTACT_CHAT_ID}
+                    eyebrow='Free consultation'
+                    fresh={{
+                        heading: 'Ready when you are',
+                        body: 'Three questions, under a minute. A patient coordinator texts you within 24 hours to book your free consultation.',
+                        buttonLabel: 'Start my request',
+                    }}
+                    resume={{
+                        heading: 'Pick up where you left off',
+                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you within 24 hours.',
+                        buttonLabel: 'Finish my request',
+                    }}
+                />
             </ContainerLayout>
 
-            <SectionViewTracker />
+            <ConsultStickyBar
+                chatId={CONTACT_CHAT_ID}
+                label={{
+                    en: 'Request my free consultation',
+                    es: 'Pedir mi consulta gratis',
+                }}
+                phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
+                phoneLabel={`Call ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}`}
+                smsLink={getSmsLink()}
+            />
 
-            {/* Mobile Call Button - Always visible on contact page for conversion optimization */}
-            <MobileCallButton position='bottom-right' style='icon-only' />
+            <SectionViewTracker />
         </>
     )
 }

@@ -11,6 +11,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import { readCookie } from '@/lib/analytics/attribution-params.util'
 import {
     LEAD_FORM_EVENTS,
     readGaClientId,
@@ -46,8 +47,8 @@ export type SubmissionState = {
 export type UseContactFormSubmissionOptions = {
     /** The source identifier for this form (used for backend routing) */
     readonly source: ContactSource
-    /** Callback fired on successful submission */
-    readonly onSuccess?: () => void
+    /** Callback fired on successful submission, with the API's response */
+    readonly onSuccess?: (result: ContactFormResponse) => void
     /** Callback fired on submission error */
     readonly onError?: (error: string) => void
     /**
@@ -248,6 +249,10 @@ export function useContactFormSubmission(
                         _formLoadedAt: formLoadedAt.current,
                         submittedFromPath: window.location.pathname,
                         gaClientId: readGaClientId(),
+                        // Meta's browser and click ids, for matching the
+                        // lead in a Conversions API event later.
+                        fbp: readCookie('_fbp'),
+                        fbc: readCookie('_fbc'),
                         // Include UTM tracking data for attribution
                         ...(utmData ?? {}),
                     }),
@@ -314,7 +319,7 @@ export function useContactFormSubmission(
                     }
 
                     // Call success callback first
-                    onSuccess?.()
+                    onSuccess?.(result)
 
                     // Redirect if specified
                     if (redirectOnSuccess) {

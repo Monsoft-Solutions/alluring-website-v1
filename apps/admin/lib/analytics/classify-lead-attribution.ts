@@ -76,7 +76,7 @@ export function classifyLeadAttribution(
         return { source: utmSource, medium: utmMedium, classification: 'utm' }
     }
 
-    if (input.gclid) {
+    if (input.gclid || input.gbraid || input.wbraid) {
         return { source: 'google', medium: 'cpc', classification: 'click-id' }
     }
     if (input.fbclid) {

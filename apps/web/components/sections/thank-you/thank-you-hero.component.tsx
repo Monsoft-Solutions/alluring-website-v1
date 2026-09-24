@@ -5,13 +5,12 @@
  * Displays success message, sets expectations for follow-up, and provides trust indicators.
  *
  * Features:
- * - Animated success icon
- * - Confirmation message about Beauty Specialist callback
- * - Trust badges (Double Board-Certified)
+ * - Confirmation that a patient coordinator reaches out within 24 hours
+ * - Trust indicators the site can stand behind (free consultation, Spanish)
  * - Business hours and immediate contact option
  */
 
-import { Phone, Clock, Award, ShieldCheck } from 'lucide-react'
+import { Phone, Clock, Languages, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 
@@ -60,13 +59,13 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                         <p className='text-xl leading-relaxed text-stone-200 md:text-2xl'>
                             We&apos;ve received your information and one of our{' '}
                             <span className='font-semibold text-white'>
-                                Beauty Specialists
+                                patient coordinators
                             </span>{' '}
-                            will call you within the next{' '}
+                            will reach out within{' '}
                             <span className='font-semibold text-white'>
                                 24 hours
                             </span>{' '}
-                            to discuss your goals and schedule your
+                            to answer your questions and schedule your free
                             consultation.
                         </p>
                         <p className='text-lg text-stone-300'>
@@ -81,15 +80,13 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                         <div className='flex items-center gap-2 text-stone-400'>
                             <ShieldCheck className='text-gold-400 h-5 w-5' />
                             <span className='text-sm font-medium'>
-                                {siteConfig.trustStats?.accreditation ??
-                                    'Double Board-Certified'}{' '}
-                                Accredited
+                                Free consultation
                             </span>
                         </div>
                         <div className='flex items-center gap-2 text-stone-400'>
-                            <Award className='text-gold-400 h-5 w-5' />
+                            <Languages className='text-gold-400 h-5 w-5' />
                             <span className='text-sm font-medium'>
-                                Board-Certified
+                                Hablamos español
                             </span>
                         </div>
                         <div className='flex items-center gap-2 text-stone-400'>

@@ -31,8 +31,17 @@ export const contactSubmission = pgTable(
         utmContent: text('utm_content'),
         utmTerm: text('utm_term'),
         gclid: text('gclid'),
+        // Google Ads sends these instead of, or beside, gclid on iOS traffic.
+        gbraid: text('gbraid'),
+        wbraid: text('wbraid'),
+        // `gad_campaignid`: the campaign id, since the tracking template's
+        // `{campaignname}` never expands and leaves utm_campaign empty.
+        gadCampaignId: text('gad_campaign_id'),
         fbclid: text('fbclid'),
         ttclid: text('ttclid'),
+        // Meta pixel cookies, the match keys a Conversions API event needs.
+        fbp: text('fbp'),
+        fbc: text('fbc'),
         referrer: text('referrer'),
         landingPage: text('landing_page'),
         // Where the form itself was submitted — `landing_page` is where the
@@ -41,6 +50,21 @@ export const contactSubmission = pgTable(
         // GA4 client id from the `_ga` cookie: joins a lead to its GA4
         // behaviour without sending anything about the lead to Google.
         gaClientId: text('ga_client_id'),
+
+        // The consultation thread's answers and the context it was sent in
+        // (#274), stored as their option values — labels are copy and change.
+        timeline: text('timeline'),
+        // 'en' | 'es' — the language the visitor used the page in.
+        language: text('language'),
+        // The promotion shown next to the form, by title.
+        offer: text('offer'),
+        // IANA zone from the visitor's browser, e.g. 'America/Chicago'.
+        timeZone: text('time_zone'),
+
+        // Optional answers from the thank-you page, added to the same lead.
+        consultType: text('consult_type'),
+        financingInterest: text('financing_interest'),
+        heardFrom: text('heard_from'),
 
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at')

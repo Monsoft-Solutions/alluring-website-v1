@@ -9,11 +9,13 @@
 import { useState } from 'react'
 import { ChevronDown, X } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedureNavItems } from '@/lib/data/procedure-nav.data'
 import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
+import { consultCtaHref } from '@/lib/constants/standalone-routes'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 
 type MobileMenuProps = {
@@ -26,6 +28,8 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     const [isSurgeonsMobileOpen, setIsSurgeonsMobileOpen] = useState(false)
 
     const { track } = useAnalyticsEvent()
+    // On a lead page the button jumps to that page's own thread.
+    const consultHref = consultCtaHref(usePathname())
 
     // Generate links dynamically
     const procedureLinks = procedureNavItems.map((procedure) => ({
@@ -319,7 +323,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             className='h-14 w-full text-lg'
                             asChild
                         >
-                            <Link href='/contact-us' onClick={handleCTAClick}>
+                            <Link href={consultHref} onClick={handleCTAClick}>
                                 Request Consultation
                             </Link>
                         </Button>

@@ -3,10 +3,10 @@
 /**
  * The confirmation after a request from Melissa's page.
  *
- * It greets the visitor by first name and repeats the contact method they
- * chose. Both come from `sessionStorage`, written by the chat form just before
- * the redirect — never from the URL, so no name reaches analytics. The server
- * renders the unnamed greeting, and it stays that way when storage is empty.
+ * It greets the visitor by first name, read from `sessionStorage` — written
+ * by the chat form just before the redirect, never from the URL, so no name
+ * reaches analytics. The server renders the unnamed greeting, and it stays
+ * that way when storage is empty.
  */
 
 import Image from 'next/image'
@@ -17,7 +17,6 @@ import type { MjDictionary, MjLang } from './mj-copy'
 
 interface StoredLead {
     readonly firstName: string
-    readonly method: 'text' | 'call'
 }
 
 const NOTHING = ''
@@ -42,7 +41,6 @@ function parse(raw: string): StoredLead | null {
         return {
             firstName:
                 typeof value.firstName === 'string' ? value.firstName : '',
-            method: value.method === 'call' ? 'call' : 'text',
         }
     } catch {
         return null
@@ -78,7 +76,7 @@ export function MjThankYou({ lang, copy }: MjThankYouProps) {
             <h1 className='mj-h2 mj-h2--light mj-ty__title'>
                 {name ? fill(copy.headingNamed, { name }) : copy.heading}
             </h1>
-            <p className='mj-ty__body'>{copy.body[lead?.method ?? 'text']}</p>
+            <p className='mj-ty__body'>{copy.body}</p>
 
             <div className='mj-ty__next'>
                 <h2 className='mj-eyebrow mj-eyebrow--light'>

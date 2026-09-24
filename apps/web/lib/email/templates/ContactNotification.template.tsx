@@ -9,6 +9,8 @@
  */
 import { Heading, Hr, Link, Section, Text } from '@react-email/components'
 
+import { isPlaceholderEmail } from '@/lib/constants/lead-fields'
+import { siteConfig } from '@/lib/data/site-config'
 import type { ContactNotificationProps } from '@/lib/types/email/email-service.type'
 
 import { EmailButton } from '../components/email-button.component'
@@ -38,10 +40,14 @@ export function ContactNotificationEmail({
     submittedAt,
     sentToCrm,
 }: ContactNotificationProps) {
+    // Staff read the time in Miami, not in the server's UTC.
     const formattedDate = new Date(submittedAt).toLocaleString('en-US', {
         dateStyle: 'full',
         timeStyle: 'short',
+        timeZone: siteConfig.contact.timezone,
     })
+    // Phone-only leads carry no address, or a placeholder the database needs.
+    const hasEmail = !isPlaceholderEmail(contactData.email)
 
     return (
         <EmailLayout preview={`New inquiry from ${contactData.name}`}>
@@ -100,17 +106,21 @@ export function ContactNotificationEmail({
                     </Text>
 
                     {/* Email */}
-                    <Text className='m-0 mb-1 text-xs font-semibold tracking-wide text-stone-500 uppercase'>
-                        Email
-                    </Text>
-                    <Text className='m-0 mb-4 text-base text-stone-900'>
-                        <Link
-                            href={`mailto:${contactData.email}`}
-                            className='font-medium text-[#D4AF37] no-underline'
-                        >
-                            {contactData.email}
-                        </Link>
-                    </Text>
+                    {hasEmail && (
+                        <>
+                            <Text className='m-0 mb-1 text-xs font-semibold tracking-wide text-stone-500 uppercase'>
+                                Email
+                            </Text>
+                            <Text className='m-0 mb-4 text-base text-stone-900'>
+                                <Link
+                                    href={`mailto:${contactData.email}`}
+                                    className='font-medium text-[#D4AF37] no-underline'
+                                >
+                                    {contactData.email}
+                                </Link>
+                            </Text>
+                        </>
+                    )}
 
                     {/* Phone */}
                     {contactData.phone && (
@@ -168,14 +178,16 @@ export function ContactNotificationEmail({
                     Quick Actions
                 </Heading>
 
-                <Section className='mb-4 text-center'>
-                    <EmailButton
-                        href={`mailto:${contactData.email}?subject=Re: ${contactData.subject || 'Your inquiry to Alluring Plastic Surgery'}`}
-                        variant='primary'
-                    >
-                        {`Reply to ${contactData.name}`}
-                    </EmailButton>
-                </Section>
+                {hasEmail && (
+                    <Section className='mb-4 text-center'>
+                        <EmailButton
+                            href={`mailto:${contactData.email}?subject=Re: ${contactData.subject || 'Your inquiry to Alluring Plastic Surgery'}`}
+                            variant='primary'
+                        >
+                            {`Reply to ${contactData.name}`}
+                        </EmailButton>
+                    </Section>
+                )}
 
                 {contactData.phone && (
                     <Section className='mb-4 text-center'>

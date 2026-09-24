@@ -12,10 +12,14 @@
  *
  * If `utm_source` is missing entirely, click IDs are left alone so direct
  * paid-ad clicks where UTMs were stripped still attribute correctly.
+ *
+ * Google's click IDs (`gclid`, `gbraid`, `wbraid`) are exempt: no browser or
+ * app appends them to organic links, so their presence alone proves an ad
+ * click. Gating them on `utm_medium` threw away every Google Ads gclid while
+ * the tracking template sent `cpc{ifvideo:video}{ifshopping:shopping}` (#276).
  */
 
 const META_SOURCES = new Set(['facebook', 'fb', 'instagram', 'ig', 'meta'])
-const GOOGLE_SOURCES = new Set(['google', 'google_ads', 'gads', 'adwords'])
 const TIKTOK_SOURCES = new Set(['tiktok', 'tiktok_ads'])
 
 const PAID_MEDIUMS = new Set([
@@ -34,7 +38,6 @@ export type AdClickIdAttribution = {
     utmSource?: string | null | undefined
     utmMedium?: string | null | undefined
     fbclid?: string | null | undefined
-    gclid?: string | null | undefined
     ttclid?: string | null | undefined
 }
 
@@ -51,8 +54,6 @@ export function sanitizeAdClickIds<T extends AdClickIdAttribution>(
         ...input,
         fbclid:
             isPaid && META_SOURCES.has(utmSource) ? input.fbclid : undefined,
-        gclid:
-            isPaid && GOOGLE_SOURCES.has(utmSource) ? input.gclid : undefined,
         ttclid:
             isPaid && TIKTOK_SOURCES.has(utmSource) ? input.ttclid : undefined,
     }

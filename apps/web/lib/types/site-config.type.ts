@@ -40,6 +40,14 @@ export type ContactInfo = {
     phone: string
     /** Formatted phone number for display (optional) */
     phoneDisplay?: string
+    /**
+     * Number patients can text, when it differs from `phone` (which does not
+     * receive texts). Every "Text us" link reads it and stays hidden while it
+     * is unset.
+     */
+    textPhone?: string
+    /** Display format for `textPhone`, e.g. "(305) 555-0123". */
+    textPhoneDisplay?: string
     /** Business email address */
     email: string
     /** Support email (if different from main) */

@@ -29,6 +29,12 @@ export type UTMParams = {
 export type ClickIds = {
     /** Google Click ID - automatically appended by Google Ads */
     readonly gclid?: string
+    /** Google Ads click ID for app-to-web (iOS) traffic, sent instead of or beside gclid */
+    readonly gbraid?: string
+    /** Google Ads click ID for web-to-app (iOS) traffic */
+    readonly wbraid?: string
+    /** Google Ads campaign id, auto-appended with auto-tagging (`gad_campaignid`) */
+    readonly gadCampaignId?: string
     /** Facebook Click ID - automatically appended by Meta Ads */
     readonly fbclid?: string
     /** TikTok Click ID - automatically appended by TikTok Ads */
@@ -60,6 +66,9 @@ export const UTM_PARAM_NAMES = [
     'utm_content',
     'utm_term',
     'gclid',
+    'gbraid',
+    'wbraid',
+    'gad_campaignid',
     'fbclid',
     'ttclid',
 ] as const

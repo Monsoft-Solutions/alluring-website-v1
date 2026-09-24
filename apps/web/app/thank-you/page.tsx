@@ -5,7 +5,7 @@
  * Sets expectations for follow-up and guides users to explore more content.
  *
  * Features:
- * - Success confirmation with expected callback timeline
+ * - Success confirmation with the expected reply time
  * - Trust indicators and immediate contact options
  * - Links to key site sections
  * - No-indexed to prevent search engine indexing

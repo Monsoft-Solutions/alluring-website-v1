@@ -13,28 +13,43 @@
  *
  * Also captures UTM parameters and ad platform click IDs for attribution tracking.
  *
+ * PATCH adds the thank-you page's optional answers to a lead it just created
+ * (#274), authorised by the token the POST returned.
+ *
  * @module app/api/contact/route
  */
+import { eq } from 'drizzle-orm'
 import { type NextRequest, NextResponse, after } from 'next/server'
 import { ZodError } from 'zod'
 
 import { db } from '@workspace/db/client'
 import {
+    type ContactSubmission,
     contactSubmission,
     type InsertContactSubmission,
 } from '@workspace/db/schema/contact'
 
+import { placeholderEmail } from '@/lib/constants/lead-fields'
 import {
     CONTACT_SOURCES,
     type ContactFormData,
     type ContactFormResponse,
     contactFormSchema,
+    leadUpdateSchema,
 } from '@/lib/types/forms/contact-form.type'
 import {
     sendContactEmails,
     sendContactNotification,
 } from '@/lib/services/email.service'
-import { sendLeadToN8N } from '@/lib/services/n8n-webhook.service'
+import {
+    createLeadUpdateToken,
+    verifyLeadUpdateToken,
+} from '@/lib/services/lead-update-token.service'
+import {
+    sendLeadToN8N,
+    sendLeadUpdateToN8N,
+} from '@/lib/services/n8n-webhook.service'
+import { stripPlaceholders } from '@/lib/analytics/attribution-params.util'
 import { sanitizeAdClickIds } from '@/lib/analytics/sanitize-attribution.util'
 import { siteConfig } from '@/lib/data/site-config'
 import { env } from '@/env'
@@ -184,14 +199,17 @@ function validateBySource(data: ContactFormData): {
     const source = data.source || CONTACT_SOURCES.GENERAL
 
     switch (source) {
-        case CONTACT_SOURCES.CONTACT_PAGE:
         case CONTACT_SOURCES.CONTACT_HERO:
-            // Contact page and hero forms require email
+            // The home and Atelier hero forms still ask for email
             if (!data.email) {
                 return { valid: false, error: 'Email is required' }
             }
             break
 
+        // The contact and specials pages use the chat thread (#274), which
+        // asks for a mobile number only; email is optional afterwards.
+        case CONTACT_SOURCES.CONTACT_PAGE:
+        case CONTACT_SOURCES.SPECIALS_PAGE:
         case CONTACT_SOURCES.BLOG_LEAD:
         case CONTACT_SOURCES.EXIT_INTENT:
         case CONTACT_SOURCES.LEAD_FORM:
@@ -242,30 +260,45 @@ function getSuccessMessage(
 }
 
 /**
+ * Lines staff need that the form's own note cannot know: the sanitized
+ * campaign and the lead id the CRM carries.
+ */
+function staffContextLines(lead: ContactSubmission): string[] {
+    const campaign = [lead.utmSource, lead.utmMedium, lead.utmCampaign]
+        .filter(Boolean)
+        .join(' / ')
+    const lines: string[] = []
+    if (campaign) lines.push(`Campaign: ${campaign}`)
+    else if (lead.referrer) lines.push(`Referrer: ${lead.referrer}`)
+    lines.push(`Lead ID: ${lead.id}`)
+    return lines
+}
+
+/**
  * Process lead in background (post-response)
  *
  * Handles CRM sync and email sending after the HTTP response is sent.
  * Both operations run asynchronously without blocking the user's response.
  *
- * @param insertData - Contact submission data from database
+ * @param lead - The saved contact submission
  * @param validatedData - Validated form data
- * @param submissionId - Database ID of the contact submission
  * @param hasUserProvidedEmail - Whether user provided a real email address
  * @param source - Form source identifier
  * @param fullName - User's full name
  */
 async function processLeadInBackground(
-    insertData: InsertContactSubmission,
+    lead: ContactSubmission,
     validatedData: ContactFormData,
-    submissionId: string,
     hasUserProvidedEmail: boolean,
     source: string,
     fullName: string
 ): Promise<void> {
+    const submissionId = lead.id
+
     // 1. Send to N8N FIRST (before email)
     let sentToCrm = false
     try {
-        const n8nResult = await sendLeadToN8N(insertData)
+        const n8nResult = await sendLeadToN8N(lead)
         sentToCrm = n8nResult.success
     } catch (n8nError) {
         console.error('N8N webhook failed:', n8nError)
@@ -297,13 +330,26 @@ async function processLeadInBackground(
                       ? 'Exit Intent Popup'
                       : 'Lead Form'
 
+            // Forms that write their own subject and note (the consultation
+            // thread, #274) keep them: that note is the procedure, timeline,
+            // language and offer staff need. The generic text is only for
+            // lead-capture forms that send a name and a phone number.
+            const subject =
+                validatedData.subject ??
+                `${sourceLabel} Lead: ${fullName} - Callback Requested`
+            const message = validatedData.message
+                ? [validatedData.message, '', ...staffContextLines(lead)].join(
+                      '\n'
+                  )
+                : `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${fullName}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`
+
             await sendContactNotification(
                 {
                     name: fullName,
                     email: '',
                     phone: validatedData.phone,
-                    subject: `${sourceLabel} Lead: ${fullName} - Callback Requested`,
-                    message: `New lead from ${sourceLabel.toLowerCase()}:\n\nName: ${fullName}\nPhone: ${validatedData.phone}\nSource: ${source}\n\nThis lead requested a callback.`,
+                    subject,
+                    message,
                 },
                 submissionId,
                 sentToCrm
@@ -444,14 +490,9 @@ export async function POST(
             source as (typeof SOURCES_WITHOUT_EMAIL_FIELD)[number]
         )
 
-        const autoGeneratedEmail =
-            validatedData.firstName?.toLowerCase().trim() +
-            '-' +
-            new Date().getTime().toString() +
-            '@no-email.com'
-
         // Email is required in DB - use placeholder for forms without email field
-        const email = validatedData.email || autoGeneratedEmail
+        const email =
+            validatedData.email || placeholderEmail(validatedData.firstName)
 
         // Generate default subject based on source
         const getDefaultSubject = (): string => {
@@ -481,7 +522,17 @@ export async function POST(
         // Drop click IDs that don't match the explicit utm_source. Instagram
         // appends fbclid to every outbound bio-link click, so without this
         // doctor/influencer/organic-social leads get falsely attributed to Meta.
-        const attribution = sanitizeAdClickIds(validatedData)
+        // Unexpanded tracking-template tokens (`cpc{ifvideo:video}`) are
+        // stripped first: the paid check reads utm_medium, and a UTM captured
+        // before the client-side fix can still sit in a visitor's storage.
+        const attribution = sanitizeAdClickIds({
+            ...validatedData,
+            utmSource: stripPlaceholders(validatedData.utmSource),
+            utmMedium: stripPlaceholders(validatedData.utmMedium),
+            utmCampaign: stripPlaceholders(validatedData.utmCampaign),
+            utmContent: stripPlaceholders(validatedData.utmContent),
+            utmTerm: stripPlaceholders(validatedData.utmTerm),
+        })
 
         const insertData: InsertContactSubmission = {
             name: fullName,
@@ -501,18 +552,27 @@ export async function POST(
             source,
             // Analytics tracking fields
             ipAddress: clientIP,
-            utmSource: validatedData.utmSource,
-            utmMedium: validatedData.utmMedium,
-            utmCampaign: validatedData.utmCampaign,
-            utmContent: validatedData.utmContent,
-            utmTerm: validatedData.utmTerm,
+            utmSource: attribution.utmSource,
+            utmMedium: attribution.utmMedium,
+            utmCampaign: attribution.utmCampaign,
+            utmContent: attribution.utmContent,
+            utmTerm: attribution.utmTerm,
             gclid: attribution.gclid,
+            gbraid: attribution.gbraid,
+            wbraid: attribution.wbraid,
+            gadCampaignId: attribution.gadCampaignId,
             fbclid: attribution.fbclid,
             ttclid: attribution.ttclid,
+            fbp: validatedData.fbp,
+            fbc: validatedData.fbc,
             referrer: validatedData.referrer,
             landingPage: validatedData.landingPage,
             submittedFromPath: validatedData.submittedFromPath,
             gaClientId: validatedData.gaClientId,
+            timeline: validatedData.timeline,
+            language: validatedData.language,
+            offer: validatedData.offer,
+            timeZone: validatedData.timeZone,
         }
 
         // Persist submission
@@ -530,9 +590,8 @@ export async function POST(
         // Process lead in background: CRM sync + email sending (post-response)
         after(async () => {
             await processLeadInBackground(
-                insertData,
+                submission,
                 validatedData,
-                submission.id,
                 hasUserProvidedEmail,
                 source,
                 fullName
@@ -541,11 +600,13 @@ export async function POST(
 
         // Return success response with source-appropriate message
         const message = getSuccessMessage(source, hasUserProvidedEmail)
+        const token = createLeadUpdateToken(submission.id)
 
         return NextResponse.json<ContactFormResponse>(
             {
                 success: true,
                 message,
+                ...(token && { lead: { id: submission.id, token } }),
             },
             { status: 200 }
         )
@@ -609,6 +670,146 @@ export async function POST(
 }
 
 /**
+ * PATCH handler: the thank-you page's optional answers (#274).
+ *
+ * Adds an email, video-or-in-person, financing interest, best time to text
+ * or how they heard about us to the lead the visitor just sent, then sends
+ * the whole lead to N8N as `lead.updated`. The token from the POST response
+ * is the only authorisation: it names one lead and expires.
+ *
+ * Staff are not emailed again; the CRM receives the answers through N8N.
+ */
+export async function PATCH(
+    request: NextRequest
+): Promise<NextResponse<ContactFormResponse>> {
+    try {
+        const contentType = request.headers.get('content-type')
+        if (!contentType?.includes('application/json')) {
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Invalid content type. Expected application/json.',
+                    error: 'Content-Type must be application/json',
+                },
+                { status: 400 }
+            )
+        }
+
+        if (!isValidOrigin(request)) {
+            console.warn(
+                '[spam:origin] Blocked lead update with invalid origin/referer'
+            )
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Forbidden',
+                    error: 'Request origin not allowed',
+                },
+                { status: 403 }
+            )
+        }
+
+        const update = leadUpdateSchema.parse(await request.json())
+
+        if (!verifyLeadUpdateToken(update.id, update.token)) {
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Forbidden',
+                    error: 'Invalid or expired token',
+                },
+                { status: 403 }
+            )
+        }
+
+        const changes: Partial<InsertContactSubmission> = {
+            ...(update.email && { email: update.email }),
+            ...(update.consultType && { consultType: update.consultType }),
+            ...(update.financingInterest && {
+                financingInterest: update.financingInterest,
+            }),
+            ...(update.preferredContactTime && {
+                preferredContactTime: update.preferredContactTime,
+            }),
+            ...(update.heardFrom && { heardFrom: update.heardFrom }),
+        }
+
+        const [lead] = await db
+            .update(contactSubmission)
+            .set(changes)
+            .where(eq(contactSubmission.id, update.id))
+            .returning()
+
+        if (!lead) {
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Not found',
+                    error: 'Lead not found',
+                },
+                { status: 404 }
+            )
+        }
+
+        console.log(
+            `Lead ${lead.id} updated from the thank-you page: ${Object.keys(changes).join(', ')}`
+        )
+
+        after(async () => {
+            try {
+                await sendLeadUpdateToN8N(lead)
+            } catch (n8nError) {
+                console.error('N8N lead update failed:', n8nError)
+            }
+        })
+
+        return NextResponse.json<ContactFormResponse>(
+            { success: true, message: 'Saved' },
+            { status: 200 }
+        )
+    } catch (error) {
+        if (error instanceof ZodError) {
+            const firstError = error.issues[0]
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Validation failed',
+                    error: firstError
+                        ? `${firstError.path.join('.')}: ${firstError.message}`
+                        : 'Validation failed',
+                },
+                { status: 400 }
+            )
+        }
+
+        if (error instanceof SyntaxError) {
+            return NextResponse.json<ContactFormResponse>(
+                {
+                    success: false,
+                    message: 'Invalid JSON format',
+                    error: 'Request body must be valid JSON',
+                },
+                { status: 400 }
+            )
+        }
+
+        console.error('Server error in lead update handler:', {
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: new Date().toISOString(),
+        })
+
+        return NextResponse.json<ContactFormResponse>(
+            {
+                success: false,
+                message: 'Something went wrong. Please try again later.',
+                error: 'Internal server error',
+            },
+            { status: 500 }
+        )
+    }
+}
+
+/**
  * OPTIONS handler for CORS preflight requests
  *
  * @returns Response with CORS headers
@@ -617,7 +818,7 @@ export function OPTIONS(): NextResponse {
     return new NextResponse(null, {
         status: 204,
         headers: {
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Methods': 'POST, PATCH, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
         },
     })

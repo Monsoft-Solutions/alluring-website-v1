@@ -14,7 +14,10 @@ import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedb
 import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
 import { NonStandaloneOnly } from '@/components/layout/non-standalone-only.component'
-import { NO_PROMO_BAR_ROUTES } from '@/lib/constants/standalone-routes'
+import {
+    NO_FLOATING_WIDGET_ROUTES,
+    NO_PROMO_BAR_ROUTES,
+} from '@/lib/constants/standalone-routes'
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
 import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
@@ -167,20 +170,21 @@ export default function RootLayout({
                     <ConditionalLayout>{children}</ConditionalLayout>
                     {/*
                         Exit intent and the timed promotion modal are suppressed
-                        on standalone routes (/lp, /landing, /links): a modal
-                        over the form is the fastest way to lose a paid click.
+                        on standalone routes (/lp, /landing, /links) and on the
+                        contact and specials pages: a modal over the form is the
+                        fastest way to lose a click.
                     */}
-                    <NonStandaloneOnly>
+                    <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
                         <ExitIntentPopup />
                     </NonStandaloneOnly>
-                    <NonStandaloneOnly>
+                    <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
                         <PromoModalWrapper />
                     </NonStandaloneOnly>
                     {/* Mobile Call Button - visible on mobile devices only.
                         Suppressed on standalone routes so ad/IG landing pages
                         can ship their own chrome. */}
                     {isMobileCallButtonEnabled && (
-                        <NonStandaloneOnly>
+                        <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
                             <MobileCallButton
                                 position='bottom-left'
                                 style='icon-only'

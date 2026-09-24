@@ -128,6 +128,8 @@ function classifyContact(contact: ContactListItem): ClassifiedContactListItem {
         source: contact.source,
         referrer: contact.referrer,
         gclid: contact.gclid,
+        gbraid: contact.gbraid,
+        wbraid: contact.wbraid,
         fbclid: contact.fbclid,
         ttclid: contact.ttclid,
     })

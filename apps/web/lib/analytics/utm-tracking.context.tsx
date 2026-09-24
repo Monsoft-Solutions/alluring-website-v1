@@ -17,8 +17,10 @@ import {
     type ReactNode,
 } from 'react'
 
+import { readAttributionParam } from '@/lib/analytics/attribution-params.util'
 import {
     type UTMData,
+    type UTMParamName,
     UTM_STORAGE_KEY,
 } from '@/lib/types/analytics/utm-tracking.type'
 
@@ -48,38 +50,27 @@ function extractUTMFromURL(): UTMData | null {
     if (!isBrowser()) return null
 
     const params = new URLSearchParams(window.location.search)
+    const read = (name: UTMParamName) => readAttributionParam(params, name)
 
-    const utmSource = params.get('utm_source')
-    const utmMedium = params.get('utm_medium')
-    const utmCampaign = params.get('utm_campaign')
-    const utmContent = params.get('utm_content')
-    const utmTerm = params.get('utm_term')
-    const gclid = params.get('gclid')
-    const fbclid = params.get('fbclid')
-    const ttclid = params.get('ttclid')
+    const data = {
+        utmSource: read('utm_source'),
+        utmMedium: read('utm_medium'),
+        utmCampaign: read('utm_campaign'),
+        utmContent: read('utm_content'),
+        utmTerm: read('utm_term'),
+        gclid: read('gclid'),
+        gbraid: read('gbraid'),
+        wbraid: read('wbraid'),
+        gadCampaignId: read('gad_campaignid'),
+        fbclid: read('fbclid'),
+        ttclid: read('ttclid'),
+    }
 
     // Return null if no tracking params present
-    const hasAnyParam =
-        utmSource ||
-        utmMedium ||
-        utmCampaign ||
-        utmContent ||
-        utmTerm ||
-        gclid ||
-        fbclid ||
-        ttclid
-
-    if (!hasAnyParam) return null
+    if (!Object.values(data).some(Boolean)) return null
 
     return {
-        utmSource: utmSource ?? undefined,
-        utmMedium: utmMedium ?? undefined,
-        utmCampaign: utmCampaign ?? undefined,
-        utmContent: utmContent ?? undefined,
-        utmTerm: utmTerm ?? undefined,
-        gclid: gclid ?? undefined,
-        fbclid: fbclid ?? undefined,
-        ttclid: ttclid ?? undefined,
+        ...data,
         referrer: document.referrer || undefined,
         landingPage: window.location.href,
     }

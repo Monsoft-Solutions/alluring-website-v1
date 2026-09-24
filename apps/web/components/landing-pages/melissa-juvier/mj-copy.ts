@@ -63,15 +63,10 @@ export interface MjDictionary {
         readonly procedures: readonly MjOption[]
         readonly qTimeline: string
         readonly timelines: readonly MjOption[]
-        readonly qName: string
-        readonly fieldFirstName: string
-        readonly fieldLastName: string
-        readonly next: string
-        /** `{name}` is replaced with the visitor's first name. */
+        /** The last step asks for the name and the mobile number together. */
         readonly qContact: string
+        readonly fieldName: string
         readonly fieldPhone: string
-        readonly methodLegend: string
-        readonly methods: readonly MjOption[]
         readonly consent: RichText
         readonly submit: string
         readonly submitting: string
@@ -81,8 +76,7 @@ export interface MjDictionary {
         readonly stepLabel: string
         readonly reassure: string
         readonly errors: {
-            readonly firstName: string
-            readonly lastName: string
+            readonly name: string
             readonly phone: string
             readonly consent: string
             readonly submit: string
@@ -155,8 +149,7 @@ export interface MjDictionary {
         /** `{name}` is replaced when the first name is known. */
         readonly headingNamed: string
         readonly heading: string
-        /** Keyed by contact method. */
-        readonly body: Readonly<Record<'text' | 'call', string>>
+        readonly body: string
         readonly nextTitle: string
         readonly next: readonly string[]
         readonly signoff: string
@@ -197,7 +190,7 @@ const en: MjDictionary = {
     chat: {
         title: 'Message Melissa',
         role: 'Patient coordinator',
-        status: 'Replies within 24 hours',
+        status: 'Replies by text within 24 hours',
         greeting: 'Hi! I’m so glad you’re here.',
         qProcedure: 'What are you thinking about doing?',
         procedures: [
@@ -220,31 +213,22 @@ const en: MjDictionary = {
             { value: '3-6-months', label: 'In 3–6 months' },
             { value: 'researching', label: 'Just researching' },
         ],
-        qName: 'Perfect. What’s your name?',
-        fieldFirstName: 'First name',
-        fieldLastName: 'Last name',
-        next: 'Next',
         qContact:
-            'Nice to meet you, {name}. What’s the best number to reach you?',
+            'Perfect. What’s your name and mobile number? I’ll text you to set up your free consultation.',
+        fieldName: 'Your name',
         fieldPhone: 'Mobile number',
-        methodLegend: 'I prefer a',
-        methods: [
-            { value: 'text', label: 'Text' },
-            { value: 'call', label: 'Call' },
-        ],
         consent: LP_COPY.en.form.consent,
         submit: 'Send to Melissa',
         submitting: 'Sending…',
         change: 'Change',
         you: 'You',
         typing: 'Melissa is typing',
-        stepLabel: 'Step {n} of 4',
+        stepLabel: 'Step {n} of 3',
         reassure: 'Private. Goes straight to me — never to a sales team.',
         errors: {
-            firstName: 'Enter your first name.',
-            lastName: 'Enter your last name.',
+            name: 'Enter your name.',
             phone: 'Enter a valid US mobile number, with area code.',
-            consent: 'Please tick the box so I’m allowed to contact you.',
+            consent: 'Please tick the box so I’m allowed to text you.',
             submit: 'That didn’t go through. Please try again in a moment.',
         },
     },
@@ -268,7 +252,7 @@ const en: MjDictionary = {
             },
             {
                 title: 'I reach out within 24 hours',
-                body: 'By text or by call, whichever you prefer. I answer your first questions and book your free consultation with Dr. Karlinsky — in person in Miami, or by video from anywhere in the U.S.',
+                body: 'By text. I answer your first questions and book your free consultation with Dr. Karlinsky — in person in Miami, or by video from anywhere in the U.S.',
             },
             {
                 title: 'You leave with a plan, in writing',
@@ -351,10 +335,7 @@ const en: MjDictionary = {
         eyebrow: 'Message sent',
         headingNamed: 'Got it, {name}.',
         heading: 'Got it.',
-        body: {
-            text: 'I’ll text you within 24 hours. Keep an eye on your messages — it’ll be me.',
-            call: 'I’ll call you within 24 hours. If you miss me, I’ll send you a text too.',
-        },
+        body: 'I’ll text you within 24 hours. Keep an eye on your messages — it’ll be me.',
         nextTitle: 'What happens next',
         next: [
             'I reach out and answer your first questions.',
@@ -399,7 +380,7 @@ const es: MjDictionary = {
     chat: {
         title: 'Escríbele a Melissa',
         role: 'Coordinadora de pacientes',
-        status: 'Te responde en 24 horas',
+        status: 'Te responde por texto en 24 horas',
         greeting: '¡Hola! Qué alegría que estés aquí.',
         qProcedure: '¿Qué te gustaría hacerte?',
         procedures: [
@@ -422,30 +403,22 @@ const es: MjDictionary = {
             { value: '3-6-months', label: 'En 3–6 meses' },
             { value: 'researching', label: 'Solo estoy averiguando' },
         ],
-        qName: 'Perfecto. ¿Cómo te llamas?',
-        fieldFirstName: 'Nombre',
-        fieldLastName: 'Apellido',
-        next: 'Siguiente',
-        qContact: 'Mucho gusto, {name}. ¿A qué número te puedo contactar?',
+        qContact:
+            'Perfecto. ¿Cómo te llamas y cuál es tu celular? Te escribo por texto para agendar tu consulta gratis.',
+        fieldName: 'Tu nombre',
         fieldPhone: 'Número de celular',
-        methodLegend: 'Prefiero',
-        methods: [
-            { value: 'text', label: 'Mensaje' },
-            { value: 'call', label: 'Llamada' },
-        ],
         consent: LP_COPY.es.form.consent,
         submit: 'Enviar a Melissa',
         submitting: 'Enviando…',
         change: 'Cambiar',
         you: 'Tú',
         typing: 'Melissa está escribiendo',
-        stepLabel: 'Paso {n} de 4',
+        stepLabel: 'Paso {n} de 3',
         reassure: 'Privado. Me llega directo a mí, nunca a un vendedor.',
         errors: {
-            firstName: 'Escribe tu nombre.',
-            lastName: 'Escribe tu apellido.',
+            name: 'Escribe tu nombre.',
             phone: 'Escribe un celular válido de EE. UU., con código de área.',
-            consent: 'Marca la casilla para que pueda contactarte.',
+            consent: 'Marca la casilla para que pueda escribirte.',
             submit: 'No se pudo enviar. Inténtalo de nuevo en un momento.',
         },
     },
@@ -472,7 +445,7 @@ const es: MjDictionary = {
             },
             {
                 title: 'Te contacto en menos de 24 horas',
-                body: 'Por mensaje o por llamada, como prefieras. Respondo tus primeras preguntas y te agendo tu consulta gratis con la Dra. Karlinsky: en persona en Miami o por video desde cualquier lugar de EE. UU.',
+                body: 'Por mensaje de texto. Respondo tus primeras preguntas y te agendo tu consulta gratis con la Dra. Karlinsky: en persona en Miami o por video desde cualquier lugar de EE. UU.',
             },
             {
                 title: 'Sales con un plan por escrito',
@@ -555,10 +528,7 @@ const es: MjDictionary = {
         eyebrow: 'Mensaje enviado',
         headingNamed: 'Listo, {name}.',
         heading: 'Listo.',
-        body: {
-            text: 'Te escribo en menos de 24 horas. Pendiente a tus mensajes, que voy a ser yo.',
-            call: 'Te llamo en menos de 24 horas. Si no me contestas, te dejo un mensaje de texto también.',
-        },
+        body: 'Te escribo en menos de 24 horas. Pendiente a tus mensajes, que voy a ser yo.',
         nextTitle: 'Lo que sigue',
         next: [
             'Te contacto y respondo tus primeras preguntas.',
