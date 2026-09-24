@@ -5,7 +5,7 @@
  * The revamp works through levers every page already uses, so no page is
  * restyled by hand:
  *
- * - Type: Instrument Sans and Bodoni Moda (app/layout.tsx).
+ * - Type: Instrument Sans and Fraunces (app/layout.tsx).
  * - Colour: the `stone-*` and `gold-*` scales and the theme tokens, remapped
  *   to porcelain, cocoa, champagne and bronze (packages/ui globals.css).
  * - Shape: this file. Every shared `Button` becomes a pill set in sentence
@@ -78,9 +78,9 @@
 }
 
 @layer utilities {
-    /* Bodoni Moda picks its optical size from the font size, and below about
-       24 px that draws hairlines too fine to read on a phone. Display type set
-       that small (card titles, FAQ questions, captions) takes a sturdier cut. */
+    /* Display type set small (card titles, FAQ questions, captions) is pinned
+       to Fraunces's sturdiest text cut rather than the optical size the
+       browser would pick, so it holds up on a phone. */
     .font-serif:is(
         .text-xs,
         .text-sm,
@@ -90,5 +90,17 @@
         .text-2xl
     ) {
         font-variation-settings: 'opsz' 14;
+    }
+
+    /* Fraunces reads a step heavier than the faces these headings were
+       drawn with, so every display weight comes down one: medium sets at
+       regular, semibold and bold at medium. Its contrast and italic carry
+       the emphasis instead. */
+    .font-serif.font-medium {
+        font-weight: 400;
+    }
+
+    .font-serif:is(.font-semibold, .font-bold) {
+        font-weight: 500;
     }
 }

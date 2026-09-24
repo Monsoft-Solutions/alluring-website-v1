@@ -1,6 +1,6 @@
 import { OrganizationSchema, WebSiteSchema } from '@workspace/seo/react'
 import '@workspace/ui/globals.css'
-import { Bodoni_Moda, Geist_Mono, Instrument_Sans } from 'next/font/google'
+import { Fraunces, Geist_Mono, Instrument_Sans } from 'next/font/google'
 import Script from 'next/script'
 
 import './brand.css'
@@ -49,15 +49,16 @@ export const metadata = toNextMetadata(seoConfig, {
 })
 
 /**
- * The site's type: Instrument Sans for everything read at text size, Bodoni
- * Moda for display (`font-sans` / `font-serif`, through `--font-text` and
+ * The site's type: Instrument Sans for everything read at text size,
+ * Fraunces for display (`font-sans` / `font-serif`, through `--font-text` and
  * `--font-display` in packages/ui globals). They replaced Lato and Playfair
- * Display in 2026-09, with the home page redesign.
+ * Display in 2026-09, with the home page redesign. Fraunces took over from
+ * Bodoni Moda, whose hairlines were too fine to read at FAQ and price sizes.
  *
  * Instrument Sans is a variable file from 400 to 700, so `font-light` sets
- * at 400. Bodoni Moda is variable in weight and optical size: browsers pick
- * the optical size from the font size, so a 100 px headline gets razor
- * hairlines and a 20 px one sturdier strokes.
+ * at 400. Fraunces is variable in weight and optical size: browsers pick the
+ * optical size from the font size, so a 100 px headline gets fine detail and
+ * a 20 px one sturdier strokes.
  */
 const fontText = Instrument_Sans({
     subsets: ['latin'],
@@ -75,7 +76,7 @@ const fontMono = Geist_Mono({
     preload: false,
 })
 
-const fontDisplay = Bodoni_Moda({
+const fontDisplay = Fraunces({
     subsets: ['latin'],
     style: ['normal', 'italic'],
     axes: ['opsz'],

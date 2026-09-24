@@ -110,7 +110,7 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
                             />
                             Alluring Plastic Surgery · Miami
                         </span>
-                        <span className='hp-display mt-5 block text-[3.9rem] leading-[0.88] font-medium tracking-[-0.035em] sm:text-[5.25rem] lg:text-[7rem]'>
+                        <span className='hp-display mt-5 block text-[3.9rem] leading-[0.88] font-normal tracking-[-0.02em] sm:text-[5.25rem] lg:text-[7rem]'>
                             Become the <em>after</em>.
                         </span>
                     </h1>
