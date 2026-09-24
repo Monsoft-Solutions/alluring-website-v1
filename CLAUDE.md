@@ -256,6 +256,24 @@ Requires `pnpm build` — `.mcp.json` runs the compiled output, and a stale
 
 ---
 
+## Google Ads Data
+
+The `google-ads` MCP server (`packages/mcp-google-ads`) gives agents read-only
+access to the Google Ads account (447-254-7809). It covers spend by campaign,
+search terms, keywords, landing pages, conversion actions, change history, and
+gclid → campaign/keyword lookups. **Use it instead of reading the Ads UI in a
+browser.** `.claude/skills/google-ads/SKILL.md` maps questions to tools.
+
+- Data layer: `packages/google-ads` (`@workspace/google-ads`), shared with the
+  admin app.
+- Auth: the Search Console service account, plus `GOOGLE_ADS_CUSTOMER_ID` in
+  `apps/admin/.env`.
+- Google sunset developer tokens on 2026-09-09, so none is used. Access follows
+  the Cloud project, which is on the Explorer tier (2,880 operations/day).
+- Registration and build are the same as `search-console`.
+
+---
+
 ## Specialized Agents
 
 | Task             | Agent                                                               |
