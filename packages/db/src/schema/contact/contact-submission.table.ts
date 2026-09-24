@@ -1,11 +1,14 @@
 import {
     boolean,
     index,
+    jsonb,
     pgTable,
     text,
     timestamp,
     uuid,
 } from 'drizzle-orm/pg-core'
+
+import type { LandingParams } from '@workspace/shared/attribution'
 
 export const contactSubmission = pgTable(
     'contact_submission',
@@ -44,6 +47,10 @@ export const contactSubmission = pgTable(
         fbc: text('fbc'),
         referrer: text('referrer'),
         landingPage: text('landing_page'),
+        // ValueTrack parameters from the landing URL with unexpanded `{…}`
+        // tokens dropped — keyword, matchtype, network, device, gad_source,
+        // utm_id. Before this they only survived inside `landing_page`.
+        landingParams: jsonb('landing_params').$type<LandingParams>(),
         // Where the form itself was submitted — `landing_page` is where the
         // session started, and several pages share one source.
         submittedFromPath: text('submitted_from_path'),

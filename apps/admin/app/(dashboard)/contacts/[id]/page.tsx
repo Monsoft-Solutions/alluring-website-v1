@@ -19,6 +19,8 @@ import {
     CardTitle,
 } from '@workspace/ui/components/card'
 
+import { AdClickCard } from '@/components/ads/ad-click-card.component'
+import { getContactAdClick } from '@/lib/queries/ads/ads-leads.query'
 import { getContactById } from '@/lib/queries/contacts.query'
 
 export const dynamic = 'force-dynamic'
@@ -30,7 +32,10 @@ type PageProps = {
 
 export default async function ContactDetailPage({ params }: PageProps) {
     const { id } = await params
-    const contact = await getContactById(id)
+    const [contact, adClick] = await Promise.all([
+        getContactById(id),
+        getContactAdClick(id),
+    ])
 
     if (!contact) {
         notFound()
@@ -174,6 +179,9 @@ export default async function ContactDetailPage({ params }: PageProps) {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* The Google Ads click behind a paid lead (#288) */}
+            {adClick && <AdClickCard click={adClick} />}
 
             {/* Analytics Data */}
             {hasUtmData && (

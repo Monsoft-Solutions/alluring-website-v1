@@ -18,6 +18,8 @@
         "geo:backfill": "tsx scripts/backfill-quick-answers.ts",
         "pipeline:local": "tsx scripts/run-pipeline-local.ts",
         "backfill:gsc": "tsx scripts/backfill-gsc-snapshots.ts",
+        "backfill:ads": "tsx scripts/backfill-ads.ts",
+        "backfill:lead-params": "tsx scripts/backfill-lead-landing-params.ts",
         "refresh:prune": "tsx scripts/prune-refresh-noise.ts"
     },
     "dependencies": {
@@ -46,6 +48,7 @@
         "@workspace/ai": "workspace:*",
         "@workspace/chat": "workspace:*",
         "@workspace/db": "workspace:*",
+        "@workspace/google-ads": "workspace:*",
         "@workspace/seo": "workspace:*",
         "@workspace/shared": "workspace:*",
         "@workspace/ui": "workspace:*",

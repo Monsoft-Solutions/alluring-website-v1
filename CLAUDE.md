@@ -272,6 +272,27 @@ browser.** `.claude/skills/google-ads/SKILL.md` maps questions to tools.
   the Cloud project, which is on the Explorer tier (2,880 operations/day).
 - Registration and build are the same as `search-console`.
 
+### Ads console (admin, epic #288)
+
+The admin's **Ads** section (`/ads`) puts spend next to the paid leads the
+website stored. It never calls Google on a page view: two cron jobs write
+Postgres and every screen is a SQL join.
+
+- `ads-snapshot` (daily, 06:30 ET) re-pulls the trailing 30 days of daily
+  reports into `ads_*_daily` (replacing the window) and upserts the change log
+  into `ads_change_event`, which keeps history past Google's 30 days.
+- `resolve-lead-clicks` (hourly) writes one `lead_ad_click` row per paid Google
+  lead: which click, campaign, ad group and keyword brought it, matched through
+  `click_view` while Google still keeps the click (90 days). A **paid lead is a
+  `lead_ad_click` row** — count leads through it, not by re-classifying
+  `contact_submission`.
+- Both jobs lock through `ads_sync_run` and log their API operations; together
+  they spend well under 50 of the 2,880 a day.
+- Times in these tables are DB `now()`, i.e. Miami wall time like
+  `contact_submission.created_at` — write them with sql`now()`, never a JS Date.
+- First run on a new database: `pnpm --filter admin backfill:ads` (13 months of
+  reports + lead matches, ≈150 operations).
+
 ---
 
 ## Specialized Agents

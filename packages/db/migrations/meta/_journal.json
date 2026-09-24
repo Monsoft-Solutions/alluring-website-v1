@@ -393,6 +393,13 @@
       "when": 1790216066407,
       "tag": "0055_polite_gamora",
       "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "7",
+      "when": 1790284118879,
+      "tag": "0056_lethal_tyrannus",
+      "breakpoints": true
     }
   ]
 }

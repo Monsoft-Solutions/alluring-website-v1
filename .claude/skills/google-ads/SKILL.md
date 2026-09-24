@@ -97,3 +97,16 @@ traps:
   Performance Max clicks.
 - Some served URLs carry both the account tracking template and the final URL
   suffix, so parameters appear twice.
+
+## History beyond the API's limits: the Ads console tables
+
+The admin's Ads console (epic #288) snapshots the account into Postgres. Query
+those tables (read-only) when the API can no longer answer:
+
+- `lead_ad_click` — one row per paid website lead with the campaign, ad group
+  and keyword its click came from, kept after `click_view`'s 90 days. Join to
+  `contact_submission` on `lead_id`. This is the definition of a paid lead.
+- `ads_change_event` — change history kept past `change_event`'s 30 days.
+- `ads_campaign_daily`, `ads_keyword_daily`, `ads_search_term_daily`,
+  `ads_landing_page_daily`, `ads_conversion_daily` — 13 months of daily
+  reports, refreshed for the trailing 30 days every morning.
