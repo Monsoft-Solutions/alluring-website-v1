@@ -6,17 +6,18 @@
  * event carries `pageVariant`, `adVariant` and `lang` so Google Ads conversions
  * can be attributed per ad group and per language.
  *
- * `pageVariant` is "ads-consultation-v4" since the page moved to the
- * consultation thread (#283); v3 was the five-field form. The Google Ads
- * conversion fires on the thank-you page view, not on this value, so the bump
- * only splits the reporting into before and after.
+ * `pageVariant` is "ads-consultation-v5" since the copy, the per-ad-group
+ * headlines and the price & financing section (#290); v4 moved the page to
+ * the consultation thread (#283) and v3 was the five-field form. The Google
+ * Ads conversion fires on the thank-you page view, not on this value, so the
+ * bump only splits the reporting into before and after.
  */
 
 import { readAttributionParam } from '@/lib/analytics/attribution-params.util'
 
 import type { LpLang } from './lp-copy'
 
-export const LP_PAGE_VERSION = 'v4'
+export const LP_PAGE_VERSION = 'v5'
 export const LP_PAGE_VARIANT = `ads-consultation-${LP_PAGE_VERSION}`
 
 /** Query keys Google and our own campaigns put on the ad URL. */

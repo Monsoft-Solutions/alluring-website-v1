@@ -6,6 +6,7 @@
  */
 
 import type { RichText } from '@/components/landing-pages/request-consultation/lp-copy'
+import type { LeadFinancingInterest } from '@/lib/constants/lead-fields'
 
 export type ConsultChatLang = 'en' | 'es'
 
@@ -74,6 +75,14 @@ export interface ConsultChatLead {
     readonly lead?: {
         readonly id: string
         readonly token: string
+    }
+    /**
+     * Answers the thread already has, so the thank-you page shows them as
+     * given instead of asking again: a visitor who tapped "Ask about
+     * financing" sees "Interested in financing?" already answered yes.
+     */
+    readonly answers?: {
+        readonly financingInterest?: LeadFinancingInterest
     }
 }
 

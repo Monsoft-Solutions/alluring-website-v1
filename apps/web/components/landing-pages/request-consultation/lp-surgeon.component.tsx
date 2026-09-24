@@ -1,11 +1,13 @@
 'use client'
 
 /**
- * The surgeon section, right after the results.
+ * The surgeon section, after price & financing.
  *
  * The objection a paid visitor has by this point is "who is actually going
- * to operate on me", and the answer — you meet the surgeon, not a
- * commission-paid closer — is the page's strongest claim.
+ * to operate on me", and the answer is the promise every ad makes: the
+ * surgeon you meet plans your surgery, performs it and sees you at
+ * follow-up. v5 (#290) leads with that line and drops the general quote,
+ * which said nothing she could check and cost a phone screen of scrolling.
  *
  * Credentials are the ones checked at the issuing bodies and worded per
  * Florida Rule 64B8-11.001 (`karlinsky-credentials.constant.ts`): her name
@@ -59,7 +61,6 @@ export function LpSurgeon({ copy }: LpSurgeonProps) {
                         <Rich parts={copy.heading} />
                     </h2>
                     <p className='role'>{copy.role}</p>
-                    <blockquote>{copy.quote}</blockquote>
                     <p className='lead'>{copy.lead}</p>
                     <div className='stats'>
                         {copy.stats.map((stat) => (

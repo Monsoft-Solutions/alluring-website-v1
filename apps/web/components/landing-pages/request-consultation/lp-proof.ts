@@ -77,6 +77,18 @@ const GALLERY_PROCEDURE: Readonly<Record<string, string>> = {
 }
 
 /**
+ * Ad groups with no photographs of their own lead with the nearest set: a
+ * breast lift is often done with implants, and a tummy tuck is the one
+ * skin-removal result there are photographs of. Breast reduction and a
+ * second opinion keep the page's own order rather than lead with results
+ * she didn't ask about.
+ */
+const PHOTO_LEAD: Partial<Record<AdVariant, string>> = {
+    'breast-lift': 'breast-augmentation',
+    'skin-removal': 'tummy-tuck',
+}
+
+/**
  * Curated pairs first — they are the ones the page vouches for by name — but
  * the ad group's procedure leads, curated and gallery together, so a BBL
  * click opens on BBL results.
@@ -105,7 +117,8 @@ function selectPhotos(
                 : []
         })
 
-    const mine = (photo: LpPhoto) => photo.procedure === adVariant
+    const lead = PHOTO_LEAD[adVariant] ?? adVariant
+    const mine = (photo: LpPhoto) => photo.procedure === lead
     const ordered = [
         ...curated.filter(mine),
         ...fromGallery.filter(mine),

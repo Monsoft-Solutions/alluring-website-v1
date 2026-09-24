@@ -10,9 +10,14 @@
  * landing.css — adding or reordering one changes the animation, so keep the
  * order: eyebrow, headline, lede, trust.
  *
- * There is no financing chip and no price here. The thread's reply to the
- * first tap gives the starting price where one is settled; see the REGISTER
- * note in `lp-copy.ts`.
+ * The trust row answers the two things the ads promise before the thread
+ * asks anything (#290): who operates, and whether she can pay over time. The
+ * board credential moved to the surgeon section, where it has room for the
+ * wording Florida requires. All three items stay visible on a phone; on a
+ * 390px screen they are what sits between the headline and the thread.
+ *
+ * No price here. The thread's reply to the first tap gives the starting price
+ * where one is settled; see the REGISTER note in `lp-copy.ts`.
  */
 
 import { fill } from '@/components/shared/consult-chat/consult-chat.util'
@@ -65,11 +70,11 @@ export function LpHero({
                         </li>
                         <li>
                             <CheckIcon />
-                            <span>{copy.trustBoard}</span>
+                            <span>{copy.trustSurgeon}</span>
                         </li>
                         <li>
                             <CheckIcon />
-                            <span>{copy.trustAaaasf}</span>
+                            <span>{copy.trustFinancing}</span>
                         </li>
                     </ul>
                 </div>

@@ -17,6 +17,11 @@
  * — so a visitor who checks the gallery and comes back picks up where they
  * left off.
  *
+ * Links elsewhere on the page can answer for the visitor: a procedure chip
+ * (`data-consult-procedure`) answers the first question, and a financing CTA
+ * (`data-consult-financing="yes"`, the ads landing page, #290) saves the lead
+ * with `financing_interest = yes` and tells the coordinator in the note.
+ *
  * Underneath it is an ordinary form posting through the site's contact
  * pipeline (`useContactFormSubmission` → `/api/contact`), so it reports the
  * shared lead funnel (#272) and every lead lands tagged with its page's
@@ -87,6 +92,8 @@ interface Thread {
     readonly step: Step
     readonly answers: Answers
     readonly name: string
+    /** The visitor asked about financing through a CTA on the page. */
+    readonly financing: boolean
 }
 
 const noSubscription = () => () => {}
@@ -112,14 +119,23 @@ function restoreThread(
         procedure: offered(copy.procedures, saved.procedure),
         timeline: offered(copy.timelines, saved.timeline),
     }
-    if (!answers.procedure && !answers.timeline && !saved.name) return null
-    return { step: nextOpenStep(-1, answers), answers, name: saved.name }
+    const financing = saved.financing === true
+    if (!answers.procedure && !answers.timeline && !saved.name && !financing) {
+        return null
+    }
+    return {
+        step: nextOpenStep(-1, answers),
+        answers,
+        name: saved.name,
+        financing,
+    }
 }
 
 const EMPTY_THREAD: Thread = {
     step: 0,
     answers: { procedure: '', timeline: '' },
     name: '',
+    financing: false,
 }
 
 export interface ConsultChatProps {
@@ -213,6 +229,7 @@ export function ConsultChat({
 
     /** Read when the request resolves, not when it began. */
     const firstNameRef = useRef('')
+    const financingRef = useRef(false)
 
     const {
         submit,
@@ -230,6 +247,9 @@ export function ConsultChat({
             const lead: ConsultChatLead = {
                 firstName: firstNameRef.current,
                 ...(result.lead && { lead: result.lead }),
+                ...(financingRef.current && {
+                    answers: { financingInterest: 'yes' },
+                }),
             }
             try {
                 window.sessionStorage.setItem(
@@ -275,7 +295,11 @@ export function ConsultChat({
 
     const update = (next: Thread) => {
         setTouched(next)
-        writeSavedThread(threadKey, { ...next.answers, name: next.name })
+        writeSavedThread(threadKey, {
+            ...next.answers,
+            name: next.name,
+            financing: next.financing,
+        })
     }
 
     const goTo = (target: Step, withTyping: boolean, next: Thread = thread) => {
@@ -317,18 +341,30 @@ export function ConsultChat({
      * thread; the thread just opens on its next question, with the reply to
      * that procedure already given. Values the thread doesn't offer are
      * ignored, so a stale link falls back to the plain jump.
+     *
+     * `<a href="#<id>" data-consult-financing="yes">` answers nothing on
+     * screen: it marks the thread, and the lead it sends is saved as
+     * interested in financing.
      */
     const answerRef = useRef(answer)
+    const markFinancingRef = useRef(() => {})
     useEffect(() => {
         answerRef.current = answer
+        markFinancingRef.current = () => {
+            if (!thread.financing) update({ ...thread, financing: true })
+        }
     })
     useEffect(() => {
         const onClick = (event: MouseEvent) => {
             if (!(event.target instanceof Element)) return
             const link = event.target.closest<HTMLAnchorElement>(
-                `a[href="#${id}"][data-consult-procedure]`
+                `a[href="#${id}"]`
             )
-            const value = link?.dataset.consultProcedure
+            if (!link) return
+            if (link.dataset.consultFinancing === 'yes') {
+                markFinancingRef.current()
+            }
+            const value = link.dataset.consultProcedure
             if (!value) return
             if (!copy.procedures.some((option) => option.value === value)) {
                 return
@@ -364,6 +400,7 @@ export function ConsultChat({
 
         const { firstName, lastName } = splitName(fullName)
         firstNameRef.current = firstName
+        financingRef.current = thread.financing
         if (dataLayerEvents) {
             pushDataLayer({
                 event: dataLayerEvents.attempt,
@@ -390,6 +427,9 @@ export function ConsultChat({
                 ...noteLines,
                 `Procedure: ${procedureLabel}`,
                 `Timeline: ${labelOf(staff.timelines, answers.timeline)}`,
+                ...(thread.financing
+                    ? ['Financing: asked about financing on the page']
+                    : []),
                 `Preferred language: ${lang === 'es' ? 'Spanish' : 'English'}`,
                 ...(timeZone
                     ? [
@@ -399,6 +439,7 @@ export function ConsultChat({
             ].join('\n'),
             // Stored on the lead and sent to the CRM; never to analytics.
             timeline: answers.timeline,
+            financingInterest: thread.financing ? 'yes' : undefined,
             language: lang,
             offer,
             timeZone: timeZone?.zone,

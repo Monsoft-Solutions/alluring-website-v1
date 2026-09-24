@@ -5,9 +5,10 @@
  * US.
  *
  * What is promised here is clinical and nothing else: a video consultation,
- * dates in writing before flights are booked, one accredited facility, a
- * bilingual team. The practice does not coordinate travel — no flights, no
- * lodging, no recovery house — so do not let "concierge" language back in.
+ * dates in writing before flights are booked, how many nights to stay before
+ * she is cleared to fly home, a bilingual team. The practice does not
+ * coordinate travel — no flights, no lodging, no recovery house — so do not
+ * let "concierge" language back in.
  */
 
 import type { LpDictionary } from './lp-copy'
@@ -18,7 +19,7 @@ interface LpFlyInProps {
 
 export function LpFlyIn({ copy }: LpFlyInProps) {
     return (
-        <section className='band flyin'>
+        <section className='band flyin' id='fly-in'>
             <div className='wrap flyin-in'>
                 <div className='reveal'>
                     <p className='eyebrow'>{copy.eyebrow}</p>

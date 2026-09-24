@@ -585,6 +585,7 @@ export async function POST(
             submittedFromPath: validatedData.submittedFromPath,
             gaClientId: validatedData.gaClientId,
             timeline: validatedData.timeline,
+            financingInterest: validatedData.financingInterest,
             language: validatedData.language,
             offer: validatedData.offer,
             timeZone: validatedData.timeZone,

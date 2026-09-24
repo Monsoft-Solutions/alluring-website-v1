@@ -403,6 +403,8 @@ export const contactFormSchema = z.object({
     // Consultation thread context (#274). A malformed value is dropped
     // rather than rejected: none of these is worth losing a lead over.
     timeline: leadContext(z.string().trim().min(1).max(40)),
+    // Set when the visitor asked about financing on the page (#290).
+    financingInterest: leadContext(z.enum(LEAD_FINANCING_INTEREST)),
     language: leadContext(z.enum(LEAD_LANGUAGES)),
     offer: leadContext(z.string().trim().min(1).max(200)),
     timeZone: leadContext(
