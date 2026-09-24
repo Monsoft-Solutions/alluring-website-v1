@@ -3,8 +3,8 @@
  *
  * Renders nothing if its child fails to load or throws.
  *
- * The exit-intent popup and the promotion modal are mounted from the root
- * layout and their panels are fetched on demand (issue #199). `next/dynamic`
+ * The lead popup (`components/lead-popups`) is mounted from the root layout
+ * and its dialog is fetched on demand (issue #199). `next/dynamic`
  * wraps the import in `React.lazy`, so a rejected fetch throws during render —
  * and with no `app/error.tsx` or `app/global-error.tsx` in this app, that
  * throw escalates to Next's default global error boundary and replaces the

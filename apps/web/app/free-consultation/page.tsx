@@ -27,7 +27,6 @@ import { Journey } from '@/components/home/journey.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import {
     landingFaqCategories,
     landingFaqData,
@@ -207,9 +206,6 @@ export default async function FreeConsultationPage() {
                     size='lg'
                 />
             </ContainerLayout>
-
-            {/* Exit Intent Popup - triggers on exit or after 60 seconds */}
-            <ExitIntentPopup />
         </>
     )
 }

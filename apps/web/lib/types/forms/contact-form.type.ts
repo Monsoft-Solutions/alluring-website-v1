@@ -563,7 +563,7 @@ export const consultationFormCompactSchema = z.object({
 
 /**
  * Lead capture schema - minimal fields for conversion-focused forms
- * Used by: BlogCTA footer, ExitIntentPopup, LeadForm
+ * Used by: BlogCTA footer and the landing pages' mini captures
  * Name is optional to minimize friction in lead capture forms
  */
 export const leadCaptureSchema = z.object({

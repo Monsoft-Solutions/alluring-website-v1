@@ -13,15 +13,14 @@ import { WebVitalsReporter } from '@/components/analytics/web-vitals-reporter.co
 import { CookieBanner } from '@/components/cookie-banner.component'
 import { FloatingChatButtonLazy } from '@/components/chat/floating-chat-button-lazy.component'
 import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedback-button-lazy.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
+import { LeadPopupsWrapper } from '@/components/lead-popups/lead-popups-wrapper.component'
 import { NonStandaloneOnly } from '@/components/layout/non-standalone-only.component'
 import {
     NO_FLOATING_WIDGET_ROUTES,
     NO_PROMO_BAR_ROUTES,
 } from '@/lib/constants/standalone-routes'
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
-import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
 import { ScrollToTop } from '@/components/scroll-to-top.component'
 import { IconSprite } from '@/components/shared/icon-sprite.component'
@@ -180,16 +179,13 @@ export default function RootLayout({
                     {/* Conditional Layout - Header/Footer hidden on standalone pages */}
                     <ConditionalLayout>{children}</ConditionalLayout>
                     {/*
-                        Exit intent and the timed promotion modal are suppressed
-                        on standalone routes (/lp, /landing, /links) and on the
-                        contact and specials pages: a modal over the form is the
-                        fastest way to lose a click.
+                        The lead popup (the promotion, or the text-consultation
+                        request) is suppressed on standalone routes (/lp,
+                        /landing, /links) and on the contact and specials pages:
+                        a modal over the form is the fastest way to lose a click.
                     */}
                     <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
-                        <ExitIntentPopup />
-                    </NonStandaloneOnly>
-                    <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
-                        <PromoModalWrapper />
+                        <LeadPopupsWrapper />
                     </NonStandaloneOnly>
                     {/* Mobile Call Button - visible on mobile devices only.
                         Suppressed on standalone routes so ad/IG landing pages
