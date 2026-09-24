@@ -104,7 +104,7 @@ export function FinancingHero({
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ duration: 0.8, delay: 0.4 }}
-                            className='bg-gold-500 mb-8 h-1 w-24 origin-left shadow-[0_0_20px_rgba(234,179,8,0.4)]'
+                            className='bg-gold-500 mb-8 h-1 w-24 origin-left shadow-[0_0_20px_rgba(205,172,119,0.4)]'
                         />
 
                         {/* Description */}

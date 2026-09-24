@@ -29,12 +29,13 @@ export const moduleLink =
     'text-stone-900 underline decoration-gold-500 decoration-1 underline-offset-4 transition-colors hover:text-stone-600 hover:decoration-stone-900'
 
 const button =
-    'inline-flex h-13 items-center justify-center gap-2.5 rounded-[4px] border px-6.5 text-base leading-none font-bold whitespace-nowrap no-underline transition-colors'
+    'inline-flex h-13 items-center justify-center gap-2.5 rounded-full border px-7 text-base leading-none font-semibold whitespace-nowrap no-underline transition-colors'
 
-/** Stone-900 on gold-400; white on gold-500 fails AA at this size. */
+/** Ink on champagne (gold-400), a pill: 8:1, and it reads on the page's
+ * light bands and its one dark band alike. */
 export const moduleButtonPrimary = `${button} border-gold-400 bg-gold-400 text-stone-900 hover:border-gold-300 hover:bg-gold-300`
 
-export const moduleButtonSecondary = `${button} border-stone-400 bg-white text-stone-900 hover:border-stone-900`
+export const moduleButtonSecondary = `${button} border-stone-300 bg-white text-stone-900 hover:border-stone-900`
 
 /** A section's H3 on the page's one dark band. */
 export const moduleH3Dark =

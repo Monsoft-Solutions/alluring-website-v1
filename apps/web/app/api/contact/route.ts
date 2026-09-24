@@ -8,6 +8,7 @@
  * - blog-lead: Minimal lead capture (phone required, no email)
  * - exit-intent: Exit intent popup (phone required)
  * - lead-form: Home page lead form (phone required)
+ * - home-page: Home page consultation thread (phone required)
  * - footer: Footer contact form (email or phone required)
  * - general: Default behavior (email or phone required)
  *
@@ -206,10 +207,11 @@ function validateBySource(data: ContactFormData): {
             }
             break
 
-        // The contact and specials pages use the chat thread (#274), which
-        // asks for a mobile number only; email is optional afterwards.
+        // The contact, specials and home pages use the chat thread (#274),
+        // which asks for a mobile number only; email is optional afterwards.
         case CONTACT_SOURCES.CONTACT_PAGE:
         case CONTACT_SOURCES.SPECIALS_PAGE:
+        case CONTACT_SOURCES.HOME_PAGE:
         case CONTACT_SOURCES.BLOG_LEAD:
         case CONTACT_SOURCES.EXIT_INTENT:
         case CONTACT_SOURCES.LEAD_FORM:

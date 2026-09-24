@@ -28,7 +28,6 @@ import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import {
     newBeginningFaqCategories,
@@ -166,9 +165,6 @@ export default async function NewBeginningConsultationPage() {
                     backgroundImage='/images/landing/new-beginning-cta-bg.webp'
                 />
             </ContainerLayout>
-
-            {/* Exit Intent Popup */}
-            <ExitIntentPopup />
         </>
     )
 }

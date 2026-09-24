@@ -1,7 +1,9 @@
 import { OrganizationSchema, WebSiteSchema } from '@workspace/seo/react'
 import '@workspace/ui/globals.css'
-import { Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
+import { Bodoni_Moda, Geist_Mono, Instrument_Sans } from 'next/font/google'
 import Script from 'next/script'
+
+import './brand.css'
 
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
 import { CtaClickTracker } from '@/components/analytics/cta-click-tracker.component'
@@ -11,15 +13,14 @@ import { WebVitalsReporter } from '@/components/analytics/web-vitals-reporter.co
 import { CookieBanner } from '@/components/cookie-banner.component'
 import { FloatingChatButtonLazy } from '@/components/chat/floating-chat-button-lazy.component'
 import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedback-button-lazy.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import { ConditionalLayout } from '@/components/layout/conditional-layout.component'
+import { LeadPopupsWrapper } from '@/components/lead-popups/lead-popups-wrapper.component'
 import { NonStandaloneOnly } from '@/components/layout/non-standalone-only.component'
 import {
     NO_FLOATING_WIDGET_ROUTES,
     NO_PROMO_BAR_ROUTES,
 } from '@/lib/constants/standalone-routes'
 import { AnnouncementBar } from '@/components/promotions/announcement-bar.component'
-import { PromoModalWrapper } from '@/components/promotions/promo-modal-wrapper.component'
 import { Providers } from '@/components/providers'
 import { ScrollToTop } from '@/components/scroll-to-top.component'
 import { IconSprite } from '@/components/shared/icon-sprite.component'
@@ -47,12 +48,21 @@ export const metadata = toNextMetadata(seoConfig, {
     title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
 })
 
-const fontLato = Lato({
+/**
+ * The site's type: Instrument Sans for everything read at text size, Bodoni
+ * Moda for display (`font-sans` / `font-serif`, through `--font-text` and
+ * `--font-display` in packages/ui globals). They replaced Lato and Playfair
+ * Display in 2026-09, with the home page redesign.
+ *
+ * Instrument Sans is a variable file from 400 to 700, so `font-light` sets
+ * at 400. Bodoni Moda is variable in weight and optical size: browsers pick
+ * the optical size from the font size, so a 100 px headline gets razor
+ * hairlines and a 20 px one sturdier strokes.
+ */
+const fontText = Instrument_Sans({
     subsets: ['latin'],
-    weight: ['300', '400', '700'],
-    variable: '--font-lato',
+    variable: '--font-text',
     display: 'swap',
-    preload: true,
 })
 
 // Geist Mono is used by exactly four <kbd> elements in the blog search modal
@@ -65,11 +75,11 @@ const fontMono = Geist_Mono({
     preload: false,
 })
 
-const fontPlayfair = Playfair_Display({
+const fontDisplay = Bodoni_Moda({
     subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
     style: ['normal', 'italic'],
-    variable: '--font-playfair',
+    axes: ['opsz'],
+    variable: '--font-display',
     display: 'swap',
 })
 
@@ -125,7 +135,7 @@ export default function RootLayout({
                 )}
             </head>
             <body
-                className={`${fontLato.variable} ${fontMono.variable} ${fontPlayfair.variable} font-sans antialiased`}
+                className={`${fontText.variable} ${fontMono.variable} ${fontDisplay.variable} font-sans antialiased`}
                 suppressHydrationWarning
             >
                 {/* Symbol definitions for the repeated star / Google icons.
@@ -169,16 +179,13 @@ export default function RootLayout({
                     {/* Conditional Layout - Header/Footer hidden on standalone pages */}
                     <ConditionalLayout>{children}</ConditionalLayout>
                     {/*
-                        Exit intent and the timed promotion modal are suppressed
-                        on standalone routes (/lp, /landing, /links) and on the
-                        contact and specials pages: a modal over the form is the
-                        fastest way to lose a click.
+                        The lead popup (the promotion, or the text-consultation
+                        request) is suppressed on standalone routes (/lp,
+                        /landing, /links) and on the contact and specials pages:
+                        a modal over the form is the fastest way to lose a click.
                     */}
                     <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
-                        <ExitIntentPopup />
-                    </NonStandaloneOnly>
-                    <NonStandaloneOnly routes={NO_FLOATING_WIDGET_ROUTES}>
-                        <PromoModalWrapper />
+                        <LeadPopupsWrapper />
                     </NonStandaloneOnly>
                     {/* Mobile Call Button - visible on mobile devices only.
                         Suppressed on standalone routes so ad/IG landing pages

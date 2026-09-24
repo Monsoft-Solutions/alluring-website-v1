@@ -62,7 +62,7 @@ export function ProcedureLandingBenefits({
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0'
             >
-                <div className='absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(212,175,55,0.10),_transparent_60%)]' />
+                <div className='absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(205,172,119,0.10),_transparent_60%)]' />
             </div>
 
             <ContentWrapper

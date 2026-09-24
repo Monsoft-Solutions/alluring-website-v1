@@ -46,13 +46,21 @@ We create **immersive, distinctive experiences** that feel luxurious yet accessi
 
 ### Visual Identity
 
-| Element               | Value                                          |
-| --------------------- | ---------------------------------------------- |
-| **Primary Palette**   | Stone (`stone-50`, `stone-900`)                |
-| **Accent**            | Gold (`gold-500`, `gold-400`)                  |
-| **Headings**          | Serif font (`font-serif`)                      |
-| **Body**              | Sans-serif (`font-sans`)                       |
-| **Signature Pattern** | Glassmorphism (`bg-white/80 backdrop-blur-xl`) |
+| Element               | Value                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------- |
+| **Primary Palette**   | Stone: warm porcelain (`stone-50`) to cocoa and espresso (`stone-900`, `stone-950`)          |
+| **Accent**            | Gold: champagne `gold-300`/`400` on dark bands, honey `500`, bronze `600`+ for text on light |
+| **Headings**          | Bodoni Moda (`font-serif`), weight 400–500, one word in italic                               |
+| **Body**              | Instrument Sans (`font-sans`)                                                                |
+| **Buttons**           | Pills in sentence case: ink on light bands, champagne on dark; ink text on gold fills        |
+| **Signature Pattern** | The arch (`rounded-t-full`) as a window on portraits and scenes; glass on photography        |
+
+The whole site takes this look through shared levers, not per-page styling
+(2026-09 revamp): the `stone-*` / `gold-*` / theme tokens in
+`packages/ui/src/styles/globals.css`, the fonts in `apps/web/app/layout.tsx`,
+and `apps/web/app/brand.css` (every shared `Button` is a pill; gold fills get
+ink text). Style new work with the same tokens rather than hex values; the
+home page (`components/home-page/`) is the reference implementation.
 
 ---
 

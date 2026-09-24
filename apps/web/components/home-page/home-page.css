@@ -1,0 +1,846 @@
+/*
+ * Home page: the rules Tailwind utilities can't express, and the page's
+ * motion. Classes are prefixed `hp-` (home page); the page's root element
+ * carries `hp-page`.
+ *
+ * The look (v2): porcelain, ink and cocoa with champagne light, the tones of
+ * skin and of the golden-hour film the page opens on. Bodoni Moda for
+ * display, Instrument Sans for text (the site's faces). One recurring shape,
+ * the arch: the doorway of the opening film, used as a window on the
+ * surgeon, on each procedure and on the closing scene. Buttons are ink on
+ * light bands and champagne on dark ones. Champagne is never text on a
+ * light band: it can't hold 4.5:1 there.
+ *
+ * Motion follows the procedure module kit's three rules (module-kit.css):
+ *
+ * 1. Text never animates in from hidden. Photographs, rules, dots and whole
+ *    cards move; words sit at their final position for a crawler, a
+ *    screenshot and a slow phone.
+ * 2. It is progressive. Scroll-driven effects sit behind
+ *    `@supports (animation-timeline: view())`, and everything that moves sits
+ *    behind `prefers-reduced-motion: no-preference`, so the reduced-motion
+ *    guard is the absence of the rule rather than an override that has to
+ *    win on specificity.
+ * 3. Keyframes fill `both`, so nothing flashes its end state before it
+ *    starts.
+ */
+
+.hp-page {
+    --hp-porcelain: #fbf8f4;
+    --hp-linen: #f4ede5;
+    --hp-nude: #eadbcd;
+    --hp-ink: #171210;
+    --hp-ink-2: #3f3531;
+    --hp-mute: #6e625a;
+    --hp-cocoa: #261a16;
+    --hp-cocoa-2: #33251f;
+    --hp-espresso: #140d0a;
+    --hp-champagne: #e6cb9f;
+    --hp-champagne-2: #cdae7c;
+    --hp-bronze: #7c5433;
+    --hp-star: #a87b2f;
+    --hp-line: rgba(23, 18, 16, 0.12);
+    --hp-line-dark: rgba(230, 203, 159, 0.18);
+    --hp-display-font: var(--font-display), 'Bodoni 72', Didot, Georgia, serif;
+    --hp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+    /* What text on a band reads from. Light by default; `hp-dark` swaps
+       them. Contrast on porcelain: 17.6, 11.2, 5.6 and 6.3 to 1. */
+    --hp-fg: var(--hp-ink);
+    --hp-fg-2: var(--hp-ink-2);
+    --hp-fg-3: var(--hp-mute);
+    --hp-accent: var(--hp-bronze);
+    --hp-rule: var(--hp-line);
+
+    background: var(--hp-porcelain);
+    color: var(--hp-ink);
+}
+
+/* The page has its own bottom bar on phones. The root layout's floating call
+   button would sit in the same corner. */
+body:has(.hp-page) [data-mobile-call-button] {
+    display: none;
+}
+
+/* Every CTA jumps to the consultation thread: land it clear of the fixed
+   announcement bar and header. */
+.hp-page .cc-chat {
+    scroll-margin-top: calc(var(--announcement-bar-height, 0px) + 6.5rem);
+}
+
+/* Below-the-fold sections skip rendering until they near the viewport. The
+   text stays in the DOM, so find-in-page, anchors and crawlers all see it. */
+.hp-defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1100px;
+}
+
+/* Components sit in Tailwind's `components` layer, so a utility on the
+   same element (`hidden`, `md:inline-flex`, `font-medium`) still wins. */
+@layer components {
+    /* A dark band. On cocoa: 16.0, 11.6, 7.2 and 10.8 to 1. */
+    .hp-dark {
+        --hp-fg: var(--hp-porcelain);
+        --hp-fg-2: #dccdbf;
+        --hp-fg-3: #b5a597;
+        --hp-accent: var(--hp-champagne);
+        --hp-rule: var(--hp-line-dark);
+
+        background-color: var(--hp-cocoa);
+        color: var(--hp-fg);
+    }
+
+    /* Film grain on the dark bands, so cocoa reads as a material rather than a
+       flat fill. One 160 px tile of SVG noise, drawn once. */
+    .hp-grain {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .84 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 160px 160px;
+    }
+
+    /* ── Type ──────────────────────────────────────────────────────────────── */
+
+    .hp-display {
+        font-family: var(--hp-display-font);
+        font-optical-sizing: auto;
+        font-weight: 400;
+        color: var(--hp-fg);
+    }
+
+    /* The one word per heading that carries the feeling. Ink on light bands,
+       champagne on dark ones. */
+    .hp-display em {
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    .hp-dark .hp-display em {
+        color: var(--hp-champagne);
+    }
+
+    /* Display type set small (an FAQ question, a caption): below ~30 px the
+       optical size that `auto` picks draws hairlines too fine for a phone,
+       so it is pinned to a sturdier cut. */
+    .hp-display--small {
+        font-variation-settings: 'opsz' 14;
+    }
+
+    /* Figures that line up: prices, counts, steps. */
+    .hp-num {
+        font-variant-numeric: lining-nums tabular-nums;
+    }
+
+    .hp-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--hp-fg-2);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        line-height: 1.2;
+        text-transform: uppercase;
+    }
+
+    .hp-eyebrow__index {
+        color: var(--hp-accent);
+        font-family: var(--hp-display-font);
+        font-size: 1.125rem;
+        font-style: italic;
+        font-variant-numeric: lining-nums;
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .hp-eyebrow__rule {
+        width: 2.5rem;
+        height: 1px;
+        flex: none;
+        background: currentColor;
+        opacity: 0.4;
+    }
+
+    /* ── Buttons and links ─────────────────────────────────────────────────── */
+
+    .hp-btn {
+        display: inline-flex;
+        min-height: 3.25rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.875rem;
+        border-radius: 9999px;
+        background: var(--hp-ink);
+        padding: 0.375rem 0.4375rem 0.375rem 1.5rem;
+        box-shadow: 0 20px 40px -24px rgba(23, 18, 16, 0.75);
+        color: var(--hp-porcelain);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        line-height: 1.2;
+        text-align: left;
+        transition:
+            background-color 0.3s var(--hp-ease),
+            color 0.3s var(--hp-ease);
+    }
+
+    /* The arrow, in a champagne disc. Generated content, hidden from assistive
+       technology where the alt-text syntax is supported. */
+    .hp-btn::after {
+        content: '→';
+        content: '→' / '';
+        display: grid;
+        width: 2.375rem;
+        height: 2.375rem;
+        flex: none;
+        place-items: center;
+        border-radius: 9999px;
+        background: var(--hp-champagne);
+        color: var(--hp-ink);
+        font-size: 1rem;
+        transition: translate 0.3s var(--hp-ease);
+    }
+
+    .hp-btn:hover {
+        background: var(--hp-cocoa-2);
+    }
+
+    .hp-btn:hover::after {
+        translate: 0.1875rem 0;
+    }
+
+    .hp-btn:focus-visible {
+        outline: 2px solid var(--hp-ink);
+        outline-offset: 3px;
+    }
+
+    .hp-btn--light {
+        background: var(--hp-champagne);
+        box-shadow: 0 20px 40px -24px rgba(230, 203, 159, 0.5);
+        color: var(--hp-ink);
+    }
+
+    .hp-btn--light::after {
+        background: var(--hp-ink);
+        color: var(--hp-champagne);
+    }
+
+    .hp-btn--light:hover {
+        background: #f0dcba;
+    }
+
+    .hp-btn--light:focus-visible {
+        outline-color: var(--hp-champagne);
+    }
+
+    /* An outlined button, for the second action on a band. */
+    .hp-btn--ghost {
+        background: transparent;
+        box-shadow: inset 0 0 0 1px var(--hp-rule);
+        color: var(--hp-fg);
+    }
+
+    .hp-btn--ghost:hover {
+        background: var(--hp-ink);
+        color: var(--hp-porcelain);
+    }
+
+    .hp-dark .hp-btn--ghost {
+        box-shadow: inset 0 0 0 1px rgba(230, 203, 159, 0.4);
+    }
+
+    .hp-dark .hp-btn--ghost:hover {
+        background: var(--hp-champagne);
+        color: var(--hp-ink);
+    }
+
+    .hp-link {
+        color: var(--hp-fg);
+        font-weight: 600;
+        text-decoration-line: underline;
+        text-decoration-color: var(--hp-accent);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.4em;
+        transition:
+            text-decoration-color 0.2s var(--hp-ease),
+            text-underline-offset 0.2s var(--hp-ease);
+    }
+
+    .hp-link:hover {
+        text-decoration-color: currentColor;
+        text-underline-offset: 0.28em;
+    }
+
+    /* ── Surfaces ──────────────────────────────────────────────────────────── */
+
+    /* A card: white paper with a hairline, square-ish, no drop shadow. */
+    .hp-card {
+        border: 1px solid var(--hp-line);
+        border-radius: 0.625rem;
+        background: #fff;
+    }
+
+    /* The arch: a window with a semicircular head. The oversized radius is
+       scaled down to half the box's width, whatever its size. */
+    .hp-arch {
+        overflow: hidden;
+        border-radius: 100vmax 100vmax 0.625rem 0.625rem;
+    }
+
+    /* ── Chips: the hero's procedure links and the picker's zones ──────────── */
+
+    .hp-chip {
+        display: inline-flex;
+        min-height: 2.875rem;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(23, 18, 16, 0.16);
+        background: rgba(255, 255, 255, 0.68);
+        padding: 0.5rem 1.125rem;
+        color: var(--hp-ink);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        line-height: 1.2;
+        white-space: nowrap;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        transition:
+            background-color 0.25s var(--hp-ease),
+            border-color 0.25s var(--hp-ease),
+            color 0.25s var(--hp-ease);
+    }
+
+    .hp-chip:hover {
+        border-color: var(--hp-ink);
+        background: var(--hp-ink);
+        color: var(--hp-porcelain);
+    }
+
+    .hp-chip:focus-visible {
+        outline: 2px solid var(--hp-ink);
+        outline-offset: 2px;
+    }
+
+    .hp-chip--quiet {
+        border-style: dashed;
+        background: transparent;
+        color: var(--hp-ink-2);
+    }
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+
+.hp-hero {
+    view-timeline: --hp-hero block;
+}
+
+/* Both the poster and the film are anchored to the top, so the subject's
+   head is never the part a crop removes. */
+.hp-hero-media video {
+    object-position: 50% 0%;
+}
+
+/* Porcelain scrims that keep the headline readable over the photograph:
+   from the foot on phones, where the copy sits under the subject; from the
+   left on wider screens, where it sits beside her. */
+.hp-hero-scrim {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(251, 248, 244, 0.8) 0%,
+            rgba(251, 248, 244, 0) 16%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(251, 248, 244, 0) 30%,
+            rgba(251, 248, 244, 0.74) 50%,
+            rgba(251, 248, 244, 0.96) 66%,
+            var(--hp-porcelain) 100%
+        );
+}
+
+@media (width >= 48rem) {
+    .hp-hero-scrim {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(251, 248, 244, 0.96) 0%,
+                rgba(251, 248, 244, 0.86) 32%,
+                rgba(251, 248, 244, 0.2) 56%,
+                rgba(251, 248, 244, 0) 70%
+            ),
+            linear-gradient(
+                180deg,
+                rgba(251, 248, 244, 0) 78%,
+                var(--hp-porcelain) 100%
+            );
+    }
+}
+
+/* ── Marquees: the proof ticker and the review rows ────────────────────── */
+
+.hp-marquee {
+    display: flex;
+    overflow: hidden;
+    mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 6%,
+        #000 94%,
+        transparent
+    );
+}
+
+.hp-marquee__track {
+    display: flex;
+    flex: none;
+    gap: var(--hp-marquee-gap, 2.5rem);
+    padding-right: var(--hp-marquee-gap, 2.5rem);
+}
+
+/* Without motion the row is an ordinary scroller, and the duplicate copy
+   that makes the loop seamless is not rendered at all. */
+.hp-marquee__track[aria-hidden='true'] {
+    display: none;
+}
+
+.hp-marquee {
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+}
+
+.hp-marquee::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Results rail ──────────────────────────────────────────────────────── */
+
+.hp-rail {
+    --hp-gutter: 1.25rem;
+    display: flex;
+    gap: 0.875rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--hp-gutter);
+    padding-inline: var(--hp-gutter);
+    margin-inline: calc(-1 * var(--hp-gutter));
+    scrollbar-width: none;
+}
+
+.hp-rail::-webkit-scrollbar {
+    display: none;
+}
+
+.hp-rail > li {
+    flex: none;
+    scroll-snap-align: start;
+}
+
+@media (width >= 48rem) {
+    .hp-rail {
+        --hp-gutter: 2rem;
+        gap: 1.25rem;
+    }
+}
+
+@media (width >= 82rem) {
+    .hp-rail {
+        /* From the container's content edge to the edge of the screen. */
+        --hp-bleed: calc(2rem + max(0px, (100vw - 78rem) / 2));
+        scroll-padding-inline: var(--hp-bleed);
+        padding-inline: var(--hp-bleed);
+        margin-inline: calc(-1 * var(--hp-bleed));
+    }
+}
+
+/* ── Procedure picker ──────────────────────────────────────────────────── */
+
+/* Zone chips: the radio sits right before its label, so `:checked + label`
+   styles the chosen one. */
+.hp-zone:checked + .hp-chip {
+    border-color: var(--hp-ink);
+    background: var(--hp-ink);
+    color: var(--hp-porcelain);
+}
+
+.hp-zone:focus-visible + .hp-chip {
+    outline: 2px solid var(--hp-ink);
+    outline-offset: 2px;
+}
+
+/* A hotspot on the figure: a champagne dot with a halo. */
+.hp-dot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    translate: -50% -50%;
+    place-items: center;
+    border-radius: 9999px;
+    cursor: pointer;
+}
+
+.hp-dot::before {
+    content: '';
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    background: var(--hp-champagne-2);
+    box-shadow:
+        0 0 0 4px rgba(251, 248, 244, 0.92),
+        0 0 0 5px rgba(124, 84, 51, 0.4);
+    transition:
+        scale 0.3s var(--hp-ease),
+        background-color 0.3s var(--hp-ease);
+}
+
+.hp-dot:hover::before {
+    scale: 1.25;
+}
+
+/* Without :has(), every panel shows, stacked: nothing is lost. With it, the
+   chosen zone's panel shows and its dot lights up. */
+@supports selector(:has(*)) {
+    .hp-panel {
+        display: none;
+    }
+
+    .hp-map:has(#hp-zone-lipo:checked) .hp-panel[data-zone='lipo'],
+    .hp-map:has(#hp-zone-bbl:checked) .hp-panel[data-zone='bbl'],
+    .hp-map:has(#hp-zone-tummy:checked) .hp-panel[data-zone='tummy'],
+    .hp-map:has(#hp-zone-breast:checked) .hp-panel[data-zone='breast'],
+    .hp-map:has(#hp-zone-mommy:checked) .hp-panel[data-zone='mommy'],
+    .hp-map:has(#hp-zone-weightLoss:checked) .hp-panel[data-zone='weightLoss'],
+    .hp-map:has(#hp-zone-face:checked) .hp-panel[data-zone='face'] {
+        display: grid;
+    }
+
+    .hp-map:has(#hp-zone-lipo:checked) .hp-dot[data-zone='lipo']::before,
+    .hp-map:has(#hp-zone-bbl:checked) .hp-dot[data-zone='bbl']::before,
+    .hp-map:has(#hp-zone-tummy:checked) .hp-dot[data-zone='tummy']::before,
+    .hp-map:has(#hp-zone-breast:checked) .hp-dot[data-zone='breast']::before,
+    .hp-map:has(#hp-zone-mommy:checked) .hp-dot[data-zone='mommy']::before,
+    .hp-map:has(#hp-zone-face:checked) .hp-dot[data-zone='face']::before {
+        scale: 1.35;
+        background: var(--hp-ink);
+        box-shadow:
+            0 0 0 4px rgba(251, 248, 244, 0.95),
+            0 0 0 6px var(--hp-champagne-2);
+    }
+}
+
+/* ── Fly-in timeline ───────────────────────────────────────────────────── */
+
+.hp-step {
+    position: relative;
+}
+
+.hp-step::before {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    top: 3rem;
+    bottom: -1.75rem;
+    width: 1px;
+    translate: -50% 0;
+    background: rgba(230, 203, 159, 0.35);
+    transform-origin: top;
+}
+
+.hp-step:last-child::before {
+    display: none;
+}
+
+/* ── FAQ ───────────────────────────────────────────────────────────────── */
+
+.hp-faq summary {
+    list-style: none;
+}
+
+.hp-faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.hp-plus-v {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.hp-faq details[open] .hp-plus-v {
+    scale: 1 0;
+}
+
+/* ── Motion ────────────────────────────────────────────────────────────── */
+
+/* Where nothing moves there is nothing to pause. */
+@media (prefers-reduced-motion: reduce) {
+    .hp-motion-toggle {
+        display: none;
+    }
+}
+
+/* The page's pause control (home-motion-toggle.component.tsx). */
+:root[data-hp-motion='paused'] .hp-marquee__track,
+:root[data-hp-motion='paused'] .hp-dot::after {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* The one orchestrated moment on load: the photograph settles. The
+       headline does not move. */
+    .hp-hero-media img {
+        animation: hp-settle 1.8s var(--hp-ease) both;
+    }
+
+    /* Marquees run once motion is welcome: the duplicate track makes the
+       loop seamless, and hovering or focusing inside pauses it. */
+    .hp-marquee {
+        overflow-x: hidden;
+    }
+
+    .hp-marquee__track[aria-hidden='true'] {
+        display: flex;
+    }
+
+    .hp-marquee__track {
+        animation: hp-marquee var(--hp-marquee-duration, 48s) linear infinite;
+    }
+
+    .hp-marquee--reverse .hp-marquee__track {
+        animation-direction: reverse;
+    }
+
+    .hp-marquee:hover .hp-marquee__track,
+    .hp-marquee:focus-within .hp-marquee__track {
+        animation-play-state: paused;
+    }
+
+    /* A zone's panel slides into place when it is chosen. */
+    .hp-panel {
+        animation: hp-rise 0.5s var(--hp-ease) both;
+    }
+
+    /* Every dot breathes, softly, to say it can be tapped. */
+    .hp-dot::after {
+        content: '';
+        position: absolute;
+        inset: 0.5rem;
+        border-radius: 9999px;
+        border: 1px solid var(--hp-champagne-2);
+        animation: hp-halo 2.4s var(--hp-ease) infinite;
+    }
+
+    .hp-faq {
+        interpolate-size: allow-keywords;
+    }
+
+    .hp-faq details::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition:
+            block-size 0.35s var(--hp-ease),
+            content-visibility 0.35s allow-discrete;
+    }
+
+    .hp-faq details[open]::details-content {
+        block-size: auto;
+    }
+
+    .hp-plus-v {
+        transition: scale 0.3s var(--hp-ease);
+    }
+
+    @supports (animation-timeline: view()) {
+        /* The photograph also drifts and softly zooms as the hero scrolls
+           away. One declaration for both: a second `animation` would replace
+           the load-time settle, not add to it. */
+        .hp-hero-media img,
+        .hp-hero-media video {
+            animation:
+                hp-settle 1.8s var(--hp-ease) both,
+                hp-drift linear both;
+            animation-timeline: auto, --hp-hero;
+            animation-range:
+                normal,
+                exit 0% exit 100%;
+        }
+
+        /* An arch window opens upward from its sill as it comes into view. */
+        .hp-arch-unveil {
+            animation: hp-arch-open linear both;
+            animation-timeline: view();
+            animation-range: entry 0% cover 40%;
+        }
+
+        /* From `md` the closing scene's photograph is the band's backdrop,
+           not a window: it stays whole. */
+        @media (width >= 48rem) {
+            .hp-close-media.hp-arch-unveil {
+                animation: none;
+            }
+        }
+
+        /* Dark bands arrive as a change of scene: they open from an inset
+           card to full width. The inset is narrower than the band's padding,
+           so no text is ever clipped. */
+        .hp-scene {
+            animation: hp-scene-open linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 55%;
+        }
+
+        /* Results rail: a photo comes up to full size as it slides in. */
+        .hp-rail-frame {
+            animation: hp-card linear both;
+            animation-timeline: view(inline);
+            animation-range: entry 0% entry 100%;
+        }
+
+        /* A portrait rises through its frame while it crosses the screen. */
+        .hp-parallax {
+            animation: hp-parallax linear both;
+            animation-timeline: view();
+            animation-range: cover 0% cover 100%;
+        }
+
+        /* Fly-in timeline: the rule draws down and each marker fills as the
+           step reaches the middle of the screen. */
+        .hp-step::before {
+            animation: hp-draw-y linear both;
+            animation-timeline: view();
+            animation-range: cover 30% cover 60%;
+        }
+
+        .hp-step-marker {
+            animation: hp-marker linear both;
+            animation-timeline: view();
+            animation-range: cover 30% cover 42%;
+        }
+
+        /* A rule drawn across as its heading scrolls in. */
+        .hp-draw-x {
+            transform-origin: left center;
+            animation: hp-draw-x linear both;
+            animation-timeline: view();
+            animation-range: entry 20% cover 30%;
+        }
+    }
+}
+
+@keyframes hp-settle {
+    from {
+        scale: 1.07;
+    }
+    to {
+        scale: 1;
+    }
+}
+
+@keyframes hp-drift {
+    from {
+        translate: 0 0;
+        scale: 1;
+    }
+    to {
+        translate: 0 8%;
+        scale: 1.06;
+    }
+}
+
+@keyframes hp-marquee {
+    from {
+        translate: 0 0;
+    }
+    to {
+        translate: -100% 0;
+    }
+}
+
+@keyframes hp-rise {
+    from {
+        translate: 0 1rem;
+    }
+    to {
+        translate: 0 0;
+    }
+}
+
+@keyframes hp-halo {
+    0% {
+        scale: 0.6;
+        opacity: 0.9;
+    }
+    80%,
+    100% {
+        scale: 1.35;
+        opacity: 0;
+    }
+}
+
+@keyframes hp-arch-open {
+    from {
+        clip-path: inset(14% 7% 0 7% round 100vmax 100vmax 0 0);
+    }
+    to {
+        clip-path: inset(0 0 0 0 round 100vmax 100vmax 0 0);
+    }
+}
+
+@keyframes hp-scene-open {
+    from {
+        clip-path: inset(0 3% round 2rem);
+    }
+    to {
+        clip-path: inset(0 0 round 0);
+    }
+}
+
+@keyframes hp-card {
+    from {
+        scale: 0.88;
+    }
+    to {
+        scale: 1;
+    }
+}
+
+@keyframes hp-parallax {
+    from {
+        translate: 0 -6%;
+    }
+    to {
+        translate: 0 6%;
+    }
+}
+
+@keyframes hp-draw-y {
+    from {
+        scale: 1 0;
+    }
+    to {
+        scale: 1 1;
+    }
+}
+
+@keyframes hp-draw-x {
+    from {
+        scale: 0 1;
+    }
+    to {
+        scale: 1 1;
+    }
+}
+
+@keyframes hp-marker {
+    from {
+        background-color: transparent;
+        color: var(--hp-champagne);
+    }
+    to {
+        background-color: var(--hp-champagne);
+        color: var(--hp-ink);
+    }
+}

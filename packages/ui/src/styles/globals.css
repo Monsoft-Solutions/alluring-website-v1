@@ -9,25 +9,28 @@
 @source '../**/*.{ts,tsx}';
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
+    /* Base theme: porcelain, ink and linen, with champagne as the focus
+       ring. Warm neutrals rather than pure grey, the tones of the site's
+       photography (2026-09 revamp). */
+    --background: #fbf8f4;
+    --foreground: #171210;
+    --card: #ffffff;
+    --card-foreground: #171210;
+    --popover: #ffffff;
+    --popover-foreground: #171210;
+    --primary: #171210;
+    --primary-foreground: #fbf8f4;
+    --secondary: #f4ede5;
+    --secondary-foreground: #171210;
+    --muted: #f4ede5;
+    --muted-foreground: #6e625a;
+    --accent: #f4ede5;
+    --accent-foreground: #171210;
     --destructive: oklch(0.577 0.245 27.325);
     --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
+    --border: #e7dcd1;
+    --input: #e7dcd1;
+    --ring: #cdac77;
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
     --chart-3: oklch(0.398 0.07 227.392);
@@ -65,27 +68,37 @@
     --cta-orange-bg: oklch(0.6 0.22 40); /* Bold darker orange background */
     --cta-orange-border: oklch(0.5 0.24 40); /* Bold darker orange border */
 
-    /* Stone Color Palette */
-    --stone-50: lab(98.5% -0.05 0.2);
-    --stone-100: lab(96.5286% -0.0991821 0.364268);
-    --stone-200: lab(91.055% 0.663072 0.865579);
-    --stone-300: lab(84.7909% 0.928015 1.59738);
-    --stone-400: lab(66.2166% 1.88044 3.20326);
-    --stone-500: lab(48.1164% 2.35701 4.26852);
-    --stone-600: lab(35.5168% 1.08604 4.07829);
-    --stone-700: lab(27.3812% 1.32917 3.57789);
-    --stone-800: lab(15.0353% 1.96067 1.53427);
-    --stone-900: lab(9.03835% 1.15298 1.92955);
-    --stone-950: lab(2.86037% 0.455312 0.568903);
+    /* Stone: the site's neutrals, from porcelain to espresso. The names are
+       Tailwind's, the values warm (2026-09 revamp), so every `stone-*`
+       utility on every page moved with them. Text contrast: 500 is 5.5:1 on
+       white, 400 is 6.2:1 on 900. */
+    --stone-50: #fbf8f4;
+    --stone-100: #f4ede5;
+    --stone-200: #e7dcd1;
+    --stone-300: #d2c3b5;
+    --stone-400: #a99888;
+    --stone-500: #756659;
+    --stone-600: #5a4d45;
+    --stone-700: #43372f;
+    --stone-800: #2f231d;
+    --stone-900: #221813;
+    --stone-950: #130c09;
 
-    /* Gold Color Palette */
-    --gold-50: lab(98.5% 0.01 8);
-    --gold-100: lab(95.5% 0.02 12);
-    --gold-200: lab(93% 0.03 14);
-    --gold-300: lab(83% 0.08 22);
-    --gold-400: lab(72% 0.12 30); /* Classic Gold #D4AF37 */
-    --gold-500: lab(62% 0.15 35); /* Darker Gold #B4941F */
-    --gold-600: lab(54% 0.12 32);
+    /* Gold: champagne light (50-400) turning to honey and bronze (500-800).
+       400 is the accent on dark bands (8:1 on stone-900). 500 is honey, the
+       accent that has to work on both: 5.2:1 on stone-900, 3.4:1 on white,
+       and ink reads on it at 5.8:1 (brand.css sets ink on gold buttons). 600
+       and up hold text on light bands (5.6:1 and up). 700 and 800 were used
+       before they existed. */
+    --gold-50: #fbf6ee;
+    --gold-100: #f5eada;
+    --gold-200: #eddcc1;
+    --gold-300: #e4c99d;
+    --gold-400: #cdac77;
+    --gold-500: #ae854c;
+    --gold-600: #86603a;
+    --gold-700: #6b4a29;
+    --gold-800: #4d3520;
 
     /* Blush Color Palette */
     --blush-50: lab(99.2% 0.01 5); /* #FDF8F8 */
@@ -167,18 +180,36 @@
     --color-gold-400: var(--gold-400);
     --color-gold-500: var(--gold-500);
     --color-gold-600: var(--gold-600);
+    --color-gold-700: var(--gold-700);
+    --color-gold-800: var(--gold-800);
+
+    /* Tailwind's stock amber, folded into the gold scale: 80-odd `amber-*`
+       utilities on the landing templates follow the brand instead of
+       drawing their own yellow. */
+    --color-amber-50: var(--gold-50);
+    --color-amber-100: var(--gold-100);
+    --color-amber-200: var(--gold-200);
+    --color-amber-300: var(--gold-300);
+    --color-amber-400: var(--gold-400);
+    --color-amber-500: var(--gold-500);
+    --color-amber-600: var(--gold-600);
+    --color-amber-700: var(--gold-700);
+    --color-amber-800: var(--gold-800);
+    --color-amber-900: #3a281a;
+    --color-amber-950: #241810;
 
     /* Blush Color Palette */
     --color-blush-50: var(--blush-50);
     --color-blush-100: var(--blush-100);
 
     /* Font families. Tailwind v4 builds the `font-sans` / `font-serif`
-       utilities from `--font-sans` / `--font-serif`. They were named
-       `--font-family-*` until #251, which is why every `font-serif` heading on
-       the site fell through to the ui-serif stack and rendered in Georgia
-       while Playfair downloaded and went unused. Nothing reads the old names. */
-    --font-sans: var(--font-lato), sans-serif;
-    --font-serif: var(--font-playfair), serif;
+       utilities from `--font-sans` / `--font-serif` (they were named
+       `--font-family-*` until #251, and nothing read them). The faces are
+       Instrument Sans and Bodoni Moda, set by the web app's root layout as
+       `--font-text` / `--font-display`; the admin app sets neither and gets
+       the fallbacks. */
+    --font-sans: var(--font-text), 'Helvetica Neue', Arial, sans-serif;
+    --font-serif: var(--font-display), 'Bodoni 72', Didot, Georgia, serif;
 }
 
 @layer base {

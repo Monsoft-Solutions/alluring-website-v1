@@ -6,34 +6,22 @@
  * See `../landing.css` for the full rationale.
  *
  * One deliberate difference from the standalone prototype: the display serif
- * is Playfair Display, the same face the landing page uses, instead of the
+ * is the site's display face, the same one the landing page uses, instead of the
  * system `ui-serif` the older thank-you shipped. It costs nothing here — the
  * root layout already loads it — and the two pages are one funnel.
  */
 
 .aps-ty {
-    --gold-400: #bfaf79;
-    --gold-500: #a59557;
-    --gold-600: #8f8049;
-    --gold-700: #7f7341;
-    --stone-950: #0c0a09;
-    --stone-900: #1c1917;
-    --stone-600: #57534d;
-    --stone-500: #79716b;
-    --stone-400: #a6a09b;
-    --stone-300: #d6d3d1;
-    --stone-200: #e7e5e4;
-    --stone-100: #f5f5f4;
-    --stone-50: #fbfbfa;
+    /* Stone and gold are the site's scales (packages/ui globals). */
     --white: #fff;
     --radius: 12px;
-    --serif: var(--font-playfair), Georgia, Cambria, 'Times New Roman', serif;
+    --serif: var(--font-display), Georgia, Cambria, 'Times New Roman', serif;
 
     /* The original set these on <body>; the page root carries them instead. */
     box-sizing: border-box;
     background: var(--white);
     color: var(--stone-900);
-    font-family: var(--font-lato), Arial, sans-serif;
+    font-family: var(--font-text), Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;

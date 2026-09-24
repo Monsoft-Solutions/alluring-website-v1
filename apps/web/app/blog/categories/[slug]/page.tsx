@@ -236,7 +236,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
                             </h1>
 
                             {/* Gold accent line */}
-                            <div className='bg-gold-500 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(234,179,8,0.3)]' />
+                            <div className='bg-gold-500 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(205,172,119,0.3)]' />
 
                             {/* Description - Enhanced if available */}
                             <p className='text-base leading-relaxed font-light text-stone-300 md:text-lg'>

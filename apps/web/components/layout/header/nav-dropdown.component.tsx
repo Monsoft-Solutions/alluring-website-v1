@@ -49,7 +49,7 @@ export function NavDropdown({
                 }}
                 aria-haspopup='true'
                 aria-expanded={isOpen}
-                className='hover:text-gold-500 group relative flex items-center text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                className='group relative flex items-center text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-600 uppercase transition-colors hover:text-stone-950'
             >
                 {label}
                 <ChevronDown
@@ -57,11 +57,11 @@ export function NavDropdown({
                         isOpen ? 'rotate-180' : ''
                     }`}
                 />
-                <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                <span className='bg-gold-500 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
             </button>
             {isOpen && (
                 <div className='absolute top-full -left-4 pt-2'>
-                    <div className='animate-fade-in min-w-[260px] rounded-md border border-stone-200 bg-white shadow-lg'>
+                    <div className='animate-fade-in min-w-[260px] rounded-xl border border-stone-200 bg-white shadow-[0_24px_48px_-24px_rgba(34,24,19,0.35)]'>
                         <div className='max-h-[80vh] overflow-y-auto py-2'>
                             {links.map((link) => (
                                 <Link
@@ -70,7 +70,7 @@ export function NavDropdown({
                                     onClick={() =>
                                         handleLinkClick(link.label, link.href)
                                     }
-                                    className='hover:text-gold-500 block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50'
+                                    className='block px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50 hover:text-stone-950'
                                 >
                                     {link.label}
                                 </Link>

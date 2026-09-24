@@ -155,9 +155,15 @@ contact page, the booking subdomain, or a `tel:` / `sms:` number.
 Mark a CTA with `data-cta` instead of calling `trackCTA` — the listener would
 send it a second time.
 
-**Popups.** `popup_view` / `popup_dismiss` with `popup_name` (`exit_intent`,
-`promo_modal`). A view counts once the popup's lazy chunk has mounted; a
-dismissal is the visitor's own close, not a successful submit.
+**Popups.** One lead popup (`components/lead-popups`), at most once per
+session and never after a lead. `popup_view` / `popup_dismiss` with
+`popup_name` (`promo_modal` while a promotion's modal is on, `exit_intent`
+otherwise). `popup_view` carries `trigger_type` (`exit_intent`, `scroll_up`,
+`timer`); `popup_dismiss` carries `method` (`close_button`, `backdrop`,
+`escape`, `no_thanks`) and `step` (`offer`, `contact`). A view counts once the
+popup's lazy chunk has mounted; a dismissal is the visitor's own close, not a
+successful submit. The tap from the offer to the form is `lead_step` with
+`step: offer`.
 
 **Page speed.** `<WebVitalsReporter />` sends `web_vital` for LCP, INP and CLS
 with `metric_name`, `metric_value` (ms; CLS ×1000) and `metric_rating`, tagged

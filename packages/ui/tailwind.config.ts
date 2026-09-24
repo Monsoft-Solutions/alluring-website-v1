@@ -84,7 +84,7 @@ const config = {
             },
             fontFamily: {
                 sans: ['var(--font-sans)', 'sans-serif'],
-                serif: ['var(--font-playfair)', 'serif'],
+                serif: ['var(--font-display)', 'serif'],
             },
             letterSpacing: {
                 tighter: '-0.05em',

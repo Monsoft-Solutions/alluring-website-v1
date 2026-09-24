@@ -112,10 +112,10 @@ export function DesktopNav() {
                         nav_type: 'desktop',
                         link_category: 'financing',
                     }}
-                    className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                    className='group relative text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-600 uppercase transition-colors hover:text-stone-950'
                 >
                     Financing
-                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                    <span className='bg-gold-500 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
 
                 {/* Blog Link */}
@@ -126,10 +126,10 @@ export function DesktopNav() {
                         nav_type: 'desktop',
                         link_category: 'blog',
                     }}
-                    className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                    className='group relative text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-600 uppercase transition-colors hover:text-stone-950'
                 >
                     Blog
-                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                    <span className='bg-gold-500 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
 
                 {/* Gallery Link */}
@@ -140,10 +140,10 @@ export function DesktopNav() {
                         nav_type: 'desktop',
                         link_category: 'gallery',
                     }}
-                    className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                    className='group relative text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-600 uppercase transition-colors hover:text-stone-950'
                 >
                     Gallery
-                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                    <span className='bg-gold-500 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
 
                 {/* About Link */}
@@ -154,10 +154,10 @@ export function DesktopNav() {
                         nav_type: 'desktop',
                         link_category: 'about',
                     }}
-                    className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                    className='group relative text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-600 uppercase transition-colors hover:text-stone-950'
                 >
                     About
-                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                    <span className='bg-gold-500 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
 
                 {/* FAQ Link */}
@@ -168,10 +168,10 @@ export function DesktopNav() {
                         nav_type: 'desktop',
                         link_category: 'faq',
                     }}
-                    className='hover:text-gold-500 group relative text-sm font-bold tracking-widest text-stone-500 uppercase transition-colors'
+                    className='group relative text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-600 uppercase transition-colors hover:text-stone-950'
                 >
                     FAQ
-                    <span className='bg-gold-400 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
+                    <span className='bg-gold-500 absolute -bottom-2 left-0 h-px w-0 transition-all duration-300 group-hover:w-full'></span>
                 </TrackedLink>
             </nav>
 
@@ -185,7 +185,7 @@ export function DesktopNav() {
                 <Link
                     href={getPhoneLink()}
                     onClick={handlePhoneClick}
-                    className='hover:text-gold-500 hidden items-center text-sm font-bold tracking-widest text-stone-900 uppercase transition-colors 2xl:flex'
+                    className='hidden items-center text-[0.8125rem] font-semibold tracking-[0.14em] text-stone-900 uppercase transition-colors hover:text-stone-600 2xl:flex'
                 >
                     {contactInfo.phoneDisplay}
                 </Link>

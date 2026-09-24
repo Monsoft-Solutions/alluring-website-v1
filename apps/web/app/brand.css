@@ -1,0 +1,94 @@
+/*
+ * The website's brand layer, loaded by the root layout after the shared
+ * globals (2026-09 revamp, from the home page redesign).
+ *
+ * The revamp works through levers every page already uses, so no page is
+ * restyled by hand:
+ *
+ * - Type: Instrument Sans and Bodoni Moda (app/layout.tsx).
+ * - Colour: the `stone-*` and `gold-*` scales and the theme tokens, remapped
+ *   to porcelain, cocoa, champagne and bronze (packages/ui globals.css).
+ * - Shape: this file. Every shared `Button` becomes a pill set in sentence
+ *   case, whatever utilities it carries, and gold fills carry ink.
+ *
+ * The Button rules are unlayered on purpose: they must beat the utility
+ * classes the Button sets on itself. They only touch shape and type, so a
+ * colour a page gives a Button still applies. The admin app does not load
+ * this file.
+ */
+
+[data-ui-button] {
+    border-radius: 9999px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-transform: none;
+}
+
+/* The gold variant is champagne now: ink on it, not white (2.2:1). */
+[data-ui-button][data-variant='gold'] {
+    border-color: var(--gold-400);
+    color: var(--stone-950);
+}
+
+[data-ui-button][data-variant='gold']:hover {
+    border-color: var(--gold-300);
+    background-color: var(--gold-300);
+    color: var(--stone-950);
+}
+
+/* Primary: cocoa, with champagne type on hover rather than a gold tint. */
+[data-ui-button][data-variant='primary']:hover {
+    color: var(--gold-300);
+}
+
+/* Gold fills carry ink, not white. White on honey is 3.4:1, and 40-odd
+   buttons across the site were drawn white-on-gold; this fixes every one of
+   them where they stand. Hover lightens to champagne instead of darkening,
+   so the ink keeps its contrast. */
+:is(.bg-gold-400, .bg-gold-500, .bg-gold-600).text-white {
+    color: var(--stone-950);
+}
+
+:is(.bg-gold-400, .bg-gold-500, .bg-gold-600).text-white:is(
+        :hover,
+        :focus-visible
+    ) {
+    background-color: var(--gold-400);
+    color: var(--stone-950);
+}
+
+[data-ui-button]:focus-visible {
+    outline: 2px solid var(--gold-400);
+    outline-offset: 3px;
+}
+
+::selection {
+    background: var(--gold-300);
+    color: var(--stone-950);
+}
+
+@layer base {
+    /* Headlines break into even lines instead of leaving a word alone. */
+    h1,
+    h2,
+    h3 {
+        text-wrap: balance;
+    }
+}
+
+@layer utilities {
+    /* Bodoni Moda picks its optical size from the font size, and below about
+       24 px that draws hairlines too fine to read on a phone. Display type set
+       that small (card titles, FAQ questions, captions) takes a sturdier cut. */
+    .font-serif:is(
+        .text-xs,
+        .text-sm,
+        .text-base,
+        .text-lg,
+        .text-xl,
+        .text-2xl
+    ) {
+        font-variation-settings: 'opsz' 14;
+    }
+}

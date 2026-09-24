@@ -2,7 +2,7 @@
  * ProcedureLandingMidCTA
  *
  * Mid-page conversion punch styled as a magazine pull quote. Large
- * italic Playfair, gold quotation marks framing the message, hairline
+ * italic display serif, gold quotation marks framing the message, hairline
  * gold rule below, and a single refined CTA. The dark background mirrors
  * the hero so the chapter visually picks up where the cover spread left
  * off.
@@ -44,8 +44,8 @@ export function ProcedureLandingMidCTA({
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0'
             >
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_0%,_rgba(212,175,55,0.18),_transparent_70%)]' />
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_100%,_rgba(212,175,55,0.10),_transparent_70%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_0%,_rgba(205,172,119,0.18),_transparent_70%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_100%,_rgba(205,172,119,0.10),_transparent_70%)]' />
                 <div
                     className='absolute inset-0 opacity-[0.35] mix-blend-overlay'
                     style={{ backgroundImage: GRAIN_DATA_URI }}
@@ -113,7 +113,7 @@ export function ProcedureLandingMidCTA({
                     <a
                         href={formAnchor}
                         data-cta='landing_cta_mid'
-                        className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-9 py-3.5 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_15px_35px_-10px_rgba(212,175,55,0.45)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_18px_40px_-8px_rgba(212,175,55,0.55)] active:scale-[0.98]'
+                        className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-9 py-3.5 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_15px_35px_-10px_rgba(205,172,119,0.45)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_18px_40px_-8px_rgba(205,172,119,0.55)] active:scale-[0.98]'
                     >
                         Send My Free Quote
                         <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />

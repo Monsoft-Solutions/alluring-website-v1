@@ -210,7 +210,7 @@ export function FeaturedPost({
                             </h2>
 
                             {/* Gold accent line */}
-                            <div className='bg-gold-500 relative z-10 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(234,179,8,0.3)]' />
+                            <div className='bg-gold-500 relative z-10 mb-6 h-1 w-16 shadow-[0_0_15px_rgba(205,172,119,0.3)]' />
 
                             {/* Excerpt */}
                             {post.excerpt && (

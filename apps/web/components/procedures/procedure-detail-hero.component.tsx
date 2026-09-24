@@ -62,14 +62,14 @@ export function ProcedureDetailHero({
 
                 <div className='pointer-events-none container mx-auto px-4 pb-24 md:px-12 lg:pb-32'>
                     <div className='pointer-events-auto max-w-3xl md:ml-0'>
-                        <div className='animate-fade-in-up relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md sm:p-10 md:p-14'>
+                        <div className='animate-fade-in-up relative overflow-hidden rounded-2xl border border-white/10 bg-stone-950/40 p-8 backdrop-blur-md sm:p-10 md:p-14'>
                             {/* Decorative elements */}
                             <div className='bg-gold-400/20 absolute top-0 right-0 -mt-24 -mr-24 h-80 w-80 rounded-full blur-3xl' />
                             <div className='absolute bottom-0 left-0 -mb-24 -ml-24 h-80 w-80 rounded-full bg-stone-500/20 blur-3xl' />
 
                             <div className='relative z-10'>
                                 <div className='animate-fade-in-up animate-delay-300 mb-6 flex items-center gap-4'>
-                                    <span className='bg-gold-400 h-[1px] w-12 shadow-[0_0_10px_rgba(234,179,8,0.5)]'></span>
+                                    <span className='bg-gold-400 h-[1px] w-12'></span>
                                     <span className='text-gold-400 text-xs font-bold tracking-[0.3em] uppercase drop-shadow-sm'>
                                         Premium Procedure
                                     </span>

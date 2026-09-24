@@ -157,7 +157,7 @@ function LuxuryCTASection({
                         </h2>
 
                         {/* Gold Accent Line */}
-                        <div className='bg-gold-500 mb-8 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)]' />
+                        <div className='bg-gold-400 mb-8 h-px w-24' />
 
                         {/* Description */}
                         {description && (
@@ -206,7 +206,7 @@ function LuxuryCTASection({
                                     variant='default'
                                     data-cta={`${id}:primary`}
                                     onClick={primaryButton.onClick}
-                                    className='bg-gold-500 hover:bg-gold-600 min-w-[200px] border-none px-8 py-6 text-base font-bold tracking-wide text-white uppercase shadow-lg shadow-amber-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30'
+                                    className='bg-gold-300 hover:bg-gold-200 min-w-[200px] border-none px-8 py-6 text-base text-stone-950 shadow-[0_20px_40px_-24px_rgba(228,201,157,0.6)] transition-all duration-300 hover:text-stone-950'
                                 >
                                     {primaryButton.icon &&
                                         primaryButton.iconPosition !==
@@ -223,7 +223,7 @@ function LuxuryCTASection({
                                     asChild
                                     size='lg'
                                     variant='default'
-                                    className='bg-gold-500 hover:bg-gold-600 min-w-[200px] border-none px-8 py-6 text-base font-bold tracking-wide text-white uppercase shadow-lg shadow-amber-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30'
+                                    className='bg-gold-300 hover:bg-gold-200 min-w-[200px] border-none px-8 py-6 text-base text-stone-950 shadow-[0_20px_40px_-24px_rgba(228,201,157,0.6)] transition-all duration-300 hover:text-stone-950'
                                 >
                                     <Link
                                         href={primaryButton.href}
@@ -255,7 +255,7 @@ function LuxuryCTASection({
                                             variant='outline'
                                             data-cta={`${id}:secondary`}
                                             onClick={secondaryButton.onClick}
-                                            className='hover:border-gold-500/50 min-w-[160px] border-white/20 bg-white/5 px-8 py-6 text-base font-bold tracking-wide text-white uppercase backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
+                                            className='hover:border-gold-300/60 min-w-[160px] border-white/25 bg-white/5 px-8 py-6 text-base text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
                                         >
                                             {secondaryButton.icon &&
                                                 secondaryButton.iconPosition !==
@@ -272,7 +272,7 @@ function LuxuryCTASection({
                                             asChild
                                             size='lg'
                                             variant='outline'
-                                            className='hover:border-gold-500/50 min-w-[160px] border-white/20 bg-white/5 px-8 py-6 text-base font-bold tracking-wide text-white uppercase backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
+                                            className='hover:border-gold-300/60 min-w-[160px] border-white/25 bg-white/5 px-8 py-6 text-base text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
                                         >
                                             <Link
                                                 href={secondaryButton.href}

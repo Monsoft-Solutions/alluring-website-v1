@@ -20,8 +20,8 @@ import {
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { useUTMTracking } from '@/lib/analytics/utm-tracking.context'
 import {
-    dispatchFormSubmitted,
-    FORM_SUBMITTED_KEY,
+    dispatchFormStarted,
+    markLeadConverted,
 } from '@/lib/events/form-events'
 import {
     type ContactFormResponse,
@@ -104,6 +104,13 @@ const isFieldList = (
 /** Fraction of the form that must be on screen to count as seen. */
 const FORM_VIEW_THRESHOLD = 0.5
 const FORM_START_EVENTS = ['focusin', 'pointerdown', 'input'] as const
+/**
+ * What counts as filling the form in, for the lead popup: a tap, a key or a
+ * focused field. Not `pointerdown`, which a thumb scrolling past the form
+ * also fires, and which would keep the popup off for a visitor who never
+ * touched the form.
+ */
+const FORM_ENGAGE_EVENTS = ['focusin', 'input', 'click'] as const
 
 const INITIAL_STATE: SubmissionState = {
     status: 'idle',
@@ -159,6 +166,7 @@ export function useContactFormSubmission(
     // Funnel milestones fire once per mounted form.
     const hasViewed = useRef(false)
     const hasStarted = useRef(false)
+    const hasEngaged = useRef(false)
     const detachFormListeners = useRef<(() => void) | null>(null)
 
     const formRef = useCallback(
@@ -200,6 +208,26 @@ export function useContactFormSubmission(
                     element.addEventListener(type, onStart, { passive: true })
                 }
                 cleanups.push(removeStartListeners)
+            }
+
+            if (!hasEngaged.current) {
+                // The timed lead popup must not open over a form the
+                // visitor is already filling in.
+                const onEngage = () => {
+                    if (hasEngaged.current) return
+                    hasEngaged.current = true
+                    dispatchFormStarted()
+                    removeEngageListeners()
+                }
+                const removeEngageListeners = () => {
+                    for (const type of FORM_ENGAGE_EVENTS) {
+                        element.removeEventListener(type, onEngage)
+                    }
+                }
+                for (const type of FORM_ENGAGE_EVENTS) {
+                    element.addEventListener(type, onEngage, { passive: true })
+                }
+                cleanups.push(removeEngageListeners)
             }
 
             detachFormListeners.current = () => {
@@ -301,14 +329,9 @@ export function useContactFormSubmission(
                         message: result.message,
                     })
 
-                    // Mark that user has submitted a form this session
-                    // This prevents additional lead capture popups/modals from showing
-                    if (typeof window !== 'undefined') {
-                        sessionStorage.setItem(FORM_SUBMITTED_KEY, 'true')
-                        // Dispatch custom event to immediately notify all floating modals
-                        // This prevents stale closure issues where modals check sessionStorage only on mount
-                        dispatchFormSubmitted()
-                    }
+                    // A converted lead never sees a lead popup again, in this
+                    // tab, in other open tabs or on a later visit.
+                    markLeadConverted()
 
                     trackLeadFormEvent(
                         LEAD_FORM_EVENTS.SUBMIT_SUCCESS,

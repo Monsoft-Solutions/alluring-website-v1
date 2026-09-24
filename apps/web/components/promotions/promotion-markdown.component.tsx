@@ -237,7 +237,7 @@ export function PromotionMarkdown({ content, className = '' }: MarkdownProps) {
 /**
  * Client Component - Promotion Markdown Renderer
  *
- * Use for PromoModal and other client-side contexts.
+ * Use for the lead popup's promotion and other client-side contexts.
  * Identical rendering logic, just marked as client component.
  */
 export function PromotionMarkdownClient({

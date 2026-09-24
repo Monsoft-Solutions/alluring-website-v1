@@ -37,7 +37,6 @@ import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { ExitIntentPopup } from '@/components/home/exit-intent-popup.component'
 import {
     travelLandingFaqCategories,
     travelLandingFaqData,
@@ -180,9 +179,6 @@ export default async function FlyInConsultationPage() {
                     size='lg'
                 />
             </ContainerLayout>
-
-            {/* Exit Intent Popup */}
-            <ExitIntentPopup />
         </>
     )
 }

@@ -312,8 +312,8 @@ export function BlogCTA({
             )}
         >
             {/* Decorative background */}
-            <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.08),transparent_60%)]' />
-            <div className='absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(212,175,55,0.05),transparent_50%)]' />
+            <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(205,172,119,0.08),transparent_60%)]' />
+            <div className='absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(205,172,119,0.05),transparent_50%)]' />
 
             <div className='relative px-8 py-12 md:px-12 md:py-16'>
                 <div className='mx-auto max-w-xl'>

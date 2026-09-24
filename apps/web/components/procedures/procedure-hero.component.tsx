@@ -81,7 +81,7 @@ export function ProcedureHero() {
                                     transition={{ delay: 0.4, duration: 0.8 }}
                                     className='mb-6 flex items-center gap-4'
                                 >
-                                    <span className='bg-gold-400 h-px w-12 shadow-[0_0_10px_rgba(234,179,8,0.5)]'></span>
+                                    <span className='bg-gold-400 h-px w-12 shadow-[0_0_10px_rgba(205,172,119,0.5)]'></span>
                                     <span className='text-gold-400 text-xs font-bold tracking-[0.3em] uppercase drop-shadow-sm'>
                                         Excellence in Aesthetics
                                     </span>
