@@ -43,6 +43,7 @@ describe('getPageType', () => {
         ['/lp/request-consultation/thank-you', 'thank_you'],
         ['/landing/procedure/liposuction-miami', 'landing'],
         ['/thank-you', 'thank_you'],
+        ['/thank-you/consultation', 'thank_you'],
         ['/miami-plastic-surgery-specials', 'specials'],
         ['/promotions/love-your-body', 'specials'],
         ['/plastic-surgery-financing-miami', 'financing'],

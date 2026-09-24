@@ -79,6 +79,7 @@ export function ConsultStickyBar({
             <div className='flex items-center gap-2'>
                 <a
                     href={`#${chatId}`}
+                    data-cta='consult_sticky_chat'
                     className='from-gold-300 via-gold-400 to-gold-500 flex min-h-12 flex-1 items-center justify-center rounded-xl bg-gradient-to-br px-4 text-center text-[15px] font-bold text-stone-950'
                 >
                     {left !== null ? RESUME[lang](left) : label[lang]} →
@@ -86,6 +87,7 @@ export function ConsultStickyBar({
                 {smsLink ? (
                     <a
                         href={smsLink}
+                        data-cta='consult_sticky_text'
                         className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
                     >
                         {lang === 'es' ? 'Escríbenos' : 'Text us'}
@@ -93,6 +95,7 @@ export function ConsultStickyBar({
                 ) : (
                     <a
                         href={`tel:${phoneDigits}`}
+                        data-cta='consult_sticky_call'
                         className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
                         aria-label={phoneLabel}
                     >

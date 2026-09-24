@@ -110,6 +110,7 @@ const EXACT_TYPES: Readonly<Record<string, PageType>> = {
 
 /** Prefix rules, most specific first. A prefix matches itself + `/…`. */
 const PREFIX_TYPES: ReadonlyArray<readonly [string, PageType]> = [
+    ['/thank-you', 'thank_you'],
     ['/procedures', 'procedure'],
     ['/blog/categories', 'blog_index'],
     ['/blog/tags', 'blog_index'],
