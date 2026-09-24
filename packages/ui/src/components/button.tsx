@@ -63,6 +63,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     asChild?: boolean
 }
 
+/**
+ * `data-ui-button` and `data-variant` let an app restyle every Button at once
+ * from its own stylesheet (the web app's brand.css does) without touching the
+ * variants other apps rely on.
+ */
 const Button = ({
     children,
     variant = 'primary',
@@ -109,14 +114,25 @@ const Button = ({
             props as unknown as ComponentPropsWithoutRef<'button'>
 
         return (
-            <Slot className={buttonClassName} {...standardProps}>
+            <Slot
+                className={buttonClassName}
+                data-ui-button=''
+                data-variant={effectiveVariant}
+                {...standardProps}
+            >
                 {children}
             </Slot>
         )
     }
 
     return (
-        <button type='button' className={buttonClassName} {...props}>
+        <button
+            type='button'
+            className={buttonClassName}
+            data-ui-button=''
+            data-variant={effectiveVariant}
+            {...props}
+        >
             {buttonContent}
         </button>
     )

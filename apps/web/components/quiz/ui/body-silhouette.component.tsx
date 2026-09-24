@@ -48,8 +48,8 @@ export function BodySilhouette({
                         x2='0%'
                         y2='100%'
                     >
-                        <stop offset='0%' stopColor='#f5f5f4' />
-                        <stop offset='100%' stopColor='#e7e5e4' />
+                        <stop offset='0%' stopColor='#f4ede5' />
+                        <stop offset='100%' stopColor='#e7dcd1' />
                     </linearGradient>
                     <linearGradient
                         id='selectedGradient'
@@ -58,8 +58,8 @@ export function BodySilhouette({
                         x2='0%'
                         y2='100%'
                     >
-                        <stop offset='0%' stopColor='#d4af37' />
-                        <stop offset='100%' stopColor='#b8941c' />
+                        <stop offset='0%' stopColor='#ae854c' />
+                        <stop offset='100%' stopColor='#86603a' />
                     </linearGradient>
                     <filter id='glow'>
                         <feGaussianBlur stdDeviation='3' result='coloredBlur' />
@@ -88,7 +88,7 @@ export function BodySilhouette({
                                 ? 'url(#selectedGradient)'
                                 : 'url(#bodyGradient)'
                         }
-                        stroke={isSelected('face') ? '#d4af37' : '#a8a29e'}
+                        stroke={isSelected('face') ? '#ae854c' : '#a99888'}
                         strokeWidth='2'
                         filter={isSelected('face') ? 'url(#glow)' : undefined}
                         className='transition-all duration-300'
@@ -112,7 +112,7 @@ export function BodySilhouette({
                 <path
                     d='M60 90 Q40 95 40 130 L40 240 Q40 260 60 270 L80 280 L80 380 L120 380 L120 280 L140 270 Q160 260 160 240 L160 130 Q160 95 140 90 Z'
                     fill='url(#bodyGradient)'
-                    stroke='#a8a29e'
+                    stroke='#a99888'
                     strokeWidth='1'
                     className='pointer-events-none'
                 />
@@ -135,7 +135,7 @@ export function BodySilhouette({
                                 ? 'url(#selectedGradient)'
                                 : 'url(#bodyGradient)'
                         }
-                        stroke={isSelected('breast') ? '#d4af37' : '#a8a29e'}
+                        stroke={isSelected('breast') ? '#ae854c' : '#a99888'}
                         strokeWidth='2'
                         filter={isSelected('breast') ? 'url(#glow)' : undefined}
                         className='transition-all duration-300'
@@ -151,7 +151,7 @@ export function BodySilhouette({
                                 ? 'url(#selectedGradient)'
                                 : 'url(#bodyGradient)'
                         }
-                        stroke={isSelected('breast') ? '#d4af37' : '#a8a29e'}
+                        stroke={isSelected('breast') ? '#ae854c' : '#a99888'}
                         strokeWidth='2'
                         filter={isSelected('breast') ? 'url(#glow)' : undefined}
                         className='transition-all duration-300'
@@ -173,7 +173,7 @@ export function BodySilhouette({
                                 ? 'url(#selectedGradient)'
                                 : 'url(#bodyGradient)'
                         }
-                        stroke={isSelected('body') ? '#d4af37' : '#a8a29e'}
+                        stroke={isSelected('body') ? '#ae854c' : '#a99888'}
                         strokeWidth='2'
                         filter={isSelected('body') ? 'url(#glow)' : undefined}
                         className='transition-all duration-300'
@@ -189,7 +189,7 @@ export function BodySilhouette({
                                 ? 'url(#selectedGradient)'
                                 : 'url(#bodyGradient)'
                         }
-                        stroke={isSelected('body') ? '#d4af37' : '#a8a29e'}
+                        stroke={isSelected('body') ? '#ae854c' : '#a99888'}
                         strokeWidth='2'
                         filter={isSelected('body') ? 'url(#glow)' : undefined}
                         className='transition-all duration-300'
@@ -200,7 +200,7 @@ export function BodySilhouette({
                 <path
                     d='M40 95 Q25 100 20 140 Q18 180 25 220'
                     fill='none'
-                    stroke='#a8a29e'
+                    stroke='#a99888'
                     strokeWidth='12'
                     strokeLinecap='round'
                     className='pointer-events-none'
@@ -208,7 +208,7 @@ export function BodySilhouette({
                 <path
                     d='M160 95 Q175 100 180 140 Q182 180 175 220'
                     fill='none'
-                    stroke='#a8a29e'
+                    stroke='#a99888'
                     strokeWidth='12'
                     strokeLinecap='round'
                     className='pointer-events-none'
@@ -218,7 +218,7 @@ export function BodySilhouette({
                 <path
                     d='M85 275 L80 380'
                     fill='none'
-                    stroke='#a8a29e'
+                    stroke='#a99888'
                     strokeWidth='18'
                     strokeLinecap='round'
                     className='pointer-events-none'
@@ -226,7 +226,7 @@ export function BodySilhouette({
                 <path
                     d='M115 275 L120 380'
                     fill='none'
-                    stroke='#a8a29e'
+                    stroke='#a99888'
                     strokeWidth='18'
                     strokeLinecap='round'
                     className='pointer-events-none'

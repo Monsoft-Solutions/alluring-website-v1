@@ -9,9 +9,6 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
-// First, and it brings the page's stylesheet: see fonts.tsx for why the
-// order keeps the home fonts from being preloaded on other routes.
-import { HomeFontScope } from '@/components/home-page/fonts'
 import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
 import { HomeClose } from '@/components/home-page/home-close.component'
 import { HomeConsult } from '@/components/home-page/home-consult.component'
@@ -45,6 +42,8 @@ import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
+
+import '@/components/home-page/home-page.css'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
@@ -266,7 +265,6 @@ export default async function Page() {
                 />
             )}
 
-            <HomeFontScope />
             <div className='hp-page'>
                 <ModuleStarSprite />
                 <HomeHero rating={averageRating} reviewCount={totalCount} />

@@ -3,7 +3,7 @@
  *
  * Conversion-first hero for procedure-specific ad landing pages,
  * styled as an editorial atelier spread:
- *   - chapter-marker hairline above an oversized Playfair display
+ *   - chapter-marker hairline above an oversized display serif
  *   - italic accent word, refined letter-spacing
  *   - data-sheet price anchor (FROM / FINANCING) with a gold underline
  *   - hero photograph framed with thin gold corner brackets
@@ -87,8 +87,8 @@ export function ProcedureLandingHero({
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0'
             >
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_85%_-5%,_rgba(212,175,55,0.22),_transparent_70%)]' />
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_-5%_110%,_rgba(180,148,31,0.12),_transparent_65%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_85%_-5%,_rgba(205,172,119,0.22),_transparent_70%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_-5%_110%,_rgba(174,133,76,0.12),_transparent_65%)]' />
                 <div
                     className='absolute inset-0 opacity-[0.35] mix-blend-overlay'
                     style={{ backgroundImage: GRAIN_DATA_URI }}

@@ -167,7 +167,7 @@ export function ModuleHero({
                             <li
                                 key={chip.label}
                                 lang={chip.lang}
-                                className='inline-flex min-h-[2.375rem] items-center rounded-[4px] border border-stone-300 bg-white px-3.5 text-[0.9375rem] text-stone-900 tabular-nums'
+                                className='inline-flex min-h-[2.375rem] items-center rounded-full border border-stone-300 bg-white px-4 text-[0.9375rem] text-stone-900 tabular-nums'
                             >
                                 {chip.label}
                             </li>

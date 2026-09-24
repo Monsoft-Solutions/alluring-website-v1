@@ -71,7 +71,7 @@ export function OptionCard({
                 sizeClasses[size],
                 // States
                 isSelected
-                    ? 'border-gold-500 shadow-[0_0_20px_rgba(212,175,55,0.15)]'
+                    ? 'border-gold-500 shadow-[0_0_20px_rgba(205,172,119,0.15)]'
                     : 'border-stone-200 hover:border-stone-300',
                 // Disabled
                 disabled && 'cursor-not-allowed opacity-50',

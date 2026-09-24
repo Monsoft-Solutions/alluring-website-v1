@@ -37,7 +37,7 @@ export function ModuleSurgeonCredentials() {
         <div className='mt-9 grid gap-7 sm:grid-cols-[12rem_minmax(0,1fr)] sm:gap-9 md:grid-cols-[14rem_minmax(0,1fr)]'>
             {portrait && (
                 <figure className='w-40 sm:w-auto'>
-                    <div className='pm-unveil overflow-hidden rounded-[4px] bg-stone-200'>
+                    <div className='pm-unveil overflow-hidden rounded-t-full rounded-b-[0.625rem] bg-stone-200'>
                         <Image
                             src={portrait}
                             alt={`Portrait of ${KARLINSKY_NAME}`}

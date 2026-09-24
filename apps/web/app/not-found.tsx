@@ -45,7 +45,7 @@ export default function NotFoundPage() {
                         <div className='mb-4 font-serif text-9xl font-bold text-white md:text-[12rem]'>
                             404
                         </div>
-                        <div className='bg-gold-500 mx-auto h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)]' />
+                        <div className='bg-gold-500 mx-auto h-1 w-24 shadow-[0_0_20px_rgba(205,172,119,0.4)]' />
                     </div>
 
                     {/* Headline */}

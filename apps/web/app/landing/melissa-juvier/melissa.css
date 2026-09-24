@@ -30,8 +30,8 @@
     --text: #f3ece1;
     --mute: #b9ad9f;
     --error: #f2a197;
-    --display: var(--font-playfair), Georgia, 'Times New Roman', serif;
-    --body: var(--font-lato), 'Helvetica Neue', Arial, sans-serif;
+    --display: var(--font-display), Georgia, 'Times New Roman', serif;
+    --body: var(--font-text), 'Helvetica Neue', Arial, sans-serif;
     --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
     --gutter: 20px;
 

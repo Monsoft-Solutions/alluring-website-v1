@@ -15,34 +15,32 @@
  * Loquent chat bubble lives outside the page root, and so does <html>.
  *
  * The @font-face blocks of the original are gone: the root layout already
- * self-hosts Lato and Playfair Display through next/font and exposes them as
- * --font-lato / --font-playfair, which is ~190 KB of embedded WOFF2 saved.
+ * self-hosts the site's faces through next/font and exposes them as
+ * --font-text / --font-display, which is ~190 KB of embedded WOFF2 saved.
  */
 
 .aps-lp {
-    --ink: #0c0a09;
-    --ink-2: #1c1917;
-    --ink-3: #292524;
-    --s600: #57534d;
-    --s500: #79716b;
-    --s400: #a6a09b;
-    --s300: #d6d3d1;
-    --s200: #e7e5e4;
-    --s100: #f5f5f4;
-    --s50: #fbfbfa;
+    /* The site's palette (packages/ui globals): `--gold-500` to `-800` are
+       inherited from there rather than redefined here. */
+    --ink: var(--stone-950);
+    --ink-2: var(--stone-900);
+    --ink-3: var(--stone-800);
+    --s600: var(--stone-600);
+    --s500: var(--stone-500);
+    --s400: var(--stone-400);
+    --s300: var(--stone-300);
+    --s200: var(--stone-200);
+    --s100: var(--stone-100);
+    --s50: var(--stone-50);
     --paper: #fff;
-    --champ: #f7f3ea;
-    --champ-2: #efe9db;
-    --gold: #bfaf79;
-    --gold-500: #a59557;
-    --gold-600: #8f8049;
-    --gold-700: #7f7341;
-    --gold-800: #6b6035;
-    --gold-line: rgba(191, 175, 121, 0.5);
-    --gold-faint: rgba(191, 175, 121, 0.14);
+    --champ: var(--gold-50);
+    --champ-2: var(--gold-100);
+    --gold: var(--gold-400);
+    --gold-line: rgba(205, 172, 119, 0.5);
+    --gold-faint: rgba(205, 172, 119, 0.14);
     --error: #b3261e;
-    --display: var(--font-playfair), Georgia, 'Times New Roman', serif;
-    --body: var(--font-lato), Arial, sans-serif;
+    --display: var(--font-display), Georgia, 'Times New Roman', serif;
+    --body: var(--font-text), Arial, sans-serif;
     --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
     /* The original set these on <body>; the page root carries them instead. */

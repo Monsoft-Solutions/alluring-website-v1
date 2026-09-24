@@ -46,7 +46,7 @@ export const Footer = () => {
     }
 
     return (
-        <footer className='border-t border-stone-900 bg-stone-950 pt-24 pb-12 text-white'>
+        <footer className='border-t border-stone-800 bg-stone-950 pt-24 pb-12 text-white'>
             <div className='container mx-auto px-6 md:px-12'>
                 <div className='mb-20 grid gap-12 md:grid-cols-2 lg:grid-cols-6'>
                     <div className='lg:col-span-1'>
@@ -59,7 +59,7 @@ export const Footer = () => {
                                 className='h-auto w-auto max-w-[180px] transition-opacity hover:opacity-80'
                             />
                         </Link>
-                        <p className='mb-8 text-base leading-relaxed text-stone-500'>
+                        <p className='mb-8 text-base leading-relaxed text-stone-400'>
                             Premier plastic surgery center in Miami, FL
                             providing world-class aesthetic results with
                             concierge care.
@@ -81,7 +81,7 @@ export const Footer = () => {
                                         rel='noopener noreferrer'
                                         aria-label={social.label}
                                     >
-                                        <Instagram className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
+                                        <Instagram className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-400 transition-colors' />
                                     </Link>
                                 ))}
                             {siteConfig.social
@@ -100,16 +100,16 @@ export const Footer = () => {
                                         rel='noopener noreferrer'
                                         aria-label={social.label}
                                     >
-                                        <Facebook className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-500 transition-colors' />
+                                        <Facebook className='hover:text-gold-400 h-5 w-5 cursor-pointer text-stone-400 transition-colors' />
                                     </Link>
                                 ))}
                         </div>
                     </div>
 
                     <div>
-                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                        <h2 className='text-gold-400 mb-6 text-[0.8125rem] font-semibold tracking-[0.18em] uppercase'>
                             Procedures
-                        </h4>
+                        </h2>
                         <ul className='space-y-4 text-base text-stone-400'>
                             {procedureNavItems.map((procedure) => (
                                 <li key={procedure.slug}>
@@ -132,9 +132,9 @@ export const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                        <h2 className='text-gold-400 mb-6 text-[0.8125rem] font-semibold tracking-[0.18em] uppercase'>
                             Surgeons
-                        </h4>
+                        </h2>
                         <ul className='space-y-4 text-base text-stone-400'>
                             {surgeons.map((surgeon) => (
                                 <li key={surgeon.id}>
@@ -157,9 +157,9 @@ export const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                        <h2 className='text-gold-400 mb-6 text-[0.8125rem] font-semibold tracking-[0.18em] uppercase'>
                             For You
-                        </h4>
+                        </h2>
                         <ul className='space-y-4 text-base text-stone-400'>
                             {footerSections
                                 .find((section) => section.title === 'For You')
@@ -190,9 +190,9 @@ export const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                        <h2 className='text-gold-400 mb-6 text-[0.8125rem] font-semibold tracking-[0.18em] uppercase'>
                             Patients
-                        </h4>
+                        </h2>
                         <ul className='space-y-4 text-base text-stone-400'>
                             <li>
                                 <Link
@@ -333,12 +333,12 @@ export const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className='text-gold-500 mb-6 text-sm font-bold tracking-widest uppercase'>
+                        <h2 className='text-gold-400 mb-6 text-[0.8125rem] font-semibold tracking-[0.18em] uppercase'>
                             Contact
-                        </h4>
+                        </h2>
                         <div className='space-y-4 text-base text-stone-400'>
                             <div className='flex cursor-pointer items-start transition-colors hover:text-white'>
-                                <MapPin className='mt-1 mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
+                                <MapPin className='mt-1 mr-3 h-4 w-4 flex-shrink-0 text-stone-500' />
                                 <span>
                                     {siteConfig.contact.address}
                                     <br />
@@ -352,7 +352,7 @@ export const Footer = () => {
                                 onClick={handlePhoneClick}
                                 className='flex cursor-pointer items-center transition-colors hover:text-white'
                             >
-                                <Phone className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
+                                <Phone className='mr-3 h-4 w-4 flex-shrink-0 text-stone-500' />
                                 <span>{siteConfig.contact.phoneDisplay}</span>
                             </Link>
                             <Link
@@ -360,14 +360,19 @@ export const Footer = () => {
                                 onClick={handleEmailClick}
                                 className='flex cursor-pointer items-center transition-colors hover:text-white'
                             >
-                                <Mail className='mr-3 h-4 w-4 flex-shrink-0 text-stone-600' />
-                                <span>{siteConfig.contact.email}</span>
+                                <Mail className='mr-3 h-4 w-4 flex-shrink-0 text-stone-500' />
+                                {/* Breaks inside the address: at 1,024 px the
+                                    column is narrower than it, and it pushed
+                                    the page wider than the screen. */}
+                                <span className='min-w-0 break-all'>
+                                    {siteConfig.contact.email}
+                                </span>
                             </Link>
                         </div>
                     </div>
                 </div>
 
-                <div className='flex flex-col items-center justify-between border-t border-stone-900 pt-8 text-sm text-stone-600 md:flex-row'>
+                <div className='flex flex-col items-center justify-between border-t border-stone-800 pt-8 text-sm text-stone-400 md:flex-row'>
                     <p>
                         &copy; {new Date().getFullYear()} Alluring Plastic
                         Surgery. All rights reserved.

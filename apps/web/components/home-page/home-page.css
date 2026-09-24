@@ -5,7 +5,7 @@
  *
  * The look (v2): porcelain, ink and cocoa with champagne light, the tones of
  * skin and of the golden-hour film the page opens on. Bodoni Moda for
- * display, Instrument Sans for text (home-fonts.tsx). One recurring shape,
+ * display, Instrument Sans for text (the site's faces). One recurring shape,
  * the arch: the doorway of the opening film, used as a window on the
  * surgeon, on each procedure and on the closing scene. Buttons are ink on
  * light bands and champagne on dark ones. Champagne is never text on a
@@ -41,7 +41,7 @@
     --hp-star: #a87b2f;
     --hp-line: rgba(23, 18, 16, 0.12);
     --hp-line-dark: rgba(230, 203, 159, 0.18);
-    --hp-display-font: var(--font-playfair), 'Bodoni 72', Didot, Georgia, serif;
+    --hp-display-font: var(--font-display), 'Bodoni 72', Didot, Georgia, serif;
     --hp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
     /* What text on a band reads from. Light by default; `hp-dark` swaps
@@ -60,20 +60,6 @@
    button would sit in the same corner. */
 body:has(.hp-page) [data-mobile-call-button] {
     display: none;
-}
-
-/* The shared sticky bar, retuned to the page: champagne pills, not a gold
-   gradient. */
-body:has(.hp-page) [data-cta='consult_sticky_chat'] {
-    border-radius: 9999px;
-    background: #e6cb9f;
-    color: #171210;
-    font-weight: 600;
-}
-
-body:has(.hp-page) [data-cta='consult_sticky_text'],
-body:has(.hp-page) [data-cta='consult_sticky_call'] {
-    border-radius: 9999px;
 }
 
 /* Every CTA jumps to the consultation thread: land it clear of the fixed
@@ -585,121 +571,6 @@ body:has(.hp-page) [data-cta='consult_sticky_call'] {
 
 .hp-faq details[open] .hp-plus-v {
     scale: 1 0;
-}
-
-/* ── The consultation thread, retuned to the page ──────────────────────── */
-
-/* ConsultChat's own sheet (consult-chat.css) is stone and gold. Here it
-   takes the page's cocoa and champagne through its tokens, and the few
-   rules that name gold directly are restated. */
-.hp-page .cc-chat {
-    --cc-night: #1d1411;
-    --cc-satin: #2d211c;
-    --cc-satin-2: #3a2b24;
-    --cc-line: rgba(230, 203, 159, 0.2);
-    --cc-line-strong: rgba(230, 203, 159, 0.42);
-    --cc-gold: #e6cb9f;
-    --cc-gold-light: #f1dfc0;
-    --cc-text: #fbf8f4;
-    --cc-mute: #bfae9f;
-
-    border-radius: 1.25rem;
-    background:
-        radial-gradient(
-            120% 60% at 100% 0%,
-            rgba(230, 203, 159, 0.12),
-            transparent 60%
-        ),
-        linear-gradient(180deg, #2b1f1a 0%, #1d1411 100%);
-}
-
-.hp-page .cc-chat__avatar {
-    background: linear-gradient(140deg, #f1dfc0, #a67c4e);
-    box-shadow:
-        0 0 0 2px #1d1411,
-        0 0 0 3.5px var(--cc-gold);
-}
-
-.hp-page .cc-chat__head {
-    border-bottom-color: rgba(230, 203, 159, 0.14);
-}
-
-.hp-page .cc-chat__progress {
-    background: rgba(230, 203, 159, 0.12);
-}
-
-.hp-page .cc-chat__progress span {
-    background: linear-gradient(90deg, #a67c4e, var(--cc-gold-light));
-}
-
-.hp-page .cc-bubble--you,
-.hp-page .cc-chip[aria-pressed='true'],
-.hp-page .cc-send {
-    background: var(--cc-gold);
-    color: #171210;
-}
-
-.hp-page .cc-bubble__change {
-    color: rgba(23, 18, 16, 0.66);
-}
-
-.hp-page .cc-chip {
-    background: rgba(230, 203, 159, 0.06);
-    color: #f6ead6;
-    font-weight: 600;
-}
-
-.hp-page .cc-chip:hover {
-    background: rgba(230, 203, 159, 0.16);
-}
-
-.hp-page .cc-send {
-    border-radius: 9999px;
-    box-shadow: none;
-    font-weight: 600;
-}
-
-.hp-page .cc-send:hover {
-    background: #f0dcba;
-}
-
-.hp-page .cc-field input {
-    border-radius: 0.75rem;
-}
-
-.hp-page .cc-field input:focus {
-    box-shadow: 0 0 0 3px rgba(230, 203, 159, 0.22);
-}
-
-.hp-page .cc-bubble--offer {
-    border-color: rgba(230, 203, 159, 0.38);
-    background: linear-gradient(
-        135deg,
-        rgba(230, 203, 159, 0.18),
-        rgba(230, 203, 159, 0.04)
-    );
-}
-
-/* The thread's title is set in the page's display face, which runs wider
-   than Playfair: a sturdier cut, a size down on phones, and no wrapping keep
-   "Alluring patient care" on one line beside the step count. */
-.hp-page .cc-chat__title {
-    overflow: hidden;
-    font-size: 1.125rem;
-    font-variation-settings: 'opsz' 14;
-    letter-spacing: -0.01em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-@media (width < 30rem) {
-    .hp-page .cc-chat__title {
-        font-size: 1rem;
-    }
-
-    .hp-page .cc-chat__status {
-        font-size: 11px;
-    }
 }
 
 /* ── Motion ────────────────────────────────────────────────────────────── */

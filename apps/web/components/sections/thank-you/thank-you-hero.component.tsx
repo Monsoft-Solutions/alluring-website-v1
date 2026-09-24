@@ -52,7 +52,7 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                     </h1>
 
                     {/* Gold Accent Line */}
-                    <div className='bg-gold-500 mx-auto mb-8 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)]' />
+                    <div className='bg-gold-500 mx-auto mb-8 h-1 w-24 shadow-[0_0_20px_rgba(205,172,119,0.4)]' />
 
                     {/* Main Message */}
                     <div className='mb-10 space-y-4'>

@@ -54,8 +54,8 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
         >
             {/* Ambient gradient + gold orbs */}
             <div className='pointer-events-none absolute inset-0'>
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(212,175,55,0.18),_transparent_60%)]' />
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(212,175,55,0.08),_transparent_55%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(205,172,119,0.18),_transparent_60%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(205,172,119,0.08),_transparent_55%)]' />
                 <div className='bg-gold-500/10 absolute -top-1/4 -left-1/4 h-[600px] w-[600px] rounded-full blur-3xl' />
                 <div className='bg-gold-400/5 absolute right-0 bottom-0 h-[420px] w-[420px] translate-x-1/3 rounded-full blur-3xl' />
                 {/* Hairline grid for tactile depth */}

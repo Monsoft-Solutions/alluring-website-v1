@@ -35,8 +35,8 @@ export const Header = () => {
                 }}
                 className={`animate-slide-down fixed right-0 left-0 z-50 transition-all duration-500 ${
                     isScrolled
-                        ? 'border-b border-stone-100 bg-white/80 py-4 backdrop-blur-md'
-                        : 'bg-transparent py-6'
+                        ? 'border-b border-stone-200/70 bg-stone-50/95 py-4 backdrop-blur-md'
+                        : 'bg-stone-50/95 py-6 backdrop-blur-md'
                 }`}
             >
                 <div className='mx-auto flex items-center justify-between px-6 md:px-8 lg:px-10 xl:px-12'>

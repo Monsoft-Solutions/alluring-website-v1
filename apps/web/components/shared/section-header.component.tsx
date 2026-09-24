@@ -26,10 +26,10 @@ import type {
  * Maps heading level to Tailwind typography classes
  */
 const headingStyles: Record<HeadingLevel, string> = {
-    h1: 'text-4xl md:text-5xl lg:text-6xl font-bold',
+    h1: 'text-4xl md:text-5xl lg:text-6xl font-medium',
     h2: 'text-3xl md:text-4xl lg:text-5xl',
-    h3: 'text-2xl md:text-3xl lg:text-4xl font-semibold',
-    h4: 'text-xl md:text-2xl font-semibold',
+    h3: 'text-2xl md:text-3xl lg:text-4xl font-medium',
+    h4: 'text-xl md:text-2xl font-medium',
     h5: 'text-lg md:text-xl font-semibold',
     h6: 'text-base md:text-lg font-semibold',
 }
@@ -85,7 +85,11 @@ export function SectionHeader({
             {badge && (
                 <div className='inline-flex'>
                     {isBadgeString ? (
-                        <span className='text-gold-500 block text-sm font-bold tracking-[0.2em] uppercase'>
+                        <span className='text-gold-500 flex items-center gap-3 text-xs font-semibold tracking-[0.2em] uppercase'>
+                            <span
+                                aria-hidden='true'
+                                className='h-px w-10 bg-current opacity-50'
+                            />
                             {badge}
                         </span>
                     ) : (
@@ -109,7 +113,7 @@ export function SectionHeader({
             {description && (
                 <div
                     className={cn(
-                        'max-w-md text-lg leading-relaxed font-light text-stone-600',
+                        'max-w-md text-lg leading-relaxed text-stone-600',
                         align === 'center' && 'mx-auto',
                         descriptionClassName
                     )}

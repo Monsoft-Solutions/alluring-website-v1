@@ -88,7 +88,7 @@ export function BlogHeroSection({
                         )}
 
                         {/* Gold accent line */}
-                        <div className='bg-gold-500 animate-fade-in-up mb-8 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)] [animation-delay:300ms]' />
+                        <div className='bg-gold-500 animate-fade-in-up mb-8 h-1 w-24 shadow-[0_0_20px_rgba(205,172,119,0.4)] [animation-delay:300ms]' />
 
                         {/* Description */}
                         <p className='animate-fade-in-up max-w-2xl text-base leading-relaxed font-light text-stone-300 [animation-delay:400ms] md:text-lg'>

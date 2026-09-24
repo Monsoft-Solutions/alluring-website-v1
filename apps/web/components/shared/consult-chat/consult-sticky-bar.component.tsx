@@ -80,7 +80,7 @@ export function ConsultStickyBar({
                 <a
                     href={`#${chatId}`}
                     data-cta='consult_sticky_chat'
-                    className='from-gold-300 via-gold-400 to-gold-500 flex min-h-12 flex-1 items-center justify-center rounded-xl bg-gradient-to-br px-4 text-center text-[15px] font-bold text-stone-950'
+                    className='bg-gold-300 hover:bg-gold-200 flex min-h-12 flex-1 items-center justify-center rounded-full px-4 text-center text-[15px] font-semibold text-stone-950 transition-colors'
                 >
                     {left !== null ? RESUME[lang](left) : label[lang]} →
                 </a>
@@ -88,7 +88,7 @@ export function ConsultStickyBar({
                     <a
                         href={smsLink}
                         data-cta='consult_sticky_text'
-                        className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
+                        className='flex min-h-12 items-center rounded-full border border-white/15 px-4 text-sm font-semibold text-stone-100'
                     >
                         {lang === 'es' ? 'Escríbenos' : 'Text us'}
                     </a>
@@ -96,7 +96,7 @@ export function ConsultStickyBar({
                     <a
                         href={`tel:${phoneDigits}`}
                         data-cta='consult_sticky_call'
-                        className='flex min-h-12 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold text-stone-100'
+                        className='flex min-h-12 items-center rounded-full border border-white/15 px-4 text-sm font-semibold text-stone-100'
                         aria-label={phoneLabel}
                     >
                         {lang === 'es' ? 'Llamar' : 'Call'}

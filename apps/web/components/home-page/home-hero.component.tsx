@@ -66,7 +66,7 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
             aria-labelledby='hero-title'
             className='hp-hero relative isolate overflow-hidden bg-[var(--hp-porcelain)]'
         >
-            {/* On phones the film fills the hero behind a transparent header.
+            {/* On phones the film fills the hero behind the frosted header.
                 From `md` it starts under the header: the landscape cut puts
                 her face in its top quarter, which would sit behind the nav. */}
             <div

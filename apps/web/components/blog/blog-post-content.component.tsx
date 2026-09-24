@@ -279,7 +279,7 @@ export function BlogPostContent({
                             </div>
 
                             {/* Gold accent line */}
-                            <div className='animate-fade-in-up animate-delay-300 bg-gold-500 mb-6 h-1 w-24 shadow-[0_0_20px_rgba(234,179,8,0.4)]' />
+                            <div className='animate-fade-in-up animate-delay-300 bg-gold-500 mb-6 h-1 w-24 shadow-[0_0_20px_rgba(205,172,119,0.4)]' />
 
                             {/* Excerpt */}
                             {post.excerpt && (

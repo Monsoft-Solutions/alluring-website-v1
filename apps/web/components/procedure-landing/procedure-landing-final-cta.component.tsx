@@ -3,7 +3,7 @@
  *
  * Editorial closing spread for the landing page. Mirrors the cover-page
  * (hero) treatment so the funnel ends with the same visual cadence it
- * began with — gold hairline rule above an oversized italic Playfair,
+ * began with — gold hairline rule above an oversized italic display serif,
  * thin gold underline, and a single refined CTA. Avoids the generic
  * "trust box" pattern in favor of an editorial colophon.
  */
@@ -43,7 +43,7 @@ export function ProcedureLandingFinalCTA({
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0'
             >
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_30%,_rgba(212,175,55,0.18),_transparent_70%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_30%,_rgba(205,172,119,0.18),_transparent_70%)]' />
                 <div
                     className='absolute inset-0 opacity-[0.35] mix-blend-overlay'
                     style={{ backgroundImage: GRAIN_DATA_URI }}
@@ -92,7 +92,7 @@ export function ProcedureLandingFinalCTA({
                     <a
                         href={formAnchor}
                         data-cta='landing_cta_final'
-                        className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-10 py-4 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_18px_45px_-12px_rgba(212,175,55,0.55)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_22px_55px_-10px_rgba(212,175,55,0.65)] active:scale-[0.98]'
+                        className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-10 py-4 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_18px_45px_-12px_rgba(205,172,119,0.55)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_22px_55px_-10px_rgba(205,172,119,0.65)] active:scale-[0.98]'
                     >
                         Send My Free Quote
                         <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-0.5' />

@@ -83,7 +83,7 @@ export function WhyChooseSection() {
                         </p>
 
                         {/* Gold Accent Line */}
-                        <div className='bg-gold-400 h-1 w-20 shadow-[0_0_15px_rgba(234,179,8,0.3)]' />
+                        <div className='bg-gold-400 h-1 w-20 shadow-[0_0_15px_rgba(205,172,119,0.3)]' />
 
                         {/* Trust Stats - Desktop Only */}
                         <div className='mt-12 hidden gap-8 lg:flex'>

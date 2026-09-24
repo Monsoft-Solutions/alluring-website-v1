@@ -45,13 +45,13 @@ export function StickyCtaBar({
             <div className='mx-auto flex max-w-md gap-2.5'>
                 <a
                     href={bookHref}
-                    className='bg-gold-400 border-gold-400 hover:bg-gold-300 flex h-12 flex-1 items-center justify-center rounded-[4px] border px-4 text-base font-bold text-stone-900 transition-colors'
+                    className='bg-gold-400 border-gold-400 hover:bg-gold-300 flex h-12 flex-1 items-center justify-center rounded-full border px-4 text-base font-semibold text-stone-900 transition-colors'
                 >
                     {bookLabel}
                 </a>
                 <a
                     href={getPhoneLink()}
-                    className='flex h-12 flex-1 items-center justify-center gap-2 rounded-[4px] border border-stone-400 bg-white px-4 text-base font-bold text-stone-900 transition-colors hover:border-stone-900'
+                    className='flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-stone-300 bg-white px-4 text-base font-semibold text-stone-900 transition-colors hover:border-stone-900'
                 >
                     <Phone aria-hidden='true' className='size-[1.125rem]' />
                     {callLabel}

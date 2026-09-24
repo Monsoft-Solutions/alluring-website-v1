@@ -62,7 +62,7 @@ export function DrKarlinskyCredentialsWall({
         >
             {/* Subtle gold ambient */}
             <div className='pointer-events-none absolute inset-0'>
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(212,175,55,0.12),_transparent_60%)]' />
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(205,172,119,0.12),_transparent_60%)]' />
                 <div className='bg-gold-500/10 absolute -top-1/4 left-1/3 h-[500px] w-[500px] rounded-full blur-3xl' />
             </div>
 
