@@ -383,8 +383,14 @@ export const contactFormSchema = z.object({
 
     // Ad platform click IDs
     gclid: z.string().optional(),
+    gbraid: z.string().max(512).optional(),
+    wbraid: z.string().max(512).optional(),
+    gadCampaignId: z.string().max(64).optional(),
     fbclid: z.string().optional(),
     ttclid: z.string().optional(),
+    // Meta pixel cookies (`_fbp`, `_fbc`)
+    fbp: z.string().max(256).optional(),
+    fbc: z.string().max(512).optional(),
 
     // Session context
     referrer: z.string().optional(),

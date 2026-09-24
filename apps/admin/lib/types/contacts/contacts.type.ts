@@ -18,8 +18,13 @@ export type ContactListItem = {
     utmContent: string | null
     utmTerm: string | null
     gclid: string | null
+    gbraid: string | null
+    wbraid: string | null
+    gadCampaignId: string | null
     fbclid: string | null
     ttclid: string | null
+    fbp: string | null
+    fbc: string | null
     referrer: string | null
     landingPage: string | null
     ipAddress: string | null

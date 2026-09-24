@@ -8,6 +8,8 @@ const emptyInput: LeadAttributionInput = {
     source: null,
     referrer: null,
     gclid: null,
+    gbraid: null,
+    wbraid: null,
     fbclid: null,
     ttclid: null,
 }
@@ -58,6 +60,21 @@ describe('classifyLeadAttribution', () => {
     })
 
     describe('Click ID priority', () => {
+        it.each(['gbraid', 'wbraid'] as const)(
+            'classifies an iOS Google Ads click (%s) as google/cpc',
+            (key) => {
+                const result = classifyLeadAttribution({
+                    ...emptyInput,
+                    [key]: 'abc',
+                })
+                expect(result).toEqual({
+                    source: 'google',
+                    medium: 'cpc',
+                    classification: 'click-id',
+                })
+            }
+        )
+
         it('classifies gclid as google/cpc', () => {
             const result = classifyLeadAttribution({
                 ...emptyInput,
