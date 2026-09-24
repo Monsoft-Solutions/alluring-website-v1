@@ -7,15 +7,17 @@ import { getProcedureBySlug } from '@/lib/data/procedures.data'
 import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
 import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
 
+import { HomeEyebrow } from './home-eyebrow.component'
 import {
     HOME_CHAT_ID,
     HOME_MEDIA,
     HOME_PROCEDURES,
     HOME_SECTION_IDS,
+    HOME_SECTION_INDEX,
     type HomeProcedureKey,
     homeContainer,
-    homeEyebrow,
     homeHeading,
+    homeLead,
     homeLink,
     homePrimaryButton,
 } from './home-page.constant'
@@ -150,19 +152,17 @@ export function HomeProcedurePicker() {
         <section
             id={HOME_SECTION_IDS.picker}
             aria-labelledby='picker-title'
-            className='hp-defer relative overflow-hidden bg-[var(--hp-ivory)] py-16 md:py-28'
+            className='hp-defer relative overflow-hidden bg-[var(--hp-porcelain)] py-16 md:py-28'
         >
             <div className={homeContainer}>
                 <div className='max-w-[44rem]'>
-                    <p className={homeEyebrow}>Find your procedure</p>
-                    <h2
-                        id='picker-title'
-                        className={cn(homeHeading, 'mt-4 text-stone-950')}
-                    >
-                        Where do you want to see{' '}
-                        <em className='text-[#8a6c12] italic'>the change?</em>
+                    <HomeEyebrow index={HOME_SECTION_INDEX.picker}>
+                        Find your procedure
+                    </HomeEyebrow>
+                    <h2 id='picker-title' className={cn(homeHeading, 'mt-5')}>
+                        Where do you want to see <em>the change?</em>
                     </h2>
-                    <p className='mt-5 text-lg leading-relaxed text-stone-600'>
+                    <p className={cn(homeLead, 'mt-6 text-[var(--hp-fg-2)]')}>
                         You don’t need to know the name of the procedure. Tap
                         the area, and we’ll show you what addresses it and what
                         it costs where we can say.
@@ -178,7 +178,7 @@ export function HomeProcedurePicker() {
                             className='relative mx-auto aspect-[700/2135] w-full max-w-[11rem] lg:max-w-[13.5rem]'
                             aria-hidden='true'
                         >
-                            <div className='absolute inset-x-[-40%] top-[20%] aspect-square rounded-full bg-[radial-gradient(closest-side,rgba(212,175,55,0.16),transparent)]' />
+                            <div className='absolute inset-x-[-45%] top-[18%] aspect-square rounded-full bg-[radial-gradient(closest-side,rgba(230,203,159,0.3),transparent)]' />
                             <Image
                                 src={HOME_MEDIA.figure}
                                 alt=''
@@ -206,7 +206,7 @@ export function HomeProcedurePicker() {
                         </div>
 
                         <fieldset>
-                            <legend className='text-sm font-bold text-stone-950'>
+                            <legend className='text-[0.75rem] font-semibold tracking-[0.2em] text-[var(--hp-ink-2)] uppercase'>
                                 Choose an area
                             </legend>
                             <div className='mt-3 flex flex-col items-start gap-2'>
@@ -255,57 +255,58 @@ function ZonePanel({ zone }: { zone: Zone }) {
             data-zone={zone.key}
             aria-labelledby={titleId}
             className={cn(
-                'hp-panel mb-6 grid overflow-hidden rounded-[2rem] border border-stone-200/80 bg-white shadow-[0_40px_80px_-50px_rgba(28,25,23,0.45)] last:mb-0',
-                page?.image && 'md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]'
+                'hp-panel hp-card mb-6 grid last:mb-0',
+                page?.image &&
+                    'md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]'
             )}
         >
             {page?.image && (
-                <div className='relative hidden bg-stone-100 md:block md:min-h-[22rem]'>
-                    <Image
-                        src={page.image}
-                        alt=''
-                        fill
-                        sizes='(width >= 48rem) 22rem, 100vw'
-                        className='object-cover'
-                    />
-                    <span className='absolute bottom-3 left-3 rounded-full bg-black/45 px-2.5 py-1 text-[0.6875rem] text-white backdrop-blur'>
-                        Model shown
-                    </span>
+                <div className='hidden p-3 pr-0 md:block'>
+                    <div className='hp-arch relative h-full min-h-[24rem] bg-[var(--hp-linen)]'>
+                        <Image
+                            src={page.image}
+                            alt=''
+                            fill
+                            sizes='(width >= 48rem) 22rem, 100vw'
+                            className='object-cover'
+                        />
+                        <span className='absolute bottom-3 left-3 rounded-full bg-black/45 px-2.5 py-1 text-[0.6875rem] text-white backdrop-blur'>
+                            Model shown
+                        </span>
+                    </div>
                 </div>
             )}
-            <div className='p-6 md:p-8'>
-                <p className='text-[0.75rem] font-bold tracking-[0.18em] text-[#7d6311] uppercase'>
-                    {zone.area}
-                </p>
+            <div className='p-6 md:p-9'>
+                <p className='hp-eyebrow'>{zone.area}</p>
                 <h3
                     id={titleId}
-                    className='mt-2 font-serif text-[1.875rem] leading-tight text-stone-950 md:text-[2.25rem]'
+                    className='hp-display mt-3 text-[2rem] leading-[1.02] tracking-[-0.015em] md:text-[2.5rem]'
                 >
                     {zone.title}
                 </h3>
-                <p className='mt-3 leading-relaxed text-stone-600'>
+                <p className='mt-4 leading-relaxed text-[var(--hp-ink-2)]'>
                     {zone.body}
                 </p>
-                <ul className='mt-5 grid gap-2'>
+                <ul className='mt-6 grid border-t border-[var(--hp-line)]'>
                     {zone.facts.map((fact, index) => (
                         <li
                             key={fact}
                             className={cn(
-                                'flex items-start gap-2.5 text-[0.9375rem]',
+                                'flex items-start gap-3 border-b border-[var(--hp-line)] py-2.5 text-[0.9375rem]',
                                 index === 0 && fact.startsWith('From')
-                                    ? 'font-bold text-stone-950'
-                                    : 'text-stone-700'
+                                    ? 'font-semibold text-[var(--hp-ink)]'
+                                    : 'text-[var(--hp-ink-2)]'
                             )}
                         >
                             <span
                                 aria-hidden='true'
-                                className='bg-gold-400 mt-2 size-1.5 shrink-0 rounded-full'
+                                className='mt-[0.55rem] size-1.5 shrink-0 rounded-full bg-[var(--hp-champagne-2)]'
                             />
                             {fact}
                         </li>
                     ))}
                 </ul>
-                <div className='mt-6 flex flex-wrap items-center gap-x-5 gap-y-3'>
+                <div className='mt-7 flex flex-wrap items-center gap-x-6 gap-y-4'>
                     <a
                         href={`#${HOME_CHAT_ID}`}
                         data-consult-procedure={procedure.chat}
@@ -314,23 +315,20 @@ function ZonePanel({ zone }: { zone: Zone }) {
                     >
                         {zone.ask ?? `Ask about ${procedure.name}`}
                     </a>
-                    <Link
-                        href={procedure.href}
-                        className={cn(homeLink, 'text-stone-900')}
-                    >
+                    <Link href={procedure.href} className={homeLink}>
                         {zone.link ??
                             `${zone.title.split(/[,(&]/)[0]?.trim()} in detail`}
                     </Link>
                 </div>
                 {zone.more && (
-                    <p className='mt-4 text-sm text-stone-500'>
+                    <p className='mt-5 text-sm text-[var(--hp-mute)]'>
                         Also:{' '}
                         {zone.more.map((link, index) => (
                             <span key={link.href}>
                                 {index > 0 && ' · '}
                                 <Link
                                     href={link.href}
-                                    className='underline underline-offset-4 hover:text-stone-900'
+                                    className='underline underline-offset-4 hover:text-[var(--hp-ink)]'
                                 >
                                     {link.label}
                                 </Link>

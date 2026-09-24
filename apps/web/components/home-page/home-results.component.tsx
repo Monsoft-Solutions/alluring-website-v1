@@ -4,10 +4,13 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import type { GalleryImage } from '@/lib/types/gallery/gallery.type'
 
+import { HomeEyebrow } from './home-eyebrow.component'
 import {
     HOME_SECTION_IDS,
+    HOME_SECTION_INDEX,
     homeContainer,
     homeHeading,
+    homeLead,
 } from './home-page.constant'
 
 /** Gallery group for each procedure page the specials query draws from. */
@@ -71,8 +74,8 @@ type HomeResultsProps = {
  * visitors in 90 days), and only 15% of phone visitors ever scrolled far
  * enough to reach the old page's gallery.
  *
- * A dark band that opens to full width as it arrives, then a rail of the
- * gallery's photos, each scaling up as it slides into view. Photos are shown
+ * A linen band with a rail of the gallery's photos, each on a dark mat and
+ * scaling up as it slides into view. Photos are shown
  * whole (`object-contain`): a before-and-after pair cropped to fill a frame
  * loses half of its point.
  */
@@ -87,24 +90,26 @@ export function HomeResults({ images }: HomeResultsProps) {
         <section
             id={HOME_SECTION_IDS.results}
             aria-labelledby='results-title'
-            className='hp-scene hp-defer overflow-hidden bg-stone-900 py-16 text-stone-100 md:py-28'
+            className='hp-defer overflow-hidden bg-[var(--hp-linen)] py-16 md:py-28'
         >
             <div className={homeContainer}>
                 <div className='flex flex-wrap items-end justify-between gap-6'>
-                    <div className='max-w-[40rem]'>
-                        <p className='text-gold-300 text-[0.75rem] font-bold tracking-[0.2em] uppercase'>
+                    <div className='max-w-[42rem]'>
+                        <HomeEyebrow index={HOME_SECTION_INDEX.results}>
                             Real results
-                        </p>
+                        </HomeEyebrow>
                         <h2
                             id='results-title'
-                            className={cn(homeHeading, 'mt-4 text-stone-50')}
+                            className={cn(homeHeading, 'mt-5')}
                         >
-                            Real patients.{' '}
-                            <em className='text-gold-300 italic'>
-                                Real afters.
-                            </em>
+                            Real patients. <em>Real afters.</em>
                         </h2>
-                        <p className='mt-5 text-lg leading-relaxed text-stone-300'>
+                        <p
+                            className={cn(
+                                homeLead,
+                                'mt-6 text-[var(--hp-fg-2)]'
+                            )}
+                        >
                             Before-and-after photos from Alluring’s gallery.
                             Swipe through, then open the full gallery by
                             procedure. Individual results vary.
@@ -112,9 +117,9 @@ export function HomeResults({ images }: HomeResultsProps) {
                     </div>
                     <Link
                         href='/gallery'
-                        className='border-gold-400/60 hover:bg-gold-400 hidden min-h-12 items-center rounded-full border px-6 font-bold text-stone-50 transition-colors hover:text-stone-950 md:inline-flex'
+                        className='hp-btn hp-btn--ghost hidden md:inline-flex'
                     >
-                        See the full gallery →
+                        See the full gallery
                     </Link>
                 </div>
 
@@ -127,7 +132,7 @@ export function HomeResults({ images }: HomeResultsProps) {
                         return (
                             <li
                                 key={image.id}
-                                className='w-[72vw] max-w-[20rem] md:w-[19rem]'
+                                className='w-[72vw] max-w-[20rem] md:w-[19.5rem]'
                             >
                                 <Link
                                     href={
@@ -137,12 +142,12 @@ export function HomeResults({ images }: HomeResultsProps) {
                                     }
                                     className='group block focus-visible:outline-none'
                                 >
-                                    <span className='hp-rail-frame group-hover:ring-gold-400/60 group-focus-visible:ring-gold-400 relative block aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-stone-950 ring-1 ring-white/10 transition group-focus-visible:ring-2'>
+                                    <span className='hp-rail-frame relative block aspect-[4/5] overflow-hidden rounded-[0.625rem] bg-[var(--hp-espresso)] ring-1 ring-[var(--hp-line)] transition group-hover:ring-2 group-hover:ring-[var(--hp-champagne-2)] group-focus-visible:ring-2 group-focus-visible:ring-[var(--hp-ink)]'>
                                         <Image
                                             src={image.url}
                                             alt={image.alt}
                                             fill
-                                            sizes='(width >= 48rem) 19rem, 72vw'
+                                            sizes='(width >= 48rem) 19.5rem, 72vw'
                                             loading={
                                                 index < 2 ? 'eager' : 'lazy'
                                             }
@@ -157,11 +162,15 @@ export function HomeResults({ images }: HomeResultsProps) {
                                             }
                                         />
                                     </span>
-                                    <span className='mt-3 flex items-center justify-between text-sm'>
-                                        <span className='font-bold text-stone-100'>
+                                    <span className='mt-3.5 flex items-baseline justify-between gap-3 border-b border-[var(--hp-line)] pb-3'>
+                                        <span className='text-[0.9375rem] font-semibold text-[var(--hp-ink)]'>
                                             {image.procedureName}
                                         </span>
-                                        <span className='text-gold-300 transition-transform group-hover:translate-x-1'>
+                                        <span
+                                            aria-hidden='true'
+                                            className='hp-num text-xs tracking-[0.12em] text-[var(--hp-mute)] transition-transform group-hover:translate-x-1'
+                                        >
+                                            {String(index + 1).padStart(2, '0')}{' '}
                                             →
                                         </span>
                                     </span>
@@ -173,9 +182,9 @@ export function HomeResults({ images }: HomeResultsProps) {
 
                 <Link
                     href='/gallery'
-                    className='border-gold-400/60 mt-8 inline-flex min-h-12 items-center rounded-full border px-6 font-bold text-stone-50 md:hidden'
+                    className='hp-btn hp-btn--ghost mt-8 md:hidden'
                 >
-                    See the full gallery →
+                    See the full gallery
                 </Link>
             </div>
         </section>

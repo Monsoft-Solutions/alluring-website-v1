@@ -9,11 +9,15 @@ import { HOME_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
+import { HomeEyebrow } from './home-eyebrow.component'
 import {
     HOME_CHAT_ID,
     HOME_SECTION_IDS,
+    HOME_SECTION_INDEX,
     homeContainer,
     homeHeading,
+    homeLead,
+    homeLink,
 } from './home-page.constant'
 
 /**
@@ -47,55 +51,57 @@ export function HomeConsult() {
         <section
             id={HOME_SECTION_IDS.consult}
             aria-labelledby='consult-title'
-            className='relative isolate overflow-hidden bg-stone-950 py-16 text-stone-100 md:py-28'
+            className='hp-dark hp-grain relative isolate overflow-hidden py-16 md:py-28'
         >
             <div
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0 -z-10'
             >
-                <div className='absolute -top-40 -right-40 size-[38rem] rounded-full bg-[radial-gradient(closest-side,rgba(212,175,55,0.22),transparent)]' />
-                <div className='absolute -bottom-56 -left-40 size-[34rem] rounded-full bg-[radial-gradient(closest-side,rgba(233,196,170,0.12),transparent)]' />
+                <div className='absolute -top-48 -right-40 size-[40rem] rounded-full bg-[radial-gradient(closest-side,rgba(230,203,159,0.2),transparent)]' />
+                <div className='absolute -bottom-60 -left-40 size-[34rem] rounded-full bg-[radial-gradient(closest-side,rgba(234,219,205,0.1),transparent)]' />
             </div>
 
             <div
                 className={cn(
                     homeContainer,
-                    'grid items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] lg:gap-16'
+                    'grid items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] lg:gap-20'
                 )}
             >
                 <div className='lg:sticky lg:top-32'>
-                    <p className='text-gold-300 text-[0.75rem] font-bold tracking-[0.2em] uppercase'>
+                    <HomeEyebrow index={HOME_SECTION_INDEX.consult}>
                         Free consultation
-                    </p>
-                    <h2
-                        id='consult-title'
-                        className={cn(homeHeading, 'mt-4 text-stone-50')}
-                    >
-                        Start here.{' '}
-                        <em className='text-gold-300 italic'>
-                            It takes a minute.
-                        </em>
+                    </HomeEyebrow>
+                    <h2 id='consult-title' className={cn(homeHeading, 'mt-5')}>
+                        Start here. <em>It takes a minute.</em>
                     </h2>
-                    <p className='mt-5 max-w-[32rem] text-lg leading-relaxed text-stone-300'>
+                    <p
+                        className={cn(
+                            homeLead,
+                            'mt-6 max-w-[32rem] text-[var(--hp-fg-2)]'
+                        )}
+                    >
                         Three quick answers, no phone call. Tell us what you’re
                         thinking about and we’ll text you to set up your free
                         consultation.
                     </p>
 
-                    <ul className='mt-8 hidden gap-5 lg:grid'>
-                        {PROMISES.map((promise) => (
-                            <li key={promise.title} className='flex gap-4'>
+                    <ul className='mt-10 hidden border-t border-[var(--hp-rule)] lg:block'>
+                        {PROMISES.map((promise, index) => (
+                            <li
+                                key={promise.title}
+                                className='grid grid-cols-[2.5rem_minmax(0,1fr)] gap-4 border-b border-[var(--hp-rule)] py-5'
+                            >
                                 <span
                                     aria-hidden='true'
-                                    className='border-gold-400/50 text-gold-300 mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border text-sm'
+                                    className='hp-display pt-0.5 text-xl text-[var(--hp-champagne)] italic'
                                 >
-                                    ✓
+                                    {String(index + 1).padStart(2, '0')}
                                 </span>
                                 <span>
-                                    <strong className='block text-stone-50'>
+                                    <strong className='block font-semibold text-[var(--hp-fg)]'>
                                         {promise.title}
                                     </strong>
-                                    <span className='text-stone-400'>
+                                    <span className='mt-1 block leading-relaxed text-[var(--hp-fg-3)]'>
                                         {promise.body}
                                     </span>
                                 </span>
@@ -103,12 +109,9 @@ export function HomeConsult() {
                         ))}
                     </ul>
 
-                    <p className='mt-8 hidden text-stone-400 lg:block'>
+                    <p className='mt-8 hidden text-[var(--hp-fg-3)] lg:block'>
                         Prefer to talk?{' '}
-                        <a
-                            href={getPhoneLink()}
-                            className='decoration-gold-400 font-bold text-stone-50 underline underline-offset-4'
-                        >
+                        <a href={getPhoneLink()} className={homeLink}>
                             {siteConfig.contact.phoneDisplay}
                         </a>
                     </p>
@@ -135,15 +138,15 @@ export function HomeConsult() {
                             >
                                 <span
                                     aria-hidden='true'
-                                    className='border-gold-400/50 text-gold-300 mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border text-xs'
+                                    className='mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-[rgba(230,203,159,0.5)] text-xs text-[var(--hp-champagne)]'
                                 >
                                     ✓
                                 </span>
                                 <span>
-                                    <strong className='text-stone-50'>
+                                    <strong className='font-semibold text-[var(--hp-fg)]'>
                                         {promise.title}.
                                     </strong>{' '}
-                                    <span className='text-stone-400'>
+                                    <span className='text-[var(--hp-fg-3)]'>
                                         {promise.body}
                                     </span>
                                 </span>

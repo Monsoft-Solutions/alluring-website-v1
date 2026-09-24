@@ -60,8 +60,10 @@ export function HomeProofTicker({
     const items: ReactNode[] = [
         rating !== null && reviewCount > 0 ? (
             <span key='rating'>
-                <span className='text-gold-300'>★ {rating.toFixed(1)}</span> on
-                Google · {reviewCount} reviews
+                <span className='text-[var(--hp-champagne)]'>
+                    ★ {rating.toFixed(1)}
+                </span>{' '}
+                on Google · {reviewCount} reviews
             </span>
         ) : null,
         <span key='surgeon'>
@@ -70,11 +72,11 @@ export function HomeProofTicker({
         ...quotes.slice(0, 2).map(({ review, quote }) => (
             <span
                 key={review.id}
-                className='font-serif text-[1.0625rem] tracking-normal text-stone-100 normal-case italic'
+                className='hp-display text-[1.125rem] tracking-normal text-[var(--hp-porcelain)] normal-case italic'
                 data-copy-check='data'
             >
                 “{quote}”{' '}
-                <span className='text-stone-400'>
+                <span className='font-sans text-[0.8125rem] text-[#b5a597] not-italic'>
                     — {firstName(review.reviewerName)}
                 </span>
             </span>
@@ -84,11 +86,11 @@ export function HomeProofTicker({
         ...quotes.slice(2).map(({ review, quote }) => (
             <span
                 key={review.id}
-                className='font-serif text-[1.0625rem] tracking-normal text-stone-100 normal-case italic'
+                className='hp-display text-[1.125rem] tracking-normal text-[var(--hp-porcelain)] normal-case italic'
                 data-copy-check='data'
             >
                 “{quote}”{' '}
-                <span className='text-stone-400'>
+                <span className='font-sans text-[0.8125rem] text-[#b5a597] not-italic'>
                     — {firstName(review.reviewerName)}
                 </span>
             </span>
@@ -108,10 +110,13 @@ export function HomeProofTicker({
             {items.map((item, index) => (
                 <li
                     key={index}
-                    className='flex shrink-0 items-center gap-[var(--hp-marquee-gap)] text-[0.8125rem] font-bold tracking-[0.14em] whitespace-nowrap text-stone-300 uppercase'
+                    className='flex shrink-0 items-center gap-[var(--hp-marquee-gap)] text-[0.75rem] font-semibold tracking-[0.18em] whitespace-nowrap text-[#dccdbf] uppercase'
                 >
                     {item}
-                    <span aria-hidden='true' className='text-gold-400'>
+                    <span
+                        aria-hidden='true'
+                        className='text-[var(--hp-champagne-2)]'
+                    >
                         ✦
                     </span>
                 </li>
@@ -123,7 +128,7 @@ export function HomeProofTicker({
         <section
             id={HOME_SECTION_IDS.proof}
             aria-label='Why patients choose Alluring'
-            className='border-y border-white/5 bg-stone-950 py-5 md:py-6'
+            className='hp-grain border-y border-[var(--hp-line-dark)] bg-[var(--hp-espresso)] py-5 md:py-6'
         >
             <div
                 className='hp-marquee'

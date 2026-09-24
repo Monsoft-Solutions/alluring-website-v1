@@ -12,13 +12,16 @@ import {
     karlinskyRecords,
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
+import { HomeEyebrow } from './home-eyebrow.component'
 import {
     HOME_CHAT_ID,
     HOME_SECTION_IDS,
+    HOME_SECTION_INDEX,
     homeContainer,
-    homeEyebrow,
     homeHeading,
+    homeLead,
     homeLink,
+    homePrimaryButton,
 } from './home-page.constant'
 
 const ABS_YEAR = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
@@ -64,55 +67,51 @@ export function HomeSurgeon() {
         <section
             id={HOME_SECTION_IDS.surgeon}
             aria-labelledby='surgeon-title'
-            className='hp-defer overflow-hidden bg-white py-16 md:py-28'
+            className='hp-defer overflow-hidden bg-[var(--hp-nude)] py-16 md:py-28'
         >
             <div
                 className={cn(
                     homeContainer,
-                    'grid items-center gap-10 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-16'
+                    'grid items-center gap-12 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-16 lg:gap-24'
                 )}
             >
-                <figure className='relative'>
-                    <div className='hp-unveil relative mx-auto aspect-[4/5] w-[82%] max-w-[28rem] overflow-hidden rounded-[2rem] bg-stone-200 md:w-full'>
+                <figure>
+                    <div className='hp-arch hp-arch-unveil relative mx-auto aspect-[4/5] w-[80%] max-w-[26rem] bg-[var(--hp-linen)] md:w-full'>
                         <Image
                             src='/images/surgeons/dr-karlinsky.webp'
                             alt={`${KARLINSKY_NAME}, the surgeon at Alluring Plastic Surgery`}
                             fill
-                            sizes='(width >= 48rem) 28rem, 100vw'
+                            sizes='(width >= 48rem) 26rem, 80vw'
                             className='hp-parallax scale-[1.12] object-cover object-top'
                         />
                     </div>
-                    <figcaption className='absolute -bottom-5 left-1/2 w-[86%] max-w-[24rem] -translate-x-1/2 rounded-2xl border border-white/70 bg-white/85 px-5 py-4 text-center shadow-[0_30px_60px_-30px_rgba(28,25,23,0.5)] backdrop-blur-xl'>
-                        <span className='block font-serif text-lg text-stone-950'>
+                    <figcaption className='mx-auto mt-5 max-w-[26rem] text-center'>
+                        <span className='hp-display hp-display--small block text-[1.375rem] text-[var(--hp-ink)]'>
                             {KARLINSKY_NAME}
                         </span>
-                        <span className='text-sm text-stone-600'>
+                        <span className='mt-1 block text-[0.75rem] font-semibold tracking-[0.2em] text-[var(--hp-ink-2)] uppercase'>
                             The one surgeon at Alluring
                         </span>
                     </figcaption>
                 </figure>
 
-                <div className='pt-6 md:pt-0'>
-                    <p className={homeEyebrow}>Your surgeon</p>
-                    <h2
-                        id='surgeon-title'
-                        className={cn(homeHeading, 'mt-4 text-stone-950')}
-                    >
-                        One surgeon.{' '}
-                        <em className='text-[#8a6c12] italic'>
-                            Every surgery.
-                        </em>
+                <div>
+                    <HomeEyebrow index={HOME_SECTION_INDEX.surgeon}>
+                        Your surgeon
+                    </HomeEyebrow>
+                    <h2 id='surgeon-title' className={cn(homeHeading, 'mt-5')}>
+                        One surgeon. <em>Every surgery.</em>
                     </h2>
-                    <p className='mt-5 text-lg leading-relaxed text-stone-600'>
+                    <p className={cn(homeLead, 'mt-6 text-[var(--hp-ink-2)]')}>
                         Every procedure at Alluring is performed by{' '}
                         {KARLINSKY_NAME}. {KARLINSKY_CREDENTIALS} You know whose
                         hands you’re in before you book.
                     </p>
 
-                    <p className='mt-8 text-sm font-bold text-stone-950'>
-                        Don’t take our word for it. Check each record:
+                    <p className='mt-9 text-[0.75rem] font-semibold tracking-[0.2em] text-[var(--hp-ink-2)] uppercase'>
+                        Don’t take our word for it. Check each record
                     </p>
-                    <ul className='mt-4 divide-y divide-stone-200 border-y border-stone-200'>
+                    <ul className='mt-4 divide-y divide-[var(--hp-line)] border-y border-[var(--hp-line)]'>
                         {RECORDS.map((record) => (
                             <li key={record.href} className='py-4'>
                                 <a
@@ -122,22 +121,22 @@ export function HomeSurgeon() {
                                     className='group flex items-start justify-between gap-4'
                                 >
                                     <span>
-                                        <span className='block font-bold text-stone-950 group-hover:underline'>
+                                        <span className='block font-semibold text-[var(--hp-ink)] group-hover:underline'>
                                             {record.label}
                                         </span>
-                                        <span className='text-sm text-stone-500'>
+                                        <span className='text-sm text-[var(--hp-ink-2)]'>
                                             {record.by}
                                         </span>
                                     </span>
                                     <span
                                         aria-hidden='true'
-                                        className='mt-1 text-[#8a6c12] transition-transform group-hover:translate-x-1'
+                                        className='mt-0.5 grid size-8 shrink-0 place-items-center rounded-full border border-[var(--hp-line)] text-sm text-[var(--hp-bronze)] transition-colors group-hover:border-[var(--hp-ink)] group-hover:bg-[var(--hp-ink)] group-hover:text-[var(--hp-porcelain)]'
                                     >
                                         ↗
                                     </span>
                                 </a>
                                 {'statement' in record && (
-                                    <p className='mt-2 font-bold text-stone-950'>
+                                    <p className='mt-2 font-semibold text-[var(--hp-ink)]'>
                                         {record.statement}
                                     </p>
                                 )}
@@ -145,20 +144,17 @@ export function HomeSurgeon() {
                         ))}
                     </ul>
 
-                    <div className='mt-8 flex flex-wrap gap-x-6 gap-y-3'>
-                        <Link
-                            href='/dr-karlinsky'
-                            className={cn(homeLink, 'text-stone-900')}
-                        >
-                            Meet {KARLINSKY_SHORT_NAME}
-                        </Link>
+                    <div className='mt-9 flex flex-wrap items-center gap-x-6 gap-y-4'>
                         <a
                             href={`#${HOME_CHAT_ID}`}
                             data-cta='home_surgeon_consult'
-                            className={cn(homeLink, 'text-stone-900')}
+                            className={homePrimaryButton}
                         >
                             Book a free consultation
                         </a>
+                        <Link href='/dr-karlinsky' className={homeLink}>
+                            Meet {KARLINSKY_SHORT_NAME}
+                        </Link>
                     </div>
                 </div>
             </div>

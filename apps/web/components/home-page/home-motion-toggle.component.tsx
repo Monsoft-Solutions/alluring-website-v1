@@ -70,10 +70,10 @@ export function HomeMotionToggle({
             aria-pressed={paused}
             onClick={() => setPaused(!paused)}
             className={cn(
-                'hp-motion-toggle inline-flex min-h-8 items-center gap-1.5 rounded-full px-3 text-[0.6875rem] font-bold tracking-[0.08em] uppercase backdrop-blur-md transition-colors',
+                'hp-motion-toggle inline-flex min-h-8 items-center gap-1.5 rounded-full px-3 text-[0.6875rem] font-semibold tracking-[0.1em] uppercase backdrop-blur-md transition-colors',
                 tone === 'light'
-                    ? 'border border-stone-900/10 bg-white/60 text-stone-700 hover:bg-white'
-                    : 'border border-white/15 bg-white/5 text-stone-300 hover:bg-white/10',
+                    ? 'border border-[rgba(23,18,16,0.12)] bg-white/60 text-[#3f3531] hover:bg-white'
+                    : 'border border-white/15 bg-white/5 text-[#dccdbf] hover:bg-white/10',
                 className
             )}
         >

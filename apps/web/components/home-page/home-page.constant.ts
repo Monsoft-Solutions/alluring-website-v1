@@ -6,8 +6,6 @@
  * @module
  */
 
-import { cn } from '@workspace/ui/lib/utils'
-
 /**
  * The consultation thread's section id. It matches the contact page's, so a
  * visitor who starts the thread here and opens /contact-us (or the other way
@@ -54,6 +52,21 @@ export const HOME_MEDIA = {
         'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/home/2026-09/close-mobile-b3094b80.webp',
 } as const
 
+/**
+ * The number each section wears in its eyebrow: the page reads as one
+ * guided path, from the first question to the last.
+ */
+export const HOME_SECTION_INDEX = {
+    consult: '01',
+    results: '02',
+    picker: '03',
+    surgeon: '04',
+    prices: '05',
+    flyIn: '06',
+    reviews: '07',
+    faq: '08',
+} as const satisfies Partial<Record<keyof typeof HOME_SECTION_IDS, string>>
+
 /** Where the practice's generated imagery says so. */
 export const MODEL_DISCLOSURE = 'Model shown. Not a patient.'
 
@@ -65,27 +78,30 @@ export const PRICE_VARIABLES =
     'Starting prices. Yours depends on the areas treated, your body and any procedures combined, and your surgeon confirms it at consultation.'
 
 /** The page's content width. */
-export const homeContainer = 'mx-auto w-full max-w-[76rem] px-5 md:px-8'
+export const homeContainer = 'mx-auto w-full max-w-[78rem] px-5 md:px-8'
 
-/** Eyebrow above a section heading: a dark gold that holds 5:1 on ivory. */
-export const homeEyebrow =
-    'text-[0.75rem] font-bold tracking-[0.2em] text-[#7d6311] uppercase'
-
-/** A section's H2. */
+/**
+ * A section's H2: Bodoni Moda at display size, tight, with the one word
+ * that carries the feeling set in italic (`<em>`, styled in home-page.css).
+ */
 export const homeHeading =
-    'font-serif text-[2.35rem] leading-[1.02] tracking-[-0.015em] text-balance md:text-[3.5rem] lg:text-[4.25rem]'
+    'hp-display text-[2.75rem] leading-[0.98] tracking-[-0.02em] text-balance md:text-[4rem] lg:text-[4.75rem]'
 
-/** The primary button: ink on gold. 8.1:1, as on the procedure pages. */
-export const homePrimaryButton = cn(
-    'inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6',
-    'from-gold-300 via-gold-400 to-gold-500 bg-gradient-to-br text-[0.9375rem] font-bold text-stone-950',
-    'shadow-[0_18px_40px_-18px_rgba(180,148,31,0.8)] transition-transform duration-300 hover:-translate-y-0.5',
-    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500'
-)
+/** A section's lead paragraph. */
+export const homeLead =
+    'text-[1.0625rem] leading-[1.65] text-pretty md:text-[1.1875rem]'
 
-/** A quiet text link with an animated underline. */
-export const homeLink =
-    'font-bold underline decoration-gold-400 decoration-2 underline-offset-[6px] transition-colors hover:decoration-stone-900'
+/**
+ * The primary button: ink on porcelain, champagne on the dark bands
+ * (`hp-btn--light`). 17:1 and 12:1. The arrow is drawn by the CSS.
+ */
+export const homePrimaryButton = 'hp-btn'
+
+/** The primary button on a dark band. */
+export const homePrimaryButtonOnDark = 'hp-btn hp-btn--light'
+
+/** A quiet text link with a bronze hairline under it. */
+export const homeLink = 'hp-link'
 
 /**
  * Procedures the page links to: their page, and the consultation thread's

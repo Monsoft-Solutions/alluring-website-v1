@@ -64,7 +64,7 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
         <section
             id={HOME_SECTION_IDS.hero}
             aria-labelledby='hero-title'
-            className='hp-hero relative isolate overflow-hidden bg-[var(--hp-ivory)]'
+            className='hp-hero relative isolate overflow-hidden bg-[var(--hp-porcelain)]'
         >
             {/* On phones the film fills the hero behind a transparent header.
                 From `md` it starts under the header: the landscape cut puts
@@ -101,20 +101,23 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
                     'md:min-h-[46rem] md:justify-center md:pt-[calc(var(--announcement-bar-height,0px)+8rem)] md:pb-24 lg:min-h-[100svh]'
                 )}
             >
-                <div className='max-w-[35rem]'>
-                    <h1 id='hero-title' className='text-stone-950'>
-                        <span className='block text-[0.75rem] font-bold tracking-[0.22em] text-[#7d6311] uppercase'>
+                <div className='max-w-[40rem]'>
+                    <h1 id='hero-title'>
+                        <span className='hp-eyebrow'>
+                            <span
+                                className='hp-eyebrow__rule'
+                                aria-hidden='true'
+                            />
                             Alluring Plastic Surgery · Miami
                         </span>
-                        <span className='mt-3 block font-serif text-[3.5rem] leading-[0.9] tracking-[-0.03em] sm:text-[4.5rem] lg:text-[6.25rem]'>
-                            Become the{' '}
-                            <em className='text-[#8a6c12] italic'>after</em>.
+                        <span className='hp-display mt-5 block text-[3.9rem] leading-[0.88] font-medium tracking-[-0.035em] sm:text-[5.25rem] lg:text-[7rem]'>
+                            Become the <em>after</em>.
                         </span>
                     </h1>
 
-                    <p className='mt-5 max-w-[30rem] text-[1.0625rem] leading-relaxed text-stone-700 md:text-lg'>
+                    <p className='mt-6 max-w-[31rem] text-[1.0625rem] leading-relaxed text-[var(--hp-ink-2)] md:text-lg'>
                         Body contouring by {KARLINSKY_NAME}.{' '}
-                        <strong className='font-bold text-stone-950'>
+                        <strong className='font-semibold text-[var(--hp-ink)]'>
                             Lipo 360 from {lipoFigure('price-starting-at')}. BBL
                             from {bblFigure('price-starting-at')}.*
                         </strong>{' '}
@@ -122,13 +125,13 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
                     </p>
 
                     {rating !== null && reviewCount > 0 && (
-                        <p className='mt-4 flex items-center gap-2.5 text-sm text-stone-700'>
+                        <p className='mt-4 flex items-center gap-2.5 text-sm text-[var(--hp-ink-2)]'>
                             <ModuleStars
                                 rating={rating}
-                                className='text-[0.95rem] text-[#b4941f]'
+                                className='text-[0.9rem] text-[var(--hp-star)]'
                             />
-                            <span>
-                                <strong className='text-stone-950'>
+                            <span className='hp-num'>
+                                <strong className='font-semibold text-[var(--hp-ink)]'>
                                     {rating.toFixed(1)}
                                 </strong>{' '}
                                 from {reviewCount} Google reviews
@@ -139,22 +142,22 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
                     <div
                         role='group'
                         aria-labelledby='hero-chips-label'
-                        className='mt-7 rounded-[1.75rem] border border-white/70 bg-white/55 p-4 shadow-[0_30px_60px_-40px_rgba(28,25,23,0.55)] backdrop-blur-xl md:p-5'
+                        className='mt-8 border-t border-[var(--hp-line)] pt-6'
                     >
                         <p
                             id='hero-chips-label'
-                            className='flex items-center gap-2 text-[0.9375rem] font-bold text-stone-950'
+                            className='flex items-center gap-2.5 text-[0.9375rem] font-semibold text-[var(--hp-ink)]'
                         >
                             <span
-                                className='relative flex size-2.5'
+                                className='relative flex size-2'
                                 aria-hidden='true'
                             >
                                 <span className='absolute inline-flex size-full rounded-full bg-emerald-500/60 motion-safe:animate-ping' />
-                                <span className='relative inline-flex size-2.5 rounded-full bg-emerald-600' />
+                                <span className='relative inline-flex size-2 rounded-full bg-emerald-600' />
                             </span>
                             What are you thinking about?
                         </p>
-                        <ul className='mt-3 flex flex-wrap gap-2'>
+                        <ul className='mt-3.5 flex flex-wrap gap-2'>
                             {HERO_CHIPS.map((chip) => (
                                 <li key={chip.chat}>
                                     <a
@@ -178,7 +181,7 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
                                 </a>
                             </li>
                         </ul>
-                        <p className='mt-3 text-[0.8125rem] leading-snug text-stone-600'>
+                        <p className='mt-4 text-[0.8125rem] leading-snug text-[var(--hp-mute)]'>
                             Free consultation in Miami, or by video from
                             anywhere in the U.S. A coordinator replies by text.
                         </p>
@@ -188,7 +191,7 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
 
             <div className='absolute inset-x-0 bottom-3 flex items-center justify-between gap-4 px-4 md:px-8'>
                 <HomeMotionToggle />
-                <p className='max-w-[34rem] text-right text-[0.6875rem] leading-snug text-stone-600'>
+                <p className='max-w-[34rem] text-right text-[0.6875rem] leading-snug text-[var(--hp-mute)]'>
                     *{PRICE_VARIABLES} {MODEL_DISCLOSURE}
                 </p>
             </div>

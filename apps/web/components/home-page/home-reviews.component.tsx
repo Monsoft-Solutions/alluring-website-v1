@@ -8,11 +8,13 @@ import { readGoogleReviewText } from '@/lib/utils/google-review-text.util'
 
 import { HomeMotionToggle } from './home-motion-toggle.component'
 
+import { HomeEyebrow } from './home-eyebrow.component'
 import {
     HOME_SECTION_IDS,
+    HOME_SECTION_INDEX,
     homeContainer,
-    homeEyebrow,
     homeHeading,
+    homeLead,
     homeLink,
 } from './home-page.constant'
 
@@ -27,18 +29,18 @@ function ReviewCard({ review }: { review: GoogleReviewPublic }) {
         review.comment ?? ''
     )
     return (
-        <figure className='flex h-full w-[18.5rem] flex-col rounded-[1.75rem] border border-stone-200/80 bg-white p-6 shadow-[0_30px_60px_-45px_rgba(28,25,23,0.45)] md:w-[22rem]'>
+        <figure className='hp-card flex h-full w-[19rem] flex-col p-6 md:w-[23rem] md:p-7'>
             <ModuleStars
                 rating={review.rating}
-                className='text-[0.95rem] text-[#b4941f]'
+                className='text-[0.85rem] text-[var(--hp-star)]'
             />
             <blockquote className='mt-4 flex-1'>
-                <p className='line-clamp-6 font-serif text-[1.0625rem] leading-[1.55] text-stone-900'>
+                <p className='line-clamp-6 text-[0.975rem] leading-[1.6] text-[var(--hp-ink-2)]'>
                     {text}
                 </p>
             </blockquote>
-            <figcaption className='mt-5 text-sm text-stone-600'>
-                <span className='font-bold text-stone-950'>
+            <figcaption className='mt-5 border-t border-[var(--hp-line)] pt-4 text-sm text-[var(--hp-mute)]'>
+                <span className='font-semibold text-[var(--hp-ink)]'>
                     {review.reviewerName}
                 </span>
                 {' · '}
@@ -48,7 +50,7 @@ function ReviewCard({ review }: { review: GoogleReviewPublic }) {
                     timeZone: 'UTC',
                 })}
                 {translatedByGoogle && (
-                    <span className='block text-stone-500'>
+                    <span className='block text-[var(--hp-mute)]'>
                         Translated by Google
                     </span>
                 )}
@@ -82,7 +84,7 @@ export function HomeReviews({
         <section
             id={HOME_SECTION_IDS.reviews}
             aria-labelledby='reviews-title'
-            className='hp-defer overflow-hidden bg-[var(--hp-ivory)] py-16 md:py-28'
+            className='hp-defer overflow-hidden bg-[var(--hp-porcelain)] py-16 md:py-28'
         >
             <div
                 className={cn(
@@ -90,29 +92,23 @@ export function HomeReviews({
                     'flex flex-wrap items-end justify-between gap-6'
                 )}
             >
-                <div className='max-w-[40rem]'>
-                    <p className={homeEyebrow}>Google reviews</p>
-                    <h2
-                        id='reviews-title'
-                        className={cn(homeHeading, 'mt-4 text-stone-950')}
-                    >
+                <div className='max-w-[42rem]'>
+                    <HomeEyebrow index={HOME_SECTION_INDEX.reviews}>
+                        Google reviews
+                    </HomeEyebrow>
+                    <h2 id='reviews-title' className={cn(homeHeading, 'mt-5')}>
                         {rating !== null && reviewCount > 0 ? (
                             <>
                                 {rating.toFixed(1)} stars.{' '}
-                                <em className='text-[#8a6c12] italic'>
-                                    {reviewCount} reviews.
-                                </em>
+                                <em>{reviewCount} reviews.</em>
                             </>
                         ) : (
                             <>
-                                In their{' '}
-                                <em className='text-[#8a6c12] italic'>
-                                    own words.
-                                </em>
+                                In their <em>own words.</em>
                             </>
                         )}
                     </h2>
-                    <p className='mt-5 text-lg leading-relaxed text-stone-600'>
+                    <p className={cn(homeLead, 'mt-6 text-[var(--hp-fg-2)]')}>
                         A selection of what patients wrote on Google, including
                         many who flew in from other states. Read them all on our
                         reviews page.
@@ -120,10 +116,7 @@ export function HomeReviews({
                 </div>
                 <div className='flex items-center gap-5'>
                     <HomeMotionToggle />
-                    <Link
-                        href='/reviews'
-                        className={cn(homeLink, 'text-stone-900')}
-                    >
+                    <Link href='/reviews' className={homeLink}>
                         Read every review
                     </Link>
                 </div>

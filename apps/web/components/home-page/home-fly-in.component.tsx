@@ -3,12 +3,16 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
 
+import { HomeEyebrow } from './home-eyebrow.component'
 import {
     HOME_CHAT_ID,
     HOME_SECTION_IDS,
+    HOME_SECTION_INDEX,
     homeContainer,
     homeHeading,
-    homePrimaryButton,
+    homeLead,
+    homeLink,
+    homePrimaryButtonOnDark,
 } from './home-page.constant'
 
 /**
@@ -58,11 +62,11 @@ export function HomeFlyIn() {
         <section
             id={HOME_SECTION_IDS.flyIn}
             aria-labelledby='fly-in-title'
-            className='hp-scene hp-defer relative overflow-hidden bg-stone-950 py-16 text-stone-100 md:py-28'
+            className='hp-dark hp-grain hp-scene hp-defer relative overflow-hidden py-16 md:py-28'
         >
             <div
                 aria-hidden='true'
-                className='pointer-events-none absolute -top-48 left-1/2 size-[46rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(212,175,55,0.14),transparent)]'
+                className='pointer-events-none absolute -top-56 left-1/2 size-[48rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(230,203,159,0.13),transparent)]'
             />
             <div
                 className={cn(
@@ -71,36 +75,37 @@ export function HomeFlyIn() {
                 )}
             >
                 <div>
-                    <p className='text-gold-300 text-[0.75rem] font-bold tracking-[0.2em] uppercase'>
+                    <HomeEyebrow index={HOME_SECTION_INDEX.flyIn}>
                         Coming from another state
-                    </p>
-                    <h2
-                        id='fly-in-title'
-                        className={cn(homeHeading, 'mt-4 text-stone-50')}
-                    >
-                        Fly in. Heal.{' '}
-                        <em className='text-gold-300 italic'>Fly home.</em>
+                    </HomeEyebrow>
+                    <h2 id='fly-in-title' className={cn(homeHeading, 'mt-5')}>
+                        Fly in. Heal. <em>Fly home.</em>
                     </h2>
-                    <p className='mt-5 max-w-[34rem] text-lg leading-relaxed text-stone-300'>
+                    <p
+                        className={cn(
+                            homeLead,
+                            'mt-6 max-w-[34rem] text-[var(--hp-fg-2)]'
+                        )}
+                    >
                         Most people who write to us don’t live in Florida.
                         Here’s how it works when you fly in, from the first
                         video call to the day you’re cleared to fly home.
                     </p>
 
-                    <ol className='mt-10 grid gap-6'>
+                    <ol className='mt-12 grid gap-7'>
                         {STEPS.map((step, index) => (
                             <li key={step.title} className='hp-step flex gap-5'>
                                 <span
-                                    className='hp-step-marker border-gold-400/70 text-gold-300 grid size-10 shrink-0 place-items-center rounded-full border font-serif text-lg'
+                                    className='hp-step-marker hp-display grid size-12 shrink-0 place-items-center rounded-full border border-[rgba(230,203,159,0.55)] text-lg text-[var(--hp-champagne)] italic'
                                     aria-hidden='true'
                                 >
-                                    {index + 1}
+                                    {String(index + 1).padStart(2, '0')}
                                 </span>
-                                <span className='pt-1.5'>
-                                    <strong className='block text-lg text-stone-50'>
+                                <span className='pt-2.5'>
+                                    <strong className='block text-lg font-semibold text-[var(--hp-fg)]'>
                                         {step.title}
                                     </strong>
-                                    <span className='mt-1 block leading-relaxed text-stone-400'>
+                                    <span className='mt-1.5 block leading-relaxed text-[var(--hp-fg-3)]'>
                                         {step.body}
                                     </span>
                                 </span>
@@ -113,48 +118,48 @@ export function HomeFlyIn() {
                     aria-label='Example of a written schedule'
                     className='lg:sticky lg:top-32 lg:self-start'
                 >
-                    <div className='rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] backdrop-blur-xl md:p-8'>
+                    <div className='rounded-[0.875rem] border border-[var(--hp-rule)] bg-white/[0.035] p-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] backdrop-blur-xl md:p-8'>
                         <div className='flex items-center justify-between'>
-                            <p className='text-sm font-bold text-stone-50'>
-                                Your schedule
+                            <p className='hp-display hp-display--small text-[1.625rem] text-[var(--hp-fg)]'>
+                                Your <em>schedule</em>
                             </p>
-                            <span className='rounded-full border border-white/15 px-2.5 py-1 text-[0.6875rem] tracking-[0.14em] text-stone-400 uppercase'>
+                            <span className='rounded-full border border-[var(--hp-rule)] px-2.5 py-1 text-[0.6875rem] font-semibold tracking-[0.16em] text-[var(--hp-fg-3)] uppercase'>
                                 Example
                             </span>
                         </div>
-                        <ol className='mt-6 grid gap-3'>
+                        <ol className='mt-6 border-t border-[var(--hp-rule)]'>
                             {EXAMPLE_SCHEDULE.map((row) => (
                                 <li
                                     key={row.label}
-                                    className='flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3.5'
+                                    className='flex items-baseline justify-between gap-4 border-b border-[var(--hp-rule)] py-3.5'
                                 >
-                                    <span className='font-bold text-stone-100'>
+                                    <span className='font-semibold text-[var(--hp-fg)]'>
                                         {row.label}
                                     </span>
-                                    <span className='text-gold-300 text-sm'>
+                                    <span className='text-right text-sm text-[var(--hp-champagne)]'>
                                         {row.when}
                                     </span>
                                 </li>
                             ))}
                         </ol>
-                        <p className='mt-6 text-sm leading-relaxed text-stone-400'>
+                        <p className='mt-6 text-sm leading-relaxed text-[var(--hp-fg-3)]'>
                             Yours comes in writing, with real dates, after your
                             consultation. We don’t book flights, hotels,
                             transport or recovery houses; you arrange your stay,
                             and we give you the medical plan you can’t plan
                             without.
                         </p>
-                        <div className='mt-6 flex flex-wrap items-center gap-x-5 gap-y-3'>
+                        <div className='mt-7 flex flex-wrap items-center gap-x-5 gap-y-4'>
                             <a
                                 href={`#${HOME_CHAT_ID}`}
                                 data-cta='home_fly_in_consult'
-                                className={homePrimaryButton}
+                                className={homePrimaryButtonOnDark}
                             >
                                 Start with a video consult
                             </a>
                             <Link
                                 href='/fly-in-consultation'
-                                className='decoration-gold-400 text-sm font-bold text-stone-100 underline underline-offset-4'
+                                className={cn(homeLink, 'text-sm')}
                             >
                                 How fly-in surgery works
                             </Link>
