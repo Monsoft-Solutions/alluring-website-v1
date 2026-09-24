@@ -33,6 +33,9 @@ import type {
 
 export type SiteChatPage = 'contact' | 'specials' | 'home'
 
+/** A procedure the thread offers, as the contact system stores it. */
+export type ChatProcedureValue = ProcedureValue
+
 type ProcedureValue =
     | 'bbl'
     | 'liposuction'
@@ -88,7 +91,9 @@ const PROCEDURE_LABELS: Record<
  * Lipo 360 19%, BBL 13%, a combination 12%, mommy makeover 12%, breast
  * augmentation 9%, tummy tuck 7%, then the rest under 4% each.
  */
-const PROCEDURE_ORDER: Record<SiteChatPage, readonly ProcedureValue[]> = {
+export const CHAT_PROCEDURE_ORDER: Readonly<
+    Record<SiteChatPage, readonly ProcedureValue[]>
+> = {
     specials: [
         'liposuction',
         'multiple',
@@ -136,25 +141,42 @@ const OTHER_LABEL: Record<SiteChatPage, Record<ConsultChatLang, string>> = {
 }
 
 /** Settled starting prices only; the rest wait on #232. */
-const STARTING_PRICES: Partial<Record<ProcedureValue, string>> = {
+export const CHAT_STARTING_PRICES: Readonly<
+    Partial<Record<ProcedureValue, string>>
+> = {
     bbl: bblFigure('price-starting-at'),
     liposuction: lipoFigure('price-starting-at'),
+}
+
+/**
+ * The chips for `order`, in the thread's own labels. The ads landing page
+ * builds its thread from this too, with its ad group's procedure first.
+ */
+export function chatProcedureOptions(
+    order: readonly ProcedureValue[],
+    lang: ConsultChatLang,
+    otherLabel = PROCEDURE_LABELS[lang].other
+): readonly ConsultChatOption[] {
+    return order.map((value) => ({
+        value,
+        label: value === 'other' ? otherLabel : PROCEDURE_LABELS[lang][value],
+    }))
 }
 
 function procedures(
     page: SiteChatPage,
     lang: ConsultChatLang
 ): readonly ConsultChatOption[] {
-    return PROCEDURE_ORDER[page].map((value) => ({
-        value,
-        label:
-            value === 'other'
-                ? OTHER_LABEL[page][lang]
-                : PROCEDURE_LABELS[lang][value],
-    }))
+    return chatProcedureOptions(
+        CHAT_PROCEDURE_ORDER[page],
+        lang,
+        OTHER_LABEL[page][lang]
+    )
 }
 
-const TIMELINES: Record<ConsultChatLang, readonly ConsultChatOption[]> = {
+export const CHAT_TIMELINES: Readonly<
+    Record<ConsultChatLang, readonly ConsultChatOption[]>
+> = {
     en: [
         { value: 'asap', label: 'As soon as possible' },
         { value: '1-3-months', label: 'In 1–3 months' },
@@ -181,18 +203,18 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
                 priced: '{procedure} starts at {price}. Your exact price and dates come in writing after your free consultation, and it can be by video if you’re not in Miami.',
                 standard:
                     'Good to know. Your exact price and dates come in writing after your free consultation, and it can be by video if you’re not in Miami.',
-                prices: STARTING_PRICES,
+                prices: CHAT_STARTING_PRICES,
                 byProcedure: {
                     other: 'No problem, that’s what the free consultation is for. It can be by video if you’re not in Miami, and your price comes in writing.',
                 },
             },
             qTimeline: 'When are you hoping to have it done?',
-            timelines: TIMELINES.en,
+            timelines: CHAT_TIMELINES.en,
             qContact:
                 'Last step. What’s your name and mobile number? We’ll text you to set up your free consultation.',
             fieldName: 'Your name',
             fieldPhone: 'Mobile number',
-            consent: LP_COPY.en.form.consent,
+            consent: LP_COPY.en.consent,
             submit: 'Request my free consultation',
             submitting: 'Sending…',
             change: 'Change',
@@ -217,18 +239,18 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
                 priced: '{procedure} empieza en {price}. Tu precio exacto y tus fechas te llegan por escrito después de tu consulta gratis, y puede ser por video si no estás en Miami.',
                 standard:
                     'Perfecto. Tu precio exacto y tus fechas te llegan por escrito después de tu consulta gratis, y puede ser por video si no estás en Miami.',
-                prices: STARTING_PRICES,
+                prices: CHAT_STARTING_PRICES,
                 byProcedure: {
                     other: 'No hay problema, para eso es la consulta gratis. Puede ser por video si no estás en Miami, y tu precio te llega por escrito.',
                 },
             },
             qTimeline: '¿Para cuándo te gustaría hacerlo?',
-            timelines: TIMELINES.es,
+            timelines: CHAT_TIMELINES.es,
             qContact:
                 'Último paso. ¿Cómo te llamas y cuál es tu celular? Te escribimos por texto para agendar tu consulta gratis.',
             fieldName: 'Tu nombre',
             fieldPhone: 'Número de celular',
-            consent: LP_COPY.es.form.consent,
+            consent: LP_COPY.es.consent,
             submit: 'Pedir mi consulta gratis',
             submitting: 'Enviando…',
             change: 'Cambiar',
@@ -255,7 +277,7 @@ function siteChat(page: SiteChatPage): SiteChat {
     const copy = copyFor(page)
     return {
         copy,
-        staff: { procedures: copy.en.procedures, timelines: TIMELINES.en },
+        staff: { procedures: copy.en.procedures, timelines: CHAT_TIMELINES.en },
     }
 }
 

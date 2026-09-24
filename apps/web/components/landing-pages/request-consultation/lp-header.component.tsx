@@ -5,20 +5,16 @@
  * suppressed on `/lp/*` (see `conditional-layout.component.tsx`): a paid
  * landing page has exactly one job, and site navigation is a way out of it.
  *
- * What survives is a logo that leaves to the main site, the language toggle,
- * the phone number, and the CTA that scrolls to the form.
+ * What survives is the logo (not a link: it used to take the visitor to the
+ * home page), the language toggle, the phone number, and the CTA that
+ * scrolls to the consultation thread.
  */
 
 import Image from 'next/image'
 
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
-import {
-    LP_LANGUAGES,
-    LP_LINKS,
-    type LpDictionary,
-    type LpLang,
-} from './lp-copy'
+import { LP_LANGUAGES, type LpDictionary, type LpLang } from './lp-copy'
 import { LP_LOGO } from './lp-assets'
 import { PhoneIcon } from './lp-primitives.component'
 
@@ -32,11 +28,7 @@ export function LpHeader({ lang, copy, onSelectLang }: LpHeaderProps) {
     return (
         <header className='hdr'>
             <div className='wrap hdr-in'>
-                <a
-                    className='brand'
-                    href={LP_LINKS.home}
-                    aria-label={siteConfig.business.name}
-                >
+                <span className='brand'>
                     <Image
                         src={LP_LOGO.src}
                         width={LP_LOGO.width}
@@ -44,7 +36,7 @@ export function LpHeader({ lang, copy, onSelectLang }: LpHeaderProps) {
                         alt={siteConfig.business.name}
                         priority
                     />
-                </a>
+                </span>
                 <div className='hdr-r'>
                     <div
                         className='lang'

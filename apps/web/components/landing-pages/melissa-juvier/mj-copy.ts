@@ -14,8 +14,9 @@
  * CLAIMS
  * ---------------------------------------------------------------------
  * Every practice claim is one the site already publishes (see the header of
- * `request-consultation/lp-copy.ts`): double board certification, the
- * AAAASF-accredited facility, board-certified anesthesiologists, the 4.7
+ * `request-consultation/lp-copy.ts`): the surgeon named as an MD with the
+ * boards `karlinsky-credentials.constant.ts` allows, the AAAASF-accredited
+ * facility, board-certified anesthesiologists, the 4.7
  * Google rating, the procedure counts, the all-inclusive figure in writing,
  * the confirmed dates, the 24-hour response, no commission. Nothing here
  * offers travel coordination — what the practice provides is dates in
@@ -25,6 +26,8 @@
  * disclaimer are not restated: they are read from the ads landing page's
  * deck, so the legal text lives in exactly one place.
  */
+
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 import { LP_COPY, type RichText } from '../request-consultation/lp-copy'
 
@@ -217,7 +220,7 @@ const en: MjDictionary = {
             'Perfect. What’s your name and mobile number? I’ll text you to set up your free consultation.',
         fieldName: 'Your name',
         fieldPhone: 'Mobile number',
-        consent: LP_COPY.en.form.consent,
+        consent: LP_COPY.en.consent,
         submit: 'Send to Melissa',
         submitting: 'Sending…',
         change: 'Change',
@@ -265,7 +268,7 @@ const en: MjDictionary = {
     surgeon: {
         eyebrow: 'Who I’ll introduce you to',
         heading: ['Dr. Victoria ', { em: 'Karlinsky' }],
-        role: 'Medical Director · Double board-certified cosmetic surgeon',
+        role: `${KARLINSKY_NAME} · Medical Director`,
         body: 'Your consultation is with the surgeon who operates — not an advisor, not a closer. Dr. Karlinsky tells you honestly what she can do for you, and what she won’t.',
         stats: [
             { value: '5,000+', label: 'Procedures' },
@@ -407,7 +410,7 @@ const es: MjDictionary = {
             'Perfecto. ¿Cómo te llamas y cuál es tu celular? Te escribo por texto para agendar tu consulta gratis.',
         fieldName: 'Tu nombre',
         fieldPhone: 'Número de celular',
-        consent: LP_COPY.es.form.consent,
+        consent: LP_COPY.es.consent,
         submit: 'Enviar a Melissa',
         submitting: 'Enviando…',
         change: 'Cambiar',
@@ -458,7 +461,7 @@ const es: MjDictionary = {
     surgeon: {
         eyebrow: 'A quién te voy a presentar',
         heading: ['Dra. Victoria ', { em: 'Karlinsky' }],
-        role: 'Directora médica · Cirujana cosmética con doble certificación',
+        role: `${KARLINSKY_NAME} · Directora médica`,
         body: 'Tu consulta es con la cirujana que opera, no con una asesora ni con un vendedor. La Dra. Karlinsky te dice con honestidad lo que puede hacer por ti, y lo que no.',
         stats: [
             { value: '5,000+', label: 'Procedimientos' },

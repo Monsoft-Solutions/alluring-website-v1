@@ -13,7 +13,12 @@
  *
  * It lives under `/lp/*`, which `ConditionalLayout` treats as standalone: no
  * site header, no footer, no floating chrome. A paid landing page has one job,
- * and site navigation is a way out of it.
+ * and site navigation is a way out of it — so nothing on the page links to
+ * the rest of the site either (#283).
+ *
+ * The before/after photographs past the curated five, the live Google rating
+ * and the review rail are read here. They are cached queries, and a database
+ * failure only drops them: the page never fails because of its proof.
  *
  * The page renders per request because the language and the headline are
  * resolved from the query string and Accept-Language on the server — the HTML
@@ -23,13 +28,17 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 
+import { buildLpChat } from '@/components/landing-pages/request-consultation/lp-chat-copy'
 import { LpLanding } from '@/components/landing-pages/request-consultation/lp-landing.component'
 import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy'
 import {
     resolveLpLanguage,
     type ResolvedLpLanguage,
 } from '@/components/landing-pages/request-consultation/lp-language'
+import { selectLpProof } from '@/components/landing-pages/request-consultation/lp-proof'
 import { resolveAdVariant } from '@/components/landing-pages/request-consultation/lp-variants'
+import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
+import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 
 import './landing.css'
 
@@ -38,6 +47,9 @@ type SearchParams = Record<string, string | string[] | undefined>
 interface PageProps {
     searchParams: Promise<SearchParams>
 }
+
+/** Enough rows that a handful survive the rail's length and rating filters. */
+const REVIEWS_TO_READ = 40
 
 function first(value: string | string[] | undefined): string | undefined {
     return Array.isArray(value) ? value[0] : value
@@ -80,11 +92,18 @@ export default async function RequestConsultationLandingPage({
         first(params.p) ?? first(params.procedure)
     )
 
+    const [gallery, reviews] = await Promise.all([
+        getSpecialsFeaturedGalleryImages().catch(() => []),
+        getPublishedGoogleReviews(REVIEWS_TO_READ).catch(() => null),
+    ])
+
     return (
         <LpLanding
             initialLang={lang}
             langPinnedByUrl={pinned}
             adVariant={adVariant}
+            chat={buildLpChat(adVariant)}
+            proof={selectLpProof(adVariant, gallery, reviews)}
         />
     )
 }

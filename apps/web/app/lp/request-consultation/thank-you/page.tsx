@@ -1,15 +1,16 @@
 /**
  * Confirmation page for the Google Ads funnel.
  *
- * The landing page's form redirects here after a successful submission,
- * carrying `?p=` (ad group), `?hl=` (language), `?pv=` (landing page version)
- * and the campaign identifiers, so the conversion event knows which ad and
- * which language produced the lead.
+ * The landing page's consultation thread redirects here after a successful
+ * submission (a full page load), carrying `?p=` (ad group), `?hl=`
+ * (language) and `?pv=` (landing page version), so the conversion event
+ * knows which ad and which language produced the lead. The campaign
+ * identifiers are not in the URL: the event reads them from the session copy
+ * the landing page kept (`readAttribution`), and the lead itself already
+ * carries them.
  *
- * It is a separate route from the site's own `/thank-you` on purpose: that one
- * confirms organic form submissions, and mixing the two would make paid
- * conversions impossible to count. See the note in `lp-thank-you.component`
- * about triggering on the event rather than the path.
+ * It is a separate route from the site's own thank-you pages, so paid leads
+ * can be told apart in reporting by path as well as by the event.
  */
 
 import type { Metadata } from 'next'

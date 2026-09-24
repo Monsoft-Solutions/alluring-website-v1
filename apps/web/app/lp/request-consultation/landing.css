@@ -14,6 +14,10 @@
  * Two rules are deliberately left unscoped at the bottom of the file — the
  * Loquent chat bubble lives outside the page root, and so does <html>.
  *
+ * The consultation thread in the hero is the site's (`cc-*`, styled by
+ * `consult-chat.css`); this sheet only places it. Nothing here starts
+ * invisible: sections rise into place, they do not fade in from zero.
+ *
  * The @font-face blocks of the original are gone: the root layout already
  * self-hosts the site's faces through next/font and exposes them as
  * --font-text / --font-display, which is ~190 KB of embedded WOFF2 saved.
@@ -69,10 +73,11 @@
 .aps-lp button {
     font-family: inherit;
 }
-.aps-lp :focus-visible {
+/* Zero-specificity pseudo-class, and no border-radius: the consultation
+   thread (`cc-*`) draws its own focus and keeps its own rounded corners. */
+.aps-lp :where(:focus-visible) {
     outline: 2px solid var(--gold-600);
     outline-offset: 3px;
-    border-radius: 2px;
 }
 .aps-lp .wrap {
     width: min(1280px, 100% - 56px);
@@ -144,13 +149,12 @@
     justify-content: center;
     gap: 10px;
     font-family: var(--body);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 19px 34px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 17px 30px;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 999px;
     cursor: pointer;
     text-decoration: none;
     text-align: center;
@@ -192,9 +196,8 @@
     border-color: var(--ink);
 }
 .aps-lp .btn-sm {
-    padding: 13px 22px;
-    font-size: 11.5px;
-    letter-spacing: 0.16em;
+    padding: 11px 20px;
+    font-size: 14px;
 }
 .aps-lp .cta-row {
     display: flex;
@@ -220,8 +223,7 @@
 @media (max-width: 640px) {
     .aps-lp .btn {
         width: 100%;
-        padding: 18px 22px;
-        letter-spacing: 0.14em;
+        padding: 17px 22px;
     }
     .aps-lp .btn-sm {
         width: auto;
@@ -243,6 +245,7 @@
 }
 .aps-lp .brand {
     display: block;
+    flex: none;
     line-height: 0;
 }
 .aps-lp .brand img {
@@ -361,10 +364,40 @@
 .aps-lp .hero-in {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 430px;
+    grid-template-columns: minmax(0, 1fr) 440px;
     gap: 72px;
     align-items: center;
     padding: 64px 0 76px;
+}
+/*
+ * The thread column. The thread is a dark cocoa card (`cc-chat`) on the
+ * champagne ground; the call line and the language nudge sit under it.
+ */
+.aps-lp .hero-thread {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    animation: aps-rise 1s 0.2s var(--ease) both;
+}
+.aps-lp .hero-thread .cc-chat {
+    scroll-margin-top: 16px;
+}
+.aps-lp .hero-thread .cc-consent a {
+    color: var(--gold-300);
+}
+.aps-lp .hero-alt {
+    margin: 16px 0 0;
+    font-size: 14px;
+    color: var(--s600);
+    text-align: center;
+}
+.aps-lp .hero-alt a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--gold);
+    white-space: nowrap;
 }
 /*
  * Wide enough that the headline holds a line on its own now that the hero
@@ -449,9 +482,10 @@
     height: 16px;
 }
 .aps-lp .nudge {
-    margin: 18px 0 0;
+    margin: 8px 0 0;
     font-size: 13px;
     color: var(--s500);
+    text-align: center;
 }
 .aps-lp .nudge button {
     font: inherit;
@@ -465,349 +499,61 @@
     text-underline-offset: 3px;
     text-decoration-color: var(--gold);
 }
-.aps-lp .badges {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    flex-wrap: wrap;
-    list-style: none;
-    margin: 30px 0 0;
-    padding: 24px 0 0;
-    border-top: 1px solid var(--gold-line);
-}
-.aps-lp .badges li {
-    display: flex;
-}
-.aps-lp .badges img {
-    height: 40px;
-    width: auto;
-    max-width: 118px;
-    object-fit: contain;
-    filter: grayscale(1);
-    opacity: 0.7;
-    transition:
-        opacity 0.3s,
-        filter 0.3s;
-}
-.aps-lp .badges li:hover img {
-    filter: none;
-    opacity: 1;
-}
 @media (max-width: 1180px) {
     .aps-lp .hero-in {
-        grid-template-columns: minmax(0, 1fr) 410px;
+        grid-template-columns: minmax(0, 1fr) 420px;
         gap: 48px;
     }
 }
 @media (max-width: 1023px) {
     .aps-lp .hero-in {
         grid-template-columns: 1fr;
-        gap: 32px;
-        padding: 44px 0 48px;
+        gap: 28px;
+        padding: 40px 0 48px;
     }
     .aps-lp .hero-copy {
         max-width: 40rem;
     }
-    .aps-lp .badges {
-        display: none;
+    .aps-lp .hero-thread {
+        width: 100%;
+        max-width: 560px;
     }
 }
+/*
+ * Phones: the headline block is kept short so the thread's first question
+ * and its chips are on the first screen. The lede is the one thing dropped;
+ * the thread's reply to the first tap makes the same argument.
+ */
 @media (max-width: 640px) {
     .aps-lp .hero-in {
-        padding: 32px 0 44px;
+        padding: 22px 0 36px;
+        gap: 18px;
+    }
+    .aps-lp .hero .eyebrow {
+        font-size: 10.5px;
+        margin-bottom: 10px;
     }
     .aps-lp h1 {
-        font-size: 36px;
-        margin-bottom: 14px;
+        font-size: 31px;
+        line-height: 1.06;
+        margin-bottom: 12px;
     }
     .aps-lp h1 em {
-        font-size: 0.7em;
+        font-size: 0.72em;
+        margin-top: 6px;
     }
     .aps-lp .lede {
-        font-size: 15.5px;
-        margin-bottom: 18px;
+        display: none;
     }
     .aps-lp .trust {
-        gap: 8px 16px;
-        margin-bottom: 16px;
+        gap: 6px 14px;
+        margin-bottom: 0;
     }
     .aps-lp .trust li {
-        font-size: 12.5px;
+        font-size: 12px;
     }
-    .aps-lp .nudge {
-        margin-top: 2px;
-    }
-}
-/* ---------- form card ---------- */
-.aps-lp .card {
-    position: relative;
-    z-index: 1;
-    background: var(--paper);
-    border: 1px solid var(--s200);
-    border-top: 2px solid var(--gold);
-    border-radius: 14px;
-    box-shadow:
-        0 40px 80px -40px rgba(12, 10, 9, 0.35),
-        0 2px 6px rgba(12, 10, 9, 0.04);
-    padding: 0 0 22px;
-}
-.aps-lp .card-head {
-    padding: 24px 24px 4px;
-}
-.aps-lp .card-head .eyebrow {
-    font-size: 10.5px;
-    margin-bottom: 10px;
-}
-.aps-lp .card-head h2 {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 27px;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    margin: 0 0 8px;
-    color: var(--ink);
-}
-.aps-lp .card-head p {
-    margin: 0;
-    font-size: 13px;
-    line-height: 1.45;
-    color: var(--s500);
-}
-/* The consultation form. Its column lines up with the consent block below it. */
-.aps-lp .lp-form {
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 12px 24px 2px;
-}
-.aps-lp .lp-honeypot {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
-.aps-lp .lp-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-.aps-lp .lp-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    grid-column: 1 / -1;
-    min-width: 0;
-}
-.aps-lp .lp-field--half {
-    grid-column: auto;
-}
-.aps-lp .lp-label {
-    margin: 0;
-    font-family: var(--body);
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--s600);
-}
-.aps-lp .lp-req {
-    margin-left: 4px;
-    color: var(--gold-600);
-}
-.aps-lp .lp-input {
-    width: 100%;
-    margin: 0;
-    padding: 13px 14px;
-    /* 16px keeps iOS Safari from zooming the page when a field takes focus. */
-    font-family: var(--body);
-    font-size: 16px;
-    line-height: 1.3;
-    color: var(--ink);
-    background-color: var(--paper);
-    border: 1px solid var(--s300);
-    border-radius: 5px;
-    appearance: none;
-    transition:
-        border-color 0.2s var(--ease),
-        box-shadow 0.2s var(--ease);
-}
-.aps-lp .lp-input::placeholder {
-    color: var(--s400);
-}
-.aps-lp .lp-input:focus {
-    outline: none;
-    border-color: var(--gold-500);
-    box-shadow: 0 0 0 3px rgba(165, 149, 87, 0.22);
-}
-.aps-lp .lp-input[aria-invalid='true'] {
-    border-color: var(--error);
-}
-.aps-lp .lp-input[aria-invalid='true']:focus {
-    box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.16);
-}
-.aps-lp .lp-select {
-    padding-right: 40px;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2379716b' stroke-width='1.6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 12px 8px;
-}
-.aps-lp .lp-field-error,
-.aps-lp .lp-form-error {
-    margin: 0;
-    font-size: 12.5px;
-    line-height: 1.4;
-    color: var(--error);
-}
-.aps-lp .lp-form-error {
-    margin-top: 10px;
-    font-weight: 700;
-    text-align: center;
-}
-.aps-lp .lp-submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 58px;
-    margin-top: 10px;
-    padding: 0 20px;
-    font-family: var(--body);
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink);
-    background-color: var(--gold);
-    border: 0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.35s var(--ease);
-}
-.aps-lp .lp-submit:hover:not(:disabled) {
-    background-color: var(--gold-500);
-}
-.aps-lp .lp-submit:focus-visible {
-    outline: 2px solid var(--ink);
-    outline-offset: 3px;
-}
-.aps-lp .lp-submit:disabled {
-    cursor: progress;
-    opacity: 0.72;
-}
-@media (max-width: 480px) {
-    .aps-lp .lp-form {
-        padding: 10px 18px 0;
-    }
-}
-@media (max-width: 340px) {
-    .aps-lp .lp-field--half {
-        grid-column: 1 / -1;
-    }
-}
-.aps-lp .consent {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 12px;
-    align-items: start;
-    margin-top: 12px;
-}
-.aps-lp .consent input {
-    width: 20px;
-    height: 20px;
-    margin: 1px 0 0;
-    accent-color: var(--gold-600);
-    flex: none;
-    cursor: pointer;
-}
-.aps-lp .consent label {
-    font-size: 11.5px;
-    line-height: 1.5;
-    color: var(--s500);
-    font-weight: 400;
-    letter-spacing: 0;
-    text-transform: none;
-    margin: 0;
-    cursor: pointer;
-}
-.aps-lp .consent a {
-    color: var(--ink);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-}
-.aps-lp .consent.is-invalid label {
-    color: var(--error);
-}
-.aps-lp .consent.is-invalid input {
-    outline: 2px solid var(--error);
-    outline-offset: 2px;
-}
-.aps-lp .consent-error {
-    display: none;
-    margin: 8px 0 0;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--error);
-}
-.aps-lp .consent-error.is-visible {
-    display: block;
-}
-.aps-lp .reassure {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--s500);
-    margin: 16px 0 0;
-    text-align: center;
-}
-.aps-lp .reassure svg {
-    width: 13px;
-    height: 13px;
-    flex: none;
-    color: var(--gold-600);
-}
-.aps-lp .micro {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px 18px;
-    margin: 14px 0 0;
-    padding: 12px 0 0;
-    border-top: 1px solid var(--s200);
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--s500);
-    font-weight: 700;
-}
-.aps-lp .card > .consent,
-.aps-lp .card > .consent-error,
-.aps-lp .card > .reassure,
-.aps-lp .card > .micro {
-    max-width: 560px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 24px;
-    padding-right: 24px;
-}
-@media (max-width: 480px) {
-    .aps-lp .card > .consent,
-    .aps-lp .card > .consent-error,
-    .aps-lp .card > .reassure,
-    .aps-lp .card > .micro {
-        padding-left: 18px;
-        padding-right: 18px;
-    }
-    .aps-lp .card-head {
-        padding: 22px 18px 4px;
-    }
-    .aps-lp .card-head h2 {
-        font-size: 24px;
+    .aps-lp .trust li + li + li {
+        display: none;
     }
 }
 /* ---------- surgeon ---------- */
@@ -940,6 +686,28 @@
     padding-left: 20px;
     position: relative;
 }
+.aps-lp .seals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    margin: -8px 0 36px;
+    padding: 0;
+}
+.aps-lp .seals li {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: #fff;
+}
+.aps-lp .seals img {
+    height: 36px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+}
 .aps-lp .creds li::before {
     content: '';
     position: absolute;
@@ -994,62 +762,104 @@
 .aps-lp .rule-top {
     border-top: 1px solid var(--s200);
 }
-/* ---------- results ---------- */
-.aps-lp .ba-grid {
+/* ---------- rails (results, reviews) ---------- */
+/*
+ * A horizontal, snap-scrolling list that runs to the edge of the screen and
+ * starts on the page's left margin. Used for the before/after photographs
+ * and for the extra Google reviews: more proof, on the page, with no link
+ * out to the gallery or the reviews page.
+ */
+.aps-lp .rail {
+    --rail-gutter: max(28px, calc((100% - 1280px) / 2));
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
+    grid-auto-flow: column;
+    gap: 18px;
+    list-style: none;
+    margin: 0;
+    padding: 4px var(--rail-gutter) 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--rail-gutter);
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-line) transparent;
+}
+.aps-lp .rail > li {
+    scroll-snap-align: start;
+}
+.aps-lp .rail-hint {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    color: var(--s500);
+}
+.aps-lp .rail-hint span {
+    color: var(--gold-600);
+}
+@media (max-width: 640px) {
+    .aps-lp .rail {
+        --rail-gutter: 20px;
+        gap: 14px;
+    }
+}
+@media (min-width: 1100px) {
+    .aps-lp .rail-hint {
+        display: none;
+    }
+}
+/* ---------- results ---------- */
+.aps-lp .results .sec-head {
+    margin-bottom: 40px;
+}
+.aps-lp .ba-rail {
+    grid-auto-columns: 292px;
 }
 .aps-lp .ba {
     margin: 0;
-    position: relative;
 }
-.aps-lp .ba img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4/5;
-    object-fit: cover;
-    border-radius: 8px;
-    background: var(--s100);
+.aps-lp .ba-frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--ink-2);
+    box-shadow: 0 24px 40px -30px rgba(12, 10, 9, 0.6);
+}
+.aps-lp .ba-frame img {
+    object-fit: contain;
 }
 .aps-lp .ba figcaption {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 10px;
-    padding: 14px 2px 0;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 700;
+    padding: 12px 2px 0;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--ink);
 }
 .aps-lp .ba figcaption .tag {
+    font-size: 12px;
     font-weight: 400;
     color: var(--s500);
-    letter-spacing: 0.08em;
     white-space: nowrap;
-}
-.aps-lp .ba-grid .ba:nth-child(n + 5) {
-    display: none;
 }
 .aps-lp .ba-note {
     text-align: center;
     font-size: 12px;
     color: var(--s500);
-    margin: 22px 0 0;
+    margin: 14px 0 0;
     letter-spacing: 0.04em;
 }
-@media (max-width: 860px) {
-    .aps-lp .ba-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-    .aps-lp .ba figcaption {
-        font-size: 11px;
-        flex-direction: column;
-        gap: 2px;
-        padding-top: 10px;
+.aps-lp .results .cta-row {
+    margin-top: 32px;
+}
+@media (max-width: 640px) {
+    .aps-lp .ba-rail {
+        grid-auto-columns: 76vw;
     }
 }
 /* ---------- in writing ---------- */
@@ -1137,7 +947,7 @@
     height: 12px;
 }
 .aps-lp .sheet-name span:last-child {
-    color: var(--s400);
+    color: var(--s600);
 }
 .aps-lp .sheet dl {
     margin: 0;
@@ -1279,6 +1089,51 @@
     text-transform: uppercase;
     color: var(--s500);
     font-weight: 700;
+}
+.aps-lp .rail-title {
+    margin: 64px 0 18px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-800);
+}
+.aps-lp .rv-rail {
+    grid-auto-columns: 320px;
+}
+.aps-lp .rv {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 22px 22px 18px;
+    border: 1px solid var(--s200);
+    border-radius: 14px;
+    background: var(--s50);
+}
+.aps-lp .rv .stars {
+    color: var(--gold-500);
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+.aps-lp .rv p {
+    flex: 1;
+    margin: 12px 0 16px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-2);
+}
+.aps-lp .rv footer {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--s500);
+}
+@media (max-width: 640px) {
+    .aps-lp .rv-rail {
+        grid-auto-columns: 82vw;
+    }
+    .aps-lp .rail-title {
+        margin-top: 48px;
+    }
 }
 @media (max-width: 860px) {
     .aps-lp .quotes {
@@ -1431,6 +1286,47 @@
     color: var(--s400);
     font-size: 16px;
 }
+.aps-lp .cta-chips-label {
+    margin: 0 0 14px !important;
+    font-size: 14px !important;
+    font-weight: 600;
+    color: #fff !important;
+}
+.aps-lp .cta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 38rem;
+}
+.aps-lp .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 10px 20px;
+    border: 1px solid rgba(230, 203, 159, 0.5);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        background-color 0.25s var(--ease),
+        border-color 0.25s var(--ease),
+        color 0.25s var(--ease);
+}
+.aps-lp .chip:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+}
+.aps-lp .chip--quiet {
+    border-style: dashed;
+    color: var(--s300);
+}
 .aps-lp .cta .or {
     margin: 20px 0 0;
     font-size: 13px;
@@ -1482,61 +1378,12 @@
     color: var(--s500);
     max-width: 84ch;
 }
-/* ---------- mobile sticky bar ---------- */
-.aps-lp .sticky {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    display: none;
-    gap: 10px;
-    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-    background: rgba(255, 255, 255, 0.96);
-    border-top: 1px solid var(--s200);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: transform 0.3s var(--ease);
-}
-.aps-lp .sticky.is-hidden {
-    transform: translateY(110%);
-}
-.aps-lp .sticky a {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 50px;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 4px;
-    border: 1px solid var(--ink);
-}
-.aps-lp .sticky .s-call {
-    background: #fff;
-    color: var(--ink);
-    flex: 0 0 40%;
-}
-.aps-lp .sticky .s-call svg {
-    width: 14px;
-    height: 14px;
-    color: var(--gold-600);
-}
-.aps-lp .sticky .s-cta {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--ink);
-}
-@media (max-width: 768px) {
-    .aps-lp .sticky {
-        display: flex;
-    }
+/* ---------- page padding for the shared sticky bar ---------- */
+/* `ConsultStickyBar` slides up on phones once the thread is off screen; the
+   page keeps room for it so it never covers the footer's disclaimer. */
+@media (max-width: 767px) {
     .aps-lp {
-        padding-bottom: 74px;
+        padding-bottom: 84px;
     }
     /* Unscoped: the Loquent chat bubble is appended to <body>, outside this page. */
     #loquent-widget {
@@ -1546,11 +1393,9 @@
 /* ---------- motion ---------- */
 @keyframes aps-rise {
     from {
-        opacity: 0;
-        transform: translateY(18px);
+        transform: translateY(14px);
     }
     to {
-        opacity: 1;
         transform: none;
     }
 }
@@ -1569,33 +1414,19 @@
 .aps-lp .hero-copy > :nth-child(4) {
     animation-delay: 0.28s;
 }
-.aps-lp .hero-copy > :nth-child(5) {
-    animation-delay: 0.34s;
-}
-.aps-lp .hero-copy > :nth-child(6) {
-    animation-delay: 0.4s;
-}
-.aps-lp .card {
-    animation: aps-rise 1s 0.3s var(--ease) both;
-}
 .aps-lp .reveal {
-    opacity: 0;
-    transform: translateY(18px);
-    transition:
-        opacity 0.9s var(--ease),
-        transform 0.9s var(--ease);
+    transform: translateY(22px);
+    transition: transform 0.9s var(--ease);
 }
 .aps-lp .reveal.in {
-    opacity: 1;
     transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
     .aps-lp .hero-copy > *,
-    .aps-lp .card {
+    .aps-lp .hero-thread {
         animation: none;
     }
     .aps-lp .reveal {
-        opacity: 1;
         transform: none;
         transition: none;
     }
@@ -1605,10 +1436,9 @@
 }
 
 /* Without scripting the reveal observer never runs, so the sections below the
-   fold would stay at opacity 0 forever. */
+   fold would stay offset forever. */
 @media (scripting: none) {
     .aps-lp .reveal {
-        opacity: 1;
         transform: none;
         transition: none;
     }

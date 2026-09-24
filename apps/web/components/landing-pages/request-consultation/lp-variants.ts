@@ -7,11 +7,14 @@
  *
  * The hero photograph is not part of a variant — there is no hero photograph.
  * Neither is a price: no variant carries a weekly payment, an APR or a "from"
- * figure. See the REGISTER note in `lp-copy.ts`; the argument every variant
- * makes is the surgeon's judgment and an accredited facility, not the cost of
- * entry.
+ * figure (the thread gives the starting price once she names the procedure).
+ * See the REGISTER note in `lp-copy.ts`; the argument every variant makes is
+ * the surgeon's judgment and an accredited facility, not the cost of entry.
+ * The surgeon is named as an MD rather than "double board-certified" (see
+ * `karlinsky-credentials.constant.ts`).
  */
 
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { PROCEDURE_OPTIONS } from '@/lib/types/forms/contact-form.type'
 
 import type { LpLang } from './lp-copy'
@@ -98,7 +101,7 @@ const en: Record<AdVariant, VariantCopy> = {
     default: {
         headline: 'Refined. Never obvious.',
         headlineEm: 'Begin with a private consultation.',
-        lede: 'A double board-certified surgeon, an accredited operating facility, and every figure and date in writing before you decide anything.',
+        lede: `${KARLINSKY_NAME}, an accredited operating facility, and every figure and date in writing before you decide anything.`,
     },
     bbl: {
         headline: 'The Miami BBL, done properly.',
@@ -108,7 +111,7 @@ const en: Record<AdVariant, VariantCopy> = {
     'mommy-makeover': {
         headline: 'Your body, after children.',
         headlineEm: 'One surgery. One recovery. One plan.',
-        lede: 'Tummy tuck, breast lift or augmentation, and liposuction, planned as a single operation by a double board-certified surgeon.',
+        lede: `Tummy tuck, breast lift or augmentation, and liposuction, planned as a single operation by ${KARLINSKY_NAME}.`,
     },
     'breast-augmentation': {
         headline: 'Fuller. Still unmistakably you.',
@@ -118,12 +121,12 @@ const en: Record<AdVariant, VariantCopy> = {
     'tummy-tuck': {
         headline: 'A flat, considered result.',
         headlineEm: 'Loose skin, resolved.',
-        lede: 'A tummy tuck by a double board-certified surgeon, with a written week-by-week recovery plan before you commit to a date.',
+        lede: `A tummy tuck by ${KARLINSKY_NAME}, with a written week-by-week recovery plan before you commit to a date.`,
     },
     liposuction: {
         headline: 'Lipo 360, in Miami.',
         headlineEm: 'The waist training won’t give you.',
-        lede: 'Stubborn fat removed and the waist defined, by a double board-certified surgeon in an accredited facility.',
+        lede: `Stubborn fat removed and the waist defined, by ${KARLINSKY_NAME}, in an accredited facility.`,
     },
 }
 
@@ -131,7 +134,7 @@ const es: Record<AdVariant, VariantCopy> = {
     default: {
         headline: 'Refinado. Nunca evidente.',
         headlineEm: 'Empieza con una consulta privada.',
-        lede: 'Una cirujana con doble certificación, una clínica acreditada y cada cifra y cada fecha por escrito antes de que decidas nada.',
+        lede: `La Dra. ${KARLINSKY_NAME}, una clínica acreditada y cada cifra y cada fecha por escrito antes de que decidas nada.`,
     },
     bbl: {
         headline: 'El BBL de Miami, bien hecho.',
@@ -141,7 +144,7 @@ const es: Record<AdVariant, VariantCopy> = {
     'mommy-makeover': {
         headline: 'Tu cuerpo, después de los hijos.',
         headlineEm: 'Una cirugía. Una recuperación. Un plan.',
-        lede: 'Abdominoplastia, levantamiento o aumento de senos y lipo, planificados como una sola operación por una cirujana con doble certificación.',
+        lede: `Abdominoplastia, levantamiento o aumento de senos y lipo, planificados como una sola operación por la Dra. ${KARLINSKY_NAME}.`,
     },
     'breast-augmentation': {
         headline: 'Con más volumen. Inconfundiblemente tú.',
@@ -151,12 +154,12 @@ const es: Record<AdVariant, VariantCopy> = {
     'tummy-tuck': {
         headline: 'Un abdomen plano y definido.',
         headlineEm: 'La piel suelta, resuelta.',
-        lede: 'Abdominoplastia por una cirujana con doble certificación, con un plan de recuperación semana a semana por escrito antes de fijar la fecha.',
+        lede: `Abdominoplastia por la Dra. ${KARLINSKY_NAME}, con un plan de recuperación semana a semana por escrito antes de fijar la fecha.`,
     },
     liposuction: {
         headline: 'Lipo 360, en Miami.',
         headlineEm: 'La cintura que el gimnasio no te da.',
-        lede: 'Grasa localizada eliminada y la cintura definida, por una cirujana con doble certificación en una clínica acreditada.',
+        lede: `Grasa localizada eliminada y la cintura definida, por la Dra. ${KARLINSKY_NAME}, en una clínica acreditada.`,
     },
 }
 

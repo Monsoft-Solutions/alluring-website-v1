@@ -9,28 +9,51 @@
  * the first response. This component owns what only the browser can know: a
  * language the visitor chose here on an earlier visit, the reveal-on-scroll
  * observer, and the dataLayer events.
+ *
+ * One ask, and no way off the page (#283): every CTA leads to the
+ * consultation thread in the hero, the proof a visitor used to leave for
+ * (gallery, reviews) is on the page, the legal documents open in a dialog,
+ * and nothing links to the main site. The phone number stays — a call is a
+ * conversion, not an exit.
+ *
+ * Order: the ask, then results, the surgeon, reviews, what the consultation
+ * gives her in writing, flying in, the three objections, and the ask again.
  */
 
 import { useEffect, useRef } from 'react'
 
+import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
+import { getSmsLink, siteConfig } from '@/lib/data/site-config'
+
+import type { LpChat } from './lp-chat-copy'
+import { LpClosingCta, LpFooter } from './lp-closing.component'
+import { LP_CHAT_ID } from './lp-config'
+import { LpConsultThread } from './lp-consult-thread.component'
 import { LP_COPY, type LpLang } from './lp-copy'
-import { LpClosingCta, LpFooter, LpStickyBar } from './lp-closing.component'
-import { LpConsultationForm } from './lp-consultation-form.component'
 import { LpFaq } from './lp-faq.component'
 import { LpFlyIn } from './lp-fly-in.component'
 import { LpHeader } from './lp-header.component'
 import { LpHero } from './lp-hero.component'
+import { LpLegalDialog } from './lp-legal-dialog.component'
+import type { LpProof } from './lp-proof'
 import { LpResults } from './lp-results.component'
 import { LpReviews } from './lp-reviews.component'
 import { LpSurgeon } from './lp-surgeon.component'
 import { LpWriting } from './lp-writing.component'
 import { trackLpEvent } from './lp-tracking'
-import {
-    AD_VARIANT_COPY,
-    VARIANT_PROCEDURE,
-    type AdVariant,
-} from './lp-variants'
+import { AD_VARIANT_COPY, type AdVariant } from './lp-variants'
 import { useLpLanguage } from './use-lp-language.hook'
+
+/** The shared sticky bar's links, under the placement names the page reported before. */
+const STICKY_PLACEMENTS: Readonly<Record<string, string>> = {
+    consult_sticky_chat: 'cta-sticky',
+    consult_sticky_call: 'call-sticky',
+    consult_sticky_text: 'text-sticky',
+}
+
+/** The published figures, for when the live ones are unavailable. */
+const FALLBACK_RATING = '4.7'
+const FALLBACK_REVIEW_COUNT = '80+'
 
 interface LpLandingProps {
     /** Resolved server-side from `?hl=` or the request's Accept-Language. */
@@ -41,18 +64,28 @@ interface LpLandingProps {
      */
     readonly langPinnedByUrl: boolean
     readonly adVariant: AdVariant
+    /** The thread's copy in both languages, built on the server. */
+    readonly chat: LpChat
+    /** Photographs, rating and reviews, read on the server. */
+    readonly proof: LpProof
 }
 
 export function LpLanding({
     initialLang,
     langPinnedByUrl,
     adVariant,
+    chat,
+    proof,
 }: LpLandingProps) {
     const [lang, chooseLang] = useLpLanguage(initialLang, langPinnedByUrl)
     const rootRef = useRef<HTMLDivElement>(null)
 
     const copy = LP_COPY[lang]
     const variant = AD_VARIANT_COPY[lang][adVariant]
+    const rating = proof.rating ?? FALLBACK_RATING
+    const reviewCount = proof.reviewCount
+        ? String(proof.reviewCount)
+        : FALLBACK_REVIEW_COUNT
 
     const selectLang = (next: LpLang) => {
         if (next === lang) return
@@ -67,17 +100,17 @@ export function LpLanding({
 
     /**
      * Calls and CTAs, for Google Ads call conversions through GTM. One
-     * delegated listener rather than a handler on each of the eight links.
+     * delegated listener on the document rather than a handler on each link:
+     * the shared sticky bar sits outside the page root, and marks its links
+     * with `data-cta` rather than `data-track`.
      */
     useEffect(() => {
-        const root = rootRef.current
-        if (!root) return
-
         const onClick = (event: MouseEvent) => {
-            const target = (event.target as HTMLElement | null)?.closest(
-                '[data-track]'
-            )
-            const placement = target?.getAttribute('data-track')
+            if (!(event.target instanceof Element)) return
+            const target = event.target.closest('[data-track], [data-cta]')
+            const placement =
+                target?.getAttribute('data-track') ??
+                STICKY_PLACEMENTS[target?.getAttribute('data-cta') ?? '']
             if (!placement) return
             trackLpEvent(
                 placement.startsWith('call') ? 'lp_call_click' : 'lp_cta_click',
@@ -86,8 +119,8 @@ export function LpLanding({
             )
         }
 
-        root.addEventListener('click', onClick)
-        return () => root.removeEventListener('click', onClick)
+        document.addEventListener('click', onClick)
+        return () => document.removeEventListener('click', onClick)
     }, [lang, adVariant])
 
     /**
@@ -135,40 +168,61 @@ export function LpLanding({
         }
     }, [lang, copy.meta.title])
 
+    // The sticky bar and the legal dialog sit outside the page root: its
+    // scoped `a { color: inherit }` would outrank their utility classes.
     return (
-        <div className='aps-lp' ref={rootRef}>
-            <LpHeader
-                lang={lang}
-                copy={copy.header}
-                onSelectLang={selectLang}
-            />
-
-            <main>
-                <LpHero
+        <>
+            <div className='aps-lp' ref={rootRef}>
+                <LpHeader
                     lang={lang}
-                    copy={copy.hero}
-                    variant={variant}
+                    copy={copy.header}
                     onSelectLang={selectLang}
-                    form={
-                        <LpConsultationForm
-                            lang={lang}
-                            adVariant={adVariant}
-                            copy={copy.form}
-                            procedure={VARIANT_PROCEDURE[adVariant]}
-                        />
-                    }
                 />
-                <LpSurgeon copy={copy.surgeon} />
-                <LpResults copy={copy.results} adVariant={adVariant} />
-                <LpWriting copy={copy.writing} />
-                <LpReviews copy={copy.reviews} />
-                <LpFlyIn copy={copy.flyIn} />
-                <LpFaq copy={copy.faq} />
-                <LpClosingCta copy={copy.closing} />
-            </main>
 
-            <LpFooter copy={copy.footer} />
-            <LpStickyBar copy={copy.sticky} />
-        </div>
+                <main>
+                    <LpHero
+                        lang={lang}
+                        copy={copy.hero}
+                        variant={variant}
+                        rating={rating}
+                        reviewCount={reviewCount}
+                        onSelectLang={selectLang}
+                        thread={
+                            <LpConsultThread
+                                lang={lang}
+                                adVariant={adVariant}
+                                chat={chat}
+                            />
+                        }
+                    />
+                    <LpResults copy={copy.results} photos={proof.photos} />
+                    <LpSurgeon copy={copy.surgeon} />
+                    <LpReviews
+                        lang={lang}
+                        copy={copy.reviews}
+                        rating={rating}
+                        reviewCount={proof.reviewCount}
+                        liveReviews={proof.reviews}
+                    />
+                    <LpWriting copy={copy.writing} />
+                    <LpFlyIn copy={copy.flyIn} />
+                    <LpFaq copy={copy.faq} />
+                    <LpClosingCta
+                        copy={copy.closing}
+                        procedures={chat.copy[lang].procedures}
+                    />
+                </main>
+
+                <LpFooter copy={copy.footer} />
+            </div>
+            <LpLegalDialog copy={copy.footer} />
+            <ConsultStickyBar
+                chatId={LP_CHAT_ID}
+                label={{ en: LP_COPY.en.sticky.cta, es: LP_COPY.es.sticky.cta }}
+                phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
+                phoneLabel={`${copy.header.callWord}${siteConfig.contact.phoneDisplay}`}
+                smsLink={getSmsLink()}
+            />
+        </>
     )
 }

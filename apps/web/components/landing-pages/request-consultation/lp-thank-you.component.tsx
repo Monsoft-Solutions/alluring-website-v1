@@ -3,20 +3,30 @@
 /**
  * The ad funnel's confirmation page.
  *
- * Its one job beyond reassurance is the `lp_lead_submitted` dataLayer event.
- * The Google Ads conversion should trigger on that event, NOT on a path
- * containing "/thank-you" — the site has its own `/thank-you` for organic form
- * submissions, and a path trigger would fire there too and inflate paid
- * conversions with organic leads.
+ * Its body is the site's consultation thank-you (`ConsultationThankYou`):
+ * it greets the visitor by the first name the thread left in
+ * `sessionStorage`, says when the text will come, and asks five optional
+ * one-tap questions (email, video or in person, financing, best time to
+ * text, how she heard of us), each saved to the lead she just sent. The old
+ * page offered links to the gallery and the surgeon page instead — two more
+ * ways off it, and nothing learned.
+ *
+ * Its other job is the `lp_lead_submitted` dataLayer event. The Google Ads
+ * conversion tag fires on this page's view (its path contains "thank-you");
+ * the event carries the ad group, language and page version for reporting.
  */
 
 import Image from 'next/image'
 import { useEffect } from 'react'
 
+import { ConsultationThankYou } from '@/components/sections/thank-you/consultation-thank-you.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 import { LP_LOGO } from './lp-assets'
-import { LP_LINKS, type LpLang } from './lp-copy'
+import { LP_LEAD_KEY } from './lp-config'
+import { LP_COPY, type LpLang } from './lp-copy'
+import { LP_LEGAL_HREFS } from './lp-legal'
+import { LpLegalDialog } from './lp-legal-dialog.component'
 import { PhoneIcon } from './lp-primitives.component'
 import { LP_THANK_YOU_COPY } from './lp-thank-you-copy'
 import { pushDataLayer, readAttribution } from './lp-tracking'
@@ -31,6 +41,11 @@ interface LpThankYouProps {
     readonly pageVersion: string
 }
 
+const THANK_YOU_OVERRIDE = {
+    en: LP_THANK_YOU_COPY.en.thankYou,
+    es: LP_THANK_YOU_COPY.es.thankYou,
+} as const
+
 export function LpThankYou({
     initialLang,
     langPinnedByUrl,
@@ -39,6 +54,7 @@ export function LpThankYou({
 }: LpThankYouProps) {
     const [lang] = useLpLanguage(initialLang, langPinnedByUrl)
     const copy = LP_THANK_YOU_COPY[lang]
+    const footer = LP_COPY[lang].footer
 
     /**
      * The conversion event. Campaign identifiers only — no personal data
@@ -79,11 +95,7 @@ export function LpThankYou({
 
             <header>
                 <div className='wrap header-in'>
-                    <a
-                        className='brand'
-                        href={LP_LINKS.home}
-                        aria-label={siteConfig.business.name}
-                    >
+                    <span className='brand'>
                         <Image
                             src={LP_LOGO.src}
                             width={LP_LOGO.width}
@@ -91,7 +103,7 @@ export function LpThankYou({
                             alt={siteConfig.business.name}
                             priority
                         />
-                    </a>
+                    </span>
                     <a className='tel' href={getPhoneLink()}>
                         <PhoneIcon />
                         <span>
@@ -103,51 +115,12 @@ export function LpThankYou({
             </header>
 
             <main>
-                <div className='wrap panel'>
-                    <div className='seal'>
-                        <svg
-                            viewBox='0 0 24 24'
-                            fill='none'
-                            stroke='currentColor'
-                            strokeWidth='2.5'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            aria-hidden='true'
-                        >
-                            <path d='M20 6 9 17l-5-5' />
-                        </svg>
-                    </div>
-                    <p className='eyebrow'>{copy.eyebrow}</p>
-                    <h1>{copy.heading}</h1>
-                    <p className='lede'>{copy.lede}</p>
-
-                    <div className='next'>
-                        {copy.steps.map((item) => (
-                            <div key={item.heading}>
-                                <p className='n'>{item.step}</p>
-                                <h2>{item.heading}</h2>
-                                <p>{item.body}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <p className='eyebrow'>{copy.waitEyebrow}</p>
-                    <div className='actions'>
-                        <a className='btn btn-primary' href={LP_LINKS.gallery}>
-                            {copy.galleryCta}
-                        </a>
-                        <a className='btn btn-ghost' href={LP_LINKS.surgeon}>
-                            {copy.surgeonCta}
-                        </a>
-                    </div>
-                    <p className='callnow'>
-                        {copy.callNow}{' '}
-                        <a href={getPhoneLink()}>
-                            {siteConfig.contact.phoneDisplay}
-                        </a>
-                        .
-                    </p>
-                </div>
+                <ConsultationThankYou
+                    leadStorageKey={LP_LEAD_KEY}
+                    copyOverride={THANK_YOU_OVERRIDE}
+                    lang={lang}
+                    compact
+                />
             </main>
 
             <footer className='site'>
@@ -159,12 +132,13 @@ export function LpThankYou({
                         {siteConfig.contact.postalCode}
                     </span>
                     <nav>
-                        <a href={LP_LINKS.privacy}>{copy.privacy}</a>
-                        <a href={LP_LINKS.terms}>{copy.terms}</a>
-                        <a href={LP_LINKS.cookies}>{copy.cookies}</a>
+                        <a href={LP_LEGAL_HREFS.privacy}>{footer.privacy}</a>
+                        <a href={LP_LEGAL_HREFS.terms}>{footer.terms}</a>
+                        <a href={LP_LEGAL_HREFS.cookies}>{footer.cookies}</a>
                     </nav>
                 </div>
             </footer>
+            <LpLegalDialog copy={footer} />
         </div>
     )
 }

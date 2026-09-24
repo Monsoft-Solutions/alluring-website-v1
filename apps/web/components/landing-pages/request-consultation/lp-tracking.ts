@@ -6,14 +6,15 @@
  * event carries `pageVariant`, `adVariant` and `lang` so Google Ads conversions
  * can be attributed per ad group and per language.
  *
- * `pageVariant` stays "ads-consultation-v3": the reporting and the conversion
- * triggers were built against that value while the page was hosted standalone,
- * and moving it onto the site should not orphan its history.
+ * `pageVariant` is "ads-consultation-v4" since the page moved to the
+ * consultation thread (#283); v3 was the five-field form. The Google Ads
+ * conversion fires on the thank-you page view, not on this value, so the bump
+ * only splits the reporting into before and after.
  */
 
 import type { LpLang } from './lp-copy'
 
-export const LP_PAGE_VERSION = 'v3'
+export const LP_PAGE_VERSION = 'v4'
 export const LP_PAGE_VARIANT = `ads-consultation-${LP_PAGE_VERSION}`
 
 /** Query keys Google and our own campaigns put on the ad URL. */
@@ -102,23 +103,4 @@ export function readAttribution(): Attribution {
         // Storage unavailable; the values still reach this page's events.
     }
     return data
-}
-
-/**
- * Builds the post-submission URL, carrying the campaign, the ad variant, the
- * language and the page version through to the conversion event.
- */
-export function buildThankYouUrl(
-    base: string,
-    context: LpEventContext
-): string {
-    const query = new URLSearchParams()
-    const attribution = readAttribution()
-    for (const key of ATTRIBUTION_KEYS) {
-        if (attribution[key]) query.set(key, attribution[key])
-    }
-    query.set('p', context.adVariant)
-    query.set('hl', context.lang)
-    query.set('pv', LP_PAGE_VERSION)
-    return `${base}${base.includes('?') ? '&' : '?'}${query.toString()}`
 }

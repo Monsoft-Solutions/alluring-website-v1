@@ -1,42 +1,46 @@
 'use client'
 
 /**
- * Hero: the argument on the left, the form on the right, on a champagne
- * ground. There is no hero photograph — the page leads with the claim and the
- * ask, which also puts the form title on the first screen of a phone without
- * any scrolling.
+ * Hero: the argument on the left, the consultation thread on the right, on a
+ * champagne ground. On a phone the thread follows a short headline block, so
+ * its first question and the procedure chips are on the first screen — the
+ * old form's submit button sat 980px down, below it.
  *
- * The six children of `.hero-copy` are staggered by `:nth-child` in
+ * The four children of `.hero-copy` are staggered by `:nth-child` in
  * landing.css — adding or reordering one changes the animation, so keep the
- * order: eyebrow, headline, lede, trust, nudge, badges.
+ * order: eyebrow, headline, lede, trust.
  *
- * There is no financing chip. A weekly payment is the one element that told
- * this audience the page was selling on price; see the REGISTER note in
- * `lp-copy.ts`.
+ * There is no financing chip and no price here. The thread's reply to the
+ * first tap gives the starting price where one is settled; see the REGISTER
+ * note in `lp-copy.ts`.
  */
 
-import Image from 'next/image'
+import { fill } from '@/components/shared/consult-chat/consult-chat.util'
+import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
-import { LP_BADGES } from './lp-assets'
 import type { LpDictionary, LpLang } from './lp-copy'
-import { CheckIcon, GoogleMark, Rich, Stars } from './lp-primitives.component'
+import { CheckIcon, GoogleMark, Stars } from './lp-primitives.component'
 import type { VariantCopy } from './lp-variants'
 
 interface LpHeroProps {
     readonly lang: LpLang
     readonly copy: LpDictionary['hero']
     readonly variant: VariantCopy
+    readonly rating: string
+    readonly reviewCount: string
     readonly onSelectLang: (lang: LpLang) => void
-    /** The form card, rendered by the page so this stays presentational. */
-    readonly form: React.ReactNode
+    /** The consultation thread, rendered by the page so this stays presentational. */
+    readonly thread: React.ReactNode
 }
 
 export function LpHero({
     lang,
     copy,
     variant,
+    rating,
+    reviewCount,
     onSelectLang,
-    form,
+    thread,
 }: LpHeroProps) {
     const otherLang: LpLang = lang === 'en' ? 'es' : 'en'
 
@@ -55,7 +59,8 @@ export function LpHero({
                             <GoogleMark />
                             <Stars />
                             <span>
-                                <Rich parts={copy.trustGoogle} />
+                                <b>{rating}</b>{' '}
+                                {fill(copy.trustGoogle, { count: reviewCount })}
                             </span>
                         </li>
                         <li>
@@ -67,6 +72,16 @@ export function LpHero({
                             <span>{copy.trustAaaasf}</span>
                         </li>
                     </ul>
+                </div>
+
+                <div className='hero-thread'>
+                    {thread}
+                    <p className='hero-alt'>
+                        {copy.callAlt}{' '}
+                        <a href={getPhoneLink()} data-track='call-hero'>
+                            {siteConfig.contact.phoneDisplay}
+                        </a>
+                    </p>
                     <p className='nudge'>
                         {copy.nudge.question}{' '}
                         <button
@@ -76,22 +91,7 @@ export function LpHero({
                             {copy.nudge.action}
                         </button>
                     </p>
-                    <ul className='badges' aria-label={copy.badgesLabel}>
-                        {LP_BADGES.map((badge) => (
-                            <li key={badge.src}>
-                                <Image
-                                    src={badge.src}
-                                    alt={badge.alt}
-                                    width={badge.width}
-                                    height={badge.height}
-                                    loading='lazy'
-                                />
-                            </li>
-                        ))}
-                    </ul>
                 </div>
-
-                {form}
             </div>
         </section>
     )

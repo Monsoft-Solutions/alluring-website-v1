@@ -83,7 +83,7 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         },
         fieldName: 'Your name',
         fieldPhone: 'Mobile number',
-        consent: LP_COPY.en.form.consent,
+        consent: LP_COPY.en.consent,
         submitting: 'Sending…',
         reassure: 'Private. Only our patient coordinators see it.',
         errors: {
@@ -123,7 +123,7 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         },
         fieldName: 'Tu nombre',
         fieldPhone: 'Número de celular',
-        consent: LP_COPY.es.form.consent,
+        consent: LP_COPY.es.consent,
         submitting: 'Enviando…',
         reassure: 'Privado. Solo lo ven nuestras coordinadoras.',
         errors: {

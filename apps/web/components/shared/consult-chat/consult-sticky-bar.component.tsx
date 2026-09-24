@@ -14,6 +14,7 @@
 import { useEffect, useState } from 'react'
 
 import { useConsultChatProgress } from './consult-chat-progress'
+import type { ConsultChatLang } from './consult-chat.types'
 import { usePageLanguage } from './use-page-language.hook'
 
 export interface ConsultStickyBarProps {
@@ -25,6 +26,11 @@ export interface ConsultStickyBarProps {
     readonly phoneLabel: string
     /** `sms:` link to the texting number; replaces the call button when set. */
     readonly smsLink?: string | null
+    /**
+     * The page's own language, for a page that sets it itself (the ads
+     * landing page). Without it the bar follows Google Translate.
+     */
+    readonly lang?: ConsultChatLang
 }
 
 const RESUME = {
@@ -40,9 +46,11 @@ export function ConsultStickyBar({
     phoneDigits,
     phoneLabel,
     smsLink,
+    lang: langProp,
 }: ConsultStickyBarProps) {
     const [visible, setVisible] = useState(false)
-    const lang = usePageLanguage()
+    const pageLang = usePageLanguage()
+    const lang = langProp ?? pageLang
     const progress = useConsultChatProgress(chatId)
     const left =
         progress && progress.answered > 0
