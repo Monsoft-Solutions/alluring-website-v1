@@ -109,7 +109,7 @@ export function HomePrices({ promotion }: HomePricesProps) {
                                 <span className='block text-[0.75rem] font-semibold tracking-[0.2em] text-[var(--hp-mute)] uppercase'>
                                     From
                                 </span>
-                                <span className='hp-display mt-2 block text-[4.25rem] leading-[0.9] font-medium tracking-[-0.02em] lg:text-[4.5rem] xl:text-[5.25rem]'>
+                                <span className='hp-display mt-2 block text-[4.25rem] leading-[0.9] font-normal tracking-[-0.02em] lg:text-[4.5rem] xl:text-[5.25rem]'>
                                     {card.price}
                                 </span>
                             </p>

@@ -4,7 +4,7 @@
  * carries `hp-page`.
  *
  * The look (v2): porcelain, ink and cocoa with champagne light, the tones of
- * skin and of the golden-hour film the page opens on. Bodoni Moda for
+ * skin and of the golden-hour film the page opens on. Fraunces for
  * display, Instrument Sans for text (the site's faces). One recurring shape,
  * the arch: the doorway of the opening film, used as a window on the
  * surgeon, on each procedure and on the closing scene. Buttons are ink on
@@ -41,7 +41,7 @@
     --hp-star: #a87b2f;
     --hp-line: rgba(23, 18, 16, 0.12);
     --hp-line-dark: rgba(230, 203, 159, 0.18);
-    --hp-display-font: var(--font-display), 'Bodoni 72', Didot, Georgia, serif;
+    --hp-display-font: var(--font-display), Georgia, serif;
     --hp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
     /* What text on a band reads from. Light by default; `hp-dark` swaps
@@ -117,9 +117,9 @@ body:has(.hp-page) [data-mobile-call-button] {
         color: var(--hp-champagne);
     }
 
-    /* Display type set small (an FAQ question, a caption): below ~30 px the
-       optical size that `auto` picks draws hairlines too fine for a phone,
-       so it is pinned to a sturdier cut. */
+    /* Display type set small (an FAQ question, a caption) is pinned to the
+       sturdiest text cut rather than the optical size `auto` would pick, so
+       it holds up on a phone. */
     .hp-display--small {
         font-variation-settings: 'opsz' 14;
     }

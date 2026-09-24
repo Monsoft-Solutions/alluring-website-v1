@@ -81,7 +81,7 @@ export const PRICE_VARIABLES =
 export const homeContainer = 'mx-auto w-full max-w-[78rem] px-5 md:px-8'
 
 /**
- * A section's H2: Bodoni Moda at display size, tight, with the one word
+ * A section's H2: Fraunces at display size, tight, with the one word
  * that carries the feeling set in italic (`<em>`, styled in home-page.css).
  */
 export const homeHeading =

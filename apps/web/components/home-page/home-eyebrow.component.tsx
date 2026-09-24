@@ -9,7 +9,7 @@ type HomeEyebrowProps = {
 }
 
 /**
- * The line above a section heading: its number in Bodoni italic, a hairline
+ * The line above a section heading: its number in Fraunces italic, a hairline
  * that draws itself as the section arrives, and the section's name. The
  * number is decoration, so assistive technology hears only the name.
  * Colours come from the band it sits on (`hp-dark` or not).

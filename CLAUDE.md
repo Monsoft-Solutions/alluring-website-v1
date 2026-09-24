@@ -50,7 +50,7 @@ We create **immersive, distinctive experiences** that feel luxurious yet accessi
 | --------------------- | -------------------------------------------------------------------------------------------- |
 | **Primary Palette**   | Stone: warm porcelain (`stone-50`) to cocoa and espresso (`stone-900`, `stone-950`)          |
 | **Accent**            | Gold: champagne `gold-300`/`400` on dark bands, honey `500`, bronze `600`+ for text on light |
-| **Headings**          | Bodoni Moda (`font-serif`), weight 400–500, one word in italic                               |
+| **Headings**          | Fraunces (`font-serif`), weight 400–500, one word in italic                                  |
 | **Body**              | Instrument Sans (`font-sans`)                                                                |
 | **Buttons**           | Pills in sentence case: ink on light bands, champagne on dark; ink text on gold fills        |
 | **Signature Pattern** | The arch (`rounded-t-full`) as a window on portraits and scenes; glass on photography        |

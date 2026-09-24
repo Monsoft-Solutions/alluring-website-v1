@@ -205,11 +205,11 @@
     /* Font families. Tailwind v4 builds the `font-sans` / `font-serif`
        utilities from `--font-sans` / `--font-serif` (they were named
        `--font-family-*` until #251, and nothing read them). The faces are
-       Instrument Sans and Bodoni Moda, set by the web app's root layout as
+       Instrument Sans and Fraunces, set by the web app's root layout as
        `--font-text` / `--font-display`; the admin app sets neither and gets
        the fallbacks. */
     --font-sans: var(--font-text), 'Helvetica Neue', Arial, sans-serif;
-    --font-serif: var(--font-display), 'Bodoni 72', Didot, Georgia, serif;
+    --font-serif: var(--font-display), Georgia, serif;
 }
 
 @layer base {
