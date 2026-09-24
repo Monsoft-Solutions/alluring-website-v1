@@ -5,23 +5,30 @@
  * landing page: the argument, the ordering and the disclaimers were written
  * for ad traffic and are not shared with any indexed route.
  *
+ * The consultation thread's own words (the questions, the reply after the
+ * first tap) live in `lp-chat-copy.ts`, which is built on the server.
+ *
  * ---------------------------------------------------------------------
  * REGISTER
  * ---------------------------------------------------------------------
- * This page is written for the top decile of the market, and the register is
+ * This page is written for the top of the market, and the register is
  * load-bearing rather than decorative. Three rules:
  *
  *   1. No price anxiety. There is no weekly payment, no APR and no
- *      "affordable" anywhere on this page. What stays is the *service* claim
- *      — an all-inclusive figure, in writing, before anything is decided —
- *      because that reads as competence where "from $27/week" reads as a
- *      discount, and a discount is not what this audience is shopping for.
+ *      "affordable" anywhere on this page. The one figure it gives is the
+ *      settled starting price, and only in the thread's reply after the
+ *      visitor names the procedure — an answer to her question, not a
+ *      banner. The *service* claim stays: an all-inclusive figure, in
+ *      writing, before anything is decided.
  *   2. Declarative, not persuasive. Short sentences, no exclamation marks, no
  *      superlatives we would have to defend. Confidence is quieter than
  *      enthusiasm.
- *   3. "Private", not "free". The consultation still costs nothing and still
- *      carries no obligation, and both are still said plainly — but the word
- *      leading every heading is discretion, not price.
+ *   3. "Private", not "free". The consultation still carries no obligation,
+ *      and that is said plainly. "Free" stays off this page until counsel has
+ *      settled the Fla. Stat. 456.062 statement it would need.
+ *
+ * The practice answers every lead by text, so nothing here promises a call.
+ * A visitor who would rather talk can still tap the phone number.
  *
  * Spanish exists for Spanish speakers inside the US, not for cross-border
  * patients — nothing here offers travel coordination.
@@ -29,18 +36,26 @@
  * ---------------------------------------------------------------------
  * CLAIMS
  * ---------------------------------------------------------------------
- * Every factual claim here is already published on the site: double board
- * certification, the AAAASF-accredited facility, board-certified
- * anesthesiologists, the 4.7 Google rating, the procedure counts, the written
- * recovery plan, the confirmed dates, and that nobody here earns a commission.
- * Raising the register does not license a new one — reword freely, invent
- * nothing.
+ * Every factual claim here is already published on the site: the
+ * AAAASF-accredited facility, board-certified anesthesiologists, the Google
+ * rating, the procedure counts, the written recovery plan, the confirmed
+ * dates, and that nobody here earns a commission. Raising the register does
+ * not license a new one — reword freely, invent nothing.
+ *
+ * Dr. Karlinsky's credentials follow `karlinsky-credentials.constant.ts` and
+ * Florida Rule 64B8-11.001: she is named as an MD, and only the boards that
+ * need no Florida statement are named. She is not certified by the American
+ * Board of Plastic Surgery, and this page never says "double board-certified".
  *
  * Verbatim and not to be paraphrased: the consent wording, the reviews, and
  * the footer disclaimer.
  */
 
-import type { LpProcedureValue } from './lp-variants'
+import {
+    KARLINSKY_ABS_CERTIFIED_ON,
+    KARLINSKY_FLORIDA_LICENSE,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export type LpLang = 'en' | 'es'
 
@@ -99,45 +114,22 @@ export interface LpDictionary {
     }
     readonly hero: {
         readonly eyebrow: string
-        readonly trustGoogle: RichText
+        /** After the bold rating. `{count}` is the Google review count. */
+        readonly trustGoogle: string
         readonly trustBoard: string
         readonly trustAaaasf: string
-        readonly badgesLabel: string
-        /** The "prefer the other language?" nudge under the trust row. */
+        /** The "prefer the other language?" nudge under the thread. */
         readonly nudge: { readonly question: string; readonly action: string }
+        /** Under the thread, before the phone number. */
+        readonly callAlt: string
+        /** Melissa's page labels its certification badges with this. */
+        readonly badgesLabel: string
     }
-    readonly form: {
-        readonly eyebrow: string
-        readonly title: string
-        readonly subtitle: string
-        readonly consent: RichText
-        readonly consentError: string
-        readonly reassure: string
-        readonly micro: readonly [string, string, string]
-        readonly submitLabel: string
-        readonly fieldFirstName: string
-        readonly fieldLastName: string
-        readonly fieldPhone: string
-        readonly fieldEmail: string
-        readonly fieldProcedure: string
-        readonly procedurePlaceholder: string
-        /** Every procedure the form offers, as the contact system stores it. */
-        readonly procedureOptions: readonly {
-            readonly value: LpProcedureValue
-            readonly label: string
-        }[]
-        /** Button label while the request is in flight. */
-        readonly submitting: string
-        /** One message per field, shown in place of the schema's own. */
-        readonly errors: {
-            readonly firstName: string
-            readonly lastName: string
-            readonly phone: string
-            readonly email: string
-            /** The request failed: network, server, or a rejected payload. */
-            readonly submit: string
-        }
-    }
+    /**
+     * The SMS consent every thread on the site shows (read by the site's
+     * consultation thread, the lead popup and Melissa's page too).
+     */
+    readonly consent: RichText
     readonly surgeon: {
         readonly eyebrow: string
         readonly heading: RichText
@@ -146,6 +138,7 @@ export interface LpDictionary {
         readonly lead: string
         readonly stats: readonly LpStat[]
         readonly credentials: readonly string[]
+        readonly badgesLabel: string
         readonly cta: string
         readonly portraitAlt: string
     }
@@ -155,9 +148,10 @@ export interface LpDictionary {
         readonly subtitle: string
         readonly beforeAfterTag: string
         readonly captions: Readonly<Record<string, LpResultCaption>>
+        readonly railLabel: string
+        readonly swipeHint: string
         readonly note: string
         readonly cta: string
-        readonly link: string
     }
     readonly writing: {
         readonly eyebrow: string
@@ -176,8 +170,13 @@ export interface LpDictionary {
     readonly reviews: {
         readonly eyebrow: string
         readonly heading: RichText
+        /** Static count, for pages without the live one (Melissa's). */
         readonly source: string
+        /** `{count}` is the live Google review count. */
+        readonly sourceLive: string
         readonly items: readonly LpReview[]
+        readonly moreLabel: string
+        /** Melissa's page links out to /reviews with this; the ads page does not. */
         readonly link: string
     }
     readonly flyIn: {
@@ -195,7 +194,8 @@ export interface LpDictionary {
     readonly closing: {
         readonly heading: RichText
         readonly body: string
-        readonly cta: string
+        /** Above the procedure chips that answer the thread's first question. */
+        readonly chipsLabel: string
         readonly or: string
     }
     readonly footer: {
@@ -203,11 +203,25 @@ export interface LpDictionary {
         readonly terms: string
         readonly cookies: string
         readonly disclaimer: string
+        /** The legal documents open in a dialog on the page, under these titles. */
+        readonly titles: {
+            readonly privacy: string
+            readonly terms: string
+            readonly cookies: string
+        }
+        readonly close: string
+        readonly loading: string
+        /** When the document could not be downloaded, before the new-tab link. */
+        readonly loadError: string
+        readonly openInTab: string
     }
-    readonly sticky: { readonly call: string; readonly cta: string }
+    readonly sticky: { readonly cta: string }
 }
 
-/** Absolute, because the landing page links out to the main site. */
+/**
+ * Absolute links to the main site. The ads page itself no longer links out
+ * (its legal links open in a dialog); Melissa's page still uses these.
+ */
 const SITE = 'https://www.alluringplasticsurgery.com'
 
 export const LP_LINKS = {
@@ -220,11 +234,12 @@ export const LP_LINKS = {
     reviews: `${SITE}/reviews`,
 } as const
 
+const ABS_YEAR = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
+
 const en: LpDictionary = {
     meta: {
         title: 'Private Plastic Surgery Consultation in Miami | Alluring Plastic Surgery',
-        description:
-            'A private consultation with a double board-certified surgeon in Miami. Real before-and-after results, an AAAASF-accredited facility, and your all-inclusive figure in writing before you decide anything. Hablamos Español.',
+        description: `A private consultation with ${KARLINSKY_NAME}, in Miami. Real before-and-after results, an AAAASF-accredited facility, and your all-inclusive figure in writing before you decide anything. Hablamos Español.`,
     },
     header: {
         langLabel: 'Language / Idioma',
@@ -233,67 +248,27 @@ const en: LpDictionary = {
     },
     hero: {
         eyebrow: 'Private consultation · Miami, FL',
-        trustGoogle: [{ b: '4.7' }, ' on Google · 80+ reviews'],
-        trustBoard: 'Double board-certified',
+        trustGoogle: 'on Google · {count} reviews',
+        trustBoard: 'Board certified, American Board of Surgery',
         trustAaaasf: 'AAAASF-accredited facility',
-        badgesLabel: 'Board certifications',
         nudge: {
             question: '¿Prefieres español?',
             action: 'Ver esta página en español',
         },
+        callAlt: 'Prefer to talk? Call',
+        badgesLabel: 'Board certifications',
     },
-    form: {
-        eyebrow: 'Private · Discreet · No obligation',
-        title: 'Request a consultation',
-        subtitle:
-            'Less than a minute. A patient coordinator calls you within 24 hours.',
-        consent: [
-            'I have read and understood the ',
-            { link: { label: 'Privacy Policy', href: LP_LINKS.privacy } },
-            ' and ',
-            { link: { label: 'Terms', href: LP_LINKS.terms } },
-            '. By submitting my mobile number and email, I expressly consent to receive informational and promotional messages from Alluring Plastic Surgery through SMS, email, and phone calls, including messages sent using an automatic telephone dialing system. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Reply STOP to opt out, HELP for help.*',
-        ],
-        consentError: 'Please tick the consent box below the form to continue.',
-        reassure:
-            'Private & secure. A patient coordinator calls you, never a sales team.',
-        micro: ['Private', 'No obligation', 'English & Spanish'],
-        submitLabel: 'Request my consultation',
-        fieldFirstName: 'First name',
-        fieldLastName: 'Last name',
-        fieldPhone: 'Phone',
-        fieldEmail: 'Email',
-        fieldProcedure: 'Procedure of Interest',
-        procedurePlaceholder: 'Select a procedure',
-        procedureOptions: [
-            { value: 'bbl', label: 'Brazilian Butt Lift (BBL)' },
-            { value: 'mommy-makeover', label: 'Mommy Makeover' },
-            { value: 'breast-augmentation', label: 'Breast Augmentation' },
-            { value: 'breast-lift', label: 'Breast Lift' },
-            { value: 'breast-reduction', label: 'Breast Reduction' },
-            { value: 'tummy-tuck', label: 'Tummy Tuck' },
-            { value: 'liposuction', label: 'Liposuction / Lipo 360' },
-            { value: 'facelift', label: 'Facelift' },
-            {
-                value: 'blepharoplasty',
-                label: 'Eyelid Surgery (Blepharoplasty)',
-            },
-            { value: 'multiple', label: 'Multiple Procedures' },
-            { value: 'other', label: 'Other / Not Sure Yet' },
-        ],
-        submitting: 'Sending…',
-        errors: {
-            firstName: 'Enter your first name.',
-            lastName: 'Enter your last name.',
-            phone: 'Enter a valid US phone number, with area code.',
-            email: 'Enter a valid email address, or leave it blank.',
-            submit: 'Your request did not go through. Please try again, or call us.',
-        },
-    },
+    consent: [
+        'I have read and understood the ',
+        { link: { label: 'Privacy Policy', href: LP_LINKS.privacy } },
+        ' and ',
+        { link: { label: 'Terms', href: LP_LINKS.terms } },
+        '. By submitting my mobile number and email, I expressly consent to receive informational and promotional messages from Alluring Plastic Surgery through SMS, email, and phone calls, including messages sent using an automatic telephone dialing system. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Reply STOP to opt out, HELP for help.*',
+    ],
     surgeon: {
         eyebrow: 'Your surgeon',
         heading: ['Dr. Victoria ', { em: 'Karlinsky' }],
-        role: 'Medical Director · Double board-certified cosmetic surgeon',
+        role: `${KARLINSKY_NAME} · Medical Director`,
         quote: '“Cosmetic surgery is never just about a single feature. It’s about how you feel when you walk into a room, and knowing we prioritized your safety at every step.”',
         lead: 'Your consultation is with the surgeon who operates. Not a patient advisor, not a closer.',
         stats: [
@@ -303,19 +278,20 @@ const en: LpDictionary = {
             { value: '4.7', star: true, label: 'Google rating, 80+ reviews' },
         ],
         credentials: [
-            'Board certified by the American Board of Cosmetic Surgery and the American Board of Surgery',
-            'Fellow, American College of Surgeons (FACS)',
-            'Fellowship Director, American Board of Cosmetic Surgery',
+            `Board certified in general surgery by the American Board of Surgery since ${ABS_YEAR}`,
+            'Fellow of the American College of Surgeons (FACS)',
+            `Florida medical license ${KARLINSKY_FLORIDA_LICENSE}, clear and active`,
             'Operates in an AAAASF-accredited facility with board-certified anesthesiologists',
         ],
+        badgesLabel: 'Board certification and fellowship',
         cta: 'Request a consultation with Dr. Karlinsky',
         portraitAlt: 'Dr. Victoria Karlinsky',
     },
     results: {
-        eyebrow: 'Dr. Karlinsky’s patients',
+        eyebrow: 'Real patients',
         heading: ['See the ', { em: 'work' }],
         subtitle:
-            'Before and after photographs of actual patients of Dr. Karlinsky at Alluring Plastic Surgery.',
+            'Before-and-after photographs of actual Alluring patients, starting with the procedure you asked about.',
         beforeAfterTag: 'Before · After',
         captions: {
             bbl: {
@@ -339,9 +315,10 @@ const en: LpDictionary = {
                 alt: 'Before and after Lipo 360, front view',
             },
         },
+        railLabel: 'Before-and-after photographs',
+        swipeHint: 'Swipe for more results',
         note: 'Individual results vary.',
         cta: 'Request a consultation',
-        link: 'See more results in the gallery',
     },
     writing: {
         eyebrow: 'What you leave with',
@@ -402,6 +379,7 @@ const en: LpDictionary = {
         eyebrow: 'Google reviews',
         heading: ['What patients ', { em: 'actually' }, ' say'],
         source: '80+ reviews on Google',
+        sourceLive: '{count} reviews on Google',
         items: [
             {
                 quote: 'The entire team was amazing, took care of me from start to finish. Doctor was truly helpful. The post op massages were epic. 10/10 can’t wait to tell and bring my girls out here for their procedures.',
@@ -416,6 +394,7 @@ const en: LpDictionary = {
                 by: 'Marycelis Trinidad Matos · Dec 2025',
             },
         ],
+        moreLabel: 'More from Google',
         link: 'Read more patient reviews',
     },
     flyIn: {
@@ -437,12 +416,12 @@ const en: LpDictionary = {
         items: [
             {
                 question: '“Is it safe?”',
-                answer: 'Surgery happens in an AAAASF-accredited facility with board-certified anesthesiologists, not an office suite. Every patient has pre-op lab work before we clear them. Your surgeon is double board-certified.',
+                answer: `Surgery happens in an AAAASF-accredited facility with board-certified anesthesiologists, not an office suite. Every patient has pre-op lab work before we clear them. Your surgeon, ${KARLINSKY_NAME}, is board certified in general surgery by the American Board of Surgery.`,
                 tag: 'Accredited facility · Pre-op labs',
             },
             {
                 question: '“How long is recovery?”',
-                answer: 'Most patients are back at a desk in one to two weeks and at the gym in four to six. You get a written week-by-week recovery plan before you book, so you can plan work, childcare and travel around it.',
+                answer: 'Most patients are back at a desk in one to two weeks; exercise comes back in stages after that, depending on the procedure. You get a written week-by-week recovery plan before you book, so you can plan work, childcare and travel around it.',
                 tag: 'Written recovery plan up front',
             },
             {
@@ -454,8 +433,8 @@ const en: LpDictionary = {
     },
     closing: {
         heading: ['Ready for a real ', { em: 'answer?' }],
-        body: 'Private, confidential, no obligation. We call within 24 hours.',
-        cta: 'Request a consultation',
+        body: 'Private, confidential, no obligation. A patient coordinator texts you within 24 hours.',
+        chipsLabel: 'Start with what you’re considering',
         or: 'or call',
     },
     footer: {
@@ -464,15 +443,23 @@ const en: LpDictionary = {
         cookies: 'Cookies',
         disclaimer:
             '*Before-and-after photographs show actual patients of Dr. Karlinsky; individual results vary. All surgical procedures carry risk. This page is for general information and is not medical advice.',
+        titles: {
+            privacy: 'Privacy Policy',
+            terms: 'Terms of Service',
+            cookies: 'Cookie Policy',
+        },
+        close: 'Close',
+        loading: 'Loading…',
+        loadError: 'This document didn’t load here.',
+        openInTab: 'Open it in a new tab',
     },
-    sticky: { call: 'Call', cta: 'Request consultation' },
+    sticky: { cta: 'Request consultation' },
 }
 
 const es: LpDictionary = {
     meta: {
         title: 'Consulta privada de cirugía plástica en Miami | Alluring Plastic Surgery',
-        description:
-            'Una consulta privada con una cirujana con doble certificación en Miami. Resultados reales de antes y después, una clínica acreditada AAAASF y tu cifra todo incluido por escrito antes de decidir nada.',
+        description: `Una consulta privada con la Dra. ${KARLINSKY_NAME}, en Miami. Resultados reales de antes y después, una clínica acreditada AAAASF y tu cifra todo incluido por escrito antes de decidir nada.`,
     },
     header: {
         langLabel: 'Idioma / Language',
@@ -481,73 +468,32 @@ const es: LpDictionary = {
     },
     hero: {
         eyebrow: 'Consulta privada · Miami, FL',
-        trustGoogle: [{ b: '4.7' }, ' en Google · Más de 80 reseñas'],
-        trustBoard: 'Doble certificación',
+        trustGoogle: 'en Google · {count} reseñas',
+        trustBoard: 'Certificada por el American Board of Surgery',
         trustAaaasf: 'Clínica acreditada AAAASF',
-        badgesLabel: 'Certificaciones',
         nudge: {
             question: 'Prefer English?',
             action: 'View this page in English',
         },
+        callAlt: '¿Prefieres hablar? Llama al',
+        badgesLabel: 'Certificaciones',
     },
-    form: {
-        eyebrow: 'Privada · Discreta · Sin compromiso',
-        title: 'Pide tu consulta',
-        subtitle:
-            'Menos de un minuto. Una coordinadora de pacientes te llama en 24 horas.',
-        consent: [
-            'He leído y entiendo la ',
-            {
-                link: {
-                    label: 'Política de Privacidad',
-                    href: LP_LINKS.privacy,
-                },
+    consent: [
+        'He leído y entiendo la ',
+        {
+            link: {
+                label: 'Política de Privacidad',
+                href: LP_LINKS.privacy,
             },
-            ' y los ',
-            { link: { label: 'Términos', href: LP_LINKS.terms } },
-            '. Al enviar mi número de celular y correo, doy mi consentimiento expreso para recibir mensajes informativos y promocionales de Alluring Plastic Surgery por SMS, correo electrónico y llamadas, incluidos mensajes enviados con un sistema de marcación automática. El consentimiento no es condición de compra. Pueden aplicar tarifas de mensajes y datos. La frecuencia varía. Responda STOP para cancelar, HELP para ayuda.*',
-        ],
-        consentError:
-            'Marca la casilla de consentimiento debajo del formulario para continuar.',
-        reassure:
-            'Privado y seguro. Te llama una coordinadora de pacientes, nunca un vendedor.',
-        micro: ['Privada', 'Sin compromiso', 'En español'],
-        submitLabel: 'Pedir mi consulta',
-        fieldFirstName: 'Nombre',
-        fieldLastName: 'Apellido',
-        fieldPhone: 'Teléfono',
-        fieldEmail: 'Correo electrónico',
-        fieldProcedure: 'Procedimiento de interés',
-        procedurePlaceholder: 'Elige un procedimiento',
-        procedureOptions: [
-            { value: 'bbl', label: 'Levantamiento de glúteos (BBL)' },
-            { value: 'mommy-makeover', label: 'Mommy Makeover' },
-            { value: 'breast-augmentation', label: 'Aumento de senos' },
-            { value: 'breast-lift', label: 'Levantamiento de senos' },
-            { value: 'breast-reduction', label: 'Reducción de senos' },
-            { value: 'tummy-tuck', label: 'Abdominoplastia' },
-            { value: 'liposuction', label: 'Liposucción / Lipo 360' },
-            { value: 'facelift', label: 'Lifting facial' },
-            {
-                value: 'blepharoplasty',
-                label: 'Cirugía de párpados (blefaroplastia)',
-            },
-            { value: 'multiple', label: 'Varios procedimientos' },
-            { value: 'other', label: 'Otro / aún no lo sé' },
-        ],
-        submitting: 'Enviando…',
-        errors: {
-            firstName: 'Escribe tu nombre.',
-            lastName: 'Escribe tu apellido.',
-            phone: 'Escribe un teléfono válido de EE. UU., con código de área.',
-            email: 'Escribe un correo válido, o déjalo en blanco.',
-            submit: 'Tu solicitud no se envió. Inténtalo de nuevo o llámanos.',
         },
-    },
+        ' y los ',
+        { link: { label: 'Términos', href: LP_LINKS.terms } },
+        '. Al enviar mi número de celular y correo, doy mi consentimiento expreso para recibir mensajes informativos y promocionales de Alluring Plastic Surgery por SMS, correo electrónico y llamadas, incluidos mensajes enviados con un sistema de marcación automática. El consentimiento no es condición de compra. Pueden aplicar tarifas de mensajes y datos. La frecuencia varía. Responda STOP para cancelar, HELP para ayuda.*',
+    ],
     surgeon: {
         eyebrow: 'Tu cirujana',
         heading: ['Dra. Victoria ', { em: 'Karlinsky' }],
-        role: 'Directora médica · Cirujana cosmética con doble certificación',
+        role: `${KARLINSKY_NAME} · Directora médica`,
         quote: '“La cirugía cosmética nunca se trata de un solo rasgo. Se trata de cómo te sientes al entrar a un lugar, sabiendo que tu seguridad fue la prioridad en cada paso.”',
         lead: 'Tu consulta es con la cirujana que opera. No con una asesora, no con un vendedor.',
         stats: [
@@ -561,19 +507,20 @@ const es: LpDictionary = {
             },
         ],
         credentials: [
-            'Certificada por el American Board of Cosmetic Surgery y el American Board of Surgery',
+            `Certificada en cirugía general por el American Board of Surgery desde ${ABS_YEAR}`,
             'Fellow del American College of Surgeons (FACS)',
-            'Directora de Fellowship, American Board of Cosmetic Surgery',
+            `Licencia médica de Florida ${KARLINSKY_FLORIDA_LICENSE}, vigente y sin sanciones`,
             'Opera en una clínica acreditada AAAASF con anestesiólogos certificados',
         ],
+        badgesLabel: 'Certificación y fellowship',
         cta: 'Pedir una consulta con la Dra. Karlinsky',
         portraitAlt: 'Dra. Victoria Karlinsky',
     },
     results: {
-        eyebrow: 'Pacientes de la Dra. Karlinsky',
+        eyebrow: 'Pacientes reales',
         heading: ['Mira el ', { em: 'trabajo' }],
         subtitle:
-            'Fotografías de antes y después de pacientes reales de la Dra. Karlinsky en Alluring Plastic Surgery.',
+            'Fotografías de antes y después de pacientes reales de Alluring, empezando por el procedimiento que buscas.',
         beforeAfterTag: 'Antes · Después',
         captions: {
             bbl: {
@@ -597,9 +544,10 @@ const es: LpDictionary = {
                 alt: 'Antes y después de una Lipo 360, vista frontal',
             },
         },
+        railLabel: 'Fotografías de antes y después',
+        swipeHint: 'Desliza para ver más resultados',
         note: 'Los resultados varían según la persona.',
         cta: 'Pedir una consulta',
-        link: 'Ver más resultados en la galería',
     },
     writing: {
         eyebrow: 'Con qué sales de la consulta',
@@ -665,6 +613,7 @@ const es: LpDictionary = {
         eyebrow: 'Reseñas de Google',
         heading: ['Lo que dicen ', { em: 'nuestras pacientes' }],
         source: 'Más de 80 reseñas en Google',
+        sourceLive: '{count} reseñas en Google',
         items: [
             {
                 quote: 'Me sentí tranquila y segura con todo el equipo de Alluring. Han pasado menos de 24 horas desde mi cirugía, abdominoplastia y liposucción de flancos y abdomen, y me siento perfecta.',
@@ -679,6 +628,7 @@ const es: LpDictionary = {
                 by: 'Raynellys Rodriguez Weffer · 2025',
             },
         ],
+        moreLabel: 'Más reseñas en Google',
         link: 'Leer más reseñas de pacientes',
     },
     flyIn: {
@@ -701,12 +651,12 @@ const es: LpDictionary = {
         items: [
             {
                 question: '“¿Es seguro?”',
-                answer: 'La cirugía se realiza en una clínica acreditada por la AAAASF con anestesiólogos certificados, no en un consultorio. Toda paciente pasa por exámenes de laboratorio antes de ser aprobada. Tu cirujana tiene doble certificación.',
+                answer: `La cirugía se realiza en una clínica acreditada por la AAAASF con anestesiólogos certificados, no en un consultorio. Toda paciente pasa por exámenes de laboratorio antes de ser aprobada. Tu cirujana, la Dra. ${KARLINSKY_NAME}, está certificada en cirugía general por el American Board of Surgery.`,
                 tag: 'Clínica acreditada · Laboratorios previos',
             },
             {
                 question: '“¿Cuánto dura la recuperación?”',
-                answer: 'La mayoría vuelve al trabajo de oficina en una o dos semanas y al gimnasio en cuatro a seis. Recibes un plan de recuperación semana a semana por escrito antes de reservar.',
+                answer: 'La mayoría vuelve al trabajo de oficina en una o dos semanas; el ejercicio vuelve por etapas después, según el procedimiento. Recibes un plan de recuperación semana a semana por escrito antes de reservar.',
                 tag: 'Plan de recuperación por escrito',
             },
             {
@@ -718,8 +668,8 @@ const es: LpDictionary = {
     },
     closing: {
         heading: ['¿Lista para una respuesta ', { em: 'de verdad?' }],
-        body: 'Privada, confidencial y sin compromiso. Te llamamos en 24 horas.',
-        cta: 'Pedir una consulta',
+        body: 'Privada, confidencial y sin compromiso. Una coordinadora te escribe por texto en 24 horas.',
+        chipsLabel: 'Empieza por lo que estás considerando',
         or: 'o llama al',
     },
     footer: {
@@ -728,8 +678,17 @@ const es: LpDictionary = {
         cookies: 'Cookies',
         disclaimer:
             '*Las fotografías de antes y después muestran pacientes reales de la Dra. Karlinsky; los resultados varían según la persona. Toda cirugía conlleva riesgos. Esta página es informativa y no constituye consejo médico.',
+        titles: {
+            privacy: 'Política de privacidad (en inglés)',
+            terms: 'Términos del servicio (en inglés)',
+            cookies: 'Política de cookies (en inglés)',
+        },
+        close: 'Cerrar',
+        loading: 'Cargando…',
+        loadError: 'Este documento no cargó aquí.',
+        openInTab: 'Ábrelo en una pestaña nueva',
     },
-    sticky: { call: 'Llamar', cta: 'Pedir consulta' },
+    sticky: { cta: 'Pedir consulta' },
 }
 
 export const LP_COPY: Readonly<Record<LpLang, LpDictionary>> = { en, es }

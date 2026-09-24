@@ -1,11 +1,17 @@
 'use client'
 
 /**
- * The surgeon section, immediately after the form.
+ * The surgeon section, right after the results.
  *
- * It sits this high on purpose: the objection a paid visitor has at this point
- * is "who is actually going to operate on me", and the answer — you meet the
- * surgeon, not a commission-paid closer — is the page's strongest claim.
+ * The objection a paid visitor has by this point is "who is actually going
+ * to operate on me", and the answer — you meet the surgeon, not a
+ * commission-paid closer — is the page's strongest claim.
+ *
+ * Credentials are the ones checked at the issuing bodies and worded per
+ * Florida Rule 64B8-11.001 (`karlinsky-credentials.constant.ts`): her name
+ * with MD, and only boards that need no Florida statement. The badges are
+ * the same two: the American Board of Surgery and the American College of
+ * Surgeons.
  */
 
 import Image from 'next/image'
@@ -17,6 +23,21 @@ import { Rich } from './lp-primitives.component'
 interface LpSurgeonProps {
     readonly copy: LpDictionary['surgeon']
 }
+
+const SURGEON_BADGES = [
+    {
+        src: '/images/certifications/abs-board-certified.png',
+        alt: 'American Board of Surgery, Board Certified',
+        width: 1713,
+        height: 424,
+    },
+    {
+        src: '/images/certifications/facs-fellow.svg',
+        alt: 'Fellow, American College of Surgeons',
+        width: 237,
+        height: 74,
+    },
+] as const
 
 export function LpSurgeon({ copy }: LpSurgeonProps) {
     return (
@@ -64,6 +85,19 @@ export function LpSurgeon({ copy }: LpSurgeonProps) {
                     <ul className='creds'>
                         {copy.credentials.map((credential) => (
                             <li key={credential}>{credential}</li>
+                        ))}
+                    </ul>
+                    <ul className='seals' aria-label={copy.badgesLabel}>
+                        {SURGEON_BADGES.map((badge) => (
+                            <li key={badge.src}>
+                                <Image
+                                    src={badge.src}
+                                    alt={badge.alt}
+                                    width={badge.width}
+                                    height={badge.height}
+                                    loading='lazy'
+                                />
+                            </li>
                         ))}
                     </ul>
                     <a

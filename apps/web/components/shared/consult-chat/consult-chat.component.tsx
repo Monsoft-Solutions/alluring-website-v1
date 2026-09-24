@@ -154,6 +154,11 @@ export interface ConsultChatProps {
         readonly step: string
         readonly attempt: string
     }
+    /**
+     * Merged into both `dataLayerEvents` pushes: the ads landing page adds its
+     * page version and ad group, which its conversion reporting splits by.
+     */
+    readonly dataLayerContext?: Readonly<Record<string, string>>
 }
 
 export function ConsultChat({
@@ -173,6 +178,7 @@ export function ConsultChat({
     defaultProcedure = '',
     classPrefix = 'cc',
     dataLayerEvents,
+    dataLayerContext,
 }: ConsultChatProps) {
     const c = (name: string) => `${classPrefix}-${name}`
     const titleId = `${id}-title`
@@ -294,6 +300,7 @@ export function ConsultChat({
                 event: dataLayerEvents.step,
                 step: STEP_NAMES[from],
                 lang,
+                ...dataLayerContext,
             })
         }
         trackLeadFormEvent(LEAD_FORM_EVENTS.STEP, formName, {
@@ -362,6 +369,7 @@ export function ConsultChat({
                 event: dataLayerEvents.attempt,
                 lang,
                 method: 'text',
+                ...dataLayerContext,
             })
         }
 

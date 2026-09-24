@@ -19,6 +19,7 @@
  */
 
 import { Check, Clock } from 'lucide-react'
+import { cn } from '@workspace/ui/lib/utils'
 import {
     type FormEvent,
     useEffect,
@@ -251,14 +252,40 @@ function cachedStatus() {
     return statusCache
 }
 
+/**
+ * Lines a page can replace in its own voice. The ads landing page says
+ * "private" where the site says "free" (see its `lp-copy.ts`).
+ */
+export interface ConsultationThankYouCopyOverride {
+    readonly body?: string
+    readonly next?: readonly string[]
+}
+
 export function ConsultationThankYou({
     leadStorageKey,
+    copyOverride,
+    compact = false,
+    lang: langProp,
 }: {
     /** Where the thread stored the lead (`ConsultChat`'s `leadStorageKey`). */
     readonly leadStorageKey: string
+    readonly copyOverride?: Readonly<
+        Partial<Record<ConsultChatLang, ConsultationThankYouCopyOverride>>
+    >
+    /**
+     * Less room above the heading, for a page with its own static header
+     * rather than the site's fixed one.
+     */
+    readonly compact?: boolean
+    /**
+     * The page's own language, for a page that sets it itself (the ads
+     * landing page). Without it the section follows Google Translate.
+     */
+    readonly lang?: ConsultChatLang
 }) {
-    const lang = usePageLanguage()
-    const copy = COPY[lang]
+    const pageLang = usePageLanguage()
+    const lang = langProp ?? pageLang
+    const copy = { ...COPY[lang], ...copyOverride?.[lang] }
 
     const raw = useSyncExternalStore(
         noSubscription,
@@ -277,7 +304,10 @@ export function ConsultationThankYou({
         <section
             id='thank-you-hero'
             aria-labelledby='thank-you-title'
-            className='relative overflow-hidden bg-stone-900 px-4 pt-28 pb-16 sm:pt-36 sm:pb-24'
+            className={cn(
+                'relative overflow-hidden bg-stone-900 px-4 pb-16 sm:pb-24',
+                compact ? 'pt-12 sm:pt-16' : 'pt-28 sm:pt-36'
+            )}
             translate='no'
         >
             <div
