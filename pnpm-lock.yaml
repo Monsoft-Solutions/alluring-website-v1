@@ -176,7 +176,7 @@ importers:
         version: 0.554.0(react@19.2.1)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: ^19.2.1
         version: 19.2.1
@@ -200,7 +200,7 @@ importers:
         version: 2.0.7(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       workflow:
         specifier: 4.0.1-beta.48
-        version: 4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(next@16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3)
+        version: 4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(next@16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3)
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -339,7 +339,7 @@ importers:
         version: 0.554.0(react@19.2.1)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       next-mdx-remote:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@19.2.7)(react@19.2.1)
@@ -585,6 +585,59 @@ importers:
         specifier: ^8.48.0
         version: 8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
 
+  packages/google-ads:
+    dependencies:
+      google-auth-library:
+        specifier: ^10.5.0
+        version: 10.5.0
+      zod:
+        specifier: ^4.3.5
+        version: 4.3.5
+    devDependencies:
+      '@types/node':
+        specifier: ^24.10.1
+        version: 24.10.1
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.5
+        version: 4.1.5(@opentelemetry/api@1.9.1)(@types/node@24.10.1)(jsdom@29.0.2)(vite@8.0.9(@types/node@24.10.1)(jiti@2.6.1)(tsx@4.20.6)(yaml@2.8.1))
+
+  packages/mcp-google-ads:
+    dependencies:
+      '@modelcontextprotocol/server':
+        specifier: ^2.0.0
+        version: 2.0.0
+      '@workspace/google-ads':
+        specifier: workspace:*
+        version: link:../google-ads
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
+      zod:
+        specifier: ^4.3.5
+        version: 4.3.5
+    devDependencies:
+      '@types/node':
+        specifier: ^24.10.1
+        version: 24.10.1
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/mcp-gsc:
     dependencies:
       '@modelcontextprotocol/server':
@@ -642,7 +695,7 @@ importers:
         version: link:../typescript-config
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -11634,7 +11687,7 @@ snapshots:
       - '@swc/helpers'
       - supports-color
 
-  '@workflow/cli@4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3)':
+  '@workflow/cli@4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3)':
     dependencies:
       '@oclif/core': 4.0.0(typescript@5.9.3)
       '@oclif/plugin-help': 6.2.31(typescript@5.9.3)
@@ -11644,7 +11697,7 @@ snapshots:
       '@workflow/errors': 4.0.1-beta.13
       '@workflow/swc-plugin': 4.0.1-beta.13(@swc/core@1.15.3)
       '@workflow/utils': 4.0.1-beta.10
-      '@workflow/web': 4.0.1-beta.28(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@workflow/web': 4.0.1-beta.28(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@workflow/world': 4.0.1-beta.13(zod@4.1.11)
       '@workflow/world-local': 4.0.1-beta.26(@opentelemetry/api@1.9.1)
       '@workflow/world-vercel': 4.0.1-beta.27
@@ -11709,7 +11762,7 @@ snapshots:
       '@workflow/utils': 4.0.1-beta.10
       ms: 2.1.3
 
-  '@workflow/next@4.0.1-beta.44(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(next@16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))':
+  '@workflow/next@4.0.1-beta.44(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(next@16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))':
     dependencies:
       '@swc/core': 1.15.3
       '@workflow/builders': 4.0.1-beta.39(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)
@@ -11718,7 +11771,7 @@ snapshots:
       semver: 7.7.3
       watchpack: 2.4.4
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      next: 16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
     transitivePeerDependencies:
       - '@aws-sdk/client-sts'
       - '@opentelemetry/api'
@@ -11792,9 +11845,9 @@ snapshots:
 
   '@workflow/vite@4.0.0-beta.2': {}
 
-  '@workflow/web@4.0.1-beta.28(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@workflow/web@4.0.1-beta.28(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
-      next: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      next: 16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -14738,7 +14791,7 @@ snapshots:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  next@16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  next@16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -14746,7 +14799,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
-      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.1)
+      styled-jsx: 5.1.6(react@19.2.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.0.10
       '@next/swc-darwin-x64': 16.0.10
@@ -16026,12 +16079,10 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.7
 
-  styled-jsx@5.1.6(@babel/core@7.28.5)(react@19.2.1):
+  styled-jsx@5.1.6(react@19.2.1):
     dependencies:
       client-only: 0.0.1
       react: 19.2.1
-    optionalDependencies:
-      '@babel/core': 7.28.5
 
   supports-color@10.2.2: {}
 
@@ -16636,13 +16687,13 @@ snapshots:
 
   wordwrap@1.0.0: {}
 
-  workflow@4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(next@16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3):
+  workflow@4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(next@16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3):
     dependencies:
       '@workflow/astro': 4.0.0-beta.22(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)
-      '@workflow/cli': 4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3)
+      '@workflow/cli': 4.0.1-beta.48(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(typescript@5.9.3)
       '@workflow/core': 4.0.1-beta.39(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)
       '@workflow/errors': 4.0.1-beta.13
-      '@workflow/next': 4.0.1-beta.44(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(next@16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))
+      '@workflow/next': 4.0.1-beta.44(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)(next@16.0.10(@opentelemetry/api@1.9.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))
       '@workflow/nitro': 4.0.1-beta.43(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)
       '@workflow/nuxt': 4.0.1-beta.32(@aws-sdk/client-sts@3.971.0)(@opentelemetry/api@1.9.1)
       '@workflow/rollup': 4.0.0-beta.7
