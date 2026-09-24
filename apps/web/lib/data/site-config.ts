@@ -50,7 +50,9 @@ export const siteConfig: SiteConfig = {
     business: {
         name: 'Alluring Plastic Surgery',
         legalName: 'Alluring Plastic Surgery',
-        tagline: 'Luxury Surgeries Made Affordable',
+        // Personal care and fair value, without "luxury" or "affordable"
+        // (#290, replaces "Luxury Surgeries Made Affordable").
+        tagline: 'Personal care. Honest price.',
         description:
             'World-class aesthetic procedures in Miami combining high-end results with flexible financing and personalized care. Where luxury meets affordability.',
         foundedYear: undefined,
