@@ -48,6 +48,8 @@ export default async function ContactDetailPage({ params }: PageProps) {
         contact.utmContent ||
         contact.utmTerm ||
         contact.gclid ||
+        contact.gbraid ||
+        contact.wbraid ||
         contact.fbclid ||
         contact.ttclid ||
         contact.referrer ||
@@ -243,6 +245,26 @@ export default async function ContactDetailPage({ params }: PageProps) {
                                     truncate
                                 />
                             )}
+                            {contact.gbraid && (
+                                <DataRow
+                                    label='Google Ads (gbraid)'
+                                    value={contact.gbraid}
+                                    truncate
+                                />
+                            )}
+                            {contact.wbraid && (
+                                <DataRow
+                                    label='Google Ads (wbraid)'
+                                    value={contact.wbraid}
+                                    truncate
+                                />
+                            )}
+                            {contact.gadCampaignId && (
+                                <DataRow
+                                    label='Google Ads campaign id'
+                                    value={contact.gadCampaignId}
+                                />
+                            )}
                             {contact.fbclid && (
                                 <DataRow
                                     label='Meta Ads (fbclid)'
@@ -254,6 +276,20 @@ export default async function ContactDetailPage({ params }: PageProps) {
                                 <DataRow
                                     label='TikTok Ads (ttclid)'
                                     value={contact.ttclid}
+                                    truncate
+                                />
+                            )}
+                            {contact.fbp && (
+                                <DataRow
+                                    label='Meta browser id (_fbp)'
+                                    value={contact.fbp}
+                                    truncate
+                                />
+                            )}
+                            {contact.fbc && (
+                                <DataRow
+                                    label='Meta click id (_fbc)'
+                                    value={contact.fbc}
                                     truncate
                                 />
                             )}

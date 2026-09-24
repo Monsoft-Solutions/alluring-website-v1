@@ -49,6 +49,7 @@ import {
     sendLeadToN8N,
     sendLeadUpdateToN8N,
 } from '@/lib/services/n8n-webhook.service'
+import { stripPlaceholders } from '@/lib/analytics/attribution-params.util'
 import { sanitizeAdClickIds } from '@/lib/analytics/sanitize-attribution.util'
 import { siteConfig } from '@/lib/data/site-config'
 import { env } from '@/env'
@@ -521,7 +522,17 @@ export async function POST(
         // Drop click IDs that don't match the explicit utm_source. Instagram
         // appends fbclid to every outbound bio-link click, so without this
         // doctor/influencer/organic-social leads get falsely attributed to Meta.
-        const attribution = sanitizeAdClickIds(validatedData)
+        // Unexpanded tracking-template tokens (`cpc{ifvideo:video}`) are
+        // stripped first: the paid check reads utm_medium, and a UTM captured
+        // before the client-side fix can still sit in a visitor's storage.
+        const attribution = sanitizeAdClickIds({
+            ...validatedData,
+            utmSource: stripPlaceholders(validatedData.utmSource),
+            utmMedium: stripPlaceholders(validatedData.utmMedium),
+            utmCampaign: stripPlaceholders(validatedData.utmCampaign),
+            utmContent: stripPlaceholders(validatedData.utmContent),
+            utmTerm: stripPlaceholders(validatedData.utmTerm),
+        })
 
         const insertData: InsertContactSubmission = {
             name: fullName,
@@ -541,14 +552,19 @@ export async function POST(
             source,
             // Analytics tracking fields
             ipAddress: clientIP,
-            utmSource: validatedData.utmSource,
-            utmMedium: validatedData.utmMedium,
-            utmCampaign: validatedData.utmCampaign,
-            utmContent: validatedData.utmContent,
-            utmTerm: validatedData.utmTerm,
+            utmSource: attribution.utmSource,
+            utmMedium: attribution.utmMedium,
+            utmCampaign: attribution.utmCampaign,
+            utmContent: attribution.utmContent,
+            utmTerm: attribution.utmTerm,
             gclid: attribution.gclid,
+            gbraid: attribution.gbraid,
+            wbraid: attribution.wbraid,
+            gadCampaignId: attribution.gadCampaignId,
             fbclid: attribution.fbclid,
             ttclid: attribution.ttclid,
+            fbp: validatedData.fbp,
+            fbc: validatedData.fbc,
             referrer: validatedData.referrer,
             landingPage: validatedData.landingPage,
             submittedFromPath: validatedData.submittedFromPath,

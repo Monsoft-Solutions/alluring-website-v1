@@ -40,8 +40,14 @@ export type N8NLeadPayload = {
     readonly utm_content: string
     readonly utm_term: string
     readonly gclid: string
+    readonly gbraid: string
+    readonly wbraid: string
+    readonly gad_campaign_id: string
     readonly fbclid: string
     readonly ttclid: string
+    /** Meta pixel cookies (`_fbp`, `_fbc`): Conversions API match keys. */
+    readonly fbp: string
+    readonly fbc: string
     readonly procedures: string[]
     readonly timeline: string
     readonly timeOfDayToBeContacted: string
@@ -133,8 +139,13 @@ export function buildN8NLeadPayload(
         utm_content: lead.utmContent || '',
         utm_term: lead.utmTerm || '',
         gclid: lead.gclid || '',
+        gbraid: lead.gbraid || '',
+        wbraid: lead.wbraid || '',
+        gad_campaign_id: lead.gadCampaignId || '',
         fbclid: lead.fbclid || '',
         ttclid: lead.ttclid || '',
+        fbp: lead.fbp || '',
+        fbc: lead.fbc || '',
         procedures: lead.procedure ? [lead.procedure] : [],
         timeline: lead.timeline || '',
         timeOfDayToBeContacted: mapContactTime(lead.preferredContactTime),

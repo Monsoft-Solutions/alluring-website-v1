@@ -16,6 +16,8 @@ export type LeadAttributionInput = {
     source: string | null
     referrer: string | null
     gclid: string | null
+    gbraid: string | null
+    wbraid: string | null
     fbclid: string | null
     ttclid: string | null
 }

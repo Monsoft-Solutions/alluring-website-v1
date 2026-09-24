@@ -11,6 +11,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import { readCookie } from '@/lib/analytics/attribution-params.util'
 import {
     LEAD_FORM_EVENTS,
     readGaClientId,
@@ -248,6 +249,10 @@ export function useContactFormSubmission(
                         _formLoadedAt: formLoadedAt.current,
                         submittedFromPath: window.location.pathname,
                         gaClientId: readGaClientId(),
+                        // Meta's browser and click ids, for matching the
+                        // lead in a Conversions API event later.
+                        fbp: readCookie('_fbp'),
+                        fbc: readCookie('_fbc'),
                         // Include UTM tracking data for attribution
                         ...(utmData ?? {}),
                     }),

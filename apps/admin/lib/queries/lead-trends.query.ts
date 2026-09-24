@@ -21,6 +21,8 @@ export async function getClassifiedLeadsInRange(
             source: contactSubmission.source,
             referrer: contactSubmission.referrer,
             gclid: contactSubmission.gclid,
+            gbraid: contactSubmission.gbraid,
+            wbraid: contactSubmission.wbraid,
             fbclid: contactSubmission.fbclid,
             ttclid: contactSubmission.ttclid,
             createdAt: contactSubmission.createdAt,
@@ -41,6 +43,8 @@ export async function getClassifiedLeadsInRange(
             source: row.source,
             referrer: row.referrer,
             gclid: row.gclid,
+            gbraid: row.gbraid,
+            wbraid: row.wbraid,
             fbclid: row.fbclid,
             ttclid: row.ttclid,
         })

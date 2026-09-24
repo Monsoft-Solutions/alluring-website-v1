@@ -31,8 +31,17 @@ export const contactSubmission = pgTable(
         utmContent: text('utm_content'),
         utmTerm: text('utm_term'),
         gclid: text('gclid'),
+        // Google Ads sends these instead of, or beside, gclid on iOS traffic.
+        gbraid: text('gbraid'),
+        wbraid: text('wbraid'),
+        // `gad_campaignid`: the campaign id, since the tracking template's
+        // `{campaignname}` never expands and leaves utm_campaign empty.
+        gadCampaignId: text('gad_campaign_id'),
         fbclid: text('fbclid'),
         ttclid: text('ttclid'),
+        // Meta pixel cookies, the match keys a Conversions API event needs.
+        fbp: text('fbp'),
+        fbc: text('fbc'),
         referrer: text('referrer'),
         landingPage: text('landing_page'),
         // Where the form itself was submitted — `landing_page` is where the
