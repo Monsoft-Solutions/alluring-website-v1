@@ -4,8 +4,19 @@
  * Comprehensive FAQ data specifically for the specials landing page.
  * Addresses common objections and questions about promotional offers.
  */
-import { siteConfig } from '@/lib/data/site-config'
+import { faqDataContact } from '@/lib/data/faq/contact-faq-data'
+import { getFinancingPartnersString, siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_SHORT_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { FaqItem } from '@/lib/types/shared/faq.type'
+
+/** An approved answer from the contact page, word for word. */
+const fromContactPage = (category: string, question: string): FaqItem => {
+    const item = faqDataContact[category]?.find(
+        (faq) => faq.question === question
+    )
+    if (!item) throw new Error(`Contact FAQ missing: ${question}`)
+    return item
+}
 
 /**
  * Specials FAQ items
@@ -13,35 +24,30 @@ import type { FaqItem } from '@/lib/types/shared/faq.type'
 export const specialsFaqData: FaqItem[] = [
     {
         question: 'How do I claim a special offer?',
-        answer: `Simply fill out the consultation form on this page or call us at ${siteConfig.contact.phoneDisplay}. Mention the promotion you're interested in when scheduling, and our team will ensure the discount is applied to your quote.`,
+        answer: `Answer the three quick questions in the message thread on this page, or call us at ${siteConfig.contact.phoneDisplay}. A patient coordinator texts you within 24 hours, books your free consultation and makes sure the current offer is applied to your written quote.`,
+    },
+    // Four in five visitors to this page are outside Florida (#274).
+    fromContactPage('consultations', 'Do you offer virtual consultations?'),
+    fromContactPage('preparation', 'Do you help with travel arrangements?'),
+    {
+        question: 'Do specials apply to all procedures?',
+        answer: 'Each promotion says which procedures it covers, and some apply only to combined procedures. Your coordinator confirms exactly how the current offer applies to your plan before you commit to anything.',
     },
     {
         question: 'Can I combine special offers with financing?',
-        answer: 'Absolutely! Our special offers can be combined with our flexible financing options through Cherry, CareCredit, and United Credit. This means you can enjoy promotional pricing while spreading payments over time with low monthly payments.',
+        answer: `Yes. Special offers can be combined with our financing options through ${getFinancingPartnersString()}, so you can keep the promotional price and spread the payments over time.`,
     },
     {
         question: 'Are the promotional prices all-inclusive?',
-        answer: 'Our promotional pricing typically includes surgeon fees, anesthesia, facility costs, and standard follow-up care. During your consultation, you will receive a detailed breakdown of exactly what is included so there are no surprises.',
+        answer: 'Your quote lists exactly what is included — surgeon fees, anesthesia, facility and standard follow-up care — in writing, so there are no surprises.',
     },
     {
         question: 'What if the offer expires before my surgery date?',
-        answer: 'Once you schedule your consultation and confirm your procedure, the promotional price is locked in for you—even if the public promotion ends before your surgery date. We honor the price at the time of booking.',
-    },
-    {
-        question: 'Do specials apply to all procedures?',
-        answer: 'Each promotion specifies which procedures are included. Some offers apply to specific procedures like BBL or breast augmentation, while others may cover multiple treatments. Check the promotion details or ask during your consultation.',
+        answer: 'The offer depends on when you sign, not when you have surgery. Sign your surgery contract and place your reservation deposit before the offer ends, and your price is locked in — even if your surgery date is months away.',
     },
     {
         question: 'Is the consultation really free?',
-        answer: 'Yes! Your initial consultation is completely complimentary with no obligation. You will meet with a board-certified surgeon who will assess your goals, explain your options, and provide a personalized quote—all at no cost to you.',
-    },
-    {
-        question: 'How long are special offers valid?',
-        answer: 'Each promotion has its own timeline, which is clearly displayed on the offer. Some specials run for a few weeks, while seasonal promotions may be available for a month or longer. We recommend booking early to ensure availability.',
-    },
-    {
-        question: 'Can I book now and schedule surgery later?',
-        answer: 'Yes, you can secure your promotional pricing by scheduling a consultation now, even if your preferred surgery date is months away. Our team will work with you to find the perfect timing for your transformation.',
+        answer: `Yes. Your consultation is free and there is no obligation. You meet ${KARLINSKY_SHORT_NAME}, who is board certified in general surgery by the American Board of Surgery, and you leave with a personalized quote.`,
     },
 ]
 

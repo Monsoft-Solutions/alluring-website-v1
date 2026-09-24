@@ -7,6 +7,7 @@
 
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 import { getFinancingPartnersString } from '@/lib/data/site-config'
+import { KARLINSKY_SHORT_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * Contact page FAQ categories
@@ -25,7 +26,7 @@ export const faqDataContact: Record<string, FaqItem[]> = {
     consultations: [
         {
             question: 'What happens during a consultation?',
-            answer: "Your consultation is a private, unhurried conversation with our board-certified surgeon. We'll discuss your goals, examine the areas you'd like to address, review your medical history, and create a personalized treatment plan. You'll receive a detailed quote and have all your questions answered—no pressure, just clarity.",
+            answer: `Your consultation is a private, unhurried conversation with ${KARLINSKY_SHORT_NAME}, who is board certified in general surgery by the American Board of Surgery. You'll discuss your goals, she'll examine the areas you'd like to address and review your medical history, and you'll leave with a personalized plan and a detailed quote — no pressure, just clarity.`,
         },
         {
             question: 'How long does a consultation take?',
@@ -34,10 +35,6 @@ export const faqDataContact: Record<string, FaqItem[]> = {
         {
             question: 'Do you offer virtual consultations?',
             answer: "Yes! We offer secure video consultations for patients who can't visit our Miami office in person. Virtual consultations are perfect for initial discussions, procedure education, and treatment planning. Many out-of-town patients complete their virtual consult first, then fly in for their surgery.",
-        },
-        {
-            question: 'Is there a consultation fee?',
-            answer: 'Yes, there is a consultation fee that goes toward your procedure cost if you decide to move forward. This ensures we can provide you with undivided attention and comprehensive care during your visit. The fee is discussed when you schedule your appointment.',
         },
     ],
     scheduling: [
@@ -95,3 +92,25 @@ export const faqDataContact: Record<string, FaqItem[]> = {
         },
     ],
 }
+
+const pick = (category: string, question: string): FaqItem => {
+    const item = faqDataContact[category]?.find(
+        (faq) => faq.question === question
+    )
+    if (!item) throw new Error(`Contact FAQ missing: ${question}`)
+    return item
+}
+
+/**
+ * The six questions /contact-us shows (#274): what the visit is, how to do
+ * it from out of state, when to book, and money. The page asks for one
+ * thing, so the FAQ answers only what stands between a visitor and the form.
+ */
+export const contactPageFaqs: readonly FaqItem[] = [
+    pick('consultations', 'What happens during a consultation?'),
+    pick('consultations', 'Do you offer virtual consultations?'),
+    pick('scheduling', 'How far in advance should I book my consultation?'),
+    pick('financing', 'What financing options do you offer?'),
+    pick('financing', 'What does the quoted price include?'),
+    pick('preparation', 'Do you help with travel arrangements?'),
+]

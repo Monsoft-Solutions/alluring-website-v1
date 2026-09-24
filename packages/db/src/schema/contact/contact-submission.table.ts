@@ -42,6 +42,21 @@ export const contactSubmission = pgTable(
         // behaviour without sending anything about the lead to Google.
         gaClientId: text('ga_client_id'),
 
+        // The consultation thread's answers and the context it was sent in
+        // (#274), stored as their option values — labels are copy and change.
+        timeline: text('timeline'),
+        // 'en' | 'es' — the language the visitor used the page in.
+        language: text('language'),
+        // The promotion shown next to the form, by title.
+        offer: text('offer'),
+        // IANA zone from the visitor's browser, e.g. 'America/Chicago'.
+        timeZone: text('time_zone'),
+
+        // Optional answers from the thank-you page, added to the same lead.
+        consultType: text('consult_type'),
+        financingInterest: text('financing_interest'),
+        heardFrom: text('heard_from'),
+
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at')
             .defaultNow()

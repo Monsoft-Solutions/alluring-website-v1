@@ -7,10 +7,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Button } from '@workspace/ui/components/button'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedureNavItems } from '@/lib/data/procedure-nav.data'
 import { getPhoneLink, contactInfo } from '@/lib/data/site-config'
+import { consultCtaHref } from '@/lib/constants/standalone-routes'
 import { NavDropdown } from './nav-dropdown.component'
 import type { NavLink } from './header.type'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
@@ -23,6 +25,8 @@ export function DesktopNav() {
         useState(false)
 
     const { track } = useAnalyticsEvent()
+    // On a lead page the button jumps to that page's own thread.
+    const consultHref = consultCtaHref(usePathname())
 
     // Generate surgeon links dynamically
     const surgeonLinks: NavLink[] = surgeons.map((surgeon) => ({
@@ -186,7 +190,7 @@ export function DesktopNav() {
                     {contactInfo.phoneDisplay}
                 </Link>
                 <Button size='sm' variant='primary' asChild>
-                    <Link href='/contact-us' onClick={handleCTAClick}>
+                    <Link href={consultHref} onClick={handleCTAClick}>
                         Request Consult
                     </Link>
                 </Button>

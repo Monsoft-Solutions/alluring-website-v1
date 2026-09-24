@@ -4,20 +4,35 @@
  * Handles lead synchronization to N8N webhook for CRM integration.
  * Sends lead data with UTM parameters and ad platform click IDs.
  *
+ * Every lead is sent as `lead.created` when it is saved. When the thank-you
+ * page adds answers to it (#274), the whole record is sent again as
+ * `lead.updated` with the same `submission_id`, so the CRM side can upsert.
+ *
  * @module lib/services/n8n-webhook.service
  */
 
-import type { InsertContactSubmission } from '@workspace/db/schema/contact'
+import type { ContactSubmission } from '@workspace/db/schema/contact'
 
+import { isPlaceholderEmail } from '@/lib/constants/lead-fields'
 import { env } from '@/env'
 
+export type N8NLeadEvent = 'lead.created' | 'lead.updated'
+
 /**
- * N8N lead payload structure (snake_case format)
- * Matches the expected payload format for N8N webhook
+ * N8N lead payload structure.
+ *
+ * The camelCase keys predate #274 and keep their human-readable values
+ * (`timeOfDayToBeContacted: '9am - 12pm'`, `needFinancing: 'Yes'`). The
+ * snake_case keys added with it carry the stored option values.
  */
 export type N8NLeadPayload = {
+    readonly event: N8NLeadEvent
+    readonly submission_id: string
     readonly name: string
+    readonly first_name: string
+    readonly last_name: string
     readonly phone: string
+    /** Empty when the visitor gave none — never the placeholder address. */
     readonly email: string
     readonly utm_source: string
     readonly utm_medium: string
@@ -28,14 +43,28 @@ export type N8NLeadPayload = {
     readonly fbclid: string
     readonly ttclid: string
     readonly procedures: string[]
+    readonly timeline: string
     readonly timeOfDayToBeContacted: string
     readonly whereDidYouHearFromUs: string
     readonly lang: string
     readonly needFinancing: string
+    readonly consult_type: string
+    readonly offer: string
+    readonly time_zone: string
+    readonly sms_consent: boolean
     readonly referrer: string
     readonly landingPage: string
+    /** The page the form was sent from; `landingPage` is where the visit began. */
+    readonly page: string
     readonly source: string
+    readonly ga_client_id: string
+    /** When this payload was sent — the later of two events for a lead wins. */
+    readonly sent_at: string
 }
+
+/** The stored lead, as the payload builder reads it. */
+export type N8NLeadRecord = Pick<ContactSubmission, 'id'> &
+    Partial<Omit<ContactSubmission, 'id'>>
 
 /**
  * N8N webhook result
@@ -62,21 +91,110 @@ function mapContactTime(
     return timeMap[preferredContactTime] || preferredContactTime
 }
 
+const FINANCING_LABELS: Record<string, string> = {
+    yes: 'Yes',
+    no: 'No',
+    'not-sure': 'Not sure',
+}
+
+const HEARD_FROM_LABELS: Record<string, string> = {
+    instagram: 'Instagram',
+    tiktok: 'TikTok',
+    google: 'Google',
+    friend: 'Friend or family',
+    other: 'Other',
+}
+
+const labelFrom = (
+    labels: Record<string, string>,
+    value: string | null | undefined
+): string => (value ? (labels[value] ?? value) : '')
+
+export function buildN8NLeadPayload(
+    lead: N8NLeadRecord,
+    event: N8NLeadEvent
+): N8NLeadPayload {
+    const fullName =
+        lead.firstName && lead.lastName
+            ? `${lead.firstName} ${lead.lastName}`.trim()
+            : lead.name || ''
+
+    return {
+        event,
+        submission_id: lead.id,
+        name: fullName,
+        first_name: lead.firstName || '',
+        last_name: lead.lastName || '',
+        phone: lead.phone || '',
+        email: isPlaceholderEmail(lead.email) ? '' : (lead.email ?? ''),
+        utm_source: lead.utmSource || '',
+        utm_medium: lead.utmMedium || '',
+        utm_campaign: lead.utmCampaign || '',
+        utm_content: lead.utmContent || '',
+        utm_term: lead.utmTerm || '',
+        gclid: lead.gclid || '',
+        fbclid: lead.fbclid || '',
+        ttclid: lead.ttclid || '',
+        procedures: lead.procedure ? [lead.procedure] : [],
+        timeline: lead.timeline || '',
+        timeOfDayToBeContacted: mapContactTime(lead.preferredContactTime),
+        whereDidYouHearFromUs: labelFrom(HEARD_FROM_LABELS, lead.heardFrom),
+        lang: lead.language || '',
+        needFinancing: labelFrom(FINANCING_LABELS, lead.financingInterest),
+        consult_type: lead.consultType || '',
+        offer: lead.offer || '',
+        time_zone: lead.timeZone || '',
+        sms_consent: lead.consentGiven ?? false,
+        referrer: lead.referrer || '',
+        landingPage: lead.landingPage || '',
+        page: lead.submittedFromPath || '',
+        source: lead.source || '',
+        ga_client_id: lead.gaClientId || '',
+        sent_at: new Date().toISOString(),
+    }
+}
+
 /**
- * Send lead to N8N webhook
+ * Send a new lead to the N8N webhook as `lead.created`.
  *
- * Makes POST request to N8N webhook endpoint with lead data.
  * Non-blocking - failures are logged but don't throw errors.
  *
- * @param leadData - Contact submission data from database
+ * @param lead - The saved contact submission
  * @returns Promise resolving to webhook result
  */
 export async function sendLeadToN8N(
-    leadData: InsertContactSubmission
+    lead: N8NLeadRecord
 ): Promise<N8NWebhookResult> {
-    // Skip if N8N webhook URL not configured
-    if (!env.N8N_WEBHOOK_URL) {
-        console.log('N8N webhook skipped: N8N_WEBHOOK_URL not configured')
+    return postToN8N(
+        env.N8N_WEBHOOK_URL,
+        'N8N_WEBHOOK_URL',
+        buildN8NLeadPayload(lead, 'lead.created')
+    )
+}
+
+/**
+ * Send a lead again, whole, as `lead.updated` after the thank-you page added
+ * answers to it. Goes to its own webhook so an N8N workflow that only knows
+ * `lead.created` never turns an update into a second lead.
+ */
+export async function sendLeadUpdateToN8N(
+    lead: N8NLeadRecord
+): Promise<N8NWebhookResult> {
+    return postToN8N(
+        env.N8N_LEAD_UPDATE_WEBHOOK_URL,
+        'N8N_LEAD_UPDATE_WEBHOOK_URL',
+        buildN8NLeadPayload(lead, 'lead.updated')
+    )
+}
+
+async function postToN8N(
+    url: string | undefined,
+    envName: string,
+    payload: N8NLeadPayload
+): Promise<N8NWebhookResult> {
+    // Skip if the webhook URL is not configured
+    if (!url) {
+        console.log(`N8N webhook skipped: ${envName} not configured`)
         return {
             success: false,
             error: 'N8N webhook URL not configured',
@@ -84,38 +202,11 @@ export async function sendLeadToN8N(
     }
 
     try {
-        // Build full name from available fields
-        const fullName =
-            leadData.firstName && leadData.lastName
-                ? `${leadData.firstName} ${leadData.lastName}`.trim()
-                : leadData.name || ''
-
-        // Build payload in expected N8N format (snake_case)
-        const payload: N8NLeadPayload = {
-            name: fullName,
-            phone: leadData.phone || '',
-            email: leadData.email,
-            utm_source: leadData.utmSource || '',
-            utm_medium: leadData.utmMedium || '',
-            utm_campaign: leadData.utmCampaign || '',
-            utm_content: leadData.utmContent || '',
-            utm_term: leadData.utmTerm || '',
-            gclid: leadData.gclid || '',
-            fbclid: leadData.fbclid || '',
-            ttclid: leadData.ttclid || '',
-            procedures: leadData.procedure ? [leadData.procedure] : [],
-            timeOfDayToBeContacted: mapContactTime(
-                leadData.preferredContactTime
-            ),
-            whereDidYouHearFromUs: '',
-            lang: '',
-            needFinancing: '',
-            referrer: leadData.referrer || '',
-            landingPage: leadData.landingPage || '',
-            source: leadData.source || '',
-        }
-
-        console.log('N8N webhook payload:', payload)
+        console.log('N8N webhook payload:', {
+            event: payload.event,
+            submission_id: payload.submission_id,
+            source: payload.source,
+        })
 
         // Set up timeout guard with AbortController
         const TIMEOUT_MS = 5000
@@ -124,7 +215,7 @@ export async function sendLeadToN8N(
 
         try {
             // Make POST request to N8N webhook with timeout
-            const response = await fetch(env.N8N_WEBHOOK_URL, {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -139,6 +230,7 @@ export async function sendLeadToN8N(
             if (!response.ok) {
                 const errorText = await response.text()
                 console.error('N8N webhook failed:', {
+                    event: payload.event,
                     status: response.status,
                     statusText: response.statusText,
                     error: errorText,
@@ -151,7 +243,7 @@ export async function sendLeadToN8N(
             }
 
             // Log success
-            console.log('Lead sent to N8N successfully:')
+            console.log(`Lead sent to N8N successfully (${payload.event})`)
 
             return {
                 success: true,
@@ -166,8 +258,8 @@ export async function sendLeadToN8N(
                 fetchError.name === 'AbortError'
             ) {
                 console.error('N8N webhook timeout:', {
+                    event: payload.event,
                     timeoutMs: TIMEOUT_MS,
-                    url: env.N8N_WEBHOOK_URL,
                 })
 
                 return {
