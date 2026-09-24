@@ -9,12 +9,23 @@
  * This component should be placed in the root layout or a high-level provider
  * to ensure it captures all navigation events.
  *
+ * It is the only sender of client-navigation page views: GA4's enhanced
+ * measurement "page changes based on browser history" must stay OFF, or
+ * every in-app navigation counts twice. Each page view carries the page
+ * context (`page_type`, `procedure`, `content_group`), records the visitor's
+ * user properties and pushes the context to the dataLayer for GTM (issue #279).
+ *
  * @module components/analytics/page-view-tracker
  */
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useRef } from 'react'
 
-import { trackPageView } from '@/lib/analytics/analytics.client'
+import {
+    setAnalyticsContext,
+    trackPageView,
+} from '@/lib/analytics/analytics.client'
+import { getPageContext } from '@/lib/analytics/page-context'
+import { getVisitorProperties } from '@/lib/analytics/visitor-properties'
 
 /**
  * Internal component that uses useSearchParams (requires Suspense boundary)
@@ -28,14 +39,19 @@ function PageViewTrackerInternal() {
         // Construct full path with search params
         const search = searchParams?.toString()
         const fullPath = search ? `${pathname}?${search}` : pathname
+        const context = getPageContext(pathname)
 
-        // Skip tracking on initial mount (GA4 auto-tracks initial page view)
+        setAnalyticsContext(context, getVisitorProperties(context.procedure))
+
+        // Skip tracking on initial mount (`GoogleAnalytics` sends the initial
+        // page view, with its context, right after its config).
         // Only track subsequent navigation
         if (
             previousPathRef.current !== null &&
             previousPathRef.current !== fullPath
         ) {
             trackPageView({
+                ...context,
                 page_path: pathname,
                 page_location: window.location.href,
                 page_title: document.title,

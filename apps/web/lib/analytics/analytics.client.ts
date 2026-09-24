@@ -9,6 +9,7 @@
 import { publicEnv } from '@/lib/env/public-env'
 
 import type { EventParams, PageViewParams } from './analytics.types'
+import { getPageContext } from './page-context'
 
 /**
  * Check if code is running in browser context
@@ -21,6 +22,19 @@ const isBrowser = (): boolean => typeof window !== 'undefined'
  * @internal
  */
 const isGtagAvailable = (): boolean => isBrowser() && !!window.gtag
+
+/**
+ * The page context every event carries (issue #279), read from the URL at send
+ * time, so an event fired while a client navigation is still settling — a
+ * form's `lead_form_view` on mount — already carries the new page's context.
+ *
+ * Added to each event explicitly because GA4 offers nothing better:
+ * `gtag('set', {...})` custom parameters never reach GA4 events, and `config`
+ * parameters can't change after the first `config`, so they would keep the
+ * landing page's context after a client navigation.
+ */
+const currentPageContext = (): EventParams =>
+    isBrowser() ? getPageContext(window.location.pathname) : {}
 
 /**
  * Check if Microsoft Clarity is available
@@ -46,7 +60,10 @@ export function trackEvent(eventName: string, params?: EventParams): void {
     if (!isGtagAvailable()) return
 
     try {
-        window.gtag!('event', eventName, params ?? {})
+        window.gtag!('event', eventName, {
+            ...currentPageContext(),
+            ...params,
+        })
     } catch (error) {
         if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track event', error)
@@ -74,6 +91,8 @@ export function trackPageView(params?: PageViewParams): void {
         // GA4 automatically tracks page_view on initial load
         // This is for manual tracking (e.g., SPA navigation)
         window.gtag!('event', 'page_view', {
+            ...currentPageContext(),
+            ...params,
             page_title: params?.page_title ?? document.title,
             page_location: params?.page_location ?? window.location.href,
             page_path: params?.page_path ?? window.location.pathname,
@@ -81,6 +100,31 @@ export function trackPageView(params?: PageViewParams): void {
     } catch (error) {
         if (publicEnv.NODE_ENV === 'development') {
             console.error('Analytics: Failed to track page view', error)
+        }
+    }
+}
+
+/**
+ * Record the visitor's GA4 user properties, and push the page context to the
+ * dataLayer so GTM can add it to the events it sends (scroll, `call_click`,
+ * `generate_lead`…), which otherwise carry none. Called once per page view by
+ * `PageViewTracker` (issue #279).
+ */
+export function setAnalyticsContext(
+    context: EventParams,
+    userProperties: EventParams
+): void {
+    if (!isBrowser()) return
+
+    window.dataLayer = window.dataLayer ?? []
+    window.dataLayer.push({ ...context })
+
+    if (!isGtagAvailable()) return
+    try {
+        window.gtag!('set', 'user_properties', userProperties)
+    } catch (error) {
+        if (publicEnv.NODE_ENV === 'development') {
+            console.error('Analytics: Failed to set user properties', error)
         }
     }
 }

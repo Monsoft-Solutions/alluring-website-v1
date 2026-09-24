@@ -7,11 +7,8 @@
  * thin gold underline, and a single refined CTA. Avoids the generic
  * "trust box" pattern in favor of an editorial colophon.
  */
-'use client'
-
 import { ArrowRight } from 'lucide-react'
 
-import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { siteConfig } from '@/lib/data/site-config'
@@ -30,7 +27,6 @@ export function ProcedureLandingFinalCTA({
     procedureTitle,
     formAnchor = '#hero-form',
 }: ProcedureLandingFinalCTAProps) {
-    const { trackCTA } = useAnalyticsEvent()
     const cleanTitle = procedureTitle.replace(/\s*Miami\s*$/i, '')
     const rating = siteConfig.trustStats?.rating
     const patients = siteConfig.trustStats?.patients
@@ -95,12 +91,7 @@ export function ProcedureLandingFinalCTA({
 
                     <a
                         href={formAnchor}
-                        onClick={() =>
-                            trackCTA('landing_cta_final', {
-                                cta_position: 'landing_final_cta',
-                                lp_template_version: 'v2',
-                            })
-                        }
+                        data-cta='landing_cta_final'
                         className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-10 py-4 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_18px_45px_-12px_rgba(212,175,55,0.55)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_22px_55px_-10px_rgba(212,175,55,0.65)] active:scale-[0.98]'
                     >
                         Send My Free Quote

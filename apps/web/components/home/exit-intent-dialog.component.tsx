@@ -50,7 +50,7 @@ export const ExitIntentDialog = ({
 }: ExitIntentDialogProps) => {
     const { track } = useAnalyticsEvent()
 
-    // `exit_intent_shown` fires here rather than in the trigger shim: this
+    // `popup_view` fires here rather than in the trigger shim: this
     // component only mounts once its chunk has arrived, so the event now marks
     // a panel the visitor could actually see. Tracking it at trigger time
     // counted an impression while the fetch was still in flight — and on the
@@ -60,7 +60,10 @@ export const ExitIntentDialog = ({
     useEffect(() => {
         if (hasTracked.current) return
         hasTracked.current = true
-        track('exit_intent_shown', { trigger_type: triggerType })
+        track('popup_view', {
+            popup_name: 'exit_intent',
+            trigger_type: triggerType,
+        })
     }, [track, triggerType])
 
     const form = useForm<LeadCaptureInput>({

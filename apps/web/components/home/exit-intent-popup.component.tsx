@@ -77,7 +77,8 @@ export const ExitIntentPopup = () => {
     const { track } = useAnalyticsEvent()
 
     const handleClose = useCallback(() => {
-        track('exit_intent_dismissed', {
+        track('popup_dismiss', {
+            popup_name: 'exit_intent',
             method: 'close_button',
         })
         setTrigger(null)

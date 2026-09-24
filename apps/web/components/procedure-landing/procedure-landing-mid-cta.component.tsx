@@ -7,11 +7,8 @@
  * the hero so the chapter visually picks up where the cover spread left
  * off.
  */
-'use client'
-
 import { ArrowRight } from 'lucide-react'
 
-import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 
@@ -34,7 +31,6 @@ export function ProcedureLandingMidCTA({
     formAnchor = '#hero-form',
 }: ProcedureLandingMidCTAProps) {
     const cleanTitle = procedureTitle.replace(/\s*Miami\s*$/i, '')
-    const { trackCTA } = useAnalyticsEvent()
 
     return (
         <SectionContainer
@@ -116,12 +112,7 @@ export function ProcedureLandingMidCTA({
                     {/* CTA */}
                     <a
                         href={formAnchor}
-                        onClick={() =>
-                            trackCTA('landing_cta_mid', {
-                                cta_position: 'landing_mid_cta',
-                                lp_template_version: 'v2',
-                            })
-                        }
+                        data-cta='landing_cta_mid'
                         className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 px-9 py-3.5 text-sm font-bold tracking-[0.22em] text-stone-950 uppercase shadow-[0_15px_35px_-10px_rgba(212,175,55,0.45)] transition-all hover:from-amber-400 hover:to-amber-300 hover:shadow-[0_18px_40px_-8px_rgba(212,175,55,0.55)] active:scale-[0.98]'
                     >
                         Send My Free Quote

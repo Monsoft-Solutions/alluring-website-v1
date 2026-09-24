@@ -6,13 +6,10 @@
  * single book CTA that anchors to the hero form. Sticky so both actions
  * are always one tap away.
  */
-'use client'
-
 import { Button } from '@workspace/ui/components/button'
 import { Phone } from 'lucide-react'
 import Image from 'next/image'
 
-import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 export type ProcedureLandingMinimalHeaderProps = {
@@ -22,7 +19,6 @@ export type ProcedureLandingMinimalHeaderProps = {
 export function ProcedureLandingMinimalHeader({
     formAnchor = '#hero-form',
 }: ProcedureLandingMinimalHeaderProps) {
-    const { trackCTA } = useAnalyticsEvent()
     const phoneHref = getPhoneLink()
     const phoneDisplay = siteConfig.contact.phoneDisplay
 
@@ -43,12 +39,7 @@ export function ProcedureLandingMinimalHeader({
                 <div className='flex items-center gap-2 sm:gap-3'>
                     <a
                         href={phoneHref}
-                        onClick={() =>
-                            trackCTA('landing_phone_click', {
-                                cta_position: 'landing_header',
-                                lp_template_version: 'v2',
-                            })
-                        }
+                        data-cta='landing_phone'
                         className='hover:border-gold-400 hover:text-gold-700 inline-flex items-center gap-1.5 rounded-full border border-stone-300 px-3 py-2 text-xs font-semibold tracking-wide text-stone-700 transition-colors sm:py-2 md:px-4 md:text-sm'
                         aria-label={`Call us at ${phoneDisplay}`}
                     >
@@ -64,15 +55,7 @@ export function ProcedureLandingMinimalHeader({
                         size='sm'
                         className='bg-gold-500 hover:bg-gold-600 px-3 text-xs font-bold tracking-wide text-white uppercase shadow-md shadow-amber-500/20 transition-shadow hover:shadow-lg hover:shadow-amber-500/30 sm:px-6 sm:text-sm'
                     >
-                        <a
-                            href={formAnchor}
-                            onClick={() =>
-                                trackCTA('landing_cta_header', {
-                                    cta_position: 'landing_header',
-                                    lp_template_version: 'v2',
-                                })
-                            }
-                        >
+                        <a href={formAnchor} data-cta='landing_cta_header'>
                             <span className='hidden sm:inline'>
                                 Get My Free Quote
                             </span>

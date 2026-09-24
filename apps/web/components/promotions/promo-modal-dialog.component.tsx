@@ -28,6 +28,7 @@ import {
     Gift,
     Languages,
 } from 'lucide-react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@workspace/ui/components/button'
@@ -40,6 +41,7 @@ import {
 } from '@/components/shared/forms/form-fields.component'
 import { PromotionMarkdownClient } from '@/components/promotions/promotion-markdown.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { trackEvent } from '@/lib/analytics/analytics.client'
 import {
     CONTACT_SOURCES,
     type LeadCaptureInput,
@@ -87,22 +89,50 @@ export function PromoModalDialog({
         await submit(data)
     }
 
+    // Like the exit-intent popup: the view is counted once the lazy chunk has
+    // mounted, i.e. when the visitor can actually see the modal.
+    const hasTracked = useRef(false)
+    useEffect(() => {
+        if (hasTracked.current) return
+        hasTracked.current = true
+        trackEvent('popup_view', {
+            popup_name: 'promo_modal',
+            promotion_id: promotion.id,
+        })
+    }, [promotion.id])
+
+    // Only the visitor's own close counts as a dismissal; a successful
+    // submit closes the modal through `onClose` directly.
+    const dismiss = (method: 'close_button' | 'backdrop') => {
+        trackEvent('popup_dismiss', {
+            popup_name: 'promo_modal',
+            promotion_id: promotion.id,
+            method,
+        })
+        onClose()
+    }
+
     return (
         <div className='pointer-events-none fixed inset-0 z-[100] flex items-center justify-center p-4'>
             {/* Backdrop */}
             <div
-                onClick={onClose}
+                onClick={() => dismiss('backdrop')}
                 className='animate-in fade-in pointer-events-auto absolute inset-0 bg-black/70 backdrop-blur-sm duration-200'
             />
 
             {/* Modal */}
-            <div className='animate-in fade-in zoom-in-95 pointer-events-auto relative w-full max-w-4xl overflow-hidden rounded-2xl bg-stone-900 shadow-2xl duration-300'>
+            <div
+                role='dialog'
+                aria-modal='true'
+                aria-label={promotion.title}
+                className='animate-in fade-in zoom-in-95 pointer-events-auto relative w-full max-w-4xl overflow-hidden rounded-2xl bg-stone-900 shadow-2xl duration-300'
+            >
                 {/* Gold accent line */}
                 <div className='from-gold-600 via-gold-400 to-gold-600 absolute top-0 right-0 left-0 h-1 bg-gradient-to-r' />
 
                 {/* Close button */}
                 <button
-                    onClick={onClose}
+                    onClick={() => dismiss('close_button')}
                     className='absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-stone-800/80 text-stone-400 backdrop-blur-sm transition-colors hover:bg-stone-700 hover:text-white'
                     aria-label='Close promotion'
                 >
