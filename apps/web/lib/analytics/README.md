@@ -106,13 +106,64 @@ Each carries `form_name`. Attach the hook's `formRef` to the `<form>` and pass
 `trackValidationErrors` to React Hook Form's `onInvalid`. Values never leave
 the page: the lead is joined to GA4 through the `ga_client_id` column.
 
-GA4's own `form_start` / `form_submit` come from enhanced measurement and are
-not ours. Scroll depth comes from GA4 and GTM; the site no longer sends its own.
+GA4's enhanced-measurement form interactions are off (2026-09-23), so GA4 sends
+no `form_start` / `form_submit` of its own. Scroll depth comes from GA4 and GTM;
+the site no longer sends its own.
 
 `<SectionViewTracker />` sends `section_view` (`section` = the section's id)
 once per page view for every `main section[id]` that is seen.
 
-### 4. Consent Management
+### 4. Page context, CTAs, popups and page speed
+
+Issue #279. Everything here is automatic — the trackers mount once in the root
+layout.
+
+**Page context.** Every event the site sends carries `page_type`, `procedure`
+and GA4's `content_group` (`lib/analytics/page-context.ts`, derived from the
+path): `trackEvent` and `trackPageView` add the context of the current URL.
+GA4's `gtag('set')` can't do this — custom parameters set that way never reach
+events — and `config` parameters can't change after a client navigation. Events
+sent by GTM or enhanced measurement (scroll, `call_click`, `generate_lead`)
+carry none; the context is also pushed to the dataLayer for GTM to map.
+
+A new static route needs an entry in `page-context.ts` — unlisted, a
+root-level page would count as a blog post;
+`__tests__/lib/analytics/page-context.test.ts` fails until it is listed.
+
+`GoogleAnalytics` sends the initial page view itself (`send_page_view: false`
+on config) and `PageViewTracker` every client-navigation one. GA4's enhanced
+measurement "page changes based on browser history" must stay **off**, or each
+navigation counts twice.
+
+**Visitor properties.** User-scoped `site_language` (`en` / `es`) and
+`procedure_interest` (the last procedure page read). For analysis only — do not
+build Ads remarketing audiences from `procedure_interest`. First-touch source
+needs nothing: GA4's "First user source / medium / campaign" hold it.
+
+**CTA clicks.** `<CtaClickTracker />` sends one `cta_click` for every conversion
+CTA: any element with `data-cta="<name>"`, and any link to a consultation or
+contact page, the booking subdomain, or a `tel:` / `sms:` number.
+
+| Param             | Value                                                          |
+| ----------------- | -------------------------------------------------------------- |
+| `cta_name`        | the `data-cta` value, else the destination                     |
+| `cta_location`    | `nav`, `footer`, `popup`, `sticky`, `hero`, `middle`, `bottom` |
+| `cta_destination` | `phone`, `sms`, `booking`, or the page path                    |
+| `section`         | the closest `section[id]`                                      |
+| `cta_text`        | the button's label                                             |
+
+Mark a CTA with `data-cta` instead of calling `trackCTA` — the listener would
+send it a second time.
+
+**Popups.** `popup_view` / `popup_dismiss` with `popup_name` (`exit_intent`,
+`promo_modal`). A view counts once the popup's lazy chunk has mounted; a
+dismissal is the visitor's own close, not a successful submit.
+
+**Page speed.** `<WebVitalsReporter />` sends `web_vital` for LCP, INP and CLS
+with `metric_name`, `metric_value` (ms; CLS ×1000) and `metric_rating`, tagged
+with the page that loaded.
+
+### 5. Consent Management
 
 Use the `useConsent` hook to manage user consent:
 
@@ -147,7 +198,7 @@ Returns event tracking utilities:
 - `track(eventName, params?, options?)` - Track custom event
 - `trackClick(elementName, params?)` - Track click event
 - `trackFormSubmit(formName, params?)` - Track form submission
-- `trackCTA(ctaName, params?)` - Track CTA click
+- `trackCTA(ctaName, params?)` - Track a CTA click that is not a conversion CTA (those use `data-cta`, see §4)
 
 **Parameters:**
 

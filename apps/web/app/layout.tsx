@@ -4,8 +4,10 @@ import { Geist_Mono, Lato, Playfair_Display } from 'next/font/google'
 import Script from 'next/script'
 
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider.component'
+import { CtaClickTracker } from '@/components/analytics/cta-click-tracker.component'
 import { InternalPageViewTracker } from '@/components/analytics/internal-page-view-tracker.component'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker.component'
+import { WebVitalsReporter } from '@/components/analytics/web-vitals-reporter.component'
 import { CookieBanner } from '@/components/cookie-banner.component'
 import { FloatingChatButtonLazy } from '@/components/chat/floating-chat-button-lazy.component'
 import { FloatingFeedbackButtonLazy } from '@/components/feedback/floating-feedback-button-lazy.component'
@@ -135,6 +137,8 @@ export default function RootLayout({
                 <ScrollToTop />
                 <InternalPageViewTracker />
                 <PageViewTracker />
+                <CtaClickTracker />
+                <WebVitalsReporter />
                 <OrganizationSchema
                     id={`${seoConfig.siteUrl}/#organization`}
                     name={seoConfig.siteName}

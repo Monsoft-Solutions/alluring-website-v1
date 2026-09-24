@@ -8,11 +8,15 @@
 /**
  * Google Analytics gtag function type
  */
-export type GtagFunction = (
-    command: 'config' | 'event' | 'consent' | 'set',
-    targetOrAction: string,
-    params?: Record<string, unknown>
-) => void
+export type GtagFunction = {
+    (
+        command: 'config' | 'event' | 'consent' | 'set',
+        targetOrAction: string,
+        params?: Record<string, unknown>
+    ): void
+    /** `gtag('set', {...})`: parameters for every later event on the page. */
+    (command: 'set', params: Record<string, unknown>): void
+}
 
 /**
  * Microsoft Clarity global function type
@@ -62,7 +66,7 @@ export interface EventParams {
 /**
  * Page view parameters
  */
-export interface PageViewParams {
+export interface PageViewParams extends EventParams {
     page_title?: string
     page_location?: string
     page_path?: string

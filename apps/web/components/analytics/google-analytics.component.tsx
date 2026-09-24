@@ -16,8 +16,10 @@
 
 'use client'
 
+import { usePathname } from 'next/navigation'
 import Script from 'next/script'
 
+import { getPageContext } from '@/lib/analytics/page-context'
 import { publicEnv } from '@/lib/env/public-env'
 
 interface GoogleAnalyticsProps {
@@ -39,6 +41,10 @@ interface GoogleAnalyticsProps {
  */
 export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
     const isDevelopment = publicEnv.NODE_ENV === 'development'
+    // The landing page's context for the initial page_view (issue #279).
+    // `PageViewTracker` sends every later page view, and `trackEvent` adds
+    // the current page's context to every event.
+    const pageContext = JSON.stringify(getPageContext(usePathname()))
 
     return (
         <>
@@ -70,8 +76,16 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
                     // Initialize GA4 (analytics enabled immediately)
                     gtag('js', new Date());
                     gtag('config', '${measurementId}', {
-                        page_path: window.location.pathname,${isDevelopment ? '\n                        debug_mode: true,' : ''}
+                        page_path: window.location.pathname,
+                        send_page_view: false,${isDevelopment ? '\n                        debug_mode: true,' : ''}
                     });
+
+                    // The initial page view, sent here rather than by config
+                    // so it carries the page context: config parameters can't
+                    // change after a client navigation, so they can't hold it.
+                    // This config runs before GTM's Google tag configures the
+                    // same ID, which is then a no-op and sends no page_view.
+                    gtag('event', 'page_view', ${pageContext});
                     
                     ${isDevelopment ? "console.log('Analytics: GA4 initialized (consent granted by default)');" : ''}
                 `}
