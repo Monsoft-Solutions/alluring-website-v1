@@ -3,14 +3,15 @@
  *
  * The thread itself is the site's (`ConsultChat`, the one on the home,
  * contact and specials pages): three steps, the first two a single tap. This
- * deck only gives it the landing page's voice — "private", never "free" (see
- * the REGISTER note in `lp-copy.ts`) — and puts the ad group's procedure
- * first among the chips, preselected.
+ * deck only gives it the landing page's voice — "no obligation", never
+ * "free" (see the REGISTER note in `lp-copy.ts`) — and puts the ad group's
+ * procedure first among the chips, preselected.
  *
  * The reply to the first tap gives the settled starting price where there is
  * one (BBL, Lipo 360), read from the procedure facts files like the rest of
- * the site. That is the only price on the page, and it arrives as the answer
- * to a question the visitor has just asked.
+ * the site, and says financing is available whatever she picked (#290): the
+ * visitor has just named a procedure, which is when she is wondering what it
+ * costs, and most visitors never scroll down to the financing section.
  *
  * Built on the server: the facts files stay out of the client bundle, and the
  * page hands both languages to the thread so a language switch needs no
@@ -57,16 +58,17 @@ function copyFor(
         en: {
             title: 'Alluring patient care',
             status: 'Replies by text within 24 hours',
-            greeting: 'Hello. Let’s set up your private consultation.',
+            greeting:
+                'Hi. Let’s start your consultation. It takes about 30 seconds.',
             qProcedure: 'What are you considering?',
             procedures: chatProcedureOptions(order, 'en'),
             procedureReply: {
-                priced: '{procedure} starts at {price}. Your exact figure, all-inclusive, and your dates come in writing after your consultation. It can be by video if you’re not in Miami.',
+                priced: '{procedure} starts at {price}, and financing is available. Your exact figure, all-inclusive, and your dates come in writing after your consultation. It can be by video if you’re not in Miami.',
                 standard:
-                    'Good to know. Your all-inclusive figure and your dates come in writing after your consultation. It can be by video if you’re not in Miami.',
+                    'Good to know. Financing is available, and your all-inclusive figure and your dates come in writing after your consultation. It can be by video if you’re not in Miami.',
                 prices: CHAT_STARTING_PRICES,
                 byProcedure: {
-                    other: 'No problem, that’s what the consultation is for. It can be by video if you’re not in Miami, and your figure comes in writing.',
+                    other: 'No problem, that’s what the consultation is for. It can be by video if you’re not in Miami, your figure comes in writing, and financing is available.',
                 },
             },
             qTimeline: 'When are you hoping to have it done?',
@@ -93,16 +95,16 @@ function copyFor(
         es: {
             title: 'Atención al paciente Alluring',
             status: 'Responde por texto en 24 horas',
-            greeting: 'Hola. Vamos a agendar tu consulta privada.',
+            greeting: 'Hola. Empecemos tu consulta. Toma unos 30 segundos.',
             qProcedure: '¿Qué estás considerando?',
             procedures: chatProcedureOptions(order, 'es'),
             procedureReply: {
-                priced: '{procedure} empieza en {price}. Tu cifra exacta, todo incluido, y tus fechas te llegan por escrito después de tu consulta. Puede ser por video si no estás en Miami.',
+                priced: '{procedure} empieza en {price}, y hay financiamiento disponible. Tu cifra exacta, todo incluido, y tus fechas te llegan por escrito después de tu consulta. Puede ser por video si no estás en Miami.',
                 standard:
-                    'Perfecto. Tu cifra todo incluido y tus fechas te llegan por escrito después de tu consulta. Puede ser por video si no estás en Miami.',
+                    'Perfecto. Hay financiamiento disponible, y tu cifra todo incluido y tus fechas te llegan por escrito después de tu consulta. Puede ser por video si no estás en Miami.',
                 prices: CHAT_STARTING_PRICES,
                 byProcedure: {
-                    other: 'No hay problema, para eso es la consulta. Puede ser por video si no estás en Miami, y tu cifra te llega por escrito.',
+                    other: 'No hay problema, para eso es la consulta. Puede ser por video si no estás en Miami, tu cifra te llega por escrito y hay financiamiento disponible.',
                 },
             },
             qTimeline: '¿Para cuándo te gustaría hacerlo?',

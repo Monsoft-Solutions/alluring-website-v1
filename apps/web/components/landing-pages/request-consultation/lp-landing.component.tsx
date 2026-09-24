@@ -16,11 +16,13 @@
  * and nothing links to the main site. The phone number stays — a call is a
  * conversion, not an exit.
  *
- * Order: the ask, then results, the surgeon, reviews, what the consultation
- * gives her in writing, flying in, the three objections, and the ask again.
+ * Order (v5, #290): the ask, then results, price & financing, the surgeon,
+ * reviews, flying in, the six questions, and the ask again. A sitelink's
+ * `?s=` moves its section directly under the hero and scrolls to it
+ * (`lp-sections.ts`).
  */
 
-import { useEffect, useRef } from 'react'
+import { Fragment, type ReactNode, useEffect, useRef } from 'react'
 
 import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
 import { getSmsLink, siteConfig } from '@/lib/data/site-config'
@@ -31,6 +33,7 @@ import { LP_CHAT_ID } from './lp-config'
 import { LpConsultThread } from './lp-consult-thread.component'
 import { LP_COPY, type LpLang } from './lp-copy'
 import { LpFaq } from './lp-faq.component'
+import { LpFinancing } from './lp-financing.component'
 import { LpFlyIn } from './lp-fly-in.component'
 import { LpHeader } from './lp-header.component'
 import { LpHero } from './lp-hero.component'
@@ -38,10 +41,10 @@ import { LpLegalDialog } from './lp-legal-dialog.component'
 import type { LpProof } from './lp-proof'
 import { LpResults } from './lp-results.component'
 import { LpReviews } from './lp-reviews.component'
+import { type LpSection, orderLpSections } from './lp-sections'
 import { LpSurgeon } from './lp-surgeon.component'
-import { LpWriting } from './lp-writing.component'
 import { trackLpEvent } from './lp-tracking'
-import { AD_VARIANT_COPY, type AdVariant } from './lp-variants'
+import { AD_VARIANT_COPY, type AdVariant, lpTitle } from './lp-variants'
 import { useLpLanguage } from './use-lp-language.hook'
 
 /** The shared sticky bar's links, under the placement names the page reported before. */
@@ -54,6 +57,13 @@ const STICKY_PLACEMENTS: Readonly<Record<string, string>> = {
 /** The published figures, for when the live ones are unavailable. */
 const FALLBACK_RATING = '4.7'
 const FALLBACK_REVIEW_COUNT = '80+'
+
+/**
+ * Sections that report `lp_section_view` the first time a quarter of them is
+ * on screen: how many visitors reach the financing section at all is the
+ * number that says whether it belongs higher.
+ */
+const VIEW_TRACKED: readonly LpSection[] = ['financing']
 
 interface LpLandingProps {
     /** Resolved server-side from `?hl=` or the request's Accept-Language. */
@@ -68,6 +78,8 @@ interface LpLandingProps {
     readonly chat: LpChat
     /** Photographs, rating and reviews, read on the server. */
     readonly proof: LpProof
+    /** From `?s=`: the section a sitelink opened, moved under the hero. */
+    readonly focusSection: LpSection | null
 }
 
 export function LpLanding({
@@ -76,12 +88,18 @@ export function LpLanding({
     adVariant,
     chat,
     proof,
+    focusSection,
 }: LpLandingProps) {
     const [lang, chooseLang] = useLpLanguage(initialLang, langPinnedByUrl)
     const rootRef = useRef<HTMLDivElement>(null)
+    const langRef = useRef(lang)
+    useEffect(() => {
+        langRef.current = lang
+    }, [lang])
 
     const copy = LP_COPY[lang]
     const variant = AD_VARIANT_COPY[lang][adVariant]
+    const title = lpTitle(lang, adVariant)
     const rating = proof.rating ?? FALLBACK_RATING
     const reviewCount = proof.reviewCount
         ? String(proof.reviewCount)
@@ -95,8 +113,49 @@ export function LpLanding({
 
     /** One page view, whatever happens to the language afterwards. */
     useEffect(() => {
-        trackLpEvent('lp_view', { lang: initialLang, adVariant })
-    }, [initialLang, adVariant])
+        trackLpEvent(
+            'lp_view',
+            { lang: initialLang, adVariant },
+            focusSection ? { section: focusSection } : undefined
+        )
+    }, [initialLang, adVariant, focusSection])
+
+    /**
+     * A sitelink's section is already first under the hero; this brings it
+     * into view. Only if the visitor hasn't scrolled yet: a slow hydration
+     * must not yank a page someone is already reading.
+     */
+    useEffect(() => {
+        if (!focusSection || window.scrollY > 40) return
+        document
+            .getElementById(focusSection)
+            ?.scrollIntoView({ block: 'start', behavior: 'instant' })
+    }, [focusSection])
+
+    /** `lp_section_view`, once per section per page view. */
+    useEffect(() => {
+        if (!('IntersectionObserver' in window)) return
+        const targets = VIEW_TRACKED.flatMap((section) => {
+            const element = document.getElementById(section)
+            return element ? [element] : []
+        })
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue
+                    observer.unobserve(entry.target)
+                    trackLpEvent(
+                        'lp_section_view',
+                        { lang: langRef.current, adVariant },
+                        { section: entry.target.id }
+                    )
+                }
+            },
+            { threshold: 0.25 }
+        )
+        for (const target of targets) observer.observe(target)
+        return () => observer.disconnect()
+    }, [adVariant])
 
     /**
      * Calls and CTAs, for Google Ads call conversions through GTM. One
@@ -161,12 +220,34 @@ export function LpLanding({
         const previousLang = documentElement.lang
         const previousTitle = document.title
         documentElement.lang = lang
-        document.title = copy.meta.title
+        document.title = title
         return () => {
             documentElement.lang = previousLang
             document.title = previousTitle
         }
-    }, [lang, copy.meta.title])
+    }, [lang, title])
+
+    const sections: Record<LpSection, ReactNode> = {
+        results: <LpResults copy={copy.results} photos={proof.photos} />,
+        financing: <LpFinancing copy={copy.financing} />,
+        surgeon: <LpSurgeon copy={copy.surgeon} />,
+        reviews: (
+            <LpReviews
+                lang={lang}
+                copy={copy.reviews}
+                rating={rating}
+                reviewCount={proof.reviewCount}
+                liveReviews={proof.reviews}
+            />
+        ),
+        'fly-in': <LpFlyIn copy={copy.flyIn} />,
+        faq: (
+            <LpFaq
+                copy={copy.faq}
+                prices={chat.copy[lang].procedureReply?.prices ?? {}}
+            />
+        ),
+    }
 
     // The sticky bar and the legal dialog sit outside the page root: its
     // scoped `a { color: inherit }` would outrank their utility classes.
@@ -195,18 +276,9 @@ export function LpLanding({
                             />
                         }
                     />
-                    <LpResults copy={copy.results} photos={proof.photos} />
-                    <LpSurgeon copy={copy.surgeon} />
-                    <LpReviews
-                        lang={lang}
-                        copy={copy.reviews}
-                        rating={rating}
-                        reviewCount={proof.reviewCount}
-                        liveReviews={proof.reviews}
-                    />
-                    <LpWriting copy={copy.writing} />
-                    <LpFlyIn copy={copy.flyIn} />
-                    <LpFaq copy={copy.faq} />
+                    {orderLpSections(focusSection).map((section) => (
+                        <Fragment key={section}>{sections[section]}</Fragment>
+                    ))}
                     <LpClosingCta
                         copy={copy.closing}
                         procedures={chat.copy[lang].procedures}

@@ -55,6 +55,8 @@ export interface SavedThread {
     readonly procedure: string
     readonly timeline: string
     readonly name: string
+    /** Set by a financing CTA on the page (`data-consult-financing`). */
+    readonly financing?: boolean
 }
 
 export function readSavedThreadRaw(key: string): string {
@@ -75,6 +77,7 @@ export function parseSavedThread(raw: string): SavedThread | null {
             procedure: text(value.procedure),
             timeline: text(value.timeline),
             name: text(value.name),
+            financing: value.financing === true,
         }
     } catch {
         return null

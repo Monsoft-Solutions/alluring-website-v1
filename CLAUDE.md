@@ -14,7 +14,7 @@
 
 **We do not coordinate travel.** No flights, lodging, transport or airport pickup, and no affiliation with any recovery house or recovery suite. What the practice provides is clinical: confirmed surgery, pre-op and follow-up dates in writing, and how many nights a patient needs to stay in Miami before being cleared to fly home. Do not reintroduce "concierge" travel claims.
 
-**Tagline**: "Luxury Surgeries Made Affordable"
+**Tagline**: "Personal care. Honest price." (`siteConfig.business.tagline`, since #290; it replaced "Luxury Surgeries Made Affordable" — don't write "luxury" or "affordable" into new copy)
 
 **Industry**: Elective cosmetic procedures. High-consideration, research-heavy purchase cycle.
 

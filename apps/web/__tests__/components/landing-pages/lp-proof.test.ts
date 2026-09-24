@@ -63,6 +63,15 @@ describe('selectLpProof — photographs', () => {
         expect(photos[1]?.id).toBe('tt-1')
     })
 
+    it('leads ad groups without photos of their own with the nearest set', () => {
+        const first = (variant: Parameters<typeof selectLpProof>[0]) =>
+            selectLpProof(variant, [], null).photos[0]?.procedure
+
+        expect(first('breast-lift')).toBe('breast-augmentation')
+        expect(first('skin-removal')).toBe('tummy-tuck')
+        expect(first('breast-reduction')).toBe(LP_BEFORE_AFTER[0]?.procedure)
+    })
+
     it('keeps the curated order for the general variant', () => {
         const { photos } = selectLpProof('default', [], null)
         expect(photos.map((photo) => photo.src)).toEqual(

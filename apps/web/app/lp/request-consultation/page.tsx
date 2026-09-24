@@ -6,10 +6,11 @@
  *   /lp/request-consultation                      general
  *   /lp/request-consultation?p=bbl                per ad group
  *   /lp/request-consultation?p=bbl&hl=es          Spanish campaigns
+ *   /lp/request-consultation?s=financing          a sitelink's section first
  *
- * Aliases (`lipo`, `mm`, `tt`, `breast`…) resolve in `lp-variants.ts`, and
- * Google's `gclid` / `wbraid` / `gbraid` / `utm_*` pass through untouched to
- * the thank-you page.
+ * Aliases (`lipo`, `mm`, `tt`, `breast`…) resolve in `lp-variants.ts`, `?s=`
+ * sections in `lp-sections.ts`, and Google's `gclid` / `wbraid` / `gbraid` /
+ * `utm_*` pass through untouched to the thank-you page.
  *
  * It lives under `/lp/*`, which `ConditionalLayout` treats as standalone: no
  * site header, no footer, no floating chrome. A paid landing page has one job,
@@ -36,7 +37,11 @@ import {
     type ResolvedLpLanguage,
 } from '@/components/landing-pages/request-consultation/lp-language'
 import { selectLpProof } from '@/components/landing-pages/request-consultation/lp-proof'
-import { resolveAdVariant } from '@/components/landing-pages/request-consultation/lp-variants'
+import { resolveLpSection } from '@/components/landing-pages/request-consultation/lp-sections'
+import {
+    lpTitle,
+    resolveAdVariant,
+} from '@/components/landing-pages/request-consultation/lp-variants'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 
@@ -62,14 +67,20 @@ async function resolveLang(params: SearchParams): Promise<ResolvedLpLanguage> {
     )
 }
 
+function variantFrom(params: SearchParams) {
+    return resolveAdVariant(first(params.p) ?? first(params.procedure))
+}
+
 export async function generateMetadata({
     searchParams,
 }: PageProps): Promise<Metadata> {
-    const { lang } = await resolveLang(await searchParams)
+    const params = await searchParams
+    const { lang } = await resolveLang(params)
     const { meta } = LP_COPY[lang]
 
     return {
-        title: meta.title,
+        // Absolute: the title already ends with the practice's name.
+        title: { absolute: lpTitle(lang, variantFrom(params)) },
         description: meta.description,
         // Paid traffic only. It must never compete with /free-consultation or
         // /consulta-gratis in organic search.
@@ -88,9 +99,7 @@ export default async function RequestConsultationLandingPage({
 }: PageProps) {
     const params = await searchParams
     const { lang, pinned } = await resolveLang(params)
-    const adVariant = resolveAdVariant(
-        first(params.p) ?? first(params.procedure)
-    )
+    const adVariant = variantFrom(params)
 
     const [gallery, reviews] = await Promise.all([
         getSpecialsFeaturedGalleryImages().catch(() => []),
@@ -104,6 +113,7 @@ export default async function RequestConsultationLandingPage({
             adVariant={adVariant}
             chat={buildLpChat(adVariant)}
             proof={selectLpProof(adVariant, gallery, reviews)}
+            focusSection={resolveLpSection(first(params.s))}
         />
     )
 }

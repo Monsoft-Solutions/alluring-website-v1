@@ -189,7 +189,7 @@ export const financingPageData: FinancingPageData = {
     hero: {
         badge: 'Flexible Payment Options',
         headline: 'Your Dream Results, Your Timeline',
-        subheadline: 'Luxury Surgeries Made Affordable',
+        subheadline: siteConfig.business.tagline,
         description:
             "Don't let finances delay your transformation. Our flexible financing options make world-class cosmetic surgery accessible with affordable monthly payments and quick approvals.",
         trustIndicators: heroTrustIndicators,

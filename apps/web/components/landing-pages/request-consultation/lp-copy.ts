@@ -9,23 +9,27 @@
  * first tap) live in `lp-chat-copy.ts`, which is built on the server.
  *
  * ---------------------------------------------------------------------
- * REGISTER
+ * REGISTER (v5, #290)
  * ---------------------------------------------------------------------
- * This page is written for the top of the market, and the register is
- * load-bearing rather than decorative. Three rules:
+ * The page talks to the person who clicked the ad, and the data says who
+ * that is: usually a woman on her phone, often out of state, often after
+ * hours, and often comparing prices (price words are in 8.6% of paid
+ * clicks). v4 was written as a top-of-market brand and said little to
+ * someone asking "can I afford this, and who operates on me?". The line v5
+ * makes everywhere is the site's tagline: personal care, honest price.
  *
- *   1. No price anxiety. There is no weekly payment, no APR and no
- *      "affordable" anywhere on this page. The one figure it gives is the
- *      settled starting price, and only in the thread's reply after the
- *      visitor names the procedure — an answer to her question, not a
- *      banner. The *service* claim stays: an all-inclusive figure, in
- *      writing, before anything is decided.
- *   2. Declarative, not persuasive. Short sentences, no exclamation marks, no
- *      superlatives we would have to defend. Confidence is quieter than
- *      enthusiasm.
- *   3. "Private", not "free". The consultation still carries no obligation,
- *      and that is said plainly. "Free" stays off this page until counsel has
- *      settled the Fla. Stat. 456.062 statement it would need.
+ *   1. Say what she searched. The headline names the procedure and Miami
+ *      (`lp-variants.ts`); the second line repeats the ad's promise.
+ *   2. Answer the money question plainly: the settled starting prices, one
+ *      all-inclusive figure in writing, and financing by partner name. Never
+ *      a payment amount, an APR or a term — those trigger Truth in Lending
+ *      disclosures (Reg Z) — and never "affordable" or "luxury": show the
+ *      value, don't claim it.
+ *   3. Talk to her. "You", short sentences, plain words, no exclamation
+ *      marks, no superlatives we would have to defend, no acronyms she has
+ *      to look up.
+ *   4. "No obligation", not "free". "Free" stays off this page until counsel
+ *      has settled the Fla. Stat. 456.062 statement it would need.
  *
  * The practice answers every lead by text, so nothing here promises a call.
  * A visitor who would rather talk can still tap the phone number.
@@ -36,11 +40,15 @@
  * ---------------------------------------------------------------------
  * CLAIMS
  * ---------------------------------------------------------------------
- * Every factual claim here is already published on the site: the
- * AAAASF-accredited facility, board-certified anesthesiologists, the Google
- * rating, the procedure counts, the written recovery plan, the confirmed
- * dates, and that nobody here earns a commission. Raising the register does
- * not license a new one — reword freely, invent nothing.
+ * Every factual claim here is already published on the site: the Google
+ * rating, the procedure counts, the starting prices (read from the facts
+ * files by the server), the three financing partners and Cherry's soft
+ * check, the written recovery plan, the confirmed dates, and that nobody
+ * here earns a commission. Reword freely, invent nothing.
+ *
+ * No facility-accreditation claim (AAAASF or any other) and no
+ * anesthesiologist claim: the practice has not confirmed either in writing,
+ * and the procedure-page compliance guide lists both as owner claims.
  *
  * Dr. Karlinsky's credentials follow `karlinsky-credentials.constant.ts` and
  * Florida Rule 64B8-11.001: she is named as an MD, and only the boards that
@@ -51,6 +59,7 @@
  * the footer disclaimer.
  */
 
+import { FINANCING_PARTNERS } from '@/lib/data/site-config'
 import {
     KARLINSKY_ABS_CERTIFIED_ON,
     KARLINSKY_FLORIDA_LICENSE,
@@ -90,8 +99,14 @@ export interface LpStat {
 
 export interface LpFaqItem {
     readonly question: string
+    /** `{prices}` is replaced with the deck's `faq.prices` sentence, or dropped. */
     readonly answer: string
     readonly tag: string
+}
+
+export interface LpFinancingStep {
+    readonly title: string
+    readonly body: string
 }
 
 export interface LpSheetRow {
@@ -106,7 +121,11 @@ export interface LpResultCaption {
 }
 
 export interface LpDictionary {
-    readonly meta: { readonly title: string; readonly description: string }
+    readonly meta: {
+        /** `{title}` is the ad group's own (`VariantCopy.title`). */
+        readonly title: string
+        readonly description: string
+    }
     readonly header: {
         readonly langLabel: string
         readonly callWord: string
@@ -116,8 +135,9 @@ export interface LpDictionary {
         readonly eyebrow: string
         /** After the bold rating. `{count}` is the Google review count. */
         readonly trustGoogle: string
-        readonly trustBoard: string
-        readonly trustAaaasf: string
+        /** The promise every ad makes. */
+        readonly trustSurgeon: string
+        readonly trustFinancing: string
         /** The "prefer the other language?" nudge under the thread. */
         readonly nudge: { readonly question: string; readonly action: string }
         /** Under the thread, before the phone number. */
@@ -134,7 +154,6 @@ export interface LpDictionary {
         readonly eyebrow: string
         readonly heading: RichText
         readonly role: string
-        readonly quote: string
         readonly lead: string
         readonly stats: readonly LpStat[]
         readonly credentials: readonly string[]
@@ -153,11 +172,19 @@ export interface LpDictionary {
         readonly note: string
         readonly cta: string
     }
-    readonly writing: {
+    /**
+     * Price & financing (#290): the written-summary card v4 called "What you
+     * leave with", plus how paying works. No amounts, rates or terms.
+     */
+    readonly financing: {
         readonly eyebrow: string
         readonly heading: RichText
         readonly body: string
+        readonly steps: readonly LpFinancingStep[]
+        readonly partnersLabel: string
+        /** Scrolls to the thread and tags the lead `financing_interest = yes`. */
         readonly cta: string
+        readonly fine: string
         readonly sheetLabel: string
         readonly sheetTitle: string
         readonly sheetSubtitle: string
@@ -189,6 +216,11 @@ export interface LpDictionary {
     readonly faq: {
         readonly eyebrow: string
         readonly heading: RichText
+        /**
+         * The settled starting prices, for the cost answer: `{bbl}` and
+         * `{lipo}`. Dropped whole when either price is missing.
+         */
+        readonly prices: string
         readonly items: readonly LpFaqItem[]
     }
     readonly closing: {
@@ -236,21 +268,30 @@ export const LP_LINKS = {
 
 const ABS_YEAR = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
 
+/** "Cherry, CareCredit or United Credit", from the site's partner list. */
+function partners(conjunction: string): string {
+    const names = [...FINANCING_PARTNERS]
+    const last = names.pop()
+    return names.length
+        ? `${names.join(', ')} ${conjunction} ${last}`
+        : (last ?? '')
+}
+
 const en: LpDictionary = {
     meta: {
-        title: 'Private Plastic Surgery Consultation in Miami | Alluring Plastic Surgery',
-        description: `A private consultation with ${KARLINSKY_NAME}, in Miami. Real before-and-after results, an AAAASF-accredited facility, and your all-inclusive figure in writing before you decide anything. Hablamos Español.`,
+        title: '{title} · Financing Available | Alluring Plastic Surgery',
+        description: `A consultation with ${KARLINSKY_NAME}, in Miami or by video. Real before-and-after results, one all-inclusive price in writing, and financing through ${partners('and')}. Hablamos Español.`,
     },
     header: {
         langLabel: 'Language / Idioma',
         callWord: 'Call ',
-        cta: 'Request consultation',
+        cta: 'Start my consultation',
     },
     hero: {
-        eyebrow: 'Private consultation · Miami, FL',
+        eyebrow: 'In person or by video · Miami',
         trustGoogle: 'on Google · {count} reviews',
-        trustBoard: 'Board certified, American Board of Surgery',
-        trustAaaasf: 'AAAASF-accredited facility',
+        trustSurgeon: 'Your surgeon does your surgery',
+        trustFinancing: 'Financing available',
         nudge: {
             question: '¿Prefieres español?',
             action: 'Ver esta página en español',
@@ -269,8 +310,7 @@ const en: LpDictionary = {
         eyebrow: 'Your surgeon',
         heading: ['Dr. Victoria ', { em: 'Karlinsky' }],
         role: `${KARLINSKY_NAME} · Medical Director`,
-        quote: '“Cosmetic surgery is never just about a single feature. It’s about how you feel when you walk into a room, and knowing we prioritized your safety at every step.”',
-        lead: 'Your consultation is with the surgeon who operates. Not a patient advisor, not a closer.',
+        lead: 'The surgeon you meet is the surgeon who operates. She plans your surgery, performs it, and sees you at follow-up.',
         stats: [
             { value: '5,000+', label: 'Procedures' },
             { value: '1,500+', label: 'BBLs performed' },
@@ -281,7 +321,6 @@ const en: LpDictionary = {
             `Board certified in general surgery by the American Board of Surgery since ${ABS_YEAR}`,
             'Fellow of the American College of Surgeons (FACS)',
             `Florida medical license ${KARLINSKY_FLORIDA_LICENSE}, clear and active`,
-            'Operates in an AAAASF-accredited facility with board-certified anesthesiologists',
         ],
         badgesLabel: 'Board certification and fellowship',
         cta: 'Request a consultation with Dr. Karlinsky',
@@ -320,11 +359,27 @@ const en: LpDictionary = {
         note: 'Individual results vary.',
         cta: 'Request a consultation',
     },
-    writing: {
-        eyebrow: 'What you leave with',
-        heading: ['Answers, not a pitch. ', { em: 'In writing.' }],
-        body: 'Most consultations end in a sales pitch. Yours ends with a straight answer on candidacy and your all-inclusive figure, put in writing so you can take it home, weigh it and decide in your own time. Nobody here earns a commission.',
-        cta: 'Request a consultation',
+    financing: {
+        eyebrow: 'Price & financing',
+        heading: ['Your price in writing. ', { em: 'Your payments, planned.' }],
+        body: 'Surgery is a real investment, and you shouldn’t have to guess what it costs. You get one all-inclusive figure in writing before you decide anything. Then you choose how to pay: in full, in monthly payments through a financing partner, or both.',
+        steps: [
+            {
+                title: 'Get your figure',
+                body: 'Your all-inclusive price comes in writing after your consultation, so the amount you finance is the real one.',
+            },
+            {
+                title: 'Check your options',
+                body: `Apply with ${partners('or')}. Checking with Cherry won’t affect your credit score.`,
+            },
+            {
+                title: 'Choose your date',
+                body: 'Book once the monthly payment works for you. Your coordinator will walk you through the plans.',
+            },
+        ],
+        partnersLabel: 'Financing partners',
+        cta: 'Ask about financing',
+        fine: 'Financing is offered by third-party lenders and is subject to credit approval. Terms vary by lender and plan.',
         sheetLabel: 'Consultation summary',
         sheetTitle: 'Consultation summary',
         sheetSubtitle: 'What every patient leaves with',
@@ -350,9 +405,10 @@ const en: LpDictionary = {
                 ],
             },
             {
-                term: 'Facility',
+                term: 'Payment',
                 value: [
-                    'AAAASF-accredited, with board-certified anesthesiologists.',
+                    'In full, financed, or a mix. ',
+                    { em: 'Your choice.' },
                 ],
             },
             {
@@ -363,12 +419,6 @@ const en: LpDictionary = {
                 term: 'Dates',
                 value: [
                     'Surgery, pre-op and follow-ups confirmed before you book travel.',
-                ],
-            },
-            {
-                term: 'Your surgeon',
-                value: [
-                    'Dr. Victoria Karlinsky. Time with her, not a commission-paid closer.',
                 ],
             },
         ],
@@ -398,42 +448,58 @@ const en: LpDictionary = {
         link: 'Read more patient reviews',
     },
     flyIn: {
-        eyebrow: 'Flying in?',
-        heading: 'Over 40% of our patients travel to Miami for surgery',
+        eyebrow: 'From out of state',
+        heading: 'Flying in? Plan it from home.',
         subtitle:
-            'Meet your surgeon by video first. Book flights only once your dates are confirmed in writing.',
-        cta: 'Request a virtual consultation',
+            'Over 40% of our patients travel to Miami for surgery. Meet your surgeon by video first, and book flights only once your dates are confirmed in writing.',
+        cta: 'Request a video consultation',
         bullets: [
-            'Virtual consultation from anywhere in the U.S.',
+            'Video consultation from anywhere in the U.S.',
             'Surgery, pre-op and follow-up dates in writing before you book travel',
-            'Pre-op, surgery and every follow-up in one accredited Miami facility',
+            'How many nights to stay in Miami before you’re cleared to fly home, in writing',
             'Bilingual team, English and Spanish',
         ],
     },
     faq: {
-        eyebrow: 'The real questions',
-        heading: ['What’s actually ', { em: 'stopping you?' }],
+        eyebrow: 'Straight answers',
+        heading: ['The questions ', { em: 'everyone asks' }],
+        prices: 'BBL starts at {bbl} and Lipo 360 at {lipo}.',
         items: [
             {
-                question: '“Is it safe?”',
-                answer: `Surgery happens in an AAAASF-accredited facility with board-certified anesthesiologists, not an office suite. Every patient has pre-op lab work before we clear them. Your surgeon, ${KARLINSKY_NAME}, is board certified in general surgery by the American Board of Surgery.`,
-                tag: 'Accredited facility · Pre-op labs',
+                question: 'How much will it cost?',
+                answer: 'It depends on your body and your goals, so your figure comes after your consultation: one all-inclusive price, in writing, with no surprise fees. {prices} Financing is available if you’d rather pay monthly.',
+                tag: 'All-inclusive · In writing',
             },
             {
-                question: '“How long is recovery?”',
-                answer: 'Most patients are back at a desk in one to two weeks; exercise comes back in stages after that, depending on the procedure. You get a written week-by-week recovery plan before you book, so you can plan work, childcare and travel around it.',
+                question: 'Can I finance it?',
+                answer: `Yes. We work with ${partners('and')}. You can check your options before you choose a date, and checking with Cherry won’t affect your credit score. Financing is subject to the lender’s approval.`,
+                tag: FINANCING_PARTNERS.join(' · '),
+            },
+            {
+                question: 'Is it safe?',
+                answer: `Every patient has pre-op lab work before we clear them for surgery. Your surgeon, ${KARLINSKY_NAME}, is board certified in general surgery by the American Board of Surgery. She performs your surgery herself and sees you at follow-up.`,
+                tag: 'Pre-op labs · Your surgeon operates',
+            },
+            {
+                question: 'How much time off will I need?',
+                answer: 'Most patients are back at a desk in one to two weeks, and exercise comes back in stages after that, depending on the procedure. You get a written week-by-week recovery plan before you book, so you can plan work and childcare around it.',
                 tag: 'Written recovery plan up front',
             },
             {
-                question: '“What if I’m not ready?”',
+                question: 'I don’t live in Miami. How does it work?',
+                answer: 'Start with a video consultation from home. Your surgery, pre-op and follow-up dates come in writing before you book flights, along with how many nights to stay in Miami before you’re cleared to fly home.',
+                tag: 'Video consultation · Dates in writing',
+            },
+            {
+                question: 'What if I’m not ready?',
                 answer: 'Then don’t book. The consultation carries no obligation, and you can leave with a price, a plan and no appointment. Nobody here earns a commission for closing you.',
                 tag: 'No obligation · No commission',
             },
         ],
     },
     closing: {
-        heading: ['Ready for a real ', { em: 'answer?' }],
-        body: 'Private, confidential, no obligation. A patient coordinator texts you within 24 hours.',
+        heading: ['Your plan and your price, ', { em: 'in writing.' }],
+        body: 'Private, no obligation. A patient coordinator texts you within 24 hours.',
         chipsLabel: 'Start with what you’re considering',
         or: 'or call',
     },
@@ -453,24 +519,24 @@ const en: LpDictionary = {
         loadError: 'This document didn’t load here.',
         openInTab: 'Open it in a new tab',
     },
-    sticky: { cta: 'Request consultation' },
+    sticky: { cta: 'Start my consultation' },
 }
 
 const es: LpDictionary = {
     meta: {
-        title: 'Consulta privada de cirugía plástica en Miami | Alluring Plastic Surgery',
-        description: `Una consulta privada con la Dra. ${KARLINSKY_NAME}, en Miami. Resultados reales de antes y después, una clínica acreditada AAAASF y tu cifra todo incluido por escrito antes de decidir nada.`,
+        title: '{title} · Con financiamiento | Alluring Plastic Surgery',
+        description: `Una consulta con la Dra. ${KARLINSKY_NAME}, en Miami o por video. Resultados reales de antes y después, un solo precio todo incluido por escrito y financiamiento con ${partners('y')}.`,
     },
     header: {
         langLabel: 'Idioma / Language',
         callWord: 'Llama ',
-        cta: 'Pedir consulta',
+        cta: 'Empezar mi consulta',
     },
     hero: {
-        eyebrow: 'Consulta privada · Miami, FL',
+        eyebrow: 'En persona o por video · Miami',
         trustGoogle: 'en Google · {count} reseñas',
-        trustBoard: 'Certificada por el American Board of Surgery',
-        trustAaaasf: 'Clínica acreditada AAAASF',
+        trustSurgeon: 'Tu cirujana hace tu cirugía',
+        trustFinancing: 'Financiamiento disponible',
         nudge: {
             question: 'Prefer English?',
             action: 'View this page in English',
@@ -494,8 +560,7 @@ const es: LpDictionary = {
         eyebrow: 'Tu cirujana',
         heading: ['Dra. Victoria ', { em: 'Karlinsky' }],
         role: `${KARLINSKY_NAME} · Directora médica`,
-        quote: '“La cirugía cosmética nunca se trata de un solo rasgo. Se trata de cómo te sientes al entrar a un lugar, sabiendo que tu seguridad fue la prioridad en cada paso.”',
-        lead: 'Tu consulta es con la cirujana que opera. No con una asesora, no con un vendedor.',
+        lead: 'La cirujana que conoces es la cirujana que opera. Ella planifica tu cirugía, la realiza y te ve en tus controles.',
         stats: [
             { value: '5,000+', label: 'Procedimientos' },
             { value: '1,500+', label: 'BBL realizados' },
@@ -510,7 +575,6 @@ const es: LpDictionary = {
             `Certificada en cirugía general por el American Board of Surgery desde ${ABS_YEAR}`,
             'Fellow del American College of Surgeons (FACS)',
             `Licencia médica de Florida ${KARLINSKY_FLORIDA_LICENSE}, vigente y sin sanciones`,
-            'Opera en una clínica acreditada AAAASF con anestesiólogos certificados',
         ],
         badgesLabel: 'Certificación y fellowship',
         cta: 'Pedir una consulta con la Dra. Karlinsky',
@@ -549,14 +613,30 @@ const es: LpDictionary = {
         note: 'Los resultados varían según la persona.',
         cta: 'Pedir una consulta',
     },
-    writing: {
-        eyebrow: 'Con qué sales de la consulta',
+    financing: {
+        eyebrow: 'Precio y financiamiento',
         heading: [
-            'Respuestas, no un discurso de venta. ',
-            { em: 'Por escrito.' },
+            'Tu precio, por escrito. ',
+            { em: 'Tus pagos, planificados.' },
         ],
-        body: 'La mayoría de las consultas terminan en una venta. La tuya termina con una respuesta clara sobre si eres candidata y tu cifra todo incluido, por escrito, para que te la lleves a casa, la valores y decidas con calma. Aquí nadie gana comisión.',
-        cta: 'Pedir una consulta',
+        body: 'Una cirugía es una inversión real, y no deberías tener que adivinar cuánto cuesta. Recibes una sola cifra todo incluido por escrito antes de decidir nada. Después eliges cómo pagar: completo, en pagos mensuales con una financiera, o una combinación.',
+        steps: [
+            {
+                title: 'Recibe tu cifra',
+                body: 'Tu precio todo incluido te llega por escrito después de tu consulta, así que el monto que financias es el real.',
+            },
+            {
+                title: 'Revisa tus opciones',
+                body: `Solicita con ${partners('o')}. Consultar con Cherry no afecta tu puntaje de crédito.`,
+            },
+            {
+                title: 'Elige tu fecha',
+                body: 'Reserva cuando el pago mensual te funcione. Tu coordinadora te explica los planes.',
+            },
+        ],
+        partnersLabel: 'Financieras',
+        cta: 'Preguntar por financiamiento',
+        fine: 'El financiamiento lo ofrecen prestamistas externos y está sujeto a aprobación de crédito. Las condiciones varían según el prestamista y el plan.',
         sheetLabel: 'Resumen de tu consulta',
         sheetTitle: 'Resumen de tu consulta',
         sheetSubtitle: 'Con qué sale cada paciente',
@@ -582,9 +662,10 @@ const es: LpDictionary = {
                 ],
             },
             {
-                term: 'Clínica',
+                term: 'Pago',
                 value: [
-                    'Acreditada por la AAAASF, con anestesiólogos certificados.',
+                    'Completo, financiado o una combinación. ',
+                    { em: 'Tú decides.' },
                 ],
             },
             {
@@ -597,12 +678,6 @@ const es: LpDictionary = {
                 term: 'Fechas',
                 value: [
                     'Cirugía, preoperatorio y controles confirmados antes de reservar tu viaje.',
-                ],
-            },
-            {
-                term: 'Tu cirujana',
-                value: [
-                    'Dra. Victoria Karlinsky. Tiempo con ella, no con un vendedor a comisión.',
                 ],
             },
         ],
@@ -632,43 +707,58 @@ const es: LpDictionary = {
         link: 'Leer más reseñas de pacientes',
     },
     flyIn: {
-        eyebrow: '¿Vienes de fuera?',
-        heading:
-            'Más del 40% de nuestras pacientes viajan a Miami para operarse',
+        eyebrow: 'Desde otro estado',
+        heading: '¿Vienes de fuera? Planifícalo desde casa.',
         subtitle:
-            'Conoce a tu cirujana por video primero. Compra tus vuelos solo cuando tus fechas estén confirmadas por escrito.',
-        cta: 'Pedir una consulta virtual',
+            'Más del 40% de nuestras pacientes viajan a Miami para operarse. Conoce a tu cirujana por video primero y compra tus vuelos solo cuando tus fechas estén confirmadas por escrito.',
+        cta: 'Pedir una consulta por video',
         bullets: [
-            'Consulta virtual desde cualquier lugar',
+            'Consulta por video desde cualquier lugar de EE. UU.',
             'Fechas de cirugía, preoperatorio y controles por escrito antes de reservar tu viaje',
-            'Preoperatorio, cirugía y todos los controles en una sola clínica acreditada en Miami',
+            'Cuántas noches quedarte en Miami antes de que te autoricen a volar a casa, por escrito',
             'Todo el equipo habla español',
         ],
     },
     faq: {
-        eyebrow: 'Las preguntas de verdad',
-        heading: ['¿Qué te está ', { em: 'frenando?' }],
+        eyebrow: 'Respuestas claras',
+        heading: ['Las preguntas que ', { em: 'todas hacen' }],
+        prices: 'El BBL empieza en {bbl} y la Lipo 360 en {lipo}.',
         items: [
             {
-                question: '“¿Es seguro?”',
-                answer: `La cirugía se realiza en una clínica acreditada por la AAAASF con anestesiólogos certificados, no en un consultorio. Toda paciente pasa por exámenes de laboratorio antes de ser aprobada. Tu cirujana, la Dra. ${KARLINSKY_NAME}, está certificada en cirugía general por el American Board of Surgery.`,
-                tag: 'Clínica acreditada · Laboratorios previos',
+                question: '¿Cuánto me va a costar?',
+                answer: 'Depende de tu cuerpo y de tus metas, así que tu cifra llega después de tu consulta: un solo precio todo incluido, por escrito y sin cargos sorpresa. {prices} Hay financiamiento disponible si prefieres pagar mes a mes.',
+                tag: 'Todo incluido · Por escrito',
             },
             {
-                question: '“¿Cuánto dura la recuperación?”',
-                answer: 'La mayoría vuelve al trabajo de oficina en una o dos semanas; el ejercicio vuelve por etapas después, según el procedimiento. Recibes un plan de recuperación semana a semana por escrito antes de reservar.',
+                question: '¿Puedo financiarlo?',
+                answer: `Sí. Trabajamos con ${partners('y')}. Puedes revisar tus opciones antes de elegir la fecha, y consultar con Cherry no afecta tu puntaje de crédito. El financiamiento está sujeto a la aprobación del prestamista.`,
+                tag: FINANCING_PARTNERS.join(' · '),
+            },
+            {
+                question: '¿Es seguro?',
+                answer: `Toda paciente pasa por exámenes de laboratorio antes de que la aprobemos para la cirugía. Tu cirujana, la Dra. ${KARLINSKY_NAME}, está certificada en cirugía general por el American Board of Surgery. Ella realiza tu cirugía y te ve en tus controles.`,
+                tag: 'Laboratorios previos · Tu cirujana opera',
+            },
+            {
+                question: '¿Cuánto tiempo tendré que tomarme libre?',
+                answer: 'La mayoría vuelve al trabajo de oficina en una o dos semanas, y el ejercicio vuelve por etapas después, según el procedimiento. Recibes un plan de recuperación semana a semana por escrito antes de reservar, para organizar el trabajo y el cuidado de tus hijos.',
                 tag: 'Plan de recuperación por escrito',
             },
             {
-                question: '“¿Y si aún no estoy lista?”',
+                question: 'No vivo en Miami. ¿Cómo funciona?',
+                answer: 'Empieza con una consulta por video desde casa. Tus fechas de cirugía, preoperatorio y controles te llegan por escrito antes de comprar vuelos, junto con cuántas noches quedarte en Miami antes de que te autoricen a volar a casa.',
+                tag: 'Consulta por video · Fechas por escrito',
+            },
+            {
+                question: '¿Y si aún no estoy lista?',
                 answer: 'Entonces no reserves. La consulta no tiene ningún compromiso y puedes irte con un precio, un plan y sin cita programada. Aquí nadie gana comisión por convencerte.',
                 tag: 'Sin compromiso · Sin comisiones',
             },
         ],
     },
     closing: {
-        heading: ['¿Lista para una respuesta ', { em: 'de verdad?' }],
-        body: 'Privada, confidencial y sin compromiso. Una coordinadora te escribe por texto en 24 horas.',
+        heading: ['Tu plan y tu precio, ', { em: 'por escrito.' }],
+        body: 'Privada y sin compromiso. Una coordinadora te escribe por texto en 24 horas.',
         chipsLabel: 'Empieza por lo que estás considerando',
         or: 'o llama al',
     },
@@ -688,7 +778,7 @@ const es: LpDictionary = {
         loadError: 'Este documento no cargó aquí.',
         openInTab: 'Ábrelo en una pestaña nueva',
     },
-    sticky: { cta: 'Pedir consulta' },
+    sticky: { cta: 'Empezar mi consulta' },
 }
 
 export const LP_COPY: Readonly<Record<LpLang, LpDictionary>> = { en, es }

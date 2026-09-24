@@ -8,6 +8,8 @@
 import Image from 'next/image'
 import { ShieldCheck, Award, Star, Users } from 'lucide-react'
 
+import { siteConfig } from '@/lib/data/site-config'
+
 export function AboutHeroFullbleed() {
     return (
         <section className='relative w-full'>
@@ -75,7 +77,7 @@ export function AboutHeroFullbleed() {
                                 state-of-the-art facility, and a promise that
                                 defines us:{' '}
                                 <strong className='font-bold text-stone-900'>
-                                    Luxury Surgeries Made Affordable
+                                    {siteConfig.business.tagline}
                                 </strong>
                                 .
                             </p>

@@ -552,9 +552,6 @@
     .aps-lp .trust li {
         font-size: 12px;
     }
-    .aps-lp .trust li + li + li {
-        display: none;
-    }
 }
 /* ---------- surgeon ---------- */
 .aps-lp .surgeon {
@@ -612,16 +609,6 @@
     color: var(--s400);
     margin: 0 0 28px;
     font-weight: 700;
-}
-.aps-lp .surgeon blockquote {
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 23px;
-    line-height: 1.42;
-    color: var(--s300);
-    margin: 0 0 32px;
-    padding-left: 22px;
-    border-left: 1px solid var(--gold);
 }
 .aps-lp .surgeon .lead {
     font-size: 16px;
@@ -736,9 +723,6 @@
     }
     .aps-lp .portrait img {
         aspect-ratio: 1/1.1;
-    }
-    .aps-lp .surgeon blockquote {
-        font-size: 20px;
     }
     .aps-lp .stats {
         grid-template-columns: 1fr 1fr;
@@ -862,27 +846,117 @@
         grid-auto-columns: 76vw;
     }
 }
-/* ---------- in writing ---------- */
-.aps-lp .writing {
+/* ---------- price & financing ---------- */
+/*
+ * Desktop: the argument and the three steps on the left, the written summary
+ * on the right, the partners and the button across the bottom. Phones read
+ * it in the order it argues: why, the summary, how paying works, then ask.
+ */
+.aps-lp .financing {
     background: var(--champ);
     border-top: 1px solid var(--s200);
     border-bottom: 1px solid var(--s200);
 }
-.aps-lp .writing-in {
+.aps-lp .financing-in {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-    gap: 80px;
-    align-items: center;
+    grid-template-areas:
+        'intro sheet'
+        'steps sheet'
+        'foot foot';
+    gap: 44px 80px;
+    align-items: start;
 }
-.aps-lp .writing .h2 {
+.aps-lp .fin-intro {
+    grid-area: intro;
+}
+.aps-lp .financing .sheet {
+    grid-area: sheet;
+    align-self: center;
+}
+.aps-lp .financing .h2 {
     margin-bottom: 20px;
 }
-.aps-lp .writing p.sub {
+.aps-lp .financing p.sub {
     font-size: 16.5px;
     line-height: 1.65;
     color: var(--s600);
-    margin: 0 0 30px;
+    margin: 0;
     max-width: 32rem;
+}
+.aps-lp .fin-steps {
+    grid-area: steps;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 22px;
+    counter-reset: fin;
+}
+.aps-lp .fin-steps li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 16px;
+    counter-increment: fin;
+}
+.aps-lp .fin-steps li::before {
+    content: counter(fin);
+    grid-row: span 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-500);
+    color: var(--gold-700);
+    display: grid;
+    place-items: center;
+    font-family: var(--display);
+    font-size: 18px;
+    line-height: 1;
+}
+.aps-lp .fin-steps b {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+    padding-top: 2px;
+}
+.aps-lp .fin-steps span {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--s600);
+    margin-top: 4px;
+}
+.aps-lp .fin-foot {
+    grid-area: foot;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px 40px;
+    align-items: center;
+    padding-top: 28px;
+    border-top: 1px solid var(--s200);
+}
+.aps-lp .partners {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 36px;
+    align-items: baseline;
+}
+.aps-lp .partners li {
+    font-family: var(--display);
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink-2);
+}
+.aps-lp .fin-foot .fine {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--s500);
 }
 .aps-lp .sheet {
     position: relative;
@@ -995,12 +1069,26 @@
     font-weight: 700;
 }
 @media (max-width: 1023px) {
-    .aps-lp .writing-in {
-        grid-template-columns: 1fr;
-        gap: 44px;
+    .aps-lp .financing-in {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: 'intro' 'sheet' 'steps' 'foot';
+        gap: 40px;
     }
-    .aps-lp .writing p.sub {
+    .aps-lp .financing p.sub {
         max-width: none;
+    }
+}
+@media (max-width: 640px) {
+    .aps-lp .fin-foot {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 22px;
+    }
+    .aps-lp .partners {
+        justify-content: space-between;
+        gap: 6px 16px;
+    }
+    .aps-lp .partners li {
+        font-size: 19px;
     }
 }
 @media (max-width: 640px) {
@@ -1205,29 +1293,60 @@
     }
 }
 /* ---------- faq ---------- */
-.aps-lp .faq-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 52px;
+/* Native <details>, first one open: see `lp-faq.component.tsx`. */
+.aps-lp .faq-list {
+    max-width: 52rem;
+    margin: 0 auto;
+    border-top: 1px solid var(--s200);
+}
+.aps-lp .faq-item {
+    border-bottom: 1px solid var(--s200);
+}
+.aps-lp .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 0;
+    cursor: pointer;
+    list-style: none;
+}
+.aps-lp .faq-item summary::-webkit-details-marker {
+    display: none;
+}
+.aps-lp .faq-item summary::after {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+    border-right: 1.5px solid var(--gold-600);
+    border-bottom: 1.5px solid var(--gold-600);
+    transform: translateY(-3px) rotate(45deg);
+    transition: transform 0.3s var(--ease);
+}
+.aps-lp .faq-item[open] summary::after {
+    transform: translateY(2px) rotate(-135deg);
 }
 .aps-lp .faq-item h3 {
     font-family: var(--display);
     font-weight: 400;
     font-size: 24px;
-    margin: 0 0 12px;
+    margin: 0;
     color: var(--ink);
-    line-height: 1.2;
+    line-height: 1.25;
     letter-spacing: -0.01em;
 }
 .aps-lp .faq-item p {
     margin: 0;
-    font-size: 15px;
+    max-width: 44rem;
+    font-size: 15.5px;
     line-height: 1.65;
     color: var(--s600);
 }
 .aps-lp .faq-item .tag {
     display: inline-block;
-    margin-top: 18px;
+    margin: 16px 0 26px;
     padding-top: 10px;
     border-top: 1px solid var(--gold-line);
     font-size: 10.5px;
@@ -1237,9 +1356,11 @@
     font-weight: 700;
 }
 @media (max-width: 860px) {
-    .aps-lp .faq-grid {
-        grid-template-columns: 1fr;
-        gap: 34px;
+    .aps-lp .faq-item summary {
+        padding: 18px 0;
+    }
+    .aps-lp .faq-item h3 {
+        font-size: 20px;
     }
 }
 /* ---------- closing cta ---------- */
