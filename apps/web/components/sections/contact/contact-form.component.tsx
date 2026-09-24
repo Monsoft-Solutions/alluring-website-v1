@@ -61,14 +61,21 @@ export function ContactForm({
         },
     })
 
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.CONTACT_PAGE,
-            enableAnalytics: true,
-            analyticsFormName: 'contact_form',
-            redirectOnSuccess: '/thank-you',
-            onSuccess: () => form.reset(),
-        })
+    const {
+        submit,
+        state,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: CONTACT_SOURCES.CONTACT_PAGE,
+        enableAnalytics: true,
+        analyticsFormName: 'contact_form',
+        redirectOnSuccess: '/thank-you',
+        onSuccess: () => form.reset(),
+    })
 
     /**
      * Handle form submission
@@ -101,7 +108,11 @@ export function ContactForm({
                 {/* Contact Form */}
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
+                        ref={formRef}
+                        onSubmit={form.handleSubmit(
+                            onSubmit,
+                            trackValidationErrors
+                        )}
                         className='group bg-card/80 border-border/50 mx-auto max-w-2xl space-y-8 rounded-2xl border p-8 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl md:p-10'
                     >
                         {/* Honeypot field - hidden from real users, bots will fill it */}

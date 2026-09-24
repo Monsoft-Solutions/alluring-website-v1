@@ -18,6 +18,7 @@ import {
     WebPageSchema,
 } from '@workspace/seo/react'
 
+import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { SpecialsHero } from '@/components/sections/specials/specials-hero.component'
 import { SpecialsHowItWorks } from '@/components/sections/specials/specials-how-it-works.component'
@@ -291,6 +292,8 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     size='lg'
                 />
             </ContainerLayout>
+
+            <SectionViewTracker />
 
             {/* Mobile Sticky CTA - Removed: handled by root layout */}
         </>

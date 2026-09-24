@@ -52,16 +52,23 @@ export function MiamiMiniCapture({
         },
     })
 
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.LANDING_PAGE,
-            enableAnalytics: true,
-            analyticsFormName: 'miami_mini_capture',
-            redirectOnSuccess: '/thank-you',
-            onSuccess: () => {
-                form.reset()
-            },
-        })
+    const {
+        submit,
+        state,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: CONTACT_SOURCES.LANDING_PAGE,
+        enableAnalytics: true,
+        analyticsFormName: 'miami_mini_capture',
+        redirectOnSuccess: '/thank-you',
+        onSuccess: () => {
+            form.reset()
+        },
+    })
 
     const handleSubmit = async (data: LeadCaptureInput) => {
         await submit(data)
@@ -146,8 +153,10 @@ export function MiamiMiniCapture({
                             ) : (
                                 <Form {...form}>
                                     <form
+                                        ref={formRef}
                                         onSubmit={form.handleSubmit(
-                                            handleSubmit
+                                            handleSubmit,
+                                            trackValidationErrors
                                         )}
                                         className='space-y-4'
                                     >

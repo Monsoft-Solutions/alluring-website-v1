@@ -66,15 +66,22 @@ export function PromoModalDialog({
         },
     })
 
-    const { submit, state, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.PROMO_MODAL,
-            redirectOnSuccess: '/thank-you',
-            onSuccess: () => {
-                form.reset()
-                onClose()
-            },
-        })
+    const {
+        submit,
+        state,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: CONTACT_SOURCES.PROMO_MODAL,
+        redirectOnSuccess: '/thank-you',
+        onSuccess: () => {
+            form.reset()
+            onClose()
+        },
+    })
 
     const onSubmit = async (data: LeadCaptureInput) => {
         await submit(data)
@@ -199,7 +206,11 @@ export function PromoModalDialog({
                         ) : (
                             <Form {...form}>
                                 <form
-                                    onSubmit={form.handleSubmit(onSubmit)}
+                                    ref={formRef}
+                                    onSubmit={form.handleSubmit(
+                                        onSubmit,
+                                        trackValidationErrors
+                                    )}
                                     className='space-y-4'
                                 >
                                     {/* Honeypot field - hidden from real users, bots will fill it */}

@@ -511,6 +511,8 @@ export async function POST(
             ttclid: attribution.ttclid,
             referrer: validatedData.referrer,
             landingPage: validatedData.landingPage,
+            submittedFromPath: validatedData.submittedFromPath,
+            gaClientId: validatedData.gaClientId,
         }
 
         // Persist submission

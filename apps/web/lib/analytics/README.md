@@ -89,44 +89,28 @@ export function MyComponent() {
 }
 ```
 
-### 3. Track Scroll Depth
+### 3. Lead forms and section views
 
-Use the `useScrollDepth` hook to automatically track scroll milestones:
+Every form that posts through `useContactFormSubmission` reports the same
+funnel (`lib/analytics/lead-form-tracking.ts`, issue #272):
 
-```tsx
-'use client'
+| Event                 | Fires when                                     |
+| --------------------- | ---------------------------------------------- |
+| `lead_form_view`      | the form is half in view, once per mount       |
+| `lead_form_start`     | first focus, tap or keystroke in the form      |
+| `lead_submit_attempt` | submit is pressed                              |
+| `lead_submit_error`   | validation (`field`) or the API (`error_type`) |
+| `lead_submit_success` | `/api/contact` accepted the lead               |
 
-import { useScrollDepth } from '@/lib/analytics'
+Each carries `form_name`. Attach the hook's `formRef` to the `<form>` and pass
+`trackValidationErrors` to React Hook Form's `onInvalid`. Values never leave
+the page: the lead is joined to GA4 through the `ga_client_id` column.
 
-export function BlogPost() {
-    // Automatically track at 25%, 50%, 75%, 100% scroll depth
-    useScrollDepth({
-        onThresholdReached: (threshold) => {
-            console.log(`Reader scrolled ${threshold}% of article`)
-        },
-    })
+GA4's own `form_start` / `form_submit` come from enhanced measurement and are
+not ours. Scroll depth comes from GA4 and GTM; the site no longer sends its own.
 
-    return <article>{/* Long-form content */}</article>
-}
-```
-
-#### Custom Scroll Thresholds
-
-```tsx
-import { useScrollDepth } from '@/lib/analytics'
-
-export function CustomScrollTracking() {
-    useScrollDepth({
-        thresholds: [50, 100], // Only track 50% and 100%
-        debounceMs: 200, // Custom debounce delay
-        onThresholdReached: (threshold) => {
-            // Custom callback
-        },
-    })
-
-    return <div>{/* content */}</div>
-}
-```
+`<SectionViewTracker />` sends `section_view` (`section` = the section's id)
+once per page view for every `main section[id]` that is seen.
 
 ### 4. Consent Management
 
@@ -180,29 +164,6 @@ track('custom_event', { key: 'value' })
 trackClick('button_name', { location: 'header' })
 ```
 
-#### `useScrollDepth(options?)`
-
-Track scroll depth automatically.
-
-**Options:**
-
-- `thresholds` - Array of thresholds to track (default: [25, 50, 75, 100])
-- `debounceMs` - Debounce delay in ms (default: 100)
-- `enabled` - Enable/disable tracking (default: true)
-- `resetOnPathChange` - Reset on route change (default: true)
-- `onThresholdReached` - Callback when threshold is reached
-
-**Example:**
-
-```tsx
-useScrollDepth({
-    thresholds: [25, 50, 75, 100],
-    onThresholdReached: (threshold) => {
-        console.log(`Scrolled ${threshold}%`)
-    },
-})
-```
-
 #### `useConsent()`
 
 Manage consent state.
@@ -240,19 +201,6 @@ import { trackPageView } from '@/lib/analytics'
 trackPageView({
     page_title: 'About Us',
     page_path: '/about',
-})
-```
-
-#### `trackScrollDepth(params)`
-
-Track scroll depth milestone.
-
-```tsx
-import { trackScrollDepth } from '@/lib/analytics'
-
-trackScrollDepth({
-    percent: 75,
-    page_path: '/blog/article',
 })
 ```
 
@@ -319,14 +267,6 @@ track('form_submit', {
 - Limit custom parameters to essential data
 - Enable tracking conditionally when needed
 
-```tsx
-// Good: conditional tracking
-useScrollDepth({
-    enabled: isLongFormContent,
-    thresholds: [50, 100],
-})
-```
-
 ## Testing
 
 ### Development Mode
@@ -375,7 +315,6 @@ import type {
     ConsentConfig,
     EventParams,
     PageViewParams,
-    ScrollDepthParams,
 } from '@/lib/analytics'
 ```
 
@@ -387,13 +326,6 @@ import type {
 2. Verify scripts are loaded (check Network tab)
 3. Check consent state (analytics_storage must be 'granted')
 4. Use DebugView to see real-time events
-
-### Scroll tracking not working
-
-1. Ensure content is actually scrollable
-2. Check `enabled` option is true
-3. Verify debounce delay isn't too high
-4. Check browser console for errors
 
 ### Clarity not recording
 

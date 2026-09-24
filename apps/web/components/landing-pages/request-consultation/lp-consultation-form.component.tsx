@@ -155,21 +155,27 @@ export function LpConsultationForm({
         },
     })
 
-    const { submit, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: CONTACT_SOURCES.LANDING_PAGE,
-            enableAnalytics: true,
-            analyticsFormName: 'ads_lp_consultation',
-            // A full page load, not a client-side transition: the tag
-            // container needs a real page view on the thank-you page for
-            // its conversion triggers, and the conversion event must fire
-            // exactly once from a fresh data layer.
-            onSuccess: () => {
-                window.location.assign(
-                    buildThankYouUrl(LP_THANK_YOU_PATH, context.current)
-                )
-            },
-        })
+    const {
+        submit,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: CONTACT_SOURCES.LANDING_PAGE,
+        enableAnalytics: true,
+        analyticsFormName: 'ads_lp_consultation',
+        // A full page load, not a client-side transition: the tag
+        // container needs a real page view on the thank-you page for
+        // its conversion triggers, and the conversion event must fire
+        // exactly once from a fresh data layer.
+        onSuccess: () => {
+            window.location.assign(
+                buildThankYouUrl(LP_THANK_YOU_PATH, context.current)
+            )
+        },
+    })
 
     /** Only the current language's copy is ever shown. */
     const errorFor = (field: LpFormErrorField) =>
@@ -225,6 +231,7 @@ export function LpConsultationForm({
      * happened.
      */
     const onInvalid = (fieldErrors: FieldErrors<LpFormValues>) => {
+        trackValidationErrors(fieldErrors)
         const onlyConsent = Object.keys(fieldErrors).every(
             (field) => field === 'consentGiven'
         )
@@ -256,6 +263,7 @@ export function LpConsultationForm({
             </div>
 
             <form
+                ref={formRef}
                 id={FORM_ID}
                 className='lp-form'
                 noValidate

@@ -26,6 +26,10 @@ import {
 } from 'react'
 
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import {
+    LEAD_FORM_EVENTS,
+    trackLeadFormEvent,
+} from '@/lib/analytics/lead-form-tracking'
 
 import type { MjDictionary, MjLang, MjOption } from './mj-copy'
 import {
@@ -49,6 +53,7 @@ type ErrorField = 'firstName' | 'lastName' | 'phone' | 'consent'
 
 const STEP_NAMES = ['procedure', 'timeline', 'name', 'contact'] as const
 const TYPING_MS = 700
+const FORM_NAME = 'melissa_juvier_chat'
 
 /** The English labels, because the lead is always read in English. */
 interface StaffLabels {
@@ -175,25 +180,31 @@ export function MjChatForm({ lang, copy, staff }: MjChatFormProps) {
     /** Read when the request resolves, not when it began. */
     const leadRef = useRef({ firstName: '', method: 'text' as Method })
 
-    const { submit, isSubmitting, isSuccess, isError } =
-        useContactFormSubmission({
-            source: MJ_SOURCE,
-            enableAnalytics: true,
-            analyticsFormName: 'melissa_juvier_chat',
-            // A full page load, so the tag container sees a real page view
-            // on the thank-you page, as it does for the ads landing page.
-            onSuccess: () => {
-                try {
-                    window.sessionStorage.setItem(
-                        MJ_LEAD_STORAGE_KEY,
-                        JSON.stringify(leadRef.current)
-                    )
-                } catch {
-                    // The thank-you page falls back to a greeting without a name.
-                }
-                window.location.assign(`${MJ_THANK_YOU_PATH}?hl=${lang}`)
-            },
-        })
+    const {
+        submit,
+        isSubmitting,
+        isSuccess,
+        isError,
+        formRef,
+        trackValidationErrors,
+    } = useContactFormSubmission({
+        source: MJ_SOURCE,
+        enableAnalytics: true,
+        analyticsFormName: FORM_NAME,
+        // A full page load, so the tag container sees a real page view
+        // on the thank-you page, as it does for the ads landing page.
+        onSuccess: () => {
+            try {
+                window.sessionStorage.setItem(
+                    MJ_LEAD_STORAGE_KEY,
+                    JSON.stringify(leadRef.current)
+                )
+            } catch {
+                // The thank-you page falls back to a greeting without a name.
+            }
+            window.location.assign(`${MJ_THANK_YOU_PATH}?hl=${lang}`)
+        },
+    })
 
     useEffect(() => () => window.clearTimeout(typingTimer.current), [])
 
@@ -243,14 +254,13 @@ export function MjChatForm({ lang, copy, staff }: MjChatFormProps) {
     const answer = (from: Step, patch: Partial<Answers>) => {
         const next = { ...answers, ...patch }
         setAnswers(next)
-        // The taps are worth reporting; the visitor's name never goes into
-        // the data layer.
-        pushDataLayer({
-            event: 'mj_chat_step',
+        // Which step was answered is worth reporting; the answer is not.
+        // Procedure interest and names stay out of the data layer, where
+        // every tag in the container can read them (#272).
+        pushDataLayer({ event: 'mj_chat_step', step: STEP_NAMES[from], lang })
+        trackLeadFormEvent(LEAD_FORM_EVENTS.STEP, FORM_NAME, {
             step: STEP_NAMES[from],
-            lang,
-            ...(patch.procedure ? { procedure: patch.procedure } : {}),
-            ...(patch.timeline ? { timeline: patch.timeline } : {}),
+            step_index: from + 1,
         })
         goTo(nextOpenStep(from, next), true)
     }
@@ -270,7 +280,10 @@ export function MjChatForm({ lang, copy, staff }: MjChatFormProps) {
         if (!firstName.trim()) nextErrors.add('firstName')
         if (!lastName.trim()) nextErrors.add('lastName')
         setErrors(nextErrors)
-        if (nextErrors.size) return
+        if (nextErrors.size) {
+            trackValidationErrors([...nextErrors])
+            return
+        }
         answer(2, { firstName: firstName.trim(), lastName: lastName.trim() })
     }
 
@@ -280,7 +293,10 @@ export function MjChatForm({ lang, copy, staff }: MjChatFormProps) {
         if (!national) nextErrors.add('phone')
         if (!consent) nextErrors.add('consent')
         setErrors(nextErrors)
-        if (!national || nextErrors.size) return
+        if (!national || nextErrors.size) {
+            trackValidationErrors([...nextErrors])
+            return
+        }
 
         leadRef.current = { firstName: answers.firstName, method }
         pushDataLayer({ event: 'mj_lead_attempt', lang, method })
@@ -331,6 +347,7 @@ export function MjChatForm({ lang, copy, staff }: MjChatFormProps) {
 
     return (
         <section
+            ref={formRef}
             id={MJ_CHAT_ID}
             className='mj-chat'
             aria-labelledby='mj-chat-title'

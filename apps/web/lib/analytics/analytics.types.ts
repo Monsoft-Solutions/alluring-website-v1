@@ -69,14 +69,6 @@ export interface PageViewParams {
 }
 
 /**
- * Scroll depth tracking parameters
- */
-export interface ScrollDepthParams {
-    percent: 25 | 50 | 75 | 100
-    page_path?: string
-}
-
-/**
  * Analytics configuration from environment
  */
 export interface AnalyticsConfig {
