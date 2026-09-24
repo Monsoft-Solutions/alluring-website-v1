@@ -1,0 +1,596 @@
+/*
+ * Home page: the rules Tailwind utilities can't express, and the page's
+ * motion. Classes are prefixed `hp-` (home page); the page's root element
+ * carries `hp-page`.
+ *
+ * Motion follows the procedure module kit's three rules (module-kit.css):
+ *
+ * 1. Text never animates in from hidden. Photographs, rules, dots and whole
+ *    cards move; words sit at their final position for a crawler, a
+ *    screenshot and a slow phone.
+ * 2. It is progressive. Scroll-driven effects sit behind
+ *    `@supports (animation-timeline: view())`, and everything that moves sits
+ *    behind `prefers-reduced-motion: no-preference`, so the reduced-motion
+ *    guard is the absence of the rule rather than an override that has to
+ *    win on specificity.
+ * 3. Keyframes fill `both`, so nothing flashes its end state before it
+ *    starts.
+ */
+
+.hp-page {
+    --hp-ivory: #faf6ef;
+    --hp-sand: #f1e8da;
+    --hp-ink: #1c1917;
+    --hp-night: #0c0a09;
+    --hp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* The page has its own bottom bar on phones. The root layout's floating call
+   button would sit in the same corner. */
+body:has(.hp-page) [data-mobile-call-button] {
+    display: none;
+}
+
+/* Every CTA jumps to the consultation thread: land it clear of the fixed
+   announcement bar and header. */
+.hp-page .cc-chat {
+    scroll-margin-top: calc(var(--announcement-bar-height, 0px) + 6.5rem);
+}
+
+/* Below-the-fold sections skip rendering until they near the viewport. The
+   text stays in the DOM, so find-in-page, anchors and crawlers all see it. */
+.hp-defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1100px;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+
+.hp-hero {
+    view-timeline: --hp-hero block;
+}
+
+/* Both the poster and the film are anchored to the top, so the subject's
+   head is never the part a crop removes. */
+.hp-hero-media video {
+    object-position: 50% 0%;
+}
+
+/* Ivory scrims that keep the headline readable over the photograph: from the
+   foot on phones, where the copy sits under the subject; from the left on
+   wider screens, where it sits beside her. */
+.hp-hero-scrim {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(250, 246, 239, 0.8) 0%,
+            rgba(250, 246, 239, 0) 16%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(250, 246, 239, 0) 30%,
+            rgba(250, 246, 239, 0.72) 52%,
+            rgba(250, 246, 239, 0.96) 70%,
+            var(--hp-ivory) 100%
+        );
+}
+
+@media (width >= 48rem) {
+    .hp-hero-scrim {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(250, 246, 239, 0.94) 0%,
+                rgba(250, 246, 239, 0.82) 30%,
+                rgba(250, 246, 239, 0.18) 55%,
+                rgba(250, 246, 239, 0) 70%
+            ),
+            linear-gradient(
+                180deg,
+                rgba(250, 246, 239, 0) 75%,
+                var(--hp-ivory) 100%
+            );
+    }
+}
+
+/* ── Chips: the hero's procedure links and the picker's zones ──────────── */
+
+.hp-chip {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(28, 25, 23, 0.14);
+    background: rgba(255, 255, 255, 0.72);
+    padding: 0.5rem 1.05rem;
+    color: var(--hp-ink);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition:
+        background-color 0.25s var(--hp-ease),
+        border-color 0.25s var(--hp-ease),
+        color 0.25s var(--hp-ease),
+        translate 0.25s var(--hp-ease);
+}
+
+.hp-chip:hover {
+    border-color: var(--gold-500);
+    background: #fff;
+}
+
+.hp-chip:focus-visible {
+    outline: 2px solid var(--gold-500);
+    outline-offset: 2px;
+}
+
+.hp-chip--quiet {
+    border-style: dashed;
+    background: transparent;
+    color: var(--stone-600);
+}
+
+/* ── Marquees: the proof ticker and the review rows ────────────────────── */
+
+.hp-marquee {
+    display: flex;
+    overflow: hidden;
+    mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 6%,
+        #000 94%,
+        transparent
+    );
+}
+
+.hp-marquee__track {
+    display: flex;
+    flex: none;
+    gap: var(--hp-marquee-gap, 2.5rem);
+    padding-right: var(--hp-marquee-gap, 2.5rem);
+}
+
+/* Without motion the row is an ordinary scroller, and the duplicate copy
+   that makes the loop seamless is not rendered at all. */
+.hp-marquee__track[aria-hidden='true'] {
+    display: none;
+}
+
+.hp-marquee {
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+}
+
+.hp-marquee::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Results rail ──────────────────────────────────────────────────────── */
+
+.hp-rail {
+    --hp-gutter: 1.25rem;
+    display: flex;
+    gap: 0.875rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--hp-gutter);
+    padding-inline: var(--hp-gutter);
+    margin-inline: calc(-1 * var(--hp-gutter));
+    scrollbar-width: none;
+}
+
+.hp-rail::-webkit-scrollbar {
+    display: none;
+}
+
+.hp-rail > li {
+    flex: none;
+    scroll-snap-align: start;
+}
+
+@media (width >= 48rem) {
+    .hp-rail {
+        --hp-gutter: 2rem;
+        gap: 1.25rem;
+    }
+}
+
+@media (width >= 80rem) {
+    .hp-rail {
+        /* From the container's content edge to the edge of the screen. */
+        --hp-bleed: calc(2rem + max(0px, (100vw - 76rem) / 2));
+        scroll-padding-inline: var(--hp-bleed);
+        padding-inline: var(--hp-bleed);
+        margin-inline: calc(-1 * var(--hp-bleed));
+    }
+}
+
+/* ── Procedure picker ──────────────────────────────────────────────────── */
+
+/* Zone chips: the radio sits right before its label, so `:checked + label`
+   styles the chosen one. */
+.hp-zone:checked + .hp-chip {
+    border-color: var(--hp-ink);
+    background: var(--hp-ink);
+    color: #fff;
+}
+
+.hp-zone:focus-visible + .hp-chip {
+    outline: 2px solid var(--gold-500);
+    outline-offset: 2px;
+}
+
+/* A hotspot on the figure: a gold dot with a halo. */
+.hp-dot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    translate: -50% -50%;
+    place-items: center;
+    border-radius: 9999px;
+    cursor: pointer;
+}
+
+.hp-dot::before {
+    content: '';
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    background: var(--gold-400);
+    box-shadow:
+        0 0 0 4px rgba(250, 246, 239, 0.9),
+        0 0 0 5px rgba(180, 148, 31, 0.45);
+    transition:
+        scale 0.3s var(--hp-ease),
+        background-color 0.3s var(--hp-ease);
+}
+
+.hp-dot:hover::before {
+    scale: 1.25;
+}
+
+/* Without :has(), every panel shows, stacked: nothing is lost. With it, the
+   chosen zone's panel shows and its dot lights up. */
+@supports selector(:has(*)) {
+    .hp-panel {
+        display: none;
+    }
+
+    .hp-map:has(#hp-zone-lipo:checked) .hp-panel[data-zone='lipo'],
+    .hp-map:has(#hp-zone-bbl:checked) .hp-panel[data-zone='bbl'],
+    .hp-map:has(#hp-zone-tummy:checked) .hp-panel[data-zone='tummy'],
+    .hp-map:has(#hp-zone-breast:checked) .hp-panel[data-zone='breast'],
+    .hp-map:has(#hp-zone-mommy:checked) .hp-panel[data-zone='mommy'],
+    .hp-map:has(#hp-zone-weightLoss:checked) .hp-panel[data-zone='weightLoss'],
+    .hp-map:has(#hp-zone-face:checked) .hp-panel[data-zone='face'] {
+        display: grid;
+    }
+
+    .hp-map:has(#hp-zone-lipo:checked) .hp-dot[data-zone='lipo']::before,
+    .hp-map:has(#hp-zone-bbl:checked) .hp-dot[data-zone='bbl']::before,
+    .hp-map:has(#hp-zone-tummy:checked) .hp-dot[data-zone='tummy']::before,
+    .hp-map:has(#hp-zone-breast:checked) .hp-dot[data-zone='breast']::before,
+    .hp-map:has(#hp-zone-mommy:checked) .hp-dot[data-zone='mommy']::before,
+    .hp-map:has(#hp-zone-face:checked) .hp-dot[data-zone='face']::before {
+        scale: 1.35;
+        background: var(--hp-ink);
+        box-shadow:
+            0 0 0 4px rgba(250, 246, 239, 0.95),
+            0 0 0 6px var(--gold-400);
+    }
+}
+
+/* ── Fly-in timeline ───────────────────────────────────────────────────── */
+
+.hp-step {
+    position: relative;
+}
+
+.hp-step::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    top: 2.5rem;
+    bottom: -1.5rem;
+    width: 1px;
+    translate: -50% 0;
+    background: rgba(212, 175, 55, 0.45);
+    transform-origin: top;
+}
+
+.hp-step:last-child::before {
+    display: none;
+}
+
+/* ── FAQ ───────────────────────────────────────────────────────────────── */
+
+.hp-faq summary {
+    list-style: none;
+}
+
+.hp-faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.hp-plus-v {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.hp-faq details[open] .hp-plus-v {
+    scale: 1 0;
+}
+
+/* ── Motion ────────────────────────────────────────────────────────────── */
+
+/* Where nothing moves there is nothing to pause. */
+@media (prefers-reduced-motion: reduce) {
+    .hp-motion-toggle {
+        display: none;
+    }
+}
+
+/* The page's pause control (home-motion-toggle.component.tsx). */
+:root[data-hp-motion='paused'] .hp-marquee__track,
+:root[data-hp-motion='paused'] .hp-dot::after {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* The one orchestrated moment on load: the photograph settles. The
+       headline does not move. */
+    .hp-hero-media img {
+        animation: hp-settle 1.8s var(--hp-ease) both;
+    }
+
+    /* Marquees run once motion is welcome: the duplicate track makes the
+       loop seamless, and hovering or focusing inside pauses it. */
+    .hp-marquee {
+        overflow-x: hidden;
+    }
+
+    .hp-marquee__track[aria-hidden='true'] {
+        display: flex;
+    }
+
+    .hp-marquee__track {
+        animation: hp-marquee var(--hp-marquee-duration, 48s) linear infinite;
+    }
+
+    .hp-marquee--reverse .hp-marquee__track {
+        animation-direction: reverse;
+    }
+
+    .hp-marquee:hover .hp-marquee__track,
+    .hp-marquee:focus-within .hp-marquee__track {
+        animation-play-state: paused;
+    }
+
+    /* A zone's panel slides into place when it is chosen. */
+    .hp-panel {
+        animation: hp-rise 0.5s var(--hp-ease) both;
+    }
+
+    /* Every dot breathes, softly, to say it can be tapped. */
+    .hp-dot::after {
+        content: '';
+        position: absolute;
+        inset: 0.5rem;
+        border-radius: 9999px;
+        border: 1px solid var(--gold-400);
+        animation: hp-halo 2.4s var(--hp-ease) infinite;
+    }
+
+    .hp-faq {
+        interpolate-size: allow-keywords;
+    }
+
+    .hp-faq details::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition:
+            block-size 0.35s var(--hp-ease),
+            content-visibility 0.35s allow-discrete;
+    }
+
+    .hp-faq details[open]::details-content {
+        block-size: auto;
+    }
+
+    .hp-plus-v {
+        transition: scale 0.3s var(--hp-ease);
+    }
+
+    @supports (animation-timeline: view()) {
+        /* The photograph also drifts and softly zooms as the hero scrolls
+           away. One declaration for both: a second `animation` would replace
+           the load-time settle, not add to it. */
+        .hp-hero-media img,
+        .hp-hero-media video {
+            animation:
+                hp-settle 1.8s var(--hp-ease) both,
+                hp-drift linear both;
+            animation-timeline: auto, --hp-hero;
+            animation-range:
+                normal,
+                exit 0% exit 100%;
+        }
+
+        /* Photographs open as they come into view. */
+        .hp-unveil {
+            animation: hp-unveil linear both;
+            animation-timeline: view();
+            animation-range: entry 0% cover 35%;
+        }
+
+        /* Dark bands arrive as a change of scene: they open from an inset
+           card to full width. The inset is narrower than the band's padding,
+           so no text is ever clipped. */
+        .hp-scene {
+            animation: hp-scene-open linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 55%;
+        }
+
+        /* Results rail: a photo comes up to full size as it slides in. */
+        .hp-rail-frame {
+            animation: hp-card linear both;
+            animation-timeline: view(inline);
+            animation-range: entry 0% entry 100%;
+        }
+
+        /* A portrait rises through its frame while it crosses the screen. */
+        .hp-parallax {
+            animation: hp-parallax linear both;
+            animation-timeline: view();
+            animation-range: cover 0% cover 100%;
+        }
+
+        /* Fly-in timeline: the rule draws down and each marker fills as the
+           step reaches the middle of the screen. */
+        .hp-step::before {
+            animation: hp-draw-y linear both;
+            animation-timeline: view();
+            animation-range: cover 30% cover 60%;
+        }
+
+        .hp-step-marker {
+            animation: hp-marker linear both;
+            animation-timeline: view();
+            animation-range: cover 30% cover 42%;
+        }
+
+        /* A rule drawn across as its heading scrolls in. */
+        .hp-draw-x {
+            transform-origin: left center;
+            animation: hp-draw-x linear both;
+            animation-timeline: view();
+            animation-range: cover 10% cover 35%;
+        }
+    }
+}
+
+@keyframes hp-settle {
+    from {
+        scale: 1.07;
+    }
+    to {
+        scale: 1;
+    }
+}
+
+@keyframes hp-drift {
+    from {
+        translate: 0 0;
+        scale: 1;
+    }
+    to {
+        translate: 0 8%;
+        scale: 1.06;
+    }
+}
+
+@keyframes hp-marquee {
+    from {
+        translate: 0 0;
+    }
+    to {
+        translate: -100% 0;
+    }
+}
+
+@keyframes hp-rise {
+    from {
+        translate: 0 1rem;
+    }
+    to {
+        translate: 0 0;
+    }
+}
+
+@keyframes hp-halo {
+    0% {
+        scale: 0.6;
+        opacity: 0.9;
+    }
+    80%,
+    100% {
+        scale: 1.35;
+        opacity: 0;
+    }
+}
+
+@keyframes hp-unveil {
+    from {
+        clip-path: inset(0 0 10% 0 round 1.5rem);
+    }
+    to {
+        clip-path: inset(0 0 0 0 round 1.5rem);
+    }
+}
+
+@keyframes hp-scene-open {
+    from {
+        clip-path: inset(0 3% round 2rem);
+    }
+    to {
+        clip-path: inset(0 0 round 0);
+    }
+}
+
+@keyframes hp-card {
+    from {
+        scale: 0.88;
+    }
+    to {
+        scale: 1;
+    }
+}
+
+@keyframes hp-parallax {
+    from {
+        translate: 0 -6%;
+    }
+    to {
+        translate: 0 6%;
+    }
+}
+
+@keyframes hp-draw-y {
+    from {
+        scale: 1 0;
+    }
+    to {
+        scale: 1 1;
+    }
+}
+
+@keyframes hp-draw-x {
+    from {
+        scale: 0 1;
+    }
+    to {
+        scale: 1 1;
+    }
+}
+
+@keyframes hp-marker {
+    from {
+        background-color: transparent;
+        color: var(--gold-300);
+    }
+    to {
+        background-color: var(--gold-400);
+        color: var(--hp-night);
+    }
+}

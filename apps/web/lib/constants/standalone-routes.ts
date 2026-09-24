@@ -60,12 +60,19 @@ export const LEAD_PAGE_CHAT_IDS = {
     '/miami-plastic-surgery-specials': 'claim-offer',
 } as const satisfies Record<(typeof LEAD_PAGE_ROUTES)[number], string>
 
+/**
+ * Pages that carry the consultation thread without being lead pages: they
+ * keep their floating widgets, but the header's button still jumps to the
+ * thread on the page. Matched exactly, so `/` covers the home page only.
+ */
+const PAGE_CHAT_IDS: Readonly<Record<string, string>> = {
+    ...LEAD_PAGE_CHAT_IDS,
+    '/': 'start-consultation',
+}
+
 /** Where the header's consultation button leads from `pathname`. */
 export function consultCtaHref(pathname: string | null): string {
-    const chatId =
-        pathname && pathname in LEAD_PAGE_CHAT_IDS
-            ? LEAD_PAGE_CHAT_IDS[pathname as keyof typeof LEAD_PAGE_CHAT_IDS]
-            : null
+    const chatId = pathname ? PAGE_CHAT_IDS[pathname] : undefined
     return chatId ? `#${chatId}` : '/contact-us'
 }
 

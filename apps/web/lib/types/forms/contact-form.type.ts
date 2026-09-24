@@ -12,6 +12,7 @@
  * - general: Default behavior
  * - specials-page: Specials landing page consultation form
  * - landing-page: Lead generation landing page consultation form
+ * - home-page: Home page consultation thread (phone required)
  */
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
@@ -37,6 +38,7 @@ export const CONTACT_SOURCES = {
     GENERAL: 'general',
     PROMO_MODAL: 'promo-modal',
     SPECIALS_PAGE: 'specials-page',
+    HOME_PAGE: 'home-page',
     BMI_CALCULATOR: 'bmi-calculator',
     LANDING_PAGE: 'landing-page',
     PROCEDURE_PAGE: 'procedure-page',

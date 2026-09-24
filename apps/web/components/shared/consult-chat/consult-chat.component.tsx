@@ -303,6 +303,35 @@ export function ConsultChat({
         goTo(nextOpenStep(from, next.answers), true, next)
     }
 
+    /**
+     * A link elsewhere on the page can answer the first question for the
+     * visitor: `<a href="#<id>" data-consult-procedure="bbl">` (the home
+     * page's hero chips and procedure picker). The link still jumps to the
+     * thread; the thread just opens on its next question, with the reply to
+     * that procedure already given. Values the thread doesn't offer are
+     * ignored, so a stale link falls back to the plain jump.
+     */
+    const answerRef = useRef(answer)
+    useEffect(() => {
+        answerRef.current = answer
+    })
+    useEffect(() => {
+        const onClick = (event: MouseEvent) => {
+            if (!(event.target instanceof Element)) return
+            const link = event.target.closest<HTMLAnchorElement>(
+                `a[href="#${id}"][data-consult-procedure]`
+            )
+            const value = link?.dataset.consultProcedure
+            if (!value) return
+            if (!copy.procedures.some((option) => option.value === value)) {
+                return
+            }
+            answerRef.current(0, { procedure: value })
+        }
+        document.addEventListener('click', onClick)
+        return () => document.removeEventListener('click', onClick)
+    }, [id, copy.procedures])
+
     const invalid = (field: ErrorField) => errors.has(field)
 
     /** An error goes away as soon as the visitor starts fixing it. */

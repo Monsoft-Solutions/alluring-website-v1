@@ -1,5 +1,6 @@
 /**
- * The consultation thread's words on site pages (/contact-us, specials).
+ * The consultation thread's words on site pages (/contact-us, specials and
+ * the home page).
  *
  * Voice: "we", from the practice's patient coordinators. Several people
  * answer these leads, so no one person's name or face is on the thread
@@ -30,7 +31,7 @@ import type {
     ConsultChatStaffLabels,
 } from './consult-chat.types'
 
-export type SiteChatPage = 'contact' | 'specials'
+export type SiteChatPage = 'contact' | 'specials' | 'home'
 
 type ProcedureValue =
     | 'bbl'
@@ -82,7 +83,10 @@ const PROCEDURE_LABELS: Record<
  * 15.7%, a combination 14.5% (and what the offers usually cover), tummy tuck
  * and mommy makeover 12.7% each, BBL 8%, then the breast procedures. Facelift
  * and eyelids are under 1% there, so they fold into "Something else".
- * Contact keeps every procedure, in the wider site's order.
+ * Contact keeps every procedure, in the wider site's order. Home follows
+ * what its hero form's leads picked (180 days to 2026-09-23, 895 leads):
+ * Lipo 360 19%, BBL 13%, a combination 12%, mommy makeover 12%, breast
+ * augmentation 9%, tummy tuck 7%, then the rest under 4% each.
  */
 const PROCEDURE_ORDER: Record<SiteChatPage, readonly ProcedureValue[]> = {
     specials: [
@@ -109,12 +113,26 @@ const PROCEDURE_ORDER: Record<SiteChatPage, readonly ProcedureValue[]> = {
         'blepharoplasty',
         'other',
     ],
+    home: [
+        'liposuction',
+        'bbl',
+        'multiple',
+        'mommy-makeover',
+        'breast-augmentation',
+        'tummy-tuck',
+        'breast-lift',
+        'breast-reduction',
+        'facelift',
+        'blepharoplasty',
+        'other',
+    ],
 }
 
 /** On specials "other" also covers facelift and eyelids. */
 const OTHER_LABEL: Record<SiteChatPage, Record<ConsultChatLang, string>> = {
     specials: { en: 'Something else', es: 'Otro' },
     contact: { en: 'Not sure yet', es: 'Aún no lo sé' },
+    home: { en: 'Not sure yet', es: 'Aún no lo sé' },
 }
 
 /** Settled starting prices only; the rest wait on #232. */
@@ -243,3 +261,4 @@ function siteChat(page: SiteChatPage): SiteChat {
 
 export const CONTACT_CHAT = siteChat('contact')
 export const SPECIALS_CHAT = siteChat('specials')
+export const HOME_CHAT = siteChat('home')

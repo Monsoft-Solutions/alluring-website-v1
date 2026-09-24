@@ -2,62 +2,70 @@ import type { Metadata } from 'next'
 import {
     BreadcrumbSchema,
     FAQSchema,
-    HowToSchema,
+    JsonLdGraph,
     MedicalClinicSchema,
     OfferSchema,
-    PhysicianSchema,
     VideoObjectSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
 
-import { ContainerLayout } from '@/components/container-layout.component'
-import { Hero } from '@/components/home/hero.component'
-import { TrustBar } from '@/components/home/trust-bar.component'
-import { AudiencePaths } from '@/components/home/audience-paths.component'
-import { InlineCtaBand } from '@/components/home/inline-cta-band.component'
-import { Objections } from '@/components/home/objections.component'
-import { Journey } from '@/components/home/journey.component'
-import { Procedures } from '@/components/home/procedures.component'
-import { SecondaryProcedures } from '@/components/home/secondary-procedures.component'
-import { GalleryShowcase } from '@/components/shared/gallery-showcase.component'
-import { Surgeons } from '@/components/home/surgeons.component'
-import { MedicalTourism } from '@/components/home/medical-tourism.component'
-import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
-import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
-import { GoogleReviews } from '@/components/shared/google-reviews.component'
-import { LeadForm } from '@/components/home/lead-form.component'
-import { PromoSection } from '@/components/promotions/promo-section.component'
-import { siteConfig } from '@/lib/data/site-config'
-import { seoConfig } from '@/lib/seo-config'
-import { toNextMetadata } from '@/lib/seo/metadata'
-import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
+import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
+import { HomeClose } from '@/components/home-page/home-close.component'
+import { HomeConsult } from '@/components/home-page/home-consult.component'
+import { HomeFaq } from '@/components/home-page/home-faq.component'
+import { HomeFlyIn } from '@/components/home-page/home-fly-in.component'
+import { HomeHero } from '@/components/home-page/home-hero.component'
+import {
+    HOME_CHAT_ID,
+    HOME_MEDIA,
+} from '@/components/home-page/home-page.constant'
+import { HomePrices } from '@/components/home-page/home-prices.component'
+import { HomeProcedurePicker } from '@/components/home-page/home-procedure-picker.component'
+import { HomeProofTicker } from '@/components/home-page/home-proof-ticker.component'
+import { HomeResults } from '@/components/home-page/home-results.component'
+import { HomeReviews } from '@/components/home-page/home-reviews.component'
+import { HomeSurgeon } from '@/components/home-page/home-surgeon.component'
+import { ModuleStarSprite } from '@/components/procedures/module-kit/module-stars.component'
+import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
+import { env } from '@/env'
+import { homePageFaqs } from '@/lib/data/faq/home-page-faqs.data'
+import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
+import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import { getSmsLink, siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import {
     formatDiscount,
     getFeaturedPromotion,
 } from '@/lib/queries/promotion.query'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
-import { env } from '@/env'
+import { seoConfig } from '@/lib/seo-config'
+import { toNextMetadata } from '@/lib/seo/metadata'
+import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
+
+import '@/components/home-page/home-page.css'
 
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 
 /**
- * Homepage Metadata
- * SEO-optimized for plastic surgery + Miami + credentials + value proposition
- * CTR-optimized with trust signals and clear value proposition
+ * The home page is found by its name: nearly every search click it earns is
+ * a brand query, and the brand queries it loses are "alluring plastic
+ * surgery reviews" and "… photos". So the title answers those — prices,
+ * reviews, results — after the name. No surgeon name in the title (a
+ * staffing change would break it); the description names her, as an MD.
  */
+const title = 'Alluring Plastic Surgery Miami | Real Prices, Reviews & Results'
+const description = `Lipo 360 from ${lipoFigure('price-starting-at')} and BBL from ${bblFigure('price-starting-at')}, by ${KARLINSKY_NAME}. Financing, Google reviews and a free consult in Miami or by video.`
+
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/',
-    title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
-    description:
-        "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Free consultation.",
-
-    // Open Graph tags for social sharing
+    title,
+    description,
     openGraph: {
         type: 'website',
         url: siteUrl,
-        title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
-        description:
-            "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons. Free consultation.",
+        title,
+        description,
         siteName: siteConfig.business.name,
         locale: 'en_US',
         images: [
@@ -65,21 +73,16 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
                 url: `${siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: `${siteConfig.business.name} - Board-Certified Plastic Surgery in Miami`,
+                alt: `${siteConfig.business.name}, Miami`,
             },
         ],
     },
-
-    // Twitter Card tags
     twitter: {
         card: 'summary_large_image',
-        title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
-        description:
-            "5,000+ happy patients trust Miami's premier plastic surgery clinic. BBL, breast augmentation, mommy makeover & more. Double Board-Certified surgeons.",
+        title,
+        description,
         images: [`${siteUrl}/og-image.jpg`],
     },
-
-    // Robots directives
     robots: {
         index: true,
         follow: true,
@@ -94,51 +97,47 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
 })
 
 /**
- * Homepage Component
+ * Home page, rebuilt around the visitor it actually gets: someone who has
+ * seen the practice on social media or heard of it, searched its name, and
+ * came to check it out, usually on a phone, usually from another state,
+ * often after hours.
  *
- * The main landing page of the website.
- * Adapted from the prototype design with all sections in order.
+ * The old page was 28,000 px tall on a phone and 42% of phone visitors left
+ * within its first 1,400 px, so everything they came to verify now sits in
+ * the first few screens: the first question of the consultation thread in the
+ * hero, a proof ribbon, the thread itself, then results, the surgeon, prices
+ * and the fly-in plan. One conversion path runs through it all, the
+ * consultation thread, and every CTA jumps to it.
  */
 export default async function Page() {
-    // Fetch featured promotion for homepage section
-    const featuredPromotion = await getFeaturedPromotion()
-
-    // Fetch Google reviews for aggregate rating schema
-    const { averageRating, totalCount } = await getPublishedGoogleReviews(1)
-
-    // Flatten FAQ data for schema (combine all categories)
-    const allFaqItems = Object.values(faqDataHome).flat()
-    const faqSchemaItems = allFaqItems.map((faq) => ({
-        question: faq.question,
-        answer: faq.answer,
-    }))
+    const [featuredPromotion, reviewsResult, galleryImages] = await Promise.all(
+        [
+            getFeaturedPromotion(),
+            getPublishedGoogleReviews(14),
+            getSpecialsFeaturedGalleryImages(),
+        ]
+    )
+    const { reviews, averageRating, totalCount } = reviewsResult
 
     return (
         <>
-            {/* Structured Data - WebPage Schema with Speakable for Voice Search */}
             <WebPageSchema
                 name={`${siteConfig.business.name} | ${siteConfig.business.tagline}`}
                 url={siteUrl}
-                description={siteConfig.seo.siteDescription}
+                description={description}
                 speakable={{
-                    cssSelector: [
-                        'h1',
-                        '.quick-answer',
-                        '[data-speakable="true"]',
-                    ],
+                    cssSelector: ['h1', '#faq summary'],
                 }}
             />
 
-            {/* Structured Data - BreadcrumbList for navigation */}
             <BreadcrumbSchema items={[{ name: 'Home', item: siteUrl }]} />
 
-            {/* Structured Data - VideoObject for hero background video */}
             <VideoObjectSchema
-                name='Alluring Plastic Surgery - Miami'
-                description="Lifestyle brand film for Miami's premier plastic surgery destination, where world-class cosmetic surgery meets flexible financing. Model shown; not a patient."
-                thumbnailUrl='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-desktop-poster.jpg'
-                uploadDate='2026-08-03'
-                contentUrl='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-desktop.mp4'
+                name='Alluring Plastic Surgery, Miami'
+                description='A short lifestyle film on a sunlit terrace in Miami. Model shown; not a patient.'
+                thumbnailUrl={HOME_MEDIA.heroPosterDesktop}
+                uploadDate='2026-09-24'
+                contentUrl={HOME_MEDIA.heroVideoDesktop}
                 author={{
                     type: 'Organization',
                     name: siteConfig.business.name,
@@ -146,7 +145,6 @@ export default async function Page() {
                 }}
             />
 
-            {/* Structured Data - MedicalBusiness Schema for healthcare SEO */}
             <MedicalClinicSchema
                 name={siteConfig.business.name}
                 id={`${siteUrl}/#organization`}
@@ -185,7 +183,7 @@ export default async function Page() {
                 image={`${siteUrl}/og-image.jpg`}
                 medicalSpecialty={['PlasticSurgery']}
                 isAcceptingNewPatients={true}
-                priceRange='$2500-$25000'
+                priceRange='$$$'
                 availableLanguage={['English', 'Spanish']}
                 contactPoint={[
                     {
@@ -198,13 +196,13 @@ export default async function Page() {
                 sameAs={siteConfig.social.map((s) => s.url)}
                 areaServed={['Miami, FL', 'South Florida', 'United States']}
                 hasOfferCatalog={{
-                    name: 'Plastic Surgery Procedures',
+                    name: 'Cosmetic Surgery Procedures',
                     itemListElement: [
+                        'Liposuction (Lipo 360)',
                         'Brazilian Butt Lift',
                         'Mommy Makeover',
-                        'Breast Augmentation',
-                        'Liposuction',
                         'Tummy Tuck',
+                        'Breast Augmentation',
                     ],
                 }}
                 {...(averageRating && totalCount > 0
@@ -219,81 +217,18 @@ export default async function Page() {
                     : {})}
             />
 
-            {/* Structured Data - Physician Schema for Dr. Victoria Karlinsky (E-E-A-T) */}
-            <PhysicianSchema
-                id={`${siteUrl}/#physician-dr-karlinsky`}
-                name='Dr. Victoria Karlinsky'
-                url={`${siteUrl}/about`}
-                image={`${siteUrl}/images/surgeons/dr-karlinsky.webp`}
-                description='Double Board-Certified Cosmetic Surgeon specializing in Brazilian Butt Lift (BBL), breast augmentation, mommy makeover, and body contouring procedures at Alluring Plastic Surgery in Miami, FL.'
-                jobTitle='Double Board-Certified Cosmetic Surgeon'
-                medicalSpecialty={['Plastic Surgery', 'Cosmetic Surgery']}
-                telephone={siteConfig.contact.phone}
-                address={{
-                    streetAddress: siteConfig.contact.address,
-                    addressLocality: siteConfig.contact.city,
-                    addressRegion: siteConfig.contact.state,
-                    postalCode: siteConfig.contact.postalCode,
-                    addressCountry: 'US',
-                }}
-                worksFor={{
-                    '@id': `${siteUrl}/#organization`,
-                    name: siteConfig.business.name,
-                    url: siteUrl,
-                }}
-                hasCredential={[
-                    {
-                        credentialCategory: 'BoardCertification',
-                        name: 'Board Certified Cosmetic Surgeon',
-                        recognizedBy: {
-                            name: 'American Board of Cosmetic Surgery',
-                            url: 'https://www.americanboardcosmeticsurgery.org/',
-                        },
-                    },
-                ]}
-                knowsAbout={[
-                    'Brazilian Butt Lift (BBL)',
-                    'Breast Augmentation',
-                    'Mommy Makeover',
-                    'Liposuction',
-                    'Tummy Tuck',
-                    'Body Contouring',
-                    'Facial Rejuvenation',
-                ]}
-                sameAs={siteConfig.social.map((s) => s.url)}
+            {/* The surgeon, from the verified-credentials constant: the node
+                the procedure pages publish, in place of the old "Double
+                Board-Certified" Physician node. */}
+            <JsonLdGraph nodes={[karlinskyPersonNode(siteUrl)]} />
+
+            <FAQSchema
+                items={homePageFaqs.map((faq) => ({
+                    question: faq.question,
+                    answer: faq.answer,
+                }))}
             />
 
-            {/* Structured Data - FAQ Schema for rich snippets */}
-            {faqSchemaItems.length > 0 && <FAQSchema items={faqSchemaItems} />}
-
-            {/* Structured Data - HowTo Schema for patient journey (voice search optimization) */}
-            <HowToSchema
-                name='How to Get Plastic Surgery at Alluring Plastic Surgery Miami'
-                description="Three simple steps to your transformation at Miami's premier plastic surgery clinic. From free consultation to your final results."
-                url={`${siteUrl}/#experience`}
-                image={`${siteUrl}/og-image.jpg`}
-                totalTime='P8W'
-                steps={[
-                    {
-                        name: 'Schedule Your Free Consultation',
-                        description:
-                            'Book a private consultation with a board-certified cosmetic surgeon. Discuss your goals for BBL, mommy makeover, breast augmentation, liposuction, or other procedures. No salespeople—just honest medical advice.',
-                    },
-                    {
-                        name: 'Receive Your Custom Surgical Plan',
-                        description:
-                            'Get a personalized treatment plan tailored to your anatomy and goals. Review all-inclusive pricing, financing options including 0% interest plans, and your recovery timeline.',
-                    },
-                    {
-                        name: 'Your Transformation',
-                        description:
-                            'Undergo your procedure with expert care from our double board-certified surgeons. Your dedicated concierge team supports you from surgery day through final follow-up, ensuring results that exceed expectations.',
-                    },
-                ]}
-                yield='Your dream transformation'
-            />
-
-            {/* Structured Data - Offer Schema for featured promotion */}
             {featuredPromotion && (
                 <OfferSchema
                     name={featuredPromotion.title}
@@ -321,126 +256,59 @@ export default async function Page() {
                     category={featuredPromotion.type}
                     image={featuredPromotion.imageUrl ?? undefined}
                     discount={formatDiscount(featuredPromotion) ?? undefined}
-                    discountDescription={
-                        formatDiscount(featuredPromotion)
-                            ? `${formatDiscount(featuredPromotion)} - ${featuredPromotion.title}`
-                            : undefined
-                    }
                     offeredBy={{
                         '@id': `${siteUrl}/#organization`,
                         type: 'MedicalBusiness',
                         name: siteConfig.business.name,
                         url: siteUrl,
                     }}
-                    itemOffered={
-                        featuredPromotion.procedureSlug
-                            ? {
-                                  type: 'MedicalProcedure',
-                                  name: featuredPromotion.title
-                                      .replace(/\d+%?\s*(OFF|off)?\s*/g, '')
-                                      .trim(),
-                                  url: `${siteUrl}/procedures/${featuredPromotion.procedureSlug}`,
-                              }
-                            : undefined
-                    }
                 />
             )}
 
-            <ContainerLayout as='div' noPaddingTop noPadding size='full'>
-                {/* ---------------------------------------------------- */}
-                {/* 1 — Capture. Form lives in the first viewport.        */}
-                {/* ---------------------------------------------------- */}
-                <Hero />
-                <TrustBar />
-
-                {/* ---------------------------------------------------- */}
-                {/* 2 — Qualify. Route visitors by situation, not by      */}
-                {/*     procedure name, into the matching consult page.   */}
-                {/* ---------------------------------------------------- */}
-                <AudiencePaths />
-
-                {/* ---------------------------------------------------- */}
-                {/* 3 — Desire.                                           */}
-                {/* ---------------------------------------------------- */}
-                <Procedures />
-                <SecondaryProcedures />
-                {featuredPromotion && (
-                    <PromoSection promotion={featuredPromotion} />
-                )}
-
-                {/* ---------------------------------------------------- */}
-                {/* 4 — Proof. Results, then reviews.                     */}
-                {/* ---------------------------------------------------- */}
-                {/* Gallery renders white so it steps against the muted
-                    reviews block directly beneath it — muted on muted read as
-                    one flat wall. */}
-                <GalleryShowcase variant='default' />
-                <GoogleReviews
-                    title='Real Reviews from Google'
-                    subtitle='See what our patients are saying on Google'
-                    limit={6}
+            <div className='hp-page'>
+                <ModuleStarSprite />
+                <HomeHero rating={averageRating} reviewCount={totalCount} />
+                <HomeProofTicker
+                    rating={averageRating}
+                    reviewCount={totalCount}
+                    reviews={reviews}
                 />
-
-                {/* ---------------------------------------------------- */}
-                {/* 5 — Capture again, at peak trust: straight after the  */}
-                {/*     visitor has seen results and read reviews.        */}
-                {/* ---------------------------------------------------- */}
-                <InlineCtaBand />
-
-                {/* ---------------------------------------------------- */}
-                {/* 6 — Objections: who is operating, then everything     */}
-                {/*     else. Pricing detail lives on the financing and   */}
-                {/*     specials pages rather than here.                  */}
-                {/* ---------------------------------------------------- */}
-                <Surgeons />
-                <Objections />
-
-                {/* ---------------------------------------------------- */}
-                {/* 7 — Process. What happens, and how it works if you're */}
-                {/*     flying in. Week-by-week recovery detail lives on  */}
-                {/*     each procedure page, where it can be specific.    */}
-                {/* ---------------------------------------------------- */}
-                <Journey />
-                <MedicalTourism />
-
-                <CategorizedFAQ
-                    categories={faqCategoriesHome}
-                    faqData={faqDataHome}
-                    badge='Clarity & Confidence'
-                    title='Your Questions,'
-                    subtitle='Answered.'
-                    description='We believe transparency is the ultimate luxury. Here are the answers to the most common questions our patients ask.'
-                    variant='default'
-                    showBackgroundDecoration={true}
-                    includeSchema={false}
-                    ctaConfig={{
-                        title: 'Still have questions?',
-                        description:
-                            'Our patient concierge is ready to help you.',
-                        buttonText: 'Chat with Concierge',
-                        phoneNumber: '7863058649',
-                    }}
+                <HomeConsult />
+                <HomeResults images={galleryImages} />
+                <HomeProcedurePicker />
+                <HomeSurgeon />
+                <HomePrices
+                    promotion={
+                        featuredPromotion
+                            ? {
+                                  title: featuredPromotion.title,
+                                  href: `/promotions/${featuredPromotion.slug}`,
+                              }
+                            : null
+                    }
                 />
-
-                {/* ---------------------------------------------------- */}
-                {/* 8 — Final capture, for visitors who read everything.  */}
-                {/* ---------------------------------------------------- */}
-                <LeadForm />
-
-                {/* ---------------------------------------------------- */}
-                {/* 9 — Below the conversion path: editorial content that */}
-                {/*     earns organic traffic without competing with the  */}
-                {/*     forms above it.                                   */}
-                {/* ---------------------------------------------------- */}
-                <BlogPostsSection
-                    title='Latest from Our Blog'
-                    description='Expert insights and advice from our board-certified plastic surgeons'
-                    badge='Knowledge Center'
-                    variant='muted'
-                    limit={3}
-                    columns={3}
+                <HomeFlyIn />
+                <HomeReviews
+                    reviews={reviews}
+                    rating={averageRating}
+                    reviewCount={totalCount}
                 />
-            </ContainerLayout>
+                <HomeFaq />
+                <HomeClose />
+            </div>
+
+            <ConsultStickyBar
+                chatId={HOME_CHAT_ID}
+                label={{
+                    en: 'Start my free consultation',
+                    es: 'Empezar mi consulta gratis',
+                }}
+                phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
+                phoneLabel={`Call ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}`}
+                smsLink={getSmsLink()}
+            />
+
+            <SectionViewTracker />
         </>
     )
 }
