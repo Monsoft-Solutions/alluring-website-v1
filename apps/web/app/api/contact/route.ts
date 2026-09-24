@@ -24,6 +24,7 @@ import { type NextRequest, NextResponse, after } from 'next/server'
 import { ZodError } from 'zod'
 
 import { db } from '@workspace/db/client'
+import { parseLandingUrl } from '@workspace/shared/attribution'
 import {
     type ContactSubmission,
     contactSubmission,
@@ -536,6 +537,16 @@ export async function POST(
             utmTerm: stripPlaceholders(validatedData.utmTerm),
         })
 
+        // The landing URL is the one record every Google click leaves, even
+        // when the client lost the ids on the way (the LP read the first,
+        // placeholder copy of each param before #288). Recover what's missing
+        // from it and keep the ValueTrack params (keyword, matchtype, device…)
+        // that have no column of their own.
+        const landing = parseLandingUrl(validatedData.landingPage)
+        const landingParams = Object.keys(landing.params).length
+            ? landing.params
+            : undefined
+
         const insertData: InsertContactSubmission = {
             name: fullName,
             firstName: validatedData.firstName,
@@ -559,16 +570,18 @@ export async function POST(
             utmCampaign: attribution.utmCampaign,
             utmContent: attribution.utmContent,
             utmTerm: attribution.utmTerm,
-            gclid: attribution.gclid,
-            gbraid: attribution.gbraid,
-            wbraid: attribution.wbraid,
-            gadCampaignId: attribution.gadCampaignId,
+            gclid: attribution.gclid || landing.clickIds.gclid,
+            gbraid: attribution.gbraid || landing.clickIds.gbraid,
+            wbraid: attribution.wbraid || landing.clickIds.wbraid,
+            gadCampaignId:
+                attribution.gadCampaignId || landing.clickIds.gadCampaignId,
             fbclid: attribution.fbclid,
             ttclid: attribution.ttclid,
             fbp: validatedData.fbp,
             fbc: validatedData.fbc,
             referrer: validatedData.referrer,
             landingPage: validatedData.landingPage,
+            landingParams,
             submittedFromPath: validatedData.submittedFromPath,
             gaClientId: validatedData.gaClientId,
             timeline: validatedData.timeline,

@@ -2,7 +2,7 @@
 
 Read-only data layer for the practice's Google Ads account. It is shared by the
 `google-ads` MCP server ([`packages/mcp-google-ads`](../mcp-google-ads)) and
-will be used by the admin app.
+the admin app's Ads console (epic #288).
 
 ```ts
 import { getCampaignPerformance, lookupClicks } from '@workspace/google-ads'
@@ -42,6 +42,19 @@ const { clicks } = await lookupClicks({
 
 For anything else, use `searchGaql` (flattened) or `searchGaqlRaw` (nested, as
 sent).
+
+### Daily reports (the admin snapshot)
+
+`getCampaignDaily`, `getKeywordDaily`, `getSearchTermDaily`,
+`getLandingPageDaily`, `getConversionDaily` take an explicit
+`{ startDate, endDate }` and return one row per day and per the admin table's
+key, every metric present, rows that share a key rolled up (`rollUpDaily`), and
+rows with no activity dropped. Each is one GAQL query (one operation per 10,000
+rows). The admin's `ads-snapshot` job stores them; see
+`apps/admin/lib/services/ads/`.
+
+`getOperationCount()` returns the API requests this process has made — read
+it before and after a job to know what it spent against the daily quota.
 
 ## Tests
 

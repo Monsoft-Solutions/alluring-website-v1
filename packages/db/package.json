@@ -10,6 +10,11 @@
             "import": "./dist/client.js",
             "default": "./dist/client.js"
         },
+        "./schema/ads": {
+            "types": "./dist/schema/ads/index.d.ts",
+            "import": "./dist/schema/ads/index.js",
+            "default": "./dist/schema/ads/index.js"
+        },
         "./schema/analytics": {
             "types": "./dist/schema/analytics/index.d.ts",
             "import": "./dist/schema/analytics/index.js",

@@ -22,6 +22,11 @@
             "import": "./dist/utils/index.js",
             "default": "./dist/utils/index.js"
         },
+        "./attribution": {
+            "types": "./dist/attribution/index.d.ts",
+            "import": "./dist/attribution/index.js",
+            "default": "./dist/attribution/index.js"
+        },
         "./seo": {
             "types": "./dist/seo/index.d.ts",
             "import": "./dist/seo/index.js",

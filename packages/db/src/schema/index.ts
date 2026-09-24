@@ -82,6 +82,46 @@ export {
     type InsertCannibalizationReport,
 } from './gsc'
 
+// Google Ads schema
+export {
+    adsCampaignDaily,
+    adsKeywordDaily,
+    adsSearchTermDaily,
+    adsLandingPageDaily,
+    adsConversionDaily,
+    adsChangeEvent,
+    adsSyncJob,
+    adsSyncTrigger,
+    adsSyncStatus,
+    adsSyncRun,
+    adsTermClassName,
+    adsTermClass,
+    leadAdMatch,
+    leadAdClick,
+    type AdsCampaignDaily,
+    type InsertAdsCampaignDaily,
+    type AdsKeywordDaily,
+    type InsertAdsKeywordDaily,
+    type AdsSearchTermDaily,
+    type InsertAdsSearchTermDaily,
+    type AdsLandingPageDaily,
+    type InsertAdsLandingPageDaily,
+    type AdsConversionDaily,
+    type InsertAdsConversionDaily,
+    type AdsChangeEvent,
+    type AdsChangeValues,
+    type InsertAdsChangeEvent,
+    type AdsSyncRun,
+    type InsertAdsSyncRun,
+    type AdsTermClass,
+    type InsertAdsTermClass,
+    type LeadAdClick,
+    type InsertLeadAdClick,
+    type LeadAdMatch,
+    type LeadClickIdSource,
+    type LeadClickIdType,
+} from './ads'
+
 // Chat schema
 export {
     CHAT_MODELS,

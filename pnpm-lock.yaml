@@ -144,6 +144,9 @@ importers:
       '@workspace/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@workspace/google-ads':
+        specifier: workspace:*
+        version: link:../../packages/google-ads
       '@workspace/seo':
         specifier: workspace:*
         version: link:../../packages/seo

@@ -12,6 +12,8 @@
  * only splits the reporting into before and after.
  */
 
+import { readAttributionParam } from '@/lib/analytics/attribution-params.util'
+
 import type { LpLang } from './lp-copy'
 
 export const LP_PAGE_VERSION = 'v4'
@@ -69,6 +71,10 @@ export function trackLpEvent(
  * Reads the campaign identifiers off the URL and remembers them for the
  * session, so a visitor who reloads or switches language still carries the
  * click that brought them here into the conversion.
+ *
+ * Values go through `readAttributionParam`, like the rest of the site: the
+ * tracking template repeats each UTM with unexpanded `{…}` tokens first, and
+ * `params.get()` would keep that copy.
  */
 export function readAttribution(): Attribution {
     const empty = Object.fromEntries(
@@ -90,7 +96,7 @@ export function readAttribution(): Attribution {
     const data = Object.fromEntries(
         ATTRIBUTION_KEYS.map((key) => [
             key,
-            params.get(key) || stored[key] || '',
+            readAttributionParam(params, key) || stored[key] || '',
         ])
     ) as Attribution
 

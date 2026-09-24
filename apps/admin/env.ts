@@ -78,6 +78,18 @@ export const env = createEnv({
         // or "https://example.com" for URL-prefix properties
         GOOGLE_SEARCH_CONSOLE_SITE_URL: z.string().optional(),
 
+        // Google Ads (optional - the Ads console, epic #288). Authenticates
+        // with the Search Console service account above; @workspace/google-ads
+        // reads these from process.env itself, they are declared here so a
+        // malformed value fails the build.
+        GOOGLE_ADS_CUSTOMER_ID: z
+            .string()
+            .regex(/^\d{3}-?\d{3}-?\d{4}$/)
+            .optional(),
+        GOOGLE_ADS_LOGIN_CUSTOMER_ID: z.string().optional(),
+        GOOGLE_ADS_API_VERSION: z.string().optional(),
+        GOOGLE_ADS_TIME_ZONE: z.string().optional(),
+
         // Tavily API key for web search (optional)
         // Get one at https://tavily.com
         TAVILY_API_KEY: z.string().optional(),

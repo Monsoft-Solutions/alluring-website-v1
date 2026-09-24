@@ -615,6 +615,8 @@ export async function getConversionActions(input: RangeInput = {}) {
 export const CHANGE_HISTORY_MAX_DAYS = 30
 
 export type ChangeEventRow = {
+    /** Google's resource name for the event — stable across pulls. */
+    resourceName: string
     /** Account-zone timestamp, as the API reports it. */
     changedAt: string
     userEmail: string
@@ -622,7 +624,9 @@ export type ChangeEventRow = {
     resourceType: string
     operation: string
     changedFields: string[]
+    campaignId: string | null
     campaignName: string | null
+    adGroupId: string | null
     adGroupName: string | null
     /** Per changed field, the value before and after — when `includeValues`. */
     values?: Record<string, { old: unknown; new: unknown }>
@@ -633,6 +637,7 @@ const IDENTITY_FIELDS = new Set(['id', 'resource_name'])
 
 /** A change_event as the REST API returns it. */
 type RawChangeEvent = {
+    resourceName?: string
     changeDateTime?: string
     userEmail?: string
     clientType?: string
@@ -642,6 +647,17 @@ type RawChangeEvent = {
     changedFields?: string
     oldResource?: unknown
     newResource?: unknown
+    /** Resource names, e.g. `customers/1/campaigns/2`. */
+    campaign?: string
+    adGroup?: string
+}
+
+/** The trailing numeric id of a resource name, e.g. `customers/1/adGroups/2` → `2`. */
+export function idFromResourceName(
+    resourceName: string | null | undefined
+): string | null {
+    const match = resourceName?.match(/\/(\d+)$/)
+    return match ? match[1]! : null
 }
 
 /** Read one changed-field path out of a change event's old/new resource. */
@@ -673,6 +689,7 @@ function changedValue(resource: unknown, fieldPath: string): unknown {
  * @param input.days - Look-back, at most 30 (the API's limit)
  * @param input.resourceType - Filter, e.g. CAMPAIGN, CAMPAIGN_BUDGET, AD_GROUP_AD
  * @param input.includeValues - Attach old → new values for each changed field
+ * @param input.limit - Row cap (default 100; the API allows up to 10,000)
  */
 export async function getChangeHistory(
     input: {
@@ -695,9 +712,11 @@ export async function getChangeHistory(
     }
 
     const { rows } = await searchGaqlRaw(
-        `SELECT change_event.change_date_time, change_event.user_email,
-            change_event.client_type, change_event.change_resource_type,
+        `SELECT change_event.resource_name, change_event.change_date_time,
+            change_event.user_email, change_event.client_type,
+            change_event.change_resource_type,
             change_event.resource_change_operation, change_event.changed_fields,
+            change_event.campaign, change_event.ad_group,
             campaign.name, ad_group.name${
                 input.includeValues
                     ? ', change_event.old_resource, change_event.new_resource'
@@ -711,7 +730,8 @@ export async function getChangeHistory(
                     : ''
             }
         ORDER BY change_event.change_date_time DESC
-        LIMIT ${input.limit ?? 100}`
+        LIMIT ${Math.min(input.limit ?? 100, 10_000)}`,
+        { maxRows: 10_000 }
     )
 
     const events: ChangeEventRow[] = rows.map((row: RawRow) => {
@@ -724,13 +744,16 @@ export async function getChangeHistory(
             .filter(Boolean)
 
         return {
+            resourceName: event.resourceName ?? '',
             changedAt: event.changeDateTime ?? '',
             userEmail: event.userEmail ?? '',
             clientType: event.clientType ?? '',
             resourceType: event.changeResourceType ?? '',
             operation: event.resourceChangeOperation ?? '',
             changedFields,
+            campaignId: idFromResourceName(event.campaign),
             campaignName: campaign?.name ?? null,
+            adGroupId: idFromResourceName(event.adGroup),
             adGroupName: adGroup?.name ?? null,
             ...(input.includeValues
                 ? {

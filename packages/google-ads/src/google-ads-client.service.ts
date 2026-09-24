@@ -28,6 +28,17 @@ const ADWORDS_SCOPE = 'https://www.googleapis.com/auth/adwords'
 /** Upper bound on rows gathered across pages when the caller sets none. */
 export const DEFAULT_MAX_ROWS = 10_000
 
+/** API requests made by this process — each one is a billed operation. */
+let operationCount = 0
+
+/**
+ * Requests sent to the API since the process started. Read it before and
+ * after a job to know what the job spent against the daily quota.
+ */
+export function getOperationCount(): number {
+    return operationCount
+}
+
 /** One JWT client per service account; it caches and refreshes its own token. */
 const jwtClients = new Map<string, JWT>()
 
@@ -71,6 +82,7 @@ async function post<T>(
     body: unknown
 ): Promise<T> {
     return withGoogleAdsRetry(async () => {
+        operationCount += 1
         const response = await fetch(
             `${API_HOST}/${config.apiVersion}/${path}`,
             {

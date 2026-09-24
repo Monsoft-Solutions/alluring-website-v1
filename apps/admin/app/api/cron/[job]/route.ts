@@ -27,6 +27,8 @@ import { runGscSnapshotJob } from '@/lib/services/gsc-snapshot.service'
 import { runCannibalizationReportJob } from '@/lib/services/cannibalization-report.service'
 import { runDecayDetectionJob } from '@/lib/services/decay-detection.service'
 import { runRefreshOutcomesJob } from '@/lib/services/refresh-outcome.service'
+import { runAdsSnapshotJob } from '@/lib/services/ads/ads-snapshot.service'
+import { runResolveLeadClicksJob } from '@/lib/services/ads/lead-ad-click.service'
 import { getSnapshotStatus } from '@/lib/queries/gsc-snapshot.query'
 import {
     countActiveRefreshRuns,
@@ -124,6 +126,32 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
     'autopilot-refresh': async () => {
         const result = await startRefreshRunJob('cron')
         return { outcome: result.outcome, ...result.detail }
+    },
+
+    /** Re-pulls the trailing 30 days of Google Ads reports + change log (#288). */
+    'ads-snapshot': async () => {
+        const result = await runAdsSnapshotJob('cron')
+        return {
+            outcome: result.outcome,
+            window: result.window,
+            ...result.counts,
+            apiOperations: result.apiOperations,
+            ...(result.error ? { error: result.error } : {}),
+        }
+    },
+
+    /** Matches new paid Google leads to their ad clicks while Google keeps them (#288). */
+    'resolve-lead-clicks': async () => {
+        const result = await runResolveLeadClicksJob('cron')
+        return {
+            outcome: result.outcome,
+            examined: result.examined,
+            written: result.written,
+            byMatch: result.byMatch,
+            failedLookups: result.failedLookups,
+            apiOperations: result.apiOperations,
+            ...(result.error ? { error: result.error } : {}),
+        }
     },
 
     /** Scores applied refreshes 28 days out from snapshots (#144). */

@@ -15,6 +15,7 @@ export {
 } from './google-ads-config.util.js'
 export {
     DEFAULT_MAX_ROWS,
+    getOperationCount,
     searchGaql,
     searchGaqlRaw,
     searchGoogleAdsFields,
@@ -31,6 +32,7 @@ export {
 } from './google-ads-error.util.js'
 export {
     addDays,
+    assertIsoDate,
     daysBetween,
     resolveDateRange,
     todayIn,
@@ -55,6 +57,7 @@ export {
     getLandingPages,
     getReportRange,
     getSearchTerms,
+    idFromResourceName,
     landingPagePath,
     lookupClicks,
     runGaql,
@@ -73,6 +76,23 @@ export type {
     ReportOrder,
     SearchTermRow,
 } from './google-ads-reports.service.js'
+export {
+    getCampaignDaily,
+    getConversionDaily,
+    getKeywordDaily,
+    getLandingPageDaily,
+    getSearchTermDaily,
+    rollUpDaily,
+} from './google-ads-daily.service.js'
+export type {
+    CampaignDailyRow,
+    ConversionDailyRow,
+    DailyMetrics,
+    DailyRange,
+    KeywordDailyRow,
+    LandingPageDailyRow,
+    SearchTermDailyRow,
+} from './google-ads-daily.service.js'
 export type {
     DateRange,
     FlatRow,

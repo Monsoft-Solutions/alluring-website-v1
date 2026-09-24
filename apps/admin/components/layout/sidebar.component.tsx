@@ -17,6 +17,7 @@ import {
     Search,
     Workflow,
     Star,
+    Target,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -41,6 +42,18 @@ const navItems: NavItem[] = [
         children: [
             { title: 'Website', href: '/analytics' },
             { title: 'Leads', href: '/analytics/leads' },
+        ],
+    },
+    {
+        title: 'Ads',
+        href: '/ads',
+        icon: Target,
+        children: [
+            { title: 'Overview', href: '/ads' },
+            { title: 'Campaigns', href: '/ads/campaigns' },
+            { title: 'Keywords & terms', href: '/ads/keywords' },
+            { title: 'Leads', href: '/ads/leads' },
+            { title: 'Changes', href: '/ads/changes' },
         ],
     },
     {
