@@ -78,6 +78,13 @@ export const env = createEnv({
         // fail a pipeline rather than only log — `NODE_ENV` is 'production'
         // during `next build`, so it cannot tell CI apart on its own.
         CI: z.string().optional(),
+
+        // Blog post template v2 (epic #293): 'all' renders every post with it
+        // on a non-production build (lib/blog/blog-v2.constant.ts).
+        BLOG_V2_PREVIEW: z.string().optional(),
+        // Set by Vercel: 'production', 'preview' or 'development'. Keeps the
+        // preview flag above off production builds.
+        VERCEL_ENV: z.string().optional(),
     },
     client: {
         // Site URL - used by site-config.ts (with fallback to VERCEL_URL)

@@ -4,6 +4,7 @@
  * Floating social sharing buttons for blog posts.
  * - Desktop: Vertical floating bar on left side
  * - Mobile: Horizontal bar at bottom (uses native share API when available)
+ * - `variant='inline'`: the same buttons as one row in the page's flow
  *
  * Features:
  * - Share to Facebook, Twitter/X, Pinterest, Copy Link
@@ -53,6 +54,13 @@ type SocialShareProps = {
      * Additional CSS classes
      */
     className?: string
+
+    /**
+     * `floating` (default): the fixed side bar on desktop and bottom bar on
+     * mobile. `inline`: the same buttons as one row in the page's flow, for a
+     * template that keeps the bottom of the screen for something else.
+     */
+    variant?: 'floating' | 'inline'
 }
 
 // X/Twitter icon as SVG (not in Lucide)
@@ -124,12 +132,23 @@ function subscribe() {
     return () => {}
 }
 
+// The inline row hands off to the OS share sheet on touch devices only:
+// desktop browsers expose navigator.share too, but readers there expect the
+// network buttons.
+function getInlineNativeShare() {
+    return (
+        typeof navigator.share === 'function' &&
+        window.matchMedia('(pointer: coarse)').matches
+    )
+}
+
 export function SocialShare({
     title,
     url,
     description,
     imageUrl,
     className,
+    variant = 'floating',
 }: SocialShareProps) {
     const [copied, setCopied] = useState(false)
 
@@ -148,6 +167,14 @@ export function SocialShare({
         if (typeof navigator === 'undefined') return false
         return 'share' in navigator && typeof navigator.share === 'function'
     }, [])
+
+    // False on the server and during hydration, so the inline row renders the
+    // same markup on both sides before switching on a phone
+    const showInlineNativeShare = useSyncExternalStore(
+        subscribe,
+        getInlineNativeShare,
+        () => false
+    )
 
     const shareToFacebook = useCallback(() => {
         const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(absoluteUrl)}`
@@ -196,6 +223,72 @@ export function SocialShare({
             // User cancelled or error - ignore
         }
     }, [canNativeShare, title, description, absoluteUrl])
+
+    // Inline renders on the server too: the buttons only need the absolute URL
+    // once they are clicked, and a row that appeared after hydration would
+    // push the end of the article down.
+    if (variant === 'inline') {
+        const inlineButton =
+            'border border-stone-300 bg-white text-stone-800 hover:scale-100 hover:border-stone-900 hover:bg-stone-900 hover:text-stone-50'
+
+        return (
+            <div
+                role='group'
+                aria-label='Share this article'
+                className={cn('flex flex-wrap items-center gap-4', className)}
+            >
+                <p className='text-[0.9375rem] font-semibold text-stone-900'>
+                    Share this article
+                </p>
+                <div className='flex items-center gap-2'>
+                    {showInlineNativeShare ? (
+                        <ShareButton
+                            onClick={nativeShare}
+                            label='Share this article'
+                            className={inlineButton}
+                        >
+                            <Share2 className='h-5 w-5' />
+                        </ShareButton>
+                    ) : (
+                        <>
+                            <ShareButton
+                                onClick={shareToFacebook}
+                                label='Share on Facebook'
+                                className={inlineButton}
+                            >
+                                <Facebook className='h-5 w-5' />
+                            </ShareButton>
+                            <ShareButton
+                                onClick={shareToTwitter}
+                                label='Share on X (Twitter)'
+                                className={inlineButton}
+                            >
+                                <XIcon className='h-5 w-5' />
+                            </ShareButton>
+                            <ShareButton
+                                onClick={shareToPinterest}
+                                label='Share on Pinterest'
+                                className={inlineButton}
+                            >
+                                <PinterestIcon className='h-5 w-5' />
+                            </ShareButton>
+                        </>
+                    )}
+                    <ShareButton
+                        onClick={copyLink}
+                        label={copied ? 'Link copied!' : 'Copy link'}
+                        className={inlineButton}
+                    >
+                        {copied ? (
+                            <Check className='h-5 w-5' />
+                        ) : (
+                            <Copy className='h-5 w-5' />
+                        )}
+                    </ShareButton>
+                </div>
+            </div>
+        )
+    }
 
     // Don't render until we have the absolute URL
     if (!absoluteUrl) return null

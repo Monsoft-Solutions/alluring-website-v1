@@ -60,7 +60,9 @@
                 "SEED_CLEAR_BLOG",
                 "N8N_WEBHOOK_URL",
                 "N8N_LEAD_UPDATE_WEBHOOK_URL",
-                "LEAD_UPDATE_SECRET"
+                "LEAD_UPDATE_SECRET",
+                "BLOG_V2_PREVIEW",
+                "VERCEL_ENV"
             ]
         },
         "analyze": {
@@ -148,6 +150,8 @@
                 "N8N_WEBHOOK_URL",
                 "N8N_LEAD_UPDATE_WEBHOOK_URL",
                 "LEAD_UPDATE_SECRET",
+                "BLOG_V2_PREVIEW",
+                "VERCEL_ENV",
                 "WEB_PORT",
                 "ADMIN_PORT"
             ]

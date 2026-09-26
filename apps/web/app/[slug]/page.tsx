@@ -20,6 +20,8 @@ import { env } from '@/env'
 
 // Blog imports
 import { BlogPostContent } from '@/components/blog/blog-post-content.component'
+import { BlogPostPage } from '@/components/blog/post-page/blog-post-page.component'
+import { isBlogV2 } from '@/lib/blog/blog-v2.constant'
 import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
@@ -247,6 +249,21 @@ export default async function DynamicPage({ params }: PageProps) {
         const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(
             post.content
         )
+
+        // Template v2 (epic #293), for allowlisted posts and preview builds
+        if (isBlogV2(slug, env)) {
+            return (
+                <BlogPostPage
+                    post={post}
+                    relatedPosts={relatedPosts}
+                    tableOfContents={tableOfContents}
+                    beforeCTA={beforeCTA}
+                    afterCTA={afterCTA}
+                    adjacentPosts={adjacentPosts}
+                    inlineImages={inlineImages}
+                />
+            )
+        }
 
         // Get related procedures for cross-linking (SEO benefit)
         const relatedProcedures = getRelatedProcedures(post, 3)
