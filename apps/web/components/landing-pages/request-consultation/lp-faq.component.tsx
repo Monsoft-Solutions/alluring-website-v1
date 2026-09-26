@@ -2,12 +2,13 @@
 
 /**
  * The questions a paid visitor actually asks, money first (#290): what it
- * costs, whether she can finance it, whether it is safe, the time off, how
- * it works from out of state, and what if she isn't ready.
+ * costs, whether she can finance it, how it works from out of state, whether
+ * it is safe, and what if she isn't ready. v6 (#292) drops the time-off
+ * question and closes them all: the page is for the few who look, and five
+ * question lines are shorter to scroll past than one open answer.
  *
- * Six answers are too long to read open on a phone, so they are native
- * `<details>` with the first one open: no script, the browser's own keyboard
- * and screen-reader behaviour, and the answers stay in the HTML. There is no
+ * Native `<details>`: no script, the browser's own keyboard and
+ * screen-reader behaviour, and the answers stay in the HTML. There is no
  * structured data to earn here — the page is noindex.
  *
  * The cost answer repeats the settled starting prices (BBL, Lipo 360). They
@@ -42,12 +43,8 @@ export function LpFaq({ copy, prices }: LpFaqProps) {
                     </h2>
                 </div>
                 <div className='faq-list reveal'>
-                    {copy.items.map((item, index) => (
-                        <details
-                            className='faq-item'
-                            key={item.question}
-                            open={index === 0}
-                        >
+                    {copy.items.map((item) => (
+                        <details className='faq-item' key={item.question}>
                             <summary>
                                 <h3>{item.question}</h3>
                             </summary>

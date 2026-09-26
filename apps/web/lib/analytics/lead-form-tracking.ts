@@ -34,7 +34,18 @@ export const LEAD_FORM_EVENTS = {
 export type LeadFormEvent =
     (typeof LEAD_FORM_EVENTS)[keyof typeof LEAD_FORM_EVENTS]
 
-export type LeadFormEventParams = {
+/**
+ * Which version of a form and page the visitor saw, and where an answer was
+ * given — for forms under an A/B test (the ads landing page, #292).
+ */
+export type LeadFormContextParams = {
+    /** The form arm: `thread`, `card`. */
+    readonly form_variant?: string
+    /** The page version: `ads-consultation-v6`. */
+    readonly page_variant?: string
+}
+
+export type LeadFormEventParams = LeadFormContextParams & {
     /** Which step or fields failed validation, comma-separated names only. */
     readonly field?: string
     /** `validation`, `api_error`, `http_error`, `network_error`, … */
@@ -44,6 +55,11 @@ export type LeadFormEventParams = {
     /** Name of the step just answered (`procedure`, `timeline`, …) — never the answer. */
     readonly step?: string
     readonly step_index?: number
+    /**
+     * Where a step was answered: in the form itself, or through a link that
+     * answers it (the sticky bar, the closing chips, a sitelink's strip).
+     */
+    readonly entry_point?: string
 }
 
 /** Clarity tag set at each milestone, so recordings filter by funnel stage. */

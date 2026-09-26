@@ -25,6 +25,7 @@ import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import { LP_LOGO } from './lp-assets'
 import { LP_LEAD_KEY } from './lp-config'
 import { LP_COPY, type LpLang } from './lp-copy'
+import type { LpFormVariant } from './lp-form-variant'
 import { LP_LEGAL_HREFS } from './lp-legal'
 import { LpLegalDialog } from './lp-legal-dialog.component'
 import { PhoneIcon } from './lp-primitives.component'
@@ -39,6 +40,8 @@ interface LpThankYouProps {
     readonly adVariant: string
     /** Which version of the landing page produced the lead (`?pv=`). */
     readonly pageVersion: string
+    /** Which form the lead came through (`?fv=`), null before v6. */
+    readonly formVariant: LpFormVariant | null
 }
 
 const THANK_YOU_OVERRIDE = {
@@ -51,6 +54,7 @@ export function LpThankYou({
     langPinnedByUrl,
     adVariant,
     pageVersion,
+    formVariant,
 }: LpThankYouProps) {
     const [lang] = useLpLanguage(initialLang, langPinnedByUrl)
     const copy = LP_THANK_YOU_COPY[lang]
@@ -66,13 +70,14 @@ export function LpThankYou({
             event: 'lp_lead_submitted',
             pageVariant: `ads-consultation-${pageVersion}`,
             adVariant,
+            ...(formVariant && { formVariant }),
             lang: initialLang,
             gclid: campaign.gclid,
             utm_source: campaign.utm_source,
             utm_medium: campaign.utm_medium,
             utm_campaign: campaign.utm_campaign,
         })
-    }, [adVariant, pageVersion, initialLang])
+    }, [adVariant, pageVersion, formVariant, initialLang])
 
     useEffect(() => {
         const { documentElement } = document

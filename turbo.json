@@ -61,6 +61,7 @@
                 "N8N_WEBHOOK_URL",
                 "N8N_LEAD_UPDATE_WEBHOOK_URL",
                 "LEAD_UPDATE_SECRET",
+                "LP_FORM_SPLIT",
                 "BLOG_V2_PREVIEW",
                 "VERCEL_ENV"
             ]
@@ -150,6 +151,7 @@
                 "N8N_WEBHOOK_URL",
                 "N8N_LEAD_UPDATE_WEBHOOK_URL",
                 "LEAD_UPDATE_SECRET",
+                "LP_FORM_SPLIT",
                 "BLOG_V2_PREVIEW",
                 "VERCEL_ENV",
                 "WEB_PORT",

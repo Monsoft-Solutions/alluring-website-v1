@@ -73,6 +73,10 @@ export const env = createEnv({
         // Signs the token that lets the thank-you page update the lead it
         // just created (#274). Unset, the thank-you page asks no questions.
         LEAD_UPDATE_SECRET: z.string().min(32).optional(),
+        // The ads landing page's form test (#292): each arm's share of new
+        // visitors, e.g. 'thread:50,card:50'. Unset means 50/50;
+        // 'thread:100' ends the test. See `lp-form-variant.ts`.
+        LP_FORM_SPLIT: z.string().optional(),
 
         // Set by CI providers. Read by data-consistency assertions that should
         // fail a pipeline rather than only log — `NODE_ENV` is 'production'

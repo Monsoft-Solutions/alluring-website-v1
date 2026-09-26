@@ -12,11 +12,15 @@
  *
  * Google can disapprove a sitelink that opens the same content as the ad, so
  * each view has to be a different page, not an anchor on the same one. The
- * visitor still has the thread above and the sticky bar, and nothing links
- * off the page.
+ * visitor still has the form above, a question strip over her section and
+ * the sticky bar, and nothing links off the page.
+ *
+ * v6 (#292) is the short page: results, the surgeon, reviews and the
+ * questions. Price & financing and flying in are off the page but stay as
+ * views, in short versions, because live sitelinks open them.
  */
 
-/** Page order, top to bottom, with no `?s=`. Each is also the section's id. */
+/** Every section a sitelink can open. Each is also the section's id. */
 export const LP_SECTIONS = [
     'results',
     'financing',
@@ -27,6 +31,14 @@ export const LP_SECTIONS = [
 ] as const
 
 export type LpSection = (typeof LP_SECTIONS)[number]
+
+/** The page, top to bottom, with no `?s=`. */
+export const LP_PAGE_ORDER: readonly LpSection[] = [
+    'results',
+    'surgeon',
+    'reviews',
+    'faq',
+]
 
 /** Spellings someone might type into a sitelink. */
 const SECTION_ALIASES: Readonly<Record<string, LpSection>> = {
@@ -59,9 +71,12 @@ export function resolveLpSection(
         : null
 }
 
-/** The page order with the requested section moved to the top. */
+/**
+ * The page order with the requested section at the top — added for a
+ * view-only section (financing, flying in), moved for one already there.
+ */
 export function orderLpSections(focus: LpSection | null): readonly LpSection[] {
     return focus
-        ? [focus, ...LP_SECTIONS.filter((section) => section !== focus)]
-        : LP_SECTIONS
+        ? [focus, ...LP_PAGE_ORDER.filter((section) => section !== focus)]
+        : LP_PAGE_ORDER
 }
