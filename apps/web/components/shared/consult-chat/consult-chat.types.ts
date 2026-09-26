@@ -44,6 +44,11 @@ export interface ConsultChatCopy {
     readonly fieldName: string
     readonly fieldPhone: string
     readonly consent: RichText
+    /**
+     * The line above the button when tapping it is the consent (no
+     * checkbox). It names the button, so it changes with `submit`.
+     */
+    readonly consentTap?: RichText
     readonly submit: string
     readonly submitting: string
     readonly change: string
@@ -51,6 +56,17 @@ export interface ConsultChatCopy {
     /** `{n}` is replaced with the step number. */
     readonly stepLabel: string
     readonly reassure: string
+    /**
+     * The form header (`header="steps"`), which replaces the messaging-app
+     * header on the ads landing page (#292): how long it takes and the three
+     * steps by name. The title is `title`.
+     */
+    readonly formHeader?: {
+        readonly time: string
+        /** Shown in place of `time` on the last step. */
+        readonly lastStep: string
+        readonly steps: readonly [string, string, string]
+    }
     readonly errors: {
         readonly name: string
         readonly phone: string
