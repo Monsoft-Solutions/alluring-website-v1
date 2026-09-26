@@ -7,7 +7,10 @@
  * and all motion switches off under reduced motion.
  */
 
-.cc-chat {
+/* The palette, shared with the tap card (`consult-card.css`), which draws
+   the same header and last step. */
+.cc-chat,
+.ck-card {
     --cc-night: #1d1411;
     --cc-satin: #2d211c;
     --cc-satin-2: #3a2b24;
@@ -22,7 +25,9 @@
     --cc-display: var(--font-display), Georgia, 'Times New Roman', serif;
     --cc-body: var(--font-text), 'Helvetica Neue', Arial, sans-serif;
     --cc-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
 
+.cc-chat {
     position: relative;
     z-index: 2;
     box-sizing: border-box;
@@ -493,9 +498,108 @@
     color: var(--cc-gold);
 }
 
+/* ---------------------------------------------------------------------
+   The form header (`header="steps"`, #292): a title, the time it takes and
+   three named steps, in place of the messaging-app header. Shared with the
+   tap card.
+   --------------------------------------------------------------------- */
+
+.cc-steps {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid rgba(230, 203, 159, 0.14);
+}
+
+.cc-steps__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.cc-steps__title {
+    min-width: 0;
+    margin: 0;
+    color: var(--cc-text);
+    font-family: var(--cc-display);
+    font-size: 1.0625rem;
+    font-variation-settings: 'opsz' 14;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.cc-steps__time {
+    flex: none;
+    color: var(--cc-mute);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.cc-steps__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin: 11px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cc-steps__list li {
+    padding-top: 7px;
+    border-top: 3px solid rgba(230, 203, 159, 0.18);
+    color: #8f7f71;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.11em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    transition:
+        border-color 0.3s,
+        color 0.3s;
+}
+
+.cc-steps__list li.is-done {
+    border-top-color: #a67c4e;
+    color: var(--cc-mute);
+}
+
+.cc-steps__list li.is-current {
+    border-top-color: var(--cc-gold);
+    color: var(--cc-gold-light);
+}
+
+/* The quiet thread (`history="compact"`): the answers so far on one line,
+   then the question in hand. */
+.cc-thread--compact {
+    padding-top: 14px;
+}
+
+.cc-thread--compact .cc-bubble--you {
+    padding: 9px 12px 9px 15px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Consent by tapping the button: the line above it names the button. */
+.cc-consent-line {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: #c2b2a3;
+    font-size: 11.5px;
+    line-height: 1.45;
+}
+
+.cc-consent-line a {
+    color: var(--cc-gold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 /* The Loquent bubble would sit on top of — and compete with — the one
    conversation these pages are for. */
-body:has(.cc-chat) #loquent-widget {
+body:has(.cc-chat, .ck-card) #loquent-widget {
     display: none !important;
 }
 
