@@ -1,9 +1,11 @@
-import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeSlug from 'rehype-slug'
-import remarkGfm from 'remark-gfm'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import type { ElementType } from 'react'
 import 'server-only'
 
+import {
+    getPostMdxOptions,
+    type PostRehypePlugins,
+} from '@/lib/blog/post-mdx.util'
 import { normalizeMdxSource } from '@/lib/utils/mdx-source.util'
 
 import { getMDXComponents } from './mdx-components'
@@ -11,6 +13,10 @@ import { getMDXComponents } from './mdx-components'
 type PostMarkdownProps = {
     content: string
     className?: string
+    /** Components added to the blog set, e.g. the v2 template's split slot. */
+    components?: Record<string, ElementType>
+    /** Rehype plugins run after heading ids exist, e.g. v2's FAQ grouping. */
+    rehypePlugins?: PostRehypePlugins
 }
 
 /**
@@ -18,7 +24,12 @@ type PostMarkdownProps = {
  * Supports custom React components, GFM tables and syntax highlighting.
  * Headings have IDs (via rehypeSlug) for navigation, but are not rendered as links.
  */
-export function PostMarkdown({ content, className = '' }: PostMarkdownProps) {
+export function PostMarkdown({
+    content,
+    className = '',
+    components,
+    rehypePlugins,
+}: PostMarkdownProps) {
     const trimmedContent = content?.trim()
 
     if (!trimmedContent) {
@@ -29,29 +40,12 @@ export function PostMarkdown({ content, className = '' }: PostMarkdownProps) {
     // source is normalised before it reaches the compiler. See the util for why.
     const normalizedContent = normalizeMdxSource(trimmedContent)
 
-    const mdxOptions: MDXRemoteProps['options'] = {
-        mdxOptions: {
-            remarkPlugins: [remarkGfm],
-            rehypePlugins: [
-                // Note: We don't use rehype-sanitize here because:
-                // 1. Blog content is first-party — authored by our own AI
-                //    pipeline and reviewed by admins before publishing, the
-                //    same trust level as procedure content
-                // 2. Sanitization strips custom MDX components (<Figure />,
-                //    <QuickAnswer />, <CalloutBox />) and <figure>/<figcaption>,
-                //    which makes captions and rich blocks impossible
-                rehypeSlug, // Adds IDs to headings for scroll targeting
-                rehypeHighlight,
-            ],
-        },
-    }
-
     return (
         <div className={className}>
             <MDXRemote
                 source={normalizedContent}
-                options={mdxOptions}
-                components={getMDXComponents()}
+                options={getPostMdxOptions(rehypePlugins)}
+                components={{ ...getMDXComponents(), ...components }}
             />
         </div>
     )

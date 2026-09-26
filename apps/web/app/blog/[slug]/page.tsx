@@ -3,6 +3,9 @@ import type { Metadata } from 'next'
 import { cache } from 'react'
 
 import { BlogPostContent } from '@/components/blog/blog-post-content.component'
+import { BlogPostPage as BlogPostPageV2 } from '@/components/blog/post-page/blog-post-page.component'
+import { env } from '@/env'
+import { isBlogV2 } from '@/lib/blog/blog-v2.constant'
 import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
@@ -122,6 +125,21 @@ export default async function BlogPostPage({ params }: PageProps) {
         getInlineImagesByPostId(post.id),
     ])
     const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(post.content)
+
+    // Template v2 (epic #293), for allowlisted posts and preview builds
+    if (isBlogV2(slug, env)) {
+        return (
+            <BlogPostPageV2
+                post={post}
+                relatedPosts={relatedPosts}
+                tableOfContents={tableOfContents}
+                beforeCTA={beforeCTA}
+                afterCTA={afterCTA}
+                adjacentPosts={adjacentPosts}
+                inlineImages={inlineImages}
+            />
+        )
+    }
 
     const relatedProcedures = getRelatedProcedures(post, 3)
 
