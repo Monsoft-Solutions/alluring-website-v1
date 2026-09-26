@@ -16,10 +16,16 @@
  * and nothing links to the main site. The phone number stays — a call is a
  * conversion, not an exit.
  *
- * Order (v5, #290): the ask, then results, price & financing, the surgeon,
- * reviews, flying in, the six questions, and the ask again. A sitelink's
- * `?s=` moves its section directly under the hero and scrolls to it
- * (`lp-sections.ts`).
+ * v6 (#292) is the short page: the form, results, the surgeon, one review,
+ * five closed questions, and the form's question again. A sitelink's `?s=`
+ * puts its section directly under the hero, with a question strip over it,
+ * and scrolls there (`lp-sections.ts`). The phone's sticky bar asks the
+ * form's first question until it is answered.
+ *
+ * The hero form is under a 50/50 test, the quiet thread against the tap
+ * card; `middleware.ts` picks the visitor's arm and the page hands it here.
+ * Every event, the lead and the thank-you conversion carry the arm, and each
+ * answer is logged to our own database (`lp-step-beacon.ts`).
  */
 
 import { Fragment, type ReactNode, useEffect, useRef } from 'react'
@@ -27,24 +33,34 @@ import { Fragment, type ReactNode, useEffect, useRef } from 'react'
 import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
 import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 
+import { labelOf } from '@/components/shared/consult-chat/consult-chat.util'
+
 import type { LpChat } from './lp-chat-copy'
-import { LpClosingCta, LpFooter } from './lp-closing.component'
+import { LP_CLOSING_ID, LpClosingCta, LpFooter } from './lp-closing.component'
 import { LP_CHAT_ID } from './lp-config'
-import { LpConsultThread } from './lp-consult-thread.component'
+import { LpConsultForm } from './lp-consult-form.component'
 import { LP_COPY, type LpLang } from './lp-copy'
 import { LpFaq } from './lp-faq.component'
 import { LpFinancing } from './lp-financing.component'
 import { LpFlyIn } from './lp-fly-in.component'
+import type { LpFormVariant } from './lp-form-variant'
 import { LpHeader } from './lp-header.component'
 import { LpHero } from './lp-hero.component'
 import { LpLegalDialog } from './lp-legal-dialog.component'
 import type { LpProof } from './lp-proof'
+import { LP_STRIP_ID, LpQuestionStrip } from './lp-question-strip.component'
 import { LpResults } from './lp-results.component'
 import { LpReviews } from './lp-reviews.component'
 import { type LpSection, orderLpSections } from './lp-sections'
+import { lpStepBeacon } from './lp-step-beacon'
 import { LpSurgeon } from './lp-surgeon.component'
-import { trackLpEvent } from './lp-tracking'
-import { AD_VARIANT_COPY, type AdVariant, lpTitle } from './lp-variants'
+import { trackLpEvent, trackLpViewInGa4 } from './lp-tracking'
+import {
+    AD_VARIANT_COPY,
+    type AdVariant,
+    lpTitle,
+    VARIANT_PROCEDURE,
+} from './lp-variants'
 import { useLpLanguage } from './use-lp-language.hook'
 
 /** The shared sticky bar's links, under the placement names the page reported before. */
@@ -52,6 +68,7 @@ const STICKY_PLACEMENTS: Readonly<Record<string, string>> = {
     consult_sticky_chat: 'cta-sticky',
     consult_sticky_call: 'call-sticky',
     consult_sticky_text: 'text-sticky',
+    consult_sticky_chip: 'cta-sticky-chip',
 }
 
 /** The published figures, for when the live ones are unavailable. */
@@ -60,10 +77,9 @@ const FALLBACK_REVIEW_COUNT = '80+'
 
 /**
  * Sections that report `lp_section_view` the first time a quarter of them is
- * on screen: how many visitors reach the financing section at all is the
- * number that says whether it belongs higher.
+ * on screen: how far down the short page visitors get.
  */
-const VIEW_TRACKED: readonly LpSection[] = ['financing']
+const VIEW_TRACKED: readonly string[] = ['surgeon', 'faq', LP_CLOSING_ID]
 
 interface LpLandingProps {
     /** Resolved server-side from `?hl=` or the request's Accept-Language. */
@@ -74,7 +90,9 @@ interface LpLandingProps {
      */
     readonly langPinnedByUrl: boolean
     readonly adVariant: AdVariant
-    /** The thread's copy in both languages, built on the server. */
+    /** The hero form's test arm, chosen by the middleware. */
+    readonly formVariant: LpFormVariant
+    /** The form's copy in both languages, built on the server. */
     readonly chat: LpChat
     /** Photographs, rating and reviews, read on the server. */
     readonly proof: LpProof
@@ -86,6 +104,7 @@ export function LpLanding({
     initialLang,
     langPinnedByUrl,
     adVariant,
+    formVariant,
     chat,
     proof,
     focusSection,
@@ -105,30 +124,37 @@ export function LpLanding({
         ? String(proof.reviewCount)
         : FALLBACK_REVIEW_COUNT
 
+    const procedures = chat.copy[lang].procedures
+    const adProcedure = VARIANT_PROCEDURE[adVariant]
+    const procedureLabel = adProcedure ? labelOf(procedures, adProcedure) : null
+
     const selectLang = (next: LpLang) => {
         if (next === lang) return
         chooseLang(next)
-        trackLpEvent('lp_lang_switch', { lang: next, adVariant })
+        trackLpEvent('lp_lang_switch', { lang: next, adVariant, formVariant })
     }
 
     /** One page view, whatever happens to the language afterwards. */
     useEffect(() => {
+        const context = { lang: initialLang, adVariant, formVariant }
         trackLpEvent(
             'lp_view',
-            { lang: initialLang, adVariant },
+            context,
             focusSection ? { section: focusSection } : undefined
         )
-    }, [initialLang, adVariant, focusSection])
+        trackLpViewInGa4(context, focusSection)
+    }, [initialLang, adVariant, formVariant, focusSection])
 
     /**
-     * A sitelink's section is already first under the hero; this brings it
-     * into view. Only if the visitor hasn't scrolled yet: a slow hydration
-     * must not yank a page someone is already reading.
+     * A sitelink's section is already first under the hero, with the
+     * question strip over it; this brings the strip into view. Only if the
+     * visitor hasn't scrolled yet: a slow hydration must not yank a page
+     * someone is already reading.
      */
     useEffect(() => {
         if (!focusSection || window.scrollY > 40) return
         document
-            .getElementById(focusSection)
+            .getElementById(LP_STRIP_ID)
             ?.scrollIntoView({ block: 'start', behavior: 'instant' })
     }, [focusSection])
 
@@ -146,7 +172,7 @@ export function LpLanding({
                     observer.unobserve(entry.target)
                     trackLpEvent(
                         'lp_section_view',
-                        { lang: langRef.current, adVariant },
+                        { lang: langRef.current, adVariant, formVariant },
                         { section: entry.target.id }
                     )
                 }
@@ -155,7 +181,7 @@ export function LpLanding({
         )
         for (const target of targets) observer.observe(target)
         return () => observer.disconnect()
-    }, [adVariant])
+    }, [adVariant, formVariant])
 
     /**
      * Calls and CTAs, for Google Ads call conversions through GTM. One
@@ -173,14 +199,14 @@ export function LpLanding({
             if (!placement) return
             trackLpEvent(
                 placement.startsWith('call') ? 'lp_call_click' : 'lp_cta_click',
-                { lang, adVariant },
+                { lang, adVariant, formVariant },
                 { placement }
             )
         }
 
         document.addEventListener('click', onClick)
         return () => document.removeEventListener('click', onClick)
-    }, [lang, adVariant])
+    }, [lang, adVariant, formVariant])
 
     /**
      * Sections rise into view once. The `in` class is written to the DOM
@@ -228,7 +254,13 @@ export function LpLanding({
     }, [lang, title])
 
     const sections: Record<LpSection, ReactNode> = {
-        results: <LpResults copy={copy.results} photos={proof.photos} />,
+        results: (
+            <LpResults
+                copy={copy.results}
+                photos={proof.photos}
+                procedureLabel={procedureLabel}
+            />
+        ),
         financing: <LpFinancing copy={copy.financing} />,
         surgeon: <LpSurgeon copy={copy.surgeon} />,
         reviews: (
@@ -238,15 +270,12 @@ export function LpLanding({
                 rating={rating}
                 reviewCount={proof.reviewCount}
                 liveReviews={proof.reviews}
+                adVariant={adVariant}
+                full={focusSection === 'reviews'}
             />
         ),
         'fly-in': <LpFlyIn copy={copy.flyIn} />,
-        faq: (
-            <LpFaq
-                copy={copy.faq}
-                prices={chat.copy[lang].procedureReply?.prices ?? {}}
-            />
-        ),
+        faq: <LpFaq copy={copy.faq} prices={chat.prices} />,
     }
 
     // The sticky bar and the legal dialog sit outside the page root: its
@@ -268,21 +297,36 @@ export function LpLanding({
                         rating={rating}
                         reviewCount={reviewCount}
                         onSelectLang={selectLang}
-                        thread={
-                            <LpConsultThread
+                        form={
+                            <LpConsultForm
                                 lang={lang}
                                 adVariant={adVariant}
+                                formVariant={formVariant}
                                 chat={chat}
+                                onAnswer={(answer) =>
+                                    lpStepBeacon({
+                                        ...answer,
+                                        lang,
+                                        adVariant,
+                                        formVariant,
+                                        section: focusSection,
+                                    })
+                                }
                             />
                         }
                     />
                     {orderLpSections(focusSection).map((section) => (
-                        <Fragment key={section}>{sections[section]}</Fragment>
+                        <Fragment key={section}>
+                            {section === focusSection && (
+                                <LpQuestionStrip
+                                    copy={copy.strip}
+                                    procedures={procedures}
+                                />
+                            )}
+                            {sections[section]}
+                        </Fragment>
                     ))}
-                    <LpClosingCta
-                        copy={copy.closing}
-                        procedures={chat.copy[lang].procedures}
-                    />
+                    <LpClosingCta copy={copy.closing} procedures={procedures} />
                 </main>
 
                 <LpFooter copy={copy.footer} />
@@ -294,6 +338,22 @@ export function LpLanding({
                 phoneDigits={siteConfig.contact.phone.replace(/\D/g, '')}
                 phoneLabel={`${copy.header.callWord}${siteConfig.contact.phoneDisplay}`}
                 smsLink={getSmsLink()}
+                lang={lang}
+                question={{
+                    label: {
+                        en: LP_COPY.en.sticky.question,
+                        es: LP_COPY.es.sticky.question,
+                    },
+                    hint: {
+                        en: LP_COPY.en.sticky.hint,
+                        es: LP_COPY.es.sticky.hint,
+                    },
+                    chips: {
+                        en: chat.copy.en.procedures,
+                        es: chat.copy.es.procedures,
+                    },
+                }}
+                hideWhile={[LP_CLOSING_ID, LP_STRIP_ID]}
             />
         </>
     )
