@@ -68,6 +68,18 @@ export const contactSubmission = pgTable(
         // IANA zone from the visitor's browser, e.g. 'America/Chicago'.
         timeZone: text('time_zone'),
 
+        // Which version of the page and which form sent the lead, for pages
+        // under an A/B test (the ads landing page, #292): 'ads-consultation-v6'
+        // and 'thread' | 'card'. Null for every other form.
+        pageVariant: text('page_variant'),
+        formVariant: text('form_variant'),
+        // How the visitor agreed to be texted: 'checkbox' (the site-wide
+        // wording) or 'tap' (a line above the button that names it), and
+        // which wording, e.g. 'lp-tap-2026-09-26'. Null for older leads and
+        // forms that don't say.
+        consentMethod: text('consent_method'),
+        consentVersion: text('consent_version'),
+
         // Optional answers from the thank-you page, added to the same lead.
         consultType: text('consult_type'),
         financingInterest: text('financing_interest'),

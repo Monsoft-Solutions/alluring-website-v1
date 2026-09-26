@@ -273,6 +273,16 @@ function staffContextLines(lead: ContactSubmission): string[] {
     const lines: string[] = []
     if (campaign) lines.push(`Campaign: ${campaign}`)
     else if (lead.referrer) lines.push(`Referrer: ${lead.referrer}`)
+    if (lead.formVariant) {
+        lines.push(
+            `Form: ${lead.formVariant}${lead.pageVariant ? ` (${lead.pageVariant})` : ''}`
+        )
+    }
+    if (lead.consentMethod === 'tap') {
+        lines.push(
+            `Consent: tapped the send button${lead.consentVersion ? ` (wording ${lead.consentVersion})` : ''}`
+        )
+    }
     lines.push(`Lead ID: ${lead.id}`)
     return lines
 }
@@ -589,6 +599,10 @@ export async function POST(
             language: validatedData.language,
             offer: validatedData.offer,
             timeZone: validatedData.timeZone,
+            pageVariant: validatedData.pageVariant,
+            formVariant: validatedData.formVariant,
+            consentMethod: validatedData.consentMethod,
+            consentVersion: validatedData.consentVersion,
         }
 
         // Persist submission
