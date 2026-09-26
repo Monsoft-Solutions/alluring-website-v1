@@ -3,8 +3,9 @@
  *
  * The landing page's consultation thread redirects here after a successful
  * submission (a full page load), carrying `?p=` (ad group), `?hl=`
- * (language) and `?pv=` (landing page version), so the conversion event
- * knows which ad and which language produced the lead. The campaign
+ * (language), `?pv=` (landing page version) and `?fv=` (the form test's arm,
+ * #292), so the conversion event knows which ad, language and form produced
+ * the lead. The campaign
  * identifiers are not in the URL: the event reads them from the session copy
  * the landing page kept (`readAttribution`), and the lead itself already
  * carries them.
@@ -22,6 +23,7 @@ import {
     resolveLpLanguage,
     type ResolvedLpLanguage,
 } from '@/components/landing-pages/request-consultation/lp-language'
+import { toLpFormVariant } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { LP_PAGE_VERSION } from '@/components/landing-pages/request-consultation/lp-tracking'
 import { resolveAdVariant } from '@/components/landing-pages/request-consultation/lp-variants'
 
@@ -82,6 +84,7 @@ export default async function RequestConsultationThankYouPage({
             langPinnedByUrl={pinned}
             adVariant={resolveAdVariant(first(params.p))}
             pageVersion={resolvePageVersion(first(params.pv))}
+            formVariant={toLpFormVariant(first(params.fv))}
         />
     )
 }
