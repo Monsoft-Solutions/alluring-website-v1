@@ -16,6 +16,14 @@
  * (`data-consult-procedure`, read by the form). `hideWhile` names sections
  * that ask the same question (the closing, a sitelink's strip); the bar
  * steps aside while any of them is on screen.
+ *
+ * `reveal` decides when it first appears. By default (`past-chat`) only once
+ * the thread has scrolled above the screen: right for pages that open on the
+ * thread. A blog post (#295) places its thread mid-article, where most readers
+ * never arrive, so `away-from-chat` shows the bar after the first screen and
+ * hides it only while the thread itself is on screen. `procedure` makes its
+ * main link answer the thread's first question, as the post's other
+ * "Get my … price" links do, until the visitor has answered it.
  */
 
 import { useEffect, useState } from 'react'
@@ -48,7 +56,14 @@ export interface ConsultStickyBarProps {
     }
     /** Ids of sections the bar steps aside for while they are on screen. */
     readonly hideWhile?: readonly string[]
+    /** When the bar first appears; see the module comment. */
+    readonly reveal?: 'past-chat' | 'away-from-chat'
+    /** The thread value the main link answers until step 1 is answered. */
+    readonly procedure?: string
 }
+
+/** `away-from-chat`: how far down, in screen heights, before the bar shows. */
+const FIRST_SCREEN = 0.6
 
 const RESUME = {
     en: (left: number) =>
@@ -66,10 +81,17 @@ export function ConsultStickyBar({
     lang: langProp,
     question,
     hideWhile,
+    reveal = 'past-chat',
+    procedure,
 }: ConsultStickyBarProps) {
     const [pastChat, setPastChat] = useState(false)
+    const [chatOnScreen, setChatOnScreen] = useState(true)
+    const [pastFirstScreen, setPastFirstScreen] = useState(false)
     const [covered, setCovered] = useState(false)
-    const visible = pastChat && !covered
+    const visible =
+        (reveal === 'away-from-chat'
+            ? pastFirstScreen && !chatOnScreen
+            : pastChat) && !covered
     const pageLang = usePageLanguage()
     const lang = langProp ?? pageLang
     const progress = useConsultChatProgress(chatId)
@@ -89,10 +111,23 @@ export function ConsultStickyBar({
             setPastChat(
                 !entry.isIntersecting && entry.boundingClientRect.top < 0
             )
+            setChatOnScreen(entry.isIntersecting)
         })
         observer.observe(chat)
         return () => observer.disconnect()
     }, [chatId])
+
+    useEffect(() => {
+        if (reveal !== 'away-from-chat') return
+        const onScroll = () => {
+            setPastFirstScreen(
+                window.scrollY > window.innerHeight * FIRST_SCREEN
+            )
+        }
+        onScroll()
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [reveal])
 
     const hideKey = (hideWhile ?? []).join(' ')
     useEffect(() => {
@@ -172,6 +207,12 @@ export function ConsultStickyBar({
                 <div className='flex items-center gap-2'>
                     <a
                         href={`#${chatId}`}
+                        data-consult-procedure={
+                            left === null ? procedure : undefined
+                        }
+                        data-consult-entry={
+                            left === null && procedure ? 'bar' : undefined
+                        }
                         data-cta='consult_sticky_chat'
                         className='bg-gold-300 hover:bg-gold-200 flex min-h-12 flex-1 items-center justify-center rounded-full px-4 text-center text-[15px] font-semibold text-stone-950 transition-colors'
                     >

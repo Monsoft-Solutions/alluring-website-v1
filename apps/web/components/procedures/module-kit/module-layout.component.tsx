@@ -52,6 +52,21 @@ export type ModuleFactRailProps = {
     surgeonName: string
     /** ISO date of the page's last real update. */
     updatedOn?: string
+    /** Where the primary button goes; the procedure pages' `#book`. */
+    bookHref?: `#${string}`
+    /** The primary button's label. */
+    bookLabel?: string
+    /** A consultation-thread value the button answers on the way there. */
+    bookProcedure?: string
+    /** The primary button's `data-cta`, for `cta_click` tracking. */
+    bookCta?: string
+    /** The thread's `entry_point` when the button answers it. */
+    bookEntry?: string
+    /**
+     * Pinned under the header by default. The blog template sets `false`: its
+     * rail is already sticky, with the table of contents above the card.
+     */
+    sticky?: boolean
 }
 
 /**
@@ -65,11 +80,17 @@ export function ModuleFactRail({
     priceNote,
     surgeonName,
     updatedOn,
+    bookHref = '#book',
+    bookLabel = 'Book a free consultation',
+    bookProcedure,
+    bookCta,
+    bookEntry,
+    sticky = true,
 }: ModuleFactRailProps) {
     return (
         <aside
             aria-label={label}
-            className='border-t-gold-400 sticky top-40 flex flex-col gap-5.5 border border-t-[3px] border-stone-200 bg-white px-7 pt-7 pb-6'
+            className={`border-t-gold-400 ${sticky ? 'sticky top-40 ' : ''}flex flex-col gap-5.5 border border-t-[3px] border-stone-200 bg-white px-7 pt-7 pb-6`}
         >
             <div className='flex flex-col gap-2'>
                 <p className={moduleLabel}>Starting at</p>
@@ -81,8 +102,14 @@ export function ModuleFactRail({
                 </p>
             </div>
             <div className='flex flex-col gap-2.5'>
-                <a href='#book' className={cn(moduleButtonPrimary, 'w-full')}>
-                    Book a free consultation
+                <a
+                    href={bookHref}
+                    data-consult-procedure={bookProcedure}
+                    data-consult-entry={bookEntry}
+                    data-cta={bookCta}
+                    className={cn(moduleButtonPrimary, 'w-full')}
+                >
+                    {bookLabel}
                 </a>
                 <a
                     href={getPhoneLink()}

@@ -6,6 +6,7 @@ import { BlogPostContent } from '@/components/blog/blog-post-content.component'
 import { BlogPostPage as BlogPostPageV2 } from '@/components/blog/post-page/blog-post-page.component'
 import { env } from '@/env'
 import { isBlogV2 } from '@/lib/blog/blog-v2.constant'
+import { getPostConversionData } from '@/lib/queries/blog/post-conversion.query'
 import { getAdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import { getPublishedPostBySlug } from '@/lib/queries/blog/post-detail.query'
 import { getRelatedPosts } from '@/lib/queries/blog/related-posts.query'
@@ -112,22 +113,26 @@ export default async function BlogPostPage({ params }: PageProps) {
     }
 
     const tableOfContents = extractTableOfContents(post.content)
-    const [relatedPosts, adjacentPosts, inlineImages] = await Promise.all([
-        getRelatedPosts(
-            post.id,
-            post.categories.map((c) => c.id),
-            post.tags.map((t) => t.id),
-            6
-        ),
-        post.publishedAt
-            ? getAdjacentPosts(post.id, post.publishedAt)
-            : Promise.resolve({ previousPost: null, nextPost: null }),
-        getInlineImagesByPostId(post.id),
-    ])
+    const [relatedPosts, adjacentPosts, inlineImages, conversion] =
+        await Promise.all([
+            getRelatedPosts(
+                post.id,
+                post.categories.map((c) => c.id),
+                post.tags.map((t) => t.id),
+                6
+            ),
+            post.publishedAt
+                ? getAdjacentPosts(post.id, post.publishedAt)
+                : Promise.resolve({ previousPost: null, nextPost: null }),
+            getInlineImagesByPostId(post.id),
+            // Template v2 (epic #293) needs more than the old one, fetched
+            // alongside for allowlisted posts and preview builds only
+            isBlogV2(slug, env) ? getPostConversionData(post.title) : null,
+        ])
     const { beforeCTA, afterCTA, ctaId } = findCTAInsertionPoint(post.content)
 
     // Template v2 (epic #293), for allowlisted posts and preview builds
-    if (isBlogV2(slug, env)) {
+    if (conversion) {
         return (
             <BlogPostPageV2
                 post={post}
@@ -137,6 +142,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 afterCTA={afterCTA}
                 adjacentPosts={adjacentPosts}
                 inlineImages={inlineImages}
+                {...conversion}
             />
         )
     }

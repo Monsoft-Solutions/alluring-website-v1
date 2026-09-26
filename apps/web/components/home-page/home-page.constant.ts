@@ -70,12 +70,8 @@ export const HOME_SECTION_INDEX = {
 /** Where the practice's generated imagery says so. */
 export const MODEL_DISCLOSURE = 'Model shown. Not a patient.'
 
-/**
- * Florida Rule 64B8-11.001(1)(g): an advertised fee must disclose the
- * variables that change it. Stated wherever a "from" price appears.
- */
-export const PRICE_VARIABLES =
-    'Starting prices. Yours depends on the areas treated, your body and any procedures combined, and your surgeon confirms it at consultation.'
+/** Shared with the blog template's procedure strip; see the constant. */
+export { PRICE_VARIABLES } from '@/lib/data/pricing-copy.constant'
 
 /** The page's content width. */
 export const homeContainer = 'mx-auto w-full max-w-[78rem] px-5 md:px-8'

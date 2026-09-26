@@ -61,7 +61,16 @@ type ModuleResultsProps = {
     galleryLinkLabel: string
     /** An honest caption for each photo, e.g. "Before and after a BBL". */
     captionOf: (photo: GalleryMediaCard) => string
+    /**
+     * The line under the photos. The default suits a procedure page, where
+     * every model image is labelled; a page whose other images are not (a
+     * blog post) says only that these are patients.
+     */
+    realPatientsNote?: string
 }
+
+const DEFAULT_REAL_PATIENTS_NOTE =
+    'Photos in this section are real patients. Images elsewhere on the page that show a model are labeled as such.'
 
 /**
  * Before and after: real patients only. The before/after pair leads with its
@@ -86,6 +95,7 @@ export function ModuleResults({
     railLabel,
     galleryLinkLabel,
     captionOf,
+    realPatientsNote = DEFAULT_REAL_PATIENTS_NOTE,
 }: ModuleResultsProps) {
     if (!pair && photos.length === 0) return null
 
@@ -149,11 +159,7 @@ export function ModuleResults({
 
                 <div className='mt-8 flex items-end justify-between gap-6'>
                     <div className='flex max-w-[34rem] flex-col gap-4 text-[0.9375rem] leading-[1.55] text-stone-600'>
-                        <p>
-                            Photos in this section are real patients. Images
-                            elsewhere on the page that show a model are labeled
-                            as such.
-                        </p>
+                        <p>{realPatientsNote}</p>
                         {gallerySlug && (
                             <Link
                                 href={`/gallery/${gallerySlug}`}

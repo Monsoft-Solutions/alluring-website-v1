@@ -57,6 +57,15 @@ export function composePostSource(
  */
 const FAQ_HEADING_ID = /(^|-)(faqs?|frequently-asked|common-questions)(-|$)/
 
+/**
+ * Whether a heading id names an FAQ section. The template shows a post's
+ * stored FAQs only when its body has no such section, so the questions
+ * never appear twice.
+ */
+export function isFaqHeadingId(id: string): boolean {
+    return FAQ_HEADING_ID.test(id)
+}
+
 /** The slice of a hast node this plugin reads and writes. */
 type HastNode = {
     type: string

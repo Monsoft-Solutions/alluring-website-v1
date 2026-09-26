@@ -10,6 +10,17 @@
 export const DEFAULT_DELAY_SECONDS = 60
 
 /**
+ * A page that allows only exit intent marks an element with this: the blog
+ * post template (#295), whose readers came to read, not to be interrupted.
+ * There the timer and the touch flick stay off, and exit intent too once the
+ * visitor has started the page's form. The URL can't say which pages these
+ * are (pre-2026 posts live at the root), and the popups live in the root
+ * layout across client navigations, so the marker is read when a trigger
+ * fires, never once at mount.
+ */
+export const EXIT_ONLY_SELECTOR = '[data-lead-popup="exit-only"]'
+
+/**
  * The phone's stand-in for exit intent. A touch screen has no pointer to
  * leave the window, but a visitor heading for the address bar, the tab
  * switcher or the back gesture usually flicks the page back up first. It
