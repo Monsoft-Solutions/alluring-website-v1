@@ -11,8 +11,7 @@
  * lede is hidden, so the headline has to carry that on its own.
  *
  * No variant carries a payment amount, an APR or a term (see the REGISTER
- * note in `lp-copy.ts`); the thread gives the settled starting price once she
- * names the procedure. The surgeon is named as an MD rather than "double
+ * note in `lp-copy.ts`), and none a procedure count (see CLAIMS there). The surgeon is named as an MD rather than "double
  * board-certified" (see `karlinsky-credentials.constant.ts`), and nothing here
  * claims a facility accreditation.
  */
@@ -136,7 +135,7 @@ const en: Record<AdVariant, VariantCopy> = {
         title: 'BBL in Miami',
         headline: 'BBL in Miami,',
         headlineEm: 'planned for your frame.',
-        lede: 'Ultrasound-guided, as Florida law requires, by a surgeon with 1,500+ BBLs performed. Your all-inclusive price in writing, with financing available.',
+        lede: 'Ultrasound-guided, as Florida law requires. Your all-inclusive price in writing, with financing available.',
     },
     'mommy-makeover': {
         title: 'Mommy Makeover in Miami',
@@ -199,7 +198,7 @@ const es: Record<AdVariant, VariantCopy> = {
         title: 'BBL en Miami',
         headline: 'BBL en Miami,',
         headlineEm: 'planificado para tu cuerpo.',
-        lede: 'Guiado por ultrasonido, como exige la ley de Florida, por una cirujana con más de 1,500 BBL realizados. Tu precio todo incluido por escrito, con financiamiento disponible.',
+        lede: 'Guiado por ultrasonido, como exige la ley de Florida. Tu precio todo incluido por escrito, con financiamiento disponible.',
     },
     'mommy-makeover': {
         title: 'Mommy Makeover en Miami',

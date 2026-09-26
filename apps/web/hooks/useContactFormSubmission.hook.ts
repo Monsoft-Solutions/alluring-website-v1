@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation'
 import { readCookie } from '@/lib/analytics/attribution-params.util'
 import {
     LEAD_FORM_EVENTS,
+    type LeadFormContextParams,
     readGaClientId,
     trackLeadFormEvent,
 } from '@/lib/analytics/lead-form-tracking'
@@ -60,6 +61,25 @@ export type UseContactFormSubmissionOptions = {
     readonly analyticsFormName?: string
     /** Optional path to redirect to on successful submission (e.g., '/thank-you') */
     readonly redirectOnSuccess?: string
+    /**
+     * Merged into every `lead_*` funnel event: the ads landing page adds
+     * which form and page version the visitor saw, so the funnel splits by
+     * test arm.
+     */
+    readonly analyticsParams?: LeadFormContextParams
+    /**
+     * When `lead_form_start` fires. `interaction` (the default): the first
+     * touch, focus or keystroke on the form — which a thumb scrolling past
+     * it also fires. `first-answer`: only when the form calls `trackStart`,
+     * which a multi-step form does on its first answer.
+     */
+    readonly startOn?: 'interaction' | 'first-answer'
+    /**
+     * Called when the server rejects one field (a 400 whose error names it,
+     * `phone: …`), so the form can show the error under that field instead
+     * of a general "didn't go through".
+     */
+    readonly onFieldError?: (field: string) => void
 }
 
 /**
@@ -95,6 +115,8 @@ export type UseContactFormSubmissionReturn = {
     readonly trackValidationErrors: (
         fields: readonly string[] | Record<string, unknown>
     ) => void
+    /** Reports `lead_form_start` now (once), for `startOn: 'first-answer'`. */
+    readonly trackStart: () => void
 }
 
 const isFieldList = (
@@ -111,6 +133,22 @@ const FORM_START_EVENTS = ['focusin', 'pointerdown', 'input'] as const
  * touched the form.
  */
 const FORM_ENGAGE_EVENTS = ['focusin', 'input', 'click'] as const
+
+/**
+ * The field a 400 response blames, from the API's `error` ("phone: Invalid
+ * phone number"), or null when the body names none.
+ */
+export function rejectedField(body: string | undefined): string | null {
+    if (!body) return null
+    try {
+        const parsed = JSON.parse(body) as { error?: unknown }
+        if (typeof parsed.error !== 'string') return null
+        const match = /^([a-zA-Z]+):/.exec(parsed.error)
+        return match?.[1] ?? null
+    } catch {
+        return null
+    }
+}
 
 const INITIAL_STATE: SubmissionState = {
     status: 'idle',
@@ -149,6 +187,9 @@ export function useContactFormSubmission(
         enableAnalytics = false,
         analyticsFormName,
         redirectOnSuccess,
+        analyticsParams,
+        startOn = 'interaction',
+        onFieldError,
     } = options
 
     const [state, setState] = useState<SubmissionState>(INITIAL_STATE)
@@ -158,6 +199,23 @@ export function useContactFormSubmission(
     const formLoadedAt = useRef(Date.now())
 
     const formName = analyticsFormName ?? source
+
+    /** Read at send time, so a change of arm or version needs no new listeners. */
+    const contextRef = useRef(analyticsParams)
+    useEffect(() => {
+        contextRef.current = analyticsParams
+    })
+    const track = useCallback(
+        (
+            event: Parameters<typeof trackLeadFormEvent>[0],
+            params: Parameters<typeof trackLeadFormEvent>[2] = {}
+        ) =>
+            trackLeadFormEvent(event, formName, {
+                ...contextRef.current,
+                ...params,
+            }),
+        [formName]
+    )
 
     const reset = useCallback(() => {
         setState(INITIAL_STATE)
@@ -182,7 +240,7 @@ export function useContactFormSubmission(
                     (entries) => {
                         if (entries.some((entry) => entry.isIntersecting)) {
                             hasViewed.current = true
-                            trackLeadFormEvent(LEAD_FORM_EVENTS.VIEW, formName)
+                            track(LEAD_FORM_EVENTS.VIEW)
                             observer.disconnect()
                         }
                     },
@@ -192,11 +250,11 @@ export function useContactFormSubmission(
                 cleanups.push(() => observer.disconnect())
             }
 
-            if (!hasStarted.current) {
+            if (!hasStarted.current && startOn === 'interaction') {
                 const onStart = () => {
                     if (hasStarted.current) return
                     hasStarted.current = true
-                    trackLeadFormEvent(LEAD_FORM_EVENTS.START, formName)
+                    track(LEAD_FORM_EVENTS.START)
                     removeStartListeners()
                 }
                 const removeStartListeners = () => {
@@ -234,10 +292,16 @@ export function useContactFormSubmission(
                 for (const cleanup of cleanups) cleanup()
             }
         },
-        [formName]
+        [track, startOn]
     )
 
     useEffect(() => () => detachFormListeners.current?.(), [])
+
+    const trackStart = useCallback(() => {
+        if (hasStarted.current) return
+        hasStarted.current = true
+        track(LEAD_FORM_EVENTS.START)
+    }, [track])
 
     const trackValidationErrors = useCallback(
         (fields: readonly string[] | Record<string, unknown>) => {
@@ -246,12 +310,12 @@ export function useContactFormSubmission(
                 ? fields
                 : Object.keys(fields)
             if (names.length === 0) return
-            trackLeadFormEvent(LEAD_FORM_EVENTS.SUBMIT_ERROR, formName, {
+            track(LEAD_FORM_EVENTS.SUBMIT_ERROR, {
                 error_type: 'validation',
                 field: [...names].sort().join(','),
             })
         },
-        [formName]
+        [track]
     )
 
     const submit = useCallback(
@@ -261,7 +325,7 @@ export function useContactFormSubmission(
             // Set submitting state
             setState({ status: 'submitting', message: '' })
 
-            trackLeadFormEvent(LEAD_FORM_EVENTS.SUBMIT_ATTEMPT, formName)
+            track(LEAD_FORM_EVENTS.SUBMIT_ATTEMPT)
 
             try {
                 const response = await fetch('/api/contact', {
@@ -333,10 +397,7 @@ export function useContactFormSubmission(
                     // tab, in other open tabs or on a later visit.
                     markLeadConverted()
 
-                    trackLeadFormEvent(
-                        LEAD_FORM_EVENTS.SUBMIT_SUCCESS,
-                        formName
-                    )
+                    track(LEAD_FORM_EVENTS.SUBMIT_SUCCESS)
                     if (enableAnalytics) {
                         trackFormSubmit(formName, { status: 'success' })
                     }
@@ -362,7 +423,7 @@ export function useContactFormSubmission(
                     message: errorMessage,
                 })
 
-                trackLeadFormEvent(LEAD_FORM_EVENTS.SUBMIT_ERROR, formName, {
+                track(LEAD_FORM_EVENTS.SUBMIT_ERROR, {
                     error_type: 'api_error',
                 })
 
@@ -382,6 +443,23 @@ export function useContactFormSubmission(
                     | 'http_error'
                     | 'json_parse_error'
                     | 'network_error'
+
+                const field =
+                    typedError.isHttpError && typedError.status === 400
+                        ? rejectedField(typedError.body)
+                        : null
+
+                if (field && onFieldError) {
+                    // The server refused one field (a number outside the US,
+                    // say): the form shows it under that field.
+                    setState({ status: 'idle', message: '' })
+                    track(LEAD_FORM_EVENTS.SUBMIT_ERROR, {
+                        error_type: 'server_validation',
+                        field,
+                    })
+                    onFieldError(field)
+                    return false
+                }
 
                 if (typedError.isHttpError) {
                     errorType = 'http_error'
@@ -411,7 +489,7 @@ export function useContactFormSubmission(
                     message: errorMessage,
                 })
 
-                trackLeadFormEvent(LEAD_FORM_EVENTS.SUBMIT_ERROR, formName, {
+                track(LEAD_FORM_EVENTS.SUBMIT_ERROR, {
                     error_type: errorType,
                 })
 
@@ -422,6 +500,8 @@ export function useContactFormSubmission(
         [
             source,
             formName,
+            track,
+            onFieldError,
             enableAnalytics,
             trackFormSubmit,
             onSuccess,
@@ -441,5 +521,6 @@ export function useContactFormSubmission(
         reset,
         formRef,
         trackValidationErrors,
+        trackStart,
     }
 }

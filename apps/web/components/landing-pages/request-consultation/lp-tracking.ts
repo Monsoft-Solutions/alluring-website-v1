@@ -6,18 +6,26 @@
  * event carries `pageVariant`, `adVariant` and `lang` so Google Ads conversions
  * can be attributed per ad group and per language.
  *
- * `pageVariant` is "ads-consultation-v5" since the copy, the per-ad-group
- * headlines and the price & financing section (#290); v4 moved the page to
- * the consultation thread (#283) and v3 was the five-field form. The Google
- * Ads conversion fires on the thank-you page view, not on this value, so the
- * bump only splits the reporting into before and after.
+ * `pageVariant` is "ads-consultation-v6" since the short page and the form
+ * test (#292): the quiet thread against the tap card, which every event also
+ * carries as `formVariant`. v5 was the copy, per-ad-group headlines and the
+ * price & financing section (#290), v4 moved the page to the consultation
+ * thread (#283) and v3 was the five-field form. The Google Ads conversion
+ * fires on the thank-you page view, not on this value, so the bump only
+ * splits the reporting into before and after.
+ *
+ * The `lp_*` dataLayer events feed GTM and never reach GA4. The one GA4
+ * needs for the test — visits per arm — is sent to GA4 directly
+ * (`trackLpViewInGa4`).
  */
 
+import { trackEvent } from '@/lib/analytics/analytics.client'
 import { readAttributionParam } from '@/lib/analytics/attribution-params.util'
 
 import type { LpLang } from './lp-copy'
+import type { LpFormVariant } from './lp-form-variant'
 
-export const LP_PAGE_VERSION = 'v5'
+export const LP_PAGE_VERSION = 'v6'
 export const LP_PAGE_VARIANT = `ads-consultation-${LP_PAGE_VERSION}`
 
 /** Query keys Google and our own campaigns put on the ad URL. */
@@ -52,6 +60,8 @@ export function pushDataLayer(payload: DataLayerRecord): void {
 export interface LpEventContext {
     readonly lang: LpLang
     readonly adVariant: string
+    /** The hero form's test arm. */
+    readonly formVariant?: LpFormVariant
 }
 
 export function trackLpEvent(
@@ -63,8 +73,27 @@ export function trackLpEvent(
         event,
         pageVariant: LP_PAGE_VARIANT,
         adVariant: context.adVariant,
+        ...(context.formVariant && { formVariant: context.formVariant }),
         lang: context.lang,
         ...extra,
+    })
+}
+
+/**
+ * `lp_view` in GA4: the denominator of the form test, visits per arm. Sent
+ * once per page view, with the ad group and the sitelink section the visitor
+ * landed on. Nothing about the visitor.
+ */
+export function trackLpViewInGa4(
+    context: Required<LpEventContext>,
+    section: string | null
+): void {
+    trackEvent('lp_view', {
+        form_variant: context.formVariant,
+        page_variant: LP_PAGE_VARIANT,
+        ad_variant: context.adVariant,
+        section: section ?? 'none',
+        lang: context.lang,
     })
 }
 

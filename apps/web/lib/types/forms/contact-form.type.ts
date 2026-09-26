@@ -356,6 +356,17 @@ export const consentSchema = z.boolean().refine((val) => val === true, {
 const leadContext = <T extends z.ZodType>(schema: T) =>
     schema.optional().catch(undefined)
 
+/** A short machine label: `ads-consultation-v6`, `card`, `lp-tap-2026-09-26`. */
+const leadTag = z
+    .string()
+    .trim()
+    .max(40)
+    .regex(/^[a-z0-9][a-z0-9-]*$/)
+
+/** How a lead consented to texts: the checkbox, or tapping the named button. */
+export const LEAD_CONSENT_METHODS = ['checkbox', 'tap'] as const
+export type LeadConsentMethod = (typeof LEAD_CONSENT_METHODS)[number]
+
 /**
  * Base contact form schema - all fields optional initially
  * Conditional requirements are applied in the API route based on source
@@ -413,6 +424,12 @@ export const contactFormSchema = z.object({
             .max(64)
             .regex(/^[A-Za-z][A-Za-z0-9_+\-/]*$/)
     ),
+    // Which page version and form arm sent the lead, and how and to which
+    // wording the visitor consented (#292).
+    pageVariant: leadContext(leadTag),
+    formVariant: leadContext(leadTag),
+    consentMethod: leadContext(z.enum(LEAD_CONSENT_METHODS)),
+    consentVersion: leadContext(leadTag),
 
     // Anti-spam honeypot
     _website: z.string().optional(),

@@ -1,30 +1,31 @@
 'use client'
 
 /**
- * Hero: the argument on the left, the consultation thread on the right, on a
- * champagne ground. On a phone the thread follows a short headline block, so
- * its first question and the procedure chips are on the first screen — the
- * old form's submit button sat 980px down, below it.
+ * Hero: the argument on the left, the consultation form on the right, on a
+ * champagne ground. On a phone the form follows a short headline block, so
+ * its first question and every procedure chip are on the first screen — at
+ * 390 × 664, the height Safari leaves, not only at 844 (#292).
  *
  * The four children of `.hero-copy` are staggered by `:nth-child` in
  * landing.css — adding or reordering one changes the animation, so keep the
  * order: eyebrow, headline, lede, trust.
  *
- * The trust row answers the two things the ads promise before the thread
- * asks anything (#290): who operates, and whether she can pay over time. The
- * board credential moved to the surgeon section, where it has room for the
- * wording Florida requires. All three items stay visible on a phone; on a
- * 390px screen they are what sits between the headline and the thread.
+ * The trust row answers the two things the ads promise before the form asks
+ * anything (#290): who operates, and whether she can pay over time. Since v6
+ * it is one line on a 390px phone — the rating, "your surgeon operates",
+ * "financing" — so the form's chips sit above Safari's toolbar. The board
+ * credential is in the surgeon section, where it has room for the wording
+ * Florida requires.
  *
- * No price here. The thread's reply to the first tap gives the starting price
- * where one is settled; see the REGISTER note in `lp-copy.ts`.
+ * No price here, and none in the form: the FAQ keeps the settled starting
+ * prices; see the REGISTER note in `lp-copy.ts`.
  */
 
 import { fill } from '@/components/shared/consult-chat/consult-chat.util'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 import type { LpDictionary, LpLang } from './lp-copy'
-import { CheckIcon, GoogleMark, Stars } from './lp-primitives.component'
+import { CheckIcon, GoogleMark } from './lp-primitives.component'
 import type { VariantCopy } from './lp-variants'
 
 interface LpHeroProps {
@@ -34,8 +35,8 @@ interface LpHeroProps {
     readonly rating: string
     readonly reviewCount: string
     readonly onSelectLang: (lang: LpLang) => void
-    /** The consultation thread, rendered by the page so this stays presentational. */
-    readonly thread: React.ReactNode
+    /** The consultation form, rendered by the page so this stays presentational. */
+    readonly form: React.ReactNode
 }
 
 export function LpHero({
@@ -45,7 +46,7 @@ export function LpHero({
     rating,
     reviewCount,
     onSelectLang,
-    thread,
+    form,
 }: LpHeroProps) {
     const otherLang: LpLang = lang === 'en' ? 'es' : 'en'
 
@@ -62,7 +63,6 @@ export function LpHero({
                     <ul className='trust'>
                         <li>
                             <GoogleMark />
-                            <Stars />
                             <span>
                                 <b>{rating}</b>{' '}
                                 {fill(copy.trustGoogle, { count: reviewCount })}
@@ -80,7 +80,7 @@ export function LpHero({
                 </div>
 
                 <div className='hero-thread'>
-                    {thread}
+                    {form}
                     <p className='hero-alt'>
                         {copy.callAlt}{' '}
                         <a href={getPhoneLink()} data-track='call-hero'>

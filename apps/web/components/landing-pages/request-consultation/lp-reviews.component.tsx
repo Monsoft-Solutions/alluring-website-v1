@@ -1,7 +1,10 @@
 'use client'
 
 /**
- * Google reviews: three quoted, then a rail of more.
+ * Google reviews: the rating and one quote chosen for the ad (#292) — the
+ * reviewer who had that procedure, or the aftercare quote. A visitor who
+ * opened the reviews sitelink (`?s=reviews`) asked to read them, so she gets
+ * all three and the rail.
  *
  * The three quotes are pasted rather than read from the reviews table on
  * purpose: they were picked for what they answer (aftercare, travelling in,
@@ -19,6 +22,8 @@ import { fill } from '@/components/shared/consult-chat/consult-chat.util'
 import type { LpDictionary, LpLang } from './lp-copy'
 import { GoogleMark, Rich, Stars } from './lp-primitives.component'
 import type { LpLiveReview } from './lp-proof'
+import { lpQuoteIndex } from './lp-quote'
+import type { AdVariant } from './lp-variants'
 
 interface LpReviewsProps {
     readonly lang: LpLang
@@ -27,6 +32,9 @@ interface LpReviewsProps {
     /** Null when the live count is unavailable: the published figure shows. */
     readonly reviewCount: number | null
     readonly liveReviews: readonly LpLiveReview[]
+    readonly adVariant: AdVariant
+    /** All three quotes and the live rail: the reviews sitelink's view. */
+    readonly full: boolean
 }
 
 /** "May 2026". UTC on both sides, so the server and the browser agree. */
@@ -44,8 +52,12 @@ export function LpReviews({
     rating,
     reviewCount,
     liveReviews,
+    adVariant,
+    full,
 }: LpReviewsProps) {
-    const more = lang === 'en' ? liveReviews : []
+    const more = full && lang === 'en' ? liveReviews : []
+    const chosen = copy.items[lpQuoteIndex(lang, adVariant)]
+    const quotes = full ? copy.items : chosen ? [chosen] : copy.items
 
     return (
         <section className='band reviews' id='reviews'>
@@ -68,8 +80,10 @@ export function LpReviews({
                             : copy.source}
                     </span>
                 </p>
-                <div className='quotes reveal'>
-                    {copy.items.map((review) => (
+                <div
+                    className={`quotes reveal${quotes.length === 1 ? ' quotes--one' : ''}`}
+                >
+                    {quotes.map((review) => (
                         <article className='quote' key={review.by}>
                             <span className='mark' aria-hidden='true'>
                                 “

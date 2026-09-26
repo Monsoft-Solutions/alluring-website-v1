@@ -1,13 +1,13 @@
 'use client'
 
 /**
- * The surgeon section, after price & financing.
+ * The surgeon section, after the results.
  *
  * The objection a paid visitor has by this point is "who is actually going
- * to operate on me", and the answer is the promise every ad makes: the
- * surgeon you meet plans your surgery, performs it and sees you at
- * follow-up. v5 (#290) leads with that line and drops the general quote,
- * which said nothing she could check and cost a phone screen of scrolling.
+ * to operate on me", and the answer is the promise every ad makes, in one
+ * line: the surgeon you meet is the surgeon who operates. v6 (#292) drops
+ * the stats row — its procedure counts had no source on file — and the
+ * button; the sticky bar asks the form's question instead.
  *
  * Credentials are the ones checked at the issuing bodies and worded per
  * Florida Rule 64B8-11.001 (`karlinsky-credentials.constant.ts`): her name
@@ -55,34 +55,13 @@ export function LpSurgeon({ copy }: LpSurgeonProps) {
                         loading='lazy'
                     />
                 </div>
-                <div className='reveal'>
+                <div className='surgeon-copy reveal'>
                     <p className='eyebrow'>{copy.eyebrow}</p>
                     <h2 className='h2'>
                         <Rich parts={copy.heading} />
                     </h2>
                     <p className='role'>{copy.role}</p>
                     <p className='lead'>{copy.lead}</p>
-                    <div className='stats'>
-                        {copy.stats.map((stat) => (
-                            <div className='stat' key={stat.label}>
-                                {/*
-                                    The number is a bare text node, not a
-                                    <span>: `.stat span` in landing.css is a
-                                    descendant selector and would shrink it to
-                                    the label's 10.5px. Only the star, which
-                                    has its own higher-specificity rule, can
-                                    be an element here.
-                                */}
-                                <b>
-                                    {stat.value}
-                                    {stat.star ? (
-                                        <span className='star'>★</span>
-                                    ) : null}
-                                </b>
-                                <span>{stat.label}</span>
-                            </div>
-                        ))}
-                    </div>
                     <ul className='creds'>
                         {copy.credentials.map((credential) => (
                             <li key={credential}>{credential}</li>
@@ -101,13 +80,6 @@ export function LpSurgeon({ copy }: LpSurgeonProps) {
                             </li>
                         ))}
                     </ul>
-                    <a
-                        className='btn btn-primary'
-                        href='#consultation'
-                        data-track='cta-surgeon'
-                    >
-                        {copy.cta}
-                    </a>
                 </div>
             </div>
         </section>

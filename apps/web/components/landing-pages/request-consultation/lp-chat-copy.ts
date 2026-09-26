@@ -1,20 +1,27 @@
 /**
- * The consultation thread's words on /lp/request-consultation.
+ * The consultation form's words on /lp/request-consultation, for both test
+ * arms (#292): the quiet thread and the tap card read the same deck.
  *
- * The thread itself is the site's (`ConsultChat`, the one on the home,
- * contact and specials pages): three steps, the first two a single tap. This
- * deck only gives it the landing page's voice — "no obligation", never
- * "free" (see the REGISTER note in `lp-copy.ts`) — and puts the ad group's
- * procedure first among the chips, preselected.
+ * The form is the site's (`useConsultFlow`, the one on the home, contact and
+ * specials pages): three steps, the first two a single tap. This deck gives
+ * it the landing page's voice — "no obligation", never "free" (see the
+ * REGISTER note in `lp-copy.ts`) — and a form header in place of the
+ * coordinator's name.
  *
- * The reply to the first tap gives the settled starting price where there is
- * one (BBL, Lipo 360), read from the procedure facts files like the rest of
- * the site, and says financing is available whatever she picked (#290): the
- * visitor has just named a procedure, which is when she is wondering what it
- * costs, and most visitors never scroll down to the financing section.
+ * v6 takes out what stopped paid visitors (26 Sep readout): the reply after
+ * the first tap (six lines, with a price, that half of them left on), the
+ * greeting, the checkbox and its 69-word consent. Consent is given by tapping
+ * the button, and the line above it names the button (`consentTap`), so the
+ * line is built from `submit` and can never name a button that isn't there.
+ * The FAQ keeps the settled starting prices.
+ *
+ * Chips: the ad group's procedure first (preselected, still one tap), then
+ * the six that make up 88% of the page's leads over six months, then
+ * "Something else". An ad group whose procedure is outside the six (a breast
+ * lift) gets eight.
  *
  * Built on the server: the facts files stay out of the client bundle, and the
- * page hands both languages to the thread so a language switch needs no
+ * page hands both languages to the form so a language switch needs no
  * request.
  */
 
@@ -24,106 +31,135 @@ import type {
     ConsultChatStaffLabels,
 } from '@/components/shared/consult-chat/consult-chat.types'
 import {
-    CHAT_PROCEDURE_ORDER,
     CHAT_STARTING_PRICES,
     CHAT_TIMELINES,
     type ChatProcedureValue,
     chatProcedureOptions,
 } from '@/components/shared/consult-chat/site-chat-copy'
 
-import { LP_COPY } from './lp-copy'
+import { LP_COPY, LP_LINKS, type RichText } from './lp-copy'
 import { type AdVariant, VARIANT_PROCEDURE } from './lp-variants'
+
+/**
+ * Names the tap-consent wording each lead agreed to (`consent_version`).
+ * Change it whenever `consentTap` changes, in either language.
+ */
+export const LP_CONSENT_VERSION = 'lp-tap-2026-09-26'
 
 export interface LpChat {
     readonly copy: Readonly<Record<ConsultChatLang, ConsultChatCopy>>
     readonly staff: ConsultChatStaffLabels
+    /** Settled starting prices by procedure value ("$5,500"), for the FAQ. */
+    readonly prices: Readonly<Partial<Record<ChatProcedureValue, string>>>
 }
 
-/**
- * The home page's order (what its leads picked, by volume), with the ad
- * group's procedure moved to the front: someone who clicked a tummy tuck ad
- * should find it first.
- */
-function procedureOrder(adVariant: AdVariant): readonly ChatProcedureValue[] {
-    const base = CHAT_PROCEDURE_ORDER.home
+/** Lipo 360, a combination, mommy makeover, BBL, breast augmentation, tummy tuck. */
+const LP_PROCEDURE_ORDER: readonly ChatProcedureValue[] = [
+    'liposuction',
+    'multiple',
+    'mommy-makeover',
+    'bbl',
+    'breast-augmentation',
+    'tummy-tuck',
+    'other',
+]
+
+/** The six, with the ad group's procedure moved (or added) to the front. */
+export function lpProcedureOrder(
+    adVariant: AdVariant
+): readonly ChatProcedureValue[] {
     const lead = VARIANT_PROCEDURE[adVariant]
-    return lead ? [lead, ...base.filter((value) => value !== lead)] : base
+    return lead
+        ? [lead, ...LP_PROCEDURE_ORDER.filter((value) => value !== lead)]
+        : LP_PROCEDURE_ORDER
+}
+
+/** The consent line above the button. Verbatim for counsel; see `LP_CONSENT_VERSION`. */
+function consentTap(lang: ConsultChatLang, submit: string): RichText {
+    const { privacy, terms } = LP_COPY[lang].footer
+    const links: RichText = [
+        { link: { label: privacy, href: LP_LINKS.privacy } },
+        ' · ',
+        { link: { label: terms, href: LP_LINKS.terms } },
+    ]
+    return lang === 'es'
+        ? [
+              `Al tocar “${submit}”, aceptas recibir mensajes de texto y llamadas de Alluring Plastic Surgery en este número, incluso automatizados. El consentimiento no es condición de compra. La frecuencia de los mensajes varía; pueden aplicar tarifas de mensajes y datos. Responde STOP para cancelar y HELP para ayuda. `,
+              ...links,
+          ]
+        : [
+              `By tapping “${submit}”, you agree to receive texts and calls from Alluring Plastic Surgery at this number, including automated ones. Consent is not a condition of purchase. Msg frequency varies; msg & data rates may apply. Reply STOP to opt out, HELP for help. `,
+              ...links,
+          ]
 }
 
 function copyFor(
     adVariant: AdVariant
 ): Readonly<Record<ConsultChatLang, ConsultChatCopy>> {
-    const order = procedureOrder(adVariant)
+    const order = lpProcedureOrder(adVariant)
+    const en = { submit: 'Request my consultation' }
+    const es = { submit: 'Pedir mi consulta' }
     return {
         en: {
-            title: 'Alluring patient care',
+            title: 'Request your consultation',
             status: 'Replies by text within 24 hours',
-            greeting:
-                'Hi. Let’s start your consultation. It takes about 30 seconds.',
+            greeting: '',
             qProcedure: 'What are you considering?',
-            procedures: chatProcedureOptions(order, 'en'),
-            procedureReply: {
-                priced: '{procedure} starts at {price}, and financing is available. Your exact figure, all-inclusive, and your dates come in writing after your consultation. It can be by video if you’re not in Miami.',
-                standard:
-                    'Good to know. Financing is available, and your all-inclusive figure and your dates come in writing after your consultation. It can be by video if you’re not in Miami.',
-                prices: CHAT_STARTING_PRICES,
-                byProcedure: {
-                    other: 'No problem, that’s what the consultation is for. It can be by video if you’re not in Miami, your figure comes in writing, and financing is available.',
-                },
-            },
-            qTimeline: 'When are you hoping to have it done?',
+            procedures: chatProcedureOptions(order, 'en', 'Something else'),
+            qTimeline: 'When would you like it done?',
             timelines: CHAT_TIMELINES.en,
-            qContact:
-                'Last step. Your name and mobile number, and a patient coordinator will text you to set up your consultation.',
-            fieldName: 'Your name',
+            qContact: 'Where should we text you?',
+            fieldName: 'First name',
             fieldPhone: 'Mobile number',
             consent: LP_COPY.en.consent,
-            submit: 'Request my consultation',
+            consentTap: consentTap('en', en.submit),
+            submit: en.submit,
             submitting: 'Sending…',
             change: 'Change',
             typing: 'Alluring is typing',
             stepLabel: 'Step {n} of 3',
             reassure:
-                'Private. Only our patient coordinators see it, never a sales team.',
+                'Private. A patient coordinator texts you within 24 hours.',
+            formHeader: {
+                time: '30 seconds',
+                lastStep: 'Last step',
+                steps: ['Procedure', 'Timing', 'Your number'],
+            },
             errors: {
-                name: 'Enter your name.',
-                phone: 'Enter a valid US mobile number, with area code.',
+                name: 'Enter your first name.',
+                phone: 'Enter a US mobile number, with area code.',
                 consent: 'Please tick the box so we’re allowed to text you.',
                 submit: 'That didn’t go through. Please try again, or call us.',
             },
         },
         es: {
-            title: 'Atención al paciente Alluring',
+            title: 'Pide tu consulta',
             status: 'Responde por texto en 24 horas',
-            greeting: 'Hola. Empecemos tu consulta. Toma unos 30 segundos.',
+            greeting: '',
             qProcedure: '¿Qué estás considerando?',
-            procedures: chatProcedureOptions(order, 'es'),
-            procedureReply: {
-                priced: '{procedure} empieza en {price}, y hay financiamiento disponible. Tu cifra exacta, todo incluido, y tus fechas te llegan por escrito después de tu consulta. Puede ser por video si no estás en Miami.',
-                standard:
-                    'Perfecto. Hay financiamiento disponible, y tu cifra todo incluido y tus fechas te llegan por escrito después de tu consulta. Puede ser por video si no estás en Miami.',
-                prices: CHAT_STARTING_PRICES,
-                byProcedure: {
-                    other: 'No hay problema, para eso es la consulta. Puede ser por video si no estás en Miami, tu cifra te llega por escrito y hay financiamiento disponible.',
-                },
-            },
+            procedures: chatProcedureOptions(order, 'es', 'Otro'),
             qTimeline: '¿Para cuándo te gustaría hacerlo?',
             timelines: CHAT_TIMELINES.es,
-            qContact:
-                'Último paso. Tu nombre y tu celular, y una coordinadora te escribe por texto para agendar tu consulta.',
-            fieldName: 'Tu nombre',
+            qContact: '¿A qué número te escribimos?',
+            fieldName: 'Nombre',
             fieldPhone: 'Número de celular',
             consent: LP_COPY.es.consent,
-            submit: 'Pedir mi consulta',
+            consentTap: consentTap('es', es.submit),
+            submit: es.submit,
             submitting: 'Enviando…',
             change: 'Cambiar',
             typing: 'Alluring está escribiendo',
             stepLabel: 'Paso {n} de 3',
             reassure:
-                'Privado. Solo lo ven nuestras coordinadoras, nunca un vendedor.',
+                'Privado. Una coordinadora te escribe por texto en menos de 24 horas.',
+            formHeader: {
+                time: '30 segundos',
+                lastStep: 'Último paso',
+                steps: ['Procedimiento', 'Fecha', 'Tu número'],
+            },
             errors: {
                 name: 'Escribe tu nombre.',
-                phone: 'Escribe un celular válido de EE. UU., con código de área.',
+                phone: 'Escribe un celular de EE. UU., con código de área.',
                 consent: 'Marca la casilla para que podamos escribirte.',
                 submit: 'No se pudo enviar. Inténtalo de nuevo o llámanos.',
             },
@@ -131,11 +167,12 @@ function copyFor(
     }
 }
 
-/** The thread's copy for an ad group, and the English labels staff read. */
+/** The form's copy for an ad group, the English labels staff read, and prices. */
 export function buildLpChat(adVariant: AdVariant): LpChat {
     const copy = copyFor(adVariant)
     return {
         copy,
         staff: { procedures: copy.en.procedures, timelines: CHAT_TIMELINES.en },
+        prices: CHAT_STARTING_PRICES,
     }
 }

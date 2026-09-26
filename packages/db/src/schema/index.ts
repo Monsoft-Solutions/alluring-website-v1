@@ -4,6 +4,9 @@ export {
     pageView,
     type PageView,
     type InsertPageView,
+    lpFormStep,
+    type LpFormStep,
+    type InsertLpFormStep,
 } from './analytics'
 
 // Blog schema
