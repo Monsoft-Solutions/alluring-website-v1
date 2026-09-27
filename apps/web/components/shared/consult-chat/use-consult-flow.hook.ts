@@ -17,6 +17,12 @@
  * `data-consult-entry` names where the link sits (`bar`, `closing`, `strip`)
  * for the funnel's `entry_point`.
  *
+ * With `layout: 'one-screen'` (#307) the same flow draws as one form: the
+ * procedure, name and number together, no timeline. It starts on the last
+ * step and stays there; answering the procedure (in the form or through a
+ * page link) only fills it in. A lead sent without a timeline tells the
+ * thank-you page to ask for it (`askTimeline`).
+ *
  * Underneath it is an ordinary form posting through the site's contact
  * pipeline (`useContactFormSubmission` → `/api/contact`), so it reports the
  * shared lead funnel (#272) and every lead lands tagged with its page's
@@ -83,7 +89,7 @@ import {
     restoreThread,
 } from './consult-flow.logic'
 
-export type FlowErrorField = 'name' | 'phone' | 'consent'
+export type FlowErrorField = 'procedure' | 'name' | 'phone' | 'consent'
 
 /** Default pause before the next question, as if the coordinator typed it. */
 export const DEFAULT_TYPING_MS = 700
@@ -153,6 +159,16 @@ export interface ConsultFlowOptions {
     readonly keepSendAboveKeyboard?: boolean
     /** Every answer, as it is given. */
     readonly onAnswer?: (answer: ConsultFlowAnswer) => void
+    /**
+     * `steps` (the default): one question at a time. `one-screen`: the
+     * procedure, name and number in one form, no timeline (#307).
+     */
+    readonly layout?: 'steps' | 'one-screen'
+    /**
+     * One screen only: the procedure the list starts on (the ad group's), as
+     * an answer. Ignored when it isn't one of the options.
+     */
+    readonly presetProcedure?: string
 }
 
 export function useConsultFlow(options: ConsultFlowOptions) {
@@ -178,7 +194,10 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         leadVariants,
         keepSendAboveKeyboard = false,
         onAnswer,
+        layout = 'steps',
+        presetProcedure = '',
     } = options
+    const oneScreen = layout === 'one-screen'
 
     const titleId = `${id}-title`
     const qId = (step: FlowStep) => `${id}-q-${FLOW_STEP_NAMES[step]}`
@@ -192,10 +211,26 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         () => ''
     )
     const touched = useFlowThread(id)
-    const thread: FlowThread =
+    const stored: FlowThread =
         touched ??
         restoreThread(parseSavedThread(savedRaw), copy) ??
         EMPTY_THREAD
+    // One screen is always on its last (only) step.
+    const preset = copy.procedures.some(
+        (option) => option.value === presetProcedure
+    )
+        ? presetProcedure
+        : ''
+    const thread: FlowThread = oneScreen
+        ? {
+              ...stored,
+              answers: {
+                  ...stored.answers,
+                  procedure: stored.answers.procedure || preset,
+              },
+              step: FLOW_LAST_STEP,
+          }
+        : stored
     const { step, answers, name } = thread
 
     const [typing, setTyping] = useState(false)
@@ -213,6 +248,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
     /** Read when the request resolves, not when it began. */
     const firstNameRef = useRef('')
     const financingRef = useRef(false)
+    const askTimelineRef = useRef(false)
 
     const addError = useCallback((field: FlowErrorField) => {
         setErrors((current) => new Set(current).add(field))
@@ -246,6 +282,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
                 ...(financingRef.current && {
                     answers: { financingInterest: 'yes' },
                 }),
+                ...(askTimelineRef.current && { askTimeline: true }),
             }
             try {
                 window.sessionStorage.setItem(
@@ -309,7 +346,13 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         patch: Partial<FlowAnswers>,
         entry: string = entryName
     ) => {
-        const next = answerStep(thread, from, patch)
+        const next = oneScreen
+            ? {
+                  ...thread,
+                  answers: { ...thread.answers, ...patch },
+                  step: FLOW_LAST_STEP,
+              }
+            : answerStep(thread, from, patch)
         const stepName = FLOW_STEP_NAMES[from]
         // Which step was answered is worth reporting; the answer is not.
         // Procedure interest and names stay out of the data layer, where
@@ -334,18 +377,32 @@ export function useConsultFlow(options: ConsultFlowOptions) {
             answer: next.answers[stepName],
             entry,
         })
-        goTo(next.step, true, next)
+        goTo(next.step, !oneScreen, next)
+        // The one-screen form's procedure error goes as soon as one is picked.
+        setErrors((current) => {
+            if (!current.has('procedure')) return current
+            const rest = new Set(current)
+            rest.delete('procedure')
+            return rest
+        })
+    }
+
+    /** On one screen, typing in a field is starting the form. */
+    const startByTyping = () => {
+        if (oneScreen && startOn === 'first-answer') trackStart()
     }
 
     /** Change: back to a step, keeping the later answers. */
     const change = (target: FlowStep) => goTo(target, false)
 
     const setName = (value: string) => {
+        startByTyping()
         update({ ...thread, name: value })
         clearError('name')
     }
 
     const setPhone = (value: string) => {
+        startByTyping()
         setPhoneValue(formatPhone(value))
         clearError('phone')
     }
@@ -442,6 +499,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         const fullName = name.trim().replace(/\s+/g, ' ')
         const national = nationalDigits(phone)
         const nextErrors = new Set<FlowErrorField>()
+        if (oneScreen && !answers.procedure) nextErrors.add('procedure')
         if (fullName.length < 2) nextErrors.add('name')
         if (!national) nextErrors.add('phone')
         if (!tapConsent && !consentChecked) nextErrors.add('consent')
@@ -454,6 +512,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         const { firstName, lastName } = splitName(fullName)
         firstNameRef.current = firstName
         financingRef.current = thread.financing
+        askTimelineRef.current = !answers.timeline
         if (dataLayerEvents) {
             pushDataLayer({
                 event: dataLayerEvents.attempt,
@@ -487,7 +546,9 @@ export function useConsultFlow(options: ConsultFlowOptions) {
             message: [
                 ...noteLines,
                 `Procedure: ${procedureLabel}`,
-                `Timeline: ${labelOf(staff.timelines, answers.timeline)}`,
+                answers.timeline
+                    ? `Timeline: ${labelOf(staff.timelines, answers.timeline)}`
+                    : 'Timeline: not asked on the form (the thank-you page asks)',
                 ...(thread.financing
                     ? ['Financing: asked about financing on the page']
                     : []),
@@ -499,7 +560,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
                     : []),
             ].join('\n'),
             // Stored on the lead and sent to the CRM; never to analytics.
-            timeline: answers.timeline,
+            timeline: answers.timeline || undefined,
             financingInterest: thread.financing ? 'yes' : undefined,
             language: lang,
             offer,

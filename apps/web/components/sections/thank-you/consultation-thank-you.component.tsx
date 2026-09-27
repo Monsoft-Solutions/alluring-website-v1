@@ -6,7 +6,8 @@
  * It greets the visitor by first name, says we will text, and — in the
  * evening and at weekends, when two thirds of these leads arrive — says the
  * office is closed and when the text will come. Then it asks five optional
- * one-tap questions. Each answer is saved to the lead the visitor just sent
+ * one-tap questions, and a sixth first when the form didn't ask when
+ * (`askTimeline`, the one-screen form, #307). Each answer is saved to the lead the visitor just sent
  * (`PATCH /api/contact`, authorised by the token the thread stored) and
  * reaches the CRM through N8N. None of it goes to analytics.
  *
@@ -39,10 +40,12 @@ import {
     LEAD_FINANCING_INTEREST,
     LEAD_HEARD_FROM,
     LEAD_TEXT_TIMES,
+    LEAD_TIMELINES,
     type LeadConsultType,
     type LeadFinancingInterest,
     type LeadHeardFrom,
     type LeadTextTime,
+    type LeadTimeline,
 } from '@/lib/constants/lead-fields'
 import { getPhoneLink, getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { officeStatus } from '@/lib/utils/office-hours.util'
@@ -53,6 +56,7 @@ interface Answers {
     readonly preferredContactTime?: LeadTextTime
     readonly email?: string
     readonly heardFrom?: LeadHeardFrom
+    readonly timeline?: LeadTimeline
 }
 
 /** The thread's stored lead, plus the answers given on this page. */
@@ -78,6 +82,13 @@ const COPY = {
         questionsTitle: 'Help us prepare',
         questionsNote:
             'Optional. A few taps and your coordinator comes ready. Each answer saves on its own.',
+        timeline: 'When are you thinking of having it done?',
+        timelines: {
+            asap: 'As soon as possible',
+            '1-3-months': 'In 1–3 months',
+            '3-6-months': 'In 3–6 months',
+            researching: 'Just researching',
+        },
         consultType: 'Video or in person?',
         consultTypes: { video: 'Video', 'in-person': 'In person in Miami' },
         financing: 'Interested in financing?',
@@ -124,6 +135,13 @@ const COPY = {
         questionsTitle: 'Ayúdanos a prepararnos',
         questionsNote:
             'Opcional. Unos toques y tu coordinadora llega preparada. Cada respuesta se guarda sola.',
+        timeline: '¿Para cuándo piensas hacértelo?',
+        timelines: {
+            asap: 'Lo antes posible',
+            '1-3-months': 'En 1–3 meses',
+            '3-6-months': 'En 3–6 meses',
+            researching: 'Solo estoy averiguando',
+        },
         consultType: '¿Por video o en persona?',
         consultTypes: {
             video: 'Por video',
@@ -191,6 +209,7 @@ function parseStored(raw: string): StoredLead | null {
                 value.answers && typeof value.answers === 'object'
                     ? value.answers
                     : undefined,
+            ...(value.askTimeline === true && { askTimeline: true }),
         }
     } catch {
         return null
@@ -514,6 +533,16 @@ function LeadQuestions({
             <p className='mt-1 text-sm text-stone-400'>{copy.questionsNote}</p>
 
             <div className='mt-5 grid gap-6'>
+                {stored.askTimeline && (
+                    <ChipQuestion
+                        id='timeline'
+                        question={copy.timeline}
+                        options={LEAD_TIMELINES}
+                        labels={copy.timelines}
+                        selected={answers.timeline}
+                        onPick={(timeline) => answer({ timeline })}
+                    />
+                )}
                 <ChipQuestion
                     id='consult-type'
                     question={copy.consultType}

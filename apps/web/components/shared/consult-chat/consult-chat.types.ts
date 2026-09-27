@@ -47,6 +47,12 @@ export interface ConsultChatCopy {
      * (#302); unset, the last step draws as it always has.
      */
     readonly contactNote?: string
+    /**
+     * The procedure field's label and its empty choice, for the one-screen
+     * form (#307), where the procedure is a list rather than a question.
+     */
+    readonly fieldProcedure?: string
+    readonly procedurePlaceholder?: string
     readonly fieldName: string
     readonly fieldPhone: string
     readonly consent: RichText
@@ -74,6 +80,8 @@ export interface ConsultChatCopy {
         readonly steps: readonly [string, string, string]
     }
     readonly errors: {
+        /** One-screen form only: no procedure picked. */
+        readonly procedure?: string
         readonly name: string
         readonly phone: string
         readonly consent: string
@@ -106,6 +114,11 @@ export interface ConsultChatLead {
     readonly answers?: {
         readonly financingInterest?: LeadFinancingInterest
     }
+    /**
+     * The form didn't ask when (the one-screen form, #307), so the thank-you
+     * page asks it first among its optional questions.
+     */
+    readonly askTimeline?: boolean
 }
 
 /** Dispatched on `window` whenever the thread moves, for sticky bars. */

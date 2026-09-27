@@ -14,6 +14,19 @@ export type LeadConsultType = (typeof LEAD_CONSULT_TYPES)[number]
 export const LEAD_FINANCING_INTEREST = ['yes', 'no', 'not-sure'] as const
 export type LeadFinancingInterest = (typeof LEAD_FINANCING_INTEREST)[number]
 
+/**
+ * When the visitor is thinking of having surgery: the thread's second
+ * question, and the thank-you page's first when the form didn't ask (#307).
+ * Same values as the thread's `CHAT_TIMELINES`.
+ */
+export const LEAD_TIMELINES = [
+    'asap',
+    '1-3-months',
+    '3-6-months',
+    'researching',
+] as const
+export type LeadTimeline = (typeof LEAD_TIMELINES)[number]
+
 /** Same values as `preferred_contact_time` on every other form. */
 export const LEAD_TEXT_TIMES = ['morning', 'afternoon', 'evening'] as const
 export type LeadTextTime = (typeof LEAD_TEXT_TIMES)[number]
