@@ -16,7 +16,8 @@
  * thank-you page (whose page view is what the Google Ads conversion fires
  * on), now with `&fv=` for the arm. It still pushes `lp_step` and
  * `lp_lead_attempt` with the page version and ad group, and each lead
- * records the page version, the arm and the consent wording.
+ * records the page version, the arm and the consent wording. The page
+ * version names the last step's wording arm too (#302): `v6` or `v6r`.
  */
 
 import type { ConsultChatLang } from '@/components/shared/consult-chat/consult-chat.types'
@@ -30,8 +31,8 @@ import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 import { type LpChat, LP_CONSENT_VERSION } from './lp-chat-copy'
 import { LP_CHAT_ID, LP_LEAD_KEY, LP_THANK_YOU_PATH } from './lp-config'
-import type { LpFormVariant } from './lp-form-variant'
-import { LP_PAGE_VARIANT, LP_PAGE_VERSION } from './lp-tracking'
+import type { LpCopyVariant, LpFormVariant } from './lp-form-variant'
+import { lpPageVariant, lpPageVersion } from './lp-tracking'
 import { type AdVariant, VARIANT_PROCEDURE } from './lp-variants'
 
 import '@/components/shared/consult-chat/consult-chat.css'
@@ -40,6 +41,12 @@ interface LpConsultFormProps {
     readonly lang: ConsultChatLang
     readonly adVariant: AdVariant
     readonly formVariant: LpFormVariant
+    /**
+     * The last step's wording arm (#302). Its words are already in `chat`;
+     * here it names the page variant the lead, the events and the thank-you
+     * URL carry (`v6` / `v6r`).
+     */
+    readonly copyVariant: LpCopyVariant
     readonly chat: LpChat
     /** Every answer, for the page's own log of chip picks. */
     readonly onAnswer?: (answer: ConsultFlowAnswer) => void
@@ -49,9 +56,11 @@ export function LpConsultForm({
     lang,
     adVariant,
     formVariant,
+    copyVariant,
     chat,
     onAnswer,
 }: LpConsultFormProps) {
+    const pageVariant = lpPageVariant(copyVariant)
     const flow: ConsultFlowOptions = {
         id: LP_CHAT_ID,
         lang,
@@ -60,17 +69,17 @@ export function LpConsultForm({
         source: CONTACT_SOURCES.LANDING_PAGE,
         formName: 'ads_lp_consultation',
         // The form adds `hl` from the language at the moment of success.
-        thankYouPath: `${LP_THANK_YOU_PATH}?p=${adVariant}&pv=${LP_PAGE_VERSION}&fv=${formVariant}`,
+        thankYouPath: `${LP_THANK_YOU_PATH}?p=${adVariant}&pv=${lpPageVersion(copyVariant)}&fv=${formVariant}`,
         leadStorageKey: LP_LEAD_KEY,
         subject: (procedure) => `Consultation Request: ${procedure}`,
         noteLines: [
             'Page: /lp/request-consultation (paid landing page)',
             `Ad group: ${adVariant}`,
-            `Landing page: ${LP_PAGE_VARIANT}`,
+            `Landing page: ${pageVariant}`,
         ],
         dataLayerEvents: { step: 'lp_step', attempt: 'lp_lead_attempt' },
         dataLayerContext: {
-            pageVariant: LP_PAGE_VARIANT,
+            pageVariant,
             adVariant,
             formVariant,
         },
@@ -78,11 +87,11 @@ export function LpConsultForm({
         consent: { method: 'tap', version: LP_CONSENT_VERSION },
         analyticsParams: {
             form_variant: formVariant,
-            page_variant: LP_PAGE_VARIANT,
+            page_variant: pageVariant,
         },
         startOn: 'first-answer',
         entryName: 'hero',
-        leadVariants: { page: LP_PAGE_VARIANT, form: formVariant },
+        leadVariants: { page: pageVariant, form: formVariant },
         keepSendAboveKeyboard: true,
         onAnswer,
     }

@@ -20,6 +20,10 @@
  * "Something else". An ad group whose procedure is outside the six (a breast
  * lift) gets eight.
  *
+ * The last step's wording is under its own test (#302), crossed with the
+ * form test: the `reassure` arm adds a line above the fields that says what
+ * happens next (`contactNote`); `plain` is the step as launched.
+ *
  * Built on the server: the facts files stay out of the client bundle, and the
  * page hands both languages to the form so a language switch needs no
  * request.
@@ -38,6 +42,7 @@ import {
 } from '@/components/shared/consult-chat/site-chat-copy'
 
 import { LP_COPY, LP_LINKS, type RichText } from './lp-copy'
+import type { LpCopyVariant } from './lp-form-variant'
 import { type AdVariant, VARIANT_PROCEDURE } from './lp-variants'
 
 /**
@@ -93,10 +98,19 @@ function consentTap(lang: ConsultChatLang, submit: string): RichText {
           ]
 }
 
+/** The `reassure` arm's line above the last step's fields (#302). */
+const CONTACT_NOTE: Readonly<Record<ConsultChatLang, string>> = {
+    en: 'A patient coordinator will text you to set up your consultation. Private, and no obligation.',
+    es: 'Una coordinadora te escribe por texto para agendar tu consulta. Privado y sin compromiso.',
+}
+
 function copyFor(
-    adVariant: AdVariant
+    adVariant: AdVariant,
+    copyVariant: LpCopyVariant
 ): Readonly<Record<ConsultChatLang, ConsultChatCopy>> {
     const order = lpProcedureOrder(adVariant)
+    const note = (lang: ConsultChatLang) =>
+        copyVariant === 'reassure' ? { contactNote: CONTACT_NOTE[lang] } : {}
     const en = { submit: 'Request my consultation' }
     const es = { submit: 'Pedir mi consulta' }
     return {
@@ -109,6 +123,7 @@ function copyFor(
             qTimeline: 'When would you like it done?',
             timelines: CHAT_TIMELINES.en,
             qContact: 'Where should we text you?',
+            ...note('en'),
             fieldName: 'First name',
             fieldPhone: 'Mobile number',
             consent: LP_COPY.en.consent,
@@ -141,6 +156,7 @@ function copyFor(
             qTimeline: '¿Para cuándo te gustaría hacerlo?',
             timelines: CHAT_TIMELINES.es,
             qContact: '¿A qué número te escribimos?',
+            ...note('es'),
             fieldName: 'Nombre',
             fieldPhone: 'Número de celular',
             consent: LP_COPY.es.consent,
@@ -167,9 +183,15 @@ function copyFor(
     }
 }
 
-/** The form's copy for an ad group, the English labels staff read, and prices. */
-export function buildLpChat(adVariant: AdVariant): LpChat {
-    const copy = copyFor(adVariant)
+/**
+ * The form's copy for an ad group and a last-step wording arm, the English
+ * labels staff read, and prices.
+ */
+export function buildLpChat(
+    adVariant: AdVariant,
+    copyVariant: LpCopyVariant = 'plain'
+): LpChat {
+    const copy = copyFor(adVariant, copyVariant)
     return {
         copy,
         staff: { procedures: copy.en.procedures, timelines: CHAT_TIMELINES.en },

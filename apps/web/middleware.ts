@@ -2,24 +2,33 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 import {
+    assignLpCopyVariant,
     assignLpFormVariant,
+    LP_COPY_COOKIE,
+    LP_COPY_COOKIE_MAX_AGE,
+    LP_COPY_HEADER,
+    LP_COPY_QUERY,
     LP_FORM_COOKIE,
     LP_FORM_COOKIE_MAX_AGE,
     LP_FORM_HEADER,
     LP_FORM_QUERY,
+    parseLpCopySplit,
     parseLpFormSplit,
 } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { env } from '@/env'
 
-/** The ads landing page, whose hero form is under an A/B test (#292). */
+/**
+ * The ads landing page, whose hero form (#292) and last-step wording (#302)
+ * are under two crossed A/B tests.
+ */
 const LP_PATH = '/lp/request-consultation'
 
 /**
  * Middleware to handle:
  * 1. Trailing slash redirects - redirects /path/ to /path for SEO consistency
  * 2. X-Robots-Tag header - adds noindex when crawling is disabled
- * 3. The ads landing page's form arm - chosen per visitor before the page
- *    renders, so its first HTML already has the right form
+ * 3. The ads landing page's test arms - chosen per visitor before the page
+ *    renders, so its first HTML already has the right form and wording
  */
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
@@ -32,7 +41,7 @@ export function middleware(request: NextRequest) {
     }
 
     const response =
-        pathname === LP_PATH ? withLpFormVariant(request) : NextResponse.next()
+        pathname === LP_PATH ? withLpVariants(request) : NextResponse.next()
 
     // Check if crawling is allowed (defaults to false)
     const allowCrawling = env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
@@ -49,25 +58,41 @@ export function middleware(request: NextRequest) {
 }
 
 /**
- * Picks the landing page's form arm (`lp-form-variant.ts`), passes it to the
- * page as a request header, and keeps it in the visitor's cookie.
+ * Picks the landing page's form arm and copy arm (`lp-form-variant.ts`),
+ * each with its own random number so the two tests are independent, passes
+ * both to the page as request headers, and keeps each in its own cookie.
  */
-function withLpFormVariant(request: NextRequest): NextResponse {
-    const { variant } = assignLpFormVariant({
-        query: request.nextUrl.searchParams.get(LP_FORM_QUERY),
+function withLpVariants(request: NextRequest): NextResponse {
+    const { searchParams } = request.nextUrl
+    const form = assignLpFormVariant({
+        query: searchParams.get(LP_FORM_QUERY),
         cookie: request.cookies.get(LP_FORM_COOKIE)?.value,
         split: parseLpFormSplit(env.LP_FORM_SPLIT),
         random: Math.random(),
-    })
+    }).variant
+    const copy = assignLpCopyVariant({
+        query: searchParams.get(LP_COPY_QUERY),
+        cookie: request.cookies.get(LP_COPY_COOKIE)?.value,
+        split: parseLpCopySplit(env.LP_COPY_SPLIT),
+        random: Math.random(),
+    }).variant
 
     const headers = new Headers(request.headers)
-    headers.set(LP_FORM_HEADER, variant)
+    headers.set(LP_FORM_HEADER, form)
+    headers.set(LP_COPY_HEADER, copy)
     const response = NextResponse.next({ request: { headers } })
-    response.cookies.set(LP_FORM_COOKIE, variant, {
+    const cookie = {
         path: '/lp',
-        maxAge: LP_FORM_COOKIE_MAX_AGE,
         sameSite: 'lax',
         secure: request.nextUrl.protocol === 'https:',
+    } as const
+    response.cookies.set(LP_FORM_COOKIE, form, {
+        ...cookie,
+        maxAge: LP_FORM_COOKIE_MAX_AGE,
+    })
+    response.cookies.set(LP_COPY_COOKIE, copy, {
+        ...cookie,
+        maxAge: LP_COPY_COOKIE_MAX_AGE,
     })
     return response
 }

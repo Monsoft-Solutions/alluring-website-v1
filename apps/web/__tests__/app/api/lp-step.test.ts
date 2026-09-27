@@ -50,6 +50,14 @@ describe('POST /api/lp/step', () => {
         })
     })
 
+    it('accepts the reassure arm’s page variant (#302)', async () => {
+        const response = await post({ ...valid, page: 'ads-consultation-v6r' })
+        expect(response.status).toBe(204)
+        expect(values).toHaveBeenCalledWith(
+            expect.objectContaining({ pageVariant: 'ads-consultation-v6r' })
+        )
+    })
+
     it('refuses another site', async () => {
         const response = await post(valid, 'https://example.com')
         expect(response.status).toBe(403)

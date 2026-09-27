@@ -77,6 +77,10 @@ export const env = createEnv({
         // visitors, e.g. 'thread:50,card:50'. Unset means 50/50;
         // 'thread:100' ends the test. See `lp-form-variant.ts`.
         LP_FORM_SPLIT: z.string().optional(),
+        // The same for its last-step wording test (#302), crossed with the
+        // form test: 'plain:50,reassure:50' when unset, 'plain:100' rolls it
+        // back. See `lp-form-variant.ts`.
+        LP_COPY_SPLIT: z.string().optional(),
 
         // Set by CI providers. Read by data-consistency assertions that should
         // fail a pipeline rather than only log — `NODE_ENV` is 'production'

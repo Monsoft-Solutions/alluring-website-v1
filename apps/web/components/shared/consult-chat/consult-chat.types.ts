@@ -41,6 +41,12 @@ export interface ConsultChatCopy {
     readonly timelines: readonly ConsultChatOption[]
     /** The last step asks for the name and the mobile number together. */
     readonly qContact: string
+    /**
+     * A line under `qContact`, above the fields, that says what happens
+     * after sending. Only the ads landing page's `reassure` arm sets it
+     * (#302); unset, the last step draws as it always has.
+     */
+    readonly contactNote?: string
     readonly fieldName: string
     readonly fieldPhone: string
     readonly consent: RichText

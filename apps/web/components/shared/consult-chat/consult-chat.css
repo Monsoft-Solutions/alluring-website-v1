@@ -582,6 +582,15 @@
     font-weight: 600;
 }
 
+/* What happens after sending, above the last step's fields (#302). */
+.cc-contact-note {
+    grid-column: 1 / -1;
+    margin: 0 0 2px;
+    color: var(--cc-mute);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
 /* Consent by tapping the button: the line above it names the button. */
 .cc-consent-line {
     grid-column: 1 / -1;
