@@ -8,6 +8,7 @@
  *   /lp/request-consultation?p=bbl&hl=es          Spanish campaigns
  *   /lp/request-consultation?s=financing          a sitelink's section first
  *   /lp/request-consultation?fv=card              force a form test arm (QA)
+ *   /lp/request-consultation?cv=reassure          force a last-step wording arm (QA)
  *
  * Aliases (`lipo`, `mm`, `tt`, `breast`…) resolve in `lp-variants.ts`, `?s=`
  * sections in `lp-sections.ts`, and Google's `gclid` / `wbraid` / `gbraid` /
@@ -25,8 +26,9 @@
  * The page renders per request because the language and the headline are
  * resolved from the query string and Accept-Language on the server — the HTML
  * arrives already correct rather than flipping after hydration. The same goes
- * for the hero form: `middleware.ts` picks the visitor's test arm (#292) and
- * passes it in a request header, so the right form is in the first HTML.
+ * for the hero form: `middleware.ts` picks the visitor's test arms — the form
+ * (#292) and the last step's wording (#302) — and passes them in request
+ * headers, so the right form and words are in the first HTML.
  */
 
 import type { Metadata } from 'next'
@@ -34,10 +36,15 @@ import { cookies, headers } from 'next/headers'
 
 import { buildLpChat } from '@/components/landing-pages/request-consultation/lp-chat-copy'
 import {
+    LP_COPY_COOKIE,
+    LP_COPY_HEADER,
+    LP_COPY_QUERY,
     LP_FORM_COOKIE,
     LP_FORM_HEADER,
     LP_FORM_QUERY,
+    type LpCopyVariant,
     type LpFormVariant,
+    toLpCopyVariant,
     toLpFormVariant,
 } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { LpLanding } from '@/components/landing-pages/request-consultation/lp-landing.component'
@@ -91,6 +98,16 @@ async function formVariantFrom(params: SearchParams): Promise<LpFormVariant> {
     )
 }
 
+/** The last step's wording arm, resolved the same way; `plain` is today's. */
+async function copyVariantFrom(params: SearchParams): Promise<LpCopyVariant> {
+    return (
+        toLpCopyVariant((await headers()).get(LP_COPY_HEADER)) ??
+        toLpCopyVariant(first(params[LP_COPY_QUERY])) ??
+        toLpCopyVariant((await cookies()).get(LP_COPY_COOKIE)?.value) ??
+        'plain'
+    )
+}
+
 function variantFrom(params: SearchParams) {
     return resolveAdVariant(first(params.p) ?? first(params.procedure))
 }
@@ -125,6 +142,7 @@ export default async function RequestConsultationLandingPage({
     const { lang, pinned } = await resolveLang(params)
     const adVariant = variantFrom(params)
     const formVariant = await formVariantFrom(params)
+    const copyVariant = await copyVariantFrom(params)
 
     const [gallery, reviews] = await Promise.all([
         getSpecialsFeaturedGalleryImages().catch(() => []),
@@ -137,7 +155,8 @@ export default async function RequestConsultationLandingPage({
             langPinnedByUrl={pinned}
             adVariant={adVariant}
             formVariant={formVariant}
-            chat={buildLpChat(adVariant)}
+            copyVariant={copyVariant}
+            chat={buildLpChat(adVariant, copyVariant)}
             proof={selectLpProof(adVariant, gallery, reviews)}
             focusSection={resolveLpSection(first(params.s))}
         />

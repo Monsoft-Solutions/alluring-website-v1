@@ -26,6 +26,10 @@
  * card; `middleware.ts` picks the visitor's arm and the page hands it here.
  * Every event, the lead and the thank-you conversion carry the arm, and each
  * answer is logged to our own database (`lp-step-beacon.ts`).
+ *
+ * Crossed with it, a second 50/50 on the last step's wording (#302): a line
+ * above the fields that says what happens next, or none. Its words are in
+ * `chat`; everything recorded carries it as the page variant (`v6` / `v6r`).
  */
 
 import { Fragment, type ReactNode, useEffect, useRef } from 'react'
@@ -43,7 +47,7 @@ import { LP_COPY, type LpLang } from './lp-copy'
 import { LpFaq } from './lp-faq.component'
 import { LpFinancing } from './lp-financing.component'
 import { LpFlyIn } from './lp-fly-in.component'
-import type { LpFormVariant } from './lp-form-variant'
+import type { LpCopyVariant, LpFormVariant } from './lp-form-variant'
 import { LpHeader } from './lp-header.component'
 import { LpHero } from './lp-hero.component'
 import { LpLegalDialog } from './lp-legal-dialog.component'
@@ -54,7 +58,7 @@ import { LpReviews } from './lp-reviews.component'
 import { type LpSection, orderLpSections } from './lp-sections'
 import { lpStepBeacon } from './lp-step-beacon'
 import { LpSurgeon } from './lp-surgeon.component'
-import { trackLpEvent, trackLpViewInGa4 } from './lp-tracking'
+import { lpPageVariant, trackLpEvent, trackLpViewInGa4 } from './lp-tracking'
 import {
     AD_VARIANT_COPY,
     type AdVariant,
@@ -92,7 +96,9 @@ interface LpLandingProps {
     readonly adVariant: AdVariant
     /** The hero form's test arm, chosen by the middleware. */
     readonly formVariant: LpFormVariant
-    /** The form's copy in both languages, built on the server. */
+    /** The last step's wording arm, chosen by the middleware (#302). */
+    readonly copyVariant: LpCopyVariant
+    /** The form's copy in both languages, built on the server for `copyVariant`. */
     readonly chat: LpChat
     /** Photographs, rating and reviews, read on the server. */
     readonly proof: LpProof
@@ -105,10 +111,12 @@ export function LpLanding({
     langPinnedByUrl,
     adVariant,
     formVariant,
+    copyVariant,
     chat,
     proof,
     focusSection,
 }: LpLandingProps) {
+    const pageVariant = lpPageVariant(copyVariant)
     const [lang, chooseLang] = useLpLanguage(initialLang, langPinnedByUrl)
     const rootRef = useRef<HTMLDivElement>(null)
     const langRef = useRef(lang)
@@ -131,19 +139,29 @@ export function LpLanding({
     const selectLang = (next: LpLang) => {
         if (next === lang) return
         chooseLang(next)
-        trackLpEvent('lp_lang_switch', { lang: next, adVariant, formVariant })
+        trackLpEvent('lp_lang_switch', {
+            lang: next,
+            adVariant,
+            formVariant,
+            pageVariant,
+        })
     }
 
     /** One page view, whatever happens to the language afterwards. */
     useEffect(() => {
-        const context = { lang: initialLang, adVariant, formVariant }
+        const context = {
+            lang: initialLang,
+            adVariant,
+            formVariant,
+            pageVariant,
+        }
         trackLpEvent(
             'lp_view',
             context,
             focusSection ? { section: focusSection } : undefined
         )
         trackLpViewInGa4(context, focusSection)
-    }, [initialLang, adVariant, formVariant, focusSection])
+    }, [initialLang, adVariant, formVariant, pageVariant, focusSection])
 
     /**
      * A sitelink's section is already first under the hero, with the
@@ -172,7 +190,12 @@ export function LpLanding({
                     observer.unobserve(entry.target)
                     trackLpEvent(
                         'lp_section_view',
-                        { lang: langRef.current, adVariant, formVariant },
+                        {
+                            lang: langRef.current,
+                            adVariant,
+                            formVariant,
+                            pageVariant,
+                        },
                         { section: entry.target.id }
                     )
                 }
@@ -181,7 +204,7 @@ export function LpLanding({
         )
         for (const target of targets) observer.observe(target)
         return () => observer.disconnect()
-    }, [adVariant, formVariant])
+    }, [adVariant, formVariant, pageVariant])
 
     /**
      * Calls and CTAs, for Google Ads call conversions through GTM. One
@@ -199,14 +222,14 @@ export function LpLanding({
             if (!placement) return
             trackLpEvent(
                 placement.startsWith('call') ? 'lp_call_click' : 'lp_cta_click',
-                { lang, adVariant, formVariant },
+                { lang, adVariant, formVariant, pageVariant },
                 { placement }
             )
         }
 
         document.addEventListener('click', onClick)
         return () => document.removeEventListener('click', onClick)
-    }, [lang, adVariant, formVariant])
+    }, [lang, adVariant, formVariant, pageVariant])
 
     /**
      * Sections rise into view once. The `in` class is written to the DOM
@@ -302,11 +325,13 @@ export function LpLanding({
                                 lang={lang}
                                 adVariant={adVariant}
                                 formVariant={formVariant}
+                                copyVariant={copyVariant}
                                 chat={chat}
                                 onAnswer={(answer) =>
                                     lpStepBeacon({
                                         ...answer,
                                         lang,
+                                        pageVariant,
                                         adVariant,
                                         formVariant,
                                         section: focusSection,

@@ -14,6 +14,11 @@
  * fires on the thank-you page view, not on this value, so the bump only
  * splits the reporting into before and after.
  *
+ * The last step's wording test (#302) rides on the same value: the
+ * `reassure` arm reports "ads-consultation-v6r" (`lpPageVariant`), so the
+ * lead, every event, `lp_form_step` and the thank-you conversion carry it
+ * without a new column.
+ *
  * The `lp_*` dataLayer events feed GTM and never reach GA4. The one GA4
  * needs for the test — visits per arm — is sent to GA4 directly
  * (`trackLpViewInGa4`).
@@ -23,10 +28,21 @@ import { trackEvent } from '@/lib/analytics/analytics.client'
 import { readAttributionParam } from '@/lib/analytics/attribution-params.util'
 
 import type { LpLang } from './lp-copy'
-import type { LpFormVariant } from './lp-form-variant'
+import type { LpCopyVariant, LpFormVariant } from './lp-form-variant'
 
+/** The base version: what the `plain` arm, and every report before #302, says. */
 export const LP_PAGE_VERSION = 'v6'
 export const LP_PAGE_VARIANT = `ads-consultation-${LP_PAGE_VERSION}`
+
+/** The page version for a copy arm: `v6`, or `v6r` for `reassure`. */
+export function lpPageVersion(copyVariant: LpCopyVariant): string {
+    return copyVariant === 'reassure' ? `${LP_PAGE_VERSION}r` : LP_PAGE_VERSION
+}
+
+/** The page variant every record carries: `ads-consultation-v6` or `-v6r`. */
+export function lpPageVariant(copyVariant: LpCopyVariant): string {
+    return `ads-consultation-${lpPageVersion(copyVariant)}`
+}
 
 /** Query keys Google and our own campaigns put on the ad URL. */
 export const ATTRIBUTION_KEYS = [
@@ -60,6 +76,8 @@ export function pushDataLayer(payload: DataLayerRecord): void {
 export interface LpEventContext {
     readonly lang: LpLang
     readonly adVariant: string
+    /** `lpPageVariant(copyVariant)`: carries the last-step wording arm. */
+    readonly pageVariant: string
     /** The hero form's test arm. */
     readonly formVariant?: LpFormVariant
 }
@@ -71,7 +89,7 @@ export function trackLpEvent(
 ): void {
     pushDataLayer({
         event,
-        pageVariant: LP_PAGE_VARIANT,
+        pageVariant: context.pageVariant,
         adVariant: context.adVariant,
         ...(context.formVariant && { formVariant: context.formVariant }),
         lang: context.lang,
@@ -90,7 +108,7 @@ export function trackLpViewInGa4(
 ): void {
     trackEvent('lp_view', {
         form_variant: context.formVariant,
-        page_variant: LP_PAGE_VARIANT,
+        page_variant: context.pageVariant,
         ad_variant: context.adVariant,
         section: section ?? 'none',
         lang: context.lang,

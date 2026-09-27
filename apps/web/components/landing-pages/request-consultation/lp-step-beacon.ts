@@ -15,7 +15,6 @@ import type { LpFormStepPayload } from '@/lib/types/analytics/lp-form-step.type'
 import type { LpLang } from './lp-copy'
 import type { LpFormVariant } from './lp-form-variant'
 import type { LpSection } from './lp-sections'
-import { LP_PAGE_VARIANT } from './lp-tracking'
 import type { AdVariant } from './lp-variants'
 
 const TAB_KEY_STORAGE = 'lp_tab'
@@ -36,6 +35,8 @@ function tabKey(): string {
 
 interface LpStepContext extends ConsultFlowAnswer {
     readonly lang: LpLang
+    /** `lpPageVariant(copyVariant)`: carries the last-step wording arm. */
+    readonly pageVariant: string
     readonly adVariant: AdVariant
     readonly formVariant: LpFormVariant
     readonly section: LpSection | null
@@ -46,7 +47,7 @@ export function lpStepBeacon(context: LpStepContext): void {
         const entry = context.entry as LpFormStepPayload['entry']
         const payload: LpFormStepPayload = {
             tab: tabKey(),
-            page: LP_PAGE_VARIANT,
+            page: context.pageVariant,
             form: context.formVariant,
             ad: context.adVariant,
             section: context.section,
