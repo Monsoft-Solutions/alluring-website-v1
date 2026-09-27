@@ -124,6 +124,8 @@ function copyFor(
             timelines: CHAT_TIMELINES.en,
             qContact: 'Where should we text you?',
             ...note('en'),
+            fieldProcedure: 'Procedure',
+            procedurePlaceholder: 'Choose one',
             fieldName: 'First name',
             fieldPhone: 'Mobile number',
             consent: LP_COPY.en.consent,
@@ -141,6 +143,7 @@ function copyFor(
                 steps: ['Procedure', 'Timing', 'Your number'],
             },
             errors: {
+                procedure: 'Choose the procedure you’re considering.',
                 name: 'Enter your first name.',
                 phone: 'Enter a US mobile number, with area code.',
                 consent: 'Please tick the box so we’re allowed to text you.',
@@ -157,6 +160,8 @@ function copyFor(
             timelines: CHAT_TIMELINES.es,
             qContact: '¿A qué número te escribimos?',
             ...note('es'),
+            fieldProcedure: 'Procedimiento',
+            procedurePlaceholder: 'Elige uno',
             fieldName: 'Nombre',
             fieldPhone: 'Número de celular',
             consent: LP_COPY.es.consent,
@@ -174,6 +179,7 @@ function copyFor(
                 steps: ['Procedimiento', 'Fecha', 'Tu número'],
             },
             errors: {
+                procedure: 'Elige el procedimiento que estás considerando.',
                 name: 'Escribe tu nombre.',
                 phone: 'Escribe un celular de EE. UU., con código de área.',
                 consent: 'Marca la casilla para que podamos escribirte.',

@@ -104,11 +104,12 @@ describe('middleware: the last step’s wording arm (#302)', () => {
         env.LP_FORM_SPLIT = undefined
         env.LP_COPY_SPLIT = undefined
         vi.spyOn(Math, 'random')
-            .mockReturnValueOnce(0.1)
+            .mockReturnValueOnce(0.5)
             .mockReturnValueOnce(0.9)
         const response = middleware(new NextRequest(LP))
+        // The default form split (#307): card below 0.33, the one-screen form above.
         expect(response.headers.get('x-middleware-request-x-lp-fv')).toBe(
-            'thread'
+            'form'
         )
         expect(response.headers.get('x-middleware-request-x-lp-cv')).toBe(
             'reassure'

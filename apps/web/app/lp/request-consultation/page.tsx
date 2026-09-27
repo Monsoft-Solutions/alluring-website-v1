@@ -7,7 +7,7 @@
  *   /lp/request-consultation?p=bbl                per ad group
  *   /lp/request-consultation?p=bbl&hl=es          Spanish campaigns
  *   /lp/request-consultation?s=financing          a sitelink's section first
- *   /lp/request-consultation?fv=card              force a form test arm (QA)
+ *   /lp/request-consultation?fv=form              force a form test arm (QA): form | card | thread
  *   /lp/request-consultation?cv=reassure          force a last-step wording arm (QA)
  *
  * Aliases (`lipo`, `mm`, `tt`, `breast`…) resolve in `lp-variants.ts`, `?s=`
