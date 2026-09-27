@@ -22,11 +22,29 @@
 /**
  * Slugs that render with the v2 template in every environment.
  *
- * Keep it empty until phase 2 (#295) has shipped. The phase 1 shell has no
- * consultation thread yet and hides the floating call button, so a post listed
- * before then would have no way to book.
+ * Epic phase 3: the 15 posts with the most sessions (61% of blog sessions,
+ * GA4 26 Jun – 25 Sep 2026), in that order. Released together and judged over
+ * three weeks: each post's Search Console position and click-through rate
+ * against its own four weeks before, and the blog lead rate against 0.11%.
+ * If positions hold, phase 4 routes every post to v2 and removes this list.
  */
-export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([])
+export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
+    'breast-implant-size-guide',
+    'how-to-reduce-pubic-swelling-after-tummy-tuck',
+    'weeks-post-op-breast-augmentation-what-to-expect',
+    'how-to-reduce-tightness-after-tummy-tuck',
+    'when-can-i-sleep-without-a-bra-after-breast-reduction',
+    'how-to-reduce-itching-after-lipo',
+    'how-many-massages-after-bbl',
+    'when-can-i-sleep-on-my-side-after-breast-reduction',
+    'why-do-bbl-stink',
+    'how-many-massages-after-lipo-360',
+    'when-do-breast-augmentation-stitches-dissolve',
+    'how-to-fix-dents-after-bbl',
+    'how-to-regain-sensation-after-breast-reduction',
+    'how-to-get-rid-of-fibrosis-after-lipo',
+    'how-to-sleep-after-bbl',
+])
 
 /** The two variables the switch reads; the routes pass `env`. */
 export type BlogV2Env = {
