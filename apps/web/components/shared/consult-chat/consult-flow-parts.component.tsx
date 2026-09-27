@@ -61,7 +61,10 @@ interface ConsultContactFieldsProps {
     readonly nameField?: 'full' | 'first'
 }
 
-/** The last step: name, mobile number, consent, and the send button. */
+/**
+ * The last step: an optional note on what happens next (`contactNote`),
+ * name, mobile number, consent, and the send button.
+ */
 export function ConsultContactFields({
     c,
     flow,
@@ -74,6 +77,9 @@ export function ConsultContactFields({
     const consentLineId = fieldId('consent-line')
     return (
         <div className={c('fields')}>
+            {copy.contactNote && (
+                <p className={c('contact-note')}>{copy.contactNote}</p>
+            )}
             <div className={`${c('field')} ${c('field--wide')}`}>
                 <label htmlFor={fieldId('name')}>{copy.fieldName}</label>
                 <input
