@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import type { QuickAnswerParts } from '@workspace/shared/content'
 import { cn } from '@workspace/ui/lib/utils'
 
@@ -22,6 +23,11 @@ type PostHeaderProps = {
     dateModified: string
     /** Whether `dateModified` is a real revision rather than the publish date. */
     isUpdated: boolean
+    /**
+     * The procedure strip, under the answer: before the photograph on a phone,
+     * in the text column beside it from `lg`.
+     */
+    strip?: ReactNode
 }
 
 /** "Sep 12, 2026". UTC, like the server that prerenders it. */
@@ -50,6 +56,7 @@ export function PostHeader({
     quickAnswer,
     dateModified,
     isUpdated,
+    strip,
 }: PostHeaderProps) {
     const primaryCategory = post.categories[0]
     const image = post.featuredImage
@@ -139,6 +146,8 @@ export function PostHeader({
                             />
                         </div>
                     )}
+
+                    {strip}
                 </div>
 
                 {image && (

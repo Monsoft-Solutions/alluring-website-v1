@@ -13,9 +13,10 @@ type PostEndProps = {
 }
 
 /**
- * Where the article ends: share it, the previous and next posts, and related
- * reading (two on phones, all six from `sm`). Share sits here, in the flow,
- * because v2 keeps the bottom of a phone's screen for the consult bar.
+ * Where the article ends, after the closing band: share it, the previous and
+ * next posts, and related reading (two on phones, all six from `sm`). Share
+ * sits here, in the flow, because v2 keeps the bottom of a phone's screen for
+ * the consult bar.
  */
 export function PostEnd({ post, adjacentPosts, relatedPosts }: PostEndProps) {
     return (
@@ -26,7 +27,7 @@ export function PostEnd({ post, adjacentPosts, relatedPosts }: PostEndProps) {
                 url={getBlogPostUrl(post.slug, post.publishedAt)}
                 description={post.excerpt ?? undefined}
                 imageUrl={post.featuredImage?.url}
-                className='border-t border-stone-200 pt-8'
+                className='pt-8'
             />
 
             <PostNavigation

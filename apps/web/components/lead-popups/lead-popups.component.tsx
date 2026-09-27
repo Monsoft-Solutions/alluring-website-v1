@@ -23,6 +23,10 @@
  *   one, only the pointer actually leaving the window (desktop) can still
  *   open it. Never while they are typing: the timed trigger waits for them,
  *   the others let that moment pass.
+ * - On a page marked exit-only (`EXIT_ONLY_SELECTOR`, the blog posts), only
+ *   the pointer leaving opens it, and not after the page's form is started.
+ *   The timer keeps waiting there, so it still fires after a client
+ *   navigation to an ordinary page.
  *
  * This file is rendered from the root layout, so everything it imports is in
  * the shared chunk of every route. It is deliberately kept to React, the
@@ -51,9 +55,15 @@ import type {
 import {
     createFlickDetector,
     DEFAULT_DELAY_SECONDS,
+    EXIT_ONLY_SELECTOR,
     isTextEntry,
     SCROLL_UP_RULES,
 } from './lead-popup.triggers'
+
+/** Whether the page on screen allows only exit intent; see the selector. */
+function isExitOnlyPage(): boolean {
+    return document.querySelector(EXIT_ONLY_SELECTOR) !== null
+}
 
 /** Fetched on first render of the dialog — i.e. when a trigger fires. */
 const LeadPopupDialog = dynamic(
@@ -177,11 +187,14 @@ export function LeadPopups({ promotion }: LeadPopupsProps) {
             listen
         )
 
-        // Desktop: the pointer leaves through the top of the window.
+        // Desktop: the pointer leaves through the top of the window. On an
+        // exit-only page, not once the visitor has started its form.
         document.addEventListener(
             'mouseleave',
             (event) => {
-                if (event.clientY <= 0) open('exit_intent')
+                if (event.clientY > 0) return
+                if (formStarted && isExitOnlyPage()) return
+                open('exit_intent')
             },
             listen
         )
@@ -210,6 +223,7 @@ export function LeadPopups({ promotion }: LeadPopupsProps) {
                     if (
                         isFlick &&
                         !formStarted &&
+                        !isExitOnlyPage() &&
                         now - startedAt >= SCROLL_UP_RULES.minEngagedMs &&
                         now - lastUserJump >= SCROLL_UP_RULES.userJumpGraceMs &&
                         deepest >= screen * SCROLL_UP_RULES.minDepthScreens
@@ -222,11 +236,12 @@ export function LeadPopups({ promotion }: LeadPopupsProps) {
         }
 
         // Everyone: time on the site. It waits while the tab is hidden, the
-        // visitor is typing, or a form on the page has been started.
+        // visitor is typing, or the page is exit-only, and stops once a form
+        // on the page has been started.
         const tick = () => {
             if (done.current) return
             if (formStarted) return
-            if (document.hidden || !open('timer')) {
+            if (document.hidden || isExitOnlyPage() || !open('timer')) {
                 timer = window.setTimeout(tick, RETRY_MS)
             }
         }
