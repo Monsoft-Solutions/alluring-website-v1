@@ -6,6 +6,7 @@ import {
     lpProcedureOrder,
 } from '@/components/landing-pages/request-consultation/lp-chat-copy'
 import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy'
+import { LP_COPY_VARIANTS } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { lpQuoteIndex } from '@/components/landing-pages/request-consultation/lp-quote'
 import {
     LP_PAGE_ORDER,
@@ -78,13 +79,15 @@ const PAGE_STRINGS = [
     ...strings(withoutSiteConsent(LP_COPY.en)),
     ...strings(withoutSiteConsent(LP_COPY.es)),
     ...strings(AD_VARIANT_COPY),
-    ...AD_VARIANTS.flatMap((variant) => {
-        const { copy } = buildLpChat(variant)
-        return [
-            ...strings(withoutSiteConsent(copy.en)),
-            ...strings(withoutSiteConsent(copy.es)),
-        ]
-    }),
+    ...AD_VARIANTS.flatMap((variant) =>
+        LP_COPY_VARIANTS.flatMap((copyVariant) => {
+            const { copy } = buildLpChat(variant, copyVariant)
+            return [
+                ...strings(withoutSiteConsent(copy.en)),
+                ...strings(withoutSiteConsent(copy.es)),
+            ]
+        })
+    ),
 ]
 
 describe('ads landing page v6 copy', () => {
@@ -176,6 +179,39 @@ describe('the form', () => {
         const { prices } = buildLpChat('default')
         expect(prices.bbl).toMatch(/^\$\d/)
         expect(prices.liposuction).toMatch(/^\$\d/)
+    })
+})
+
+describe('the last step’s wording test (#302)', () => {
+    it('says what happens next above the fields in the reassure arm', () => {
+        for (const variant of AD_VARIANTS) {
+            const { copy } = buildLpChat(variant, 'reassure')
+            expect(copy.en.contactNote).toBe(
+                'A patient coordinator will text you to set up your consultation. Private, and no obligation.'
+            )
+            expect(copy.es.contactNote).toBe(
+                'Una coordinadora te escribe por texto para agendar tu consulta. Privado y sin compromiso.'
+            )
+        }
+    })
+
+    it('has no note in the plain arm, or when no arm is named', () => {
+        for (const copy of [
+            buildLpChat('tummy-tuck', 'plain').copy,
+            buildLpChat('tummy-tuck').copy,
+        ]) {
+            expect(copy.en.contactNote).toBeUndefined()
+            expect(copy.es.contactNote).toBeUndefined()
+        }
+    })
+
+    it('changes nothing else in the form', () => {
+        const plain = buildLpChat('bbl', 'plain').copy
+        const reassure = buildLpChat('bbl', 'reassure').copy
+        // toEqual ignores a key whose value is undefined.
+        expect({ ...reassure.en, contactNote: undefined }).toEqual(plain.en)
+        expect({ ...reassure.es, contactNote: undefined }).toEqual(plain.es)
+        expect(LP_CONSENT_VERSION).toBe('lp-tap-2026-09-26')
     })
 })
 
@@ -284,6 +320,14 @@ describe('a new lead’s context fields', () => {
             consentMethod: 'tap',
             consentVersion: LP_CONSENT_VERSION,
         })
+    })
+
+    it('keeps the reassure arm’s page variant (#302)', () => {
+        const parsed = contactFormSchema.parse({
+            ...lead,
+            pageVariant: 'ads-consultation-v6r',
+        })
+        expect(parsed.pageVariant).toBe('ads-consultation-v6r')
     })
 
     it('drops malformed ones instead of rejecting the lead', () => {

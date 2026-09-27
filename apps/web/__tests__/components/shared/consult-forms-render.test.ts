@@ -7,6 +7,35 @@ vi.mock('@/lib/analytics/utm-tracking.context', () => ({
     useUTMTracking: () => ({ utmData: null }),
 }))
 
+/**
+ * A server render always starts a fresh form. Forms whose id starts with
+ * `last-` open on the last step instead, as if both taps were given.
+ */
+vi.mock(
+    '@/components/shared/consult-chat/consult-flow-store',
+    async (importOriginal) => {
+        const actual =
+            await importOriginal<
+                typeof import('@/components/shared/consult-chat/consult-flow-store')
+            >()
+        return {
+            ...actual,
+            useFlowThread: (formId: string) =>
+                formId.startsWith('last-')
+                    ? {
+                          step: 2,
+                          answers: {
+                              procedure: 'tummy-tuck',
+                              timeline: '1-3-months',
+                          },
+                          name: '',
+                          financing: false,
+                      }
+                    : actual.useFlowThread(formId),
+        }
+    }
+)
+
 const { ConsultChat } = await import(
     '@/components/shared/consult-chat/consult-chat.component'
 )
@@ -123,5 +152,76 @@ describe('the landing page’s tap card (arm B)', () => {
 
     it('carries the section id every CTA links to', () => {
         expect(html).toContain('id="consultation"')
+    })
+})
+
+describe('the last step’s wording test (#302)', () => {
+    const lastStep = (
+        form: 'thread' | 'card',
+        lang: 'en' | 'es',
+        copyVariant: 'plain' | 'reassure'
+    ) => {
+        const props = {
+            ...base,
+            id: `last-${form}-${lang}-${copyVariant}`,
+            lang,
+            copy: buildLpChat('tummy-tuck', copyVariant).copy[lang],
+            consent: { method: 'tap', version: LP_CONSENT_VERSION },
+            defaultProcedure: 'tummy-tuck',
+        } as const
+        return renderToStaticMarkup(
+            form === 'card'
+                ? createElement(ConsultCard, props)
+                : createElement(ConsultChat, {
+                      ...props,
+                      avatar: null,
+                      header: 'steps',
+                      greeting: false,
+                      history: 'compact',
+                  })
+        )
+    }
+    const NOTE = {
+        en: 'A patient coordinator will text you to set up your consultation. Private, and no obligation.',
+        es: 'Una coordinadora te escribe por texto para agendar tu consulta. Privado y sin compromiso.',
+    }
+
+    it.each([
+        ['thread', 'en'],
+        ['thread', 'es'],
+        ['card', 'en'],
+        ['card', 'es'],
+    ] as const)(
+        'the %s shows the note first in the fields with reassure (%s)',
+        (form, lang) => {
+            const html = lastStep(form, lang, 'reassure')
+            expect(html).toContain(
+                `<div class="cc-fields"><p class="cc-contact-note">${NOTE[lang]}</p>`
+            )
+            // Nothing else on the step changes.
+            expect(html).toContain('cc-consent-line')
+        }
+    )
+
+    it.each(['thread', 'card'] as const)(
+        'the %s has no note with plain',
+        (form) => {
+            const html = lastStep(form, 'en', 'plain')
+            expect(html).toContain('cc-fields')
+            expect(html).not.toContain('cc-contact-note')
+        }
+    )
+
+    it('leaves the home thread’s last step without a note', () => {
+        const html = renderToStaticMarkup(
+            createElement(ConsultChat, {
+                ...base,
+                id: 'last-home',
+                copy: HOME_CHAT.copy.en,
+                avatar: createElement('span', null, 'A'),
+            })
+        )
+        expect(html).toContain('cc-fields')
+        expect(html).not.toContain('cc-contact-note')
     })
 })
