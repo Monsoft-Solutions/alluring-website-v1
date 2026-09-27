@@ -253,12 +253,16 @@ export {
     instagramPostMedia,
     instagramPostRelations,
     instagramPostMediaRelations,
+    youtubeConnectionStatus,
+    youtubeConnection,
     type SocialMediaSettings,
     type InsertSocialMediaSettings,
     type InstagramPost,
     type InsertInstagramPost,
     type InstagramPostMedia,
     type InsertInstagramPostMedia,
+    type YouTubeConnection,
+    type InsertYouTubeConnection,
 } from './social-media'
 
 // Reviews schema
