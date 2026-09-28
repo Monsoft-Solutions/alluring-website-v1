@@ -36,6 +36,7 @@ import {
     mommyMakeoverFaqConfig,
 } from '@/lib/data/faq/mommy-makeover-faq.data'
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
@@ -49,12 +50,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/mommy-makeover-consultation',
     title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
     description:
-        'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction. Board-certified surgeons. Financing from $67/week. Free consultation.',
+        'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction, by one surgeon. Financing available. Free consultation.',
 
     openGraph: {
         title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
         description:
-            'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction. Board-certified surgeons. Financing available.',
+            'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction, by one surgeon. Financing available.',
         url: `${seoConfig.siteUrl}/mommy-makeover-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -72,7 +73,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
         description:
-            'Reclaim your pre-baby body with a customized mommy makeover in Miami. Board-certified surgeons. Financing from $67/week.',
+            'Reclaim your pre-baby body with a customized mommy makeover in Miami, by one surgeon. Financing available.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
@@ -94,7 +95,7 @@ export default async function MommyMakeoverConsultationPage() {
             <WebPageSchema
                 name={`Mommy Makeover Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/mommy-makeover-consultation`}
-                description='Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction combined in one transformative procedure. Board-certified surgeons with 15+ years of experience.'
+                description={`Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction combined in one procedure, performed by ${KARLINSKY_NAME}.`}
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -152,7 +153,7 @@ export default async function MommyMakeoverConsultationPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Your Transformation Starts Today'
-                    description="You've given so much to your family. Now it's time to invest in yourself. Our board-certified surgeons will create a customized mommy makeover plan that fits your goals, your timeline, and your budget."
+                    description="You've given so much to your family. Now it's time to invest in yourself. Dr. Karlinsky will create a customized mommy makeover plan that fits your goals, your timeline, and your budget."
                     primaryButton={{
                         text: 'Yes, I Want My Free Consultation',
                         href: '#hero-form',

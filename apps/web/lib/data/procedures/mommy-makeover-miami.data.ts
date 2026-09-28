@@ -1,24 +1,39 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const mommyMakeoverMiami: Procedure = {
     title: 'Mommy Makeover Miami',
     slug: 'mommy-makeover-miami',
-    description:
-        'Mommy makeover in Miami starting at $7,000. Combine breast enhancement, tummy tuck, and liposuction in one surgery with flexible financing from $67/week.',
+    // Also the description in the page graph, `llms-full.txt` and the paid
+    // landing page. The practice's price sheet (2026-09-15) has no mommy
+    // makeover line, only its parts, so no total is published until the
+    // practice confirms how one is priced. The site had four different
+    // "starting" prices ($5,000, $7,000, $9,500, $12,000), and AI engines
+    // quoted three of them (#309).
+    description: `A mommy makeover combines a tummy tuck with breast surgery, often with liposuction, in one planned surgery. At Alluring in Miami, one surgeon performs every mommy makeover: ${KARLINSKY_NAME}. Each part has its own price: a tummy tuck from $3,000, breast augmentation from $3,500 and a breast lift from $5,000.`,
     shortDescription:
         'A comprehensive combination of personalized procedures to restore your pre-pregnancy body, with flexible financing options to fit your budget.',
     heroSubtitle:
-        "Reclaim Your Pre-Baby Body with Miami's Premier Post-Pregnancy Transformation",
+        'Your breasts and abdomen after pregnancy, planned together by one surgeon',
+    // Hand-written meta description: the generated one claimed "Miami's top
+    // surgeons. 5,000+ procedures" (#309). The title stays generated until
+    // the page rebuild changes it.
+    metaDescription: `Mommy makeover in Miami, priced part by part from the practice price list and performed by one surgeon, ${KARLINSKY_NAME}. Free consultation.`,
+
     category: 'combined',
     bodyLocation: 'Abdomen and breast',
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/hero.webp',
-    dateModified: '2026-01-29T00:00:00.000Z',
+    dateModified: '2026-09-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing — combo procedure, conservative starting estimate
-    priceFrom: '$9,500',
-    weeklyPaymentFrom: '$58/week with approved credit',
+    // No paid-LP price: the price sheet has no mommy makeover line, and the
+    // old "$9,500" wasn't the practice's figure. Set it once the practice
+    // confirms a starting price. No weekly figure either: financing is
+    // offered but never quoted as a number.
 
     // Inline content images for enhanced engagement
     contentImages: [
@@ -79,16 +94,13 @@ export const mommyMakeoverMiami: Procedure = {
         'mommy makeover cost',
         'how much is a mommy makeover',
         'mommy makeover price',
-        'mommy makeover packages',
         'mom makeover',
-        'affordable mommy makeover',
         'mini mommy makeover cost',
         'post pregnancy surgery',
         'breast augmentation tummy tuck',
         'mommy makeover recovery',
         'mommy makeover recovery time',
         'mommy makeover before and after',
-        'best mommy makeover surgeon miami',
         'mommy makeover financing miami',
         'tummy tuck breast lift combo miami',
     ],
@@ -108,7 +120,7 @@ export const mommyMakeoverMiami: Procedure = {
         {
             title: 'Personalized for You',
             description:
-                "Every woman's body responds differently to pregnancy. Your combined procedure package is fully customized to address your specific concerns—whether that's deflated breasts, loose abdominal skin, or stubborn fat pockets.",
+                "Every woman's body responds differently to pregnancy. Your combined surgical plan is fully customized to address your specific concerns—whether that's deflated breasts, loose abdominal skin, or stubborn fat pockets.",
         },
         {
             title: 'Comprehensive Transformation',
@@ -163,7 +175,7 @@ export const mommyMakeoverMiami: Procedure = {
 
 You gave everything to bring your children into this world. Your body carried them, nurtured them, and transformed in ways you never anticipated. Now, years later, you still see those changes every time you look in the mirror—the loose skin, the separated muscles, the breasts that aren't quite where they used to be. It's not vanity to want your body back. It's honoring yourself after honoring everyone else.
 
-A **mommy makeover** combines multiple procedures into one surgery, addressing the physical changes that diet and exercise simply can't fix. At **Alluring Plastic Surgery** in Miami, we help mothers reclaim their confidence with customized surgical plans, board-certified expertise, and financing that makes transformation accessible.
+A **mommy makeover** combines multiple procedures into one surgery, addressing the physical changes that diet and exercise simply can't fix. At **Alluring Plastic Surgery** in Miami, every mommy makeover is planned and performed by one surgeon, ${KARLINSKY_NAME}, and financing is available with approved credit.
 
 ## What Does a Mommy Makeover Consist Of?
 
@@ -184,49 +196,44 @@ A [tummy tuck](/procedures/tummy-tuck-miami) removes excess skin and repairs sep
 
 <ProcedureImage id="liposuction-contouring" />
 
-Some patients also add procedures like labiaplasty, arm lift, or non-surgical skin treatments. By combining surgeries into one operation, you experience a single recovery period—meaning less time away from your family.
+Some patients also add an arm lift or a thigh lift. By combining surgeries into one operation, you experience a single recovery period—meaning less time away from your family.
 
-## Mommy Makeover Packages: Your Options
+## Common Mommy Makeover Combinations
 
-We offer different package levels to match your goals and budget:
+Every plan is built around what you want to change. Common combinations:
 
-### Essential Package
-Breast procedure (lift or augmentation) + mini tummy tuck. Ideal for mothers with moderate changes who want targeted improvement.
+- **Breast surgery and a mini tummy tuck**: breast augmentation or a lift, with a tummy tuck for the lower abdomen. For mothers with moderate changes.
+- **Breast surgery, a full tummy tuck and liposuction**: addresses the concerns most mothers share.
+- **Breast surgery, an extended tummy tuck and liposuction of several areas**: the extended tummy tuck uses a hip-to-hip incision.
 
-### Classic Package
-Breast procedure + full tummy tuck + limited liposuction. Our most popular option, addressing the core concerns most mothers share.
-
-### Complete Package
-Breast procedure + extended tummy tuck + comprehensive liposuction (multiple areas). For mothers seeking full-body restoration.
-
-During your consultation, we'll recommend the package that best addresses your concerns and fits your budget.
+During your consultation, Dr. Karlinsky recommends the combination that best addresses your concerns.
 
 ## How Much Does a Mommy Makeover Cost?
 
-Understanding **mommy makeover cost** helps you plan and make informed decisions. Here's what affects pricing:
+A mommy makeover is priced from the procedures in your plan, and Dr. Karlinsky confirms your exact price at your free consultation. These are the practice's list prices for each part:
 
-### Average Cost in Miami
+| Part of the plan | Price |
+|------------------|-------|
+| Mini tummy tuck | $3,000 |
+| Full tummy tuck | $4,500 |
+| Extended tummy tuck | $5,500 |
+| Breast augmentation, saline implants | $3,500 |
+| Breast augmentation, silicone implants | $4,500 |
+| Breast lift without implants | $5,000 |
+| Breast lift with saline implants | $6,000 |
+| Breast lift with silicone implants | $7,000 |
+| Lipo 360 | $4,000 |
+| Liposuction of the abdomen and flanks, added to another procedure | $1,500 |
 
-The average **mommy makeover price** in Miami ranges from **$7,000 to $20,000**, depending on:
-
-- **Number of procedures**: More procedures = higher cost
-- **Procedure complexity**: Extended tummy tuck costs more than mini
-- **Anesthesia time**: Longer surgeries require more anesthesia
-- **Facility fees**: Accredited surgical centers have associated costs
+Combining procedures lowers the total: two procedures take $500 off, and three take $1,000 off. See the [tummy tuck](/procedures/tummy-tuck-miami) and [breast augmentation](/procedures/breast-augmentation-miami) pages for what each part involves.
 
 ### Does Insurance Cover a Mommy Makeover?
 
-No. Because this is an elective cosmetic procedure, **insurance does not cover mommy makeovers**. However, if you have documented diastasis recti causing functional problems, a portion of the tummy tuck *may* qualify for coverage. We can provide documentation for you to submit to your insurance company.
+No. Because this is an elective cosmetic procedure, **insurance does not cover mommy makeovers**. However, if you have documented diastasis recti causing functional problems, a portion of the tummy tuck *may* qualify for coverage. Ask your insurer before your consultation.
 
-### Affordable Mommy Makeover Financing
+### Mommy Makeover Financing
 
-We believe every mother deserves to feel confident in her body. That's why we partner with multiple financing providers:
-
-- **Cherry**: Payments as low as $67/week
-- **CareCredit**: 0% APR options available
-- **United Credit**: Flexible terms with no prepayment penalties
-
-Our "Luxury Made Affordable" approach means you don't have to choose between quality and accessibility.
+Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.
 
 ## Mini Mommy Makeover: A Lighter Option
 
@@ -238,7 +245,7 @@ Not every mother needs comprehensive surgery. A **mini mommy makeover** offers t
 - Optional: limited liposuction
 
 ### Mini Mommy Makeover Cost
-A mini version typically costs **30-40% less** than a full procedure, ranging from $5,000 to $12,000.
+A mini tummy tuck is $3,000 on the practice's price list, against $4,500 for a full tummy tuck, so a mini mommy makeover costs less than a full one.
 
 ### Who's a Good Candidate
 - Mothers with changes primarily below the belly button
@@ -325,14 +332,11 @@ We know recovery with children at home is your biggest concern. Here's what to r
 
 ## Why Miami Mothers Choose Alluring
 
-### Board-Certified Expertise
-Our surgeons specialize in post-pregnancy body restoration, performing hundreds of these combined procedures annually.
+### One Surgeon
+Every mommy makeover at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
 
 ### Personalized Approach
 No cookie-cutter plans. Every surgical combination is designed for your unique anatomy and goals.
-
-### State-of-the-Art Facility
-Modern technology, accredited surgical suites, and a comfortable environment throughout your journey.
 
 ### Comprehensive Care
 Your relationship with us doesn't end at surgery. Follow-up appointments, scar care guidance, and ongoing support are included.
@@ -356,27 +360,19 @@ Your journey back to confidence starts with one phone call.`,
         },
         {
             question: 'How much does a mommy makeover cost in Miami?',
-            answer: 'The average mommy makeover price in Miami ranges from $7,000 to $20,000, depending on procedures included and complexity. We provide detailed pricing during your free consultation.',
+            answer: 'At Alluring Plastic Surgery, a mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at $3,000 (mini) or $4,500 (full), breast augmentation at $3,500 (saline) or $4,500 (silicone), and a breast lift at $5,000. Combining two procedures takes $500 off the total, and three take $1,000 off. Dr. Karlinsky confirms your exact price at your free consultation.',
         },
         {
             question: 'Does insurance cover a mommy makeover?',
-            answer: 'No, mommy makeovers are elective cosmetic procedures and not covered by insurance. However, we offer flexible financing through Cherry, CareCredit, and United Credit with payments starting at $67/week and 0% APR options available.',
-        },
-        {
-            question: 'What is the average cost of a mommy makeover?',
-            answer: 'Nationally, the average cost ranges from $10,000 to $25,000. In Miami, competitive pricing means you can expect $7,000 to $20,000 depending on your personalized surgical plan.',
-        },
-        {
-            question: 'Are there affordable mommy makeover options?',
-            answer: 'Yes! Our "Luxury Made Affordable" approach includes multiple financing options with weekly payments starting at $67, 0% APR available, and no penalty for early payoff. We also offer a mini mommy makeover option at 30-40% less cost.',
+            answer: 'No, mommy makeovers are elective cosmetic procedures and not covered by insurance. Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.',
         },
         {
             question: 'What is a mini mommy makeover?',
-            answer: 'A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. It costs 30-40% less than a full procedure, has a shorter recovery time, and is ideal for mothers with moderate post-pregnancy changes.',
+            answer: 'A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. A mini tummy tuck is $3,000 on the practice price list, against $4,500 for a full one. It has a shorter recovery time and suits mothers with moderate post-pregnancy changes.',
         },
         {
             question: 'What procedures are included in a mommy makeover?',
-            answer: 'A typical mom makeover includes breast augmentation or lift (or both), tummy tuck, and liposuction. The exact combination is customized to your needs and may also include arm lift, thigh lift, or labiaplasty.',
+            answer: 'A typical mom makeover includes breast augmentation or lift (or both), tummy tuck, and liposuction. The exact combination is customized to your needs and may also include an arm lift or a thigh lift.',
         },
         {
             question: 'What is the recovery time for a mommy makeover?',
@@ -388,7 +384,7 @@ Your journey back to confidence starts with one phone call.`,
         },
         {
             question: 'Is a mommy makeover safe?',
-            answer: 'Yes, when performed by a qualified, board-certified surgeon in an accredited facility. Our surgeons perform hundreds of these combined procedures annually with excellent safety records.',
+            answer: `Like all surgeries, a mommy makeover carries risks, and combining procedures makes the surgery longer. At Alluring Plastic Surgery, ${KARLINSKY_NAME} performs every mommy makeover and reviews your health, your plan and how long your surgery will take with you at your consultation.`,
         },
         {
             question:
@@ -398,7 +394,7 @@ Your journey back to confidence starts with one phone call.`,
         {
             question:
                 'Can I have a mommy makeover if I plan to have more children?',
-            answer: 'While medically safe, we recommend completing your family first. Future pregnancies can affect results, particularly the tummy tuck portion. If you do become pregnant afterward, touch-up procedures are always an option.',
+            answer: 'While medically safe, we recommend completing your family first. Future pregnancies can affect results, particularly the tummy tuck portion.',
         },
         {
             question: 'Does a mommy makeover leave scars?',
@@ -406,7 +402,7 @@ Your journey back to confidence starts with one phone call.`,
         },
         {
             question: 'How long do the results of a mommy makeover last?',
-            answer: "With stable weight and no future pregnancies, results are long-lasting. Muscle repair and skin removal are permanent. Breast implants may need replacement in 10-15 years, but you'll always look better than if you hadn't had the procedure.",
+            answer: 'With stable weight and no future pregnancies, results are long-lasting. Muscle repair and skin removal are permanent. Breast implants are not lifetime devices and may need to be replaced.',
         },
     ],
 }
