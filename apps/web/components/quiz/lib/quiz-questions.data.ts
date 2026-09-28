@@ -259,16 +259,17 @@ export const QUIZ_QUESTIONS = {
 } as const
 
 /**
- * Social proof messages for results
+ * One line under each result card. No figures: the percentages, patient
+ * counts and ages these used to quote had no source (#309).
  */
 export const SOCIAL_PROOF_MESSAGES = {
-    'breast-augmentation': '92% of similar patients loved their results',
-    'breast-lift': 'Most popular among women 35-50',
-    'breast-reduction': '98% report improved comfort and confidence',
-    liposuction: '5,000+ successful procedures performed',
+    'breast-augmentation': 'Saline or silicone implants, sized to your frame',
+    'breast-lift': 'Lifts and reshapes without adding size',
+    'breast-reduction': 'Smaller, lighter breasts in proportion to your frame',
+    liposuction: 'Lipo 360 treats your whole midsection in one surgery',
     bbl: 'Our most requested body procedure',
     'tummy-tuck': 'Perfect for post-pregnancy restoration',
-    'mommy-makeover': '95% of moms recommend this combination',
-    facelift: 'Average age of patients: 52 years',
+    'mommy-makeover': 'A tummy tuck and breast surgery, planned as one surgery',
+    facelift: 'Face and neck lifted together in one surgery',
     blepharoplasty: 'Quick recovery, dramatic results',
 } as const

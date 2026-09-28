@@ -33,7 +33,7 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'What if I get pregnant after my mommy makeover?',
-            answer: `While a future pregnancy won't harm you medically, it can affect your results—especially the tummy tuck portion. That's why we recommend waiting until you're confident you're done having children. If you do become pregnant afterward, touch-up procedures are always an option.`,
+            answer: `While a future pregnancy won't harm you medically, it can affect your results—especially the tummy tuck portion. That's why we recommend waiting until you're confident you're done having children.`,
         },
         {
             question: 'How long after breastfeeding should I wait?',
@@ -41,26 +41,26 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Can I have a mommy makeover if I had a C-section?',
-            answer: `Absolutely! In fact, having a C-section can be beneficial for your tummy tuck because the incision is often made in a similar location. We can revise the C-section scar and create a single, well-hidden incision. Most of our mommy makeover patients have had C-sections.`,
+            answer: `Absolutely! In fact, having a C-section can be beneficial for your tummy tuck because the incision is often made in a similar location. We can revise the C-section scar and create a single, well-hidden incision.`,
         },
     ],
     cost: [
         {
             question: 'How much does a mommy makeover cost in Miami?',
-            answer: `The average mommy makeover price in Miami ranges from $7,000 to $20,000, depending on the procedures included and complexity. During your free consultation, we provide a detailed cost breakdown based on your personalized surgical plan.`,
+            answer: `A mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at $3,000 (mini) or $4,500 (full), breast augmentation at $3,500 (saline) or $4,500 (silicone), and a breast lift at $5,000. Combining two procedures takes $500 off the total, and three take $1,000 off. Dr. Karlinsky confirms your exact price at your free consultation.`,
         },
         {
             question: 'Does insurance cover a mommy makeover?',
-            answer: `No, mommy makeovers are elective cosmetic procedures and not covered by insurance. However, we offer flexible financing through Cherry, CareCredit, and United Credit with payments starting at $67/week and 0% APR options available.`,
+            answer: `No, mommy makeovers are elective cosmetic procedures and not covered by insurance. Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.`,
         },
         {
-            question: 'Are there affordable payment options?',
-            answer: `Yes! Our "Luxury Made Affordable" approach means you don't have to choose between quality and accessibility. We partner with multiple financing providers offering weekly payments starting at $67, 0% APR options, and no penalty for early payoff.`,
+            question: 'What payment options are there?',
+            answer: `Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.`,
         },
         {
             question:
                 'What is a mini mommy makeover and how much does it cost?',
-            answer: `A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. It costs 30-40% less than a full procedure—typically $5,000 to $12,000—and is ideal for mothers with moderate post-pregnancy changes who want targeted improvement.`,
+            answer: `A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. A mini tummy tuck is $3,000 on the practice price list, against $4,500 for a full one, so it costs less than a full mommy makeover. It suits mothers with moderate post-pregnancy changes who want targeted improvement.`,
         },
     ],
     procedures: [
@@ -102,7 +102,7 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
     results: [
         {
             question: 'How long do mommy makeover results last?',
-            answer: `With stable weight and no future pregnancies, your mommy makeover results are long-lasting. The muscle repair and skin removal are permanent. Breast implants may eventually need replacement (typically 10-15 years), and natural aging will continue, but you'll always look better than if you hadn't had the procedure.`,
+            answer: `With stable weight and no future pregnancies, your mommy makeover results are long-lasting. The muscle repair and skin removal are permanent. Breast implants are not lifetime devices and may eventually need replacement, and natural aging will continue.`,
         },
         {
             question: 'Will I have visible scars?',
