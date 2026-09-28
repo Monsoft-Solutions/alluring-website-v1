@@ -75,7 +75,8 @@ const bbl: ProcedureCopyConfig = {
     rules: [
         {
             rule: 'volume-figure',
-            re: /\bcc\b|\bml\b|cubic centimet|\bbmi\b/,
+            // "ccs" too: the number reader counts "350 ccs" as a volume.
+            re: /\bccs?\b|\bml\b|cubic centimet|\bbmi\b/,
             why: 'no fat volume or BMI figure is in the sourced standard (#252)',
         },
     ],
