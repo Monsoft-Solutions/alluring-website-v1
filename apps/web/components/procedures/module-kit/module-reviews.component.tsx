@@ -10,9 +10,15 @@ import { ModuleStars } from './module-stars.component'
 import { moduleContainer, moduleLink } from './module-ui.constant'
 
 /**
- * Up to `limit` reviews: those that mention the procedure first, then the
- * rest in the query's own order (featured, display order, newest). This is
- * the order the section's answer describes, so keep the two in step.
+ * Up to `limit` reviews: those that mention the procedure first, then those
+ * that mention one of `relatedSlugs`, then the rest in the query's own order
+ * (featured, display order, newest). This is the order the section's answer
+ * describes, so keep the two in step.
+ *
+ * `relatedSlugs` is for a procedure that few reviews name but its parts do:
+ * a mommy makeover's reviews are mostly about a tummy tuck or breast
+ * surgery. A related review doesn't name this procedure, so once one is
+ * shown `ModuleReviews` uses its neutral heading.
  *
  * Pass every published review: the ones that name a procedure can sit far
  * down the featured-first order (on 2026-09-22 the BBL ones were at
@@ -21,15 +27,35 @@ import { moduleContainer, moduleLink } from './module-ui.constant'
 export function selectProcedureReviews(
     reviews: GoogleReviewPublic[],
     procedureSlug: string,
-    limit = 3
+    {
+        limit = 3,
+        relatedSlugs = [],
+    }: {
+        limit?: number
+        /** Procedures whose reviews fill in after this one's. */
+        relatedSlugs?: readonly string[]
+    } = {}
 ): GoogleReviewPublic[] {
     const withText = reviews.filter((review) => review.comment?.trim())
-    const named = withText.filter((review) =>
-        mentionsProcedure(procedureSlug, review.comment)
+    const named = new Set(
+        withText.filter((review) =>
+            mentionsProcedure(procedureSlug, review.comment)
+        )
     )
-    const rest = withText.filter((review) => !named.includes(review))
+    const related = new Set(
+        withText.filter(
+            (review) =>
+                !named.has(review) &&
+                relatedSlugs.some((slug) =>
+                    mentionsProcedure(slug, review.comment)
+                )
+        )
+    )
+    const rest = withText.filter(
+        (review) => !named.has(review) && !related.has(review)
+    )
 
-    return [...named, ...rest].slice(0, limit)
+    return [...named, ...related, ...rest].slice(0, limit)
 }
 
 type ModuleReviewsProps = {
