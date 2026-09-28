@@ -6,10 +6,10 @@ import {
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 const HERO_WIDE =
-    'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/hero.webp'
+    'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/tummy-tuck/2026-09/hero-wide-alluring-plastic-surgery-miami.jpg'
 
 const HERO_WIDE_ALT =
-    'Woman in a white top and cream wide-leg trousers standing on a terrace at sunset'
+    'Woman with long dark curls in a black sleeveless top and champagne pleated skirt walking through a stone arcade, with palms and a garden on either side'
 
 export const tummyTuckMiami: Procedure = {
     title: 'Tummy Tuck Miami',
@@ -40,8 +40,10 @@ export const tummyTuckMiami: Procedure = {
         'Loose skin removed and your abdomen tightened, by one surgeon',
     category: 'body',
     bodyLocation: 'Abdomen',
-    // og:image, the home cards, procedure cards and the sitemap. Replaced by
-    // the 2026-09 hero's 16:9 crop once it is picked (Gate 4).
+    // og:image, the home cards, procedure cards and the sitemap: the 2026-09
+    // hero in its 16:9 crop. The page hero uses the 4:5 master. The old
+    // `images/procedures/tummy-tuck/hero.webp` stays on Blob until every
+    // reader of it is deployed with this one.
     image: HERO_WIDE,
     dateModified: '2026-09-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
@@ -251,7 +253,8 @@ export const tummyTuckMiami: Procedure = {
 
     // The paid landing page's hero reads the `hero` entry; nothing else here
     // is rendered since the tummy tuck page module retired the markdown
-    // body and its images.
+    // body and its images. The 16:9 crop, with the model label on the page
+    // itself.
     contentImages: [
         {
             id: 'hero',
