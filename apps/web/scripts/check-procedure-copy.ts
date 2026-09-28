@@ -9,9 +9,10 @@
  * text on the page, its title and descriptions, and the page's own nodes in
  * the structured-data graph. It fails on:
  *
- *   - any %, cc, BMI, $, minute, hour, day, week, month, year or count figure
- *     that the page's facts file does not declare, and any number it cannot
- *     classify;
+ *   - any %, cc, BMI, $, minute, hour, day, night, week, month, year, inch,
+ *     age or count figure that the page's facts file does not declare, and
+ *     any number it cannot classify (`procedure-copy-figures.ts` reads
+ *     them);
  *   - board-certification wording other than the credentials checked in
  *     `karlinsky-credentials.constant.ts`, and a board Florida does not
  *     approve named without Rule 64B8-11.001's statement beside it;
@@ -52,7 +53,6 @@ import { fileURLToPath } from 'node:url'
 
 import { parse, type DefaultTreeAdapterMap } from 'parse5'
 
-import type { ProcedureFigure } from '../lib/data/procedures/facts/procedure-facts'
 import {
     FLORIDA_UNAPPROVED_BOARD_STATEMENT,
     KARLINSKY_ABS_CERTIFIED_ON,
@@ -62,6 +62,11 @@ import {
     type ProcedureCopyConfig,
     type WordingRule,
 } from './procedure-copy.config'
+import {
+    declaredKey,
+    extractFigures as readFigures,
+    figureKey,
+} from './procedure-copy-figures'
 
 const LAUNCH = process.argv.includes('--launch')
 // Print every licensed figure with the fact and sources behind it (markdown).
@@ -358,281 +363,9 @@ function ldNodes(document: ParentNode): LdNode[] {
 
 // ─── Figures ────────────────────────────────────────────────────────────────
 
-type Unit = ProcedureFigure['unit'] | 'ratio' | 'temperature'
-
-interface Extracted {
-    unit: Unit
-    min: number
-    max: number
-    raw: string
-}
-
-const NUMBER_WORDS: Record<string, number> = {
-    one: 1,
-    two: 2,
-    three: 3,
-    four: 4,
-    five: 5,
-    six: 6,
-    seven: 7,
-    eight: 8,
-    nine: 9,
-    ten: 10,
-    eleven: 11,
-    twelve: 12,
-    thirteen: 13,
-    fourteen: 14,
-    fifteen: 15,
-    sixteen: 16,
-    eighteen: 18,
-    twenty: 20,
-    thirty: 30,
-    forty: 40,
-    fifty: 50,
-    sixty: 60,
-    seventy: 70,
-    eighty: 80,
-    ninety: 90,
-}
-
-const ORDINALS: Record<string, number> = {
-    first: 1,
-    second: 2,
-    third: 3,
-    fourth: 4,
-    fifth: 5,
-    sixth: 6,
-    seventh: 7,
-    eighth: 8,
-    ninth: 9,
-    tenth: 10,
-    eleventh: 11,
-    twelfth: 12,
-}
-
-const TIME_UNIT = '(?:minutes?|hours?|days?|weeks?|months?|years?)'
-const NUMBER_WORD = `(?:${Object.keys(NUMBER_WORDS).join('|')})`
-const JOINER = '(?:-|to|or|and)'
-
-function normalize(text: string): string {
-    let t = ` ${text.toLowerCase()} `
-    t = t.replace(/[–—−]/g, '-')
-    // Identifiers that contain digits but are not figures: the page's own
-    // (a statute number), then the ones every page may use.
-    for (const [pattern, replacement] of CONFIG.identifiers ?? []) {
-        t = t.replace(pattern, replacement)
-    }
-    t = t.replace(/\blipo\s*360\b/g, ' lipo-all-round ')
-    // "360-degree liposuction" is the same procedure's name, not a figure;
-    // the gallery's alt text uses it.
-    t = t.replace(/\b360[\s-]*degree\b/g, ' all-round ')
-    t = t.replace(/\b24\s*\/\s*7\b/g, ' around-the-clock ')
-    t = t.replace(/\bpercent\b/g, '%')
-    t = t.replace(
-        new RegExp(`\\b(${NUMBER_WORD})\\s*(%|cc\\b)`, 'g'),
-        (_, a: string, unit: string) => `${NUMBER_WORDS[a]}${unit}`
-    )
-    // Number words next to a time unit: "two to three months", "week six".
-    t = t.replace(
-        new RegExp(
-            `\\b(${NUMBER_WORD})(\\s*${JOINER}\\s*)(${NUMBER_WORD})\\s+(${TIME_UNIT})\\b`,
-            'g'
-        ),
-        (_, a: string, joiner: string, b: string, unit: string) =>
-            `${NUMBER_WORDS[a]}${joiner}${NUMBER_WORDS[b]} ${unit}`
-    )
-    t = t.replace(
-        new RegExp(`\\b(${NUMBER_WORD})\\s+(${TIME_UNIT})\\b`, 'g'),
-        (_, a: string, unit: string) => `${NUMBER_WORDS[a]} ${unit}`
-    )
-    t = t.replace(
-        new RegExp(
-            `\\b(minute|hour|day|week|month|year)s?\\s+(${NUMBER_WORD})\\b`,
-            'g'
-        ),
-        (_, unit: string, a: string) => `${unit} ${NUMBER_WORDS[a]}`
-    )
-    // Ordinals: "the second month" is month 2.
-    t = t.replace(
-        new RegExp(
-            `\\b(${Object.keys(ORDINALS).join('|')})\\s+(minute|hour|day|week|month|year)\\b(?!s)`,
-            'g'
-        ),
-        (_, ordinal: string, unit: string) => `${unit} ${ORDINALS[ordinal]}`
-    )
-    // Rates before "a day" becomes "1 day": "12 hours a day".
-    t = t.replace(
-        /(\d[\d,.]*)\s*hours?\s+(?:a|per)\s+day\b/g,
-        '$1 hours-per-day'
-    )
-    t = t.replace(/\bevery\s+(minute|hour|day|week|month)\b/g, '1 $1')
-    t = t.replace(/\b(?:a|an)\s+(minute|hour|week|month|year)\b/g, '1 $1')
-    t = t.replace(/(?<!(?:hours?|times|same|per|the)\s)\ba\s+day\b/g, '1 day')
-    // Percent and dollar ranges: "50% to 80%", "$5,500 and $10,000".
-    t = t.replace(
-        new RegExp(`(\\d[\\d.]*)\\s*%\\s*${JOINER}\\s*(\\d[\\d.]*)\\s*%`, 'g'),
-        '$1-$2%'
-    )
-    t = t.replace(
-        new RegExp(
-            `\\$\\s?(\\d[\\d,]*)\\s*${JOINER}\\s*\\$\\s?(\\d[\\d,]*)`,
-            'g'
-        ),
-        '$$$1-$$$2'
-    )
-    // Numeric ranges: "10 to 14", "1 or 2", "between 2 and 3".
-    t = t.replace(
-        new RegExp(`(\\d[\\d,.]*\\d|\\d)\\s*${JOINER}\\s*(\\d)`, 'g'),
-        '$1-$2'
-    )
-    return t
-}
-
-function toNumber(raw: string): number {
-    return Number(raw.replace(/,/g, '').replace(/\.$/, ''))
-}
-
-function unitOf(word: string): Unit {
-    if (/^min/.test(word)) return 'minute'
-    if (/^(hour|hr)/.test(word)) return 'hour'
-    if (/^day/.test(word)) return 'day'
-    if (/^week/.test(word)) return 'week'
-    if (/^month/.test(word)) return 'month'
-    if (/^year/.test(word)) return 'year'
-    if (/^death/.test(word)) return 'death'
-    if (/^stud/.test(word)) return 'study'
-    if (/^patient/.test(word)) return 'patient'
-    throw new Error(`No unit for "${word}"`)
-}
-
-interface Pattern {
-    re: RegExp
-    read: (match: RegExpExecArray) => Omit<Extracted, 'raw'>
-}
-
-const NUM = '(\\d[\\d,]*(?:\\.\\d+)?)'
-
-const PATTERNS: Pattern[] = [
-    {
-        re: new RegExp(`${NUM}\\s*hours-per-day`, 'g'),
-        read: (m) => ({
-            unit: 'hour',
-            min: toNumber(m[1]!),
-            max: toNumber(m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(`\\$${NUM}(?:\\s*-\\s*\\$?${NUM})?`, 'g'),
-        read: (m) => ({
-            unit: 'usd',
-            min: toNumber(m[1]!),
-            max: toNumber(m[2] ?? m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(`${NUM}(?:\\s*-\\s*${NUM})?\\s*%`, 'g'),
-        read: (m) => ({
-            unit: 'percent',
-            min: toNumber(m[1]!),
-            max: toNumber(m[2] ?? m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(`\\bbmi\\b[^\\d]{0,20}${NUM}(?:\\s*-\\s*${NUM})?`, 'g'),
-        read: (m) => ({
-            unit: 'bmi',
-            min: toNumber(m[1]!),
-            max: toNumber(m[2] ?? m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(`${NUM}(?:\\s*-\\s*${NUM})?\\s*cc\\b`, 'g'),
-        read: (m) => ({
-            unit: 'cc',
-            min: toNumber(m[1]!),
-            max: toNumber(m[2] ?? m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(`\\b1\\s+in\\s+${NUM}`, 'g'),
-        read: (m) => ({ unit: 'ratio', min: 1, max: toNumber(m[1]!) }),
-    },
-    {
-        re: new RegExp(`${NUM}\\s*°\\s*[fc]\\b`, 'g'),
-        read: (m) => ({
-            unit: 'temperature',
-            min: toNumber(m[1]!),
-            max: toNumber(m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(
-            `${NUM}(?:\\s*-\\s*${NUM})?\\s*(minutes?|mins?|hours?|hrs?|days?|weeks?|months?|years?|deaths?|studies|study|patients?)\\b`,
-            'g'
-        ),
-        read: (m) => ({
-            unit: unitOf(m[3]!),
-            min: toNumber(m[1]!),
-            max: toNumber(m[2] ?? m[1]!),
-        }),
-    },
-    {
-        re: new RegExp(
-            `\\b(minute|hour|day|week|month|year)s?\\s+${NUM}(?:\\s*-\\s*${NUM})?`,
-            'g'
-        ),
-        read: (m) => ({
-            unit: unitOf(m[1]!),
-            min: toNumber(m[2]!),
-            max: toNumber(m[3] ?? m[2]!),
-        }),
-    },
-]
-
-function extractFigures(text: string): {
-    figures: Extracted[]
-    years: number[]
-    stray: string[]
-} {
-    let t = normalize(text)
-    const figures: Extracted[] = []
-    for (const { re, read } of PATTERNS) {
-        t = t.replace(re, (...args: unknown[]) => {
-            const match = args.slice(0, -2) as unknown as RegExpExecArray
-            figures.push({
-                ...read(match),
-                raw: String(args[0])
-                    .trim()
-                    .replace(/[,.;]$/, '')
-                    .replace('hours-per-day', 'hours a day'),
-            })
-            return ' '.repeat(String(args[0]).length)
-        })
-    }
-    const years: number[] = []
-    t = t.replace(/\b(?:19|20)\d\d\b/g, (year) => {
-        years.push(Number(year))
-        return '    '
-    })
-    const stray = [
-        ...(t.match(/\d[\d,.]*/g) ?? []),
-        // Large numbers written as words never name a declared figure.
-        ...(t.match(
-            /\b(?:eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|dozen)\b/g
-        ) ?? []),
-    ]
-    return { figures, years, stray }
-}
-
-function figureKey(unit: string, min: number, max: number): string {
-    return `${unit}:${min}-${max}`
-}
-
-function declaredKey(figure: ProcedureFigure): string {
-    return 'value' in figure
-        ? figureKey(figure.unit, figure.value, figure.value)
-        : figureKey(figure.unit, figure.min, figure.max)
-}
+/** The number reader (`procedure-copy-figures.ts`) with this page's identifiers. */
+const extractFigures = (text: string) =>
+    readFigures(text, CONFIG.identifiers ?? [])
 
 const FACTS = CONFIG.facts
 const SOURCES = CONFIG.sources

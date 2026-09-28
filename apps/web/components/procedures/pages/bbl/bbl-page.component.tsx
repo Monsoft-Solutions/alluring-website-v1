@@ -1,5 +1,6 @@
 import '@/components/procedures/module-kit/module-kit.css'
 
+import { SectionViewTracker } from '@/components/analytics/section-view-tracker.component'
 import { ModuleBook } from '@/components/procedures/module-kit/module-book.component'
 import { ModuleFaq } from '@/components/procedures/module-kit/module-faq.component'
 import { ModuleHero } from '@/components/procedures/module-kit/module-hero.component'
@@ -76,9 +77,10 @@ function captionOf(photo: GalleryMediaCard): string {
  * procedure data file, which the graph and the paid landing page also read.
  *
  * Server components throughout. The client code is the before/after slider,
- * the results rail's two buttons and the consultation form, rendered twice
- * (compact after the results, in full at the end). Motion is CSS
- * (`module-kit.css`).
+ * the results rail's two buttons, the consultation form, rendered twice
+ * (compact after the results, in full at the end), and one
+ * `SectionViewTracker`, which sends `section_view` once for each section a
+ * visitor reaches. Motion is CSS (`module-kit.css`).
  */
 export async function BblPage({ procedure }: ProcedurePageModuleProps) {
     const [pairs, gallery, reviewData] = await Promise.all([
@@ -216,6 +218,12 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
             {/* Right padding keeps the bar clear of the chat launcher, which
                 lives in a closed shadow root and cannot be moved from here. */}
             <StickyCtaBar className='pm-sticky-bar pr-[4.75rem]' />
+
+            {/* `section_view` for every section with an id (results,
+                pricing, safety, surgeon, recovery, reviews, faq, book and
+                the page's own). The event carries the page's procedure
+                from its URL (`lib/analytics/page-context.ts`). */}
+            <SectionViewTracker />
         </div>
     )
 }

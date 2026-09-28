@@ -1,10 +1,125 @@
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@workspace/ui/lib/utils'
 
-import type { ProcedurePricing } from '@/lib/types/procedure.type'
+import { formatProcedureFigure } from '@/lib/data/procedures/facts/procedure-facts'
+import type {
+    ProcedurePriceOption,
+    ProcedurePricing,
+} from '@/lib/types/procedure.type'
 
-import { moduleButtonPrimary, moduleH3, moduleLink } from './module-ui.constant'
+import {
+    moduleButtonPrimary,
+    moduleH3,
+    moduleLabel,
+    moduleLink,
+} from './module-ui.constant'
+
+/**
+ * An option's price as the table prints it: "$3,000–$4,500" when it has a
+ * real range, else "From $3,000", since every price is a starting point
+ * the surgeon confirms after an exam. Formatted like the facts file, so the
+ * copy sweep matches it to the declared figure.
+ */
+function optionPrice({ startingAt, upTo }: ProcedurePriceOption): string {
+    return upTo
+        ? formatProcedureFigure({ min: startingAt, max: upTo, unit: 'usd' })
+        : `From ${formatProcedureFigure({ value: startingAt, unit: 'usd' })}`
+}
+
+/**
+ * The procedure's prices by variant, from `procedure.pricing.options`: one
+ * row per option, its name and who it suits, then its price. The same
+ * numbers give the graph one `Offer` per option, so the two can't disagree.
+ *
+ * A real table with row headers, the shape screen readers and AI engines
+ * both read as option → price. It keeps two columns at every width, the
+ * note under the name, so a phone reads it without scrolling sideways. No
+ * button per row: the section's "Get your exact price" follows it.
+ */
+export function ModulePriceTable({
+    options,
+    heading = 'Prices by type',
+    id = 'price-options',
+    optionLabel = 'Option',
+    priceLabel = 'Price',
+    note,
+}: {
+    options: ProcedurePriceOption[]
+    /** The H3 over the table, which also names it. */
+    heading?: string
+    /** Anchor for the heading (`{id}-heading`); unique on the page. */
+    id?: string
+    /** Column headers, e.g. "Type of tummy tuck" and "Price". */
+    optionLabel?: string
+    priceLabel?: string
+    /** A line under the table, e.g. that the surgeon confirms the price. */
+    note?: ReactNode
+}) {
+    if (options.length === 0) return null
+
+    const headingId = `${id}-heading`
+
+    return (
+        <>
+            <h3 id={headingId} className={cn(moduleH3, 'mt-10 md:mt-11')}>
+                {heading}
+            </h3>
+            <table
+                aria-labelledby={headingId}
+                className='mt-4 w-full max-w-[41.25rem] border-collapse text-left tabular-nums'
+            >
+                <thead>
+                    <tr>
+                        <th scope='col' className={cn(moduleLabel, 'pb-2.5')}>
+                            {optionLabel}
+                        </th>
+                        <th
+                            scope='col'
+                            className={cn(
+                                moduleLabel,
+                                'pb-2.5 pl-4 text-right'
+                            )}
+                        >
+                            {priceLabel}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {options.map((option) => (
+                        <tr
+                            key={option.label}
+                            className='border-t border-stone-200 last:border-b'
+                        >
+                            <th
+                                scope='row'
+                                className='py-3.5 align-top font-normal'
+                            >
+                                <span className='block text-[1.0625rem] leading-[1.45] font-bold text-stone-900'>
+                                    {option.label}
+                                </span>
+                                {option.note && (
+                                    <span className='mt-1 block text-[0.9375rem] leading-[1.5] text-stone-600 md:text-base'>
+                                        {option.note}
+                                    </span>
+                                )}
+                            </th>
+                            <td className='py-3.5 pl-4 text-right align-top text-[1.0625rem] leading-[1.45] font-bold whitespace-nowrap text-stone-900'>
+                                {optionPrice(option)}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {note && (
+                <p className='mt-4 max-w-[41.25rem] text-[0.9375rem] leading-[1.55] text-stone-600 md:text-base md:leading-[1.6]'>
+                    {note}
+                </p>
+            )}
+        </>
+    )
+}
 
 /**
  * "What the price includes", from `procedure.pricing.includes`: the site's

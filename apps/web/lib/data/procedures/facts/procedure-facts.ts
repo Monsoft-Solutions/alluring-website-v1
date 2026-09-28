@@ -5,8 +5,9 @@
  *
  * A page module reads its figures from its facts file (`bbl.facts.ts` is the
  * first), and `scripts/check-procedure-copy.ts` fails any copy on the built
- * page that states a %, $, time, count or volume figure the file does not
- * declare, or uses a declared figure in a sentence about something else.
+ * page that states a %, $, time, count, volume, length or age figure the
+ * file does not declare, or uses a declared figure in a sentence about
+ * something else.
  *
  * Pure data: no imports from `@/env`, Next or React, so a tsx script can read
  * it.
@@ -20,14 +21,21 @@ export type FigureUnit =
     | 'minute'
     | 'hour'
     | 'day'
+    /** Nights of a stay, e.g. how long to stay in Miami. */
+    | 'night'
     | 'week'
     | 'month'
     | 'year'
     | 'death'
     | 'study'
     | 'patient'
+    /** A volume: fat removed or transferred, an implant's size. */
     | 'cc'
     | 'bmi'
+    /** A length, e.g. an incision. */
+    | 'inch'
+    /** A minimum or maximum age, e.g. "22 or older". */
+    | 'age'
 
 /** One figure: a single value or an inclusive range, in one unit. */
 export type ProcedureFigure =
@@ -87,6 +95,7 @@ const UNIT_LABELS: Record<FigureUnit, [singular: string, plural: string]> = {
     minute: ['minute', 'minutes'],
     hour: ['hour', 'hours'],
     day: ['day', 'days'],
+    night: ['night', 'nights'],
     week: ['week', 'weeks'],
     month: ['month', 'months'],
     year: ['year', 'years'],
@@ -95,6 +104,8 @@ const UNIT_LABELS: Record<FigureUnit, [singular: string, plural: string]> = {
     patient: ['patient', 'patients'],
     cc: ['cc', 'cc'],
     bmi: ['BMI', 'BMI'],
+    inch: ['inch', 'inches'],
+    age: ['age', 'ages'],
 }
 
 function formatNumber(value: number, unit: FigureUnit): string {
@@ -104,7 +115,9 @@ function formatNumber(value: number, unit: FigureUnit): string {
 
 /**
  * A figure as copy writes it: "$5,500", "$5,500–$10,000", "10–14 days",
- * "50–80%", "8 weeks", "300 cc", "BMI 30".
+ * "50–80%", "8 weeks", "300 cc", "BMI 30", "3 nights", "2 inches",
+ * "age 22". The copy sweep also reads an age as "22 or older" or "22 years
+ * old", and an inch as "2-inch".
  */
 export function formatProcedureFigure(figure: ProcedureFigure): string {
     const [singular, plural] = UNIT_LABELS[figure.unit]
@@ -125,6 +138,11 @@ export function formatProcedureFigure(figure: ProcedureFigure): string {
         return 'value' in figure
             ? `BMI ${formatNumber(figure.value, 'bmi')}`
             : `BMI ${range(figure.min, figure.max)}`
+    }
+    if (figure.unit === 'age') {
+        return 'value' in figure
+            ? `${singular} ${formatNumber(figure.value, 'age')}`
+            : `${plural} ${range(figure.min, figure.max)}`
     }
     if ('value' in figure) {
         return `${formatNumber(figure.value, figure.unit)} ${figure.value === 1 ? singular : plural}`

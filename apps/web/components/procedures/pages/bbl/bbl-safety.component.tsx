@@ -1,15 +1,10 @@
-import { cn } from '@workspace/ui/lib/utils'
-
 import {
-    ModuleAskAnySurgeon,
-    ModuleScene,
+    ModuleSceneSection,
+    type ModuleSceneEvidence,
+    type ModuleSceneItem,
 } from '@/components/procedures/module-kit/module-scene.component'
-import {
-    moduleBodyDark,
-    moduleH3Dark,
-} from '@/components/procedures/module-kit/module-ui.constant'
 
-const law = [
+const law: ModuleSceneItem[] = [
     {
         title: 'Fat under the skin only',
         body: 'Fat goes only into the layer under the skin and never crosses the fascia, the tissue that covers the gluteal muscle.',
@@ -32,7 +27,7 @@ const law = [
     },
 ]
 
-const evidence = [
+const evidence: ModuleSceneEvidence[] = [
     {
         title: 'Why the law exists',
         body: 'South Florida recorded 25 deaths from BBL fat embolism between 2010 and 2022. 92% of those patients had surgery at high-volume, budget clinics, and in every case examined at autopsy, fat had been injected into the muscle (Pazmiño and Garcia, Aesthetic Surgery Journal, 2023).',
@@ -111,107 +106,44 @@ function BblStrata() {
 }
 
 /**
- * "Is a BBL safe in Miami?" The page's one dark band (`ModuleScene`), which
- * opens from an inset card to full width as it arrives. The layer diagram
- * sits between the answer and the law on phones, and stays pinned beside
- * the reading column from `lg`.
+ * "Is a BBL safe in Miami?" The page's one dark band, laid out by the kit's
+ * `ModuleSceneSection`, which opens from an inset card to full width as it
+ * arrives. The layer diagram sits between the answer and the law on phones,
+ * and stays pinned beside the reading column from `lg`.
  *
  * It ends where a reader has just been told to question every surgeon, so
  * the band's last word is an invitation to question ours.
  */
 export function BblSafety() {
     return (
-        <ModuleScene>
-            <section
-                id='safety'
-                aria-labelledby='safety-heading'
-                className='answer-block grid scroll-mt-32 lg:scroll-mt-40 lg:grid-cols-[minmax(0,40rem)_28.75rem] lg:grid-rows-[auto_auto_1fr] lg:justify-between lg:gap-x-16'
-            >
-                <h2
-                    id='safety-heading'
-                    className='font-serif text-[1.75rem] leading-[1.2] font-medium text-balance text-stone-50 md:text-[2.375rem] md:leading-[1.15] lg:col-start-1 lg:row-start-1'
-                >
-                    Is a BBL safe in Miami?
-                </h2>
-                <p className='answer-block__answer mt-4 text-[1.0625rem] leading-[1.6] text-stone-200 md:mt-5 md:text-lg md:leading-[1.65] lg:col-start-1 lg:row-start-2'>
+        <ModuleSceneSection
+            question='Is a BBL safe in Miami?'
+            answer={
+                <>
                     A BBL&apos;s most serious risk is a fat embolism: fat
                     injected into or below the gluteal muscle can enter a blood
                     vessel, which can be fatal. The risk is lowest when the fat
                     stays under the skin, and Florida law now requires exactly
                     that, along with ultrasound guidance and one surgeon for one
                     patient.
-                </p>
-                <div className='mt-8 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0'>
-                    <div className='lg:sticky lg:top-40'>
-                        <BblStrata />
-                    </div>
-                </div>
-                <div className='lg:col-start-1 lg:row-start-3'>
-                    <h3 className={cn(moduleH3Dark, 'mt-10 md:mt-12')}>
-                        What Florida law requires
-                    </h3>
-                    <p className='mt-1.5 text-sm text-stone-400'>
-                        <a
-                            href='#source-florida-statutes-458-328'
-                            className='underline decoration-stone-600 underline-offset-4 hover:text-stone-200'
-                        >
-                            Florida Statutes §458.328
-                        </a>
-                    </p>
-                    <ul className='mt-5 flex flex-col gap-4.5'>
-                        {law.map((item) => (
-                            <li
-                                key={item.title}
-                                className='grid grid-cols-[0.5rem_minmax(0,1fr)] gap-x-3.5'
-                            >
-                                <span
-                                    aria-hidden='true'
-                                    className='bg-gold-400 mt-2.5 size-2'
-                                />
-                                <div>
-                                    <p className='text-[1.0625rem] leading-[1.55] font-bold text-stone-100'>
-                                        {item.title}
-                                    </p>
-                                    <p className={cn(moduleBodyDark, 'mt-0.5')}>
-                                        {item.body}
-                                    </p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <h3 className={cn(moduleH3Dark, 'mt-10 md:mt-12')}>
-                        What the research shows
-                    </h3>
-                    <div className='mt-4.5 flex flex-col gap-6'>
-                        {evidence.map((item) => (
-                            <div key={item.title}>
-                                <p className='text-[1.0625rem] leading-[1.55] font-bold text-stone-100'>
-                                    {item.title}
-                                </p>
-                                <p
-                                    className={cn(
-                                        moduleBodyDark,
-                                        'mt-1 tabular-nums'
-                                    )}
-                                >
-                                    {item.body}{' '}
-                                    <a
-                                        href={`#source-${item.sourceId}`}
-                                        className='text-sm whitespace-nowrap text-stone-400 underline decoration-stone-600 underline-offset-4 hover:text-stone-200'
-                                    >
-                                        Source
-                                    </a>
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <ModuleAskAnySurgeon
-                heading='Questions to ask any BBL surgeon, including us'
-                questions={checklist}
-            />
-        </ModuleScene>
+                </>
+            }
+            diagram={<BblStrata />}
+            law={{
+                heading: 'What Florida law requires',
+                sources: [
+                    {
+                        label: 'Florida Statutes §458.328',
+                        sourceId: 'florida-statutes-458-328',
+                    },
+                ],
+                items: law,
+            }}
+            evidence={{ items: evidence }}
+            checklist={{
+                heading: 'Questions to ask any BBL surgeon, including us',
+                questions: checklist,
+            }}
+        />
     )
 }

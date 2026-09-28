@@ -34,26 +34,28 @@ Alluring's price, safety standard, surgeon and recovery for this procedure.
 The worked examples, `apps/web/`: the BBL and liposuction pages, built on
 the shared module kit.
 
-| File                                                                         | What it shows                                                                                                |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `components/procedures/pages/bbl/bbl-page.component.tsx`, `…/lipo/…`         | Section order, data fetching, jump links, sticky bar; each page's copy passed to the kit                     |
-| `components/procedures/module-kit/module-hero.component.tsx`                 | First screen: H1, surgeon-naming lede, trust row, chips, CTA pair (the page passes lede, chips, image, card) |
-| `…/module-results.component.tsx`                                             | Real results right after the hero; `selectResultPhotos`, the page's own caption function                     |
-| `…/module-quick-quote.component.tsx`, `…/module-book.component.tsx`          | Two-field form at peak intent; full form, location and hours from `siteConfig`                               |
-| `…/module-scene.component.tsx`                                               | The one dark band (`ModuleScene`) and the ask-any-surgeon bridge; the diagram is the page's own              |
-| `…/module-surgeon.component.tsx`                                             | Credentials exactly as held, each linked to the board's record                                               |
-| `…/module-price.component.tsx`                                               | Inclusions, what moves the price, financing and offers links, "Get your exact price"                         |
-| `…/module-reviews.component.tsx`, `…/module-faq.component.tsx`               | Procedure reviews first (heading claims only what they back); the FAQ from `procedure.faqs`                  |
-| `…/module-steps.component.tsx`, `…/module-sources.component.tsx`             | Numbered steps, the recovery timeline and guide links; the sources list                                      |
-| `…/module-layout.component.tsx`, `module-ui.constant.ts`                     | Jump nav, bands with the fact rail, type and button tokens, `AI_MODEL_LABEL`                                 |
-| `…/module-kit.css`                                                           | All shared motion and page-level rules, classes `pm-*`                                                       |
-| `pages/bbl/bbl-safety.component.tsx`, `pages/lipo/lipo-safety.component.tsx` | Two signature scenes: the buttock layers; Florida's liposuction limits as a to-scale measure                 |
-| `components/procedures/sections/*`                                           | Shared primitives: `AnswerBlock`, `FactTable`, `SourcesList`, `StickyCtaBar`, `PriceRange`, `ReviewedBy`     |
-| `lib/data/procedures/facts/bbl.facts.ts`                                     | Every publishable figure, its source and attribution                                                         |
-| `lib/procedures/procedure-page-registry.ts`                                  | Module and surgeon-node registration                                                                         |
-| `lib/seo/procedure-graph.util.ts`, `lib/seo/surgeon-graph.util.ts`           | The page's one JSON-LD `@graph`                                                                              |
-| `scripts/check-procedure-copy.ts` + `procedure-copy.config.ts`               | The copy sweep and each page's config                                                                        |
-| `scripts/audit-procedure-assets.ts`                                          | Gallery and review inventory for any procedure                                                               |
+| File                                                                         | What it shows                                                                                                                                                                 |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `components/procedures/pages/bbl/bbl-page.component.tsx`, `…/lipo/…`         | Section order, data fetching, jump links, sticky bar; each page's copy passed to the kit                                                                                      |
+| `components/procedures/module-kit/module-hero.component.tsx`                 | First screen: H1, surgeon-naming lede, trust row, chips, CTA pair (the page passes lede, chips, image, card)                                                                  |
+| `…/module-results.component.tsx`                                             | Real results right after the hero; `selectResultPhotos`, the page's own caption function                                                                                      |
+| `…/module-quick-quote.component.tsx`, `…/module-book.component.tsx`          | Two-field form at peak intent; full form, location and hours from `siteConfig`                                                                                                |
+| `…/module-scene.component.tsx`                                               | The one dark band (`ModuleScene`), its layout (`ModuleSceneSection`: answer, diagram, law, evidence, checklist) and the ask-any-surgeon bridge; the diagram is the page's own |
+| `…/module-surgeon.component.tsx`                                             | Credentials exactly as held, each linked to the board's record                                                                                                                |
+| `…/module-price.component.tsx`                                               | Inclusions, what moves the price, financing and offers links, "Get your exact price"; `ModulePriceTable` for `pricing.options` (one row, and one graph `Offer`, per variant)  |
+| `…/module-comparison.component.tsx`, `…/module-candidate.component.tsx`      | A real comparison table that stacks per row on a phone; "may suit you if" / "another option may suit you better if"                                                           |
+| `…/module-reviews.component.tsx`, `…/module-faq.component.tsx`               | Procedure reviews first, then `relatedSlugs` (heading claims only what they back); the FAQ from `procedure.faqs`                                                              |
+| `…/module-steps.component.tsx`, `…/module-sources.component.tsx`             | Numbered steps, the recovery timeline (optionally two parallel `tracks`) and guide links; the sources list                                                                    |
+| `lib/queries/gallery/procedure-galleries.query.ts`                           | `getGalleryMediaByProcedures`: results from several gallery groups (a combined procedure)                                                                                     |
+| `…/module-layout.component.tsx`, `module-ui.constant.ts`                     | Jump nav, bands with the fact rail, type and button tokens, `AI_MODEL_LABEL`                                                                                                  |
+| `…/module-kit.css`                                                           | All shared motion and page-level rules, classes `pm-*`                                                                                                                        |
+| `pages/bbl/bbl-safety.component.tsx`, `pages/lipo/lipo-safety.component.tsx` | Two signature scenes: the buttock layers; Florida's liposuction limits as a to-scale measure                                                                                  |
+| `components/procedures/sections/*`                                           | Shared primitives: `AnswerBlock`, `FactTable`, `SourcesList`, `StickyCtaBar`, `PriceRange`, `ReviewedBy`                                                                      |
+| `lib/data/procedures/facts/bbl.facts.ts`                                     | Every publishable figure, its source and attribution                                                                                                                          |
+| `lib/procedures/procedure-page-registry.ts`                                  | Module and surgeon-node registration                                                                                                                                          |
+| `lib/seo/procedure-graph.util.ts`, `lib/seo/surgeon-graph.util.ts`           | The page's one JSON-LD `@graph`                                                                                                                                               |
+| `scripts/check-procedure-copy.ts` + `procedure-copy.config.ts`               | The copy sweep and each page's config                                                                                                                                         |
+| `scripts/audit-procedure-assets.ts`                                          | Gallery and review inventory for any procedure                                                                                                                                |
 
 The review that shaped the current BBL page is
 https://claude.ai/artifact/Q5UBQFeDqj7KTL65TRTvhp. Read it with the Artifact
@@ -183,7 +185,9 @@ https://claude.ai/artifact/EairTjDsV2qHDfbMGoEYay. Follow
    `alt`). The page component imports `module-kit.css`; its root element
    carries `<short>-page pm-page` (the sweep reads inside `<short>-page`, the
    kit's timelines hang off `pm-page`), and it passes
-   `className='pm-sticky-bar pr-[4.75rem]'` to `StickyCtaBar`. Add a
+   `className='pm-sticky-bar pr-[4.75rem]'` to `StickyCtaBar`. Mount one
+   `<SectionViewTracker />` (`components/analytics/`) in the page component,
+   so every `main section[id]` sends `section_view` once. Add a
    `<short>-page.css` only for motion no kit class covers (`pm-draw-x`,
    `pm-draw-y`, `pm-unveil` usually do).
 2. **Shared pieces** live in `components/procedures/module-kit/`: use them
