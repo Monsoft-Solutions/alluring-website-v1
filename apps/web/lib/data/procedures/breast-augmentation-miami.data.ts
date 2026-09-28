@@ -1,31 +1,43 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const breastAugmentationMiami: Procedure = {
     title: 'Breast Augmentation Miami',
     slug: 'breast-augmentation-miami',
-    description:
-        'Breast augmentation in Miami from $4,500. Board-certified surgeons, natural-looking results. Silicone & saline implants with financing from $45/week. See before & afters. Free consultation.',
+    // Also the description in the page graph, `llms-full.txt` and the paid
+    // landing page. Prices from the practice's price sheet of 2026-09-15
+    // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
+    // page's old saline "$4,500–$6,500" and silicone "$5,500–$8,500" (#309).
+    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Saline implants are $3,500 and silicone implants $4,500.`,
     shortDescription:
         'Achieve the fuller, more balanced look you desire with natural-looking breast enhancement. Silicone, saline, and fat transfer options with flexible financing.',
-    heroSubtitle:
-        "Enhance Your Natural Beauty with Miami's Premier Breast Augmentation Specialists",
+    heroSubtitle: 'Implants sized to your frame, placed by one surgeon',
+    // Hand-written meta description: the generated one claimed "Miami's top
+    // surgeons. 5,000+ procedures" (#309). The title stays generated until
+    // the page rebuild changes it.
+    metaDescription: `Breast augmentation in Miami: saline implants $3,500, silicone $4,500, performed by one surgeon, ${KARLINSKY_NAME}. Free consultation.`,
+
     category: 'breast',
     bodyLocation: 'Breast',
     image: '/images/procedures/breast-augmentation.jpg',
-    dateModified: '2026-01-29T00:00:00.000Z',
+    dateModified: '2026-09-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing — sourced from the public WeeklyPayments table
-    priceFrom: '$4,500',
-    weeklyPaymentFrom: '$27/week with approved credit',
+    // Paid-LP hero pricing: saline implants, the lower of the two
+    // augmentation prices on the price sheet. No weekly figure: financing is
+    // offered but never quoted as a number.
+    priceFrom: '$3,500',
 
     // Inline content images for enhanced engagement
     contentImages: [
         {
             id: 'hero',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/breast-augmentation/hero-alluring-plastic-surgery-miami.webp',
-            alt: 'Stunning woman in white designer dress on Miami rooftop at sunset showcasing breast augmentation results',
+            alt: 'Woman in a white dress on a Miami rooftop at sunset',
             section: 'hero',
             variant: 'full-width',
         },
@@ -40,7 +52,7 @@ export const breastAugmentationMiami: Procedure = {
         {
             id: 'natural-results',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/breast-augmentation/natural-results-alluring-plastic-surgery-miami.webp',
-            alt: 'Natural-looking breast augmentation results showcasing balanced proportions',
+            alt: 'Woman in a champagne satin gown in a Miami living room at dusk',
             caption:
                 'Our focus on natural-looking results enhances your beauty',
             section: 'content',
@@ -57,7 +69,7 @@ export const breastAugmentationMiami: Procedure = {
         {
             id: 'consultation',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/breast-augmentation/consultation-alluring-plastic-surgery-miami.webp',
-            alt: 'Patient consultation with board-certified plastic surgeon discussing breast augmentation options',
+            alt: 'Patient consultation discussing breast augmentation options at Alluring Plastic Surgery in Miami',
             caption:
                 'Your transformation begins with a personalized consultation',
             section: 'process',
@@ -100,8 +112,6 @@ export const breastAugmentationMiami: Procedure = {
         'mini boob job',
         'fat transfer breast augmentation',
         'breast aug miami',
-        'best breast augmentation surgeon miami',
-        'affordable breast augmentation miami',
     ],
     quickStats: {
         duration: '1 to 2 Hours',
@@ -119,7 +129,7 @@ export const breastAugmentationMiami: Procedure = {
         {
             title: 'Natural-Looking Results',
             description:
-                'Our surgeons specialize in achieving results that enhance your beauty without looking artificial. The goal is breasts that look like they naturally belong on your body.',
+                'The goal is breasts that look like they naturally belong on your body, sized to your frame rather than to a number.',
         },
         {
             title: 'Balanced Proportions',
@@ -174,9 +184,9 @@ export const breastAugmentationMiami: Procedure = {
 
 You've imagined it countless times—slipping into that dress that finally fits the way you want, feeling confident in a bikini without adjusting, catching your reflection and loving what you see. It's not vanity. It's about your body matching how you feel inside.
 
-Whether you've always desired fuller curves, want to restore volume lost after pregnancy and breastfeeding, or simply seek better proportion for your frame, **breast augmentation** can make that vision a reality. In **Miami**—where beach days are year-round and confidence is a lifestyle—thousands of women choose breast enhancement to feel like the best version of themselves.
+Whether you've always desired fuller curves, want to restore volume lost after pregnancy and breastfeeding, or simply seek better proportion for your frame, **breast augmentation** can make that vision a reality. In **Miami**—where beach days are year-round and confidence is a lifestyle—many women choose breast enhancement to feel like the best version of themselves.
 
-At **Alluring Plastic Surgery**, our board-certified surgeons combine surgical precision with an artistic eye, delivering **natural-looking results** that enhance your beauty without looking artificial.
+At **Alluring Plastic Surgery**, every breast augmentation is performed by one surgeon, ${KARLINSKY_NAME}, who plans for **natural-looking results** that suit your frame. ${KARLINSKY_CREDENTIALS}
 
 ## What Is Breast Augmentation?
 
@@ -203,7 +213,7 @@ Choosing the right implant is crucial to achieving your desired outcome. Here's 
 - Excellent for women with less natural breast tissue
 
 **Cons:**
-- Requires monitoring (MRI recommended every few years)
+- Requires screening for silent rupture: the FDA recommends an ultrasound or MRI 5 to 6 years after surgery, then every 2 to 3 years
 - Slightly larger incision than saline
 - Must be 22+ years old (FDA guideline)
 
@@ -323,38 +333,29 @@ During your consultation, your surgeon will assess your anatomy and recommend th
 
 ## How Much Does a Boob Job Cost in Miami?
 
-Understanding **breast augmentation cost** helps you plan and make informed decisions. Here's what affects pricing:
+At Alluring Plastic Surgery, breast augmentation is **$3,500 with saline implants** and **$4,500 with silicone implants**. These are the practice's list prices. Your exact price depends on the implants you choose and anything added to the surgery, and Dr. Karlinsky confirms it at your free consultation.
 
-### Average Breast Augmentation Price in Miami
+| Procedure | Price |
+|-----------|-------|
+| Breast augmentation, saline implants | $3,500 |
+| Breast augmentation, silicone implants | $4,500 |
+| Breast lift with saline implants | $6,000 |
+| Breast lift with silicone implants | $7,000 |
+| Fat grafting to the breasts, added to another procedure | $1,500 |
 
-At Alluring Plastic Surgery, our **boob job cost** starts from **$4,500**, depending on:
+What moves your price:
 
-- **Implant type**: Silicone costs more than saline
-- **Surgeon expertise**: Board-certified specialists command higher fees
-- **Anesthesia and facility fees**: Accredited surgical centers ensure safety
-- **Additional procedures**: Lift combined with augmentation adds cost
-
-| Procedure Type | Price Range |
-|----------------|-------------|
-| Breast Augmentation (Saline) | $4,500 - $6,500 |
-| Breast Augmentation (Silicone) | $5,500 - $8,500 |
-| Breast Augmentation (Gummy Bear) | $6,500 - $10,000 |
-| Fat Transfer Breast Augmentation | $6,000 - $12,000 |
-| Breast Augmentation + Lift | $8,500 - $15,000 |
+- **Implant type**: silicone costs more than saline
+- **A lift**: a breast lift with implants is priced as its own procedure, as in the table
+- **Other procedures**: combining breast augmentation with a second procedure takes $500 off the total, and with a third, $1,000
 
 ### Does Insurance Cover Breast Augmentation?
 
 No. **Breast augmentation** is an elective cosmetic procedure, so insurance does not cover it. However, if you're undergoing breast reconstruction after mastectomy, insurance coverage may apply under federal law.
 
-### Affordable Breast Augmentation Financing
+### Breast Augmentation Financing
 
-We believe every woman deserves to feel confident in her body. That's why we partner with multiple financing providers:
-
-- **Cherry**: Payments as low as $45/week
-- **CareCredit**: 0% APR options available
-- **United Credit**: Flexible terms with no prepayment penalties
-
-Our "Luxury Made Affordable" approach means you don't have to choose between quality and accessibility.
+Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.
 
 ## Am I a Good Candidate for Breast Augmentation?
 
@@ -466,23 +467,19 @@ Understanding **breast augmentation recovery** helps you plan your life around h
 
 ## Why Choose Alluring Plastic Surgery for Your Breast Augmentation
 
-### Board-Certified Excellence
+### One Surgeon
 
-Our surgeons specialize in breast enhancement, performing hundreds of augmentations annually with a focus on natural-looking results.
+Every breast augmentation at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
 
 ### Personalized Approach
 
 No cookie-cutter results. Every surgical plan is customized to your unique anatomy, lifestyle, and aesthetic goals.
 
-### State-of-the-Art Facility
-
-Our accredited surgical center features the latest technology and adheres to the highest safety standards.
-
 ### Natural Results Philosophy
 
 <ProcedureImage id="natural-results" />
 
-We believe the best breast augmentation is one that enhances your natural beauty—results that look like they belong on your body.
+We believe a good breast augmentation is one that enhances your natural beauty—results that look like they belong on your body.
 
 ### Comprehensive Care
 
@@ -490,7 +487,7 @@ Your relationship with us extends beyond surgery. From consultation through reco
 
 ### Miami Lifestyle Expertise
 
-Living in South Florida means swimwear season never ends. Our surgeons understand the unique aesthetic goals of Miami women and deliver results that look stunning at the beach, pool, and everywhere in between.
+Living in South Florida means swimwear season never ends. Your plan accounts for how you'll wear your results, at the beach, the pool and everywhere in between.
 
 ## Your Transformation Starts Here
 
@@ -504,11 +501,11 @@ Your journey to the body you've always envisioned starts with one phone call.`,
     faqs: [
         {
             question: 'How much does a boob job cost?',
-            answer: 'Breast augmentation at Alluring Plastic Surgery starts from $4,500 for saline implants to $10,000+ for gummy bear or combined procedures. The exact price depends on implant type, surgical complexity, and whether additional procedures like a lift are included. We offer financing from $45/week through Cherry, CareCredit, and United Credit.',
+            answer: 'At Alluring Plastic Surgery, breast augmentation is $3,500 with saline implants and $4,500 with silicone implants. A breast lift with implants is $6,000 with saline and $7,000 with silicone. Dr. Karlinsky confirms your exact price at your free consultation, and financing is available with approved credit.',
         },
         {
             question: 'How much is breast augmentation in Miami?',
-            answer: 'In Miami, breast augmentation typically ranges from $4,500 to $15,000 depending on implant type and procedure complexity. Our prices start at $4,500 for saline and $5,500 for silicone, with financing options available to make your procedure affordable.',
+            answer: 'At Alluring Plastic Surgery in Miami, breast augmentation is $3,500 with saline implants and $4,500 with silicone implants. Combining it with a second procedure takes $500 off the total. Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.',
         },
         {
             question: 'What is the recovery time for breast augmentation?',
@@ -524,7 +521,7 @@ Your journey to the body you've always envisioned starts with one phone call.`,
         },
         {
             question: 'How long do breast implants last?',
-            answer: "Modern breast implants typically last 10-20 years or longer. They're not considered lifetime devices, and you may eventually need replacement due to normal wear, changes in preference, or complications. Many women go 15-20+ years before considering replacement.",
+            answer: "Modern breast implants typically last 10-20 years or longer. They're not considered lifetime devices, and you may eventually need replacement due to normal wear, changes in preference, or complications.",
         },
         {
             question: 'Can you breastfeed after breast augmentation?',
@@ -553,11 +550,11 @@ Your journey to the body you've always envisioned starts with one phone call.`,
         },
         {
             question: 'How do I see boob job before and after results?',
-            answer: 'Visit our before and after gallery to see real patient results from breast augmentation procedures performed by our surgeons. During your consultation, we can show you results from patients with similar anatomy and goals to help you visualize your potential outcome.',
+            answer: 'Visit our before and after gallery to see real patient results from breast augmentation at Alluring. During your consultation, we can show you results from patients with similar anatomy and goals to help you visualize your potential outcome.',
         },
         {
             question: 'Is breast augmentation safe?',
-            answer: 'Yes, when performed by a board-certified plastic surgeon in an accredited facility. Breast augmentation is one of the most commonly performed cosmetic procedures with an excellent safety record. Like all surgeries, there are risks, which your surgeon will discuss in detail during consultation.',
+            answer: `Breast augmentation is one of the most commonly performed cosmetic surgeries, and like all surgeries it carries risks. Before surgery, the FDA requires that you review a checklist of breast implant risks with your surgeon. At Alluring Plastic Surgery, ${KARLINSKY_NAME} performs every breast augmentation and goes through it with you.`,
         },
     ],
 }

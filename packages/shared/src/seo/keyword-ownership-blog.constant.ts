@@ -1483,8 +1483,23 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
         kind: 'blog',
         intent: 'informational',
         status: 'live',
-        primaryKeyword: 'tummy tuck mommy makeover miami',
-        ownsQueries: ['tummy tuck vs mommy makeover miami costs recovery'],
+        primaryKeyword: 'tummy tuck vs mommy makeover',
+        ownsQueries: ['tummy tuck or mommy makeover'],
+        mustNotTarget: [
+            {
+                query: 'tummy tuck cost miami',
+                ownedBy: '/tummy-tuck-cost-miami',
+            },
+            {
+                query: 'mommy makeover cost',
+                ownedBy: '/mommy-makeover-cost-miami',
+            },
+            {
+                query: 'mommy makeover miami',
+                ownedBy: '/procedures/mommy-makeover-miami',
+            },
+        ],
+        notes: 'Re-scoped to the comparison in #309 (D3 of the wave-two brief). It held 90% of "tummy tuck cost miami" and outranked /procedures/mommy-makeover-miami on "mommy makeover miami"; the procedure pages own both. If the mommy makeover page still trails it at day 56, fold it in with a 301. primary_keyword is empty in the database, so a regeneration drops this entry; restore it from git diff.',
     },
     {
         url: '/blog/breast-augmentation-safety-miami',

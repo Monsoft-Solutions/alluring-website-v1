@@ -115,7 +115,7 @@ export const faqDataProcedures: Record<string, FaqItem[]> = {
         },
         {
             question: 'Do you offer package pricing for multiple procedures?',
-            answer: 'Yes, combining procedures often provides savings compared to having them separately. Packages like our Mommy Makeover bundle multiple procedures at a combined rate. Your Specialist will discuss all options and provide pricing for both individual and combined procedures during your consultation.',
+            answer: 'Yes. When procedures are combined in one surgery, $500 comes off the total for two procedures and $1,000 for three (the practice price list). Your Specialist will discuss all options and provide pricing for both individual and combined procedures during your consultation.',
         },
         {
             question: 'Does insurance cover cosmetic surgery?',

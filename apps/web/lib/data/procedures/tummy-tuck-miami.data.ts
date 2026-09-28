@@ -1,24 +1,37 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const tummyTuckMiami: Procedure = {
     title: 'Tummy Tuck Miami',
     slug: 'tummy-tuck-miami',
-    description:
-        'Tummy tuck in Miami from $3,500. Board-certified surgeons, 5,000+ procedures. Mini & full abdominoplasty with financing from $35/week. See before & afters. Free consultation.',
+    // Also the description in the page graph, `llms-full.txt` and the paid
+    // landing page. Prices from the practice's price sheet of 2026-09-15
+    // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
+    // "$3,500" and "5,000+ procedures" this used to carry (#309).
+    description: `A tummy tuck (abdominoplasty) removes loose skin and fat from the abdomen and can repair separated abdominal muscles. At Alluring in Miami, one surgeon performs every tummy tuck: ${KARLINSKY_NAME}. A mini tummy tuck is $3,000 and a full tummy tuck $4,500.`,
     shortDescription:
         'Remove excess skin and tighten your abdomen for a flatter, more toned midsection. Perfect for post-pregnancy recovery or after significant weight loss.',
     heroSubtitle:
-        "Achieve the Flat, Toned Abdomen You've Always Wanted with Miami's Most Trusted Abdominoplasty Specialists",
+        'Loose skin removed and your abdomen tightened, by one surgeon',
+    // Hand-written meta description: the generated one claimed "Miami's top
+    // surgeons. 5,000+ procedures" (#309). The title stays generated until
+    // the page rebuild changes it.
+    metaDescription: `Tummy tuck in Miami: mini $3,000, full $4,500, performed by one surgeon, ${KARLINSKY_NAME}. All five types priced. Free consultation.`,
+
     category: 'body',
     bodyLocation: 'Abdomen',
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/hero.webp',
-    dateModified: '2026-01-29T00:00:00.000Z',
+    dateModified: '2026-09-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing — sourced from the public WeeklyPayments table
-    priceFrom: '$5,500',
-    weeklyPaymentFrom: '$34/week with approved credit',
+    // Paid-LP hero pricing: the mini tummy tuck, the lowest tummy tuck price
+    // on the price sheet. No weekly figure: financing is offered but never
+    // quoted as a number.
+    priceFrom: '$3,000',
 
     // Inline content images for enhanced engagement
     contentImages: [
@@ -32,7 +45,7 @@ export const tummyTuckMiami: Procedure = {
         {
             id: 'full-tummy-tuck',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/full-tummy-tuck.webp',
-            alt: 'Before and after comparison of full tummy tuck abdominoplasty results',
+            alt: 'Model in neutral underwear showing where a full tummy tuck scar sits, low across the abdomen',
             caption:
                 'Full tummy tuck addresses the entire abdominal area for dramatic transformation',
             section: 'content',
@@ -41,7 +54,7 @@ export const tummyTuckMiami: Procedure = {
         {
             id: 'mini-tummy-tuck',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/mini-tummy-tuck.webp',
-            alt: 'Mini tummy tuck results showing flatter lower abdomen',
+            alt: 'Model in neutral underwear showing the lower abdomen, the area a mini tummy tuck treats',
             caption:
                 'Mini abdominoplasty targets the lower belly with a shorter recovery time',
             section: 'content',
@@ -59,7 +72,7 @@ export const tummyTuckMiami: Procedure = {
         {
             id: 'consultation',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/tummy-tuck/consultation.webp',
-            alt: 'Patient consultation with board-certified plastic surgeon in Miami',
+            alt: 'Patient consultation for a tummy tuck at Alluring Plastic Surgery in Miami',
             caption:
                 'Your transformation begins with a personalized consultation',
             section: 'process',
@@ -95,7 +108,6 @@ export const tummyTuckMiami: Procedure = {
         'tummy tuck before and after',
         'tummy tuck belly button',
         'mini tummy tuck cost',
-        'best tummy tuck surgeon miami',
         'tummy tuck and liposuction combo miami',
         'tummy tuck scars healing',
         'diastasis recti surgery miami',
@@ -174,7 +186,7 @@ You've done everything right. Hundreds of crunches, strict diets, early morning 
 
 Pregnancy, significant weight loss, and aging stretch your skin and separate your abdominal muscles in ways that no amount of exercise can reverse. The frustration is real—but so is the solution.
 
-A **tummy tuck** (abdominoplasty) removes what diet can't and repairs what exercise won't. At **Alluring Plastic Surgery** in Miami, our board-certified surgeons have performed over 5,000 body contouring procedures, helping patients finally achieve the flat, toned midsection they deserve.
+A **tummy tuck** (abdominoplasty) removes what diet can't and repairs what exercise won't. At **Alluring Plastic Surgery** in Miami, every tummy tuck is performed by one surgeon, ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
 
 ## What Is a Tummy Tuck?
 
@@ -194,11 +206,11 @@ Here's what to expect:
 - **Healing**: Your navel may look different initially but settles into a natural appearance
 - **Scarring**: A small scar around the belly button is hidden within the navel itself
 
-Our surgeons take great care to create a natural-looking belly button that complements your new flat contour.
+Dr. Karlinsky plans the belly button to look natural with your new, flatter contour.
 
 ## Types of Tummy Tuck Procedures
 
-Choosing the right type of **tummy tuck** is essential for achieving your desired results. At **Alluring Plastic Surgery**, our surgeons evaluate your abdominal structure, skin quality, and aesthetic goals to recommend the most appropriate technique.
+Choosing the right type of **tummy tuck** is essential for achieving your desired results. At **Alluring Plastic Surgery**, Dr. Karlinsky evaluates your abdominal structure, skin quality, and aesthetic goals to recommend the most appropriate technique.
 
 <ProcedureImage id="infographic-procedure-types" />
 
@@ -209,7 +221,7 @@ A **full tummy tuck** is the most comprehensive option, addressing the entire ab
 <ProcedureImage id="full-tummy-tuck" />
 
 **What It Involves:**
-*   A horizontal incision from hip to hip
+*   A horizontal incision low on the abdomen (an extended tummy tuck runs it from hip to hip)
 *   Removal of considerable amounts of loose skin and fat
 *   Tightening of the entire abdominal wall by suturing separated muscles back together
 *   Repositioning of the belly button to maintain natural proportions
@@ -225,7 +237,7 @@ A **mini tummy tuck** is a less invasive option designed for patients whose conc
 **What It Involves:**
 *   A shorter incision (typically smaller than a C-section scar)
 *   Removal of excess skin and fat only in the lower abdominal area
-*   Tightening of muscles below the belly button
+*   No muscle repair
 *   Usually no repositioning of the navel
 
 Because it's less extensive, a **mini tummy tuck** offers faster recovery, less scarring, and reduced post-operative discomfort compared to a full procedure. However, it won't address concerns above the navel or provide the dramatic transformation of a full **abdominoplasty**.
@@ -254,37 +266,29 @@ Because of its comprehensive nature, this procedure typically requires a longer 
 
 ## How Much Does a Tummy Tuck Cost in Miami?
 
-Understanding **tummy tuck cost** helps you plan and make informed decisions. Here's what affects pricing:
+At Alluring Plastic Surgery, a **mini tummy tuck is $3,000** and a **full tummy tuck is $4,500**. These are the practice's list prices for each kind of tummy tuck. Your exact price depends on the kind you need and what is added to it, and Dr. Karlinsky confirms it at your free consultation.
 
-### Average Tummy Tuck Price in Miami
+| Tummy tuck | What it is | Price |
+|------------|------------|-------|
+| Mini | No muscle repair | $3,000 |
+| Extended mini | No muscle repair, with a hip-to-hip incision | $4,000 |
+| Full | For loose skin that doesn't extend to the hips | $4,500 |
+| Extended | A hip-to-hip incision | $5,500 |
+| Fleur-de-lis | A vertical incision as well as the horizontal one | $10,000 |
 
-At Alluring Plastic Surgery, our **tummy tuck price** starts from just **$3,500**, depending on:
+What moves your price:
 
-- **Type of procedure**: Mini abdominoplasty costs less than extended
-- **Procedure complexity**: Muscle repair and liposuction add to cost
-- **Anesthesia time**: Longer surgeries require more anesthesia
-- **Facility fees**: Accredited surgical centers ensure safety
-
-| Procedure Type | Price Range |
-|----------------|-------------|
-| Mini Tummy Tuck | $3,500 - $8,000 |
-| Full Tummy Tuck | $4,000 - $12,000 |
-| Extended Tummy Tuck | $5,000 - $15,000 |
-| Circumferential (Body Lift) | $12,000 - $18,000 |
+- **Type of tummy tuck**: from the mini to the fleur-de-lis, as in the table
+- **Liposuction**: liposuction of the abdomen and flanks adds $1,500
+- **Other procedures**: combining a tummy tuck with a second procedure takes $500 off the total, and with a third, $1,000
 
 ### Does Insurance Cover a Tummy Tuck?
 
-No. Because **abdominoplasty** is considered a cosmetic procedure, insurance does not cover it. However, if you have documented diastasis recti causing functional problems (back pain, hernia), a portion of the muscle repair *may* qualify for coverage. We can provide documentation for your insurance company.
+No. Because **abdominoplasty** is considered a cosmetic procedure, insurance does not cover it. However, if you have documented diastasis recti causing functional problems (back pain, hernia), a portion of the muscle repair *may* qualify for coverage. Ask your insurer before your consultation.
 
-### Affordable Tummy Tuck Financing
+### Tummy Tuck Financing
 
-We believe everyone deserves to feel confident in their body. That's why we partner with multiple financing providers:
-
-- **Cherry**: Payments as low as $35/week
-- **CareCredit**: 0% APR options available
-- **United Credit**: Flexible terms with no prepayment penalties
-
-A **mini tummy tuck** starts from just **$3,500**—an excellent option if your concerns are limited to below the belly button.
+Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.
 
 ## Benefits of Tummy Tuck Surgery
 
@@ -401,7 +405,7 @@ During your consultation, we'll discuss which combination of procedures will bes
 
 ## Why Choose Miami for Your Tummy Tuck?
 
-**Miami's** reputation as a premier destination for **plastic surgery** isn't just about sunny beaches and vibrant culture—it's also home to some of the nation's most skilled and experienced cosmetic surgeons. At **Alluring Plastic Surgery**, our board-certified surgeons combine advanced techniques with an artistic eye to deliver natural-looking results tailored to your unique anatomy and goals.
+At **Alluring Plastic Surgery**, every tummy tuck is performed by ${KARLINSKY_NAME}, who plans each one around your anatomy and goals, for results that look natural on you.
 
 Living in South Florida means embracing a lifestyle where swimwear season never ends. Whether you're enjoying Biscayne Bay, lounging poolside, or simply feeling confident in summer dresses, having a body you're proud of can make all the difference.
 
@@ -419,7 +423,7 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
         },
         {
             question: 'How much does a tummy tuck cost in Miami?',
-            answer: 'Tummy tuck cost at Alluring Plastic Surgery starts from $3,500 for a mini abdominoplasty to $12,000 for a full tummy tuck. The exact price depends on procedure type, complexity, and whether liposuction is included. We offer financing from $35/week through Cherry, CareCredit, and United Credit.',
+            answer: 'At Alluring Plastic Surgery, a mini tummy tuck is $3,000 and a full tummy tuck $4,500. An extended mini is $4,000, an extended tummy tuck $5,500 and a fleur-de-lis tummy tuck $10,000. Liposuction of the abdomen and flanks adds $1,500. Dr. Karlinsky confirms your exact price at your free consultation, and financing is available with approved credit.',
         },
         {
             question: 'What is the tummy tuck recovery time?',
@@ -431,7 +435,7 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
         },
         {
             question: 'How much does a mini tummy tuck cost?',
-            answer: 'A mini tummy tuck at Alluring Plastic Surgery starts from $3,500 to $8,000—significantly less than a full abdominoplasty. This option addresses only the lower abdomen below the belly button and has a shorter recovery time.',
+            answer: 'A mini tummy tuck at Alluring Plastic Surgery is $3,000, and an extended mini tummy tuck, with a hip-to-hip incision, is $4,000. Neither includes muscle repair. A mini tummy tuck addresses only the lower abdomen below the belly button and has a shorter recovery time than a full tummy tuck.',
         },
         {
             question: 'Am I a good candidate for a tummy tuck?',
@@ -452,7 +456,7 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
         },
         {
             question: 'Will there be a scar after my tummy tuck?',
-            answer: "Yes, there will be a tummy tuck scar, but our skilled surgeons ensure it's placed low and discreet, typically along the bikini line. Over time, the scar will fade and become less noticeable with proper care.",
+            answer: 'Yes, there will be a tummy tuck scar. It is placed low, typically along the bikini line, so underwear and most swimwear cover it. Over time, the scar fades and becomes less noticeable with proper care.',
         },
         {
             question: 'Are the results of a tummy tuck permanent?',
@@ -468,11 +472,11 @@ If you've been dreaming of a flatter, firmer abdomen but haven't been able to ac
         },
         {
             question: 'Is a tummy tuck safe?',
-            answer: 'Like all surgeries, there are risks involved. However, tummy tuck surgery is generally considered safe when performed by experienced, board-certified surgeons like those at Alluring Plastic Surgery.',
+            answer: `Like all surgeries, a tummy tuck carries risks, and your health, weight and smoking all affect them. At Alluring Plastic Surgery, ${KARLINSKY_NAME} performs every tummy tuck and reviews your risks with you at your consultation.`,
         },
         {
             question: 'Does insurance cover a tummy tuck?',
-            answer: 'No. Because abdominoplasty is considered a cosmetic procedure, insurance does not cover it. However, if you have documented diastasis recti causing functional problems, a portion of the muscle repair may qualify for coverage. We can provide documentation for your insurance company.',
+            answer: 'No. Because abdominoplasty is considered a cosmetic procedure, insurance does not cover it. However, if you have documented diastasis recti causing functional problems, a portion of the muscle repair may qualify for coverage. Ask your insurer before your consultation.',
         },
     ],
 }

@@ -74,7 +74,10 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'How much does a mommy makeover cost?',
-            answer: 'Mommy makeover pricing ranges from $12,000-$18,000 depending on the combination of procedures (tummy tuck, breast surgery, liposuction). This all-inclusive pricing covers surgeon fees, anesthesia, facility, and follow-up care. Financing plans available with 0% interest for qualified applicants.',
+            // Parts from the practice's price sheet of 2026-09-15, as in
+            // mommy-makeover-miami.data.ts. The sheet has no mommy makeover
+            // total, and what a price includes waits on the practice (#309).
+            answer: 'A mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at $3,000 (mini) or $4,500 (full), breast augmentation at $3,500 (saline) or $4,500 (silicone), and a breast lift at $5,000. Combining two procedures takes $500 off the total, and three take $1,000 off. Financing is available for qualified applicants.',
         },
         {
             question: 'Do you offer 0% financing for plastic surgery?',

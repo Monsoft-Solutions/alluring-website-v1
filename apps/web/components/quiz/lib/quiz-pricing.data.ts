@@ -21,13 +21,16 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Enhance your curves with natural-looking breast implants',
         slug: 'breast-augmentation-miami',
         category: 'breast',
+        // Saline to silicone, from the practice's price sheet of 2026-09-15,
+        // as in breast-augmentation-miami.data.ts
         priceRange: {
-            min: 4500,
-            max: 7500,
+            min: 3500,
+            max: 4500,
         },
+        // priceRange over 36 months, like the other rows
         monthlyPayment: {
-            min: 125,
-            max: 208,
+            min: 97,
+            max: 125,
         },
         recoveryWeeks: 1,
         benefits: [
@@ -153,13 +156,16 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Flatten your abdomen and tighten loose skin and muscles',
         slug: 'tummy-tuck-miami',
         category: 'body',
+        // Mini to fleur-de-lis, from the practice's price sheet of 2026-09-15,
+        // as in tummy-tuck-miami.data.ts
         priceRange: {
-            min: 5500,
-            max: 9500,
+            min: 3000,
+            max: 10000,
         },
+        // priceRange over 36 months, like the other rows
         monthlyPayment: {
-            min: 153,
-            max: 264,
+            min: 83,
+            max: 278,
         },
         recoveryWeeks: 3,
         benefits: [
@@ -177,12 +183,18 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         shortDescription: 'Comprehensive post-pregnancy body restoration',
         slug: 'mommy-makeover-miami',
         category: 'combined',
+        // The price sheet has no mommy makeover line. The minimum is its
+        // cheapest parts less the two-procedure discount (mini tummy tuck
+        // $3,000 + saline augmentation $3,500 - $500); the maximum is the
+        // quiz's earlier figure. Budget matching only: the quiz never shows
+        // it, and neither is a published price.
         priceRange: {
-            min: 9000,
+            min: 6000,
             max: 16000,
         },
+        // priceRange over 36 months, like the other rows
         monthlyPayment: {
-            min: 250,
+            min: 167,
             max: 444,
         },
         recoveryWeeks: 4,
