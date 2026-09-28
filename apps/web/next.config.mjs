@@ -721,6 +721,17 @@ const nextConfig = {
                 permanent: true,
             },
 
+            // BBL's WordPress-era URL, the same case (#310): 18,135 Search
+            // Console impressions and 4 clicks in the 480 days to
+            // 2026-09-25, a 404 since the move. The slash form Google holds
+            // reaches this rule through the trailing-slash redirect, as the
+            // liposuction one does.
+            {
+                source: '/procedures/brazilian-butt-lift-cosmetic-surgery-in-miami',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+
             // Liposuction blog consolidation (2026-09-22 blog review):
             // 25 liposuction posts become 17.
             //
