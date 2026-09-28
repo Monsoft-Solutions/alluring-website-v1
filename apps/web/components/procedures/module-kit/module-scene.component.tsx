@@ -1,7 +1,9 @@
+import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Phone } from 'lucide-react'
 import { cn } from '@workspace/ui/lib/utils'
 
+import { sourceAnchorId } from '@/components/procedures/sections/sources-list.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import { KARLINSKY_SHORT_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
@@ -100,5 +102,204 @@ export function ModuleAskAnySurgeon({
                 </div>
             </div>
         </section>
+    )
+}
+
+/** One rule of the law, or one finding: a bold title over its body. */
+export type ModuleSceneItem = { title: string; body: ReactNode }
+
+/** A finding, with the source it links to in the page's source list. */
+export type ModuleSceneEvidence = ModuleSceneItem & { sourceId: string }
+
+/** A source named under the law's heading, linked to the source list. */
+export type ModuleSceneSource = { label: string; sourceId: string }
+
+/**
+ * The diagram column's width from `lg`, beside the 40 rem reading column:
+ * `wide` for a drawing with room to label (BBL's layers), `narrow` for a
+ * tall, thin one (liposuction's scale).
+ */
+const DIAGRAM_COLUMNS = {
+    wide: 'lg:grid-cols-[minmax(0,40rem)_28.75rem]',
+    narrow: 'lg:grid-cols-[minmax(0,40rem)_24rem]',
+} as const
+
+export type ModuleSceneSectionProps = {
+    /** The section's anchor; the jump nav's "Safety" points at it. */
+    id?: string
+    /** The H2, phrased as her question, e.g. "Is a BBL safe in Miami?" */
+    question: string
+    /** The direct answer, 40–60 words. */
+    answer: ReactNode
+    /**
+     * The procedure's signature diagram, page-owned: it sits between the
+     * answer and the law on phones and stays pinned beside the reading
+     * column from `lg`.
+     */
+    diagram: ReactNode
+    diagramWidth?: keyof typeof DIAGRAM_COLUMNS
+    /** Tabular figures in the answer and the law's titles, for copy full of numbers. */
+    tabularFigures?: boolean
+    /** What the law requires, with the sources it rests on. */
+    law: {
+        heading: string
+        sources: ModuleSceneSource[]
+        items: ModuleSceneItem[]
+    }
+    /** What the research shows, each finding linked to its source. */
+    evidence: {
+        heading?: string
+        items: ModuleSceneEvidence[]
+        /** A closing link to the post that goes further. */
+        link?: { label: string; href: string }
+    }
+    /** The questions to ask any surgeon, closing the band. */
+    checklist?: {
+        heading: string
+        questions: string[]
+        note?: string
+    }
+}
+
+/**
+ * The signature scene's layout, in the page's one dark band: the question
+ * and its answer, the page's own diagram, what the law requires, what the
+ * research shows, then the questions to ask any surgeon. The diagram sits
+ * between the answer and the law on phones, and stays pinned beside the
+ * reading column from `lg`.
+ *
+ * Every procedure page tells its safety story this way, so the layout lives
+ * here and the page passes its copy and its diagram. Figures in the copy
+ * come from the page's facts file, like everywhere else on the page.
+ */
+export function ModuleSceneSection({
+    id = 'safety',
+    question,
+    answer,
+    diagram,
+    diagramWidth = 'wide',
+    tabularFigures = false,
+    law,
+    evidence,
+    checklist,
+}: ModuleSceneSectionProps) {
+    const headingId = `${id}-heading`
+
+    return (
+        <ModuleScene>
+            <section
+                id={id}
+                aria-labelledby={headingId}
+                className={`answer-block grid scroll-mt-32 lg:scroll-mt-40 ${DIAGRAM_COLUMNS[diagramWidth]} lg:grid-rows-[auto_auto_1fr] lg:justify-between lg:gap-x-16`}
+            >
+                <h2
+                    id={headingId}
+                    className='font-serif text-[1.75rem] leading-[1.2] font-medium text-balance text-stone-50 md:text-[2.375rem] md:leading-[1.15] lg:col-start-1 lg:row-start-1'
+                >
+                    {question}
+                </h2>
+                <p
+                    className={[
+                        'answer-block__answer mt-4 text-[1.0625rem] leading-[1.6] text-stone-200',
+                        tabularFigures && 'tabular-nums',
+                        'md:mt-5 md:text-lg md:leading-[1.65] lg:col-start-1 lg:row-start-2',
+                    ]
+                        .filter(Boolean)
+                        .join(' ')}
+                >
+                    {answer}
+                </p>
+                <div className='mt-8 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0'>
+                    <div className='lg:sticky lg:top-40'>{diagram}</div>
+                </div>
+                <div className='lg:col-start-1 lg:row-start-3'>
+                    <h3 className={cn(moduleH3Dark, 'mt-10 md:mt-12')}>
+                        {law.heading}
+                    </h3>
+                    <p className='mt-1.5 text-sm text-stone-400'>
+                        {/* One flat run of links and separators, the
+                            separator as three text nodes: the markup a
+                            hand-written " · " between two links makes. */}
+                        {law.sources.flatMap((source, index) => [
+                            ...(index > 0 ? [' ', '·', ' '] : []),
+                            <a
+                                key={source.sourceId}
+                                href={`#${sourceAnchorId(source.sourceId)}`}
+                                className='underline decoration-stone-600 underline-offset-4 hover:text-stone-200'
+                            >
+                                {source.label}
+                            </a>,
+                        ])}
+                    </p>
+                    <ul className='mt-5 flex flex-col gap-4.5'>
+                        {law.items.map((item) => (
+                            <li
+                                key={item.title}
+                                className='grid grid-cols-[0.5rem_minmax(0,1fr)] gap-x-3.5'
+                            >
+                                <span
+                                    aria-hidden='true'
+                                    className='bg-gold-400 mt-2.5 size-2'
+                                />
+                                <div>
+                                    <p
+                                        className={`text-[1.0625rem] leading-[1.55] font-bold text-stone-100${tabularFigures ? ' tabular-nums' : ''}`}
+                                    >
+                                        {item.title}
+                                    </p>
+                                    <p className={cn(moduleBodyDark, 'mt-0.5')}>
+                                        {item.body}
+                                    </p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                    <h3 className={cn(moduleH3Dark, 'mt-10 md:mt-12')}>
+                        {evidence.heading ?? 'What the research shows'}
+                    </h3>
+                    <div className='mt-4.5 flex flex-col gap-6'>
+                        {evidence.items.map((item) => (
+                            <div key={item.title}>
+                                <p className='text-[1.0625rem] leading-[1.55] font-bold text-stone-100'>
+                                    {item.title}
+                                </p>
+                                <p
+                                    className={cn(
+                                        moduleBodyDark,
+                                        'mt-1 tabular-nums'
+                                    )}
+                                >
+                                    {item.body}{' '}
+                                    <a
+                                        href={`#${sourceAnchorId(item.sourceId)}`}
+                                        className='text-sm whitespace-nowrap text-stone-400 underline decoration-stone-600 underline-offset-4 hover:text-stone-200'
+                                    >
+                                        Source
+                                    </a>
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                    {evidence.link ? (
+                        <p className={cn(moduleBodyDark, 'mt-6')}>
+                            <Link
+                                href={evidence.link.href}
+                                className='decoration-gold-400 text-stone-100 underline underline-offset-4 hover:text-white'
+                            >
+                                {evidence.link.label}
+                            </Link>
+                        </p>
+                    ) : null}
+                </div>
+            </section>
+
+            {checklist ? (
+                <ModuleAskAnySurgeon
+                    heading={checklist.heading}
+                    questions={checklist.questions}
+                    note={checklist.note}
+                />
+            ) : null}
+        </ModuleScene>
     )
 }
