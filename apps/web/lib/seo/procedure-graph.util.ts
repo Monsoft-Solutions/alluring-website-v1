@@ -97,6 +97,37 @@ export function procedureNameInMiami(title: string): string {
 }
 
 /**
+ * One `Offer` for a published price: a starting price, and a top when the
+ * range is real. `name` is set for a priced variant, so each of a
+ * procedure's options says which one it prices.
+ */
+function priceOffer({
+    name,
+    startingAt,
+    upTo,
+    pageUrl,
+}: {
+    name?: string
+    startingAt: number
+    upTo?: number
+    pageUrl: string
+}) {
+    return {
+        '@type': 'Offer',
+        ...(name && { name }),
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        url: pageUrl,
+        priceSpecification: {
+            '@type': 'PriceSpecification',
+            priceCurrency: 'USD',
+            minPrice: startingAt,
+            ...(upTo && { maxPrice: upTo }),
+        },
+    }
+}
+
+/**
  * Every node a procedure page publishes, as one `@graph`.
  *
  * The page used to emit six standalone JSON-LD blocks for the procedure alone,
@@ -221,21 +252,23 @@ export function buildProcedureGraph({
         // Caribbean — see CLAUDE.md.
         areaServed: ['Miami', 'Florida', 'United States'],
         image,
+        // One Offer per priced variant when the procedure has several (a
+        // tummy tuck by type), else the one starting price and its range.
         ...(procedure.pricing && {
-            offers: {
-                '@type': 'Offer',
-                priceCurrency: 'USD',
-                availability: 'https://schema.org/InStock',
-                url: pageUrl,
-                priceSpecification: {
-                    '@type': 'PriceSpecification',
-                    priceCurrency: 'USD',
-                    minPrice: procedure.pricing.startingAt,
-                    ...(procedure.pricing.upTo && {
-                        maxPrice: procedure.pricing.upTo,
-                    }),
-                },
-            },
+            offers: procedure.pricing.options?.length
+                ? procedure.pricing.options.map((option) =>
+                      priceOffer({
+                          name: option.label,
+                          startingAt: option.startingAt,
+                          upTo: option.upTo,
+                          pageUrl,
+                      })
+                  )
+                : priceOffer({
+                      startingAt: procedure.pricing.startingAt,
+                      upTo: procedure.pricing.upTo,
+                      pageUrl,
+                  }),
         }),
     }
 

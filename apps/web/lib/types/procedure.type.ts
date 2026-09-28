@@ -68,6 +68,22 @@ export interface ProcedurePriceFactor {
 }
 
 /**
+ * One priced variant of a procedure, e.g. a mini tummy tuck or silicone
+ * implants: a row in `ModulePriceTable` and an `Offer` of its own in the
+ * structured-data graph.
+ */
+export interface ProcedurePriceOption {
+    /** The variant as the page names it, e.g. "Mini tummy tuck" */
+    label: string
+    /** Its lowest advertised price, in USD */
+    startingAt: number
+    /** Top of its typical range, in USD. Omit when there is no real spread. */
+    upTo?: number
+    /** Who it suits, in one short line */
+    note?: string
+}
+
+/**
  * Published pricing for a procedure page.
  *
  * Figures are stored as numbers rather than pre-formatted strings so the same
@@ -89,6 +105,14 @@ export interface ProcedurePricing {
     includes: string[]
     /** What moves the price inside the range */
     factors: ProcedurePriceFactor[]
+    /**
+     * The procedure's priced variants, when it has more than one price (a
+     * tummy tuck by type, implants by fill). Set, the graph publishes one
+     * `Offer` per option instead of the single `startingAt`/`upTo` one, so
+     * keep `startingAt` at the lowest option's price for the surfaces that
+     * read only it (the fact rail, the paid landing page).
+     */
+    options?: ProcedurePriceOption[]
 }
 
 export interface Procedure {
@@ -205,6 +229,26 @@ export const procedureSchema = z.object({
                     description: z.string(),
                 })
             ),
+            options: z
+                .array(
+                    z
+                        .object({
+                            label: z.string().min(1),
+                            startingAt: z.number().positive(),
+                            upTo: z.number().positive().optional(),
+                            note: z.string().optional(),
+                        })
+                        .refine(
+                            (option) =>
+                                option.upTo === undefined ||
+                                option.upTo >= option.startingAt,
+                            {
+                                message:
+                                    'pricing.options[].upTo must not be below its startingAt',
+                            }
+                        )
+                )
+                .optional(),
         })
         .refine(
             (pricing) =>
