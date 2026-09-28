@@ -12,6 +12,10 @@
 
 import { bblFacts, bblSources } from '../lib/data/procedures/facts/bbl.facts'
 import { lipoFacts, lipoSources } from '../lib/data/procedures/facts/lipo.facts'
+import {
+    tummyTuckFacts,
+    tummyTuckSources,
+} from '../lib/data/procedures/facts/tummy-tuck.facts'
 import type {
     ProcedureFact,
     ProcedureSource,
@@ -111,9 +115,46 @@ const lipo: ProcedureCopyConfig = {
     ],
 }
 
+const tummyTuck: ProcedureCopyConfig = {
+    slug: 'tummy-tuck-miami',
+    name: 'Tummy tuck',
+    rootClass: 'tummy-tuck-page',
+    factsFile: 'tummy-tuck.facts.ts',
+    facts: tummyTuckFacts,
+    sources: tummyTuckSources,
+    // The title carries the current year, as the liposuction page's does
+    // (`seoTitle` in tummy-tuck-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    identifiers: [
+        [/64b8-9\.009\d?/g, ' rule '],
+        // Cleveland Clinic's sunscreen advice names the protection factor.
+        [/\bspf\s*30\b/g, ' spf '],
+        // The drug class, not a figure.
+        [/\bglp-1\b/g, ' glp '],
+    ],
+    rules: [
+        {
+            rule: 'drain-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\b(?:drainless|no drains?|without drains?)\b|\bdrainless\b/,
+            why: 'drains or a drainless technique is an owner question (brief #11)',
+        },
+        {
+            rule: 'named-technique',
+            re: /hourglass|progressive[\s-]tension|quilting|\bhlta\b|j[\s-]?plasma|renuvion/,
+            why: 'technique names wait on the owner (brief #14)',
+        },
+        {
+            rule: 'muscle-repair-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\balways\b[^.]{0,30}\brepair/,
+            why: 'which types include muscle repair waits on the owner (brief #10); the minis are "no muscle repair" on the sheet',
+        },
+    ],
+}
+
 export const procedureCopyConfigs: Readonly<
     Record<string, ProcedureCopyConfig>
 > = {
     [bbl.slug]: bbl,
     [lipo.slug]: lipo,
+    [tummyTuck.slug]: tummyTuck,
 }

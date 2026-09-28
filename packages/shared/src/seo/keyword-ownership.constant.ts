@@ -85,20 +85,20 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'tummy tuck before and after',
             'tummy tuck belly button',
             'best tummy tuck surgeon miami',
-        ],
-        mustNotTarget: [
-            {
-                query: 'tummy tuck cost miami',
-                ownedBy: '/tummy-tuck-cost-miami',
-            },
-            {
-                query: 'how much does a tummy tuck cost',
-                ownedBy: '/tummy-tuck-cost-miami',
-            },
-            {
-                query: 'mini tummy tuck cost',
-                ownedBy: '/tummy-tuck-cost-miami',
-            },
+            // Price intent (D5 of the wave-two brief). Like BBL and
+            // liposuction, the tummy tuck has no cost page: the planned
+            // /tummy-tuck-cost-miami is retired to this page, which carries
+            // the five prices from the practice's 2026-09-15 price sheet.
+            // The blog post that held these searches,
+            // /blog/tummy-tuck-mommy-makeover-miami, was re-scoped to the
+            // comparison in #309.
+            'tummy tuck cost miami',
+            'how much is a tummy tuck',
+            'how much does a tummy tuck cost',
+            'mini tummy tuck cost',
+            'abdominoplasty cost',
+            'tummy tuck cost',
+            'tummy tuck prices in miami',
         ],
     },
     {
@@ -287,21 +287,11 @@ const COST_PAGE_ENTRIES: OwnedPage[] = [
         url: '/tummy-tuck-cost-miami',
         kind: 'cost',
         intent: 'price',
-        status: 'planned',
+        status: 'retired',
         primaryKeyword: 'tummy tuck cost miami',
-        ownsQueries: [
-            'how much is a tummy tuck',
-            'how much does a tummy tuck cost',
-            'mini tummy tuck cost',
-            'abdominoplasty cost',
-            'tummy tuck cost',
-        ],
-        mustNotTarget: [
-            {
-                query: 'tummy tuck miami',
-                ownedBy: '/procedures/tummy-tuck-miami',
-            },
-        ],
+        ownsQueries: [],
+        redirectsTo: '/procedures/tummy-tuck-miami',
+        notes: 'Never built (it returned 404). Retired in the tummy tuck page rebuild (#313, D5): the procedure page owns the cost cluster, as the BBL and liposuction pages do.',
     },
     {
         url: '/breast-augmentation-cost-miami',

@@ -732,6 +732,24 @@ const nextConfig = {
                 permanent: true,
             },
 
+            // The tummy tuck's WordPress-era URL (#313, D6): 10,506 Search
+            // Console impressions and 2 clicks in 16 months, the last on
+            // 2025-10-10, and a 404 since the move. Its old links still
+            // point here.
+            {
+                source: '/procedures/tummy-tuck-cosmetic-surgery-in-miami',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            // The cost page the keyword registry planned and never built
+            // (D5): the procedure page's #pricing section owns the cost
+            // searches, as on the BBL and liposuction pages.
+            {
+                source: '/tummy-tuck-cost-miami',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+
             // Liposuction blog consolidation (2026-09-22 blog review):
             // 25 liposuction posts become 17.
             //
