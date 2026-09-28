@@ -702,8 +702,9 @@ export async function POST(
 /**
  * PATCH handler: the thank-you page's optional answers (#274).
  *
- * Adds an email, video-or-in-person, financing interest, best time to text
- * or how they heard about us to the lead the visitor just sent, then sends
+ * Adds an email, video-or-in-person, financing interest, best time to text,
+ * how they heard about us or (when the form didn't ask, #307) the timeline
+ * to the lead the visitor just sent, then sends
  * the whole lead to N8N as `lead.updated`. The token from the POST response
  * is the only authorisation: it names one lead and expires.
  *
@@ -762,6 +763,7 @@ export async function PATCH(
                 preferredContactTime: update.preferredContactTime,
             }),
             ...(update.heardFrom && { heardFrom: update.heardFrom }),
+            ...(update.timeline && { timeline: update.timeline }),
         }
 
         const [lead] = await db

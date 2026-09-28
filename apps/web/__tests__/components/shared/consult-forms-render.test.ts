@@ -225,3 +225,57 @@ describe('the last step’s wording test (#302)', () => {
         expect(html).not.toContain('cc-contact-note')
     })
 })
+
+describe('ConsultFields, the one-screen form (#307)', async () => {
+    const { ConsultFields } = await import(
+        '@/components/shared/consult-chat/consult-fields.component'
+    )
+    const copy = lp.copy.en
+    const render = (defaultProcedure?: string) =>
+        renderToStaticMarkup(
+            createElement(ConsultFields, {
+                ...base,
+                copy,
+                defaultProcedure,
+                nameField: 'first' as const,
+            })
+        )
+
+    it('shows the procedure, first name and number at once, with no timeline', () => {
+        const html = render()
+        expect(html).toContain('<select')
+        expect(html).toContain(copy.fieldProcedure)
+        expect(html).toContain(copy.fieldName)
+        expect(html).toContain(copy.fieldPhone)
+        expect(html).toContain('type="submit"')
+        expect(html).not.toContain(copy.qTimeline)
+        for (const option of copy.timelines) {
+            expect(html).not.toContain(`>${option.label}<`)
+        }
+    })
+
+    it('uses the consent checkbox, not the tap line', () => {
+        const html = render()
+        expect(html).toContain('type="checkbox"')
+        expect(html).not.toContain('cc-consent-line')
+    })
+
+    it('has no step list, only the title and the time', () => {
+        const html = render()
+        expect(html).toContain(copy.title)
+        expect(html).not.toContain('cc-steps__list')
+    })
+
+    it('starts on the ad group’s procedure, or on the empty choice', () => {
+        expect(render('tummy-tuck')).toMatch(
+            /<option value="tummy-tuck" selected="">/
+        )
+        expect(render()).toMatch(/<option value="" disabled="" selected="">/)
+    })
+
+    it('ignores a preset the list does not offer', () => {
+        expect(render('not-a-procedure')).toMatch(
+            /<option value="" disabled="" selected="">/
+        )
+    })
+})

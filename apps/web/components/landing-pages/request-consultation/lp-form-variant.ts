@@ -1,10 +1,11 @@
 /**
- * The ads landing page's two tests, crossed (a 2×2):
+ * The ads landing page's two tests, crossed:
  *
- *   form (#292)   which form a visitor sees in the hero — the quiet thread
- *                 (A) or the tap card (B)
- *   copy (#302)   whether the form's last step says what happens next above
- *                 the fields (`reassure`) or only asks for the number (`plain`)
+ *   form (#292, #307)  which form a visitor sees in the hero: one screen with
+ *                      every field (`form`), the stepped tap card (`card`),
+ *                      or the quiet stepped thread (`thread`, closed since #307)
+ *   copy (#302)        whether the form's last step says what happens next above
+ *                      the fields (`reassure`) or only asks for the number (`plain`)
  *
  * Each test has its own cookie, header, override and split, and draws its
  * arm with its own random number, so the two are independent.
@@ -15,16 +16,17 @@
  * it to the page in a request header, so the first HTML already has the
  * right form and nothing swaps after hydration.
  *
- *   ?fv=thread | ?fv=card     forces a form arm (QA), and keeps it
+ *   ?fv=form | ?fv=card | ?fv=thread   forces a form arm (QA), and keeps it
  *   LP_FORM_SPLIT             each form arm's share of new visitors:
- *                             'thread:50,card:50' (the default when unset),
- *                             'thread:100' to end the test on the thread.
+ *                             'form:67,card:33' (the default when unset),
+ *                             'card:100' to end the test on the card.
  *   ?cv=plain | ?cv=reassure  forces a copy arm, and keeps it
  *   LP_COPY_SPLIT             the same for the copy test: 'plain:50,reassure:50'
  *                             when unset, 'plain:100' to roll it back.
  *
- * An arm set to 0 is closed: a returning visitor whose cookie names it is
- * drawn again, so rolling back is one environment variable.
+ * An arm set to 0 (or left out of the split) is closed: a returning visitor
+ * whose cookie names it is drawn again, so rolling back is one environment
+ * variable. The override still reaches a closed arm, for QA.
  *
  * No React and no Next here: the middleware (Edge) and the tests use it.
  */
@@ -46,7 +48,7 @@ interface AssignInput<V extends string> {
 
 /** Narrows a query value, cookie or header to one of `variants`. */
 function toVariant<V extends string>(
-    variants: readonly [V, V],
+    variants: readonly V[],
     value: string | null | undefined
 ): V | null {
     const key = (value ?? '').toLowerCase().trim()
@@ -59,13 +61,15 @@ function toVariant<V extends string>(
  * dashboard must not send every visitor to one arm by accident.
  */
 function parseSplit<V extends string>(
-    variants: readonly [V, V],
+    variants: readonly V[],
     fallback: Split<V>,
     raw: string | null | undefined
 ): Split<V> {
     const text = (raw ?? '').trim()
     if (!text) return fallback
-    const split = { [variants[0]]: 0, [variants[1]]: 0 } as Record<V, number>
+    const split = Object.fromEntries(
+        variants.map((variant) => [variant, 0])
+    ) as Record<V, number>
     for (const part of text.split(',')) {
         const [name, weight] = part.split(':').map((piece) => piece.trim())
         const variant = toVariant(variants, name)
@@ -73,22 +77,35 @@ function parseSplit<V extends string>(
         if (!variant || !Number.isFinite(share) || share < 0) return fallback
         split[variant] = share
     }
-    return split[variants[0]] + split[variants[1]] > 0 ? split : fallback
+    return total(variants, split) > 0 ? split : fallback
 }
 
-/** An arm by weight, given a number in [0, 1). */
+function total<V extends string>(
+    variants: readonly V[],
+    split: Split<V>
+): number {
+    return variants.reduce((sum, variant) => sum + split[variant], 0)
+}
+
+/** An arm by weight, given a number in [0, 1). Closed arms are never drawn. */
 function drawVariant<V extends string>(
-    [first, second]: readonly [V, V],
+    variants: readonly V[],
     split: Split<V>,
     random: number
 ): V {
-    const total = split[first] + split[second]
-    return random * total < split[first] ? first : second
+    let point = random * total(variants, split)
+    const open = variants.filter((variant) => split[variant] > 0)
+    for (const variant of open) {
+        if (point < split[variant]) return variant
+        point -= split[variant]
+    }
+    // Only reached when every arm is closed, which parseSplit never returns.
+    return (open.at(-1) ?? variants[0]) as V
 }
 
 /** The override, then a cookie naming an open arm, then a draw. */
 function assignVariant<V extends string>(
-    variants: readonly [V, V],
+    variants: readonly V[],
     { query, cookie, split, random }: AssignInput<V>
 ): Assignment<V> {
     const forced = toVariant(variants, query)
@@ -101,9 +118,9 @@ function assignVariant<V extends string>(
 /** 90 days, in seconds, for both tests' cookies. */
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 90
 
-// ---- The form test (#292) --------------------------------------------------
+// ---- The form test (#292, #307) --------------------------------------------
 
-export const LP_FORM_VARIANTS = ['thread', 'card'] as const
+export const LP_FORM_VARIANTS = ['thread', 'card', 'form'] as const
 export type LpFormVariant = (typeof LP_FORM_VARIANTS)[number]
 
 export const LP_FORM_COOKIE = 'lp_fv'
@@ -113,7 +130,15 @@ export const LP_FORM_COOKIE_MAX_AGE = COOKIE_MAX_AGE
 
 export type LpFormSplit = Split<LpFormVariant>
 
-export const DEFAULT_LP_FORM_SPLIT: LpFormSplit = { thread: 50, card: 50 }
+/**
+ * #307: two thirds see every field on one screen, one third the stepped card.
+ * The thread is closed.
+ */
+export const DEFAULT_LP_FORM_SPLIT: LpFormSplit = {
+    thread: 0,
+    card: 33,
+    form: 67,
+}
 
 export const toLpFormVariant = (value: string | null | undefined) =>
     toVariant(LP_FORM_VARIANTS, value)

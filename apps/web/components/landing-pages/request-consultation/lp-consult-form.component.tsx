@@ -1,35 +1,37 @@
 'use client'
 
 /**
- * The landing page's consultation form, in either of the two test arms
- * (#292): the quiet thread (`ConsultChat`, arm `thread`) or the tap card
- * (`ConsultCard`, arm `card`). Both run the same flow with the same copy,
+ * The landing page's consultation form, in any of the test's arms: one
+ * screen with every field (`ConsultFields`, arm `form`, #307), the stepped
+ * tap card (`ConsultCard`, arm `card`) or the quiet thread (`ConsultChat`,
+ * arm `thread`, closed since #307). All run the same flow with the same copy,
  * send and tracking; only the drawing differs, so the test measures the form
  * and nothing else.
  *
- * The thread is the site's own, made quiet: the form header instead of the
- * chat header, no greeting, no typing pause, earlier answers on one line,
- * and consent by tapping the button.
+ * Consent is the site-wide checkbox in every arm (#307). v6 had made tapping
+ * the button the consent, and sends fell anyway, so the box stays and the
+ * two arms differ only in steps vs one screen.
  *
  * It submits like the v5 thread did: source `landing-page`, the lead's
  * campaign identifiers, and a full page load to the ad funnel's own
  * thank-you page (whose page view is what the Google Ads conversion fires
  * on), now with `&fv=` for the arm. It still pushes `lp_step` and
  * `lp_lead_attempt` with the page version and ad group, and each lead
- * records the page version, the arm and the consent wording. The page
+ * records the page version, the arm and how it consented. The page
  * version names the last step's wording arm too (#302): `v6` or `v6r`.
  */
 
 import type { ConsultChatLang } from '@/components/shared/consult-chat/consult-chat.types'
 import { ConsultCard } from '@/components/shared/consult-chat/consult-card.component'
 import { ConsultChat } from '@/components/shared/consult-chat/consult-chat.component'
+import { ConsultFields } from '@/components/shared/consult-chat/consult-fields.component'
 import type {
     ConsultFlowAnswer,
     ConsultFlowOptions,
 } from '@/components/shared/consult-chat/use-consult-flow.hook'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
-import { type LpChat, LP_CONSENT_VERSION } from './lp-chat-copy'
+import type { LpChat } from './lp-chat-copy'
 import { LP_CHAT_ID, LP_LEAD_KEY, LP_THANK_YOU_PATH } from './lp-config'
 import type { LpCopyVariant, LpFormVariant } from './lp-form-variant'
 import { lpPageVariant, lpPageVersion } from './lp-tracking'
@@ -84,7 +86,6 @@ export function LpConsultForm({
             formVariant,
         },
         typingMs: 0,
-        consent: { method: 'tap', version: LP_CONSENT_VERSION },
         analyticsParams: {
             form_variant: formVariant,
             page_variant: pageVariant,
@@ -96,6 +97,16 @@ export function LpConsultForm({
         onAnswer,
     }
     const defaultProcedure = VARIANT_PROCEDURE[adVariant]
+
+    if (formVariant === 'form') {
+        return (
+            <ConsultFields
+                {...flow}
+                defaultProcedure={defaultProcedure}
+                nameField='first'
+            />
+        )
+    }
 
     return formVariant === 'card' ? (
         <ConsultCard

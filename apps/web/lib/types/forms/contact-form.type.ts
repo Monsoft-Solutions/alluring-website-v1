@@ -23,6 +23,7 @@ import {
     LEAD_HEARD_FROM,
     LEAD_LANGUAGES,
     LEAD_TEXT_TIMES,
+    LEAD_TIMELINES,
 } from '@/lib/constants/lead-fields'
 
 /**
@@ -478,6 +479,8 @@ export const leadUpdateSchema = z
         financingInterest: z.enum(LEAD_FINANCING_INTEREST).optional(),
         preferredContactTime: z.enum(LEAD_TEXT_TIMES).optional(),
         heardFrom: z.enum(LEAD_HEARD_FROM).optional(),
+        // Asked here when the form didn't (the one-screen form, #307).
+        timeline: z.enum(LEAD_TIMELINES).optional(),
     })
     .refine(
         ({
@@ -486,13 +489,15 @@ export const leadUpdateSchema = z
             financingInterest,
             preferredContactTime,
             heardFrom,
+            timeline,
         }) =>
             Boolean(
                 email ||
                     consultType ||
                     financingInterest ||
                     preferredContactTime ||
-                    heardFrom
+                    heardFrom ||
+                    timeline
             ),
         { message: 'Nothing to update.' }
     )
