@@ -1488,7 +1488,7 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
         mustNotTarget: [
             {
                 query: 'tummy tuck cost miami',
-                ownedBy: '/tummy-tuck-cost-miami',
+                ownedBy: '/procedures/tummy-tuck-miami',
             },
             {
                 query: 'mommy makeover cost',
