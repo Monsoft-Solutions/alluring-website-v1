@@ -4,10 +4,12 @@
  * The question strip (#292): a one-row card that asks the form's first
  * question above the section a sitelink opened (`?s=`).
  *
- * A sitelink visitor lands on the section she clicked, below the hero, and
- * 25 of them (22% of paid visits, 24–26 Sep) sent nothing: the form was
- * above the screen. The strip puts the question in front of her; a chip
- * answers it and brings her to the form at the second step.
+ * A sitelink visitor used to land on the section she clicked, below the
+ * hero, and 25 of them (22% of paid visits, 24–26 Sep) sent nothing: the form
+ * was above the screen. The strip puts the question in front of her; a chip
+ * answers it and brings her to the form at the second step. Since #315 the
+ * view opens at the top, so the strip is what she meets when she scrolls
+ * down to the section she came for.
  */
 
 import type { ConsultChatOption } from '@/components/shared/consult-chat/consult-chat.types'
