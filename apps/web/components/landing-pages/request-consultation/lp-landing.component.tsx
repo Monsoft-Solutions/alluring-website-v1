@@ -19,10 +19,11 @@
  * v6 (#292) is the short page: the form, results, the surgeon, one review,
  * five closed questions, and the form's question again. The tummy tuck view
  * also lists the five tummy tuck prices under the hero (#316), because its
- * ads quote them. A sitelink's `?s=`
- * puts its section directly under the hero, with a question strip over it,
- * and scrolls there (`lp-sections.ts`). The phone's sticky bar asks the
- * form's first question until it is answered.
+ * ads quote them. A sitelink's `?s=` puts its section directly under the
+ * hero, with a question strip over it (`lp-sections.ts`). Since #315 the page
+ * no longer scrolls there: a sitelink visitor opens on the same first screen
+ * as everyone else, the form in view, with her section one scroll below. The
+ * phone's sticky bar asks the form's first question until it is answered.
  *
  * The hero form is under a 50/50 test, the quiet thread against the tap
  * card; `middleware.ts` picks the visitor's arm and the page hands it here.
@@ -174,19 +175,6 @@ export function LpLanding({
         )
         trackLpViewInGa4(context, focusSection)
     }, [initialLang, adVariant, formVariant, pageVariant, focusSection])
-
-    /**
-     * A sitelink's section is already first under the hero, with the
-     * question strip over it; this brings the strip into view. Only if the
-     * visitor hasn't scrolled yet: a slow hydration must not yank a page
-     * someone is already reading.
-     */
-    useEffect(() => {
-        if (!focusSection || window.scrollY > 40) return
-        document
-            .getElementById(LP_STRIP_ID)
-            ?.scrollIntoView({ block: 'start', behavior: 'instant' })
-    }, [focusSection])
 
     /** `lp_section_view`, once per section per page view. */
     useEffect(() => {
