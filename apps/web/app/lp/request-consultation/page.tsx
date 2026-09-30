@@ -7,6 +7,7 @@
  *   /lp/request-consultation?p=bbl                per ad group
  *   /lp/request-consultation?p=bbl&hl=es          Spanish campaigns
  *   /lp/request-consultation?s=financing          a sitelink's section first
+ *   /lp/request-consultation?p=tummy-tuck         also lists the tummy tuck prices (#316)
  *   /lp/request-consultation?fv=form              force a form test arm (QA): form | card | thread
  *   /lp/request-consultation?cv=reassure          force a last-step wording arm (QA)
  *
@@ -53,6 +54,7 @@ import {
     resolveLpLanguage,
     type ResolvedLpLanguage,
 } from '@/components/landing-pages/request-consultation/lp-language'
+import { buildLpPrices } from '@/components/landing-pages/request-consultation/lp-prices'
 import { selectLpProof } from '@/components/landing-pages/request-consultation/lp-proof'
 import { resolveLpSection } from '@/components/landing-pages/request-consultation/lp-sections'
 import {
@@ -158,6 +160,7 @@ export default async function RequestConsultationLandingPage({
             copyVariant={copyVariant}
             chat={buildLpChat(adVariant, copyVariant)}
             proof={selectLpProof(adVariant, gallery, reviews)}
+            prices={buildLpPrices(adVariant)}
             focusSection={resolveLpSection(first(params.s))}
         />
     )

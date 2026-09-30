@@ -1125,6 +1125,70 @@
 .aps-lp .qstrip + .surgeon {
     padding-top: 48px;
 }
+/* ---------- prices (#316): the tummy tuck view only ---------- */
+.aps-lp .prices {
+    background: var(--s50);
+    border-top: 1px solid var(--s200);
+    border-bottom: 1px solid var(--s200);
+}
+.aps-lp .prices .sec-head {
+    margin-bottom: 36px;
+}
+.aps-lp .price-list {
+    list-style: none;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0;
+    border-top: 1px solid var(--s200);
+}
+.aps-lp .price-list li {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--s200);
+}
+.aps-lp .price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+}
+.aps-lp .price-row h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--ink);
+}
+.aps-lp .price-amount {
+    flex: none;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+}
+.aps-lp .price-note {
+    margin: 4px 0 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--s600);
+}
+.aps-lp .price-foot {
+    max-width: 52rem;
+    margin: 18px auto 0;
+}
+.aps-lp .price-fine {
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--s500);
+}
+@media (max-width: 860px) {
+    .aps-lp .price-row h3 {
+        font-size: 19px;
+    }
+}
 /* ---------- faq ---------- */
 /* Native <details>, first one open: see `lp-faq.component.tsx`. */
 .aps-lp .faq-list {
