@@ -5,7 +5,7 @@
  * A sitelink used to send a visitor to a main-site page (/gallery, /reviews,
  * the financing page…) — a page with the site menu and its popups, built for
  * someone else. Now each sitelink opens this page with its section moved
- * directly under the hero, and the page scrolls to it:
+ * directly under the hero:
  *
  *   /lp/request-consultation?s=financing       the price & financing section
  *   /lp/request-consultation?s=reviews&p=bbl   works with every `?p=` too
@@ -14,6 +14,13 @@
  * each view has to be a different page, not an anchor on the same one. The
  * visitor still has the form above, a question strip over her section and
  * the sticky bar, and nothing links off the page.
+ *
+ * Until #315 the page also scrolled down to the section, past the form.
+ * Sitelinks then took a fifth of the ad spend (97 clicks, 24–30 Sep) and sent
+ * no request; their visitors started the form as often as anyone (16 of 63
+ * paid sessions since v6) and none finished. Now the view opens at the top,
+ * on the same first screen as a headline click, with the section one scroll
+ * below. What Google sees is unchanged: each view is still its own order.
  *
  * v6 (#292) is the short page: results, the surgeon, reviews and the
  * questions. Price & financing and flying in are off the page but stay as
