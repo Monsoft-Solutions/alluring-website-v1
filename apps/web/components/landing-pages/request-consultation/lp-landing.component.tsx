@@ -17,7 +17,9 @@
  * conversion, not an exit.
  *
  * v6 (#292) is the short page: the form, results, the surgeon, one review,
- * five closed questions, and the form's question again. A sitelink's `?s=`
+ * five closed questions, and the form's question again. The tummy tuck view
+ * also lists the five tummy tuck prices under the hero (#316), because its
+ * ads quote them. A sitelink's `?s=`
  * puts its section directly under the hero, with a question strip over it,
  * and scrolls there (`lp-sections.ts`). The phone's sticky bar asks the
  * form's first question until it is answered.
@@ -51,6 +53,8 @@ import type { LpCopyVariant, LpFormVariant } from './lp-form-variant'
 import { LpHeader } from './lp-header.component'
 import { LpHero } from './lp-hero.component'
 import { LpLegalDialog } from './lp-legal-dialog.component'
+import { LP_PRICES_ID, LpPriceList } from './lp-prices.component'
+import type { LpPrices } from './lp-prices'
 import type { LpProof } from './lp-proof'
 import { LP_STRIP_ID, LpQuestionStrip } from './lp-question-strip.component'
 import { LpResults } from './lp-results.component'
@@ -83,7 +87,12 @@ const FALLBACK_REVIEW_COUNT = '80+'
  * Sections that report `lp_section_view` the first time a quarter of them is
  * on screen: how far down the short page visitors get.
  */
-const VIEW_TRACKED: readonly string[] = ['surgeon', 'faq', LP_CLOSING_ID]
+const VIEW_TRACKED: readonly string[] = [
+    LP_PRICES_ID,
+    'surgeon',
+    'faq',
+    LP_CLOSING_ID,
+]
 
 interface LpLandingProps {
     /** Resolved server-side from `?hl=` or the request's Accept-Language. */
@@ -102,6 +111,8 @@ interface LpLandingProps {
     readonly chat: LpChat
     /** Photographs, rating and reviews, read on the server. */
     readonly proof: LpProof
+    /** The tummy tuck view's prices (#316), read on the server; null elsewhere. */
+    readonly prices: LpPrices | null
     /** From `?s=`: the section a sitelink opened, moved under the hero. */
     readonly focusSection: LpSection | null
 }
@@ -114,6 +125,7 @@ export function LpLanding({
     copyVariant,
     chat,
     proof,
+    prices,
     focusSection,
 }: LpLandingProps) {
     const pageVariant = lpPageVariant(copyVariant)
@@ -298,7 +310,13 @@ export function LpLanding({
             />
         ),
         'fly-in': <LpFlyIn copy={copy.flyIn} />,
-        faq: <LpFaq copy={copy.faq} prices={chat.prices} />,
+        faq: (
+            <LpFaq
+                copy={copy.faq}
+                prices={chat.prices}
+                tummyTuck={prices?.tummyTuck}
+            />
+        ),
     }
 
     // The sticky bar and the legal dialog sit outside the page root: its
@@ -340,6 +358,12 @@ export function LpLanding({
                             />
                         }
                     />
+                    {prices && (
+                        <LpPriceList
+                            copy={copy.prices}
+                            prices={prices.tummyTuck}
+                        />
+                    )}
                     {orderLpSections(focusSection).map((section) => (
                         <Fragment key={section}>
                             {section === focusSection && (

@@ -101,6 +101,14 @@ export interface LpReview {
     readonly by: string
 }
 
+/** The tummy tuck types on the practice's price sheet, in its order (#316). */
+export type LpTummyTuckType =
+    | 'mini'
+    | 'extended-mini'
+    | 'full'
+    | 'extended'
+    | 'fleur-de-lis'
+
 export interface LpFaqItem {
     readonly question: string
     /** `{prices}` is replaced with the deck's `faq.prices` sentence, or dropped. */
@@ -206,7 +214,26 @@ export interface LpDictionary {
          * `{lipo}`. Dropped whole when either price is missing.
          */
         readonly prices: string
+        /** The same sentence on the tummy tuck view (#316): `{mini}` and `{full}`. */
+        readonly pricesTummyTuck: string
         readonly items: readonly LpFaqItem[]
+    }
+    /**
+     * Tummy tuck prices, on the tummy tuck view only (#316). Each row mirrors
+     * the procedure page's price table; `from` takes `{price}`. No payment
+     * amounts, rates or terms, and no claim about what a price includes.
+     */
+    readonly prices: {
+        readonly eyebrow: string
+        readonly heading: RichText
+        readonly from: string
+        readonly rows: readonly {
+            readonly type: LpTummyTuckType
+            readonly label: string
+            readonly note: string
+        }[]
+        readonly fine: string
+        readonly cta: string
     }
     readonly closing: {
         readonly heading: RichText
@@ -390,6 +417,8 @@ const en: LpDictionary = {
         eyebrow: 'Straight answers',
         heading: ['The questions ', { em: 'everyone asks' }],
         prices: 'BBL starts at {bbl} and Lipo 360 at {lipo}.',
+        pricesTummyTuck:
+            'A mini tummy tuck starts at {mini} and a full tummy tuck at {full}.',
         items: [
             {
                 question: 'How much will it cost?',
@@ -417,6 +446,40 @@ const en: LpDictionary = {
                 tag: 'No obligation · No commission',
             },
         ],
+    },
+    prices: {
+        eyebrow: 'Tummy tuck prices',
+        heading: ['Five tummy tucks, ', { em: 'five prices' }],
+        from: 'From {price}',
+        rows: [
+            {
+                type: 'mini',
+                label: 'Mini tummy tuck',
+                note: 'Loose skin below the belly button. No muscle repair.',
+            },
+            {
+                type: 'extended-mini',
+                label: 'Extended mini tummy tuck',
+                note: 'A hip-to-hip incision. No muscle repair.',
+            },
+            {
+                type: 'full',
+                label: 'Full tummy tuck',
+                note: 'Loose skin that doesn’t extend to the hips.',
+            },
+            {
+                type: 'extended',
+                label: 'Extended tummy tuck',
+                note: 'A hip-to-hip incision, when loose skin reaches the hips.',
+            },
+            {
+                type: 'fleur-de-lis',
+                label: 'Fleur-de-lis tummy tuck',
+                note: 'Adds a vertical scar, usually after major weight loss.',
+            },
+        ],
+        fine: 'Starting prices from the practice’s price list. Your surgeon tells you which tummy tuck you need at your consultation, and your price comes in writing before you decide.',
+        cta: 'Ask about your price',
     },
     closing: {
         heading: ['Your plan and your price, ', { em: 'in writing.' }],
@@ -575,6 +638,8 @@ const es: LpDictionary = {
         eyebrow: 'Respuestas claras',
         heading: ['Las preguntas que ', { em: 'todas hacen' }],
         prices: 'El BBL empieza en {bbl} y la Lipo 360 en {lipo}.',
+        pricesTummyTuck:
+            'La mini abdominoplastia empieza en {mini} y la abdominoplastia completa en {full}.',
         items: [
             {
                 question: '¿Cuánto me va a costar?',
@@ -602,6 +667,40 @@ const es: LpDictionary = {
                 tag: 'Sin compromiso · Sin comisiones',
             },
         ],
+    },
+    prices: {
+        eyebrow: 'Precios de abdominoplastia',
+        heading: ['Cinco abdominoplastias, ', { em: 'cinco precios' }],
+        from: 'Desde {price}',
+        rows: [
+            {
+                type: 'mini',
+                label: 'Mini abdominoplastia',
+                note: 'Piel suelta debajo del ombligo. Sin reparación muscular.',
+            },
+            {
+                type: 'extended-mini',
+                label: 'Mini abdominoplastia extendida',
+                note: 'Una incisión de cadera a cadera. Sin reparación muscular.',
+            },
+            {
+                type: 'full',
+                label: 'Abdominoplastia completa',
+                note: 'Piel suelta que no llega a las caderas.',
+            },
+            {
+                type: 'extended',
+                label: 'Abdominoplastia extendida',
+                note: 'Una incisión de cadera a cadera, cuando la piel suelta llega a las caderas.',
+            },
+            {
+                type: 'fleur-de-lis',
+                label: 'Abdominoplastia en flor de lis',
+                note: 'Suma una cicatriz vertical, por lo general después de una gran pérdida de peso.',
+            },
+        ],
+        fine: 'Precios iniciales de la lista de precios de la práctica. Tu cirujana te dice qué abdominoplastia necesitas en tu consulta, y tu precio llega por escrito antes de que decidas.',
+        cta: 'Pregunta por tu precio',
     },
     closing: {
         heading: ['Tu plan y tu precio, ', { em: 'por escrito.' }],

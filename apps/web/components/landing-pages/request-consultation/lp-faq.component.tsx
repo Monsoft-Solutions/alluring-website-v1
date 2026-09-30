@@ -14,24 +14,35 @@
  * The cost answer repeats the settled starting prices (BBL, Lipo 360). They
  * come from the thread's own copy, which the server read from the procedure
  * facts files, so the page never states a price the facts no longer carry:
- * without both, the sentence is dropped.
+ * without both, the sentence is dropped. On the tummy tuck view (#316) it
+ * names the mini and full tummy tuck prices instead.
  */
 
 import { fill } from '@/components/shared/consult-chat/consult-chat.util'
 
 import type { LpDictionary } from './lp-copy'
+import type { LpPrices } from './lp-prices'
 import { Rich } from './lp-primitives.component'
 
 interface LpFaqProps {
     readonly copy: LpDictionary['faq']
     /** Starting prices by procedure value, already formatted ("$5,500"). */
     readonly prices: Readonly<Record<string, string>>
+    /** The tummy tuck view's prices (#316), when this is that view. */
+    readonly tummyTuck?: LpPrices['tummyTuck']
 }
 
-export function LpFaq({ copy, prices }: LpFaqProps) {
+export function LpFaq({ copy, prices, tummyTuck }: LpFaqProps) {
     const bbl = prices.bbl
     const lipo = prices.liposuction
-    const pricesLine = bbl && lipo ? fill(copy.prices, { bbl, lipo }) : ''
+    const pricesLine = tummyTuck
+        ? fill(copy.pricesTummyTuck, {
+              mini: tummyTuck.mini,
+              full: tummyTuck.full,
+          })
+        : bbl && lipo
+          ? fill(copy.prices, { bbl, lipo })
+          : ''
 
     return (
         <section className='band' id='faq'>
