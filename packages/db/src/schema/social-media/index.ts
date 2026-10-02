@@ -22,6 +22,14 @@ export {
     type InsertInstagramPostMedia,
 } from './instagram-post-media.table'
 
+// YouTube Connection
+export {
+    youtubeConnectionStatus,
+    youtubeConnection,
+    type YouTubeConnection,
+    type InsertYouTubeConnection,
+} from './youtube-connection.table'
+
 // Relations
 export {
     instagramPostRelations,

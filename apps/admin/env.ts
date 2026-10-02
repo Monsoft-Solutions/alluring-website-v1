@@ -90,6 +90,15 @@ export const env = createEnv({
         GOOGLE_ADS_API_VERSION: z.string().optional(),
         GOOGLE_ADS_TIME_ZONE: z.string().optional(),
 
+        // YouTube (optional - epic #303). The OAuth client identifies the
+        // admin app to Google; the channel's own token is stored encrypted in
+        // youtube_connection with YOUTUBE_TOKEN_ENCRYPTION_KEY (32 bytes,
+        // base64). @workspace/youtube reads these from process.env itself;
+        // they are declared here so a malformed value fails the build.
+        YOUTUBE_OAUTH_CLIENT_ID: z.string().min(1).optional(),
+        YOUTUBE_OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
+        YOUTUBE_TOKEN_ENCRYPTION_KEY: z.string().min(40).optional(),
+
         // Tavily API key for web search (optional)
         // Get one at https://tavily.com
         TAVILY_API_KEY: z.string().optional(),

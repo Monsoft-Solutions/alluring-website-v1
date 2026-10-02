@@ -21,6 +21,7 @@ import {
     Star,
     Clock,
     ExternalLink,
+    Youtube,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -52,6 +53,12 @@ export default async function SocialMediaDashboardPage() {
                     </p>
                 </div>
                 <div className='flex items-center gap-3'>
+                    <Button asChild variant='outline' size='sm'>
+                        <Link href='/social-media/youtube'>
+                            <Youtube className='mr-2 h-4 w-4' />
+                            YouTube
+                        </Link>
+                    </Button>
                     <Button asChild variant='outline' size='sm'>
                         <Link href='/social-media/settings'>
                             <Settings className='mr-2 h-4 w-4' />

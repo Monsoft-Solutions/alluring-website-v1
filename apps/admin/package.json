@@ -20,7 +20,8 @@
         "backfill:gsc": "tsx scripts/backfill-gsc-snapshots.ts",
         "backfill:ads": "tsx scripts/backfill-ads.ts",
         "backfill:lead-params": "tsx scripts/backfill-lead-landing-params.ts",
-        "refresh:prune": "tsx scripts/prune-refresh-noise.ts"
+        "refresh:prune": "tsx scripts/prune-refresh-noise.ts",
+        "youtube:test-upload": "tsx scripts/youtube-test-upload.ts"
     },
     "dependencies": {
         "@ai-sdk/react": "^4.0.86",
@@ -52,6 +53,7 @@
         "@workspace/seo": "workspace:*",
         "@workspace/shared": "workspace:*",
         "@workspace/ui": "workspace:*",
+        "@workspace/youtube": "workspace:*",
         "date-fns": "^4.1.0",
         "diff": "^9.0.0",
         "drizzle-orm": "^0.44.7",
