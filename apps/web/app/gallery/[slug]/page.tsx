@@ -7,10 +7,14 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
-import { Award, Shield, Users, Building2 } from 'lucide-react'
+import { ArrowLeft, Award, Users, Building2 } from 'lucide-react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { GalleryMediaGrid } from '@/components/gallery/gallery-media-grid.component'
+import {
+    GalleryProcedureCards,
+    GalleryProcedureChips,
+} from '@/components/gallery-page/gallery-procedure-nav.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
@@ -19,6 +23,7 @@ import {
     getAllGalleryGroupSlugs,
     getGalleryGroupBySlug,
 } from '@/lib/queries/gallery/gallery-detail.query'
+import { getGalleryOverview } from '@/lib/queries/gallery/gallery-overview.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
@@ -38,6 +43,38 @@ const procedurePageByGroup: Record<string, { href: string; label: string }> = {
     'brazilian-butt-lift': {
         href: '/procedures/brazilian-butt-lift-bbl-miami',
         label: 'BBL in Miami: cost, safety and recovery',
+    },
+    'tummy-tuck': {
+        href: '/procedures/tummy-tuck-miami',
+        label: 'Tummy tuck in Miami: cost, safety and recovery',
+    },
+    liposuction: {
+        href: '/procedures/liposuction-miami',
+        label: 'Liposuction and Lipo 360 in Miami: cost and recovery',
+    },
+    'mommy-makeover': {
+        href: '/procedures/mommy-makeover-miami',
+        label: 'Mommy makeover in Miami: what it includes and costs',
+    },
+    'breast-augmentation': {
+        href: '/procedures/breast-augmentation-miami',
+        label: 'Breast augmentation in Miami: implants, cost and recovery',
+    },
+    'breast-lift': {
+        href: '/procedures/breast-lift-miami',
+        label: 'Breast lift in Miami: cost and recovery',
+    },
+    'breast-reduction': {
+        href: '/procedures/breast-reduction-miami',
+        label: 'Breast reduction in Miami: cost and recovery',
+    },
+    facelift: {
+        href: '/procedures/facelift-miami',
+        label: 'Facelift in Miami: cost and recovery',
+    },
+    blepharoplasty: {
+        href: '/procedures/blepharoplasty-miami',
+        label: 'Eyelid surgery in Miami: cost and recovery',
     },
 }
 
@@ -98,11 +135,28 @@ export async function generateMetadata({
 
 export default async function GalleryGroupPage({ params }: PageProps) {
     const { slug } = await params
-    const group = await getCachedGroupBySlug(slug)
+    const [group, overview] = await Promise.all([
+        getCachedGroupBySlug(slug),
+        getGalleryOverview(),
+    ])
 
     if (!group) {
         notFound()
     }
+
+    const otherProcedures = overview.procedures.filter(
+        (p) => p.slug !== group.slug
+    )
+    const photoCount = group.media.filter((m) => m.type === 'image').length
+    const videoCount = group.media.length - photoCount
+    const countLine = [
+        photoCount > 0 &&
+            `${photoCount} ${photoCount === 1 ? 'photo' : 'photos'}`,
+        videoCount > 0 &&
+            `${videoCount} ${videoCount === 1 ? 'video' : 'videos'}`,
+    ]
+        .filter(Boolean)
+        .join(' · ')
 
     const pageUrl = `${siteUrl}/gallery/${group.slug}`
 
@@ -147,6 +201,24 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                 {/* Header Section */}
                 <SectionContainer variant='default' className='pb-0'>
                     <ContentWrapper>
+                        {/* Way back, and across to the other procedures */}
+                        <div className='mb-10 flex flex-col gap-4 md:mb-14'>
+                            <Link
+                                href='/gallery'
+                                className='inline-flex w-fit items-center gap-2 text-sm text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline'
+                            >
+                                <ArrowLeft
+                                    aria-hidden='true'
+                                    className='h-4 w-4'
+                                />
+                                All results
+                            </Link>
+                            <GalleryProcedureChips
+                                procedures={overview.procedures}
+                                currentSlug={group.slug}
+                            />
+                        </div>
+
                         {/* Group Header */}
                         <div className='mb-12 max-w-3xl md:mb-16'>
                             <div className='mb-4 flex items-center gap-3'>
@@ -167,9 +239,7 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                             )}
 
                             <p className='mt-4 text-sm text-stone-500'>
-                                {group.media.length}{' '}
-                                {group.media.length === 1 ? 'photo' : 'photos'}{' '}
-                                in this collection
+                                {countLine}
                             </p>
 
                             {procedurePage && (
@@ -196,6 +266,42 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                     </ContentWrapper>
                 </SectionContainer>
 
+                {/* Other procedures */}
+                {otherProcedures.length > 0 && (
+                    <section
+                        aria-labelledby='other-procedures-title'
+                        className='bg-[var(--gp-linen)] py-16 md:py-24'
+                    >
+                        <div className='mx-auto w-full max-w-[78rem] px-5 md:px-8'>
+                            <div className='flex flex-wrap items-end justify-between gap-6'>
+                                <div className='max-w-[40rem]'>
+                                    <p className='gp-eyebrow'>Keep exploring</p>
+                                    <h2
+                                        id='other-procedures-title'
+                                        className='gp-display mt-5 text-[2.25rem] leading-[1.02] tracking-[-0.015em] text-balance md:text-[3rem]'
+                                    >
+                                        Results for <em>other</em> procedures
+                                    </h2>
+                                </div>
+                                <Link
+                                    href='/gallery'
+                                    className='inline-flex items-center gap-2 rounded-full border border-[var(--gp-line)] px-5 py-2.5 text-sm transition hover:border-[var(--gp-champagne-2)] hover:bg-white'
+                                >
+                                    <ArrowLeft
+                                        aria-hidden='true'
+                                        className='h-4 w-4'
+                                    />
+                                    Back to the full gallery
+                                </Link>
+                            </div>
+                            <GalleryProcedureCards
+                                procedures={otherProcedures}
+                                className='mt-12'
+                            />
+                        </div>
+                    </section>
+                )}
+
                 {/* CTA Section */}
                 <CTASection
                     variant='luxury'
@@ -215,10 +321,6 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                         {
                             icon: <Award className='h-5 w-5' />,
                             label: 'Board-Certified Surgeons',
-                        },
-                        {
-                            icon: <Shield className='h-5 w-5' />,
-                            label: 'Accredited Facility',
                         },
                         {
                             icon: <Users className='h-5 w-5' />,

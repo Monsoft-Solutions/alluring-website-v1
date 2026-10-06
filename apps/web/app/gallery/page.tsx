@@ -1,13 +1,12 @@
 import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
-import { Award, Shield, Users, Building2 } from 'lucide-react'
+import { Award, Users, Building2 } from 'lucide-react'
 
-import { BeforeAfterShowcase } from '@/components/gallery/before-after-showcase.component'
-import { GalleryGroupsSection } from '@/components/gallery/gallery-groups-section.component'
-import { GalleryHero } from '@/components/gallery/gallery-hero.component'
+import { GalleryMediaGrid } from '@/components/gallery/gallery-media-grid.component'
+import { GalleryIndexHero } from '@/components/gallery-page/gallery-index-hero.component'
+import { GalleryProcedureCards } from '@/components/gallery-page/gallery-procedure-nav.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { siteConfig } from '@/lib/data/site-config'
-import { getFeaturedBeforeAfterPairs } from '@/lib/queries/gallery/before-after.query'
-import { getVisibleGalleryGroups } from '@/lib/queries/gallery/gallery-list.query'
+import { getGalleryOverview } from '@/lib/queries/gallery/gallery-overview.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { env } from '@/env'
@@ -15,126 +14,184 @@ import { env } from '@/env'
 const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
 const pageUrl = `${siteUrl}/gallery`
 
-const pageTitle = 'Plastic Surgery Before & After Photos | 500+ Real Results'
+// Leads with the query the page is found for ("alluring plastic surgery
+// photos", GSC Jul–Oct 2026). The old title's "500+ Real Results" was not
+// true of the gallery's count.
+const pageTitle = 'Alluring Plastic Surgery Photos | Before & After Miami'
+const pageDescription =
+    'Before-and-after photos and videos of real Alluring Plastic Surgery patients in Miami: BBL, tummy tuck, mommy makeover, breast and arm lift, liposuction and more.'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/gallery',
     title: pageTitle,
-    description:
-        "See real patient transformations from Miami's top plastic surgeons. BBL, breast, tummy tuck & facial results. Unretouched photos. Start your journey today.",
+    description: pageDescription,
     keywords: [
-        'plastic surgery before after photos',
-        'cosmetic surgery results Miami',
-        'breast augmentation before after',
+        'alluring plastic surgery photos',
+        'plastic surgery before after photos Miami',
         'BBL before after',
-        'tummy tuck results',
+        'tummy tuck before after',
+        'mommy makeover before after',
+        'breast augmentation before after',
         'liposuction before after',
-        'mommy makeover photos',
-        'plastic surgery gallery Miami',
+        'arm lift before after',
     ],
     openGraph: {
         type: 'website',
         url: pageUrl,
         title: pageTitle,
-        description:
-            "See real patient transformations from Miami's top plastic surgeons. BBL, breast, tummy tuck & facial results. Unretouched photos. Start your journey today.",
+        description: pageDescription,
         siteName: siteConfig.business.name,
         images: [
             {
                 url: `${siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: `Before and After Gallery at ${siteConfig.business.name} Miami`,
+                alt: `Before and after gallery at ${siteConfig.business.name} Miami`,
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
         title: pageTitle,
-        description:
-            "See real patient transformations from Miami's top plastic surgeons. BBL, breast, tummy tuck & facial results. Unretouched photos.",
+        description: pageDescription,
         images: [`${siteUrl}/og-image.jpg`],
     },
-    robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-            index: true,
-            follow: true,
-            'max-video-preview': -1,
-            'max-image-preview': 'large',
-            'max-snippet': -1,
-        },
-    },
+    robots: { index: true, follow: true },
 })
 
-export default async function GalleryPage() {
-    // Fetch data in parallel
-    const [groups, beforeAfterPairs] = await Promise.all([
-        getVisibleGalleryGroups(),
-        getFeaturedBeforeAfterPairs(6),
-    ])
+const container = 'mx-auto w-full max-w-[78rem] px-5 md:px-8'
+const heading =
+    'gp-display text-[2.25rem] leading-[1.02] tracking-[-0.015em] text-balance md:text-[3.25rem]'
+const lead = 'text-[1.0625rem] leading-[1.65] text-pretty md:text-[1.125rem]'
 
-    // Breadcrumb items for schema
-    const breadcrumbItems = [
-        { name: 'Home', item: siteUrl },
-        { name: 'Gallery', item: pageUrl },
-    ]
+export default async function GalleryPage() {
+    const overview = await getGalleryOverview()
+    const { procedures, latest, videos } = overview
 
     return (
         <>
-            {/* Structured Data - WebPage Schema */}
             <WebPageSchema
-                name={`Gallery | ${siteConfig.business.name} Miami`}
+                name={`Before & After Gallery | ${siteConfig.business.name} Miami`}
                 url={pageUrl}
-                description={`View real before and after photos from ${siteConfig.business.name} in Miami. Explore authentic transformations showcasing the artistry of our board-certified surgeons.`}
+                description={pageDescription}
+            />
+            <BreadcrumbSchema
+                items={[
+                    { name: 'Home', item: siteUrl },
+                    { name: 'Gallery', item: pageUrl },
+                ]}
             />
 
-            {/* Structured Data - Breadcrumb Schema */}
-            <BreadcrumbSchema items={breadcrumbItems} />
+            <GalleryIndexHero overview={overview} />
 
-            {/* Hero Section */}
-            <GalleryHero />
+            {/* Procedures */}
+            <section
+                id='procedures'
+                aria-labelledby='procedures-title'
+                className='bg-[var(--gp-linen)] py-16 md:py-24'
+            >
+                <div className={container}>
+                    <div className='max-w-[42rem]'>
+                        <p className='gp-eyebrow'>Browse by procedure</p>
+                        <h2 id='procedures-title' className={`${heading} mt-5`}>
+                            Results for <em>your</em> procedure
+                        </h2>
+                        <p className={`${lead} mt-5 text-[var(--gp-ink-2)]`}>
+                            Each collection holds every published result for
+                            that procedure, newest first. Combination surgeries
+                            appear in each procedure they include.
+                        </p>
+                    </div>
+                    <GalleryProcedureCards
+                        procedures={procedures}
+                        className='mt-12'
+                    />
+                </div>
+            </section>
 
-            {/* Before/After Showcase */}
-            {beforeAfterPairs.length > 0 && (
-                <BeforeAfterShowcase pairs={beforeAfterPairs} />
+            {/* Newest results */}
+            {latest.length > 0 && (
+                <section
+                    aria-labelledby='latest-title'
+                    className='py-16 md:py-24'
+                >
+                    <div className={container}>
+                        <div className='max-w-[42rem]'>
+                            <p className='gp-eyebrow'>Newest</p>
+                            <h2 id='latest-title' className={`${heading} mt-5`}>
+                                Recently added <em>results</em>
+                            </h2>
+                            <p
+                                className={`${lead} mt-5 text-[var(--gp-ink-2)]`}
+                            >
+                                The latest before-and-afters from every
+                                procedure. Tap one to see it full size.
+                            </p>
+                        </div>
+                        <GalleryMediaGrid
+                            media={latest}
+                            linkToDetail={false}
+                            className='mt-12'
+                        />
+                    </div>
+                </section>
             )}
 
-            {/* Gallery Groups */}
-            <GalleryGroupsSection groups={groups} />
+            {/* Videos */}
+            {videos.length > 0 && (
+                <section
+                    aria-labelledby='videos-title'
+                    className='gp-dark bg-[var(--gp-cocoa)] py-16 text-[var(--gp-porcelain)] md:py-24'
+                >
+                    <div className={container}>
+                        <div className='max-w-[42rem]'>
+                            <p className='gp-eyebrow'>Videos</p>
+                            <h2 id='videos-title' className={`${heading} mt-5`}>
+                                Watch the <em>change</em>
+                            </h2>
+                            <p className={`${lead} mt-5 text-stone-300`}>
+                                Short clips that go from before to after, some
+                                from the operating room and some months later.
+                                Each one says how long after surgery it was
+                                taken.
+                            </p>
+                        </div>
+                        <GalleryMediaGrid
+                            media={videos}
+                            linkToDetail={false}
+                            tone='dark'
+                            className='mt-12'
+                        />
+                    </div>
+                </section>
+            )}
 
-            {/* CTA Section */}
             <CTASection
                 variant='luxury'
-                eyebrow='Your Transformation Awaits'
-                heading='Ready to See Your Potential?'
-                description="Every transformation in our gallery started with a single conversation. Schedule your free consultation with our board-certified surgeons and discover what's possible for you."
+                eyebrow='Your result starts with a conversation'
+                heading='Ready to see what is possible for you?'
+                description='Every result in this gallery started with a free consultation. Bring your questions and your goals, and leave with a plan made for your body.'
                 primaryButton={{
-                    text: 'Schedule Your Consultation',
+                    text: 'Book a free consultation',
                     href: '/contact-us',
                 }}
                 secondaryButton={{
-                    text: 'Call Us Now',
+                    text: 'Call us',
                     href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
                 }}
                 backgroundImage='/images/hero-beautiful-latin-woman.jpg'
                 trustBadges={[
                     {
                         icon: <Award className='h-5 w-5' />,
-                        label: 'Board-Certified Surgeons',
-                    },
-                    {
-                        icon: <Shield className='h-5 w-5' />,
-                        label: 'Accredited Facility',
+                        label: 'Board-certified surgeons',
                     },
                     {
                         icon: <Users className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} patients`,
                     },
                     {
                         icon: <Building2 className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                        label: `${siteConfig.trustStats?.years ?? '15+'} years of experience`,
                     },
                 ]}
             />

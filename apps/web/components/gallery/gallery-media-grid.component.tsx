@@ -5,19 +5,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import Lightbox from 'yet-another-react-lightbox'
+import Lightbox, { type Slide } from 'yet-another-react-lightbox'
 import Captions from 'yet-another-react-lightbox/plugins/captions'
+import Video from 'yet-another-react-lightbox/plugins/video'
 import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/captions.css'
 import { ExternalLink } from 'lucide-react'
 
 import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 
+/** A card, optionally labelled with the collection it came from. */
+type GridMedia = GalleryMediaCard & { readonly groupName?: string }
+
 type GalleryMediaGridProps = {
-    readonly media: GalleryMediaCard[]
+    readonly media: GridMedia[]
     readonly className?: string
     readonly enableLightbox?: boolean
     readonly linkToDetail?: boolean
+    /** Caption colours for the band the grid sits on. */
+    readonly tone?: 'light' | 'dark'
 }
 
 /**
@@ -30,6 +36,7 @@ export function GalleryMediaGrid({
     className,
     enableLightbox = true,
     linkToDetail = true,
+    tone = 'light',
 }: GalleryMediaGridProps) {
     const [lightboxIndex, setLightboxIndex] = useState(-1)
     const router = useRouter()
@@ -44,15 +51,30 @@ export function GalleryMediaGrid({
         )
     }
 
-    // Convert media to lightbox slides
-    const lightboxSlides = media.map((item) => ({
-        src: item.url,
-        alt: item.alt,
-        width: item.width ?? undefined,
-        height: item.height ?? undefined,
-        title: item.title,
-        description: item.title,
-    }))
+    // Convert media to lightbox slides. A video must be a `video` slide:
+    // given as a plain slide, its .mp4 is loaded as an image and never plays.
+    const lightboxSlides: Slide[] = media.map((item) =>
+        item.type === 'video'
+            ? {
+                  type: 'video',
+                  poster: item.thumbnailUrl ?? undefined,
+                  width: item.width ?? undefined,
+                  height: item.height ?? undefined,
+                  autoPlay: true,
+                  playsInline: true,
+                  sources: [{ src: item.url, type: 'video/mp4' }],
+                  title: item.title,
+                  description: item.title,
+              }
+            : {
+                  src: item.url,
+                  alt: item.alt,
+                  width: item.width ?? undefined,
+                  height: item.height ?? undefined,
+                  title: item.title,
+                  description: item.title,
+              }
+    )
 
     const handleMediaClick = (index: number) => {
         if (enableLightbox && !linkToDetail) {
@@ -82,6 +104,7 @@ export function GalleryMediaGrid({
                         key={item.id}
                         item={item}
                         linkToDetail={linkToDetail}
+                        tone={tone}
                         onClick={() => handleMediaClick(index)}
                     />
                 ))}
@@ -94,7 +117,7 @@ export function GalleryMediaGrid({
                     close={() => setLightboxIndex(-1)}
                     index={lightboxIndex}
                     slides={lightboxSlides}
-                    plugins={[Captions]}
+                    plugins={[Captions, Video]}
                     carousel={{
                         finite: false,
                     }}
@@ -124,63 +147,75 @@ export function GalleryMediaGrid({
 }
 
 type MediaGridItemProps = {
-    readonly item: GalleryMediaCard
+    readonly item: GridMedia
     readonly linkToDetail: boolean
+    readonly tone: 'light' | 'dark'
     readonly onClick: () => void
 }
 
-function MediaGridItem({ item, linkToDetail, onClick }: MediaGridItemProps) {
+function MediaGridItem({
+    item,
+    linkToDetail,
+    tone,
+    onClick,
+}: MediaGridItemProps) {
     const content = (
-        <div
-            className={cn(
-                'group relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-stone-100',
-                'transition-all duration-300',
-                'hover:shadow-xl hover:shadow-stone-900/10'
-            )}
-        >
-            <Image
-                src={item.thumbnailUrl ?? item.url}
-                alt={item.alt}
-                fill
-                className='object-cover transition-transform duration-500 group-hover:scale-105'
-                sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
-                placeholder={item.blurDataUrl ? 'blur' : 'empty'}
-                blurDataURL={item.blurDataUrl ?? undefined}
-            />
+        <span className='group block'>
+            <span
+                className={cn(
+                    'relative block aspect-[4/5] w-full overflow-hidden rounded-lg bg-stone-950 ring-1 ring-stone-900/10',
+                    'transition-all duration-300',
+                    'group-hover:ring-gold-300 group-hover:shadow-xl group-hover:ring-2 group-hover:shadow-stone-900/15'
+                )}
+            >
+                {/* Shown whole: a before-and-after cropped to fill the
+                    frame loses half of its point */}
+                <Image
+                    src={item.thumbnailUrl ?? item.url}
+                    alt={item.alt}
+                    fill
+                    className='object-contain transition-transform duration-500 group-hover:scale-[1.03]'
+                    sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                    placeholder={item.blurDataUrl ? 'blur' : 'empty'}
+                    blurDataURL={item.blurDataUrl ?? undefined}
+                />
 
-            {/* Hover Overlay */}
-            <div className='absolute inset-0 flex flex-col justify-end bg-linear-to-t from-stone-900/80 via-stone-900/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-                <div className='p-4'>
-                    <h3 className='line-clamp-2 text-sm font-medium text-white'>
-                        {item.title}
-                    </h3>
-                </div>
-            </div>
-
-            {/* Featured Badge */}
-            {item.isFeatured && (
-                <div className='absolute top-3 left-3'>
-                    <span className='bg-gold-500 rounded-full px-2 py-1 text-xs font-bold text-white uppercase'>
-                        Featured
-                    </span>
-                </div>
-            )}
-
-            {/* Video Indicator */}
-            {item.type === 'video' && (
-                <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                    <div className='flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm'>
+                {/* Video Indicator */}
+                {item.type === 'video' && (
+                    <span className='absolute top-1/2 left-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm'>
                         <svg
                             className='ml-1 h-6 w-6 text-stone-900'
                             fill='currentColor'
                             viewBox='0 0 24 24'
+                            aria-hidden='true'
                         >
                             <path d='M8 5v14l11-7z' />
                         </svg>
-                    </div>
-                </div>
-            )}
-        </div>
+                    </span>
+                )}
+            </span>
+
+            <span className='mt-2.5 block text-left'>
+                {item.groupName && (
+                    <span
+                        className={cn(
+                            'block text-[0.7rem] font-semibold tracking-[0.14em] uppercase',
+                            tone === 'dark' ? 'text-gold-300' : 'text-stone-500'
+                        )}
+                    >
+                        {item.groupName}
+                    </span>
+                )}
+                <span
+                    className={cn(
+                        'mt-0.5 line-clamp-2 block text-sm leading-snug',
+                        tone === 'dark' ? 'text-stone-200' : 'text-stone-800'
+                    )}
+                >
+                    {item.title}
+                </span>
+            </span>
+        </span>
     )
 
     if (linkToDetail) {

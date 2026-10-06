@@ -6,6 +6,11 @@
  * `noindex, follow` — they pass link equity to the indexable gallery
  * GROUP pages (`/gallery` and `/gallery/[slug]`), which carry the real
  * procedure context and remain fully indexable.
+ *
+ * Videos are the exception (issue #321): Google indexes a video only from
+ * an indexable page where it is the main content, so a video's detail page
+ * is its watch page — indexable, and listed in the video sitemap under its
+ * own URL.
  */
 import {
     BreadcrumbSchema,
@@ -66,39 +71,57 @@ export async function generateMetadata({
         media.description ??
         `View ${media.title} from our ${media.groups.length > 0 ? media.groups[0]?.name : 'photo'} gallery at ${siteConfig.business.name} Miami.`
 
+    // Image pages are thin, high-volume detail pages: noindex but follow so
+    // link equity flows to the gallery group pages (issue #118). A video's
+    // page is its watch page, which Google must be able to index (#321).
+    const isWatchPage = media.type === 'video'
+    const previewImage = isWatchPage ? media.thumbnailUrl : media.url
+
     return toNextMetadata(seoConfig, {
         title: pageTitle,
         description,
         canonical: `/gallery/media/${media.slug}`,
-        // Thin, high-volume detail pages: noindex but follow so link equity
-        // still flows to the indexable gallery group pages (issue #118).
-        robots: {
-            index: false,
-            follow: true,
-            googleBot: {
-                index: false,
-                follow: true,
-            },
-        },
+        // A watch page keeps the site-wide googleBot directives (which carry
+        // max-video-preview); an image page must override them, since the
+        // merge is shallow and they say `index`.
+        robots: isWatchPage
+            ? { index: true, follow: true }
+            : {
+                  index: false,
+                  follow: true,
+                  googleBot: { index: false, follow: true },
+              },
         openGraph: {
-            type: 'article',
+            type: isWatchPage ? 'video.other' : 'article',
             url: pageUrl,
             title: pageTitle,
             description,
-            images: [
-                {
-                    url: media.url,
-                    width: media.width ?? undefined,
-                    height: media.height ?? undefined,
-                    alt: media.alt,
-                },
-            ],
+            ...(previewImage && {
+                images: [
+                    {
+                        url: previewImage,
+                        width: media.width ?? undefined,
+                        height: media.height ?? undefined,
+                        alt: media.alt,
+                    },
+                ],
+            }),
+            ...(isWatchPage && {
+                videos: [
+                    {
+                        url: media.url,
+                        type: 'video/mp4',
+                        width: media.width ?? undefined,
+                        height: media.height ?? undefined,
+                    },
+                ],
+            }),
         },
         twitter: {
             card: 'summary_large_image',
             title: pageTitle,
             description,
-            images: [media.url],
+            ...(previewImage && { images: [previewImage] }),
         },
     })
 }

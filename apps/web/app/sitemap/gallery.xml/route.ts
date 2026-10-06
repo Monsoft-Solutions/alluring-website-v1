@@ -2,16 +2,22 @@
  * Gallery Sitemap
  *
  * Generates sitemap XML for gallery content including:
- * - Main gallery listing page (carrying ungrouped media)
- * - Gallery group pages, each carrying ALL of its published media via the
- *   image and video sitemap extensions
+ * - Main gallery listing page (carrying ungrouped images)
+ * - Gallery group pages, each carrying ALL of its published images via
+ *   the image sitemap extension
+ * - One URL per video: its /gallery/media/[slug] watch page, carrying a
+ *   single <video:video> entry (issue #321)
  *
- * Individual gallery media detail pages (/gallery/media/[slug]) are
- * intentionally excluded as URLs: per issue #118 they are noindex,follow
- * thin pages. Their images and videos remain fully visible to Google
- * Images/Video by being attached to the indexable group page URLs
- * instead — image sitemaps support up to 1,000 images per URL, and the
- * group pages render the same media with captions and ImageObject schema.
+ * Image detail pages (/gallery/media/[slug]) are intentionally excluded
+ * as URLs: per issue #118 they are noindex,follow thin pages. Their images
+ * remain fully visible to Google Images by being attached to the indexable
+ * group page URLs instead — image sitemaps support up to 1,000 images per
+ * URL, and the group pages render the same media with captions and
+ * ImageObject schema.
+ *
+ * Videos are the exception: Google indexes a video only from the page
+ * where it is the main content, so each video is listed once, under its
+ * own watch page, and not repeated on group pages.
  *
  * Revalidates every 3 hours to balance freshness with performance
  */
@@ -29,6 +35,7 @@ import {
     getMediaByGroupForSitemap,
     getMostRecentMediaDate,
     getUngroupedMediaForSitemap,
+    getVideoWatchPagesForSitemap,
 } from '@/lib/queries/gallery/sitemap.query'
 import { isCrawlingAllowed } from '@/lib/utils/crawling'
 import type {
@@ -39,39 +46,21 @@ import type {
 import { generateSitemapXml } from '@workspace/seo/utils'
 
 /**
- * Map media items onto sitemap image/video extension entries.
+ * Map a page's media onto <image:image> entries.
  *
- * Images become <image:image> entries. Videos become <video:video>
- * entries when they have the thumbnail required by the video sitemap
- * spec; videos without a thumbnail fall back to an image entry so they
- * are at least discoverable.
+ * Videos with a poster are skipped: they get their own watch page URL
+ * (see the GET handler). Videos without one — which the video sitemap
+ * spec cannot describe — fall back to an image entry so they are at
+ * least discoverable.
  */
-function toSitemapMedia(items: GroupMediaSitemapItem[]): {
-    images: SitemapImage[]
-    videos: SitemapVideo[]
-} {
-    const images: SitemapImage[] = []
-    const videos: SitemapVideo[] = []
-
-    for (const item of items) {
-        if (item.type === 'video' && item.thumbnailUrl) {
-            videos.push({
-                thumbnailUrl: item.thumbnailUrl,
-                title: item.title,
-                description: item.description ?? item.title,
-                contentUrl: item.url,
-                duration: item.duration ?? undefined,
-            })
-        } else {
-            images.push({
-                url: item.url,
-                title: item.title,
-                caption: item.description ?? undefined,
-            })
-        }
-    }
-
-    return { images, videos }
+function toSitemapImages(items: GroupMediaSitemapItem[]): SitemapImage[] {
+    return items
+        .filter((item) => !(item.type === 'video' && item.thumbnailUrl))
+        .map((item) => ({
+            url: item.url,
+            title: item.title,
+            caption: item.description ?? undefined,
+        }))
 }
 
 /**
@@ -106,16 +95,14 @@ export async function GET(): Promise<NextResponse> {
             .slice(0, 10)
 
         // Gallery main listing page — carries media that belong to no group
-        const ungroupedMedia = await getUngroupedMediaForSitemap()
-        const ungrouped = toSitemapMedia(ungroupedMedia)
+        const ungrouped = toSitemapImages(await getUngroupedMediaForSitemap())
         entries.push({
             url: `${baseUrl}/gallery`,
             lastModified:
                 mostRecentMediaDateStr ?? pageLastModified['/gallery'] ?? today,
             changeFrequency: 'weekly',
             priority: 0.9,
-            images: ungrouped.images.length > 0 ? ungrouped.images : undefined,
-            videos: ungrouped.videos.length > 0 ? ungrouped.videos : undefined,
+            images: ungrouped.length > 0 ? ungrouped : undefined,
         })
 
         // Gallery groups — each carries ALL of its published media
@@ -130,9 +117,7 @@ export async function GET(): Promise<NextResponse> {
                 group.updatedAt?.toISOString().slice(0, 10) ??
                 today
 
-            const { images, videos } = toSitemapMedia(
-                mediaByGroup.get(group.slug) ?? []
-            )
+            const images = toSitemapImages(mediaByGroup.get(group.slug) ?? [])
 
             // Include the cover image if it isn't already among the media
             if (
@@ -151,14 +136,28 @@ export async function GET(): Promise<NextResponse> {
                 changeFrequency: 'weekly',
                 priority: 0.8,
                 images: images.length > 0 ? images : undefined,
-                videos: videos.length > 0 ? videos : undefined,
             })
         }
 
-        // Note: gallery media detail pages (/gallery/media/[slug]) are
-        // intentionally NOT added as URLs here — they are noindex,follow
-        // per issue #118. Their media is attached to the group entries
-        // above instead.
+        // Video watch pages — the only media detail pages listed as URLs
+        // (image detail pages stay noindex,follow per issue #118)
+        for (const video of await getVideoWatchPagesForSitemap()) {
+            const watchVideo: SitemapVideo = {
+                thumbnailUrl: video.thumbnailUrl,
+                title: video.title,
+                description: video.description ?? video.title,
+                contentUrl: video.url,
+                duration: video.duration ?? undefined,
+                publicationDate: video.publishedAt?.toISOString(),
+            }
+            entries.push({
+                url: `${baseUrl}/gallery/media/${video.slug}`,
+                lastModified: video.updatedAt.toISOString().slice(0, 10),
+                changeFrequency: 'monthly',
+                priority: 0.6,
+                videos: [watchVideo],
+            })
+        }
     } catch (error) {
         console.error('Error generating gallery sitemap:', error)
         return new NextResponse(
