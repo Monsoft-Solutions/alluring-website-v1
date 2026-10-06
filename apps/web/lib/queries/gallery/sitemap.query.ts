@@ -7,10 +7,13 @@
  *   video can be attached to its indexable group page URL in the image /
  *   video sitemap extensions
  *
- * Media detail pages (/gallery/media/[slug]) are noindexed and no longer
- * listed as sitemap URLs (issue #118). Their images and videos are still
- * surfaced to Google Images/Video by attaching them to the group page
- * entries instead — image sitemaps support up to 1,000 images per URL.
+ * Image detail pages (/gallery/media/[slug]) are noindexed and not listed
+ * as sitemap URLs (issue #118). Their images are still surfaced to Google
+ * Images by attaching them to the group page entries instead — image
+ * sitemaps support up to 1,000 images per URL.
+ *
+ * Videos are listed under their own detail page, which is their indexable
+ * watch page (issue #321) — see getVideoWatchPagesForSitemap.
  */
 import { db } from '@workspace/db/client'
 import {
@@ -18,7 +21,7 @@ import {
     galleryMedia,
     galleryMediaGroup,
 } from '@workspace/db/schema/gallery'
-import { and, desc, eq, isNull, max } from 'drizzle-orm'
+import { and, desc, eq, isNotNull, isNull, max } from 'drizzle-orm'
 import { cache } from 'react'
 
 /**
@@ -164,6 +167,57 @@ export const getUngroupedMediaForSitemap = cache(
             thumbnailUrl: r.thumbnailUrl,
             duration: r.duration,
         }))
+    }
+)
+
+/**
+ * A published gallery video and its watch page
+ */
+export type VideoWatchPageSitemapItem = {
+    slug: string
+    url: string
+    title: string
+    description: string | null
+    thumbnailUrl: string
+    duration: number | null
+    publishedAt: Date | null
+    updatedAt: Date
+}
+
+/**
+ * Get every published video that has a poster image
+ *
+ * Each becomes its own sitemap URL (/gallery/media/[slug]) carrying one
+ * <video:video> entry: Google indexes a video from the page where it is
+ * the main content, and the video sitemap spec requires a thumbnail.
+ * Videos without a poster stay attached to their group page as images.
+ */
+export const getVideoWatchPagesForSitemap = cache(
+    async (): Promise<VideoWatchPageSitemapItem[]> => {
+        const rows = await db
+            .select({
+                slug: galleryMedia.slug,
+                url: galleryMedia.url,
+                title: galleryMedia.title,
+                description: galleryMedia.description,
+                thumbnailUrl: galleryMedia.thumbnailUrl,
+                duration: galleryMedia.duration,
+                publishedAt: galleryMedia.publishedAt,
+                updatedAt: galleryMedia.updatedAt,
+            })
+            .from(galleryMedia)
+            .where(
+                and(
+                    eq(galleryMedia.status, 'published'),
+                    eq(galleryMedia.type, 'video'),
+                    isNotNull(galleryMedia.thumbnailUrl)
+                )
+            )
+            .orderBy(desc(galleryMedia.publishedAt))
+
+        return rows.flatMap((r) =>
+            r.thumbnailUrl ? [{ ...r, thumbnailUrl: r.thumbnailUrl }] : []
+        )
     }
 )
 

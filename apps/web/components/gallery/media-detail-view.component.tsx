@@ -151,7 +151,9 @@ export function MediaDetailView({ media, className }: MediaDetailViewProps) {
                     {media.description && (
                         <div className='border-t border-stone-200 pt-6'>
                             <h2 className='mb-3 text-sm font-bold tracking-wider text-stone-500 uppercase'>
-                                About This Image
+                                {media.type === 'video'
+                                    ? 'About This Video'
+                                    : 'About This Image'}
                             </h2>
                             <p className='leading-relaxed text-stone-600'>
                                 {media.description}
