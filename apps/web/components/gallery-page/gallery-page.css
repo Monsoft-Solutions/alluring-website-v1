@@ -1,0 +1,143 @@
+/*
+ * Gallery pages (/gallery, /gallery/[slug], /gallery/media/[slug]).
+ *
+ * The same palette as the home page (components/home-page/home-page.css),
+ * scoped to `.gp-page` so the gallery reads as part of the same site.
+ */
+
+.gp-page {
+    --gp-porcelain: #fbf8f4;
+    --gp-linen: #f4ede5;
+    --gp-ink: #171210;
+    --gp-ink-2: #3f3531;
+    --gp-mute: #6e625a;
+    --gp-cocoa: #261a16;
+    --gp-espresso: #140d0a;
+    --gp-champagne: #e6cb9f;
+    --gp-champagne-2: #cdae7c;
+    --gp-bronze: #7c5433;
+    --gp-line: rgba(23, 18, 16, 0.12);
+    --gp-line-dark: rgba(230, 203, 159, 0.18);
+    --gp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+    background: var(--gp-porcelain);
+    color: var(--gp-ink);
+}
+
+/* Headings: Fraunces, one word in italic (the site's heading rule). */
+.gp-display {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+}
+.gp-display em {
+    font-style: italic;
+    color: var(--gp-bronze);
+}
+.gp-dark .gp-display em {
+    color: var(--gp-champagne);
+}
+
+.gp-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gp-bronze);
+}
+.gp-eyebrow::before {
+    content: '';
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+}
+.gp-dark .gp-eyebrow {
+    color: var(--gp-champagne);
+}
+
+/* The arch window: the brand's frame for a portrait. */
+.gp-arch {
+    border-radius: 999px 999px 0.75rem 0.75rem;
+    overflow: hidden;
+}
+
+/* Procedure chips: one horizontal row that scrolls on phones. */
+.gp-chips {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-block: 0.25rem;
+    scroll-snap-type: x proximity;
+}
+.gp-chips::-webkit-scrollbar {
+    display: none;
+}
+.gp-chip {
+    flex: none;
+    scroll-snap-align: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--gp-line);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    color: var(--gp-ink);
+    background: rgba(255, 255, 255, 0.6);
+    transition:
+        background-color 0.2s var(--gp-ease),
+        border-color 0.2s var(--gp-ease);
+}
+.gp-chip:hover {
+    border-color: var(--gp-champagne-2);
+    background: #fff;
+}
+.gp-chip[aria-current='page'] {
+    background: var(--gp-ink);
+    border-color: var(--gp-ink);
+    color: var(--gp-porcelain);
+}
+.gp-chip__count {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+/*
+ * 18+ gate. Patient photos and videos stay blurred until the visitor
+ * confirms their age (GalleryAgeGate sets `data-age-ok` on <html>; the
+ * gallery layout's inline script sets it before first paint for a
+ * returning visitor). The media stay in the HTML, so crawlers index them.
+ */
+[data-age-gated] :is(img, video) {
+    filter: blur(28px) saturate(0.7);
+}
+html[data-age-ok] [data-age-gated] :is(img, video) {
+    filter: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+    [data-age-gated] :is(img, video) {
+        transition: filter 0.5s var(--gp-ease);
+    }
+}
+
+.gp-gate {
+    /* The CSS reset zeroes a dialog's margin; auto centres it again */
+    margin: auto;
+    width: min(30rem, calc(100vw - 2rem));
+    border: 0;
+    border-radius: 1.25rem;
+    padding: 0;
+    background: var(--gp-porcelain, #fbf8f4);
+    color: var(--gp-ink, #171210);
+    box-shadow: 0 30px 80px rgba(20, 13, 10, 0.35);
+}
+.gp-gate::backdrop {
+    background: rgba(20, 13, 10, 0.55);
+    backdrop-filter: blur(6px);
+}
