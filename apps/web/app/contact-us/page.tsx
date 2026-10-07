@@ -31,6 +31,7 @@ import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { openingHoursSpecification } from '@/lib/utils/office-hours.util'
 
 /**
  * Contact Page Metadata
@@ -118,28 +119,17 @@ export default async function ContactPage() {
                     latitude: siteConfig.contact.coordinates?.lat ?? 25.7529,
                     longitude: siteConfig.contact.coordinates?.lng ?? -80.3309,
                 }}
-                openingHoursSpecification={[
-                    {
-                        dayOfWeek: [
-                            'Monday',
-                            'Tuesday',
-                            'Wednesday',
-                            'Thursday',
-                            'Friday',
-                        ],
-                        opens: '09:00',
-                        closes: '17:00',
-                    },
-                    {
-                        dayOfWeek: ['Saturday'],
-                        opens: '09:00',
-                        closes: '15:00',
-                    },
-                ]}
+                openingHoursSpecification={openingHoursSpecification()}
                 image={`${seoConfig.siteUrl}/og-image.jpg`}
                 medicalSpecialty={['PlasticSurgery']}
                 isAcceptingNewPatients={true}
-                sameAs={siteConfig.social.map((s) => s.url)}
+                sameAs={[
+                    ...siteConfig.social.map((s) => s.url),
+                    ...(siteConfig.business.googleMapsUrl
+                        ? [siteConfig.business.googleMapsUrl]
+                        : []),
+                ]}
+                hasMap={siteConfig.business.googleMapsUrl}
                 availableLanguage={['English', 'Spanish']}
                 priceRange='$$$'
             />

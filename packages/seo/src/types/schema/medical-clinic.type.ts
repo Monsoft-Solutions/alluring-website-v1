@@ -147,6 +147,12 @@ export type MedicalClinicSchemaProps = {
     sameAs?: string[]
 
     /**
+     * URL of a map of the clinic, e.g. its Google Maps listing
+     * @see https://schema.org/hasMap
+     */
+    hasMap?: string
+
+    /**
      * Geographic area(s) served by the clinic
      * Useful for local SEO. Keep values US-scoped.
      * @see https://schema.org/areaServed

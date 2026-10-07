@@ -157,6 +157,8 @@ export function buildMedicalClinicJsonLd(
         clinic.sameAs = props.sameAs
     }
 
+    if (props.hasMap) clinic.hasMap = props.hasMap
+
     // Handle areaServed - Geographic areas the clinic serves
     if (props.areaServed) {
         clinic.areaServed = props.areaServed

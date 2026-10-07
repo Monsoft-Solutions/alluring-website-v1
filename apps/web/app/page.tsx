@@ -41,6 +41,7 @@ import {
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { openingHoursSpecification } from '@/lib/utils/office-hours.util'
 import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
 
 import '@/components/home-page/home-page.css'
@@ -162,24 +163,7 @@ export default async function Page() {
                     latitude: siteConfig.contact.coordinates?.lat ?? 25.7529,
                     longitude: siteConfig.contact.coordinates?.lng ?? -80.3309,
                 }}
-                openingHoursSpecification={[
-                    {
-                        dayOfWeek: [
-                            'Monday',
-                            'Tuesday',
-                            'Wednesday',
-                            'Thursday',
-                            'Friday',
-                        ],
-                        opens: '09:00',
-                        closes: '17:00',
-                    },
-                    {
-                        dayOfWeek: ['Saturday'],
-                        opens: '09:00',
-                        closes: '15:00',
-                    },
-                ]}
+                openingHoursSpecification={openingHoursSpecification()}
                 image={`${siteUrl}/og-image.jpg`}
                 medicalSpecialty={['PlasticSurgery']}
                 isAcceptingNewPatients={true}
@@ -193,7 +177,13 @@ export default async function Page() {
                         areaServed: 'US',
                     },
                 ]}
-                sameAs={siteConfig.social.map((s) => s.url)}
+                sameAs={[
+                    ...siteConfig.social.map((s) => s.url),
+                    ...(siteConfig.business.googleMapsUrl
+                        ? [siteConfig.business.googleMapsUrl]
+                        : []),
+                ]}
+                hasMap={siteConfig.business.googleMapsUrl}
                 areaServed={['Miami, FL', 'South Florida', 'United States']}
                 hasOfferCatalog={{
                     name: 'Cosmetic Surgery Procedures',

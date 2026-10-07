@@ -162,6 +162,8 @@ export type BusinessInfo = {
     organizationType?: string
     /** Google Place ID for reviews and maps */
     googlePlaceId?: string
+    /** Google Maps URL of the Business Profile (schema.org sameAs / hasMap) */
+    googleMapsUrl?: string
 }
 
 /**
