@@ -55,3 +55,6 @@ packages/db/.env.production
 # Local only, never committed
 /implementation-plans/
 apps/web/next-env.d.ts
+
+# Google Business Profile media: patient footage and large files, local only
+gbp/media/
