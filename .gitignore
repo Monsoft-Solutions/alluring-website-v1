@@ -51,3 +51,7 @@ packages/db/.env.production
 # Per-worktree state (scripts/worktree.sh)
 .worktree-meta
 .issue.md
+
+# Local only, never committed
+/implementation-plans/
+apps/web/next-env.d.ts
