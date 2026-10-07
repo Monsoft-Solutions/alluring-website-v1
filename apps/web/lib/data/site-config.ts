@@ -58,9 +58,12 @@ export const siteConfig: SiteConfig = {
         foundedYear: undefined,
         founders: undefined,
         organizationType: 'Medical Practice',
-        // Google Place ID - used for Google Reviews link
-        // Find at: https://developers.google.com/maps/documentation/places/web-service/place-id
-        googlePlaceId: undefined,
+        // The Google Business Profile. The Place ID drives the "Leave a
+        // Google review" buttons; the Maps URL (the listing's CID) is the
+        // profile link in the clinic's JSON-LD sameAs and hasMap. Both point
+        // at Maps feature 0x88d9b956a6f32d83:0xef952a0981a4313c.
+        googlePlaceId: 'ChIJgy3zpla52YgRPDGkgQkqle8',
+        googleMapsUrl: 'https://maps.google.com/?cid=17263750966912758076',
     },
 
     /**
@@ -82,9 +85,10 @@ export const siteConfig: SiteConfig = {
         state: 'FL',
         postalCode: '33155',
         country: 'United States',
+        // The Google Business Profile pin.
         coordinates: {
-            lat: 25.7529,
-            lng: -80.3309,
+            lat: 25.74836,
+            lng: -80.3323,
         },
         timezone: 'America/New_York',
 
@@ -280,12 +284,12 @@ export function getMapEmbedUrl(): string {
         // Format: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d[zoom]!2d[lng]!3d[lat]!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s[place_id]!2s[address]!5e0!3m2!1sen!2sus!4v[version]!5m2!1sen!2sus
         // Simplified version using coordinates and address
         const encodedAddress = encodeURIComponent(address)
-        return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d${coordinates.lng}!3d${coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b82dc3d8d25d%3A0x45e7c6ee8f91b6d5!2s${encodedAddress}!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus`
+        return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d${coordinates.lng}!3d${coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b956a6f32d83%3A0xef952a0981a4313c!2s${encodedAddress}!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus`
     }
 
     // Fallback to address-only embed URL
     const encodedAddress = encodeURIComponent(address)
-    return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d-80.3309!3d25.7529!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b82dc3d8d25d%3A0x45e7c6ee8f91b6d5!2s${encodedAddress}!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus`
+    return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.0477!2d-80.3323!3d25.74836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b956a6f32d83%3A0xef952a0981a4313c!2s${encodedAddress}!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus`
 }
 
 /**

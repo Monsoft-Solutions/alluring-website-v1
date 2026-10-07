@@ -63,6 +63,39 @@ function weeklyHours(): ReadonlyMap<number, DayHours> {
     return hours
 }
 
+export interface OpeningHoursSpecification {
+    readonly dayOfWeek: string[]
+    /** "09:00" */
+    readonly opens: string
+    readonly closes: string
+}
+
+const hhmm = (minutes: number) =>
+    `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
+
+/**
+ * `businessHours` as schema.org OpeningHoursSpecification, one entry per
+ * config row, so the JSON-LD can never drift from the hours the pages show.
+ */
+export function openingHoursSpecification(): OpeningHoursSpecification[] {
+    const specs: OpeningHoursSpecification[] = []
+    for (const entry of siteConfig.contact.businessHours ?? []) {
+        const open = minutesOf(entry.open)
+        const close = minutesOf(entry.close)
+        const days = daysOf(entry.days)
+        if (open === null || close === null || days.length === 0) continue
+        specs.push({
+            dayOfWeek: days.map((day) => {
+                const name = DAY_NAMES[day] ?? ''
+                return name.charAt(0).toUpperCase() + name.slice(1)
+            }),
+            opens: hhmm(open),
+            closes: hhmm(close),
+        })
+    }
+    return specs
+}
+
 interface WallTime {
     readonly year: number
     readonly month: number
