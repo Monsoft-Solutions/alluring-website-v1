@@ -76,6 +76,7 @@ export function GalleryIndexHero({ overview }: GalleryIndexHeroProps) {
 
                     <GalleryProcedureChips
                         procedures={procedures}
+                        location='index_hero_chips'
                         className='mt-10'
                     />
                 </div>

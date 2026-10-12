@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { GalleryAgeGate } from '@/components/gallery-page/gallery-age-gate.component'
+import { GalleryTracker } from '@/components/gallery-page/gallery-tracker.component'
 import { GALLERY_AGE_SCRIPT } from '@/components/gallery-page/gallery-age-gate.constant'
 
 import '@/components/gallery-page/gallery-page.css'
@@ -26,6 +27,7 @@ export default function GalleryLayout({ children }: { children: ReactNode }) {
             <div data-age-gated className='gp-page'>
                 {children}
                 <GalleryAgeGate />
+                <GalleryTracker />
             </div>
         </>
     )

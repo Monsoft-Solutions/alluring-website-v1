@@ -216,6 +216,7 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                             <GalleryProcedureChips
                                 procedures={overview.procedures}
                                 currentSlug={group.slug}
+                                location='procedure_chips'
                             />
                         </div>
 
@@ -296,6 +297,7 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                             </div>
                             <GalleryProcedureCards
                                 procedures={otherProcedures}
+                                location='procedure_other_cards'
                                 className='mt-12'
                             />
                         </div>

@@ -104,6 +104,7 @@ export default async function GalleryPage() {
                     </div>
                     <GalleryProcedureCards
                         procedures={procedures}
+                        location='index_cards'
                         className='mt-12'
                     />
                 </div>
