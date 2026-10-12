@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import {
     composePostSource,
+    POST_INTRO_SLOT,
     POST_SPLIT_SLOT,
     rehypeFaqSections,
 } from '@/lib/blog/post-mdx.util'
@@ -14,6 +15,11 @@ type PostBodyProps = {
     afterCTA: string | null
     /** What renders at the split point. Empty in phase 1; the consult thread in #295. */
     slot?: ReactNode
+    /**
+     * What renders where the intro ends, before the first H2: a code-owned
+     * block for this slug (`getPostIntroBlock`), or nothing.
+     */
+    intro?: ReactNode
 }
 
 /**
@@ -22,19 +28,26 @@ type PostBodyProps = {
  * Both halves render as one MDX document with the slot between them, so the
  * heading ids come from one `rehype-slug` pass and match the table of
  * contents (see `composePostSource`). The post's own FAQ section is grouped
- * into question cards by `rehypeFaqSections`.
+ * into question cards by `rehypeFaqSections`. A post with an `intro` block
+ * gets it before its first H2.
  */
-export function PostBody({ beforeCTA, afterCTA, slot }: PostBodyProps) {
+export function PostBody({ beforeCTA, afterCTA, slot, intro }: PostBodyProps) {
     const components = {
         [POST_SPLIT_SLOT]: function PostSplitSlot() {
             if (!slot) return null
             return <div className='bp-slot not-prose'>{slot}</div>
         },
+        [POST_INTRO_SLOT]: function PostIntroSlot() {
+            if (!intro) return null
+            return <div className='bp-intro-slot not-prose'>{intro}</div>
+        },
     }
 
     return (
         <PostMarkdown
-            content={composePostSource(beforeCTA, afterCTA)}
+            content={composePostSource(beforeCTA, afterCTA, {
+                withIntroSlot: Boolean(intro),
+            })}
             components={components}
             rehypePlugins={[rehypeFaqSections]}
             className='bp-prose prose prose-stone md:prose-lg max-w-none'

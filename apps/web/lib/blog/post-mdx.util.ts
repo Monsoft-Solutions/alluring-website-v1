@@ -27,6 +27,14 @@ export type PostRehypePlugins = NonNullable<
 export const POST_SPLIT_SLOT = 'PostSplitSlot'
 
 /**
+ * The MDX component that marks where a post's intro ends: right before its
+ * first H2. The v2 template renders a code-owned block there for a few slugs
+ * (`getPostIntroBlock`), e.g. the implant size calculator, so the block never
+ * lives in the post's stored text, which the refresh loop rewrites.
+ */
+export const POST_INTRO_SLOT = 'PostIntroSlot'
+
+/**
  * Rejoins the two halves `findCTAInsertionPoint` produced as one document,
  * with the split slot between them.
  *
@@ -37,17 +45,47 @@ export const POST_SPLIT_SLOT = 'PostSplitSlot'
  * to the first copy. One document means one slugger, the same sequence the
  * table of contents computed.
  *
+ * With `withIntroSlot`, `<PostIntroSlot />` goes before the post's first H2
+ * (in either half), or after the body when it has none. Headings and their
+ * ids are untouched.
+ *
  * @param beforeCTA - Content before the split point
  * @param afterCTA - Content after it; empty or null puts the slot after the body
+ * @param options.withIntroSlot - Also mark the end of the intro
  * @returns MDX source with `<PostSplitSlot />` at the split point
  */
 export function composePostSource(
     beforeCTA: string,
-    afterCTA: string | null
+    afterCTA: string | null,
+    { withIntroSlot = false }: { withIntroSlot?: boolean } = {}
 ): string {
-    return [beforeCTA.trim(), `<${POST_SPLIT_SLOT} />`, afterCTA?.trim() ?? '']
+    const source = [
+        beforeCTA.trim(),
+        `<${POST_SPLIT_SLOT} />`,
+        afterCTA?.trim() ?? '',
+    ]
         .filter(Boolean)
         .join('\n\n')
+    return withIntroSlot ? insertIntroSlot(source) : source
+}
+
+/** An ATX H2 at the start of a line, outside a fenced code block. */
+function firstH2Offset(source: string): number {
+    let inFence = false
+    let offset = 0
+    for (const line of source.split('\n')) {
+        if (/^\s*(```|~~~)/.test(line)) inFence = !inFence
+        else if (!inFence && /^## /.test(line)) return offset
+        offset += line.length + 1
+    }
+    return -1
+}
+
+function insertIntroSlot(source: string): string {
+    const slot = `<${POST_INTRO_SLOT} />`
+    const at = firstH2Offset(source)
+    if (at === -1) return `${source}\n\n${slot}`
+    return `${source.slice(0, at)}${slot}\n\n${source.slice(at)}`
 }
 
 /**

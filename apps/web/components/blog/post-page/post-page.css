@@ -303,6 +303,31 @@ body:has(.bp-page) [data-mobile-call-button] {
     text-decoration-color: currentColor;
 }
 
+/* ── A code-owned block before the first H2 (`getPostIntroBlock`) ──────── */
+
+.bp-page .bp-intro-slot {
+    margin-block: 2.5rem 3rem;
+}
+
+.bp-page .bp-intro-slot section[id] {
+    scroll-margin-top: calc(var(--announcement-bar-height, 0px) + 9rem);
+}
+
+/* The block brings its own heading scale; the prose h2 rules above are
+   unlayered and would otherwise win over its utilities. */
+.bp-page .bp-prose .bp-intro-slot h2 {
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    font-size: 1.875rem;
+    line-height: 1.1;
+}
+
+@media (width >= 48rem) {
+    .bp-page .bp-prose .bp-intro-slot h2 {
+        font-size: 2.25rem;
+    }
+}
+
 /* ── Consultation thread at the split point (#295) ─────────────────────── */
 
 .bp-page .bp-consult {

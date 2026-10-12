@@ -48,6 +48,7 @@ import { PostClose } from './post-close.component'
 import { PostConsult } from './post-consult.component'
 import { PostEnd } from './post-end.component'
 import { PostHeader } from './post-header.component'
+import { getPostIntroBlock } from './post-intro-block'
 import { postOfferIntro } from './post-offer.util'
 import {
     FAQ_HEADING,
@@ -173,6 +174,7 @@ export function BlogPostPage({
                             <PostBody
                                 beforeCTA={beforeCTA}
                                 afterCTA={afterCTA}
+                                intro={getPostIntroBlock(post.slug)}
                                 slot={
                                     <PostConsult
                                         procedure={procedure}
