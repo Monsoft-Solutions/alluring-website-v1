@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+
 import { AGE_OK_KEY } from './gallery-age-gate.constant'
 
 /**
@@ -16,13 +18,25 @@ import { AGE_OK_KEY } from './gallery-age-gate.constant'
  */
 export function GalleryAgeGate() {
     const dialogRef = useRef<HTMLDialogElement>(null)
+    const { track } = useAnalyticsEvent()
 
     useEffect(() => {
         if (document.documentElement.hasAttribute('data-age-ok')) return
-        dialogRef.current?.showModal()
-    }, [])
+        const dialog = dialogRef.current
+        if (!dialog || dialog.open) return
+        dialog.showModal()
+        track('gallery_age_gate_view', undefined, { sendToClarity: true })
+    }, [track])
+
+    const answer = (value: 'yes' | 'no') =>
+        track(
+            'gallery_age_gate_answer',
+            { answer: value },
+            { sendToClarity: true }
+        )
 
     const confirm = () => {
+        answer('yes')
         try {
             localStorage.setItem(AGE_OK_KEY, '1')
         } catch {
@@ -67,6 +81,7 @@ export function GalleryAgeGate() {
                     </button>
                     <Link
                         href='/'
+                        onClick={() => answer('no')}
                         className='inline-flex flex-1 items-center justify-center rounded-full border border-[var(--gp-line)] px-6 py-3 text-[0.95rem] text-[var(--gp-ink)] transition hover:border-[var(--gp-champagne-2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gp-bronze)]'
                     >
                         No, take me back

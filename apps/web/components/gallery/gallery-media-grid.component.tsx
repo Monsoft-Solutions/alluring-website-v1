@@ -4,7 +4,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Lightbox, { type Slide } from 'yet-another-react-lightbox'
 import Captions from 'yet-another-react-lightbox/plugins/captions'
 import Video from 'yet-another-react-lightbox/plugins/video'
@@ -12,6 +12,7 @@ import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/captions.css'
 import { ExternalLink } from 'lucide-react'
 
+import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 
 /** A card, optionally labelled with the collection it came from. */
@@ -40,6 +41,12 @@ export function GalleryMediaGrid({
 }: GalleryMediaGridProps) {
     const [lightboxIndex, setLightboxIndex] = useState(-1)
     const router = useRouter()
+    const { track } = useAnalyticsEvent()
+    // How the visitor reached the slide on screen: the tile they tapped,
+    // or the lightbox's own next/previous
+    const openedFromTile = useRef(false)
+    // The lightbox reports the opening slide more than once
+    const lastViewed = useRef(-1)
 
     if (media.length === 0) {
         return (
@@ -78,14 +85,43 @@ export function GalleryMediaGrid({
 
     const handleMediaClick = (index: number) => {
         if (enableLightbox && !linkToDetail) {
+            openedFromTile.current = true
             setLightboxIndex(index)
         }
+    }
+
+    const mediaParams = (index: number) => {
+        const item = media[index]
+        return {
+            media_slug: item?.slug,
+            media_type: item?.type,
+            procedure: item?.groupName,
+            position: index + 1,
+        }
+    }
+
+    // Fires when the lightbox opens and again on every slide change
+    const handleView = ({ index }: { index: number }) => {
+        if (index === lastViewed.current) return
+        lastViewed.current = index
+        // GalleryTracker reads this to name the video that is playing
+        document.documentElement.dataset.galleryMedia = media[index]?.slug
+        track(
+            'gallery_media_view',
+            {
+                ...mediaParams(index),
+                trigger: openedFromTile.current ? 'tile' : 'browse',
+            },
+            { sendToClarity: true }
+        )
+        openedFromTile.current = false
     }
 
     const handleViewDetails = () => {
         if (lightboxIndex >= 0 && lightboxIndex < media.length) {
             const currentMedia = media[lightboxIndex]
             if (currentMedia) {
+                track('gallery_media_details_click', mediaParams(lightboxIndex))
                 router.push(`/gallery/media/${currentMedia.slug}`)
             }
         }
@@ -114,10 +150,14 @@ export function GalleryMediaGrid({
             {enableLightbox && !linkToDetail && (
                 <Lightbox
                     open={lightboxIndex >= 0}
-                    close={() => setLightboxIndex(-1)}
+                    close={() => {
+                        lastViewed.current = -1
+                        setLightboxIndex(-1)
+                    }}
                     index={lightboxIndex}
                     slides={lightboxSlides}
                     plugins={[Captions, Video]}
+                    on={{ view: handleView }}
                     carousel={{
                         finite: false,
                     }}

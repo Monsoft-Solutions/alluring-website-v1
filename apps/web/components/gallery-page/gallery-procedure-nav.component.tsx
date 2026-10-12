@@ -21,6 +21,8 @@ type GalleryProcedureChipsProps = {
     currentSlug?: string
     /** Show an "All results" chip first, linking back to /gallery. */
     showAll?: boolean
+    /** Where the row sits, for the `gallery_procedure_click` event. */
+    location?: string
     className?: string
 }
 
@@ -32,6 +34,7 @@ export function GalleryProcedureChips({
     procedures,
     currentSlug,
     showAll = false,
+    location = 'chips',
     className,
 }: GalleryProcedureChipsProps) {
     return (
@@ -39,7 +42,11 @@ export function GalleryProcedureChips({
             <ul className='gp-chips'>
                 {showAll && (
                     <li>
-                        <Link href='/gallery' className='gp-chip'>
+                        <Link
+                            href='/gallery'
+                            className='gp-chip'
+                            data-gallery-nav={location}
+                        >
                             All results
                         </Link>
                     </li>
@@ -49,6 +56,8 @@ export function GalleryProcedureChips({
                         <Link
                             href={`/gallery/${procedure.slug}`}
                             className='gp-chip'
+                            data-gallery-nav={location}
+                            data-gallery-procedure={procedure.slug}
                             aria-current={
                                 procedure.slug === currentSlug
                                     ? 'page'
@@ -69,6 +78,8 @@ export function GalleryProcedureChips({
 
 type GalleryProcedureCardsProps = {
     procedures: GalleryProcedure[]
+    /** Where the cards sit, for the `gallery_procedure_click` event. */
+    location?: string
     className?: string
 }
 
@@ -78,6 +89,7 @@ type GalleryProcedureCardsProps = {
  */
 export function GalleryProcedureCards({
     procedures,
+    location = 'cards',
     className,
 }: GalleryProcedureCardsProps) {
     return (
@@ -92,6 +104,8 @@ export function GalleryProcedureCards({
                     <Link
                         href={`/gallery/${procedure.slug}`}
                         className='group block focus-visible:outline-none'
+                        data-gallery-nav={location}
+                        data-gallery-procedure={procedure.slug}
                     >
                         <span className='gp-arch relative block aspect-[3/4] bg-[var(--gp-linen)] ring-1 ring-[var(--gp-line)] transition group-hover:ring-2 group-hover:ring-[var(--gp-champagne-2)] group-focus-visible:ring-2 group-focus-visible:ring-[var(--gp-ink)]'>
                             {procedure.cover && (
