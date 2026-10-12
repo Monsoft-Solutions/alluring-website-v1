@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 import {
     composePostSource,
     getPostMdxOptions,
+    POST_INTRO_SLOT,
     POST_SPLIT_SLOT,
     rehypeFaqSections,
 } from '@/lib/blog/post-mdx.util'
@@ -24,6 +25,8 @@ const SLOT_MARKUP = '<div data-post-split-slot=""></div>'
 const components: Record<string, ElementType> = {
     [POST_SPLIT_SLOT]: () =>
         createElement('div', { 'data-post-split-slot': '' }),
+    [POST_INTRO_SLOT]: () =>
+        createElement('div', { 'data-post-intro-slot': '' }),
 }
 
 /** Renders MDX through the page's own pipeline to static HTML. */
@@ -107,6 +110,48 @@ describe('composePostSource', () => {
         expect(composePostSource('Only text.', '')).toBe(
             'Only text.\n\n<PostSplitSlot />'
         )
+    })
+
+    it('marks the end of the intro before the first h2 when asked', () => {
+        expect(
+            composePostSource('Intro.\n\n## First\n\nText.', '## Next', {
+                withIntroSlot: true,
+            })
+        ).toBe(
+            'Intro.\n\n<PostIntroSlot />\n\n## First\n\nText.\n\n<PostSplitSlot />\n\n## Next'
+        )
+    })
+
+    it('finds the first h2 in the second half, past fenced code', () => {
+        expect(
+            composePostSource(
+                'Intro.\n\n```\n## not a heading\n```',
+                '## Next',
+                {
+                    withIntroSlot: true,
+                }
+            )
+        ).toBe(
+            'Intro.\n\n```\n## not a heading\n```\n\n<PostSplitSlot />\n\n<PostIntroSlot />\n\n## Next'
+        )
+    })
+
+    it('leaves the source alone without the option', () => {
+        expect(composePostSource('Intro.\n\n## First', null)).not.toContain(
+            POST_INTRO_SLOT
+        )
+    })
+
+    it('keeps every heading id when the intro slot is added', async () => {
+        const source = 'Intro.\n\n## First\n\nA.\n\n## First\n\nB.'
+        const plain = await renderPost(composePostSource(source, null))
+        const withIntro = await renderPost(
+            composePostSource(source, null, { withIntroSlot: true })
+        )
+        const ids = (html: string) =>
+            [...html.matchAll(/id="([^"]+)"/g)].map((m) => m[1])
+        expect(ids(withIntro)).toEqual(ids(plain))
+        expect(withIntro).toContain('data-post-intro-slot')
     })
 })
 
