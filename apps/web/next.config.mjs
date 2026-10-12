@@ -712,9 +712,8 @@ const nextConfig = {
             // The WordPress-era procedure URL. It collected 11,370 Search
             // Console impressions and 10 clicks in the 480 days to 2026-09-19,
             // and has returned 404 since the move to this app: no redirect
-            // was ever added. The other eight procedures' old URLs 404 the
-            // same way; they are the #260 control group, so they get their
-            // redirects in a separate change.
+            // was ever added. The other procedures' old URLs are redirected
+            // in the WordPress-era block below.
             {
                 source: '/procedures/liposuction-cosmetic-surgery-in-miami',
                 destination: '/procedures/liposuction-miami',
@@ -749,6 +748,180 @@ const nextConfig = {
                 destination: '/procedures/tummy-tuck-miami',
                 permanent: true,
             },
+
+            // WordPress-era URLs, pre 2025-12-21 relaunch.
+            //
+            // Every page Search Console recorded impressions for between
+            // 2025-05-26 (the oldest data it keeps) and the relaunch was
+            // checked against production on 2026-10-07; these returned 404,
+            // as did the older-site and gallery URLs below that Search
+            // Console has recorded since the relaunch. Each goes to the live page that answers the queries it ranked
+            // for. Impressions are for that pre-relaunch window. The slash
+            // forms Google holds reach these rules through the trailing-slash
+            // redirect, as the procedure URLs above do.
+            //
+            // Left as 404 on purpose: /dr-andrew-lofman (the surgeon's page
+            // was removed, and his name has no honest destination),
+            // /understanding-the-recovery-process-after-cosmetic-surgery
+            // (generic "plastic surgery recovery" queries, no general
+            // recovery page), and /gallery/media/gallery-1765746376190-9y8r46
+            // (no procedure in the slug).
+            //
+            // Procedure pages. These six were the #260 control group.
+            ...[
+                ['breast-augmentation', 'breast-augmentation-miami'], // 9,372
+                ['mommy-makeover', 'mommy-makeover-miami'], // 7,036
+                ['breast-reduction', 'breast-reduction-miami'], // 5,536
+                ['eyelid-surgery', 'blepharoplasty-miami'], // 4,825
+                ['facelift', 'facelift-miami'], // 2,347
+                ['breast-lift', 'breast-lift-miami'], // 2,208
+            ].map(([oldSlug, slug]) => ({
+                source: `/procedures/${oldSlug}-cosmetic-surgery-in-miami`,
+                destination: `/procedures/${slug}`,
+                permanent: true,
+            })),
+            // No neck lift page; the facelift page covers neck lifts. 123.
+            {
+                source: '/procedures/neck-lift-miami',
+                destination: '/procedures/facelift-miami',
+                permanent: true,
+            },
+            {
+                source: '/services/breast-augmentation',
+                destination: '/procedures/breast-augmentation-miami',
+                permanent: true,
+            },
+            // Old blog posts and pages.
+            {
+                // 1,882. Ranked for brand and reviews queries.
+                source: '/faqs-about-cosmetic-surgery-in-miami',
+                destination: '/faqs',
+                permanent: true,
+            },
+            {
+                // 702. "how to choose a plastic surgeon".
+                source: '/how-to-choose-the-right-cosmetic-surgeon-for-you',
+                destination:
+                    '/how-to-choose-the-best-plastic-surgeon-in-miami-10-things-to-look-for',
+                permanent: true,
+            },
+            {
+                // 414. "benefits of a tummy tuck".
+                source: '/5-benefits-of-a-tummy-tuck-you-didnt-know-about',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                // 176. "mom makeover", "post pregnancy plastic surgery".
+                source: '/mommy-makeover-transforming-confidence-after-motherhood',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                // 35. Its only queries were "liposuction before and after".
+                source: '/liposuction-what-to-expect-before-during-and-after',
+                destination: '/gallery/liposuction',
+                permanent: true,
+            },
+            {
+                source: '/the-ultimate-guide-to-breast-augmentation',
+                destination: '/procedures/breast-augmentation-miami',
+                permanent: true,
+            },
+            {
+                source: '/cosmetic-plastic-surgery/body/lipo-360/post-op-sleeping',
+                destination: '/how-to-sleep-after-liposuction',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation/breast-augmentation-recovery-what-to-expect',
+                destination: '/blog/breast-augmentation-recovery-miami',
+                permanent: true,
+            },
+            {
+                source: '/how-long-do-brazilian-butt-lift-results-last',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/linkinbio',
+                destination: '/links',
+                permanent: true,
+            },
+            // WordPress blog pagination; the blog index has no pages now.
+            {
+                source: '/blog/page/:page(\\d+)',
+                destination: '/blog',
+                permanent: true,
+            },
+            // An expired promotion; the listing still exists.
+            {
+                source: '/promotions/giveaway-5000',
+                destination: '/promotions',
+                permanent: true,
+            },
+            // Deleted gallery media, as in #241: each goes to its procedure's
+            // gallery group. Listed one by one because a prefix pattern would
+            // also catch the media items that still exist.
+            ...[
+                [
+                    'breast-augmentation',
+                    [
+                        'breast-augmentation-before-after-miami-affordable-results',
+                        'breast-augmentation-before-after-miami-gallery-6',
+                        'breast-augmentation-before-after-miami-gallery-7',
+                        'breast-augmentation-before-after-miami-gallery-8',
+                        'breast-augmentation-before-after-miami-gallery-9',
+                        'breast-augmentation-before-after-miami-gallery-10',
+                        'breast-augmentation-before-after-miami-natural-results-2',
+                        'breast-augmentation-before-after-miami-patient-gallery-2',
+                        'breast-augmentation-before-after-miami-results-2',
+                        'breast-augmentation-before-after-miami-results-3',
+                    ],
+                ],
+                [
+                    'breast-reduction',
+                    [
+                        'breast-reduction-before-after-miami-gallery-4',
+                        'breast-reduction-before-after-miami-gallery-5',
+                        'breast-reduction-before-after-miami-gallery-6',
+                        'breast-reduction-before-after-miami-gallery-8',
+                        'breast-reduction-before-after-miami-patient-gallery',
+                        'breast-reduction-before-after-miami-patient-gallery-2',
+                        'breast-reduction-before-after-miami-results-2',
+                        'breast-reduction-before-after-miami-results-3',
+                    ],
+                ],
+                [
+                    'liposuction',
+                    [
+                        'liposuction-target-areas-body-contouring-miami',
+                        'liposuction-target-areas-guide-miami',
+                        'liposuction-target-areas-miami-body-contouring',
+                    ],
+                ],
+                [
+                    'tummy-tuck',
+                    [
+                        'tummy-tuck-before-after-miami-abdominoplasty',
+                        'tummy-tuck-before-after-miami-abdominoplasty-results-2',
+                        'tummy-tuck-before-after-miami-body-contouring-2',
+                        'tummy-tuck-before-after-miami-body-contouring-4',
+                        'tummy-tuck-before-after-miami-body-contouring-5',
+                        'tummy-tuck-before-after-miami-body-contouring-6',
+                        'tummy-tuck-before-after-miami-body-contouring-7',
+                        'tummy-tuck-before-after-miami-side-view',
+                        'tummy-tuck-before-after-side-view-miami',
+                        'tummy-tuck-side-view-before-after-miami',
+                    ],
+                ],
+            ].flatMap(([group, slugs]) =>
+                slugs.map((slug) => ({
+                    source: `/gallery/media/${slug}`,
+                    destination: `/gallery/${group}`,
+                    permanent: true,
+                }))
+            ),
 
             // Liposuction blog consolidation (2026-09-22 blog review):
             // 25 liposuction posts become 17.
