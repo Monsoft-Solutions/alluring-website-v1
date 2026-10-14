@@ -99,7 +99,9 @@ export default async function DrKarlinskyThankYouPage({
                 <DrkThankYou lang={lang} override={copy.thankYou.override} />
                 <p className='drk-ty__sign'>
                     <span>{copy.thankYou.signoff}</span>
-                    <span className='drk-ty__name'>Dr. Karlinsky</span>
+                    <span className='drk-ty__name'>
+                        {copy.thankYou.signName}
+                    </span>
                 </p>
             </main>
 

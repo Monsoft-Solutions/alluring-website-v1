@@ -64,10 +64,20 @@ function partners(conjunction: string): string {
         : (last ?? '')
 }
 
+/** Names that keep their capital mid-sentence (they start with a name). */
+const PROPER_LABEL = /^(BBL|Lipo)\b/
+
+/** "Breast augmentation" → "breast augmentation", "BBL …" unchanged. */
+function inSentence(label: string): string {
+    return PROPER_LABEL.test(label)
+        ? label
+        : label.charAt(0).toLowerCase() + label.slice(1)
+}
+
 /** "BBL (Lipo 360 + BBL) from $5,500, Lipo 360 from $4,000…" */
 function priceSentence(lang: DrkLang, word: string, and: string): string {
     const items = DRK_PRICES.map(
-        (price) => `${price.label[lang]} ${word} ${price.from}`
+        (price) => `${inSentence(price.label[lang])} ${word} ${price.from}`
     )
     const last = items.pop()
     return `${items.join(', ')} ${and} ${last}`
@@ -105,6 +115,8 @@ export interface DrkDictionary {
         readonly call: string
         readonly callAria: string
         readonly langAria: string
+        /** Accessible name of the top bar's nav (language and call). */
+        readonly navAria: string
     }
     readonly story: {
         readonly handle: string
@@ -189,6 +201,8 @@ export interface DrkDictionary {
     readonly thankYou: {
         readonly metaTitle: string
         readonly signoff: string
+        /** Her name under the sign-off. */
+        readonly signName: string
         readonly override: ConsultationThankYouCopyOverride
     }
 }
@@ -203,6 +217,7 @@ const en: DrkDictionary = {
         call: 'Call',
         callAria: 'Call the practice',
         langAria: 'Ver esta página en español',
+        navAria: 'Language and call',
     },
     story: {
         handle: '@drkarlinsky',
@@ -212,16 +227,16 @@ const en: DrkDictionary = {
     },
     hero: {
         heading: ['You know my work. Let’s talk about ', { em: 'yours' }, '.'],
-        sub: 'Send this, my coordinator texts you, and we meet in Miami or virtually.',
+        sub: 'Tell me what you’re considering, and we’ll meet in Miami or by video.',
         callPrompt: 'Prefer to call?',
     },
     priceHint: {
-        priced: '{procedure} from {price} · financing available',
+        priced: '{procedure} from {price} · personal quote · financing',
         unpriced: 'Your price is personal · financing available',
     },
     message: {
         heading: ['A message ', { em: 'from me' }],
-        body: 'In {duration} I tell you how a consultation with me works, and what happens after you send your request.',
+        body: 'In {duration}: how I take care of my patients, and how we choose the right procedure for you.',
         play: 'Play the message',
         captions: 'Captions in English and Spanish',
     },
@@ -238,20 +253,19 @@ const en: DrkDictionary = {
             },
             {
                 title: 'Your plan, price and dates in writing',
-                body: 'Your surgery, pre-op and follow-up dates, and your price, before you decide anything.',
+                body: 'Your plan and your price in writing, and once you choose, your surgery, pre-op and follow-up dates. No obligation.',
             },
         ],
     },
     prices: {
         heading: ['Starting ', { em: 'prices' }],
         from: 'from',
-        personal:
-            'Your price is personal — Dr. Karlinsky confirms it at your consultation.',
+        personal: 'Your price is personal — I confirm it at your consultation.',
         financing: 'Financing available.',
     },
     results: {
         heading: ['My patients’ ', { em: 'results' }],
-        body: 'Before and after, photographed in my practice. Tap one to see it larger.',
+        body: 'My patients, before and after. Tap one to see it larger.',
         disclaimer:
             'Actual patients of Dr. Karlinsky. Individual results vary.',
         railLabel: 'Before-and-after photographs',
@@ -267,7 +281,7 @@ const en: DrkDictionary = {
         heading: ['In my patients’ ', { em: 'words' }],
         source: '{rating} on Google · {count} reviews',
         sourceNoCount: 'Google reviews',
-        stars: '5 out of 5 stars',
+        stars: 'Google rating',
     },
     about: {
         heading: ['About ', { em: 'me' }],
@@ -289,7 +303,7 @@ const en: DrkDictionary = {
         items: [
             {
                 question: 'How much will my surgery cost?',
-                answer: `Your price is personal — Dr. Karlinsky confirms it at your consultation. As a guide: ${priceSentence('en', 'from', 'and')}.`,
+                answer: `Your price is personal — I confirm it at your consultation. As a guide: ${priceSentence('en', 'from', 'and')}.`,
             },
             {
                 question: 'Can I pay over time?',
@@ -334,11 +348,16 @@ const en: DrkDictionary = {
     thankYou: {
         metaTitle: 'Thank you | Dr. Karlinsky',
         signoff: 'See you soon,',
+        signName: 'Dr. Karlinsky',
         override: {
             eyebrow: 'Request received',
             headingNamed: 'Thank you, {name}.',
             heading: 'Thank you.',
             body: 'Sarah from my team will text you to set up your consultation with me.',
+            // No reply time: the site's line promises "tomorrow after 9 AM".
+            closed: 'My office in Miami is closed right now. Sarah will text you once we open.',
+            // My price is confirmed at the consultation, not emailed.
+            email: 'Want my team to email you too?',
             nextTitle: 'What happens next',
             next: [
                 'Sarah texts you to get to know your goals and find a time.',
@@ -352,13 +371,14 @@ const en: DrkDictionary = {
 const es: DrkDictionary = {
     meta: {
         title: 'Un mensaje de la Dra. Karlinsky | Alluring Plastic Surgery',
-        description: `Pide tu consulta con la Dra. ${KARLINSKY_NAME}, en persona en Miami o virtual. Su coordinadora te escribe por texto para agendarla.`,
+        description: `Pide tu consulta con ${KARLINSKY_NAME}, en persona en Miami o virtual. Su coordinadora te manda un mensaje de texto para agendarla.`,
     },
     top: {
         practice: 'Alluring Plastic Surgery',
         call: 'Llamar',
         callAria: 'Llamar a la clínica',
         langAria: 'View this page in English',
+        navAria: 'Idioma y llamada',
     },
     story: {
         handle: '@drkarlinsky',
@@ -368,16 +388,16 @@ const es: DrkDictionary = {
     },
     hero: {
         heading: ['Ya conoces mi trabajo. Hablemos del ', { em: 'tuyo' }, '.'],
-        sub: 'Envíame esto, mi coordinadora te escribe y nos vemos en Miami o de forma virtual.',
+        sub: 'Cuéntame qué te interesa y nos vemos en Miami o por video.',
         callPrompt: '¿Prefieres llamar?',
     },
     priceHint: {
-        priced: '{procedure} desde {price} · financiamiento disponible',
+        priced: '{procedure} desde {price} · precio personal · financiamiento',
         unpriced: 'Tu precio es personal · financiamiento disponible',
     },
     message: {
-        heading: ['Un mensaje ', { em: 'mío' }],
-        body: 'En {duration} te cuento cómo es una consulta conmigo y qué pasa después de enviar tu solicitud.',
+        heading: ['Mi mensaje ', { em: 'para ti' }],
+        body: 'En {duration}: cómo cuido a mis pacientes y cómo elegimos el procedimiento indicado para ti.',
         play: 'Ver el mensaje',
         captions: 'Subtítulos en inglés y español',
     },
@@ -386,7 +406,7 @@ const es: DrkDictionary = {
         items: [
             {
                 title: 'Sarah te escribe',
-                body: 'Sarah es mi coordinadora. Conoce tus metas y responde tus primeras preguntas.',
+                body: 'Sarah es mi coordinadora. Te pregunta por tus metas y responde tus primeras dudas.',
             },
             {
                 title: 'Tu consulta conmigo',
@@ -394,20 +414,19 @@ const es: DrkDictionary = {
             },
             {
                 title: 'Tu plan, precio y fechas por escrito',
-                body: 'Tus fechas de cirugía, preoperatorio y seguimiento, y tu precio, antes de decidir nada.',
+                body: 'Tu plan y tu precio por escrito y, cuando decidas, tus fechas de cirugía, preoperatorio y seguimiento. Sin compromiso.',
             },
         ],
     },
     prices: {
         heading: ['Precios ', { em: 'desde' }],
         from: 'desde',
-        personal:
-            'Tu precio es personal: la Dra. Karlinsky lo confirma en tu consulta.',
+        personal: 'Tu precio es personal: te lo confirmo yo en tu consulta.',
         financing: 'Financiamiento disponible.',
     },
     results: {
         heading: ['Resultados de ', { em: 'mis pacientes' }],
-        body: 'Antes y después, fotografiados en mi consulta. Toca una foto para verla más grande.',
+        body: 'Antes y después de mis pacientes. Toca una foto para verla más grande.',
         disclaimer:
             'Pacientes reales de la Dra. Karlinsky. Los resultados varían según la persona.',
         railLabel: 'Fotos de antes y después',
@@ -423,13 +442,13 @@ const es: DrkDictionary = {
         heading: ['En palabras de ', { em: 'mis pacientes' }],
         source: '{rating} en Google · {count} reseñas',
         sourceNoCount: 'Reseñas de Google',
-        stars: '5 de 5 estrellas',
+        stars: 'Calificación en Google',
     },
     about: {
         heading: ['Sobre ', { em: 'mí' }],
         paragraphs: [
             'Soy Victoria Karlinsky. La cirujana que conoces en tu consulta es la que te opera.',
-            'Prefiero decirte con honestidad qué se verá bien en tu cuerpo antes que venderte algo que no.',
+            'Prefiero decirte con honestidad qué te va a quedar bien que venderte algo que no te favorece.',
         ],
         name: KARLINSKY_NAME,
         credentialsLabel: 'Credenciales',
@@ -445,7 +464,7 @@ const es: DrkDictionary = {
         items: [
             {
                 question: '¿Cuánto me va a costar la cirugía?',
-                answer: `Tu precio es personal: la Dra. Karlinsky lo confirma en tu consulta. Como referencia: ${priceSentence('es', 'desde', 'y')}.`,
+                answer: `Tu precio es personal: te lo confirmo yo en tu consulta. Como referencia: ${priceSentence('es', 'desde', 'y')}.`,
             },
             {
                 question: '¿Puedo pagar a plazos?',
@@ -453,7 +472,7 @@ const es: DrkDictionary = {
             },
             {
                 question: 'No vivo en Miami. ¿Cómo funciona?',
-                answer: 'Tu consulta puede ser virtual. Tus fechas de cirugía, preoperatorio y seguimiento se confirman por escrito, y yo te digo cuántas noches quedarte en Miami antes de que puedas volar a casa.',
+                answer: 'Tu consulta puede ser virtual. Tus fechas de cirugía, preoperatorio y seguimiento se confirman por escrito, y yo te digo cuántas noches quedarte en Miami antes de darte el alta para volar a casa.',
             },
             {
                 question: '¿La consulta es en persona o virtual?',
@@ -461,12 +480,12 @@ const es: DrkDictionary = {
             },
             {
                 question: '¿Qué pasa después de enviar mi solicitud?',
-                answer: 'Sarah, de mi equipo, te escribe por texto para conocer tus metas y buscar una fecha para tu consulta conmigo. Sin compromiso.',
+                answer: 'Sarah, de mi equipo, te manda un mensaje de texto para conocer tus metas y buscar una fecha para tu consulta conmigo. Sin compromiso.',
             },
         ],
     },
     closing: {
-        heading: ['Cuando estés lista, ', { em: 'aquí estoy' }, '.'],
+        heading: ['Cuando quieras, ', { em: 'aquí estoy' }, '.'],
         cta: 'Solicitar mi consulta',
         callPrompt: 'O llama al',
     },
@@ -478,7 +497,7 @@ const es: DrkDictionary = {
         close: 'Cerrar',
         cta: 'Solicitar mi consulta',
         replay: 'Ver otra vez',
-        endTitle: 'Cuando estés lista.',
+        endTitle: 'Cuando quieras, aquí estoy.',
         captionsEn: 'English',
         captionsEs: 'Español',
         unavailable: 'El video no cargó. Igual puedes enviar tu solicitud.',
@@ -490,11 +509,14 @@ const es: DrkDictionary = {
     thankYou: {
         metaTitle: 'Gracias | Dra. Karlinsky',
         signoff: 'Nos vemos pronto,',
+        signName: 'Dra. Karlinsky',
         override: {
             eyebrow: 'Solicitud recibida',
             headingNamed: 'Gracias, {name}.',
             heading: 'Gracias.',
-            body: 'Sarah, de mi equipo, te escribirá por texto para agendar tu consulta conmigo.',
+            body: 'Sarah, de mi equipo, te va a mandar un mensaje de texto para agendar tu consulta conmigo.',
+            closed: 'Mi oficina en Miami está cerrada ahora. Sarah te escribe en cuanto abramos.',
+            email: '¿Quieres que mi equipo también te escriba por correo?',
             nextTitle: 'Lo que sigue',
             next: [
                 'Sarah te escribe para conocer tus metas y buscar una fecha.',
@@ -528,7 +550,7 @@ export function buildDrkForm(lang: DrkLang): DrkForm {
     const mine: Partial<ConsultChatCopy> =
         lang === 'es'
             ? {
-                  title: 'Solicita tu consulta con la Dra. Karlinsky',
+                  title: 'Solicita tu consulta conmigo',
                   fieldProcedure: '¿Qué estás considerando?',
                   procedurePlaceholder: 'Elige un procedimiento',
                   fieldName: 'Nombre',
@@ -539,7 +561,7 @@ export function buildDrkForm(lang: DrkLang): DrkForm {
                   formHeader: undefined,
               }
             : {
-                  title: 'Request your consultation with Dr. Karlinsky',
+                  title: 'Request your consultation with me',
                   fieldProcedure: 'What are you considering?',
                   procedurePlaceholder: 'Choose a procedure',
                   fieldName: 'First name',

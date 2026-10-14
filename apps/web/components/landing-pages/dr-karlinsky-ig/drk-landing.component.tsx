@@ -15,7 +15,8 @@
  * (a call is a conversion, not an exit).
  */
 
-import Image from 'next/image'
+import Image, { getImageProps } from 'next/image'
+import { preload } from 'react-dom'
 
 import { LpLegalDialog } from '@/components/landing-pages/request-consultation/lp-legal-dialog.component'
 import { LP_LEGAL_HREFS } from '@/components/landing-pages/request-consultation/lp-legal'
@@ -52,6 +53,11 @@ interface DrkLandingProps {
 }
 
 const CLOSING_ID = 'drk-closing'
+
+/** Where the hero shows the film beside the form (drk.css). */
+const DESKTOP_HERO_MEDIA = '(min-width: 1024px)'
+
+const POSTER_SIZES = '(max-width: 640px) 78vw, 340px'
 
 const LOGO = { src: '/logo.png', width: 400, height: 166 } as const
 
@@ -90,7 +96,7 @@ export function DrkLanding({
                         />
                         <nav
                             className='drk-top__end'
-                            aria-label={copy.top.practice}
+                            aria-label={copy.top.navAria}
                         >
                             <span className='drk-lang'>
                                 <a
@@ -179,6 +185,7 @@ export function DrkLanding({
                                     playLabel={copy.message.play}
                                     duration={duration}
                                     placement='hero-desktop'
+                                    preloadMedia={DESKTOP_HERO_MEDIA}
                                 />
                             </div>
                         )}
@@ -298,7 +305,10 @@ export function DrkLanding({
                                 <Rich parts={copy.reviews.heading} />
                             </h2>
                             <p className='drk-reviews__source'>
-                                <Stars label={copy.reviews.stars} />
+                                <Stars />
+                                <span className='sr-only'>
+                                    {copy.reviews.stars}:{' '}
+                                </span>
                                 {proof.rating && proof.reviewCount
                                     ? fill(copy.reviews.source, {
                                           rating: proof.rating,
@@ -310,7 +320,7 @@ export function DrkLanding({
                                 {proof.reviews.map((review) => (
                                     <li key={review.id}>
                                         <figure>
-                                            <blockquote lang='en'>
+                                            <blockquote lang={review.lang}>
                                                 <p>{review.text}</p>
                                             </blockquote>
                                             <figcaption>
@@ -543,12 +553,37 @@ function MessageArch({
     playLabel,
     duration,
     placement,
+    preloadMedia,
 }: {
     readonly video: DrkVideo
     readonly playLabel: string
     readonly duration: string
     readonly placement: string
+    /**
+     * Preload the poster at high priority where this media query matches.
+     * The desktop hero's arch is above the fold there (likely the LCP), but
+     * `display: none` on phones, which must not fetch it: so a media-scoped
+     * preload, not `priority` (whose preload has no media) or eager loading
+     * (which fetches hidden images too).
+     */
+    readonly preloadMedia?: string
 }) {
+    if (preloadMedia) {
+        const { props } = getImageProps({
+            src: video.poster,
+            width: video.posterWidth,
+            height: video.posterHeight,
+            sizes: POSTER_SIZES,
+            alt: '',
+        })
+        preload(props.src, {
+            as: 'image',
+            imageSrcSet: props.srcSet,
+            imageSizes: props.sizes,
+            fetchPriority: 'high',
+            media: preloadMedia,
+        })
+    }
     return (
         <button
             type='button'
@@ -560,8 +595,9 @@ function MessageArch({
                 src={video.poster}
                 width={video.posterWidth}
                 height={video.posterHeight}
-                sizes='(max-width: 640px) 78vw, 340px'
+                sizes={POSTER_SIZES}
                 alt=''
+                fetchPriority={preloadMedia ? 'high' : undefined}
             />
             <span className='drk-film__play' aria-hidden='true'>
                 <PlayIcon />
@@ -606,9 +642,13 @@ function PhoneIcon() {
     )
 }
 
-function Stars({ label }: { readonly label: string }) {
+/**
+ * Decoration only: the line beside it gives the real rating, and five stars
+ * read aloud would claim a 5/5 the page doesn't.
+ */
+function Stars() {
     return (
-        <span className='drk-stars' role='img' aria-label={label}>
+        <span className='drk-stars' aria-hidden='true'>
             {'★★★★★'}
         </span>
     )

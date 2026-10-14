@@ -19,7 +19,7 @@ const { DRK_PRICES, drkPriceFor } = await import(
 const { DRK_VIDEO, hasDrkVideo } = await import(
     '@/components/landing-pages/dr-karlinsky-ig/drk-media'
 )
-const { selectDrkReviews } = await import(
+const { selectDrkReviews, reviewLanguage } = await import(
     '@/components/landing-pages/dr-karlinsky-ig/drk-proof'
 )
 const { DrkLanding } = await import(
@@ -104,15 +104,40 @@ describe('Dr. Karlinsky IG copy rules', () => {
         expect(everything).not.toContain(word)
     })
 
-    it('frames every price as personal, with financing', () => {
+    it('frames every price as personal, with financing, in her voice', () => {
         for (const lang of ['en', 'es'] as const) {
             const copy = DRK_COPY[lang]
-            expect(copy.prices.personal).toMatch(/Dr(a)?\. Karlinsky/)
             expect(copy.faq.items[0]?.answer).toContain('$5,500')
+            // The hero hint names a price, so it says it is personal too.
+            expect(copy.priceHint.priced).toMatch(/personal/)
+            expect(copy.priceHint.priced).toMatch(/financ/)
         }
         expect(DRK_COPY.en.prices.personal).toBe(
-            'Your price is personal — Dr. Karlinsky confirms it at your consultation.'
+            'Your price is personal — I confirm it at your consultation.'
         )
+        expect(DRK_COPY.en.faq.items[0]?.answer).toContain(
+            'As a guide: BBL (Lipo 360 + BBL) from $5,500, Lipo 360 from $4,000, breast augmentation from $3,500 and tummy tuck from $3,000.'
+        )
+        expect(DRK_COPY.es.faq.items[0]?.answer).toContain(
+            'aumento de senos desde $3,500 y abdominoplastia desde $3,000.'
+        )
+    })
+
+    it('promises no reply time on the thank-you page, and no emailed quote', () => {
+        for (const lang of ['en', 'es'] as const) {
+            const { override } = DRK_COPY[lang].thankYou
+            expect(override.closed).toBeTruthy()
+            expect(override.closed).not.toMatch(/\{time\}|\{when\}|9/)
+            expect(override.email?.toLowerCase()).not.toMatch(/quote|cotizaci/)
+        }
+        expect(DRK_COPY.es.thankYou.signName).toBe('Dra. Karlinsky')
+    })
+
+    it('gives her one title in Spanish', () => {
+        expect(JSON.stringify(DRK_COPY.es)).not.toMatch(
+            /Dra\. Victoria Karlinsky, MD/
+        )
+        expect(JSON.stringify(DRK_COPY.es)).not.toMatch(/"Dr\. /)
     })
 
     it('quotes the four starting prices from the price sheet', () => {
@@ -250,5 +275,64 @@ describe('DrkLanding', () => {
         // Mounted only on tap.
         expect(html).not.toContain('<video')
         expect(html).toContain('Ya conoces mi trabajo.')
+    })
+})
+
+describe('Dr. Karlinsky IG review language', () => {
+    it('tags a review by the language it is written in', () => {
+        expect(
+            reviewLanguage(
+                'La doctora Karlinsky es excelente, muy atenta con todo'
+            )
+        ).toBe('es')
+        expect(
+            reviewLanguage(
+                'Dr. K was amazing and very kind to me and my family'
+            )
+        ).toBe('en')
+    })
+})
+
+describe('drk_lead_submitted counts each lead once', async () => {
+    const { claimLeadCount } = await import(
+        '@/components/landing-pages/dr-karlinsky-ig/drk-thank-you.component'
+    )
+
+    function memoryStorage(): Storage {
+        const map = new Map<string, string>()
+        return {
+            get length() {
+                return map.size
+            },
+            clear: () => map.clear(),
+            getItem: (key) => map.get(key) ?? null,
+            key: (index) => [...map.keys()][index] ?? null,
+            removeItem: (key) => void map.delete(key),
+            setItem: (key, value) => void map.set(key, String(value)),
+        }
+    }
+
+    it('counts the lead the form stored, then not on a reload', () => {
+        const storage = memoryStorage()
+        storage.setItem(
+            'drk_lead',
+            JSON.stringify({ firstName: 'Ana', lead: { id: 'a', token: 't' } })
+        )
+        expect(claimLeadCount(storage)).toBe(true)
+        expect(claimLeadCount(storage)).toBe(false)
+        // A second request in the same tab is a new lead.
+        storage.setItem(
+            'drk_lead',
+            JSON.stringify({ firstName: 'Ana', lead: { id: 'b', token: 't' } })
+        )
+        expect(claimLeadCount(storage)).toBe(true)
+    })
+
+    it('does not count a visit with no stored lead', () => {
+        expect(claimLeadCount(memoryStorage())).toBe(false)
+    })
+
+    it('counts when storage is unavailable', () => {
+        expect(claimLeadCount(undefined)).toBe(true)
     })
 })

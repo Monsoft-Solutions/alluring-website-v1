@@ -32,6 +32,8 @@ export interface DrkReview {
     readonly text: string
     /** "May 2026", in the page's language. */
     readonly date: string
+    /** The language the patient wrote in, for the quote's `lang`. */
+    readonly lang: DrkLang
 }
 
 export interface DrkProof {
@@ -63,6 +65,18 @@ export function mentionsKarlinsky(text: string): boolean {
     return MENTIONS_HER.test(text)
 }
 
+const SPANISH_WORDS =
+    /\b(que|muy|con|por|para|mi|una|el|la|los|las|todo|gracias|excelente|doctora)\b/gi
+const ENGLISH_WORDS =
+    /\b(the|and|was|my|she|very|with|is|her|to|of|for|amazing)\b/gi
+
+/** Which language a review is written in, by its common words. */
+export function reviewLanguage(text: string): DrkLang {
+    const es = text.match(SPANISH_WORDS)?.length ?? 0
+    const en = text.match(ENGLISH_WORDS)?.length ?? 0
+    return es > en ? 'es' : 'en'
+}
+
 export function selectDrkReviews(
     result: GoogleReviewsResult | null,
     lang: DrkLang
@@ -92,6 +106,7 @@ export function selectDrkReviews(
                     name,
                     text,
                     date: month.format(new Date(review.reviewCreatedAt)),
+                    lang: reviewLanguage(text),
                 },
             ]
         })
