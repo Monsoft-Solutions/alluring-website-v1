@@ -15,6 +15,8 @@
  * the two arms look alike apart from the steps.
  */
 
+import type { ReactNode } from 'react'
+
 import {
     ConsultContactFields,
     ConsultHoneypot,
@@ -35,6 +37,12 @@ export interface ConsultFieldsProps
     readonly defaultProcedure?: string
     /** See `ConsultContactFields`. */
     readonly nameField?: 'full' | 'first'
+    /**
+     * A quiet line under the procedure list that follows the choice (Dr.
+     * Karlinsky's page shows the starting price, #332). Given the selected
+     * value, '' before one is chosen. Unset, nothing is drawn.
+     */
+    readonly procedureHint?: (procedure: string) => ReactNode
 }
 
 const cc = classNamer('cc')
@@ -42,6 +50,7 @@ const cc = classNamer('cc')
 export function ConsultFields({
     defaultProcedure = '',
     nameField = 'full',
+    procedureHint,
     ...options
 }: ConsultFieldsProps) {
     const { copy } = options
@@ -56,6 +65,14 @@ export function ConsultFields({
     const { answers, fieldId, invalid, titleId } = flow
     const procedureId = fieldId('procedure')
     const procedureError = fieldId('procedure-error')
+    const procedureHintId = fieldId('procedure-hint')
+    const describedBy =
+        [
+            invalid('procedure') ? procedureError : null,
+            procedureHint ? procedureHintId : null,
+        ]
+            .filter(Boolean)
+            .join(' ') || undefined
 
     return (
         <section
@@ -103,9 +120,7 @@ export function ConsultFields({
                             flow.answer(0, { procedure: event.target.value })
                         }
                         aria-invalid={invalid('procedure')}
-                        aria-describedby={
-                            invalid('procedure') ? procedureError : undefined
-                        }
+                        aria-describedby={describedBy}
                     >
                         <option value='' disabled>
                             {copy.procedurePlaceholder ?? ''}
@@ -119,6 +134,15 @@ export function ConsultFields({
                     {invalid('procedure') && (
                         <p className='cc-error' id={procedureError}>
                             {copy.errors.procedure}
+                        </p>
+                    )}
+                    {procedureHint && (
+                        <p
+                            className='ck-procedure__hint'
+                            id={procedureHintId}
+                            aria-live='polite'
+                        >
+                            {procedureHint(answers.procedure)}
                         </p>
                     )}
                 </div>
