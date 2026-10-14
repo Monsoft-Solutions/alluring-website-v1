@@ -212,6 +212,30 @@ describe('DrkLanding', () => {
         expect(html).toContain('aria-describedby="drk-request-procedure-hint"')
     })
 
+    it('ships the real cut: Blob URLs, captions in both languages, label from durationSec', () => {
+        const blob =
+            /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/landing\/dr-karlinsky-ig\//
+        expect(hasDrkVideo()).toBe(true)
+        for (const url of [
+            DRK_VIDEO.src,
+            DRK_VIDEO.poster,
+            DRK_VIDEO.captionsEn,
+            DRK_VIDEO.captionsEs,
+        ]) {
+            expect(url).toMatch(blob)
+        }
+        const html = renderToStaticMarkup(
+            createElement(DrkLanding, {
+                lang: 'en',
+                languageLinks: links,
+                proof,
+                video: DRK_VIDEO,
+            })
+        )
+        expect(html).toContain(config.formatDuration(DRK_VIDEO.durationSec))
+        expect(html).not.toContain('0:48')
+    })
+
     it('draws the story ring and the arch as play buttons, without a <video>', () => {
         const html = renderToStaticMarkup(
             createElement(DrkLanding, {

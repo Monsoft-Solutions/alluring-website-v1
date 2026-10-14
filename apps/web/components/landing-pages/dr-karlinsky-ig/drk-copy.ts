@@ -111,7 +111,7 @@ export interface DrkDictionary {
         readonly label: string
         /** Shown in place of `label` while there is no video. */
         readonly fallback: string
-        /** `{duration}` is "0:48". */
+        /** `{duration}` is formatDuration(DRK_VIDEO.durationSec), e.g. "0:46". */
         readonly playAria: string
     }
     readonly hero: {
@@ -126,7 +126,7 @@ export interface DrkDictionary {
     }
     readonly message: {
         readonly heading: RichText
-        /** `{duration}` is "0:48". */
+        /** `{duration}` is formatDuration(DRK_VIDEO.durationSec), e.g. "0:46". */
         readonly body: string
         readonly play: string
         readonly captions: string

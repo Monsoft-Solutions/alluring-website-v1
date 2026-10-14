@@ -20,7 +20,7 @@ export interface DrkVideo {
     /** WebVTT captions. Empty when the cut has none in that language. */
     readonly captionsEn: string
     readonly captionsEs: string
-    /** Length in seconds, shown as "0:48". */
+    /** Length in seconds; the "0:46" label is derived from it. */
     readonly durationSec: number
 }
 
@@ -35,14 +35,21 @@ export interface DrkImage {
     readonly faceCrop?: boolean
 }
 
+/**
+ * Stopgap cut (45.7 s) from her existing Instagram videos; the script for a
+ * fresh recording is docs/landing/dr-karlinsky-ig-video.md. Blob files are
+ * cached for a year: a new cut goes up under new `-v2` paths, never over these.
+ */
 export const DRK_VIDEO: DrkVideo = {
-    src: '',
-    poster: '/images/surgeons/dr-karlinsky.webp',
-    posterWidth: 800,
-    posterHeight: 1000,
-    captionsEn: '',
-    captionsEs: '',
-    durationSec: 48,
+    src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v1.mp4',
+    poster: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-poster-v1.webp',
+    posterWidth: 720,
+    posterHeight: 1280,
+    captionsEn:
+        'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v1.en.vtt',
+    captionsEs:
+        'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v1.es.vtt',
+    durationSec: 46,
 }
 
 /** Her portrait, for the "about me" arch. */
@@ -57,10 +64,10 @@ export const DRK_PORTRAIT: DrkImage = {
  * `faceCrop`, which CSS zooms to her face.
  */
 export const DRK_AVATAR: DrkImage = {
-    src: '/images/surgeons/dr-karlinsky.webp',
-    width: 800,
-    height: 1000,
-    faceCrop: true,
+    src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-avatar-v1.webp',
+    width: 256,
+    height: 256,
+    faceCrop: false,
 }
 
 /** True when there is a video to play. */

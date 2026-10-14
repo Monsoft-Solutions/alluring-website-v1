@@ -59,7 +59,7 @@ export const DRK_EVENTS = {
 /** Fills `{key}` placeholders in a copy string. */
 export { fill } from '@/components/shared/consult-chat/consult-chat.util'
 
-/** "0:48" from 48 seconds. */
+/** "0:46" from 46 seconds. */
 export function formatDuration(seconds: number): string {
     const whole = Math.max(0, Math.round(seconds))
     return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`
