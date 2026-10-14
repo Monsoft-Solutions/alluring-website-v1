@@ -200,8 +200,14 @@ export default function RootLayout({
                             />
                         </NonStandaloneOnly>
                     )}
-                    {/* Beta Feedback Button - visible during beta testing */}
-                    {isBetaMode && <FloatingFeedbackButtonLazy />}
+                    {/* Beta Feedback Button - visible during beta testing,
+                        except on standalone pages, where it covers the
+                        sticky CTA. */}
+                    {isBetaMode && (
+                        <NonStandaloneOnly>
+                            <FloatingFeedbackButtonLazy />
+                        </NonStandaloneOnly>
+                    )}
                     {/* Chat Widget - AI chat assistant */}
                     {isChatEnabled && <FloatingChatButtonLazy />}
                 </Providers>
