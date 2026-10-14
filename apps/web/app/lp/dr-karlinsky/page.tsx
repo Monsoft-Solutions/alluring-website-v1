@@ -30,9 +30,14 @@ import {
     DrkLanding,
     type DrkLanguageLinks,
 } from '@/components/landing-pages/dr-karlinsky-ig/drk-landing.component'
-import { DRK_VIDEO } from '@/components/landing-pages/dr-karlinsky-ig/drk-media'
+import {
+    DRK_AVATAR,
+    DRK_VIDEO,
+    hasDrkVideo,
+} from '@/components/landing-pages/dr-karlinsky-ig/drk-media'
 import { selectDrkProof } from '@/components/landing-pages/dr-karlinsky-ig/drk-proof'
 import { resolveLpLanguage } from '@/components/landing-pages/request-consultation/lp-language'
+import { siteConfig } from '@/lib/data/site-config'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 
@@ -78,7 +83,23 @@ export async function generateMetadata({
     searchParams,
 }: PageProps): Promise<Metadata> {
     const lang = await resolveLang(await searchParams)
-    const { meta } = DRK_COPY[lang]
+    const copy = DRK_COPY[lang]
+    const { meta } = copy
+    // Setting `openGraph` here replaces the root layout's whole object, so
+    // the image, URL and site name are given again. Her poster (or her face)
+    // is what a link sent from her profile previews with.
+    const image = hasDrkVideo(DRK_VIDEO)
+        ? {
+              url: DRK_VIDEO.poster,
+              width: DRK_VIDEO.posterWidth,
+              height: DRK_VIDEO.posterHeight,
+          }
+        : {
+              url: DRK_AVATAR.src,
+              width: DRK_AVATAR.width,
+              height: DRK_AVATAR.height,
+          }
+    const images = [{ ...image, alt: copy.about.portraitAlt }]
 
     return {
         title: { absolute: meta.title },
@@ -91,11 +112,16 @@ export async function generateMetadata({
             description: meta.description,
             type: 'profile',
             locale: lang === 'es' ? 'es_US' : 'en_US',
+            url: lang === 'es' ? '/lp/dr-karlinsky?hl=es' : '/lp/dr-karlinsky',
+            siteName: siteConfig.seo.siteName,
+            images,
         },
         twitter: {
-            card: 'summary_large_image',
+            // A portrait image: the small card shows it whole.
+            card: 'summary',
             title: meta.title,
             description: meta.description,
+            images,
         },
     }
 }
