@@ -6,6 +6,12 @@
  * burned in, plus English and Spanish WebVTT tracks. Hosted on Vercel Blob:
  * use the URL `put()` returned, never a hand-written host.
  *
+ * Encode for iPhone: H.264 Main, `yuv420p` in TV (limited) range. v1 was
+ * full-range `yuvj420p`; desktop browsers played it, an iPhone reported
+ * "couldn't load". The caption files live in `public/` on the site's own
+ * origin, so the `<video>` needs no `crossOrigin` (cross-origin media is a
+ * second thing iOS can refuse).
+ *
  * An empty `src` means there is no video yet: the page then hides every play
  * control and the "message" section, and shows her portrait only.
  */
@@ -41,14 +47,12 @@ export interface DrkImage {
  * cached for a year: a new cut goes up under new `-v2` paths, never over these.
  */
 export const DRK_VIDEO: DrkVideo = {
-    src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v1.mp4',
+    src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v2.mp4',
     poster: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-poster-v1.webp',
     posterWidth: 720,
     posterHeight: 1280,
-    captionsEn:
-        'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v1.en.vtt',
-    captionsEs:
-        'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/dr-karlinsky-ig/drk-ig-message-v1.es.vtt',
+    captionsEn: '/media/dr-karlinsky-ig/drk-ig-message.en.vtt',
+    captionsEs: '/media/dr-karlinsky-ig/drk-ig-message.es.vtt',
     durationSec: 46,
 }
 

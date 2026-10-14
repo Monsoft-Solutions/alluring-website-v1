@@ -65,6 +65,7 @@ describe('Dr. Karlinsky IG page config (#332)', () => {
             videoOpen: 'drk_video_open',
             videoProgress: 'drk_video_progress',
             videoCta: 'drk_video_cta',
+            videoError: 'drk_video_error',
         })
     })
 
@@ -241,13 +242,12 @@ describe('DrkLanding', () => {
         const blob =
             /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/landing\/dr-karlinsky-ig\//
         expect(hasDrkVideo()).toBe(true)
-        for (const url of [
-            DRK_VIDEO.src,
-            DRK_VIDEO.poster,
-            DRK_VIDEO.captionsEn,
-            DRK_VIDEO.captionsEs,
-        ]) {
+        for (const url of [DRK_VIDEO.src, DRK_VIDEO.poster]) {
             expect(url).toMatch(blob)
+        }
+        // Same-origin captions: the <video> must not need crossOrigin (iOS).
+        for (const url of [DRK_VIDEO.captionsEn, DRK_VIDEO.captionsEs]) {
+            expect(url).toMatch(/^\/media\/dr-karlinsky-ig\/[a-z0-9.-]+\.vtt$/)
         }
         const html = renderToStaticMarkup(
             createElement(DrkLanding, {

@@ -33,6 +33,9 @@ import { trackDrkEvent } from './drk-tracking'
 /** Height of the caption band under the player's button, in px. */
 const CUE_BAND_PX = 70
 
+/** How long the Spanish page outvotes Safari's automatic caption pick. */
+const AUTO_CAPTION_GUARD_MS = 4000
+
 const MILESTONES = [25, 50, 75] as const
 
 interface DrkPlayerProps {
@@ -97,6 +100,37 @@ export function DrkPlayer({
         element.play().catch(() => {})
     }, [open])
 
+    // Safari picks a caption track from the visitor's system language after
+    // the media loads, ignoring `default` and any mode set before (it showed
+    // English on the Spanish page). The Spanish page only carries the Spanish
+    // track; keep it showing through Safari's automatic pick, then leave the
+    // native captions menu to the visitor.
+    useEffect(() => {
+        if (!open || lang !== 'es') return
+        const element = videoRef.current
+        if (!element) return
+        const tracks = element.textTracks
+        const apply = () => {
+            for (const track of Array.from(tracks)) {
+                if (track.language === 'es' && track.mode !== 'showing') {
+                    track.mode = 'showing'
+                }
+            }
+        }
+        apply()
+        tracks.addEventListener('change', apply)
+        tracks.addEventListener('addtrack', apply)
+        const stop = window.setTimeout(() => {
+            tracks.removeEventListener('change', apply)
+            tracks.removeEventListener('addtrack', apply)
+        }, AUTO_CAPTION_GUARD_MS)
+        return () => {
+            window.clearTimeout(stop)
+            tracks.removeEventListener('change', apply)
+            tracks.removeEventListener('addtrack', apply)
+        }
+    }, [open, lang])
+
     // The default cue position (just above the controls) sits under the
     // persistent "Request my consultation" button, and the burned-in English
     // captions own the middle of the frame. Pin every cue into the band
@@ -157,6 +191,17 @@ export function DrkPlayer({
         trackDrkEvent(DRK_EVENTS.videoProgress, lang, { percent: 100 })
     }
 
+    // MediaError codes: 1 aborted, 2 network, 3 decode, 4 source not supported.
+    // Logged so a phone that can't play the cut shows up in analytics.
+    const onError = () => {
+        setFailed(true)
+        const error = videoRef.current?.error
+        trackDrkEvent(DRK_EVENTS.videoError, lang, {
+            code: error?.code ?? 0,
+            message: (error?.message ?? '').slice(0, 100),
+        })
+    }
+
     const replay = () => {
         const element = videoRef.current
         if (!element) return
@@ -174,10 +219,18 @@ export function DrkPlayer({
 
     if (!video.src) return null
 
+    // English captions are burned into the cut, so the English page carries no
+    // track (Safari would otherwise switch one on over them). The Spanish page
+    // carries the Spanish track only.
     const tracks = [
-        { src: video.captionsEn, srcLang: 'en', label: copy.captionsEn },
-        { src: video.captionsEs, srcLang: 'es', label: copy.captionsEs },
-    ].filter((track) => track.src)
+        lang === 'es'
+            ? { src: video.captionsEs, srcLang: 'es', label: copy.captionsEs }
+            : null,
+    ].filter((track) => track !== null && Boolean(track.src)) as {
+        src: string
+        srcLang: string
+        label: string
+    }[]
 
     return (
         <dialog
@@ -237,11 +290,10 @@ export function DrkPlayer({
                         playsInline
                         preload='auto'
                         aria-labelledby='drk-player-title'
-                        crossOrigin={tracks.length ? 'anonymous' : undefined}
                         onTimeUpdate={onTimeUpdate}
                         onEnded={onEnded}
                         onPlay={() => setEnded(false)}
-                        onError={() => setFailed(true)}
+                        onError={onError}
                     >
                         {tracks.map((track) => (
                             <track
