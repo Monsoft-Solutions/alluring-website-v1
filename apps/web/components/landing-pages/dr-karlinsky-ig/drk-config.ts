@@ -54,6 +54,7 @@ export const DRK_EVENTS = {
     videoOpen: 'drk_video_open',
     videoProgress: 'drk_video_progress',
     videoCta: 'drk_video_cta',
+    videoError: 'drk_video_error',
 } as const
 
 /** Fills `{key}` placeholders in a copy string. */
