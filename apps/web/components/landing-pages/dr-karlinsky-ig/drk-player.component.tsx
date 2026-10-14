@@ -30,6 +30,9 @@ import { focusDrkForm } from './drk-focus'
 import type { DrkVideo } from './drk-media'
 import { trackDrkEvent } from './drk-tracking'
 
+/** Height of the caption band under the player's button, in px. */
+const CUE_BAND_PX = 70
+
 const MILESTONES = [25, 50, 75] as const
 
 interface DrkPlayerProps {
@@ -92,6 +95,42 @@ export function DrkPlayer({
         const element = videoRef.current
         if (!element) return
         element.play().catch(() => {})
+    }, [open])
+
+    // The default cue position (just above the controls) sits under the
+    // persistent "Request my consultation" button, and the burned-in English
+    // captions own the middle of the frame. Pin every cue into the band
+    // between the button (76px up) and the bottom edge, the one band nothing
+    // else uses. Chrome ignores `lineAlign`, so the cue's top is placed.
+    useEffect(() => {
+        if (!open) return
+        const element = videoRef.current
+        if (!element) return
+        const trackElements = Array.from(element.querySelectorAll('track'))
+        const pin = (trackElement: HTMLTrackElement) => {
+            const height = element.clientHeight
+            if (!height) return
+            const line = Math.round(((height - CUE_BAND_PX) / height) * 100)
+            for (const cue of Array.from(trackElement.track.cues ?? [])) {
+                if (!(cue instanceof VTTCue)) continue
+                cue.snapToLines = false
+                cue.line = line
+                cue.lineAlign = 'start'
+            }
+        }
+        const onLoad = (event: Event) =>
+            pin(event.currentTarget as HTMLTrackElement)
+        for (const trackElement of trackElements) {
+            if (trackElement.readyState === HTMLTrackElement.LOADED) {
+                pin(trackElement)
+            }
+            trackElement.addEventListener('load', onLoad)
+        }
+        return () => {
+            for (const trackElement of trackElements) {
+                trackElement.removeEventListener('load', onLoad)
+            }
+        }
     }, [open])
 
     const close = () => dialogRef.current?.close()
