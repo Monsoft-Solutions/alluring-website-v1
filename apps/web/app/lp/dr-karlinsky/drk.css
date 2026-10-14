@@ -263,9 +263,10 @@ body:has(.drk) #loquent-widget {
 }
 
 .drk-lang a {
+    position: relative;
     display: inline-grid;
     place-items: center;
-    min-width: 38px;
+    min-width: 44px;
     height: 32px;
     padding: 0 8px;
     border-radius: 9999px;
@@ -276,12 +277,25 @@ body:has(.drk) #loquent-widget {
     text-decoration: none;
 }
 
+/* A 44px tap height without a taller bar. */
+.drk-lang a::after,
+.drk-top__call::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+}
+
+.drk-top__call::after {
+    inset: -2px 0;
+}
+
 .drk-lang a[aria-current='true'] {
     background: color-mix(in srgb, var(--gold-300) 16%, transparent);
     color: var(--drk-champagne);
 }
 
 .drk-top__call {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -397,7 +411,12 @@ button.drk-story:hover .drk-story__handle {
     text-align: center;
 }
 
-.drk-hero__call a {
+.drk-hero__call a,
+.drk-closing__call a {
+    /* A taller tap area that the line around it doesn't feel. */
+    display: inline-block;
+    padding-block: 13px;
+    margin-block: -13px;
     color: var(--drk-champagne);
     font-weight: 600;
     text-underline-offset: 3px;
@@ -494,9 +513,10 @@ button.drk-story:hover .drk-story__handle {
 }
 
 .drk .cc-consent label {
-    color: var(--stone-400);
-    font-size: 10.5px;
-    line-height: 1.42;
+    /* Consent to automated texts must be clear and conspicuous: no fine print. */
+    color: var(--stone-300);
+    font-size: 12px;
+    line-height: 1.45;
 }
 
 .drk .cc-send {
@@ -757,7 +777,14 @@ button.drk-story:hover .drk-story__handle {
     list-style: none;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-padding-inline: var(--drk-gutter);
+    /*
+     * Same as the left padding: snapping the first card to a plain gutter
+     * would scroll the rail out of the content column on a wide screen.
+     */
+    scroll-padding-inline: max(
+        var(--drk-gutter),
+        calc((100% - 1080px) / 2 + var(--drk-gutter))
+    );
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
 }
@@ -1114,12 +1141,6 @@ button.drk-story:hover .drk-story__handle {
     font-size: 14px;
 }
 
-.drk-closing__call a {
-    color: var(--drk-champagne);
-    font-weight: 600;
-    text-underline-offset: 3px;
-}
-
 /* ---------- footer ---------- */
 
 .drk-footer {
@@ -1147,7 +1168,7 @@ button.drk-story:hover .drk-story__handle {
 .drk-footer__legal a {
     display: inline-flex;
     align-items: center;
-    min-height: 36px;
+    min-height: 44px;
 }
 
 .drk-footer__fine {
