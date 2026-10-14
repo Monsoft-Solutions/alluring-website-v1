@@ -229,8 +229,14 @@ function clockTime(
     }).format(instant)
 }
 
-/** The after-hours line, or null while the office is open. */
-function useClosedNotice(lang: ConsultChatLang): string | null {
+/**
+ * The after-hours line, or null while the office is open. `template` is the
+ * page's own wording; `{when}`, `{time}` and `{local}` are optional in it.
+ */
+function useClosedNotice(
+    lang: ConsultChatLang,
+    template: string = COPY[lang].closed
+): string | null {
     // Read once the page is running: the server cannot know the visitor's
     // clock, and the answer only changes at opening time.
     const status = useSyncExternalStore(
@@ -254,7 +260,7 @@ function useClosedNotice(lang: ConsultChatLang): string | null {
                     weekday: 'long',
                     timeZone: officeZone,
                 }).format(status.opensAt)
-    return fill(copy.closed, {
+    return fill(template, {
         when,
         time: officeTime,
         local:
@@ -283,6 +289,13 @@ export interface ConsultationThankYouCopyOverride {
     readonly body?: string
     readonly nextTitle?: string
     readonly next?: readonly string[]
+    /**
+     * The out-of-hours line. The site's names the time the text will come;
+     * a page that can't promise one says so in its own words.
+     */
+    readonly closed?: string
+    /** The optional email question. */
+    readonly email?: string
 }
 
 export function ConsultationThankYou({
@@ -324,7 +337,7 @@ export function ConsultationThankYou({
     )
     const stored = parseStored(raw)
     const name = stored?.firstName.trim()
-    const closedNotice = useClosedNotice(lang)
+    const closedNotice = useClosedNotice(lang, copy.closed)
 
     const smsLink = getSmsLink()
     const textDisplay =
@@ -381,6 +394,7 @@ export function ConsultationThankYou({
                         storageKey={leadStorageKey}
                         stored={stored}
                         hideHeardFrom={hideHeardFrom}
+                        emailQuestion={copy.email}
                     />
                 )}
 
@@ -437,13 +451,17 @@ export function LeadQuestions({
     lead,
     storageKey,
     stored,
-    hideHeardFrom,
+    hideHeardFrom = false,
+    emailQuestion,
 }: {
     readonly lang: ConsultChatLang
     readonly lead: NonNullable<ConsultChatLead['lead']>
     readonly storageKey: string
     readonly stored: StoredLead
-    readonly hideHeardFrom: boolean
+    /** Same default as `ConsultationThankYou`: the question is asked. */
+    readonly hideHeardFrom?: boolean
+    /** The page's own email question (`copyOverride.email`). */
+    readonly emailQuestion?: string
 }) {
     const copy = COPY[lang]
     const [local, setLocal] = useState<Answers | null>(null)
@@ -592,7 +610,7 @@ export function LeadQuestions({
                         htmlFor='thank-you-email'
                         className='text-sm font-semibold text-stone-100'
                     >
-                        {copy.email}
+                        {emailQuestion ?? copy.email}
                     </label>
                     <div className='mt-3 flex gap-2'>
                         <input
