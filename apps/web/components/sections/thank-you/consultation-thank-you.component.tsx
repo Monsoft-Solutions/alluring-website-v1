@@ -229,8 +229,14 @@ function clockTime(
     }).format(instant)
 }
 
-/** The after-hours line, or null while the office is open. */
-function useClosedNotice(lang: ConsultChatLang): string | null {
+/**
+ * The after-hours line, or null while the office is open. `template` is the
+ * page's own wording; `{when}`, `{time}` and `{local}` are optional in it.
+ */
+function useClosedNotice(
+    lang: ConsultChatLang,
+    template: string = COPY[lang].closed
+): string | null {
     // Read once the page is running: the server cannot know the visitor's
     // clock, and the answer only changes at opening time.
     const status = useSyncExternalStore(
@@ -254,7 +260,7 @@ function useClosedNotice(lang: ConsultChatLang): string | null {
                     weekday: 'long',
                     timeZone: officeZone,
                 }).format(status.opensAt)
-    return fill(copy.closed, {
+    return fill(template, {
         when,
         time: officeTime,
         local:
@@ -276,8 +282,20 @@ function cachedStatus() {
  * "private" where the site says "free" (see its `lp-copy.ts`).
  */
 export interface ConsultationThankYouCopyOverride {
+    readonly eyebrow?: string
+    /** `{name}` is the visitor's first name. */
+    readonly headingNamed?: string
+    readonly heading?: string
     readonly body?: string
+    readonly nextTitle?: string
     readonly next?: readonly string[]
+    /**
+     * The out-of-hours line. The site's names the time the text will come;
+     * a page that can't promise one says so in its own words.
+     */
+    readonly closed?: string
+    /** The optional email question. */
+    readonly email?: string
 }
 
 export function ConsultationThankYou({
@@ -285,6 +303,7 @@ export function ConsultationThankYou({
     copyOverride,
     compact = false,
     lang: langProp,
+    hideHeardFrom = false,
 }: {
     /** Where the thread stored the lead (`ConsultChat`'s `leadStorageKey`). */
     readonly leadStorageKey: string
@@ -301,6 +320,11 @@ export function ConsultationThankYou({
      * landing page). Without it the section follows Google Translate.
      */
     readonly lang?: ConsultChatLang
+    /**
+     * Leaves out "How did you hear about us?" on a page whose source already
+     * answers it (Dr. Karlinsky's Instagram page, #332).
+     */
+    readonly hideHeardFrom?: boolean
 }) {
     const pageLang = usePageLanguage()
     const lang = langProp ?? pageLang
@@ -313,7 +337,7 @@ export function ConsultationThankYou({
     )
     const stored = parseStored(raw)
     const name = stored?.firstName.trim()
-    const closedNotice = useClosedNotice(lang)
+    const closedNotice = useClosedNotice(lang, copy.closed)
 
     const smsLink = getSmsLink()
     const textDisplay =
@@ -369,6 +393,8 @@ export function ConsultationThankYou({
                         lead={stored.lead}
                         storageKey={leadStorageKey}
                         stored={stored}
+                        hideHeardFrom={hideHeardFrom}
+                        emailQuestion={copy.email}
                     />
                 )}
 
@@ -419,16 +445,23 @@ export function ConsultationThankYou({
     )
 }
 
-function LeadQuestions({
+/** The optional questions. Exported for tests; pages use `ConsultationThankYou`. */
+export function LeadQuestions({
     lang,
     lead,
     storageKey,
     stored,
+    hideHeardFrom = false,
+    emailQuestion,
 }: {
     readonly lang: ConsultChatLang
     readonly lead: NonNullable<ConsultChatLead['lead']>
     readonly storageKey: string
     readonly stored: StoredLead
+    /** Same default as `ConsultationThankYou`: the question is asked. */
+    readonly hideHeardFrom?: boolean
+    /** The page's own email question (`copyOverride.email`). */
+    readonly emailQuestion?: string
 }) {
     const copy = COPY[lang]
     const [local, setLocal] = useState<Answers | null>(null)
@@ -577,7 +610,7 @@ function LeadQuestions({
                         htmlFor='thank-you-email'
                         className='text-sm font-semibold text-stone-100'
                     >
-                        {copy.email}
+                        {emailQuestion ?? copy.email}
                     </label>
                     <div className='mt-3 flex gap-2'>
                         <input
@@ -617,14 +650,16 @@ function LeadQuestions({
                     )}
                 </form>
 
-                <ChipQuestion
-                    id='heard-from'
-                    question={copy.heard}
-                    options={LEAD_HEARD_FROM}
-                    labels={copy.heardOptions}
-                    selected={answers.heardFrom}
-                    onPick={(heardFrom) => answer({ heardFrom })}
-                />
+                {!hideHeardFrom && (
+                    <ChipQuestion
+                        id='heard-from'
+                        question={copy.heard}
+                        options={LEAD_HEARD_FROM}
+                        labels={copy.heardOptions}
+                        selected={answers.heardFrom}
+                        onPick={(heardFrom) => answer({ heardFrom })}
+                    />
+                )}
             </div>
         </div>
     )

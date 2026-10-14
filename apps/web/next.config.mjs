@@ -161,11 +161,22 @@ const nextConfig = {
                     '/miami-plastic-surgery-specials?utm_source=influencer&utm_medium=dirian-garcia',
                 permanent: true,
             },
+            // Dr. Karlinsky's Instagram bio link (#332). `/drk` is the link in
+            // her bio; `/dr-karlinsky-ig` is the old one. Both temporary, so
+            // the destination can change without browsers holding on to it,
+            // and both carry UTMs: without a `utm_source` the fbclid Instagram
+            // adds would file the lead as paid Meta.
+            {
+                source: '/drk',
+                destination:
+                    '/lp/dr-karlinsky?utm_source=doctor&utm_medium=dr-karlinsky&utm_campaign=ig-bio',
+                permanent: false,
+            },
             {
                 source: '/dr-karlinsky-ig',
                 destination:
-                    '/landing/dr-victoria-karlinsky?utm_source=doctor&utm_medium=dr-karlinsky',
-                permanent: true,
+                    '/lp/dr-karlinsky?utm_source=doctor&utm_medium=dr-karlinsky&utm_campaign=ig-bio',
+                permanent: false,
             },
             // Melissa Juvier's bio link. Temporary, so the UTMs can change
             // without browsers holding on to the old destination.

@@ -63,6 +63,11 @@ export type N8NLeadPayload = {
     /** The page the form was sent from; `landingPage` is where the visit began. */
     readonly page: string
     readonly source: string
+    /**
+     * Which version of the page sent the lead (`drk-ig-v1`,
+     * `ads-consultation-v6`); empty for forms that don't tag one.
+     */
+    readonly page_variant: string
     readonly ga_client_id: string
     /** When this payload was sent — the later of two events for a lead wins. */
     readonly sent_at: string
@@ -160,6 +165,7 @@ export function buildN8NLeadPayload(
         landingPage: lead.landingPage || '',
         page: lead.submittedFromPath || '',
         source: lead.source || '',
+        page_variant: lead.pageVariant || '',
         ga_client_id: lead.gaClientId || '',
         sent_at: new Date().toISOString(),
     }
