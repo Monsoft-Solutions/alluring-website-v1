@@ -13,6 +13,7 @@
  * - specials-page: Specials landing page consultation form
  * - landing-page: Lead generation landing page consultation form
  * - home-page: Home page consultation thread (phone required)
+ * - dr-karlinsky-ig: Dr. Karlinsky's Instagram bio-link page, /lp/dr-karlinsky (phone required)
  */
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
@@ -46,6 +47,8 @@ export const CONTACT_SOURCES = {
     QUIZ: 'quiz',
     DR_KARLINSKY_LANDING: 'dr-karlinsky-landing',
     MELISSA_JUVIER_LANDING: 'melissa-juvier-landing',
+    /** /lp/dr-karlinsky, reached from the link in her Instagram bio (#332). */
+    DR_KARLINSKY_IG: 'dr-karlinsky-ig',
 } as const
 
 export type ContactSource =

@@ -276,7 +276,12 @@ function cachedStatus() {
  * "private" where the site says "free" (see its `lp-copy.ts`).
  */
 export interface ConsultationThankYouCopyOverride {
+    readonly eyebrow?: string
+    /** `{name}` is the visitor's first name. */
+    readonly headingNamed?: string
+    readonly heading?: string
     readonly body?: string
+    readonly nextTitle?: string
     readonly next?: readonly string[]
 }
 
@@ -285,6 +290,7 @@ export function ConsultationThankYou({
     copyOverride,
     compact = false,
     lang: langProp,
+    hideHeardFrom = false,
 }: {
     /** Where the thread stored the lead (`ConsultChat`'s `leadStorageKey`). */
     readonly leadStorageKey: string
@@ -301,6 +307,11 @@ export function ConsultationThankYou({
      * landing page). Without it the section follows Google Translate.
      */
     readonly lang?: ConsultChatLang
+    /**
+     * Leaves out "How did you hear about us?" on a page whose source already
+     * answers it (Dr. Karlinsky's Instagram page, #332).
+     */
+    readonly hideHeardFrom?: boolean
 }) {
     const pageLang = usePageLanguage()
     const lang = langProp ?? pageLang
@@ -369,6 +380,7 @@ export function ConsultationThankYou({
                         lead={stored.lead}
                         storageKey={leadStorageKey}
                         stored={stored}
+                        hideHeardFrom={hideHeardFrom}
                     />
                 )}
 
@@ -419,16 +431,19 @@ export function ConsultationThankYou({
     )
 }
 
-function LeadQuestions({
+/** The optional questions. Exported for tests; pages use `ConsultationThankYou`. */
+export function LeadQuestions({
     lang,
     lead,
     storageKey,
     stored,
+    hideHeardFrom,
 }: {
     readonly lang: ConsultChatLang
     readonly lead: NonNullable<ConsultChatLead['lead']>
     readonly storageKey: string
     readonly stored: StoredLead
+    readonly hideHeardFrom: boolean
 }) {
     const copy = COPY[lang]
     const [local, setLocal] = useState<Answers | null>(null)
@@ -617,14 +632,16 @@ function LeadQuestions({
                     )}
                 </form>
 
-                <ChipQuestion
-                    id='heard-from'
-                    question={copy.heard}
-                    options={LEAD_HEARD_FROM}
-                    labels={copy.heardOptions}
-                    selected={answers.heardFrom}
-                    onPick={(heardFrom) => answer({ heardFrom })}
-                />
+                {!hideHeardFrom && (
+                    <ChipQuestion
+                        id='heard-from'
+                        question={copy.heard}
+                        options={LEAD_HEARD_FROM}
+                        labels={copy.heardOptions}
+                        selected={answers.heardFrom}
+                        onPick={(heardFrom) => answer({ heardFrom })}
+                    />
+                )}
             </div>
         </div>
     )
