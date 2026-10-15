@@ -158,7 +158,7 @@ export const getAdjacentPosts = (
         [`blog-adjacent-posts-${postId}`],
         {
             tags: ['blog-posts', `blog-adjacent-${postId}`],
-            revalidate: 60,
+            revalidate: 3600, // publishing fires revalidateTag('blog-posts'); see #337
         }
     )()
 }

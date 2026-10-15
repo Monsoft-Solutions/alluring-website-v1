@@ -26,6 +26,13 @@ import { seoConfig } from '@/lib/seo-config'
 // This sits on top of the query's own CACHE_TTL, so it caps what this route adds.
 export const revalidate = 600
 
+// No paths at build time, but returning a list (even an empty one) makes the
+// route ISR: each slug renders on its first visit and is cached for the
+// window above. Without it the route renders on every request (#337).
+export function generateStaticParams() {
+    return []
+}
+
 type Params = Promise<{ slug: string }>
 
 export async function generateMetadata({

@@ -182,7 +182,7 @@ export async function getPublishedPostCardsPage(options?: {
         ],
         {
             tags: [CACHE_TAGS.BLOG_POSTS],
-            revalidate: 60, // Cache for 60 seconds
+            revalidate: 3600, // publishing fires revalidateTag('blog-posts'); see #337
         }
     )()
 

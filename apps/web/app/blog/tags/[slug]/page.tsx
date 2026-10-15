@@ -30,6 +30,13 @@ import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 // is the safety net, not the mechanism.
 export const revalidate = 3600
 
+// No paths at build time, but returning a list (even an empty one) makes the
+// route ISR: each slug renders on its first visit and is cached for the
+// window above. Without it the route renders on every request (#337).
+export function generateStaticParams() {
+    return []
+}
+
 type PageProps = {
     params: Promise<{ slug: string }>
 }

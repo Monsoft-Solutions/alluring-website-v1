@@ -6,7 +6,7 @@
  *
  * @module app/api/blog/posts/[id]/views/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { after, type NextRequest, NextResponse } from 'next/server'
 
 import { db } from '@workspace/db/client'
 import { blogPost } from '@workspace/db/schema/blog'
@@ -34,7 +34,7 @@ function isValidUUID(id: string): boolean {
  * POST handler for blog post view tracking
  *
  * Atomically increments the view count for a blog post.
- * Returns immediately - database operation is fire-and-forget.
+ * Returns immediately; the database write runs in after().
  *
  * @param request - Next.js request object
  * @param params - Route params containing post ID
@@ -55,9 +55,10 @@ export async function POST(
             )
         }
 
-        // Increment views asynchronously - don't await to return quickly
-        // Use Promise.resolve().then() pattern for truly async execution
-        void Promise.resolve().then(async () => {
+        // Increment after the response is sent. after() keeps the function
+        // alive until the write settles; a bare un-awaited promise is frozen
+        // with the instance and times out connecting when it resumes (#337).
+        after(async () => {
             try {
                 await db
                     .update(blogPost)
