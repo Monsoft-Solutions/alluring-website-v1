@@ -1,6 +1,6 @@
 {
     "profile_id": "3460358991193098276",
-    "updated": "2026-10-07",
+    "updated": "2026-10-14",
     "source": "Instagram @alluring posts, chosen 2026-10-07 from ~/monsoft/projects/alluring/instagram-review (gbp-selection.json, tools/build_gbp.py)",
     "rules": "video <=30 s and >=720p; no B/A, skin, garments, surgery/blood, prices/% OFF/phone overlays, stock or collages; no surgeon name in copy; US only; no travel claims",
     "posts": [
@@ -17,14 +17,16 @@
         },
         {
             "n": 2,
-            "date": "2026-10-15",
+            "date": "2026-10-14",
             "title": "Flying in from another state",
             "button": "Learn more",
             "url": "https://www.alluringplasticsurgery.com/fly-in-consultation?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=fly-in",
             "media": "ca-patient",
             "media_note": "ca-patient needs a release and names the surgeon; a fresh storefront photo from the practice is the safer pick. travel-surgeon is NOT allowed.",
-            "status": "draft",
-            "text": "Coming from another state for surgery in Miami?\n\nMany of our patients fly in. Before you book a flight, you need three dates, and we give you all three in writing:\n• your surgery date\n• your pre-op and follow-up appointments\n• how many nights to stay in Miami before you're cleared to fly home\n\nStart with a virtual consultation from wherever you live in the US. Once your plan is set, you book travel around confirmed dates.\n\nFlights and lodging are yours to choose. We take care of the clinical side."
+            "status": "published",
+            "text": "Coming from another state for surgery in Miami?\n\nMany of our patients fly in. Before you book a flight, you need three dates, and we give you all three in writing:\n• your surgery date\n• your pre-op and follow-up appointments\n• how many nights to stay in Miami before you're cleared to fly home\n\nStart with a virtual consultation from wherever you live in the US. Once your plan is set, you book travel around confirmed dates.\n\nFlights and lodging are yours to choose. We take care of the clinical side.",
+            "status_date": "2026-10-14",
+            "status_note": "Posted 14 Oct with the ca-patient video; approved by Google the same day (Published)."
         },
         {
             "n": 3,
@@ -33,8 +35,70 @@
             "button": "Book",
             "url": "https://www.alluringplasticsurgery.com/consulta-gratis?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=espanol",
             "media": "es-surgery-day",
-            "status": "draft",
-            "text": "Hablamos español.\n\nEn Alluring Plastic Surgery nuestro equipo te atiende en español, desde la primera llamada hasta tus citas de seguimiento.\n\nEn tu consulta gratis recibes por escrito:\n• tu plan quirúrgico\n• tu precio\n• tus fechas de cirugía, preoperatorio y seguimiento\n\nSi vives fuera de Miami, puedes empezar con una consulta virtual."
+            "status": "scheduled",
+            "text": "Hablamos español.\n\nEn Alluring Plastic Surgery nuestro equipo te atiende en español, desde la primera llamada hasta tus citas de seguimiento.\n\nEn tu consulta gratis recibes por escrito:\n• tu plan quirúrgico\n• tu precio\n• tus fechas de cirugía, preoperatorio y seguimiento\n\nSi vives fuera de Miami, puedes empezar con una consulta virtual.",
+            "status_date": "2026-10-14",
+            "status_note": "Scheduled in GBP for 2026-10-22 09:00 with the es-surgery-day video. Pending Google review."
+        },
+        {
+            "n": 4,
+            "date": "2026-10-29",
+            "title": "Implants or a breast lift?",
+            "button": "Learn more",
+            "url": "https://www.alluringplasticsurgery.com/blog/breast-augmentation-vs-breast-lift?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=implants-vs-lift",
+            "media": "implants-vs-lift",
+            "status": "scheduled",
+            "text": "Implants or a breast lift?\n\nThey solve different problems. An implant adds volume. A lift raises the breast and removes extra skin, which is what corrects sagging. An implant on its own won't lift a breast that has dropped.\n\nIf you'd like more volume and less sagging, the two can be done together.\n\nAt your free consultation the surgeon examines you and tells you which one fits your body. You leave with your plan, your price and your dates in writing.",
+            "status_date": "2026-10-14",
+            "status_note": "Scheduled in GBP for 2026-10-29 09:00 with its video (uploaded by Claude via file_upload after the user's explicit permission). Pending Google review."
+        },
+        {
+            "n": 5,
+            "date": "2026-11-05",
+            "title": "Can a facelift be combined with other procedures?",
+            "button": "Learn more",
+            "url": "https://www.alluringplasticsurgery.com/procedures/facelift-miami?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=facelift-combo",
+            "media": "facelift-combo",
+            "status": "scheduled",
+            "text": "Can a facelift be combined with other procedures?\n\nYes, but it depends on the procedure. Eyelid surgery and fat grafting to the face can be done in the same surgery as a facelift. Body procedures are different: we prefer not to combine them with a facelift.\n\nAt your free consultation the surgeon looks at your goals and your health and tells you what can safely be done together. You leave with your plan, your price and your dates in writing.\n\nNot in Miami? Start with a virtual consultation.",
+            "status_date": "2026-10-14",
+            "status_note": "Scheduled in GBP for 2026-11-05 09:00 with its video (uploaded by Claude via file_upload after the user's explicit permission). Pending Google review."
+        },
+        {
+            "n": 6,
+            "date": "2026-11-12",
+            "title": "Cómo venir el día de tu cirugía",
+            "button": "Book",
+            "url": "https://www.alluringplasticsurgery.com/consulta-gratis?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=dia-de-cirugia",
+            "media": "surgery-day-prep",
+            "status": "scheduled",
+            "text": "¿Cómo venir el día de tu cirugía?\n\n• Trae una bata y unas pantuflas.\n• Ven sin maquillaje, cremas ni perfume.\n• Recógete el cabello; lo mejor es una trenza.\n• Deja al menos el dedo índice sin pintura de uñas.\n• Trae una toalla.\n• No traigas objetos de metal ni prendas de valor.\n• Y lo más importante: trae una colcha, porque hace mucho frío.\n\n¿Tienes otra duda sobre tu día de cirugía? Pregúntale a nuestro equipo, en español.",
+            "status_date": "2026-10-14",
+            "status_note": "Scheduled in GBP for 2026-11-12 09:00 with its video (uploaded by Claude via file_upload after the user's explicit permission). Pending Google review."
+        },
+        {
+            "n": 7,
+            "date": "2026-11-19",
+            "title": "Five signs you're ready",
+            "button": "Book",
+            "url": "https://www.alluringplasticsurgery.com/free-consultation?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=ready",
+            "media": "office-walk",
+            "status": "scheduled",
+            "text": "Five signs you're ready for plastic surgery:\n\n• You've been thinking about it for months, maybe years.\n• You're doing it for yourself, not because someone else wants you to.\n• You understand that healing takes time.\n• Your expectations are realistic: you want to enhance your body, not chase perfection.\n• You're ready to invest in yourself.\n\nIf this sounds like you, the next step is a free consultation. You leave with your plan, your price and your dates in writing.",
+            "status_date": "2026-10-14",
+            "status_note": "Scheduled in GBP for 2026-11-19 09:00 with its video (uploaded by Claude via file_upload after the user's explicit permission). Pending Google review."
+        },
+        {
+            "n": 8,
+            "date": "2026-11-25",
+            "title": "Así es el día de tu cirugía",
+            "button": "Book",
+            "url": "https://www.alluringplasticsurgery.com/consulta-gratis?utm_source=google&utm_medium=organic&utm_campaign=gbp-post&utm_content=tour",
+            "media": "es-tour",
+            "status": "scheduled",
+            "text": "Así es el día de tu cirugía en Alluring Plastic Surgery.\n\nDesde que llegas y haces check-in, nuestro equipo está contigo para responder tus preguntas y dudas. El día de tu cirugía recorres este camino hasta el cuarto de preparación, donde esperas los minutos antes de entrar.\n\nTodo empieza con tu evaluación gratis. Allí recibes por escrito tu plan quirúrgico, tu precio y tus fechas.\n\nSi vives fuera de Miami, puedes empezar con una consulta virtual.",
+            "status_date": "2026-10-14",
+            "status_note": "Scheduled in GBP for 2026-11-25 09:00 with its video (uploaded by Claude via file_upload after the user's explicit permission). Pending Google review."
         }
     ],
     "schedule": [
@@ -69,38 +133,38 @@
         {
             "week": 4,
             "thursday": "2026-10-29",
-            "post": "(topic open) breast surgery",
+            "post": "Implants or a breast lift?",
             "post_media": "implants-vs-lift",
             "profile": ["anesthesia", "int-reception-b"]
         },
         {
             "week": 5,
             "thursday": "2026-11-05",
-            "post": "(topic open) face",
+            "post": "Can a facelift be combined with other procedures?",
             "post_media": "facelift-combo",
             "profile": ["ext-tummy-tuck", "es-renuvion"]
         },
         {
             "week": 6,
             "thursday": "2026-11-12",
-            "post": "(topic open) preparing for surgery day",
+            "post": "Cómo venir el día de tu cirugía",
             "post_media": "surgery-day-prep",
             "profile": ["tampa-patient", "driving-after"]
         },
         {
             "week": 7,
             "thursday": "2026-11-19",
-            "post": "(topic open) Spanish tour",
-            "post_media": "es-tour",
+            "post": "Five signs you're ready",
+            "post_media": "office-walk",
             "profile": ["arrival-8435", "nurse-care"]
         },
         {
             "week": 8,
             "thursday": "2026-11-26",
-            "post": "(topic open) are you ready?",
-            "post_media": "office-walk",
+            "post": "Así es el día de tu cirugía (tour)",
+            "post_media": "es-tour",
             "profile": ["lipo-tt-combo", "renuvion-doctor"],
-            "note": "Thanksgiving Day: post Wednesday 25 Nov instead if the office is closed."
+            "note": "Thanksgiving week: scheduled Wed 25 Nov."
         }
     ],
     "items": [
@@ -121,9 +185,9 @@
                 "STOPGAP: no clean storefront shot exists on IG; a person is in frame and the door shows the phone number. Shoot a fresh exterior photo instead if possible."
             ],
             "approved": "2026-10-07",
-            "status": "uploaded",
-            "status_date": "2026-10-07",
-            "status_note": "pending Google review"
+            "status": "live",
+            "status_date": "2026-10-14",
+            "status_note": "live on the profile (about 55 views each by 14 Oct)"
         },
         {
             "rank": 2,
@@ -140,9 +204,9 @@
             "needs_media_release": false,
             "flags": [],
             "approved": "2026-10-07",
-            "status": "uploaded",
-            "status_date": "2026-10-07",
-            "status_note": "pending Google review"
+            "status": "live",
+            "status_date": "2026-10-14",
+            "status_note": "live on the profile (about 55 views each by 14 Oct)"
         },
         {
             "rank": 3,
@@ -159,9 +223,9 @@
             "needs_media_release": false,
             "flags": ["Caption must not name her."],
             "approved": "2026-10-07",
-            "status": "uploaded",
-            "status_date": "2026-10-07",
-            "status_note": "pending Google review"
+            "status": "live",
+            "status_date": "2026-10-14",
+            "status_note": "live on the profile (about 55 views each by 14 Oct)"
         },
         {
             "rank": 4,
@@ -261,9 +325,9 @@
             "needs_media_release": false,
             "flags": ["Confirm she is still on staff."],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to post 3 by the user (drag-in); pending Google review"
         },
         {
             "rank": 9,
@@ -285,9 +349,9 @@
                 "Patient says the surgeon's name out loud. User approved on 2026-10-07; still needs the patient's media release."
             ],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to post 2 by the user (drag-in); pending Google review"
         },
         {
             "rank": 10,
@@ -365,9 +429,9 @@
             "needs_media_release": false,
             "flags": [],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to scheduled post 4; pending Google review"
         },
         {
             "rank": 14,
@@ -425,9 +489,9 @@
             "needs_media_release": false,
             "flags": ["Some large title text (\"YES\")."],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to scheduled post 5; pending Google review"
         },
         {
             "rank": 17,
@@ -474,7 +538,7 @@
         {
             "rank": 19,
             "id": "surgery-day-prep",
-            "file": "media/19-surgery-day-prep.mp4",
+            "file": "media/19-surgery-day-prep-v2.mp4",
             "type": "video",
             "ig_code": "DcEX--ghetl",
             "ig_url": "https://www.instagram.com/p/DcEX--ghetl/",
@@ -484,11 +548,13 @@
             "category": "at work",
             "use": "attach to weekly post",
             "needs_media_release": false,
-            "flags": ["Trimmed from 32.6 s."],
+            "flags": [
+                "v2 (14 Oct): full 32.6 s original played at 1.1x, so it keeps the last line (bring a blanket). In Spanish, not bilingual."
+            ],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to scheduled post 6; pending Google review"
         },
         {
             "rank": 20,
@@ -515,21 +581,23 @@
         {
             "rank": 21,
             "id": "es-tour",
-            "file": "media/21-es-tour.mp4",
+            "file": "media/21-es-tour-v2.mp4",
             "type": "video",
             "ig_code": "DQ7Hte_Dnpk",
             "ig_url": "https://www.instagram.com/p/DQ7Hte_Dnpk/",
             "shows": "Staff presenter tours the surgery-day route in Spanish (Nov 2025)",
-            "duration_s": 29.6,
+            "duration_s": 22.4,
             "resolution": "720x1280",
             "category": "interior",
             "use": "attach to weekly post",
             "needs_media_release": false,
-            "flags": ["Trimmed from 65 s; check where it cuts."],
+            "flags": [
+                "v2 (14 Oct): cut at 22.4 s, after the prep-room line; the old 29.6 s cut stopped mid-sentence."
+            ],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to scheduled post 8; pending Google review"
         },
         {
             "rank": 22,
@@ -598,7 +666,7 @@
             "type": "video",
             "ig_code": "Da8RuvWBSrb",
             "ig_url": "https://www.instagram.com/p/Da8RuvWBSrb/",
-            "shows": "Presenter walks through the office: 5 signs you are ready (Jul 2026, Spanish)",
+            "shows": "Presenter walks through the office: 5 signs you are ready (Jul 2026, English)",
             "duration_s": 29.6,
             "resolution": "720x1280",
             "category": "interior",
@@ -608,9 +676,9 @@
                 "Trimmed from 38.8 s, which drops the \"DM us\" end card."
             ],
             "approved": "2026-10-07",
-            "status": "todo",
-            "status_date": null,
-            "status_note": null
+            "status": "uploaded",
+            "status_date": "2026-10-14",
+            "status_note": "attached to scheduled post 7; pending Google review"
         },
         {
             "rank": 26,
