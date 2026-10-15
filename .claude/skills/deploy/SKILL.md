@@ -11,10 +11,10 @@ Both Vercel projects use **`production`** as their Production Branch, so a
 deploy is a fast-forward of that branch to `master`. Vercel builds it from
 GitHub; nothing is uploaded from this machine.
 
-| Project                     | Root          | Production URL                         |
-| --------------------------- | ------------- | -------------------------------------- |
-| `alluring-website-v1-web`   | `apps/web`    | https://www.alluringplasticsurgery.com |
-| `alluring-website-v1-admin` | `apps/admin`  | https://admin.alluringmiami.com        |
+| Project                     | Root         | Production URL                         |
+| --------------------------- | ------------ | -------------------------------------- |
+| `alluring-website-v1-web`   | `apps/web`   | https://www.alluringplasticsurgery.com |
+| `alluring-website-v1-admin` | `apps/admin` | https://admin.alluringmiami.com        |
 
 Both projects build on every push to `production`. The admin's crons run only
 on its production deployment.
