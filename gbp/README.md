@@ -81,11 +81,19 @@ The last three posts before 7 Oct 2026 were rejected for "20% OFF" promos.
 Google doesn't let you choose a category (exterior, interior, team) when you
 upload. It sorts photos itself.
 
-### Videos (by hand)
+### Videos
 
-Uploading a video through Claude in Chrome stalls: the progress bar spins
+**In a post:** open
+`https://www.google.com/local/business/3460358991193098276/promote/updates/add`
+as the top page. Its file input accepts a video through Claude in Chrome's
+`file_upload` (14 Oct 2026, five videos, about 10 s each to process). Claude
+Code's auto mode blocks that upload unless the user has explicitly said in
+chat that Claude may upload the videos itself. Without that, the user drags
+the file onto the form.
+
+**As a profile video** (Photos), the upload stalls: the progress bar spins
 and no upload request is ever sent. This happened on 7 Oct 2026, three tries,
-including a file re-encoded to standard 30 fps. Drag videos in yourself:
+including a file re-encoded to standard 30 fps. Drag those in yourself:
 
 1. Open the profile → **Photos** → **Add photos**, or the `photos/add` URL
    above.
@@ -95,7 +103,9 @@ including a file re-encoded to standard 30 fps. Drag videos in yourself:
 
 1. On the Search manager view, click **Add update**, then **Add a post**.
 2. Choose **Update**, paste the text from `plan.json → posts`, and add the
-   button with its link.
+   button with its link. To publish later, turn on **Schedule this post**
+   and set the date and time. The posts list shows a scheduled post as
+   "Pending" until Google reviews it, then as "Scheduled <date>".
 3. Click **Post**.
 4. Google then offers to copy the post to the **Monsoft Solutions** profile.
    Always click **Skip**.
