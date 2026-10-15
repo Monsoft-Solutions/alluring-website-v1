@@ -37,8 +37,10 @@ export const DRK_FORM_NAME = 'dr_karlinsky_ig_form'
 /**
  * Stored on the lead (`page_variant`, sent to n8n too) and on every event.
  * Bump it when the page changes enough to read before and after apart.
+ * v1: the whole form on the phone's first screen. v2: her message in an
+ * arch and one button there, the form just below.
  */
-export const DRK_PAGE_VARIANT = 'drk-ig-v1'
+export const DRK_PAGE_VARIANT = 'drk-ig-v2'
 
 /** Stored on the lead (`form_variant`): the one-screen form. */
 export const DRK_FORM_VARIANT = 'form'

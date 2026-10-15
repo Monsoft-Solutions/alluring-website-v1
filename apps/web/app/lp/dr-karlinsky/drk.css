@@ -426,6 +426,136 @@ button.drk-story:hover .drk-story__handle {
     display: none;
 }
 
+/* ---------- the phone hero: her message, her words, one button ---------- */
+
+/* With a video, the arch replaces the story row on phones. */
+.drk-hero__intro--cover .drk-story {
+    display: none;
+}
+
+.drk-cover {
+    width: 100%;
+    max-width: 100%;
+    height: clamp(240px, 45svh, 360px);
+    margin: 12px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px 9999px 22px 22px;
+    cursor: pointer;
+}
+
+.drk-cover img {
+    object-position: 50% 14%;
+}
+
+.drk-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        transparent 52%,
+        color-mix(in srgb, var(--stone-950) 82%, transparent) 100%
+    );
+}
+
+.drk-cover:focus-visible {
+    outline: 2px solid var(--drk-champagne);
+    outline-offset: 3px;
+}
+
+.drk-cover__bar {
+    position: absolute;
+    z-index: 1;
+    right: 16px;
+    bottom: 14px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.drk-cover__play {
+    display: grid;
+    flex: none;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--stone-50) 45%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--stone-50) 20%, transparent);
+    color: var(--stone-50);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform 0.25s var(--drk-ease);
+}
+
+.drk-cover__play svg {
+    width: 20px;
+    height: 20px;
+    margin-left: 2px;
+}
+
+.drk-cover:hover .drk-cover__play {
+    transform: scale(1.06);
+}
+
+.drk-cover__text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.drk-cover__label {
+    color: var(--drk-porcelain);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.drk-cover__meta {
+    color: var(--stone-300);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+.drk-hero__intro--cover .drk-h1 {
+    margin: 18px 0 0;
+}
+
+.drk-hero__go {
+    display: grid;
+    margin: 18px 0 0;
+}
+
+.drk-hero__go .drk-btn {
+    width: 100%;
+    min-height: 56px;
+    font-size: 17px;
+}
+
+.drk-hero__note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 10px 0 0;
+    color: var(--stone-400);
+    font-size: 13px;
+}
+
+/* On phones the form is the next block down, set off by a hairline. */
+.drk-hero__form {
+    margin-top: 30px;
+    padding-top: 26px;
+    border-top: 1px solid color-mix(in srgb, var(--stone-50) 9%, transparent);
+}
+
+.drk-hero__form .drk-hero__sub {
+    color: var(--stone-200);
+    font-size: 16px;
+}
+
 /* ---------- the form, drawn into the hero ---------- */
 
 .drk .ck-card {
@@ -618,17 +748,6 @@ button.drk-story:hover .drk-story__handle {
     font-size: 12.5px;
     font-variant-numeric: tabular-nums;
     transform: translateX(-50%);
-}
-
-.drk-message__in {
-    display: grid;
-    gap: 28px;
-}
-
-.drk-message__text p {
-    max-width: 30rem;
-    margin: 12px 0 0;
-    color: var(--drk-mute);
 }
 
 /* ---------- how it starts ---------- */
@@ -1458,7 +1577,6 @@ button.drk-story:hover .drk-story__handle {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .drk-message__in,
     .drk-about__in {
         grid-template-columns: auto 1fr;
         align-items: center;
@@ -1503,6 +1621,31 @@ button.drk-story:hover .drk-story__handle {
         max-width: 520px;
     }
 
+    /* Desktop keeps the story row, with the film and the form beside it. */
+    .drk-cover,
+    .drk-hero__go {
+        display: none;
+    }
+
+    .drk-hero__intro--cover .drk-story {
+        display: flex;
+    }
+
+    .drk-hero__intro--cover .drk-h1 {
+        margin: 22px 0 6px;
+    }
+
+    .drk-hero__form {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    .drk-hero__form .drk-hero__sub {
+        color: var(--stone-300);
+        font-size: 17px;
+    }
+
     .drk-hero__film {
         display: block;
         grid-column: 2;
@@ -1531,11 +1674,6 @@ button.drk-story:hover .drk-story__handle {
         justify-content: flex-start;
     }
 
-    /* The film is in the hero beside the form; no second copy below. */
-    .drk-message {
-        display: none;
-    }
-
     .drk-player__frame {
         border-inline: 1px solid
             color-mix(in srgb, var(--stone-50) 10%, transparent);
@@ -1550,6 +1688,7 @@ button.drk-story:hover .drk-story__handle {
     .drk-sticky,
     .drk-btn,
     .drk-film__play,
+    .drk-cover__play,
     .drk-faq__icon::before,
     .drk-faq__icon::after,
     .drk-player__bar span {

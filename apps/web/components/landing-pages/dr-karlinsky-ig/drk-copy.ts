@@ -130,6 +130,8 @@ export interface DrkDictionary {
         readonly heading: RichText
         readonly sub: string
         readonly callPrompt: string
+        /** Under the phone hero's button, which goes to the form. */
+        readonly note: string
     }
     /** The hint under the procedure list. `{procedure}`, `{price}`. */
     readonly priceHint: {
@@ -229,6 +231,7 @@ const en: DrkDictionary = {
         heading: ['You know my work. Let’s talk about ', { em: 'yours' }, '.'],
         sub: 'Tell me what you’re considering, and we’ll meet in Miami or by video.',
         callPrompt: 'Prefer to call?',
+        note: 'Sarah from my team will text you.',
     },
     priceHint: {
         priced: '{procedure} from {price} · personal quote · financing',
@@ -390,6 +393,7 @@ const es: DrkDictionary = {
         heading: ['Ya conoces mi trabajo. Hablemos del ', { em: 'tuyo' }, '.'],
         sub: 'Cuéntame qué te interesa y nos vemos en Miami o por video.',
         callPrompt: '¿Prefieres llamar?',
+        note: 'Sarah, de mi equipo, te escribirá.',
     },
     priceHint: {
         priced: '{procedure} desde {price} · precio personal · financiamiento',

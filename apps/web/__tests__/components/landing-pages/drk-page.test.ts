@@ -34,7 +34,7 @@ describe('Dr. Karlinsky IG page config (#332)', () => {
     it('tags leads with its own source, page and form variant', () => {
         expect(config.DRK_SOURCE).toBe(CONTACT_SOURCES.DR_KARLINSKY_IG)
         expect(config.DRK_SOURCE).toBe('dr-karlinsky-ig')
-        expect(config.DRK_PAGE_VARIANT).toBe('drk-ig-v1')
+        expect(config.DRK_PAGE_VARIANT).toBe('drk-ig-v2')
         expect(config.DRK_FORM_VARIANT).toBe('form')
         expect(config.DRK_FORM_NAME).toBe('dr_karlinsky_ig_form')
         expect(config.DRK_LEAD_STORAGE_KEY).toBe('drk_lead')
@@ -261,7 +261,7 @@ describe('DrkLanding', () => {
         expect(html).not.toContain('0:48')
     })
 
-    it('draws the story ring and the arch as play buttons, without a <video>', () => {
+    it('draws the story ring and the arches as play buttons, without a <video>', () => {
         const html = renderToStaticMarkup(
             createElement(DrkLanding, {
                 lang: 'es',
@@ -271,10 +271,27 @@ describe('DrkLanding', () => {
             })
         )
         expect(html).toContain('data-drk-play="story"')
-        expect(html).toContain('data-drk-play="inline"')
+        expect(html).toContain('data-drk-play="hero-cover"')
+        expect(html).toContain('data-drk-play="hero-desktop"')
+        // Her message plays from the hero only; the band below is gone (v2).
+        expect(html).not.toContain('data-drk-play="inline"')
         // Mounted only on tap.
         expect(html).not.toContain('<video')
         expect(html).toContain('Ya conoces mi trabajo.')
+    })
+
+    it('sends the phone hero button to the form', () => {
+        const html = renderToStaticMarkup(
+            createElement(DrkLanding, {
+                lang: 'en',
+                languageLinks: links,
+                proof,
+            })
+        )
+        expect(html).toMatch(
+            /id="drk-hero-go"[^]*?href="#drk-request"[^>]*data-drk-focus=""[^>]*data-cta="drk_hero"/
+        )
+        expect(html).toContain('Sarah from my team will text you.')
     })
 })
 

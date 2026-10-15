@@ -2,11 +2,12 @@
  * Dr. Karlinsky's Instagram bio-link page (#332), server-rendered.
  *
  * Her followers already know her face and her voice, so the page reads like
- * an extension of her profile: the story ring with her message, then her
- * words and the request form, all on the first screen of a phone (390 × 664,
- * Instagram's in-app Safari). Below it, for the ones who scroll: the message
- * in an arch, how it starts, prices, her results, her patients' words, about
- * her, straight answers, and the ask again.
+ * an extension of her profile. On a phone (390 × 664, Instagram's in-app
+ * Safari) the first screen is only her message in an arch, her words and one
+ * button; the request form starts right below it (v2 — v1 put the whole form
+ * there, and it read as crowded). On a desktop the form sits beside the film.
+ * Below, for the ones who scroll: how it starts, prices, her results, her
+ * patients' words, about her, straight answers, and the ask again.
  *
  * Client islands only where something must run in the browser: the form,
  * the video player, the results lightbox, the sticky CTA and the legal
@@ -53,6 +54,9 @@ interface DrkLandingProps {
 }
 
 const CLOSING_ID = 'drk-closing'
+
+/** The phone hero's button; the sticky CTA stays away while it shows. */
+const HERO_GO_ID = 'drk-hero-go'
 
 /** Where the hero shows the film beside the form (drk.css). */
 const DESKTOP_HERO_MEDIA = '(min-width: 1024px)'
@@ -143,7 +147,20 @@ export function DrkLanding({
                     </header>
 
                     <div className='drk-hero__grid'>
-                        <div className='drk-hero__intro'>
+                        <div
+                            className={`drk-hero__intro${playable ? ' drk-hero__intro--cover' : ''}`}
+                        >
+                            {playable && (
+                                <HeroCover
+                                    video={video}
+                                    handle={copy.story.handle}
+                                    label={copy.story.label}
+                                    duration={duration}
+                                    playAria={fill(copy.story.playAria, {
+                                        duration,
+                                    })}
+                                />
+                            )}
                             <StoryRow
                                 playable={playable}
                                 handle={copy.story.handle}
@@ -160,10 +177,25 @@ export function DrkLanding({
                             <h1 id='drk-title' className='drk-h1'>
                                 <Rich parts={copy.hero.heading} />
                             </h1>
-                            <p className='drk-hero__sub'>{copy.hero.sub}</p>
+                            <div id={HERO_GO_ID} className='drk-hero__go'>
+                                <a
+                                    href={`#${DRK_FORM_ID}`}
+                                    className='drk-btn drk-btn--gold'
+                                    data-drk-focus=''
+                                    data-cta='drk_hero'
+                                >
+                                    {copy.sticky.cta}
+                                    <ArrowIcon />
+                                </a>
+                                <p className='drk-hero__note'>
+                                    <LockIcon />
+                                    {copy.hero.note}
+                                </p>
+                            </div>
                         </div>
 
                         <div className='drk-hero__form'>
+                            <p className='drk-hero__sub'>{copy.hero.sub}</p>
                             <DrkForm
                                 lang={lang}
                                 copy={form.copy}
@@ -191,31 +223,6 @@ export function DrkLanding({
                         )}
                     </div>
                 </section>
-
-                {playable && (
-                    <section
-                        className='drk-band drk-message'
-                        aria-labelledby='drk-message-title'
-                    >
-                        <div className='drk-wrap drk-message__in'>
-                            <MessageArch
-                                video={video}
-                                playLabel={copy.message.play}
-                                duration={duration}
-                                placement='inline'
-                            />
-                            <div className='drk-message__text'>
-                                <h2 id='drk-message-title' className='drk-h2'>
-                                    <Rich parts={copy.message.heading} />
-                                </h2>
-                                <p>{fill(copy.message.body, { duration })}</p>
-                                <p className='drk-quiet'>
-                                    {copy.message.captions}
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-                )}
 
                 <section
                     className='drk-band drk-steps'
@@ -466,7 +473,10 @@ export function DrkLanding({
                 </div>
             </footer>
 
-            <DrkStickyCta label={copy.sticky.cta} hideWhile={[CLOSING_ID]} />
+            <DrkStickyCta
+                label={copy.sticky.cta}
+                hideWhile={[HERO_GO_ID, CLOSING_ID]}
+            />
             <DrkPlayer
                 lang={lang}
                 video={video}
@@ -547,6 +557,55 @@ function StoryRow({
     )
 }
 
+/**
+ * The phone hero: her message's poster in a wide arch, with the play button
+ * and what it is along the bottom edge. Phones only (drk.css); it is their
+ * largest image, so it loads first. Same `sizes` as the desktop film, so
+ * both resolve to one file.
+ */
+function HeroCover({
+    video,
+    handle,
+    label,
+    duration,
+    playAria,
+}: {
+    readonly video: DrkVideo
+    readonly handle: string
+    readonly label: string
+    readonly duration: string
+    readonly playAria: string
+}) {
+    return (
+        <button
+            type='button'
+            className='drk-arch drk-cover'
+            data-drk-play='hero-cover'
+            aria-label={playAria}
+        >
+            <Image
+                src={video.poster}
+                width={video.posterWidth}
+                height={video.posterHeight}
+                sizes={POSTER_SIZES}
+                alt=''
+                priority
+            />
+            <span className='drk-cover__bar' aria-hidden='true'>
+                <span className='drk-cover__play'>
+                    <PlayIcon />
+                </span>
+                <span className='drk-cover__text'>
+                    <span className='drk-cover__label'>{label}</span>
+                    <span className='drk-cover__meta'>
+                        {handle} · {duration}
+                    </span>
+                </span>
+            </span>
+        </button>
+    )
+}
+
 /** The message's poster in an arch, with a play button over it. */
 function MessageArch({
     video,
@@ -620,6 +679,43 @@ function PlayIcon({ className }: { readonly className?: string }) {
             aria-hidden='true'
         >
             <path d='M7 4.8v14.4a.8.8 0 0 0 1.2.7l11.3-7.2a.8.8 0 0 0 0-1.4L8.2 4.1a.8.8 0 0 0-1.2.7Z' />
+        </svg>
+    )
+}
+
+function ArrowIcon() {
+    return (
+        <svg
+            viewBox='0 0 24 24'
+            width='18'
+            height='18'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            aria-hidden='true'
+        >
+            <path d='M5 12h14M13 6l6 6-6 6' />
+        </svg>
+    )
+}
+
+function LockIcon() {
+    return (
+        <svg
+            viewBox='0 0 24 24'
+            width='13'
+            height='13'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            aria-hidden='true'
+        >
+            <rect x='5' y='11' width='14' height='10' rx='2' />
+            <path d='M8 11V7a4 4 0 0 1 8 0v4' />
         </svg>
     )
 }
