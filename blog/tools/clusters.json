@@ -1,0 +1,114 @@
+{
+    "_about": "One entry per blog cluster: the procedure page posts in it must link (at least twice), that page's section anchors (null = the page has no module anchors to check), the facts files whose dollar figures a post may state, and figures retired for this cluster. Anchors were read from apps/web/components/procedures/pages/<page>/ and module-kit defaults on 2026-10-07; update them when a page is rebuilt. A post's meta.json \"cluster\" must be a key here.",
+    "lipo": {
+        "label": "Liposuction",
+        "page": "/procedures/liposuction-miami",
+        "anchors": [
+            "what-is-liposuction",
+            "candidate",
+            "areas",
+            "procedure",
+            "recovery",
+            "safety",
+            "pricing",
+            "surgeon",
+            "faq"
+        ],
+        "facts": ["lipo.facts.ts"],
+        "old_figures": [
+            "72 hours",
+            "\\$2,?500\\b",
+            "6[–-]9 months",
+            "10% (?:of (?:the )?swelling )?linger",
+            "10[–-]20 (?:sessions|massages)",
+            "4[–-]6 (?:sessions|massages)",
+            "6[–-]12 months between",
+            "\\b5 ?(?:l\\b|liters|litres)",
+            "≤ ?5 ?l\\b",
+            "(?:garment|compression)[^.\\n]{0,40}\\b2 weeks\\b",
+            "\\$3,000\\s*(?:[–-]|to)\\s*\\$5,000"
+        ]
+    },
+    "bbl": {
+        "label": "Brazilian butt lift",
+        "page": "/procedures/brazilian-butt-lift-bbl-miami",
+        "anchors": [
+            "what-is-a-bbl",
+            "options",
+            "procedure",
+            "recovery",
+            "safety",
+            "pricing",
+            "surgeon",
+            "faq"
+        ],
+        "facts": ["bbl.facts.ts"],
+        "old_figures": []
+    },
+    "tummy-tuck": {
+        "label": "Tummy tuck",
+        "page": "/procedures/tummy-tuck-miami",
+        "anchors": [
+            "what-is-a-tummy-tuck",
+            "candidate",
+            "procedure",
+            "recovery",
+            "safety",
+            "pricing",
+            "tummy-tuck-prices",
+            "surgeon",
+            "faq"
+        ],
+        "facts": ["tummy-tuck.facts.ts"],
+        "old_figures": []
+    },
+    "mommy-makeover": {
+        "label": "Mommy makeover",
+        "page": "/procedures/mommy-makeover-miami",
+        "anchors": null,
+        "facts": ["tummy-tuck.facts.ts", "lipo.facts.ts"],
+        "old_figures": []
+    },
+    "breast-augmentation": {
+        "label": "Breast augmentation",
+        "page": "/procedures/breast-augmentation-miami",
+        "anchors": null,
+        "facts": [],
+        "old_figures": []
+    },
+    "breast-lift": {
+        "label": "Breast lift",
+        "page": "/procedures/breast-lift-miami",
+        "anchors": null,
+        "facts": [],
+        "old_figures": []
+    },
+    "breast-reduction": {
+        "label": "Breast reduction",
+        "page": "/procedures/breast-reduction-miami",
+        "anchors": null,
+        "facts": [],
+        "old_figures": []
+    },
+    "facelift": {
+        "label": "Facelift",
+        "page": "/procedures/facelift-miami",
+        "anchors": null,
+        "facts": [],
+        "old_figures": []
+    },
+    "blepharoplasty": {
+        "label": "Blepharoplasty",
+        "page": "/procedures/blepharoplasty-miami",
+        "anchors": null,
+        "facts": [],
+        "old_figures": []
+    },
+    "general": {
+        "label": "General (no single procedure)",
+        "page": null,
+        "anchors": null,
+        "facts": [],
+        "old_figures": []
+    }
+}

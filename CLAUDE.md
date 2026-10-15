@@ -307,5 +307,12 @@ Postgres and every screen is a SQL join.
 | Images           | `@agent-image-creator-expert`                                       |
 | Procedure pages  | `/procedure-page <slug>` skill · `@agent-procedure-page-builder`    |
 | Procedure images | `/procedure-images <slug>` skill · `@agent-procedure-image-creator` |
+| Blog posts       | `/blog-post <slug\|topic>` skill · `@agent-blog-post-writer`        |
+| SEO plan         | `/seo-plan` skill · `@agent-seo-strategist`                         |
 
-**Blog posts are NOT created via agents or seed files.** The blog content pipeline lives in the admin panel (`apps/admin` → Blog → Pipeline), powered by `packages/ai`. See `implementation-plans/2026-08-11-blog-content-pipeline-v2.md` for the pipeline architecture and roadmap. Never run `pnpm db:seed` against a database containing real blog posts.
+**Blog posts have two paths, and neither uses seed files.**
+
+- **AI-generated posts**: the admin pipeline (`apps/admin` → Blog → Pipeline, powered by `packages/ai`) and autopilot (ideation and content crons, plus the refresh loop, which runs in `auto` mode). Architecture: `implementation-plans/2026-08-11-blog-content-pipeline-v2.md`.
+- **Posts written in Claude Code**: the `/blog-post` skill. A post is files in `blog/posts/<slug>/`. `blog/tools/` lints it and builds one guarded SQL transaction, which is rehearsed on a throwaway database; the user runs it on production. The manual is `blog/README.md`. `/seo-plan` keeps the plan (`blog/plan.json`) and the readouts.
+
+Both paths respect the keyword registry (`packages/shared/src/seo/keyword-ownership-blog.constant.ts`). No new post goes in without a `new` verdict from the topic gate; `blog/tools/gate.mjs` runs it for direct inserts. A new or retired post updates the registry and the live-post count in `apps/admin/__tests__/lib/seo/keyword-ownership.test.ts`. Both respect the refresh loop, which rewrites candidate posts without review: dismiss the open `content_refresh` candidates of a post written or rewritten by hand (`build_sql.py` does it; `blog/tools/sql/hold_refresh.sql` for longer work), or autopilot overwrites it. Never leave a post as `draft` (drafts block autopilot) or `scheduled` (nothing publishes it). Never run `pnpm db:seed` against a database containing real blog posts.

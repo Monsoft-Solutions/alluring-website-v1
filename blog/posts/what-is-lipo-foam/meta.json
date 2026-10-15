@@ -1,0 +1,158 @@
+{
+  "slug": "what-is-lipo-foam",
+  "mode": "rewrite",
+  "base_md5": "640c65c2b1bc4daa33873fb676fde0b0",
+  "base_from": "localhost:5432/alluring-autopilot-dev 2026-10-07 (worked example only, see notes)",
+  "reader": "recovering",
+  "cluster": "lipo",
+  "title": "Lipo Foam and Boards: What They Do, How Long to Wear Them",
+  "meta_description": "Lipo foam is a soft layer worn under your compression garment after liposuction. What foam and boards do, how to wear them, skin care and when to stop.",
+  "excerpt": "Lipo foam is a soft sheet worn on the skin under your compression garment after liposuction, and boards add a firm layer on top. Here is what each does, how to wear them, how to protect your skin and why your surgeon sets how long.",
+  "quick_answer": "What is lipo foam?\n\nLipo foam is a soft, flexible foam sheet worn directly on the skin under your compression garment after liposuction, to spread pressure evenly and cushion seams and creases. The Aesthetic Society says the garment itself is worn for 4 to 6 weeks; how long you wear foam and boards is your surgeon's call.",
+  "primary_keyword": "what is lipo foam",
+  "secondary_keywords": [
+    "lipo foam",
+    "lipofoam",
+    "what does lipo foam do",
+    "what is lipo foam used for",
+    "how long do you wear your foams and boards after lipo",
+    "how long to wear lipo foam",
+    "when can i stop wearing foams after lipo",
+    "is lipo foam necessary",
+    "lipo foam pads",
+    "lipo foam boards",
+    "lipo board vs lipo foam",
+    "how to use lipo foam",
+    "liposuction foam",
+    "how to use lipo foam after tummy tuck",
+    "how to clean lipo foam",
+    "lipo foam leaves marks"
+  ],
+  "owns_queries": [
+    "lipo foam",
+    "what is lipo foam",
+    "lipofoam",
+    "what does lipo foam do",
+    "how long to wear lipo foam",
+    "what is lipo foam used for",
+    "is lipo foam necessary",
+    "lipo foam pads",
+    "lipo foam boards",
+    "how long do you wear your foams and boards after lipo",
+    "when can i stop wearing foams after lipo",
+    "lipo board vs lipo foam",
+    "how to use lipo foam",
+    "liposuction foam"
+  ],
+  "categories": [
+    "Liposuction",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Liposuction",
+    "Lipo",
+    "Recovery",
+    "Swelling",
+    "Compression Garments",
+    "Recovery Timeline"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a cardigan sits on her bed in a sunlit bedroom, looking at a folded sheet of lipo foam, with an ab board and a folded compression garment beside her.",
+      "prompt": "SCENE: A sunlit apartment bedroom in the morning, white linen duvet, a pale oak bedside table with a glass of water and a small plant, soft daylight from a window on the left, calm and uncluttered. SUBJECT: A South Asian woman in her early 30s with long dark hair in a loose low bun, wearing a sage-green knit cardigan over a high-neck cream top and soft charcoal joggers, sitting on the edge of the bed, holding a folded sheet of thin white medical foam in both hands and looking at it with a calm, practical expression. Beside her on the duvet lie a curved white ab board and a neatly folded beige compression garment. KEY DETAILS: Editorial lifestyle photograph, 35mm lens, natural light, gentle shadows, natural skin texture, warm neutral palette of cream, stone and sage with a muted gold accent (a thin gold bracelet). Her face, hands and the foam sit in the upper two thirds of the frame; the lower third is the quiet bedspread so a title can sit over it. CONSTRAINTS: 3:2 landscape. Fully clothed, no bare midriff, no garment being worn on skin, no cleavage, no glamour posing. No text, brand names or logos on the foam, board or garment; no phone numbers. No medical instruments, incisions or bruising. Photorealistic, not glossy or stock-like."
+    },
+    {
+      "key": "layers",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Layering diagram of lipo foam and boards: clean, dry skin, then lipo foam, then an ab board or back board if your surgeon uses one, then the compression garment. The garment is worn 4 to 6 weeks over the treated areas, according to The Aesthetic Society; foam and boards as your surgeon directs.",
+      "prompt": "SCENE: A clean editorial diagram on a warm off-white (stone-50) background with a thin muted-gold rule at the top. SUBJECT: A stylised, abstract cross-section of four stacked horizontal layers seen slightly from the side, like a cutaway: a smooth warm skin-tone base layer, a soft white foam layer with a fine open-cell texture, a thin curved pale-grey rigid board, and a beige knit compression-fabric top layer. Each layer has a thin leader line to its label on the right. Below the diagram, a two-line note and a small source footer. KEY DETAILS: Flat vector illustration with subtle depth, no human body or silhouette, serif headline in dark stone (stone-900), sans-serif labels, muted gold (gold-500) only for leader lines and the rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "How lipo foam and boards are layered\n\nSkin (clean and dry)\nLipo foam\nAb board or back board (if your surgeon uses one)\nCompression garment\n\nGarment: 4 to 6 weeks over the treated areas (The Aesthetic Society)\nFoam and boards: as your surgeon directs\n\nSource: The Aesthetic Society"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/liposuction/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Liposuction aftercare and recovery",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "You will wear a compression garment over the treated areas for four to six weeks to control swelling and promote skin contraction.",
+        "The swelling will peak around 48 hours after surgery and will mostly disappear within two to three weeks, but there may be slight residual swelling for up to four months.",
+        "Your incisions may be leaky or drain fluids for several days."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8430530/",
+      "publisher": "Aesthetic Plastic Surgery (PubMed)",
+      "title": "Use of Reston foam in liposuction (Schlesinger SL, Kaczynski AJ, 1993;17(1):49-51, PMID 8430530)",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "Use of Reston foam along with a pressure garment after liposuction results in three salutary effects: less waviness in the skin surface, a more comfortable recovery, and less blood loss and ecchymoses.",
+        "In addition, the use of the foam, in conjunction with the pressure garment, results in less postoperative bleeding and bruising."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12472493/",
+      "publisher": "Dermatologic Surgery (PubMed)",
+      "title": "A new foam girdle for the significant reduction of ecchymoses post-liposuction (Brandy DA, 2002;28(12):1135-7, PMID 12472493)",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "This garment is kept on for two to three days.",
+        "In most cases, Reston foam is a good adjunct to liposuction surgery. However, it can occasionally cause allergic dermatitis, bullae formation or postinflammatory hyper-pigmentation and can take an inordinately long time to apply."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37753333/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open (PubMed; full text via Europe PMC PMC10519563)",
+      "title": "The Use of Postoperative Compression Garments in Plastic Surgery—Necessary or Not? A Practical Review (Ormseth BH and colleagues, 2023;11(9):e5293)",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "Although plastic surgeons have frequently reported the use of compression garments after body contouring operations,43–45 no RCTs or comparative studies have been conducted to evaluate the efficacy of compression in this setting.",
+        "In 2006, he noted how excessive or poorly distributed compression could result in venous stasis and thrombosis along with skin folding and bulging."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/eight-ways-to-make-liposuction-recovery-a-breeze",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Eight ways to make liposuction recovery a breeze (Kaitlin Clark, August 4, 2022)",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "He advises his liposuction patients to wear a customized compression garment for four to eight weeks, while patients whose procedure included athletic sculpting, will also be given a supplemental foam to place under the garment."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11009-liposuction",
+      "publisher": "Cleveland Clinic",
+      "title": "Liposuction",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "It may take between three to six months for the swelling to go away completely before you see results."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/liposuction",
+      "publisher": "The Aesthetic Society",
+      "title": "Liposuction",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "Liposuction removes fat but does not tighten skin, and it does not improve the look of cellulite."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt lift aftercare and recovery (general section, 'What can I expect during my butt lift recovery?')",
+      "read_on": "2026-09-23",
+      "quotes": [
+        "You will likely need to wear a compression garment for six to eight weeks."
+      ]
+    }
+  ],
+  "notes": "Worked example for the blog kit (2026-10-07): the liposuction phase-2 rewrite of this post, live since 2026-09-23, copied verbatim from implementation-plans/2026-09-23-lipo-blog-phase-2/posts/what-is-lipo-foam (feat-lipo-page-module worktree) with the kit's meta keys added: mode rewrite, reader, cluster, owns_queries (the registry entry's ownsQueries), categories and tags (as on the post in the local DB), cta default (the live body has no CTA marker). Phase-2 notes: Kept the plain definition as the first sentence under the opening H2 (Perplexity cites this post first for 'what is lipo foam'). Resolved the old contradiction ('at least four weeks, around the clock' vs '2-14 days' vs 'up to three months'): the only duration stated as a figure is the garment's 4-6 weeks (The Aesthetic Society); foam and board duration is 'your surgeon's call' (owner question 2 open), with one published example (a foam girdle kept on 2-3 days, Brandy 2002) labelled as one device, not a rule. Evidence on foam is stated honestly as old and uncontrolled (Schlesinger 1993, Brandy 2002) and Ormseth 2023 is quoted for the lack of any RCT on compression after body contouring. No published study of ab boards or back boards was found in PubMed (searched 2026-09-23), and the post says so. Removed: the 'around the clock for the first weeks' instruction, 'hypoallergenic/medical-grade' claims, '4-6 sheets' advice, 'lowers risk of revision', the plural-surgeons credential claim, phone numbers, #contactus links, bold keywords. The ASPS article's 'four to eight weeks' garment figure (one surgeon's practice) is deliberately not used, so the post doesn't contradict the canonical 4-6 weeks. The tummy tuck foam queries (~400 impressions combined) get one short section linking /how-long-to-recover-tummy-tuck; the BBL section links /blog/bbl-compression-garment-timeline. Owner: once question 2 is answered (foam and boards: which, how long, day and night or not), add one sentence stating Alluring's plan as Alluring's. Fact-check fixes 2026-09-23: the BBL section no longer calls The Aesthetic Society's general butt lift aftercare page a 'BBL recovery page'; it now says the 6-8 week figure is from that page's general advice for every type of butt lift and sets it beside the 4-6 week liposuction figure, with the combined plan left to the surgeon. The 2006 Illouz point is 'noted/observed', not 'shown'; the 1993 report 'describes no controlled comparison'. The Ormseth quote is restored verbatim (the earlier version dropped the opening clause containing 'plastic surgeons'; the superscript reference numbers are shown inline as 43–45). Kit fields 2026-10-07: base_md5 is the md5 of this post's row in the local dev copy (the 2026-08-26 clone), set on purpose so the example rehearses Phase 6 on a createdb -T copy of the local database. A real rewrite takes its base from production (blog/tools/rewrite_base.py --save); the phase-2 run's real base on production was f27edb57e9d16944e55802f5694d8ce2 (05-rewrite-posts.sql). Production already holds this content, so build_sql.py against production reports the post as already live and writes nothing."
+}
