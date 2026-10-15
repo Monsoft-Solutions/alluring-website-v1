@@ -89,7 +89,7 @@ export const getPopularPosts = (limit = 5): Promise<PopularPost[]> => {
         [`blog-popular-posts-${limit}`],
         {
             tags: ['blog-posts', 'blog-popular-posts'],
-            revalidate: 3600, // view counts can lag an hour; see #337
+            revalidate: 86400, // view counts can lag a day; see #337
         }
     )()
 }

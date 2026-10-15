@@ -19,11 +19,10 @@ import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.co
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 
-// 10 minutes, not the hour the other content routes use. Promotion *writes* fire
-// revalidateTag, but a promotion expiring is not a write — nothing invalidates
-// when it passes endsAt, and getPromotionBySlug filters on now(), so cached HTML
-// can still be showing a getRemainingDays countdown for an offer that has ended.
-// This sits on top of the query's own CACHE_TTL, so it caps what this route adds.
+// 10 minutes, not the day the content routes use: the page renders a
+// getRemainingDays countdown, which changes without any write. A promotion
+// starting or ending is handled by the admin's hourly promotion-boundaries
+// cron, which clears the promotion tags (#337).
 export const revalidate = 600
 
 // No paths at build time, but returning a list (even an empty one) makes the

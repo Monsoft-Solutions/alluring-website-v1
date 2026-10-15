@@ -23,6 +23,7 @@ import {
     startRefreshRunJob,
 } from '@/lib/services/autopilot.service'
 import { reapStuckPosts } from '@/lib/services/stuck-post-reaper.service'
+import { runPromotionBoundaryJob } from '@/lib/services/promotion-boundary.service'
 import { runGscSnapshotJob } from '@/lib/services/gsc-snapshot.service'
 import { runCannibalizationReportJob } from '@/lib/services/cannibalization-report.service'
 import { runDecayDetectionJob } from '@/lib/services/decay-detection.service'
@@ -87,6 +88,15 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
     'autopilot-content': async () => {
         const result = await startAutopilotContentJob('cron')
         return { outcome: result.outcome, ...result.detail }
+    },
+
+    /**
+     * Clears the web app's promotion cache when a promotion started or ended
+     * in the last hour; the web caches promotion reads for a day (#337).
+     */
+    'promotion-boundaries': async () => {
+        const result = await runPromotionBoundaryJob()
+        return { ...result }
     },
 
     /** Flips posts stuck in 'processing' (dead invocation) to a retryable error. */

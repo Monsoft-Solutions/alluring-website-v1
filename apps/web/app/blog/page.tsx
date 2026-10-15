@@ -103,9 +103,9 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     },
 })
 
-// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// Revalidate daily (86400 seconds). Publishing fires revalidateTag, so this
 // is the safety net, not the mechanism.
-export const revalidate = 3600
+export const revalidate = 86400
 
 export default async function BlogPage() {
     const pageSize = 12
