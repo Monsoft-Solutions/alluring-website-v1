@@ -43,6 +43,8 @@ export type LeadFormContextParams = {
     readonly form_variant?: string
     /** The page version: `ads-consultation-v6`. */
     readonly page_variant?: string
+    /** Dr. Karlinsky's page: the hero arm (`arch`, `pick`), #332. */
+    readonly hero_arm?: string
 }
 
 export type LeadFormEventParams = LeadFormContextParams & {

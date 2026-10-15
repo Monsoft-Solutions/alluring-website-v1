@@ -8,12 +8,14 @@
  *                               utm_source=doctor&utm_medium=dr-karlinsky&utm_campaign=ig-bio
  *
  * One job: turn a follower into a consultation request tagged as hers
- * (`source = dr-karlinsky-ig`, `page_variant = drk-ig-v1`).
+ * (`source = dr-karlinsky-ig`, `page_variant = drk-ig-v2-arch | -pick`).
  *
  * Under `/lp/*`, so `ConditionalLayout` renders it standalone: no site header
  * or footer, no promotion bar, no popups, no floating call button
- * (`lib/constants/standalone-routes.ts`). The middleware's A/B arms apply to
- * `/lp/request-consultation` only, not here.
+ * (`lib/constants/standalone-routes.ts`). Its phone hero is under a 50/50 test
+ * between two new heroes, `arch` and `pick` (v1's is out): the middleware
+ * picks the visitor's arm and passes it in a request header
+ * (`drk-hero-variant.ts`).
  *
  * Renders per request: the language is resolved on the server so the HTML
  * arrives in the right language. Being dynamic, it is not measured by
@@ -30,6 +32,11 @@ import {
     DrkLanding,
     type DrkLanguageLinks,
 } from '@/components/landing-pages/dr-karlinsky-ig/drk-landing.component'
+import {
+    DRK_HERO_FALLBACK,
+    DRK_HERO_HEADER,
+    toDrkHeroArm,
+} from '@/components/landing-pages/dr-karlinsky-ig/drk-hero-variant'
 import {
     DRK_AVATAR,
     DRK_VIDEO,
@@ -137,6 +144,9 @@ export default async function DrKarlinskyInstagramPage({
 }: PageProps) {
     const params = await searchParams
     const lang = await resolveLang(params)
+    const heroArm =
+        toDrkHeroArm((await headers()).get(DRK_HERO_HEADER)) ??
+        DRK_HERO_FALLBACK
 
     const [gallery, reviews] = await Promise.all([
         getSpecialsFeaturedGalleryImages().catch(() => []),
@@ -149,6 +159,7 @@ export default async function DrKarlinskyInstagramPage({
             languageLinks={languageLinks(params)}
             proof={selectDrkProof(lang, gallery, reviews)}
             video={DRK_VIDEO}
+            heroArm={heroArm}
         />
     )
 }

@@ -163,6 +163,15 @@ body:has(.drk) #loquent-widget {
     background: var(--gold-200);
 }
 
+.drk-btn--ink {
+    background: var(--drk-ink);
+    color: var(--drk-porcelain);
+}
+
+.drk-btn--ink:hover {
+    background: var(--drk-cocoa);
+}
+
 .drk-btn:active {
     transform: scale(0.98);
 }
@@ -426,10 +435,10 @@ button.drk-story:hover .drk-story__handle {
     display: none;
 }
 
-/* ---------- the phone hero: her message, her words, one button ---------- */
+/* ---------- the `arch` arm's phone hero (drk-hero-variant.ts) ----------
+   Her message, her words, one button; the form is the next block down. */
 
-/* With a video, the arch replaces the story row on phones. */
-.drk-hero__intro--cover .drk-story {
+.drk-hero--arch .drk-story {
     display: none;
 }
 
@@ -519,7 +528,7 @@ button.drk-story:hover .drk-story__handle {
     font-variant-numeric: tabular-nums;
 }
 
-.drk-hero__intro--cover .drk-h1 {
+.drk-hero--arch .drk-h1 {
     margin: 18px 0 0;
 }
 
@@ -544,16 +553,71 @@ button.drk-story:hover .drk-story__handle {
     font-size: 13px;
 }
 
-/* On phones the form is the next block down, set off by a hairline. */
-.drk-hero__form {
+/* Set off by a hairline, with her words leading into it. */
+.drk-hero--arch .drk-hero__form {
     margin-top: 30px;
     padding-top: 26px;
     border-top: 1px solid color-mix(in srgb, var(--stone-50) 9%, transparent);
 }
 
-.drk-hero__form .drk-hero__sub {
+.drk-hero--arch .drk-hero__sub {
     color: var(--stone-200);
     font-size: 16px;
+}
+
+/* ---------- the `pick` arm's phone hero (drk-hero-variant.ts) ----------
+   Her words, then the procedures as tiles: the form is the first screen,
+   and a choice opens the rest of it in place. */
+
+.drk-hero--pick .drk-h1 {
+    margin-bottom: 20px;
+}
+
+/* Phones go straight from her words to the tiles; desktop keeps the line. */
+.drk-hero--pick .drk-hero__sub {
+    display: none;
+}
+
+.drk .ck-pick {
+    margin-bottom: 10px;
+}
+
+.drk .ck-pick__legend {
+    color: var(--stone-200);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+}
+
+.drk .ck-pick__face {
+    min-height: 54px;
+    border-color: color-mix(in srgb, var(--gold-300) 30%, transparent);
+    background: color-mix(in srgb, var(--stone-50) 6%, transparent);
+    color: var(--drk-porcelain);
+}
+
+.drk .ck-pick__input:checked + .ck-pick__face {
+    border-color: var(--drk-champagne);
+    background: color-mix(in srgb, var(--gold-300) 14%, transparent);
+    box-shadow: inset 0 0 0 1px var(--drk-champagne);
+}
+
+.drk .ck-pick__check {
+    color: var(--drk-champagne);
+}
+
+.drk .ck-pick__note {
+    color: var(--stone-400);
+    text-align: center;
+}
+
+.drk .ck-pick__more {
+    padding-top: 2px;
+    /* Room for the reassurance line under the button, outside the block. */
+    scroll-margin-bottom: 44px;
+}
+
+.drk .ck-pick__more .ck-procedure__hint {
+    margin: 0 0 12px;
 }
 
 /* ---------- the form, drawn into the hero ---------- */
@@ -750,6 +814,19 @@ button.drk-story:hover .drk-story__handle {
     transform: translateX(-50%);
 }
 
+/* ---------- a message from me (the `pick` arm only) ---------- */
+
+.drk-message__in {
+    display: grid;
+    gap: 28px;
+}
+
+.drk-message__text p {
+    max-width: 30rem;
+    margin: 12px 0 0;
+    color: var(--drk-mute);
+}
+
 /* ---------- how it starts ---------- */
 
 .drk-steps__list {
@@ -812,10 +889,12 @@ button.drk-story:hover .drk-story__handle {
     color: var(--drk-mute);
 }
 
-/* ---------- prices ---------- */
+/* ---------- financing ---------- */
 
-.drk-prices__card {
+.drk-financing__card {
+    display: grid;
     max-width: 34rem;
+    gap: 14px;
     margin: 26px 0 0;
     padding: 22px 20px 20px;
     border: 1px solid color-mix(in srgb, var(--gold-400) 45%, transparent);
@@ -823,63 +902,43 @@ button.drk-story:hover .drk-story__handle {
     background: var(--drk-porcelain);
 }
 
-.drk-prices__card dl {
+.drk-financing__label {
     margin: 0;
+    color: var(--stone-500);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
-.drk-prices__row {
+.drk-financing__partners {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--drk-line);
-}
-
-.drk-prices__row dt {
-    color: var(--drk-text);
-    font-weight: 500;
-}
-
-/* A dotted leader, like a printed price list. */
-.drk-prices__row::after {
-    content: '';
-    order: 1;
-    flex: 1;
-    min-width: 16px;
-    border-bottom: 1px dotted var(--stone-300);
-    transform: translateY(-4px);
-}
-
-.drk-prices__row dd {
-    order: 2;
+    flex-wrap: wrap;
+    gap: 8px;
     margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.drk-financing__partners li {
+    padding: 8px 16px;
+    border: 1px solid var(--drk-line);
+    border-radius: 9999px;
+    background: var(--drk-sand);
     color: var(--drk-text);
     font-family: var(--drk-display);
-    font-size: 21px;
-    white-space: nowrap;
+    font-size: 18px;
 }
 
-.drk-prices__row dd span {
-    color: var(--stone-500);
-    font-family: var(--drk-body);
-    font-size: 13px;
+.drk-financing__card .drk-btn {
+    margin-top: 4px;
 }
 
-.drk-prices__personal {
-    margin: 16px 0 0;
+.drk-financing__fine {
+    margin: 0;
     color: var(--drk-mute);
-    font-size: 14.5px;
-}
-
-.drk-prices__financing {
-    display: inline-block;
-    margin: 12px 0 0;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--gold-300) 30%, transparent);
-    color: var(--gold-800);
-    font-size: 13.5px;
-    font-weight: 600;
+    font-size: 12.5px;
+    line-height: 1.45;
 }
 
 /* ---------- results ---------- */
@@ -1577,20 +1636,21 @@ button.drk-story:hover .drk-story__handle {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .drk-message__in,
     .drk-about__in {
         grid-template-columns: auto 1fr;
         align-items: center;
         gap: 56px;
     }
 
-    .drk-prices__in {
+    .drk-financing__in {
         display: grid;
-        grid-template-columns: 1fr 1.2fr;
+        grid-template-columns: 1fr 1.1fr;
         align-items: start;
         gap: 40px;
     }
 
-    .drk-prices__card {
+    .drk-financing__card {
         margin: 0;
     }
 
@@ -1627,23 +1687,31 @@ button.drk-story:hover .drk-story__handle {
         display: none;
     }
 
-    .drk-hero__intro--cover .drk-story {
+    .drk-hero--arch .drk-story {
         display: flex;
     }
 
-    .drk-hero__intro--cover .drk-h1 {
+    .drk-hero--arch .drk-h1 {
         margin: 22px 0 6px;
     }
 
-    .drk-hero__form {
+    .drk-hero--arch .drk-hero__form {
         margin-top: 0;
         padding-top: 0;
         border-top: 0;
     }
 
-    .drk-hero__form .drk-hero__sub {
+    .drk-hero--arch .drk-hero__sub {
         color: var(--stone-300);
         font-size: 17px;
+    }
+
+    .drk-hero--pick .drk-h1 {
+        margin-bottom: 6px;
+    }
+
+    .drk-hero--pick .drk-hero__sub {
+        display: block;
     }
 
     .drk-hero__film {
@@ -1672,6 +1740,15 @@ button.drk-story:hover .drk-story__handle {
 
     .drk .ck-reassure {
         justify-content: flex-start;
+    }
+
+    .drk .ck-pick__note {
+        text-align: left;
+    }
+
+    /* The film is in the hero beside the form; no second copy below. */
+    .drk-message {
+        display: none;
     }
 
     .drk-player__frame {

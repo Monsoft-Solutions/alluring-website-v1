@@ -15,6 +15,14 @@ import {
     parseLpCopySplit,
     parseLpFormSplit,
 } from '@/components/landing-pages/request-consultation/lp-form-variant'
+import {
+    assignDrkHeroArm,
+    DRK_HERO_COOKIE,
+    DRK_HERO_COOKIE_MAX_AGE,
+    DRK_HERO_HEADER,
+    DRK_HERO_QUERY,
+    parseDrkHeroSplit,
+} from '@/components/landing-pages/dr-karlinsky-ig/drk-hero-variant'
 import { env } from '@/env'
 
 /**
@@ -23,12 +31,16 @@ import { env } from '@/env'
  */
 const LP_PATH = '/lp/request-consultation'
 
+/** Dr. Karlinsky's Instagram page, whose phone hero is under test (#332). */
+const DRK_PATH = '/lp/dr-karlinsky'
+
 /**
  * Middleware to handle:
  * 1. Trailing slash redirects - redirects /path/ to /path for SEO consistency
  * 2. X-Robots-Tag header - adds noindex when crawling is disabled
- * 3. The ads landing page's test arms - chosen per visitor before the page
- *    renders, so its first HTML already has the right form and wording
+ * 3. The ads landing page's and Dr. Karlinsky's page's test arms - chosen
+ *    per visitor before the page renders, so its first HTML already has
+ *    the right form, wording or hero
  */
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
@@ -41,7 +53,11 @@ export function middleware(request: NextRequest) {
     }
 
     const response =
-        pathname === LP_PATH ? withLpVariants(request) : NextResponse.next()
+        pathname === LP_PATH
+            ? withLpVariants(request)
+            : pathname === DRK_PATH
+              ? withDrkHeroArm(request)
+              : NextResponse.next()
 
     // Check if crawling is allowed (defaults to false)
     const allowCrawling = env.NEXT_PUBLIC_ALLOW_CRAWLING === 'true'
@@ -93,6 +109,28 @@ function withLpVariants(request: NextRequest): NextResponse {
     response.cookies.set(LP_COPY_COOKIE, copy, {
         ...cookie,
         maxAge: LP_COPY_COOKIE_MAX_AGE,
+    })
+    return response
+}
+
+/** Dr. Karlinsky's page: the same, for its one test (`drk-hero-variant.ts`). */
+function withDrkHeroArm(request: NextRequest): NextResponse {
+    const arm = assignDrkHeroArm({
+        query: request.nextUrl.searchParams.get(DRK_HERO_QUERY),
+        cookie: request.cookies.get(DRK_HERO_COOKIE)?.value,
+        split: parseDrkHeroSplit(env.DRK_HERO_SPLIT),
+        random: Math.random(),
+    }).variant
+
+    const headers = new Headers(request.headers)
+    headers.set(DRK_HERO_HEADER, arm)
+    const response = NextResponse.next({ request: { headers } })
+    // Path `/lp` so the thank-you page's events can read the arm too.
+    response.cookies.set(DRK_HERO_COOKIE, arm, {
+        path: '/lp',
+        sameSite: 'lax',
+        secure: request.nextUrl.protocol === 'https:',
+        maxAge: DRK_HERO_COOKIE_MAX_AGE,
     })
     return response
 }

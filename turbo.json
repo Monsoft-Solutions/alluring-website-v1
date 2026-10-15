@@ -63,6 +63,7 @@
                 "LEAD_UPDATE_SECRET",
                 "LP_FORM_SPLIT",
                 "LP_COPY_SPLIT",
+                "DRK_HERO_SPLIT",
                 "BLOG_V2_PREVIEW",
                 "VERCEL_ENV"
             ]
@@ -154,6 +155,7 @@
                 "LEAD_UPDATE_SECRET",
                 "LP_FORM_SPLIT",
                 "LP_COPY_SPLIT",
+                "DRK_HERO_SPLIT",
                 "BLOG_V2_PREVIEW",
                 "VERCEL_ENV",
                 "WEB_PORT",

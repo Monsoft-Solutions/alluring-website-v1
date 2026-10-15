@@ -262,3 +262,137 @@
     background: #2a211c;
     color: #f4ede4;
 }
+
+/* ---------------------------------------------------------------------
+   The one-screen form's procedure tiles (`procedureInput: 'tiles'`, #332):
+   real radios under the tap card's tile look, with a check on the chosen
+   one. The rest of the form stays folded until a tile is chosen.
+   --------------------------------------------------------------------- */
+
+.ck-pick {
+    min-width: 0;
+    margin: 0 0 12px;
+    padding: 0;
+    border: 0;
+}
+
+/* Focused by script only (a CTA leading here), never by Tab: no ring. */
+.ck-pick:focus {
+    outline: none;
+}
+
+.ck-pick__legend {
+    margin: 0 0 10px;
+    padding: 0;
+    color: var(--cc-text);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.ck-pick__tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.ck-pick__tile {
+    position: relative;
+    display: flex;
+    min-width: 0;
+}
+
+.ck-pick__tile--wide {
+    grid-column: 1 / -1;
+}
+
+/* The radio covers its tile: the tap lands on it, its face is drawn below. */
+.ck-pick__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.ck-pick__face {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+    min-height: 52px;
+    padding: 8px 12px 8px 14px;
+    border: 1px solid var(--cc-line-strong);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--cc-text) 3%, transparent);
+    color: var(--cc-text);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+    pointer-events: none;
+    transition:
+        background 0.18s,
+        border-color 0.18s,
+        box-shadow 0.18s,
+        transform 0.18s var(--cc-ease);
+}
+
+.ck-pick__check {
+    flex: none;
+    color: var(--cc-gold);
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+        opacity 0.18s,
+        transform 0.18s var(--cc-ease);
+}
+
+/* Touch screens keep :hover on the last tapped tile; only real pointers. */
+@media (hover: hover) {
+    .ck-pick__tile:hover .ck-pick__face {
+        border-color: var(--cc-gold);
+    }
+}
+
+.ck-pick__input:active + .ck-pick__face {
+    transform: scale(0.98);
+}
+
+.ck-pick__input:checked + .ck-pick__face {
+    border-color: var(--cc-gold);
+    background: color-mix(in srgb, var(--cc-gold) 12%, transparent);
+    box-shadow: inset 0 0 0 1px var(--cc-gold);
+}
+
+.ck-pick__input:checked + .ck-pick__face .ck-pick__check {
+    opacity: 1;
+    transform: none;
+}
+
+.ck-pick__input:focus-visible + .ck-pick__face {
+    outline: 2px solid var(--cc-gold-light);
+    outline-offset: 3px;
+}
+
+.ck-pick__note {
+    margin: 0;
+    color: var(--cc-mute);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.ck-pick__more[hidden],
+.ck-reassure[hidden] {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ck-pick__face,
+    .ck-pick__check {
+        transition: none;
+    }
+}
