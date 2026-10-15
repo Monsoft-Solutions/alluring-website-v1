@@ -168,6 +168,23 @@ it prints a warning and generates nothing.
 
 ---
 
+## Deploying
+
+**Production deploys are manual.** Merging to `master` builds a preview only.
+Both Vercel projects (`alluring-website-v1-web`, `alluring-website-v1-admin`)
+use the **`production`** branch as their Production Branch, so deploying means
+fast-forwarding `production` to `master`; Vercel builds it from GitHub.
+
+Use the `/deploy` skill (`.claude/skills/deploy/SKILL.md`): it shows the
+commits going out, checks CI, pending migrations and env vars, asks, pushes,
+watches both builds and verifies. `/deploy rollback` reverts production.
+
+Never run `vercel deploy --prod` (it uploads the local working tree, dirty
+files included), never force-push `production`, and don't call a merged change
+"live" until it has been deployed.
+
+---
+
 ## Database & Migrations
 
 Local is the default target; production is always an explicit, separate
