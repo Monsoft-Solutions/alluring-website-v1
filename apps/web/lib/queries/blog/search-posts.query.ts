@@ -105,7 +105,7 @@ export const searchPosts = (
         [`blog-search-${normalizedQuery}-${limit}`],
         {
             tags: ['blog-posts', 'blog-search'],
-            revalidate: 60,
+            revalidate: 86400,
         }
     )()
 }
@@ -151,6 +151,6 @@ async function fetchSearchIndex(): Promise<SearchIndexPost[]> {
 export const getSearchIndex = (): Promise<SearchIndexPost[]> => {
     return unstable_cache(() => fetchSearchIndex(), ['blog-search-index'], {
         tags: ['blog-posts', 'blog-search-index'],
-        revalidate: 300, // Cache for 5 minutes
+        revalidate: 86400,
     })()
 }

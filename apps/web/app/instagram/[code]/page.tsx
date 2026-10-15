@@ -46,6 +46,13 @@ type PageProps = {
 // demand and cache from there instead. Revalidate every hour (3600 seconds).
 export const revalidate = 3600
 
+// No paths at build time, but returning a list (even an empty one) makes the
+// route ISR: each slug renders on its first visit and is cached for the
+// window above. Without it the route renders on every request (#337).
+export function generateStaticParams() {
+    return []
+}
+
 const getCachedPostByCode = cache(async (code: string) =>
     getInstagramPostByCode(code)
 )

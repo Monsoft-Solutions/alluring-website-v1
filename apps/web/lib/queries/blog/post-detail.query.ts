@@ -122,7 +122,7 @@ export const getPublishedPostBySlug = (
         [`blog-post-${slug}`],
         {
             tags: ['blog-posts', `blog-post-${slug}`],
-            revalidate: 60, // Cache for 60 seconds
+            revalidate: 86400, // publishing fires revalidateTag('blog-posts'); see #337
         }
     )()
 }

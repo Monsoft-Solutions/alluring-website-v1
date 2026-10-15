@@ -10,7 +10,7 @@
  *
  * @module app/api/analytics/page-view/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { after, type NextRequest, NextResponse } from 'next/server'
 
 import { db } from '@workspace/db/client'
 import { pageView, type InsertPageView } from '@workspace/db/schema/analytics'
@@ -258,9 +258,10 @@ export async function POST(
             city: geoInfo.city,
         }
 
-        // Insert asynchronously - don't await to return quickly
-        // Use Promise.resolve().then() pattern for truly async execution
-        void Promise.resolve().then(async () => {
+        // Write after the response is sent. after() keeps the function alive
+        // until the write settles; a bare un-awaited promise is frozen with the
+        // instance and times out connecting when it resumes (#337).
+        after(async () => {
             try {
                 await db.insert(pageView).values(insertData)
             } catch (error) {

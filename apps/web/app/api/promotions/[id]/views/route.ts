@@ -6,7 +6,7 @@
  *
  * @module app/api/promotions/[id]/views/route
  */
-import { type NextRequest, NextResponse } from 'next/server'
+import { after, type NextRequest, NextResponse } from 'next/server'
 
 import { db } from '@workspace/db/client'
 import { promotion } from '@workspace/db/schema/promotion'
@@ -225,8 +225,10 @@ export async function POST(
             return NextResponse.json({ success: true }, { status: 200 })
         }
 
-        // Increment views asynchronously - don't await to return quickly
-        void Promise.resolve().then(async () => {
+        // Increment after the response is sent. after() keeps the function
+        // alive until the write settles; a bare un-awaited promise is frozen
+        // with the instance and times out connecting when it resumes (#337).
+        after(async () => {
             try {
                 await db
                     .update(promotion)

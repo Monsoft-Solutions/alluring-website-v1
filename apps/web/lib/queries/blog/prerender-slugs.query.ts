@@ -50,5 +50,5 @@ async function fetchBlogPrerenderSlugs(): Promise<BlogPrerenderSlug[]> {
 export const getBlogPrerenderSlugs = (): Promise<BlogPrerenderSlug[]> =>
     unstable_cache(fetchBlogPrerenderSlugs, ['blog-prerender-slugs'], {
         tags: [CACHE_TAGS.BLOG_POSTS],
-        revalidate: 3600,
+        revalidate: 86400,
     })()

@@ -26,9 +26,16 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getBlogPostAbsoluteUrl } from '@/lib/utils/blog-url.util'
 
-// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// Revalidate daily (86400 seconds). Publishing fires revalidateTag, so this
 // is the safety net, not the mechanism.
-export const revalidate = 3600
+export const revalidate = 86400
+
+// No paths at build time, but returning a list (even an empty one) makes the
+// route ISR: each slug renders on its first visit and is cached for the
+// window above. Without it the route renders on every request (#337).
+export function generateStaticParams() {
+    return []
+}
 
 type PageProps = {
     params: Promise<{ slug: string }>

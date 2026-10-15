@@ -49,9 +49,9 @@ const getCachedPostBySlug = cache(async (slug: string) =>
 // Posts published after the build still resolve on first hit, then stay cached.
 export const dynamicParams = true
 
-// Revalidate every hour (3600 seconds). Publishing fires revalidateTag, so this
+// Revalidate daily (86400 seconds). Publishing fires revalidateTag, so this
 // is the safety net, not the mechanism.
-export const revalidate = 3600
+export const revalidate = 86400
 
 /**
  * Prerender the surgeon pages plus every pre-2026 blog post, which is the set

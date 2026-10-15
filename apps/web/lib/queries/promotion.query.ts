@@ -8,8 +8,14 @@ import { CACHE_TAGS } from '@/lib/cache/cache-tags.constant'
 
 export type PromotionType = 'discount' | 'seasonal' | 'bundle' | 'financing'
 
-/** Cache revalidation time in seconds (1 hour fallback) */
-const CACHE_TTL = 3600
+/**
+ * Cache revalidation time in seconds (1 day fallback). The announcement bar
+ * reads getFeaturedPromotion in the root layout, so this TTL caps the ISR
+ * window of every page on the site. Promotion writes fire revalidateTag, and
+ * the admin's hourly promotion-boundaries cron clears these tags when a
+ * promotion starts or ends, so the TTL is only a safety net (#337).
+ */
+const CACHE_TTL = 86400
 
 // ============================================================================
 // Internal Fetch Functions (not exported - wrapped with cache below)

@@ -70,7 +70,7 @@ export const getInlineImagesByPostId = (
         [`blog-post-images-${blogPostId}`],
         {
             tags: ['blog-posts', `blog-post-${blogPostId}`],
-            revalidate: 60, // Cache for 60 seconds
+            revalidate: 86400, // publishing fires revalidateTag('blog-posts'); see #337
         }
     )()
 }
