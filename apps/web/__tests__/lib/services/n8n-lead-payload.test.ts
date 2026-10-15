@@ -16,14 +16,14 @@ describe('buildN8NLeadPayload', () => {
                 firstName: 'Ana',
                 phone: '+13055550123',
                 source: 'dr-karlinsky-ig',
-                pageVariant: 'drk-ig-v1',
+                pageVariant: 'drk-ig-v2-arch',
                 utmSource: 'doctor',
                 utmMedium: 'dr-karlinsky',
                 utmCampaign: 'ig-bio',
             },
             'lead.created'
         )
-        expect(payload.page_variant).toBe('drk-ig-v1')
+        expect(payload.page_variant).toBe('drk-ig-v2-arch')
         expect(payload.source).toBe('dr-karlinsky-ig')
         expect(payload.utm_source).toBe('doctor')
         expect(payload.utm_campaign).toBe('ig-bio')

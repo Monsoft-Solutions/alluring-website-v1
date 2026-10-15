@@ -64,7 +64,7 @@ export type N8NLeadPayload = {
     readonly page: string
     readonly source: string
     /**
-     * Which version of the page sent the lead (`drk-ig-v1`,
+     * Which version of the page sent the lead (`drk-ig-v2-arch`,
      * `ads-consultation-v6`); empty for forms that don't tag one.
      */
     readonly page_variant: string

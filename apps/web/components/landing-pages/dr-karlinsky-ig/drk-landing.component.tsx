@@ -2,11 +2,18 @@
  * Dr. Karlinsky's Instagram bio-link page (#332), server-rendered.
  *
  * Her followers already know her face and her voice, so the page reads like
- * an extension of her profile: the story ring with her message, then her
- * words and the request form, all on the first screen of a phone (390 × 664,
- * Instagram's in-app Safari). Below it, for the ones who scroll: the message
- * in an arch, how it starts, prices, her results, her patients' words, about
+ * an extension of her profile. The phone hero (390 × 664, Instagram's
+ * in-app Safari) is under a 50/50 test between two heroes
+ * (`drk-hero-variant.ts`): `arch` shows only her message in a wide arch, her
+ * words and one button, with the form right below; `pick` shows her story
+ * ring, her words and the procedures as tiles ("pick one to start"), and a
+ * choice opens the rest of the form in place, with "A message from me"
+ * further down. On a desktop both arms show the form beside the film. Below, for the ones who
+ * scroll: how it starts, financing, her results, her patients' words, about
  * her, straight answers, and the ask again.
+ *
+ * Every section carries `data-drk-section`, which `DrkInsights` reports as
+ * it is seen, with scroll depth, CTA taps and FAQ opens.
  *
  * Client islands only where something must run in the browser: the form,
  * the video player, the results lightbox, the sticky CTA and the legal
@@ -21,11 +28,23 @@ import { preload } from 'react-dom'
 import { LpLegalDialog } from '@/components/landing-pages/request-consultation/lp-legal-dialog.component'
 import { LP_LEGAL_HREFS } from '@/components/landing-pages/request-consultation/lp-legal'
 import { Rich } from '@/components/landing-pages/request-consultation/lp-primitives.component'
-import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import {
+    FINANCING_PARTNERS,
+    getPhoneLink,
+    siteConfig,
+} from '@/lib/data/site-config'
 
-import { DRK_FORM_ID, DRK_HERO_ID, fill, formatDuration } from './drk-config'
+import {
+    DRK_FORM_ID,
+    DRK_HERO_ID,
+    drkPageVariant,
+    fill,
+    formatDuration,
+} from './drk-config'
 import { buildDrkForm, DRK_COPY, type DrkLang } from './drk-copy'
 import { DrkForm } from './drk-form.component'
+import { DRK_HERO_FALLBACK, type DrkHeroArm } from './drk-hero-variant'
+import { DrkInsights } from './drk-insights.component'
 import {
     DRK_AVATAR,
     DRK_PORTRAIT,
@@ -34,7 +53,6 @@ import {
     hasDrkVideo,
 } from './drk-media'
 import { DrkPlayer } from './drk-player.component'
-import { DRK_PRICES } from './drk-prices'
 import type { DrkProof } from './drk-proof'
 import { DrkResults } from './drk-results.component'
 import { DrkStickyCta } from './drk-sticky-cta.component'
@@ -50,9 +68,14 @@ interface DrkLandingProps {
     readonly proof: DrkProof
     /** Defaults to `DRK_VIDEO`; tests pass their own. */
     readonly video?: DrkVideo
+    /** The visitor's arm of the hero test, from the middleware. */
+    readonly heroArm?: DrkHeroArm
 }
 
 const CLOSING_ID = 'drk-closing'
+
+/** The phone hero's button; the sticky CTA stays away while it shows. */
+const HERO_GO_ID = 'drk-hero-go'
 
 /** Where the hero shows the film beside the form (drk.css). */
 const DESKTOP_HERO_MEDIA = '(min-width: 1024px)'
@@ -68,6 +91,7 @@ export function DrkLanding({
     languageLinks,
     proof,
     video = DRK_VIDEO,
+    heroArm = DRK_HERO_FALLBACK,
 }: DrkLandingProps) {
     const copy = DRK_COPY[lang]
     const form = buildDrkForm(lang)
@@ -75,14 +99,22 @@ export function DrkLanding({
     const duration = formatDuration(video.durationSec)
     const phone = getPhoneLink()
     const year = new Date().getFullYear()
+    const arch = playable && heroArm === 'arch'
+    const pick = heroArm === 'pick'
 
     return (
-        <div className='drk' lang={lang}>
+        <div
+            className='drk'
+            lang={lang}
+            data-hero-arm={heroArm}
+            data-page-variant={drkPageVariant(heroArm)}
+        >
             <main>
                 <section
                     id={DRK_HERO_ID}
-                    className='drk-hero'
+                    className={`drk-hero${arch ? ' drk-hero--arch' : ''}${pick ? ' drk-hero--pick' : ''}`}
                     aria-labelledby='drk-title'
+                    data-drk-section='hero'
                 >
                     <header className='drk-top'>
                         <Image
@@ -144,6 +176,17 @@ export function DrkLanding({
 
                     <div className='drk-hero__grid'>
                         <div className='drk-hero__intro'>
+                            {arch && (
+                                <HeroCover
+                                    video={video}
+                                    handle={copy.story.handle}
+                                    label={copy.story.label}
+                                    duration={duration}
+                                    playAria={fill(copy.story.playAria, {
+                                        duration,
+                                    })}
+                                />
+                            )}
                             <StoryRow
                                 playable={playable}
                                 handle={copy.story.handle}
@@ -160,15 +203,34 @@ export function DrkLanding({
                             <h1 id='drk-title' className='drk-h1'>
                                 <Rich parts={copy.hero.heading} />
                             </h1>
-                            <p className='drk-hero__sub'>{copy.hero.sub}</p>
+                            {arch && (
+                                <div id={HERO_GO_ID} className='drk-hero__go'>
+                                    <a
+                                        href={`#${DRK_FORM_ID}`}
+                                        className='drk-btn drk-btn--gold'
+                                        data-drk-focus=''
+                                        data-cta='drk_hero'
+                                    >
+                                        {copy.sticky.cta}
+                                        <ArrowIcon />
+                                    </a>
+                                    <p className='drk-hero__note'>
+                                        <LockIcon />
+                                        {copy.hero.note}
+                                    </p>
+                                </div>
+                            )}
                         </div>
 
                         <div className='drk-hero__form'>
+                            <p className='drk-hero__sub'>{copy.hero.sub}</p>
                             <DrkForm
                                 lang={lang}
                                 copy={form.copy}
                                 staff={form.staff}
-                                priceHint={copy.priceHint}
+                                hint={copy.formHint}
+                                tilesNote={copy.tilesNote}
+                                heroArm={heroArm}
                             />
                             <p className='drk-hero__call'>
                                 {copy.hero.callPrompt}{' '}
@@ -192,10 +254,11 @@ export function DrkLanding({
                     </div>
                 </section>
 
-                {playable && (
+                {playable && !arch && (
                     <section
                         className='drk-band drk-message'
                         aria-labelledby='drk-message-title'
+                        data-drk-section='message'
                     >
                         <div className='drk-wrap drk-message__in'>
                             <MessageArch
@@ -220,6 +283,7 @@ export function DrkLanding({
                 <section
                     className='drk-band drk-steps'
                     aria-labelledby='drk-steps-title'
+                    data-drk-section='steps'
                 >
                     <div className='drk-wrap'>
                         <h2 id='drk-steps-title' className='drk-h2'>
@@ -243,33 +307,36 @@ export function DrkLanding({
                 </section>
 
                 <section
-                    className='drk-band drk-prices'
-                    aria-labelledby='drk-prices-title'
+                    className='drk-band drk-financing'
+                    aria-labelledby='drk-financing-title'
+                    data-drk-section='financing'
                 >
-                    <div className='drk-wrap drk-prices__in'>
-                        <h2 id='drk-prices-title' className='drk-h2'>
-                            <Rich parts={copy.prices.heading} />
-                        </h2>
-                        <div className='drk-prices__card'>
-                            <dl>
-                                {DRK_PRICES.map((price) => (
-                                    <div
-                                        key={price.procedure}
-                                        className='drk-prices__row'
-                                    >
-                                        <dt>{price.label[lang]}</dt>
-                                        <dd>
-                                            <span>{copy.prices.from}</span>{' '}
-                                            {price.from}
-                                        </dd>
-                                    </div>
-                                ))}
-                            </dl>
-                            <p className='drk-prices__personal'>
-                                {copy.prices.personal}
+                    <div className='drk-wrap drk-financing__in'>
+                        <div>
+                            <h2 id='drk-financing-title' className='drk-h2'>
+                                <Rich parts={copy.financing.heading} />
+                            </h2>
+                            <p className='drk-lede'>{copy.financing.body}</p>
+                        </div>
+                        <div className='drk-financing__card'>
+                            <p className='drk-financing__label'>
+                                {copy.financing.partnersLabel}
                             </p>
-                            <p className='drk-prices__financing'>
-                                {copy.prices.financing}
+                            <ul className='drk-financing__partners'>
+                                {FINANCING_PARTNERS.map((partner) => (
+                                    <li key={partner}>{partner}</li>
+                                ))}
+                            </ul>
+                            <a
+                                href={`#${DRK_FORM_ID}`}
+                                className='drk-btn drk-btn--ink'
+                                data-drk-focus=''
+                                data-cta='drk_financing'
+                            >
+                                {copy.financing.cta}
+                            </a>
+                            <p className='drk-financing__fine'>
+                                {copy.financing.fine}
                             </p>
                         </div>
                     </div>
@@ -279,6 +346,7 @@ export function DrkLanding({
                     <section
                         className='drk-band drk-results'
                         aria-labelledby='drk-results-title'
+                        data-drk-section='results'
                     >
                         <div className='drk-wrap'>
                             <h2 id='drk-results-title' className='drk-h2'>
@@ -299,6 +367,7 @@ export function DrkLanding({
                     <section
                         className='drk-band drk-reviews'
                         aria-labelledby='drk-reviews-title'
+                        data-drk-section='reviews'
                     >
                         <div className='drk-wrap'>
                             <h2 id='drk-reviews-title' className='drk-h2'>
@@ -338,6 +407,7 @@ export function DrkLanding({
                 <section
                     className='drk-band drk-about'
                     aria-labelledby='drk-about-title'
+                    data-drk-section='about'
                 >
                     <div className='drk-wrap drk-about__in'>
                         <div className='drk-arch drk-about__portrait'>
@@ -372,6 +442,7 @@ export function DrkLanding({
                 <section
                     className='drk-band drk-faq'
                     aria-labelledby='drk-faq-title'
+                    data-drk-section='faq'
                 >
                     <div className='drk-wrap drk-faq__in'>
                         <h2 id='drk-faq-title' className='drk-h2'>
@@ -397,6 +468,7 @@ export function DrkLanding({
                 <section
                     id={CLOSING_ID}
                     className='drk-closing'
+                    data-drk-section='closing'
                     aria-labelledby='drk-closing-title'
                 >
                     <div className='drk-wrap drk-closing__in'>
@@ -466,7 +538,10 @@ export function DrkLanding({
                 </div>
             </footer>
 
-            <DrkStickyCta label={copy.sticky.cta} hideWhile={[CLOSING_ID]} />
+            <DrkStickyCta
+                label={copy.sticky.cta}
+                hideWhile={[HERO_GO_ID, CLOSING_ID]}
+            />
             <DrkPlayer
                 lang={lang}
                 video={video}
@@ -476,6 +551,7 @@ export function DrkLanding({
                 avatarCrop={DRK_AVATAR.faceCrop}
             />
             <LpLegalDialog copy={copy.footer} />
+            <DrkInsights lang={lang} />
         </div>
     )
 }
@@ -544,6 +620,55 @@ function StoryRow({
         </button>
     ) : (
         <div className='drk-story'>{inner}</div>
+    )
+}
+
+/**
+ * The phone hero: her message's poster in a wide arch, with the play button
+ * and what it is along the bottom edge. Phones only (drk.css); it is their
+ * largest image, so it loads first. Same `sizes` as the desktop film, so
+ * both resolve to one file.
+ */
+function HeroCover({
+    video,
+    handle,
+    label,
+    duration,
+    playAria,
+}: {
+    readonly video: DrkVideo
+    readonly handle: string
+    readonly label: string
+    readonly duration: string
+    readonly playAria: string
+}) {
+    return (
+        <button
+            type='button'
+            className='drk-arch drk-cover'
+            data-drk-play='hero-cover'
+            aria-label={playAria}
+        >
+            <Image
+                src={video.poster}
+                width={video.posterWidth}
+                height={video.posterHeight}
+                sizes={POSTER_SIZES}
+                alt=''
+                priority
+            />
+            <span className='drk-cover__bar' aria-hidden='true'>
+                <span className='drk-cover__play'>
+                    <PlayIcon />
+                </span>
+                <span className='drk-cover__text'>
+                    <span className='drk-cover__label'>{label}</span>
+                    <span className='drk-cover__meta'>
+                        {handle} · {duration}
+                    </span>
+                </span>
+            </span>
+        </button>
     )
 }
 
@@ -620,6 +745,43 @@ function PlayIcon({ className }: { readonly className?: string }) {
             aria-hidden='true'
         >
             <path d='M7 4.8v14.4a.8.8 0 0 0 1.2.7l11.3-7.2a.8.8 0 0 0 0-1.4L8.2 4.1a.8.8 0 0 0-1.2.7Z' />
+        </svg>
+    )
+}
+
+function ArrowIcon() {
+    return (
+        <svg
+            viewBox='0 0 24 24'
+            width='18'
+            height='18'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            aria-hidden='true'
+        >
+            <path d='M5 12h14M13 6l6 6-6 6' />
+        </svg>
+    )
+}
+
+function LockIcon() {
+    return (
+        <svg
+            viewBox='0 0 24 24'
+            width='13'
+            height='13'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            aria-hidden='true'
+        >
+            <rect x='5' y='11' width='14' height='10' rx='2' />
+            <path d='M8 11V7a4 4 0 0 1 8 0v4' />
         </svg>
     )
 }

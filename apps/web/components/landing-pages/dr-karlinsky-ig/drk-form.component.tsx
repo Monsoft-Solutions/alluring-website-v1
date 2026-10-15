@@ -8,8 +8,10 @@
  * It runs on `useConsultFlow`, so validation (US mobile numbers), consent,
  * the funnel events and the full-page redirect to the thank-you page are the
  * shared ones. What this file adds: the source and tags every lead carries
- * (`dr-karlinsky-ig`, `drk-ig-v1`, `form`), the `drk_*` dataLayer names, and
- * the starting-price hint under the procedure list.
+ * (`dr-karlinsky-ig`, `drk-ig-v2-<arm>`, `form`), the `drk_*` dataLayer
+ * names, the line under the procedure list (no prices: her price is
+ * personal, and financing is the point), and, in the hero test's `pick`
+ * arm, the procedures as tiles.
  *
  * No procedure is preselected: her followers come for many reasons.
  */
@@ -20,7 +22,6 @@ import type {
     ConsultChatLang,
     ConsultChatStaffLabels,
 } from '@/components/shared/consult-chat/consult-chat.types'
-import { labelOf } from '@/components/shared/consult-chat/consult-chat.util'
 
 import {
     DRK_EVENTS,
@@ -29,12 +30,11 @@ import {
     DRK_FORM_VARIANT,
     DRK_LEAD_STORAGE_KEY,
     DRK_PAGE_PATH,
-    DRK_PAGE_VARIANT,
     DRK_SOURCE,
     DRK_THANK_YOU_PATH,
-    fill,
+    drkPageVariant,
 } from './drk-config'
-import { drkPriceFor } from './drk-prices'
+import type { DrkHeroArm } from './drk-hero-variant'
 
 import '@/components/shared/consult-chat/consult-chat.css'
 
@@ -42,26 +42,26 @@ interface DrkFormProps {
     readonly lang: ConsultChatLang
     readonly copy: ConsultChatCopy
     readonly staff: ConsultChatStaffLabels
-    readonly priceHint: {
-        readonly priced: string
-        readonly unpriced: string
-    }
+    /** Under the procedure list, whatever is chosen. */
+    readonly hint: string
+    /** The `pick` arm: under the tiles until one is chosen. */
+    readonly tilesNote: string
+    readonly heroArm: DrkHeroArm
 }
 
-const NOTE_LINES = [
-    `Page: ${DRK_PAGE_PATH} (Dr. Karlinsky's Instagram bio link)`,
-    `Landing page: ${DRK_PAGE_VARIANT}`,
-] as const
-
-export function DrkForm({ lang, copy, staff, priceHint }: DrkFormProps) {
-    const hint = (procedure: string) => {
-        const price = drkPriceFor(procedure)
-        if (!price) return priceHint.unpriced
-        return fill(priceHint.priced, {
-            procedure: labelOf(copy.procedures, procedure),
-            price: price.from,
-        })
-    }
+export function DrkForm({
+    lang,
+    copy,
+    staff,
+    hint,
+    tilesNote,
+    heroArm,
+}: DrkFormProps) {
+    const pageVariant = drkPageVariant(heroArm)
+    const noteLines = [
+        `Page: ${DRK_PAGE_PATH} (Dr. Karlinsky's Instagram bio link)`,
+        `Landing page: ${pageVariant}`,
+    ]
 
     return (
         <ConsultFields
@@ -77,25 +77,31 @@ export function DrkForm({ lang, copy, staff, priceHint }: DrkFormProps) {
             subject={(procedure) =>
                 `Dr. Karlinsky Instagram lead: ${procedure}`
             }
-            noteLines={NOTE_LINES}
+            noteLines={noteLines}
             dataLayerEvents={{
                 step: DRK_EVENTS.step,
                 attempt: DRK_EVENTS.attempt,
             }}
             dataLayerContext={{
-                pageVariant: DRK_PAGE_VARIANT,
+                pageVariant,
+                heroArm,
                 formVariant: DRK_FORM_VARIANT,
             }}
             analyticsParams={{
                 form_variant: DRK_FORM_VARIANT,
-                page_variant: DRK_PAGE_VARIANT,
+                page_variant: pageVariant,
+                hero_arm: heroArm,
             }}
             startOn='first-answer'
             entryName='hero'
-            leadVariants={{ page: DRK_PAGE_VARIANT, form: DRK_FORM_VARIANT }}
+            leadVariants={{ page: pageVariant, form: DRK_FORM_VARIANT }}
             keepSendAboveKeyboard
             nameField='first'
-            procedureHint={hint}
+            procedureHint={() => hint}
+            // The `pick` arm asks for the procedure with tiles, and opens the
+            // rest once one is chosen (drk-hero-variant.ts).
+            procedureInput={heroArm === 'pick' ? 'tiles' : 'select'}
+            tilesNote={heroArm === 'pick' ? tilesNote : undefined}
         />
     )
 }

@@ -81,6 +81,9 @@ export const env = createEnv({
         // form test: 'plain:50,reassure:50' when unset, 'plain:100' rolls it
         // back. See `lp-form-variant.ts`.
         LP_COPY_SPLIT: z.string().optional(),
+        // Dr. Karlinsky's page hero test (#332), arch against pick:
+        // 'arch:50,pick:50' when unset, 'arch:100' ends it on the arch. See `drk-hero-variant.ts`.
+        DRK_HERO_SPLIT: z.string().optional(),
 
         // Set by CI providers. Read by data-consistency assertions that should
         // fail a pipeline rather than only log — `NODE_ENV` is 'production'

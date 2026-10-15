@@ -20,8 +20,9 @@
  *   that would need the Florida statement beside it.
  * - No "free", "complimentary" or "no-cost" while Fla. Stat. 456.062 is with
  *   counsel. "Consultation", "in person in Miami or virtual".
- * - Prices from `drk-prices.ts` only, always with "your price is personal"
- *   and "financing available" — never a weekly or monthly figure.
+ * - No prices on this page (user, 14 Oct 2026): her price is personal and
+ *   confirmed at the consultation. Financing by partner name only — never
+ *   an amount, a rate, a term or a weekly or monthly figure.
  * - US only, and no travel coordination: "not in Miami" is answered
  *   clinically (virtual consultation, dates in writing, nights to stay).
  * - No "luxury", no "affordable", no facility claims, no promised reply
@@ -49,8 +50,6 @@ import {
     KARLINSKY_NAME,
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
-import { DRK_PRICES } from './drk-prices'
-
 export type DrkLang = ConsultChatLang
 
 const ABS_YEAR = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
@@ -62,25 +61,6 @@ function partners(conjunction: string): string {
     return names.length
         ? `${names.join(', ')} ${conjunction} ${last}`
         : (last ?? '')
-}
-
-/** Names that keep their capital mid-sentence (they start with a name). */
-const PROPER_LABEL = /^(BBL|Lipo)\b/
-
-/** "Breast augmentation" → "breast augmentation", "BBL …" unchanged. */
-function inSentence(label: string): string {
-    return PROPER_LABEL.test(label)
-        ? label
-        : label.charAt(0).toLowerCase() + label.slice(1)
-}
-
-/** "BBL (Lipo 360 + BBL) from $5,500, Lipo 360 from $4,000…" */
-function priceSentence(lang: DrkLang, word: string, and: string): string {
-    const items = DRK_PRICES.map(
-        (price) => `${inSentence(price.label[lang])} ${word} ${price.from}`
-    )
-    const last = items.pop()
-    return `${items.join(', ')} ${and} ${last}`
 }
 
 export interface DrkFaqItem {
@@ -130,12 +110,16 @@ export interface DrkDictionary {
         readonly heading: RichText
         readonly sub: string
         readonly callPrompt: string
+        /** Under the phone hero's button, which goes to the form. */
+        readonly note: string
     }
-    /** The hint under the procedure list. `{procedure}`, `{price}`. */
-    readonly priceHint: {
-        readonly priced: string
-        readonly unpriced: string
-    }
+    /** The line under the procedure list. */
+    readonly formHint: string
+    /**
+     * The `pick` arm: under the procedure tiles until one is chosen, so the
+     * visitor knows how little follows.
+     */
+    readonly tilesNote: string
     readonly message: {
         readonly heading: RichText
         /** `{duration}` is formatDuration(DRK_VIDEO.durationSec), e.g. "0:46". */
@@ -147,11 +131,13 @@ export interface DrkDictionary {
         readonly heading: RichText
         readonly items: readonly [DrkStep, DrkStep, DrkStep]
     }
-    readonly prices: {
+    readonly financing: {
         readonly heading: RichText
-        readonly from: string
-        readonly personal: string
-        readonly financing: string
+        readonly body: string
+        readonly partnersLabel: string
+        /** Goes to the form. */
+        readonly cta: string
+        readonly fine: string
     }
     readonly results: {
         readonly heading: RichText
@@ -229,11 +215,10 @@ const en: DrkDictionary = {
         heading: ['You know my work. Let’s talk about ', { em: 'yours' }, '.'],
         sub: 'Tell me what you’re considering, and we’ll meet in Miami or by video.',
         callPrompt: 'Prefer to call?',
+        note: 'Sarah from my team will text you.',
     },
-    priceHint: {
-        priced: '{procedure} from {price} · personal quote · financing',
-        unpriced: 'Your price is personal · financing available',
-    },
+    formHint: 'Your price is personal · financing available',
+    tilesNote: 'Then just your first name and mobile.',
     message: {
         heading: ['A message ', { em: 'from me' }],
         body: 'In {duration}: how I take care of my patients, and how we choose the right procedure for you.',
@@ -257,11 +242,12 @@ const en: DrkDictionary = {
             },
         ],
     },
-    prices: {
-        heading: ['Starting ', { em: 'prices' }],
-        from: 'from',
-        personal: 'Your price is personal — I confirm it at your consultation.',
-        financing: 'Financing available.',
+    financing: {
+        heading: ['Pay over time with ', { em: 'financing' }],
+        body: 'Your price is personal: I confirm it at your consultation, in writing, before you decide. Pay in full, monthly through a financing partner, or both.',
+        partnersLabel: 'Financing partners',
+        cta: 'Ask about financing',
+        fine: 'Checking with Cherry won’t affect your credit score. Financing is offered by third-party lenders and is subject to credit approval.',
     },
     results: {
         heading: ['My patients’ ', { em: 'results' }],
@@ -303,7 +289,7 @@ const en: DrkDictionary = {
         items: [
             {
                 question: 'How much will my surgery cost?',
-                answer: `Your price is personal — I confirm it at your consultation. As a guide: ${priceSentence('en', 'from', 'and')}.`,
+                answer: 'Your price is personal — I confirm it at your consultation, in writing, before you decide. No obligation.',
             },
             {
                 question: 'Can I pay over time?',
@@ -390,11 +376,10 @@ const es: DrkDictionary = {
         heading: ['Ya conoces mi trabajo. Hablemos del ', { em: 'tuyo' }, '.'],
         sub: 'Cuéntame qué te interesa y nos vemos en Miami o por video.',
         callPrompt: '¿Prefieres llamar?',
+        note: 'Sarah, de mi equipo, te escribirá.',
     },
-    priceHint: {
-        priced: '{procedure} desde {price} · precio personal · financiamiento',
-        unpriced: 'Tu precio es personal · financiamiento disponible',
-    },
+    formHint: 'Tu precio es personal · financiamiento disponible',
+    tilesNote: 'Luego solo tu nombre y tu celular.',
     message: {
         heading: ['Mi mensaje ', { em: 'para ti' }],
         body: 'En {duration}: cómo cuido a mis pacientes y cómo elegimos el procedimiento indicado para ti.',
@@ -418,11 +403,12 @@ const es: DrkDictionary = {
             },
         ],
     },
-    prices: {
-        heading: ['Precios ', { em: 'desde' }],
-        from: 'desde',
-        personal: 'Tu precio es personal: te lo confirmo yo en tu consulta.',
-        financing: 'Financiamiento disponible.',
+    financing: {
+        heading: ['Paga a plazos con ', { em: 'financiamiento' }],
+        body: 'Tu precio es personal: te lo confirmo yo en tu consulta, por escrito, antes de que decidas. Paga completo, en cuotas mensuales con una financiera, o ambas.',
+        partnersLabel: 'Financieras',
+        cta: 'Preguntar por financiamiento',
+        fine: 'Consultar con Cherry no afecta tu puntaje de crédito. El financiamiento lo ofrecen prestamistas externos y está sujeto a aprobación de crédito.',
     },
     results: {
         heading: ['Resultados de ', { em: 'mis pacientes' }],
@@ -464,7 +450,7 @@ const es: DrkDictionary = {
         items: [
             {
                 question: '¿Cuánto me va a costar la cirugía?',
-                answer: `Tu precio es personal: te lo confirmo yo en tu consulta. Como referencia: ${priceSentence('es', 'desde', 'y')}.`,
+                answer: 'Tu precio es personal: te lo confirmo yo en tu consulta, por escrito, antes de que decidas. Sin compromiso.',
             },
             {
                 question: '¿Puedo pagar a plazos?',

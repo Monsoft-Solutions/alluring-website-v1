@@ -12,6 +12,8 @@
 
 import type { ContactSource } from '@/lib/types/forms/contact-form.type'
 
+import type { DrkHeroArm } from './drk-hero-variant'
+
 export const DRK_PAGE_PATH = '/lp/dr-karlinsky'
 
 /** Contains `thank-you`, which is what GTM's lead conversion tags fire on. */
@@ -35,10 +37,21 @@ export const DRK_SOURCE = 'dr-karlinsky-ig' satisfies ContactSource
 export const DRK_FORM_NAME = 'dr_karlinsky_ig_form'
 
 /**
- * Stored on the lead (`page_variant`, sent to n8n too) and on every event.
- * Bump it when the page changes enough to read before and after apart.
+ * The page's version. Bump it when the page changes enough to read before
+ * and after apart. v1 (14 Oct 2026): the whole form on the phone's first
+ * screen, with starting prices. v2: financing instead of prices, and the
+ * hero under an A/B test between two new heroes, `arch` and `pick`
+ * (`drk-hero-variant.ts`); v1's hero is not in it.
  */
-export const DRK_PAGE_VARIANT = 'drk-ig-v1'
+export const DRK_PAGE_VERSION = 'drk-ig-v2'
+
+/**
+ * Stored on the lead (`page_variant`, sent to n8n too) and on every event:
+ * the version and the hero arm, `drk-ig-v2-arch` or `drk-ig-v2-pick`.
+ */
+export function drkPageVariant(arm: DrkHeroArm): string {
+    return `${DRK_PAGE_VERSION}-${arm}`
+}
 
 /** Stored on the lead (`form_variant`): the one-screen form. */
 export const DRK_FORM_VARIANT = 'form'
@@ -55,6 +68,16 @@ export const DRK_EVENTS = {
     videoProgress: 'drk_video_progress',
     videoCta: 'drk_video_cta',
     videoError: 'drk_video_error',
+    /** Once per page view, with the hero arm: the test's denominator. */
+    view: 'drk_view',
+    /** A section was seen (40% on screen), once per page view. */
+    sectionView: 'drk_section_view',
+    /** How far down the page the visitor got: 25 / 50 / 75 / 100 %. */
+    scroll: 'drk_scroll',
+    /** Any `data-cta` button or link: the hero, sticky and closing buttons, calls. */
+    cta: 'drk_cta',
+    /** A question opened in "Straight answers". */
+    faqOpen: 'drk_faq_open',
 } as const
 
 /** Fills `{key}` placeholders in a copy string. */

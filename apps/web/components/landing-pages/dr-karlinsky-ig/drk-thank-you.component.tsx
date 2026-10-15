@@ -31,9 +31,10 @@ import {
     DRK_EVENTS,
     DRK_FORM_VARIANT,
     DRK_LEAD_STORAGE_KEY,
-    DRK_PAGE_VARIANT,
+    drkPageVariant,
 } from './drk-config'
 import type { DrkDictionary, DrkLang } from './drk-copy'
+import { readDrkHeroArm } from './drk-tracking'
 
 /** Remembers which lead `drk_lead_submitted` was pushed for. */
 export const DRK_COUNTED_STORAGE_KEY = `${DRK_LEAD_STORAGE_KEY}_counted`
@@ -76,9 +77,11 @@ export function DrkThankYou({ lang, override }: DrkThankYouProps) {
     useEffect(() => {
         if (!claimLeadCount(sessionStore())) return
         const campaign = readAttribution()
+        const heroArm = readDrkHeroArm()
         pushDataLayer({
             event: DRK_EVENTS.submitted,
-            pageVariant: DRK_PAGE_VARIANT,
+            pageVariant: drkPageVariant(heroArm),
+            heroArm,
             formVariant: DRK_FORM_VARIANT,
             lang,
             utm_source: campaign.utm_source,

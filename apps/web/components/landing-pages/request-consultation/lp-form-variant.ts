@@ -29,17 +29,19 @@
  * variable. The override still reaches a closed arm, for QA.
  *
  * No React and no Next here: the middleware (Edge) and the tests use it.
+ * The generic pieces are exported for the other pages' tests
+ * (`drk-hero-variant.ts`).
  */
 
-type Split<V extends string> = Readonly<Record<V, number>>
+export type Split<V extends string> = Readonly<Record<V, number>>
 
-interface Assignment<V extends string> {
+export interface Assignment<V extends string> {
     readonly variant: V
     /** Where it came from: the QA override, the visitor's cookie, or a draw. */
     readonly source: 'query' | 'cookie' | 'draw'
 }
 
-interface AssignInput<V extends string> {
+export interface AssignInput<V extends string> {
     readonly query: string | null | undefined
     readonly cookie: string | null | undefined
     readonly split: Split<V>
@@ -47,7 +49,7 @@ interface AssignInput<V extends string> {
 }
 
 /** Narrows a query value, cookie or header to one of `variants`. */
-function toVariant<V extends string>(
+export function toVariant<V extends string>(
     variants: readonly V[],
     value: string | null | undefined
 ): V | null {
@@ -60,7 +62,7 @@ function toVariant<V extends string>(
  * Anything unreadable, or all zeros, is the fallback (50/50): a typo in the
  * dashboard must not send every visitor to one arm by accident.
  */
-function parseSplit<V extends string>(
+export function parseSplit<V extends string>(
     variants: readonly V[],
     fallback: Split<V>,
     raw: string | null | undefined
@@ -104,7 +106,7 @@ function drawVariant<V extends string>(
 }
 
 /** The override, then a cookie naming an open arm, then a draw. */
-function assignVariant<V extends string>(
+export function assignVariant<V extends string>(
     variants: readonly V[],
     { query, cookie, split, random }: AssignInput<V>
 ): Assignment<V> {
@@ -116,7 +118,7 @@ function assignVariant<V extends string>(
 }
 
 /** 90 days, in seconds, for both tests' cookies. */
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 90
+export const COOKIE_MAX_AGE = 60 * 60 * 24 * 90
 
 // ---- The form test (#292, #307) --------------------------------------------
 

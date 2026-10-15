@@ -344,7 +344,10 @@ export function useConsultFlow(options: ConsultFlowOptions) {
     const answer = (
         from: Exclude<FlowStep, 2>,
         patch: Partial<FlowAnswers>,
-        entry: string = entryName
+        entry: string = entryName,
+        // `false` updates the answer without reporting a step: the tiles'
+        // second and later choices (arrow keys move the checked radio).
+        track = true
     ) => {
         const next = oneScreen
             ? {
@@ -357,7 +360,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         // Which step was answered is worth reporting; the answer is not.
         // Procedure interest and names stay out of the data layer, where
         // every tag in the container can read them (#272).
-        if (dataLayerEvents) {
+        if (track && dataLayerEvents) {
             pushDataLayer({
                 event: dataLayerEvents.step,
                 step: stepName,
@@ -366,12 +369,13 @@ export function useConsultFlow(options: ConsultFlowOptions) {
             })
         }
         if (startOn === 'first-answer') trackStart()
-        trackLeadFormEvent(LEAD_FORM_EVENTS.STEP, formName, {
-            ...analyticsParams,
-            step: stepName,
-            step_index: from + 1,
-            entry_point: entry,
-        })
+        if (track)
+            trackLeadFormEvent(LEAD_FORM_EVENTS.STEP, formName, {
+                ...analyticsParams,
+                step: stepName,
+                step_index: from + 1,
+                entry_point: entry,
+            })
         onAnswer?.({
             step: stepName,
             answer: next.answers[stepName],

@@ -15,10 +15,22 @@ export function focusDrkForm(): void {
         block: 'start',
         behavior: prefersReducedMotion() ? 'auto' : 'smooth',
     })
-    // The first field still empty: the procedure, else the name, else the
-    // number. Focus only, without a second scroll fighting the first.
+    // Focus only, without a second scroll fighting the first. The `pick`
+    // arm's tiles, while none is chosen: the group itself, so a screen
+    // reader hears the question and no single tile wears the focus ring
+    // like a preselection (the other fields are still folded).
+    const tiles = [
+        ...form.querySelectorAll<HTMLInputElement>('input[type=radio]'),
+    ]
+    if (tiles.length && !tiles.some((tile) => tile.checked)) {
+        const group = tiles[0]?.closest('fieldset')
+        group?.focus({ preventScroll: true })
+        return
+    }
+    // Else the first field still empty: the procedure, else the name, else
+    // the number.
     const fields = form.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
-        'select, input:not([type=checkbox]):not([tabindex="-1"])'
+        'select, input:not([type=checkbox]):not([type=radio]):not([tabindex="-1"])'
     )
     const target =
         [...fields].find((field) => !field.value) ?? fields[0] ?? null
