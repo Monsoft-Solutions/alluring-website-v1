@@ -1,0 +1,3724 @@
+{
+ "run": {
+  "date": "2026-10-07",
+  "tag": null,
+  "started": "2026-10-07T18:51:35-0400",
+  "finished": "2026-10-07T18:53:27-04:00",
+  "source": "from-raw /private/tmp/claude-501/-Users-monsoft-solutions-monsoft-projects-alluring-websites-alluring-website-1/7dcf099a-d9b0-44f3-b309-bfa3651f4c11/scratchpad/ai-panel",
+  "model": "sonar",
+  "prompts": 24,
+  "prompts_file": "blog/tools/ai-panel-prompts.json",
+  "prompts_version": "2026-10-07",
+  "retries_429": 0,
+  "cost_usd": 0.1059,
+  "partial": false
+ },
+ "truths_as_of": "2026-10-07",
+ "tallies": {
+  "overall": {
+   "hit": 17,
+   "of": 24,
+   "pct": 71
+  },
+  "non_brand": {
+   "hit": 15,
+   "of": 22,
+   "pct": 68
+  },
+  "brand": {
+   "hit": 2,
+   "of": 2,
+   "pct": 100
+  },
+  "by_group": {
+   "BUYING": {
+    "hit": 8,
+    "of": 8,
+    "pct": 100
+   },
+   "INFORMATIONAL": {
+    "hit": 7,
+    "of": 12,
+    "pct": 58
+   },
+   "SPANISH": {
+    "hit": 2,
+    "of": 4,
+    "pct": 50
+   }
+  },
+  "by_group_non_brand": {
+   "BUYING": {
+    "hit": 6,
+    "of": 6,
+    "pct": 100
+   },
+   "INFORMATIONAL": {
+    "hit": 7,
+    "of": 12,
+    "pct": 58
+   },
+   "SPANISH": {
+    "hit": 2,
+    "of": 4,
+    "pct": 50
+   }
+  },
+  "by_procedure_non_brand": {
+   "bbl": {
+    "hit": 3,
+    "of": 6,
+    "pct": 50
+   },
+   "breast-augmentation": {
+    "hit": 1,
+    "of": 2,
+    "pct": 50
+   },
+   "general": {
+    "hit": 1,
+    "of": 1,
+    "pct": 100
+   },
+   "lipo": {
+    "hit": 4,
+    "of": 4,
+    "pct": 100
+   },
+   "mommy-makeover": {
+    "hit": 2,
+    "of": 2,
+    "pct": 100
+   },
+   "tummy-tuck": {
+    "hit": 4,
+    "of": 7,
+    "pct": 57
+   }
+  },
+  "referenced_in_text": {
+   "hit": 14,
+   "of": 24,
+   "pct": 58
+  },
+  "named_in_answer": {
+   "hit": 5,
+   "of": 24,
+   "pct": 21
+  },
+  "rank1": {
+   "hit": 10,
+   "of": 24,
+   "pct": 42
+  },
+  "best_rank_distribution": {
+   "1": 10,
+   "10": 1,
+   "2": 2,
+   "3": 3,
+   "6": 1,
+   "not_cited": 7
+  },
+  "abps_in_answer": {
+   "hit": 5,
+   "of": 24,
+   "pct": 21
+  },
+  "most_cited_domains_by_prompts": [
+   [
+    "alluringplasticsurgery.com",
+    17
+   ],
+   [
+    "realself.com",
+    7
+   ],
+   [
+    "sveltaplasticsurgery.com",
+    5
+   ],
+   [
+    "avanaplasticsurgery.com",
+    4
+   ],
+   [
+    "acibademinternational.com",
+    4
+   ],
+   [
+    "pureplasticsurgery.com",
+    3
+   ],
+   [
+    "careagaplasticsurgery.com",
+    3
+   ],
+   [
+    "cgcosmetic.com",
+    3
+   ],
+   [
+    "lipo.com",
+    3
+   ],
+   [
+    "iconcosmeticcenter.com",
+    3
+   ],
+   [
+    "boutinicaesthetics.com",
+    3
+   ],
+   [
+    "plasticsurgery.org",
+    3
+   ],
+   [
+    "betterplasticsurgery.com",
+    3
+   ],
+   [
+    "centreforsurgery.com",
+    3
+   ],
+   [
+    "newbodysurgerymiami.com",
+    3
+   ]
+  ],
+  "most_cited_domains_by_slots": [
+   [
+    "alluringplasticsurgery.com",
+    35
+   ],
+   [
+    "realself.com",
+    15
+   ],
+   [
+    "sveltaplasticsurgery.com",
+    6
+   ],
+   [
+    "lipo.com",
+    5
+   ],
+   [
+    "centreforsurgery.com",
+    5
+   ],
+   [
+    "careagaplasticsurgery.com",
+    4
+   ],
+   [
+    "avanaplasticsurgery.com",
+    4
+   ],
+   [
+    "doctor.webmd.com",
+    4
+   ],
+   [
+    "acibademinternational.com",
+    4
+   ],
+   [
+    "contourmd.com",
+    4
+   ],
+   [
+    "carelyclinic.com",
+    4
+   ],
+   [
+    "newbodysurgerymiami.com",
+    4
+   ],
+   [
+    "pureplasticsurgery.com",
+    3
+   ],
+   [
+    "cgcosmetic.com",
+    3
+   ],
+   [
+    "boutinicaesthetics.com",
+    3
+   ]
+  ],
+  "alluring_citations_by_type": {
+   "site": 14,
+   "procedure": 8,
+   "blog_2026": 8,
+   "blog_root": 5
+  },
+  "alluring_pages_cited": [
+   [
+    "/blog/affordable-plastic-surgery-miami",
+    3
+   ],
+   [
+    "/procedures/tummy-tuck-miami",
+    2
+   ],
+   [
+    "/mens-plastic-surgery-miami",
+    2
+   ],
+   [
+    "/free-consultation",
+    2
+   ],
+   [
+    "/procedures/breast-augmentation-miami",
+    2
+   ],
+   [
+    "/mommy-makeover-consultation",
+    2
+   ],
+   [
+    "/procedures/liposuction-miami",
+    2
+   ],
+   [
+    "/reviews",
+    2
+   ],
+   [
+    "/about",
+    2
+   ],
+   [
+    "/procedures/brazilian-butt-lift-bbl-miami",
+    1
+   ],
+   [
+    "/blog/tummy-tuck-mommy-makeover-miami",
+    1
+   ],
+   [
+    "/",
+    1
+   ],
+   [
+    "/consulta-gratis",
+    1
+   ],
+   [
+    "/reviews/page/7",
+    1
+   ],
+   [
+    "/miami-plastic-surgery-specials",
+    1
+   ],
+   [
+    "/how-long-to-recover-from-bbl",
+    1
+   ],
+   [
+    "/how-many-massages-after-lipo-360",
+    1
+   ],
+   [
+    "/what-is-lipo-foam",
+    1
+   ],
+   [
+    "/how-to-reduce-pubic-swelling-after-tummy-tuck",
+    1
+   ],
+   [
+    "/blog/flying-after-bbl-tips",
+    1
+   ],
+   [
+    "/what-is-a-tummy-tuck-without-muscle-repair-called",
+    1
+   ],
+   [
+    "/blog/liposuction-recovery-ozempic-miami",
+    1
+   ],
+   [
+    "/blog/ozempic-tummy-tuck-myths-miami",
+    1
+   ],
+   [
+    "/blog/tummy-tuck-miami-candidate-checklist",
+    1
+   ],
+   [
+    "/procedures/mommy-makeover-miami",
+    1
+   ]
+  ],
+  "flags": {
+   "error": 10,
+   "warn": 4,
+   "by_code": {
+    "financing-figure": 4,
+    "volume-claim": 3,
+    "double-board": 2,
+    "tenure-claim": 2,
+    "multiple-surgeons": 2,
+    "retired-price": 1
+   }
+  },
+  "errors": 0
+ },
+ "comparison": null,
+ "rows": [
+  {
+   "n": 1,
+   "group": "BUYING",
+   "brand": false,
+   "procedure": "bbl",
+   "lang": "en",
+   "prompt": "Who is a good surgeon for a BBL in Miami?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:51:35-0400",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami",
+     "path": "/procedures/brazilian-butt-lift-bbl-miami",
+     "type": "procedure"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "realself.com",
+     "count": 4,
+     "ranks": [
+      4,
+      6,
+      7,
+      8
+     ]
+    },
+    {
+     "domain": "floridacentercosmetic.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "pureplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "careagaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "miamilifecosmetic.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "yelp.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": true,
+   "abps_in_answer": true,
+   "alluring_statements": [
+    {
+     "text": "- **Victoria Karlinsky, MD, FACS — Alluring Plastic Surgery:** Her practice says she performs every BBL with ultrasound guidance, which is a key safety measure for fat placement.[1]",
+     "via": [
+      "citation",
+      "name"
+     ],
+     "checked": true,
+     "prices": []
+    }
+   ],
+   "flags": [
+    {
+     "code": "retired-price",
+     "severity": "error",
+     "amount": "$3,500",
+     "procedure": "bbl",
+     "why": "$3,500 is a retired bbl price; current: $5,500, $10,000",
+     "source": "index-title",
+     "path": "/procedures/brazilian-butt-lift-bbl-miami",
+     "text": "BBL Miami | Brazilian Butt Lift From $3,500 | Board-Certified"
+    }
+   ],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/procedures/brazilian-butt-lift-bbl-miami",
+     "title": "BBL Miami | Brazilian Butt Lift From $3,500 | Board-Certified",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "A strong starting shortlist in Miami includes:\n\n- **Victoria Karlinsky, MD, FACS — Alluring Plastic Surgery:** Her practice says she performs every BBL with ultrasound guidance, which is a key safety measure for fat placement.[1]\n- **Robert Cucin, MD — South Florida Center for Cosmetic Surgery:** Board-certified plastic and reconstructive surgeon offering BBL procedures in Miami.[2]\n- **Drs. Earle, Vidal, and Wegerif — PURE Plastic Surgery:** The practice identifies them as double-board-certified plastic surgeons using ultrasound-guided BBL techniques.[3]\n\nThe “best” choice depends on your anatomy, goals, and medical history. Before booking, verify the surgeon through the **American Board of Plastic Surgery**, confirm that surgery occurs in an accredited facility, ask who provides anesthesia, and ensure the surgeon personally performs the fat transfer. Florida requires ultrasound guidance and subcutaneous-only fat placement for BBLs; avoid any surgeon promising unusually cheap surgery or very large volume.\n\nSchedule consultations with at least two surgeons and ask for:\n- Their personal BBL complication and revision rates\n- Before-and-after results for patients with a similar body type\n- The planned fat-injection technique and maximum volume\n- What happens if you develop infection, fat necrosis, asymmetry, or pulmonary symptoms\n- Total cost, including facility, anesthesia, garments, follow-ups, and revisions\n\nOnline profiles and clinic websites are not substitutes for independent board-certification and facility verification.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/procedures/brazilian-butt-lift-bbl-miami",
+    "https://www.floridacentercosmetic.com/miami/body/brazilian-butt-lift/",
+    "https://www.pureplasticsurgery.com/body/brazilian-butt-lift",
+    "https://www.realself.com/find/Florida/Miami/Brazilian-Butt-Lift",
+    "https://www.careagaplasticsurgery.com/body/butt-lift/",
+    "https://www.realself.com/dr/timothy-m-bradley-miami-fl",
+    "https://www.realself.com/find/Florida/Miami/Brazilian-Butt-Lift-Revision",
+    "https://www.realself.com/find/Florida/Miami-Beach/Brazilian-Butt-Lift",
+    "https://miamilifecosmetic.com/procedure/brazilian-butt-lift/",
+    "https://www.yelp.com/biz/miami-life-plastic-surgery-miami"
+   ],
+   "usage": {
+    "completion_tokens": 308,
+    "cost": {
+     "input_tokens_cost": 0.00056,
+     "output_tokens_cost": 0.00072,
+     "request_cost": 0.0025,
+     "total_cost": 0.00378
+    },
+    "prompt_tokens": 12,
+    "search_context_size": "low",
+    "total_tokens": 320
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 2,
+   "group": "BUYING",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "en",
+   "prompt": "How much does a tummy tuck cost in Miami in 2026?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:51:39-0400",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami",
+     "path": "/procedures/tummy-tuck-miami",
+     "type": "procedure"
+    },
+    {
+     "rank": 2,
+     "url": "https://www.alluringplasticsurgery.com/blog/affordable-plastic-surgery-miami",
+     "path": "/blog/affordable-plastic-surgery-miami",
+     "type": "blog_2026"
+    },
+    {
+     "rank": 8,
+     "url": "https://www.alluringplasticsurgery.com/blog/tummy-tuck-mommy-makeover-miami",
+     "path": "/blog/tummy-tuck-mommy-makeover-miami",
+     "type": "blog_2026"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "cgcosmetic.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "tummytuckdoctors.net",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "aeplasticsurgerymiami.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "careagaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "theplasticsurgeonmiami.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "int.livhospital.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "hauteliving.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "- **Complex or fleur-de-lis procedures:** $10,000–$18,000+[1][4]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$10,000",
+      "$18,000"
+     ]
+    },
+    {
+     "text": "Some clinics advertise packages starting around **$4,500**, but the advertised price may not include every surgical, anesthesia, or facility charge.[1][3] Liposuction, often added for body contouring, can add approximately **$1,500 or more**.[1]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$4,500",
+      "$1,500"
+     ]
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/procedures/tummy-tuck-miami",
+     "title": "Tummy Tuck Miami 2026 | Board-Certified Surgeons",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 2,
+     "path": "/blog/affordable-plastic-surgery-miami",
+     "title": "Affordable Plastic Surgery Miami: Costs & Financing",
+     "date": "2026-01-19",
+     "last_updated": "2026-09-30"
+    },
+    {
+     "rank": 8,
+     "path": "/blog/tummy-tuck-mommy-makeover-miami",
+     "title": "Tummy Tuck vs Mommy Makeover Miami: Costs & Recovery",
+     "date": "2026-01-21",
+     "last_updated": "2026-09-30"
+    }
+   ],
+   "answer": "In Miami in 2026, a tummy tuck typically costs about **$5,000–$10,000** for a standard/full procedure. Broader self-pay estimates range from roughly **$6,000 to $18,000+**, depending on the surgeon, facility, anesthesia, and complexity.[3][4][5]\n\nTypical ranges:\n\n- **Mini tummy tuck:** $3,500–$7,500[5][6]\n- **Full/standard tummy tuck:** $5,000–$10,000[5][7]\n- **Extended tummy tuck:** $7,500–$9,800[6][7]\n- **Complex or fleur-de-lis procedures:** $10,000–$18,000+[1][4]\n\nSome clinics advertise packages starting around **$4,500**, but the advertised price may not include every surgical, anesthesia, or facility charge.[1][3] Liposuction, often added for body contouring, can add approximately **$1,500 or more**.[1]\n\nRequest a written, all-inclusive quote specifying surgeon fees, anesthesia, operating-room costs, garments, medications, follow-up care, and any overnight stay. Insurance usually does not cover a cosmetic tummy tuck.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami",
+    "https://www.alluringplasticsurgery.com/blog/affordable-plastic-surgery-miami",
+    "https://www.cgcosmetic.com/tummy-tuck-surgery/",
+    "https://www.tummytuckdoctors.net/guides/tummy-tuck-in-miami/",
+    "https://aeplasticsurgerymiami.com/plastic-surgery-guide/plastic-surgery-cost-in-miami/",
+    "https://www.careagaplasticsurgery.com/body/tummy-tuck/",
+    "https://theplasticsurgeonmiami.com/how-much-is-a-tummy-tuck-in-miami/",
+    "https://www.alluringplasticsurgery.com/blog/tummy-tuck-mommy-makeover-miami",
+    "https://int.livhospital.com/5-best-tummy-tuck-options-in-miami-affordable-lipo-procedures/",
+    "https://hauteliving.com/hautemd/costs/mommy-makeover-cost"
+   ],
+   "usage": {
+    "completion_tokens": 278,
+    "cost": {
+     "input_tokens_cost": 0.00132,
+     "output_tokens_cost": 0.00062,
+     "request_cost": 0.0025,
+     "total_cost": 0.00444
+    },
+    "prompt_tokens": 16,
+    "search_context_size": "low",
+    "total_tokens": 294
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 3,
+   "group": "BUYING",
+   "brand": false,
+   "procedure": "breast-augmentation",
+   "lang": "en",
+   "prompt": "Affordable breast augmentation in Miami with financing",
+   "status": 200,
+   "ran_at": "2026-10-07T18:51:44-0400",
+   "cited": true,
+   "best_rank": 2,
+   "alluring_citations": [
+    {
+     "rank": 2,
+     "url": "https://www.alluringplasticsurgery.com/mens-plastic-surgery-miami",
+     "path": "/mens-plastic-surgery-miami",
+     "type": "site"
+    },
+    {
+     "rank": 3,
+     "url": "https://www.alluringplasticsurgery.com/free-consultation",
+     "path": "/free-consultation",
+     "type": "site"
+    },
+    {
+     "rank": 5,
+     "url": "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami",
+     "path": "/procedures/breast-augmentation-miami",
+     "type": "procedure"
+    },
+    {
+     "rank": 7,
+     "url": "https://www.alluringplasticsurgery.com/mommy-makeover-consultation",
+     "path": "/mommy-makeover-consultation",
+     "type": "site"
+    },
+    {
+     "rank": 9,
+     "url": "https://www.alluringplasticsurgery.com/blog/affordable-plastic-surgery-miami",
+     "path": "/blog/affordable-plastic-surgery-miami",
+     "type": "blog_2026"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "mycosmeticsurgerymiami.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "xiluetplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "sveltaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "cgcosmetic.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "avanaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": true,
+   "abps_in_answer": true,
+   "alluring_statements": [
+    {
+     "text": "| **Alluring Plastic Surgery** | $3,500 saline / $4,500 silicone | Cherry, CareCredit, and United Credit; some 0% APR promotions for qualified applicants[1] |",
+     "via": [
+      "name"
+     ],
+     "checked": true,
+     "prices": [
+      "$3,500",
+      "$4,500"
+     ]
+    },
+    {
+     "text": "| **My Cosmetic Surgery Miami** | From $2,800 | Cherry Financing and Alphaeon[2] |",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$2,800"
+     ]
+    },
+    {
+     "text": "| **Svelta Plastic Surgery** | From $2,800 or about $25–$27/week | CareCredit and in-house layaway plans[3] |",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$2,800",
+      "$25",
+      "$27"
+     ]
+    },
+    {
+     "text": "| **Xiluet Aesthetic Surgery** | Typically $5,000–$8,000 | Multiple financing partners and payment plans[5] |",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$5,000",
+      "$8,000"
+     ]
+    },
+    {
+     "text": "**Best value to investigate first:** Alluring lists both implant-specific prices and financing providers, while My Cosmetic Surgery and Svelta advertise lower starting prices.",
+     "via": [
+      "name"
+     ],
+     "checked": true,
+     "prices": []
+    },
+    {
+     "text": "- Ensure the consultation gives you a written, itemized quote; several providers state that final pricing depends on the implants and treatment plan[1][3].",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [
+    {
+     "code": "financing-figure",
+     "severity": "warn",
+     "amount": "$45",
+     "why": "A weekly/monthly financing figure attributed to Alluring; the site quotes none.",
+     "source": "index-snippet",
+     "path": "/mens-plastic-surgery-miami",
+     "text": "+1 (786) 305-8649Request Consult\n...\nFrom $45/week | 0% APR available\n...\n✓ Free consultation • ✓ Confidential & discreet • ✓ Flexible financing\n...\nFlexible financing starting at just $27/week.\nMany patients qualify for 0% APR.\nYour investment, your terms.\n...\n### Breast Augmentation\n$27/week\nWith "
+    },
+    {
+     "code": "financing-figure",
+     "severity": "warn",
+     "amount": "$27",
+     "why": "A weekly/monthly financing figure attributed to Alluring; the site quotes none.",
+     "source": "index-snippet",
+     "path": "/mens-plastic-surgery-miami",
+     "text": "+1 (786) 305-8649Request Consult\n...\nFrom $45/week | 0% APR available\n...\n✓ Free consultation • ✓ Confidential & discreet • ✓ Flexible financing\n...\nFlexible financing starting at just $27/week.\nMany patients qualify for 0% APR.\nYour investment, your terms.\n...\n### Breast Augmentation\n$27/week\nWith "
+    },
+    {
+     "code": "financing-figure",
+     "severity": "warn",
+     "amount": "$27",
+     "why": "A weekly/monthly financing figure attributed to Alluring; the site quotes none.",
+     "source": "index-snippet",
+     "path": "/free-consultation",
+     "text": "Free consultation.\n...\nFrom $27/week | 0% APR available\n...\nFlexible financing starting at just $27/week.\nMany patients qualify for 0% APR.\nYour investment, your terms.\n...\n### Breast Augmentation\n$27/week\nWith approved credit\n...\n*Prices shown are starting weekly payments and may vary based on proc"
+    },
+    {
+     "code": "financing-figure",
+     "severity": "warn",
+     "amount": "$27",
+     "why": "A weekly/monthly financing figure attributed to Alluring; the site quotes none.",
+     "source": "index-snippet",
+     "path": "/mommy-makeover-consultation",
+     "text": "+1 (786) 305-8649Request Consult\n...\nFinancing available with approved credit\n...\n✓ Free consultation • ✓ Customized procedure plan • ✓ Flexible financing\n...\nFlexible financing starting at just $27/week.\nMany patients qualify for 0% APR.\nYour investment, your terms.\n...\n### Breast Augmentation\n$27/"
+    }
+   ],
+   "alluring_index": [
+    {
+     "rank": 2,
+     "path": "/mens-plastic-surgery-miami",
+     "title": "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 3,
+     "path": "/free-consultation",
+     "title": "Free Consultation | Miami Plastic Surgery | Alluring",
+     "date": "2026-05-22",
+     "last_updated": "2026-09-24"
+    },
+    {
+     "rank": 5,
+     "path": "/procedures/breast-augmentation-miami",
+     "title": "Breast Augmentation Miami 2026 | Board-Certified Surgeons",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 7,
+     "path": "/mommy-makeover-consultation",
+     "title": "Mommy Makeover Miami | Post-Pregnancy Transformation",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-06"
+    },
+    {
+     "rank": 9,
+     "path": "/blog/affordable-plastic-surgery-miami",
+     "title": "Affordable Plastic Surgery Miami: Costs & Financing",
+     "date": "2026-01-19",
+     "last_updated": "2026-09-30"
+    }
+   ],
+   "answer": "Affordable Miami options advertising financing include:\n\n| Provider | Advertised starting price | Financing |\n|---|---:|---|\n| **Alluring Plastic Surgery** | $3,500 saline / $4,500 silicone | Cherry, CareCredit, and United Credit; some 0% APR promotions for qualified applicants[1] |\n| **My Cosmetic Surgery Miami** | From $2,800 | Cherry Financing and Alphaeon[2] |\n| **Svelta Plastic Surgery** | From $2,800 or about $25–$27/week | CareCredit and in-house layaway plans[3] |\n| **Avana Plastic Surgery** | From $3,000 | Flexible financing plans[4] |\n| **Xiluet Aesthetic Surgery** | Typically $5,000–$8,000 | Multiple financing partners and payment plans[5] |\n| **CG Cosmetic Surgery** | Implants from $2,500 | Financing for qualified applicants; advertised price may require cash payment and financing can add costs[6] |\n\n**Best value to investigate first:** Alluring lists both implant-specific prices and financing providers, while My Cosmetic Surgery and Svelta advertise lower starting prices. Confirm whether the quote includes the surgeon, anesthesia, operating facility, implants, garments, medications, follow-ups, and revision coverage—low advertised prices may exclude some of these costs.\n\nBefore choosing a clinic:\n\n- Verify the surgeon’s board certification through the American Board of Plastic Surgery.\n- Ask for the **cash price and total financed repayment**, including APR, fees, down payment, and promotional-period terms.\n- Confirm the accredited surgical facility and who provides anesthesia.\n- Request before-and-after results for patients with similar anatomy.\n- Ensure the consultation gives you a written, itemized quote; several providers state that final pricing depends on the implants and treatment plan[1][3].\n\nFinancing is subject to credit approval, and cosmetic breast augmentation generally is not covered by insurance[1].",
+   "citations": [
+    "https://mycosmeticsurgerymiami.com/en/procedure/breast-augmentation/",
+    "https://www.alluringplasticsurgery.com/mens-plastic-surgery-miami",
+    "https://www.alluringplasticsurgery.com/free-consultation",
+    "https://xiluetplasticsurgery.com/",
+    "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami",
+    "https://sveltaplasticsurgery.com/",
+    "https://www.alluringplasticsurgery.com/mommy-makeover-consultation",
+    "https://www.cgcosmetic.com/",
+    "https://www.alluringplasticsurgery.com/blog/affordable-plastic-surgery-miami",
+    "https://avanaplasticsurgery.com/breast-augmentation-miami"
+   ],
+   "usage": {
+    "completion_tokens": 405,
+    "cost": {
+     "input_tokens_cost": 0.00133,
+     "output_tokens_cost": 0.00097,
+     "request_cost": 0.0025,
+     "total_cost": 0.0048
+    },
+    "prompt_tokens": 8,
+    "search_context_size": "low",
+    "total_tokens": 413
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 4,
+   "group": "BUYING",
+   "brand": false,
+   "procedure": "mommy-makeover",
+   "lang": "en",
+   "prompt": "Best mommy makeover clinics in Miami",
+   "status": 200,
+   "ran_at": "2026-10-07T18:51:48-0400",
+   "cited": true,
+   "best_rank": 3,
+   "alluring_citations": [
+    {
+     "rank": 3,
+     "url": "https://www.alluringplasticsurgery.com/mommy-makeover-consultation",
+     "path": "/mommy-makeover-consultation",
+     "type": "site"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "navmds.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "rotembergmd.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "theplasticsurgeonmiami.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "miamiplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "pureplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "arcplasticsurgeons.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "drbaker.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "realself.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "imagosplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": true,
+   "abps_in_answer": true,
+   "alluring_statements": [
+    {
+     "text": "- **Alluring Plastic Surgery** — Miami; provides mommy-makeover consultations at its 8435 SW 24th St location.[3]",
+     "via": [
+      "citation",
+      "name"
+     ],
+     "checked": true,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 3,
+     "path": "/mommy-makeover-consultation",
+     "title": "Mommy Makeover Miami | Post-Pregnancy Transformation",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "For a Miami **mommy makeover**, start by comparing these clinics and surgeons rather than choosing solely from online rankings:\n\n- **Rotemberg Plastic Surgery** — South Miami; offers post-pregnancy body-contouring procedures, including combinations of breast and abdominal surgery.[2]\n- **Alluring Plastic Surgery** — Miami; provides mommy-makeover consultations at its 8435 SW 24th St location.[3]\n- **Pure Plastic Surgery** — Miami; offers mommy makeovers and virtual consultations.[6]\n- **ARC Plastic Surgery** — Aventura/Miami area; located at 20950 NE 27th Ct, Suite 302.[7]\n- **Dr. Stephan Baker** — Coral Gables/Miami; offers mommy makeovers from his Bird Road office.[8]\n- **Miami Plastic Surgery** — Serves Kendall, South Miami, and Coral Gables.[5]\n- **Imagos Plastic Surgery** — Miami; offers mommy-makeover procedures at its Miami office.[10]\n\nA Miami mommy makeover commonly costs roughly **$5,600–$27,000**, depending on the procedures, anesthesia, operating facility, and extent of surgery.[1]\n\nBefore booking, verify that the surgeon:\n\n- Is certified by the **American Board of Plastic Surgery**.\n- Operates in an accredited facility.\n- Personally performs the surgery.\n- Provides a detailed quote covering surgeon, anesthesia, facility, garments, medications, and follow-up.\n- Explains blood-clot prevention, scar placement, revision policy, and emergency coverage.\n- Has substantial experience combining procedures safely.\n\nGet at least **two or three in-person consultations**. Ask to see before-and-after photos of patients with a similar body type and confirm whether the clinic has hospital privileges and a board-certified anesthesiologist.",
+   "citations": [
+    "https://www.navmds.com/doctor/specialty/mommy-makeover/florida/miami",
+    "https://www.rotembergmd.com/miami-plastic-surgery/body/mommy-makeover/",
+    "https://www.alluringplasticsurgery.com/mommy-makeover-consultation",
+    "https://theplasticsurgeonmiami.com/mommy-makeover-miami/",
+    "https://miamiplasticsurgery.com/surgical-services/body/mommy-makeover/",
+    "https://www.pureplasticsurgery.com/body/mommy-makeover",
+    "https://www.arcplasticsurgeons.com/body/mommy-makeover/",
+    "https://www.drbaker.com/body/mommy-makeover/",
+    "https://www.realself.com/find/Florida/Miami/Mommy-Makeover",
+    "https://imagosplasticsurgery.com/body/mommy-makeover/"
+   ],
+   "usage": {
+    "completion_tokens": 378,
+    "cost": {
+     "input_tokens_cost": 0.0005,
+     "output_tokens_cost": 0.00088,
+     "request_cost": 0.0025,
+     "total_cost": 0.00388
+    },
+    "prompt_tokens": 6,
+    "search_context_size": "low",
+    "total_tokens": 384
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 5,
+   "group": "BUYING",
+   "brand": false,
+   "procedure": "lipo",
+   "lang": "en",
+   "prompt": "Lipo 360 cost in Miami",
+   "status": 200,
+   "ran_at": "2026-10-07T18:51:52-0400",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/procedures/liposuction-miami",
+     "path": "/procedures/liposuction-miami",
+     "type": "procedure"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "sveltaplasticsurgery.com",
+     "count": 2,
+     "ranks": [
+      2,
+      10
+     ]
+    },
+    {
+     "domain": "lipo.com",
+     "count": 2,
+     "ranks": [
+      3,
+      5
+     ]
+    },
+    {
+     "domain": "avanaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "boutinicaesthetics.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "drsolerbaillo.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "revivesurgery.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "iconcosmeticcenter.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "Lipo 360 in Miami typically costs **about $6,000–$14,000 all-in**, though advertised starting prices range from **$3,000–$4,000** at some clinics.[1][2][5]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$6,000",
+      "$14,000",
+      "$3,000",
+      "$4,000"
+     ]
+    },
+    {
+     "text": "- **Low advertised prices:** may exclude anesthesia, facility fees, garments, medications, or postoperative care.[1][4]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/procedures/liposuction-miami",
+     "title": "Liposuction Miami 2026 | Lipo 360 From $4,000 + Financing",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "Lipo 360 in Miami typically costs **about $6,000–$14,000 all-in**, though advertised starting prices range from **$3,000–$4,000** at some clinics.[1][2][5]\n\n- **Typical standalone Lipo 360:** $6,000–$10,000.[3]\n- **Higher-end or comprehensive quotes:** $7,000–$14,000.[5]\n- **Lipo 360 with BBL:** usually starts around $7,500 and can reach $15,000.[3][10]\n- **Low advertised prices:** may exclude anesthesia, facility fees, garments, medications, or postoperative care.[1][4]\n\nThe final quote depends on the surgeon, number of areas treated, anesthesia, operating-room fees, your anatomy, and whether fat transfer is added. Ask for a written **all-inclusive quote** and verify the surgeon’s board certification and accredited surgical facility before booking.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/procedures/liposuction-miami",
+    "https://sveltaplasticsurgery.com/lipo-360/",
+    "https://lipo.com/guide/city/liposuction-miami",
+    "https://avanaplasticsurgery.com/lipo-360-miami",
+    "https://lipo.com/guide/cost/cost-by-city",
+    "https://boutinicaesthetics.com/lipo-360-miami/",
+    "https://www.drsolerbaillo.com/post/lipo-360-miami-specials",
+    "https://revivesurgery.com/body/lipo-360/",
+    "https://iconcosmeticcenter.com/360-lipo-miami",
+    "https://sveltaplasticsurgery.com/lipo-360-with-bbl-miami/"
+   ],
+   "usage": {
+    "completion_tokens": 208,
+    "cost": {
+     "input_tokens_cost": 0.00134,
+     "output_tokens_cost": 0.00048,
+     "request_cost": 0.0025,
+     "total_cost": 0.00432
+    },
+    "prompt_tokens": 7,
+    "search_context_size": "low",
+    "total_tokens": 215
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 6,
+   "group": "BUYING",
+   "brand": true,
+   "procedure": "general",
+   "lang": "en",
+   "prompt": "Is Alluring Plastic Surgery in Miami legit? reviews",
+   "status": 200,
+   "ran_at": "2026-10-07T18:51:57-0400",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/reviews",
+     "path": "/reviews",
+     "type": "site"
+    },
+    {
+     "rank": 2,
+     "url": "https://www.alluringplasticsurgery.com/about",
+     "path": "/about",
+     "type": "site"
+    },
+    {
+     "rank": 3,
+     "url": "https://www.alluringplasticsurgery.com/mens-plastic-surgery-miami",
+     "path": "/mens-plastic-surgery-miami",
+     "type": "site"
+    },
+    {
+     "rank": 4,
+     "url": "https://www.alluringplasticsurgery.com/",
+     "path": "/",
+     "type": "site"
+    },
+    {
+     "rank": 5,
+     "url": "https://www.alluringplasticsurgery.com/consulta-gratis",
+     "path": "/consulta-gratis",
+     "type": "site"
+    },
+    {
+     "rank": 6,
+     "url": "https://www.alluringplasticsurgery.com/free-consultation",
+     "path": "/free-consultation",
+     "type": "site"
+    },
+    {
+     "rank": 7,
+     "url": "https://www.alluringplasticsurgery.com/reviews/page/7",
+     "path": "/reviews/page/7",
+     "type": "site"
+    },
+    {
+     "rank": 9,
+     "url": "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami",
+     "path": "/procedures/breast-augmentation-miami",
+     "type": "procedure"
+    },
+    {
+     "rank": 10,
+     "url": "https://www.alluringplasticsurgery.com/miami-plastic-surgery-specials",
+     "path": "/miami-plastic-surgery-specials",
+     "type": "site"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "bbb.org",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": true,
+   "abps_in_answer": true,
+   "alluring_statements": [
+    {
+     "text": "Alluring Plastic Surgery in Miami appears to be a **real, operating practice**, but the available review evidence is limited and largely self-published.",
+     "via": [
+      "name"
+     ],
+     "checked": true,
+     "prices": []
+    },
+    {
+     "text": "Its website reports a **4.7/5 rating from 87 Google reviews**, with patients commonly praising the staff, communication, and postoperative care.[1]",
+     "via": [
+      "citation",
+      "context"
+     ],
+     "checked": true,
+     "prices": []
+    },
+    {
+     "text": "- The search results are dominated by Alluring’s own website, so they do not independently verify the reviews.[1][2]",
+     "via": [
+      "citation",
+      "name"
+     ],
+     "checked": true,
+     "prices": []
+    },
+    {
+     "text": "- The practice advertises “double board-certified” surgeons and more than 5,000 procedures, but those claims should be independently checked through Florida’s medical-license database and the American Board of Plastic Surgery.",
+     "via": [
+      "context"
+     ],
+     "checked": true,
+     "prices": []
+    }
+   ],
+   "flags": [
+    {
+     "code": "double-board",
+     "severity": "error",
+     "why": "Never 'double/triple board-certified'.",
+     "source": "answer",
+     "text": "- The practice advertises “double board-certified” surgeons and more than 5,000 procedures, but those claims should be independently checked through Florida’s medical-license database and the American Board of Plastic Surgery."
+    },
+    {
+     "code": "volume-claim",
+     "severity": "error",
+     "why": "No '5,000+' or volume claims.",
+     "source": "answer",
+     "text": "- The practice advertises “double board-certified” surgeons and more than 5,000 procedures, but those claims should be independently checked through Florida’s medical-license database and the American Board of Plastic Surgery."
+    },
+    {
+     "code": "tenure-claim",
+     "severity": "error",
+     "why": "No '15+ years' or tenure claims.",
+     "source": "index-title",
+     "path": "/about",
+     "text": "Meet Our Surgeons | 15+ Years"
+    },
+    {
+     "code": "multiple-surgeons",
+     "severity": "error",
+     "why": "One surgeon: Victoria Karlinsky, MD, FACS.",
+     "source": "index-title",
+     "path": "/about",
+     "text": "Meet Our Surgeons | 15+ Years"
+    },
+    {
+     "code": "volume-claim",
+     "severity": "error",
+     "why": "No '5,000+' or volume claims.",
+     "source": "index-snippet",
+     "path": "/mens-plastic-surgery-miami",
+     "text": "State-of-the-art facility.\n5,000+ procedures performed with exceptional safety record.\n...\n4.7\n|87 reviews on Google\n...\nErika Frausto rated us 5 out of 5 stars\n> “The entire team was amazing, took care of me from start to finish.\nDoctor was truly helpful.\nThe post op massages were epic.\n10/10 can’t"
+    },
+    {
+     "code": "double-board",
+     "severity": "error",
+     "why": "Never 'double/triple board-certified'.",
+     "source": "index-snippet",
+     "path": "/free-consultation",
+     "text": "Double Board-Certified surgeons.\nState-of-the-art facility.\n5,000+ procedures performed with exceptional safety record.\n...\nVerified reviews from real patients\n4.7\n|87 reviews on Google\n...\nErika Frausto rated us 5 out of 5 stars\n> “The entire team was amazing, took care of me from start to finish.\n"
+    },
+    {
+     "code": "volume-claim",
+     "severity": "error",
+     "why": "No '5,000+' or volume claims.",
+     "source": "index-snippet",
+     "path": "/free-consultation",
+     "text": "Double Board-Certified surgeons.\nState-of-the-art facility.\n5,000+ procedures performed with exceptional safety record.\n...\nVerified reviews from real patients\n4.7\n|87 reviews on Google\n...\nErika Frausto rated us 5 out of 5 stars\n> “The entire team was amazing, took care of me from start to finish.\n"
+    }
+   ],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/reviews",
+     "title": "Patient Reviews | 4.7 Stars",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-06"
+    },
+    {
+     "rank": 2,
+     "path": "/about",
+     "title": "Meet Our Surgeons | 15+ Years",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-06"
+    },
+    {
+     "rank": 3,
+     "path": "/mens-plastic-surgery-miami",
+     "title": "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 4,
+     "path": "/",
+     "title": "Alluring Plastic Surgery Miami | Real Prices, Reviews & Results",
+     "date": null,
+     "last_updated": "2026-10-06"
+    },
+    {
+     "rank": 5,
+     "path": "/consulta-gratis",
+     "title": "Cirugía Plástica Miami | Consulta Gratis | Hablamos Español",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 6,
+     "path": "/free-consultation",
+     "title": "Free Consultation | Miami Plastic Surgery | Alluring",
+     "date": "2026-05-22",
+     "last_updated": "2026-09-24"
+    },
+    {
+     "rank": 7,
+     "path": "/reviews/page/7",
+     "title": "Patient Reviews | 4.7 Stars | Alluring Plastic Surgery - Page 7",
+     "date": "2024-12-13",
+     "last_updated": "2026-08-29"
+    },
+    {
+     "rank": 9,
+     "path": "/procedures/breast-augmentation-miami",
+     "title": "Breast Augmentation Miami 2026 | Board-Certified Surgeons",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 10,
+     "path": "/miami-plastic-surgery-specials",
+     "title": "Miami Plastic Surgery Specials September 2026 | Alluring",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-07"
+    }
+   ],
+   "answer": "Alluring Plastic Surgery in Miami appears to be a **real, operating practice**, but the available review evidence is limited and largely self-published. Its website reports a **4.7/5 rating from 87 Google reviews**, with patients commonly praising the staff, communication, and postoperative care.[1]\n\nA few cautions:\n\n- The search results are dominated by Alluring’s own website, so they do not independently verify the reviews.[1][2]\n- The practice advertises “double board-certified” surgeons and more than 5,000 procedures, but those claims should be independently checked through Florida’s medical-license database and the American Board of Plastic Surgery.\n- Do not confuse it with similarly named businesses. A BBB listing for **Allure Plastic Surgery LLC** says that business is not BBB-accredited; this may be a different entity.[8]\n- Reviews alone cannot establish surgical safety or quality. Look specifically for reviews mentioning complications, revisions, refunds, follow-up care, and how negative complaints were handled.\n\n**Before paying a deposit**, verify the exact surgeon—not just the clinic—has an active Florida license, ABPS certification, hospital privileges, and operates in an accredited facility. Request the written quote, anesthesia provider’s credentials, complication/revision policy, and emergency plan. A consultation with an independent, board-certified plastic surgeon is also wise.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/reviews",
+    "https://www.alluringplasticsurgery.com/about",
+    "https://www.alluringplasticsurgery.com/mens-plastic-surgery-miami",
+    "https://www.alluringplasticsurgery.com/",
+    "https://www.alluringplasticsurgery.com/consulta-gratis",
+    "https://www.alluringplasticsurgery.com/free-consultation",
+    "https://www.alluringplasticsurgery.com/reviews/page/7",
+    "https://www.bbb.org/us/fl/miami/profile/plastic-surgery/allure-plastic-surgery-llc-0633-90595845",
+    "https://www.alluringplasticsurgery.com/procedures/breast-augmentation-miami",
+    "https://www.alluringplasticsurgery.com/miami-plastic-surgery-specials"
+   ],
+   "usage": {
+    "completion_tokens": 279,
+    "cost": {
+     "input_tokens_cost": 0.00133,
+     "output_tokens_cost": 0.00066,
+     "request_cost": 0.0025,
+     "total_cost": 0.00449
+    },
+    "prompt_tokens": 10,
+    "search_context_size": "low",
+    "total_tokens": 289
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 7,
+   "group": "BUYING",
+   "brand": true,
+   "procedure": "general",
+   "lang": "en",
+   "prompt": "Dr Victoria Karlinsky Miami reviews",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:01-0400",
+   "cited": true,
+   "best_rank": 3,
+   "alluring_citations": [
+    {
+     "rank": 3,
+     "url": "https://www.alluringplasticsurgery.com/reviews",
+     "path": "/reviews",
+     "type": "site"
+    },
+    {
+     "rank": 4,
+     "url": "https://www.alluringplasticsurgery.com/about",
+     "path": "/about",
+     "type": "site"
+    },
+    {
+     "rank": 8,
+     "url": "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami",
+     "path": "/procedures/tummy-tuck-miami",
+     "type": "procedure"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "doctor.webmd.com",
+     "count": 4,
+     "ranks": [
+      1,
+      5,
+      6,
+      9
+     ]
+    },
+    {
+     "domain": "vitals.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "mapquest.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "yelp.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": true,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "Victoria Karlinsky-Bellini’s Miami reviews are **mostly very positive**, though some negative reports also appear.",
+     "via": [
+      "name"
+     ],
+     "checked": true,
+     "prices": []
+    },
+    {
+     "text": "Patients frequently mention positive results, supportive staff, and postoperative care, including tummy tucks, liposuction, breast procedures, and mommy makeovers.[3]",
+     "via": [
+      "citation"
+     ],
+     "checked": true,
+     "prices": []
+    }
+   ],
+   "flags": [
+    {
+     "code": "tenure-claim",
+     "severity": "error",
+     "why": "No '15+ years' or tenure claims.",
+     "source": "index-title",
+     "path": "/about",
+     "text": "Meet Our Surgeons | 15+ Years"
+    },
+    {
+     "code": "multiple-surgeons",
+     "severity": "error",
+     "why": "One surgeon: Victoria Karlinsky, MD, FACS.",
+     "source": "index-title",
+     "path": "/about",
+     "text": "Meet Our Surgeons | 15+ Years"
+    }
+   ],
+   "alluring_index": [
+    {
+     "rank": 3,
+     "path": "/reviews",
+     "title": "Patient Reviews | 4.7 Stars",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-06"
+    },
+    {
+     "rank": 4,
+     "path": "/about",
+     "title": "Meet Our Surgeons | 15+ Years",
+     "date": "2026-05-22",
+     "last_updated": "2026-10-06"
+    },
+    {
+     "rank": 8,
+     "path": "/procedures/tummy-tuck-miami",
+     "title": "Tummy Tuck Miami 2026 | Board-Certified Surgeons",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-07"
+    }
+   ],
+   "answer": "Dr. Victoria Karlinsky-Bellini’s Miami reviews are **mostly very positive**, though some negative reports also appear.\n\n- **WebMD:** 4.5/5 from 45 ratings. Reviews commonly praise her attentiveness, surgical skill, communication, and staff.[1]\n- **Vitals:** 45 ratings and 15 written reviews; category scores include 4.7 for wait time, 4.6 for appointment ease, 4.8 for promptness, bedside manner, and diagnosis accuracy.[2]\n- **Google reviews shown by her practice:** 4.7/5 from 87 reviews. Patients frequently mention positive results, supportive staff, and postoperative care, including tummy tucks, liposuction, breast procedures, and mommy makeovers.[3]\n- **Yelp/MapQuest:** Reviews are mixed. Some patients describe excellent surgery and follow-up, while at least one reviewer alleges poor liposuction results and price changes.[7][10]\n\n**Bottom line:** The available ratings suggest a strong overall reputation, but many reviews are hosted or reproduced by the practice itself, so they should be weighed alongside independent reviews. Before choosing her, verify current board certification, hospital/surgical-facility privileges, complication and revision policies, total pricing, and see before-and-after results for the specific procedure.",
+   "citations": [
+    "https://doctor.webmd.com/providers/specialty/plastic-surgery/florida/miami",
+    "https://www.vitals.com/doctors/Dr_Victoria_Karlinsky-Bellini.html",
+    "https://www.alluringplasticsurgery.com/reviews",
+    "https://www.alluringplasticsurgery.com/about",
+    "https://doctor.webmd.com/doctor/jeffrey-weinzweig-7d65a11d-bd8b-4f13-bf66-3eeac0e7b520-overview",
+    "https://doctor.webmd.com/providers/specialty/plastic-surgery/florida/key-biscayne",
+    "https://www.mapquest.com/us/florida/plus-cosmetic-surgery-center-387523545",
+    "https://www.alluringplasticsurgery.com/procedures/tummy-tuck-miami",
+    "https://doctor.webmd.com/doctor/algird-mameniskis-85925ad0-2ca5-4975-880f-70322dfb3975-overview",
+    "https://www.yelp.com/biz/plus-cosmetic-surgery-center-hollywood-2"
+   ],
+   "usage": {
+    "completion_tokens": 276,
+    "cost": {
+     "input_tokens_cost": 0.0013599999999999999,
+     "output_tokens_cost": 0.00065,
+     "request_cost": 0.0025,
+     "total_cost": 0.00451
+    },
+    "prompt_tokens": 6,
+    "search_context_size": "low",
+    "total_tokens": 282
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 8,
+   "group": "BUYING",
+   "brand": false,
+   "procedure": "general",
+   "lang": "en",
+   "prompt": "plastic surgery in Miami with payment plans",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:42-04:00",
+   "cited": true,
+   "best_rank": 3,
+   "alluring_citations": [
+    {
+     "rank": 3,
+     "url": "https://www.alluringplasticsurgery.com/blog/affordable-plastic-surgery-miami",
+     "path": "/blog/affordable-plastic-surgery-miami",
+     "type": "blog_2026"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "miamiplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "sveltaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "beautylandplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "pureplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "4beauty.net",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "proplasticsurgerymiami.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "zionmiami.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "boutinicaesthetics.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "vittomd.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "Promotional 0% offers generally require approval and on-time payment.[1][3][7]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 3,
+     "path": "/blog/affordable-plastic-surgery-miami",
+     "title": "Affordable Plastic Surgery Miami: Costs & Financing",
+     "date": "2026-01-19",
+     "last_updated": "2026-09-30"
+    }
+   ],
+   "answer": "Several Miami plastic-surgery practices advertise payment plans through **CareCredit, Cherry, Alphaeon, Affirm, PatientFi, or in-house financing**:\n\n- **Miami Plastic Surgery®** — Cherry, CareCredit, and Alphaeon; locations include Kendall, MedSquare, South Miami, and Coral Gables.[1]\n- **Svelta Plastic Surgery** — CareCredit and in-house layaway; advertises plans starting around **$25/week**, depending on procedure and approval.[2]\n- **BeautyLand Plastic Surgery** — Cherry, Medicard/iFinance, and clinic-arranged financing; advertises financing from about **$40/week**.[4]\n- **Pure Plastic Surgery** — Cherry, CareCredit, Alphaeon, and Affirm; located at 7265 SW 93rd Ave.[5]\n- **4Beauty Aesthetic Institute** — Cherry, PatientFi, CareCredit, and Alphaeon.[6]\n- **Professional Plastic Surgery Miami** — Cherry plans of 3–60 months plus in-house financing; the balance must be paid before surgery under its in-house option.[7]\n- **Zion Plastic Surgery** — Cherry, Avvance, Affirm, CareCredit, Alphaeon, and United Medical Credit; advertises terms up to 36 months and some qualifying 0% APR offers.[8]\n- **VittoMD** — CareCredit, Alphaeon, and Cherry; advertises CareCredit terms of 24–36 months and Alphaeon terms of 6–24 months.[10]\n\nBefore scheduling, ask for the **all-in surgical quote**, including surgeon, anesthesia, facility, garments, medications, follow-ups, and revision policy. Confirm the APR, promotional-period deadline, down payment, cancellation/refund terms, and whether financing must be fully paid before surgery. Promotional 0% offers generally require approval and on-time payment.[1][3][7]",
+   "citations": [
+    "https://miamiplasticsurgery.com/patient-resources/payment-financing-options/",
+    "https://sveltaplasticsurgery.com/",
+    "https://www.alluringplasticsurgery.com/blog/affordable-plastic-surgery-miami",
+    "https://beautylandplasticsurgery.com/financing/",
+    "https://www.pureplasticsurgery.com/patient-resources/financing-options",
+    "https://4beauty.net/financing/",
+    "https://www.proplasticsurgerymiami.com/financing/",
+    "https://zionmiami.com/financing/",
+    "https://boutinicaesthetics.com/financing-options/",
+    "https://www.vittomd.com/financing"
+   ],
+   "usage": {
+    "completion_tokens": 409,
+    "cost": {
+     "input_tokens_cost": 0.0012699999999999999,
+     "output_tokens_cost": 0.00095,
+     "request_cost": 0.0025,
+     "total_cost": 0.00472
+    },
+    "prompt_tokens": 8,
+    "search_context_size": "low",
+    "total_tokens": 417
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 9,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "bbl",
+   "lang": "en",
+   "prompt": "How long does it take to recover from a BBL?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:45-04:00",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/how-long-to-recover-from-bbl",
+     "path": "/how-long-to-recover-from-bbl",
+     "type": "blog_root"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "education.mirrorplasticsurgery.com",
+     "count": 2,
+     "ranks": [
+      6,
+      8
+     ]
+    },
+    {
+     "domain": "goodrx.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "my.clevelandclinic.org",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "plasticsurgery.org",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "cadoganclinic.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "lmaclinic.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "turkeyluxuryclinics.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "acibademinternational.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "- **10–14 days:** Many people return to desk work, though they may need a standing setup or special BBL pillow.[1][3]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/how-long-to-recover-from-bbl",
+     "title": "How Long Does BBL Recovery Take? Week-by-Week Timeline",
+     "date": "2025-10-03",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "Recovery from a **Brazilian butt lift (BBL)** usually takes about **6–8 weeks for routine activities**, while full healing and the final shape can take **3–6 months**.[3][4]\n\nTypical timeline:\n\n- **First week:** Most swelling, bruising, and discomfort; rest and assistance are often needed.\n- **10–14 days:** Many people return to desk work, though they may need a standing setup or special BBL pillow.[1][3]\n- **Up to about 8 weeks:** Avoid direct sitting on the buttocks and sleep as instructed—usually on the stomach or sides. Normal exercise and unrestricted sitting generally require surgeon clearance.[2][3]\n- **3–6 months:** Swelling settles and the final contour becomes clearer.[3][4]\n\nRecovery varies with the amount of liposuction, the type of work, overall health, and your surgeon’s instructions. Seek urgent medical care for sudden shortness of breath, chest pain, fainting, severe leg swelling, or rapidly worsening pain.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/how-long-to-recover-from-bbl",
+    "https://www.goodrx.com/health-topic/procedures/brazilian-butt-lift-procedure-cost-recovery",
+    "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+    "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+    "https://www.cadoganclinic.com/cosmetic-surgery/body-surgery/bbl-recovery",
+    "https://education.mirrorplasticsurgery.com/medspa/brazilian-butt-lift-recovery-time/",
+    "https://www.lmaclinic.com/lma/blog/brazilian-butt-lift-recovery",
+    "https://education.mirrorplasticsurgery.com/surgery/brazilian-butt-lift-recovery-timeline/",
+    "https://turkeyluxuryclinics.com/en/blog/bbl-recovery",
+    "https://acibademinternational.com/health-library/brazilian-butt-lift-surgery-procedure-recovery-and-results/"
+   ],
+   "usage": {
+    "completion_tokens": 224,
+    "cost": {
+     "input_tokens_cost": 0.00135,
+     "output_tokens_cost": 0.00052,
+     "request_cost": 0.0025,
+     "total_cost": 0.00437
+    },
+    "prompt_tokens": 12,
+    "search_context_size": "low",
+    "total_tokens": 236
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 10,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "bbl",
+   "lang": "en",
+   "prompt": "Why does a BBL smell?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:47-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "newbeauty.com",
+     "count": 2,
+     "ranks": [
+      4,
+      9
+     ]
+    },
+    {
+     "domain": "plasticsurgery.org",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "vice.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "scienceinsights.org",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "facts.net",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "newsofbahrain.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "ebony.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "distractify.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "nypost.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "A **BBL (Brazilian butt lift) does not inherently smell**. When odor occurs after surgery, it’s usually from sweat, wound drainage, and bacteria trapped beneath a tight compression garment, or from difficulty cleaning the area during recovery.[1]\n\nA **strong, foul, worsening odor**—especially with redness, increasing pain, swelling, fever, pus-like drainage, skin discoloration, or a firm tender lump—may indicate infection, an abscess, or rarely fat necrosis and should be assessed promptly by the operating surgeon.[1][4]\n\nKeep the area clean and dry, change and wash compression garments as directed, and don’t apply products to healing incisions unless the surgeon approves. If this is happening to you now, contact your surgeon today; seek urgent care for fever, severe pain, rapidly spreading redness, confusion, or weakness.",
+   "citations": [
+    "https://www.plasticsurgery.org/news/articles/is-bbl-smell-real-heres-what-you-need-to-know",
+    "https://www.vice.com/en/article/bbl-smell-is-real-and-just-as-gross-as-it-sounds/",
+    "https://scienceinsights.org/what-is-bbl-smell-causes-duration-and-warning-signs/",
+    "https://www.newbeauty.com/view/bbl-smell-real-or-viral-myth",
+    "https://facts.net/fitness-and-wellbeing/hygiene/25-facts-about-bbl-smell-phenomenon/",
+    "https://www.newsofbahrain.com/trends/124762.html",
+    "https://www.ebony.com/bbl-smell-fat-necrosis-prevention-surgery-care/",
+    "https://www.distractify.com/p/why-does-a-bbl-smell",
+    "https://www.newbeauty.com/bbl-smell-real-or-viral-myth/",
+    "https://nypost.com/2025/07/06/lifestyle/disgusting-bbl-smell-side-effect-might-make-people-reconsider-popular-surgery/"
+   ],
+   "usage": {
+    "completion_tokens": 179,
+    "cost": {
+     "input_tokens_cost": 0.00139,
+     "output_tokens_cost": 0.00042,
+     "request_cost": 0.0025,
+     "total_cost": 0.00431
+    },
+    "prompt_tokens": 7,
+    "search_context_size": "low",
+    "total_tokens": 186
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 11,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "lipo",
+   "lang": "en",
+   "prompt": "How many lymphatic massages do I need after lipo 360?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:50-04:00",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/how-many-massages-after-lipo-360",
+     "path": "/how-many-massages-after-lipo-360",
+     "type": "blog_root"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "aliesteticusa.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "labeautypostop.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "niptuckaesthetics.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "lipo.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "getsnatched.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "betterplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "revivspa.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "lipo360.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "akmclinic.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "A common plan is **6–12 sessions**, usually **2–3 times weekly for the first 3–4 weeks**, then tapering as swelling improves; more extensive swelling or fibrosis may lead to additional sessions.[1][5][9]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    },
+    {
+     "text": "- **Start only when your surgeon clears you**—timing varies with incision healing, drains, bruising, and complications.[1][10]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    },
+    {
+     "text": "- You can still heal well without massage; it is generally an adjunct for comfort and swelling, not a guarantee of a better result.[1][7]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/how-many-massages-after-lipo-360",
+     "title": "www.alluringplasticsurgery.com · when-to-startWhen to Start Lymphatic Massage After Lipo?",
+     "date": "2025-07-08",
+     "last_updated": "2026-10-03"
+    }
+   ],
+   "answer": "There’s **no medically required number** of lymphatic massages after Lipo 360. A common plan is **6–12 sessions**, usually **2–3 times weekly for the first 3–4 weeks**, then tapering as swelling improves; more extensive swelling or fibrosis may lead to additional sessions.[1][5][9]\n\n- **Start only when your surgeon clears you**—timing varies with incision healing, drains, bruising, and complications.[1][10]\n- Use a **qualified post-operative/lymphedema therapist** and insist on gentle treatment; aggressive massage can worsen bruising or inflammation.\n- You can still heal well without massage; it is generally an adjunct for comfort and swelling, not a guarantee of a better result.[1][7]\n- Stop and contact your surgeon for fever, spreading redness or warmth, worsening one-sided swelling, severe pain, shortness of breath, or chest pain.\n\nYour surgeon’s written recovery plan should take priority over any spa’s prepaid package recommendation.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/how-many-massages-after-lipo-360",
+    "https://aliesteticusa.com/recovery/how-many-lymphatic-massages/",
+    "https://www.labeautypostop.com/blog",
+    "https://www.niptuckaesthetics.com/how-many-lymphatic-massages-after-lipo/",
+    "https://lipo.com/guide/recovery/lymphatic-massage",
+    "https://www.getsnatched.com/how-many-massages-after-lipo-360/",
+    "https://betterplasticsurgery.com/blog/lymphatic-drainage-massage-after-liposuction-tummy-tuck-north-jersey",
+    "https://revivspa.com/faq/",
+    "https://www.lipo360.com/blog/how-lymphatic-massage-enhances-liposuction-recovery-and-reduces-swelling/",
+    "https://akmclinic.com/blog/lymphatic-drainage-massage-after-lipo/"
+   ],
+   "usage": {
+    "completion_tokens": 218,
+    "cost": {
+     "input_tokens_cost": 0.00138,
+     "output_tokens_cost": 0.0005,
+     "request_cost": 0.0025,
+     "total_cost": 0.00438
+    },
+    "prompt_tokens": 14,
+    "search_context_size": "low",
+    "total_tokens": 232
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 12,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "lipo",
+   "lang": "en",
+   "prompt": "What does lipo foam do?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:52-04:00",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/what-is-lipo-foam",
+     "path": "/what-is-lipo-foam",
+     "type": "blog_root"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "contourmd.com",
+     "count": 4,
+     "ranks": [
+      3,
+      4,
+      5,
+      7
+     ]
+    },
+    {
+     "domain": "acibademinternational.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "biologyinsights.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "alibaba.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "marena.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "amazon.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "- Helps keep the skin smooth as it heals and may reduce creasing or contour irregularities[1][2]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/what-is-lipo-foam",
+     "title": "What Is Lipo Foam?",
+     "date": "2025-08-18",
+     "last_updated": "2026-10-03"
+    }
+   ],
+   "answer": "Lipo foam is a soft sheet worn **between the skin and a compression garment after liposuction**. It:\n\n- Spreads pressure evenly over treated areas\n- Prevents garment seams, folds, and zippers from digging into swollen skin\n- Helps reduce swelling, bruising, fluid buildup, and discomfort\n- Helps keep the skin smooth as it heals and may reduce creasing or contour irregularities[1][2]\n\nIt does **not** remove fat or directly speed healing; it mainly improves how compression is applied. Use it exactly as your surgeon instructed—too much or uneven pressure can irritate skin or impair circulation.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/what-is-lipo-foam",
+    "https://acibademinternational.com/blog/lipo-foam-what-it-does-under-a-compression-garment-and-how-to-use-it/",
+    "https://contourmd.com/product/lipo-foam-8x11in-sheet/",
+    "https://contourmd.com/product/10ft-roll-of-lipo-foam-liposuction-compression-foam/",
+    "https://contourmd.com/about-liposuction/commonly-asked-questions-about-lipofoam/",
+    "https://biologyinsights.com/what-do-lipo-foams-do-after-liposuction/",
+    "https://contourmd.com/the-top-5-lipo-foams-to-help-you-recover-from-liposuction-treatment/",
+    "https://www.alibaba.com/showroom/lipo-foam.html",
+    "https://marena.com/pages/breathable-lipo-foam",
+    "https://www.amazon.com/KAIHENG-Liposuction-Flattening-Abdominal-Compression/dp/B0D1VBQLC5"
+   ],
+   "usage": {
+    "completion_tokens": 130,
+    "cost": {
+     "input_tokens_cost": 0.00135,
+     "output_tokens_cost": 0.00032,
+     "request_cost": 0.0025,
+     "total_cost": 0.00417
+    },
+    "prompt_tokens": 7,
+    "search_context_size": "low",
+    "total_tokens": 137
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 13,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "en",
+   "prompt": "How to reduce pubic swelling after a tummy tuck",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:55-04:00",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/how-to-reduce-pubic-swelling-after-tummy-tuck",
+     "path": "/how-to-reduce-pubic-swelling-after-tummy-tuck",
+     "type": "blog_root"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "realself.com",
+     "count": 2,
+     "ranks": [
+      2,
+      7
+     ]
+    },
+    {
+     "domain": "internationalclinics.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "raadinahealth.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "acibademinternational.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "calendar-australia.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "cancerrehabpt.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "my.clevelandclinic.org",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "eppleyplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "- **Wear the prescribed compression garment** snugly—but not so tight that it causes pain, numbness, skin discoloration, or breathing difficulty.[1][2]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    },
+    {
+     "text": "- **Walk gently and frequently**, such as short walks around the house, to support circulation; avoid strenuous exercise, abdominal workouts, and heavy lifting until cleared.[1][9]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    },
+    {
+     "text": "- **Rest with your upper body and legs slightly elevated** rather than lying completely flat.[1][4]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    },
+    {
+     "text": "- **Stay hydrated and limit salty foods**, which may reduce fluid retention.[1][3]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/how-to-reduce-pubic-swelling-after-tummy-tuck",
+     "title": "How to Reduce Pubic Swelling After Tummy Tuck?",
+     "date": "2025-07-08",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "Pubic swelling after a tummy tuck is common and often improves gradually over several weeks, sometimes months. Follow your surgeon’s instructions first, since compression and activity recommendations vary by procedure.\n\n- **Wear the prescribed compression garment** snugly—but not so tight that it causes pain, numbness, skin discoloration, or breathing difficulty.[1][2]\n- **Walk gently and frequently**, such as short walks around the house, to support circulation; avoid strenuous exercise, abdominal workouts, and heavy lifting until cleared.[1][9]\n- **Rest with your upper body and legs slightly elevated** rather than lying completely flat.[1][4]\n- **Stay hydrated and limit salty foods**, which may reduce fluid retention.[1][3]\n- **Do not massage the pubic area, apply heat or ice, or take anti-inflammatory medicines** unless your surgeon approves. Lymphatic massage should be performed only after clearance, ideally by a qualified postoperative therapist.[2]\n- Keep incisions clean and dry, and do not use creams, powders, or home remedies unless instructed.\n\n**Contact your surgeon promptly** for rapidly worsening or one-sided swelling, severe or increasing pain, redness or warmth, fever, foul drainage, wound opening, significant bleeding, or a new soft “water-balloon” lump, which can indicate infection, bleeding, or a seroma.[5] Seek emergency care for shortness of breath, chest pain, or sudden leg swelling.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/how-to-reduce-pubic-swelling-after-tummy-tuck",
+    "https://www.realself.com/question/swollen-pubic-area-tummy-tuck-permanent",
+    "https://internationalclinics.com/en/blog/Stages-of-Swelling-After-Tummy-Tuck/",
+    "https://www.raadinahealth.com/en/blog/swelling-and-bruising-after-tummy-tuck",
+    "https://acibademinternational.com/blog/reverse-tummy-tuck-recovery-supportive-garments-incision-care-and-returning-to-lifting/",
+    "https://www.calendar-australia.com/faq/why-is-my-mons-pubis-so-large-after-tummy-tuck",
+    "https://www.realself.com/question/weeks-after-tummy-tuck-swollen-noticed-after-back-work",
+    "https://cancerrehabpt.com/blog/stages-of-swelling-after-tummy-tuck/",
+    "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+    "https://www.eppleyplasticsurgery.com/tag/pubic-liposuction/"
+   ],
+   "usage": {
+    "completion_tokens": 309,
+    "cost": {
+     "input_tokens_cost": 0.00138,
+     "output_tokens_cost": 0.00071,
+     "request_cost": 0.0025,
+     "total_cost": 0.00459
+    },
+    "prompt_tokens": 12,
+    "search_context_size": "low",
+    "total_tokens": 321
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 14,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "bbl",
+   "lang": "en",
+   "prompt": "When can I fly after a BBL?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:57-04:00",
+   "cited": true,
+   "best_rank": 6,
+   "alluring_citations": [
+    {
+     "rank": 6,
+     "url": "https://www.alluringplasticsurgery.com/blog/flying-after-bbl-tips",
+     "path": "/blog/flying-after-bbl-tips",
+     "type": "blog_2026"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "carelyclinic.com",
+     "count": 3,
+     "ranks": [
+      4,
+      7,
+      8
+     ]
+    },
+    {
+     "domain": "thailandcare.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "trueclinic.app",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "losangelesliposuction.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "formationmed.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "drsofer.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "esteluxistanbul.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 6,
+     "path": "/blog/flying-after-bbl-tips",
+     "title": "Travel After BBL: Safe Flying Timeline & Tips",
+     "date": "2026-08-04",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "Most people should wait **at least 10–14 days after a BBL before flying**, and only after their plastic surgeon confirms that healing is progressing normally.[1][5] Some surgeons may clear a short flight after 7–10 days, but **long-haul or international flights often warrant 2–6 weeks**, depending on the procedure, your mobility, and clot risk.[2][3]\n\nWhen your surgeon clears you to fly:\n\n- Use a **BBL cushion** and avoid direct pressure on the buttocks.\n- Walk and move your legs regularly—ideally every 30–60 minutes on longer flights.\n- Wear compression garments or medical compression stockings as directed.\n- Stay hydrated and avoid alcohol.\n- Carry your surgeon’s written clearance and postoperative instructions.\n\nDo **not** fly without urgent medical advice if you have worsening leg swelling or pain, chest pain, shortness of breath, fever, heavy bleeding, or increasing wound redness. Your own surgeon’s clearance should take priority over any general timeline.[2][9]",
+   "citations": [
+    "https://thailandcare.com/procedures/body-contouring/brazilian-butt-lift",
+    "https://www.trueclinic.app/help/can-i-fly-after-brazilian-butt-lift",
+    "https://www.losangelesliposuction.com/surgery/can-i-fly-after-a-bbl-and-when-is-it-safe-to-travel-by-air/",
+    "https://carelyclinic.com/bbl-over-40-and-50/",
+    "https://formationmed.com/can-you-fly-after-a-bbl-surgery/",
+    "https://www.alluringplasticsurgery.com/blog/flying-after-bbl-tips",
+    "https://carelyclinic.com/bbl-recovery-week-by-week/",
+    "https://carelyclinic.com/bbl-long-term-maintenance/",
+    "https://drsofer.com/can-you-fly-after-a-bbl/",
+    "https://esteluxistanbul.com/bbl-recovery/"
+   ],
+   "usage": {
+    "completion_tokens": 218,
+    "cost": {
+     "input_tokens_cost": 0.00134,
+     "output_tokens_cost": 0.00051,
+     "request_cost": 0.0025,
+     "total_cost": 0.00435
+    },
+    "prompt_tokens": 9,
+    "search_context_size": "low",
+    "total_tokens": 227
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 15,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "en",
+   "prompt": "What is a tummy tuck without muscle repair called?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:52:59-04:00",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/what-is-a-tummy-tuck-without-muscle-repair-called",
+     "path": "/what-is-a-tummy-tuck-without-muscle-repair-called",
+     "type": "blog_root"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "realself.com",
+     "count": 3,
+     "ranks": [
+      7,
+      8,
+      10
+     ]
+    },
+    {
+     "domain": "baaps.org.uk",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "betterplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "us-uk.bookimed.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "marinaesthetics.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "mayoclinic.org",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "emoryhealthcare.org",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "It removes excess lower-abdominal skin, typically without repairing separated abdominal muscles; the exact procedure name can vary by surgeon.[1][2]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": []
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/what-is-a-tummy-tuck-without-muscle-repair-called",
+     "title": "What Is a Tummy Tuck Without Muscle Repair Called?",
+     "date": "2025-07-22",
+     "last_updated": "2026-09-28"
+    }
+   ],
+   "answer": "It’s usually called a **mini tummy tuck** or **skin-only abdominoplasty**. It removes excess lower-abdominal skin, typically without repairing separated abdominal muscles; the exact procedure name can vary by surgeon.[1][2]\n\nIf the main goal is removing a hanging apron of skin, it may instead be called a **panniculectomy**, which generally does not tighten the abdominal muscles.[7]",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/what-is-a-tummy-tuck-without-muscle-repair-called",
+    "https://baaps.org.uk/patients/procedures/3/tummy_tuck_abdominoplasty",
+    "https://betterplasticsurgery.com/blog/branded-procedure-names-smooth-tuck-lunchtime-lift-decoded-north-jersey",
+    "https://us-uk.bookimed.com/article/types-of-tummy-tucks/",
+    "https://www.marinaesthetics.com/tummy-tuck-without-muscle-repair/",
+    "https://www.mayoclinic.org/tests-procedures/tummy-tuck/about/pac-20384892",
+    "https://www.realself.com/question/indiana-i-tummy-tuck-absolutely-muscle-repair-lipo-hope",
+    "https://www.realself.com/question/tummy-tuck-muscle-repair-muscle-repair",
+    "https://www.emoryhealthcare.org/centers-programs/aesthetic-center/surgical-services/body-surgery/tummy-tuck",
+    "https://www.realself.com/question/orlando-fl-tummy-tuck-muscle-plication"
+   ],
+   "usage": {
+    "completion_tokens": 93,
+    "cost": {
+     "input_tokens_cost": 0.00133,
+     "output_tokens_cost": 0.00021,
+     "request_cost": 0.0025,
+     "total_cost": 0.00404
+    },
+    "prompt_tokens": 12,
+    "search_context_size": "low",
+    "total_tokens": 105
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 16,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "breast-augmentation",
+   "lang": "en",
+   "prompt": "Breast implant size guide cc chart",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:03-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "manchesterprivatehospital.uk",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "cadoganclinic.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "carecredit.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "iowaclinic.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "drmattgoldschmidt.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "drbasner.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "levamedical.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "healthcalculators.xyz",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "newvuemedical.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "andrewpieri.co.uk",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "Breast implants are measured in **cubic centimeters (cc)**, not cup sizes. As a rough guide, **150–200 cc may add about one cup size**, but the result varies with your starting breast volume, chest width, implant profile, and bra brand.[1][3]\n\n## Approximate breast implant size chart\n\n| Implant volume | Typical effect |\n|---:|---|\n| 125–250 cc | Subtle enhancement |\n| 250–300 cc | Often about A → B or B → C |\n| 300–350 cc | Often about A → C or C → D |\n| 350–400 cc | Often about B → D |\n| 370–450 cc | Often about A/C → D or DD |\n| 400–450 cc | Often about B → DD |\n| 450–550 cc | Often about C → E |\n| 500+ cc | Fuller, more dramatic enlargement |\n\nThese are broad estimates—not guarantees—and commonly used implants are roughly **300–500 cc**.[1][2]\n\n### Practical examples\n\n- **200–250 cc:** subtle, natural-looking increase  \n- **300 cc:** moderate enhancement for many patients  \n- **350–400 cc:** noticeable but often balanced enlargement  \n- **450–500 cc:** fuller, more prominent result  \n- **600+ cc:** dramatic enlargement and greater proportion/sagging considerations  \n\nCup-size predictions are unreliable because the same implant can produce different results on different bodies. Implant **width and profile**—low, moderate, or high—matter as much as volume; a surgeon should measure your breast base width and available tissue before recommending a size.",
+   "citations": [
+    "https://manchesterprivatehospital.uk/blog/breast-implant-sizes-and-cup-size-guide/",
+    "https://www.cadoganclinic.com/ask-the-expert/body-and-breast/choosing-breast-implant-size",
+    "https://www.carecredit.com/well-u/health-wellness/breast-implant-size-shape-texture/",
+    "https://www.iowaclinic.com/doctors/plastic-surgery/choosing-the-best-breast-implant-size-and-type-for-your-body/",
+    "https://www.drmattgoldschmidt.com/blog/breast-implant-size-chart/",
+    "https://www.drbasner.com/blog/your-guide-to-breast-implant-size-selection",
+    "https://levamedical.com/blog/breast-implant-sizes-cc-chart",
+    "https://healthcalculators.xyz/resources/breast-implant-size-guide",
+    "https://newvuemedical.com/breast-implant-sizes/",
+    "https://andrewpieri.co.uk/blog-articles/breast-implant-sizes/"
+   ],
+   "usage": {
+    "completion_tokens": 346,
+    "cost": {
+     "input_tokens_cost": 0.00133,
+     "output_tokens_cost": 0.00082,
+     "request_cost": 0.0025,
+     "total_cost": 0.00465
+    },
+    "prompt_tokens": 7,
+    "search_context_size": "low",
+    "total_tokens": 353
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 17,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "bbl",
+   "lang": "en",
+   "prompt": "How to sleep after a BBL",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:05-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "centreforsurgery.com",
+     "count": 3,
+     "ranks": [
+      2,
+      3,
+      8
+     ]
+    },
+    {
+     "domain": "careagaplasticsurgery.com",
+     "count": 2,
+     "ranks": [
+      5,
+      9
+     ]
+    },
+    {
+     "domain": "carelyclinic.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "clevelandplasticsurgeryinstitute.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "neurolaunch.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "scienceinsights.org",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "virginiafacialplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "After a Brazilian butt lift (BBL), **sleep on your stomach** to avoid pressure on the transferred fat. Many surgeons recommend this for at least the first 2 weeks, while others restrict back-sleeping for 6 weeks or longer—follow your own surgeon’s instructions first.[1][2][10]\n\n- Place a pillow under your pelvis or lower abdomen and another under your ankles to reduce back strain.\n- Use a face-down pillow with a head opening, or turn your head periodically to avoid neck pain.\n- Put pillows beside or behind you to prevent rolling onto your back.\n- If your surgeon permits side-sleeping, keep your hips slightly forward, place a pillow between your knees, and use pillows behind your back for stability.\n- Do **not** sleep on your back or put prolonged pressure on your buttocks until cleared.\n- Avoid sleeping in a recliner unless your surgeon approves it; make sure your buttocks are not pressing against the seat.\n- Take only the pain medicine prescribed or approved by your surgeon—never combine it with alcohol or unapproved sedatives.\n\nContact your surgeon urgently for worsening pain, one-sided swelling, fever, redness, drainage, chest pain, shortness of breath, or sudden leg swelling.",
+   "citations": [
+    "https://carelyclinic.com/how-to-sleep-after-bbl/",
+    "https://centreforsurgery.com/how-to-sleep-after-bbl/",
+    "https://centreforsurgery.com/bbl-recovery/",
+    "https://clevelandplasticsurgeryinstitute.com/how-to-sleep-well-after-a-bbl-4-tips/",
+    "https://www.careagaplasticsurgery.com/blog/the-basics-of-bbl-aftercare/",
+    "https://neurolaunch.com/how-to-sleep-after-bbl/",
+    "https://scienceinsights.org/how-to-sleep-after-a-bbl-without-ruining-results/",
+    "https://centreforsurgery.com/sleep-after-cosmetic-surgery/",
+    "https://www.careagaplasticsurgery.com/blog/when-can-i-sleep-on-my-back-after-a-brazilian-butt-lift/",
+    "https://www.virginiafacialplasticsurgery.com/operation-instructions/brazilian-butt-lift-post-operative-instructions"
+   ],
+   "usage": {
+    "completion_tokens": 256,
+    "cost": {
+     "input_tokens_cost": 0.00134,
+     "output_tokens_cost": 0.00061,
+     "request_cost": 0.0025,
+     "total_cost": 0.00445
+    },
+    "prompt_tokens": 7,
+    "search_context_size": "low",
+    "total_tokens": 263
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 18,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "en",
+   "prompt": "Tummy tuck vs liposuction which is better for me",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:08-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "realself.com",
+     "count": 3,
+     "ranks": [
+      4,
+      6,
+      9
+     ]
+    },
+    {
+     "domain": "healthcare.utah.edu",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "plasticsurgery.org",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "healthline.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "acibademinternational.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "akmclinic.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "centreforsurgery.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "medanta.org",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "Neither is universally “better”—they treat different problems:\n\n- **Liposuction:** Best for localized, pinchable fat when your skin is fairly firm and elastic. It does **not** remove loose skin or repair separated abdominal muscles, and it is not a weight-loss procedure.[1][2]\n- **Tummy tuck (abdominoplasty):** Best when you have hanging or wrinkled excess skin, stretch marks, or abdominal muscle separation after pregnancy or major weight loss. It removes skin and can tighten the abdominal wall, but involves a longer recovery and a permanent scar.[2][3]\n- **Both:** If you have loose skin plus stubborn fat around the abdomen, waist, or flanks, surgeons may recommend a combined procedure.[5]\n\nA practical guide:\n\n| Main concern | Usually better suited |\n|---|---|\n| Small fat pockets; firm skin | Liposuction |\n| Skin that hangs or folds over | Tummy tuck |\n| Bulging from muscle separation | Tummy tuck with muscle repair |\n| Both excess skin and fat | Tummy tuck plus liposuction |\n\nDo not choose based only on weight or a self-exam. A board-certified plastic surgeon should assess your skin elasticity, abdominal muscles, medical history, smoking status, future pregnancy plans, and desired result. If you plan another pregnancy or major weight loss, it is generally better to wait.",
+   "citations": [
+    "https://healthcare.utah.edu/the-scope/health-library/all/2024/09/tummy-tuck-or-liposuction-which-body-contouring-procedure",
+    "https://www.plasticsurgery.org/news/blog/tummy-tuck-or-liposuction",
+    "https://www.healthline.com/health/liposuction-vs-tummy-tuck",
+    "https://www.realself.com/news/tummy-tuck-or-liposuction",
+    "https://acibademinternational.com/blog/tummy-tuck-vs-liposuction-which-addresses-what-a-calm-decision-guide/",
+    "https://www.realself.com/question/lipoabdominoplasty-abdominoplasty-post-pregnancy",
+    "https://akmclinic.com/blog/tummy-tuck-vs-liposuction/",
+    "https://centreforsurgery.com/liposuction-vs-tummy-tuck/",
+    "https://www.realself.com/question/vancouver-british-columbia-canada-tummy-tuck-flat-lipo",
+    "https://www.medanta.org/patient-education-blog/tummy-tuck-vs-liposuction-recovery-time-results-and-suitability"
+   ],
+   "usage": {
+    "completion_tokens": 293,
+    "cost": {
+     "input_tokens_cost": 0.00139,
+     "output_tokens_cost": 0.00068,
+     "request_cost": 0.0025,
+     "total_cost": 0.00457
+    },
+    "prompt_tokens": 13,
+    "search_context_size": "low",
+    "total_tokens": 306
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 19,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "en",
+   "prompt": "Can I get a tummy tuck after Ozempic?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:10-04:00",
+   "cited": true,
+   "best_rank": 2,
+   "alluring_citations": [
+    {
+     "rank": 2,
+     "url": "https://www.alluringplasticsurgery.com/blog/liposuction-recovery-ozempic-miami",
+     "path": "/blog/liposuction-recovery-ozempic-miami",
+     "type": "blog_2026"
+    },
+    {
+     "rank": 4,
+     "url": "https://www.alluringplasticsurgery.com/blog/ozempic-tummy-tuck-myths-miami",
+     "path": "/blog/ozempic-tummy-tuck-myths-miami",
+     "type": "blog_2026"
+    },
+    {
+     "rank": 5,
+     "url": "https://www.alluringplasticsurgery.com/blog/tummy-tuck-miami-candidate-checklist",
+     "path": "/blog/tummy-tuck-miami-candidate-checklist",
+     "type": "blog_2026"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "darrensmithmd.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "betterplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "aestheticmedguide.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "castellanocosmeticsurgery.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "wellnesskliniek.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "norcalsurgery.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "allureesthetic.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 2,
+     "path": "/blog/liposuction-recovery-ozempic-miami",
+     "title": "Liposuction Recovery After Ozempic: Miami Guide",
+     "date": "2026-01-22",
+     "last_updated": "2026-10-07"
+    },
+    {
+     "rank": 4,
+     "path": "/blog/ozempic-tummy-tuck-myths-miami",
+     "title": "Top 7 Tummy Tuck Myths After Ozempic Miami",
+     "date": "2026-01-27",
+     "last_updated": "2026-03-12"
+    },
+    {
+     "rank": 5,
+     "path": "/blog/tummy-tuck-miami-candidate-checklist",
+     "title": "Am I a Candidate for Tummy Tuck in Miami? Checklist",
+     "date": "2026-01-19",
+     "last_updated": "2026-03-27"
+    }
+   ],
+   "answer": "Yes. A tummy tuck can be performed after weight loss with Ozempic, especially if you have excess abdominal skin or separated abdominal muscles that diet and exercise cannot correct.[1]\n\nTypically, surgeons recommend:\n\n- Reaching your goal weight—or being close to it—and keeping it stable for at least **3–6 months**; some prefer longer.[1][3]\n- Discussing Ozempic with both your prescriber, surgeon, and anesthesiologist. Because semaglutide slows stomach emptying, the surgical team may instruct you to pause it before anesthesia; the timing depends on your dose, health, and procedure.[3][6]\n- Ensuring adequate nutrition, particularly protein, and avoiding smoking to support healing.\n- Waiting if you are still losing weight, since further loss can create additional loose skin and affect the result.[7]\n\nA tummy tuck is **body-contouring surgery, not weight-loss surgery**. Seek an in-person evaluation with a board-certified plastic surgeon, and do not stop Ozempic without guidance from your prescribing clinician.",
+   "citations": [
+    "https://www.darrensmithmd.com/body/plastic-surgery-after-glp-1-drugs",
+    "https://www.alluringplasticsurgery.com/blog/liposuction-recovery-ozempic-miami",
+    "https://betterplasticsurgery.com/blog/ozempic-tummy-tuck-plastic-surgery-nj",
+    "https://www.alluringplasticsurgery.com/blog/ozempic-tummy-tuck-myths-miami",
+    "https://www.alluringplasticsurgery.com/blog/tummy-tuck-miami-candidate-checklist",
+    "https://aestheticmedguide.com/blog/tummy-tuck-cost-recovery-scars",
+    "https://www.castellanocosmeticsurgery.com/blog/best-body-contouring-options-after-ozempic-weight-loss/",
+    "https://www.wellnesskliniek.com/en/body/loose-skin-after-weight-loss-surgery",
+    "https://www.norcalsurgery.com/patient-resources/blog/tummy-tuck-after-ozempic-when-its-the-right-next-step/",
+    "https://www.allureesthetic.com/blog/liposuction-after-ozempic-weight-loss-seattle/"
+   ],
+   "usage": {
+    "completion_tokens": 230,
+    "cost": {
+     "input_tokens_cost": 0.0013599999999999999,
+     "output_tokens_cost": 0.00052,
+     "request_cost": 0.0025,
+     "total_cost": 0.00438
+    },
+    "prompt_tokens": 13,
+    "search_context_size": "low",
+    "total_tokens": 243
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 20,
+   "group": "INFORMATIONAL",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "en",
+   "prompt": "How long after a tummy tuck can I work out?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:13-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "healthcare.utah.edu",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "mayoclinic.org",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "centreforsurgery.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "ramsayhealth.co.uk",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "realself.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "delacruzplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "berkeleysquaremedical.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "castellanocosmeticsurgery.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "drglennlyle.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "beautybydrcat.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "Most people can start with **short, gentle walks within the first few days**, increasing gradually as tolerated. Avoid lifting, straining, and formal workouts for roughly **6 weeks**, then resume low-impact exercise only after your surgeon clears you.[1][2]\n\nTypical timeline:\n\n- **Weeks 0–2:** Gentle walking only; no gym, weights, core work, or strenuous activity.[2][6]\n- **Weeks 3–6:** Gradually increase walking; some patients may begin light, low-impact exercise near week 6 if healing is uncomplicated.[1][3]\n- **Weeks 6–8+:** Gradual return to cardio and light weights, with medical clearance; avoid movements that pull on the incision or engage the abdomen strongly.[2][3]\n- **Around 3 months:** Many patients can resume heavy lifting, high-impact activity, and more intense core work, depending on the extent of surgery and muscle repair.[1][3]\n\nYour plastic surgeon’s instructions take priority—especially if you had muscle tightening, an extended/fleur-de-lis tummy tuck, wound problems, significant pain, swelling, or drainage. Stop exercising and contact your surgeon if you develop increasing pain, bleeding, wound opening, marked swelling, redness, or shortness of breath.",
+   "citations": [
+    "https://healthcare.utah.edu/plastic-surgery/body/tummy-tuck-abdominoplasty/recovery",
+    "https://www.mayoclinic.org/tests-procedures/tummy-tuck/about/pac-20384892",
+    "https://centreforsurgery.com/tummy-tuck-recovery/",
+    "https://www.ramsayhealth.co.uk/blog/cosmetic-surgery/tummy-tuck-recovery",
+    "https://www.realself.com/question/how-long-after-tummy-tuck-do-wait-before-start-doing",
+    "https://www.delacruzplasticsurgery.com/resources/exercise-after-tummy-tuck/",
+    "https://www.berkeleysquaremedical.com/exercise-advice-after-tummy-tuck/",
+    "https://www.castellanocosmeticsurgery.com/blog/how-long-to-wait-to-exercise-after-a-tummy-tuck/",
+    "https://drglennlyle.com/blog/when-can-i-exercise-after-tummy-tuck/",
+    "https://beautybydrcat.com/blog/when-can-i-exercise-after-tummy-tuck/"
+   ],
+   "usage": {
+    "completion_tokens": 282,
+    "cost": {
+     "input_tokens_cost": 0.00135,
+     "output_tokens_cost": 0.00063,
+     "request_cost": 0.0025,
+     "total_cost": 0.00448
+    },
+    "prompt_tokens": 13,
+    "search_context_size": "low",
+    "total_tokens": 295
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 21,
+   "group": "SPANISH",
+   "brand": false,
+   "procedure": "lipo",
+   "lang": "es",
+   "prompt": "¿Cuánto cuesta una lipo 360 en Miami?",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:16-04:00",
+   "cited": true,
+   "best_rank": 1,
+   "alluring_citations": [
+    {
+     "rank": 1,
+     "url": "https://www.alluringplasticsurgery.com/procedures/liposuction-miami",
+     "path": "/procedures/liposuction-miami",
+     "type": "procedure"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "lipo.com",
+     "count": 2,
+     "ranks": [
+      2,
+      8
+     ]
+    },
+    {
+     "domain": "avanaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "sveltaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "newbodysurgerymiami.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "iconcosmeticcenter.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "boutinicaesthetics.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "epsmiami.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "drsolerbaillo.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": true,
+   "cited_in_text": true,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [
+    {
+     "text": "Algunas clínicas anuncian precios desde **US$3,000**, mientras que procedimientos más extensos o con cirujanos e instalaciones premium pueden llegar a **US$14,000**.[1][2][4][8]",
+     "via": [
+      "citation"
+     ],
+     "checked": false,
+     "prices": [
+      "$3,000",
+      "$14,000"
+     ]
+    }
+   ],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 1,
+     "path": "/procedures/liposuction-miami",
+     "title": "Liposuction Miami 2026 | Lipo 360 From $4,000 + Financing",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "En Miami, una **lipo 360 suele costar aproximadamente entre US$4,000 y US$10,000**. Algunas clínicas anuncian precios desde **US$3,000**, mientras que procedimientos más extensos o con cirujanos e instalaciones premium pueden llegar a **US$14,000**.[1][2][4][8]\n\nEl precio depende principalmente de:\n\n- Cantidad de grasa y zonas tratadas.\n- Honorarios del cirujano, anestesia y quirófano.\n- Si incluye faja, drenajes y controles postoperatorios.\n- Si se combina con una transferencia de grasa o BBL; en ese caso, el rango puede subir a **US$8,500–US$15,000**.[2][5]\n\nAntes de reservar, pide un presupuesto escrito que confirme si incluye **anestesia, sala quirúrgica, medicamentos, prendas de compresión, revisiones y posibles cargos adicionales**. Las ofertas demasiado bajas pueden excluir varios de esos costos.",
+   "citations": [
+    "https://www.alluringplasticsurgery.com/procedures/liposuction-miami",
+    "https://lipo.com/guide/city/liposuction-miami",
+    "https://avanaplasticsurgery.com/lipo-360-miami",
+    "https://sveltaplasticsurgery.com/lipo-360/",
+    "https://newbodysurgerymiami.com/liposuccion/",
+    "https://iconcosmeticcenter.com/360-lipo-miami",
+    "https://boutinicaesthetics.com/lipo-360-miami/",
+    "https://lipo.com/guide/cost/cost-by-city",
+    "https://www.epsmiami.com/es/liposuccion-miami/",
+    "https://www.drsolerbaillo.com/post/lipo-360-miami-specials"
+   ],
+   "usage": {
+    "completion_tokens": 257,
+    "cost": {
+     "input_tokens_cost": 0.00134,
+     "output_tokens_cost": 0.0005,
+     "request_cost": 0.0025,
+     "total_cost": 0.00434
+    },
+    "prompt_tokens": 14,
+    "search_context_size": "low",
+    "total_tokens": 271
+   },
+   "model": "sonar",
+   "rank1": true
+  },
+  {
+   "n": 22,
+   "group": "SPANISH",
+   "brand": false,
+   "procedure": "bbl",
+   "lang": "es",
+   "prompt": "Mejor cirujano para BBL en Miami",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:19-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "epsmiami.com",
+     "count": 2,
+     "ranks": [
+      2,
+      7
+     ]
+    },
+    {
+     "domain": "newbodysurgerymiami.com",
+     "count": 2,
+     "ranks": [
+      4,
+      9
+     ]
+    },
+    {
+     "domain": "xiluetmiami.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "squlptbody.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "avanaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "vidabellamiami.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "realself.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "xiluetaestheticsurgery.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": true,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "No existe un único “mejor” cirujano para un BBL en Miami: prioriza un **cirujano plástico certificado por la American Board of Plastic Surgery (ABPS)**, con experiencia específica en BBL y cirugía realizada en un centro acreditado. Entre los nombres que aparecen en directorios y clínicas locales están **S. Alexander Earle, MD, FACS**, **Dr. Dillon**, **Dr. Benjamin Liliav** y **Dr. Nilay Shah**; deben verificarse individualmente antes de elegir.[1][3][8][10]\n\nAntes de reservar:\n\n- Confirma la certificación ABPS en el directorio oficial; “board-certified” sin especificar la junta no es suficiente.\n- Pregunta cuántos BBL realiza al año y solicita fotos de pacientes con un tipo corporal parecido.\n- Verifica que use **inyección de grasa únicamente en el plano subcutáneo**, con ecografía durante la transferencia; evita inyección intramuscular o profunda.\n- Confirma que el quirófano esté acreditado y que el cirujano tenga privilegios hospitalarios.\n- Pide el precio total por escrito: honorarios, anestesia, quirófano, prendas, medicamentos y revisiones.\n- Desconfía de ofertas muy baratas, paquetes con varios procedimientos o presión para pagar rápidamente.\n- Programa consultas con al menos **dos o tres cirujanos** y no elijas solo por redes sociales o reseñas.\n\nEl BBL tiene riesgos graves, incluida la embolia grasa; la seguridad y la certificación deben pesar más que el precio o el tamaño prometido. Entre las opciones publicitadas en Miami también figuran Elite Plastic Surgery, Avana y New Body, pero sus propias páginas no demuestran por sí solas que sean la mejor elección.[2][4][5][7][9]",
+   "citations": [
+    "https://www.xiluetmiami.com/es/",
+    "https://www.epsmiami.com/es/brazilian-butt-lift-miami/",
+    "https://squlptbody.com/es/locations/miami-florida/",
+    "https://newbodysurgerymiami.com/dr-ahmed/",
+    "https://avanaplasticsurgery.com/espanol/levantamiento-de-gluteos-en-miami",
+    "https://vidabellamiami.com/",
+    "https://www.epsmiami.com/es/",
+    "https://www.realself.com/find/Florida/Miami/Brazilian-Butt-Lift",
+    "https://newbodysurgerymiami.com/",
+    "https://xiluetaestheticsurgery.com/es/"
+   ],
+   "usage": {
+    "completion_tokens": 455,
+    "cost": {
+     "input_tokens_cost": 0.00049,
+     "output_tokens_cost": 0.00092,
+     "request_cost": 0.0025,
+     "total_cost": 0.00391
+    },
+    "prompt_tokens": 11,
+    "search_context_size": "low",
+    "total_tokens": 466
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 23,
+   "group": "SPANISH",
+   "brand": false,
+   "procedure": "tummy-tuck",
+   "lang": "es",
+   "prompt": "Recuperación de abdominoplastia semana a semana",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:24-04:00",
+   "cited": false,
+   "best_rank": null,
+   "alluring_citations": [],
+   "other_domains": [
+    {
+     "domain": "medicalgrass.es",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "drpereztemprano.es",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "almoclinic.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "alamoplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "sculptureclinic.es",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "rubencastromd.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "cun.es",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "andresordenes.cl",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "turkeyluxuryclinics.com",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    },
+    {
+     "domain": "apollohospitals.com",
+     "count": 1,
+     "ranks": [
+      10
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [],
+   "answer": "La recuperación de una abdominoplastia suele durar **4–8 semanas**, aunque la inflamación y la maduración de la cicatriz pueden continuar durante varios meses. El ritmo depende de si hubo reparación muscular, liposucción, complicaciones y del tipo de trabajo. [1][2]\n\n## Semana a semana\n\n- **Días 0–3:** dolor, tirantez, inflamación y hematomas importantes. Es habitual caminar brevemente varias veces al día, con el tronco algo flexionado; no debe permanecer inmóvil todo el tiempo. Pueden existir drenajes y debe usar la faja según la indicación del cirujano. [2][8]\n\n- **Semana 1:** necesita ayuda en casa y reposo relativo. Continúe con caminatas cortas, medicación prescrita, cuidado de las heridas y la postura semiflexionada si así se le indicó. No conduzca, levante peso ni haga esfuerzos. [2][6]\n\n- **Semana 2:** suelen disminuir el dolor y los hematomas, y mejora la movilidad. Algunas personas con trabajo sedentario pueden reincorporarse alrededor de las 2–3 semanas, si el cirujano lo autoriza; todavía deben evitar esfuerzos, cargas y ejercicio. [3][7]\n\n- **Semanas 3–4:** puede caminar más y realizar actividades ligeras de forma gradual. La inflamación continúa, y no siempre podrá mantenerse completamente erguido al principio. La faja y los cuidados de la cicatriz se mantienen según las instrucciones médicas. [1][2]\n\n- **Semanas 5–6:** muchas personas recuperan buena parte de su autonomía y vuelven a trabajos no físicos. Puede valorarse ejercicio suave o de bajo impacto, pero solo tras la revisión; la inflamación residual, especialmente en la parte baja del abdomen, es frecuente. [2][3]\n\n- **Semanas 6–8:** normalmente se progresa hacia una actividad más normal, siempre de manera gradual. Los ejercicios abdominales, cargas pesadas y actividades intensas suelen retrasarse hasta recibir autorización, especialmente si se repararon los músculos. [3][8]\n\n- **Después de 8 semanas:** la cicatriz sigue madurando y aclarando durante meses. El resultado final no debe juzgarse demasiado pronto por la inflamación residual. [2]\n\n## Cuidados habituales\n\n- Caminar suavemente varias veces al día para favorecer la circulación, sin sobrecargarse.\n- No levantar peso, pujar, limpiar intensamente ni contraer con fuerza el abdomen hasta recibir autorización.\n- Usar la faja exactamente el tiempo indicado; las recomendaciones pueden variar entre 4 y 8 semanas. [1][2]\n- No sumergirse en piscina o bañera ni aplicar productos sobre la herida sin aprobación médica.\n- No conducir mientras tome analgésicos sedantes, tenga movilidad limitada o no pueda frenar con seguridad.\n- Acudir a todas las revisiones; la retirada de drenajes, puntos y el inicio de masajes dependen de la evolución.\n\n## Consulte de urgencia si aparece\n\nFiebre, dolor que empeora bruscamente, enrojecimiento intenso, secreción maloliente, apertura de la herida, hinchazón marcada de un solo lado, falta de aire, dolor torácico o hinchazón dolorosa de una pierna. Las instrucciones de su cirujano prevalecen sobre cualquier calendario general.",
+   "citations": [
+    "https://www.medicalgrass.es/recuperacion-abdominoplastia/",
+    "https://drpereztemprano.es/recuperacion-de-abdominoplastia-semana-a-semana/",
+    "https://www.almoclinic.com/es/cirugia-plastica/abdominoplastia-bogota/recuperacion/",
+    "https://www.alamoplasticsurgery.com/es-articles/recuperacion-de-abdominoplastia-semana-a-semana",
+    "https://sculptureclinic.es/blog/tiempo-recuperacion-de-una-abdominoplastia/",
+    "https://www.rubencastromd.com/es/blog/recuperacion-abdominoplastia-semana-por-semana",
+    "https://www.cun.es/enfermedades-tratamientos/tratamientos/abdominoplastia",
+    "https://andresordenes.cl/recuperacion-abdominoplastia-semana-a-semana/",
+    "https://turkeyluxuryclinics.com/es/blog/fotos-3-semanas-despues-abdominoplastia",
+    "https://www.apollohospitals.com/es/procedures/abdominoplasty-tummy-tuck"
+   ],
+   "usage": {
+    "completion_tokens": 859,
+    "cost": {
+     "input_tokens_cost": 0.00138,
+     "output_tokens_cost": 0.00171,
+     "request_cost": 0.0025,
+     "total_cost": 0.00559
+    },
+    "prompt_tokens": 11,
+    "search_context_size": "low",
+    "total_tokens": 870
+   },
+   "model": "sonar",
+   "rank1": false
+  },
+  {
+   "n": 24,
+   "group": "SPANISH",
+   "brand": false,
+   "procedure": "mommy-makeover",
+   "lang": "es",
+   "prompt": "Mommy makeover en Miami precio",
+   "status": 200,
+   "ran_at": "2026-10-07T18:53:27-04:00",
+   "cited": true,
+   "best_rank": 10,
+   "alluring_citations": [
+    {
+     "rank": 10,
+     "url": "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami",
+     "path": "/procedures/mommy-makeover-miami",
+     "type": "procedure"
+    }
+   ],
+   "other_domains": [
+    {
+     "domain": "getsnatched.com",
+     "count": 1,
+     "ranks": [
+      1
+     ]
+    },
+    {
+     "domain": "zoeplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      2
+     ]
+    },
+    {
+     "domain": "iconcosmeticcenter.com",
+     "count": 1,
+     "ranks": [
+      3
+     ]
+    },
+    {
+     "domain": "cgcosmetic.com",
+     "count": 1,
+     "ranks": [
+      4
+     ]
+    },
+    {
+     "domain": "floridacentercosmetic.com",
+     "count": 1,
+     "ranks": [
+      5
+     ]
+    },
+    {
+     "domain": "newbodysurgerymiami.com",
+     "count": 1,
+     "ranks": [
+      6
+     ]
+    },
+    {
+     "domain": "sveltaplasticsurgery.com",
+     "count": 1,
+     "ranks": [
+      7
+     ]
+    },
+    {
+     "domain": "miamilakescosmetics.com",
+     "count": 1,
+     "ranks": [
+      8
+     ]
+    },
+    {
+     "domain": "4beauty.net",
+     "count": 1,
+     "ranks": [
+      9
+     ]
+    }
+   ],
+   "referenced_in_text": false,
+   "cited_in_text": false,
+   "named_in_answer": false,
+   "abps_in_answer": false,
+   "alluring_statements": [],
+   "flags": [],
+   "alluring_index": [
+    {
+     "rank": 10,
+     "path": "/procedures/mommy-makeover-miami",
+     "title": "Mommy Makeover Miami 2026 | Board-Certified Surgeons",
+     "date": "2024-06-15",
+     "last_updated": "2026-10-06"
+    }
+   ],
+   "answer": "En Miami, un **mommy makeover suele costar aproximadamente entre \\$8,000 y \\$20,000+**, dependiendo de si incluye abdominoplastia, cirugía de senos, liposucción 360 o BBL.[1][2]\n\nPrecios orientativos:\n\n- **Paquete básico** — abdomen + senos: desde **\\$6,000–\\$8,000**.[1][2]\n- **Abdominoplastia + cirugía de senos + liposucción**: aproximadamente **\\$9,500–\\$16,000**.[3][4]\n- **Paquete completo con lipo 360 o BBL**: cerca de **\\$13,000–\\$20,000 o más**.[2][3]\n- Algunas clínicas anuncian precios iniciales de **\\$5,999–\\$6,798**, pero pueden excluir anestesia, honorarios del cirujano, quirófano, prendas posoperatorias y medicamentos.[2][5]\n\nSolicita un presupuesto escrito que detalle **cirujano, anestesia, centro quirúrgico, implantes, análisis, seguimiento y posibles noches de hospitalización**. Verifica además que el cirujano esté certificado por la junta correspondiente y que la cirugía se realice en un centro acreditado.",
+   "citations": [
+    "https://www.getsnatched.com/procedures/mommy-makeover-miami",
+    "https://zoeplasticsurgery.com/mommy-makeover-miami/",
+    "https://iconcosmeticcenter.com/mommy-makeover-miami",
+    "https://www.cgcosmetic.com/mommy-makeover-miami/",
+    "https://www.floridacentercosmetic.com/miami/body/mommy-makeover-surgery/",
+    "https://newbodysurgerymiami.com/mommy-make-over/",
+    "https://sveltaplasticsurgery.com/mommy-makeover-miami/",
+    "https://www.miamilakescosmetics.com/mommy-makeover/",
+    "https://4beauty.net/body/mommy-makeover/",
+    "https://www.alluringplasticsurgery.com/procedures/mommy-makeover-miami"
+   ],
+   "usage": {
+    "completion_tokens": 314,
+    "cost": {
+     "input_tokens_cost": 0.00126,
+     "output_tokens_cost": 0.00064,
+     "request_cost": 0.0025,
+     "total_cost": 0.0044
+    },
+    "prompt_tokens": 6,
+    "search_context_size": "low",
+    "total_tokens": 320
+   },
+   "model": "sonar",
+   "rank1": false
+  }
+ ]
+}
