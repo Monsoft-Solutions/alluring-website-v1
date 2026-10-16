@@ -312,6 +312,31 @@ Postgres and every screen is a SQL join.
 
 ---
 
+## Blog Posts over MCP (admin)
+
+The admin hosts a remote MCP server at `/api/mcp` (issue #343) that reads,
+edits, creates and restores **live** blog posts. It is a stateless route on
+Vercel, not a local process, so it needs no build. Connect Claude Code with
+the `ADMIN_MCP_TOKEN` from the admin's Vercel env:
+
+```bash
+claude mcp add --transport http alluring-admin https://<admin-host>/api/mcp \
+    --header "Authorization: Bearer $ADMIN_MCP_TOKEN"
+```
+
+- Tools: `get_writing_guide`, `list_posts`, `get_post`, `update_post`,
+  `create_post`, `list_revisions`, `get_revision`, `restore_revision`,
+  `list_categories`, `list_authors`.
+- `update_post` prefers exact find-and-replace `edits` over a full body. Every
+  change saves a `blog_post_revision` (reason `mcp-edit`) first, dismisses the
+  post's open refresh candidates, and revalidates the site. Content that
+  `validateGeneratedMdx` would change is rejected.
+- `create_post` runs the keyword gate and slug checks. It cannot update the
+  registry file: a new post still needs its registry entry and the live-post
+  count bump in a code PR.
+- Not possible over MCP: slug changes and unpublishing (admin only).
+- Code: `apps/admin/lib/mcp/` and `apps/admin/lib/services/mcp-post.service.ts`.
+
 ## Specialized Agents
 
 | Task             | Agent                                                               |

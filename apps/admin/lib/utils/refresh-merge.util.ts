@@ -88,7 +88,7 @@ export function buildMergeValues(workingCopy: ComparableFields) {
  */
 export function buildRevisionValues(
     post: ComparableFields & { id: string },
-    reason: 'refresh-apply' | 'rollback'
+    reason: 'refresh-apply' | 'rollback' | 'mcp-edit'
 ): InsertBlogPostRevision {
     return {
         blogPostId: post.id,
