@@ -1,146 +1,120 @@
-/**
- * BMI Hero Component
- *
- * Educational hero section for the BMI calculator page.
- * Server-rendered for SEO optimization.
- *
- * Features:
- * - SSR for SEO crawlability
- * - Trust indicators with icons
- * - CSS animations instead of JS for better performance
- * - Luxury aesthetic with gold accents
- */
-import { Award, Heart, Shield } from 'lucide-react'
-
-import { Button } from '@workspace/ui/components/button'
 import { cn } from '@workspace/ui/lib/utils'
 
-import { ContentWrapper } from '@/components/shared/content-wrapper.component'
-import { SectionContainer } from '@/components/shared/section-container.component'
-import type { BmiHeroData } from '@/lib/data/webpages/bmi-calculator.data'
+import { BMI_PROCEDURES } from '@/lib/data/bmi/bmi.facts'
+
+import { BmiCalculator } from './bmi-calculator.component'
+import {
+    BMI_ANCHORS,
+    BMI_CHAT_ID,
+    bmiContainer,
+    bmiEyebrow,
+} from './bmi-page.constant'
+
+/** What the calculator needs from each procedure: nothing else ships. */
+const calculatorProcedures = BMI_PROCEDURES.map(
+    ({ id, name, href, chat, limit, bound }) => ({
+        id,
+        name,
+        href,
+        chat,
+        limit,
+        bound,
+    })
+)
+
+const PROMISES = [
+    {
+        title: 'A range for each procedure',
+        body: 'Seven procedures, each against its own recommended range.',
+    },
+    {
+        title: 'From published research',
+        body: 'ASPS, The Aesthetic Society and peer-reviewed studies, all listed.',
+    },
+    {
+        title: 'A way there if you need one',
+        body: 'Above your range? The weight to reach it, and how we help.',
+    },
+] as const
 
 /**
- * Map icon names to Lucide components
+ * The first screen: the question, the practice's stance in one line, and
+ * the calculator beside it, so the tool is the first thing a visitor can use.
+ *
+ * A cocoa band with film grain; two outlined arches rise behind the copy
+ * once on load (decoration only). The H1 and every word stay put.
  */
-const iconMap: Record<string, React.ElementType> = {
-    Shield,
-    Award,
-    Heart,
-}
-
-type BmiHeroProps = BmiHeroData & {
-    readonly id?: string
-    readonly className?: string
-}
-
-export function BmiHero({
-    badge,
-    headline,
-    subheadline,
-    description,
-    trustIndicators,
-    primaryCta,
-    secondaryCta,
-    id = 'bmi-hero',
-    className,
-}: BmiHeroProps) {
+export function BmiHero() {
     return (
-        <SectionContainer
-            id={id}
-            variant='default'
-            noPadding
-            className={cn(
-                'relative overflow-hidden bg-stone-900 py-16 pt-24 md:py-24 md:pt-32',
-                className
-            )}
+        <section
+            aria-labelledby='bmi-title'
+            className='bmi-dark bmi-grain relative isolate overflow-hidden bg-stone-900 pt-28 pb-14 text-stone-50 md:pt-36 md:pb-20'
         >
-            {/* Decorative background elements */}
-            <div className='bg-gold-500/10 pointer-events-none absolute top-1/4 left-0 h-[400px] w-[400px] -translate-x-1/2 rounded-full blur-[120px]' />
-            <div className='bg-gold-400/5 pointer-events-none absolute right-0 bottom-0 h-[300px] w-[300px] translate-x-1/3 rounded-full blur-[100px]' />
+            <div aria-hidden='true' className='bmi-hero-arches -z-10' />
+            <div
+                aria-hidden='true'
+                className='pointer-events-none absolute -top-40 -left-32 -z-10 size-[36rem] rounded-full bg-[radial-gradient(closest-side,rgb(228_201_157/0.16),transparent)]'
+            />
 
-            <ContentWrapper size='lg' className='relative z-10'>
-                <div className='mx-auto max-w-3xl text-center'>
-                    {/* Badge */}
-                    {badge && (
-                        <div className='animate-fade-in-up mb-6'>
-                            <span className='border-gold-500/40 bg-gold-500/10 text-gold-400 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium tracking-wide'>
-                                {badge}
-                            </span>
-                        </div>
-                    )}
-
-                    {/* Headline */}
-                    <h1 className='animate-fade-in-up mb-4 font-serif text-4xl leading-[1.1] text-white [animation-delay:100ms] md:text-5xl lg:text-6xl'>
-                        {headline}
+            <div
+                className={cn(
+                    bmiContainer,
+                    'grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,33rem)] lg:gap-16'
+                )}
+            >
+                <div className='lg:pt-10'>
+                    <p className={cn(bmiEyebrow, 'text-gold-300')}>
+                        BMI calculator for plastic surgery
+                    </p>
+                    <h1
+                        id='bmi-title'
+                        className='bmi-display mt-5 font-serif text-[2.75rem] leading-[0.98] font-normal tracking-[-0.02em] text-balance md:text-[4rem] lg:text-[4.5rem]'
+                    >
+                        BMI for plastic surgery, procedure by <em>procedure</em>
                     </h1>
-
-                    {/* Subheadline */}
-                    {subheadline && (
-                        <p className='text-gold-400 animate-fade-in-up mb-6 font-serif text-xl font-light italic [animation-delay:200ms] md:text-2xl'>
-                            {subheadline}
-                        </p>
-                    )}
-
-                    {/* Gold accent line */}
-                    <div className='bg-gold-500 animate-scale-x mx-auto mb-8 h-1 w-24 shadow-[0_0_20px_rgba(205,172,119,0.4)] [animation-delay:300ms]' />
-
-                    {/* Description */}
-                    <p className='animate-fade-in-up mx-auto mb-8 max-w-2xl text-base leading-relaxed font-light text-stone-300 [animation-delay:400ms] md:text-lg'>
-                        {description}
+                    <p className='mt-6 max-w-[34rem] text-[1.0625rem] leading-[1.65] text-pretty text-stone-300 md:text-[1.1875rem]'>
+                        Enter your height and weight to see your BMI next to the
+                        recommended range for a BBL, lipo 360, tummy tuck, mommy
+                        makeover and breast surgery. We encourage you to reach
+                        that range before surgery, and we&apos;ll tell you
+                        exactly what applies to your procedure.
                     </p>
 
-                    {/* Trust Indicators */}
-                    <div className='animate-fade-in-up mb-8 flex flex-wrap justify-center gap-4 [animation-delay:500ms] md:gap-6'>
-                        {trustIndicators.map((indicator, idx) => {
-                            const IconComponent = iconMap[indicator.icon]
-                            return (
-                                <div
-                                    key={idx}
-                                    className='flex items-center gap-2.5'
-                                >
-                                    <div className='bg-gold-500/20 text-gold-400 flex h-10 w-10 items-center justify-center rounded-full'>
-                                        {IconComponent && (
-                                            <IconComponent className='h-4 w-4' />
-                                        )}
-                                    </div>
-                                    <div className='text-left'>
-                                        <div className='text-base font-bold text-white'>
-                                            {indicator.text}
-                                        </div>
-                                        <div className='text-xs text-stone-400'>
-                                            {indicator.label}
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-
-                    {/* CTAs */}
-                    <div className='animate-fade-in-up flex flex-col justify-center gap-4 [animation-delay:600ms] sm:flex-row'>
-                        <Button
-                            asChild
-                            size='lg'
-                            className='bg-gold-500 hover:bg-gold-600 min-w-[180px] border-none px-6 py-5 text-sm font-bold tracking-wide text-white uppercase shadow-lg shadow-amber-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30'
-                        >
-                            <a href={primaryCta.href}>{primaryCta.text}</a>
-                        </Button>
-
-                        {secondaryCta && (
-                            <Button
-                                asChild
-                                size='lg'
-                                variant='outline'
-                                className='hover:border-gold-500/50 min-w-[140px] border-white/20 bg-white/5 px-6 py-5 text-sm font-bold tracking-wide text-white uppercase backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:text-white'
+                    <ul className='mt-9 hidden max-w-[34rem] border-t border-[rgb(228_201_157/0.18)] md:block'>
+                        {PROMISES.map((promise) => (
+                            <li
+                                key={promise.title}
+                                className='border-b border-[rgb(228_201_157/0.18)] py-4'
                             >
-                                <a href={secondaryCta.href}>
-                                    {secondaryCta.text}
-                                </a>
-                            </Button>
-                        )}
-                    </div>
+                                <strong className='block font-semibold text-stone-50'>
+                                    {promise.title}
+                                </strong>
+                                <span className='mt-0.5 block text-[0.9375rem] leading-relaxed text-stone-400'>
+                                    {promise.body}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <p className='mt-7 hidden text-[0.9375rem] text-stone-400 md:block'>
+                        How we chose the ranges:{' '}
+                        <a
+                            href={`#${BMI_ANCHORS.ranges}`}
+                            className='decoration-gold-300 text-stone-50 underline decoration-1 underline-offset-4 hover:decoration-stone-50'
+                        >
+                            see the evidence
+                        </a>
+                    </p>
                 </div>
-            </ContentWrapper>
-        </SectionContainer>
+
+                <div id={BMI_ANCHORS.calculator}>
+                    <BmiCalculator
+                        procedures={calculatorProcedures}
+                        consultHref={`#${BMI_CHAT_ID}`}
+                        gettingThereHref={`#${BMI_ANCHORS.gettingThere}`}
+                    />
+                </div>
+            </div>
+        </section>
     )
 }

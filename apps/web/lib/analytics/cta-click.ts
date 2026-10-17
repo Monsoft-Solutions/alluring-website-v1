@@ -9,7 +9,10 @@
  *
  * `cta_location` says where the button sat: in the nav, footer, a popup or a
  * fixed bar, or else by its place on the page — `hero` (first screen),
- * `bottom` (last quarter) or `middle`.
+ * `bottom` (last quarter) or `middle`. A tool whose links move with the
+ * reader's input (the BMI calculator's procedure rows, #346) names its own
+ * location with `data-cta-location`, so its clicks group however far down
+ * the result happens to sit.
  *
  * @module lib/analytics/cta-click
  */
@@ -22,6 +25,7 @@ export type CtaLocation =
     | 'hero'
     | 'middle'
     | 'bottom'
+    | 'calculator'
 
 export type CtaClickParams = {
     readonly cta_name: string
@@ -78,7 +82,18 @@ function hasFixedAncestor(element: Element): boolean {
     return false
 }
 
+/** Locations a tool may name itself with `data-cta-location`. */
+const DECLARED_LOCATIONS: ReadonlySet<string> = new Set<CtaLocation>([
+    'calculator',
+])
+
 export function getCtaLocation(element: HTMLElement): CtaLocation {
+    const declared = element.closest<HTMLElement>('[data-cta-location]')
+        ?.dataset.ctaLocation
+    if (declared && DECLARED_LOCATIONS.has(declared)) {
+        return declared as CtaLocation
+    }
+
     // Nav first: the mobile menu is a dialog, but its links are navigation.
     if (element.closest('header, nav')) return 'nav'
     if (element.closest('[role="dialog"], dialog')) return 'popup'
