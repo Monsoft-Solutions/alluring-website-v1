@@ -15,7 +15,14 @@ import sys
 import textwrap
 
 # Fixes Whisper gets wrong for this practice. Extend as new ones turn up.
-FIXES = {'24-7': '24/7', 'Karlinski': 'Karlinsky', 'lipo 360': 'Lipo 360'}
+FIXES = {
+    '24-7': '24/7',
+    'Karlinski': 'Karlinsky',
+    'Kurlinski': 'Karlinsky',
+    'Kerlinski': 'Karlinsky',
+    'Karolinski': 'Karlinsky',
+    'lipo 360': 'Lipo 360',
+}
 
 
 def ts(t):
@@ -31,14 +38,22 @@ def join(ws):
 
 
 src, out = sys.argv[1], sys.argv[2]
-words = [w for s in json.load(open(src))['segments'] for w in s['words']]
+# Whisper pads music-only tails with bare "," or "---" segments; skip them.
+words = [
+    w
+    for s in json.load(open(src))['segments']
+    for w in s['words']
+    if re.search(r'\w', w['word'])
+]
 cues, cur = [], []
 for i, w in enumerate(words):
     cur.append(w)
     text = join(cur)
     nxt = words[i + 1] if i + 1 < len(words) else None
     word = w['word'].strip()
-    end_sentence = re.search(r'[.?!]$', word) and len(text) > 12
+    end_sentence = (
+        re.search(r'[.?!]$', word) and word not in ('Dr.', 'Dra.') and len(text) > 12
+    )
     long_clause = word.endswith(',') and len(text) > 40
     pause = nxt and nxt['start'] - w['end'] > 0.6
     if not nxt or end_sentence or long_clause or pause:

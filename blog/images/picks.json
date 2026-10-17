@@ -1,0 +1,7 @@
+{
+  "_about": "The chosen render per image, written after the user picks from the candidates: { \"<slug>\": { \"<image key>\": \"flare\" | \"sunburst\" } }. Read by blog/tools/images/export_upload.mjs.",
+  "what-is-lipo-foam": {
+    "hero": "flare",
+    "layers": "flare"
+  }
+}

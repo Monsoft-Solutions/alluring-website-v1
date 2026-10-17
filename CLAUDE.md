@@ -168,6 +168,23 @@ it prints a warning and generates nothing.
 
 ---
 
+## Deploying
+
+**Production deploys are manual.** Merging to `master` builds a preview only.
+Both Vercel projects (`alluring-website-v1-web`, `alluring-website-v1-admin`)
+use the **`production`** branch as their Production Branch, so deploying means
+fast-forwarding `production` to `master`; Vercel builds it from GitHub.
+
+Use the `/deploy` skill (`.claude/skills/deploy/SKILL.md`): it shows the
+commits going out, checks CI, pending migrations and env vars, asks, pushes,
+watches both builds and verifies. `/deploy rollback` reverts production.
+
+Never run `vercel deploy --prod` (it uploads the local working tree, dirty
+files included), never force-push `production`, and don't call a merged change
+"live" until it has been deployed.
+
+---
+
 ## Database & Migrations
 
 Local is the default target; production is always an explicit, separate
@@ -295,6 +312,31 @@ Postgres and every screen is a SQL join.
 
 ---
 
+## Blog Posts over MCP (admin)
+
+The admin hosts a remote MCP server at `/api/mcp` (issue #343) that reads,
+edits, creates and restores **live** blog posts. It is a stateless route on
+Vercel, not a local process, so it needs no build. Connect Claude Code with
+the `ADMIN_MCP_TOKEN` from the admin's Vercel env:
+
+```bash
+claude mcp add --transport http alluring-admin https://<admin-host>/api/mcp \
+    --header "Authorization: Bearer $ADMIN_MCP_TOKEN"
+```
+
+- Tools: `get_writing_guide`, `list_posts`, `get_post`, `update_post`,
+  `create_post`, `list_revisions`, `get_revision`, `restore_revision`,
+  `list_categories`, `list_authors`.
+- `update_post` prefers exact find-and-replace `edits` over a full body. Every
+  change saves a `blog_post_revision` (reason `mcp-edit`) first, dismisses the
+  post's open refresh candidates, and revalidates the site. Content that
+  `validateGeneratedMdx` would change is rejected.
+- `create_post` runs the keyword gate and slug checks. It cannot update the
+  registry file: a new post still needs its registry entry and the live-post
+  count bump in a code PR.
+- Not possible over MCP: slug changes and unpublishing (admin only).
+- Code: `apps/admin/lib/mcp/` and `apps/admin/lib/services/mcp-post.service.ts`.
+
 ## Specialized Agents
 
 | Task             | Agent                                                               |
@@ -307,5 +349,12 @@ Postgres and every screen is a SQL join.
 | Images           | `@agent-image-creator-expert`                                       |
 | Procedure pages  | `/procedure-page <slug>` skill · `@agent-procedure-page-builder`    |
 | Procedure images | `/procedure-images <slug>` skill · `@agent-procedure-image-creator` |
+| Blog posts       | `/blog-post <slug\|topic>` skill · `@agent-blog-post-writer`        |
+| SEO plan         | `/seo-plan` skill · `@agent-seo-strategist`                         |
 
-**Blog posts are NOT created via agents or seed files.** The blog content pipeline lives in the admin panel (`apps/admin` → Blog → Pipeline), powered by `packages/ai`. See `implementation-plans/2026-08-11-blog-content-pipeline-v2.md` for the pipeline architecture and roadmap. Never run `pnpm db:seed` against a database containing real blog posts.
+**Blog posts have two paths, and neither uses seed files.**
+
+- **AI-generated posts**: the admin pipeline (`apps/admin` → Blog → Pipeline, powered by `packages/ai`) and autopilot (ideation and content crons, plus the refresh loop, which runs in `auto` mode). Architecture: `implementation-plans/2026-08-11-blog-content-pipeline-v2.md`.
+- **Posts written in Claude Code**: the `/blog-post` skill. A post is files in `blog/posts/<slug>/`. `blog/tools/` lints it and builds one guarded SQL transaction, which is rehearsed on a throwaway database; the user runs it on production. The manual is `blog/README.md`. `/seo-plan` keeps the plan (`blog/plan.json`) and the readouts.
+
+Both paths respect the keyword registry (`packages/shared/src/seo/keyword-ownership-blog.constant.ts`). No new post goes in without a `new` verdict from the topic gate; `blog/tools/gate.mjs` runs it for direct inserts. A new or retired post updates the registry and the live-post count in `apps/admin/__tests__/lib/seo/keyword-ownership.test.ts`. Both respect the refresh loop, which rewrites candidate posts without review: dismiss the open `content_refresh` candidates of a post written or rewritten by hand (`build_sql.py` does it; `blog/tools/sql/hold_refresh.sql` for longer work), or autopilot overwrites it. Never leave a post as `draft` (drafts block autopilot) or `scheduled` (nothing publishes it). Never run `pnpm db:seed` against a database containing real blog posts.

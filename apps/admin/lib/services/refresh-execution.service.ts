@@ -340,9 +340,17 @@ export async function rollbackRevision(
     if (!post) return { success: false, error: 'Post not found' }
 
     await db.transaction(async (tx) => {
+        // Snapshot under a row lock, so an edit committed since the read
+        // above is what the undo log keeps (issue #343: MCP edits run in
+        // parallel with admin and refresh writes).
+        const [current] = await tx
+            .select()
+            .from(blogPost)
+            .where(eq(blogPost.id, post.id))
+            .for('update')
         await tx
             .insert(blogPostRevision)
-            .values(buildRevisionValues(post, 'rollback'))
+            .values(buildRevisionValues(current ?? post, 'rollback'))
 
         await tx
             .update(blogPost)

@@ -58,3 +58,9 @@ apps/web/next-env.d.ts
 
 # Google Business Profile media: patient footage and large files, local only
 gbp/media/
+
+# Blog kit: image renders and exports, local only (blog/images/manifest.json and picks.json stay tracked)
+blog/images/work/
+# rewrite_base.py --save keeps each base text here, for the --rebase diff
+blog/posts/*/.base/
+blog/**/__pycache__/

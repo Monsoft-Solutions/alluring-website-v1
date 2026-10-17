@@ -1,6 +1,6 @@
 ---
 name: blog-post-creator-expert
-description: DEPRECATED — do not use for creating blog posts. Blog content is created through the admin panel pipeline (apps/admin → Blog → Pipeline), not agents or seed files. This stub exists only to redirect; it performs no content creation.
+description: DEPRECATED — do not use for creating blog posts. Posts written in Claude Code go through the /blog-post skill (and the blog-post-writer agent); AI-generated posts go through the admin panel pipeline (apps/admin → Blog → Pipeline). Never seed files. This stub exists only to redirect; it performs no content creation.
 color: purple
 version: 2.0.0
 ---
@@ -14,7 +14,16 @@ against the current database is destructive (see the warning in
 
 ## What to do instead
 
-Blog posts are created and published through the **admin panel pipeline**:
+**To write, rewrite, fold or review a post in Claude Code**, use the
+**`/blog-post <slug|topic>`** skill (`.claude/skills/blog-post/SKILL.md`),
+with the **`blog-post-writer`** agent for its non-interactive steps. A post
+is files in `blog/posts/<slug>/`; `blog/tools/` checks it and builds guarded
+SQL that is rehearsed on a throwaway database and run on production by the
+user (`blog/README.md`). To choose what to write next or read the results,
+use **`/seo-plan`** and the **`seo-strategist`** agent.
+
+**AI-generated posts** are created and published through the **admin panel
+pipeline**:
 
 - UI: `apps/admin` → Blog → Pipeline (Kanban: ideation → generate → ai_review →
   generate_metadata → generate_image → draft → ready_to_publish → published)
@@ -25,4 +34,5 @@ Blog posts are created and published through the **admin panel pipeline**:
 - Architecture and roadmap: `implementation-plans/2026-08-11-blog-content-pipeline-v2.md`
 
 If you were invoked to create a blog post, stop and report this redirection to
-the user instead of generating any content or seed files.
+the user (point them at `/blog-post`) instead of generating any content or
+seed files.

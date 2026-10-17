@@ -42,6 +42,11 @@ export const env = createEnv({
         // header on cron invocations when set on the project.
         CRON_SECRET: z.string().min(32).optional(),
 
+        // Bearer token for the admin MCP endpoint (/api/mcp, issue #343) that
+        // lets Claude Code read and edit blog posts. Optional: the endpoint
+        // answers 503 while unset. Generate with `openssl rand -hex 32`.
+        ADMIN_MCP_TOKEN: z.string().min(32).optional(),
+
         // Autopilot notification emails (all optional — the notification
         // service no-ops with a log line when any is missing)
         RESEND_API_KEY: z.string().min(1).optional(),

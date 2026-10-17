@@ -50,3 +50,8 @@ next-env.d.ts
 pr-reviews/
 # Generated Search Console snapshots (data, not source)
 implementation-plans/**/baseline/*.json
+# Blog kit data written by its tools (posts, research panels, image lists, plan)
+blog/posts/
+blog/panels/
+blog/images/
+blog/plan.json

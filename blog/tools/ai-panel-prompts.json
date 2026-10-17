@@ -1,0 +1,356 @@
+{
+    "panel": "alluring-ai-citation-panel",
+    "version": "2026-10-07",
+    "description": "The standing Perplexity citation panel. Keep the 24 prompts byte-identical so monthly runs compare; add a new version (and say so in the panel file) rather than editing a prompt.",
+    "engine": {
+        "provider": "perplexity",
+        "endpoint": "https://api.perplexity.ai/chat/completions",
+        "model": "sonar",
+        "return_citations": true,
+        "return_related_questions": false
+    },
+    "site": {
+        "domain": "alluringplasticsurgery.com",
+        "blogSitemap": "https://www.alluringplasticsurgery.com/sitemap/blog.xml"
+    },
+    "groups": {
+        "BUYING": "commercial: who/what/how much, incl. two brand prompts (brand=true)",
+        "INFORMATIONAL": "recovery and how-to questions the blog answers",
+        "SPANISH": "Spanish-language buying/recovery prompts"
+    },
+    "prompts": [
+        {
+            "n": 1,
+            "group": "BUYING",
+            "brand": false,
+            "procedure": "bbl",
+            "lang": "en",
+            "prompt": "Who is a good surgeon for a BBL in Miami?"
+        },
+        {
+            "n": 2,
+            "group": "BUYING",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "en",
+            "prompt": "How much does a tummy tuck cost in Miami in 2026?"
+        },
+        {
+            "n": 3,
+            "group": "BUYING",
+            "brand": false,
+            "procedure": "breast-augmentation",
+            "lang": "en",
+            "prompt": "Affordable breast augmentation in Miami with financing"
+        },
+        {
+            "n": 4,
+            "group": "BUYING",
+            "brand": false,
+            "procedure": "mommy-makeover",
+            "lang": "en",
+            "prompt": "Best mommy makeover clinics in Miami"
+        },
+        {
+            "n": 5,
+            "group": "BUYING",
+            "brand": false,
+            "procedure": "lipo",
+            "lang": "en",
+            "prompt": "Lipo 360 cost in Miami"
+        },
+        {
+            "n": 6,
+            "group": "BUYING",
+            "brand": true,
+            "procedure": "general",
+            "lang": "en",
+            "prompt": "Is Alluring Plastic Surgery in Miami legit? reviews"
+        },
+        {
+            "n": 7,
+            "group": "BUYING",
+            "brand": true,
+            "procedure": "general",
+            "lang": "en",
+            "prompt": "Dr Victoria Karlinsky Miami reviews"
+        },
+        {
+            "n": 8,
+            "group": "BUYING",
+            "brand": false,
+            "procedure": "general",
+            "lang": "en",
+            "prompt": "plastic surgery in Miami with payment plans"
+        },
+        {
+            "n": 9,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "bbl",
+            "lang": "en",
+            "prompt": "How long does it take to recover from a BBL?"
+        },
+        {
+            "n": 10,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "bbl",
+            "lang": "en",
+            "prompt": "Why does a BBL smell?"
+        },
+        {
+            "n": 11,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "lipo",
+            "lang": "en",
+            "prompt": "How many lymphatic massages do I need after lipo 360?"
+        },
+        {
+            "n": 12,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "lipo",
+            "lang": "en",
+            "prompt": "What does lipo foam do?"
+        },
+        {
+            "n": 13,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "en",
+            "prompt": "How to reduce pubic swelling after a tummy tuck"
+        },
+        {
+            "n": 14,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "bbl",
+            "lang": "en",
+            "prompt": "When can I fly after a BBL?"
+        },
+        {
+            "n": 15,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "en",
+            "prompt": "What is a tummy tuck without muscle repair called?"
+        },
+        {
+            "n": 16,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "breast-augmentation",
+            "lang": "en",
+            "prompt": "Breast implant size guide cc chart"
+        },
+        {
+            "n": 17,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "bbl",
+            "lang": "en",
+            "prompt": "How to sleep after a BBL"
+        },
+        {
+            "n": 18,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "en",
+            "prompt": "Tummy tuck vs liposuction which is better for me"
+        },
+        {
+            "n": 19,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "en",
+            "prompt": "Can I get a tummy tuck after Ozempic?"
+        },
+        {
+            "n": 20,
+            "group": "INFORMATIONAL",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "en",
+            "prompt": "How long after a tummy tuck can I work out?"
+        },
+        {
+            "n": 21,
+            "group": "SPANISH",
+            "brand": false,
+            "procedure": "lipo",
+            "lang": "es",
+            "prompt": "¿Cuánto cuesta una lipo 360 en Miami?"
+        },
+        {
+            "n": 22,
+            "group": "SPANISH",
+            "brand": false,
+            "procedure": "bbl",
+            "lang": "es",
+            "prompt": "Mejor cirujano para BBL en Miami"
+        },
+        {
+            "n": 23,
+            "group": "SPANISH",
+            "brand": false,
+            "procedure": "tummy-tuck",
+            "lang": "es",
+            "prompt": "Recuperación de abdominoplastia semana a semana"
+        },
+        {
+            "n": 24,
+            "group": "SPANISH",
+            "brand": false,
+            "procedure": "mommy-makeover",
+            "lang": "es",
+            "prompt": "Mommy makeover en Miami precio"
+        }
+    ],
+    "truths": {
+        "asOf": "2026-10-07",
+        "sources": [
+            ".claude/skills/blog-post/reference/compliance.md (Prices, The surgeon's credentials, Owner claims)",
+            "apps/web/lib/data/surgeons/karlinsky-credentials.constant.ts",
+            "docs/pricing/practice-price-list.md (2026-09-15)",
+            "apps/web/lib/data/procedures/facts/{bbl,lipo,tummy-tuck}.facts.ts"
+        ],
+        "surgeon": {
+            "name": "Victoria Karlinsky, MD, FACS",
+            "allowedNames": [
+                "Karlinsky",
+                "Victoria",
+                "Karlinsky-Bellini",
+                "Bellini"
+            ],
+            "note": "The practice's only surgeon. ABS (general surgery) + FACS; NOT the American Board of Plastic Surgery."
+        },
+        "prices": {
+            "_note": "Amounts in whole dollars that Alluring may be quoted at, per procedure. 'retired' are old figures that must never come back. An amount in neither list is reported as price-unverified (warn). Edit this block when the price sheet changes.",
+            "bbl": {
+                "match": "\\bbbl\\b|brazilian butt|butt lift|lipo ?360 ?\\+ ?bbl",
+                "allowed": [5500, 10000],
+                "retired": [3500, 4500, 3000]
+            },
+            "mommy-makeover": {
+                "match": "mommy make ?over|mommy makeover",
+                "allowed": [
+                    500, 1000, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 7000
+                ],
+                "retired": [],
+                "note": "No published total: parts minus $500 (two) / $1,000 (three) combination discount."
+            },
+            "tummy-tuck": {
+                "match": "tummy tuck|abdominoplast|abdominoplastia",
+                "allowed": [3000, 4000, 4500, 5500, 10000, 1500],
+                "retired": [3500, 6500, 8000],
+                "note": "mini $3,000, extended mini $4,000, regular/full $4,500, extended $5,500, fleur-de-lis $10,000; lipo add-on $1,500."
+            },
+            "lipo": {
+                "match": "lipo ?360|liposuc|\\blipo\\b|liposucci",
+                "allowed": [4000, 500, 1000, 1500],
+                "retired": [2500, 4500, 3000, 5000],
+                "note": "Lipo 360 from $4,000; add-on areas $500-$1,500."
+            },
+            "breast-lift": {
+                "match": "breast lift|mastopexy|levantamiento de senos",
+                "allowed": [4000, 5000, 6000, 7000],
+                "retired": [6500]
+            },
+            "breast-reduction": {
+                "match": "breast reduction|reduction mammaplasty|reducci[oó]n de senos",
+                "allowed": [6000, 8000, 9000],
+                "retired": []
+            },
+            "breast-augmentation": {
+                "match": "breast aug|augmentation|implant|saline|silicone|aumento de senos",
+                "allowed": [3500, 4500],
+                "retired": []
+            },
+            "blepharoplasty": {
+                "match": "blepharoplast|eyelid|blefaroplastia",
+                "allowed": [3500, 6500],
+                "retired": []
+            },
+            "facelift": {
+                "match": "face ?lift|neck lift|lifting facial",
+                "allowed": [15000],
+                "retired": []
+            }
+        },
+        "procedureOrder": [
+            "mommy-makeover",
+            "bbl",
+            "tummy-tuck",
+            "lipo",
+            "breast-lift",
+            "breast-reduction",
+            "breast-augmentation",
+            "blepharoplasty",
+            "facelift"
+        ],
+        "claims": [
+            {
+                "code": "abps",
+                "severity": "error",
+                "pattern": "\\babps\\b|american board of plastic surgery",
+                "why": "She is not certified by the American Board of Plastic Surgery."
+            },
+            {
+                "code": "board-certified-plastic-surgeon",
+                "severity": "error",
+                "pattern": "board[\\s-]certified (?:cosmetic and )?plastic surgeons?",
+                "why": "Never 'board-certified plastic surgeon'."
+            },
+            {
+                "code": "double-board",
+                "severity": "error",
+                "pattern": "(?:double|triple|dual)[\\s-]board",
+                "why": "Never 'double/triple board-certified'."
+            },
+            {
+                "code": "volume-claim",
+                "severity": "error",
+                "pattern": "\\b\\d{1,2},?\\d{3}\\+? (?:\\w+ )?(?:procedures|patients|surgeries|cases)|thousands of (?:patients|procedures|surgeries)|\\b5,?000\\+",
+                "why": "No '5,000+' or volume claims."
+            },
+            {
+                "code": "tenure-claim",
+                "severity": "error",
+                "pattern": "\\b\\d{1,2}\\+ ?years|(?:over|more than) \\d{1,2} years (?:of )?(?:experience|in practice)",
+                "why": "No '15+ years' or tenure claims."
+            },
+            {
+                "code": "accreditation",
+                "severity": "error",
+                "pattern": "aaaasf|\\baccredited\\b|accreditation",
+                "why": "Facility accreditation is unverified; never AAAASF."
+            },
+            {
+                "code": "multiple-surgeons",
+                "severity": "error",
+                "pattern": "\\b(?:our|its|their|the practice'?s|alluring'?s) (?:board[\\s-]certified )?surgeons\\b|surgeons at alluring|team of (?:\\w+ )?surgeons",
+                "why": "One surgeon: Victoria Karlinsky, MD, FACS."
+            },
+            {
+                "code": "plastic-surgeon-title",
+                "severity": "warn",
+                "pattern": "plastic surgeon",
+                "requires": "karlinsk",
+                "why": "Call her a surgeon, not a plastic surgeon."
+            },
+            {
+                "code": "travel-concierge",
+                "severity": "warn",
+                "pattern": "concierge|recovery house|airport pickup|medical touris|travel package|hotel",
+                "why": "The practice coordinates no travel."
+            }
+        ],
+        "abpsAdvicePattern": "(?:verify|check|confirm|look up|search)[^.\\n]{0,80}(?:\\babps\\b|american board of plastic surgery)|(?:\\babps\\b|american board of plastic surgery)[^.\\n]{0,40}(?:verif|certification lookup|website)"
+    }
+}
