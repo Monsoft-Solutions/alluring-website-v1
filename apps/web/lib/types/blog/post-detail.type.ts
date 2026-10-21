@@ -5,6 +5,12 @@ import type { BlogPostCard } from './post-card.type'
 export type BlogPostDetail = BlogPostCard & {
     content: string
     /**
+     * Title written for search results (`<title>`, og:title, twitter:title).
+     * The H1, breadcrumbs and JSON-LD headline keep `title`. Null or empty
+     * on most posts, which then use `title` — see getBlogPostSeoTitle.
+     */
+    metaTitle?: string | null
+    /**
      * Description written for search results. Preferred over `excerpt` for the
      * meta tag: excerpts are page copy and run long, while this field is
      * authored to fit the SERP. Null on posts predating the field.

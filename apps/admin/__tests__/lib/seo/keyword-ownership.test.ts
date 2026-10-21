@@ -56,6 +56,26 @@ describe('resolveQueryOwner', () => {
         )
     })
 
+    it('gives the BBL procedure page its national price and consultation searches (#348)', () => {
+        for (const query of [
+            'bbl cost',
+            'how much is a bbl',
+            'How much is a BBL?',
+            'bbl price',
+            'bbl prices',
+            'brazilian butt lift cost',
+            'bbl consultation',
+        ]) {
+            expect(resolveQueryOwner(query)?.owner.url, query).toBe(
+                '/procedures/brazilian-butt-lift-bbl-miami'
+            )
+        }
+        // Before-and-after searches stay with the gallery.
+        expect(resolveQueryOwner('bbl before and after')?.owner.url).toBe(
+            '/gallery'
+        )
+    })
+
     it('is normalization-insensitive', () => {
         expect(resolveQueryOwner('  BBL Cost, Miami? ')?.owner.url).toBe(
             '/procedures/brazilian-butt-lift-bbl-miami'
