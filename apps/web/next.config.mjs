@@ -407,9 +407,10 @@ const nextConfig = {
                 destination: '/why-do-bbl-stink',
                 permanent: true,
             },
-            // Four BBL URLs that never were live slugs but still collect
+            // BBL URLs that never were live slugs but still collect
             // Search Console impressions and 404 (#348). Each points at the
-            // final URL, so nothing chains.
+            // final URL, so nothing chains. The comparison post's old slugs
+            // get both their /blog and root forms, as in #241.
             {
                 source: '/why-do-alluring-plasticsurgery-why-do-bbl-stink',
                 destination: '/why-do-bbl-stink',
@@ -427,6 +428,21 @@ const nextConfig = {
             },
             {
                 source: '/blog/bbl-vs-tummy-tuck-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/bbl-vs-tummy-tuck-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-vs-tummy-tuck-in-miami-lipo-implants-mommy-makeover-compared',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/bbl-vs-tummy-tuck-in-miami-lipo-implants-mommy-makeover-compared',
                 destination: '/blog/tummy-tuck-vs-bbl-miami',
                 permanent: true,
             },
