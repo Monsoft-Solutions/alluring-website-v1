@@ -407,6 +407,29 @@ const nextConfig = {
                 destination: '/why-do-bbl-stink',
                 permanent: true,
             },
+            // Four BBL URLs that never were live slugs but still collect
+            // Search Console impressions and 404 (#348). Each points at the
+            // final URL, so nothing chains.
+            {
+                source: '/why-do-alluring-plasticsurgery-why-do-bbl-stink',
+                destination: '/why-do-bbl-stink',
+                permanent: true,
+            },
+            {
+                source: '/why-do-bbl-smell',
+                destination: '/why-do-bbl-stink',
+                permanent: true,
+            },
+            {
+                source: '/what-is-a-bbl',
+                destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/bbl-vs-tummy-tuck-miami',
+                destination: '/blog/tummy-tuck-vs-bbl-miami',
+                permanent: true,
+            },
 
             // BBL January batch consolidation (#231).
             //
