@@ -14,6 +14,7 @@ import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
 import { getBlogPrerenderSlugs } from '@/lib/queries/blog/prerender-slugs.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { getBlogPostSeoTitle } from '@/lib/seo/blog-post-title.util'
 import { getContentModifiedDate } from '@/lib/utils/content-freshness.util'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
@@ -67,7 +68,8 @@ export async function generateMetadata({
     const primaryCategory = post.categories[0]
 
     return toNextMetadata(seoConfig, {
-        title: post.title,
+        // meta_title when set; the H1 and JSON-LD headline keep post.title
+        title: getBlogPostSeoTitle(post),
         // metaDescription is authored for the SERP; excerpt is page copy and
         // only stands in when the dedicated field is empty.
         description: post.metaDescription || post.excerpt || undefined,

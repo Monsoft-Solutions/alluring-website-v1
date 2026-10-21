@@ -26,6 +26,7 @@ async function fetchPublishedPostBySlug(
             id: blogPost.id,
             slug: blogPost.slug,
             title: blogPost.title,
+            metaTitle: blogPost.metaTitle,
             excerpt: blogPost.excerpt,
             metaDescription: blogPost.metaDescription,
             content: blogPost.content,
@@ -80,6 +81,7 @@ async function fetchPublishedPostBySlug(
         id: row.id,
         slug: row.slug,
         title: row.title,
+        metaTitle: row.metaTitle,
         excerpt: row.excerpt,
         metaDescription: row.metaDescription,
         content: row.content,
@@ -119,7 +121,9 @@ export const getPublishedPostBySlug = (
 ): Promise<BlogPostDetail | null> => {
     return unstable_cache(
         () => fetchPublishedPostBySlug(slug),
-        [`blog-post-${slug}`],
+        // v2: the cached detail gained metaTitle (#348). A new key keeps an
+        // entry cached before the deploy from serving the old shape.
+        [`blog-post-v2-${slug}`],
         {
             tags: ['blog-posts', `blog-post-${slug}`],
             revalidate: 86400, // publishing fires revalidateTag('blog-posts'); see #337
