@@ -70,6 +70,29 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'how much does a bbl cost',
             'bbl price',
             'average cost of bbl in florida',
+            // The national price phrasings and the consultation search
+            // (#348). Search Console, 180 days to 2026-10-18: "bbl cost"
+            // 439 impressions, "how much is a bbl in miami" 191 (90 days),
+            // "how much is a bbl" 162 (90 days), "bbl price" 115, "bbl
+            // consultation" 175. Their impressions land on posts that do not
+            // answer price (what-age-can-you-get-a-bbl, why-do-bbl-stink,
+            // what-is-more-painful-bbl-or-tummy-tuck); held here so no post
+            // is written or refreshed against them. "bbl before and after"
+            // stays with /gallery, which already owns it.
+            'bbl cost',
+            'bbl prices',
+            'bbl price in miami',
+            'bbl prices miami',
+            'how much is a bbl',
+            'how much is bbl',
+            'how much is a bbl in miami',
+            'how much do a bbl cost',
+            'bbl in miami cost',
+            'average cost of bbl in miami',
+            'average cost of a bbl',
+            'brazilian butt lift cost',
+            'bbl consultation',
+            'bbl consultation miami',
         ],
     },
     {
