@@ -13,6 +13,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { trackEvent } from '@/lib/analytics/analytics.client'
+import { confirmLead } from '@/lib/analytics/lead-confirmation'
+import { browserStorage } from '@/lib/analytics/visit-attribution'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
 import { SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
@@ -271,6 +273,12 @@ export function QuizContainer({ className }: QuizContainerProps) {
                 track('quiz_completed', {
                     quiz_name: 'procedure-finder',
                     primary_recommendation: primary?.procedureId,
+                })
+                // The quiz shows results in place, with no thank-you page to
+                // push the one-time `lead_confirmed` (#352), so push it here.
+                confirmLead(browserStorage('session'), Date.now(), (event) => {
+                    window.dataLayer = window.dataLayer ?? []
+                    window.dataLayer.push(event)
                 })
                 goToStep('results')
             } else {
