@@ -17,6 +17,7 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 
+import { LeadConfirmedEvent } from '@/components/analytics/lead-confirmed-event.component'
 import { LP_THANK_YOU_COPY } from '@/components/landing-pages/request-consultation/lp-thank-you-copy'
 import { LpThankYou } from '@/components/landing-pages/request-consultation/lp-thank-you.component'
 import {
@@ -79,12 +80,15 @@ export default async function RequestConsultationThankYouPage({
     const { lang, pinned } = await resolveLang(params)
 
     return (
-        <LpThankYou
-            initialLang={lang}
-            langPinnedByUrl={pinned}
-            adVariant={resolveAdVariant(first(params.p))}
-            pageVersion={resolvePageVersion(first(params.pv))}
-            formVariant={toLpFormVariant(first(params.fv))}
-        />
+        <>
+            <LeadConfirmedEvent />
+            <LpThankYou
+                initialLang={lang}
+                langPinnedByUrl={pinned}
+                adVariant={resolveAdVariant(first(params.p))}
+                pageVersion={resolvePageVersion(first(params.pv))}
+                formVariant={toLpFormVariant(first(params.fv))}
+            />
+        </>
     )
 }

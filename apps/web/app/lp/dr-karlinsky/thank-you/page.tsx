@@ -10,6 +10,7 @@
 import type { Metadata, Viewport } from 'next'
 import Image from 'next/image'
 
+import { LeadConfirmedEvent } from '@/components/analytics/lead-confirmed-event.component'
 import { LpLegalDialog } from '@/components/landing-pages/request-consultation/lp-legal-dialog.component'
 import { LP_LEGAL_HREFS } from '@/components/landing-pages/request-consultation/lp-legal'
 import { DRK_COPY } from '@/components/landing-pages/dr-karlinsky-ig/drk-copy'
@@ -57,6 +58,7 @@ export default async function DrKarlinskyThankYouPage({
 
     return (
         <div className='drk drk--ty' lang={lang}>
+            <LeadConfirmedEvent />
             <header className='drk-top drk-top--ty'>
                 <span className='drk-ty__who'>
                     <span

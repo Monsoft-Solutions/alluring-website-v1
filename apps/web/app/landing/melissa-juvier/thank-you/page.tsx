@@ -7,6 +7,7 @@
 
 import type { Metadata, Viewport } from 'next'
 
+import { LeadConfirmedEvent } from '@/components/analytics/lead-confirmed-event.component'
 import { MJ_COPY } from '@/components/landing-pages/melissa-juvier/mj-copy'
 import { MjThankYou } from '@/components/landing-pages/melissa-juvier/mj-thank-you.component'
 import { resolveLpLanguage } from '@/components/landing-pages/request-consultation/lp-language'
@@ -48,6 +49,7 @@ export default async function MelissaJuvierThankYouPage({
 
     return (
         <div className='mj mj--ty' lang={lang}>
+            <LeadConfirmedEvent />
             <MjThankYou lang={lang} copy={MJ_COPY[lang].thankYou} />
         </div>
     )

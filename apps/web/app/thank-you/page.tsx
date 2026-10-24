@@ -13,6 +13,7 @@
 
 import { WebPageSchema } from '@workspace/seo/react'
 
+import { LeadConfirmedEvent } from '@/components/analytics/lead-confirmed-event.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ThankYouHero } from '@/components/sections/thank-you/thank-you-hero.component'
 import { ExploreSection } from '@/components/sections/thank-you/explore-section.component'
@@ -46,6 +47,9 @@ export default function ThankYouPage() {
                 url={`${seoConfig.siteUrl}/thank-you`}
                 description="Thank you for reaching out. We'll contact you shortly to schedule your consultation."
             />
+
+            {/* One-time conversion for a lead just sent (#350) */}
+            <LeadConfirmedEvent />
 
             {/* Main Content */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
