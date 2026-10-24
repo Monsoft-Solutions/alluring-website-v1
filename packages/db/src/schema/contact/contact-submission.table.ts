@@ -8,7 +8,7 @@ import {
     uuid,
 } from 'drizzle-orm/pg-core'
 
-import type { LandingParams } from '@workspace/shared/attribution'
+import type { FirstTouch, LandingParams } from '@workspace/shared/attribution'
 
 export const contactSubmission = pgTable(
     'contact_submission',
@@ -74,11 +74,19 @@ export const contactSubmission = pgTable(
         pageVariant: text('page_variant'),
         formVariant: text('form_variant'),
         // How the visitor agreed to be texted: 'checkbox' (the site-wide
-        // wording) or 'tap' (a line above the button that names it), and
-        // which wording, e.g. 'lp-tap-2026-09-26'. Null for older leads and
-        // forms that don't say.
+        // wording beside a box, before #350) or 'tap' (a notice above the
+        // button: sending is the consent), and which wording, e.g.
+        // 'lp-tap-2026-09-26' or 'site-submit-2026-10-24'. Every form sends
+        // 'tap' since #350. Null for older leads and forms that didn't say.
         consentMethod: text('consent_method'),
         consentVersion: text('consent_version'),
+
+        // The browser's first visit to the site (#350): source, medium,
+        // campaign, referrer, landing page and time, recorded once in the
+        // visitor's localStorage and never overwritten. `referrer` and
+        // `landing_page` above are the latest visit's. Null for leads sent
+        // before #350 and from browsers that block storage.
+        firstTouch: jsonb('first_touch').$type<FirstTouch>(),
 
         // Optional answers from the thank-you page, added to the same lead.
         consultType: text('consult_type'),
