@@ -2,9 +2,16 @@ import { describe, expect, it } from 'vitest'
 
 import {
     buildLpChat,
-    LP_CONSENT_VERSION,
     lpProcedureOrder,
 } from '@/components/landing-pages/request-consultation/lp-chat-copy'
+import {
+    consentNoticeText,
+    LEAD_CONSENT_VERSION,
+} from '@/lib/constants/lead-consent'
+import {
+    CONSENT_WORDINGS,
+    LP_TAP_CONSENT_VERSION,
+} from '@/lib/constants/lead-consent-archive'
 import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy'
 import { LP_COPY_VARIANTS } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { lpQuoteIndex } from '@/components/landing-pages/request-consultation/lp-quote'
@@ -21,7 +28,6 @@ import {
     resolveAdVariant,
     VARIANT_PROCEDURE,
 } from '@/components/landing-pages/request-consultation/lp-variants'
-import type { RichText } from '@/components/landing-pages/request-consultation/lp-copy'
 import { siteConfig } from '@/lib/data/site-config'
 import { contactFormSchema } from '@/lib/types/forms/contact-form.type'
 
@@ -34,19 +40,6 @@ function strings(value: unknown): string[] {
     }
     return []
 }
-
-const plain = (parts: RichText | undefined) =>
-    (parts ?? [])
-        .map((part) =>
-            typeof part === 'string'
-                ? part
-                : 'em' in part
-                  ? part.em
-                  : 'b' in part
-                    ? part.b
-                    : part.link.label
-        )
-        .join('')
 
 /**
  * What the ads landing page must never say: an unconfirmed facility or
@@ -66,26 +59,19 @@ const BANNED = [
 ]
 
 /**
- * The page's own words. The checkbox consent (`consent`) is the site-wide
- * wording the home, contact and specials pages share; this page no longer
- * shows it, and it changes only with counsel.
+ * The page's own words, and the site-wide consent notice the form shows
+ * above its button (#350).
  */
-const withoutSiteConsent = (value: object) =>
-    Object.fromEntries(
-        Object.entries(value).filter(([key]) => key !== 'consent')
-    )
-
 const PAGE_STRINGS = [
-    ...strings(withoutSiteConsent(LP_COPY.en)),
-    ...strings(withoutSiteConsent(LP_COPY.es)),
+    ...strings(LP_COPY.en),
+    ...strings(LP_COPY.es),
     ...strings(AD_VARIANT_COPY),
+    consentNoticeText('en'),
+    consentNoticeText('es'),
     ...AD_VARIANTS.flatMap((variant) =>
         LP_COPY_VARIANTS.flatMap((copyVariant) => {
             const { copy } = buildLpChat(variant, copyVariant)
-            return [
-                ...strings(withoutSiteConsent(copy.en)),
-                ...strings(withoutSiteConsent(copy.es)),
-            ]
+            return [...strings(copy.en), ...strings(copy.es)]
         })
     ),
 ]
@@ -128,19 +114,24 @@ describe('the form', () => {
         }
     })
 
-    it('names the button in the consent line, in both languages', () => {
+    it('carries no consent words of its own: the site notice says it', () => {
         const { copy } = buildLpChat('default')
         for (const lang of ['en', 'es'] as const) {
-            const line = plain(copy[lang].consentTap)
-            expect(line).toContain(`“${copy[lang].submit}”`)
-            expect(line).toMatch(/STOP/)
-            expect(line).toMatch(/HELP/)
-            expect(line).not.toMatch(/email|correo/i)
+            expect(copy[lang]).not.toHaveProperty('consent')
+            expect(copy[lang]).not.toHaveProperty('consentTap')
+            const notice = consentNoticeText(lang)
+            expect(notice).toMatch(/STOP/)
+            expect(notice).toMatch(/HELP/)
+            expect(notice).not.toMatch(/email|correo/i)
         }
     })
 
-    it('versions the consent wording', () => {
-        expect(LP_CONSENT_VERSION).toMatch(/^lp-tap-\d{4}-\d{2}-\d{2}$/)
+    it('keeps v6’s tap wording resolvable for its leads', () => {
+        expect(LP_TAP_CONSENT_VERSION).toMatch(/^lp-tap-\d{4}-\d{2}-\d{2}$/)
+        expect(CONSENT_WORDINGS[LP_TAP_CONSENT_VERSION]?.text.en).toContain(
+            '“Request my consultation”'
+        )
+        expect(CONSENT_WORDINGS[LEAD_CONSENT_VERSION]?.method).toBe('tap')
     })
 
     it('starts every ad group’s chips with its procedure', () => {
@@ -211,7 +202,7 @@ describe('the last step’s wording test (#302)', () => {
         // toEqual ignores a key whose value is undefined.
         expect({ ...reassure.en, contactNote: undefined }).toEqual(plain.en)
         expect({ ...reassure.es, contactNote: undefined }).toEqual(plain.es)
-        expect(LP_CONSENT_VERSION).toBe('lp-tap-2026-09-26')
+        expect(LP_TAP_CONSENT_VERSION).toBe('lp-tap-2026-09-26')
     })
 })
 
@@ -311,14 +302,14 @@ describe('a new lead’s context fields', () => {
             pageVariant: 'ads-consultation-v6',
             formVariant: 'card',
             consentMethod: 'tap',
-            consentVersion: LP_CONSENT_VERSION,
+            consentVersion: LEAD_CONSENT_VERSION,
         })
         expect(parsed).toMatchObject({
             financingInterest: 'yes',
             pageVariant: 'ads-consultation-v6',
             formVariant: 'card',
             consentMethod: 'tap',
-            consentVersion: LP_CONSENT_VERSION,
+            consentVersion: LEAD_CONSENT_VERSION,
         })
     })
 

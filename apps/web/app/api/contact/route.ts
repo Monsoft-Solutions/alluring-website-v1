@@ -32,6 +32,7 @@ import {
     type InsertContactSubmission,
 } from '@workspace/db/schema/contact'
 
+import { describeConsent } from '@/lib/constants/lead-consent-archive'
 import { placeholderEmail } from '@/lib/constants/lead-fields'
 import {
     CONTACT_SOURCES,
@@ -218,7 +219,8 @@ function getSuccessMessage(
 
 /**
  * Lines staff need that the form's own note cannot know: the sanitized
- * campaign and the lead id the CRM carries.
+ * campaign, the first visit, how the lead consented and the lead id the CRM
+ * carries.
  */
 function staffContextLines(lead: ContactSubmission): string[] {
     const campaign = [lead.utmSource, lead.utmMedium, lead.utmCampaign]
@@ -232,11 +234,14 @@ function staffContextLines(lead: ContactSubmission): string[] {
             `Form: ${lead.formVariant}${lead.pageVariant ? ` (${lead.pageVariant})` : ''}`
         )
     }
-    if (lead.consentMethod === 'tap') {
+    const first = lead.firstTouch
+    if (first) {
         lines.push(
-            `Consent: tapped the send button${lead.consentVersion ? ` (wording ${lead.consentVersion})` : ''}`
+            `First visit: ${first.source} / ${first.medium}, ${first.at.slice(0, 10)}`
         )
     }
+    const consent = describeConsent(lead)
+    if (consent) lines.push(`Text consent: ${consent}`)
     lines.push(`Lead ID: ${lead.id}`)
     return lines
 }
@@ -557,6 +562,7 @@ export async function POST(
             formVariant: validatedData.formVariant,
             consentMethod: validatedData.consentMethod,
             consentVersion: validatedData.consentVersion,
+            firstTouch: validatedData.firstTouch,
         }
 
         // Persist submission

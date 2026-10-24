@@ -146,16 +146,15 @@ describe('Dr. Karlinsky IG copy rules', () => {
         expect(JSON.stringify(DRK_COPY.es)).not.toMatch(/"Dr\. /)
     })
 
-    it('offers the ads page’s procedures, none preselected, checkbox consent', () => {
+    it('offers the ads page’s procedures, none preselected, no consent words of its own', () => {
         for (const lang of ['en', 'es'] as const) {
             const form = buildDrkForm(lang)
             expect(form.copy.procedures).toEqual(
                 buildLpChat('default').copy[lang].procedures
             )
-            expect(form.copy.consentTap).toBeUndefined()
-            expect(form.copy.consent).toEqual(
-                buildLpChat('default').copy[lang].consent
-            )
+            // Consent is the site-wide notice above the button (#350).
+            expect(form.copy).not.toHaveProperty('consent')
+            expect(form.copy).not.toHaveProperty('consentTap')
         }
         expect(buildDrkForm('en').copy.submit).toBe('Request my consultation')
         expect(buildDrkForm('es').copy.submit).toBe('Solicitar mi consulta')

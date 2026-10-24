@@ -20,13 +20,6 @@ export function validateBySource(data: ContactFormData): {
     const source = data.source || CONTACT_SOURCES.GENERAL
 
     switch (source) {
-        case CONTACT_SOURCES.CONTACT_HERO:
-            // The home and Atelier hero forms still ask for email
-            if (!data.email) {
-                return { valid: false, error: 'Email is required' }
-            }
-            break
-
         // The contact, specials and home pages use the chat thread (#274),
         // which asks for a mobile number only; email is optional afterwards.
         // So does Dr. Karlinsky's bio-link page (#332), on one screen.
@@ -43,6 +36,10 @@ export function validateBySource(data: ContactFormData): {
             }
             break
 
+        // The home and Atelier hero forms are the compact ConsultationForm,
+        // which asks for a phone and no email: requiring one turned every
+        // send into a 400 (#350).
+        case CONTACT_SOURCES.CONTACT_HERO:
         case CONTACT_SOURCES.FOOTER:
         case CONTACT_SOURCES.GENERAL:
         default:

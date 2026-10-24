@@ -25,7 +25,7 @@
  * The state and the send live in `useConsultFlow`, which the tap card
  * (`ConsultCard`) shares; this component only draws the thread. The ads
  * landing page (#292) draws it quieter — `header="steps"`, no greeting,
- * `history="compact"`, no typing pause, consent by tapping the button — and
+ * `history="compact"`, no typing pause — and
  * every one of those props defaults to the thread the other pages show.
  *
  * Styling is the page's job. Every class is `<prefix>-<name>`: Melissa's page

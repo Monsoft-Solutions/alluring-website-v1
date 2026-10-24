@@ -16,11 +16,10 @@
  * (#274). Only settled starting prices appear in the reply to the first tap;
  * they are read from the procedure facts files, so they change with them.
  *
- * The consent wording is read from the ads landing page's deck, so the legal
- * text lives in exactly one place.
+ * Consent is the site-wide notice above the button (`ConsentNotice`, #350),
+ * so no deck here carries consent words.
  */
 
-import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy'
 import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
 import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
 
@@ -214,7 +213,6 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
                 'Last step. What’s your name and mobile number? We’ll text you to set up your free consultation.',
             fieldName: 'Your name',
             fieldPhone: 'Mobile number',
-            consent: LP_COPY.en.consent,
             submit: 'Request my free consultation',
             submitting: 'Sending…',
             change: 'Change',
@@ -225,7 +223,6 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
             errors: {
                 name: 'Enter your name.',
                 phone: 'Enter a valid US mobile number, with area code.',
-                consent: 'Please tick the box so we’re allowed to text you.',
                 submit: 'That didn’t go through. Please try again in a moment.',
             },
         },
@@ -250,7 +247,6 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
                 'Último paso. ¿Cómo te llamas y cuál es tu celular? Te escribimos por texto para agendar tu consulta gratis.',
             fieldName: 'Tu nombre',
             fieldPhone: 'Número de celular',
-            consent: LP_COPY.es.consent,
             submit: 'Pedir mi consulta gratis',
             submitting: 'Enviando…',
             change: 'Cambiar',
@@ -261,7 +257,6 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
             errors: {
                 name: 'Escribe tu nombre.',
                 phone: 'Escribe un celular válido de EE. UU., con código de área.',
-                consent: 'Marca la casilla para que podamos escribirte.',
                 submit: 'No se pudo enviar. Inténtalo de nuevo en un momento.',
             },
         },

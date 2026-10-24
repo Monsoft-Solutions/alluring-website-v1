@@ -7,6 +7,7 @@
  * do on /thank-you. Everything personal on it is read in the browser.
  */
 
+import { LeadConfirmedEvent } from '@/components/analytics/lead-confirmed-event.component'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { ConsultationThankYou } from '@/components/sections/thank-you/consultation-thank-you.component'
 import { ExploreSection } from '@/components/sections/thank-you/explore-section.component'
@@ -28,6 +29,7 @@ export const metadata = toNextMetadata(seoConfig, {
 export default function ConsultationThankYouPage() {
     return (
         <ContainerLayout as='div' noPaddingTop noPadding size='full'>
+            <LeadConfirmedEvent />
             <ConsultationThankYou leadStorageKey={SITE_CHAT_LEAD_KEY} />
             <ExploreSection id='explore' />
         </ContainerLayout>

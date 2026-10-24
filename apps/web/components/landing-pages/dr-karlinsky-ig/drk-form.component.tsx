@@ -3,7 +3,7 @@
 /**
  * The consultation request on Dr. Karlinsky's page: the site's one-screen
  * form (`ConsultFields`, #307) — procedure, first name, mobile number, the
- * consent box and one button — with her lead identity.
+ * consent notice and one button — with her lead identity.
  *
  * It runs on `useConsultFlow`, so validation (US mobile numbers), consent,
  * the funnel events and the full-page redirect to the thank-you page are the

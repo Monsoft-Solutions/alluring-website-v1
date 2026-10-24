@@ -9,10 +9,10 @@
  * coordinator's name.
  *
  * v6 takes out what stopped paid visitors (26 Sep readout): the reply after
- * the first tap (six lines, with a price, that half of them left on), the
- * greeting, the checkbox and its 69-word consent. Consent is given by tapping
- * the button, and the line above it names the button (`consentTap`), so the
- * line is built from `submit` and can never name a button that isn't there.
+ * the first tap (six lines, with a price, that half of them left on) and the
+ * greeting. Consent is the site-wide notice above the button
+ * (`ConsentNotice`, #350): sending is the consent, with no checkbox. v6's own
+ * tap line (`lp-tap-2026-09-26`) is archived in `lead-consent-archive.ts`.
  * The FAQ keeps the settled starting prices.
  *
  * Chips: the ad group's procedure first (preselected, still one tap), then
@@ -41,15 +41,8 @@ import {
     chatProcedureOptions,
 } from '@/components/shared/consult-chat/site-chat-copy'
 
-import { LP_COPY, LP_LINKS, type RichText } from './lp-copy'
 import type { LpCopyVariant } from './lp-form-variant'
 import { type AdVariant, VARIANT_PROCEDURE } from './lp-variants'
-
-/**
- * Names the tap-consent wording each lead agreed to (`consent_version`).
- * Change it whenever `consentTap` changes, in either language.
- */
-export const LP_CONSENT_VERSION = 'lp-tap-2026-09-26'
 
 export interface LpChat {
     readonly copy: Readonly<Record<ConsultChatLang, ConsultChatCopy>>
@@ -77,25 +70,6 @@ export function lpProcedureOrder(
     return lead
         ? [lead, ...LP_PROCEDURE_ORDER.filter((value) => value !== lead)]
         : LP_PROCEDURE_ORDER
-}
-
-/** The consent line above the button. Verbatim for counsel; see `LP_CONSENT_VERSION`. */
-function consentTap(lang: ConsultChatLang, submit: string): RichText {
-    const { privacy, terms } = LP_COPY[lang].footer
-    const links: RichText = [
-        { link: { label: privacy, href: LP_LINKS.privacy } },
-        ' · ',
-        { link: { label: terms, href: LP_LINKS.terms } },
-    ]
-    return lang === 'es'
-        ? [
-              `Al tocar “${submit}”, aceptas recibir mensajes de texto y llamadas de Alluring Plastic Surgery en este número, incluso automatizados. El consentimiento no es condición de compra. La frecuencia de los mensajes varía; pueden aplicar tarifas de mensajes y datos. Responde STOP para cancelar y HELP para ayuda. `,
-              ...links,
-          ]
-        : [
-              `By tapping “${submit}”, you agree to receive texts and calls from Alluring Plastic Surgery at this number, including automated ones. Consent is not a condition of purchase. Msg frequency varies; msg & data rates may apply. Reply STOP to opt out, HELP for help. `,
-              ...links,
-          ]
 }
 
 /** The `reassure` arm's line above the last step's fields (#302). */
@@ -128,8 +102,6 @@ function copyFor(
             procedurePlaceholder: 'Choose one',
             fieldName: 'First name',
             fieldPhone: 'Mobile number',
-            consent: LP_COPY.en.consent,
-            consentTap: consentTap('en', en.submit),
             submit: en.submit,
             submitting: 'Sending…',
             change: 'Change',
@@ -146,7 +118,6 @@ function copyFor(
                 procedure: 'Choose the procedure you’re considering.',
                 name: 'Enter your first name.',
                 phone: 'Enter a US mobile number, with area code.',
-                consent: 'Please tick the box so we’re allowed to text you.',
                 submit: 'That didn’t go through. Please try again, or call us.',
             },
         },
@@ -164,8 +135,6 @@ function copyFor(
             procedurePlaceholder: 'Elige uno',
             fieldName: 'Nombre',
             fieldPhone: 'Número de celular',
-            consent: LP_COPY.es.consent,
-            consentTap: consentTap('es', es.submit),
             submit: es.submit,
             submitting: 'Enviando…',
             change: 'Cambiar',
@@ -182,7 +151,6 @@ function copyFor(
                 procedure: 'Elige el procedimiento que estás considerando.',
                 name: 'Escribe tu nombre.',
                 phone: 'Escribe un celular de EE. UU., con código de área.',
-                consent: 'Marca la casilla para que podamos escribirte.',
                 submit: 'No se pudo enviar. Inténtalo de nuevo o llámanos.',
             },
         },

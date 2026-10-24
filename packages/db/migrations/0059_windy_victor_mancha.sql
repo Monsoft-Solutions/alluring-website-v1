@@ -1,0 +1,1 @@
+ALTER TABLE "contact_submission" ADD COLUMN "first_touch" jsonb;

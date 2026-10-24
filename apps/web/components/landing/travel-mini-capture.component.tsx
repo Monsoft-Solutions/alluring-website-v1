@@ -16,6 +16,7 @@ import { Form } from '@workspace/ui/components/form'
 import { CheckCircle2, Video, Loader2, Plane, Sparkles } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
     NameField,
@@ -24,6 +25,7 @@ import {
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import {
     CONTACT_SOURCES,
     type LeadCaptureInput,
@@ -65,7 +67,7 @@ export function TravelMiniCapture({
     })
 
     const handleSubmit = async (data: LeadCaptureInput) => {
-        await submit(data)
+        await submit({ ...data, ...SUBMIT_CONSENT })
     }
 
     return (
@@ -203,8 +205,15 @@ export function TravelMiniCapture({
                                             />
                                         )}
 
+                                        {/* Sending is the consent (#350). */}
+                                        <ConsentNotice
+                                            id='travel-mini-consent'
+                                            tone='dark'
+                                            className='pt-1'
+                                        />
                                         <Button
                                             type='submit'
+                                            aria-describedby='travel-mini-consent'
                                             variant='gold'
                                             size='lg'
                                             disabled={isSubmitting}

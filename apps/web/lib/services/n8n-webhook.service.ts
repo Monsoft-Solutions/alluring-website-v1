@@ -13,6 +13,7 @@
 
 import type { ContactSubmission } from '@workspace/db/schema/contact'
 
+import { describeConsent } from '@/lib/constants/lead-consent-archive'
 import { isPlaceholderEmail } from '@/lib/constants/lead-fields'
 import { env } from '@/env'
 
@@ -58,6 +59,18 @@ export type N8NLeadPayload = {
     readonly offer: string
     readonly time_zone: string
     readonly sms_consent: boolean
+    /**
+     * How the lead consented and to which wording (#350): `tap` (the notice
+     * above the button) and `site-submit-2026-10-24`. Empty for older leads.
+     */
+    readonly consent_method: string
+    readonly consent_version: string
+    /**
+     * The same, as one line for the CRM note, matching the Meta lead flow's
+     * "Text consent: yes (by submitting, …)". Empty when there was none.
+     */
+    readonly sms_consent_note: string
+    /** The latest visit's external referrer and landing URL. */
     readonly referrer: string
     readonly landingPage: string
     /** The page the form was sent from; `landingPage` is where the visit began. */
@@ -69,6 +82,19 @@ export type N8NLeadPayload = {
      */
     readonly page_variant: string
     readonly ga_client_id: string
+    /**
+     * The browser's first visit (#350), or null when the site has no record
+     * of it. The CRM flow reads named keys and ignores this one until it is
+     * taught to; the raw event log keeps it.
+     */
+    readonly first_touch: {
+        readonly source: string
+        readonly medium: string
+        readonly campaign: string
+        readonly referrer: string
+        readonly landing_page: string
+        readonly at: string
+    } | null
     /** When this payload was sent — the later of two events for a lead wins. */
     readonly sent_at: string
 }
@@ -129,6 +155,8 @@ export function buildN8NLeadPayload(
         lead.firstName && lead.lastName
             ? `${lead.firstName} ${lead.lastName}`.trim()
             : lead.name || ''
+    const consent = describeConsent(lead)
+    const first = lead.firstTouch
 
     return {
         event,
@@ -161,12 +189,25 @@ export function buildN8NLeadPayload(
         offer: lead.offer || '',
         time_zone: lead.timeZone || '',
         sms_consent: lead.consentGiven ?? false,
+        consent_method: lead.consentMethod || '',
+        consent_version: lead.consentVersion || '',
+        sms_consent_note: consent ? `Text consent: yes (${consent})` : '',
         referrer: lead.referrer || '',
         landingPage: lead.landingPage || '',
         page: lead.submittedFromPath || '',
         source: lead.source || '',
         page_variant: lead.pageVariant || '',
         ga_client_id: lead.gaClientId || '',
+        first_touch: first
+            ? {
+                  source: first.source,
+                  medium: first.medium,
+                  campaign: first.campaign || '',
+                  referrer: first.referrer || '',
+                  landing_page: first.landingPage,
+                  at: first.at,
+              }
+            : null,
         sent_at: new Date().toISOString(),
     }
 }

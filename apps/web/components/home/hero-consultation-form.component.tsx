@@ -10,7 +10,7 @@
  * coordinator needs to call someone back.
  *
  * Uses the shared ConsultationForm in `compact` mode (first name, phone,
- * procedure, single-line consent) with the dark field variant, which sits
+ * procedure, the consent notice) with the dark field variant, which sits
  * on the hero's smoked-glass card.
  */
 'use client'

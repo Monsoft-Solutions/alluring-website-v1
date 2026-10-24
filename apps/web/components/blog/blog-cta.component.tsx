@@ -37,6 +37,7 @@ import {
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
     NameField,
@@ -44,6 +45,7 @@ import {
 } from '@/components/shared/forms/form-fields.component'
 import { SubmitButton } from '@/components/shared/forms/submit-button.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import {
     defaultCTAContent,
     footerCTAConfig,
@@ -198,7 +200,7 @@ export function BlogCTA({
     const textColors = getTextColorClasses(colorScheme)
 
     const onSubmit = async (data: LeadCaptureInput) => {
-        await submit(data)
+        await submit({ ...data, ...SUBMIT_CONSENT })
     }
 
     // Inline variant - branded CTA box with phone number
@@ -410,13 +412,21 @@ export function BlogCTA({
                                     />
                                 )}
 
+                                {/* Sending is the consent (#350): the
+                                    notice sits right above the button. */}
+                                <ConsentNotice
+                                    id='blog-cta-consent'
+                                    tone='dark'
+                                />
+
                                 {/* Submit button */}
                                 <SubmitButton
+                                    aria-describedby='blog-cta-consent'
+                                    className='-mt-3 h-14 text-base font-semibold shadow-lg transition-all hover:shadow-xl'
                                     isSubmitting={isSubmitting}
                                     size='lg'
                                     variant='gold'
                                     fullWidth
-                                    className='h-14 text-base font-semibold shadow-lg transition-all hover:shadow-xl'
                                 >
                                     {footerCTAConfig.submitButtonText}
                                     <ArrowRight className='ml-2 h-5 w-5' />

@@ -145,6 +145,7 @@ export function SpanishHero({ id = 'hero' }: SpanishHeroProps) {
                                 enableAnalytics
                                 redirectOnSuccess='/thank-you'
                                 showPreferredContactTime={false}
+                                lang='es'
                             />
                         </div>
 

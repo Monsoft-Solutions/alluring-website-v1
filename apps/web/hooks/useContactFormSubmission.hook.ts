@@ -6,12 +6,18 @@
  * Unified hook for handling contact form submissions across the application.
  * Encapsulates API interaction, state management, UTM tracking, and optional analytics.
  *
+ * Every lead it sends carries the stored campaign, the latest visit's
+ * referrer and landing page and the browser's first touch (#350), so no
+ * form has to collect them itself. A confirmed lead leaves the one-time
+ * marker the thank-you pages turn into `lead_confirmed`.
+ *
  * @module hooks/useContactFormSubmission
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { readCookie } from '@/lib/analytics/attribution-params.util'
+import { setLeadMarker } from '@/lib/analytics/lead-confirmation'
 import {
     LEAD_FORM_EVENTS,
     type LeadFormContextParams,
@@ -20,6 +26,11 @@ import {
 } from '@/lib/analytics/lead-form-tracking'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { useUTMTracking } from '@/lib/analytics/utm-tracking.context'
+import {
+    browserStorage,
+    leadAttributionFields,
+    readVisitAttribution,
+} from '@/lib/analytics/visit-attribution'
 import {
     dispatchFormStarted,
     markLeadConverted,
@@ -345,8 +356,12 @@ export function useContactFormSubmission(
                         // lead in a Conversions API event later.
                         fbp: readCookie('_fbp'),
                         fbc: readCookie('_fbc'),
-                        // Include UTM tracking data for attribution
-                        ...(utmData ?? {}),
+                        // Campaign, latest visit and first touch (#350),
+                        // for every form.
+                        ...leadAttributionFields(
+                            utmData,
+                            readVisitAttribution(browserStorage('local'))
+                        ),
                     }),
                 })
 
@@ -396,6 +411,12 @@ export function useContactFormSubmission(
                     // A converted lead never sees a lead popup again, in this
                     // tab, in other open tabs or on a later visit.
                     markLeadConverted()
+                    // The thank-you page's one-time `lead_confirmed`.
+                    setLeadMarker(browserStorage('session'), {
+                        at: Date.now(),
+                        source,
+                        formName,
+                    })
 
                     track(LEAD_FORM_EVENTS.SUBMIT_SUCCESS)
                     if (enableAnalytics) {

@@ -239,6 +239,42 @@ describe('classifyLeadAttribution', () => {
         })
     })
 
+    describe('AI assistants (#350)', () => {
+        it.each([
+            ['https://chatgpt.com/', 'chatgpt'],
+            ['https://chat.openai.com/c/abc', 'chatgpt'],
+            ['https://www.perplexity.ai/search?q=bbl', 'perplexity'],
+            ['https://copilot.microsoft.com/', 'copilot'],
+            ['https://gemini.google.com/app', 'gemini'],
+        ])('files the referrer %s under %s / ai', (referrer, source) => {
+            expect(
+                classifyLeadAttribution({ ...emptyInput, referrer })
+            ).toEqual({ source, medium: 'ai', classification: 'referrer' })
+        })
+
+        it('does not mistake Gemini for Google search', () => {
+            expect(
+                classifyLeadAttribution({
+                    ...emptyInput,
+                    referrer: 'https://gemini.google.com/',
+                }).source
+            ).toBe('gemini')
+        })
+
+        it('reads ChatGPT’s utm_source=chatgpt.com, which has no medium', () => {
+            expect(
+                classifyLeadAttribution({
+                    ...emptyInput,
+                    utmSource: 'chatgpt.com',
+                })
+            ).toEqual({
+                source: 'chatgpt',
+                medium: 'ai',
+                classification: 'utm',
+            })
+        })
+    })
+
     describe('Default direct', () => {
         it('classifies empty input as direct', () => {
             expect(classifyLeadAttribution(emptyInput)).toEqual({

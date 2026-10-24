@@ -369,7 +369,6 @@
 }
 
 .cc-field--wide,
-.cc-consent,
 .cc-fields > .cc-error,
 .cc-send {
     grid-column: 1 / -1;
@@ -416,38 +415,6 @@
     color: var(--cc-error);
     font-size: 12.5px;
     line-height: 1.4;
-}
-
-.cc-consent {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid transparent;
-    border-radius: 12px;
-}
-
-.cc-consent.is-invalid {
-    border-color: var(--cc-error);
-    background: rgba(242, 161, 151, 0.06);
-}
-
-.cc-consent input {
-    flex: none;
-    width: 20px;
-    height: 20px;
-    margin-top: 1px;
-    accent-color: var(--cc-gold);
-}
-
-.cc-consent label {
-    color: #a99e91;
-    font-size: 11px;
-    line-height: 1.5;
-}
-
-.cc-consent a {
-    color: var(--cc-gold);
-    text-decoration: underline;
 }
 
 .cc-send {
@@ -591,13 +558,20 @@
     line-height: 1.45;
 }
 
-/* Consent by tapping the button: the line above it names the button. */
+/* Sending is the consent (#350): the notice sits right above the button,
+   at reading size and in the thread's own ink, never as fine print. */
 .cc-consent-line {
     grid-column: 1 / -1;
     margin: 0;
-    color: #c2b2a3;
-    font-size: 11.5px;
-    line-height: 1.45;
+    color: #e3d7ca;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+    .cc-consent-line {
+        font-size: 15px;
+    }
 }
 
 .cc-consent-line a {

@@ -5,7 +5,6 @@
  * the thread supplies a dictionary of this shape per language.
  */
 
-import type { RichText } from '@/components/landing-pages/request-consultation/lp-copy'
 import type { LeadFinancingInterest } from '@/lib/constants/lead-fields'
 
 export type ConsultChatLang = 'en' | 'es'
@@ -55,12 +54,8 @@ export interface ConsultChatCopy {
     readonly procedurePlaceholder?: string
     readonly fieldName: string
     readonly fieldPhone: string
-    readonly consent: RichText
-    /**
-     * The line above the button when tapping it is the consent (no
-     * checkbox). It names the button, so it changes with `submit`.
-     */
-    readonly consentTap?: RichText
+    // Consent is the site-wide notice above the button (`ConsentNotice`,
+    // #350), in the thread's language; no deck carries its own.
     readonly submit: string
     readonly submitting: string
     readonly change: string
@@ -84,7 +79,6 @@ export interface ConsultChatCopy {
         readonly procedure?: string
         readonly name: string
         readonly phone: string
-        readonly consent: string
         readonly submit: string
     }
 }

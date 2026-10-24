@@ -28,7 +28,7 @@
  * - No "luxury", no "affordable", no facility claims, no promised reply
  *   times.
  *
- * The consent wording is the site's, verbatim (`LP_COPY.consent`).
+ * Consent is the site-wide notice above the button (`ConsentNotice`, #350).
  */
 
 import type {
@@ -517,7 +517,7 @@ export const DRK_COPY: Readonly<Record<DrkLang, DrkDictionary>> = { en, es }
 
 /**
  * The form's words: the ads landing page's one-screen form (the same
- * procedure list, labels, errors and consent), in her voice.
+ * procedure list, labels and errors), in her voice.
  */
 export interface DrkForm {
     readonly copy: ConsultChatCopy
@@ -526,11 +526,9 @@ export interface DrkForm {
 
 export function buildDrkForm(lang: DrkLang): DrkForm {
     const lp = buildLpChat('default')
-    // Consent is the checkbox here; the tap wording and the ads page's
-    // test line don't apply.
+    // The ads page's test line (`contactNote`) doesn't apply here.
     const base: ConsultChatCopy = {
         ...lp.copy[lang],
-        consentTap: undefined,
         contactNote: undefined,
     }
     const mine: Partial<ConsultChatCopy> =

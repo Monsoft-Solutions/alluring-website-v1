@@ -691,26 +691,10 @@ button.drk-story:hover .drk-story__handle {
     grid-column: auto;
 }
 
-.drk .cc-consent {
-    gap: 10px;
-    padding: 2px 0;
-}
-
-.drk .cc-consent.is-invalid {
-    padding: 8px;
-}
-
-.drk .cc-consent input {
-    width: 22px;
-    height: 22px;
-    margin-top: 0;
-}
-
-.drk .cc-consent label {
-    /* Consent to automated texts must be clear and conspicuous: no fine print. */
-    color: var(--stone-300);
-    font-size: 12px;
-    line-height: 1.45;
+/* Consent to automated texts must be clear and conspicuous: no fine print.
+   The notice spans both columns of the one-screen fields. */
+.drk .cc-fields > .cc-consent-line {
+    grid-column: 1 / -1;
 }
 
 .drk .cc-send {

@@ -5,6 +5,9 @@
  * persists them in localStorage across page navigation, and provides
  * a hook for forms to include tracking data in submissions.
  *
+ * It also records where every visit began, params or not, and the
+ * browser's first touch (`visit-attribution.ts`, #350).
+ *
  * @module analytics/utm-tracking
  */
 'use client'
@@ -18,6 +21,8 @@ import {
 } from 'react'
 
 import { readAttributionParam } from '@/lib/analytics/attribution-params.util'
+import { browserStorage, recordVisit } from '@/lib/analytics/visit-attribution'
+import { siteConfig } from '@/lib/data/site-config'
 import {
     type UTMData,
     type UTMParamName,
@@ -151,6 +156,23 @@ export function UTMTrackingProvider({ children }: UTMTrackingProviderProps) {
                 setUtmData(storedData)
             }
         }
+
+        // Where this visit began and the browser's first touch, for every
+        // form's lead — with or without campaign params.
+        let siteHost = window.location.hostname
+        try {
+            siteHost = new URL(siteConfig.seo.siteUrl).hostname
+        } catch {
+            // A malformed site URL: only this host counts as the site.
+        }
+        recordVisit({
+            href: window.location.href,
+            referrer: document.referrer,
+            siteHost,
+            now: new Date(),
+            local: browserStorage('local'),
+            session: browserStorage('session'),
+        })
 
         setIsInitialized(true)
     }, [])
