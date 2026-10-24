@@ -18,6 +18,7 @@
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
 
+import { LEAD_CONSENT_METHODS } from '@/lib/constants/lead-consent'
 import {
     LEAD_CONSULT_TYPES,
     LEAD_FINANCING_INTEREST,
@@ -330,6 +331,17 @@ export const lastNameSchema = z.string().trim().min(1, {
 })
 
 /**
+ * An optional last name, where a blank one counts as none. The short forms
+ * ask for a first name only; a blank `lastName` from one used to fail
+ * `lastNameSchema.optional()` and lose the lead (#350).
+ */
+export const optionalLastNameSchema = z
+    .string()
+    .trim()
+    .transform((value) => value || undefined)
+    .optional()
+
+/**
  * Preferred contact time options
  */
 export const PREFERRED_CONTACT_TIME_OPTIONS = [
@@ -348,14 +360,6 @@ export const preferredContactTimeSchema = z
     .enum(['', 'morning', 'afternoon', 'evening'])
     .optional()
 
-/**
- * Consent validation schema
- * Requires explicit consent (must be true)
- */
-export const consentSchema = z.boolean().refine((val) => val === true, {
-    message: 'You must agree to the terms to continue.',
-})
-
 /** Optional context that is stored when well formed and dropped otherwise. */
 const leadContext = <T extends z.ZodType>(schema: T) =>
     schema.optional().catch(undefined)
@@ -367,9 +371,24 @@ const leadTag = z
     .max(40)
     .regex(/^[a-z0-9][a-z0-9-]*$/)
 
-/** How a lead consented to texts: the checkbox, or tapping the named button. */
-export const LEAD_CONSENT_METHODS = ['checkbox', 'tap'] as const
-export type LeadConsentMethod = (typeof LEAD_CONSENT_METHODS)[number]
+export {
+    LEAD_CONSENT_METHODS,
+    type LeadConsentMethod,
+} from '@/lib/constants/lead-consent'
+
+/**
+ * The browser's first visit (#350), recorded once by `UTMTrackingProvider`.
+ * Dropped whole when any part is malformed: it is context, never a reason
+ * to refuse a lead.
+ */
+const firstTouchSchema = z.object({
+    source: z.string().trim().min(1).max(100),
+    medium: z.string().trim().min(1).max(100),
+    campaign: z.string().trim().max(200).optional(),
+    referrer: z.string().trim().max(2048).optional(),
+    landingPage: z.string().trim().min(1).max(2048),
+    at: z.iso.datetime(),
+})
 
 /**
  * Base contact form schema - all fields optional initially
@@ -378,7 +397,7 @@ export type LeadConsentMethod = (typeof LEAD_CONSENT_METHODS)[number]
 export const contactFormSchema = z.object({
     name: nameSchema,
     firstName: firstNameSchema.optional(),
-    lastName: lastNameSchema.optional(),
+    lastName: optionalLastNameSchema,
     email: emailSchema,
     phone: phoneSchema,
     subject: optionalTrimmedString(3, 'Subject must be at least 3 characters.'),
@@ -434,6 +453,9 @@ export const contactFormSchema = z.object({
     formVariant: leadContext(leadTag),
     consentMethod: leadContext(z.enum(LEAD_CONSENT_METHODS)),
     consentVersion: leadContext(leadTag),
+    // Where the browser first came from; `referrer` and `landingPage` are
+    // the latest visit's (#350).
+    firstTouch: leadContext(firstTouchSchema),
 
     // Anti-spam honeypot
     _website: z.string().optional(),
@@ -553,8 +575,9 @@ export function getProcedureFormValue(slug: string): string {
 /**
  * Consultation form schema
  * Used by the shared ConsultationForm component
- * Requires: firstName, lastName, email, phone, consent
+ * Requires: firstName, lastName, email, phone
  * Optional: procedure, preferredContactTime
+ * Consent is given by sending the form (the notice above the button, #350).
  */
 export const consultationFormSchema = z.object({
     firstName: firstNameSchema,
@@ -563,7 +586,6 @@ export const consultationFormSchema = z.object({
     phone: requiredPhoneSchema,
     procedure: z.string().optional(),
     preferredContactTime: preferredContactTimeSchema,
-    consentGiven: consentSchema,
     _website: z.string().optional(),
 })
 
@@ -573,20 +595,24 @@ export type ConsultationFormData = z.output<typeof consultationFormSchema>
 /**
  * Compact consultation form schema
  * Mobile-first variant for warm-traffic landing pages where every
- * field cut compounds into a higher submit rate. Only firstName,
- * phone, and consent are required. lastName/email are dropped from
- * the UI entirely (callback will capture what we need).
+ * field cut compounds into a higher submit rate. Only firstName and
+ * phone are required. lastName/email are dropped from the UI entirely
+ * (callback will capture what we need), so a blank last name counts as
+ * none (#350).
  */
 export const consultationFormCompactSchema = z.object({
     firstName: firstNameSchema,
-    lastName: lastNameSchema.optional(),
+    lastName: optionalLastNameSchema,
     email: emailSchema,
     phone: requiredPhoneSchema,
     procedure: z.string().optional(),
     preferredContactTime: preferredContactTimeSchema,
-    consentGiven: consentSchema,
     _website: z.string().optional(),
 })
+
+export type ConsultationFormCompactInput = z.input<
+    typeof consultationFormCompactSchema
+>
 
 /**
  * Lead capture schema - minimal fields for conversion-focused forms

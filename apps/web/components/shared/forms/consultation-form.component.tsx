@@ -9,7 +9,8 @@
  * - Email and phone (both required)
  * - Procedure of interest dropdown
  * - Preferred contact time dropdown
- * - Consent checkbox with Privacy Policy and Terms links
+ * - The consent notice above the submit button: sending is the consent
+ *   to be called and texted (#350), so there is no checkbox
  * - Customizable title and subtitle
  * - Built-in success state display
  * - Form validation with react-hook-form and zod
@@ -21,22 +22,22 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@workspace/ui/components/form'
 import { CheckCircle2, Stethoscope } from 'lucide-react'
-import Link from 'next/link'
 import { useId } from 'react'
 import { type Resolver, useForm } from 'react-hook-form'
 
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
-    CheckboxField,
     EmailField,
     FirstNameField,
     LastNameField,
     PhoneField,
     SelectField,
 } from '@/components/shared/forms/form-fields.component'
+import { buildConsultationRequest } from '@/components/shared/forms/consultation-request'
 import { SubmitButton } from '@/components/shared/forms/submit-button.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
-import { siteConfig } from '@/lib/data/site-config'
+import type { ConsentLang } from '@/lib/constants/lead-consent'
 import {
     type ConsultationFormInput,
     type ContactSource,
@@ -73,7 +74,8 @@ export type ConsultationFormProps = {
     /**
      * Mobile-first compact variant. When true:
      * - Hides Last Name, Email, and Preferred Contact Time fields
-     * - Only First Name + Phone + Procedure (optional) + Consent are visible
+     * - Only First Name + Phone + Procedure (optional) are visible, and no
+     *   last name is sent
      * - Uses the relaxed `consultationFormCompactSchema`
      * - Replaces the default submit copy unless `submitText` is set
      */
@@ -89,6 +91,8 @@ export type ConsultationFormProps = {
      * (e.g. the editorial hero card) so we don't double up.
      */
     readonly showProcedureBadge?: boolean
+    /** The consent notice's language: the page's (default English). */
+    readonly lang?: ConsentLang
 }
 
 /**
@@ -122,18 +126,16 @@ export function ConsultationForm({
     submitText,
     footerNote,
     showProcedureBadge = true,
+    lang = 'en',
 }: ConsultationFormProps) {
-    // Compact (paid-LP) variant pre-checks consent — visitors can still
-    // uncheck the 1-line disclosure below the submit button. The legal
-    // trail is preserved (consentGiven is part of the submission), but
-    // the friction of an explicit unchecked checkbox above the submit
-    // button is removed.
     // The honeypot's DOM id must be unique per instance: the homepage renders
     // this form three times (hero, mid-page CTA, final lead form), and a
     // hardcoded id would produce duplicate ids and leave every label pointing
     // at the first input. Only the id changes — the field NAME stays
     // `_website`, which is what /api/contact inspects to reject bots.
-    const honeypotId = `_website_${useId()}`
+    const formId = useId()
+    const honeypotId = `_website_${formId}`
+    const consentId = `consent_${formId}`
 
     const form = useForm<ConsultationFormInput>({
         resolver: zodResolver(
@@ -141,12 +143,16 @@ export function ConsultationForm({
         ) as Resolver<ConsultationFormInput>,
         defaultValues: {
             firstName: '',
-            lastName: '',
+            // The compact form has no last-name field. Seeded with '', it
+            // failed `lastNameSchema.optional()` (min 1) on every submit,
+            // with no field on screen to show the error, so no compact form
+            // could send a lead from 2026-05-06 until #350. Unset, it is
+            // left out of the request.
+            lastName: compact ? undefined : '',
             email: '',
             phone: '',
             procedure: defaultProcedure ?? '',
             preferredContactTime: '',
-            consentGiven: compact,
             _website: '',
         },
     })
@@ -185,21 +191,7 @@ export function ConsultationForm({
     })
 
     const handleSubmit = async (data: ConsultationFormInput) => {
-        // Find the procedure label for the subject line
-        const procedureLabel = PROCEDURE_OPTIONS.find(
-            (p) => p.value === data.procedure
-        )?.label
-
-        // Combine firstName and lastName for the name field (backward compatibility)
-        const fullName = `${data.firstName} ${data.lastName}`.trim()
-
-        await submit({
-            ...data,
-            name: fullName,
-            subject: data.procedure
-                ? `Consultation Request: ${procedureLabel || data.procedure}`
-                : 'Consultation Request',
-        })
+        await submit(buildConsultationRequest(data))
     }
 
     return (
@@ -361,40 +353,6 @@ export function ConsultationForm({
                             />
                         )}
 
-                        {/* Consent Checkbox — full block in regular mode;
-                            in compact mode it's rendered as a single-line
-                            disclosure beneath the submit button below. */}
-                        {!compact && (
-                            <CheckboxField
-                                control={form.control}
-                                name='consentGiven'
-                                disabled={isSubmitting}
-                                variant='dark'
-                                required
-                            >
-                                I have read and understood the{' '}
-                                <Link
-                                    href='/privacy'
-                                    className='text-gold-400 hover:text-gold-300 underline'
-                                >
-                                    Privacy Policy
-                                </Link>{' '}
-                                and{' '}
-                                <Link
-                                    href='/terms'
-                                    className='text-gold-400 hover:text-gold-300 underline'
-                                >
-                                    Terms
-                                </Link>
-                                . By submitting my mobile number and email, I
-                                expressly consent to receive informational and
-                                promotional messages from{' '}
-                                {siteConfig.business.name} through SMS, email,
-                                and phone calls. Msg & data rates may apply. Msg
-                                frequency varies.
-                            </CheckboxField>
-                        )}
-
                         {/* Error feedback */}
                         {isError && (
                             <FormFeedback
@@ -404,10 +362,15 @@ export function ConsultationForm({
                             />
                         )}
 
+                        {/* Sending is the consent: the notice sits right
+                            above the button it describes (#350). */}
+                        <ConsentNotice id={consentId} lang={lang} tone='dark' />
+
                         {/* Submit Button: stone-900 text, since the gold
                             variant's white on gold-400 is 2.2:1 */}
-                        <div className={compact ? '' : 'pt-4'}>
+                        <div className='-mt-3'>
                             <SubmitButton
+                                aria-describedby={consentId}
                                 isSubmitting={isSubmitting}
                                 size='lg'
                                 variant='gold'
@@ -422,34 +385,6 @@ export function ConsultationForm({
                                         : 'Yes, I Want My Free Consultation')}
                             </SubmitButton>
                         </div>
-
-                        {compact && (
-                            <CheckboxField
-                                control={form.control}
-                                name='consentGiven'
-                                disabled={isSubmitting}
-                                variant='dark'
-                                required
-                                className='mt-1'
-                            >
-                                I agree to receive texts and emails about my
-                                quote — no spam, opt out anytime. See our{' '}
-                                <Link
-                                    href='/privacy'
-                                    className='text-gold-400 hover:text-gold-300 underline'
-                                >
-                                    Privacy Policy
-                                </Link>{' '}
-                                and{' '}
-                                <Link
-                                    href='/terms'
-                                    className='text-gold-400 hover:text-gold-300 underline'
-                                >
-                                    Terms
-                                </Link>
-                                .
-                            </CheckboxField>
-                        )}
 
                         {/* Privacy Note */}
                         <p className='text-center text-xs text-stone-500'>

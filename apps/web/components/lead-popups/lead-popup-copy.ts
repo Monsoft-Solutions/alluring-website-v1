@@ -7,14 +7,10 @@
  * price and dates in writing. Nothing promises a call. The promotion's own
  * title and details come from the admin, as written there.
  *
- * The consent wording is the ads landing page's, so the legal text still
- * lives in exactly one place.
+ * Consent is the site-wide notice above the button (`ConsentNotice`, #350):
+ * sending is the consent, with no checkbox.
  */
 
-import {
-    LP_COPY,
-    type RichText,
-} from '@/components/landing-pages/request-consultation/lp-copy'
 import type { ConsultChatLang } from '@/components/shared/consult-chat/consult-chat.types'
 
 export type LeadPopupCopy = {
@@ -43,13 +39,11 @@ export type LeadPopupCopy = {
     }
     readonly fieldName: string
     readonly fieldPhone: string
-    readonly consent: RichText
     readonly submitting: string
     readonly reassure: string
     readonly errors: {
         readonly name: string
         readonly phone: string
-        readonly consent: string
         readonly submit: string
     }
 }
@@ -83,13 +77,11 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         },
         fieldName: 'Your name',
         fieldPhone: 'Mobile number',
-        consent: LP_COPY.en.consent,
         submitting: 'Sending…',
         reassure: 'Private. Only our patient coordinators see it.',
         errors: {
             name: 'Enter your name.',
             phone: 'Enter a valid US mobile number, with area code.',
-            consent: 'Please tick the box so we’re allowed to text you.',
             submit: 'That didn’t go through. Please try again in a moment.',
         },
     },
@@ -123,13 +115,11 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         },
         fieldName: 'Tu nombre',
         fieldPhone: 'Número de celular',
-        consent: LP_COPY.es.consent,
         submitting: 'Enviando…',
         reassure: 'Privado. Solo lo ven nuestras coordinadoras.',
         errors: {
             name: 'Escribe tu nombre.',
             phone: 'Escribe un celular válido de EE. UU., con código de área.',
-            consent: 'Marca la casilla para que podamos escribirte.',
             submit: 'No se pudo enviar. Inténtalo de nuevo en un momento.',
         },
     },

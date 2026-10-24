@@ -5,8 +5,9 @@
  * landing page: the argument, the ordering and the disclaimers were written
  * for ad traffic and are not shared with any indexed route.
  *
- * The consultation form's own words (the questions, the consent line) live
- * in `lp-chat-copy.ts`, which is built on the server.
+ * The consultation form's own words (the questions and labels) live in
+ * `lp-chat-copy.ts`, which is built on the server. The consent notice is the
+ * site-wide one (`lib/constants/lead-consent.ts`, #350).
  *
  * ---------------------------------------------------------------------
  * LENGTH (v6, #292)
@@ -66,8 +67,8 @@
  * No procedure counts: "5,000+ procedures" and "1,500+ BBLs" could not be
  * traced to a record, so v6 removed them (the tests keep them out).
  *
- * Verbatim and not to be paraphrased: the consent wording, the reviews, and
- * the footer disclaimer.
+ * Verbatim and not to be paraphrased: the reviews and the footer
+ * disclaimer.
  */
 
 import { FINANCING_PARTNERS } from '@/lib/data/site-config'
@@ -149,11 +150,6 @@ export interface LpDictionary {
         /** Melissa's page labels its certification badges with this. */
         readonly badgesLabel: string
     }
-    /**
-     * The SMS consent every thread on the site shows (read by the site's
-     * consultation thread, the lead popup and Melissa's page too).
-     */
-    readonly consent: RichText
     readonly surgeon: {
         readonly eyebrow: string
         readonly heading: RichText
@@ -323,13 +319,6 @@ const en: LpDictionary = {
         callAlt: 'Prefer to talk? Call',
         badgesLabel: 'Board certifications',
     },
-    consent: [
-        'I have read and understood the ',
-        { link: { label: 'Privacy Policy', href: LP_LINKS.privacy } },
-        ' and ',
-        { link: { label: 'Terms', href: LP_LINKS.terms } },
-        '. By submitting my mobile number and email, I expressly consent to receive informational and promotional messages from Alluring Plastic Surgery through SMS, email, and phone calls, including messages sent using an automatic telephone dialing system. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Reply STOP to opt out, HELP for help.*',
-    ],
     surgeon: {
         eyebrow: 'Your surgeon',
         heading: ['Dr. Victoria ', { em: 'Karlinsky' }],
@@ -535,18 +524,6 @@ const es: LpDictionary = {
         callAlt: '¿Prefieres hablar? Llama al',
         badgesLabel: 'Certificaciones',
     },
-    consent: [
-        'He leído y entiendo la ',
-        {
-            link: {
-                label: 'Política de Privacidad',
-                href: LP_LINKS.privacy,
-            },
-        },
-        ' y los ',
-        { link: { label: 'Términos', href: LP_LINKS.terms } },
-        '. Al enviar mi número de celular y correo, doy mi consentimiento expreso para recibir mensajes informativos y promocionales de Alluring Plastic Surgery por SMS, correo electrónico y llamadas, incluidos mensajes enviados con un sistema de marcación automática. El consentimiento no es condición de compra. Pueden aplicar tarifas de mensajes y datos. La frecuencia varía. Responda STOP para cancelar, HELP para ayuda.*',
-    ],
     surgeon: {
         eyebrow: 'Tu cirujana',
         heading: ['Dra. Victoria ', { em: 'Karlinsky' }],

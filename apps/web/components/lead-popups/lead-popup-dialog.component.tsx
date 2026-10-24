@@ -12,8 +12,9 @@
  * 1. The offer — the promotion, or "your questions, answered by text" — and
  *    one button. Tapping it is a cheap first yes, and it keeps the sheet
  *    short enough to leave the page visible behind it.
- * 2. Name, mobile number and the SMS consent every other lead form asks for,
- *    so the coordinators may text these leads too.
+ * 2. Name, mobile number and the consent notice every lead form shows above
+ *    its button (sending is the consent, #350), so the coordinators may text
+ *    these leads too.
  *
  * A lead goes through the site's contact pipeline
  * (`useContactFormSubmission` → `/api/contact`) under its old source
@@ -42,7 +43,6 @@ import {
 } from 'react'
 import { flushSync } from 'react-dom'
 
-import { Rich } from '@/components/landing-pages/request-consultation/lp-primitives.component'
 import { PromotionMarkdownClient } from '@/components/promotions/promotion-markdown.component'
 import type {
     ConsultChatLang,
@@ -59,7 +59,9 @@ import {
     SITE_CHAT_THANK_YOU_PATH,
 } from '@/components/shared/consult-chat/site-chat.constants'
 import { usePageLanguage } from '@/components/shared/consult-chat/use-page-language.hook'
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import { trackEvent } from '@/lib/analytics/analytics.client'
 import {
     LEAD_FORM_EVENTS,
@@ -97,7 +99,7 @@ const SPANISH_PAGES = ['/consulta-gratis'] as const
 const EXCERPT_LINES = 3
 
 type Step = 'offer' | 'contact'
-type Field = 'name' | 'phone' | 'consent'
+type Field = 'name' | 'phone'
 type DismissMethod = 'close_button' | 'backdrop' | 'escape' | 'no_thanks'
 
 export type LeadPopupDialogProps = {
@@ -134,7 +136,6 @@ export function LeadPopupDialog({
     const [step, setStep] = useState<Step>('offer')
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
-    const [consent, setConsent] = useState(false)
     const [errors, setErrors] = useState<ReadonlySet<Field>>(new Set())
 
     const dialogRef = useRef<HTMLDialogElement>(null)
@@ -278,7 +279,6 @@ export function LeadPopupDialog({
         const invalid = new Set<Field>()
         if (fullName.length < 2) invalid.add('name')
         if (!national) invalid.add('phone')
-        if (!consent) invalid.add('consent')
         setErrors(invalid)
         if (!national || invalid.size) {
             trackValidationErrors([...invalid])
@@ -296,7 +296,7 @@ export function LeadPopupDialog({
             lastName: lastName || undefined,
             name: fullName,
             phone: formatPhone(national),
-            consentGiven: true,
+            ...SUBMIT_CONSENT,
             _website: honeypotRef.current?.value ?? '',
             subject: offer
                 ? `Promotion lead: ${offer.title}`
@@ -521,47 +521,20 @@ export function LeadPopupDialog({
                                 </TextField>
                             </div>
 
-                            <div
-                                className={cn(
-                                    '-mx-2.5 mt-3 flex gap-3 rounded-xl border border-transparent p-2.5',
-                                    invalid('consent') &&
-                                        'border-red-300/70 bg-red-300/5'
-                                )}
-                            >
-                                <input
-                                    id={fieldId('consent')}
-                                    type='checkbox'
-                                    checked={consent}
-                                    disabled={busy}
-                                    onChange={(event) => {
-                                        setConsent(event.target.checked)
-                                        clearError('consent')
-                                    }}
-                                    aria-invalid={invalid('consent')}
-                                    aria-describedby={
-                                        invalid('consent')
-                                            ? fieldId('consent-error')
-                                            : undefined
-                                    }
-                                    className='accent-gold-300 mt-0.5 size-5 shrink-0'
-                                />
-                                <label
-                                    htmlFor={fieldId('consent')}
-                                    className='text-[0.6875rem] leading-normal text-stone-400 [&_a]:text-stone-200 [&_a]:underline [&_a]:underline-offset-2'
-                                >
-                                    <Rich parts={copy.consent} />
-                                </label>
-                            </div>
-                            {invalid('consent') && (
-                                <p
-                                    id={fieldId('consent-error')}
-                                    className='mt-1 text-[0.8125rem] text-red-300'
-                                >
-                                    {copy.errors.consent}
-                                </p>
-                            )}
+                            {/* Sending is the consent (#350): the notice
+                                sits right above the button. */}
+                            <ConsentNotice
+                                id={fieldId('consent')}
+                                lang={lang}
+                                tone='dark'
+                                className='mt-4 -mb-3'
+                            />
 
-                            <PrimaryButton type='submit' busy={busy}>
+                            <PrimaryButton
+                                type='submit'
+                                busy={busy}
+                                describedBy={fieldId('consent')}
+                            >
                                 {busy
                                     ? copy.submitting
                                     : offer
@@ -638,11 +611,14 @@ function PrimaryButton({
     type = 'button',
     busy = false,
     onClick,
+    describedBy,
     children,
 }: {
     type?: 'button' | 'submit'
     busy?: boolean
     onClick?: () => void
+    /** The consent notice the send button stands for. */
+    describedBy?: string
     children: ReactNode
 }) {
     return (
@@ -651,6 +627,7 @@ function PrimaryButton({
             onClick={onClick}
             disabled={busy}
             aria-busy={busy}
+            aria-describedby={describedBy}
             className='bg-gold-300 hover:bg-gold-200 focus-visible:outline-gold-300 mt-6 flex min-h-14 w-full items-center justify-between gap-3 rounded-full py-2 pr-2 pl-6 text-left text-base font-semibold text-stone-950 shadow-[0_18px_40px_-22px_rgb(228_201_157/0.7)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-3 disabled:opacity-80'
         >
             {children}

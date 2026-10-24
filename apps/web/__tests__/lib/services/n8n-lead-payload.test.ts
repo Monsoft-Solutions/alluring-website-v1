@@ -35,3 +35,57 @@ describe('buildN8NLeadPayload', () => {
         expect(payload.page_variant).toBe('')
     })
 })
+
+describe('buildN8NLeadPayload: consent and first touch (#350)', () => {
+    it('says the lead consented by submitting, and to which wording', () => {
+        const payload = buildN8NLeadPayload(
+            {
+                id: 'lead-3',
+                consentGiven: true,
+                consentMethod: 'tap',
+                consentVersion: 'site-submit-2026-10-24',
+            },
+            'lead.created'
+        )
+        expect(payload.sms_consent).toBe(true)
+        expect(payload.consent_method).toBe('tap')
+        expect(payload.consent_version).toBe('site-submit-2026-10-24')
+        expect(payload.sms_consent_note).toBe(
+            'Text consent: yes (by submitting the form, notice site-submit-2026-10-24 of 2026-10-24)'
+        )
+    })
+
+    it('says nothing about consent for a lead that gave none', () => {
+        const payload = buildN8NLeadPayload({ id: 'lead-4' }, 'lead.created')
+        expect(payload.sms_consent).toBe(false)
+        expect(payload.consent_method).toBe('')
+        expect(payload.sms_consent_note).toBe('')
+    })
+
+    it('sends the first touch in snake case, or null', () => {
+        const payload = buildN8NLeadPayload(
+            {
+                id: 'lead-5',
+                firstTouch: {
+                    source: 'chatgpt',
+                    medium: 'ai',
+                    referrer: 'https://chatgpt.com/',
+                    landingPage: 'https://www.alluringplasticsurgery.com/',
+                    at: '2026-10-20T14:00:00.000Z',
+                },
+            },
+            'lead.created'
+        )
+        expect(payload.first_touch).toEqual({
+            source: 'chatgpt',
+            medium: 'ai',
+            campaign: '',
+            referrer: 'https://chatgpt.com/',
+            landing_page: 'https://www.alluringplasticsurgery.com/',
+            at: '2026-10-20T14:00:00.000Z',
+        })
+        expect(
+            buildN8NLeadPayload({ id: 'lead-6' }, 'lead.created').first_touch
+        ).toBeNull()
+    })
+})

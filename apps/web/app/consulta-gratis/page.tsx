@@ -204,7 +204,7 @@ export default async function ConsultaGratisPage() {
                 />
 
                 {/* Section 7: Mini Lead Capture */}
-                <MiniLeadCapture id='mini-capture' />
+                <MiniLeadCapture id='mini-capture' lang='es' />
 
                 {/* Section 8: Final CTA - Spanish */}
                 <CTASection

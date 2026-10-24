@@ -654,7 +654,7 @@
 }
 
 .mj .mj-field--wide,
-.mj .mj-consent,
+.mj .mj-consent-line,
 .mj .mj-fields > .mj-error,
 .mj .mj-send {
     grid-column: 1 / -1;
@@ -703,36 +703,24 @@
     line-height: 1.4;
 }
 
-.mj .mj-consent {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid transparent;
-    border-radius: 12px;
-}
-
-.mj .mj-consent.is-invalid {
-    border-color: var(--error);
-    background: rgba(242, 161, 151, 0.06);
-}
-
-.mj .mj-consent input {
-    flex: none;
-    width: 20px;
-    height: 20px;
-    margin-top: 1px;
-    accent-color: var(--gold);
-}
-
-.mj .mj-consent label {
-    color: #a99e91;
-    font-size: 11px;
+/* Sending is the consent (#350): the site-wide notice, at reading size. */
+.mj .mj-consent-line {
+    margin: 0;
+    color: #e3d7ca;
+    font-size: 14px;
     line-height: 1.5;
 }
 
-.mj .mj-consent a {
+.mj .mj-consent-line a {
     color: var(--gold);
     text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+@media (min-width: 640px) {
+    .mj .mj-consent-line {
+        font-size: 15px;
+    }
 }
 
 .mj .mj-send {

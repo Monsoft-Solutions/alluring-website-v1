@@ -14,6 +14,7 @@ import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import { trackEvent } from '@/lib/analytics/analytics.client'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 import {
     type BodyArea,
@@ -257,6 +258,7 @@ export function QuizContainer({ className }: QuizContainerProps) {
                 lastName: data.lastName,
                 email: data.email,
                 phone: data.phone,
+                ...SUBMIT_CONSENT,
                 subject: 'Procedure Quiz Lead',
                 message: `Quiz completed. Recommended: ${recommendations
                     .filter((r) => r.confidence !== 'low')

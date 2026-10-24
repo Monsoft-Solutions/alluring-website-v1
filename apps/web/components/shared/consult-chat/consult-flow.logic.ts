@@ -86,18 +86,3 @@ export function answerStep(
 export function answeredCount(answers: FlowAnswers): number {
     return [answers.procedure, answers.timeline].filter(Boolean).length
 }
-
-/**
- * How a lead gave its consent to be texted, stored with the lead
- * (`consent_method`, `consent_version`) so each record says which wording
- * it agreed to.
- *
- * - `checkbox`: the site-wide wording beside a box the visitor ticks.
- * - `tap`: a line above the button that names it; sending is the consent.
- *   `version` names the wording, and changes whenever the wording does.
- */
-export type ConsultConsent =
-    | { readonly method: 'checkbox' }
-    | { readonly method: 'tap'; readonly version: string }
-
-export const CHECKBOX_CONSENT: ConsultConsent = { method: 'checkbox' }

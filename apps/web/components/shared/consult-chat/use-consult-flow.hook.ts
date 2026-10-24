@@ -27,7 +27,12 @@
  * pipeline (`useContactFormSubmission` → `/api/contact`), so it reports the
  * shared lead funnel (#272) and every lead lands tagged with its page's
  * source. The procedure and timeline go into the staff note and the lead
- * record, never into analytics.
+ * record, never into analytics. The pipeline adds the visit's referrer,
+ * landing page and first touch (#350).
+ *
+ * Sending is the consent to be called and texted: the last step shows the
+ * site-wide notice above the button and every lead carries
+ * `SUBMIT_CONSENT` (#350). There is no checkbox.
  */
 
 import {
@@ -44,6 +49,7 @@ import {
     readAttribution,
 } from '@/components/landing-pages/request-consultation/lp-tracking'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import {
     LEAD_FORM_EVENTS,
     type LeadFormContextParams,
@@ -76,8 +82,6 @@ import {
 import {
     answeredCount,
     answerStep,
-    CHECKBOX_CONSENT,
-    type ConsultConsent,
     EMPTY_THREAD,
     FLOW_LAST_STEP,
     FLOW_STEP_NAMES,
@@ -89,7 +93,7 @@ import {
     restoreThread,
 } from './consult-flow.logic'
 
-export type FlowErrorField = 'procedure' | 'name' | 'phone' | 'consent'
+export type FlowErrorField = 'procedure' | 'name' | 'phone'
 
 /** Default pause before the next question, as if the coordinator typed it. */
 export const DEFAULT_TYPING_MS = 700
@@ -136,8 +140,6 @@ export interface ConsultFlowOptions {
     readonly dataLayerContext?: Readonly<Record<string, string>>
     /** Pause before the next question after a tap; 0 moves on at once. */
     readonly typingMs?: number
-    /** How the visitor agrees to be texted. The site-wide checkbox by default. */
-    readonly consent?: ConsultConsent
     /** Merged into every funnel event (the test arm and page version). */
     readonly analyticsParams?: LeadFormContextParams
     /**
@@ -187,7 +189,6 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         dataLayerEvents,
         dataLayerContext,
         typingMs = DEFAULT_TYPING_MS,
-        consent: consentMode = CHECKBOX_CONSENT,
         analyticsParams,
         startOn = 'interaction',
         entryName = 'form',
@@ -235,7 +236,6 @@ export function useConsultFlow(options: ConsultFlowOptions) {
 
     const [typing, setTyping] = useState(false)
     const [phone, setPhoneValue] = useState('')
-    const [consentChecked, setConsentChecked] = useState(false)
     const [errors, setErrors] = useState<ReadonlySet<FlowErrorField>>(new Set())
 
     const composerRef = useRef<HTMLDivElement>(null)
@@ -319,7 +319,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
             behavior: prefersReducedMotion() ? 'auto' : 'smooth',
         })
         composer
-            .querySelector<HTMLElement>('input:not([type=checkbox]), button')
+            .querySelector<HTMLElement>('input, button')
             ?.focus({ preventScroll: true })
     }, [step, typing])
 
@@ -411,11 +411,6 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         clearError('phone')
     }
 
-    const setConsent = (checked: boolean) => {
-        setConsentChecked(checked)
-        clearError('consent')
-    }
-
     // The page's links answer for the visitor; see the module comment.
     const answerRef = useRef(answer)
     const markFinancingRef = useRef(() => {})
@@ -497,8 +492,6 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         setErrors(next)
     }
 
-    const tapConsent = consentMode.method === 'tap'
-
     const submitLead = async () => {
         const fullName = name.trim().replace(/\s+/g, ' ')
         const national = nationalDigits(phone)
@@ -506,7 +499,6 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         if (oneScreen && !answers.procedure) nextErrors.add('procedure')
         if (fullName.length < 2) nextErrors.add('name')
         if (!national) nextErrors.add('phone')
-        if (!tapConsent && !consentChecked) nextErrors.add('consent')
         setErrors(nextErrors)
         if (!national || nextErrors.size) {
             trackValidationErrors([...nextErrors])
@@ -536,11 +528,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
             name: fullName,
             phone: formatPhone(national),
             procedure: answers.procedure,
-            consentGiven: true,
-            consentMethod: consentMode.method,
-            ...(consentMode.method === 'tap' && {
-                consentVersion: consentMode.version,
-            }),
+            ...SUBMIT_CONSENT,
             ...(leadVariants && {
                 pageVariant: leadVariants.page,
                 formVariant: leadVariants.form,
@@ -570,15 +558,15 @@ export function useConsultFlow(options: ConsultFlowOptions) {
             offer,
             timeZone: timeZone?.zone,
             // The hook merges the site-wide attribution after these, so
-            // these only fill what it did not capture.
+            // these only fill what it did not capture. The referrer and
+            // landing page are the hook's alone: the visit's, not this
+            // page's (#350).
             gclid: campaign.gclid || undefined,
             utmSource: campaign.utm_source || undefined,
             utmMedium: campaign.utm_medium || undefined,
             utmCampaign: campaign.utm_campaign || undefined,
             utmContent: campaign.utm_content || undefined,
             utmTerm: campaign.utm_term || undefined,
-            referrer: document.referrer || undefined,
-            landingPage: window.location.href,
         })
     }
 
@@ -599,8 +587,7 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         name,
         phone,
         typing,
-        consentChecked,
-        tapConsent,
+        lang,
         invalid,
         busy: isSubmitting || isSuccess,
         isError,
@@ -615,7 +602,6 @@ export function useConsultFlow(options: ConsultFlowOptions) {
         change,
         setName,
         setPhone,
-        setConsent,
         onPhoneFocus,
         onSubmit,
     }

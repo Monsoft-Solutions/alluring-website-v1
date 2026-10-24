@@ -2,8 +2,8 @@
 
 /**
  * ConsultFields — the consultation request on one screen (#307): the
- * procedure, first name and mobile number together, with the consent box and
- * the send button. No timeline: the thank-you page asks it.
+ * procedure, first name and mobile number together, with the consent notice
+ * and the send button. No timeline: the thank-you page asks it.
  *
  * It runs on the same hook as the thread and the tap card
  * (`useConsultFlow`, `layout: 'one-screen'`), so the send, validation,

@@ -17,6 +17,7 @@ import { Form } from '@workspace/ui/components/form'
 import { CheckCircle2, Languages, Loader2, Phone, Sparkles } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
 import {
     NameField,
@@ -25,6 +26,7 @@ import {
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { useContactFormSubmission } from '@/hooks/useContactFormSubmission.hook'
+import { type ConsentLang, SUBMIT_CONSENT } from '@/lib/constants/lead-consent'
 import {
     CONTACT_SOURCES,
     type ContactSource,
@@ -36,12 +38,15 @@ export type MiniLeadCaptureProps = {
     readonly id?: string
     readonly source?: ContactSource
     readonly analyticsFormName?: string
+    /** The consent notice's language: the page's (default English). */
+    readonly lang?: ConsentLang
 }
 
 export function MiniLeadCapture({
     id = 'mini-capture',
     source = CONTACT_SOURCES.LANDING_PAGE,
     analyticsFormName = 'landing_mini_capture',
+    lang = 'en',
 }: MiniLeadCaptureProps) {
     const form = useForm<LeadCaptureInput>({
         resolver: zodResolver(leadCaptureSchema),
@@ -71,7 +76,7 @@ export function MiniLeadCapture({
     })
 
     const handleSubmit = async (data: LeadCaptureInput) => {
-        await submit(data)
+        await submit({ ...data, ...SUBMIT_CONSENT })
     }
 
     return (
@@ -209,8 +214,16 @@ export function MiniLeadCapture({
                                             />
                                         )}
 
+                                        {/* Sending is the consent (#350). */}
+                                        <ConsentNotice
+                                            id='mini-capture-consent'
+                                            lang={lang}
+                                            tone='dark'
+                                            className='pt-1'
+                                        />
                                         <Button
                                             type='submit'
+                                            aria-describedby='mini-capture-consent'
                                             variant='gold'
                                             size='lg'
                                             disabled={isSubmitting}

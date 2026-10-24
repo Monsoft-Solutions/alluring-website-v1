@@ -37,3 +37,21 @@ describe('validateBySource', () => {
         expect(validateBySource({ ...base }).valid).toBe(false)
     })
 })
+
+describe('validateBySource: the compact hero forms (#350)', () => {
+    it('accepts contact-hero with a phone and no email', () => {
+        expect(
+            validateBySource({
+                ...base,
+                source: 'contact-hero',
+                phone: '+13057974357',
+            })
+        ).toEqual({ valid: true })
+    })
+
+    it('still needs a phone or an email', () => {
+        expect(
+            validateBySource({ ...base, source: 'contact-hero' }).valid
+        ).toBe(false)
+    })
+})

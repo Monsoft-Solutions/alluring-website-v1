@@ -2,7 +2,7 @@
 
 /**
  * The pieces the thread (`ConsultChat`) and the tap card (`ConsultCard`)
- * draw the same way: the last step's fields, consent and send button, the
+ * draw the same way: the last step's fields, consent notice and send button, the
  * honeypot, and the two icons. Both forms run on `useConsultFlow`, so the
  * last step behaves identically in each.
  *
@@ -10,7 +10,7 @@
  * Melissa's page, whose sheet styles its own.
  */
 
-import { Rich } from '@/components/landing-pages/request-consultation/lp-primitives.component'
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 
 import type { ConsultChatCopy } from './consult-chat.types'
 import type { RefObject } from 'react'
@@ -63,7 +63,9 @@ interface ConsultContactFieldsProps {
 
 /**
  * The last step: an optional note on what happens next (`contactNote`),
- * name, mobile number, consent, and the send button.
+ * name, mobile number, the consent notice, and the send button. Sending is
+ * the consent (#350); the notice sits right above the button and the button
+ * points screen readers at it.
  */
 export function ConsultContactFields({
     c,
@@ -134,40 +136,12 @@ export function ConsultContactFields({
                 )}
             </div>
 
-            {flow.tapConsent && copy.consentTap ? (
-                <p className={c('consent-line')} id={consentLineId}>
-                    <Rich parts={copy.consentTap} />
-                </p>
-            ) : (
-                <>
-                    <div
-                        className={`${c('consent')}${invalid('consent') ? ' is-invalid' : ''}`}
-                    >
-                        <input
-                            id={fieldId('consent')}
-                            type='checkbox'
-                            checked={flow.consentChecked}
-                            onChange={(event) =>
-                                flow.setConsent(event.target.checked)
-                            }
-                            aria-invalid={invalid('consent')}
-                            aria-describedby={
-                                invalid('consent')
-                                    ? fieldId('consent-error')
-                                    : undefined
-                            }
-                        />
-                        <label htmlFor={fieldId('consent')}>
-                            <Rich parts={copy.consent} />
-                        </label>
-                    </div>
-                    {invalid('consent') && (
-                        <p className={c('error')} id={fieldId('consent-error')}>
-                            {copy.errors.consent}
-                        </p>
-                    )}
-                </>
-            )}
+            <ConsentNotice
+                id={consentLineId}
+                lang={flow.lang}
+                tone='inherit'
+                className={c('consent-line')}
+            />
 
             <button
                 ref={sendRef}
@@ -175,11 +149,7 @@ export function ConsultContactFields({
                 className={`${c('send')} ${c('send--final')}`}
                 disabled={flow.busy}
                 aria-busy={flow.busy}
-                aria-describedby={
-                    flow.tapConsent && copy.consentTap
-                        ? consentLineId
-                        : undefined
-                }
+                aria-describedby={consentLineId}
             >
                 {flow.busy ? copy.submitting : copy.submit}
                 <ArrowIcon />

@@ -8,9 +8,9 @@
  * send and tracking; only the drawing differs, so the test measures the form
  * and nothing else.
  *
- * Consent is the site-wide checkbox in every arm (#307). v6 had made tapping
- * the button the consent, and sends fell anyway, so the box stays and the
- * two arms differ only in steps vs one screen.
+ * Consent is the site-wide notice above the button in every arm: sending is
+ * the consent, with no checkbox (#350; #307 had brought the box back after
+ * v6's tap line). The two arms differ only in steps vs one screen.
  *
  * It submits like the v5 thread did: source `landing-page`, the lead's
  * campaign identifiers, and a full page load to the ad funnel's own

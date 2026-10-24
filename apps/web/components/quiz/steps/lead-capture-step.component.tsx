@@ -12,19 +12,18 @@ import { Form } from '@workspace/ui/components/form'
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
 import { Loader2, Lock, Shield, Sparkles } from 'lucide-react'
-import Link from 'next/link'
+import { useId } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { ConsentNotice } from '@/components/shared/forms/consent-notice.component'
 import {
-    CheckboxField,
     EmailField,
     FirstNameField,
     LastNameField,
     PhoneField,
 } from '@/components/shared/forms/form-fields.component'
 import { FormFeedback } from '@/components/shared/forms/form-feedback.component'
-import { siteConfig } from '@/lib/data/site-config'
 import {
     requiredEmailSchema,
     requiredPhoneSchema,
@@ -38,9 +37,6 @@ const quizLeadSchema = z.object({
     lastName: z.string().min(1, 'Last name is required'),
     email: requiredEmailSchema,
     phone: requiredPhoneSchema,
-    consentGiven: z.boolean().refine((val) => val === true, {
-        message: 'You must agree to the terms to continue.',
-    }),
 })
 
 type QuizLeadFormInput = z.input<typeof quizLeadSchema>
@@ -66,6 +62,7 @@ export function LeadCaptureStep({
     className,
 }: LeadCaptureStepProps) {
     const content = QUIZ_QUESTIONS.leadCapture
+    const consentId = `quiz-consent-${useId()}`
 
     const form = useForm<QuizLeadFormInput>({
         resolver: zodResolver(quizLeadSchema),
@@ -74,7 +71,6 @@ export function LeadCaptureStep({
             lastName: '',
             email: '',
             phone: '',
-            consentGiven: false,
         },
     })
 
@@ -176,34 +172,6 @@ export function LeadCaptureStep({
                             required
                         />
 
-                        {/* Consent */}
-                        <CheckboxField
-                            control={form.control}
-                            name='consentGiven'
-                            disabled={isSubmitting}
-                            variant='light'
-                            required
-                        >
-                            I have read and understood the{' '}
-                            <Link
-                                href='/privacy'
-                                className='text-gold-600 hover:text-gold-500 underline'
-                                target='_blank'
-                            >
-                                Privacy Policy
-                            </Link>{' '}
-                            and{' '}
-                            <Link
-                                href='/terms'
-                                className='text-gold-600 hover:text-gold-500 underline'
-                                target='_blank'
-                            >
-                                Terms
-                            </Link>
-                            . By submitting, I consent to receive informational
-                            messages from {siteConfig.business.name}.
-                        </CheckboxField>
-
                         {/* Error */}
                         {error && (
                             <FormFeedback
@@ -213,9 +181,14 @@ export function LeadCaptureStep({
                             />
                         )}
 
+                        {/* Sending is the consent (#350): the notice sits
+                            right above the button. */}
+                        <ConsentNotice id={consentId} tone='light' />
+
                         {/* Submit button */}
                         <motion.button
                             type='submit'
+                            aria-describedby={consentId}
                             disabled={isSubmitting}
                             whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}

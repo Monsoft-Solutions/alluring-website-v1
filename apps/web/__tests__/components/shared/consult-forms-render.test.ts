@@ -42,7 +42,7 @@ const { ConsultChat } = await import(
 const { ConsultCard } = await import(
     '@/components/shared/consult-chat/consult-card.component'
 )
-const { buildLpChat, LP_CONSENT_VERSION } = await import(
+const { buildLpChat } = await import(
     '@/components/landing-pages/request-consultation/lp-chat-copy'
 )
 const { HOME_CHAT } = await import(
@@ -101,7 +101,6 @@ describe('the landing page’s quiet thread (arm A)', () => {
             greeting: false,
             history: 'compact',
             typingMs: 0,
-            consent: { method: 'tap', version: LP_CONSENT_VERSION },
             defaultProcedure: 'tummy-tuck',
         })
     )
@@ -135,7 +134,6 @@ describe('the landing page’s tap card (arm B)', () => {
             ...base,
             lang: 'es',
             copy,
-            consent: { method: 'tap', version: LP_CONSENT_VERSION },
             defaultProcedure: 'tummy-tuck',
         })
     )
@@ -166,7 +164,6 @@ describe('the last step’s wording test (#302)', () => {
             id: `last-${form}-${lang}-${copyVariant}`,
             lang,
             copy: buildLpChat('tummy-tuck', copyVariant).copy[lang],
-            consent: { method: 'tap', version: LP_CONSENT_VERSION },
             defaultProcedure: 'tummy-tuck',
         } as const
         return renderToStaticMarkup(
@@ -254,10 +251,22 @@ describe('ConsultFields, the one-screen form (#307)', async () => {
         }
     })
 
-    it('uses the consent checkbox, not the tap line', () => {
+    it('shows the consent notice above the button, with no checkbox (#350)', () => {
         const html = render()
-        expect(html).toContain('type="checkbox"')
-        expect(html).not.toContain('cc-consent-line')
+        expect(html).not.toContain('type="checkbox"')
+        expect(html).toContain('class="cc-consent-line"')
+        expect(html).toContain(
+            'By submitting this form, you agree that Alluring Plastic Surgery may call and text you'
+        )
+        // The notice comes right before the button, which points at it.
+        const notice = html.indexOf('cc-consent-line')
+        const button = html.indexOf('type="submit"')
+        expect(notice).toBeGreaterThan(-1)
+        expect(notice).toBeLessThan(button)
+        expect(html).toMatch(
+            /<button[^>]*type="submit"[^>]*aria-describedby="consultation-consent-line"/
+        )
+        expect(html).toContain('href="tel:+17863058649"')
     })
 
     it('has no step list, only the title and the time', () => {
