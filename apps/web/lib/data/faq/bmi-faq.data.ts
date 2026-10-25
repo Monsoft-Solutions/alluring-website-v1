@@ -1,71 +1,64 @@
 /**
- * BMI Calculator FAQ Data
+ * The BMI page's FAQ (/bmi-calculator, #346).
  *
- * Comprehensive FAQ data specifically for the BMI calculator page.
- * Covers BMI requirements, surgical candidacy, and procedure-specific questions.
+ * A data file because two surfaces read it: the visible FAQ (`ModuleFaq`)
+ * and the page's `FAQPage` structured data, which must match it word for
+ * word. Every figure comes from `lib/data/bmi/bmi.facts.ts`, and the copy
+ * sweep (`check:procedure-copy --slug bmi-calculator`) checks them on the
+ * built page.
  *
- * Research sources:
- * - beautybydrcat.com/blog/what-is-the-bmi-requirement-for-plastic-surgery
- * - vadoplasticsurgery.com/blog/is-there-a-bmi-requirement-for-plastic-surgery
- * - careagaplasticsurgery.com/blog/does-your-bmi-affect-your-plastic-surgery-candidacy
- * - frontrangeplasticsurgery.com/patient-information/bmi
- * - drglennlyle.com/blog/tummy-tuck-and-bmi
+ * Questions follow how people search (Search Console, 90 days to
+ * 2026-10-14) and don't repeat the page's section headings.
  */
-import { siteConfig } from '@/lib/data/site-config'
-import type { FaqItem } from '@/lib/types/shared/faq.type'
+import type { ProcedureFAQ } from '@/lib/types/procedure.type'
 
-/**
- * BMI FAQ items
- */
-export const bmiFaqData: FaqItem[] = [
+export const bmiFaqs: ProcedureFAQ[] = [
     {
-        question: 'What is the ideal BMI for plastic surgery?',
-        answer: 'Most plastic surgeons consider patients with a BMI between 18 and 32 to be optimal candidates for cosmetic surgery. While many surgeons set their BMI requirement at 30 or below, some are comfortable working with patients up to BMI 35-40 depending on overall health. Patients in the "normal" range (18.5-24.9) typically have the lowest surgical risk and best outcomes. Our surgeons evaluate each patient individually.',
+        question: 'Is there a BMI limit for plastic surgery?',
+        answer: 'No society sets one hard limit. For most body and breast procedures the published evidence points to a BMI under 30, and BMI 35 or under for breast reduction, because complications rise step by step with BMI. We encourage you to reach your range before surgery, and your surgeon decides case by case.',
     },
     {
-        question: 'Can I have plastic surgery if my BMI is over 30?',
-        answer: 'Yes, many surgeons perform procedures on patients with BMI between 30-35, though additional health screenings are typically required. For patients with BMI 35-40 without major health problems, some procedures may be performed in a hospital setting for enhanced safety. Each practice sets its own guidelines—a patient turned down by one surgeon may be accepted by another. A consultation will determine your specific options.',
+        question: 'What is the ideal BMI for a BBL?',
+        answer: "We recommend a BMI under 30 before a BBL. No society publishes a BBL-specific number, so the range follows the wider evidence on cosmetic surgery risk. Very lean patients face the opposite question, whether there's enough fat to transfer, which only an exam answers.",
     },
     {
-        question: 'How does BMI affect BBL surgery candidacy?',
-        answer: 'For Brazilian Butt Lift (BBL) and combo procedures like BBL with breast augmentation, a BMI of 32 or less is typically recommended. Patients need adequate fat deposits for transfer, so those with BMI under 23 may not have enough donor fat. A BMI between 25-30 is often optimal, providing sufficient fat while maintaining safe surgical conditions. Your consultation will assess your fat distribution and candidacy.',
+        question: 'Can I get lipo 360 with a BMI over 30?',
+        answer: "Sometimes, but we recommend reaching a BMI under 30 first. Liposuction isn't a weight-loss treatment, and studies tie a higher BMI and larger volumes to more complications. Tell us your BMI and your goals; your surgeon will tell you what applies to you and whether to lose weight first.",
     },
     {
-        question: 'What BMI do I need for a tummy tuck?',
-        answer: "For tummy tucks (abdominoplasty) and combo procedures, most surgeons recommend a BMI of 32 or less, with many preferring 30 or below. Patients with BMI up to 35 may still be candidates if they have no underlying health problems, often with surgery performed in a hospital setting. It's important to note that tummy tucks are for body contouring, not weight loss—you should be close to your goal weight for best results.",
+        question: 'Can I get a tummy tuck with a BMI of 35?',
+        answer: "It's possible, but it isn't what we recommend. In a study of 25,478 patients having a tummy tuck, a BMI of 30 or more was an independent risk factor for major complications. We encourage you to reach a BMI under 30 first, and your surgeon weighs your whole health case by case.",
     },
     {
-        question: 'Is BMI the only factor in surgical candidacy?',
-        answer: 'No, BMI is just one of many factors we consider. We also evaluate your overall health, medical history, medications, smoking status, previous surgeries, and specific aesthetic goals. A patient with a higher BMI but excellent health may be a better candidate than someone with a lower BMI who has underlying health conditions. Your personalized consultation will assess all relevant factors.',
+        question: 'What should I weigh for a mommy makeover?',
+        answer: "It depends on your height. We recommend a BMI under 30 before a mommy makeover, and the height and weight chart on this page shows the most you can weigh at each height to stay under it. ASPS lists being at your ideal body weight among the signs you're ready.",
     },
     {
-        question: 'How accurate is the BMI calculator?',
-        answer: "The BMI calculator provides an estimate based on the standard formula (weight in kg divided by height in meters squared). While BMI is a useful screening tool, it doesn't account for muscle mass, bone density, age, sex, or fat distribution. Athletes and muscular individuals may have a high BMI despite low body fat. Our surgeons use BMI alongside other assessments for a complete picture.",
+        question: 'Does BMI matter for breast augmentation?',
+        answer: 'Yes. We recommend a BMI under 30 before breast augmentation. Lower is better still: in 6,515 patients having cosmetic breast augmentation, complications in the first 30 days were 4.3% at a BMI of 25.2 or more and 1.3% below it. Your surgeon weighs that with your health and your goals.',
     },
     {
-        question: 'What should I do if my BMI is too high for surgery?',
-        answer: `If your BMI is above the recommended range for your desired procedure, don't be discouraged. We offer supportive consultations to discuss safe weight management strategies and timeline planning. Many patients successfully reach their target BMI with guidance and return for their procedures. Our team can connect you with nutritional resources and create a roadmap to your goals.`,
+        question: 'Is there a BMI limit for breast reduction?',
+        answer: "ASPS doesn't set one. The 2022 ASPS guideline on breast reduction tells surgeons to counsel patients that a BMI over 35 may mean a higher risk of complications, mainly infection and wound healing problems, and it offers surgery for symptoms rather than weight. We recommend a BMI of 35 or under before a breast reduction and decide case by case.",
     },
     {
-        question: 'Do you offer consultations for patients with higher BMIs?',
-        answer: `Absolutely. We welcome patients at all stages of their journey. During your consultation, our board-certified surgeons will honestly assess your candidacy, discuss any modifications needed, and help you understand your options. Even if surgery isn't immediately recommended, we can create a plan to help you become a candidate in the future. Call ${siteConfig.contact.phoneDisplay} to schedule.`,
+        question: 'Why is BMI 30 the line for so many procedures?',
+        answer: "Because that's where the evidence turns. In 127,961 patients having cosmetic surgery, 1.6% of those at BMI 18.5 to 24.9 had a major complication, against 3.1% at BMI 30 to 39.9. In patients having a tummy tuck, a BMI of 30 or more was an independent risk factor. Risk rises gradually, so the range is a recommendation, not a wall.",
     },
     {
-        question: 'Can weight fluctuations after surgery affect my results?',
-        answer: 'Yes, significant weight changes after surgery can impact your results. We recommend being at a stable weight you can maintain before undergoing cosmetic procedures. For body contouring procedures like liposuction or tummy tucks, weight gain can diminish results, while weight loss may create loose skin. Your surgeon will discuss realistic expectations and maintenance strategies.',
+        question: 'How long should my weight be stable before surgery?',
+        answer: "After dramatic weight loss or bariatric surgery, The Aesthetic Society's guidance for a buttock lift is a stable weight for at least six months, with no further loss expected. For other procedures the societies ask for a stable weight without setting a number, so tell us your history and we'll plan the timing with you.",
     },
     {
-        question:
-            'Why do different procedures have different BMI requirements?',
-        answer: 'Different procedures have varying BMI guidelines because of their specific risks and technical requirements. Procedures involving larger incisions or longer anesthesia times may require stricter BMI limits. Some procedures, like BBL, require adequate fat reserves. Your surgeon will explain the specific considerations for your desired procedure during your consultation.',
+        question: 'Can I have surgery while taking a GLP-1 medicine?',
+        answer: "Often, yes, with planning. Because GLP-1 medicines slow how fast the stomach empties, anesthesia and surgery societies issued joint guidance in 2024: most patients can keep taking them before elective surgery, and those at highest risk may be asked to follow a liquid diet for 24 hours before. Follow your prescriber's and your surgeon's instructions.",
+    },
+    {
+        question: 'Why does Florida law care about BMI?',
+        answer: "Florida's office surgery rule allows surgery under deep sedation or general anesthesia in a doctor's office only for patients classed ASA I or II; ASA III and higher must have it in a hospital or an ambulatory surgery center. In the ASA's own examples, a BMI of 40 or more is class III.",
+    },
+    {
+        question: 'Is BMI the only thing that decides if I can have surgery?',
+        answer: "No. The CDC calls BMI a screening measure, and it doesn't measure body fat directly. Your surgeon also looks at your health conditions, whether you smoke, your skin, where your fat sits and your goals. Tell us where you are, and we'll tell you exactly what applies to you.",
     },
 ]
-
-/**
- * FAQ section configuration for BMI calculator page
- */
-export const bmiFaqConfig = {
-    title: 'BMI & Plastic Surgery Questions',
-    description:
-        'Everything you need to know about how BMI affects your cosmetic surgery candidacy at Alluring Plastic Surgery.',
-}
