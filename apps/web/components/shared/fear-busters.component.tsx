@@ -13,26 +13,37 @@
  */
 import { CreditCard, ShieldCheck, Sparkles, Heart } from 'lucide-react'
 
+import { FINANCING_SENTENCE_LONG } from '@workspace/shared/claims/financing'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
+
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 
+/**
+ * Only what the claims canon verifies (#354): financing named with no
+ * payment figure or rate (D6), and one surgeon with her approved
+ * credentials, in place of the retired board counts, facility and volume.
+ */
 const FEAR_BUSTERS = [
     {
         icon: CreditCard,
         question: 'Can I afford this?',
-        answer: 'Flexible financing starting at just $27/week. Many patients qualify for 0% APR. Your investment, your terms.',
-        highlight: 'From $27/week',
+        answer: FINANCING_SENTENCE_LONG,
+        highlight: 'Financing available',
     },
     {
         icon: ShieldCheck,
         question: 'Is it safe?',
-        answer: 'Double Board-Certified surgeons. State-of-the-art facility. 5,000+ procedures performed with exceptional safety record.',
-        highlight: 'Double Board-Certified',
+        answer: `One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
+        highlight: 'One surgeon',
     },
     {
         icon: Sparkles,
         question: 'Will I look natural?',
-        answer: 'Our surgeons specialize in subtle, natural-looking enhancements. The goal is always "you, enhanced" — never overdone.',
+        answer: 'Your surgeon plans subtle, natural-looking changes with you. The goal is always "you, enhanced", never overdone.',
         highlight: 'Natural Results',
     },
     {
@@ -122,8 +133,8 @@ export function FearBusters({
                         <span className='font-semibold text-stone-900'>
                             Still have questions?
                         </span>{' '}
-                        Our patient concierge is happy to answer anything — zero
-                        pressure, zero sales pitch.
+                        We&apos;re happy to answer anything — zero pressure,
+                        zero sales pitch.
                     </p>
                     <a
                         href={formAnchor}

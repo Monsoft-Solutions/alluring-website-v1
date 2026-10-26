@@ -5,7 +5,10 @@ import {
 } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
-import { procedures } from '@/lib/data/procedures.data'
+import { getResolvedProcedures } from '@/lib/data/procedures.resolved.server'
+import { faqDataProcedures } from '@/lib/data/faq/procedures-faq-data'
+import { getDiscountStatementText } from '@/lib/queries/pricing.query'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { toProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { toAbsoluteUrl } from '@/lib/seo/procedure-graph.util'
 import { siteConfig } from '@/lib/data/site-config'
@@ -23,7 +26,7 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/procedures',
     title: pageTitle,
     description:
-        'Explore 15+ cosmetic procedures from board-certified Miami surgeons. BBL, breast augmentation, tummy tuck, liposuction & facial surgery. See before/afters.',
+        'Explore cosmetic procedures from one Miami surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, tummy tuck, liposuction & facial surgery. See before/afters.',
     keywords: [
         'plastic surgery miami',
         'cosmetic surgery miami',
@@ -41,7 +44,7 @@ export const metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            'Explore 15+ cosmetic procedures from board-certified Miami surgeons. BBL, breast augmentation, tummy tuck, liposuction & facial surgery. See before/afters.',
+            'Explore cosmetic procedures from one Miami surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, tummy tuck, liposuction & facial surgery. See before/afters.',
         siteName: siteConfig.business.name,
         images: [
             {
@@ -58,7 +61,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Explore 15+ cosmetic procedures from board-certified Miami surgeons. BBL, breast augmentation, tummy tuck, liposuction & facial surgery.',
+            'Explore cosmetic procedures from one Miami surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, tummy tuck, liposuction & facial surgery.',
         images: [`${siteUrl}/og-image.jpg`],
     },
 
@@ -76,7 +79,14 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default function ProceduresPage() {
+export default async function ProceduresPage() {
+    // Claim tokens in the procedures' copy are resolved first (#354).
+    const [procedures, faqData, discountStatement] = await Promise.all([
+        getResolvedProcedures(),
+        resolveClaimsIn(faqDataProcedures, 'text', 'faq /procedures'),
+        getDiscountStatementText(),
+    ])
+
     // Breadcrumb items for schema
     const breadcrumbItems = [
         { name: 'Home', item: siteUrl },
@@ -98,7 +108,7 @@ export default function ProceduresPage() {
             <WebPageSchema
                 name={`Cosmetic Surgery Procedures | ${siteConfig.business.name} Miami`}
                 url={pageUrl}
-                description={`Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. Expert surgeons, natural results, and personalized care.`}
+                description={`Discover our comprehensive range of cosmetic procedures at ${siteConfig.business.name} Miami. One surgeon, natural-looking results and personal care.`}
             />
 
             {/* Structured Data - Breadcrumb Schema */}
@@ -117,6 +127,8 @@ export default function ProceduresPage() {
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 <ProceduresPageContent
                     procedures={procedures.map(toProcedureSummary)}
+                    faqData={faqData}
+                    discountStatement={discountStatement}
                 />
             </ContainerLayout>
         </>

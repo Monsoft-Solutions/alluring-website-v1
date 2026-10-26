@@ -13,15 +13,15 @@ import {
     ShieldCheck,
     Clock,
     CreditCard,
-    Quote,
     Sparkles,
     Heart,
     Calendar,
 } from 'lucide-react'
 import Image from 'next/image'
 
+import { TRUST_BADGES } from '@workspace/shared/claims/trust'
+
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type BridalHeroProps = {
@@ -114,12 +114,6 @@ export function BridalHero({ id = 'hero' }: BridalHeroProps) {
                                     Wedding Timeline Planning
                                 </span>
                             </div>
-                            <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
-                                <Heart className='text-gold-400 h-4 w-4' />
-                                <span className='text-gold-300 text-sm font-medium'>
-                                    500+ Brides Transformed
-                                </span>
-                            </div>
                         </div>
 
                         {/* Financing Callout */}
@@ -127,7 +121,7 @@ export function BridalHero({ id = 'hero' }: BridalHeroProps) {
                             <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2'>
                                 <CreditCard className='text-gold-400 h-4 w-4' />
                                 <span className='text-sm font-medium text-stone-300'>
-                                    From $35/week | 0% APR available
+                                    Financing available
                                 </span>
                             </div>
                         </div>
@@ -150,44 +144,24 @@ export function BridalHero({ id = 'hero' }: BridalHeroProps) {
 
                         {/* Trust Cluster */}
                         <div className='mt-8 space-y-6'>
-                            {/* Testimonial Quote */}
-                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
-                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
-                                <div>
-                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
-                                        &ldquo;I wanted to feel confident in my
-                                        strapless wedding dress. The timing
-                                        worked out perfectly—my scars healed
-                                        beautifully and I felt like the best
-                                        version of myself on my wedding
-                                        day.&rdquo;
-                                    </p>
-                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Michelle K., Bride, 2024
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Board-Certified'}{' '}
-                                        Surgeons
+                                        One surgeon for every procedure
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Award className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Bridal Specialists
+                                        {TRUST_BADGES.board}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Clock className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Same-Week Consultations
+                                        In person or by video
                                     </span>
                                 </div>
                             </div>
@@ -195,7 +169,7 @@ export function BridalHero({ id = 'hero' }: BridalHeroProps) {
                             {/* Risk Reversal Message */}
                             <p className='text-center text-sm text-stone-500 lg:text-left'>
                                 ✓ Free consultation • ✓ Wedding timeline
-                                planning • ✓ Flexible financing
+                                planning • ✓ Financing available
                             </p>
                         </div>
                     </div>

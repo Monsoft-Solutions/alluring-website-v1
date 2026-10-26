@@ -18,6 +18,7 @@ import {
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     getAllGalleryGroupSlugs,
@@ -112,7 +113,7 @@ export async function generateMetadata({
             title: pageTitle,
             description:
                 group.description ??
-                `Explore our ${group.name} photo gallery showcasing exceptional results from our board-certified surgeons.`,
+                `Explore our ${group.name} before-and-after photo gallery from ${siteConfig.business.name} in Miami.`,
             images: group.coverImage
                 ? [
                       {
@@ -127,7 +128,7 @@ export async function generateMetadata({
             title: pageTitle,
             description:
                 group.description ??
-                `Explore our ${group.name} photo gallery showcasing exceptional results.`,
+                `Before-and-after photos from our ${group.name} gallery. Individual results vary.`,
             images: group.coverImage ? [group.coverImage.url] : undefined,
         },
     })
@@ -322,15 +323,17 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                     trustBadges={[
                         {
                             icon: <Award className='h-5 w-5' />,
-                            label: 'Board-Certified Surgeons',
+                            label: TRUST_BADGES.surgeon,
                         },
                         {
                             icon: <Users className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+                            label: formatRatingBadge(
+                                siteConfig.trustStats?.rating
+                            ),
                         },
                         {
                             icon: <Building2 className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                            label: TRUST_BADGES.board,
                         },
                     ]}
                 />

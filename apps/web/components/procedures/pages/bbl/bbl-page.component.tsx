@@ -23,7 +23,11 @@ import {
 import { ModuleSources } from '@/components/procedures/module-kit/module-sources.component'
 import { ModuleStarSprite } from '@/components/procedures/module-kit/module-stars.component'
 import { StickyCtaBar } from '@/components/procedures/sections/sticky-cta-bar.component'
-import { bblFigure, bblSources } from '@/lib/data/procedures/facts/bbl.facts'
+import {
+    PriceRangeText,
+    PriceTag,
+} from '@/components/shared/price-tag.component'
+import { bblSources } from '@/lib/data/procedures/facts/bbl.facts'
 import { siteConfig } from '@/lib/data/site-config'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { getBeforeAfterPairsByProcedure } from '@/lib/queries/gallery/before-after.query'
@@ -73,8 +77,9 @@ function captionOf(photo: GalleryMediaCard): string {
  * source list. Sections shared with other procedure pages come from
  * `components/procedures/module-kit/` and take the page's copy as props;
  * the BBL-only sections hold their own copy next to their markup.
- * Figures come from `bbl.facts.ts`; FAQs and the price table come from the
- * procedure data file, which the graph and the paid landing page also read.
+ * Figures come from `bbl.facts.ts`, prices from the pricing resolver
+ * (`prices`, #354); FAQs and the price table come from the procedure data
+ * file, which the graph and the paid landing page also read.
  *
  * Server components throughout. The client code is the before/after slider,
  * the results rail's two buttons, the consultation form, rendered twice
@@ -82,7 +87,7 @@ function captionOf(photo: GalleryMediaCard): string {
  * `SectionViewTracker`, which sends `section_view` once for each section a
  * visitor reaches. Motion is CSS (`module-kit.css`).
  */
-export async function BblPage({ procedure }: ProcedurePageModuleProps) {
+export async function BblPage({ procedure, prices }: ProcedurePageModuleProps) {
     const [pairs, gallery, reviewData] = await Promise.all([
         // One pair leads the results section with its slider.
         getBeforeAfterPairsByProcedure(procedure.slug, 1),
@@ -117,13 +122,18 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
     const rail = (label: string) => (
         <ModuleFactRail
             label={label}
-            startingAt={bblFigure('price-starting-at')}
+            startingAt={<PriceTag price={prices.starting} />}
             priceNote={
-                <>
-                    Most patients {bblFigure('price-most-patients')}, set for
-                    each patient
-                </>
+                prices.range ? (
+                    <>
+                        <PriceRangeText range={prices.range} capitalized />, set
+                        for each patient
+                    </>
+                ) : (
+                    'Set for each patient'
+                )
             }
+            discountStatement={prices.discountStatement}
             surgeonName={KARLINSKY_NAME}
             updatedOn={procedure.dateModified}
         />
@@ -150,11 +160,24 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
                 // table; the chips answer the next two questions: can I pay
                 // over time, and will someone speak my language.
                 chips={[
-                    { label: `Starting at ${bblFigure('price-starting-at')}` },
+                    ...(prices.starting
+                        ? [
+                              {
+                                  id: 'price',
+                                  label: (
+                                      <>
+                                          Starting at{' '}
+                                          <PriceTag price={prices.starting} />
+                                      </>
+                                  ),
+                              },
+                          ]
+                        : []),
                     { label: 'Financing available' },
                     { label: 'Hablamos español', lang: 'es' },
                 ]}
                 chipsLabel='BBL at Alluring in brief'
+                discountStatement={prices.discountStatement}
                 image={bblImages.hero}
                 cardNote='Ultrasound-guided under Florida law'
             />
@@ -178,8 +201,10 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
             />
 
             <ModuleBand rail={rail('BBL at Alluring, key facts')}>
-                <BblAtAGlance />
-                {procedure.pricing && <BblCost pricing={procedure.pricing} />}
+                <BblAtAGlance prices={prices} />
+                {procedure.pricing && (
+                    <BblCost pricing={procedure.pricing} prices={prices} />
+                )}
             </ModuleBand>
 
             <BblSafety />

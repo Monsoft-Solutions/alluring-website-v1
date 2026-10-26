@@ -1,13 +1,18 @@
 /**
  * Surgeons Grid Component
  *
- * Displays all surgeons in an elegant 3-column grid with hover effects.
+ * Displays the practice's doctors in a 3-column grid with hover effects.
  * Each card features grayscale to color transitions and links to individual surgeon pages.
  */
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
@@ -25,17 +30,15 @@ export function SurgeonsGridSection() {
                 {/* Section Header */}
                 <div className='mb-16 text-center'>
                     <span className='text-gold-500 mb-4 inline-block text-sm font-bold tracking-widest uppercase'>
-                        World-Class Expertise
+                        The Practice
                     </span>
                     <h2 className='mb-6 font-serif text-4xl leading-tight text-stone-900 md:text-5xl lg:text-6xl'>
-                        Meet Our{' '}
-                        <span className='text-stone-400 italic'>Surgeons</span>
+                        Meet the{' '}
+                        <span className='text-stone-400 italic'>Doctors</span>
                     </h2>
                     <p className='mx-auto max-w-2xl text-xl leading-relaxed text-stone-600'>
-                        Board-certified surgeons who combine technical mastery
-                        with an artistic eye. Your transformation is guided by
-                        years of experience and unwavering commitment to your
-                        safety and satisfaction.
+                        {KARLINSKY_NAME} is your surgeon at Alluring.{' '}
+                        {KARLINSKY_CREDENTIALS}
                     </p>
                 </div>
 

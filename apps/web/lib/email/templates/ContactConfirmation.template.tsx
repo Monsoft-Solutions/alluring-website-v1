@@ -16,6 +16,15 @@ import {
     Section,
     Text,
 } from '@react-email/components'
+import {
+    FINANCING_SENTENCE_LONG,
+    getFinancingPartnersString,
+} from '@workspace/shared/claims/financing'
+import {
+    KARLINSKY_ABS_CERTIFIED_YEAR,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
+import { RATING_FALLBACK } from '@workspace/shared/claims/trust'
 
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 import type { ContactConfirmationProps } from '@/lib/types/email/email-service.type'
@@ -31,52 +40,47 @@ import { EmailLayout } from '../components/email-layout.component'
 const resourceLinks = [
     {
         title: 'Browse Our Procedures',
-        description: 'Explore our full range of cosmetic surgery options',
+        description: 'See the procedures we offer',
         path: '/procedures',
     },
     {
         title: 'Financing Options',
-        description: 'Flexible payment plans through Cherry & CareCredit',
+        description: `Financing through ${getFinancingPartnersString()} for qualified applicants`,
         path: '/plastic-surgery-financing-miami',
     },
     {
-        title: 'Meet Our Surgeons',
-        description: 'Learn about our board-certified specialists',
-        path: '/about',
+        title: 'Meet Your Surgeon',
+        description: `${KARLINSKY_NAME}, board certified in general surgery by the American Board of Surgery`,
+        path: '/dr-karlinsky',
     },
     {
         title: 'Read Our Blog',
-        description: 'Tips, insights, and patient success stories',
+        description: 'Answers to common questions about surgery and recovery',
         path: '/blog',
     },
 ]
 
 /**
- * Trust statistics for credibility
- * Transformed from siteConfig.trustStats to match template format
+ * Trust facts for credibility: verified ones only. The patient count, years
+ * and accreditation it showed are retired (claims canon §4, #354).
  */
-const trustStats = siteConfig.trustStats
-    ? [
-          {
-              value: siteConfig.trustStats.patients,
-              label: 'Happy Patients',
-          },
-          {
-              value: siteConfig.trustStats.years,
-              label: 'Years Experience',
-          },
-          {
-              value: siteConfig.trustStats.accreditation || '',
-              label: 'Accredited',
-          },
-      ]
-    : []
+const trustStats = [
+    { value: 'One', label: 'Surgeon for every procedure' },
+    {
+        value: `Since ${KARLINSKY_ABS_CERTIFIED_YEAR}`,
+        label: 'Board certified in general surgery, American Board of Surgery',
+    },
+    {
+        value: siteConfig.trustStats?.rating || RATING_FALLBACK,
+        label: 'Stars on Google',
+    },
+]
 
 /**
  * Contact confirmation email template
  *
  * Sent to the form submitter confirming receipt of their message.
- * Features luxury tone, useful resource links, and trust indicators.
+ * Carries useful resource links and verified trust facts.
  *
  * @example
  * ```tsx
@@ -98,7 +102,7 @@ export function ContactConfirmationEmail({
 
     return (
         <EmailLayout
-            preview={`Thank you for contacting ${businessName}, ${firstName}!`}
+            preview={`Thank you for contacting ${businessName}, ${firstName}.`}
         >
             <EmailHeader title="We've Received Your Message" />
 
@@ -124,8 +128,7 @@ export function ContactConfirmationEmail({
                         ✓ Your Message Has Been Received
                     </Text>
                     <Text className='m-0 text-base text-stone-600'>
-                        A member of our patient care team will personally
-                        respond within <strong>1 business day</strong>.
+                        A member of our patient care team will be in touch.
                     </Text>
                 </Section>
 
@@ -137,10 +140,7 @@ export function ContactConfirmationEmail({
                 </Text>
 
                 <Text className='m-0 mb-6 text-base leading-relaxed text-stone-600'>
-                    At {businessName}, we believe that luxury aesthetic care
-                    should be accessible to everyone. Our flexible financing
-                    options make it easier than ever to achieve the look
-                    you&apos;ve always wanted.
+                    {FINANCING_SENTENCE_LONG}
                 </Text>
 
                 <Hr className='my-8 border-stone-200' />
@@ -250,8 +250,7 @@ export function ContactConfirmationEmail({
                 {/* Closing */}
                 <Text className='m-0 mb-2 text-base leading-relaxed text-stone-600'>
                     Thank you for considering {businessName} for your aesthetic
-                    goals. We look forward to helping you look and feel your
-                    absolute best.
+                    goals. We look forward to meeting you.
                 </Text>
 
                 <Text className='m-0 mt-6 text-base font-medium text-stone-900'>

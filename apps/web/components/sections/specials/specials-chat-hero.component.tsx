@@ -15,7 +15,9 @@ import {
     SITE_CHAT_THANK_YOU_PATH,
 } from '@/components/shared/consult-chat/site-chat.constants'
 import { SPECIALS_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
+import { withChatPrices } from '@/components/shared/consult-chat/site-chat-prices.server'
 import { LEAD_PAGE_CHAT_IDS } from '@/lib/constants/standalone-routes'
+import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export const SPECIALS_CHAT_ID =
@@ -34,13 +36,22 @@ export interface SpecialsOffer {
     readonly slug: string
 }
 
-export function SpecialsChatHero({
+export async function SpecialsChatHero({
     offer,
     monthYear,
+    rating,
 }: {
     readonly offer: SpecialsOffer | null
     readonly monthYear: string
+    /** The synced Google average rating; siteConfig is the fallback. */
+    readonly rating?: number | null
 }) {
+    const ratingText =
+        typeof rating === 'number'
+            ? rating.toFixed(1)
+            : (siteConfig.trustStats?.rating ?? '4.7')
+    // Starting prices from the pricing resolver (#354).
+    const chat = await withChatPrices(SPECIALS_CHAT)
     const intro = offer
         ? {
               en: (
@@ -124,12 +135,12 @@ export function SpecialsChatHero({
                     </p>
                     <p className='mt-4 hidden max-w-xl text-base leading-relaxed text-stone-300 sm:block sm:text-lg'>
                         {offer?.endsOn
-                            ? `The offer ends ${offer.endsOn}. Answer three quick questions and a patient coordinator texts you within 24 hours — in person in Miami, or by video from anywhere in the U.S.`
-                            : 'Answer three quick questions and a patient coordinator texts you within 24 hours to book your free consultation — in person in Miami, or by video from anywhere in the U.S.'}
+                            ? `The offer ends ${offer.endsOn}. Answer three quick questions and a patient coordinator texts you — in person in Miami, or by video from anywhere in the U.S.`
+                            : 'Answer three quick questions and a patient coordinator texts you to book your free consultation — in person in Miami, or by video from anywhere in the U.S.'}
                     </p>
                     <ul className='mt-5 hidden flex-wrap gap-x-5 gap-y-2 text-sm text-stone-400 lg:flex'>
                         <li>✓ Free consultation</li>
-                        <li>✓ 4.7★ on Google</li>
+                        <li>✓ {ratingText}★ on Google</li>
                         <li>✓ Financing available</li>
                         <li>✓ Hablamos español</li>
                     </ul>
@@ -138,8 +149,8 @@ export function SpecialsChatHero({
                 <div>
                     <SiteConsultChat
                         id={SPECIALS_CHAT_ID}
-                        copy={SPECIALS_CHAT.copy}
-                        staff={SPECIALS_CHAT.staff}
+                        copy={chat.copy}
+                        staff={chat.staff}
                         source={CONTACT_SOURCES.SPECIALS_PAGE}
                         formName='specials_chat'
                         thankYouPath={SITE_CHAT_THANK_YOU_PATH}
@@ -153,7 +164,8 @@ export function SpecialsChatHero({
                         intro={intro}
                     />
                     <p className='mt-3 text-center text-xs text-stone-400 lg:hidden'>
-                        Free consultation · 4.7★ on Google · Hablamos español
+                        Free consultation · {ratingText}★ on Google · Hablamos
+                        español
                     </p>
                 </div>
             </div>

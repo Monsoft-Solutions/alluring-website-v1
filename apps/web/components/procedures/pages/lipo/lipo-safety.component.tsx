@@ -107,8 +107,9 @@ function LipoVolumeScale() {
                         </p>
                         <p className='mt-0.5 text-[0.875rem] leading-[1.4] text-stone-300'>
                             The most with a tummy tuck in the same office
-                            operation. Above it, the office must register with
-                            the state and keep a log.
+                            operation. An office that removes more than 1,000 cc
+                            by liposuction must register with the Florida
+                            Department of Health, and the surgeon keeps a log.
                         </p>
                     </div>
                 </div>

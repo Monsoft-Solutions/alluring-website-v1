@@ -7,29 +7,66 @@ import {
 import { buildLpPrices } from '@/components/landing-pages/request-consultation/lp-prices'
 import { AD_VARIANTS } from '@/components/landing-pages/request-consultation/lp-variants'
 import { tummyTuckFigure } from '@/lib/data/procedures/facts/tummy-tuck.facts'
+import { buildPricingSnapshot } from '@workspace/shared/claims/prices'
+import { FALLBACK_PRICING } from '@workspace/shared/claims/prices'
 
 /**
  * The tummy tuck view's prices (#316). The ads quote "Mini tummy tuck from
  * $3,000" and a price asset with every type, and Google needs the page to show
- * the same prices, so they must come from the facts file and nowhere else.
+ * the same prices, so they come from the pricing resolver (#354), the same
+ * source as the procedure page, and the fallback sheet agrees with the facts.
  */
 describe('tummy tuck prices on the ads page (#316)', () => {
-    it('reads all five from the tummy tuck facts, in the price sheet’s order', () => {
+    it('reads all five from the pricing, in the price sheet’s order', () => {
         const prices = buildLpPrices('tummy-tuck')
         expect(prices).not.toBeNull()
-        expect(prices?.tummyTuck).toEqual({
+        const finals = Object.fromEntries(
+            Object.entries(prices?.tummyTuck ?? {}).map(([type, price]) => [
+                type,
+                price?.final,
+            ])
+        )
+        expect(finals).toEqual({
             mini: tummyTuckFigure('price-mini'),
             'extended-mini': tummyTuckFigure('price-extended-mini'),
             full: tummyTuckFigure('price-full'),
             extended: tummyTuckFigure('price-extended'),
             'fleur-de-lis': tummyTuckFigure('price-fleur-de-lis'),
         })
+        expect(prices?.statement).toBeNull()
     })
 
     it('matches what the tummy tuck ads say', () => {
         const prices = buildLpPrices('tummy-tuck')?.tummyTuck
-        expect(prices?.mini).toBe('$3,000')
-        expect(prices?.full).toBe('$4,500')
+        expect(prices?.mini?.final).toBe('$3,000')
+        expect(prices?.full?.final).toBe('$4,500')
+    })
+
+    it('follows an admin discount, with the 456.062 statement', () => {
+        const discounted = buildPricingSnapshot({
+            source: 'db',
+            lines: FALLBACK_PRICING.lines,
+            procedures: Object.values(FALLBACK_PRICING.procedures).map(
+                (settings) =>
+                    settings.procedure === 'tummy-tuck'
+                        ? { ...settings, discountPercent: 20 }
+                        : settings
+            ),
+            settings: {
+                defaultDiscountPercent: 0,
+                discountStatement: 'The 456.062 statement.',
+                comboDiscountTwoUsd: 500,
+                comboDiscountThreeUsd: 1000,
+                updatedAt: null,
+            },
+        })
+        const prices = buildLpPrices('tummy-tuck', discounted)
+        expect(prices?.tummyTuck.mini).toMatchObject({
+            list: '$3,000',
+            final: '$2,400',
+            discounted: true,
+        })
+        expect(prices?.statement).toBe('The 456.062 statement.')
     })
 
     it('shows prices on the tummy tuck view only', () => {

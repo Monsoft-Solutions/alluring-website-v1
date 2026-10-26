@@ -17,21 +17,21 @@ const philosophyPillars = [
         icon: Shield,
         title: 'Safety First',
         description:
-            'Hospital-grade protocols in our state-of-the-art facility. From anesthesia to infection control, we prioritize your health above aesthetics. Double Board-Certified surgeons who never compromise on safety standards.',
+            'From anesthesia to infection control, we put your health ahead of aesthetics.',
     },
     {
         num: '02',
         icon: HeartHandshake,
         title: 'Personalized Care',
         description:
-            'Real consultations with surgeons, not salespeople. We listen to your goals, assess your anatomy, and create a custom surgical plan built around your unique needs. No cookie-cutter approaches.',
+            'A real consultation with your surgeon, not a salesperson. We listen to your goals, assess your anatomy, and create a custom surgical plan built around your unique needs. No cookie-cutter approaches.',
     },
     {
         num: '03',
         icon: Sparkles,
         title: 'Natural Results',
         description:
-            'We enhance your natural beauty—never alter your identity. Our philosophy is simple: you should look like the best version of yourself, not a different person. Results that feel as authentic as they look.',
+            'We aim for results that look like you, not like a different person. Results that feel as authentic as they look.',
     },
 ]
 
@@ -58,8 +58,7 @@ export function PhilosophySection() {
                         </h2>
                         <p className='max-w-md text-xl leading-relaxed text-stone-600'>
                             At Alluring Plastic Surgery, every decision we make
-                            is guided by these three principles—ensuring you
-                            receive the highest standard of care, from
+                            is guided by these three principles, from
                             consultation to final result.
                         </p>
                         <div className='bg-gold-400 mt-8 h-1 w-20'></div>

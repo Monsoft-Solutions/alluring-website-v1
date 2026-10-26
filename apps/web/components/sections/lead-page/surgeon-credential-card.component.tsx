@@ -38,7 +38,7 @@ export function SurgeonCredentialCard({
         >
             <Image
                 src='/images/surgeons/dr-karlinsky.webp'
-                alt={`Dr. ${KARLINSKY_NAME}`}
+                alt={KARLINSKY_NAME}
                 width={800}
                 height={1000}
                 sizes='96px'
@@ -53,7 +53,7 @@ export function SurgeonCredentialCard({
                     Your surgeon
                 </p>
                 <Heading className='mt-1 font-serif text-lg leading-snug sm:text-xl'>
-                    Dr. {KARLINSKY_NAME}
+                    {KARLINSKY_NAME}
                 </Heading>
                 <p
                     className={`mt-1.5 text-sm leading-relaxed ${
@@ -72,7 +72,7 @@ export function SurgeonCredentialCard({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        Verify her board certification
+                        Verify her American Board of Surgery certification
                     </Link>
                 </p>
             </div>

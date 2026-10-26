@@ -4,52 +4,55 @@
  * Comprehensive FAQ data specifically for the financing page.
  * Covers application process, eligibility, payment terms, and more.
  */
-import { getFinancingPartnersString, siteConfig } from '@/lib/data/site-config'
+import {
+    FINANCING_SENTENCE_LONG,
+    getFinancingPartnersString,
+} from '@workspace/shared/claims/financing'
+
+import { siteConfig } from '@/lib/data/site-config'
 import type { FaqItem } from '@/lib/types/shared/faq.type'
 
 /**
- * Financing FAQ items
+ * Financing FAQ items. The partners are named and no number is quoted: no
+ * payment, rate, limit, term or approval speed (claims canon §6, D6, #354).
+ * Each lender sets its own terms, so the answers point there.
  */
 export const financingFaqData: FaqItem[] = [
     {
         question: 'What financing options do you offer?',
-        answer: `We partner with ${getFinancingPartnersString()} to provide flexible payment plans. Each partner offers unique benefits—from instant approval with Cherry to healthcare-specific credit with CareCredit and high loan limits with United Credit.`,
+        answer: FINANCING_SENTENCE_LONG,
     },
     {
         question: 'Will applying for financing affect my credit score?',
-        answer: 'Most of our financing partners use a soft credit check for pre-qualification, which does not impact your credit score. A hard inquiry may occur only after you formally accept a loan offer.',
+        answer: 'Each lender runs its own application and credit check. Ask the lender how its check affects your credit before you apply.',
     },
     {
         question: 'What credit score do I need to qualify?',
-        answer: 'Qualification requirements vary by partner. Cherry accepts credit scores as low as 520, making financing accessible to more patients. CareCredit and United Credit may have different requirements, and our team can help you find the best option for your situation.',
+        answer: 'Each lender sets its own requirements, and our team can go through the options with you.',
     },
     {
-        question: 'How quickly can I get approved?',
-        answer: 'Most patients receive approval within seconds. The application process is entirely online, and you can complete it from your phone or computer. Once approved, you can schedule your procedure immediately.',
-    },
-    {
-        question: 'Are there 0% APR options available?',
-        answer: 'Yes! CareCredit offers promotional 0% APR financing for qualifying purchases. The promotional period length depends on the amount financed and your creditworthiness. Our financing specialists can explain all available options during your consultation.',
+        question: 'How do I get approved?',
+        answer: 'You apply with the lender, online from your phone or computer, and the lender decides. Once approved, you can schedule your procedure.',
     },
     {
         question: 'What is the maximum amount I can finance?',
-        answer: 'Financing limits depend on the partner and your credit profile. Cherry offers up to $10,000 for aesthetic treatments, while United Credit can provide loans up to $25,000 or more based on your credit history.',
+        answer: 'Each lender sets its own limit, based on your application.',
     },
     {
         question: 'Can I pay off my loan early without penalties?',
-        answer: 'United Credit offers no early payment penalties, allowing you to pay off your loan ahead of schedule without extra fees. CareCredit and Cherry terms vary, so we recommend reviewing the specific terms of your chosen plan.',
+        answer: "Each lender sets its own terms, so review your plan's terms before you accept it.",
     },
     {
         question: 'How do I apply for financing?',
-        answer: `The easiest way is to call our office at ${siteConfig.contact.phoneDisplay} or request a consultation. Our financing specialists will guide you through the application process, help you compare options, and find the plan that best fits your budget.`,
+        answer: `The easiest way is to call our office at ${siteConfig.contact.phoneDisplay} or request a consultation. Our team will guide you through the application process and help you compare the lenders' options.`,
     },
     {
         question: 'Can I use financing for any procedure?',
-        answer: 'Yes! All of our cosmetic procedures are eligible for financing, including Brazilian Butt Lift (BBL), breast augmentation, tummy tuck, liposuction, mommy makeover, facelift, and more.',
+        answer: `Financing through ${getFinancingPartnersString()} can be used for BBL, breast augmentation, tummy tuck, liposuction, mommy makeover, facelift and our other procedures, for qualified applicants. Approval and terms are set by the lender.`,
     },
     {
         question: 'What documents do I need to apply?',
-        answer: 'The application process is straightforward. You typically need basic personal information, income details, and your Social Security number for the credit check. No extensive documentation is required for most applications.',
+        answer: 'The application process is straightforward. You typically need basic personal information, income details, and your Social Security number for the credit check. The lender tells you what it needs.',
     },
     {
         question: 'Does insurance cover cosmetic surgery?',
@@ -57,7 +60,7 @@ export const financingFaqData: FaqItem[] = [
     },
     {
         question: 'What happens if I need to reschedule my procedure?',
-        answer: "Your financing approval typically remains valid for a set period (usually 30-90 days depending on the partner). If you need to reschedule, contact our office and we'll work with you to ensure your financing remains in good standing.",
+        answer: "Your financing approval stays valid for a period the lender sets. If you need to reschedule, contact our office and we'll work with you to ensure your financing remains in good standing.",
     },
 ]
 

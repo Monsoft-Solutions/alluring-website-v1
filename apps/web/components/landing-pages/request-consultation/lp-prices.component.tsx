@@ -10,9 +10,12 @@
  * No inclusion claim: what each price covers is still open with the owner
  * (see `tummy-tuck.facts.ts`). Only the minis are described as "no muscle
  * repair", because only they are on the sheet.
+ *
+ * Prices come from the pricing resolver (#354) as `PriceDisplay`s: struck
+ * through while a discount is on, with the 456.062 statement under the list.
  */
 
-import { fill } from '@/components/shared/consult-chat/consult-chat.util'
+import { PriceTag } from '@/components/shared/price-tag.component'
 
 import { LP_CHAT_ID } from './lp-config'
 import type { LpDictionary } from './lp-copy'
@@ -25,9 +28,15 @@ export const LP_PRICES_ID = 'prices'
 interface LpPriceListProps {
     readonly copy: LpDictionary['prices']
     readonly prices: LpPrices['tummyTuck']
+    /** The 456.062 statement while a price is discounted. */
+    readonly statement: string | null
 }
 
-export function LpPriceList({ copy, prices }: LpPriceListProps) {
+export function LpPriceList({ copy, prices, statement }: LpPriceListProps) {
+    // "From {price}": the words around the figure, so the figure itself can
+    // be a PriceTag.
+    const [before = '', after = ''] = copy.from.split('{price}')
+
     return (
         <section
             className='band prices'
@@ -42,22 +51,28 @@ export function LpPriceList({ copy, prices }: LpPriceListProps) {
                     </h2>
                 </div>
                 <ul className='price-list'>
-                    {copy.rows.map((row) => (
-                        <li key={row.type}>
-                            <div className='price-row'>
-                                <h3>{row.label}</h3>
-                                <p className='price-amount'>
-                                    {fill(copy.from, {
-                                        price: prices[row.type],
-                                    })}
-                                </p>
-                            </div>
-                            <p className='price-note'>{row.note}</p>
-                        </li>
-                    ))}
+                    {copy.rows.map(
+                        (row) =>
+                            prices[row.type] && (
+                                <li key={row.type}>
+                                    <div className='price-row'>
+                                        <h3>{row.label}</h3>
+                                        <p className='price-amount'>
+                                            {before}
+                                            <PriceTag
+                                                price={prices[row.type]}
+                                            />
+                                            {after}
+                                        </p>
+                                    </div>
+                                    <p className='price-note'>{row.note}</p>
+                                </li>
+                            )
+                    )}
                 </ul>
                 <div className='price-foot'>
                     <p className='price-fine'>{copy.fine}</p>
+                    {statement && <p className='price-fine'>{statement}</p>}
                     <a
                         className='fin-link'
                         href={`#${LP_CHAT_ID}`}

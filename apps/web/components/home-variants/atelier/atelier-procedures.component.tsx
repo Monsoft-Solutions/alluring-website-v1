@@ -14,7 +14,7 @@
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 
-import { procedures } from '@/lib/data/procedures.data'
+import { getResolvedProcedures } from '@/lib/data/procedures.resolved.server'
 
 /** Plain-language framing for each procedure, in display order. */
 const FRAMING: readonly {
@@ -32,7 +32,9 @@ const FRAMING: readonly {
     { slug: 'blepharoplasty-miami', plain: 'Tired eyes' },
 ] as const
 
-export function AtelierProcedures() {
+export async function AtelierProcedures() {
+    // Claim tokens in the copy are resolved first (#354).
+    const procedures = await getResolvedProcedures()
     // flatMap rather than map().filter(): filtering on a nested property
     // does not narrow the property's type, so `procedure` would stay
     // `Procedure | undefined` in the JSX below.
@@ -64,9 +66,9 @@ export function AtelierProcedures() {
                         </span>
                     </h2>
                     <p className='mt-6 text-lg leading-[1.75] text-[#3D2B23]/70'>
-                        You do not need the clinical word. Times below are the
-                        typical return to desk work — your surgeon gives you a
-                        written week-by-week plan before you book anything.
+                        You do not need the clinical word. Times below are
+                        typical recovery times at Alluring; your surgeon sets
+                        yours.
                     </p>
                 </div>
 

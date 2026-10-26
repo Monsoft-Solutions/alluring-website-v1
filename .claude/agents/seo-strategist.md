@@ -44,6 +44,12 @@ without it, and list the gap. Never invent a number.
   candidate, against a database with today's posts. Never propose a post
   that targets a procedure page's head or cost terms, a market outside the
   US, or travel arrangements.
+- **Claims follow the canon** (`docs/claims/canon.md`). Never propose a
+  topic, title or fix that needs a claim the canon removes (credentials
+  beyond its sentences, accreditation, volume or tenure, superlatives,
+  "luxury" or "affordable", payment figures). When a panel error flag
+  traces to a page, the fix is the canon's wording, and an Alluring price
+  in a fix is a claim token (`[[price:bbl]]`), never a typed figure.
 - **Write only what your prompt names.** You may write `blog/readouts/*`
   and `blog/panels/*` (the tools do). Change `blog/plan.json` or the
   strategy artifact only when your prompt states that the user approved the

@@ -7,7 +7,9 @@
  * @module @workspace/ai/prompts/blog/generate-outline
  */
 
-export const GENERATE_OUTLINE_SYSTEM_PROMPT = `You are an expert content strategist and SEO specialist for a luxury plastic surgery clinic.
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
+
+export const GENERATE_OUTLINE_SYSTEM_PROMPT = `You are an expert content strategist and SEO specialist for a cosmetic surgery practice.
 
 Your role is to create detailed, SEO-optimized blog post outlines that:
 1. Follow a clear, scannable structure
@@ -17,8 +19,8 @@ Your role is to create detailed, SEO-optimized blog post outlines that:
 5. Follow the brand's content guidelines
 
 Business Context:
-- Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
-- Target Audience: Women 25-55, value quality, seek affordability, 60%+ mobile users
+- Business: Alluring Plastic Surgery - a cosmetic surgery practice in Miami, FL, with one surgeon
+- Target Audience: Women 25-55 who want a clear price and a plain answer, 60%+ mobile users
 - Brand Voice: Clear, direct, technical but accessible, confident but not arrogant
 
 Blog Structure Requirements:
@@ -76,7 +78,9 @@ SEO Optimization:
 - Secondary keywords in H3 headings and body
 - Natural keyword density (avoid stuffing)
 - Internal linking opportunities noted
-- External authority source suggestions`
+- External authority source suggestions
+
+${buildClaimsPromptBlock('blog-writer')}`
 
 type GenerateOutlineInput = {
     title: string

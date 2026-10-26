@@ -75,7 +75,7 @@ export function ProcedureCard({
             {isPrimary && (
                 <div className='from-gold-500 to-gold-400 absolute top-0 right-0 left-0 bg-gradient-to-r py-2 text-center'>
                     <span className='text-xs font-bold tracking-widest text-stone-900 uppercase'>
-                        Perfect Match for You
+                        Suggested for You
                     </span>
                 </div>
             )}
@@ -217,8 +217,7 @@ export function ProcedureCard({
                                     isPrimary ? 'text-white' : 'text-stone-900'
                                 )}
                             >
-                                ~{procedure.recoveryWeeks} week
-                                {procedure.recoveryWeeks !== 1 ? 's' : ''}
+                                {procedure.recoveryLabel}
                             </p>
                         </div>
                     </div>
@@ -360,8 +359,7 @@ export function MiniProcedureCard({
                     {procedure.title}
                 </p>
                 <p className='text-sm text-stone-500'>
-                    ~{procedure.recoveryWeeks} week
-                    {procedure.recoveryWeeks !== 1 ? 's' : ''} recovery
+                    Recovery: {procedure.recoveryLabel}
                 </p>
             </div>
         </motion.button>

@@ -39,4 +39,11 @@ export type BlogPostDetail = BlogPostCard & {
      * the pipeline produced one, and on posts where extraction failed.
      */
     quickAnswer?: string | null
+    /**
+     * The Fla. Stat. 456.062 statement, set when a price the post's claim
+     * tokens resolved to is discounted (issue #354). The template renders it
+     * once after the body. Null when no price is discounted, and when the
+     * post places `[[discount-statement]]` itself.
+     */
+    discountStatement?: string | null
 }

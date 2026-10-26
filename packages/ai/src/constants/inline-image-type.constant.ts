@@ -67,7 +67,7 @@ export const INLINE_IMAGE_TYPES: readonly InlineImageTypeDefinition[] = [
         description:
             'Promotional images, before/after concepts, lifestyle shots',
         promptGuidelines:
-            'Aspirational lifestyle photography, emotional appeal, brand-aligned luxury aesthetic, high-end professional photography, warm and inviting atmosphere, premium feel',
+            'Aspirational lifestyle photography, emotional appeal, brand-aligned premium aesthetic, high-end professional photography, warm and inviting atmosphere, premium feel',
         aspectRatio: '3:2',
     },
     {

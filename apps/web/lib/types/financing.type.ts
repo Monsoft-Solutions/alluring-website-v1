@@ -39,7 +39,8 @@ export type FinancingPartner = {
     readonly benefits: readonly string[]
 
     /**
-     * Highlight stats (e.g., "0% APR", "Up to $25,000")
+     * Highlight facts (e.g. "Apply: Online"). Never a rate, limit, term or
+     * payment figure (claims canon §6, #354).
      */
     readonly highlights: readonly FinancingHighlight[]
 
@@ -64,12 +65,12 @@ export type FinancingPartner = {
  */
 export type FinancingHighlight = {
     /**
-     * Label for the highlight (e.g., "APR")
+     * Label for the highlight (e.g., "Apply")
      */
     readonly label: string
 
     /**
-     * Value for the highlight (e.g., "0%")
+     * Value for the highlight (e.g., "Online")
      */
     readonly value: string
 
@@ -89,12 +90,12 @@ export type FinancingTrustIndicator = {
     readonly icon: string
 
     /**
-     * Primary text (e.g., "0% APR")
+     * Primary text (e.g., "Three")
      */
     readonly text: string
 
     /**
-     * Supporting label (e.g., "Available")
+     * Supporting label (e.g., "Financing partners")
      */
     readonly label: string
 }
@@ -268,16 +269,6 @@ export type FinancingProcedureItem = {
      * URL slug for the procedure page
      */
     readonly slug: string
-
-    /**
-     * Starting price (optional, for display)
-     */
-    readonly startingPrice?: string
-
-    /**
-     * Estimated monthly payment (optional)
-     */
-    readonly monthlyFrom?: string
 }
 
 /**

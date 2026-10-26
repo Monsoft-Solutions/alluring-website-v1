@@ -10,6 +10,17 @@ You help users create and maintain a product marketing context document. This ca
 
 The document is stored at `.claude/product-marketing-context.md`.
 
+**In this repo, the claims canon comes first.** `docs/claims/canon.md` (its
+"Decisions of 2026-10-25" block overrides the rest) decides what Alluring
+may claim: identity and tagline, the one surgeon and her credential
+sentences, prices, financing, trust facts, travel and market. Take
+positioning, proof points and objection answers from it, never from page
+copy, which may still carry retired claims. Never write a claim it removes
+(luxury or affordable, volume or tenure, accreditation, superlatives,
+payment figures) into the context document. Write no price figure either:
+say prices come from the pricing resolver and claim tokens
+(`packages/shared/src/claims/README.md`).
+
 ## Workflow
 
 ### Step 1: Check for Existing Context

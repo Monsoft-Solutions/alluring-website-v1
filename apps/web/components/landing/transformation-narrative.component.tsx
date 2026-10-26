@@ -75,9 +75,8 @@ export function TransformationNarrative({
                         </span>
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
-                        You&apos;re not alone. Thousands of women have felt
-                        exactly what you&apos;re feeling right now—and found
-                        their way back to confidence.
+                        You&apos;re not alone. Many women feel exactly what
+                        you&apos;re feeling right now.
                     </p>
                 </div>
 
@@ -117,8 +116,7 @@ export function TransformationNarrative({
                         <span className='font-semibold text-stone-900'>
                             The good news?
                         </span>{' '}
-                        You don&apos;t have to stay stuck. Thousands of women
-                        have taken the first step—and you can too.
+                        You don&apos;t have to stay stuck.
                     </p>
                 </div>
             </ContentWrapper>

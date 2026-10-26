@@ -43,7 +43,8 @@ export type RecoveryTime = '1-week' | '2-weeks' | '3-plus-weeks'
 export type LifeEvent = 'wedding' | 'vacation' | 'reunion' | 'just-for-me'
 
 /**
- * Budget range (monthly payment comfort level)
+ * Budget range: how big a change the visitor has in mind, never a dollar or
+ * payment figure (claims canon D6)
  */
 export type BudgetRange = 'low' | 'medium' | 'high' | 'premium'
 
@@ -125,15 +126,10 @@ export interface ProcedureDetails {
     readonly shortDescription: string
     readonly slug: string
     readonly category: 'face' | 'breast' | 'body' | 'combined'
-    readonly priceRange: {
-        readonly min: number
-        readonly max: number
-    }
-    readonly monthlyPayment: {
-        readonly min: number
-        readonly max: number
-    }
+    /** For matching the recovery answer only; never shown. */
     readonly recoveryWeeks: number
+    /** The procedure page's quickStats.recovery wording, shown on cards. */
+    readonly recoveryLabel: string
     readonly benefits: readonly string[]
     readonly image?: string
 }

@@ -10,7 +10,11 @@
  * to action stays one tap away.
  */
 import {
-    Award,
+    KARLINSKY_ABS_CERTIFIED_YEAR,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
+import { TRUST_BADGES } from '@workspace/shared/claims/trust'
+import {
     BadgeCheck,
     ExternalLink,
     Languages,
@@ -25,11 +29,15 @@ import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 const HERO_FORM_ID = 'hero-form'
 
+/**
+ * Verified credentials only (claims canon §2): the American Board of Surgery
+ * and the American College of Surgeons. No board count, and no "Fellowship
+ * Director" (unverified, D9).
+ */
 const TRUST_PILLS = [
-    { icon: BadgeCheck, label: 'Triple Board-Certified' },
+    { icon: BadgeCheck, label: TRUST_BADGES.board },
     { icon: ShieldCheck, label: 'FACS Fellow' },
-    { icon: Award, label: 'Fellowship Director' },
-    { icon: Languages, label: 'Hablamos Español' },
+    { icon: Languages, label: TRUST_BADGES.spanish },
 ] as const
 
 export type DrKarlinskyHeroProps = {
@@ -73,12 +81,6 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
                                 Miami, FL
                             </span>
                         </span>
-                        <span className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm'>
-                            <span className='bg-gold-400 h-1.5 w-1.5 rounded-full' />
-                            <span className='text-xs font-medium tracking-wide text-stone-300 uppercase'>
-                                Booking this month
-                            </span>
-                        </span>
                     </div>
 
                     {/* Headline — IG-warm voice */}
@@ -95,9 +97,10 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
 
                     {/* Subhead / promise — tight, benefit-led */}
                     <p className='animate-fade-in-up animate-delay-150 mb-8 max-w-xl text-lg leading-relaxed text-stone-300 lg:text-xl'>
-                        Triple board-certified Miami surgeon. Booking
-                        complimentary consults this month — virtual or
-                        in-person. Honest plan. No pressure.
+                        Board certified in general surgery by the American Board
+                        of Surgery since {KARLINSKY_ABS_CERTIFIED_YEAR}.
+                        Consultations virtual or in person. Honest plan. No
+                        pressure.
                     </p>
 
                     {/* Portrait — slimmer footprint, mobile-friendly */}
@@ -105,7 +108,7 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
                         <div className='ring-gold-500/20 group relative aspect-[4/5] w-full overflow-hidden rounded-2xl ring-1 sm:rounded-3xl'>
                             <Image
                                 src={surgeon.images.featured}
-                                alt={`${surgeon.name}, ${surgeon.title}`}
+                                alt={KARLINSKY_NAME}
                                 fill
                                 sizes='(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw'
                                 className='object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]'
@@ -141,7 +144,7 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
                     {/* Verification microlinks (replaces full credentials wall) */}
                     {(healthgradesUrl || realselfUrl) && (
                         <p className='animate-fade-in-up animate-delay-300 text-xs text-stone-400'>
-                            Verified on{' '}
+                            Her profiles on{' '}
                             {healthgradesUrl && (
                                 <a
                                     href={healthgradesUrl}
@@ -181,20 +184,20 @@ export function DrKarlinskyHero({ id = 'hero' }: DrKarlinskyHeroProps) {
                             {/* Gold tag */}
                             <div className='from-gold-500 to-gold-400 absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r px-3 py-1 shadow-lg'>
                                 <span className='text-[10px] font-bold tracking-[0.18em] text-stone-950 uppercase'>
-                                    Free · 24-hr response
+                                    Free consultation · Reply by text
                                 </span>
                             </div>
 
                             <ConsultationForm
                                 title='Tell us a little about you'
-                                subtitle="We'll text you within 24 hours."
+                                subtitle='A patient coordinator will text you.'
                                 source={CONTACT_SOURCES.DR_KARLINSKY_LANDING}
                                 analyticsFormName='dr_karlinsky_hero_form'
                                 enableAnalytics
                                 redirectOnSuccess='/thank-you'
                                 compact
                                 submitText='Book My Consult'
-                                footerNote="We'll never spam, sell, or share your data."
+                                footerNote="We'll never spam you or sell your information."
                             />
                         </div>
                     </div>

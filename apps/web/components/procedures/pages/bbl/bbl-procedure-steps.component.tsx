@@ -18,7 +18,7 @@ const steps = [
     },
     {
         title: 'Placing the fat',
-        body: 'The surgeon injects the fat into the layer under the skin of the buttocks, watching the cannula on ultrasound so it never passes into the muscle.',
+        body: 'The surgeon injects the fat into the layer under the skin of the buttocks. Florida law requires ultrasound guidance for this step and keeps the fat out of the muscle.',
     },
     {
         title: 'Closing and compression',
@@ -36,7 +36,7 @@ export function BblProcedureSteps() {
             id='procedure'
             question='How is BBL surgery performed?'
             className={moduleSectionPad}
-            answer='BBL surgery takes 3 to 5 hours under general anesthesia, and you go home the same day. The surgeon removes fat with liposuction, prepares it, injects it under the skin of the buttocks with ultrasound guidance, then closes the small incisions and fits your compression garment.'
+            answer='At Alluring, BBL surgery takes 3 to 5 hours under general anesthesia, and you go home the same day. The surgeon removes fat with liposuction, prepares it, injects it under the skin of the buttocks, where Florida law requires it to stay, then closes the small incisions and fits your compression garment.'
         >
             <p className={cn(moduleBody, 'mt-4.5')}>
                 Before surgery day, your surgeon examines you in person, reviews

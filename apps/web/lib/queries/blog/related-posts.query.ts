@@ -8,6 +8,7 @@ import {
 } from '@workspace/db/schema/blog'
 import { and, desc, eq, inArray, isNotNull, ne } from 'drizzle-orm'
 
+import { resolvePostListClaims } from '@/lib/claims/resolve-claims.server'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 
 /**
@@ -25,6 +26,18 @@ export async function getRelatedPosts(
     categoryIds: string[],
     tagIds: string[],
     limit = 3
+): Promise<BlogPostCard[]> {
+    // Claim tokens in titles and excerpts (#354)
+    return resolvePostListClaims(
+        await findRelatedPosts(postId, categoryIds, tagIds, limit)
+    )
+}
+
+async function findRelatedPosts(
+    postId: string,
+    categoryIds: string[],
+    tagIds: string[],
+    limit: number
 ): Promise<BlogPostCard[]> {
     // If no categories or tags, return recent posts
     if (categoryIds.length === 0 && tagIds.length === 0) {

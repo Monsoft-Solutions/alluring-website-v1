@@ -442,7 +442,7 @@ export function BlogCTA({
                                     </div>
                                     <div className='flex items-center gap-2'>
                                         <Languages className='text-gold-400 h-4 w-4' />
-                                        <span>Hablamos Español</span>
+                                        <span>Hablamos español</span>
                                     </div>
                                 </div>
                             </form>

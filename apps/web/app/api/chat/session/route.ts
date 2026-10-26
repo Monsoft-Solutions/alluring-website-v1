@@ -9,6 +9,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 
+import { resolveClaims } from '@/lib/claims/resolve-claims.server'
 import { getChatConfig, createChatSession } from '@/lib/queries/chat.query'
 import {
     preChatFormSchema,
@@ -89,7 +90,12 @@ export async function POST(request: NextRequest) {
             },
             config: {
                 agentName: config.agentName,
-                welcomeMessage: config.welcomeMessage,
+                // Claim tokens (#354) resolved: a visitor never sees brackets.
+                welcomeMessage: await resolveClaims(
+                    config.welcomeMessage,
+                    'text',
+                    'chat_config.welcome_message'
+                ),
                 primaryColor: config.primaryColor,
                 agentImageUrl: config.agentImageUrl,
             },

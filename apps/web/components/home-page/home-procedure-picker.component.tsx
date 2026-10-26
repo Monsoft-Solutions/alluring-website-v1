@@ -3,9 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@workspace/ui/lib/utils'
 
+import {
+    getDiscountStatement,
+    getPriceDisplay,
+    type PriceDisplay,
+} from '@workspace/shared/claims/pricing'
+
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
 import { getProcedureBySlug } from '@/lib/data/procedures.data'
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
-import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import { getPricing } from '@/lib/queries/pricing.query'
 
 import { HomeEyebrow } from './home-eyebrow.component'
 import {
@@ -28,6 +35,13 @@ type Zone = {
     area: string
     title: string
     body: ReactNode
+    /**
+     * The price that leads the facts, from the pricing resolver (#354): a
+     * claim procedure's starting price, or the one line the panel is about
+     * (the Lipo 360 panel quotes the `lipo360` line, whatever liposuction's
+     * starting line is). Unset where the price comes in writing.
+     */
+    price?: { procedure: 'lipo' | 'bbl'; line?: string }
     facts: readonly string[]
     /** Where the figure's hotspots sit, as % of the trimmed figure. */
     dots: readonly { x: number; y: number; label: string }[]
@@ -42,8 +56,9 @@ type Zone = {
 /**
  * The areas people come in about, each answered by the procedure that
  * addresses it. Figures come from the facts files and are stated with the
- * attribution those files require; procedures without a settled price say
- * that the price comes in writing, rather than guessing one (#232).
+ * attribution those files require; the two starting prices come from the
+ * pricing resolver; procedures without a settled price say that the price
+ * comes in writing, rather than guessing one (#232).
  */
 const ZONES: readonly Zone[] = [
     {
@@ -51,8 +66,8 @@ const ZONES: readonly Zone[] = [
         area: 'Waist & back',
         title: 'Lipo 360',
         body: 'Liposuction all the way around the midsection (abdomen, waist, flanks and back) in one procedure, to bring the waist in. Arms and thighs can be added. It removes fat; it does not tighten loose skin.',
+        price: { procedure: 'lipo', line: 'lipo360' },
         facts: [
-            `From ${lipoFigure('price-starting-at')}`,
             'Usually 1 to 3 hours, home the same day',
             'Most normal activities within 10 days, per The Aesthetic Society',
         ],
@@ -67,10 +82,10 @@ const ZONES: readonly Zone[] = [
         area: 'Hips & curves',
         title: 'Brazilian butt lift (BBL)',
         body: 'Your own fat, taken by liposuction and moved to the buttocks and hips for more shape and fullness, with no implants. Florida law requires the surgeon to use ultrasound guidance while placing it.',
+        price: { procedure: 'bbl' },
         facts: [
-            `From ${bblFigure('price-starting-at')}`,
-            'Ultrasound-guided, as Florida law requires',
-            'Desk work at 10 to 14 days, per Cleveland Clinic',
+            '3 to 5 hours at Alluring, home the same day',
+            'Desk work at 10 to 14 days, per Cleveland Clinic (ASPS says 7 to 10)',
         ],
         dots: [{ x: 66, y: 44, label: 'Hips' }],
     },
@@ -109,7 +124,7 @@ const ZONES: readonly Zone[] = [
         key: 'weightLoss',
         area: 'After weight loss',
         title: 'Body contouring after weight loss',
-        body: 'Loose skin that stays after a big weight loss, including weight lost on GLP-1 medication, doesn’t respond to diet or exercise. A tummy tuck, an arm lift or a body lift removes it, planned in stages or combined.',
+        body: 'Loose skin that stays after a big weight loss, including weight lost on GLP-1 medication, doesn’t respond to diet or exercise. A tummy tuck, an arm lift, a thigh lift or a back lift removes it, planned in stages or combined.',
         facts: ['Your plan and price in writing after a free consultation'],
         dots: [],
         link: 'After-weight-loss consultations',
@@ -147,7 +162,10 @@ const zoneInputId = (key: HomeProcedureKey) => `hp-zone-${key}`
  * is in the HTML, so crawlers and assistants read all six; a browser
  * without `:has()` shows them stacked.
  */
-export function HomeProcedurePicker() {
+export async function HomeProcedurePicker() {
+    const pricing = await getPricing()
+    const statement = getDiscountStatement(pricing)
+
     return (
         <section
             id={HOME_SECTION_IDS.picker}
@@ -236,7 +254,20 @@ export function HomeProcedurePicker() {
 
                     <div>
                         {ZONES.map((zone) => (
-                            <ZonePanel key={zone.key} zone={zone} />
+                            <ZonePanel
+                                key={zone.key}
+                                zone={zone}
+                                price={
+                                    zone.price
+                                        ? getPriceDisplay(
+                                              pricing,
+                                              zone.price.procedure,
+                                              zone.price.line
+                                          )
+                                        : null
+                                }
+                                statement={statement}
+                            />
                         ))}
                     </div>
                 </div>
@@ -245,7 +276,16 @@ export function HomeProcedurePicker() {
     )
 }
 
-function ZonePanel({ zone }: { zone: Zone }) {
+function ZonePanel({
+    zone,
+    price,
+    statement,
+}: {
+    zone: Zone
+    price: PriceDisplay | null
+    /** The 456.062 statement while any discount is on. */
+    statement: string | null
+}) {
     const procedure = HOME_PROCEDURES[zone.key]
     const page = getProcedureBySlug(procedure.href.split('/').pop() ?? '')
     const titleId = `hp-panel-${zone.key}`
@@ -288,15 +328,21 @@ function ZonePanel({ zone }: { zone: Zone }) {
                     {zone.body}
                 </p>
                 <ul className='mt-6 grid border-t border-[var(--hp-line)]'>
-                    {zone.facts.map((fact, index) => (
+                    {price && (
+                        <li className='flex items-start gap-3 border-b border-[var(--hp-line)] py-2.5 text-[0.9375rem] font-semibold text-[var(--hp-ink)]'>
+                            <span
+                                aria-hidden='true'
+                                className='mt-[0.55rem] size-1.5 shrink-0 rounded-full bg-[var(--hp-champagne-2)]'
+                            />
+                            <span>
+                                From <PriceTag price={price} />
+                            </span>
+                        </li>
+                    )}
+                    {zone.facts.map((fact) => (
                         <li
                             key={fact}
-                            className={cn(
-                                'flex items-start gap-3 border-b border-[var(--hp-line)] py-2.5 text-[0.9375rem]',
-                                index === 0 && fact.startsWith('From')
-                                    ? 'font-semibold text-[var(--hp-ink)]'
-                                    : 'text-[var(--hp-ink-2)]'
-                            )}
+                            className='flex items-start gap-3 border-b border-[var(--hp-line)] py-2.5 text-[0.9375rem] text-[var(--hp-ink-2)]'
                         >
                             <span
                                 aria-hidden='true'
@@ -306,6 +352,12 @@ function ZonePanel({ zone }: { zone: Zone }) {
                         </li>
                     ))}
                 </ul>
+                {/* Each panel shows alone, so a discounted price carries
+                    its own 456.062 statement. */}
+                <DiscountStatement
+                    statement={price?.discounted ? statement : null}
+                    className='mt-4 text-[0.8125rem]'
+                />
                 <div className='mt-7 flex flex-wrap items-center gap-x-6 gap-y-4'>
                     <a
                         href={`#${HOME_CHAT_ID}`}

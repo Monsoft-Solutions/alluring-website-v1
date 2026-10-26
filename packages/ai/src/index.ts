@@ -224,6 +224,7 @@ export {
     formatMessagesForClassification,
     getIntentClassificationPrompt,
     DEFAULT_CHAT_SYSTEM_PROMPT,
+    buildChatSystemPrompt,
     generateSystemPrompt,
     QUICK_QUESTIONS_SYSTEM_PROMPT,
     formatMessagesForQuickQuestions,

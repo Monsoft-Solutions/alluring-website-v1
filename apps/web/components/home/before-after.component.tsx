@@ -66,7 +66,7 @@ export async function BeforeAfter() {
                         Real Results.
                     </h2>
                     <p className='text-xl font-light text-stone-600'>
-                        Browse our verified patient transformations.
+                        Browse before-and-after photos of Alluring patients.
                     </p>
                 </div>
 

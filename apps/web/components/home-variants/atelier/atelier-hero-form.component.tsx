@@ -20,13 +20,13 @@ export function AtelierHeroForm() {
         <div className='rounded-[2rem] bg-[#2A1D17] p-7 shadow-xl md:p-9'>
             <ConsultationForm
                 title='Start a conversation'
-                subtitle='Free · No obligation · Hablamos Español'
+                subtitle='Free · No obligation · Hablamos español'
                 source={CONTACT_SOURCES.CONTACT_HERO}
                 analyticsFormName='home_atelier_hero_form'
                 enableAnalytics
                 compact
                 submitText='Start a conversation'
-                footerNote='We call within 24 hours. Nothing is booked and no deposit is taken.'
+                footerNote='A patient coordinator texts you back. Nothing is booked and no deposit is taken.'
                 redirectOnSuccess='/thank-you'
             />
         </div>

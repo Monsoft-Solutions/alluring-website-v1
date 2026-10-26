@@ -98,7 +98,8 @@ that paraphrases RealSelf is not written.
   interviewed by ASPS", not "ASPS says".
 - **Never cite** competitor clinics, RealSelf, Healthline, lipo.com or any
   clinic blog. No third-party prices except a society average the facts
-  file already carries.
+  file already carries (typed, attributed to ASPS, with what it excludes and
+  no year).
 - **Don't invent practice protocols.** If the owner hasn't confirmed a
   practice detail (massage count, garment weeks, revision policy), present
   what the evidence says and tell readers to follow their surgeon's
@@ -106,15 +107,18 @@ that paraphrases RealSelf is not written.
 
 ## The practice and the surgeon
 
-See [compliance.md](compliance.md). In short: one surgeon, named as
-"Dr. Victoria Karlinsky, MD, FACS" then "Dr. Karlinsky"; the only
-credentials sentence is the one in
-`apps/web/lib/data/surgeons/karlinsky-credentials.constant.ts`; no
-"board-certified surgeons", no ABPS, no AAAASF, no "5,000+", no travel
-arrangements, no superlatives. Mention Alluring at most 2–3 times per post,
-never in the opening answer. Close with one short paragraph that points to
-the procedure page or `/free-consultation`. No hard sell, no phone numbers
-in the content (the template carries the CTAs).
+See [compliance.md](compliance.md), which follows the claims canon
+(`docs/claims/canon.md`). In short: one surgeon, named as
+"Victoria Karlinsky, MD, FACS" (`[[surgeon:name]]`) then "Dr. Karlinsky";
+the only credentials sentence is the canon's (`[[surgeon:credentials]]`,
+from `@workspace/shared/claims/surgeon`); no "board-certified surgeons", no
+ABPS, no accreditation, no "5,000+", no travel arrangements, no
+superlatives. Every Alluring price is a claim token (`[[price:bbl]]`), never
+a typed figure. Mention Alluring at most 2–3 times per post, never in the
+opening answer. Close with one short paragraph that points to the procedure
+page or the consultation page (`/free-consultation`; the anchor says
+"consultation", since new copy never adds "free"). No hard sell, no phone
+numbers in the content (the template carries the CTAs).
 
 ## Links
 

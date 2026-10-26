@@ -17,9 +17,14 @@ import {
 } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import { sourceAnchorId } from '@/components/procedures/sections/sources-list.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import { findLinePrice } from '@/lib/claims/procedure-prices.util'
 import { tummyTuckFigure } from '@/lib/data/procedures/facts/tummy-tuck.facts'
 import { getFinancingPartnersString } from '@/lib/data/site-config'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 import type { ProcedurePricing } from '@/lib/types/procedure.type'
+import type { PriceDisplay } from '@workspace/shared/claims/pricing'
 
 import { TummyTuckIncision } from './tummy-tuck-incision.component'
 
@@ -47,30 +52,64 @@ const quoteLines = [
  * asks readers to get ours itemized too. `pricing.includes` fills the kit's
  * list the day the owner confirms it.
  *
- * The ASPS national average makes "affordable" concrete without the word.
+ * The ASPS national average puts our price in context.
  * It is a surgeon's fee only, so the comparison always says what it leaves
  * out.
  */
-export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
+export function TummyTuckCost({
+    pricing,
+    prices,
+    lipoAddOn,
+    discountStatement,
+}: {
+    pricing: ProcedurePricing
+    prices: ProcedurePrices
+    /** Abdomen and flanks liposuction, priced with liposuction's discount. */
+    lipoAddOn: PriceDisplay | null
+    /**
+     * The 456.062 statement while any price here is discounted, the lipo
+     * add-on included.
+     */
+    discountStatement: string | null
+}) {
     return (
         <AnswerBlock
             id='pricing'
             question='How much is a tummy tuck in Miami?'
             className={moduleSectionPad}
-            answer={`At Alluring, a mini tummy tuck is ${tummyTuckFigure('price-mini')}, a full tummy tuck ${tummyTuckFigure('price-full')} and an extended tummy tuck ${tummyTuckFigure('price-extended')}; the table below lists all five types. Which one you need depends on where your loose skin sits and whether your muscles need repair, and your surgeon confirms your price after an exam.`}
+            answer={
+                <>
+                    At Alluring, a mini tummy tuck is{' '}
+                    <PriceTag price={findLinePrice(prices, 'mini')} />, a full
+                    tummy tuck{' '}
+                    <PriceTag price={findLinePrice(prices, 'full')} /> and an
+                    extended tummy tuck{' '}
+                    <PriceTag price={findLinePrice(prices, 'extended')} />; the
+                    table below lists all five types. Which one you need depends
+                    on where your loose skin sits and whether your muscles need
+                    repair, and your surgeon confirms your price after an exam.
+                </>
+            }
         >
+            <DiscountStatement statement={discountStatement} className='mt-4' />
             <ModulePriceTable
                 options={pricing.options ?? []}
+                prices={prices}
                 heading='Prices by type of tummy tuck'
                 id='tummy-tuck-prices'
                 optionLabel='Type'
                 priceLabel='Price'
                 note={
                     <>
-                        List prices from our price sheet. Liposuction of the
-                        abdomen and flanks, added to a tummy tuck, is{' '}
-                        {tummyTuckFigure('price-lipo-add-on')}. Prices are
-                        estimates and may change.
+                        List prices from our price sheet.
+                        {lipoAddOn && (
+                            <>
+                                {' '}
+                                Liposuction of the abdomen and flanks, added to
+                                a tummy tuck, is <PriceTag price={lipoAddOn} />.
+                            </>
+                        )}{' '}
+                        Prices are estimates and may change.
                     </>
                 }
             />
@@ -94,7 +133,7 @@ export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
                     {
                         label: 'Muscle repair',
                         cells: [
-                            'Not included on our price list',
+                            'Not included: our price sheet lists the mini without muscle repair',
                             'Usually, when the muscles have separated',
                             'Usually, when the muscles have separated',
                         ],
@@ -216,9 +255,9 @@ export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
                 surgery and where.
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
-                Financing is available through {getFinancingPartnersString()},
-                subject to credit approval. ASPS says most health insurance
-                plans don&apos;t cover a tummy tuck.
+                Financing is available through {getFinancingPartnersString()}{' '}
+                for qualified applicants. ASPS says most health insurance plans
+                don&apos;t cover a tummy tuck.
             </p>
             <ModulePriceActions />
         </AnswerBlock>

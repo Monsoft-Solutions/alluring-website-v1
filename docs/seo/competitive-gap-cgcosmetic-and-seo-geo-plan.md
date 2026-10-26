@@ -6,6 +6,8 @@
 
 Everything below was measured directly (live HTML fetches, sitemap parsing, WHOIS, review-aggregator data), not estimated.
 
+**Claims:** what this plan proposes for Alluring's own pages follows the claims canon (`docs/claims/canon.md`, issue #354), which overrides this document. No Alluring price is typed: pages read the pricing resolver, and titles and text use claim tokens (`packages/shared/src/claims/README.md`). Figures quoted from CG Cosmetic and other competitors are observations of their sites, never copy for ours. The proposals below were aligned to the canon on 2026-10-25.
+
 ---
 
 ## Part 1 — Why CG Cosmetic Ranks
@@ -52,7 +54,7 @@ CG's actual title and H1:
 <title>Brazilian Butt Lift Miami, BBL From $3,500</title>
 ```
 
-Ours:
+Ours (as measured on 2026-08-03; "board-certified" in a title is now forbidden by the claims canon):
 
 ```
 <title>Breast Augmentation Miami 2026 | Board-Certified Surgeons | Alluring Plastic Surgery</title>
@@ -63,7 +65,7 @@ In this vertical the highest-volume modifiers are `cost`, `price`, `cheap`, `aff
 
 Their homepage carries the same pattern: "Breast Augmentation — Starts at $2,500 / BBL — Starts at $3,500 / Tummy Tuck — Starts at $3,500 / Breast Lift — Starts at $4,500", plus "100% financing available".
 
-Our tagline is _literally_ "Luxury Surgeries Made Affordable" and we do not put a single number in a title tag.
+Our tagline was _literally_ "Luxury Surgeries Made Affordable" (retired in #290; now "Personal care. Honest price.") and we did not put a single number in a title tag.
 
 ### 1.4 URL structure
 
@@ -240,11 +242,11 @@ Wrong-market declarations currently shipping:
 
 #### H1. No price in any title tag or H1.
 
-Direct CTR and intent-match loss against CG on the highest-volume modifier cluster in the vertical. See §1.3. Our pricing data already lives in `apps/web/lib/data/weekly-payments.data.ts`.
+Direct CTR and intent-match loss against CG on the highest-volume modifier cluster in the vertical. See §1.3. Our prices come from the pricing resolver (admin Pricing page, fallback the 2026-09-15 price sheet); titles carry them as claim tokens.
 
 #### H2. Homepage `<h1>` has a missing space.
 
-Rendered: `Miami's Premier Plastic Surgery.Luxury Results, Designed for You.`
+Rendered: `Miami's Premier Plastic Surgery.Luxury Results, Designed for You.` (since retired: the canon removes both "premier" and "luxury")
 
 Two-line JSX concatenated without whitespace. Visible in SERPs and to AI crawlers as a quality signal.
 
@@ -337,25 +339,25 @@ Cutting 909 thin URLs is a _ranking_ action, not a cleanup chore.
 
 This is where CG is beatable _immediately_ — it's a copy change, not an authority problem.
 
-| #   | Task                                                                                                                                                                                                                                                                             |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.1 | Rewrite all 9 procedure title tags to lead with price. Pull from `apps/web/lib/data/weekly-payments.data.ts` so it stays single-sourced.                                                                                                                                         |
-| 2.2 | Add price to each procedure `<h1>` where the number is defensible.                                                                                                                                                                                                               |
-| 2.3 | Add a `Quick Answer` block in the first 100 words of each procedure page: _"Breast augmentation in Miami at Alluring starts at $X, or $Y/week with financing. Includes surgeon fee, facility, anesthesia, and post-op garments."_ — this is the exact format LLMs lift verbatim. |
-| 2.4 | Add `Offer` schema with `price`, `priceCurrency`, `priceValidUntil` to every procedure page (server-rendered, post-Phase-0).                                                                                                                                                     |
-| 2.5 | Build `/plastic-surgery-cost-miami` — a comparison hub table of every procedure, our price, Miami average, weekly financing. Highly linkable and highly citable.                                                                                                                 |
+| #   | Task                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.1 | Rewrite all 9 procedure title tags to lead with price, as a claim token (`[[price:<procedure>]]`) so it follows the admin price list.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| 2.2 | Add price to each procedure `<h1>` where the number is defensible, from the pricing resolver.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| 2.3 | Add a `Quick Answer` block in the first 100 words of each procedure page: _"Breast augmentation at Alluring starts at `[[price:breast-augmentation:saline]]` with saline implants. These are starting prices from the practice's price list. Your price is set for you after an exam, estimates may change, and Dr. Karlinsky confirms your price at consultation. Financing is available through Cherry, CareCredit and United Credit for qualified applicants."_ No weekly figure and no inclusion list — this is the exact format LLMs lift verbatim. |
+| 2.4 | Add `Offer` schema with `price`, `priceCurrency`, `priceValidUntil` to every procedure page (server-rendered, post-Phase-0).                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 2.5 | Build `/plastic-surgery-cost-miami` — a comparison hub table of every procedure, our starting price from the resolver with the price caveat, the ASPS national average where the facts files carry one, and the financing partners (no payment figure). Highly linkable and highly citable.                                                                                                                                                                                                                                                              |
 
 **Proposed titles (55–60 chars):**
 
 ```
-Breast Augmentation Miami from $4,500 | Alluring
-BBL Miami from $X | All-Inclusive Pricing | Alluring
-Tummy Tuck Miami from $X | Financing from $Y/wk
-Mommy Makeover Miami from $X | Payment Plans
-Liposuction Miami from $X | Board-Certified Surgeons
+Breast Augmentation Miami from [[price:breast-augmentation:saline]] | Alluring
+BBL Miami from [[price:bbl]] | Alluring
+Tummy Tuck Miami from [[price:tummy-tuck:mini]] (Mini) | Alluring
+Mommy Makeover Miami | Priced Part by Part | Alluring
+Liposuction Miami from [[price:lipo:lipo360]] (Lipo 360) | Alluring
 ```
 
-Keep `Board-Certified` in the description rather than the title — CG cannot credibly claim what we can on trust, but price is what wins the click.
+The mommy makeover has no total price (canon D3). No title carries "board-certified", "all-inclusive" or a payment figure. Keep the credential in the meta description, in the canon's wording ("board certified in general surgery by the American Board of Surgery"), and never in the title — price is what wins the click.
 
 ---
 
@@ -375,10 +377,9 @@ Keep `Board-Certified` in the description rather than the title — CG cannot cr
 
 **3b. Trust-gap content** — CG is exposed here (1.3/5 ComplaintsBoard, no BBB accreditation, an indexed patient-death story). Attack on safety and transparency, factually and without naming them:
 
-- `/patient-safety-miami-plastic-surgery` — accreditation, anesthesia team credentials, board certification explained, what to ask any surgeon
+- `/patient-safety-miami-plastic-surgery` — Florida office-surgery and BBL rules as the facts files state them, generic anesthesia monitoring, what to ask any surgeon; no accreditation or anesthesia-credential claims about Alluring (canon §3)
 - `/how-to-choose-a-plastic-surgeon-miami` — this is CG's own H2 topic; own it as a standalone page
-- `/board-certification-explained` — genuine E-E-A-T; ABCS vs ABPS, why it matters
-- Surgeon bios expanded with credentials, training, memberships, publications, and `Physician` + `EducationalOccupationalCredential` schema
+- Surgeon bio expanded with the canon's credential sentences (ABS since 2008, FACS, Florida license), each linked to its record, and `karlinskyPersonNode` schema; education and training lines only once verified (canon D9)
 
 **3c. US geographic footprint** _(replaces the former Spanish/LatAm phase — see the audience correction in C3)_:
 

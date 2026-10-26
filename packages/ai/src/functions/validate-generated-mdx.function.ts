@@ -26,8 +26,22 @@
  * change is recorded so the admin UI can surface a writer prompt that has
  * started producing nonsense.
  *
+ * Claim tokens (`[[price:bbl]]`, issue #354) are plain text to MDX and pass
+ * through untouched when valid. An invalid one would render as nothing, so
+ * it is rewritten to its canonical form when only case or spacing was wrong
+ * (`[[Price: BBL]]`), and otherwise left as written and reported: the
+ * validator never deletes text it merely suspects. A typed Alluring price
+ * ("$5,500") never follows an admin edit, so one that fits a single price
+ * line becomes its token (`[[price:bbl:lipo360-bbl]]`), and any other is
+ * reported. Validate against the live pricing (`options.pricing`) where the
+ * caller has it: a line added in the admin is unknown to the 2026-09-15
+ * fallback sheet.
+ *
  * @module @workspace/ai/functions/validate-generated-mdx
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
+import { validateClaimTokens } from '@workspace/shared/claims/tokens'
+import { convertTypedPrices } from '@workspace/shared/claims/typed-prices'
 import {
     DEFAULT_BLOG_CTA_ID,
     isBlogCtaId,
@@ -51,6 +65,8 @@ export type MdxSanitizationAction = {
         | 'duplicate-cta-marker'
         | 'invalid-cta-id'
         | 'stray-expression'
+        | 'invalid-claim-token'
+        | 'typed-price'
     /** Human-readable one-liner for the admin card */
     detail: string
 }
@@ -229,12 +245,77 @@ function normalizeHtmlComments(
 }
 
 /**
+ * Rewrites every claim token that only had case or spacing wrong to its
+ * canonical form, and reports the rest without touching them: a token the
+ * renderer cannot resolve prints nothing and is logged, and a person fixes
+ * it. Spliced from the end so earlier offsets stay valid.
+ */
+function normalizeClaimTokens(
+    content: string,
+    actions: MdxSanitizationAction[],
+    pricing: PricingSnapshot | undefined
+): string {
+    const { errors } = validateClaimTokens(content, { pricing })
+    if (errors.length === 0) return content
+
+    let result = content
+    const tokenActions: MdxSanitizationAction[] = []
+    for (const error of [...errors].reverse()) {
+        const fixed =
+            error.suggestion &&
+            validateClaimTokens(error.suggestion, { pricing }).valid
+                ? error.suggestion
+                : null
+        if (fixed) {
+            result =
+                result.slice(0, error.index) +
+                fixed +
+                result.slice(error.index + error.raw.length)
+        }
+        tokenActions.unshift({
+            kind: 'invalid-claim-token',
+            detail: fixed
+                ? `Rewrote claim token ${error.raw} as ${fixed}.`
+                : `Claim token ${error.raw} cannot be resolved and renders as nothing: ${error.reason}`,
+        })
+    }
+    actions.push(...tokenActions)
+    return result
+}
+
+/**
+ * Turns each typed Alluring price that fits one price line into its token,
+ * and reports the figures that fit none or several.
+ */
+function normalizeTypedPrices(
+    content: string,
+    actions: MdxSanitizationAction[],
+    pricing: PricingSnapshot | undefined
+): string {
+    const { text, converted, remaining } = convertTypedPrices(content, {
+        pricing,
+    })
+    for (const { raw, token } of converted) {
+        actions.push({
+            kind: 'typed-price',
+            detail: `Typed Alluring price ${raw}: written as ${token}.`,
+        })
+    }
+    for (const issue of remaining) {
+        actions.push({ kind: 'typed-price', detail: issue.reason })
+    }
+    return text
+}
+
+/**
  * Makes generated content safe to persist and render.
  *
  * Idempotent: running it over already-validated content returns the content
  * unchanged with no actions.
  *
  * @param rawContent - Markdown/MDX straight out of a model
+ * @param options.pricing - The live pricing snapshot claim tokens are
+ *   checked against; the 2026-09-15 sheet when omitted
  * @returns Sanitised content plus a record of every change made
  *
  * @example
@@ -245,7 +326,10 @@ function normalizeHtmlComments(
  * }
  * ```
  */
-export function validateGeneratedMdx(rawContent: string): MdxValidationResult {
+export function validateGeneratedMdx(
+    rawContent: string,
+    options: { pricing?: PricingSnapshot } = {}
+): MdxValidationResult {
     const actions: MdxSanitizationAction[] = []
     let content = rawContent
 
@@ -298,6 +382,12 @@ export function validateGeneratedMdx(rawContent: string): MdxValidationResult {
             detail: 'Escaped { } in body text — MDX reads them as JavaScript and throws on the undefined name.',
         })
     }
+
+    // 4. Claim tokens that would render as nothing.
+    content = normalizeClaimTokens(content, actions, options.pricing)
+
+    // 5. Typed Alluring prices, which never follow an admin edit.
+    content = normalizeTypedPrices(content, actions, options.pricing)
 
     // Collapse the blank-line runs that stripping can leave behind.
     content = content.replace(/\n{3,}/g, '\n\n').trim()

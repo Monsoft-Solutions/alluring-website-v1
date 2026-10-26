@@ -140,7 +140,7 @@ export const MDX_COMPONENT_SPECS: Readonly<
             },
         ],
         example:
-            '<Figure src="PENDING" alt="Week-by-week swelling timeline after a tummy tuck" caption="Swelling peaks around day 3 and settles over 6–8 weeks." />',
+            '<Figure src="PENDING" alt="Week-by-week swelling timeline after a tummy tuck" caption="Swelling keeps going down until about 3 months after surgery (Cindy Wu, MD, on the ASPS website)." />',
         writerMayEmit: true,
     },
 
@@ -158,7 +158,7 @@ export const MDX_COMPONENT_SPECS: Readonly<
             },
         ],
         example:
-            '<CalloutBox type="warning">\nCall your surgeon the same day if drainage turns cloudy, smells foul, or output climbs after it had been falling. These are the early signs of infection.\n</CalloutBox>',
+            '<CalloutBox type="warning">\nCall your surgeon the same day if an incision or drain site turns red and warm, leaks cloudy or foul-smelling fluid, or you develop a fever. These can be signs of infection.\n</CalloutBox>',
         writerMayEmit: true,
     },
 
@@ -187,7 +187,7 @@ export const MDX_COMPONENT_SPECS: Readonly<
             },
         ],
         example:
-            '<QuickAnswer question="How long do tummy tuck drains stay in?" answer="Most drains come out 7 to 14 days after a tummy tuck." />',
+            '<QuickAnswer question="How long do tummy tuck drains stay in?" answer="When drains are placed after a tummy tuck, they usually come out in 1 to 2 weeks (Cindy Wu, MD, on the ASPS website)." />',
         writerMayEmit: false,
         writerNote:
             'Never write this yourself. The Quick Answer is generated separately and placed above your first heading; writing your own produces two competing answers on the page.',

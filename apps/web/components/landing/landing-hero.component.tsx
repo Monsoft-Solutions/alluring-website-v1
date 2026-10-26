@@ -7,18 +7,12 @@
  *
  * Adapted from SpecialsHero for maximum lead generation conversions.
  */
-import {
-    Award,
-    ShieldCheck,
-    Clock,
-    CreditCard,
-    Quote,
-    MapPin,
-} from 'lucide-react'
+import { Award, ShieldCheck, Clock, CreditCard, MapPin } from 'lucide-react'
 import Image from 'next/image'
 
+import { TRUST_BADGES } from '@workspace/shared/claims/trust'
+
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type LandingHeroProps = {
@@ -65,7 +59,7 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
                                     </span>
                                     <span className='text-gold-400'>|</span>
                                     <span className='text-sm font-medium'>
-                                        Board-Certified Surgeons
+                                        One surgeon
                                     </span>
                                 </div>
                             </div>
@@ -84,7 +78,7 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
                             </span>
                             <span className='text-gold-400'>|</span>
                             <span className='text-sm font-medium text-stone-400'>
-                                Board-Certified Surgeons
+                                One surgeon
                             </span>
                         </div>
 
@@ -97,8 +91,8 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
                                 </span>
                             </h1>
                             <p className='text-lg leading-relaxed text-stone-300'>
-                                Join 5,000+ women who trusted Alluring to feel
-                                like themselves again. Free consultation. No
+                                One surgeon, a plan made for you and your price
+                                before you decide. Free consultation. No
                                 obligation.
                             </p>
                         </div>
@@ -108,7 +102,7 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-4 py-2'>
                                 <CreditCard className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    From $27/week | 0% APR available
+                                    Financing available
                                 </span>
                             </div>
                         </div>
@@ -131,49 +125,31 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
 
                         {/* Trust Cluster */}
                         <div className='mt-8 space-y-6'>
-                            {/* Testimonial Quote */}
-                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
-                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
-                                <div>
-                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
-                                        &ldquo;The team made me feel so
-                                        comfortable from day one. Best decision
-                                        I ever made for myself.&rdquo;
-                                    </p>
-                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Maria R., BBL Patient
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Double Board-Certified'}{' '}
-                                        Accredited
+                                        One surgeon for every procedure
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Award className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Board-Certified
+                                        {TRUST_BADGES.board}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Clock className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        24hr Response
+                                        Hablamos español
                                     </span>
                                 </div>
                             </div>
 
                             {/* Risk Reversal Message */}
                             <p className='text-center text-sm text-stone-500 lg:text-left'>
-                                ✓ Free consultation • ✓ No obligation • ✓
-                                Pricing locked once you book
+                                ✓ Free consultation • ✓ No obligation
                             </p>
                         </div>
                     </div>

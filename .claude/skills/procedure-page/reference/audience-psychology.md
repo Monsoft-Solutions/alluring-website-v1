@@ -16,9 +16,9 @@ the competitor sweep before writing copy.
 - On a phone (60%+ of visits), often in short sessions over days or weeks.
   The purchase is high-consideration and research-heavy: she compares
   surgeons, prices, results and horror stories before she calls anyone.
-- Values quality and wants it within reach. The brand promise is "Luxury
-  Surgeries Made Affordable". The page proves that with specifics, not by
-  repeating the words.
+- Values quality and wants it within reach. The brand promise is "Personal
+  care. Honest price." (#290). The page proves that with specifics, not by
+  repeating the words, and never with "luxury" or "affordable".
 - Many speak Spanish at home. The page is English, but "Hablamos español"
   is a real reassurance, and reviews in Spanish exist.
 - She arrives from Google (often a cost or "near me" query), from an AI
@@ -38,8 +38,9 @@ Most readers skim in this order. The section order follows it.
    say.
 4. **Is it safe?** The honest risk, sourced, and what this practice does
    about it.
-5. **What will it cost, and can I afford it?** Starting price, typical range,
-   what's included, what moves the price, financing.
+5. **What will it cost, and can I afford it?** Starting price (BBL alone
+   adds its typical range and what's included), what moves the price,
+   financing named by partner with no payment figure.
 6. **What happens to my life during recovery?** Work, kids, sleeping,
    sitting, driving, pain, when she looks normal in clothes.
 7. **What happens if I reach out?** How little she has to commit, who
@@ -49,18 +50,18 @@ Most readers skim in this order. The section order follows it.
 
 Name the fear plainly, then answer it with a fact, not a reassurance word.
 
-| Fear                                                   | What answers it on the page                                                                                             |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| "I'll look fake or overdone"                           | Real results in varied bodies; "natural" shown, not claimed; the surgeon explains how the plan fits her proportions     |
-| "Something will go wrong"                              | Sourced complication figures, the specific safety standard (law, technique, one surgeon), what to watch for in recovery |
-| "The cheap offer is a trap, and this one might be too" | Starting price, typical range, what's included, and why some offers cost less — without naming competitors              |
-| "I'll be upsold or pressured"                          | Free consultation, "your surgeon may tell you it isn't right for you", no countdowns                                    |
-| "The surgeon won't be the one operating"               | "One surgeon performs every …", named, with portrait                                                                    |
-| "I can't take that much time off, or care for my kids" | Recovery by milestone with sourced days and weeks, and how the practice supports follow-up                              |
-| "It'll hurt"                                           | What pain is typical and for how long, sourced; pain control discussed at consultation                                  |
-| "People will judge me"                                 | Privacy in tone and imagery: editorial, not glamour; no shame language                                                  |
-| "I live out of state"                                  | Virtual consultation first, dates in writing, how many nights to stay; no travel packages                               |
-| "It's selfish to spend this on me"                     | Speak to her as a capable adult making an informed choice; never guilt, never "you deserve it" pressure                 |
+| Fear                                                   | What answers it on the page                                                                                                                                       |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "I'll look fake or overdone"                           | Real results in varied bodies; "natural" shown, not claimed; the surgeon explains how the plan fits her proportions                                               |
+| "Something will go wrong"                              | Sourced complication figures, the specific safety standard (law, technique, one surgeon), what to watch for in recovery                                           |
+| "The cheap offer is a trap, and this one might be too" | Starting price from the resolver with the caveat (BBL alone adds its typical range and inclusion list), and why some offers cost less, without naming competitors |
+| "I'll be upsold or pressured"                          | No-obligation consultation, "your surgeon may tell you it isn't right for you", no countdowns                                                                     |
+| "The surgeon won't be the one operating"               | "One surgeon performs every …", named, with portrait                                                                                                              |
+| "I can't take that much time off, or care for my kids" | Recovery by milestone with sourced days and weeks, and how the practice supports follow-up                                                                        |
+| "It'll hurt"                                           | What pain is typical and for how long, sourced; pain control discussed at consultation                                                                            |
+| "People will judge me"                                 | Privacy in tone and imagery: editorial, not glamour; no shame language                                                                                            |
+| "I live out of state"                                  | Virtual consultation first, dates in writing, how many nights to stay; no travel packages                                                                         |
+| "It's selfish to spend this on me"                     | Speak to her as a capable adult making an informed choice; never guilt, never "you deserve it" pressure                                                           |
 
 ## What she wants to feel
 
@@ -75,8 +76,9 @@ Each principle, and how it shows up on a procedure page:
 - **Answer first.** Every question H2 opens with the complete answer in 40–60
   words. It respects her time, and AI engines lift the passage whole.
 - **Specific beats superlative.** "10–14 days before most people return to a
-  desk job (The Aesthetic Society)" persuades; "fast recovery" doesn't. Every
-  number is sourced and attributed exactly.
+  desk job after a BBL (Cleveland Clinic, The Aesthetic Society; ASPS says
+  some go back at 7 to 10)" persuades; "fast recovery" doesn't. Every number
+  is sourced and attributed exactly, as the facts file words it.
 - **Similar others.** Reviews that name this procedure, photos of bodies like
   hers. If none exist, say less rather than borrow other procedures' praise.
 - **Verifiable authority.** One named surgeon, with each credential linked to
@@ -109,7 +111,9 @@ Each principle, and how it shows up on a procedure page:
 - Sexualized imagery or framing: swimwear, lingerie, crops on body parts.
 - Testimonials that aren't real reviews, edited reviews, or reviews moved
   under a heading they don't support.
-- Guarantees of results, "best", "safest", "painless", "scarless".
+- Guarantees of results, and superlatives about the practice, the surgeon or
+  results: "best", "safest", "painless", "scarless" (the claims canon,
+  `docs/claims/canon.md` §10).
 - Before/after photos of models, or AI images near results without a label.
 
 ## Per-procedure starting hypotheses

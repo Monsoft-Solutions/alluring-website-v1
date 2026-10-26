@@ -2,17 +2,18 @@
  * ProcedureLandingPromo
  *
  * Procedure-specific promotion strip rendered directly under the hero
- * when an active promotion exists for the slug. Mirrors the luxury
- * aesthetic of the homepage PromoSection but every CTA routes back to
- * the LP's hero form — visitors never leave the page.
+ * when an active promotion exists for the slug. Mirrors the homepage
+ * PromoSection, but every CTA routes back to the LP's hero form, so
+ * visitors never leave the page. No urgency label and no countdown
+ * (claims canon §10, SU9).
  */
-import { ArrowRight, Clock, Sparkles } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import { type Promotion } from '@workspace/db/schema/promotion'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
-import { formatDiscount, getRemainingDays } from '@/lib/queries/promotion.query'
+import { formatDiscount } from '@/lib/queries/promotion.query'
 
 export type ProcedureLandingPromoProps = {
     readonly id?: string
@@ -26,7 +27,6 @@ export function ProcedureLandingPromo({
     formAnchor = '#hero-form',
 }: ProcedureLandingPromoProps) {
     const discount = formatDiscount(promotion)
-    const daysRemaining = getRemainingDays(promotion)
 
     return (
         <SectionContainer
@@ -34,7 +34,7 @@ export function ProcedureLandingPromo({
             variant='default'
             className='relative overflow-hidden bg-stone-900'
             paddingY='py-14 lg:py-20'
-            aria-label='Limited-time offer'
+            aria-label='Current offer'
         >
             <div
                 aria-hidden='true'
@@ -55,7 +55,7 @@ export function ProcedureLandingPromo({
                         <div className='mb-5 inline-flex items-center gap-2 rounded-full border border-stone-700 bg-stone-800/50 px-4 py-2 backdrop-blur-sm'>
                             <Sparkles className='text-gold-400 h-4 w-4' />
                             <span className='text-gold-400 text-xs font-bold tracking-widest uppercase'>
-                                Limited-time offer
+                                Current offer
                             </span>
                         </div>
 
@@ -75,20 +75,6 @@ export function ProcedureLandingPromo({
                             <p className='mb-6 max-w-lg text-base leading-relaxed text-stone-400 lg:text-lg'>
                                 {promotion.excerpt}
                             </p>
-                        )}
-
-                        {daysRemaining !== null && daysRemaining > 0 && (
-                            <div className='mb-7 inline-flex items-center gap-3 rounded-lg border border-stone-700/50 bg-stone-800/30 px-5 py-3'>
-                                <Clock className='text-gold-400 h-5 w-5' />
-                                <div>
-                                    <span className='text-gold-400 block text-2xl leading-none font-bold'>
-                                        {daysRemaining}
-                                    </span>
-                                    <span className='text-[10px] tracking-wide text-stone-500 uppercase'>
-                                        Days remaining
-                                    </span>
-                                </div>
-                            </div>
                         )}
 
                         <a

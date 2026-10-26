@@ -7,8 +7,16 @@
  * @module
  */
 import type { JsonLdGraphNode } from '@workspace/seo/react'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
+import {
+    formatPriceText,
+    formatTypicalRangeText,
+    type PriceDisplay,
+    type TypicalRange,
+} from '@workspace/shared/claims/pricing'
 
 import { siteConfig } from '@/lib/data/site-config'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 import type { Procedure } from '@/lib/types/procedure.type'
 
 /** `http://…`, `https://…` or a protocol-relative `//…`. */
@@ -97,34 +105,78 @@ export function procedureNameInMiami(title: string): string {
 }
 
 /**
- * One `Offer` for a published price: a starting price, and a top when the
- * range is real. `name` is set for a priced variant, so each of a
- * procedure's options says which one it prices.
+ * One `Offer` for a published price, from the pricing resolver (#354): the
+ * starting price as `minPrice`. `name` is set for a priced variant, so each
+ * of a procedure's options says which one it prices. A discounted price is
+ * the price offered, and `description` gives the plain-text form, "$4,400
+ * (20% off $5,500)".
+ *
+ * BBL's "most patients pay" range goes in `description` as the sentence,
+ * never as `maxPrice`: schema.org reads `maxPrice` as the highest price,
+ * and the canon's range is typical, never a maximum (§5).
  */
 function priceOffer({
     name,
-    startingAt,
-    upTo,
+    price,
+    range,
     pageUrl,
 }: {
     name?: string
-    startingAt: number
-    upTo?: number
+    price: PriceDisplay
+    range?: TypicalRange | null
     pageUrl: string
 }) {
+    const description = range
+        ? `Starts at ${formatPriceText(price)}; ${formatTypicalRangeText(range)}.`
+        : price.discounted
+          ? formatPriceText(price)
+          : null
     return {
         '@type': 'Offer',
         ...(name && { name }),
+        ...(description && { description }),
         priceCurrency: 'USD',
         availability: 'https://schema.org/InStock',
         url: pageUrl,
         priceSpecification: {
             '@type': 'PriceSpecification',
             priceCurrency: 'USD',
-            minPrice: startingAt,
-            ...(upTo && { maxPrice: upTo }),
+            minPrice: price.finalUsd,
         },
     }
+}
+
+/**
+ * The page's offers: one per priced variant when the procedure lists
+ * options (a tummy tuck by type), else its starting price and range. Only
+ * pages with a price section (`procedure.pricing`) publish any, and a line
+ * the resolver can't price is left out: the graph never says more than the
+ * page.
+ */
+function procedureOffers(
+    procedure: Procedure,
+    prices: ProcedurePrices | undefined,
+    pageUrl: string
+) {
+    if (!procedure.pricing || !prices) return undefined
+    const options = procedure.pricing.options
+    if (options?.length) {
+        const offers = options.flatMap((option) => {
+            const price = prices.lines.find(
+                (line) => line.lineKey === option.line
+            )
+            return price
+                ? [priceOffer({ name: option.label, price, pageUrl })]
+                : []
+        })
+        return offers.length ? offers : undefined
+    }
+    if (!prices.starting) return undefined
+    return priceOffer({
+        price: prices.starting,
+        range: prices.range,
+        pageUrl,
+    })
 }
 
 /**
@@ -148,10 +200,13 @@ export function buildProcedureGraph({
     breadcrumbs,
     offer,
     surgeon,
+    prices,
 }: {
     procedure: Procedure
     pageUrl: string
     siteUrl: string
+    /** The resolver's prices, which the page's price section prints. */
+    prices?: ProcedurePrices
     faqs?: { question: string; answer: string }[]
     breadcrumbs: { name: string; item: string }[]
     offer?: JsonLdGraphNode | false | null
@@ -167,6 +222,7 @@ export function buildProcedureGraph({
     const breadcrumbId = `${pageUrl}#breadcrumb`
     const procedureId = `${pageUrl}#procedure`
     const image = procedureImageUrl(procedure, siteUrl)
+    const offers = procedureOffers(procedure, prices, pageUrl)
 
     const webPage = {
         '@type': 'MedicalWebPage',
@@ -248,28 +304,12 @@ export function buildProcedureGraph({
         provider: surgeon
             ? [{ '@id': organizationId }, { '@id': surgeon['@id'] }]
             : { '@id': organizationId },
-        // The practice serves the United States. Not Latin America, not the
-        // Caribbean — see CLAUDE.md.
-        areaServed: ['Miami', 'Florida', 'United States'],
+        // US only (claims canon §1, CLAUDE.md): `AREA_SERVED`.
+        areaServed: [...AREA_SERVED],
         image,
         // One Offer per priced variant when the procedure has several (a
         // tummy tuck by type), else the one starting price and its range.
-        ...(procedure.pricing && {
-            offers: procedure.pricing.options?.length
-                ? procedure.pricing.options.map((option) =>
-                      priceOffer({
-                          name: option.label,
-                          startingAt: option.startingAt,
-                          upTo: option.upTo,
-                          pageUrl,
-                      })
-                  )
-                : priceOffer({
-                      startingAt: procedure.pricing.startingAt,
-                      upTo: procedure.pricing.upTo,
-                      pageUrl,
-                  }),
-        }),
+        ...(offers && { offers }),
     }
 
     // The practice, as the clinic that offers this procedure. schema.org links

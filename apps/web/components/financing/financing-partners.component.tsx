@@ -40,7 +40,7 @@ function getAccentColorKey(color: string | undefined): AccentColorKey {
 }
 
 /**
- * Accent color mappings for partner cards - refined luxury aesthetic
+ * Accent color mappings for partner cards
  */
 const accentColors: Record<
     AccentColorKey,
@@ -353,7 +353,7 @@ export function FinancingPartners({
 
                 {/* Disclaimer - Elegant styling */}
                 <p className='mt-14 text-center text-sm text-stone-500 dark:text-stone-500'>
-                    *Subject to credit approval. Terms and conditions apply.
+                    Subject to credit approval. Terms and conditions apply.
                     Visit each partner&apos;s website for complete details.
                 </p>
             </ContentWrapper>

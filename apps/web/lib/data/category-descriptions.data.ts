@@ -34,11 +34,11 @@ export const categoryDescriptions: CategoryDescription[] = [
         title: 'Breast Augmentation Guides & Resources',
         shortDescription:
             'Expert guides on breast augmentation surgery in Miami. Learn about implant types, sizing, recovery, and what to expect from your procedure.',
-        fullDescription: `Our breast augmentation resources provide comprehensive information for women considering breast implant surgery in Miami. Whether you're exploring your options for the first time or preparing for your upcoming procedure, our board-certified plastic surgeons share their expertise on every aspect of breast augmentation.
+        fullDescription: `Our breast augmentation resources provide comprehensive information for women considering breast implant surgery in Miami. Whether you're exploring your options for the first time or preparing for your upcoming procedure, these guides cover every aspect of breast augmentation.
 
 Discover detailed guides on choosing between saline and silicone implants, understanding implant profiles and sizes, and learning about incision techniques. We cover the consultation process, surgical techniques, recovery timeline, and long-term care to help you make informed decisions about your body.
 
-Our articles address common concerns like implant safety, revision surgery, breastfeeding with implants, and how to achieve natural-looking results. Each piece is reviewed by our medical team to ensure accuracy and relevance.`,
+Our articles address common concerns like implant safety, revision surgery, breastfeeding with implants, and how to achieve natural-looking results.`,
         relatedCategories: [
             'breast-reduction',
             'mommy-makeover',
@@ -47,11 +47,11 @@ Our articles address common concerns like implant safety, revision surgery, brea
         faqs: [
             {
                 question: 'How long does breast augmentation recovery take?',
-                answer: 'Most patients return to light activities within 1-2 weeks and resume normal exercise after 4-6 weeks. Full results are visible after 3-6 months as swelling subsides.',
+                answer: 'Most people return to light activity in about a week. Your surgeon tells you when you can exercise again, and your result settles over the following months as swelling goes down.',
             },
             {
                 question: 'What size breast implants should I get?',
-                answer: 'Implant size depends on your body frame, current breast tissue, and aesthetic goals. During consultation, our surgeons use 3D imaging and sizing samples to help you visualize different options.',
+                answer: 'Implant size depends on your body frame, current breast tissue, and aesthetic goals. Dr. Karlinsky helps you choose a size at consultation.',
             },
         ],
     },
@@ -60,20 +60,20 @@ Our articles address common concerns like implant safety, revision surgery, brea
         title: 'Brazilian Butt Lift (BBL) Guides & Resources',
         shortDescription:
             'Everything you need to know about Brazilian Butt Lift surgery in Miami. Expert guides on BBL safety, recovery, results, and fat transfer techniques.',
-        fullDescription: `Our BBL resources provide essential information about Brazilian Butt Lift surgery, one of the most popular body contouring procedures in Miami. Our board-certified surgeons share their expertise on achieving beautiful, natural-looking results through advanced fat transfer techniques.
+        fullDescription: `Our BBL resources provide essential information about Brazilian Butt Lift surgery, one of the most popular body contouring procedures in Miami. These guides explain how fat transfer shapes a natural-looking result.
 
 Learn about BBL candidacy requirements, the liposuction and fat transfer process, safety protocols, and what to expect during recovery. We address common questions about sitting after BBL, how much fat survives, and achieving your desired curves while maintaining safety.
 
-Our guides cover the entire BBL journey from initial consultation through long-term results, helping you understand this transformative procedure. Each article reflects the latest safety standards and techniques used at Alluring Plastic Surgery.`,
+Our guides cover the entire BBL journey from initial consultation through long-term results, helping you understand this procedure.`,
         relatedCategories: ['liposuction', 'body-contouring', 'recovery-tips'],
         faqs: [
             {
                 question: 'Is a BBL safe?',
-                answer: 'When performed by a board-certified plastic surgeon following safety protocols, BBL is safe. Our surgeons use advanced techniques to minimize risks, including proper fat injection depth and volume limits.',
+                answer: "A BBL's most serious risk is a fat embolism: fat injected into or below the gluteal muscle can enter a blood vessel, which can be fatal. The risk is lowest when the fat stays under the skin, and Florida law requires exactly that, along with ultrasound guidance and one surgeon for one patient. Your surgeon reviews your own risks at consultation.",
             },
             {
                 question: 'How long do BBL results last?',
-                answer: 'BBL results are long-lasting. Once the transferred fat cells establish blood supply (about 3-6 months), they behave like natural fat. Maintaining stable weight helps preserve results for years.',
+                answer: 'BBL results are long-lasting. The risk of losing grafted fat subsides around month 3, and your final shape shows at 3 to 6 months. Keeping a stable weight helps preserve the result.',
             },
         ],
     },
@@ -82,9 +82,9 @@ Our guides cover the entire BBL journey from initial consultation through long-t
         title: 'Tummy Tuck Surgery Guides & Resources',
         shortDescription:
             'Comprehensive guides on tummy tuck surgery (abdominoplasty) in Miami. Learn about techniques, recovery, combining with other procedures, and achieving a flat stomach.',
-        fullDescription: `Our tummy tuck resources help you understand abdominoplasty surgery and determine if it's right for achieving your body goals. Our board-certified surgeons provide detailed information on different tummy tuck techniques and what to expect throughout your surgical journey.
+        fullDescription: `Our tummy tuck resources help you understand abdominoplasty surgery and determine if it's right for achieving your body goals. These guides explain the different tummy tuck techniques and what to expect throughout your surgical journey.
 
-Explore guides on mini tummy tuck vs. full tummy tuck, muscle repair, combining tummy tuck with liposuction, and the popular drainless technique. We cover candidacy requirements, surgical techniques, recovery timeline, and how to maintain your results long-term.
+Explore guides on mini tummy tuck vs. full tummy tuck, muscle repair, and combining tummy tuck with liposuction. We cover candidacy requirements, surgical techniques, recovery timeline, and how to maintain your results long-term.
 
 Whether you're addressing loose skin after weight loss or restoring your pre-pregnancy body, our articles provide the information you need to make confident decisions about your procedure.`,
         relatedCategories: ['mommy-makeover', 'liposuction', 'body-contouring'],
@@ -96,7 +96,7 @@ Whether you're addressing loose skin after weight loss or restoring your pre-pre
             },
             {
                 question: 'Can I get pregnant after a tummy tuck?',
-                answer: "Yes, you can safely get pregnant after a tummy tuck. However, pregnancy may affect your results. Many surgeons recommend waiting until you're done having children to ensure long-lasting results.",
+                answer: 'A 2023 review of 17 studies and 237 patients who became pregnant after a tummy tuck found no deaths of mothers or babies and concluded that pregnancy should not be ruled out (Karunaratne and colleagues, Aesthetic Plastic Surgery, 2023). A later pregnancy can change your result, and ASPS advises women who may want future pregnancies to postpone a tummy tuck.',
             },
         ],
     },
@@ -107,9 +107,9 @@ Whether you're addressing loose skin after weight loss or restoring your pre-pre
             'Expert guides on mommy makeover surgery in Miami. Learn about combining procedures, recovery planning, and restoring your pre-pregnancy body.',
         fullDescription: `Our mommy makeover resources provide comprehensive information for mothers looking to restore their bodies after pregnancy and breastfeeding. A mommy makeover combines multiple procedures - typically tummy tuck, breast lift or augmentation, and liposuction - customized to address your specific concerns.
 
-Our board-certified surgeons share their expertise on planning a mommy makeover, including which procedures to combine, recovery considerations with children at home, and achieving balanced, natural-looking results. We address practical concerns like timing surgery around childcare and what to expect during the healing process.
+These guides cover planning a mommy makeover, including which procedures to combine, recovery considerations with children at home, and achieving balanced, natural-looking results. We address practical concerns like timing surgery around childcare and what to expect during the healing process.
 
-Whether you're still researching or preparing for your procedure, our guides help you understand every aspect of this transformative surgical journey.`,
+Whether you're still researching or preparing for your procedure, our guides help you understand every aspect of this surgery.`,
         relatedCategories: [
             'tummy-tuck',
             'breast-augmentation',
@@ -123,7 +123,7 @@ Whether you're still researching or preparing for your procedure, our guides hel
             {
                 question:
                     'How long should I wait after pregnancy for a mommy makeover?',
-                answer: 'We recommend waiting at least 6-12 months after delivery and 3-6 months after breastfeeding. This allows your body to stabilize and ensures more predictable surgical results.',
+                answer: 'Most surgeons advise waiting at least 6 months after giving birth and a few months after you stop breastfeeding, so your body can settle and results are more predictable. Your surgeon sets your timing at consultation.',
             },
         ],
     },
@@ -134,18 +134,18 @@ Whether you're still researching or preparing for your procedure, our guides hel
             'Expert guides on liposuction surgery in Miami. Learn about different liposuction techniques, treatment areas, recovery, and body contouring results.',
         fullDescription: `Our liposuction resources provide detailed information about this popular body contouring procedure. Liposuction removes stubborn fat deposits that resist diet and exercise, helping you achieve a more sculpted physique.
 
-Our board-certified surgeons share their expertise on various liposuction techniques including tumescent liposuction, VASER liposuction, and power-assisted liposuction. Learn about treatable areas like the abdomen, flanks, thighs, arms, and chin, plus what realistic results look like.
+These guides explain how liposuction works. Learn about treatable areas like the abdomen, flanks, thighs, arms, and chin, plus what realistic results look like.
 
-We cover everything from candidacy requirements to recovery tips, helping you understand if liposuction can help you reach your body goals. Each article is reviewed for accuracy by our medical team.`,
+We cover everything from candidacy requirements to recovery tips, helping you understand if liposuction can help you reach your body goals.`,
         relatedCategories: ['bbl', 'tummy-tuck', 'body-contouring'],
         faqs: [
             {
                 question: 'How much fat can be removed with liposuction?',
-                answer: 'For safety, most surgeons limit fat removal to about 5 liters in a single session. The actual amount depends on your body composition and the number of areas being treated. Your surgeon will determine safe limits during consultation.',
+                answer: "Florida allows at most 4,000 cc of supernatant fat (the fat alone, without the fluid removed with it) to be removed by liposuction in a doctor's office, and at most 1,000 cc when liposuction is combined with a tummy tuck. How much is right for you depends on your body and the areas treated, and your surgeon sets it at consultation.",
             },
             {
                 question: 'Does fat come back after liposuction?',
-                answer: "Fat cells removed during liposuction don't grow back. However, remaining fat cells can expand with significant weight gain. Maintaining a stable weight through healthy habits helps preserve your results.",
+                answer: 'Liposuction permanently removes fat cells, Cleveland Clinic says, but the fat cells that remain can still grow if you gain weight. ASPS says results last as long as you keep a stable weight and general fitness.',
             },
         ],
     },
@@ -156,14 +156,14 @@ We cover everything from candidacy requirements to recovery tips, helping you un
             'Expert recovery tips and guides for plastic surgery patients. Learn about healing timelines, pain management, and achieving optimal results.',
         fullDescription: `Our recovery resources help plastic surgery patients prepare for and navigate the healing process. Proper recovery is essential for achieving beautiful, long-lasting results from any cosmetic procedure.
 
-Our board-certified surgeons and medical team share evidence-based recovery tips covering pain management, activity restrictions, nutrition, wound care, and compression garments. We provide procedure-specific guidance as well as general best practices for healing.
+These guides share evidence-based recovery tips covering pain management, activity restrictions, nutrition, wound care, and compression garments. We provide procedure-specific guidance as well as general best practices for healing.
 
-Whether you're preparing for upcoming surgery or currently in recovery, our guides help you understand what to expect and how to optimize your healing for the best possible results.`,
+Whether you're preparing for upcoming surgery or currently in recovery, our guides help you understand what to expect and how to support your healing.`,
         relatedCategories: ['breast-augmentation', 'bbl', 'tummy-tuck'],
         faqs: [
             {
                 question: 'When can I return to work after plastic surgery?',
-                answer: 'Return-to-work timelines vary by procedure. Most patients return to desk jobs within 1-2 weeks. Physical jobs may require 4-6 weeks. Your surgeon will provide specific guidance based on your procedure and job requirements.',
+                answer: 'It depends on the procedure. Most people go back to a desk job in about 1 to 3 weeks. Exercise and physical work take longer: about 4 to 6 weeks after liposuction (The Aesthetic Society), 4 to 8 weeks after a tummy tuck (Cleveland Clinic) and 8 weeks after a BBL (The Aesthetic Society), once your surgeon clears you. Your surgeon gives you your own timeline.',
             },
             {
                 question: 'How can I reduce swelling after surgery?',

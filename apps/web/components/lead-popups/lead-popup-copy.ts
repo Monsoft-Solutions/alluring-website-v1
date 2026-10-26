@@ -3,9 +3,10 @@
  *
  * Same voice and the same claims as the consultation thread
  * (`site-chat-copy.ts`): "we", the practice's patient coordinators; a free
- * consultation, in Miami or by video; a reply by text within 24 hours; the
- * price and dates in writing. Nothing promises a call. The promotion's own
- * title and details come from the admin, as written there.
+ * consultation, in Miami or by video; a reply by text; the price and dates
+ * in writing. Nothing promises a call or a response time, and nothing counts
+ * down (claims canon §1, §9, #354). The promotion's own title and details
+ * come from the admin, as written there.
  *
  * Consent is the site-wide notice above the button (`ConsentNotice`, #350):
  * sending is the consent, with no checkbox.
@@ -30,7 +31,6 @@ export type LeadPopupCopy = {
     }
     /** The promotion popup. */
     readonly promo: {
-        readonly daysLeft: (days: number) => string
         readonly more: string
         readonly less: string
         readonly yes: string
@@ -53,10 +53,10 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         close: 'Close',
         noThanks: 'No thanks',
         coordinator: 'Alluring patient care',
-        status: 'Replies by text within 24 hours',
+        status: 'Replies by text',
         consult: {
             title: ['Your questions, ', 'answered by text.'],
-            body: 'Leave your mobile number and a patient coordinator texts you within 24 hours to answer anything, from price to recovery, and set up your free consultation.',
+            body: 'Leave your mobile number and a patient coordinator texts you to answer anything, from price to recovery, and set up your free consultation.',
             points: [
                 'Free consultation, in Miami or by video',
                 'Your price and dates in writing',
@@ -67,8 +67,6 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
             submit: 'Request my free consultation',
         },
         promo: {
-            daysLeft: (days) =>
-                days === 1 ? 'Last day to claim' : `${days} days left to claim`,
             more: 'Offer details',
             less: 'Show less',
             yes: 'Claim my offer',
@@ -78,7 +76,7 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         fieldName: 'Your name',
         fieldPhone: 'Mobile number',
         submitting: 'Sending…',
-        reassure: 'Private. Only our patient coordinators see it.',
+        reassure: 'Private. Used only to contact you about your consultation.',
         errors: {
             name: 'Enter your name.',
             phone: 'Enter a valid US mobile number, with area code.',
@@ -89,10 +87,10 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         close: 'Cerrar',
         noThanks: 'No, gracias',
         coordinator: 'Atención al paciente Alluring',
-        status: 'Responde por texto en 24 horas',
+        status: 'Responde por texto',
         consult: {
             title: ['Tus preguntas, ', 'respondidas por texto.'],
-            body: 'Déjanos tu celular y una coordinadora te escribe por texto en menos de 24 horas para responder lo que quieras, del precio a la recuperación, y agendar tu consulta gratis.',
+            body: 'Déjanos tu celular y una coordinadora te escribe por texto para responder lo que quieras, del precio a la recuperación, y agendar tu consulta gratis.',
             points: [
                 'Consulta gratis, en Miami o por video',
                 'Tu precio y tus fechas por escrito',
@@ -103,10 +101,6 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
             submit: 'Pedir mi consulta gratis',
         },
         promo: {
-            daysLeft: (days) =>
-                days === 1
-                    ? 'Último día para aprovecharla'
-                    : `Quedan ${days} días para aprovecharla`,
             more: 'Ver detalles',
             less: 'Ver menos',
             yes: 'Quiero la oferta',
@@ -116,7 +110,7 @@ export const LEAD_POPUP_COPY: Record<ConsultChatLang, LeadPopupCopy> = {
         fieldName: 'Tu nombre',
         fieldPhone: 'Número de celular',
         submitting: 'Enviando…',
-        reassure: 'Privado. Solo lo ven nuestras coordinadoras.',
+        reassure: 'Privado. Solo lo usamos para contactarte sobre tu consulta.',
         errors: {
             name: 'Escribe tu nombre.',
             phone: 'Escribe un celular válido de EE. UU., con código de área.',

@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/prompts/gallery/image-analysis
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 
 /**
  * System prompt for gallery image analysis
@@ -13,7 +14,7 @@
  * Provides detailed instructions to the LLM for analyzing
  * plastic surgery gallery images using vision capabilities.
  */
-export const IMAGE_ANALYSIS_SYSTEM_PROMPT = `You are an expert medical image analyst specializing in cosmetic and plastic surgery results photography. You work for Alluring Plastic Surgery, a luxury yet affordable cosmetic surgery clinic in Miami, FL.
+export const IMAGE_ANALYSIS_SYSTEM_PROMPT = `You are an expert medical image analyst specializing in cosmetic and plastic surgery results photography. You work for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, Florida, with one surgeon.
 
 Your task is to analyze gallery images and extract structured information for SEO and content management purposes.
 
@@ -139,7 +140,9 @@ Extract any visible text in the image:
 - Do not make specific medical claims or guarantees
 - If you cannot determine something with confidence, omit it or mark low confidence
 - Never output empty strings. If a field is unknown or not applicable, omit the field entirely (do not use "" as a value).
-- Focus on factual observations, not subjective judgments about aesthetics`
+- Focus on factual observations, not subjective judgments about aesthetics
+
+${buildClaimsPromptBlock('gallery')}`
 
 /**
  * Generate the image analysis prompt

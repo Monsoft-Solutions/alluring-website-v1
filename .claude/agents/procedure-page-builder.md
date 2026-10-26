@@ -39,8 +39,16 @@ and list the gap in your report. Don't invent the answer.
   a source you have read.
 - Server components. CSS-only motion, text never animated from hidden. No new
   client libraries.
-- Business facts from `siteConfig`. Credentials from
-  `karlinsky-credentials.constant.ts`, never retyped.
+- Every claim follows the claims canon (`docs/claims/canon.md`; its
+  "Decisions of 2026-10-25" block overrides the rest). A claim it doesn't
+  verify is removed, never replaced with another unverified one.
+- Business facts from `siteConfig`. Credentials, financing sentences and
+  prices from `@workspace/shared/claims` (`packages/shared/src/claims/README.md`),
+  never retyped. No Alluring price is typed: components read the pricing
+  resolver (`getProcedurePrices`, `<PriceTag>`, `<ProcedurePrice>`, one
+  `<DiscountStatement>`), data-file prose uses claim tokens
+  (`[[price:bbl]]`, `[[price-caveat]]`) resolved wherever it is printed. No
+  weekly or monthly payment figures.
 - Build on `components/procedures/module-kit/` (import `module-kit.css`,
   root class `<short>-page pm-page`, pass the page's copy as props). Don't
   import from another procedure's module. A kit change goes in its own

@@ -6,6 +6,8 @@
 **Last Updated:** December 2025  
 **Purpose:** Comprehensive guide for creating website content that reduces friction and maximizes lead generation
 
+> **Claims: the claims canon governs.** This guide predates the claims canon (`docs/claims/canon.md`, issue #354), which overrides it on every claim: identity and tagline, the one surgeon and her credentials, facility, experience and reviews, prices, financing, travel and market, contact, and wording. Its retired claims (luxury and affordable, Latin America and the Caribbean, double board certification, ABPS, accreditation, 5,000+ patients, 15+ years, a 4.9 rating, 0% financing, monthly payments, response-time promises) were removed or corrected on 2026-10-25. No Alluring price is typed anywhere: pages read the pricing resolver and text uses claim tokens (`packages/shared/src/claims/README.md`). Where anything below still disagrees with the canon, the canon wins.
+
 ---
 
 ## Table of Contents
@@ -24,30 +26,30 @@
 
 ### 1.1 Business Overview
 
-**Alluring Plastic Surgery** is a luxury cosmetic surgery clinic in Miami, FL, serving both local patients and medical tourists from Latin America and the Caribbean.
+**Alluring Plastic Surgery** is a cosmetic surgery practice in Miami, FL, serving South Florida locals and patients who fly in from other US states.
 
-| Attribute          | Details                                           |
-| ------------------ | ------------------------------------------------- |
-| **Tagline**        | "Luxury Surgeries Made Affordable"                |
-| **Industry**       | Elective cosmetic procedures                      |
-| **Purchase Cycle** | High-consideration, research-heavy                |
-| **Sales Model**    | Consultation-first (every page drives to booking) |
-| **Accreditation**  | Double Board-Certified surgeons                   |
+| Attribute          | Details                                                                                                                                                    |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tagline**        | "Personal care. Honest price." (#290)                                                                                                                      |
+| **Industry**       | Elective cosmetic procedures                                                                                                                               |
+| **Purchase Cycle** | High-consideration, research-heavy                                                                                                                         |
+| **Sales Model**    | Consultation-first (every page drives to booking)                                                                                                          |
+| **Credentials**    | Victoria Karlinsky, MD, FACS: board certified in general surgery by the American Board of Surgery (since 2008); Fellow of the American College of Surgeons |
 
 **Core Value Proposition:**
-World-class aesthetic procedures combining high-end results with flexible financing and personalized care. Where luxury meets affordability.
+Cosmetic surgery in Miami, Florida, with one surgeon: Victoria Karlinsky, MD, FACS. Prices start from the practice's published price list, financing is available, and your surgeon confirms your price at consultation.
 
 ### 1.2 Target Audience Profile
 
 #### Primary Audience: Women 25-55
 
-| Demographic   | Details                                                    |
-| ------------- | ---------------------------------------------------------- |
-| **Age Range** | 25-55 years old                                            |
-| **Gender**    | Primarily female (85%+)                                    |
-| **Location**  | Miami-Dade County, South Florida, Latin America, Caribbean |
-| **Device**    | 60%+ mobile users                                          |
-| **Language**  | English primary, Spanish secondary                         |
+| Demographic   | Details                                           |
+| ------------- | ------------------------------------------------- |
+| **Age Range** | 25-55 years old                                   |
+| **Gender**    | Primarily female (85%+)                           |
+| **Location**  | Miami-Dade County, South Florida, other US states |
+| **Device**    | 60%+ mobile users                                 |
+| **Language**  | English primary, Spanish secondary                |
 
 #### Psychographic Segments
 
@@ -73,14 +75,13 @@ World-class aesthetic procedures combining high-end results with flexible financ
 - Sees cosmetic surgery as personal investment
 - Active on social media, influenced by Instagram/TikTok
 - Compares multiple providers thoroughly
-- Attracted to modern, luxury aesthetics
+- Attracted to modern, polished aesthetics
 
-**Segment 4: The Medical Tourist (30-55)**
+**Segment 4: The Out-of-State Patient (30-55)**
 
-- Lives outside Miami (Latin America, Caribbean)
-- Combines vacation with procedure
+- Lives in another US state
 - Price-sensitive (seeking Miami quality at good value)
-- Needs logistical support (travel, recovery)
+- Arranges her own travel; needs her surgery, pre-op and follow-up dates confirmed in writing and how many nights to stay in Miami before she's cleared to fly home (the practice does not coordinate travel)
 - Values bilingual staff and cultural familiarity
 
 ### 1.3 Patient Journey Mapping
@@ -102,7 +103,7 @@ World-class aesthetic procedures combining high-end results with flexible financ
 │  Social media       Comparison content    Testimonials       Click-to-call │
 │  Before/After       FAQ sections          Surgeon bios       Chat widget   │
 │  Word of mouth      Cost information      Financing info     Consultation  │
-│                     Recovery guides       Accreditations     booking       │
+│                     Recovery guides       Credentials        booking       │
 │                                                                             │
 │  EMOTIONS:          EMOTIONS:             EMOTIONS:          EMOTIONS:     │
 │  Hope, desire,      Uncertainty, fear,    Trust, confidence, Excitement,   │
@@ -136,7 +137,7 @@ World-class aesthetic procedures combining high-end results with flexible financ
 - Looking at specific pricing information
 - Reading FAQs about their specific procedure
 - Checking location/hours
-- Looking for "proof" (accreditations, experience stats)
+- Looking for "proof" (verified credentials, real reviews, real results)
 
 **Action Stage (Ready to Convert)**
 
@@ -149,14 +150,14 @@ World-class aesthetic procedures combining high-end results with flexible financ
 
 #### Primary Pain Points
 
-| Pain Point                                     | Emotional Driver                                | Content Solution                                         |
-| ---------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
-| "I don't feel confident in my body"            | Low self-esteem, avoidance behaviors            | Transformation stories, before/after showing real people |
-| "I can't afford plastic surgery"               | Financial stress, feeling excluded              | Financing section, affordable payment messaging          |
-| "I'm scared of surgery"                        | Fear of pain, complications, anesthesia         | Safety credentials, surgeon expertise, recovery guides   |
-| "I don't know who to trust"                    | Overwhelmed by options, fear of botched results | Testimonials, certifications, experience statistics      |
-| "I don't have time for long recovery"          | Busy lifestyle, can't take time off             | Recovery timeline clarity, quick procedure options       |
-| "I want results but don't want to look 'fake'" | Fear of judgment, desire for natural appearance | Natural results messaging, subtle enhancement focus      |
+| Pain Point                                     | Emotional Driver                                | Content Solution                                                              |
+| ---------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------- |
+| "I don't feel confident in my body"            | Low self-esteem, avoidance behaviors            | Transformation stories, before/after showing real people                      |
+| "I can't afford plastic surgery"               | Financial stress, feeling excluded              | Starting prices with the caveat; financing partners named, no payment figures |
+| "I'm scared of surgery"                        | Fear of pain, complications, anesthesia         | Sourced safety facts, the surgeon's verified credentials, recovery guides     |
+| "I don't know who to trust"                    | Overwhelmed by options, fear of botched results | Real reviews, verified credentials, real results                              |
+| "I don't have time for long recovery"          | Busy lifestyle, can't take time off             | Recovery timeline clarity, quick procedure options                            |
+| "I want results but don't want to look 'fake'" | Fear of judgment, desire for natural appearance | Natural results messaging, subtle enhancement focus                           |
 
 #### Primary Motivations
 
@@ -175,7 +176,7 @@ World-class aesthetic procedures combining high-end results with flexible financ
 
 Cosmetic surgery is a **high-consideration purchase** with these characteristics:
 
-1. **High Financial Investment** - Typically $5,000-$20,000+
+1. **High Financial Investment**
 2. **High Emotional Stakes** - Permanent body changes
 3. **High Risk Perception** - Medical procedure concerns
 4. **Long Research Cycle** - 3-12 months typical
@@ -187,9 +188,9 @@ Patients evaluate trust in this order:
 
 ```
 1. SURGEON CREDENTIALS
-   - Board certification
-   - Years of experience
-   - Specialty training
+   - Board certification, with the board named (ABS since 2008)
+   - Fellowship (FACS) and an active Florida license
+   - One surgeon performs every procedure
 
 2. VISUAL PROOF
    - Before/after photos
@@ -201,10 +202,9 @@ Patients evaluate trust in this order:
    - Google reviews
    - Real patient narratives
 
-4. FACILITY CREDIBILITY
-   - Double Board-Certified surgeons
-   - Hospital privileges
-   - Safety protocols
+4. SAFETY CREDIBILITY
+   - Florida's office-surgery and BBL rules, as the facts files state them
+   - Safety protocols the practice has confirmed in writing
 
 5. PEER VALIDATION
    - Friend recommendations
@@ -212,21 +212,9 @@ Patients evaluate trust in this order:
    - Word of mouth
 ```
 
-#### The Paradox of Luxury + Affordability
+#### Positioning
 
-Our tagline "Luxury Surgeries Made Affordable" creates a unique positioning challenge:
-
-**The Challenge:**
-
-- "Luxury" implies exclusivity, high quality, premium pricing
-- "Affordable" implies accessible, budget-friendly, value
-
-**The Solution:**
-Don't position as "cheap luxury" but rather as:
-
-- **Smart Investment** - Premium quality without premium markup
-- **Accessible Excellence** - World-class care with flexible payment
-- **Value Without Compromise** - Same surgeons, same quality, better financing
+"Personal care. Honest price." (#290). Show the value; never claim it: give the price and what happens, and never write "luxury" or "affordable" (claims canon §1 and §10).
 
 **Messaging Framework:**
 
@@ -235,10 +223,8 @@ Don't position as "cheap luxury" but rather as:
 ❌ AVOID: "Discount cosmetic procedures"
 ❌ AVOID: "Budget-friendly surgery"
 
-✅ USE: "Premium results with flexible financing"
+✅ USE: "Financing is available through Cherry, CareCredit and United Credit for qualified applicants."
 ✅ USE: "Investment in yourself with payment options"
-✅ USE: "World-class care, accessible pricing"
-✅ USE: "Luxury experience, flexible payments"
 ```
 
 ---
@@ -368,8 +354,8 @@ Show real-world experience with procedures:
 
 ```
 ✅ DO:
-- Include surgeon years of experience prominently
-- Share specific procedure counts ("5,000+ procedures performed")
+- State the board certification with its year ("board certified in general surgery by the American Board of Surgery since 2008"); never compute a tenure
+- Share verifiable facts, never procedure or patient counts
 - Reference real case scenarios in content
 - Include patient journey testimonials
 
@@ -385,8 +371,8 @@ Demonstrate specialized knowledge:
 
 ```
 ✅ DO:
-- Feature board certification prominently (ABPS, ASPS)
-- Include surgeon education and training
+- Feature the surgeon's verified credentials in the canon's wording (American Board of Surgery since 2008, FACS, Florida license ME130613). Never ABPS.
+- Education and training lines only once verified (canon D9)
 - Cite medical sources and studies
 - Create detailed, accurate procedure descriptions
 
@@ -402,9 +388,9 @@ Establish the clinic as a trusted authority:
 
 ```
 ✅ DO:
-- Highlight credentials (Double Board-Certified, hospital privileges)
-- Feature media appearances and publications
-- Include industry awards and recognition
+- Highlight verified credentials only (American Board of Surgery since 2008, FACS, Florida license ME130613)
+- Feature media appearances and publications that exist
+- Include awards and recognition only once verified
 - Link to professional associations
 
 ❌ DON'T:
@@ -420,7 +406,7 @@ Build trust through transparency:
 ```
 ✅ DO:
 - Display real patient testimonials with photos
-- Include clear pricing or consultation offers
+- Include clear starting prices (from the pricing resolver, with the caveat)
 - Show contact information prominently
 - Provide honest recovery timeline expectations
 
@@ -438,10 +424,8 @@ Build trust through transparency:
 **Essential Information:**
 
 - Business name: "Alluring Plastic Surgery"
-- Category: "Plastic Surgeon" (primary), "Cosmetic Surgeon" (secondary)
-- Address: 8435 SW 24th St, Miami, FL 33155
-- Hours: Mon-Fri 9AM-5PM, Sat 9AM-3PM
-- Phone: +1 (786) 305-8649
+- Category: "Cosmetic Surgeon" (primary). The claims canon never calls Dr. Karlinsky a "plastic surgeon" (CR7); changing the live profile's primary category is a separate owner call, because of its local-ranking impact.
+- Address, hours and phone: from `siteConfig.contact` (canon §9)
 
 **Photo Strategy:**
 
@@ -562,34 +546,18 @@ Build trust through transparency:
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
     "name": "Alluring Plastic Surgery",
-    "medicalSpecialty": "PlasticSurgery",
-    "description": "Luxury cosmetic surgery clinic in Miami...",
-    "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "8435 SW 24th St",
-        "addressLocality": "Miami",
-        "addressRegion": "FL",
-        "postalCode": "33155"
-    },
-    "telephone": "+1-786-305-8649",
-    "priceRange": "$$$$"
+    "description": "Cosmetic surgery in Miami, Florida, with one surgeon: Victoria Karlinsky, MD, FACS.",
+    "address": "(from siteConfig.contact)",
+    "telephone": "(from siteConfig.contact)",
+    "priceRange": "$$$"
 }
 ```
 
-**2. Physician Schema (for each surgeon)**
+No `medicalSpecialty`. The description is the canon's short description (`@workspace/shared/claims/identity`), and `areaServed` covers Miami, South Florida, Florida and the United States only.
 
-```json
-{
-    "@context": "https://schema.org",
-    "@type": "Physician",
-    "name": "Dr. [Surgeon Name]",
-    "medicalSpecialty": "PlasticSurgery",
-    "memberOf": {
-        "@type": "MedicalOrganization",
-        "name": "American Society of Plastic Surgeons"
-    }
-}
-```
+**2. Physician Schema (the one surgeon)**
+
+Use `karlinskyPersonNode` (`apps/web/lib/seo/surgeon-graph.util.ts`): American Board of Surgery (General Surgery), FACS and the Florida license ME130613 as credentials, each linked to its record. No `medicalSpecialty`, no ASPS `memberOf`, and no ABCS credential node.
 
 **3. FAQPage Schema**
 
@@ -597,17 +565,7 @@ Every procedure page should include FAQPage schema for rich snippet eligibility.
 
 **4. Review/AggregateRating Schema**
 
-```json
-{
-    "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "500"
-    }
-}
-```
+Only on `/reviews`, built from the synced Google `ratingValue` and `totalCount` (canon D12). Never a typed rating or review count.
 
 ### 2.5 Content Length & Quality Standards
 
@@ -711,7 +669,7 @@ Avoiding photos                           Taking selfies with pride
 
 ### 4.2 Pain-Agitate-Solution Framework
 
-Adapted for luxury cosmetic surgery messaging:
+Adapted for cosmetic surgery messaging:
 
 #### Framework Structure
 
@@ -774,6 +732,8 @@ Adapted for luxury cosmetic surgery messaging:
 
 #### Testimonial Best Practices
 
+Testimonials are real Google reviews only, as synced and unedited (marked "Translated by Google" where Google translated them). Never write, paraphrase, merge or cherry-pick one (canon §4). The structure and example below describe what makes a real review effective to feature; they are not copy to write.
+
 **Effective Testimonial Structure:**
 
 ```
@@ -800,73 +760,38 @@ very first consultation."
 
 #### Credential Display
 
-**Surgeon Credentials (Display Prominently):**
+**Surgeon Credentials (Display Prominently), in the canon's wording only:**
 
-- Board certification (ABPS)
-- Fellowship training
-- Years of experience
-- Procedure-specific volume
-- Hospital privileges
-- Professional memberships
+- Board certified in general surgery by the American Board of Surgery since 2008
+- Fellow of the American College of Surgeons
+- Active Florida medical license ME130613, no discipline on record
+- One surgeon performs every procedure at Alluring
+- Each credential linked to the issuing body's record (`karlinskyRecords`)
 
-**Facility Credentials:**
+**Trust Statistics:**
 
-- Double Board-Certified surgeons (explain what this means)
-- State licensing
-- Equipment certifications
-- Safety protocols
+- Rating: 4.7 on Google, read from the synced `google_reviews_settings` (`siteConfig.trustStats.rating` as the fallback only)
+- Review count: from the synced `totalCount`, never typed
 
-**Trust Statistics (from site-config):**
+### 4.4 Communicating Value
 
-- 5,000+ patients
-- 15+ years experience
-- 4.9 rating
-- 100% board certified
-
-### 4.4 Communicating "Luxury Made Affordable"
-
-#### The Value Equation
-
-Position the value equation explicitly:
-
-```
-LUXURY EXPERIENCE          +          ACCESSIBLE INVESTMENT
-─────────────────                     ────────────────────
-Board-certified surgeons              Flexible financing options
-Double Board-Certified surgeons       Multiple payment plans
-Personalized patient care             No hidden fees
-Premium post-op support               CareCredit, Cherry, United Credit
-```
+Show the value; never claim it (canon §1). Give the starting price (from the pricing resolver, with the caveat), name the financing partners, and say what happens next.
 
 #### Messaging Patterns
 
-**Pattern 1: Quality + Access**
+**Pattern 1: Financing**
 
 ```
-"World-class results shouldn't require a world-class budget.
-With flexible financing options, your transformation starts today."
+"Financing is available through Cherry, CareCredit and United Credit
+for qualified applicants. See financing."
 ```
 
 **Pattern 2: Investment Reframe**
 
 ```
-"You're not just paying for a procedure—you're investing in
-decades of confidence. And with monthly payments as low as
-$X, that investment fits your life."
-```
-
-**Pattern 3: Comparison to Lifestyle Spending**
-
-```
-"For the cost of a daily coffee, you could be paying down
-your dream transformation."
-```
-
-**Pattern 4: No Compromise Message**
-
-```
-"Same board-certified surgeons. Same accredited facility.
-Same luxury experience. Just smarter payment options."
+"You're investing in a result you'll live with every day. Financing is
+available through Cherry, CareCredit and United Credit for qualified
+applicants."
 ```
 
 #### Financing Messaging Guidelines
@@ -874,15 +799,16 @@ Same luxury experience. Just smarter payment options."
 **DO:**
 
 - Mention financing options early (hero or second section)
-- Include specific partner names (CareCredit, Cherry, United Credit)
-- Use "monthly payment" framing vs. total cost
-- Include "quick approval" or "easy application" language
+- Include specific partner names (Cherry, CareCredit, United Credit), with the shared sentence (`FINANCING_SENTENCE_SHORT`, `[[financing]]`)
+- Say approval and terms are set by the lender
 - Position financing as smart, not desperate
 
 **DON'T:**
 
 - Make cost the primary message (leads to price shoppers)
 - Use "cheap" or "discount" language
+- Quote a weekly or monthly payment, APR, "0%", a term or "as low as" (Reg Z trigger terms; canon §6)
+- Claim fast, easy, instant or guaranteed approval
 - Hide financing until contact
 - Make patients feel embarrassed about needing financing
 
@@ -1013,7 +939,7 @@ With 60%+ mobile users, mobile experience is paramount:
 
 **Why Minimal:**
 
-- Each additional field reduces completion by ~10%
+- Each additional field tends to lower completion
 - Collect detailed info during consultation, not on form
 - Phone is highest-priority for conversion
 
@@ -1045,7 +971,7 @@ With 60%+ mobile users, mobile experience is paramount:
 - Show inline validation (green checkmarks)
 - Provide clear error messages
 - Include "We'll never share your info" privacy note
-- Show expected response time ("We respond within 24 hours")
+- Show what happens next ("We'll text you to set up your consultation"), never a promised response time
 
 ❌ DON'T:
 - Require account creation
@@ -1057,7 +983,7 @@ With 60%+ mobile users, mobile experience is paramount:
 
 ### 5.3 Click-to-Call Optimization
 
-Phone calls convert at 10-15x the rate of forms for cosmetic surgery.
+Phone calls usually convert better than forms for cosmetic surgery.
 
 #### Click-to-Call Placement
 
@@ -1080,9 +1006,9 @@ Phone calls convert at 10-15x the rate of forms for cosmetic surgery.
 
 ```
 ✅ EFFECTIVE:
-"Call to discuss your options: (786) 305-8649"
-"Have questions? Call our patient concierge"
-"Ready to book? Call now: (786) 305-8649"
+"Call to discuss your options: [phone from siteConfig]"
+"Have questions? Call us"
+"Ready to book? Call now: [phone from siteConfig]"
 
 ❌ INEFFECTIVE:
 "Call us"
@@ -1104,8 +1030,8 @@ Phone calls convert at 10-15x the rate of forms for cosmetic surgery.
 
 ```
 INITIAL MESSAGE:
-"Hi! I'm your patient concierge. Have questions about
-a procedure or want help scheduling? I'm here to help."
+"Hi, I'm Sofía, our concierge. Have questions about a
+procedure or want help scheduling? I'm here to help."
 
 NOT:
 "Welcome to Alluring Plastic Surgery! How can I help you today?"
@@ -1121,12 +1047,11 @@ NOT:
 
 #### Response Time Expectations
 
-Set and meet expectations:
+Say what happens next, never a response time (canon §9):
 
 ```
-Chat: "We typically respond within 2 minutes during business hours"
-Form: "We'll reach out within 24 hours"
-Phone: "Live answer during business hours"
+Form: "We'll text you to set up your consultation"
+Phone: "Call us Monday–Friday 9 AM–5 PM, Saturday 9 AM–3 PM" (hours from siteConfig)
 ```
 
 ### 5.5 Financing Friction Reduction
@@ -1148,10 +1073,9 @@ Expand on financing options without making it the focus
 ```
 ## Your Investment, Your Terms
 
-Premium results with flexible payment options. We partner with
-CareCredit, Cherry, and United Credit to offer monthly plans
-that fit your budget. Many patients qualify for 0% interest
-financing with approval in minutes.
+Financing is available through Cherry, CareCredit and United
+Credit for qualified applicants. Approval and terms are set by
+the lender.
 
 [Check Your Options →]
 ```
@@ -1160,18 +1084,17 @@ financing with approval in minutes.
 Reduce friction at the conversion point
 
 ```
-"Monthly payments available. Book your free consultation
-to discuss your options."
+"Financing is available. Book your consultation to discuss
+your options."
 ```
 
 #### Pricing Transparency Strategy
 
 **What to Show:**
 
-- "Starting from $X" ranges (sets expectations)
-- "Financing from $X/month" (reframes cost)
-- Free consultation value
-- What's included (no hidden fees)
+- The "starting at" price per procedure, from the pricing resolver, with the variant named and the price caveat. No ranges, except BBL's "most patients pay" range (`[[price-range:bbl]]`)
+- The consultation and what happens at it
+- What's included: BBL page only, until the practice confirms one inclusion list for every procedure (canon D4). Never "no hidden fees" or "all-inclusive"
 
 **What NOT to Show:**
 
@@ -1191,11 +1114,11 @@ to discuss your options."
 
 ```
 [BADGE]: Procedure Category
-[HEADLINE]: Transformation-focused promise
+[HEADLINE]: Outcome-focused, with no promise of results
 [SUBHEADLINE]: Procedure benefit + credibility
 [CTA PRIMARY]: Book Consultation
 [CTA SECONDARY]: Learn More / Call Us
-[TRUST ELEMENTS]: Stats, accreditation badges
+[TRUST ELEMENTS]: Verified facts only (canon §2 and §4)
 ```
 
 **Example - BBL Page:**
@@ -1207,15 +1130,14 @@ to discuss your options."
 Curves That Turn Heads. Confidence That Lasts.
 
 [SUBHEADLINE]:
-Enhance your natural silhouette with Miami's most sought-after
-Brazilian Butt Lift. Your own body fat, expertly sculpted,
-beautifully transferred.
+Enhance your natural silhouette with a Brazilian Butt Lift
+that uses your own fat.
 
 [TRUST ELEMENTS]:
-✓ 5,000+ Procedures | ✓ Double Board-Certified Surgeons | ✓ Financing Available
+✓ Board certified in general surgery (American Board of Surgery) since 2008 | ✓ One surgeon performs every procedure | ✓ Financing available
 
 [CTA PRIMARY]: Book Your Consultation
-[CTA SECONDARY]: Call (786) 305-8649
+[CTA SECONDARY]: Call [phone from siteConfig]
 ```
 
 #### Homepage Hero
@@ -1233,19 +1155,18 @@ beautifully transferred.
 **Example:**
 
 ```
-[BADGE]: Miami's Premier Plastic Surgery Destination
+[BADGE]: Cosmetic surgery in Miami
 
 [HEADLINE]:
-Luxury Surgeries Made Affordable
+Personal care. Honest price.
 
 [SUBHEADLINE]:
-World-class cosmetic procedures. Board-certified surgeons.
-Flexible financing that fits your life. Your transformation
-starts with a conversation.
+One surgeon: Victoria Karlinsky, MD, FACS. Starting prices
+published, and financing available for qualified applicants.
 
-[TRUST]: 5,000+ Happy Patients | 4.9★ Rating | 15+ Years Experience
+[TRUST]: 4.7★ on Google (read from the synced google_reviews_settings) | Board certified in general surgery by the ABS since 2008 | One surgeon performs every procedure
 
-[CTA PRIMARY]: Book Free Consultation
+[CTA PRIMARY]: Book Your Consultation
 [CTA SECONDARY]: Explore Procedures
 ```
 
@@ -1272,12 +1193,16 @@ Structure FAQs to capture voice search and featured snippets:
 ```
 Q: How long does BBL recovery take?
 
-A: Most BBL patients return to work within 1-2 weeks, though
-full recovery takes 3-6 months. During the first two weeks,
-you'll need to avoid sitting directly on your buttocks to
-protect the newly transferred fat cells. After 4-6 weeks,
-most patients can resume light exercise, with full activity
-cleared around 6-8 weeks.
+A: Most people return to desk work and driving 10 to 14 days
+after a BBL, sitting on a pillow (Cleveland Clinic, The
+Aesthetic Society); ASPS says some go back between days 7 and
+10. Cleveland Clinic puts full recovery at 2 to 3 months, and
+notes it can take up to 6. For at least 2 weeks you avoid
+sitting or lying on your buttocks (Cleveland Clinic). After
+the first month, light activity such as fast walking is fine
+(Kamran Azad, MD, in an ASPS article), and The Aesthetic
+Society says exercise can resume after 8 weeks, once your
+surgeon clears you.
 ```
 
 #### FAQ Categories for Procedure Pages
@@ -1442,8 +1367,8 @@ cleared around 6-8 weeks.
 
 **Primary (High Commitment):**
 
-- "Book Your Free Consultation"
 - "Schedule Your Consultation"
+- "Book Your Consultation"
 - "Start Your Transformation"
 
 **Secondary (Lower Commitment):**
@@ -1452,16 +1377,13 @@ cleared around 6-8 weeks.
 - "See Our Results"
 - "Call to Discuss Options"
 
-**Urgency (Use Sparingly):**
-
-- "Book Today - Limited Appointments"
-- "Consultations Filling Fast"
+No urgency or scarcity CTAs ("limited appointments", "filling fast"): the canon bans fake urgency (§10).
 
 #### Phone CTAs
 
 **Direct:**
 
-- "Call (786) 305-8649"
+- "Call [phone from siteConfig]"
 - "Speak With Our Team"
 - "Call to Discuss Your Goals"
 
@@ -1472,7 +1394,7 @@ cleared around 6-8 weeks.
 
 #### Chat CTAs
 
-- "Chat With Patient Concierge"
+- "Chat with our concierge"
 - "Ask a Question"
 - "Get Quick Answers"
 
@@ -1482,8 +1404,8 @@ cleared around 6-8 weeks.
 
 ```
 [Header]: Phone number visible
-[Hero Area]: 1-2 trust stats (patients served, rating)
-[Hero Area]: Credential badge (Double Board-Certified)
+[Hero Area]: The synced Google rating (4.7, from google_reviews_settings)
+[Hero Area]: Credential line (Victoria Karlinsky, MD, FACS; board certified in general surgery by the American Board of Surgery)
 ```
 
 #### Procedure Pages
@@ -1500,8 +1422,7 @@ cleared around 6-8 weeks.
 #### Contact/Booking Pages
 
 ```
-[Hero]: "Free, no-obligation consultation"
-[Form Area]: "We respond within 24 hours"
+[Hero]: "No-obligation consultation"
 [Form Area]: Privacy assurance
 [After Form]: What to expect next
 [Sidebar]: Trust statistics + testimonial
@@ -1517,10 +1438,11 @@ Before publishing ANY page or blog post:
 
 #### Brand & Voice
 
-- [ ] No prohibited words (revolutionize, cutting-edge, world-class, seamlessly)
+- [ ] No prohibited words (revolutionize, cutting-edge, world-class, seamlessly, and everything the claims canon §10 bans)
+- [ ] No claim the claims canon (`docs/claims/canon.md`) removes, and no typed Alluring price (resolver or claim tokens only)
 - [ ] Uses active voice primarily
 - [ ] Sentences average 15-20 words
-- [ ] Matches Alluring brand voice (luxury yet accessible)
+- [ ] Matches Alluring brand voice ("Personal care. Honest price.": plain words, no "luxury" or "affordable")
 - [ ] Speaks to emotional drivers, not just features
 
 #### SEO Essentials
@@ -1538,7 +1460,7 @@ Before publishing ANY page or blog post:
 #### E-E-A-T Requirements
 
 - [ ] Author/surgeon attribution where appropriate
-- [ ] Credentials mentioned or linked
+- [ ] Credentials mentioned or linked, in the canon's wording only
 - [ ] Medical accuracy verified
 - [ ] Risks/limitations honestly addressed
 - [ ] Real patient testimonials (not stock)
@@ -1549,7 +1471,7 @@ Before publishing ANY page or blog post:
 - [ ] Phone number accessible
 - [ ] Chat widget functional
 - [ ] Financing mentioned (procedure pages)
-- [ ] Trust signals present (stats, credentials, testimonials)
+- [ ] Trust signals present (synced rating, verified credentials, real reviews)
 - [ ] Mobile-optimized layout
 
 #### Technical
@@ -1595,38 +1517,36 @@ Before publishing ANY page or blog post:
 
 #### Financing Page
 
-| Element               | Requirement                    | Priority |
-| --------------------- | ------------------------------ | -------- |
-| Reassuring headline   | Remove money anxiety           | Critical |
-| Partner logos         | CareCredit, Cherry, etc.       | High     |
-| How it works          | Simple 3-4 step process        | High     |
-| Benefits              | Quick approval, flexible terms | High     |
-| Calculator or example | Monthly payment context        | Medium   |
-| FAQ                   | 6-8 financing questions        | High     |
-| CTA                   | Check options / Contact us     | Critical |
+| Element             | Requirement                                                                    | Priority |
+| ------------------- | ------------------------------------------------------------------------------ | -------- |
+| Reassuring headline | Remove money anxiety                                                           | Critical |
+| Partner logos       | CareCredit, Cherry, etc.                                                       | High     |
+| How it works        | Simple 3-4 step process                                                        | High     |
+| Lender terms        | "Approval and terms are set by the lender"; no approval, APR or payment claims | High     |
+| FAQ                 | 6-8 financing questions                                                        | High     |
+| CTA                 | Check options / Contact us                                                     | Critical |
 
 #### About Page
 
-| Element                  | Requirement             | Priority |
-| ------------------------ | ----------------------- | -------- |
-| Story/mission            | Why we exist            | High     |
-| Surgeon profiles         | Credentials and photos  | Critical |
-| Facility tour            | Images of clinic        | High     |
-| Accreditations           | Logos and explanations  | High     |
-| Patient count/experience | Trust statistics        | High     |
-| Values/approach          | What makes us different | Medium   |
-| CTA                      | Book consultation       | High     |
+| Element          | Requirement                                      | Priority |
+| ---------------- | ------------------------------------------------ | -------- |
+| Story/mission    | Why we exist                                     | High     |
+| Surgeon profile  | Credentials and photos                           | Critical |
+| Facility tour    | Images of clinic                                 | High     |
+| Credential links | ABS (since 2008), FACS, Florida license ME130613 | High     |
+| Values/approach  | What makes us different                          | Medium   |
+| CTA              | Book consultation                                | High     |
 
 #### Contact Page
 
-| Element        | Requirement             | Priority |
-| -------------- | ----------------------- | -------- |
-| Simple form    | 4-5 fields maximum      | Critical |
-| Phone number   | Click-to-call prominent | Critical |
-| Hours          | Clear business hours    | High     |
-| Location       | Map and address         | High     |
-| Response time  | Set expectations        | High     |
-| What to expect | After form submission   | Medium   |
+| Element        | Requirement                                   | Priority |
+| -------------- | --------------------------------------------- | -------- |
+| Simple form    | 4-5 fields maximum                            | Critical |
+| Phone number   | Click-to-call prominent                       | Critical |
+| Hours          | Clear business hours                          | High     |
+| Location       | Map and address                               | High     |
+| Next step      | What happens next (no promised response time) | High     |
+| What to expect | After form submission                         | Medium   |
 
 ### 7.3 A/B Testing Priorities
 
@@ -1636,7 +1556,7 @@ Test these elements in order of expected impact:
 
 | Test                           | Hypothesis                                              | Metric           |
 | ------------------------------ | ------------------------------------------------------- | ---------------- |
-| Hero CTA text                  | "Book Free Consultation" vs "Start Your Transformation" | Form submissions |
+| Hero CTA text                  | "Book Your Consultation" vs "Start Your Transformation" | Form submissions |
 | Mobile click-to-call placement | Floating vs. header only                                | Phone calls      |
 | Form fields                    | 5 fields vs. 3 fields                                   | Completion rate  |
 | Financing mention in hero      | With vs. without                                        | Bounce rate      |
@@ -1665,20 +1585,21 @@ Test these elements in order of expected impact:
 
 ### Trust Statistics (Use Consistently)
 
-From `site-config.ts`:
+From the claims canon (`@workspace/shared/claims/trust`):
 
-- Patients served: 5,000+
-- Years experience: 15+
-- Board certified: 100%
-- Patient rating: 4.9
-- Accreditation: Double Board-Certified
+- Board certified in general surgery since: 2008 (American Board of Surgery)
+- Fellow of the American College of Surgeons; Florida license ME130613
+- One surgeon performs every procedure
+- Patient rating: 4.7 on Google (read from the synced `google_reviews_settings`; `siteConfig.trustStats.rating` as the fallback only)
 
 ### Contact Information
+
+From `siteConfig.contact` (canon §9):
 
 - Phone: +1 (786) 305-8649
 - Email: info@alluringplasticsurgery.com
 - Address: 8435 SW 24th St, Miami, FL 33155
-- Hours: Mon-Fri 9AM-5PM, Sat 9AM-3PM
+- Hours: Mon-Fri 9AM-5PM, Sat 9AM-3PM; closed Sunday and public holidays
 
 ### Financing Partners
 
@@ -1703,15 +1624,14 @@ Never use in content:
 - In today's fast-paced world
 - Unlock the potential
 - Take it to the next level
+- Everything the claims canon removes: "luxury", "affordable", superlatives about the practice, the surgeon or results, guarantees, volume or tenure counts, accreditation, payment figures, travel help (`docs/claims/canon.md` §10 and §11)
 
 ### Approved Messaging Patterns
 
-- "Luxury experience, flexible payments"
-- "World-class care, accessible pricing"
-- "Premium results with financing options"
+Show the value; never claim it. Give the price and what happens.
+
+- "Financing is available through Cherry, CareCredit and United Credit for qualified applicants."
 - "Your investment, your terms"
-- "Board-certified expertise"
-- "Double Board-Certified surgeons"
 - "Personalized care"
 - "Natural-looking results"
 
@@ -1726,6 +1646,7 @@ Never use in content:
 
 _This document should be used in conjunction with:_
 
+- [`docs/claims/canon.md`](../claims/canon.md) - The claims canon (overrides this document on every claim)
 - [`docs/brand/brand-guidelines.md`](brand/brand-guidelines.md) - Visual and voice guidelines
 - [`docs/blog-writing-guidelines.md`](blog-writing-guidelines.md) - Blog-specific guidelines
 - [`.cursor/rules/seo-content-expert.mdc`](../.cursor/rules/seo-content-expert.mdc) - AI agent rules

@@ -4,6 +4,10 @@
  * A step-by-step journey section specifically for out-of-town patients.
  * Shows the complete process from virtual consultation to flying home.
  *
+ * No day counts per step: the surgeon sets each patient's schedule and the
+ * number of nights to stay in Miami (claims canon §8). No facility claim and
+ * no travel arranged by the practice.
+ *
  * Server component for SEO optimization.
  */
 import { Video, FileCheck, Plane, Heart, Home } from 'lucide-react'
@@ -15,34 +19,30 @@ const JOURNEY_STEPS = [
     {
         number: '01',
         icon: Video,
-        title: 'Speak with Our Specialists',
+        title: 'Your Video Consultation',
         description:
-            'Connect with our patient specialists from anywhere. Discuss your goals, learn about procedures, and get your all-inclusive quote—all from home.',
-        duration: 'Week 1',
+            'Have your consultation by video, from home. Discuss your goals and the procedures, and your surgeon confirms your price in writing.',
     },
     {
         number: '02',
         icon: FileCheck,
         title: 'Plan Your Trip',
         description:
-            'Once you decide to proceed we confirm your surgery date, pre-op requirements and follow-up appointments in writing — so you can book your own flights and lodging around a fixed schedule.',
-        duration: 'Weeks 2-4',
+            'Once you decide to proceed we confirm your surgery date, pre-op requirements and follow-up appointments in writing — so you can arrange the travel itself around a fixed schedule.',
     },
     {
         number: '03',
         icon: Plane,
         title: 'Arrive in Miami',
         description:
-            'Fly into Miami and settle in wherever you have booked. Attend your in-person consultation and pre-op appointment with your surgeon.',
-        duration: 'Day 1',
+            'Fly into Miami and attend your in-person consultation and pre-op appointment with your surgeon.',
     },
     {
         number: '04',
         icon: Heart,
         title: 'Surgery & Recovery',
         description:
-            'Your procedure takes place at our accredited facility. You go home the same day with written post-op instructions, scheduled follow-up appointments, and a number to call if something does not look right.',
-        duration: 'Days 2-10',
+            'Your procedure takes place in Miami. You go home the same day with written post-op instructions, scheduled follow-up appointments, and a number to call if something does not look right.',
     },
     {
         number: '05',
@@ -50,7 +50,6 @@ const JOURNEY_STEPS = [
         title: 'Return Home Transformed',
         description:
             'Once cleared by your surgeon, fly home to reveal your results. We continue monitoring your progress through follow-up appointments.',
-        duration: 'Day 10-14',
     },
 ] as const
 
@@ -83,8 +82,8 @@ export function TravelJourney({ id = 'travel-journey' }: TravelJourneyProps) {
                         </span>
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
-                        We&apos;ve perfected the fly-in experience. Here&apos;s
-                        exactly what to expect at every step.
+                        If you&apos;re flying in, here&apos;s exactly what to
+                        expect at every step.
                     </p>
                 </div>
 
@@ -102,11 +101,6 @@ export function TravelJourney({ id = 'travel-journey' }: TravelJourneyProps) {
                             >
                                 {/* Step Number & Icon */}
                                 <div className='relative mb-6'>
-                                    {/* Duration Badge */}
-                                    <div className='bg-gold-100 text-gold-700 absolute -top-6 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap'>
-                                        {step.duration}
-                                    </div>
-
                                     {/* Icon Circle */}
                                     <div className='border-gold-200 bg-gold-50 relative z-10 flex h-20 w-20 items-center justify-center rounded-full border-4'>
                                         <step.icon className='text-gold-600 h-8 w-8' />
@@ -144,7 +138,7 @@ export function TravelJourney({ id = 'travel-journey' }: TravelJourneyProps) {
                             <span className='font-semibold text-stone-900'>
                                 Ready to start your journey?
                             </span>{' '}
-                            Speak with our specialists today.
+                            Start with a video consultation.
                         </p>
                         <a
                             href='#hero-form'

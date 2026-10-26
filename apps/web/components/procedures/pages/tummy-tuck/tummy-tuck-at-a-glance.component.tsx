@@ -1,11 +1,15 @@
 import { moduleSectionPad } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import {
     FactTable,
     type Fact,
 } from '@/components/procedures/sections/fact-table.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import { findLinePrice } from '@/lib/claims/procedure-prices.util'
 import { tummyTuckFigure } from '@/lib/data/procedures/facts/tummy-tuck.facts'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 
 /**
  * "What is a tummy tuck?" and the at-a-glance table: every figure a reader
@@ -18,12 +22,24 @@ import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.consta
  * because the hero has already said what a tummy tuck does and the price by
  * type is what she came to find.
  */
-export function TummyTuckAtAGlance() {
+export function TummyTuckAtAGlance({ prices }: { prices: ProcedurePrices }) {
+    // The price row reads the pricing resolver (#354).
+    const mini = findLinePrice(prices, 'mini')
+    const full = findLinePrice(prices, 'full')
     const facts: Fact[] = [
-        {
-            label: 'Prices',
-            value: `Mini tummy tuck from ${tummyTuckFigure('price-mini')}; full tummy tuck from ${tummyTuckFigure('price-full')}`,
-        },
+        ...(mini && full
+            ? [
+                  {
+                      label: 'Prices',
+                      value: (
+                          <>
+                              Mini tummy tuck from <PriceTag price={mini} />;
+                              full tummy tuck from <PriceTag price={full} />
+                          </>
+                      ),
+                  },
+              ]
+            : []),
         { label: 'Your surgeon', value: KARLINSKY_NAME },
         {
             label: 'Surgery time',
@@ -35,11 +51,11 @@ export function TummyTuckAtAGlance() {
         },
         {
             label: 'Standing up straight',
-            value: `After ${tummyTuckFigure('bent-7-10-days')} of walking bent at the waist`,
+            value: `After ${tummyTuckFigure('bent-7-10-days')} of walking bent at the waist (Cindy Wu, MD, on the ASPS website)`,
         },
         {
             label: 'Back to a desk job',
-            value: `About ${tummyTuckFigure('work-about-2-weeks')}`,
+            value: `About ${tummyTuckFigure('work-about-2-weeks')} (Cindy Wu, MD, on the ASPS website); plan at least ${tummyTuckFigure('work-about-2-weeks', 1)} off (Cleveland Clinic)`,
         },
         {
             label: 'Compression garment',
@@ -51,7 +67,7 @@ export function TummyTuckAtAGlance() {
         },
         {
             label: 'Final result',
-            value: `Up to ${tummyTuckFigure('results-3-months')}; the scar fades over ${tummyTuckFigure('scar-fades-12-18-months')}`,
+            value: `Up to ${tummyTuckFigure('results-3-months')} (Cleveland Clinic); the scar fades over ${tummyTuckFigure('scar-fades-12-18-months')} (Cindy Wu, MD)`,
         },
         {
             label: 'Florida office limit',
@@ -71,6 +87,12 @@ export function TummyTuckAtAGlance() {
                 caption='Tummy tuck at Alluring, at a glance'
                 facts={facts}
                 className='mt-10 md:mt-11'
+            />
+            {/* The table prints the price, so a discount's 456.062
+                statement sits right under it (#354). */}
+            <DiscountStatement
+                statement={prices.discountStatement}
+                className='mt-4'
             />
         </AnswerBlock>
     )

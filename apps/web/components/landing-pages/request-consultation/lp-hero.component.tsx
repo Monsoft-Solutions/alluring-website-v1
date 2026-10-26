@@ -33,7 +33,8 @@ interface LpHeroProps {
     readonly copy: LpDictionary['hero']
     readonly variant: VariantCopy
     readonly rating: string
-    readonly reviewCount: string
+    /** The live Google review count; null when it is unavailable (never typed). */
+    readonly reviewCount: string | null
     readonly onSelectLang: (lang: LpLang) => void
     /** The consultation form, rendered by the page so this stays presentational. */
     readonly form: React.ReactNode
@@ -65,7 +66,11 @@ export function LpHero({
                             <GoogleMark />
                             <span>
                                 <b>{rating}</b>{' '}
-                                {fill(copy.trustGoogle, { count: reviewCount })}
+                                {reviewCount
+                                    ? fill(copy.trustGoogle, {
+                                          count: reviewCount,
+                                      })
+                                    : copy.trustGoogleNoCount}
                             </span>
                         </li>
                         <li>

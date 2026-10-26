@@ -235,12 +235,13 @@
             "bbl": {
                 "match": "\\bbbl\\b|brazilian butt|butt lift|lipo ?360 ?\\+ ?bbl",
                 "allowed": [5500, 10000],
-                "retired": [3500, 4500, 3000]
+                "retired": [3000, 3500, 4500, 6000, 7000, 15000]
             },
             "mommy-makeover": {
                 "match": "mommy make ?over|mommy makeover",
                 "allowed": [
-                    500, 1000, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 7000
+                    500, 600, 800, 1000, 1500, 3000, 3500, 4000, 4500, 5000,
+                    5500, 6000, 7000
                 ],
                 "retired": [],
                 "note": "No published total: parts minus $500 (two) / $1,000 (three) combination discount."
@@ -248,7 +249,7 @@
             "tummy-tuck": {
                 "match": "tummy tuck|abdominoplast|abdominoplastia",
                 "allowed": [3000, 4000, 4500, 5500, 10000, 1500],
-                "retired": [3500, 6500, 8000],
+                "retired": [3500, 6500, 8000, 9500],
                 "note": "mini $3,000, extended mini $4,000, regular/full $4,500, extended $5,500, fleur-de-lis $10,000; lipo add-on $1,500."
             },
             "lipo": {

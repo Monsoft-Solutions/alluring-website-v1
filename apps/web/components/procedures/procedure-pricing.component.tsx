@@ -10,19 +10,29 @@
  * Server-rendered with CSS animations: this is marketing content that has to
  * be in the HTML Google receives.
  *
- * The figures come from `procedure.pricing` so the visible table and the
- * `Offer` in JSON-LD are driven by the same numbers.
+ * The figures come from the pricing resolver (`prices`, #354), the same
+ * object the `Offer` in JSON-LD reads, so the two can't disagree; a discount
+ * shows the list price struck through, with the 456.062 statement under the
+ * figures. `procedure.pricing` supplies what the price covers and what moves
+ * it. No financing figure: financing is named, never quoted (canon D6).
  */
 import { Check } from 'lucide-react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
-import { WEEKLY_PAYMENT_DISCLAIMER } from '@/lib/data/weekly-payments.data'
-import type { ProcedurePricing } from '@/lib/types/procedure.type'
-
-/** Formats a USD figure the way the rest of the site writes prices: `$3,500`. */
-export function formatProcedurePrice(amount: number): string {
-    return `$${amount.toLocaleString('en-US')}`
-}
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import {
+    PriceRangeFigures,
+    PriceRangeText,
+    PriceTag,
+} from '@/components/shared/price-tag.component'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
+import { FINANCING_SENTENCE_SHORT } from '@workspace/shared/claims/financing'
+import {
+    formatLineName,
+    quotesAsNamedLine,
+    withIndefiniteArticle,
+} from '@workspace/shared/claims/pricing'
+import type { ProcedurePricing as ProcedurePricingData } from '@/lib/types/procedure.type'
 
 /**
  * Strips the trailing location from a procedure title so it can be dropped
@@ -30,7 +40,7 @@ export function formatProcedurePrice(amount: number): string {
  *
  * Procedure titles are stored location-qualified ("Brazilian Butt Lift (BBL)
  * Miami") because that is how they read as a page heading. Interpolated into
- * "How much does a ... cost in Miami?" they say Miami twice.
+ * "How much does ... cost in Miami?" they say Miami twice.
  */
 function toProcedureNoun(title: string): string {
     return title.replace(/[\s,]*\bMiami\b[\s,]*$/i, '').trim() || title
@@ -38,7 +48,9 @@ function toProcedureNoun(title: string): string {
 
 interface ProcedurePricingProps {
     procedureTitle: string
-    pricing: ProcedurePricing
+    pricing: ProcedurePricingData
+    /** The procedure's resolved prices (`getProcedurePrices`). */
+    prices: ProcedurePrices
     /** Anchor target, so copy elsewhere on the page can link to the table. */
     id?: string
 }
@@ -46,21 +58,23 @@ interface ProcedurePricingProps {
 export function ProcedurePricing({
     procedureTitle,
     pricing,
+    prices,
     id = 'pricing',
 }: ProcedurePricingProps) {
-    const { startingAt, upTo, weeklyFrom, includes, factors } = pricing
+    const { includes, factors } = pricing
+    const { starting, range } = prices
+
+    // Nothing to publish: a procedure with no starting line prints no price
+    // section rather than a typed figure.
+    if (!starting) return null
 
     const headingId = `${id}-heading`
     const noun = toProcedureNoun(procedureTitle)
-    const range = upTo
-        ? `${formatProcedurePrice(startingAt)} – ${formatProcedurePrice(upTo)}`
-        : `From ${formatProcedurePrice(startingAt)}`
-
-    // Built as one string so JSX line breaks cannot introduce a stray space
-    // before the comma.
-    const summary = upTo
-        ? `A ${noun} at Alluring Plastic Surgery starts at ${formatProcedurePrice(startingAt)}, with most patients paying between ${formatProcedurePrice(startingAt)} and ${formatProcedurePrice(upTo)}. Every price is personalized to your body and your goals.`
-        : `A ${noun} at Alluring Plastic Surgery starts at ${formatProcedurePrice(startingAt)}. Every price is personalized to your body and your goals.`
+    // The starting line is named, so the figure stays true when the admin
+    // picks another line; a named-line procedure (the facelift, D2) is never
+    // "starting at" (canon §5).
+    const lineName = formatLineName(starting.label)
+    const namedOnly = quotesAsNamedLine(starting.procedure)
 
     return (
         <section
@@ -78,7 +92,26 @@ export function ProcedurePricing({
                             How Much Does a {noun} Cost in Miami?
                         </h2>
                         <p className='mt-4 text-lg font-light text-stone-600'>
-                            {summary}
+                            {namedOnly ? (
+                                <>
+                                    At Alluring Plastic Surgery,{' '}
+                                    {withIndefiniteArticle(lineName)} is{' '}
+                                    <PriceTag price={starting} />
+                                </>
+                            ) : (
+                                <>
+                                    A {noun} at Alluring Plastic Surgery starts
+                                    at <PriceTag price={starting} /> for{' '}
+                                    {withIndefiniteArticle(lineName)}
+                                </>
+                            )}
+                            {range && (
+                                <>
+                                    , and <PriceRangeText range={range} />
+                                </>
+                            )}
+                            . Every price is personalized to your body and your
+                            goals.
                         </p>
                     </div>
 
@@ -86,43 +119,41 @@ export function ProcedurePricing({
                     <dl className='animate-fade-in-up animate-delay-100 grid gap-px overflow-hidden rounded-2xl bg-stone-200 sm:grid-cols-3'>
                         <div className='bg-stone-50 p-6 text-center'>
                             <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
-                                Starting at
+                                {namedOnly
+                                    ? formatLineName(starting.label, {
+                                          short: true,
+                                          capitalized: true,
+                                      })
+                                    : 'Starting at'}
                             </dt>
                             <dd className='text-gold-600 mt-2 font-serif text-3xl font-medium'>
-                                {formatProcedurePrice(startingAt)}
+                                <PriceTag price={starting} />
                             </dd>
                         </div>
-                        <div className='bg-stone-50 p-6 text-center'>
-                            <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
-                                Typical range
-                            </dt>
-                            <dd className='mt-2 font-serif text-2xl font-medium tracking-tight text-stone-900'>
-                                {range}
-                            </dd>
-                        </div>
-                        {weeklyFrom !== undefined ? (
+                        {range && (
                             <div className='bg-stone-50 p-6 text-center'>
                                 <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
-                                    Financing from
-                                </dt>
-                                <dd className='mt-2 font-serif text-3xl font-medium text-stone-900'>
-                                    ${weeklyFrom}
-                                    <span className='text-lg text-stone-500'>
-                                        /week
-                                    </span>
-                                </dd>
-                            </div>
-                        ) : (
-                            <div className='bg-stone-50 p-6 text-center'>
-                                <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
-                                    Financing
+                                    Most patients
                                 </dt>
                                 <dd className='mt-2 font-serif text-2xl font-medium tracking-tight text-stone-900'>
-                                    Available
+                                    <PriceRangeFigures range={range} />
                                 </dd>
                             </div>
                         )}
+                        <div className='bg-stone-50 p-6 text-center'>
+                            <dt className='text-xs font-bold tracking-[0.2em] text-stone-500 uppercase'>
+                                Financing
+                            </dt>
+                            <dd className='mt-2 font-serif text-2xl font-medium tracking-tight text-stone-900'>
+                                Available
+                            </dd>
+                        </div>
                     </dl>
+
+                    <DiscountStatement
+                        statement={prices.discountStatement}
+                        className='mx-auto mt-6 text-center'
+                    />
 
                     {/* What the price covers */}
                     {includes.length > 0 && (
@@ -172,9 +203,10 @@ export function ProcedurePricing({
                     )}
 
                     <p className='mt-10 border-t border-stone-200 pt-6 text-sm font-light text-stone-500'>
-                        {weeklyFrom !== undefined
-                            ? WEEKLY_PAYMENT_DISCLAIMER
-                            : 'Prices are a guide, not a quote. Every price is personalized, and ranges are estimates that may change. Your surgeon gives you an exact all-inclusive price in consultation. Financing is subject to credit approval.'}
+                        Prices are a guide, not a quote. Every price is
+                        personalized, ranges are estimates that may change, and
+                        your surgeon confirms your price at consultation.{' '}
+                        {FINANCING_SENTENCE_SHORT}
                     </p>
                 </div>
             </ContainerLayout>

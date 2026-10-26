@@ -120,17 +120,17 @@ The "starting at" figure each procedure data file publishes
 price on the sheet for the same procedure. The weekly payment figures the
 site also publishes aren't on the sheet.
 
-| Page                | Site says                       | Sheet's lowest price               | Agrees?                          |
-| ------------------- | ------------------------------- | ---------------------------------- | -------------------------------- |
-| Liposuction         | $4,500 (quiz: $3,000–$7,000)    | $4,000 (Lipo 360)                  | No                               |
-| BBL                 | $5,500, most pay $5,500–$10,000 | $5,500 (Lipo 360 + BBL)            | Yes                              |
-| Tummy tuck          | $5,500 (`description`: $3,500)  | $3,000 (mini)                      | No                               |
-| Breast augmentation | $4,500                          | $3,500 (saline); $4,500 (silicone) | Only for silicone                |
-| Breast lift         | $6,500                          | $5,000 (no implants)               | No                               |
-| Breast reduction    | $6,500                          | $6,000 (small to medium)           | No                               |
-| Facelift            | $11,500                         | $15,000 (face and neck lift)       | No                               |
-| Blepharoplasty      | $3,500                          | $3,500 (upper or lower)            | Yes                              |
-| Mommy makeover      | $9,500                          | Not on the sheet                   | A combination; see the discounts |
+| Page                | Site says                       | Sheet's lowest price                    | Agrees?                          |
+| ------------------- | ------------------------------- | --------------------------------------- | -------------------------------- |
+| Liposuction         | $4,500 (quiz: $3,000–$7,000)    | $4,000 (Lipo 360)                       | No                               |
+| BBL                 | $5,500, most pay $5,500–$10,000 | $5,500 (Lipo 360 + BBL)                 | Yes                              |
+| Tummy tuck          | $5,500 (`description`: $3,500)  | $3,000 (mini)                           | No                               |
+| Breast augmentation | $4,500                          | $3,500 (saline); $4,500 (silicone)      | Only for silicone                |
+| Breast lift         | $6,500                          | $4,000 (modified); $5,000 (no implants) | No                               |
+| Breast reduction    | $6,500                          | $6,000 (small to medium)                | No                               |
+| Facelift            | $11,500                         | $15,000 (face and neck lift)            | No                               |
+| Blepharoplasty      | $3,500                          | $3,500 (upper or lower)                 | Yes                              |
+| Mommy makeover      | $9,500                          | Not on the sheet                        | A combination; see the discounts |
 
 Correcting these is issue #232's scope. Only liposuction changes with the
 liposuction page rebuild.

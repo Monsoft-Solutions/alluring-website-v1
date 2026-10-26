@@ -1,6 +1,5 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { getFinancingPartnersString } from '@/lib/data/site-config'
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
 import {
     KARLINSKY_CREDENTIALS,
     KARLINSKY_NAME,
@@ -12,8 +11,11 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // Also the description in the page graph, `llms-full.txt` and the paid
     // landing page. The "board-certified surgeons, 5,000+ procedures" claims
     // it carried wait on the owner (#247), so they are out until confirmed.
+    //
+    // Every Alluring price in this file is a claim token (`[[price:bbl]]`),
+    // resolved from the admin's price list when the page renders (#354).
     description:
-        'BBL Miami starting at $5,500, priced for each patient, with financing available. Fat stays under the skin, placed with ultrasound guidance as Florida law requires. Free consultation.',
+        'BBL Miami starting at [[price:bbl]], priced for each patient and confirmed at consultation, with financing available. Fat stays under the skin, placed with ultrasound guidance as Florida law requires. Free consultation.',
 
     // Hand-written metadata. This page competes for "bbl miami" and the
     // generic "bbl" / "brazilian butt lift" head terms, so it cannot run on
@@ -27,7 +29,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // the hook. Whether it should name "cost" waits for 28 days of data on
     // the #229 title (about 2026-10-09) — which the 2026-09-15 price change
     // restarts.
-    seoTitle: 'BBL Miami | Brazilian Butt Lift Starting at $5,500',
+    seoTitle: 'BBL Miami | Brazilian Butt Lift Starting at [[price:bbl]]',
     //
     // The snippet used to say "Board-certified Miami surgeons": plural, and a
     // certification claim naming no board, which Florida Rule
@@ -40,10 +42,10 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // spends its characters on the price, the surgeon and the law, the three
     // things a discount clinic can't match. 151 characters, under the 160
     // `clampMetaDescription` limit.
-    metaDescription: `BBL in Miami starting at $5,500, performed by one surgeon: ${KARLINSKY_NAME}. Ultrasound-guided, as Florida law requires. Free consultation.`,
+    metaDescription: `BBL in Miami starting at [[price:bbl]], performed by one surgeon: ${KARLINSKY_NAME}. Ultrasound-guided, as Florida law requires. Free consultation.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `BBL in Miami starting at $5,500. Every BBL at Alluring is performed by ${KARLINSKY_NAME}, who places the fat under the skin with ultrasound guidance, as Florida law requires.`,
+    shortDescription: `BBL in Miami starting at [[price:bbl]]. Every BBL at Alluring is performed by ${KARLINSKY_NAME}, who places the fat under the skin with ultrasound guidance, as Florida law requires.`,
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
     category: 'body',
     bodyLocation: 'Buttocks',
@@ -53,18 +55,11 @@ export const brazilianButtLiftBblMiami: Procedure = {
     dateModified: '2026-09-22T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing. No weekly figure: BBL financing is offered but
-    // never quoted as a number.
-    priceFrom: '$5,500',
-
-    // Published price table. Set 2026-09-15: starting at $5,500, most
-    // patients $5,500–$10,000, every price personalized and subject to
-    // change, financing available with no figure. This replaces the $3,500 /
-    // $15,000 / $34-a-week set from #229. Every BBL price on the site — blog
-    // posts, home FAQ, quiz — must match these.
+    // What the BBL price covers and what moves it. The figures themselves
+    // (the starting price and the "most patients pay" range) come from the
+    // pricing resolver, edited on the admin Pricing page (#354); nothing
+    // here types a price.
     pricing: {
-        startingAt: 5500,
-        upTo: 10000,
         // Rendered by the BBL page's cost section. Only what the practice has
         // confirmed: the anesthesiologist, facility accreditation and 24/7
         // access claims wait on the owner (#247 item 3).
@@ -187,7 +182,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
             step: 4,
             title: 'Placing the fat',
             description:
-                'The surgeon injects the fat into the layer under the skin of the buttocks, watching the cannula on ultrasound so it never passes into the muscle.',
+                'The surgeon injects the fat into the layer under the skin of the buttocks, watching the cannula on ultrasound, as Florida law requires, to keep the fat out of the muscle.',
         },
         {
             step: 5,
@@ -202,7 +197,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         question: 'What is a Brazilian Butt Lift (BBL)?',
         answer: 'A Brazilian butt lift (BBL) is a fat transfer to the buttocks. A surgeon uses liposuction to remove fat from areas such as the abdomen, flanks or back, processes it, and injects it under the skin of the buttocks to add volume and shape. Because it uses your own fat, there is no implant.',
         details:
-            'A BBL at Alluring takes 3 to 5 hours under general anesthesia, and you go home the same day. Your final shape shows 3 to 6 months after surgery. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
+            'A BBL at Alluring takes 3 to 5 hours under general anesthesia, and you go home the same day. Your final shape shows 3 to 6 months after surgery. A BBL at Alluring starts at [[price:bbl]], and [[price-range:bbl]]. Every price is personalized, your surgeon confirms it at consultation, and financing is available. [[discount-statement]]',
     },
     // The page's FAQ, its FAQPage node and the paid landing page all read
     // this list. Copy from #252; every figure is declared in `bbl.facts.ts`
@@ -219,7 +214,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         // question.
         {
             question: 'How much does a BBL cost in Miami?',
-            answer: `A BBL at Alluring starts at ${bblFigure('price-starting-at')}, and most patients pay between $5,500 and $10,000. Your price is set after an exam, because it depends on how much fat is moved, how many areas are treated and what else is done. It includes anesthesia, the surgical facility, your garment and your follow-up visits. Financing is available.`,
+            answer: `A BBL at Alluring starts at [[price:bbl]], and [[price-range:bbl]]. Your price is set after an exam, because it depends on how much fat is moved, how many areas are treated and what else is done, and your surgeon confirms it at consultation. It includes anesthesia, the surgical facility, your garment and your follow-up visits. Financing is available. [[discount-statement]]`,
         },
         {
             question: 'What does Florida law require for a BBL?',
@@ -270,7 +265,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         },
         {
             question: 'Does insurance cover a BBL, and can I finance it?',
-            answer: `No. Insurance does not cover a BBL, because it is a cosmetic procedure. Financing is available through ${getFinancingPartnersString()}, subject to credit approval, and we can go through the options with you at your consultation. A BBL at Alluring starts at ${bblFigure('price-starting-at')}.`,
+            answer: `No. Insurance does not cover a BBL, because it is a cosmetic procedure. Financing is available through ${getFinancingPartnersString()}, subject to credit approval, and we can go through the options with you at your consultation. A BBL at Alluring starts at [[price:bbl]], confirmed at your consultation. [[discount-statement]]`,
         },
     ],
 }

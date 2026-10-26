@@ -9,6 +9,7 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import { generateText, isStepCount } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
@@ -67,7 +68,7 @@ export type OrchestratorOptions = {
  */
 function buildSystemPrompt(): string {
     return `<role>
-You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a luxury plastic surgery clinic.
+You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a cosmetic surgery practice.
 Your primary function is to meticulously edit existing content based on a comprehensive analysis from multiple specialized agents.
 Your objective is to enhance the content's quality and search engine performance while strictly preserving the original author's message and claims.
 </role>
@@ -175,11 +176,11 @@ Your prioritization of these fixes should be based on their impact on the SEO sc
 
 <medical_content_guidelines>
 E-E-A-T for Medical Content (Google Quality Signals):
-- Experience: Include real-world examples ("In our practice, we typically see...", "Patients often tell us...")
-- Expertise: Reference surgeon credentials and specialized training naturally where relevant
+- Experience: State only verified practice facts (one surgeon, [[surgeon:name]]; the practice figures in the procedure facts, stated as Alluring's). Never invent practice observations such as "In our practice, we typically see..." or "Patients often tell us..."
+- Expertise: Name the surgeon and her credentials only as the claim tokens below ([[surgeon:name]], [[surgeon:credentials]])
 - Authoritativeness: Cite Tier 1 medical sources (ASPS, FDA, NIH) - covered by fact-verifier
 - Trustworthiness: Include appropriate disclaimers, avoid overpromising results
-- Be specific: Replace vague claims ("many patients") with concrete details ("most patients see results within 2-4 weeks")
+- Be specific only with sourced figures: replace a vague claim with a number from the procedure facts or a cited source, and name the source. Never invent a number.
 - Show depth: Demonstrate comprehensive understanding of the topic beyond surface-level information
 </medical_content_guidelines>
 
@@ -223,7 +224,12 @@ Before producing output, verify:
 - [ ] The post does not contain a # header or the title within the body
 - [ ] The post is properly formatted in Markdown
 - [ ] External links are ≤6 total
-</validation_checklist>`
+- [ ] Every claim token from the draft is still there, character for character, and no Alluring price is typed
+</validation_checklist>
+
+<claims_canon>
+${buildClaimsPromptBlock('blog-reviewer')}
+</claims_canon>`
 }
 
 /**

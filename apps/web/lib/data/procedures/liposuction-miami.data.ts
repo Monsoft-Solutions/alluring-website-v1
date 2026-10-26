@@ -18,7 +18,12 @@ export const liposuctionMiami: Procedure = {
     // landing page. The "board-certified surgeons", "power-assisted" and
     // "state-of-the-art facility" claims it carried are out until the owner
     // confirms them.
-    description: `Liposuction removes stubborn fat that diet and exercise haven't moved, to reshape an area rather than to lose weight. At Alluring in Miami, one surgeon performs every liposuction: ${KARLINSKY_NAME}. Lipo 360 starts at ${lipoFigure('price-starting-at')}.`,
+    //
+    // Every Alluring price in this file is a claim token, resolved from the
+    // admin's price list when the page renders (#354). Copy that says "Lipo
+    // 360" names that line (`[[price:lipo:lipo360]]`), so it stays true
+    // whatever liposuction's starting line is.
+    description: `Liposuction removes stubborn fat that diet and exercise haven't moved, to reshape an area rather than to lose weight. At Alluring in Miami, one surgeon performs every liposuction: ${KARLINSKY_NAME}. Lipo 360 starts at [[price:lipo:lipo360]], and your surgeon confirms your price at consultation.`,
 
     // Hand-written metadata. The generated title ended "| Board-Certified
     // Surgeons", a certification claim naming no board, which Florida Rule
@@ -28,16 +33,16 @@ export const liposuctionMiami: Procedure = {
     // After the "|": the Lipo 360 price, for the cost searches the page ranks
     // best for, and financing, which the cost section offers without a
     // figure. No surgeon's name, so a staffing change doesn't touch it.
-    seoTitle: `Liposuction Miami ${new Date().getFullYear()} | Lipo 360 From ${lipoFigure('price-starting-at')} + Financing`,
+    seoTitle: `Liposuction Miami ${new Date().getFullYear()} | Lipo 360 From [[price:lipo:lipo360]] + Financing`,
     //
     // Written for the cost cluster, where the page ranks best (positions
     // 45–50, Search Console, 180 days to 2026-09-19): the price, the one
     // surgeon as an MD, and what she offers that a volume special doesn't.
     // Under the 160 `clampMetaDescription` limit.
-    metaDescription: `Liposuction in Miami: Lipo 360 from ${lipoFigure('price-starting-at')}, performed by one surgeon, ${KARLINSKY_NAME}. Real results, sourced recovery times. Free consultation.`,
+    metaDescription: `Liposuction in Miami: Lipo 360 from [[price:lipo:lipo360]], performed by one surgeon, ${KARLINSKY_NAME}. Real results, sourced recovery times. Free consultation.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `Liposuction in Miami, with Lipo 360 starting at ${lipoFigure('price-starting-at')}. Every liposuction at Alluring is performed by ${KARLINSKY_NAME}.`,
+    shortDescription: `Liposuction in Miami, with Lipo 360 starting at [[price:lipo:lipo360]]. Every liposuction at Alluring is performed by ${KARLINSKY_NAME}.`,
     heroSubtitle: 'Stubborn fat removed and your shape refined, by one surgeon',
     category: 'body',
     bodyLocation: 'Abdomen, flanks, back, arms and thighs',
@@ -47,19 +52,12 @@ export const liposuctionMiami: Procedure = {
     dateModified: '2026-09-22T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing. No weekly figure: financing is offered but never
-    // quoted as a number.
-    priceFrom: lipoFigure('price-starting-at'),
-
-    // Published price table, from the practice's price sheet of 2026-09-15
-    // (`docs/pricing/practice-price-list.md`). Lipo 360 is the only
-    // standalone liposuction on the sheet; single areas are add-ons to
-    // another procedure. What the price includes waits on the owner, so
-    // `includes` stays empty and the page asks readers to get any quote,
-    // ours included, itemized. Every liposuction price on the site — blog
-    // posts, the quiz — must match these.
+    // What the price covers and what moves it. Lipo 360 is the only
+    // standalone liposuction on the price sheet; single areas are add-ons to
+    // another procedure. The figures come from the pricing resolver (#354).
+    // What the price includes waits on the owner, so `includes` stays empty
+    // and the page asks readers to get any quote, ours included, itemized.
     pricing: {
-        startingAt: 4000,
         includes: [],
         factors: [
             {
@@ -69,7 +67,7 @@ export const liposuctionMiami: Procedure = {
             },
             {
                 label: 'Added to another procedure',
-                description: `Liposuction of one area added to another procedure, such as a tummy tuck, is ${lipoFigure('price-added-area')}, depending on the area.`,
+                description: `Liposuction of one area added to another procedure, such as a tummy tuck, is [[price-span:lipo:add-ons]], depending on the area.`,
             },
             {
                 label: 'Combined surgery',
@@ -162,7 +160,7 @@ export const liposuctionMiami: Procedure = {
     faqs: [
         {
             question: 'How much does liposuction cost in Miami?',
-            answer: `At Alluring, Lipo 360 starts at ${lipoFigure('price-starting-at')}, and liposuction of one area added to another procedure is ${lipoFigure('price-added-area')}, depending on the area. Your price is set for you after an exam and confirmed at your consultation. Price ranges are estimates and may change. Financing is available, subject to credit approval.`,
+            answer: `At Alluring, Lipo 360 starts at [[price:lipo:lipo360]], and liposuction of one area added to another procedure is [[price-span:lipo:add-ons]], depending on the area. Your price is set for you after an exam and confirmed at your consultation. Price ranges are estimates and may change. Financing is available, subject to credit approval. [[discount-statement]]`,
         },
         {
             question: 'How long does liposuction take?',

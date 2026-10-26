@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
+import {
+    buildPricingSnapshot,
+    DEFAULT_PROCEDURE_SETTINGS,
+    FALLBACK_PRICING,
+} from '@workspace/shared/claims/prices'
+
 import { getPostProcedure } from '@/lib/blog/post-procedure.util'
 import { getReaderStage } from '@/lib/blog/reader-stage.util'
 
@@ -82,13 +88,22 @@ describe('getPostProcedure', () => {
         })
     })
 
-    it('prices only BBL and lipo, from the facts files', () => {
+    it('prices only BBL and lipo, from the pricing resolver', () => {
         const bbl = getPostProcedure('How Many Massages After BBL?')?.price
-        expect(bbl).toMatchObject({ label: 'BBL', startingAt: '$5,500' })
-        expect(bbl?.note).toContain('set for each patient')
+        expect(bbl).toMatchObject({
+            label: 'BBL',
+            display: { final: '$5,500', discounted: false },
+            range: { max: { final: '$10,000' } },
+            statement: null,
+        })
+        expect(bbl?.note.toLowerCase()).toContain('set for each patient')
         expect(
             getPostProcedure('How to Reduce Itching After Lipo')?.price
-        ).toMatchObject({ label: 'Lipo 360', startingAt: '$4,000' })
+        ).toMatchObject({
+            label: 'Lipo 360',
+            display: { final: '$4,000' },
+            range: null,
+        })
 
         for (const title of [
             'How to Reduce Tightness After Tummy Tuck',
@@ -98,6 +113,33 @@ describe('getPostProcedure', () => {
         ]) {
             expect(getPostProcedure(title)?.price, title).toBeNull()
         }
+    })
+
+    it('shows the discounted price, and the statement, from the snapshot', () => {
+        const pricing = buildPricingSnapshot({
+            source: 'db',
+            lines: FALLBACK_PRICING.lines,
+            procedures: DEFAULT_PROCEDURE_SETTINGS.map((row) =>
+                row.procedure === 'bbl' ? { ...row, discountPercent: 20 } : row
+            ),
+            settings: {
+                defaultDiscountPercent: 0,
+                discountStatement: 'The 456.062 statement.',
+                comboDiscountTwoUsd: 500,
+                comboDiscountThreeUsd: 1000,
+                updatedAt: null,
+            },
+        })
+        expect(
+            getPostProcedure('How to Sleep After BBL', pricing)?.price
+        ).toMatchObject({
+            display: { list: '$5,500', final: '$4,400', discounted: true },
+            statement: 'The 456.062 statement.',
+        })
+        // Lipo is not discounted, so it carries no statement.
+        expect(
+            getPostProcedure('Lipo 360 Recovery', pricing)?.price?.statement
+        ).toBeNull()
     })
 
     it('maps every procedure to a value the consultation thread offers', () => {

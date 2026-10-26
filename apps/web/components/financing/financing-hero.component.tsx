@@ -4,8 +4,8 @@
  * FinancingHero Component
  *
  * Split-layout hero section for the financing page with content on the left
- * and a prominent image on the right. Uses the luxury aesthetic with
- * gold accents and serif typography.
+ * and a prominent image on the right, with gold accents and serif
+ * typography.
  *
  * Layout: 50/50 split on desktop, stacked on mobile (content first)
  */
@@ -195,7 +195,7 @@ export function FinancingHero({
                         <>
                             <Image
                                 src={backgroundImage}
-                                alt='Luxury plastic surgery consultation'
+                                alt='Patient consultation at Alluring Plastic Surgery in Miami'
                                 fill
                                 priority
                                 className='object-cover'
@@ -230,7 +230,7 @@ export function FinancingHero({
                         <>
                             <Image
                                 src={backgroundImage}
-                                alt='Luxury plastic surgery consultation'
+                                alt='Patient consultation at Alluring Plastic Surgery in Miami'
                                 fill
                                 priority
                                 className='object-cover'

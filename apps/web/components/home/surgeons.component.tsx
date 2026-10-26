@@ -3,13 +3,40 @@ import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Button } from '@workspace/ui/components/button'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Award, BadgeCheck, ExternalLink, Stethoscope } from 'lucide-react'
+
 import {
-    Award,
-    BadgeCheck,
-    ExternalLink,
-    Sparkles,
-    TrendingUp,
-} from 'lucide-react'
+    KARLINSKY_ABS_CERTIFIED_ON,
+    KARLINSKY_FLORIDA_LICENSE,
+    KARLINSKY_NAME,
+    karlinskyRecords,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
+
+const ABS_YEAR = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
+
+/**
+ * Each verified credential with the public record a patient can check it
+ * against (claims canon §2). The cosmetic boards are left out: naming them
+ * needs the Florida statement beside them, which this compact list can't
+ * carry. The fellowship line is held to the surgeon page (D9).
+ */
+const RECORDS = [
+    {
+        label: `Board certified in general surgery since ${ABS_YEAR}`,
+        detail: 'American Board of Surgery',
+        href: karlinskyRecords.americanBoardOfSurgery,
+    },
+    {
+        label: 'Fellow of the American College of Surgeons (FACS)',
+        detail: 'American College of Surgeons',
+        href: karlinskyRecords.americanCollegeOfSurgeons,
+    },
+    {
+        label: `Florida medical license ${KARLINSKY_FLORIDA_LICENSE}, clear and active`,
+        detail: 'Florida Department of Health',
+        href: karlinskyRecords.floridaLicense,
+    },
+] as const
 
 /**
  * Credential stat type
@@ -27,21 +54,23 @@ type CredentialStat = {
 const STAT_DELAY = ['animate-delay-0', 'animate-delay-100', 'animate-delay-200']
 
 export const Surgeons = () => {
+    // Verified facts only (claims canon §4): no patient, procedure or
+    // year counts.
     const credentialStats: CredentialStat[] = [
         {
-            icon: <Sparkles className='h-4 w-4' />,
-            value: '1,500+',
-            label: 'BBL Procedures',
-        },
-        {
-            icon: <TrendingUp className='h-4 w-4' />,
-            value: '5,000+',
-            label: 'Total Surgeries',
-        },
-        {
             icon: <Award className='h-4 w-4' />,
-            value: '15+',
-            label: 'Years Experience',
+            value: `Since ${ABS_YEAR}`,
+            label: 'Board certified, American Board of Surgery',
+        },
+        {
+            icon: <BadgeCheck className='h-4 w-4' />,
+            value: 'FACS',
+            label: 'Fellow, American College of Surgeons',
+        },
+        {
+            icon: <Stethoscope className='h-4 w-4' />,
+            value: 'One',
+            label: 'Surgeon for every procedure',
         },
     ]
 
@@ -63,7 +92,7 @@ export const Surgeons = () => {
                         <div className='animate-fade-in-up relative aspect-[3/4] w-full max-w-md'>
                             <Image
                                 src='/images/surgeons/dr-karlinsky.webp'
-                                alt='Dr. Victoria Karlinsky - Double Board-Certified Cosmetic Surgeon specializing in BBL, breast augmentation, and mommy makeover at Alluring Plastic Surgery Miami'
+                                alt={`${KARLINSKY_NAME}, the surgeon at Alluring Plastic Surgery`}
                                 fill
                                 className='object-cover grayscale transition-all duration-700 ease-in-out hover:grayscale-0'
                                 sizes='(max-width: 1024px) 100vw, 50vw'
@@ -97,11 +126,13 @@ export const Surgeons = () => {
                     <div className='flex flex-col justify-center lg:w-1/2'>
                         <div className='mb-8'>
                             <span className='text-gold-500 mb-2 block text-sm font-bold tracking-widest uppercase'>
-                                World Class Talent
+                                Your surgeon
                             </span>
                             <h2 className='mb-8 font-serif text-4xl leading-none md:text-6xl'>
-                                Meet the <br />
-                                <span className='text-stone-500'>Masters.</span>
+                                Meet <br />
+                                <span className='text-stone-500'>
+                                    your surgeon.
+                                </span>
                             </h2>
                         </div>
 
@@ -114,10 +145,12 @@ export const Surgeons = () => {
                             </p>
                             <div className='flex flex-col gap-2'>
                                 <span className='text-base font-bold tracking-wider text-white uppercase'>
-                                    Dr. Victoria Karlinsky
+                                    {KARLINSKY_NAME}
                                 </span>
                                 <span className='text-base text-stone-500'>
-                                    Double Board-Certified Cosmetic Surgeon
+                                    {
+                                        'Cosmetic surgeon · Board certified, American Board of Surgery'
+                                    }
                                 </span>
                             </div>
                         </div>
@@ -129,49 +162,25 @@ export const Surgeons = () => {
                                 Verified Credentials
                             </h3>
                             <div className='space-y-3'>
-                                <a
-                                    href='https://www.americanboardcosmeticsurgery.org/'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='hover:border-gold-500/50 group flex items-center justify-between border-b border-stone-800 pb-3 transition-colors'
-                                >
-                                    <div>
-                                        <span className='block text-sm font-medium text-white'>
-                                            American Board of Cosmetic Surgery
-                                        </span>
-                                        <span className='text-xs text-stone-500'>
-                                            Board Certified
-                                        </span>
-                                    </div>
-                                    <ExternalLink className='text-gold-500 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100' />
-                                </a>
-                                <a
-                                    href='https://www.flhealthsource.gov/mqa/'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='hover:border-gold-500/50 group flex items-center justify-between border-b border-stone-800 pb-3 transition-colors'
-                                >
-                                    <div>
-                                        <span className='block text-sm font-medium text-white'>
-                                            Florida Medical Quality Assurance
-                                        </span>
-                                        <span className='text-xs text-stone-500'>
-                                            State Licensed
-                                        </span>
-                                    </div>
-                                    <ExternalLink className='text-gold-500 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100' />
-                                </a>
-                                <div className='flex items-center justify-between pt-1'>
-                                    <div>
-                                        <span className='block text-sm font-medium text-white'>
-                                            Fellowship Trained
-                                        </span>
-                                        <span className='text-xs text-stone-500'>
-                                            Cosmetic Surgery & Body Contouring
-                                        </span>
-                                    </div>
-                                    <Award className='text-gold-400 h-4 w-4' />
-                                </div>
+                                {RECORDS.map((record) => (
+                                    <a
+                                        key={record.href}
+                                        href={record.href}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        className='hover:border-gold-500/50 group flex items-center justify-between border-b border-stone-800 pb-3 transition-colors last:border-b-0'
+                                    >
+                                        <div>
+                                            <span className='block text-sm font-medium text-white'>
+                                                {record.label}
+                                            </span>
+                                            <span className='text-xs text-stone-500'>
+                                                {record.detail}
+                                            </span>
+                                        </div>
+                                        <ExternalLink className='text-gold-500 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100' />
+                                    </a>
+                                ))}
                             </div>
                         </div>
 

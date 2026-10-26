@@ -99,14 +99,20 @@ import { QuickAnswer } from '@/components/shared/quick-answer.component'
 
 ;<QuickAnswer
     question='How long does breast augmentation recovery take?'
-    answer='Most patients return to light activities within 1-2 weeks.'
-    details='Full results are visible after 3-6 months as swelling subsides. Our surgeons provide detailed post-operative care instructions.'
+    answer='At Alluring, most patients return to light activity in about a week.'
+    details='Dr. Karlinsky gives you detailed post-operative care instructions.'
     expert={{
-        name: 'Dr. Example',
-        credentials: 'Board-Certified Plastic Surgeon',
+        name: KARLINSKY_NAME,
+        credentials:
+            'Board certified in general surgery by the American Board of Surgery',
     }}
 />
 ```
+
+Copy in a `QuickAnswer` follows the claims canon (`docs/claims/canon.md`): the
+surgeon's name and credentials come from `@workspace/shared/claims/surgeon`,
+recovery figures from the procedure's quickStats or facts file, and a price is
+read from the pricing resolver, never typed.
 
 ### Features
 

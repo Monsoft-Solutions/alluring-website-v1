@@ -4,9 +4,10 @@
  * All content and configuration for the blog landing page.
  * Includes hero section, category configuration, and CTA content.
  *
- * Following the site's luxury aesthetic with stone/gold palette.
+ * Following the site's stone/gold palette.
  */
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * Blog page SEO metadata
@@ -15,7 +16,7 @@ import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
  */
 export const blogSeoData = {
     title: 'Plastic Surgery Blog Miami',
-    description: `Expert articles on plastic surgery procedures, recovery tips, and patient education from Miami's trusted board-certified surgeons. BBL, breast augmentation, tummy tuck & more.`,
+    description: `Articles on plastic surgery procedures, recovery and costs from Alluring Plastic Surgery in Miami, where one surgeon, ${KARLINSKY_NAME}, performs every procedure. BBL, breast augmentation, tummy tuck & more.`,
     keywords: [
         'plastic surgery blog miami',
         'cosmetic surgery education',
@@ -25,7 +26,6 @@ export const blogSeoData = {
         'mommy makeover information',
         'plastic surgery before and after',
         'cosmetic procedure guide',
-        'board certified plastic surgeon miami',
         'plastic surgery patient education',
     ],
     canonical: '/blog',
@@ -38,8 +38,7 @@ export const blogHeroData = {
     badge: 'Expert Insights',
     headline: 'Your Guide to Confident Transformation',
     subheadline: 'Knowledge is Beautiful',
-    description:
-        'Expert articles, recovery guides, and insider knowledge from our board-certified surgeons. Everything you need to make informed decisions about your aesthetic journey.',
+    description: `Articles and recovery guides from Alluring Plastic Surgery, where ${KARLINSKY_NAME} performs every procedure. Everything you need to make an informed decision.`,
     backgroundImage: '/images/hero-beautiful-latin-woman.jpg',
 }
 
@@ -79,7 +78,7 @@ export const blogCtaData = {
     eyebrow: 'Ready to Learn More?',
     heading: 'Schedule Your Free Consultation',
     description:
-        'Have questions about a procedure you read about? Our board-certified surgeons are here to provide personalized guidance and answer all your questions.',
+        'Have questions about a procedure you read about? Dr. Karlinsky answers them at your consultation.',
     primaryButton: {
         text: 'Book Consultation',
         href: '/contact-us',

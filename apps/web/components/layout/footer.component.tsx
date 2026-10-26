@@ -3,6 +3,8 @@
 import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { DESCRIPTION_SHORT } from '@workspace/shared/claims/identity'
+
 import { siteConfig } from '@/lib/data/site-config'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedureNavItems } from '@/lib/data/procedure-nav.data'
@@ -60,9 +62,7 @@ export const Footer = () => {
                             />
                         </Link>
                         <p className='mb-8 text-base leading-relaxed text-stone-400'>
-                            Premier plastic surgery center in Miami, FL
-                            providing world-class aesthetic results with
-                            concierge care.
+                            {DESCRIPTION_SHORT}
                         </p>
                         <div className='flex space-x-6'>
                             {siteConfig.social

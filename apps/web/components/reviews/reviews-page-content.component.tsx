@@ -21,6 +21,7 @@ import {
     ReviewSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BeforeAfter } from '@/components/home/before-after.component'
@@ -41,6 +42,7 @@ import {
     StarRating,
 } from '@/components/shared/sprite-icon.component'
 import { faqCategoriesHome, faqDataHome } from '@/lib/data/faq/home-faq-data'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { siteConfig } from '@/lib/data/site-config'
 import type { GoogleReviewsPageResult } from '@/lib/queries/reviews/google-reviews.query'
 import {
@@ -57,7 +59,7 @@ type ReviewsPageContentProps = {
     readonly data: GoogleReviewsPageResult
 }
 
-export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
+export async function ReviewsPageContent({ data }: ReviewsPageContentProps) {
     const { reviews, averageRating, totalCount, page, totalPages } = data
     const isFirstPage = page === 1
 
@@ -77,8 +79,12 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
         { name: 'Reviews', item: pageUrl },
     ]
 
+    // Claim tokens in the FAQ (prices, #354), resolved once for both the
+    // visible list and its schema.
+    const faqData = await resolveClaimsIn(faqDataHome, 'text', 'faq /reviews')
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(faqDataHome).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -174,7 +180,7 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                                 as='h1'
                                 badge='Patient Reviews'
                                 title='What Our Patients Say'
-                                description='Real reviews from real patients who trusted us with their care. Read their stories and see why thousands choose Alluring Plastic Surgery.'
+                                description='Real reviews from real patients who trusted us with their care, as they posted them on Google.'
                                 align='center'
                             />
 
@@ -204,9 +210,9 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                                     {/* Total Reviews */}
                                     <div className='text-stone-600'>
                                         <span className='font-semibold text-stone-900'>
-                                            {totalCount}+
+                                            {totalCount}
                                         </span>{' '}
-                                        verified reviews on Google
+                                        reviews on Google
                                     </div>
                                 </div>
                             )}
@@ -215,7 +221,7 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                             <div className='mt-6 flex items-center justify-center gap-2'>
                                 <GoogleIcon className='h-5 w-5' />
                                 <span className='text-sm text-stone-500'>
-                                    Verified Google Reviews
+                                    Google reviews
                                 </span>
                             </div>
 
@@ -301,13 +307,13 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                         {/* Before & After Gallery */}
                         <BeforeAfter />
 
-                        {/* Meet Our Surgeons */}
+                        {/* Meet the surgeon */}
                         <Surgeons />
 
                         {/* FAQ Section */}
                         <CategorizedFAQ
                             categories={faqCategoriesHome}
-                            faqData={faqDataHome}
+                            faqData={faqData}
                             badge='Common Questions'
                             title='Frequently Asked'
                             subtitle='Questions'
@@ -317,9 +323,8 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                             includeSchema={false}
                             ctaConfig={{
                                 title: 'Still have questions?',
-                                description:
-                                    'Our patient concierge is ready to help you.',
-                                buttonText: 'Chat with Concierge',
+                                description: 'Call us and we will answer them.',
+                                buttonText: 'Call Us',
                                 phoneNumber: siteConfig.contact.phone.replace(
                                     /\D/g,
                                     ''
@@ -337,7 +342,7 @@ export function ReviewsPageContent({ data }: ReviewsPageContentProps) {
                         variant='luxury'
                         eyebrow='Start Your Transformation'
                         heading='Ready to Write Your Own Review?'
-                        description='Every result you have just read about started with a free consultation. Book yours with a board-certified surgeon.'
+                        description={`Every result you have just read about started with a free consultation. Book yours with ${KARLINSKY_NAME}.`}
                         primaryButton={{
                             text: 'Schedule Your Consultation',
                             href: '/contact-us',

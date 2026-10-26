@@ -37,7 +37,13 @@ What fails a post (writing-standard.md, compliance.md):
   reviewed", superlative, luxury/affordable, travel or market, retired price,
   financing figure, urgency, phone, filler, the cluster's old figures) over the
   body, title, meta, excerpt, quick answer, image alt and image text, plus a
-  lighter sweep of the Sources list; a $ figure in neither the cluster's facts
+  lighter sweep of the Sources list; a hit on a `fail` rule of the claims
+  canon (docs/claims/canon.md §11, read from
+  packages/shared/src/claims/patterns.data.json) that the sweep doesn't already
+  report, with its review rules as warnings; a claim token that would render as
+  nothing (lib/claims_check.mjs, or the token grammar of
+  packages/shared/src/claims/tokens.ts when node can't run) or an Alluring
+  price typed instead of a token; a $ figure in neither the cluster's facts
   file nor a quote verified against docs/pricing/practice-price-list.md; a
   practice price whose paragraph, list or table doesn't say the surgeon
   confirms it at consultation; with --final, a source whose read_on is not a
@@ -86,6 +92,7 @@ def main() -> int:
 
     results = [checks.check(p, ctx, final=a.final) for p in posts]
 
+    mdx = None
     if not a.no_mdx:
         bodies = {}
         for p in posts:
@@ -99,6 +106,13 @@ def main() -> int:
                 r.problems.extend(f'MDX: {x["kind"]}: {x["detail"]}' for x in mdx[r.slug]['actions'])
             else:
                 r.info['mdx'] = 'clean'
+
+    # validateGeneratedMdx checks the body's claim tokens. When it didn't run,
+    # check at least their grammar (packages/shared/src/claims/tokens.ts).
+    if mdx is None:
+        for p, r in zip(posts, results):
+            body, _, _ = bl.apply_images(p, [], placeholder_ok=True)
+            r.problems.extend(bl.token_shape_problems('content', body))
 
     if a.json:
         print(json.dumps({'source': ctx.published_from, 'posts': [r.__dict__ for r in results]}, indent=1))

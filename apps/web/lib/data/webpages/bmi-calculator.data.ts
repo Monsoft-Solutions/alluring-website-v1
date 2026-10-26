@@ -8,6 +8,7 @@
  * to client components without serialization issues.
  */
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * BMI Category definition
@@ -85,41 +86,35 @@ export type BmiSeoData = {
 }
 
 /**
- * Hero trust indicators
+ * Hero trust indicators: verified facts only (claims canon §2–§4, #354).
+ * The retired "AAAASF Accredited" and "5,000+ Patients" badges are not
+ * replaced.
  */
 const heroTrustIndicators = [
     {
         icon: 'Shield',
-        text: 'Board-Certified',
-        label: 'Surgeons',
+        text: 'Since 2008',
+        label: 'Certified by the American Board of Surgery',
     },
     {
         icon: 'Award',
-        text: 'AAAASF',
-        label: 'Accredited',
+        text: 'FACS',
+        label: 'American College of Surgeons',
     },
     {
         icon: 'Heart',
-        text: '5,000+',
-        label: 'Patients',
+        text: 'One',
+        label: 'Surgeon for every procedure',
     },
 ]
 
 /**
  * BMI Categories Data
  *
- * Based on WHO BMI classification and cosmetic surgery industry standards.
- * Research sources:
- * - beautybydrcat.com/blog/what-is-the-bmi-requirement-for-plastic-surgery
- * - vadoplasticsurgery.com/blog/is-there-a-bmi-requirement-for-plastic-surgery
- * - careagaplasticsurgery.com/blog/does-your-bmi-affect-your-plastic-surgery-candidacy
- *
- * Key findings:
- * - Most surgeons require BMI of 30 or below
- * - Optimal surgical candidacy range: 18-32
- * - Tummy tuck & combo procedures: BMI 32 or less recommended
- * - Liposuction: BMI under 30 preferred
- * - BMI 35+: Increased complication risk
+ * The ranges are the WHO BMI classification. No BMI cutoff is quoted: the
+ * only figure is the facts file's (Winocour 2015, tummy tuck risk rises
+ * with a BMI of 30 or more), and every answer ends with the surgeon
+ * deciding at consultation (claims canon §7, #354).
  */
 const bmiCategories: BmiCategory[] = [
     {
@@ -132,9 +127,9 @@ const bmiCategories: BmiCategory[] = [
         bgColor: 'bg-blue-50',
         borderColor: 'border-blue-200',
         description:
-            'A BMI below 18.5 may indicate insufficient body fat for certain procedures like BBL, which requires adequate fat for transfer. Nutritional optimization may be recommended before surgery.',
+            "A BMI below 18.5 is in the underweight range. A BBL needs enough fat to transfer, so a low BMI can mean there isn't enough; your surgeon decides at consultation.",
         surgeryRecommendation:
-            'Consultation recommended. Breast augmentation and facial procedures are often available. BBL may require weight gain for adequate donor fat.',
+            'Consultation recommended. Some procedures, such as breast augmentation or facial surgery, may still be possible, and a BBL may need weight gain for enough donor fat. Your surgeon decides at consultation.',
     },
     {
         id: 'normal',
@@ -146,9 +141,9 @@ const bmiCategories: BmiCategory[] = [
         bgColor: 'bg-emerald-50',
         borderColor: 'border-emerald-200',
         description:
-            'A BMI between 18.5 and 24.9 is considered optimal for most cosmetic procedures. This range presents the lowest surgical risk and typically yields the best aesthetic outcomes.',
+            'A BMI between 18.5 and 24.9 is in the healthy weight range.',
         surgeryRecommendation:
-            'Ideal candidate for all procedures including BBL, breast augmentation, tummy tuck, liposuction, mommy makeover, and facial surgeries.',
+            "A BMI in this range usually doesn't limit which procedures you can consider, including BBL, breast augmentation, tummy tuck, liposuction, mommy makeover and facial surgery. Your surgeon decides at consultation.",
     },
     {
         id: 'overweight',
@@ -160,9 +155,9 @@ const bmiCategories: BmiCategory[] = [
         bgColor: 'bg-amber-50',
         borderColor: 'border-amber-200',
         description:
-            'A BMI between 25 and 29.9 falls within the optimal surgical candidacy range (18-32). Most plastic surgeons safely perform procedures in this range with excellent results.',
+            'A BMI between 25 and 29.9 is in the overweight range. Many people in this range are candidates for surgery; your surgeon decides at consultation.',
         surgeryRecommendation:
-            'Excellent candidate for most procedures. Liposuction, tummy tuck, breast surgeries, BBL, and combo procedures are commonly performed safely.',
+            'Often a candidate for many procedures, including liposuction, tummy tuck, breast surgery and BBL. Your surgeon decides at consultation.',
     },
     {
         id: 'obese-1',
@@ -174,9 +169,9 @@ const bmiCategories: BmiCategory[] = [
         bgColor: 'bg-orange-50',
         borderColor: 'border-orange-200',
         description:
-            'A BMI between 30 and 34.9 is at the upper limit of surgical candidacy. Many surgeons will operate in this range with additional health screening. For combo procedures and tummy tucks, a BMI of 32 or less is often preferred.',
+            'A BMI between 30 and 34.9 is in the obese range, and additional health screening is usually part of the evaluation. For a tummy tuck, one large study linked a BMI of 30 or more to a higher risk of major complications (Winocour and colleagues, Plastic and Reconstructive Surgery, 2015). It is a risk factor, not a cutoff; your surgeon decides at consultation.',
         surgeryRecommendation:
-            'Many procedures available with comprehensive health evaluation. Hospital setting may be recommended for enhanced safety. Weight loss before surgery may improve outcomes.',
+            'Many procedures are available with a full health evaluation, and losing weight before surgery may improve outcomes. Your surgeon decides at consultation.',
     },
     {
         id: 'obese-2-plus',
@@ -188,9 +183,9 @@ const bmiCategories: BmiCategory[] = [
         bgColor: 'bg-red-50',
         borderColor: 'border-red-200',
         description:
-            'A BMI of 35 or higher significantly increases surgical risks including anesthesia complications, delayed healing, infection, and poor scarring. Most surgeons have BMI limits of 35-40 for elective procedures.',
+            'A higher BMI raises the risk of complications after surgery. For a tummy tuck, one large study found higher risk from a BMI of 30 (Winocour and colleagues, 2015). Your surgeon decides at consultation.',
         surgeryRecommendation:
-            'Supportive consultation available to discuss weight management strategies and create a roadmap to surgical candidacy. Some procedures may be possible in a hospital setting.',
+            'A consultation can help you plan weight management and a path to surgery. Your surgeon decides at consultation.',
     },
 ]
 
@@ -225,7 +220,7 @@ export const bmiPageData: BmiPageData = {
         eyebrow: 'Ready for Your Transformation?',
         heading: 'Schedule Your Personalized Consultation',
         description:
-            'BMI is just one factor we consider. Our board-certified surgeons will evaluate your complete health profile to create a safe, personalized treatment plan. Call now for a confidential consultation.',
+            'BMI is just one factor we consider. Dr. Karlinsky reviews your complete health profile at consultation and decides with you whether surgery is right for you. Call now for a confidential consultation.',
         primaryButton: {
             text: `Call ${siteConfig.contact.phoneDisplay}`,
             href: getPhoneLink(),
@@ -242,7 +237,7 @@ export const bmiPageData: BmiPageData = {
  */
 export const bmiSeoData: BmiSeoData = {
     title: 'BMI Calculator for Plastic Surgery',
-    description: `Free BMI calculator for cosmetic surgery candidacy. Understand how your Body Mass Index affects eligibility for BBL, tummy tuck, breast surgery & more. Board-certified surgeons in Miami. Call ${siteConfig.contact.phoneDisplay}.`,
+    description: `Free BMI calculator for cosmetic surgery candidacy. Understand how your Body Mass Index affects eligibility for BBL, tummy tuck, breast surgery & more. ${KARLINSKY_NAME}, in Miami. Call ${siteConfig.contact.phoneDisplay}.`,
     keywords: [
         'BMI calculator plastic surgery',
         'BMI for cosmetic surgery miami',

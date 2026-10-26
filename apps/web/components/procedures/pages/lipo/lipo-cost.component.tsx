@@ -13,8 +13,15 @@ import {
 } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import { sourceAnchorId } from '@/components/procedures/sections/sources-list.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import {
+    isSingleAreaAddOn,
+    linePriceExtremes,
+} from '@/lib/claims/procedure-prices.util'
 import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
 import { getFinancingPartnersString } from '@/lib/data/site-config'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 import type { ProcedurePricing } from '@/lib/types/procedure.type'
 
 /** What any itemized liposuction quote should spell out, ours included. */
@@ -36,19 +43,48 @@ const quoteLines = [
  * on the owner, so the section doesn't claim any inclusion: it lists what
  * any quote should spell out and asks readers to get ours itemized too.
  * `pricing.includes` fills the kit's list the day the owner confirms it.
+ * The figures come from the pricing resolver (#354): struck through while a
+ * discount is on, with the 456.062 statement under the answer.
  *
- * The ASPS national average makes "affordable" concrete without the word.
+ * The ASPS national average puts our price in context.
  * It is a surgeon's fee only, so the comparison always says what it leaves
  * out.
  */
-export function LipoCost({ pricing }: { pricing: ProcedurePricing }) {
+export function LipoCost({
+    pricing,
+    prices,
+}: {
+    pricing: ProcedurePricing
+    prices: ProcedurePrices
+}) {
+    const addedArea = linePriceExtremes(prices, isSingleAreaAddOn)
     return (
         <AnswerBlock
             id='pricing'
             question='How much does liposuction cost in Miami?'
             className={moduleSectionPad}
-            answer={`At Alluring, Lipo 360 starts at ${lipoFigure('price-starting-at')}, and liposuction of one area added to another procedure is ${lipoFigure('price-added-area')}, depending on the area. Your price is set for you after an exam, because it depends on how many areas are treated and what else is done. Price ranges are estimates and may change.`}
+            answer={
+                <>
+                    At Alluring, Lipo 360 starts at{' '}
+                    <PriceTag price={prices.starting} />
+                    {addedArea && (
+                        <>
+                            , and liposuction of one area added to another
+                            procedure is <PriceTag price={addedArea.min} /> to{' '}
+                            <PriceTag price={addedArea.max} />, depending on the
+                            area
+                        </>
+                    )}
+                    . Your price is set for you after an exam, because it
+                    depends on how many areas are treated and what else is done.
+                    Price ranges are estimates and may change.
+                </>
+            }
         >
+            <DiscountStatement
+                statement={prices.discountStatement}
+                className='mt-4'
+            />
             <div className='border-gold-400 mt-8 max-w-[41.25rem] border-l-[3px] bg-stone-50 px-5 py-4.5 md:px-6 md:py-5'>
                 <h3 className='text-[0.9375rem] leading-[1.45] font-bold text-stone-900'>
                     For comparison
@@ -115,8 +151,8 @@ export function LipoCost({ pricing }: { pricing: ProcedurePricing }) {
                 is planned for each area.
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
-                Financing is available through {getFinancingPartnersString()},
-                subject to credit approval. Insurance generally does not cover
+                Financing is available through {getFinancingPartnersString()}{' '}
+                for qualified applicants. Insurance generally does not cover
                 liposuction done for cosmetic reasons.
             </p>
             <ModulePriceActions />

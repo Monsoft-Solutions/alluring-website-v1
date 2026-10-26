@@ -12,22 +12,25 @@
  *     the photograph so the highest-intent action lives in the first fold
  *   - trust ribbon under the submit button uses gold hairline dividers
  */
-import {
-    BadgeCheck,
-    Languages,
-    ShieldCheck,
-    Sparkles,
-    Star,
-} from 'lucide-react'
+import { Languages, ShieldCheck, Sparkles, Star } from 'lucide-react'
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     CONTACT_SOURCES,
     getProcedureFormValue,
 } from '@/lib/types/forms/contact-form.type'
 import type { Procedure } from '@/lib/types/procedure.type'
+import {
+    formatLineName,
+    quotesAsNamedLine,
+    withIndefiniteArticle,
+    type PriceDisplay,
+} from '@workspace/shared/claims/pricing'
+import { PRICE_CAVEAT_SHORT } from '@workspace/shared/claims/prices'
 
 const HERO_FORM_ID = 'hero-form'
 
@@ -42,6 +45,59 @@ const GRAIN_DATA_URI =
 export type ProcedureLandingHeroProps = {
     readonly id?: string
     readonly procedure: Procedure
+    /**
+     * The starting price from the pricing resolver (#354), or null when the
+     * procedure publishes none. Struck through while a discount is on.
+     */
+    readonly startingPrice: PriceDisplay | null
+    /** The 456.062 statement while the starting price is discounted. */
+    readonly discountStatement?: string | null
+}
+
+/**
+ * The hero's editorial data sheet: the starting price, with the line it is
+ * for named under it (canon §5), and the price caveat. A procedure quoted
+ * only as a named line (the face and neck lift, D2) is never "starting at":
+ * its line's name heads the figure. No weekly or monthly figure (canon D6).
+ * The 456.062 statement sits in the same block while the price is
+ * discounted (#354).
+ */
+export function ProcedureLandingPrice({
+    price,
+    discountStatement,
+}: {
+    price: PriceDisplay
+    discountStatement?: string | null
+}) {
+    return (
+        <dl className='animate-fade-in-up animate-delay-200 mb-10 grid max-w-md gap-y-1 border-y border-amber-200/15 py-5'>
+            <div className='flex flex-col items-start'>
+                <dt className='font-sans text-[10px] tracking-[0.28em] text-amber-200/70 uppercase'>
+                    {quotesAsNamedLine(price.procedure)
+                        ? formatLineName(price.label, {
+                              short: true,
+                          })
+                        : 'Starting at'}
+                </dt>
+                <dd className='font-serif text-3xl leading-none text-white tabular-nums'>
+                    <PriceTag price={price} />
+                </dd>
+                {!quotesAsNamedLine(price.procedure) && (
+                    <dd className='mt-2 text-sm text-stone-300'>
+                        For {withIndefiniteArticle(price.label)}
+                    </dd>
+                )}
+            </div>
+            <p className='mt-1 text-[11px] tracking-wide text-stone-400'>
+                {PRICE_CAVEAT_SHORT}
+            </p>
+            <DiscountStatement
+                statement={discountStatement}
+                tone='dark'
+                className='mt-2 text-[11px]'
+            />
+        </dl>
+    )
 }
 
 /**
@@ -65,6 +121,8 @@ function splitTitle(title: string): {
 export function ProcedureLandingHero({
     id = 'hero',
     procedure,
+    startingPrice,
+    discountStatement,
 }: ProcedureLandingHeroProps) {
     const headline = procedure.outcomeHeadline ?? procedure.title
     const { leading, accent } = splitTitle(headline)
@@ -74,7 +132,6 @@ export function ProcedureLandingHero({
 
     const procedureFormValue = getProcedureFormValue(procedure.slug)
     const rating = siteConfig.trustStats?.rating
-    const patients = siteConfig.trustStats?.patients
 
     return (
         <section
@@ -109,10 +166,6 @@ export function ProcedureLandingHero({
                             aria-hidden='true'
                             className='h-px flex-1 bg-gradient-to-r from-amber-200/40 to-transparent'
                         />
-                        <span className='inline-flex items-center gap-2 text-[10px] font-medium tracking-[0.24em] text-stone-400 uppercase'>
-                            <span className='h-1.5 w-1.5 animate-pulse rounded-full bg-amber-300' />
-                            Booking this month
-                        </span>
                     </div>
 
                     {/* Headline — display serif with italic accent and tight leading */}
@@ -136,49 +189,11 @@ export function ProcedureLandingHero({
                         {procedure.heroSubtitle ?? procedure.shortDescription}
                     </p>
 
-                    {/* Editorial data sheet — FROM / FINANCING */}
-                    {(procedure.priceFrom || procedure.weeklyPaymentFrom) && (
-                        <dl className='animate-fade-in-up animate-delay-200 mb-10 grid max-w-md grid-cols-[auto_1px_auto] items-end gap-x-6 gap-y-1 border-y border-amber-200/15 py-5'>
-                            {procedure.priceFrom && (
-                                <>
-                                    <div className='flex flex-col items-start'>
-                                        <dt className='font-sans text-[10px] tracking-[0.28em] text-amber-200/70 uppercase'>
-                                            Starting at
-                                        </dt>
-                                        <dd className='font-serif text-3xl leading-none text-white tabular-nums'>
-                                            {procedure.priceFrom}
-                                        </dd>
-                                    </div>
-                                </>
-                            )}
-                            {procedure.priceFrom &&
-                                procedure.weeklyPaymentFrom && (
-                                    <span
-                                        aria-hidden='true'
-                                        className='self-stretch bg-amber-200/15'
-                                    />
-                                )}
-                            {procedure.weeklyPaymentFrom && (
-                                <div className='flex flex-col items-start'>
-                                    <dt className='font-sans text-[10px] tracking-[0.28em] text-amber-200/70 uppercase'>
-                                        Or weekly
-                                    </dt>
-                                    <dd className='font-serif text-2xl leading-none text-white/95 tabular-nums'>
-                                        {procedure.weeklyPaymentFrom
-                                            .replace(/^\$/, '$')
-                                            .replace(
-                                                /\s*with approved credit/i,
-                                                ''
-                                            )}
-                                    </dd>
-                                </div>
-                            )}
-                            <p className='col-span-3 mt-1 text-[11px] tracking-wide text-stone-500'>
-                                {procedure.weeklyPaymentFrom
-                                    ? 'Subject to credit approval · Cherry, CareCredit, United Credit'
-                                    : 'Priced per patient · Financing available with approved credit'}
-                            </p>
-                        </dl>
+                    {startingPrice && (
+                        <ProcedureLandingPrice
+                            price={startingPrice}
+                            discountStatement={discountStatement}
+                        />
                     )}
 
                     {procedure.microProof && (
@@ -232,8 +247,7 @@ export function ProcedureLandingHero({
                                     </span>
                                 </h2>
                                 <p className='mt-2 font-serif text-sm text-stone-400 italic'>
-                                    Texted to you in under 24 hours · No
-                                    pressure
+                                    Texted to you · No pressure
                                 </p>
                             </div>
 
@@ -274,23 +288,6 @@ export function ProcedureLandingHero({
                                         </span>
                                     </li>
                                 )}
-                                {patients && (
-                                    <>
-                                        <li
-                                            aria-hidden='true'
-                                            className='h-3 w-px bg-amber-200/20'
-                                        />
-                                        <li className='inline-flex items-center gap-1.5'>
-                                            <BadgeCheck className='h-3 w-3 text-amber-300' />
-                                            <span className='font-serif text-base leading-none text-white tabular-nums'>
-                                                {patients}
-                                            </span>
-                                            <span className='tracking-[0.12em] text-stone-400 uppercase'>
-                                                Patients
-                                            </span>
-                                        </li>
-                                    </>
-                                )}
                                 <li
                                     aria-hidden='true'
                                     className='h-3 w-px bg-amber-200/20'
@@ -298,7 +295,7 @@ export function ProcedureLandingHero({
                                 <li className='inline-flex items-center gap-1.5'>
                                     <ShieldCheck className='h-3 w-3 text-amber-300' />
                                     <span className='tracking-[0.12em] text-stone-300 uppercase'>
-                                        Board-Certified
+                                        One surgeon
                                     </span>
                                 </li>
                                 <li
@@ -308,7 +305,7 @@ export function ProcedureLandingHero({
                                 <li className='inline-flex items-center gap-1.5'>
                                     <Languages className='h-3 w-3 text-amber-300' />
                                     <span className='tracking-[0.12em] text-stone-300 uppercase'>
-                                        Hablamos Español
+                                        Hablamos español
                                     </span>
                                 </li>
                             </ul>
@@ -334,7 +331,7 @@ export function ProcedureLandingHero({
                             <div className='relative aspect-[4/5] w-full overflow-hidden rounded-sm sm:aspect-[16/11]'>
                                 <Image
                                     src={heroImage}
-                                    alt={`${procedure.title} — real patient experience`}
+                                    alt={`${procedure.title} at Alluring Plastic Surgery`}
                                     fill
                                     sizes='(min-width: 1024px) 540px, (min-width: 640px) 70vw, 100vw'
                                     className='object-cover grayscale-[0.08] transition-transform duration-1000 group-hover:scale-[1.03]'
@@ -343,7 +340,7 @@ export function ProcedureLandingHero({
                                 {/* Editorial caption bar */}
                                 <div className='absolute right-0 bottom-0 left-0 flex items-end justify-between gap-3 bg-gradient-to-t from-stone-950/85 via-stone-950/30 to-transparent px-4 py-3 sm:px-6 sm:py-4'>
                                     <figcaption className='font-serif text-[11px] tracking-[0.28em] text-amber-100/90 uppercase'>
-                                        Real patient · Real surgeon
+                                        Alluring Plastic Surgery
                                     </figcaption>
                                     <span
                                         aria-hidden='true'

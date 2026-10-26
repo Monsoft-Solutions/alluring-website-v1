@@ -32,10 +32,12 @@ import {
 import { ContainerLayout } from '@/components/container-layout.component'
 import { SpanishHero } from '@/components/landing/spanish-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import {
@@ -57,12 +59,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/consulta-gratis',
     title: 'Cirugía Plástica Miami | Consulta Gratis | Hablamos Español',
     description:
-        'Cirugía plástica de clase mundial en Miami. Equipo 100% bilingüe. BBL, aumento de senos, liposucción, mommy makeover. Cirujanos certificados. Financiamiento desde $27/semana.',
+        'Cirugía estética en Miami con una sola cirujana, Victoria Karlinsky, MD, FACS. Hablamos español. BBL, aumento de senos, liposucción, mommy makeover. Financiamiento disponible.',
 
     openGraph: {
         title: 'Cirugía Plástica Miami | Consulta Gratis | Hablamos Español',
         description:
-            'Cirugía plástica de clase mundial en Miami. Equipo 100% bilingüe. BBL, aumento de senos, liposucción, mommy makeover. Cirujanos certificados.',
+            'Cirugía estética en Miami con una sola cirujana, Victoria Karlinsky, MD, FACS. Hablamos español. BBL, aumento de senos, liposucción, mommy makeover. Financiamiento disponible.',
         url: `${seoConfig.siteUrl}/consulta-gratis`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -81,7 +83,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: 'Cirugía Plástica Miami | Hablamos Español',
         description:
-            'Cirugía plástica de clase mundial en Miami. Equipo 100% bilingüe. Financiamiento disponible. Consulta gratis.',
+            'Cirugía estética en Miami con una sola cirujana. Hablamos español. Financiamiento disponible. Consulta gratis.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 
@@ -99,8 +101,16 @@ export default async function ConsultaGratisPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        spanishFaqData,
+        'text',
+        'faq /consulta-gratis'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(spanishFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -130,7 +140,7 @@ export default async function ConsultaGratisPage() {
             <WebPageSchema
                 name={`Cirugía Plástica Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/consulta-gratis`}
-                description='Cirugía plástica de clase mundial en Miami con equipo 100% bilingüe. BBL, aumento de senos, liposucción, mommy makeover. Cirujanos certificados con 15+ años de experiencia.'
+                description='Cirugía estética en Miami con una sola cirujana, Victoria Karlinsky, MD, FACS. BBL, aumento de senos, liposucción, mommy makeover. Hablamos español.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -138,7 +148,7 @@ export default async function ConsultaGratisPage() {
             {/* Structured Data - Service Schema for consultation offering */}
             <ServiceSchema
                 name='Consulta Gratis de Cirugía Plástica'
-                description='Consulta gratuita y sin compromiso con cirujanos plásticos certificados. Discuta sus metas estéticas, explore opciones quirúrgicas y no quirúrgicas, y reciba recomendaciones personalizadas.'
+                description='Consulta gratuita y sin compromiso con Victoria Karlinsky, MD, FACS. Discuta sus metas estéticas, explore opciones quirúrgicas y no quirúrgicas, y reciba recomendaciones personalizadas.'
                 url={`${seoConfig.siteUrl}/consulta-gratis`}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
@@ -147,7 +157,8 @@ export default async function ConsultaGratisPage() {
                     type: 'Organization',
                     logo: seoConfig.organization?.logo,
                 }}
-                areaServed={['Miami', 'Florida', 'Estados Unidos']}
+                // US only (claims canon §1, §8): the shared list every page uses.
+                areaServed={[...AREA_SERVED]}
                 availableLanguage={['Español', 'Inglés']}
                 offers={{
                     price: 0,
@@ -166,8 +177,8 @@ export default async function ConsultaGratisPage() {
                 {/* Section 2: Fear Busters - Address objections */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 3: Weekly Payments - Financing options */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 3: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
@@ -183,7 +194,7 @@ export default async function ConsultaGratisPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={spanishFaqCategories}
-                    faqData={spanishFaqData}
+                    faqData={faqData}
                     badge={spanishFaqConfig.badge}
                     title={spanishFaqConfig.title}
                     subtitle={spanishFaqConfig.subtitle}
@@ -211,7 +222,7 @@ export default async function ConsultaGratisPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Tu Transformación Te Espera'
-                    description='Cirugía plástica de clase mundial con un equipo que habla tu idioma y entiende tu cultura. Agenda tu consulta gratuita hoy y da el primer paso hacia la mejor versión de ti.'
+                    description='Una sola cirujana, Victoria Karlinsky, MD, FACS, y un equipo que habla tu idioma. Agenda tu consulta gratuita hoy.'
                     primaryButton={{
                         text: 'Sí, Quiero Mi Consulta Gratis',
                         href: '#hero-form',

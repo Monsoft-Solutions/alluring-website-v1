@@ -6,6 +6,8 @@
  * A consultation form section specifically designed for the BMI calculator page.
  * Uses the shared ConsultationForm component with BMI-specific context and messaging.
  */
+import { KARLINSKY_SHORT_NAME } from '@workspace/shared/claims/surgeon'
+import { TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { motion } from 'framer-motion'
 import { Award, Calculator, Languages, ShieldCheck } from 'lucide-react'
 
@@ -62,12 +64,11 @@ export function BmiConsultationSection({
                             </h2>
 
                             <p className='mx-auto mb-8 max-w-xl text-lg leading-relaxed font-light text-stone-300 lg:mx-0'>
-                                While BMI helps evaluate surgical candidacy, our
-                                board-certified surgeons consider your complete
+                                While BMI helps evaluate surgical candidacy,{' '}
+                                {KARLINSKY_SHORT_NAME} considers your complete
                                 health profile, body composition, and personal
                                 goals. Get honest, personalized answers about
-                                your options — no pressure, just expert
-                                guidance.
+                                your options, with no pressure.
                             </p>
 
                             {/* BMI-Specific Value Props */}
@@ -104,7 +105,7 @@ export function BmiConsultationSection({
                                 <div className='flex items-center gap-2 text-stone-400'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Board-Certified Surgeons
+                                        {TRUST_BADGES.board}
                                     </span>
                                 </div>
                             </div>

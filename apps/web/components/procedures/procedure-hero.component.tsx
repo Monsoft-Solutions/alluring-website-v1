@@ -2,7 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { Button } from '@workspace/ui/components/button'
-import { Award, Star, ShieldCheck } from 'lucide-react'
+import { Award, Star, UserCheck } from 'lucide-react'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
+import { siteConfig } from '@/lib/data/site-config'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -145,15 +147,19 @@ export function ProcedureHero() {
                                 >
                                     <div className='flex items-center gap-2'>
                                         <Award className='text-gold-400 h-5 w-5' />
-                                        <span>Board-Certified</span>
+                                        <span>{TRUST_BADGES.board}</span>
                                     </div>
                                     <div className='flex items-center gap-2'>
                                         <Star className='text-gold-400 h-5 w-5' />
-                                        <span>5-Star Rated</span>
+                                        <span>
+                                            {formatRatingBadge(
+                                                siteConfig.trustStats?.rating
+                                            )}
+                                        </span>
                                     </div>
                                     <div className='flex items-center gap-2'>
-                                        <ShieldCheck className='text-gold-400 h-5 w-5' />
-                                        <span>Accredited Facility</span>
+                                        <UserCheck className='text-gold-400 h-5 w-5' />
+                                        <span>{TRUST_BADGES.surgeon}</span>
                                     </div>
                                 </motion.div>
                             </div>

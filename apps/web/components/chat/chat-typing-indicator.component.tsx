@@ -7,6 +7,7 @@
  */
 'use client'
 
+import { CHAT_AGENT } from '@workspace/shared/claims/identity'
 import { memo } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import { MessageCircle } from 'lucide-react'
@@ -28,7 +29,7 @@ type ChatTypingIndicatorProps = {
  * - Accessible with proper ARIA attributes
  */
 export const ChatTypingIndicator = memo(function ChatTypingIndicator({
-    agentName = 'Assistant',
+    agentName = CHAT_AGENT.name,
     className,
 }: ChatTypingIndicatorProps) {
     return (

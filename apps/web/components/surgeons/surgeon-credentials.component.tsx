@@ -7,6 +7,12 @@ import { Award, GraduationCap, Check } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
+import {
+    FLORIDA_UNAPPROVED_BOARD_STATEMENT,
+    needsFloridaStatement,
+    withFloridaStatement,
+} from './florida-board-statement'
+
 interface SurgeonCredentialsProps {
     surgeon: Surgeon
 }
@@ -64,7 +70,7 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
                             <Award className='h-8 w-8' />
                         </div>
                         <h3 className='mb-8 font-serif text-3xl text-white'>
-                            Board Certifications
+                            Credentials
                         </h3>
                         <ul className='space-y-6'>
                             {surgeon.certifications.map((cert, index) => (
@@ -78,7 +84,7 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
                                 >
                                     <Check className='text-gold-500 mt-1 h-5 w-5 shrink-0' />
                                     <span className='text-lg leading-relaxed font-light text-stone-300'>
-                                        {cert}
+                                        {withFloridaStatement(cert)}
                                     </span>
                                 </motion.li>
                             ))}
@@ -107,13 +113,22 @@ export const SurgeonCredentials = ({ surgeon }: SurgeonCredentialsProps) => {
                                             >
                                                 <Image
                                                     src={badge.src}
-                                                    alt={badge.alt}
+                                                    alt={withFloridaStatement(
+                                                        badge.alt
+                                                    )}
                                                     width={72}
                                                     height={72}
                                                     className='h-14 w-auto object-contain'
                                                 />
                                             </motion.div>
                                         )
+                                    )}
+                                    {surgeon.certificationBadges.some((badge) =>
+                                        needsFloridaStatement(badge.alt)
+                                    ) && (
+                                        <p className='w-full text-lg leading-relaxed font-light text-stone-300'>
+                                            {FLORIDA_UNAPPROVED_BOARD_STATEMENT}
+                                        </p>
                                     )}
                                 </div>
                             )}

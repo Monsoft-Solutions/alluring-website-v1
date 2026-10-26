@@ -26,12 +26,12 @@ export const WhyUs = () => {
         {
             icon: <HeartHandshake className='h-6 w-6' />,
             title: 'Transparent Plans',
-            desc: 'Concierge-level care minus the surprise fees. We walk you through every cost upfront.',
+            desc: 'We walk you through every cost at your consultation, before you book.',
         },
         {
             icon: <CalendarCheck className='h-6 w-6' />,
-            title: 'Flexible Scheduling',
-            desc: 'We work around your lifestyle, school pickups, and work commitments.',
+            title: 'Consultations That Fit Your Week',
+            desc: 'In person in Miami, Monday to Saturday, or by video.',
         },
     ]
 
@@ -60,10 +60,8 @@ export const WhyUs = () => {
                             Why Women Fly to Miami for Alluring
                         </h2>
                         <p className='mb-8 text-xl leading-relaxed font-light text-stone-600'>
-                            Locals trust us, and patients fly in from across the
-                            United States. We blend a luxury feel with
-                            hospital-grade safety standards to create an
-                            experience that puts you at ease.
+                            Patients come from across South Florida, and others
+                            fly in from other US states.
                         </p>
                         <div className='bg-gold-400 h-1 w-20'></div>
                     </div>

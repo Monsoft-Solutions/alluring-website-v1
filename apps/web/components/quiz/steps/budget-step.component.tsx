@@ -1,7 +1,8 @@
 /**
  * Budget Step Component
  *
- * Step for selecting monthly payment comfort level.
+ * Step for choosing how big a change the visitor has in mind. Financing is
+ * named, with no payment figure (claims canon D6).
  *
  * @module components/quiz/steps/budget-step
  */
@@ -25,7 +26,7 @@ export interface BudgetStepProps {
 }
 
 /**
- * BudgetStep - Monthly payment selection
+ * BudgetStep - Scope of change selection
  */
 export function BudgetStep({ value, onChange, className }: BudgetStepProps) {
     const content = QUIZ_QUESTIONS.budget
@@ -75,7 +76,7 @@ export function BudgetStep({ value, onChange, className }: BudgetStepProps) {
                 <div className='flex items-center justify-center gap-2 text-center'>
                     <CreditCard className='text-gold-500 h-5 w-5' />
                     <p className='text-sm font-medium text-stone-700'>
-                        Flexible Financing Available
+                        Financing available for qualified applicants
                     </p>
                 </div>
                 <div className='mt-4 flex flex-wrap items-center justify-center gap-4'>
@@ -90,46 +91,9 @@ export function BudgetStep({ value, onChange, className }: BudgetStepProps) {
                 </div>
                 <div className='mt-4 flex items-center justify-center gap-2 text-xs text-stone-500'>
                     <Shield className='h-4 w-4' />
-                    <span>No impact on credit to check eligibility</span>
+                    <span>Approval and terms are set by the lender</span>
                 </div>
             </motion.div>
-
-            {/* Encouragement message (shown when budget selected) */}
-            {value && (
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className='bg-gold-50 flex items-center justify-center gap-3 rounded-lg p-4'
-                >
-                    <span className='text-2xl'>✨</span>
-                    <p className='text-sm text-stone-600'>
-                        {value === 'low' && (
-                            <span className='font-medium text-stone-700'>
-                                Great options are available at every budget
-                                level
-                            </span>
-                        )}
-                        {value === 'medium' && (
-                            <span className='font-medium text-stone-700'>
-                                Many of our most popular procedures fit this
-                                range
-                            </span>
-                        )}
-                        {value === 'high' && (
-                            <span className='font-medium text-stone-700'>
-                                You&apos;ll have access to a wide range of
-                                procedures
-                            </span>
-                        )}
-                        {value === 'premium' && (
-                            <span className='font-medium text-stone-700'>
-                                You&apos;re ready for comprehensive
-                                transformation
-                            </span>
-                        )}
-                    </p>
-                </motion.div>
-            )}
         </motion.div>
     )
 }

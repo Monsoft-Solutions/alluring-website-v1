@@ -6,7 +6,8 @@
  */
 
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
-import { getFinancingPartnersString } from '@/lib/data/site-config'
+import { HOURS_LINE } from '@workspace/shared/claims/contact'
+import { FINANCING_SENTENCE_LONG } from '@workspace/shared/claims/financing'
 import { KARLINSKY_SHORT_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
@@ -30,39 +31,39 @@ export const faqDataContact: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long does a consultation take?',
-            answer: 'Plan for 45-60 minutes. We never rush our consultations because we believe understanding your vision is the foundation of exceptional results. Some patients finish sooner, but we always allocate enough time for a thorough discussion.',
+            answer: 'Plan for 45-60 minutes. We never rush a consultation, because understanding your goals comes first. Some patients finish sooner, but we always allocate enough time for a thorough discussion.',
         },
         {
             question: 'Do you offer virtual consultations?',
-            answer: "Yes! We offer secure video consultations for patients who can't visit our Miami office in person. Virtual consultations are perfect for initial discussions, procedure education, and treatment planning. Many out-of-town patients complete their virtual consult first, then fly in for their surgery.",
+            answer: "Yes. We offer secure video consultations for patients who can't visit our Miami office in person. Virtual consultations work well for initial discussions, procedure education, and treatment planning. Many out-of-town patients complete their virtual consult first, then fly in for their surgery.",
         },
     ],
     scheduling: [
         {
             question: 'How far in advance should I book my consultation?',
-            answer: 'We recommend booking 2-3 weeks in advance for in-person consultations, though we can sometimes accommodate urgent requests. Virtual consultations often have more immediate availability. For surgery scheduling, popular months (November-February) book 4-8 weeks out.',
+            answer: "Book whenever you're ready, in person in Miami or by video. A patient coordinator gives you the open dates for your consultation and, later, your surgery.",
         },
         {
             question: 'Can I schedule surgery during my consultation visit?',
-            answer: 'Absolutely. Many patients, especially those traveling to Miami, prefer to schedule their surgery date during their consultation. Our surgical coordinator will help you select a date that works with your schedule, recovery needs, and travel plans.',
+            answer: 'Yes. Many patients, especially those traveling to Miami, prefer to schedule their surgery date during their consultation. Our surgical coordinator will help you select a date that works with your schedule, recovery needs, and travel plans.',
         },
         {
             question: 'What if I need to reschedule?',
-            answer: "Life happens—we understand. Please give us at least 48 hours' notice for consultations and as much advance notice as possible for surgery dates. Our patient concierge will work with you to find a new time that fits your schedule.",
+            answer: 'Life happens—we understand. Please give us as much notice as you can. A patient coordinator will work with you to find a new time that fits your schedule.',
         },
         {
             question: 'Do you have weekend or evening appointments?',
-            answer: 'We primarily operate Monday through Friday, with Saturday consultations available by special arrangement. Surgery is typically scheduled Tuesday through Thursday to ensure optimal staffing and post-operative care availability.',
+            answer: `Our hours: ${HOURS_LINE}`,
         },
     ],
     financing: [
         {
             question: 'What financing options do you offer?',
-            answer: `We partner with ${getFinancingPartnersString()} to offer flexible payment plans. Many patients qualify for 0% interest promotional periods. Our financial coordinator can help you explore options and find a plan that fits your budget.`,
+            answer: `${FINANCING_SENTENCE_LONG} Our financial coordinator can go through the options with you.`,
         },
         {
             question: 'When is payment due?',
-            answer: "A deposit is required to secure your surgery date, with the remaining balance due before your procedure. We accept major credit cards, financing plans, wire transfers, and cashier's checks. Payment plans through our financing partners allow you to spread costs over time.",
+            answer: `A deposit is required to secure your surgery date, with the remaining balance due before your procedure. ${FINANCING_SENTENCE_LONG}`,
         },
         {
             question: 'Does insurance cover any procedures?',
@@ -70,7 +71,7 @@ export const faqDataContact: Record<string, FaqItem[]> = {
         },
         {
             question: 'What does the quoted price include?',
-            answer: 'Our quotes are comprehensive and include surgeon fees, anesthesia, facility fees, post-operative garments, and standard follow-up appointments. We believe in transparent pricing with no hidden costs or surprise fees.',
+            answer: `Your price is set for you after an exam, estimates may change, and ${KARLINSKY_SHORT_NAME} confirms your price, in writing, at consultation. She goes through what it covers with you.`,
         },
     ],
     preparation: [

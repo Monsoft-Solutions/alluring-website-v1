@@ -75,3 +75,5 @@ export {
     REFRESH_CHANGE_SUMMARY_SYSTEM_PROMPT,
     getRefreshChangeSummaryPrompt,
 } from './refresh-change-summary.prompt'
+
+export { CLAIM_TOKEN_RULE } from './claim-tokens.prompt'

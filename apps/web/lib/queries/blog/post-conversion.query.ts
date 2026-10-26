@@ -16,6 +16,7 @@ import 'server-only'
 import { getPostProcedure } from '@/lib/blog/post-procedure.util'
 import { getReaderStage } from '@/lib/blog/reader-stage.util'
 import { getGalleryMediaByProcedure } from '@/lib/queries/gallery/procedure-galleries.query'
+import { getPricing } from '@/lib/queries/pricing.query'
 import { getActivePromotions } from '@/lib/queries/promotion.query'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 
@@ -31,7 +32,7 @@ const GALLERY_POOL = 24
  * @param title - The post's title, which the procedure and stage are read from
  */
 export async function getPostConversionData(title: string) {
-    const procedure = getPostProcedure(title)
+    const procedure = getPostProcedure(title, await getPricing())
     const stage = getReaderStage(title)
 
     const [promotions, gallery, reviews] = await Promise.all([

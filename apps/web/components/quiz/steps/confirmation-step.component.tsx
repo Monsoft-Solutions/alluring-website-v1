@@ -21,6 +21,11 @@ import {
     Sparkles,
 } from 'lucide-react'
 import Link from 'next/link'
+import {
+    KARLINSKY_ABS_CERTIFIED_YEAR,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
+import { RATING_FALLBACK } from '@workspace/shared/claims/trust'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
 import type { ProcedureId, ProcedureRecommendation } from '../lib/quiz-types'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
@@ -59,10 +64,9 @@ export function ConfirmationStep({
 
     const benefits = [
         'Complimentary, no-obligation consultation',
-        'Meet with our double board-certified surgeon',
+        `Meet your surgeon, ${KARLINSKY_NAME}`,
         'Get personalized pricing and financing options',
         'See before & after photos of similar patients',
-        'Tour our state-of-the-art facility',
     ]
 
     return (
@@ -265,7 +269,7 @@ export function ConfirmationStep({
                         )}
                     >
                         <Phone className='h-4 w-4' />
-                        {siteConfig.contact.phone}
+                        {siteConfig.contact.phoneDisplay}
                     </a>
                 </div>
             </motion.div>
@@ -277,25 +281,30 @@ export function ConfirmationStep({
                 transition={{ delay: 1.3 }}
                 className='flex flex-wrap items-center justify-center gap-6 pt-4'
             >
+                {/* Verified facts only: the patient count and years it
+                    showed are retired (claims canon §4, #354). */}
                 <div className='text-center'>
-                    <p className='text-2xl font-bold text-stone-800'>
-                        {siteConfig.trustStats?.patients ?? '5,000+'}
+                    <p className='text-2xl font-bold text-stone-800'>One</p>
+                    <p className='text-xs text-stone-500'>
+                        Surgeon for every procedure
                     </p>
-                    <p className='text-xs text-stone-500'>Happy Patients</p>
                 </div>
                 <div className='h-8 w-px bg-stone-200' />
                 <div className='text-center'>
                     <p className='text-2xl font-bold text-stone-800'>
-                        {siteConfig.trustStats?.years ?? '15+'}
+                        {KARLINSKY_ABS_CERTIFIED_YEAR}
                     </p>
-                    <p className='text-xs text-stone-500'>Years Experience</p>
+                    <p className='text-xs text-stone-500'>
+                        Board certified in general surgery by the American Board
+                        of Surgery since
+                    </p>
                 </div>
                 <div className='h-8 w-px bg-stone-200' />
                 <div className='text-center'>
                     <p className='text-2xl font-bold text-stone-800'>
-                        {siteConfig.trustStats?.rating ?? '4.7'}
+                        {siteConfig.trustStats?.rating ?? RATING_FALLBACK}
                     </p>
-                    <p className='text-xs text-stone-500'>Star Rating</p>
+                    <p className='text-xs text-stone-500'>Google rating</p>
                 </div>
             </motion.div>
 

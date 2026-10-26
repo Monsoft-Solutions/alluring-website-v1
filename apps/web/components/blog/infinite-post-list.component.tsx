@@ -44,7 +44,7 @@ export function InfinitePostList({
     tagSlug,
     badge = 'Knowledge Hub',
     title = 'All Articles',
-    description = 'Explore our collection of expert articles covering procedures, recovery, and everything you need to know about your transformation journey.',
+    description = 'Articles on procedures, prices and recovery, written to help you prepare for your consultation.',
     showHeader = true,
 }: InfinitePostListProps) {
     const { posts, isLoading, hasMore, observerRef } = useInfiniteBlogPosts({
@@ -69,7 +69,7 @@ export function InfinitePostList({
                         </h2>
                         <p className='max-w-md text-stone-600'>
                             We&apos;re working on new content. Check back soon
-                            for expert insights and guides.
+                            for new articles and guides.
                         </p>
                     </div>
                 </ContentWrapper>

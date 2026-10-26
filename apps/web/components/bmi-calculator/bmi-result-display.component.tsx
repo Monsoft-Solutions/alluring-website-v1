@@ -139,7 +139,8 @@ export function BmiResultDisplay({ bmi, className }: BmiResultDisplayProps) {
                         Surgery Candidacy
                     </h4>
                     <p className='text-sm leading-relaxed font-medium text-stone-700'>
-                        {category.surgeryRecommendation}
+                        {category.surgeryRecommendation} Your surgeon decides at
+                        consultation.
                     </p>
                 </div>
 

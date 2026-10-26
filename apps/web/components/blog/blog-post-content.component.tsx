@@ -43,8 +43,11 @@ import { BlogPostsSection } from '@/components/shared/blog-posts-section.compone
 import { LastUpdated } from '@/components/shared/last-updated.component'
 import { QuizCTA } from '@/components/shared/quiz-cta.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import type { AdjacentPosts } from '@/lib/queries/blog/adjacent-posts.query'
 import type { InlineImage } from '@/lib/queries/blog/post-images.query'
+import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { seoConfig } from '@/lib/seo-config'
 import {
     getBlogPostUrl,
@@ -393,6 +396,13 @@ export function BlogPostContent({
                                 </div>
                             )}
 
+                            {/* Fla. Stat. 456.062: once, after a body whose
+                                claim tokens printed a discounted price. */}
+                            <DiscountStatement
+                                statement={post.discountStatement}
+                                className='mt-10'
+                            />
+
                             {/* Breadcrumb trail: Home > Blog > this post */}
                             <BreadcrumbSchema items={breadcrumbItems} />
 
@@ -423,7 +433,7 @@ export function BlogPostContent({
                                               // Link to author profile for E-E-A-T
                                               url: authorProfileUrl,
                                               // Job title adds authority signal
-                                              jobTitle: 'Medical Content Team',
+                                              jobTitle: 'Editorial Team',
                                           }
                                         : (seoConfig.organization?.name ??
                                           seoConfig.siteName)
@@ -590,12 +600,11 @@ export function BlogPostContent({
                                             </svg>
                                         </div>
                                         <h3 className='mb-2 font-serif text-xl font-medium text-stone-900'>
-                                            Ready to Transform?
+                                            Ready for a plan?
                                         </h3>
                                         <p className='mb-5 text-sm leading-relaxed text-stone-600'>
-                                            Schedule your complimentary
-                                            consultation with our
-                                            board-certified surgeons.
+                                            Schedule your consultation with{' '}
+                                            {KARLINSKY_NAME}.
                                         </p>
                                         <Link
                                             href='/contact-us'
@@ -617,22 +626,6 @@ export function BlogPostContent({
                                             </svg>
                                         </Link>
                                     </div>
-                                    <div className='border-gold-500/20 bg-gold-500/5 border-t px-6 py-4'>
-                                        <p className='flex items-center gap-2 text-xs text-stone-600'>
-                                            <svg
-                                                className='text-gold-500 h-4 w-4'
-                                                fill='currentColor'
-                                                viewBox='0 0 20 20'
-                                            >
-                                                <path
-                                                    fillRule='evenodd'
-                                                    d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
-                                                    clipRule='evenodd'
-                                                />
-                                            </svg>
-                                            5,000+ Happy Patients
-                                        </p>
-                                    </div>
                                 </div>
 
                                 {/* Phone CTA */}
@@ -641,7 +634,7 @@ export function BlogPostContent({
                                         Prefer to talk?
                                     </p>
                                     <Link
-                                        href='tel:+17863058649'
+                                        href={getPhoneLink()}
                                         className='hover:text-gold-600 flex items-center gap-3 text-lg font-bold text-stone-900 transition-colors'
                                     >
                                         <span className='flex h-10 w-10 items-center justify-center rounded-full bg-stone-100'>
@@ -659,7 +652,7 @@ export function BlogPostContent({
                                                 />
                                             </svg>
                                         </span>
-                                        (786) 305-8649
+                                        {siteConfig.contact.phoneDisplay}
                                     </Link>
                                 </div>
                             </div>

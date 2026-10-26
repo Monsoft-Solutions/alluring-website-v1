@@ -19,7 +19,7 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/thank-you/consultation',
     title: 'Request Received',
     description:
-        'We received your consultation request and will text you within 24 hours to book your free consultation.',
+        'We received your consultation request. A patient coordinator will text you to book your free consultation.',
     robots: {
         index: false,
         follow: false,

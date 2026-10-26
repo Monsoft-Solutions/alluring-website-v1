@@ -14,13 +14,13 @@ export function AtelierCloseForm() {
         <div className='rounded-[2rem] bg-[#2A1D17] p-7 shadow-xl md:p-10'>
             <ConsultationForm
                 title='Ask your question'
-                subtitle='Free · No obligation · Hablamos Español'
+                subtitle='Free · No obligation · Hablamos español'
                 source={CONTACT_SOURCES.LEAD_FORM}
                 analyticsFormName='home_atelier_close_form'
                 enableAnalytics
                 compact
                 submitText='Send my question'
-                footerNote='We call within 24 hours. Nothing is booked and no deposit is taken.'
+                footerNote='A patient coordinator texts you back. Nothing is booked and no deposit is taken.'
                 redirectOnSuccess='/thank-you'
             />
         </div>

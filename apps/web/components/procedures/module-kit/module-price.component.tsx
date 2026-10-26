@@ -3,7 +3,9 @@ import type { ReactNode } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@workspace/ui/lib/utils'
 
-import { formatProcedureFigure } from '@/lib/data/procedures/facts/procedure-facts'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import { findLinePrice } from '@/lib/claims/procedure-prices.util'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 import type {
     ProcedurePriceOption,
     ProcedurePricing,
@@ -17,21 +19,15 @@ import {
 } from './module-ui.constant'
 
 /**
- * An option's price as the table prints it: "$3,000–$4,500" when it has a
- * real range, else "From $3,000", since every price is a starting point
- * the surgeon confirms after an exam. Formatted like the facts file, so the
- * copy sweep matches it to the declared figure.
- */
-function optionPrice({ startingAt, upTo }: ProcedurePriceOption): string {
-    return upTo
-        ? formatProcedureFigure({ min: startingAt, max: upTo, unit: 'usd' })
-        : `From ${formatProcedureFigure({ value: startingAt, unit: 'usd' })}`
-}
-
-/**
  * The procedure's prices by variant, from `procedure.pricing.options`: one
- * row per option, its name and who it suits, then its price. The same
- * numbers give the graph one `Offer` per option, so the two can't disagree.
+ * row per option, its name and who it suits, then its price. Each option
+ * names a price-sheet line, and the price is that line's from the pricing
+ * resolver (#354), struck through while a discount is on; the graph gives
+ * each option an `Offer` from the same line, so the two can't disagree. An
+ * option whose line the resolver can't price is left out.
+ *
+ * Every price is a starting point the surgeon confirms after an exam, so a
+ * row reads "From $3,000".
  *
  * A real table with row headers, the shape screen readers and AI engines
  * both read as option → price. It keeps two columns at every width, the
@@ -39,7 +35,8 @@ function optionPrice({ startingAt, upTo }: ProcedurePriceOption): string {
  * button per row: the section's "Get your exact price" follows it.
  */
 export function ModulePriceTable({
-    options,
+    options: allOptions,
+    prices,
     heading = 'Prices by type',
     id = 'price-options',
     optionLabel = 'Option',
@@ -47,6 +44,8 @@ export function ModulePriceTable({
     note,
 }: {
     options: ProcedurePriceOption[]
+    /** The procedure's resolved prices (`getProcedurePrices`). */
+    prices: ProcedurePrices
     /** The H3 over the table, which also names it. */
     heading?: string
     /** Anchor for the heading (`{id}-heading`); unique on the page. */
@@ -57,6 +56,10 @@ export function ModulePriceTable({
     /** A line under the table, e.g. that the surgeon confirms the price. */
     note?: ReactNode
 }) {
+    const options = allOptions.flatMap((option) => {
+        const price = findLinePrice(prices, option.line)
+        return price ? [{ ...option, price }] : []
+    })
     if (options.length === 0) return null
 
     const headingId = `${id}-heading`
@@ -106,7 +109,7 @@ export function ModulePriceTable({
                                 )}
                             </th>
                             <td className='py-3.5 pl-4 text-right align-top text-[1.0625rem] leading-[1.45] font-bold whitespace-nowrap text-stone-900'>
-                                {optionPrice(option)}
+                                From <PriceTag price={option.price} />
                             </td>
                         </tr>
                     ))}

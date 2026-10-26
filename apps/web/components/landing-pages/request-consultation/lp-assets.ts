@@ -3,7 +3,7 @@
  *
  * The before/after pairs come from the same Vercel Blob store the rest of the
  * site uses, so they are swappable without a deploy. The logo,
- * portrait and certification badges are already in `public/`, so they are
+ * portrait and credential badges are already in `public/`, so they are
  * referenced locally rather than through the live site's optimizer the way the
  * standalone HTML prototype had to.
  */
@@ -29,30 +29,25 @@ export interface LpBadge {
     readonly height: number
 }
 
+/**
+ * The verified credentials only (claims canon §2): the American Board of
+ * Surgery and the American College of Surgeons. The ABCS and ABFCS badges
+ * need the Florida statement at the same type size, which a logo strip cannot
+ * carry, and the AACS "Fellow" and ABCS "Fellowship Director" badges are
+ * unverified, so none of them is shown.
+ */
 export const LP_BADGES: readonly LpBadge[] = [
     {
-        src: '/images/certifications/abcs-fellowship-director.png',
-        alt: 'American Board of Cosmetic Surgery, Fellowship Director',
-        width: 657,
-        height: 581,
-    },
-    {
         src: '/images/certifications/abs-board-certified.png',
-        alt: 'American Board of Surgery, Board Certified',
+        alt: 'Board certified by the American Board of Surgery',
         width: 1713,
         height: 424,
     },
     {
-        src: '/images/certifications/abfcs-board-certified.png',
-        alt: 'American Board of Facial Cosmetic Surgery, Board Certified',
-        width: 748,
-        height: 748,
-    },
-    {
-        src: '/images/certifications/aacs-fellow.png',
-        alt: 'American Academy of Cosmetic Surgery, Fellow',
-        width: 401,
-        height: 385,
+        src: '/images/certifications/facs-fellow.svg',
+        alt: 'Fellow, American College of Surgeons',
+        width: 237,
+        height: 74,
     },
 ]
 

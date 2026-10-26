@@ -40,7 +40,7 @@ export function threadCopy(
     stage: ReaderStage
 ): { eyebrow: string; heading: SplitHeading; lead: string } {
     const lead =
-        'Many of our patients fly in from other states. We confirm your surgery and follow-up dates in writing, and tell you how many nights to stay in Miami.'
+        "Patients fly in from other US states. If you're flying in, we confirm your surgery, pre-op and follow-up dates in writing and tell you how many nights to stay in Miami before you're cleared to fly home."
 
     if (!procedure) {
         return {
@@ -55,7 +55,7 @@ export function threadCopy(
         ? {
               eyebrow: `Planning your ${short}?`,
               heading: {
-                  lead: 'Your price and recovery plan, ',
+                  lead: 'Your price and your dates, ',
                   em: 'in writing.',
               },
               lead,
@@ -88,8 +88,9 @@ export function stickyLabel(procedure: PostProcedure | null): {
 export const STRIP_COPY = {
     listLabel: (procedure: PostProcedure) =>
         `${capitalize(procedure.shortName)} at Alluring in brief`,
+    /** Followed by the price itself (`PriceTag`). */
     price: (price: NonNullable<PostProcedure['price']>) =>
-        `${price.label} starting at ${price.startingAt}`,
+        `${price.label} starting at`,
     recoveryLabel: 'Typical recovery: ',
     rating: (rating: number, count: number) =>
         `${rating.toFixed(1)} · ${count} Google reviews`,
@@ -151,7 +152,7 @@ export function closeCopy(procedure: PostProcedure | null) {
     return {
         eyebrow: 'Start here',
         heading: { lead: `${first} `, em: rest.join(' ') } as SplitHeading,
-        body: 'Your price, surgery date and follow-up plan, in writing, before you book a flight.',
+        body: 'Your surgery and follow-up dates in writing before you book a flight, and your price confirmed at consultation.',
         primary: priceCta(procedure),
     }
 }

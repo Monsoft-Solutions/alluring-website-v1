@@ -57,8 +57,8 @@ export default function NotFoundPage() {
                     <div className='animate-fade-in-up mb-12 max-w-2xl text-lg leading-relaxed text-stone-300 [animation-delay:300ms] md:text-xl'>
                         We just gave our website a major makeover (think of it
                         as a digital facelift!), and some pages are still
-                        finding their new home. Unlike our surgery results, this
-                        page seems to have disappeared completely.
+                        finding their new home. This page seems to have
+                        disappeared completely.
                     </div>
 
                     {/* CTA Text */}

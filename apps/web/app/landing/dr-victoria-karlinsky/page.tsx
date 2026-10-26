@@ -15,10 +15,11 @@
  */
 import {
     FAQSchema,
-    PhysicianSchema,
+    JsonLdGraph,
     ServiceSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { DrKarlinskyHero } from '@/components/dr-karlinsky-landing/dr-karlinsky-hero.component'
@@ -30,14 +31,15 @@ import { CTASection } from '@/components/shared/cta-section.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import {
     drKarlinskyFaqCategories,
     drKarlinskyFaqConfig,
     drKarlinskyFaqData,
 } from '@/lib/data/faq/dr-karlinsky-faq.data'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { siteConfig } from '@/lib/data/site-config'
-import { surgeons } from '@/lib/data/surgeons/surgeons-data'
+import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -48,14 +50,16 @@ const PAGE_URL = `${seoConfig.siteUrl}${PAGE_PATH}`
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: PAGE_PATH,
-    title: 'Book With Dr. Karlinsky · Triple Board-Certified Miami Surgeon',
+    // No surgeon name or board count in a title, no payment figure and no
+    // response-time promise (claims canon §2, §6, §9; #354).
+    title: 'Book a Consultation · One Miami Cosmetic Surgeon',
     description:
-        "Free consult with Dr. Victoria Karlinsky — triple board-certified Miami cosmetic surgeon. BBL, mommy makeover, tummy tuck, breast & facial surgery. Financing from $27/week. We'll text you within 24 hours.",
+        'Free consult with Victoria Karlinsky, MD, FACS, a cosmetic surgeon in Miami. BBL, mommy makeover, tummy tuck, breast & facial surgery. Financing available.',
 
     openGraph: {
-        title: 'Book With Dr. Karlinsky · Triple Board-Certified Miami Surgeon',
+        title: 'Book a Consultation · One Miami Cosmetic Surgeon',
         description:
-            "Free consult with Dr. Victoria Karlinsky in Miami. Triple board-certified. Financing available. We'll text you within 24 hours.",
+            'Free consult with Victoria Karlinsky, MD, FACS, in Miami. Financing available.',
         url: PAGE_URL,
         type: 'profile',
         siteName: seoConfig.siteName,
@@ -64,16 +68,16 @@ export const metadata = toNextMetadata(seoConfig, {
                 url: `${PAGE_PATH}/opengraph-image`,
                 width: 1200,
                 height: 630,
-                alt: `Dr. Victoria Karlinsky - ${siteConfig.business.name} Miami`,
+                alt: `Victoria Karlinsky, MD, FACS - ${siteConfig.business.name} Miami`,
             },
         ],
     },
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Book With Dr. Karlinsky · Miami Cosmetic Surgeon',
+        title: 'Book a Consultation · Miami Cosmetic Surgeon',
         description:
-            'Triple board-certified. Free consult. Booking this month — virtual or in-person.',
+            'Free consult with Victoria Karlinsky, MD, FACS, virtual or in person.',
         images: [`${PAGE_PATH}/opengraph-image`],
     },
 
@@ -83,40 +87,37 @@ export const metadata = toNextMetadata(seoConfig, {
 })
 
 export default async function DrVictoriaKarlinskyLandingPage() {
-    const surgeon = surgeons[0]
-    const galleryImages = await getSpecialsFeaturedGalleryImages()
+    const [galleryImages, faqData] = await Promise.all([
+        getSpecialsFeaturedGalleryImages(),
+        // Claim tokens in the answers (prices, financing; #354), resolved
+        // once for both the visible list and its schema.
+        resolveClaimsIn(
+            drKarlinskyFaqData,
+            'text',
+            'faq /landing/dr-victoria-karlinsky'
+        ),
+    ])
 
-    const allFaqItems = Object.values(drKarlinskyFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
     }))
 
-    const sameAsLinks = surgeon
-        ? [
-              ...Object.values(surgeon.social ?? {}).filter((v): v is string =>
-                  Boolean(v)
-              ),
-              ...Object.values(surgeon.externalProfiles ?? {}).filter(
-                  (v): v is string => Boolean(v)
-              ),
-          ]
-        : []
-
     return (
         <>
             {/* Page schema */}
             <WebPageSchema
-                name={`Dr. Victoria Karlinsky - ${siteConfig.business.name}`}
+                name={`Victoria Karlinsky, MD, FACS - ${siteConfig.business.name}`}
                 url={PAGE_URL}
-                description='Book a complimentary consultation with Dr. Victoria Karlinsky, triple board-certified cosmetic surgeon at Alluring Plastic Surgery Miami.'
+                description='Book a complimentary consultation with Victoria Karlinsky, MD, FACS, a cosmetic surgeon at Alluring Plastic Surgery in Miami.'
             />
 
             <FAQSchema items={faqSchemaItems} />
 
             <ServiceSchema
-                name='Cosmetic Surgery Consultation with Dr. Victoria Karlinsky'
-                description='Complimentary, no-obligation consultation with triple board-certified cosmetic surgeon Dr. Victoria Karlinsky. Discuss BBL, mommy makeover, tummy tuck, breast surgery, facelift, and more.'
+                name='Cosmetic Surgery Consultation with Victoria Karlinsky, MD, FACS'
+                description='Complimentary, no-obligation consultation with Victoria Karlinsky, MD, FACS, a Miami cosmetic surgeon board certified in general surgery by the American Board of Surgery. Discuss BBL, mommy makeover, tummy tuck, breast surgery, facelift, and more.'
                 url={PAGE_URL}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
@@ -126,7 +127,8 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     type: 'MedicalBusiness',
                     logo: seoConfig.organization?.logo,
                 }}
-                areaServed={['Miami', 'Florida', 'United States']}
+                // US only (claims canon §1, §8): the shared list every page uses.
+                areaServed={[...AREA_SERVED]}
                 availableLanguage={['English', 'Spanish']}
                 offers={{
                     price: 0,
@@ -137,46 +139,11 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                 image={`${seoConfig.siteUrl}/og-image.jpg`}
             />
 
-            {/* Physician schema (E-E-A-T) */}
-            {surgeon && (
-                <PhysicianSchema
-                    id={`${seoConfig.siteUrl}/#physician-${surgeon.slug}`}
-                    name={surgeon.name}
-                    url={PAGE_URL}
-                    image={
-                        surgeon.images.featured.startsWith('http')
-                            ? surgeon.images.featured
-                            : `${seoConfig.siteUrl}${surgeon.images.featured}`
-                    }
-                    description={surgeon.fullBio}
-                    jobTitle={surgeon.title}
-                    medicalSpecialty={surgeon.specialties}
-                    award={surgeon.certifications}
-                    alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
-                    worksFor={{
-                        '@id': `${seoConfig.siteUrl}/#organization`,
-                        name: siteConfig.business.name,
-                        url: seoConfig.siteUrl,
-                        address: {
-                            streetAddress: siteConfig.contact.address,
-                            addressLocality: siteConfig.contact.city,
-                            addressRegion: siteConfig.contact.state,
-                            postalCode: siteConfig.contact.postalCode,
-                            addressCountry: siteConfig.contact.country,
-                        },
-                    }}
-                    address={{
-                        streetAddress: siteConfig.contact.address,
-                        addressLocality: siteConfig.contact.city,
-                        addressRegion: siteConfig.contact.state,
-                        postalCode: siteConfig.contact.postalCode,
-                        addressCountry: siteConfig.contact.country,
-                    }}
-                    telephone={siteConfig.contact.phone}
-                    sameAs={sameAsLinks}
-                    knowsAbout={surgeon.specialties}
-                />
-            )}
+            {/* The surgeon, from the verified-credentials constant (claims
+                canon §2, #354): the Person node the home and procedure pages
+                publish. No award list (it carried the cosmetic boards, which
+                need the Florida statement), no education (D9), no specialty. */}
+            <JsonLdGraph nodes={[karlinskyPersonNode(seoConfig.siteUrl)]} />
 
             {/* Stripped chrome — no nav exits, just logo + phone + book CTA */}
             <DrKarlinskyMinimalHeader formAnchor={HERO_FORM_ANCHOR} />
@@ -189,8 +156,8 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
                 <GoogleReviews
-                    title='Patients on Dr. Karlinsky'
-                    subtitle='Verified Google reviews'
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from our patients on Google'
                     limit={3}
                     showGoogleLink={false}
                     showViewAllButton={false}
@@ -205,7 +172,7 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={drKarlinskyFaqCategories}
-                    faqData={drKarlinskyFaqData}
+                    faqData={faqData}
                     badge={drKarlinskyFaqConfig.badge}
                     title={drKarlinskyFaqConfig.title}
                     subtitle={drKarlinskyFaqConfig.subtitle}
@@ -215,7 +182,10 @@ export default async function DrVictoriaKarlinskyLandingPage() {
                     includeSchema={false}
                 />
 
-                <WeeklyPayments id='financing' formAnchor={HERO_FORM_ANCHOR} />
+                <FinancingSection
+                    id='financing'
+                    formAnchor={HERO_FORM_ANCHOR}
+                />
 
                 <CTASection
                     id='final-cta'

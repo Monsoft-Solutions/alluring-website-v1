@@ -57,6 +57,16 @@ report. Never invent the answer.
   lipo360.com, a clinic blog or a competitor.
 - **No invented practice facts.** If the owner hasn't confirmed a protocol,
   a price or a claim, write around it and list it under "Open".
+- **The claims canon governs every claim** (`docs/claims/canon.md`; its
+  "Decisions of 2026-10-25" block overrides the rest; the blog subset is
+  [compliance](../skills/blog-post/reference/compliance.md)). A claim it
+  doesn't verify is removed, never swapped for another unverified one.
+- **No Alluring price is typed.** Write claim tokens (`[[price:bbl]]`,
+  `[[price:tummy-tuck:mini]]`, `[[price-range:bbl]]`, `[[price-caveat]]`,
+  `[[financing]]`, `[[surgeon:name]]`; the catalog is in
+  `packages/shared/src/claims/README.md`). The site fills them from the live
+  price list. No weekly or monthly payment figures, ever. The three ASPS
+  averages in the facts files stay typed, with their attribution.
 - **Never weaken a check to pass.** Fix the post. If a check is wrong, say
   so in the report with the evidence, and don't edit the tool unless your
   prompt says to.

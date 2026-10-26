@@ -8,49 +8,48 @@
  */
 import { NextResponse } from 'next/server'
 
-import { procedures } from '@/lib/data/procedures.data'
-import { siteConfig, getFullAddress } from '@/lib/data/site-config'
+import { getResolvedProcedures } from '@/lib/data/procedures.resolved.server'
+import { siteConfig } from '@/lib/data/site-config'
+import {
+    absoluteUrl,
+    financingSection,
+    hoursLines,
+    LLMS_INTRO,
+    LLMS_SUMMARY,
+    newestDate,
+    practiceLines,
+    pricesSection,
+    surgeonSection,
+} from '@/lib/llms/llms-sections.server'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
+import { getPricing } from '@/lib/queries/pricing.query'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
+import type { Procedure } from '@/lib/types/procedure.type'
 
-/**
- * Group procedures by category
- */
-function groupProceduresByCategory() {
-    const categories = {
-        body: procedures.filter((p) => p.category === 'body'),
-        breast: procedures.filter((p) => p.category === 'breast'),
-        face: procedures.filter((p) => p.category === 'face'),
-        combined: procedures.filter((p) => p.category === 'combined'),
-    }
-    return categories
+/** The procedure list for one category, linked absolutely. */
+function procedureList(title: string, list: Procedure[]): string {
+    if (list.length === 0) return ''
+    return `### ${title}
+${list.map((p) => `- [${p.title}](${absoluteUrl(`/procedures/${p.slug}`)}): ${p.shortDescription || p.description}`).join('\n')}
+`
 }
 
 /**
- * Format business hours for display
- */
-function formatBusinessHours(): string {
-    if (
-        !siteConfig.contact.businessHours ||
-        siteConfig.contact.businessHours.length === 0
-    ) {
-        return '- Contact us for hours'
-    }
-    return siteConfig.contact.businessHours
-        .map(
-            (h) =>
-                `- ${h.days}: ${h.open === 'Closed' ? 'Closed' : `${h.open} - ${h.close}`}`
-        )
-        .join('\n')
-}
-
-/**
- * Generate llms.txt content
+ * Generate llms.txt content. Practice facts, the surgeon, prices and
+ * financing come from the claims canon and the pricing resolver
+ * (`lib/llms/llms-sections.server.ts`, #354); procedure copy is resolved for
+ * claim tokens first.
  */
 async function generateLlmsTxt(): Promise<string> {
-    const categories = groupProceduresByCategory()
+    const [resolvedProcedures, pricing] = await Promise.all([
+        getResolvedProcedures(),
+        getPricing(),
+    ])
+    const byCategory = (category: Procedure['category']) =>
+        resolvedProcedures.filter((p) => p.category === category)
 
-    // Fetch recent blog posts for the content guide
+    // Fetch recent blog posts for the content guide (titles and excerpts
+    // arrive with their claim tokens resolved)
     let recentPosts: Array<{
         title: string
         slug: string
@@ -69,122 +68,60 @@ async function generateLlmsTxt(): Promise<string> {
         // Blog posts fetch failed, continue without them
     }
 
+    const lastUpdated = newestDate(
+        [
+            ...resolvedProcedures.map((p) => p.dateModified),
+            ...recentPosts.map((p) => p.publishedAt),
+        ],
+        pricing
+    )
+
     const content = `# ${siteConfig.business.name}
 
-> ${siteConfig.business.description}
+> ${LLMS_SUMMARY}
 
-${siteConfig.business.name} is a premier plastic surgery clinic in Miami, Florida specializing in breast augmentation, Brazilian butt lift (BBL), liposuction, tummy tuck, mommy makeover, and facial procedures.${siteConfig.trustStats ? ` Our double board-certified surgeons have performed ${siteConfig.trustStats.patients} procedures with a ${siteConfig.trustStats.rating}-star rating.` : ''}
+${LLMS_INTRO}
 
 ## About Us
 
-**Business Name**: ${siteConfig.business.name}${
-        siteConfig.business.legalName
-            ? `
-**Legal Name**: ${siteConfig.business.legalName}`
-            : ''
-    }${
-        siteConfig.business.tagline
-            ? `
-**Tagline**: ${siteConfig.business.tagline}`
-            : ''
-    }${
-        siteConfig.business.organizationType
-            ? `
-**Type**: ${siteConfig.business.organizationType}`
-            : ''
-    }
+${practiceLines()}
 
-**Location**: ${getFullAddress()}
-**Phone**: ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}
-**Email**: ${siteConfig.contact.email}
-${
-    siteConfig.trustStats
-        ? `
-**Credentials**:${
-              siteConfig.trustStats.accreditation
-                  ? `
-- ${siteConfig.trustStats.accreditation}`
-                  : ''
-          }
-- ${siteConfig.trustStats.patients} Procedures Performed
-- ${siteConfig.trustStats.years} Years of Experience
-- ${siteConfig.trustStats.rating}-Star Patient Rating`
-        : ''
-}
+${surgeonSection()}
 
 ## Procedures
 
-${
-    categories.body.length > 0
-        ? `### Body Procedures
-${categories.body.map((p) => `- [${p.title}](/procedures/${p.slug}): ${p.shortDescription || p.description}`).join('\n')}
-`
-        : ''
-}
-${
-    categories.breast.length > 0
-        ? `### Breast Procedures
-${categories.breast.map((p) => `- [${p.title}](/procedures/${p.slug}): ${p.shortDescription || p.description}`).join('\n')}
-`
-        : ''
-}
-${
-    categories.face.length > 0
-        ? `### Facial Procedures
-${categories.face.map((p) => `- [${p.title}](/procedures/${p.slug}): ${p.shortDescription || p.description}`).join('\n')}
-`
-        : ''
-}
-${
-    categories.combined.length > 0
-        ? `### Combined Procedures
-${categories.combined.map((p) => `- [${p.title}](/procedures/${p.slug}): ${p.shortDescription || p.description}`).join('\n')}
-`
-        : ''
-}
+${procedureList('Body Procedures', byCategory('body'))}
+${procedureList('Breast Procedures', byCategory('breast'))}
+${procedureList('Facial Procedures', byCategory('face'))}
+${procedureList('Combined Procedures', byCategory('combined'))}
+${pricesSection(pricing)}
+
+${financingSection()}
+
 ## Patient Resources
 
-- [Free Consultation](/free-consultation): Schedule a complimentary consultation with our surgeons
-- [Financing Options](/plastic-surgery-financing-miami): Affordable payment plans through Cherry, CareCredit, and United Credit
-- [Before & After Gallery](/gallery): Real patient results and transformation photos
-- [Blog](/blog): Expert plastic surgery guides, recovery tips, and educational content
-- [FAQs](/faqs): Frequently asked questions about plastic surgery
+- [Consultation](${absoluteUrl('/free-consultation')}): Book a consultation, in person in Miami or by video
+- [Financing Options](${absoluteUrl('/plastic-surgery-financing-miami')}): Financing through Cherry, CareCredit and United Credit
+- [Before & After Gallery](${absoluteUrl('/gallery')}): Real patient results and photos
+- [Blog](${absoluteUrl('/blog')}): Procedure guides, recovery and cost articles
+- [FAQs](${absoluteUrl('/faqs')}): Frequently asked questions
 
 ${
     recentPosts.length > 0
         ? `## Recent Blog Posts
 
-${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.publishedAt)})${post.excerpt ? `: ${post.excerpt.slice(0, 100)}...` : ''}`).join('\n')}
+${recentPosts.map((post) => `- [${post.title}](${absoluteUrl(getBlogPostUrl(post.slug, post.publishedAt))})${post.excerpt ? `: ${post.excerpt.slice(0, 100)}...` : ''}`).join('\n')}
 `
         : ''
 }
-## Why Choose ${siteConfig.business.name}
-${
-    siteConfig.trustStats
-        ? `
-1. **${siteConfig.trustStats.accreditation ?? 'Board-Certified Surgeons'}**: Our surgeons hold certifications from both the American Board of Plastic Surgery and the American Board of Surgery
-2. **${siteConfig.trustStats.patients} Procedures Performed**: Extensive experience in body contouring and cosmetic surgery
-3. **${siteConfig.trustStats.rating}-Star Rating**: Consistently high patient satisfaction across review platforms
-4. **Flexible Financing**: Multiple payment options including 0% APR plans through Cherry, CareCredit, and United Credit
-5. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base
-6. **State-of-the-Art Facility**: AAASF-accredited surgical center in Miami`
-        : `
-1. **Board-Certified Surgeons**: Our surgeons hold certifications from leading medical boards
-2. **Flexible Financing**: Multiple payment options including 0% APR plans
-3. **Bilingual Staff**: English and Spanish speaking team
-4. **State-of-the-Art Facility**: AAASF-accredited surgical center in Miami`
-}
-
 ## Contact Information
 
-**Address**: ${getFullAddress()}
+**Address**: ${siteConfig.contact.address}, ${siteConfig.contact.city}, ${siteConfig.contact.state} ${siteConfig.contact.postalCode}
 **Phone**: ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}
 **Email**: ${siteConfig.contact.email}
 
 **Business Hours**:
-${formatBusinessHours()}
-
-**Serving**: South Florida (Miami, Fort Lauderdale, Coral Gables, Hialeah) and patients travelling in from other US states.
+${hoursLines()}
 
 ## Social Media
 
@@ -192,11 +129,11 @@ ${siteConfig.social.map((s) => `- [${s.label ?? s.platform}](${s.url})`).join('\
 
 ## Optional
 
-- [Full Documentation](/llms-full.txt): Comprehensive information including all procedure details, FAQs, and service areas
-- [Privacy Policy](/privacy)
-- [Terms of Service](/terms)
-- [Sitemap](/sitemap.xml)
-`
+- [Full Documentation](${absoluteUrl('/llms-full.txt')}): Every procedure in detail, with FAQs and the full price list
+- [Privacy Policy](${absoluteUrl('/privacy')})
+- [Terms of Service](${absoluteUrl('/terms')})
+- [Sitemap](${absoluteUrl('/sitemap.xml')})
+${lastUpdated ? `\n*Last updated: ${lastUpdated}*\n` : ''}`
 
     return content
 }
@@ -208,7 +145,12 @@ export async function GET() {
         return new NextResponse(content, {
             headers: {
                 'Content-Type': 'text/plain; charset=utf-8',
-                'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+                // A short CDN cache (#354): revalidateTag('pricing') does not
+                // purge a response Vercel's edge holds for its s-maxage, so a
+                // day-long one kept a price edit off this file for a day.
+                // Ten minutes, then served stale while it refreshes.
+                'Cache-Control':
+                    'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
             },
         })
     } catch (error) {
@@ -216,7 +158,7 @@ export async function GET() {
 
         // Return a basic fallback
         return new NextResponse(
-            `# ${siteConfig.business.name}\n\n> ${siteConfig.business.description}\n\nVisit our website for more information.`,
+            `# ${siteConfig.business.name}\n\n> ${LLMS_SUMMARY}\n\nVisit our website for more information.`,
             {
                 status: 500,
                 headers: {

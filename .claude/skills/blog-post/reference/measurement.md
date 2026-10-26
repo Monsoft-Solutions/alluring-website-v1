@@ -86,7 +86,7 @@ python3 blog/tools/ai_panel.py --only <n,n> --tag <slug>  # an ad-hoc check of t
   It records whether Alluring is cited, at which rank, what the answer says
   about Alluring (verbatim), and flags any wording that contradicts the
   `truths` block (prices, one surgeon, no ABPS / double board / 5,000+ /
-  AAAASF).
+  AAAASF), which follows the claims canon (`docs/claims/canon.md`).
 - The comparison line is against the newest earlier untagged panel.
   Baseline 2026-10-07: cited 17/24 (71%), non-brand 15/22 (68%), Alluring
   is citation #1 on 10/24, 10 error flags.

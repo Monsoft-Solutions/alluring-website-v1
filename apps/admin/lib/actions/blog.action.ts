@@ -11,8 +11,10 @@ import { eq } from 'drizzle-orm'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 
+import { getPricingSnapshot } from '@/lib/queries/pricing.query'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 import { validateBlogPostData } from '@/lib/utils/blog-validation.util'
+import { findClaimTokenErrors } from '@/lib/utils/claim-token-fields.util'
 import { isGoLiveStatusForWorkingCopy } from '@/lib/utils/refresh-merge.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 import { createPipelinePostInternal } from '@/lib/services/pipeline-post.service'
@@ -37,6 +39,18 @@ export type {
     BlogPostFormData,
 }
 
+/**
+ * The save error for claim tokens that would render as nothing, or for an
+ * Alluring price typed instead of a token (#354); null when every token in
+ * the post resolves and no price is typed.
+ */
+async function claimTokenError(data: BlogPostFormData): Promise<string | null> {
+    const problems = findClaimTokenErrors(data, await getPricingSnapshot())
+    return problems.length > 0
+        ? `Fix these claim tokens and typed prices before saving: ${problems.join('; ')}`
+        : null
+}
+
 export async function createBlogPost(
     data: BlogPostFormData
 ): Promise<ActionResult> {
@@ -56,6 +70,8 @@ export async function createBlogPost(
         if (!data.metaDescription?.trim()) {
             return { success: false, error: 'Meta description is required' }
         }
+        const tokenError = await claimTokenError(data)
+        if (tokenError) return { success: false, error: tokenError }
 
         // Check if slug already exists
         const existingPost = await db
@@ -151,6 +167,8 @@ export async function updateBlogPost(
         if (!validationResult.isValid) {
             return { success: false, error: validationResult.error }
         }
+        const tokenError = await claimTokenError(data)
+        if (tokenError) return { success: false, error: tokenError }
 
         // Check if slug already exists for another post
         const existingPost = await db

@@ -4,6 +4,7 @@
 **Audience:** United States. Miami and Florida first, then nationwide. **Not** Latin America or the Caribbean.
 **Companion doc:** `docs/seo/competitive-gap-cgcosmetic-and-seo-geo-plan.md`
 **Blocking issue:** [#118](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/118) — nothing in this document works until server-rendered JSON-LD ships.
+**Claims:** every claim, price and credential this plan puts on a page follows the claims canon (`docs/claims/canon.md`, issue #354), which overrides this document. No Alluring price is typed: pages read the pricing resolver and text uses claim tokens (`packages/shared/src/claims/README.md`). The examples below were aligned to the canon on 2026-10-25.
 
 ---
 
@@ -50,7 +51,7 @@ Genuinely ahead of the field here — do not regress any of it:
 | G2  | **Wrong geography declared.** `areaServed` still says Latin America + Caribbean in 6 files; `llms-full.txt` lists "Brazil, Colombia, Venezuela, Mexico" as served markets. This tells every LLM we're a foreign-inbound clinic.                      | [#118](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/118) |
 | G3  | **`packages/ai` prompts are contaminated** — 4 prompt files instruct every generated blog post, gallery caption and image brief that we serve "medical tourists from Latin America/Caribbean". Every future piece of content inherits the wrong ICP. | Rewrite prompts to the US ICP                                               |
 | G4  | **No `dateModified`, no visible "Last updated"** on most pages. Freshness is a top-3 citation signal.                                                                                                                                                | §5                                                                          |
-| G5  | **No named medical reviewer** on blog posts. This is YMYL content; unattributed medical claims are heavily discounted.                                                                                                                               | §5                                                                          |
+| G5  | **No named medical reviewer** on blog posts (none exists, so none may be claimed: canon §2). This is YMYL content; unattributed medical claims are heavily discounted.                                                                               | §5                                                                          |
 | G6  | **Comparisons written as prose, not tables.** Models extract tables reliably and paragraphs unreliably.                                                                                                                                              | §4                                                                          |
 | G7  | **Thin third-party footprint.** 49 Google reviews, no RealSelf/Healthgrades presence, no press. Nothing to corroborate against.                                                                                                                      | §6                                                                          |
 | G8  | **Bing ignored.** ChatGPT's retrieval runs on Bing. No Bing Webmaster Tools baseline.                                                                                                                                                                | §5                                                                          |
@@ -66,12 +67,14 @@ Apply to every new page and retrofit to existing money pages. This is the single
 40–70 words, above the fold, directly answering the page's primary query in complete sentences that stand alone when lifted out of context.
 
 ```
-A Brazilian Butt Lift in Miami costs $4,500–$8,500 depending on the
-volume of fat transferred and whether liposuction of multiple areas is
-included. At Alluring Plastic Surgery, BBL starts at $X all-inclusive —
-surgeon fee, accredited facility, board-certified anesthesiologist,
-garments and all follow-up visits. Financing runs from $Y per week.
+A BBL at Alluring starts at [[price:bbl]], and [[price-range:bbl]].
+Your price depends on the areas treated, your body and any procedures
+combined, and Dr. Karlinsky confirms it at consultation. Financing is
+available through Cherry, CareCredit and United Credit for qualified
+applicants.
 ```
+
+The price is a claim token the site resolves from the live price list (never a typed figure), there is no inclusion list in the answer, and no payment figure.
 
 Rules: lead with the number. Never open with "At Alluring, we believe…". Never require the previous sentence for context. Wrap it in `.quick-answer` and point `Speakable` schema at it.
 
@@ -79,7 +82,7 @@ Rules: lead with the number. Never open with "At Alluring, we believe…". Never
 
 Not `<div>` grids, not prose. Tables are the highest-fidelity extraction format there is.
 
-Every one of these becomes a table: procedure vs procedure, our price vs Miami average, implant types, recovery timelines, candidacy criteria, what's included vs what's extra.
+Every one of these becomes a table: procedure vs procedure, our starting price beside the ASPS national average (attributed, with what it excludes; never a "Miami average"), implant types, recovery timelines, candidacy criteria, and, for BBL only, what's included (canon D4).
 
 ### 4.3 Question-shaped H2s
 
@@ -87,7 +90,7 @@ Match the phrasing people actually type. `How much does a BBL cost in Miami?` be
 
 ### 4.4 Numbers over adjectives
 
-"Board-certified surgeons with 15+ years and 5,000+ procedures" is citable. "World-class expertise" is not. Every claim on the site should either carry a number or be deleted.
+"Board certified in general surgery by the American Board of Surgery since 2008" is citable. "World-class expertise" is not. Every claim on the site should either carry a verified fact or be deleted, and the verified facts are the ones in the claims canon (no volume or tenure counts).
 
 ### 4.5 State the negative case
 
@@ -97,19 +100,19 @@ Pages that say who is _not_ a good candidate, what the risks are, and when a che
 
 ## 5. Technical GEO Checklist
 
-| #   | Task                                                                  | Notes                                                                                                                                                                                         |
-| --- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| T1  | **Server-render all JSON-LD**                                         | [#118](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/118). Blocking.                                                                                                        |
-| T2  | **Fix `areaServed` to the US set**                                    | `['Miami', 'Miami-Dade County', 'South Florida', 'Florida', 'United States']`                                                                                                                 |
-| T3  | **Rewrite `packages/ai` prompts** to the US ICP                       | 4 files. Prevents ongoing contamination.                                                                                                                                                      |
-| T4  | **`dateModified` in schema + visible "Last updated"** on every page   | Freshness signal. Also where CG is dead — their last blog post is 2023-02-02.                                                                                                                 |
-| T5  | **`author` + `reviewedBy` on all medical content**                    | `Physician` entity, board certification via `EducationalOccupationalCredential`. Non-negotiable for YMYL.                                                                                     |
-| T6  | **`Speakable` on all `.quick-answer` blocks**                         | Pattern already exists on the breast-aug page — generalize it.                                                                                                                                |
-| T7  | **`Offer` schema with real prices** on every procedure page           | `price`, `priceCurrency`, `priceValidUntil`                                                                                                                                                   |
-| T8  | **Expand `llms.txt` / `llms-full.txt`**                               | Full pricing table, surgeon credentials with board names, financing terms, US service geography. Remove all LatAm/Caribbean references. Add `<link rel="llms" href="/llms.txt">` to `<head>`. |
-| T9  | **Register Bing Webmaster Tools; submit sitemaps; use IndexNow**      | ChatGPT retrieval runs on Bing. Currently unmeasured.                                                                                                                                         |
-| T10 | **`VideoObject` schema per testimonial video**                        | CG has 82 of these. Video is heavily weighted in AI answers about providers.                                                                                                                  |
-| T11 | **`ImageObject` with descriptive captions on before/after galleries** | Turns 103 thin media pages into extractable evidence                                                                                                                                          |
+| #   | Task                                                                             | Notes                                                                                                                                                                                                                                                                                                                                                |
+| --- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T1  | **Server-render all JSON-LD**                                                    | [#118](https://github.com/Monsoft-Solutions/alluring-website-v1/issues/118). Blocking.                                                                                                                                                                                                                                                               |
+| T2  | **Fix `areaServed` to the US set**                                               | `['Miami', 'Miami-Dade County', 'South Florida', 'Florida', 'United States']`                                                                                                                                                                                                                                                                        |
+| T3  | **Rewrite `packages/ai` prompts** to the US ICP                                  | 4 files. Prevents ongoing contamination.                                                                                                                                                                                                                                                                                                             |
+| T4  | **`dateModified` in schema + visible "Last updated"** on every page              | Freshness signal. Also where CG is dead — their last blog post is 2023-02-02.                                                                                                                                                                                                                                                                        |
+| T5  | **`author` on all medical content; `reviewedBy` only once a real review exists** | The surgeon via `karlinskyPersonNode` (ABS, FACS, Florida license; no ABCS node). No "medically reviewed by" until a review really happens (canon §2).                                                                                                                                                                                               |
+| T6  | **`Speakable` on all `.quick-answer` blocks**                                    | Pattern already exists on the breast-aug page — generalize it.                                                                                                                                                                                                                                                                                       |
+| T7  | **`Offer` schema with real prices** on every procedure page                      | `price`, `priceCurrency`, `priceValidUntil`, from the pricing resolver (the starting price; no `maxPrice`)                                                                                                                                                                                                                                           |
+| T8  | **Expand `llms.txt` / `llms-full.txt`**                                          | Pricing table from the resolver with the price caveat; surgeon credentials in the canon's wording (American Board of Surgery since 2008, FACS, Florida license; no ABCS or ABFCS); financing partners only (no terms or figures); US service geography. Remove all LatAm/Caribbean references. Add `<link rel="llms" href="/llms.txt">` to `<head>`. |
+| T9  | **Register Bing Webmaster Tools; submit sitemaps; use IndexNow**                 | ChatGPT retrieval runs on Bing. Currently unmeasured.                                                                                                                                                                                                                                                                                                |
+| T10 | **`VideoObject` schema per testimonial video**                                   | CG has 82 of these. Video is heavily weighted in AI answers about providers.                                                                                                                                                                                                                                                                         |
+| T11 | **`ImageObject` with descriptive captions on before/after galleries**            | Turns 103 thin media pages into extractable evidence                                                                                                                                                                                                                                                                                                 |
 
 ---
 
@@ -149,7 +152,7 @@ Winning here captures the patient at the _consideration_ stage, before they've s
 | `/miami-vs-mexico-plastic-surgery`             | "tijuana plastic surgery vs usa"                      |
 | `/medical-tourism-risks-what-to-know`          | "medical tourism plastic surgery risks"               |
 
-**Required content:** a real cost table (theirs vs ours, all-in including flights, lodging, revision risk and complication cost); malpractice recourse and licensing differences; what happens if there's a complication after you fly home; **honest acknowledgment of where abroad genuinely is cheaper**. The balanced version is the one that gets cited — and it's the true one.
+**Required content:** comparison content only: these pages never frame the practice as serving patients abroad, and never offer travel help (canon §8). A real cost table (their typical costs, including the flights, lodging, revision risk and complication cost the patient pays herself, beside our starting prices from the resolver, never "all-in"); malpractice recourse and licensing differences; what happens if there's a complication after you fly home; **honest acknowledgment of where abroad genuinely is cheaper**. The balanced version is the one that gets cited — and it's the true one.
 
 ### Cluster B — Cost & Financing 🥇 **Where CG beats us today**
 
@@ -166,22 +169,20 @@ CG's title tag is literally `Breast Augmentation Miami | From $2,500 at CG Cosme
 | `/plastic-surgery-payment-plans`   | "plastic surgery payment plans bad credit"      |
 | `/plastic-surgery-financing-miami` | _exists_ — add tables + Quick Answer            |
 
-**Required content:** exact all-inclusive price; explicit what's-included / what's-extra table; our price vs Miami average vs US average; weekly financing figure (single-source from `weekly-payments.data.ts`); honest note on when insurance does cover (breast reduction, post-mastectomy reconstruction, some panniculectomy).
+**Required content:** the starting price from the resolver, with the price caveat (no "all-inclusive"; a what's-included list for BBL only, canon D4); our starting price vs the ASPS national average (attributed, with its exclusions); the approved financing sentence naming Cherry, CareCredit and United Credit (no payment figure); honest note on when insurance does cover (breast reduction, post-mastectomy reconstruction, some panniculectomy).
 
 ### Cluster C — Safety & Trust 🥇 **Attacks CG's exposed flank**
 
 CG carries a 1.3/5 ComplaintsBoard rating, no BBB accreditation, and an indexed patient-death story. Safety is where they cannot compete and where AI engines apply the heaviest E-E-A-T weighting.
 
-| URL                                   | Primary query                                                              |
-| ------------------------------------- | -------------------------------------------------------------------------- |
-| `/bbl-safety-what-you-need-to-know`   | "is a bbl safe" / "bbl death rate" — very high volume, genuinely important |
-| `/how-to-choose-a-plastic-surgeon`    | "how to find a good plastic surgeon"                                       |
-| `/board-certification-explained`      | "abps vs abcs" / "what does board certified mean"                          |
-| `/accredited-surgical-facility-miami` | "aaaasf accredited surgery center"                                         |
-| `/plastic-surgery-red-flags`          | "plastic surgery warning signs"                                            |
-| `/plastic-surgery-safety-standards`   | "is plastic surgery safe"                                                  |
+| URL                                 | Primary query                                                              |
+| ----------------------------------- | -------------------------------------------------------------------------- |
+| `/bbl-safety-what-you-need-to-know` | "is a bbl safe" / "bbl death rate" — very high volume, genuinely important |
+| `/how-to-choose-a-plastic-surgeon`  | "how to find a good plastic surgeon"                                       |
+| `/plastic-surgery-red-flags`        | "plastic surgery warning signs"                                            |
+| `/plastic-surgery-safety-standards` | "is plastic surgery safe"                                                  |
 
-**Required content:** real statistics with sources; what accreditation actually means (AAAASF/AAAHC/Joint Commission); anesthesia provider credentials; complication rates stated honestly; the specific questions to ask _any_ surgeon. Write it so it's useful even to someone who chooses a different clinic — that's what makes it citable.
+**Required content:** real statistics with sources; Florida office-surgery rules as the facts files state them; generic anesthesia monitoring ("an anesthesia provider monitors you throughout surgery"), never a credential or accreditation claim about Alluring; complication rates stated honestly, from the facts files or a cited source; the specific questions to ask _any_ surgeon. Write it so it's useful even to someone who chooses a different clinic — that's what makes it citable.
 
 ### Cluster D — Procedure Comparison
 
@@ -247,10 +248,10 @@ Blog-tier for most, but these five earn dedicated pages:
 
 Not new pages — upgrades to existing ones. These make us a resolvable _entity_ rather than a website.
 
-- **Surgeon pages** (`/dr-karlinsky`, `/dr-rita-shats`) — full `Physician` schema, board name and certification number, training history, memberships, publications, procedure specialties, `sameAs` to every profile
-- **`/reviews`** — add `VideoObject` per testimonial, keep `aggregateRating` honest and live
-- **`/about`** — facility accreditation, anesthesia team credentials, technology, founding story with dates
-- **New: `/our-results-data`** — anonymized outcome statistics, revision rate, complication rate, average patient satisfaction. Original data, nobody else in the Miami market publishes it, and it is the single most citable asset we could own.
+- **Surgeon page** `/dr-karlinsky`: `Physician` schema via `karlinskyPersonNode` (American Board of Surgery, General Surgery, since 2008; FACS; Florida license ME130613), `sameAs` to every profile. Education and training lines stay off structured data until verified (canon D9). `/dr-rita-shats` is open (canon D1): no new schema or mentions for her until the practice decides.
+- **`/reviews`** — add `VideoObject` per testimonial; `aggregateRating` only here, from the synced Google figures (canon D12)
+- **`/about`** — one surgeon (ABS since 2008, FACS, Florida license ME130613); generic anesthesia monitoring; no accreditation, anesthesia-credential or facility-description claims (canon §3)
+- **Blocked: `/our-results-data`** — no practice revision, complication or satisfaction rates are published until the practice supplies verified records and they enter the canon.
 
 ---
 
@@ -263,7 +264,7 @@ Not new pages — upgrades to existing ones. These make us a resolvable _entity_
 | **2**          | 4–8       | Cluster A (destination) + Cluster C (safety)                                                                                                                              | Biggest untapped opportunity + attacks CG's weakest flank     |
 | **3**          | 8–12      | Cluster D (comparison) + Cluster F (rhinoplasty, gynecomastia, explant first)                                                                                             | Pure LLM fuel + uncontested search volume                     |
 | **4**          | 12–20     | Cluster E (geography) + Cluster G (candidacy/recovery)                                                                                                                    | Slower payoff; depends on E2 pages being genuinely researched |
-| **5**          | 16–24     | Cluster H + `/our-results-data` + cost report                                                                                                                             | Entity strength and original data compound over time          |
+| **5**          | 16–24     | Cluster H + cost report (`/our-results-data` blocked until verified records exist)                                                                                        | Entity strength and original data compound over time          |
 | **Continuous** | from wk 1 | §6 corroboration — reviews, directories, BBB, video, press                                                                                                                | Slowest lever, largest ceiling. Start immediately.            |
 
 ---

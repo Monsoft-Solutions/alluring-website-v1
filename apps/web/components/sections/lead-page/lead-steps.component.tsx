@@ -11,7 +11,7 @@ const STEPS = [
         body: 'The procedure, your timing, then your name and mobile number. It takes under a minute.',
     },
     {
-        title: 'A coordinator texts you within 24 hours',
+        title: 'A coordinator texts you',
         body: 'To answer your first questions and book your free consultation — in person in Miami, or by video from anywhere in the U.S.',
     },
     {

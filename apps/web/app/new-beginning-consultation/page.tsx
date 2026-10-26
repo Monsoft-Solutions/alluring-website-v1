@@ -23,10 +23,11 @@ import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { NewBeginningHero } from '@/components/landing/new-beginning-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import {
@@ -48,12 +49,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/new-beginning-consultation',
     title: 'New Beginning Plastic Surgery Miami | Rejuvenation',
     description:
-        'A new chapter deserves a new you. Natural rejuvenation for women ready to invest in themselves. Facelift, body contouring, breast procedures. Board-certified surgeons. Free consultation.',
+        'A new chapter deserves a new you. Natural rejuvenation for women ready to invest in themselves. Facelift, body contouring, breast procedures. One surgeon: Victoria Karlinsky, MD, FACS. Free consultation.',
 
     openGraph: {
         title: 'New Beginning Plastic Surgery Miami | Rejuvenation',
         description:
-            'A new chapter deserves a new you. Natural rejuvenation for women ready to invest in themselves. Board-certified surgeons.',
+            'A new chapter deserves a new you. Natural rejuvenation for women ready to invest in themselves. One surgeon: Victoria Karlinsky, MD, FACS.',
         url: `${seoConfig.siteUrl}/new-beginning-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -80,8 +81,16 @@ export default async function NewBeginningConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        newBeginningFaqData,
+        'text',
+        'faq /new-beginning-consultation'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(newBeginningFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -93,7 +102,7 @@ export default async function NewBeginningConsultationPage() {
             <WebPageSchema
                 name={`New Beginning Plastic Surgery Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/new-beginning-consultation`}
-                description='A new chapter deserves a new you. Natural rejuvenation and body contouring for women ready to invest in themselves. Board-certified surgeons specializing in natural, refreshed results.'
+                description='A new chapter deserves a new you. Natural rejuvenation and body contouring for women ready to invest in themselves, with one surgeon: Victoria Karlinsky, MD, FACS.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -106,8 +115,8 @@ export default async function NewBeginningConsultationPage() {
                 {/* Section 2: Fear Busters - Address objections */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 3: Weekly Payments - Make it affordable */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 3: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
@@ -115,7 +124,7 @@ export default async function NewBeginningConsultationPage() {
                 {/* Section 5: Google Reviews */}
                 <GoogleReviews
                     title='What Our Patients Say'
-                    subtitle='Real reviews from patients who embraced their new beginning'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 
@@ -123,7 +132,7 @@ export default async function NewBeginningConsultationPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={newBeginningFaqCategories}
-                    faqData={newBeginningFaqData}
+                    faqData={faqData}
                     badge={newBeginningFaqConfig.badge}
                     title={newBeginningFaqConfig.title}
                     subtitle={newBeginningFaqConfig.subtitle}
@@ -151,7 +160,7 @@ export default async function NewBeginningConsultationPage() {
                     id='final-cta'
                     variant='luxury'
                     heading="It's Your Time Now"
-                    description="You've spent years taking care of everyone else. Now it's time to invest in yourself. Our board-certified surgeons specialize in natural rejuvenation that helps you look as vibrant as you feel inside."
+                    description="You've spent years taking care of everyone else. Now it's time to invest in yourself. Victoria Karlinsky, MD, FACS, aims for natural rejuvenation that helps you look as vibrant as you feel inside."
                     primaryButton={{
                         text: 'Yes, I Want My Free Consultation',
                         href: '#hero-form',

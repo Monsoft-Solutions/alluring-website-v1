@@ -7,7 +7,8 @@
 /**
  * Florida Rule 64B8-11.001(1)(g): an advertised fee must disclose the
  * variables that change it. Stated wherever a "from" price appears (the home
- * page, the blog template's procedure strip).
+ * page, the blog template's procedure strip). The claims canon owns the
+ * wording (`PRICE_CAVEAT_SHORT`, issue #354); this name stays for the
+ * existing imports.
  */
-export const PRICE_VARIABLES =
-    'Starting prices. Yours depends on the areas treated, your body and any procedures combined, and your surgeon confirms it at consultation.'
+export { PRICE_CAVEAT_SHORT as PRICE_VARIABLES } from '@workspace/shared/claims/prices'

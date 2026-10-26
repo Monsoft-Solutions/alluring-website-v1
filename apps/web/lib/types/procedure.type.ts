@@ -71,46 +71,38 @@ export interface ProcedurePriceFactor {
  * One priced variant of a procedure, e.g. a mini tummy tuck or silicone
  * implants: a row in `ModulePriceTable` and an `Offer` of its own in the
  * structured-data graph.
+ *
+ * The figure is not typed here (issue #354): `line` names a line of the
+ * price sheet (`price_line.line_key`, e.g. `mini`), and the page reads its
+ * price, with any discount, from the pricing resolver.
  */
 export interface ProcedurePriceOption {
     /** The variant as the page names it, e.g. "Mini tummy tuck" */
     label: string
-    /** Its lowest advertised price, in USD */
-    startingAt: number
-    /** Top of its typical range, in USD. Omit when there is no real spread. */
-    upTo?: number
+    /** The price-sheet line it is priced from, e.g. `mini` */
+    line: string
     /** Who it suits, in one short line */
     note?: string
 }
 
 /**
- * Published pricing for a procedure page.
+ * Published pricing for a procedure page: what the price covers, what moves
+ * it, and, when the procedure has several prices, its variants.
  *
- * Figures are stored as numbers rather than pre-formatted strings so the same
- * value can drive the visible price table and the `Offer` in structured data
- * without the two drifting apart.
- *
- * `weeklyFrom` restates this procedure's entry in `WEEKLY_PAYMENT_OPTIONS`
- * (`lib/data/weekly-payments.data.ts`), which remains the source of truth for
- * every weekly figure on the site. Keep the two in step.
+ * No figure lives here (issue #354). The starting price, the BBL range and
+ * every option's price come from the pricing resolver
+ * (`getProcedurePrices`), which the admin Pricing page edits, so the visible
+ * price table and the `Offer` in structured data read the same numbers.
  */
 export interface ProcedurePricing {
-    /** Lowest advertised all-inclusive price, in USD */
-    startingAt: number
-    /** Top of the typical range, in USD. Omit when there is no real spread. */
-    upTo?: number
-    /** Illustrative financed weekly payment, in USD */
-    weeklyFrom?: number
     /** What the quoted price covers */
     includes: string[]
     /** What moves the price inside the range */
     factors: ProcedurePriceFactor[]
     /**
      * The procedure's priced variants, when it has more than one price (a
-     * tummy tuck by type, implants by fill). Set, the graph publishes one
-     * `Offer` per option instead of the single `startingAt`/`upTo` one, so
-     * keep `startingAt` at the lowest option's price for the surfaces that
-     * read only it (the fact rail, the paid landing page).
+     * tummy tuck by type). Set, the graph publishes one `Offer` per option
+     * instead of the single starting-price one.
      */
     options?: ProcedurePriceOption[]
 }
@@ -163,11 +155,9 @@ export interface Procedure {
     datePublished?: string
 
     // Paid-LP copy fields — surfaced on /landing/procedure/[slug]. All
-    // optional; the template falls back gracefully when unset.
-    /** Starting "from" price, formatted with currency, e.g. "$4,500" */
-    priceFrom?: string
-    /** Starting financing-payment phrase, e.g. "$27/week with approved credit" */
-    weeklyPaymentFrom?: string
+    // optional; the template falls back gracefully when unset. The hero's
+    // starting price comes from the pricing resolver (#354), and no weekly
+    // or monthly payment figure is published (canon D6).
     /** Outcome-focused H1 override (overrides `title` on the landing hero) */
     outcomeHeadline?: string
     /** One-line social proof for the landing hero */
@@ -219,9 +209,6 @@ export const procedureSchema = z.object({
     metaDescription: z.string().optional(),
     pricing: z
         .object({
-            startingAt: z.number().positive(),
-            upTo: z.number().positive().optional(),
-            weeklyFrom: z.number().positive().optional(),
             includes: z.array(z.string()),
             factors: z.array(
                 z.object({
@@ -231,31 +218,14 @@ export const procedureSchema = z.object({
             ),
             options: z
                 .array(
-                    z
-                        .object({
-                            label: z.string().min(1),
-                            startingAt: z.number().positive(),
-                            upTo: z.number().positive().optional(),
-                            note: z.string().optional(),
-                        })
-                        .refine(
-                            (option) =>
-                                option.upTo === undefined ||
-                                option.upTo >= option.startingAt,
-                            {
-                                message:
-                                    'pricing.options[].upTo must not be below its startingAt',
-                            }
-                        )
+                    z.object({
+                        label: z.string().min(1),
+                        line: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+                        note: z.string().optional(),
+                    })
                 )
                 .optional(),
         })
-        .refine(
-            (pricing) =>
-                pricing.upTo === undefined ||
-                pricing.upTo >= pricing.startingAt,
-            { message: 'pricing.upTo must not be below pricing.startingAt' }
-        )
         .optional(),
 
     // Structured content
@@ -331,8 +301,6 @@ export const procedureSchema = z.object({
         .optional(),
 
     // Paid-LP copy fields (all optional, hero falls back gracefully)
-    priceFrom: z.string().optional(),
-    weeklyPaymentFrom: z.string().optional(),
     outcomeHeadline: z.string().optional(),
     microProof: z.string().optional(),
     urgencyNote: z.string().optional(),

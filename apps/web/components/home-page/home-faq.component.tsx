@@ -1,6 +1,6 @@
 import { cn } from '@workspace/ui/lib/utils'
 
-import { homePageFaqs } from '@/lib/data/faq/home-page-faqs.data'
+import type { FaqItem } from '@/lib/types/shared/faq.type'
 
 import { HomeEyebrow } from './home-eyebrow.component'
 import {
@@ -15,10 +15,11 @@ import {
 
 /**
  * Straight answers to what visitors ask before they book. The same list is
- * the page's FAQPage schema (`app/page.tsx`), so the two stay in step.
+ * the page's FAQPage schema (`app/page.tsx`), so the two stay in step: the
+ * page resolves its claim tokens once and passes it here (#354).
  * Native `<details>`: no JavaScript, and every answer is in the HTML.
  */
-export function HomeFaq() {
+export function HomeFaq({ faqs }: { faqs: readonly FaqItem[] }) {
     return (
         <section
             id={HOME_SECTION_IDS.faq}
@@ -53,7 +54,7 @@ export function HomeFaq() {
                 </div>
 
                 <div className='hp-faq divide-y divide-[var(--hp-line)] border-y border-[var(--hp-line)]'>
-                    {homePageFaqs.map((faq) => (
+                    {faqs.map((faq) => (
                         <details key={faq.question} className='group'>
                             <summary className='flex cursor-pointer items-start justify-between gap-6 py-6 text-left md:py-7'>
                                 <h3 className='hp-display hp-display--small text-[1.3125rem] leading-[1.25] md:text-[1.5rem]'>

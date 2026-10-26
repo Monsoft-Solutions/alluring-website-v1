@@ -25,6 +25,10 @@ import {
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 type Objection = {
     readonly icon: React.ReactNode
@@ -37,20 +41,20 @@ const OBJECTIONS: readonly Objection[] = [
     {
         icon: <ShieldCheck className='h-5 w-5' />,
         question: '“How do I know it’s safe?”',
-        answer: 'Your surgery happens in an accredited surgical facility with a dedicated anesthesia team — not an office suite. Our surgeons are double board-certified, which means their credentials were reviewed twice by independent boards, and every patient gets pre-op lab work before we clear them.',
-        proof: 'Double board-certified · Accredited facility',
+        answer: `An anesthesia provider monitors you throughout surgery, and every patient gets pre-op lab work before we clear them. Your surgeon is ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
+        proof: 'Board certified, American Board of Surgery · Pre-op labs',
     },
     {
         icon: <Sparkles className='h-5 w-5' />,
         question: '“Will it look obvious?”',
         answer: 'We plan to your frame, not to a trend. The goal is that people tell you that you look rested, fit, or happy — and can’t say why. If your goal is a look we don’t think will age well on your body, we will tell you that in consultation.',
-        proof: 'Natural-result specialists',
+        proof: 'Planned to your frame',
     },
     {
         icon: <CalendarClock className='h-5 w-5' />,
         question: '“How much time do I actually lose?”',
-        answer: 'Most patients are back to desk work in one to two weeks and back to the gym in four to six. You get a written week-by-week recovery plan before you book, so you can schedule around childcare, work and travel instead of guessing.',
-        proof: 'Written recovery plan up front',
+        answer: 'Most people are back at a desk job within a few days to a few weeks, depending on the procedure, and exercise comes back later: The Aesthetic Society advises 4 to 6 weeks without strenuous exercise after liposuction, and 8 weeks after a BBL. Your surgeon sets your dates, and Alluring confirms your surgery, pre-op and follow-up dates in writing, so you can schedule around childcare, work and travel.',
+        proof: 'Your dates in writing',
     },
     {
         icon: <HeartHandshake className='h-5 w-5' />,
@@ -85,9 +89,8 @@ export function Objections() {
                         </span>
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
-                        It&apos;s rarely the procedure. After 5,000+ patients,
-                        we know it&apos;s usually one of these four — so
-                        here&apos;s the honest answer to each.
+                        It&apos;s rarely the procedure. It&apos;s usually one of
+                        these four, so here&apos;s the honest answer to each.
                     </p>
                 </div>
 

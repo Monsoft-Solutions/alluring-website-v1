@@ -27,7 +27,7 @@ export const contactHeroData: Omit<ContactHeroSectionProps, 'id'> = {
     badge: 'Start Your Journey',
     headline: 'Your Transformation Begins Here',
     description:
-        "Schedule your private consultation with our board-certified surgeons. We'll discuss your goals, answer every question, and create a personalized plan for your aesthetic journey.",
+        "Schedule your private consultation with Dr. Karlinsky. We'll discuss your goals, answer every question, and create a personalized plan for your aesthetic journey.",
     enableAnimations: true,
 }
 
@@ -39,7 +39,7 @@ export const contactFormData: Omit<ContactFormSectionProps, 'id'> = {
     badge: 'Request Consultation',
     headline: 'Schedule Your Visit',
     description:
-        'Fill out the form below and our concierge will contact you within 24 hours to schedule your consultation.',
+        'Fill out the form below and our team will contact you to schedule your consultation.',
 }
 
 /**

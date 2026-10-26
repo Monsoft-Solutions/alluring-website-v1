@@ -38,13 +38,13 @@ export const HeroConsultationForm = () => {
 
                 <ConsultationForm
                     title='See If You Qualify'
-                    subtitle='Free consultation • No obligation • Hablamos Español'
+                    subtitle='Free consultation • No obligation • Hablamos español'
                     source={CONTACT_SOURCES.CONTACT_HERO}
                     analyticsFormName='home_hero_form'
                     enableAnalytics
                     compact
                     submitText='Get My Free Consultation'
-                    footerNote='We call within 24 hours. Your information is never shared.'
+                    footerNote='A patient coordinator texts you back. Your information is never shared.'
                     redirectOnSuccess='/thank-you'
                 />
 
@@ -55,7 +55,7 @@ export const HeroConsultationForm = () => {
                         aria-hidden='true'
                     />
                     <span>
-                        Private &amp; confidential. A patient coordinator calls
+                        Private &amp; confidential. A patient coordinator texts
                         you — never a sales team.
                     </span>
                 </div>

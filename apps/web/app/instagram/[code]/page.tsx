@@ -259,7 +259,7 @@ export default async function InstagramPostPage({ params }: PageProps) {
                         variant='luxury'
                         eyebrow='Start Your Transformation'
                         heading='Ready to Make a Change?'
-                        description='Every transformation starts with a single conversation. Schedule your free consultation with our board-certified surgeons.'
+                        description='Every transformation starts with a single conversation. Schedule your free consultation with Victoria Karlinsky, MD, FACS.'
                         primaryButton={{
                             text: 'Schedule Your Consultation',
                             href: '/contact-us',

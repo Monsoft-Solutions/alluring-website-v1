@@ -98,7 +98,7 @@ ${articleSection}
 - Use descriptive anchor text that flows naturally in the sentence
 - Only link to pages that are genuinely relevant to the content
 - Prefer procedure pages when discussing specific treatments
-- Link to financing when discussing costs or affordability
+- Link to financing when discussing costs or payment options
 - Link to gallery when mentioning results or outcomes
 - Link to a related article when it covers a sub-topic in more depth than you have room for here — that is what turns separate posts into a subject a reader can explore
 - **Copy URLs from the lists above exactly. Never construct or guess one.** A plausible-looking URL you invented is a 404, and a reader who hits one leaves.`

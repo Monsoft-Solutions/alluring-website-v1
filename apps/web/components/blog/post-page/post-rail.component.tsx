@@ -1,4 +1,8 @@
 import { ModuleFactRail } from '@/components/procedures/module-kit/module-layout.component'
+import {
+    PriceRangeText,
+    PriceTag,
+} from '@/components/shared/price-tag.component'
 import type { PostProcedure } from '@/lib/blog/post-procedure.util'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { TOCHeading } from '@/lib/types/blog/toc.type'
@@ -32,8 +36,21 @@ export function PostRail({ headings, procedure }: PostRailProps) {
                     <div className='shrink-0'>
                         <ModuleFactRail
                             label={railCopy(procedure).label}
-                            startingAt={price.startingAt}
-                            priceNote={price.note}
+                            startingAt={<PriceTag price={price.display} />}
+                            priceNote={
+                                price.range ? (
+                                    <>
+                                        <PriceRangeText
+                                            range={price.range}
+                                            capitalized
+                                        />
+                                        , set for each patient
+                                    </>
+                                ) : (
+                                    price.note
+                                )
+                            }
+                            discountStatement={price.statement}
                             surgeonName={KARLINSKY_NAME}
                             bookHref={`#${POST_CONSULT_ID}`}
                             bookLabel={railCopy(procedure).bookLabel}

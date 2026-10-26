@@ -6,6 +6,8 @@
  *
  * @module @workspace/ai/functions/extract-faqs
  */
+import { CLAIM_TOKEN_RULE } from '../prompts/blog/claim-tokens.prompt'
+
 import { z } from 'zod'
 
 import { faqItemSchema, type FaqItem } from '@workspace/shared/schemas/blog'
@@ -71,6 +73,8 @@ Your task is to identify and extract FAQ (Frequently Asked Questions) items from
 - If the content uses "**Q:**" or similar formatting, extract those
 - Maximum 10 FAQs per extraction
 
+${CLAIM_TOKEN_RULE}
+
 **Output Format:**
 - Clean question text without "Q:" prefix
 - Clean answer text without "A:" prefix
@@ -85,8 +89,8 @@ const FAQ_GENERATOR_SYSTEM_PROMPT = `You are an expert at creating relevant FAQ 
 Your task is to analyze blog content and generate FAQ items that readers commonly search for.
 
 **Business Context:**
-- Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
-- Audience: Women 25-55, value quality, seek affordability
+- Business: Alluring Plastic Surgery - a cosmetic surgery practice in Miami, FL, with one surgeon
+- Audience: Women 25-55 who want a clear price and a plain answer
 - Goal: Create SEO-friendly FAQs that help with featured snippets and People Also Ask
 
 **Generation Guidelines:**
@@ -97,6 +101,8 @@ Your task is to analyze blog content and generate FAQ items that readers commonl
 - Focus on practical, actionable questions (costs, timing, process, results, risks, recovery)
 - Use "How", "What", "When", "Why", "Can I", "Is it" question formats
 - Ensure answers are informative but encourage consultation for specifics
+
+${CLAIM_TOKEN_RULE}
 
 **Question Types to Include:**
 - Process questions ("What happens during...?", "How does... work?")

@@ -32,12 +32,12 @@ export const spanishFaqCategories: FaqCategory[] = [
 export const spanishFaqData: Record<string, FaqItem[]> = {
     idioma: [
         {
-            question: '¿Todo el personal habla español?',
-            answer: `Sí, todo nuestro equipo es completamente bilingüe. Desde tu primera llamada telefónica hasta tu última cita de seguimiento, puedes comunicarte en español. Nuestros cirujanos, coordinadores de pacientes y personal de enfermería hablan español con fluidez.`,
+            question: '¿Hablan español?',
+            answer: `Sí, hablamos español. Desde tu primera llamada hasta tu última cita de seguimiento, puedes comunicarte con nosotros en español.`,
         },
         {
             question: '¿La consulta será en español?',
-            answer: `Absolutamente. Tu consulta completa será en español, incluyendo la evaluación con el cirujano, la explicación del procedimiento, la revisión de fotos de antes y después, y la discusión de precios y financiamiento. No necesitarás traductor.`,
+            answer: `Sí. Te atendemos en español durante tu consulta, incluyendo la explicación del procedimiento, la revisión de fotos de antes y después, y la discusión de precios y financiamiento.`,
         },
         {
             question: '¿Los documentos y formularios están en español?',
@@ -45,58 +45,59 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: '¿Atienden pacientes de otros estados?',
-            answer: `Sí. Recibimos pacientes de todo Estados Unidos — Nueva York, Nueva Jersey, Texas, Georgia, Illinois, California y muchos más — además de todo el sur de la Florida. Te atendemos en español en cada etapa, desde la consulta virtual hasta tus controles posoperatorios.`,
+            answer: `Sí. Recibimos pacientes de todo Estados Unidos, además de todo el sur de la Florida. Te atendemos en español en cada etapa, desde la consulta virtual hasta tus controles posoperatorios.`,
         },
     ],
     procedimientos: [
         {
             question: '¿Qué procedimientos ofrecen?',
-            answer: `Ofrecemos una gama completa de cirugías estéticas: Levantamiento de Glúteos Brasileño (BBL), aumento de senos, levantamiento de senos, liposucción, abdominoplastia (tummy tuck), mommy makeover, lifting facial, blefaroplastia, y más. Tu cirujano te recomendará las mejores opciones para tus metas.`,
+            answer: `Ofrecemos BBL (levantamiento de glúteos brasileño), liposucción, abdominoplastia (tummy tuck), aumento, levantamiento y reducción de senos, mommy makeover, lifting facial y blefaroplastia. Tu cirujana te dice en la consulta qué opción te conviene.`,
         },
         {
             question: '¿Qué es el BBL y cómo funciona?',
-            answer: `El Levantamiento de Glúteos Brasileño (BBL) es una cirugía que transfiere grasa de otras áreas de tu cuerpo (abdomen, espalda, muslos) a los glúteos. Esto te da curvas naturales mientras reduce grasa de áreas no deseadas. Miami es reconocido mundialmente por resultados de BBL de alta calidad.`,
+            answer: `El Levantamiento de Glúteos Brasileño (BBL) es una cirugía que transfiere grasa de otras áreas de tu cuerpo (abdomen, espalda, muslos) a los glúteos. Así se da forma a los glúteos con tu propia grasa y se reduce grasa en las áreas tratadas.`,
         },
         {
             question: '¿Puedo combinar varios procedimientos?',
             answer: `Sí, muchos pacientes combinan procedimientos para lograr una transformación más completa. Por ejemplo, el "mommy makeover" típicamente combina abdominoplastia con cirugía de senos. Discutiremos qué combinaciones son seguras y apropiadas para ti.`,
         },
         {
-            question: '¿Los cirujanos están certificados?',
-            answer: `Sí, todos nuestros cirujanos están certificados por la junta americana de cirugía plástica y tienen más de 15 años de experiencia. Nuestra clínica está acreditada y cumple con los más altos estándares de seguridad.`,
+            question: '¿Cuáles son las credenciales de su cirujana?',
+            answer: `Victoria Karlinsky, MD, FACS, realiza todas las cirugías en Alluring. Está certificada en cirugía general por el American Board of Surgery desde 2008 y es Fellow del American College of Surgeons.`,
         },
     ],
     financiamiento: [
         {
             question: '¿Ofrecen planes de financiamiento?',
-            answer: `Sí, ofrecemos múltiples opciones de financiamiento con pagos desde $27 por semana. Trabajamos con varias compañías de financiamiento y ofrecemos planes con 0% de interés para pacientes calificados. Nuestro equipo te ayudará a encontrar la mejor opción.`,
+            // Las financieras, sin cifras de pago ni tasas (canon D6).
+            answer: `Sí. Ofrecemos financiamiento a través de Cherry, CareCredit y United Credit para solicitantes calificados. Cada financiera fija la aprobación y los términos. Nuestro equipo te ayuda a ver las opciones.`,
         },
         {
             question:
                 '¿Qué necesito para solicitar financiamiento si vivo en otro estado?',
-            answer: `Lo mismo que cualquier paciente local: las solicitudes se evalúan según tu historial crediticio en EE.UU., sin importar en qué estado vivas. Puedes completar la solicitud a distancia antes de viajar a Miami, y nuestro equipo te acompaña en español durante todo el proceso.`,
+            answer: `Lo mismo que cualquier paciente local. Cada financiera define la aprobación y los términos. Puedes completar la solicitud a distancia antes de viajar a Miami, y nuestro equipo te acompaña en español durante todo el proceso.`,
         },
         {
             question: '¿Qué incluye el precio del procedimiento?',
-            answer: `Nuestros precios son transparentes e incluyen: honorarios del cirujano, uso de instalaciones quirúrgicas, anestesia, consultas de seguimiento, y fajas de compresión inicial. Te daremos un desglose completo durante tu consulta.`,
+            answer: `Tu precio se fija después de un examen, y la Dra. Karlinsky lo confirma en tu consulta. Durante la consulta revisamos contigo qué cubre tu presupuesto.`,
         },
         {
             question: '¿La consulta tiene algún costo?',
-            answer: `No, tu consulta inicial es completamente gratuita y sin compromiso. Tendrás la oportunidad de conocer al cirujano, discutir tus metas, ver fotos de resultados, y recibir un presupuesto personalizado—todo sin ningún costo.`,
+            answer: `No, tu consulta inicial es gratuita y sin compromiso. Hablas de tus metas, ves fotos de resultados y recibes un presupuesto personalizado.`,
         },
     ],
     viaje: [
         {
             question: '¿Ayudan a coordinar el viaje?',
-            answer: `No. No reservamos vuelos, alojamiento ni transporte, y no trabajamos con casas de recuperación, así que no podemos reservarte una ni recomendarte ninguna. Eso lo organizas tú. Lo que sí hacemos es darte por escrito la fecha de tu cirugía, tu cita preoperatoria y tus controles posteriores, y decirte cuántas noches necesitas quedarte en Miami antes de que tu cirujano te autorice a volar de regreso — para que compres los pasajes sobre un calendario ya confirmado. Te atendemos en español.`,
+            answer: `No. No reservamos vuelos, alojamiento ni transporte, y no trabajamos con casas de recuperación, así que no podemos reservarte una ni recomendarte ninguna. Eso lo organizas tú. Lo que sí hacemos es darte por escrito la fecha de tu cirugía, tu cita preoperatoria y tus controles posteriores, y decirte cuántas noches necesitas quedarte en Miami antes de que tu cirujana te autorice a volar de regreso — para que compres los pasajes sobre un calendario ya confirmado. Te atendemos en español.`,
         },
         {
             question: '¿Cuánto tiempo necesito quedarme en Miami?',
-            answer: `El tiempo recomendado varía según el procedimiento. Para un BBL, recomendamos 7-10 días en Miami. Para procedimientos más pequeños como aumento de senos, 5-7 días puede ser suficiente. Te daremos recomendaciones específicas durante tu consulta.`,
+            answer: `Para un BBL, planea quedarte de 7 a 10 días en Miami. Para otros procedimientos, tu cirujana te dice cuántas noches quedarte antes de volar a casa.`,
         },
         {
             question: '¿Ofrecen consultas virtuales antes de viajar?',
-            answer: `¡Sí! Ofrecemos consultas virtuales por videollamada para pacientes que vienen de lejos. Puedes conocer a tu cirujano, discutir tus metas, y recibir un presupuesto antes de hacer planes de viaje. Esto te da tranquilidad antes de comprometerte.`,
+            answer: `Sí. Ofrecemos consultas virtuales por videollamada para pacientes que vienen de lejos. Puedes discutir tus metas, y recibir un presupuesto antes de hacer planes de viaje. Esto te da tranquilidad antes de comprometerte.`,
         },
         {
             question:

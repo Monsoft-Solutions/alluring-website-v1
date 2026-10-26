@@ -21,7 +21,10 @@
 
 import {
     createFactLookups,
+    DEFAULT_BBL_TYPICAL_MAX_USD,
     formatProcedureFigure,
+    formatSheetUsd,
+    sheetUsd,
     type FactTopic,
     type FigureUnit,
     type ProcedureFact,
@@ -36,6 +39,7 @@ export type BblSourceId =
     | 'asps-bbl-travel-2023'
     | 'aesthetic-society-bbl-aftercare'
     | 'cleveland-clinic-bbl'
+    | 'cleveland-clinic-wound-infection'
     | 'ormseth-garments-2023'
     | 'semin-plast-surg-fat-grafting-2020'
     | 'florida-statutes-458-328'
@@ -99,6 +103,14 @@ export const bblSources: readonly BblSource[] = [
             'Recovery "between two and three months" and, on the same page, "up to six months": say both. No sitting or lying on the buttocks for at least 2 weeks; pillow for about 8 weeks; stomach or side sleeping; pain decreases after 1–2 weeks; no heavy lifting in about the first month. Cleveland Clinic gives no fat-survival percentage — never credit it with one.',
     },
     {
+        id: 'cleveland-clinic-wound-infection',
+        publisher: 'Cleveland Clinic',
+        title: 'Surgical Wound Infection',
+        url: 'https://my.clevelandclinic.org/health/diseases/surgical-wound-infection',
+        attribution:
+            'Infection signs usually appear 3–7 days after surgery; fever above 101°F (38.4°C); thick, cloudy, white or cream discharge, odor, redness spreading past the incision, warmth or pain. General post-op guidance, not BBL-specific: attribute to "Cleveland Clinic".',
+    },
+    {
         id: 'ormseth-garments-2023',
         publisher: 'Plastic and Reconstructive Surgery Global Open',
         title: 'Postoperative Compression Garments in Plastic Surgery',
@@ -158,6 +170,9 @@ export type BblFigureUnit = FigureUnit
 export type BblFigure = ProcedureFigure
 export type BblFactTopic = FactTopic
 export type BblFact = ProcedureFact<BblSourceId>
+
+/** BBL's list price on the 2026-09-15 sheet (`bbl:lipo360-bbl`). */
+const BBL_FROM_USD = sheetUsd('bbl', 'lipo360-bbl')
 
 export const bblFacts = [
     // ── Recovery ─────────────────────────────────────────────────────────
@@ -327,6 +342,19 @@ export const bblFacts = [
             "ASPS's article on traveling after a BBL advises staying near your surgeon for at least 4 to 5 days, and longer if you can, because an infection typically shows up 3 to 5 days after surgery.",
         sourceIds: ['asps-bbl-travel-2023'],
         caveat: 'Never "at least 5 days".',
+    },
+    {
+        id: 'infection-signs-3-7-days',
+        topic: 'recovery',
+        concepts: ['infection', 'fever'],
+        figures: [
+            { min: 3, max: 7, unit: 'day' },
+            { value: 101, unit: 'fahrenheit' },
+        ],
+        statement:
+            'Cleveland Clinic says signs of a surgical wound infection usually appear 3 to 7 days after surgery: a fever above 101°F (38.4°C), thick cloudy discharge, a smell from the incision, or redness spreading past it.',
+        sourceIds: ['cleveland-clinic-wound-infection'],
+        caveat: "General surgical-wound guidance; ASPS's BBL travel article gives 3 to 5 days for the stay-near-your-surgeon advice. Keep the two attributions separate.",
     },
     {
         id: 'stay-in-miami-7-10-days',
@@ -521,20 +549,25 @@ export const bblFacts = [
         id: 'price-starting-at',
         topic: 'price',
         concepts: ['start', 'price', 'pay'],
-        figures: [{ value: 5500, unit: 'usd' }],
-        statement: 'A BBL at Alluring starts at $5,500.',
+        figures: [{ value: BBL_FROM_USD, unit: 'usd' }],
+        statement: `A BBL at Alluring starts at ${formatSheetUsd(BBL_FROM_USD)}.`,
         sourceIds: ['alluring-practice'],
-        caveat: 'Never $3,500, $15,000 or a weekly figure. Mirrors `pricing.startingAt`.',
+        caveat: 'Never $3,500, $15,000 or a weekly figure. Read from the price sheet line `bbl:lipo360-bbl`; pages print the live price through the pricing resolver.',
     },
     {
         id: 'price-most-patients',
         topic: 'price',
         concepts: ['patient', 'pay', 'price'],
-        figures: [{ min: 5500, max: 10000, unit: 'usd' }],
-        statement:
-            'Most patients pay between $5,500 and $10,000. Every price is set for the patient, price ranges are estimates and may change, and your surgeon confirms your price at consultation. Financing is available; we quote no financing figure.',
+        figures: [
+            {
+                min: BBL_FROM_USD,
+                max: DEFAULT_BBL_TYPICAL_MAX_USD,
+                unit: 'usd',
+            },
+        ],
+        statement: `Most patients pay between ${formatSheetUsd(BBL_FROM_USD)} and ${formatSheetUsd(DEFAULT_BBL_TYPICAL_MAX_USD)}. Every price is set for the patient, price ranges are estimates and may change, and your surgeon confirms your price at consultation. Financing is available; we quote no financing figure.`,
         sourceIds: ['alluring-practice'],
-        caveat: '"Most patients", not a hard maximum. Mirrors `pricing.upTo`. No financing number.',
+        caveat: '"Most patients", not a hard maximum. The range is the resolver\'s (`procedure_pricing.typical_max_usd`). No financing number.',
     },
 ] as const satisfies readonly BblFact[]
 

@@ -114,19 +114,17 @@ export function MiamiMiniCapture({
                         </h2>
 
                         <p className='mb-6 text-lg leading-relaxed text-stone-300'>
-                            No need to travel for world-class results. Our Coral
-                            Gables office is just minutes away. Leave your
-                            number and we&apos;ll help you schedule at a time
-                            that works for your busy Miami life.
+                            No need to travel far. Our Miami office is just
+                            minutes away. Leave your number and we&apos;ll help
+                            you schedule at a time that works for your busy
+                            Miami life.
                         </p>
 
                         {/* Trust Points */}
                         <div className='flex flex-wrap justify-center gap-4 lg:justify-start'>
                             <div className='flex items-center gap-2 text-stone-400'>
                                 <MapPin className='text-gold-400 h-4 w-4' />
-                                <span className='text-sm'>
-                                    Coral Gables Location
-                                </span>
+                                <span className='text-sm'>Miami Location</span>
                             </div>
                             <div className='flex items-center gap-2 text-stone-400'>
                                 <Languages className='text-gold-400 h-4 w-4' />

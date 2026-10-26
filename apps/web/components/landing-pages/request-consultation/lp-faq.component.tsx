@@ -12,11 +12,13 @@
  * structured data to earn here — the page is noindex.
  *
  * The cost answer repeats the settled starting prices (BBL, Lipo 360). They
- * come from the thread's own copy, which the server read from the procedure
- * facts files, so the page never states a price the facts no longer carry:
+ * come from the pricing resolver (#354), in plain text ("$4,400 (20% off
+ * $5,500)" while a discount is on, with the 456.062 statement after them):
  * without both, the sentence is dropped. On the tummy tuck view (#316) it
  * names the mini and full tummy tuck prices instead.
  */
+
+import { formatPriceText } from '@workspace/shared/claims/pricing'
 
 import { fill } from '@/components/shared/consult-chat/consult-chat.util'
 
@@ -29,20 +31,28 @@ interface LpFaqProps {
     /** Starting prices by procedure value, already formatted ("$5,500"). */
     readonly prices: Readonly<Record<string, string>>
     /** The tummy tuck view's prices (#316), when this is that view. */
-    readonly tummyTuck?: LpPrices['tummyTuck']
+    readonly tummyTuck?: LpPrices
+    /** The 456.062 statement while the starting prices are discounted. */
+    readonly priceStatement?: string | null
 }
 
-export function LpFaq({ copy, prices, tummyTuck }: LpFaqProps) {
+export function LpFaq({ copy, prices, tummyTuck, priceStatement }: LpFaqProps) {
     const bbl = prices.bbl
     const lipo = prices.liposuction
-    const pricesLine = tummyTuck
-        ? fill(copy.pricesTummyTuck, {
-              mini: tummyTuck.mini,
-              full: tummyTuck.full,
-          })
+    const mini = tummyTuck?.tummyTuck.mini
+    const full = tummyTuck?.tummyTuck.full
+    const line = tummyTuck
+        ? mini && full
+            ? fill(copy.pricesTummyTuck, {
+                  mini: formatPriceText(mini),
+                  full: formatPriceText(full),
+              })
+            : ''
         : bbl && lipo
           ? fill(copy.prices, { bbl, lipo })
           : ''
+    const statement = tummyTuck ? tummyTuck.statement : priceStatement
+    const pricesLine = line && statement ? `${line} ${statement}` : line
 
     return (
         <section className='band' id='faq'>

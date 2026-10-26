@@ -7,7 +7,9 @@
  *
  * Every write to an existing post:
  *   1. refuses refresh working copies and posts the pipeline is processing
- *   2. rejects content the blog renderer cannot render (MDX validator)
+ *   2. rejects content the blog renderer cannot render (MDX validator) and
+ *      claim tokens (`[[price:bbl]]`, #354) that would render as nothing, in
+ *      every field a reader sees
  *   3. snapshots a `blog_post_revision` (reason `mcp-edit`) in the same
  *      transaction, so `rollbackRevision` can undo it
  *   4. dismisses the post's open refresh candidates — refresh runs in `auto`
@@ -48,6 +50,7 @@ import {
 } from '@workspace/db/schema/blog'
 import { getBlogPostUrl } from '@workspace/shared'
 import { CACHE_TAGS } from '@workspace/shared/cache'
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 
 import {
@@ -62,9 +65,14 @@ import {
     parseFaqSection,
     type OpenRefreshStatus,
 } from '@/lib/mcp/post-guards.util'
+import { getPricingSnapshot } from '@/lib/queries/pricing.query'
 import { dismissRefreshCandidate } from '@/lib/services/content-refresh.service'
 import { evaluateSingleTopic } from '@/lib/services/ideation-gate.service'
 import { rollbackRevision } from '@/lib/services/refresh-execution.service'
+import {
+    findClaimTokenErrors,
+    type ClaimTokenFields,
+} from '@/lib/utils/claim-token-fields.util'
 import { buildRevisionValues } from '@/lib/utils/refresh-merge.util'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 
@@ -327,14 +335,34 @@ export async function listAuthors() {
 // ============================================
 
 /** Reject content the renderer would crash on or silently strip. */
-function assertRenderable(content: string) {
-    const result = validateGeneratedMdx(content)
+function assertRenderable(content: string, pricing: PricingSnapshot) {
+    const result = validateGeneratedMdx(content, { pricing })
     if (!result.clean) {
         const problems = result.actions
             .map((action) => `- ${action.kind}: ${action.detail}`)
             .join('\n')
         throw new McpPostError(
             `The content would not render as written. Fix these and resend (get_writing_guide lists the allowed components):\n${problems}`
+        )
+    }
+}
+
+/**
+ * Reject a claim token in a non-body field that would render as nothing, or
+ * an Alluring price typed instead of a token (#354). The body goes through
+ * `assertRenderable`, which reports both among the other MDX hazards.
+ */
+function assertClaimTokens(
+    fields: Omit<ClaimTokenFields, 'content'>,
+    pricing: PricingSnapshot
+): void {
+    const problems = findClaimTokenErrors(
+        { ...fields, content: undefined },
+        pricing
+    )
+    if (problems.length > 0) {
+        throw new McpPostError(
+            `Some claim tokens would render as nothing, or a price is typed instead of a token. Fix these and resend (get_writing_guide lists every valid token):\n${problems.map((problem) => `- ${problem}`).join('\n')}`
         )
     }
 }
@@ -424,6 +452,8 @@ export async function updatePost(input: UpdatePostInput) {
         throw new McpPostError('Send either content or edits, not both.')
     }
     if (input.categoryIds) await assertCategoriesExist(input.categoryIds)
+    const pricing = await getPricingSnapshot()
+    assertClaimTokens(input.fields, pricing)
 
     // Read, check and write under a row lock: Claude Code sends tool calls in
     // parallel, and two edits computed from the same read would silently drop
@@ -461,7 +491,7 @@ export async function updatePost(input: UpdatePostInput) {
         if (fields.content !== undefined) {
             if (!fields.content.trim())
                 throw new McpPostError('Content cannot be empty.')
-            assertRenderable(fields.content)
+            assertRenderable(fields.content, pricing)
             if (fields.readingTime === undefined) {
                 fields.readingTime = estimateReadingTime(fields.content)
             }
@@ -727,7 +757,9 @@ export async function createPost(input: CreatePostInput) {
         )
     }
 
-    assertRenderable(input.content)
+    const pricing = await getPricingSnapshot()
+    assertRenderable(input.content, pricing)
+    assertClaimTokens(input, pricing)
     if (input.categoryIds) await assertCategoriesExist(input.categoryIds)
     if (input.authorId) {
         const [found] = await db

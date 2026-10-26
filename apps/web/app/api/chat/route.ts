@@ -9,6 +9,7 @@
  */
 import { type NextRequest, NextResponse, after } from 'next/server'
 import {
+    buildChatSystemPrompt,
     coreStreamText,
     createUIMessageStream,
     createUIMessageStreamResponse,
@@ -28,6 +29,7 @@ import {
     updateMessageSuggestedQuestions,
     updateSessionConversationAnalysis,
 } from '@/lib/queries/chat.query'
+import { getPricing } from '@/lib/queries/pricing.query'
 import type { AIMessage } from '@workspace/chat/types'
 import {
     sanitizeMessageContent,
@@ -148,6 +150,14 @@ export async function POST(request: NextRequest) {
                 content: msg.content,
             }))
 
+        // The DB-held prompt, then the claims canon with the current
+        // starting prices (#354), so an admin edit can't reintroduce a
+        // retired claim and Sofía quotes today's prices, never a deposit.
+        const systemPrompt = buildChatSystemPrompt(
+            config.systemPrompt,
+            await getPricing()
+        )
+
         // Get detected procedures for quick questions context
         const detectedProcedures =
             (session.detectedProcedures as string[]) ?? []
@@ -165,7 +175,7 @@ export async function POST(request: NextRequest) {
 
                 const result = coreStreamText({
                     modelId: config.modelId,
-                    system: config.systemPrompt,
+                    system: systemPrompt,
                     messages: contextMessages,
                     temperature: config.temperature,
                     maxTokens: config.maxTokens,

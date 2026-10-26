@@ -7,6 +7,7 @@
  */
 import { NextResponse } from 'next/server'
 
+import { resolveClaims } from '@/lib/claims/resolve-claims.server'
 import { getChatConfig } from '@/lib/queries/chat.query'
 
 /**
@@ -22,7 +23,12 @@ export async function GET() {
         return NextResponse.json({
             isEnabled: config.isEnabled,
             agentName: config.agentName,
-            welcomeMessage: config.welcomeMessage,
+            // Claim tokens (#354) resolved: a visitor never sees brackets.
+            welcomeMessage: await resolveClaims(
+                config.welcomeMessage,
+                'text',
+                'chat_config.welcome_message'
+            ),
             buttonPosition: config.buttonPosition,
             primaryColor: config.primaryColor,
             agentImageUrl: config.agentImageUrl,

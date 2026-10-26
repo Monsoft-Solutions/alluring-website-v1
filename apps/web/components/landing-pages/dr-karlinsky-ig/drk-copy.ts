@@ -247,7 +247,7 @@ const en: DrkDictionary = {
         body: 'Your price is personal: I confirm it at your consultation, in writing, before you decide. Pay in full, monthly through a financing partner, or both.',
         partnersLabel: 'Financing partners',
         cta: 'Ask about financing',
-        fine: 'Checking with Cherry won’t affect your credit score. Financing is offered by third-party lenders and is subject to credit approval.',
+        fine: 'Financing is offered by third-party lenders and is subject to credit approval.',
     },
     results: {
         heading: ['My patients’ ', { em: 'results' }],
@@ -408,7 +408,7 @@ const es: DrkDictionary = {
         body: 'Tu precio es personal: te lo confirmo yo en tu consulta, por escrito, antes de que decidas. Paga completo, en cuotas mensuales con una financiera, o ambas.',
         partnersLabel: 'Financieras',
         cta: 'Preguntar por financiamiento',
-        fine: 'Consultar con Cherry no afecta tu puntaje de crédito. El financiamiento lo ofrecen prestamistas externos y está sujeto a aprobación de crédito.',
+        fine: 'El financiamiento lo ofrecen prestamistas externos y está sujeto a aprobación de crédito.',
     },
     results: {
         heading: ['Resultados de ', { em: 'mis pacientes' }],
@@ -441,7 +441,7 @@ const es: DrkDictionary = {
         credentials: [
             `Certificada en cirugía general por el American Board of Surgery desde ${ABS_YEAR}`,
             'Miembro (Fellow) del American College of Surgeons (FACS)',
-            `Licencia médica de Florida ${KARLINSKY_FLORIDA_LICENSE}, vigente y sin restricciones`,
+            `Licencia médica de Florida ${KARLINSKY_FLORIDA_LICENSE}, vigente y sin sanciones`,
         ],
         portraitAlt: 'Dra. Victoria Karlinsky',
     },

@@ -67,6 +67,9 @@ Use the SEO Content Expert when you need to:
 Before writing, analyze:
 
 - Business info from `lib/data/site-config.ts`
+- **What Alluring may claim**: `docs/claims/canon.md`, the claims canon
+  (its "Decisions of 2026-10-25" block overrides the rest). A claim it
+  doesn't verify is removed, never replaced with another unverified claim.
 - Target audience and their needs
 - Page purpose and conversion goals
 - Surrounding sections for narrative flow
@@ -275,9 +278,33 @@ export function SectionName() {
 }
 ```
 
+## Alluring Claims (always)
+
+The claims canon (`docs/claims/canon.md`) and its code,
+`@workspace/shared/claims` (`packages/shared/src/claims/README.md`), decide
+every claim. In short:
+
+- **No typed Alluring price.** Components read the pricing resolver; data
+  files, FAQs and DB text use claim tokens (`[[price:bbl]]`,
+  `[[price:tummy-tuck:mini]]`, `[[price-range:bbl]]`, `[[price-caveat]]`).
+  No weekly or monthly payment figures: name the financing partners with
+  the shared sentence (`[[financing]]`), no numbers.
+- **One surgeon**, "Victoria Karlinsky, MD, FACS", then "Dr. Karlinsky".
+  Credentials only as the canon's sentences. Never "board-certified plastic
+  surgeon", "double board-certified", bare "board-certified", ABPS, or
+  "plastic surgeon" for her. No other surgeon's name.
+- No accreditation, anesthesiologist, 24/7, volume or tenure ("5,000+",
+  "15+ years") claims. No superlatives about the practice, the surgeon or
+  results, and no "luxury" or "affordable".
+- US market only, no travel coordination. Sofía is "our concierge".
+- "Free consultation" stays where it already is; new copy doesn't add
+  "free".
+- Medical figures come from the facts files
+  (`apps/web/lib/data/procedures/facts/*.facts.ts`) or a cited source.
+
 ## Key Reminders
 
-1. **Context First**: Always check site-config.ts before writing
+1. **Context First**: Always check site-config.ts and the claims canon before writing
 2. **Natural Language**: If it sounds forced, rewrite
 3. **User Intent**: Solve problems, don't just rank
 4. **Psychology**: Understand why users care

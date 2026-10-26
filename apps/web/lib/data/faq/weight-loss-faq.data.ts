@@ -29,16 +29,16 @@ export const weightLossFaqData: Record<string, FaqItem[]> = {
         {
             question:
                 'How much weight do I need to lose before skin removal surgery?',
-            answer: `There's no minimum weight loss requirement, but most patients seeking body contouring have lost 50+ pounds through bariatric surgery, diet, exercise, or a combination. The key factor is that you've achieved and can maintain a stable weight. We evaluate each patient individually during consultation.`,
+            answer: `There's no minimum weight loss requirement. Patients come to body contouring after losing weight through bariatric surgery, diet, exercise, or a combination. The key factor is that you've achieved and can maintain a stable weight. We evaluate each patient individually during consultation.`,
         },
         {
             question: 'How long should my weight be stable before surgery?',
-            answer: `We recommend maintaining a stable weight for at least 3-6 months before body contouring surgery. This ensures your body has settled and allows us to plan procedures that will give you long-lasting results. Continuing to lose significant weight after surgery can affect your results.`,
+            answer: `Most surgeons look for a stable weight for several months (often 3 to 6) before body contouring surgery, and your surgeon sets yours. This ensures your body has settled and allows us to plan procedures that will give you long-lasting results. Continuing to lose significant weight after surgery can affect your results.`,
         },
         {
             question:
                 'How soon after bariatric surgery can I have skin removal?',
-            answer: `Most bariatric surgeons and plastic surgeons agree on waiting 12-18 months after gastric bypass or sleeve gastrectomy. This allows your weight to stabilize and ensures you're nutritionally healthy enough for another major surgery. We'll coordinate with your bariatric team if needed.`,
+            answer: `Body contouring often takes place 12 to 18 months after gastric bypass or sleeve gastrectomy, once your weight has stabilized. This allows your weight to stabilize and ensures you're nutritionally healthy enough for another major surgery. We'll coordinate with your bariatric team if needed.`,
         },
         {
             question: 'Will my insurance cover skin removal after weight loss?',
@@ -52,7 +52,7 @@ export const weightLossFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'What is a lower body lift?',
-            answer: `A lower body lift, also called a belt lipectomy or circumferential body lift, is a comprehensive procedure that removes excess skin from the entire lower trunk—abdomen, hips, outer thighs, and buttocks. It's often the most transformative single procedure for post-weight loss patients.`,
+            answer: `A lower body lift, also called a belt lipectomy or circumferential body lift, is a comprehensive procedure that removes excess skin from the entire lower trunk—abdomen, hips, outer thighs, and buttocks.`,
         },
         {
             question: 'Can I have multiple procedures done at once?',
@@ -66,7 +66,7 @@ export const weightLossFaqData: Record<string, FaqItem[]> = {
     planning: [
         {
             question: 'What is staged body contouring?',
-            answer: `Staging means dividing your transformation into multiple surgeries performed months apart. For example, you might have a lower body lift first, recover for 3-6 months, then have an arm lift and breast lift. This approach reduces surgical risk and allows your body to heal optimally between procedures.`,
+            answer: `Staging means dividing your transformation into multiple surgeries performed months apart. For example, you might have a lower body lift first, recover for several months (often 3 to 6), then have an arm lift and breast lift; your surgeon sets the spacing between stages. This approach reduces surgical risk and allows your body to heal optimally between procedures.`,
         },
         {
             question: 'How do you prioritize which procedures to do first?',
@@ -74,26 +74,26 @@ export const weightLossFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long does the entire transformation take?',
-            answer: `If staging is recommended, your complete transformation might span 12-24 months to allow for proper healing between procedures. However, many patients can achieve significant improvement with one or two surgeries. We'll create a personalized timeline during your consultation.`,
+            answer: `If staging is recommended, your complete plan can span a year or more to allow for proper healing between procedures. However, many patients can achieve significant improvement with one or two surgeries. We'll create a personalized timeline during your consultation.`,
         },
         {
             question: 'What should I do to prepare for skin removal surgery?',
-            answer: `Maintain your current weight, continue good nutrition (protein is especially important for healing), stop smoking at least 4-6 weeks before surgery, and follow any specific instructions from your bariatric team. We'll provide detailed preparation guidelines tailored to your situation.`,
+            answer: `Maintain your current weight, continue good nutrition (protein is especially important for healing), stop smoking and all nicotine well before surgery, as your surgeon directs (Cleveland Clinic gives, as an example, at least 1 month before surgery and 2 weeks after), and follow any specific instructions from your bariatric team. We'll provide detailed preparation guidelines tailored to your situation.`,
         },
     ],
     recovery: [
         {
             question:
                 'How long is recovery from body contouring after weight loss?',
-            answer: `Recovery varies by procedure, but most patients take 2-4 weeks off work. Lower body lifts typically require the longest recovery (3-4 weeks), while arm lifts may only need 1-2 weeks. You'll have activity restrictions for 4-6 weeks and should avoid heavy lifting for 6-8 weeks.`,
+            answer: `Time off depends on the procedure and how many are combined; lower body lifts usually need the longest recovery. Heavy lifting and strenuous exercise wait until your surgeon clears them, usually 4 to 8 weeks after surgery (Cleveland Clinic's tummy tuck guidance). Your surgeon gives you your timeline.`,
         },
         {
             question: 'Will I have drains after surgery?',
-            answer: `Yes, drains are typically placed during skin removal surgery to prevent fluid buildup. You'll go home with drains and learn how to care for them. Most drains are removed within 1-3 weeks, depending on how quickly your body heals and how much fluid they're collecting.`,
+            answer: `Your surgeon tells you at consultation whether you'll have drains. If drains are placed, they usually come out in 1 to 2 weeks, sometimes longer (surgeons on the ASPS website).`,
         },
         {
             question: 'Will there be a lot of scarring?',
-            answer: `Yes, skin removal surgery does leave scars—you're trading excess skin for scars. However, we strategically place incisions to be hidden by underwear and clothing whenever possible. Scars fade significantly over 12-18 months, and we provide scar care guidance to optimize healing.`,
+            answer: `Yes, skin removal surgery does leave scars—you're trading excess skin for scars. Incisions are placed so underwear and clothing cover them whenever possible. Scars become thinner and lighter over time; a tummy tuck scar lightens at around 12 to 18 months (Cindy Wu, MD, on the ASPS website). We provide scar care guidance.`,
         },
         {
             question:

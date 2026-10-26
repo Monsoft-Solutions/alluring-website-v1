@@ -12,6 +12,7 @@ import {
 } from '@workspace/db/schema/blog'
 import { and, eq, isNotNull } from 'drizzle-orm'
 
+import { resolvePostClaims } from '@/lib/claims/resolve-claims.server'
 import type { BlogPostDetail } from '@/types/blog/post-detail.type'
 
 /**
@@ -113,13 +114,18 @@ async function fetchPublishedPostBySlug(
  * Uses Next.js unstable_cache for cross-request caching.
  * Cache is tagged with 'blog-posts' and specific post slug for targeted invalidation.
  *
+ * Claim tokens (`[[price:bbl]]`, issue #354) are resolved after the cache, so
+ * the cached entry keeps the stored text and a price edit in the admin
+ * (which revalidates the `pricing` tag) reaches every post without touching
+ * its cache entry.
+ *
  * @param slug - The blog post slug
- * @returns The blog post detail or null if not found
+ * @returns The blog post detail, tokens resolved, or null if not found
  */
-export const getPublishedPostBySlug = (
+export const getPublishedPostBySlug = async (
     slug: string
 ): Promise<BlogPostDetail | null> => {
-    return unstable_cache(
+    const post = await unstable_cache(
         () => fetchPublishedPostBySlug(slug),
         // v2: the cached detail gained metaTitle (#348). A new key keeps an
         // entry cached before the deploy from serving the old shape.
@@ -129,4 +135,5 @@ export const getPublishedPostBySlug = (
             revalidate: 86400, // publishing fires revalidateTag('blog-posts'); see #337
         }
     )()
+    return post ? resolvePostClaims(post) : null
 }

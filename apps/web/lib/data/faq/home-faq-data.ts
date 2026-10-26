@@ -5,8 +5,16 @@
  * Data is organized by category for the CategorizedFAQ component.
  */
 
+import {
+    FINANCING_SENTENCE_LONG,
+    FINANCING_SENTENCE_SHORT,
+} from '@workspace/shared/claims/financing'
+
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
-import { getFinancingPartnersString } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * Available FAQ categories
@@ -25,7 +33,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
     general: [
         {
             question: 'How do I schedule a consultation?',
-            answer: 'You can request a consultation via our online form, WhatsApp concierge, or by calling our Miami office directly. We offer both in-person appointments and virtual consultations for our out-of-town patients.',
+            answer: 'You can request a consultation with our online form or by calling our Miami office. We offer consultations in person in Miami or by video for out-of-town patients.',
         },
         {
             question: 'Do I need a referral from my doctor?',
@@ -33,7 +41,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'Where is the surgery performed?',
-            answer: 'All procedures are performed in our state-of-the-art surgical facility located right here in Miami by Double Board-Certified surgeons. We prioritize privacy, safety, and comfort.',
+            answer: `Every procedure is performed in Miami by one surgeon, ${KARLINSKY_NAME}, and you go home the same day. We prioritize privacy, safety, and comfort.`,
         },
         {
             question: 'What procedures are included in a mommy makeover?',
@@ -41,7 +49,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long does BBL recovery take?',
-            answer: 'BBL recovery typically requires 10-14 days off work. Avoid sitting directly on your buttocks for at least 2 weeks, then sit only on a BBL pillow until about week 8. Most patients see initial results immediately, with final results visible at 3-6 months once swelling subsides. We provide detailed post-op care instructions and recovery supplies.',
+            answer: 'Most people return to desk work 10 to 14 days after a BBL, sitting on a pillow (Cleveland Clinic, The Aesthetic Society); ASPS says some go back between days 7 and 10. Avoid sitting directly on your buttocks for at least 2 weeks (Cleveland Clinic), then sit only on a BBL pillow until about week 8. Most patients see initial results immediately, with final results visible at 3-6 months once swelling subsides. We provide detailed post-op care instructions.',
         },
         {
             question: 'Do you serve patients from outside Miami?',
@@ -50,42 +58,45 @@ export const faqDataHome: Record<string, FaqItem[]> = {
         {
             question:
                 'How far in advance should out-of-town patients plan a trip?',
-            answer: 'Plan on booking 4-6 weeks out. That gives time for your virtual consultation, medical clearance and any lab work before your surgery date is locked in. Once your date is confirmed in writing, you can book travel around it. Most procedures require staying in Miami for 7-10 days after surgery so your surgeon can see you for follow-up and clear you to fly home — we will give you the exact number for your procedure before you buy a ticket.',
+            answer: 'Plan ahead: allow time for your virtual consultation, medical clearance and any lab work before your surgery date is locked in. Once your date is confirmed in writing, you can book travel around it. After a BBL, plan on 7 to 10 days in Miami. For other procedures, your surgeon tells you how many nights to stay so you can be seen at follow-up and cleared to fly home — we give you the exact number for your procedure before you buy a ticket.',
         },
     ],
     recovery: [
         {
             question: 'How long will I need to take off work?',
-            answer: 'This varies by procedure. For a BBL or Mommy Makeover, most patients take 2 weeks off. For breast augmentation, many return to desk work within 5-7 days. We will provide a customized timeline during your consult.',
+            answer: 'It depends on the procedure. After a BBL, most people return to desk work in 10 to 14 days, sitting on a pillow (Cleveland Clinic, The Aesthetic Society); ASPS says some go back between days 7 and 10. After a mommy makeover, plan on about 2 to 3 weeks. After breast augmentation, most people are back to light activity in about a week. We will provide a customized timeline during your consult.',
         },
         {
             question: 'Do you offer recovery houses?',
-            answer: 'No. We do not operate recovery houses and we are not partnered with any, so we cannot book one for you or vouch for one. Patients who want that kind of stay research and book it themselves. What we do provide is the clinical side of your recovery: written post-op instructions, your follow-up appointment schedule, and a number to call if something does not look right.',
+            answer: 'No. We do not operate recovery houses and we are not affiliated with any, so we cannot book one for you or vouch for one. Patients who want that kind of stay research and book it themselves. What we do provide is the clinical side of your recovery: written post-op instructions, your follow-up appointment schedule, and a number to call if something does not look right.',
         },
         {
             question: 'When can I exercise again?',
-            answer: 'Light walking is encouraged immediately. Cardio can usually resume at 3-4 weeks, and heavy lifting or intense workouts typically require 6 weeks of healing.',
+            answer: 'Walking starts right away. Strenuous exercise waits until your surgeon clears you: about 4 to 6 weeks after liposuction (The Aesthetic Society), 4 to 8 weeks after a tummy tuck (Cleveland Clinic) and 8 weeks after a BBL (The Aesthetic Society).',
         },
     ],
     financing: [
         {
             question: 'How much does a BBL cost in Miami?',
-            answer: 'BBL pricing at our Miami clinic starts at $5,500, and most patients pay between $5,500 and $10,000, including surgeon fees, anesthesia, facility fees, and all pre/post-op appointments. Every price is personalized: it depends on the amount of liposuction needed and whether additional procedures are combined. Financing is available.',
+            // Prices are claim tokens, resolved from the admin's price list
+            // where the FAQ renders (#354).
+            answer: 'A BBL at Alluring starts at [[price:bbl]], and [[price-range:bbl]]. Every price is personalized: it depends on the amount of liposuction needed and whether additional procedures are combined, and your surgeon confirms it at consultation. Financing is available. [[discount-statement]]',
         },
         {
             question: 'How much does a mommy makeover cost?',
             // Parts from the practice's price sheet of 2026-09-15, as in
             // mommy-makeover-miami.data.ts. The sheet has no mommy makeover
             // total, and what a price includes waits on the practice (#309).
-            answer: 'A mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at $3,000 (mini) or $4,500 (full), breast augmentation at $3,500 (saline) or $4,500 (silicone), and a breast lift at $5,000. Combining two procedures takes $500 off the total, and three take $1,000 off. Financing is available for qualified applicants.',
+            answer: 'A mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at [[price:tummy-tuck:mini]] (mini) or [[price:tummy-tuck:full]] (full), breast augmentation at [[price:breast-augmentation:saline]] (saline) or [[price:breast-augmentation:silicone]] (silicone), and a breast lift at [[price:breast-lift:modified]] (modified lift). Combining two procedures takes [[combo-discount:2]] off the total, and three take [[combo-discount:3]] off. Your surgeon confirms your price at consultation, and financing is available for qualified applicants. [[discount-statement]]',
         },
         {
-            question: 'Do you offer 0% financing for plastic surgery?',
-            answer: `Yes! We partner with ${getFinancingPartnersString()} to offer 0% interest financing for qualified applicants. Plans range from 6-24 months. Many patients pay as little as $99-$199/month for their dream results. Apply during your free consultation.`,
+            // Partners named, no payment figure, rate or term (canon D6).
+            question: 'Do you offer financing for plastic surgery?',
+            answer: `Yes. ${FINANCING_SENTENCE_LONG} You can apply during your free consultation.`,
         },
         {
             question: 'Do you offer payment plans?',
-            answer: `Yes. We believe luxury care should be accessible. We work with ${getFinancingPartnersString()} to offer flexible monthly payment plans, some with 0% interest for qualified applicants.`,
+            answer: `Yes. ${FINANCING_SENTENCE_SHORT} Approval and terms are set by the lender.`,
         },
         {
             question: 'Does insurance cover these procedures?',
@@ -94,12 +105,12 @@ export const faqDataHome: Record<string, FaqItem[]> = {
     ],
     safety: [
         {
-            question: 'Are your surgeons board-certified?',
-            answer: 'Absolutely. Our surgeons hold board certifications and specialize specifically in aesthetic procedures. We maintain the highest standards of training and safety protocols.',
+            question: "What are your surgeon's credentials?",
+            answer: `Yes. One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
         },
         {
             question: 'What anesthesia do you use?',
-            answer: 'We use general anesthesia administered by board-certified MD anesthesiologists—never nurse anesthetists without supervision. Your safety is our non-negotiable priority.',
+            answer: 'Most procedures are done under general anesthesia; liposuction and eyelid surgery can also be done under local anesthesia with sedation. An anesthesia provider monitors you throughout surgery, and your surgeon explains your plan at consultation.',
         },
     ],
 }

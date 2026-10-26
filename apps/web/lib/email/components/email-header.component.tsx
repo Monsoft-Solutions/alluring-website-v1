@@ -28,7 +28,7 @@ type EmailHeaderProps = {
  *
  * Displays business logo, tagline, and optional title.
  * Uses site configuration for logo and business name.
- * Features gold accent border for luxury aesthetic.
+ * Features a gold accent border.
  *
  * @example
  * ```tsx

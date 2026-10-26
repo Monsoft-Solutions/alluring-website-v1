@@ -1,7 +1,7 @@
 /**
  * Blog Landing Page
  *
- * Luxury blog page showcasing expert articles on plastic surgery
+ * Blog page showcasing articles on cosmetic surgery
  * procedures, recovery tips, and patient education.
  *
  * Features:
@@ -32,6 +32,7 @@ import { FeaturedPost } from '@/components/blog/featured-post.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
 import { PopularPosts } from '@/components/blog/popular-posts.component'
 import { CTASection } from '@/components/shared/cta-section.component'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     blogArticlesSectionData,
@@ -61,7 +62,7 @@ const pageTitle = 'Plastic Surgery Blog | Expert Tips & Recovery Guides | Miami'
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     title: pageTitle,
     description:
-        "Expert insights from Miami's board-certified plastic surgeons. Recovery tips, procedure guides, patient stories & the latest in cosmetic surgery. Updated weekly.",
+        'Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami. Recovery tips, procedure guides, patient stories & the latest in cosmetic surgery.',
     keywords: blogSeoData.keywords,
     canonical: blogSeoData.canonical,
 
@@ -70,7 +71,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            "Expert insights from Miami's board-certified plastic surgeons. Recovery tips, procedure guides, patient stories & the latest in cosmetic surgery. Updated weekly.",
+            'Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami. Recovery tips, procedure guides, patient stories & the latest in cosmetic surgery.',
         siteName: siteConfig.business.name,
         images: [
             {
@@ -86,7 +87,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            "Expert insights from Miami's board-certified plastic surgeons. Recovery tips, procedure guides & patient stories. Updated weekly.",
+            'Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami. Recovery tips, procedure guides & patient stories.',
         images: [`${siteUrl}/og-image.jpg`],
     },
 
@@ -255,19 +256,21 @@ export default async function BlogPage() {
                     trustBadges={[
                         {
                             icon: <Award className='h-5 w-5' />,
-                            label: 'Board-Certified Surgeons',
+                            label: TRUST_BADGES.surgeon,
                         },
                         {
                             icon: <Shield className='h-5 w-5' />,
-                            label: 'Accredited Facility',
+                            label: TRUST_BADGES.board,
                         },
                         {
                             icon: <Users className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+                            label: formatRatingBadge(
+                                siteConfig.trustStats?.rating
+                            ),
                         },
                         {
                             icon: <Building2 className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                            label: TRUST_BADGES.spanish,
                         },
                     ]}
                     size='lg'

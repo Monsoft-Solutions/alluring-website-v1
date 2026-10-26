@@ -6,6 +6,8 @@
 **Last Updated:** December 2025  
 **Purpose:** Comprehensive keyword reference for content creation, organized by procedure and search intent
 
+> **Keywords are search terms, not copy.** Queries with "best", "top", "affordable", "cheap" or "board certified" are answered without saying those words about Alluring, the surgeon or results: the claims canon (`docs/claims/canon.md`, issue #354) bans superlatives, "luxury" and "affordable", and allows credentials only in its approved sentences. Prices on any page come from the pricing resolver or claim tokens, and financing copy names the partners with no payment figures. The suggested titles below were aligned to the canon on 2026-10-25.
+
 ---
 
 ## Table of Contents
@@ -144,8 +146,8 @@
 
 - "Mommy Makeover Recovery Timeline: Week by Week" (recovery keywords)
 - "How Much Does a Mommy Makeover Cost in Miami?" (cost keywords)
-- "Mommy Makeover with BBL: Complete Transformation" (combo keywords)
-- "Affordable Mommy Makeover: Financing Options in Miami" (financing angle)
+- "Mommy Makeover with BBL: What to Expect" (combo keywords)
+- "Mommy Makeover Financing Options in Miami" (financing angle)
 
 ---
 
@@ -229,9 +231,9 @@
 
 **Blog Opportunities:**
 
-- "Breast Augmentation Financing: Making It Affordable" (LOW competition!)
+- "Breast Augmentation Financing: How It Works" (LOW competition!)
 - "Breast Augmentation vs. Breast Lift: Which Do You Need?"
-- "Finding the Best Breast Augmentation Surgeon in Miami"
+- "How to Choose a Breast Augmentation Surgeon in Miami"
 - "Breast Augmentation Recovery: What to Expect"
 
 ---
@@ -357,7 +359,7 @@
 2. **Procedure-Specific Financing Guides:**
     - "Breast Augmentation Financing: Your Complete Guide"
     - "How to Finance Your BBL: Options and Tips"
-    - "Tummy Tuck Payment Plans: Making It Affordable"
+    - "Tummy Tuck Payment Plans: How Financing Works"
 
 ---
 

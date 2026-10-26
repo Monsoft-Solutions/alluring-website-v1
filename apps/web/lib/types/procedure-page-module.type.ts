@@ -12,6 +12,7 @@
 import type { ReactNode } from 'react'
 
 import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 import type { Procedure } from '@/lib/types/procedure.type'
 
 export type ProcedurePageModuleProps = {
@@ -23,6 +24,13 @@ export type ProcedurePageModuleProps = {
     siteUrl: string
     /** The canonical URL of this page. */
     pageUrl: string
+    /**
+     * The procedure's prices from the pricing resolver (#354): the starting
+     * line, every line, BBL's range and the 456.062 statement while a
+     * discount is on. The page prints these through `PriceTag`; the
+     * structured-data graph reads the same object.
+     */
+    prices: ProcedurePrices
 }
 
 /** A server component that renders a procedure's page body. */

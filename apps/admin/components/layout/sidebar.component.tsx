@@ -2,6 +2,7 @@
 
 import { cn } from '@workspace/ui/lib/utils'
 import {
+    BadgeDollarSign,
     BarChart3,
     FileText,
     Home,
@@ -69,6 +70,11 @@ const navItems: NavItem[] = [
         title: 'Promotions',
         href: '/promotions',
         icon: Megaphone,
+    },
+    {
+        title: 'Pricing',
+        href: '/pricing',
+        icon: BadgeDollarSign,
     },
     {
         title: 'Gallery',

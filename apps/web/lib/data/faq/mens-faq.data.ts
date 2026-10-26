@@ -9,6 +9,7 @@
  * - Recovery: Downtime, return to gym
  */
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
 /**
@@ -28,11 +29,11 @@ export const mensFaqData: Record<string, FaqItem[]> = {
     procedures: [
         {
             question: 'What cosmetic procedures are most popular for men?',
-            answer: `The most popular procedures for men at our practice are: gynecomastia surgery (male breast reduction), liposuction for stubborn fat areas, rhinoplasty (nose reshaping), facelift and neck lift for aging concerns, and body contouring. Men typically want procedures that enhance their natural masculine features without looking "done."`,
+            answer: `Procedures men often ask about at Alluring include gynecomastia surgery (male breast reduction), liposuction, face and neck lift, and body contouring. Men typically want procedures that enhance their natural masculine features without looking "done."`,
         },
         {
             question: 'Is plastic surgery different for men than women?',
-            answer: `Yes, male plastic surgery requires a different approach. Men have thicker skin, different fat distribution patterns, and distinct aesthetic goals. For example, male liposuction focuses on creating angular, athletic contours rather than curves. Our surgeons have extensive experience with male anatomy and aesthetics.`,
+            answer: `Yes, male plastic surgery requires a different approach. Men have thicker skin, different fat distribution patterns, and distinct aesthetic goals. For example, male liposuction focuses on creating angular, athletic contours rather than curves. One surgeon, ${KARLINSKY_NAME}, performs every procedure at Alluring and plans male procedures around these differences.`,
         },
         {
             question: 'Can I combine multiple procedures?',
@@ -40,61 +41,61 @@ export const mensFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Do many men get plastic surgery?',
-            answer: `Absolutely. Men represent over 15% of all cosmetic procedures nationally, and that number grows every year. In our practice, we see men from all walks of life—executives, athletes, fitness enthusiasts, and professionals who want to look as good as they feel. Male cosmetic surgery has become completely mainstream.`,
+            answer: `Yes. In our practice, we see men from all walks of life—executives, athletes, fitness enthusiasts, and professionals who want to look as good as they feel.`,
         },
     ],
     gynecomastia: [
         {
             question: 'What is gynecomastia surgery?',
-            answer: `Gynecomastia surgery (male breast reduction) removes excess breast tissue and/or fat from the male chest. Many men develop enlarged breast tissue due to hormones, genetics, medications, or weight fluctuations. No amount of diet or exercise can eliminate true gynecomastia—surgery is the only solution.`,
+            answer: `Gynecomastia surgery (male breast reduction) removes excess breast tissue and/or fat from the male chest. Many men develop enlarged breast tissue due to hormones, genetics, medications, or weight fluctuations. Diet and exercise can't remove glandular breast tissue, so when true gynecomastia persists, surgery is the usual treatment.`,
         },
         {
             question: 'How do I know if I have gynecomastia or just chest fat?',
-            answer: `True gynecomastia involves actual breast gland tissue, which feels firm and is located directly behind the nipple. Chest fat (pseudogynecomastia) is softer and more evenly distributed. During your consultation, we'll examine you to determine whether you need gland excision, liposuction, or both for optimal results.`,
+            answer: `True gynecomastia involves actual breast gland tissue, which feels firm and is located directly behind the nipple. Chest fat (pseudogynecomastia) is softer and more evenly distributed. During your consultation, we'll examine you to determine whether you need gland excision, liposuction, or both.`,
         },
         {
             question: 'Will gynecomastia surgery leave scars?',
-            answer: `Incisions are strategically placed to minimize visible scarring. For liposuction-only cases, tiny incisions are hidden in natural creases. When gland excision is needed, incisions are made around the edge of the areola where they heal very discreetly. Most patients say their scars are virtually invisible within a year.`,
+            answer: `Incisions are placed to keep scars discreet. For liposuction-only cases, tiny incisions are hidden in natural creases. When gland excision is needed, incisions are made around the edge of the areola where they tend to heal discreetly. Scars usually fade over the first year, and your surgeon gives you scar-care guidance.`,
         },
         {
             question: 'Can gynecomastia come back after surgery?',
-            answer: `When performed correctly, gynecomastia surgery provides permanent results. The breast gland tissue is removed and does not regenerate. However, significant weight gain, certain medications, or steroid use could cause recurrence. Maintaining a stable weight and avoiding known causes helps ensure lasting results.`,
+            answer: `Gynecomastia surgery results are long-lasting. The breast gland tissue is removed and does not regenerate. However, significant weight gain, certain medications, or steroid use could cause recurrence. Maintaining a stable weight and avoiding known causes helps ensure lasting results.`,
         },
     ],
     results: [
         {
             question: 'Will my results look natural?',
-            answer: `Natural-looking results are our priority for male patients. We focus on enhancing your masculine features—creating a flat, contoured chest, a defined jawline, or an athletic body shape. Our goal is for you to look like the best version of yourself, not like you had surgery.`,
+            answer: `Natural-looking results are our priority for male patients. We focus on enhancing your masculine features—creating a flat, contoured chest, a defined jawline, or an athletic body shape. Our goal is for you to look like yourself, refreshed, not like you had surgery.`,
         },
         {
             question: 'How long until I see final results?',
-            answer: `You'll see improvement immediately, but final results typically appear at 3-6 months once all swelling has resolved. For procedures like gynecomastia surgery or liposuction, you'll notice dramatic improvement within weeks. Facial procedures may take longer for subtle swelling to completely subside.`,
+            answer: `You'll see improvement immediately, but final results typically appear at 3-6 months once all swelling has resolved. For procedures like gynecomastia surgery or liposuction, you'll notice a clear improvement within weeks. Facial procedures may take longer for subtle swelling to completely subside.`,
         },
         {
             question: 'How long do results last?',
-            answer: `Most male cosmetic surgery results are long-lasting or permanent. Gynecomastia surgery permanently removes breast tissue. Liposuction permanently removes fat cells. Facial procedures turn back the clock but don't stop aging—however, you'll always look younger than you would have without surgery.`,
+            answer: `Most male cosmetic surgery results are long-lasting. Gynecomastia surgery removes the excess breast tissue, and the results are long-lasting. Liposuction permanently removes fat cells, Cleveland Clinic says, as long as you keep a stable weight. Facial procedures don't stop aging, and you'll continue to age naturally.`,
         },
         {
             question: 'Will people be able to tell I had surgery?',
-            answer: `Our approach focuses on natural-looking enhancement, not dramatic transformation. Most patients report that people notice they look better, more rested, or fitter—but can't pinpoint why. The goal is for you to look refreshed and confident, not "worked on."`,
+            answer: `Our approach focuses on natural-looking enhancement, not dramatic transformation. The goal is for you to look refreshed and confident, not "worked on."`,
         },
     ],
     recovery: [
         {
             question: 'How much time will I need off work?',
-            answer: `Recovery time varies by procedure. Gynecomastia surgery: 3-5 days for desk work. Liposuction: 5-7 days. Facelift: 2 weeks. Many men schedule procedures before a vacation or work from home during initial recovery. We'll give you a specific timeline based on your procedure and job requirements.`,
+            answer: `Recovery time varies by procedure. Liposuction: within a few days, depending on your job (The Aesthetic Society), or weeks 2 to 3 (ASPS). Facelift: about 2 to 3 weeks. Gynecomastia: your surgeon gives you your timeline at consultation. Many men schedule procedures before a vacation or work from home during initial recovery. We'll give you a specific timeline based on your procedure and job requirements.`,
         },
         {
             question: 'When can I return to the gym?',
-            answer: `Light walking is encouraged immediately. Most patients can return to lower body workouts at 2 weeks. Upper body and core exercises typically resume at 4-6 weeks depending on the procedure. Full athletic activity is usually cleared at 6-8 weeks. We'll provide a detailed return-to-exercise plan.`,
+            answer: `Walking starts right away. Strenuous exercise waits about 4 to 6 weeks after liposuction (The Aesthetic Society). Your surgeon tells you when you can lift and train fully.`,
         },
         {
             question: 'Is the recovery painful?',
-            answer: `Most men describe recovery as more uncomfortable than painful—like the soreness after an intense workout. We prescribe appropriate pain medication for the first few days, but many patients transition to over-the-counter medications within 3-5 days. We prioritize your comfort throughout recovery.`,
+            answer: `Most men describe recovery as more uncomfortable than painful—like the soreness after an intense workout. Your surgeon prescribes pain medicine for the first days and tells you when to switch to over-the-counter relief. We prioritize your comfort throughout recovery.`,
         },
         {
             question: 'Will I need to wear compression garments?',
-            answer: `Yes, compression garments are important for optimal results. For gynecomastia and liposuction, you'll wear a compression vest for 4-6 weeks. This reduces swelling, supports healing, and helps your skin conform to your new contours. Most men find it comfortable and discrete under clothing.`,
+            answer: `Yes, compression garments are part of recovery. For gynecomastia and liposuction, you'll wear a compression vest for about 4 to 6 weeks, or as your surgeon directs. This reduces swelling, supports healing, and helps your skin conform to your new contours. Most men find it comfortable and discrete under clothing.`,
         },
     ],
 }

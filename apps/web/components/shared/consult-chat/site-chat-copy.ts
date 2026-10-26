@@ -5,23 +5,32 @@
  * Voice: "we", from the practice's patient coordinators. Several people
  * answer these leads, so no one person's name or face is on the thread
  * (Melissa's own page keeps hers). Claims stay inside what the site already
- * publishes: free consultation, a reply within 24 hours, English and Spanish,
+ * publishes: free consultation, a reply by text, English and Spanish,
  * video consultations from anywhere in the U.S. The practice always answers
- * by text, so nothing here promises a call.
+ * by text, so nothing here promises a call, and no reply time is named
+ * (claims canon §9). A quoted price carries the caveat: the surgeon confirms
+ * it at the consultation (§5).
  *
  * Server-only data: pages import it and pass both languages to the client
  * wrapper, which follows the visitor's language switch.
  *
  * Each page lists procedures in order of what its visitors actually pick
- * (#274). Only settled starting prices appear in the reply to the first tap;
- * they are read from the procedure facts files, so they change with them.
+ * (#274). Only settled starting prices appear in the reply to the first tap.
+ * They come from the pricing resolver (#354), so the copy here leaves
+ * `prices` empty and the server component that renders the thread fills it
+ * (`withChatPrices` in `site-chat-prices.server.ts`).
  *
  * Consent is the site-wide notice above the button (`ConsentNotice`, #350),
  * so no deck here carries consent words.
  */
 
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
-import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import {
+    formatPriceText,
+    getDiscountStatement,
+    getPriceDisplay,
+    type PricingSnapshot,
+} from '@workspace/shared/claims/pricing'
+import { FALLBACK_PRICING } from '@workspace/shared/claims/prices'
 
 import type {
     ConsultChatCopy,
@@ -139,12 +148,47 @@ const OTHER_LABEL: Record<SiteChatPage, Record<ConsultChatLang, string>> = {
     home: { en: 'Not sure yet', es: 'Aún no lo sé' },
 }
 
-/** Settled starting prices only; the rest wait on #232. */
-export const CHAT_STARTING_PRICES: Readonly<
-    Partial<Record<ProcedureValue, string>>
+/**
+ * The procedures whose reply quotes a starting price, and the price each
+ * quotes: BBL's starting price, and the Lipo 360 line by name (the thread
+ * labels liposuction "Lipo 360"). The rest wait on #232. Filled from the
+ * pricing resolver by `withChatPrices`; never typed.
+ */
+export const CHAT_PRICED_PROCEDURES: Readonly<
+    Partial<Record<ProcedureValue, { procedure: string; line?: string }>>
 > = {
-    bbl: bblFigure('price-starting-at'),
-    liposuction: lipoFigure('price-starting-at'),
+    bbl: { procedure: 'bbl' },
+    liposuction: { procedure: 'lipo', line: 'lipo360' },
+}
+
+/** The thread's prices by procedure value, and the statement they need. */
+export interface ChatStartingPrices {
+    /** Plain text: "$5,500", or "$4,400 (20% off $5,500)". */
+    readonly prices: Readonly<Partial<Record<ProcedureValue, string>>>
+    /** The Fla. Stat. 456.062 statement while any of them is discounted. */
+    readonly statement: string | null
+}
+
+/**
+ * {@link CHAT_PRICED_PROCEDURES}' prices from a pricing snapshot. Pure: the
+ * server passes `getPricing()`; the 2026-09-15 sheet is the default.
+ */
+export function buildChatStartingPrices(
+    pricing: PricingSnapshot = FALLBACK_PRICING
+): ChatStartingPrices {
+    const prices: Partial<Record<ProcedureValue, string>> = {}
+    let discounted = false
+    for (const [value, source] of Object.entries(CHAT_PRICED_PROCEDURES)) {
+        if (!source) continue
+        const display = getPriceDisplay(pricing, source.procedure, source.line)
+        if (!display) continue
+        prices[value as ProcedureValue] = formatPriceText(display)
+        discounted ||= display.discounted
+    }
+    return {
+        prices,
+        statement: discounted ? getDiscountStatement(pricing) : null,
+    }
 }
 
 /**
@@ -194,15 +238,15 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
     return {
         en: {
             title: 'Alluring patient care',
-            status: 'Replies by text within 24 hours',
+            status: 'Replies by text',
             greeting: 'Hi! Let’s get your free consultation set up.',
             qProcedure: 'What are you thinking about doing?',
             procedures: procedures(page, 'en'),
             procedureReply: {
-                priced: '{procedure} starts at {price}. Your exact price and dates come in writing after your free consultation, and it can be by video if you’re not in Miami.',
+                priced: '{procedure} starts at {price}. Your surgeon confirms your exact price at your free consultation, and your price and dates come in writing. It can be by video if you’re not in Miami.',
                 standard:
                     'Good to know. Your exact price and dates come in writing after your free consultation, and it can be by video if you’re not in Miami.',
-                prices: CHAT_STARTING_PRICES,
+                prices: {},
                 byProcedure: {
                     other: 'No problem, that’s what the free consultation is for. It can be by video if you’re not in Miami, and your price comes in writing.',
                 },
@@ -228,15 +272,15 @@ function copyFor(page: SiteChatPage): Record<ConsultChatLang, ConsultChatCopy> {
         },
         es: {
             title: 'Atención al paciente Alluring',
-            status: 'Responde por texto en 24 horas',
+            status: 'Responde por texto',
             greeting: '¡Hola! Vamos a agendar tu consulta gratis.',
             qProcedure: '¿Qué te gustaría hacerte?',
             procedures: procedures(page, 'es'),
             procedureReply: {
-                priced: '{procedure} empieza en {price}. Tu precio exacto y tus fechas te llegan por escrito después de tu consulta gratis, y puede ser por video si no estás en Miami.',
+                priced: '{procedure} empieza en {price}. Tu cirujana confirma tu precio exacto en tu consulta gratis, y tu precio y tus fechas te llegan por escrito. Puede ser por video si no estás en Miami.',
                 standard:
                     'Perfecto. Tu precio exacto y tus fechas te llegan por escrito después de tu consulta gratis, y puede ser por video si no estás en Miami.',
-                prices: CHAT_STARTING_PRICES,
+                prices: {},
                 byProcedure: {
                     other: 'No hay problema, para eso es la consulta gratis. Puede ser por video si no estás en Miami, y tu precio te llega por escrito.',
                 },

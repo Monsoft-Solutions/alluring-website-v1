@@ -13,7 +13,7 @@ import {
     PhysicianSchema,
     WebPageSchema,
 } from '@workspace/seo/react'
-import { Award, BookOpen, GraduationCap, MapPin, Users } from 'lucide-react'
+import { Award, GraduationCap, MapPin } from 'lucide-react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BlogPostsSection } from '@/components/shared/blog-posts-section.component'
@@ -164,26 +164,8 @@ export default async function AuthorPage(props: AuthorPageProps) {
                             {author.shortBio}
                         </p>
 
-                        {/* Quick Stats */}
-                        <div className='mt-8 flex flex-wrap justify-center gap-6'>
-                            {author.yearsExperience && (
-                                <div className='flex items-center gap-2 text-stone-600'>
-                                    <BookOpen className='text-gold-500 h-5 w-5' />
-                                    <span>
-                                        {author.yearsExperience}+ years
-                                        experience
-                                    </span>
-                                </div>
-                            )}
-                            {author.proceduresPerformed && (
-                                <div className='flex items-center gap-2 text-stone-600'>
-                                    <Users className='text-gold-500 h-5 w-5' />
-                                    <span>
-                                        {author.proceduresPerformed} procedures
-                                    </span>
-                                </div>
-                            )}
-                        </div>
+                        {/* No tenure or volume stats: neither is a verified
+                            claim (claims canon §4, #354). */}
                     </div>
                 </ContainerLayout>
             </section>
@@ -337,7 +319,7 @@ export default async function AuthorPage(props: AuthorPageProps) {
             {/* CTA Section */}
             <CTASection
                 heading='Have Questions?'
-                description='Schedule a consultation to discuss your cosmetic surgery goals with our expert team.'
+                description='Schedule a consultation to discuss your cosmetic surgery goals with Dr. Karlinsky.'
                 primaryButton={{
                     text: 'Book Consultation',
                     href: '/free-consultation',

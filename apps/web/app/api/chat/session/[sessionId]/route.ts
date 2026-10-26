@@ -8,6 +8,8 @@
  */
 import { type NextRequest, NextResponse } from 'next/server'
 
+import { resolveClaims } from '@/lib/claims/resolve-claims.server'
+
 import {
     getChatSessionById,
     getChatConfig,
@@ -102,7 +104,12 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             },
             config: {
                 agentName: config.agentName,
-                welcomeMessage: config.welcomeMessage,
+                // Claim tokens (#354) resolved: a visitor never sees brackets.
+                welcomeMessage: await resolveClaims(
+                    config.welcomeMessage,
+                    'text',
+                    'chat_config.welcome_message'
+                ),
                 primaryColor: config.primaryColor,
                 agentImageUrl: config.agentImageUrl,
             },

@@ -63,7 +63,7 @@ export async function generateMetadata({
     const categoryDescription = getCategoryDescription(slug)
     const description =
         categoryDescription?.shortDescription ||
-        `Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`
+        `Browse all articles in the ${category.name} category. Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami.`
 
     const title = categoryDescription?.title || `${category.name} Articles`
 
@@ -150,7 +150,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
 
     const pageDescription =
         categoryDescription?.shortDescription ||
-        `Browse all articles in the ${category.name} category. Expert insights and guides from our board-certified surgeons.`
+        `Browse all articles in the ${category.name} category. Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami.`
 
     const pageTitle = categoryDescription?.title || `${category.name} Articles`
 

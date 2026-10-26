@@ -21,8 +21,8 @@ import { siteConfig } from '@/lib/data/site-config'
 /** What the visitor actually gets — stated plainly, no marketing verbs. */
 const WHAT_YOU_GET = [
     'A straight answer on whether you’re a candidate',
-    'Your all-inclusive price — in writing, no surprise fees',
-    'Financing options and your real monthly payment',
+    'Your price, confirmed at consultation',
+    'Financing options, and how to apply',
     'Time with a surgeon, not a commission-paid closer',
 ] as const
 
@@ -85,7 +85,7 @@ export const InlineCtaBand = () => {
                         <p className='mt-8 border-t border-white/10 pt-6 text-sm text-stone-400'>
                             Consultations available in English and Spanish ·{' '}
                             <span className='text-stone-200'>
-                                Hablamos Español
+                                Hablamos español
                             </span>
                             {' · '}
                             {siteConfig.contact.city},{' '}
@@ -97,7 +97,7 @@ export const InlineCtaBand = () => {
                     <div className='rounded-sm border border-white/10 bg-white/5 p-7 shadow-2xl backdrop-blur-lg md:p-10'>
                         <ConsultationForm
                             title='Request Your Free Consultation'
-                            subtitle='Takes under a minute. We call within 24 hours.'
+                            subtitle='Takes under a minute. A patient coordinator texts you back.'
                             source={CONTACT_SOURCES.LEAD_FORM}
                             analyticsFormName='home_inline_cta_form'
                             enableAnalytics

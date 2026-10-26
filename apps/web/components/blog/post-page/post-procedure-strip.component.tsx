@@ -1,3 +1,5 @@
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
 import type { PostProcedure } from '@/lib/blog/post-procedure.util'
 import { PRICE_VARIABLES } from '@/lib/data/pricing-copy.constant'
 
@@ -30,7 +32,8 @@ export function PostProcedureStrip({
             >
                 {price && (
                     <li className='bp-chip bp-chip--price'>
-                        {STRIP_COPY.price(price)}
+                        {STRIP_COPY.price(price)}{' '}
+                        <PriceTag price={price.display} />
                     </li>
                 )}
                 {procedure.recovery && (
@@ -66,6 +69,11 @@ export function PostProcedureStrip({
                     {PRICE_VARIABLES}
                 </p>
             )}
+            {/* Fla. Stat. 456.062, while the strip's price is discounted */}
+            <DiscountStatement
+                statement={price?.statement}
+                className='mt-2 max-w-[34rem] text-[0.8125rem] leading-snug'
+            />
         </div>
     )
 }

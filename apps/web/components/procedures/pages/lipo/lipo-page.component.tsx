@@ -23,7 +23,9 @@ import {
 import { ModuleSources } from '@/components/procedures/module-kit/module-sources.component'
 import { ModuleStarSprite } from '@/components/procedures/module-kit/module-stars.component'
 import { StickyCtaBar } from '@/components/procedures/sections/sticky-cta-bar.component'
-import { lipoFigure, lipoSources } from '@/lib/data/procedures/facts/lipo.facts'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import { formatLineName } from '@workspace/shared/claims/pricing'
+import { lipoSources } from '@/lib/data/procedures/facts/lipo.facts'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     KARLINSKY_NAME,
@@ -112,7 +114,10 @@ function captionOf(photo: GalleryMediaCard): string {
  * sends `section_view` once for each section a visitor reaches. Motion is
  * CSS (`module-kit.css`).
  */
-export async function LipoPage({ procedure }: ProcedurePageModuleProps) {
+export async function LipoPage({
+    procedure,
+    prices,
+}: ProcedurePageModuleProps) {
     const [pairs, gallery, reviewData] = await Promise.all([
         // One pair leads the results section with its slider.
         getBeforeAfterPairsByProcedure(procedure.slug, 1),
@@ -150,8 +155,15 @@ export async function LipoPage({ procedure }: ProcedurePageModuleProps) {
     const rail = (label: string) => (
         <ModuleFactRail
             label={label}
-            startingAt={lipoFigure('price-starting-at')}
-            priceNote='Lipo 360, set for each patient after an exam'
+            startingAt={<PriceTag price={prices.starting} />}
+            // The starting line's own name, so the note stays true when the
+            // admin picks another line (#354).
+            priceNote={
+                prices.starting
+                    ? `${formatLineName(prices.starting.label, { capitalized: true })}, set for each patient after an exam`
+                    : 'Set for each patient after an exam'
+            }
+            discountStatement={prices.discountStatement}
             surgeonName={KARLINSKY_NAME}
             updatedOn={procedure.dateModified}
         />
@@ -174,13 +186,28 @@ export async function LipoPage({ procedure }: ProcedurePageModuleProps) {
                 }
                 rating={rating}
                 chips={[
-                    {
-                        label: `Lipo 360 from ${lipoFigure('price-starting-at')}`,
-                    },
+                    ...(prices.starting
+                        ? [
+                              {
+                                  id: 'price',
+                                  label: (
+                                      <>
+                                          {formatLineName(
+                                              prices.starting.label,
+                                              { short: true, capitalized: true }
+                                          )}{' '}
+                                          from{' '}
+                                          <PriceTag price={prices.starting} />
+                                      </>
+                                  ),
+                              },
+                          ]
+                        : []),
                     { label: 'Financing available' },
                     { label: 'Hablamos español', lang: 'es' },
                 ]}
                 chipsLabel='Liposuction at Alluring in brief'
+                discountStatement={prices.discountStatement}
                 image={lipoImages.hero}
                 cardNote={`Every liposuction by ${KARLINSKY_SHORT_NAME}`}
             />
@@ -204,8 +231,10 @@ export async function LipoPage({ procedure }: ProcedurePageModuleProps) {
             />
 
             <ModuleBand rail={rail('Liposuction at Alluring, key facts')}>
-                <LipoAtAGlance />
-                {procedure.pricing && <LipoCost pricing={procedure.pricing} />}
+                <LipoAtAGlance prices={prices} />
+                {procedure.pricing && (
+                    <LipoCost pricing={procedure.pricing} prices={prices} />
+                )}
                 <LipoCandidate />
             </ModuleBand>
 

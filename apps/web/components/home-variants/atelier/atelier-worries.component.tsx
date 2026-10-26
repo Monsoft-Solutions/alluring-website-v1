@@ -14,6 +14,8 @@
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
+import { getFinancingPartnersString } from '@/lib/data/site-config'
+
 const WORRIES: readonly {
     readonly worry: string
     readonly answer: string
@@ -24,19 +26,19 @@ const WORRIES: readonly {
     },
     {
         worry: 'Does it hurt?',
-        answer: 'Some of it does. The first three to five days after abdominal surgery are genuinely uncomfortable, and anyone who tells you otherwise is selling. It is managed with medication and it improves quickly. Breast augmentation and eyelid surgery are considerably easier than most people expect.',
+        answer: 'Some of it does. The first few days after abdominal surgery are uncomfortable for most people. It is managed with medication and usually improves over the following days. Recovery from breast augmentation and eyelid surgery is usually shorter: at Alluring, about 1 week to light activity after breast augmentation, and 7 to 10 days to work after eyelid surgery.',
     },
     {
         worry: 'I cannot take a month off work.',
-        answer: 'Almost nobody can. Most people are back at a desk within one to two weeks depending on the procedure, and back at the gym between four and six. You get a week-by-week plan before booking so you can arrange childcare and work around real dates rather than guesses.',
+        answer: 'Almost nobody can. Most people are back at a desk job within a few days to a few weeks, depending on the procedure, and exercise comes back later: The Aesthetic Society advises 4 to 6 weeks without strenuous exercise after liposuction, and 8 weeks after a BBL. Your surgeon sets your dates, and Alluring confirms your surgery, pre-op and follow-up dates in writing, so you can arrange childcare and work around real dates.',
     },
     {
         worry: 'What if I cannot afford it?',
-        answer: 'Worth finding out for free rather than assuming. Financing depends on credit and we cannot promise approval or a particular rate — but you will know inside a day, and a real number beats another year of wondering.',
+        answer: `Worth finding out rather than assuming. Financing through ${getFinancingPartnersString()} depends on credit, and approval and terms are set by the lender, so we cannot promise approval or a particular rate. A real number beats another year of wondering.`,
     },
     {
         worry: 'Is it safe?',
-        answer: 'Your surgery happens in an accredited surgical facility with a dedicated anesthesia team, not an office suite, and you are cleared with pre-operative lab work first. Surgery carries real risk. We will go through the risks that apply to your history specifically, not a generic list.',
+        answer: 'An anesthesia provider monitors you throughout surgery, and you are cleared with pre-operative lab work first. Surgery carries real risk. We will go through the risks that apply to your history specifically, not a generic list.',
     },
     {
         worry: 'I am not ready to commit to anything.',

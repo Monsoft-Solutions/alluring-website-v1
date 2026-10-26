@@ -10,6 +10,7 @@
  * - Surgery candidacy information
  * - Stone palette with gold accents
  */
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
 import { cn } from '@workspace/ui/lib/utils'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
@@ -138,11 +139,12 @@ export function BmiCategories({
                             Important Note:
                         </strong>{' '}
                         BMI is just one factor in determining surgical
-                        candidacy. Our board-certified surgeons evaluate your
-                        complete health profile, including medical history,
-                        lifestyle factors, and personal goals. Every patient is
-                        unique, and we encourage you to schedule a consultation
-                        for a personalized assessment.
+                        candidacy. {KARLINSKY_NAME}, evaluates your complete
+                        health profile, including medical history, lifestyle
+                        factors, and personal goals. Every patient is unique,
+                        and we encourage you to schedule a consultation for a
+                        personalized assessment. Your surgeon decides at
+                        consultation.
                     </p>
                 </div>
             </ContentWrapper>

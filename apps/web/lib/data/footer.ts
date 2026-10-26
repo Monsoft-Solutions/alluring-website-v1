@@ -52,7 +52,7 @@ export const footerSections: NavigationSection[] = [
                 external: false,
             },
             {
-                label: 'Out-of-Town Guests',
+                label: 'Out-of-State Patients',
                 href: '/fly-in-consultation',
                 external: false,
             },

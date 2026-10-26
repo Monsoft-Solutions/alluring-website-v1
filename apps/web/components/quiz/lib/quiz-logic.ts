@@ -24,13 +24,6 @@ const HIGH_CONFIDENCE_THRESHOLD = 0.8
 const MEDIUM_CONFIDENCE_THRESHOLD = 0.5
 
 /**
- * Package pricing constants
- */
-const PACKAGE_DISCOUNT_RATE = 0.15
-const MIN_PROCEDURES_FOR_DISCOUNT = 2
-const FINANCING_TERM_MONTHS = 36
-
-/**
  * Scoring weights for different answer types
  */
 const SCORING_WEIGHTS = {
@@ -105,46 +98,40 @@ const CONCERN_TO_PROCEDURES: Record<
 }
 
 /**
- * Procedure approximate costs for budget matching
+ * How big a change each procedure is, 1 (one focused change) to 4 (several
+ * procedures together), for matching the budget answer. A scale, not a
+ * price: the quiz carries no dollar or payment figure (claims canon D6,
+ * #354), and the price comes from the procedure page and the consultation.
  */
-const PROCEDURE_MONTHLY_RANGES: Record<
-    ProcedureId,
-    { min: number; max: number }
-> = {
-    'breast-augmentation': { min: 100, max: 200 },
-    'breast-lift': { min: 120, max: 220 },
-    'breast-reduction': { min: 130, max: 230 },
-    liposuction: { min: 111, max: 194 }, // $4,000–$7,000 over 36 months
-    bbl: { min: 153, max: 278 }, // $5,500–$10,000 over 36 months
-    'tummy-tuck': { min: 140, max: 260 },
-    'mommy-makeover': { min: 250, max: 450 },
-    facelift: { min: 180, max: 350 },
-    blepharoplasty: { min: 60, max: 120 },
-}
+const PROCEDURE_SCOPE_TIERS: Record<ProcedureId, { min: number; max: number }> =
+    {
+        'breast-augmentation': { min: 1, max: 2 },
+        'breast-lift': { min: 2, max: 3 },
+        'breast-reduction': { min: 2, max: 3 },
+        liposuction: { min: 1, max: 2 },
+        bbl: { min: 2, max: 3 },
+        'tummy-tuck': { min: 1, max: 3 },
+        'mommy-makeover': { min: 3, max: 4 },
+        facelift: { min: 3, max: 4 },
+        blepharoplasty: { min: 1, max: 1 },
+    }
 
 /**
- * Procedure recovery times in weeks
+ * Procedure recovery times in weeks, for matching the recovery answer only.
+ * Read from `recoveryWeeks` in quiz-pricing.data.ts, which follows each
+ * procedure page's quickStats (claims canon §7).
  */
-const PROCEDURE_RECOVERY_WEEKS: Record<ProcedureId, number> = {
-    'breast-augmentation': 1,
-    'breast-lift': 2,
-    'breast-reduction': 2,
-    liposuction: 1,
-    bbl: 2,
-    'tummy-tuck': 3,
-    'mommy-makeover': 4,
-    facelift: 2,
-    blepharoplasty: 1,
-}
+const PROCEDURE_RECOVERY_WEEKS: Record<ProcedureId, number> =
+    Object.fromEntries(
+        Object.values(PROCEDURE_PRICING).map((p) => [p.id, p.recoveryWeeks])
+    ) as Record<ProcedureId, number>
 
-/**
- * Budget range to monthly payment mapping
- */
-const BUDGET_TO_MONTHLY: Record<string, { min: number; max: number }> = {
-    low: { min: 50, max: 100 },
-    medium: { min: 100, max: 200 },
-    high: { min: 200, max: 350 },
-    premium: { min: 350, max: 1000 },
+/** The budget answer on the same 1–4 scale. */
+const BUDGET_TO_TIER: Record<string, number> = {
+    low: 1,
+    medium: 2,
+    high: 3,
+    premium: 4,
 }
 
 /**
@@ -236,21 +223,17 @@ export function calculateRecommendations(
             state.bodyConcerns.includes('post-pregnancy'))
     ) {
         scores['mommy-makeover'] += SCORING_WEIGHTS.combinationBonus
-        matchedConcerns['mommy-makeover'].push('Multiple area transformation')
+        matchedConcerns['mommy-makeover'].push('Breast and body goals together')
     }
 
     // Budget fit scoring
     if (state.budgetRange) {
-        const budgetRange = BUDGET_TO_MONTHLY[state.budgetRange]
-        if (budgetRange) {
-            for (const [procedureId, monthlyRange] of Object.entries(
-                PROCEDURE_MONTHLY_RANGES
+        const tier = BUDGET_TO_TIER[state.budgetRange]
+        if (tier) {
+            for (const [procedureId, scope] of Object.entries(
+                PROCEDURE_SCOPE_TIERS
             )) {
-                // Check if procedure fits within budget
-                if (
-                    monthlyRange.min <= budgetRange.max &&
-                    monthlyRange.max >= budgetRange.min
-                ) {
+                if (scope.min <= tier && scope.max >= tier) {
                     scores[procedureId as ProcedureId] +=
                         SCORING_WEIGHTS.budgetFit
                 }
@@ -349,60 +332,6 @@ export function getComplementaryProcedures(
     }
 
     return complementaryMap[primaryProcedure] || []
-}
-
-/**
- * Calculate package pricing
- */
-export function calculatePackagePrice(procedures: readonly ProcedureId[]): {
-    readonly totalMin: number
-    readonly totalMax: number
-    readonly monthlyMin: number
-    readonly monthlyMax: number
-    readonly savings: number
-} {
-    if (procedures.length === 0) {
-        return {
-            totalMin: 0,
-            totalMax: 0,
-            monthlyMin: 0,
-            monthlyMax: 0,
-            savings: 0,
-        }
-    }
-
-    let totalMin = 0
-    let totalMax = 0
-
-    for (const procedureId of procedures) {
-        const pricing = PROCEDURE_PRICING[procedureId]
-        if (pricing) {
-            totalMin += pricing.priceRange.min
-            totalMax += pricing.priceRange.max
-        }
-    }
-
-    // Apply combination discount for multiple procedures
-    const discount =
-        procedures.length >= MIN_PROCEDURES_FOR_DISCOUNT
-            ? PACKAGE_DISCOUNT_RATE
-            : 0
-    const savings = Math.round(((totalMin + totalMax) / 2) * discount)
-
-    const discountedMin = Math.round(totalMin * (1 - discount))
-    const discountedMax = Math.round(totalMax * (1 - discount))
-
-    // Calculate monthly payments over financing term
-    const monthlyMin = Math.round(discountedMin / FINANCING_TERM_MONTHS)
-    const monthlyMax = Math.round(discountedMax / FINANCING_TERM_MONTHS)
-
-    return {
-        totalMin: discountedMin,
-        totalMax: discountedMax,
-        monthlyMin,
-        monthlyMax,
-        savings,
-    }
 }
 
 /**

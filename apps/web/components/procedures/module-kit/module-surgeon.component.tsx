@@ -31,8 +31,15 @@ const credential = 'text-[1.0625rem] leading-[1.6] text-stone-700'
  * `karlinsky-credentials.constant.ts`. The American Board of Cosmetic Surgery
  * line carries the rule's statement in the same element and type size, and
  * the copy sweep fails a page if the two are ever separated.
+ *
+ * Blog posts never mention the American Board of Cosmetic Surgery (claims
+ * canon §2), so the post template passes `includeCosmeticBoard={false}`.
  */
-export function ModuleSurgeonCredentials() {
+export function ModuleSurgeonCredentials({
+    includeCosmeticBoard = true,
+}: {
+    readonly includeCosmeticBoard?: boolean
+} = {}) {
     return (
         <div className='mt-9 grid gap-7 sm:grid-cols-[12rem_minmax(0,1fr)] sm:gap-9 md:grid-cols-[14rem_minmax(0,1fr)]'>
             {portrait && (
@@ -98,20 +105,22 @@ export function ModuleSurgeonCredentials() {
                             (FACS).
                         </p>
                     </li>
-                    <li className='py-4'>
-                        <p className={credential}>
-                            Certified in cosmetic surgery by the{' '}
-                            <a
-                                href={
-                                    karlinskyRecords.americanBoardOfCosmeticSurgery
-                                }
-                                className={moduleLink}
-                            >
-                                American Board of Cosmetic Surgery
-                            </a>
-                            . {FLORIDA_UNAPPROVED_BOARD_STATEMENT}
-                        </p>
-                    </li>
+                    {includeCosmeticBoard && (
+                        <li className='py-4'>
+                            <p className={credential}>
+                                Certified in cosmetic surgery by the{' '}
+                                <a
+                                    href={
+                                        karlinskyRecords.americanBoardOfCosmeticSurgery
+                                    }
+                                    className={moduleLink}
+                                >
+                                    American Board of Cosmetic Surgery
+                                </a>
+                                . {FLORIDA_UNAPPROVED_BOARD_STATEMENT}
+                            </p>
+                        </li>
+                    )}
                 </ul>
             </div>
         </div>

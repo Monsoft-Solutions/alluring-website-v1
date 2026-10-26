@@ -6,14 +6,14 @@
  *
  * Alluring Plastic Surgery - Custom About Page Content
  */
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * Final CTA Section Content (for end of about page)
  */
 export const aboutCTAData = {
     title: 'Ready to Start Your Transformation?',
-    description:
-        'Schedule a consultation with our board-certified surgeons. Experience the Alluring difference—where luxury meets affordability, and your safety is always our priority.',
+    description: `Schedule a consultation with ${KARLINSKY_NAME}, the one surgeon who performs every procedure at Alluring. Your surgeon confirms your plan and your price at consultation.`,
     primaryButton: {
         text: 'Book Consultation',
         href: '/contact-us',

@@ -6,6 +6,8 @@
  * before booking: price, financing, recovery, safety/results, language,
  * and virtual consults.
  */
+import { FINANCING_SENTENCE_LONG } from '@workspace/shared/claims/financing'
+
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
 export const drKarlinskyFaqCategories: FaqCategory[] = [
@@ -17,15 +19,15 @@ export const drKarlinskyFaqData: Record<string, FaqItem[]> = {
     'booking-cost': [
         {
             question: 'How much does it cost?',
-            answer: `Pricing depends on the procedure. Every quote is all-inclusive — surgeon, anesthesia, facility, follow-up — with no hidden add-ons. You'll get a personalized quote at your free consult.`,
+            answer: `Pricing depends on the procedure and is set for you after an exam. You'll get a personalized quote at your free consult, and your surgeon confirms your price at consultation.`,
         },
         {
             question: 'What financing do you offer?',
-            answer: `We partner with Cherry, CareCredit, and United Credit. Many patients qualify for 0% APR for 12–24 months, and weekly payments often start around $27/week.`,
+            answer: FINANCING_SENTENCE_LONG,
         },
         {
             question: 'Can I do a virtual consult first?',
-            answer: `Yes. Most out-of-state patients start virtual — discuss your goals, see preliminary options, get a quote estimate — then fly in for surgery.`,
+            answer: `Yes. Many out-of-state patients start virtual — discuss your goals, see preliminary options, get a quote estimate — then fly in for surgery.`,
         },
     ],
     'safety-results': [
@@ -35,7 +37,7 @@ export const drKarlinskyFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long is recovery?',
-            answer: `Most patients are back at desk work in 1–2 weeks and at full activity in 4–6 weeks. You'll get a procedure-specific timeline at your consult, plus a direct number to call after surgery.`,
+            answer: `It depends on the procedure. Most people are back at desk work in about 1 to 3 weeks; exercise waits about 4 to 6 weeks after liposuction, 4 to 8 weeks after a tummy tuck and 8 weeks after a BBL, once you're cleared. You'll get a procedure-specific timeline at your consult, plus a direct number to call after surgery.`,
         },
         {
             question: '¿Hablan español?',

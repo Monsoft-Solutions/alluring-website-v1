@@ -13,10 +13,13 @@
 import { McpServer } from '@modelcontextprotocol/server'
 import { z } from 'zod'
 
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import {
     BLOG_CTA_IDS,
     buildMdxComponentReference,
 } from '@workspace/shared/content'
+
+import { getPricingSnapshot } from '@/lib/queries/pricing.query'
 
 import {
     createPost,
@@ -123,6 +126,7 @@ ${buildMdxComponentReference()}
 - The practice does not coordinate travel: no flights, lodging, transport, airport pickup, recovery houses or "concierge" travel claims.
 - Don't write "luxury" or "affordable". No surgeon name in titles. No guaranteed outcomes.
 - Figures need a source. Say what is normal, what isn't, and when to call the surgeon.
+- Never type an Alluring price: write a claim token (\`[[price:bbl]]\`). Tokens work in \`content\`, \`faqs\`, \`quickAnswer\`, \`excerpt\`, \`metaTitle\` and \`metaDescription\`; an unknown token is rejected. The claims canon below is the full rule set and lists every valid token.
 
 ## Before you write
 - Read the full house standard in the repo when you have it: \`.claude/skills/blog-post/reference/writing-standard.md\` and \`compliance.md\`.
@@ -141,11 +145,17 @@ export function createServer(): McpServer {
         {
             title: 'Writing guide',
             description:
-                'The format and house rules for blog post content: Markdown/MDX conventions, the allowed components, the CTA marker, quick answer and FAQ fields, and compliance rules. Read it once before writing or editing content.',
+                'The format and house rules for blog post content: Markdown/MDX conventions, the allowed components, the CTA marker, quick answer and FAQ fields, compliance rules, and the claims canon with every claim token for the current price list (prices are tokens such as [[price:bbl]], never typed figures). Read it once before writing or editing content.',
             inputSchema: z.object({}),
             annotations: { readOnlyHint: true },
         },
-        () => ok(WRITING_GUIDE)
+        // The claims canon, with the token catalog for the live price list
+        // (#354), follows the house rules.
+        async () =>
+            handle('get_writing_guide', async () => {
+                const pricing = await getPricingSnapshot()
+                return `${WRITING_GUIDE}\n\n${buildClaimsPromptBlock('blog-writer', pricing)}`
+            })
     )
 
     server.registerTool(

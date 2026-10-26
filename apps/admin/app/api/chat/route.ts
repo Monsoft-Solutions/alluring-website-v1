@@ -6,7 +6,7 @@
  * @module app/api/chat/route
  */
 import { type NextRequest, NextResponse } from 'next/server'
-import { coreStreamText } from '@workspace/ai'
+import { buildChatSystemPrompt, coreStreamText } from '@workspace/ai'
 
 import { env } from '@/env'
 import {
@@ -18,6 +18,7 @@ import {
     getRecentMessages,
     saveChatMessage,
 } from '@/lib/queries/chat.query'
+import { getPricingSnapshot } from '@/lib/queries/pricing.query'
 import { isAuthenticated } from '@/lib/utils/auth.util'
 
 /**
@@ -121,9 +122,14 @@ export async function POST(request: NextRequest) {
 
         // Stream response through the shared core wrapper so this route picks
         // up the same OpenRouter provider and telemetry as every other call.
+        // The same prompt the website sends: the DB-held prompt, then the
+        // claims canon with the current starting prices (#354).
         const result = coreStreamText({
             modelId: config.modelId,
-            system: config.systemPrompt,
+            system: buildChatSystemPrompt(
+                config.systemPrompt,
+                await getPricingSnapshot()
+            ),
             messages: contextMessages,
             temperature: config.temperature,
             maxTokens: config.maxTokens,

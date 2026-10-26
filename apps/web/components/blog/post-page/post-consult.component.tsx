@@ -6,6 +6,7 @@ import {
     SITE_CHAT_THANK_YOU_PATH,
 } from '@/components/shared/consult-chat/site-chat.constants'
 import { HOME_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
+import { withChatPrices } from '@/components/shared/consult-chat/site-chat-prices.server'
 import type { PostProcedure } from '@/lib/blog/post-procedure.util'
 import type { ReaderStage } from '@/lib/blog/reader-stage.util'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
@@ -33,7 +34,7 @@ type PostConsultProps = {
  * The lead is a blog lead: its subject names the procedure, and its notes say
  * which post it came from and whether the reader was recovering or planning.
  */
-export function PostConsult({
+export async function PostConsult({
     procedure,
     stage,
     path,
@@ -41,6 +42,8 @@ export function PostConsult({
     offer,
     intro,
 }: PostConsultProps) {
+    // Starting prices from the pricing resolver (#354).
+    const chat = await withChatPrices(HOME_CHAT)
     const copy = threadCopy(procedure, stage)
 
     return (
@@ -63,8 +66,8 @@ export function PostConsult({
 
             <SiteConsultChat
                 id={POST_CONSULT_ID}
-                copy={HOME_CHAT.copy}
-                staff={HOME_CHAT.staff}
+                copy={chat.copy}
+                staff={chat.staff}
                 source={CONTACT_SOURCES.BLOG_LEAD}
                 formName='blog_chat'
                 thankYouPath={SITE_CHAT_THANK_YOU_PATH}

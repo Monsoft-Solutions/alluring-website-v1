@@ -12,15 +12,10 @@ export type {
     BodySilhouetteProps,
 } from './body-silhouette.component'
 
-export {
-    BudgetCards,
-    BudgetSlider,
-    CoffeeComparison,
-} from './budget-slider.component'
+export { BudgetCards, BudgetSlider } from './budget-slider.component'
 export type {
     BudgetCardsProps,
     BudgetSliderProps,
-    CoffeeComparisonProps,
 } from './budget-slider.component'
 
 export { OptionCard, OptionCardGrid } from './option-card.component'

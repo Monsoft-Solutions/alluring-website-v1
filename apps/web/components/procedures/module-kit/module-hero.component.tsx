@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { Phone } from 'lucide-react'
 import { cn } from '@workspace/ui/lib/utils'
 
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
@@ -28,7 +29,11 @@ export type ModuleRating = {
     count: number
 }
 
-export type ModuleHeroChip = { label: string; lang?: string }
+/**
+ * One hero chip. `label` is a node so a price chip can carry a `PriceTag`
+ * (struck through while a discount is on); such a chip passes `id`.
+ */
+export type ModuleHeroChip = { label: ReactNode; id?: string; lang?: string }
 
 type ModuleHeroProps = {
     /** The H1: `procedure.title`, unchanged by a redesign. */
@@ -51,6 +56,11 @@ type ModuleHeroProps = {
     image: ModuleImage
     /** The bold line under the rating on the glass card, from `lg`. */
     cardNote: ReactNode
+    /**
+     * The Fla. Stat. 456.062 statement while the price chip is discounted
+     * (#354), printed right under the chips; `null` prints nothing.
+     */
+    discountStatement?: string | null
 }
 
 /**
@@ -75,6 +85,7 @@ export function ModuleHero({
     chipsLabel,
     image,
     cardNote,
+    discountStatement,
 }: ModuleHeroProps) {
     return (
         <section aria-labelledby={headingId} className='pm-hero bg-stone-50'>
@@ -163,16 +174,28 @@ export function ModuleHero({
                         aria-label={chipsLabel}
                         className='flex flex-wrap gap-2 md:gap-2.5'
                     >
-                        {chips.map((chip) => (
+                        {chips.map((chip, index) => (
                             <li
-                                key={chip.label}
+                                key={
+                                    chip.id ??
+                                    (typeof chip.label === 'string'
+                                        ? chip.label
+                                        : index)
+                                }
                                 lang={chip.lang}
                                 className='inline-flex min-h-[2.375rem] items-center rounded-full border border-stone-300 bg-white px-4 text-[0.9375rem] text-stone-900 tabular-nums'
                             >
-                                {chip.label}
+                                {/* One inline box: a text node and a
+                                    PriceTag as separate flex items would
+                                    lose the space between them. */}
+                                <span>{chip.label}</span>
                             </li>
                         ))}
                     </ul>
+                    <DiscountStatement
+                        statement={discountStatement}
+                        className='-mt-2 text-[0.8125rem]'
+                    />
                     <div className='flex flex-col gap-2.5 pt-1.5 sm:flex-row sm:flex-wrap sm:gap-3'>
                         <a href='#book' className={moduleButtonPrimary}>
                             Book a free consultation

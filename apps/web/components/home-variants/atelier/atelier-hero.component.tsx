@@ -17,7 +17,6 @@ import { Phone } from 'lucide-react'
 import { TrackedLink } from '@/components/analytics/tracked-link.component'
 import { AtelierHeroForm } from '@/components/home-variants/atelier/atelier-hero-form.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
-import { LOWEST_WEEKLY_PAYMENT } from '@/lib/data/weekly-payments.data'
 
 const HERO_VIDEO =
     'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-mobile.mp4'
@@ -38,7 +37,7 @@ export function AtelierHero() {
                 {/* Left — the pitch */}
                 <div>
                     <span className='text-xs tracking-[0.3em] text-[#C4674D] uppercase'>
-                        Miami · Double board-certified
+                        Miami · Board certified, American Board of Surgery
                     </span>
 
                     <h1
@@ -67,15 +66,11 @@ export function AtelierHero() {
 
                     <dl className='mt-10 flex flex-wrap gap-x-10 gap-y-5 border-t border-[#3D2B23]/15 pt-8'>
                         {[
-                            [
-                                siteConfig.trustStats?.patients ?? '5,000+',
-                                'Patients',
-                            ],
+                            ['One', 'Surgeon for every procedure'],
                             [
                                 `${siteConfig.trustStats?.rating ?? '4.7'} ★`,
                                 'Google rating',
                             ],
-                            [`$${LOWEST_WEEKLY_PAYMENT}`, 'From / week'],
                         ].map(([figure, label]) => (
                             <div key={label}>
                                 <dd className='font-[family-name:var(--font-fraunces)] text-3xl text-[#3D2B23]'>

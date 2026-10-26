@@ -8,6 +8,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
 import { cn } from '@workspace/ui/lib/utils'
 
 import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
@@ -22,7 +23,7 @@ function getEnhancedAlt(baseAlt: string): string {
     if (hasLocation) {
         return baseAlt
     }
-    return `${baseAlt} - Results by Dr. Victoria Karlinsky at Alluring Plastic Surgery Miami`
+    return `${baseAlt} - Results by ${KARLINSKY_NAME}, at Alluring Plastic Surgery, Miami`
 }
 
 type GalleryShowcaseClientProps = {
@@ -141,8 +142,8 @@ export function GalleryShowcaseClient({ media }: GalleryShowcaseClientProps) {
 
                     <p className='mb-6 text-lg text-stone-600'>
                         Browse our gallery of real patient results. These
-                        authentic transformations showcase the precision and
-                        artistry of our board-certified surgeons.
+                        authentic transformations show the work of{' '}
+                        {KARLINSKY_NAME}.
                     </p>
 
                     {/* View Details Link */}

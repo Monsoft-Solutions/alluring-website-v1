@@ -34,11 +34,13 @@ import { FAQComponent } from '@/components/shared/faq.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { specialsFaqData } from '@/lib/data/faq/specials-faq.data'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { getActivePromotions } from '@/lib/queries/promotion.query'
+import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 
 /**
  * Generate dynamic month/year for specials page title
@@ -89,12 +91,12 @@ export async function generateMetadata(): Promise<Metadata> {
         canonical: '/miami-plastic-surgery-specials',
         title: pageTitle,
         description:
-            'Current specials on BBL, breast augmentation, mommy makeover & more at Alluring Plastic Surgery in Miami. Free consultation, your price in writing, financing available.',
+            'Current specials at Alluring Plastic Surgery in Miami. Free consultation, your price in writing, financing available.',
 
         openGraph: {
             title: pageTitle,
             description:
-                'Current specials on BBL, breast augmentation, mommy makeover & more at Alluring Plastic Surgery in Miami. Free consultation, your price in writing, financing available.',
+                'Current specials at Alluring Plastic Surgery in Miami. Free consultation, your price in writing, financing available.',
             url: `${seoConfig.siteUrl}/miami-plastic-surgery-specials`,
             type: 'website',
             siteName: seoConfig.siteName,
@@ -105,7 +107,7 @@ export async function generateMetadata(): Promise<Metadata> {
             card: 'summary_large_image',
             title: pageTitle,
             description:
-                'Current specials on BBL, breast augmentation, mommy makeover & more in Miami. Free consultation, your price in writing.',
+                'Current specials at Alluring Plastic Surgery in Miami. Free consultation, your price in writing.',
             images: [ogImage.url],
         },
     })
@@ -141,9 +143,19 @@ function toOffer(
 }
 
 export default async function MiamiPlasticSurgerySpecialsPage() {
-    const [promotions, galleryImages] = await Promise.all([
+    const [promotions, galleryImages, faqs, reviewsResult] = await Promise.all([
         getActivePromotions(),
         getSpecialsFeaturedGalleryImages(),
+        // Claim tokens in the answers (#354), resolved for the list and
+        // its schema
+        resolveClaimsIn(
+            specialsFaqData,
+            'text',
+            'faq /miami-plastic-surgery-specials'
+        ),
+        // The synced Google rating for the hero (claims canon §4); same limit
+        // as the reviews section, so it shares its cache entry.
+        getPublishedGoogleReviews(3),
     ])
 
     const featured = promotions[0] ?? null
@@ -155,7 +167,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
             <WebPageSchema
                 name={`Plastic Surgery Specials & Deals - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
-                description='Current plastic surgery specials in Miami on BBL, breast augmentation, tummy tuck, liposuction and more. Free consultation and a personalized quote in writing.'
+                description='Current specials at Alluring Plastic Surgery in Miami. Free consultation and a personalized quote in writing.'
             />
 
             {/* SEO Schema - Breadcrumb */}
@@ -171,34 +183,39 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
 
             {/* SEO Schema - FAQ */}
             <FAQSchema
-                items={specialsFaqData.map((faq) => ({
+                items={faqs.map((faq) => ({
                     question: faq.question,
                     answer: faq.answer,
                 }))}
             />
 
-            <OfferCatalogSchema
-                name={`Miami Plastic Surgery Specials - ${monthYear}`}
-                url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
-                description='Current plastic surgery specials in Miami on BBL, breast augmentation, tummy tuck, liposuction and more.'
-                numberOfItems={promotions.length}
-                offeredBy={{
-                    '@id': `${seoConfig.siteUrl}/#organization`,
-                    type: 'MedicalBusiness',
-                    name: siteConfig.business.name,
-                    url: seoConfig.siteUrl,
-                }}
-                itemListElement={promotions.map((promo) => ({
-                    name: promo.title,
-                    url: `${seoConfig.siteUrl}/promotions/${promo.slug}`,
-                    description: promo.excerpt ?? promo.description,
-                    validThrough: promo.endsAt
-                        ? new Date(promo.endsAt).toISOString()
-                        : undefined,
-                    image: promo.imageUrl ?? undefined,
-                    category: promo.type,
-                }))}
-            />
+            {/* Only while a promotion is live, listing only what it covers
+                (claims canon §10, #354): no catalog of offers that don't
+                exist. */}
+            {promotions.length > 0 && (
+                <OfferCatalogSchema
+                    name={`Miami Plastic Surgery Specials - ${monthYear}`}
+                    url={`${seoConfig.siteUrl}/miami-plastic-surgery-specials`}
+                    description='Current specials at Alluring Plastic Surgery in Miami.'
+                    numberOfItems={promotions.length}
+                    offeredBy={{
+                        '@id': `${seoConfig.siteUrl}/#organization`,
+                        type: 'MedicalBusiness',
+                        name: siteConfig.business.name,
+                        url: seoConfig.siteUrl,
+                    }}
+                    itemListElement={promotions.map((promo) => ({
+                        name: promo.title,
+                        url: `${seoConfig.siteUrl}/promotions/${promo.slug}`,
+                        description: promo.excerpt ?? promo.description,
+                        validThrough: promo.endsAt
+                            ? new Date(promo.endsAt).toISOString()
+                            : undefined,
+                        image: promo.imageUrl ?? undefined,
+                        category: promo.type,
+                    }))}
+                />
+            )}
 
             {/*
                 One ask, the consultation thread (#274). The thread sits on the
@@ -206,7 +223,11 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                 CTA leads back to it with the visitor's answers kept.
             */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
-                <SpecialsChatHero offer={offer} monthYear={monthYear} />
+                <SpecialsChatHero
+                    offer={offer}
+                    monthYear={monthYear}
+                    rating={reviewsResult.averageRating}
+                />
 
                 {featured && offer && (
                     <SpecialsOfferTerms
@@ -220,7 +241,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
 
                 <GoogleReviews
                     title='What Our Patients Say'
-                    subtitle='Real reviews from patients who trusted us with their transformation'
+                    subtitle='Real reviews from our patients on Google'
                     limit={3}
                 />
 
@@ -237,7 +258,7 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
 
                 <FAQComponent
                     id='faq'
-                    faqs={specialsFaqData}
+                    faqs={faqs}
                     title='Questions About Our Specials'
                     description='Everything you need to know about claiming an offer at Alluring Plastic Surgery.'
                     variant='muted'
@@ -253,12 +274,14 @@ export default async function MiamiPlasticSurgerySpecialsPage() {
                     }
                     fresh={{
                         heading: 'Ready when you are',
-                        body: 'Three quick questions, under a minute. A patient coordinator texts you within 24 hours and makes sure the offer is applied to your written quote.',
+                        body: offer
+                            ? 'Three quick questions, under a minute. A patient coordinator texts you and makes sure the offer is applied to your written quote.'
+                            : 'Three quick questions, under a minute. A patient coordinator texts you to book your consultation.',
                         buttonLabel: 'Start my request',
                     }}
                     resume={{
                         heading: 'Pick up where you left off',
-                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you within 24 hours.',
+                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you.',
                         buttonLabel: 'Finish my request',
                     }}
                 />

@@ -7,6 +7,7 @@
  *
  * @module @workspace/ai/agents/fact-source-verifier
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import { generateText, Output, isStepCount } from 'ai'
 import { z } from 'zod'
 
@@ -102,7 +103,7 @@ Prefer Tier 1 sources when available. Only use consumer health sites if no bette
  * Unified system prompt for fact verification
  * Combines claim identification, research, and verification into a single flow
  */
-const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a luxury plastic surgery clinic's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
+const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a cosmetic surgery practice's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
 
 ## Your Process
 
@@ -116,7 +117,7 @@ const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a l
 **Statistics and Numbers:**
 - Percentages (e.g., "90% of patients...")
 - Specific numbers (e.g., "over 300,000 procedures...")
-- Rates or ratios (e.g., "1 in 3,000 mortality rate...")
+- Rates or ratios (e.g., "1 in 20 patients...")
 - Time periods (e.g., "recovery takes 6-8 weeks")
 
 **Medical Facts:**
@@ -216,7 +217,11 @@ For each issue, provide:
 3. The original claim text
 4. A complete suggestedFix with the exact markdown citation to add
 
-If all claims are already cited, return a score of 100 with no issues.`
+If all claims are already cited, return a score of 100 with no issues.
+
+Claim tokens such as [[price:bbl]] are the practice's own figures, filled in from its price list: they need no citation, and a suggestedFix never replaces one. A typed dollar figure for an Alluring price is a "critical" issue: its fix is the matching token.
+
+${buildClaimsPromptBlock('blog-reviewer')}`
 
 /**
  * Run the fact and source verification agent

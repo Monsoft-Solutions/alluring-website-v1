@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Button } from '@workspace/ui/components/button'
-import { Camera, Images, Star } from 'lucide-react'
+import { Camera, Images } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -100,10 +100,8 @@ export function GalleryHero() {
 
                                 {/* Description */}
                                 <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-200 drop-shadow-md'>
-                                    Discover the artistry of our board-certified
-                                    surgeons through authentic before and after
-                                    results. Every transformation tells a story
-                                    of renewed confidence.
+                                    Real before and after results from patients
+                                    at Alluring. Individual results vary.
                                 </p>
 
                                 {/* CTAs with staggered animation */}
@@ -136,10 +134,6 @@ export function GalleryHero() {
                                     <div className='flex items-center gap-2'>
                                         <Camera className='text-gold-400 h-5 w-5' />
                                         <span>Real Patient Photos</span>
-                                    </div>
-                                    <div className='flex items-center gap-2'>
-                                        <Star className='text-gold-400 h-5 w-5' />
-                                        <span>Verified Results</span>
                                     </div>
                                     <div className='flex items-center gap-2'>
                                         <Images className='text-gold-400 h-5 w-5' />

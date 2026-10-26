@@ -28,7 +28,10 @@
 
 import {
     createFactLookups,
+    DEFAULT_COMBO_DISCOUNTS,
     formatProcedureFigure,
+    formatSheetUsd,
+    sheetUsd,
     type ProcedureFact,
     type ProcedureSource,
 } from './procedure-facts'
@@ -223,25 +226,33 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
 
 export type TummyTuckFact = ProcedureFact<TummyTuckSourceId>
 
+/** The tummy tuck lines' list prices on the 2026-09-15 sheet. */
+const TT_USD = {
+    mini: sheetUsd('tummy-tuck', 'mini'),
+    extendedMini: sheetUsd('tummy-tuck', 'extended-mini'),
+    full: sheetUsd('tummy-tuck', 'full'),
+    extended: sheetUsd('tummy-tuck', 'extended'),
+    fleurDeLis: sheetUsd('tummy-tuck', 'fleur-de-lis'),
+    lipoAddOn: sheetUsd('lipo', 'abdomen-flanks'),
+}
+
 export const tummyTuckFacts = [
     // ── Price (the practice's price sheet of 2026-09-15) ─────────────────
     {
         id: 'price-mini',
         topic: 'price',
         concepts: ['mini'],
-        figures: [{ value: 3000, unit: 'usd' }],
-        statement:
-            'A mini tummy tuck at Alluring is $3,000. It does not include muscle repair.',
+        figures: [{ value: TT_USD.mini, unit: 'usd' }],
+        statement: `A mini tummy tuck at Alluring is ${formatSheetUsd(TT_USD.mini)}. It does not include muscle repair.`,
         sourceIds: ['alluring-practice'],
-        caveat: 'The sheet: "Tummy Tuck - Mini (no muscle repair)". Mirrors `pricing.options` and `priceFrom`. Never $3,500 (the old figure) or a weekly figure.',
+        caveat: 'The sheet: "Tummy Tuck - Mini (no muscle repair)". Read from the sheet line `tummy-tuck:mini`. Never $3,500 (the old figure) or a weekly figure.',
     },
     {
         id: 'price-extended-mini',
         topic: 'price',
         concepts: ['extended mini'],
-        figures: [{ value: 4000, unit: 'usd' }],
-        statement:
-            'An extended mini tummy tuck at Alluring is $4,000: a hip-to-hip incision, without muscle repair.',
+        figures: [{ value: TT_USD.extendedMini, unit: 'usd' }],
+        statement: `An extended mini tummy tuck at Alluring is ${formatSheetUsd(TT_USD.extendedMini)}: a hip-to-hip incision, without muscle repair.`,
         sourceIds: ['alluring-practice'],
         caveat: 'The sheet: "Extended Mini (no muscle repair, hip to hip incision)".',
     },
@@ -249,9 +260,8 @@ export const tummyTuckFacts = [
         id: 'price-full',
         topic: 'price',
         concepts: ['full', 'regular'],
-        figures: [{ value: 4500, unit: 'usd' }],
-        statement:
-            'A full tummy tuck at Alluring, the price list\'s "regular", is $4,500, for loose skin that doesn\'t extend to the hips.',
+        figures: [{ value: TT_USD.full, unit: 'usd' }],
+        statement: `A full tummy tuck at Alluring, the price list's "regular", is ${formatSheetUsd(TT_USD.full)}, for loose skin that doesn't extend to the hips.`,
         sourceIds: ['alluring-practice'],
         caveat: 'The sheet: "Regular (loose skin doesn\'t extend to the hips)". The sheet does not say it includes muscle repair; until the owner confirms, the copy says ASPS\'s "in most cases" and that the surgeon decides at the exam.',
     },
@@ -259,9 +269,8 @@ export const tummyTuckFacts = [
         id: 'price-extended',
         topic: 'price',
         concepts: ['extended'],
-        figures: [{ value: 5500, unit: 'usd' }],
-        statement:
-            'An extended tummy tuck at Alluring is $5,500, with a hip-to-hip incision.',
+        figures: [{ value: TT_USD.extended, unit: 'usd' }],
+        statement: `An extended tummy tuck at Alluring is ${formatSheetUsd(TT_USD.extended)}, with a hip-to-hip incision.`,
         sourceIds: ['alluring-practice'],
         caveat: 'The sheet: "Extended (hip to hip incision)".',
     },
@@ -269,17 +278,16 @@ export const tummyTuckFacts = [
         id: 'price-fleur-de-lis',
         topic: 'price',
         concepts: ['fleur'],
-        figures: [{ value: 10000, unit: 'usd' }],
-        statement: 'A fleur-de-lis tummy tuck at Alluring is $10,000.',
+        figures: [{ value: TT_USD.fleurDeLis, unit: 'usd' }],
+        statement: `A fleur-de-lis tummy tuck at Alluring is ${formatSheetUsd(TT_USD.fleurDeLis)}.`,
         sourceIds: ['alluring-practice'],
     },
     {
         id: 'price-lipo-add-on',
         topic: 'price',
         concepts: ['liposuction', 'lipo', 'flank'],
-        figures: [{ value: 1500, unit: 'usd' }],
-        statement:
-            'Liposuction of the abdomen and flanks, added to a tummy tuck, is $1,500.',
+        figures: [{ value: TT_USD.lipoAddOn, unit: 'usd' }],
+        statement: `Liposuction of the abdomen and flanks, added to a tummy tuck, is ${formatSheetUsd(TT_USD.lipoAddOn)}.`,
         sourceIds: ['alluring-practice'],
         caveat: 'An add-on on the sheet ("Lipo Abdomen/Flanks"), priced on top of another procedure. Whether the page may say most patients add it waits on the owner.',
     },
@@ -288,11 +296,10 @@ export const tummyTuckFacts = [
         topic: 'price',
         concepts: ['combin', 'discount', 'procedures'],
         figures: [
-            { value: 500, unit: 'usd' },
-            { value: 1000, unit: 'usd' },
+            { value: DEFAULT_COMBO_DISCOUNTS.two, unit: 'usd' },
+            { value: DEFAULT_COMBO_DISCOUNTS.three, unit: 'usd' },
         ],
-        statement:
-            'When procedures are combined in one surgery, $500 comes off the total for two procedures and $1,000 for three.',
+        statement: `When procedures are combined in one surgery, ${formatSheetUsd(DEFAULT_COMBO_DISCOUNTS.two)} comes off the total for two procedures and ${formatSheetUsd(DEFAULT_COMBO_DISCOUNTS.three)} for three.`,
         sourceIds: ['alluring-practice'],
         caveat: 'The sheet\'s "Combination discounts". Whether an add-on such as liposuction counts as a procedure is an owner question, so the copy never applies the discount to a tummy tuck with the liposuction add-on.',
     },

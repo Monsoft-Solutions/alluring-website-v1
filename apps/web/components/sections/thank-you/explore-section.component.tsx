@@ -20,6 +20,8 @@ import {
     ArrowRight,
 } from 'lucide-react'
 
+import { FINANCING_SENTENCE_SHORT } from '@workspace/shared/claims/financing'
+
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionHeader } from '@/components/shared/section-header.component'
@@ -32,7 +34,7 @@ const exploreLinks = [
     {
         title: 'Our Procedures',
         description:
-            'Explore our signature procedures and find the perfect one for you',
+            'Explore our signature procedures and what each one involves',
         href: '/procedures',
         icon: Sparkles,
     },
@@ -44,19 +46,19 @@ const exploreLinks = [
     },
     {
         title: 'Blog & Insights',
-        description: 'Read expert tips and learn about plastic surgery',
+        description: 'Read our guides to cosmetic surgery',
         href: '/blog',
         icon: BookOpen,
     },
     {
         title: 'Financing Options',
-        description: 'Flexible payment plans to make your dream affordable',
+        description: FINANCING_SENTENCE_SHORT,
         href: '/plastic-surgery-financing-miami',
         icon: CreditCard,
     },
     {
         title: 'Current Specials',
-        description: 'View our latest promotions and limited-time offers',
+        description: 'View our current promotions',
         href: '/miami-plastic-surgery-specials',
         icon: Sparkles,
     },

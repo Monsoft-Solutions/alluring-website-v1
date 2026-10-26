@@ -25,6 +25,7 @@ import { ReadingProgress } from '@/components/blog/reading-progress.component'
 import { ModuleFaq } from '@/components/procedures/module-kit/module-faq.component'
 import { moduleContainer } from '@/components/procedures/module-kit/module-ui.constant'
 import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import { isFaqHeadingId } from '@/lib/blog/post-mdx.util'
 import type { PostProcedure } from '@/lib/blog/post-procedure.util'
 import { getTocSections } from '@/lib/blog/post-toc.util'
@@ -188,6 +189,12 @@ export function BlogPostPage({
                                         intro={postOfferIntro(promotion)}
                                     />
                                 }
+                            />
+                            {/* Fla. Stat. 456.062: once, after a body whose
+                                claim tokens printed a discounted price. */}
+                            <DiscountStatement
+                                statement={post.discountStatement}
+                                className='mt-10'
                             />
                         </div>
 

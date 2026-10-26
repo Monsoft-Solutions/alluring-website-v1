@@ -35,11 +35,12 @@ import type {
     ConsultChatStaffLabels,
 } from '@/components/shared/consult-chat/consult-chat.types'
 import {
-    CHAT_STARTING_PRICES,
+    buildChatStartingPrices,
     CHAT_TIMELINES,
     type ChatProcedureValue,
     chatProcedureOptions,
 } from '@/components/shared/consult-chat/site-chat-copy'
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 
 import type { LpCopyVariant } from './lp-form-variant'
 import { type AdVariant, VARIANT_PROCEDURE } from './lp-variants'
@@ -47,8 +48,14 @@ import { type AdVariant, VARIANT_PROCEDURE } from './lp-variants'
 export interface LpChat {
     readonly copy: Readonly<Record<ConsultChatLang, ConsultChatCopy>>
     readonly staff: ConsultChatStaffLabels
-    /** Settled starting prices by procedure value ("$5,500"), for the FAQ. */
+    /**
+     * Settled starting prices by procedure value, for the FAQ, in plain
+     * text from the pricing resolver ("$5,500", or "$4,400 (20% off
+     * $5,500)").
+     */
     readonly prices: Readonly<Partial<Record<ChatProcedureValue, string>>>
+    /** The 456.062 statement while one of those prices is discounted. */
+    readonly priceStatement: string | null
 }
 
 /** Lipo 360, a combination, mommy makeover, BBL, breast augmentation, tummy tuck. */
@@ -90,7 +97,7 @@ function copyFor(
     return {
         en: {
             title: 'Request your consultation',
-            status: 'Replies by text within 24 hours',
+            status: 'Replies by text',
             greeting: '',
             qProcedure: 'What are you considering?',
             procedures: chatProcedureOptions(order, 'en', 'Something else'),
@@ -107,8 +114,7 @@ function copyFor(
             change: 'Change',
             typing: 'Alluring is typing',
             stepLabel: 'Step {n} of 3',
-            reassure:
-                'Private. A patient coordinator texts you within 24 hours.',
+            reassure: 'Private. A patient coordinator texts you.',
             formHeader: {
                 time: '30 seconds',
                 lastStep: 'Last step',
@@ -123,7 +129,7 @@ function copyFor(
         },
         es: {
             title: 'Pide tu consulta',
-            status: 'Responde por texto en 24 horas',
+            status: 'Responde por texto',
             greeting: '',
             qProcedure: '¿Qué estás considerando?',
             procedures: chatProcedureOptions(order, 'es', 'Otro'),
@@ -141,7 +147,7 @@ function copyFor(
             typing: 'Alluring está escribiendo',
             stepLabel: 'Paso {n} de 3',
             reassure:
-                'Privado. Una coordinadora te escribe por texto en menos de 24 horas.',
+                'Privado. Una coordinadora te escribe por texto para agendar tu consulta.',
             formHeader: {
                 time: '30 segundos',
                 lastStep: 'Último paso',
@@ -163,12 +169,15 @@ function copyFor(
  */
 export function buildLpChat(
     adVariant: AdVariant,
-    copyVariant: LpCopyVariant = 'plain'
+    copyVariant: LpCopyVariant = 'plain',
+    pricing?: PricingSnapshot
 ): LpChat {
     const copy = copyFor(adVariant, copyVariant)
+    const starting = buildChatStartingPrices(pricing)
     return {
         copy,
         staff: { procedures: copy.en.procedures, timelines: CHAT_TIMELINES.en },
-        prices: CHAT_STARTING_PRICES,
+        prices: starting.prices,
+        priceStatement: starting.statement,
     }
 }

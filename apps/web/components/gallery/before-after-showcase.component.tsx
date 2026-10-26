@@ -55,10 +55,9 @@ export function BeforeAfterShowcase({
 
                         {/* Description */}
                         <p className='text-lg leading-relaxed font-light text-stone-600'>
-                            Drag the slider to reveal the remarkable
-                            transformations achieved by our expert surgeons.
-                            These authentic results showcase the precision and
-                            artistry of our procedures.
+                            Drag the slider to compare before and after. These
+                            are real Alluring patients, and results differ from
+                            person to person.
                         </p>
                     </div>
                 </div>

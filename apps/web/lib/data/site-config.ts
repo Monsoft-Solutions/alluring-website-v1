@@ -12,6 +12,11 @@
  * - Social media links
  * - Structured data (Schema.org)
  */
+import {
+    DESCRIPTION_LONG,
+    DESCRIPTION_SHORT,
+} from '@workspace/shared/claims/identity'
+
 import { publicEnv } from '@/lib/env/public-env'
 import type { SiteConfig } from '@/lib/types/site-config.type'
 
@@ -53,8 +58,8 @@ export const siteConfig: SiteConfig = {
         // Personal care and fair value, without "luxury" or "affordable"
         // (#290, replaces "Luxury Surgeries Made Affordable").
         tagline: 'Personal care. Honest price.',
-        description:
-            'World-class aesthetic procedures in Miami combining high-end results with flexible financing and personalized care. Where luxury meets affordability.',
+        // The canon's approved descriptions (claims canon §1, #354).
+        description: DESCRIPTION_SHORT,
         foundedYear: undefined,
         founders: undefined,
         organizationType: 'Medical Practice',
@@ -165,8 +170,7 @@ export const siteConfig: SiteConfig = {
     seo: {
         siteUrl: getSiteUrl(), // Dynamically from environment
         siteName: 'Alluring Plastic Surgery',
-        siteDescription:
-            'Luxury cosmetic and plastic surgery clinic in Miami. Board-certified surgeons specializing in BBL, breast augmentation, tummy tuck, liposuction, mommy makeover, and facial procedures. Where luxury meets affordability.',
+        siteDescription: DESCRIPTION_LONG,
         keywords: [
             'plastic surgery Miami',
             'cosmetic surgery Miami',
@@ -177,9 +181,7 @@ export const siteConfig: SiteConfig = {
             'liposuction Miami',
             'mommy makeover Miami',
             'facial surgery Miami',
-            'cosmetic gynecology',
             'alluring plastic surgery',
-            'Miami plastic surgeon',
         ],
         locale: 'en-US',
         twitterHandle: '@alluringplasticsurgery',
@@ -203,13 +205,13 @@ export const siteConfig: SiteConfig = {
      * AggregateRating schema. Keep the two in step — an advertised rating that
      * the public profile does not support is a claim we cannot substantiate.
      * Last reconciled 2026-08-26 against a synced value of 4.7 across 81 reviews.
+     *
+     * Only the rating: the patient count, years, "100% certified" and "Double
+     * Board-Certified" it carried are unverified and retired (claims canon
+     * §4, #354), and no consumer falls back to a typed one.
      */
     trustStats: {
-        patients: '5,000+',
-        years: '15+',
-        certified: '100%',
         rating: '4.7',
-        accreditation: 'Double Board-Certified',
     },
 
     /**
@@ -293,39 +295,14 @@ export function getMapEmbedUrl(): string {
 }
 
 /**
- * Financing Partners
- *
- * Canonical list of financing partners used across the site.
- * Normalized partner names for consistent display.
- * Based on: https://www.alluringplasticsurgery.com/plastic-surgery-financing-miami/
+ * Financing partners and their list form ("Cherry, CareCredit, and United
+ * Credit") live in the claims canon (`@workspace/shared/claims/financing`,
+ * issue #354), re-exported here for existing imports.
  */
-export const FINANCING_PARTNERS = [
-    'Cherry',
-    'CareCredit',
-    'United Credit',
-] as const
-
-/**
- * Helper function to format financing partners as a comma-separated string
- * Returns format: "Cherry, CareCredit, and United Credit"
- */
-export function getFinancingPartnersString(): string {
-    const partners = [...FINANCING_PARTNERS] // Convert readonly tuple to array
-
-    if (partners.length === 0) {
-        return ''
-    }
-    if (partners.length === 1) {
-        return partners[0]!
-    }
-    if (partners.length === 2) {
-        return `${partners[0]!} and ${partners[1]!}`
-    }
-    // For 3+ partners: "Partner1, Partner2, and Partner3"
-    const lastPartner = partners[partners.length - 1]!
-    const otherPartners = partners.slice(0, -1).join(', ')
-    return `${otherPartners}, and ${lastPartner}`
-}
+export {
+    FINANCING_PARTNERS,
+    getFinancingPartnersString,
+} from '@workspace/shared/claims/financing'
 
 /**
  * Export individual sections for convenience

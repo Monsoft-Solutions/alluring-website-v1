@@ -1,15 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Clock } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import type { Promotion } from '@workspace/db/schema/promotion'
 
 import { Button } from '@workspace/ui/components/button'
 
-import {
-    formatDiscount,
-    getRemainingDays,
-    isExpiringSoon,
-} from '@/lib/queries/promotion.query'
+import { formatDiscount } from '@/lib/queries/promotion.query'
 import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
 
 type PromotionCardProps = {
@@ -20,12 +16,11 @@ type PromotionCardProps = {
  * PromotionCard Component
  *
  * Displays a promotion in a card format for listings.
- * Features glassmorphism design with type badges and urgency indicators.
+ * Features glassmorphism design with type badges. No countdowns or
+ * urgency wording (claims canon §10, #354).
  */
 export function PromotionCard({ promotion }: PromotionCardProps) {
     const discount = formatDiscount(promotion)
-    const daysRemaining = getRemainingDays(promotion)
-    const expiringSoon = isExpiringSoon(promotion)
 
     const typeColors = {
         discount: 'bg-green-500/10 text-green-400 border-green-500/30',
@@ -73,20 +68,6 @@ export function PromotionCard({ promotion }: PromotionCardProps) {
                     <div className='absolute top-4 right-4'>
                         <span className='bg-gold-500 rounded-lg px-3 py-1.5 font-serif text-lg font-bold text-stone-900'>
                             {discount}
-                        </span>
-                    </div>
-                )}
-
-                {/* Urgency Badge */}
-                {expiringSoon && daysRemaining !== null && (
-                    <div className='absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-red-500/90 px-3 py-1.5 text-white'>
-                        <Clock className='h-3 w-3' />
-                        <span className='text-xs font-medium'>
-                            {daysRemaining === 0
-                                ? 'Ends Today!'
-                                : daysRemaining === 1
-                                  ? '1 Day Left'
-                                  : `${daysRemaining} Days Left`}
                         </span>
                     </div>
                 )}

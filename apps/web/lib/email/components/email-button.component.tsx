@@ -21,7 +21,7 @@ type EmailButtonProps = {
 
     /**
      * Button color variant
-     * - primary: Gold background (luxury CTA)
+     * - primary: Gold background (main CTA)
      * - secondary: Stone background (subtle action)
      */
     variant?: 'primary' | 'secondary'
@@ -30,7 +30,7 @@ type EmailButtonProps = {
 /**
  * Email button component
  *
- * Styled button with consistent luxury design for email templates.
+ * Styled button with a consistent design for email templates.
  * Uses Alluring Plastic Surgery brand colors:
  * - Primary: Gold background with dark text (main CTAs)
  * - Secondary: Stone background with dark text (secondary actions)

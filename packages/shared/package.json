@@ -37,6 +37,66 @@
             "import": "./dist/content/index.js",
             "default": "./dist/content/index.js"
         },
+        "./claims": {
+            "types": "./dist/claims/index.d.ts",
+            "import": "./dist/claims/index.js",
+            "default": "./dist/claims/index.js"
+        },
+        "./claims/identity": {
+            "types": "./dist/claims/identity.d.ts",
+            "import": "./dist/claims/identity.js",
+            "default": "./dist/claims/identity.js"
+        },
+        "./claims/surgeon": {
+            "types": "./dist/claims/surgeon.d.ts",
+            "import": "./dist/claims/surgeon.js",
+            "default": "./dist/claims/surgeon.js"
+        },
+        "./claims/pricing": {
+            "types": "./dist/claims/pricing.d.ts",
+            "import": "./dist/claims/pricing.js",
+            "default": "./dist/claims/pricing.js"
+        },
+        "./claims/prices": {
+            "types": "./dist/claims/prices.d.ts",
+            "import": "./dist/claims/prices.js",
+            "default": "./dist/claims/prices.js"
+        },
+        "./claims/financing": {
+            "types": "./dist/claims/financing.d.ts",
+            "import": "./dist/claims/financing.js",
+            "default": "./dist/claims/financing.js"
+        },
+        "./claims/contact": {
+            "types": "./dist/claims/contact.d.ts",
+            "import": "./dist/claims/contact.js",
+            "default": "./dist/claims/contact.js"
+        },
+        "./claims/trust": {
+            "types": "./dist/claims/trust.d.ts",
+            "import": "./dist/claims/trust.js",
+            "default": "./dist/claims/trust.js"
+        },
+        "./claims/tokens": {
+            "types": "./dist/claims/tokens.d.ts",
+            "import": "./dist/claims/tokens.js",
+            "default": "./dist/claims/tokens.js"
+        },
+        "./claims/typed-prices": {
+            "types": "./dist/claims/typed-prices.d.ts",
+            "import": "./dist/claims/typed-prices.js",
+            "default": "./dist/claims/typed-prices.js"
+        },
+        "./claims/patterns": {
+            "types": "./dist/claims/patterns.d.ts",
+            "import": "./dist/claims/patterns.js",
+            "default": "./dist/claims/patterns.js"
+        },
+        "./claims/prompt": {
+            "types": "./dist/claims/prompt.d.ts",
+            "import": "./dist/claims/prompt.js",
+            "default": "./dist/claims/prompt.js"
+        },
         "./schemas/gallery": {
             "types": "./dist/schemas/gallery/index.d.ts",
             "import": "./dist/schemas/gallery/index.js",

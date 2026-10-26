@@ -6,6 +6,7 @@ import {
     SITE_CHAT_THANK_YOU_PATH,
 } from '@/components/shared/consult-chat/site-chat.constants'
 import { HOME_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
+import { withChatPrices } from '@/components/shared/consult-chat/site-chat-prices.server'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
@@ -28,7 +29,7 @@ import {
 const PROMISES = [
     {
         title: 'Nights and weekends are fine',
-        body: 'Most requests reach us outside office hours. Send yours now; a patient coordinator texts you back within 24 hours.',
+        body: 'Most requests reach us outside office hours. Send yours now; a patient coordinator texts you back.',
     },
     {
         title: 'In Miami or by video',
@@ -46,7 +47,9 @@ const PROMISES = [
  * first two. Every CTA on the page jumps here; the hero chips and the
  * procedure picker also answer its first question on the way.
  */
-export function HomeConsult() {
+export async function HomeConsult() {
+    // Starting prices from the pricing resolver (#354).
+    const chat = await withChatPrices(HOME_CHAT)
     return (
         <section
             id={HOME_SECTION_IDS.consult}
@@ -120,8 +123,8 @@ export function HomeConsult() {
                 <div>
                     <SiteConsultChat
                         id={HOME_CHAT_ID}
-                        copy={HOME_CHAT.copy}
-                        staff={HOME_CHAT.staff}
+                        copy={chat.copy}
+                        staff={chat.staff}
                         source={CONTACT_SOURCES.HOME_PAGE}
                         formName='home_chat'
                         thankYouPath={SITE_CHAT_THANK_YOU_PATH}

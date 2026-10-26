@@ -5,12 +5,12 @@
  * Displays success message, sets expectations for follow-up, and provides trust indicators.
  *
  * Features:
- * - Confirmation that a patient coordinator reaches out within 24 hours
+ * - Confirmation that a patient coordinator texts back (no promised time)
  * - Trust indicators the site can stand behind (free consultation, Spanish)
  * - Business hours and immediate contact option
  */
 
-import { Phone, Clock, Languages, ShieldCheck } from 'lucide-react'
+import { Phone, Languages, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@workspace/ui/components/button'
 
@@ -61,12 +61,8 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                             <span className='font-semibold text-white'>
                                 patient coordinators
                             </span>{' '}
-                            will reach out within{' '}
-                            <span className='font-semibold text-white'>
-                                24 hours
-                            </span>{' '}
-                            to answer your questions and schedule your free
-                            consultation.
+                            will text you to answer your questions and schedule
+                            your free consultation.
                         </p>
                         <p className='text-lg text-stone-300'>
                             In the meantime, feel free to explore our site to
@@ -87,12 +83,6 @@ export function ThankYouHero({ id = 'thank-you-hero' }: ThankYouHeroProps) {
                             <Languages className='text-gold-400 h-5 w-5' />
                             <span className='text-sm font-medium'>
                                 Hablamos español
-                            </span>
-                        </div>
-                        <div className='flex items-center gap-2 text-stone-400'>
-                            <Clock className='text-gold-400 h-5 w-5' />
-                            <span className='text-sm font-medium'>
-                                24hr Response
                             </span>
                         </div>
                     </div>

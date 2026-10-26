@@ -21,6 +21,7 @@
         "backfill:ads": "tsx scripts/backfill-ads.ts",
         "backfill:lead-params": "tsx scripts/backfill-lead-landing-params.ts",
         "refresh:prune": "tsx scripts/prune-refresh-noise.ts",
+        "claims:convert-posts": "tsx scripts/convert-post-prices.ts",
         "gallery:import-instagram": "tsx scripts/import-instagram-gallery.ts"
     },
     "dependencies": {

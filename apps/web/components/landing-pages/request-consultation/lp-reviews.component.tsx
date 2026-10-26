@@ -29,7 +29,7 @@ interface LpReviewsProps {
     readonly lang: LpLang
     readonly copy: LpDictionary['reviews']
     readonly rating: string
-    /** Null when the live count is unavailable: the published figure shows. */
+    /** Null when the live count is unavailable: the source shows with no count. */
     readonly reviewCount: number | null
     readonly liveReviews: readonly LpLiveReview[]
     readonly adVariant: AdVariant

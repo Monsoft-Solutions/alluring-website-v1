@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Phone } from 'lucide-react'
 import { cn } from '@workspace/ui/lib/utils'
 
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 import {
@@ -44,10 +45,18 @@ export function ModuleJumpNav({ links }: { links: ModuleJumpLink[] }) {
 export type ModuleFactRailProps = {
     /** Names the rail's landmark. Each rail on a page needs its own. */
     label: string
-    /** The starting price as the page prints it, e.g. "$5,500". */
-    startingAt: string
+    /**
+     * The starting price as the page prints it: a `PriceTag` from the
+     * pricing resolver, so a discount shows struck through.
+     */
+    startingAt: ReactNode
     /** The line under the price, e.g. "Most patients $5,500–$10,000, …". */
     priceNote: ReactNode
+    /**
+     * The Fla. Stat. 456.062 statement while the rail's price is discounted
+     * (#354), printed under the price; `null` prints nothing.
+     */
+    discountStatement?: string | null
     /** The surgeon's name as the page prints it. */
     surgeonName: string
     /** ISO date of the page's last real update. */
@@ -78,6 +87,7 @@ export function ModuleFactRail({
     label,
     startingAt,
     priceNote,
+    discountStatement,
     surgeonName,
     updatedOn,
     bookHref = '#book',
@@ -100,6 +110,10 @@ export function ModuleFactRail({
                 <p className='text-[0.9375rem] leading-normal text-stone-700 tabular-nums'>
                     {priceNote}
                 </p>
+                <DiscountStatement
+                    statement={discountStatement}
+                    className='text-[0.8125rem]'
+                />
             </div>
             <div className='flex flex-col gap-2.5'>
                 <a

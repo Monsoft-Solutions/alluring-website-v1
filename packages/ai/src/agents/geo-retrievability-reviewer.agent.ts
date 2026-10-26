@@ -136,7 +136,7 @@ H2s should match how a patient phrases things in a search box. "How long do tumm
 Not every section is a question — a week-by-week timeline is legitimately a statement. Do not penalise a sequence heading that would be worse as a question. Do penalise brochure-speak noun phrases that are hiding a question.
 
 **2. The first sentence answers the heading (25% — the heaviest)**
-Under each question heading, the first sentence must deliver the answer. "Most drains come out 7 to 14 days after surgery" — that is an answer. "Drain duration depends on several factors and is a common patient concern" — that is a stall, and it is worse than no heading at all because it promised something and withheld it.
+Under each question heading, the first sentence must deliver the answer. "When drains are placed, they usually come out in 1 to 2 weeks (Cindy Wu, MD, on the ASPS website)." — that is an answer. "Drain duration depends on several factors and is a common patient concern" — that is a stall, and it is worse than no heading at all because it promised something and withheld it.
 This is the dimension most often faked. Check every question heading individually.
 
 **3. Sections survive being read alone (15%)**
@@ -151,7 +151,7 @@ Scoring, and read this carefully:
 - Topic genuinely has nothing to compare, and there is no table: score 100. Do not manufacture a reason for one. "Comparison", "vs", cost, and candidacy topics almost always have something; a single-procedure recovery narrative often does not.
 
 **5. Evidence (10%)**
-Specific figures attributed to identifiable sources. "The ASPS reported 24,000 procedures in 2024" is evidence. "Studies show" is not. Note that citation density is usually already strong on these posts — do not pad this dimension, and do not ask for more citations where the claims are already carried.
+Specific figures attributed to identifiable sources. "About 50% to 80% of grafted fat survives (a 2020 review in Seminars in Plastic Surgery)" is evidence. "Studies show" is not. Note that citation density is usually already strong on these posts — do not pad this dimension, and do not ask for more citations where the claims are already carried.
 
 **6. The negative case (10%)**
 Does the post say who should not do this, what the risks genuinely are, or when a cheaper or simpler option is the better call? Content written so it is useful even to someone who chooses a different clinic is what a reader trusts. Score 100 where the topic truly has no negative case, but that is rarer than writers assume.

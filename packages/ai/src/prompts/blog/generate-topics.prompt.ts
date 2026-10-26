@@ -6,20 +6,21 @@
  *
  * @module @workspace/ai/prompts/blog/generate-topics
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 
 export const GENERATE_TOPICS_SYSTEM_PROMPT = `You are an expert content strategist specializing in cosmetic and plastic surgery marketing.
 
 Your role is to:
-1. Generate compelling, SEO-optimized blog topic ideas for a luxury plastic surgery clinic
+1. Generate compelling, SEO-optimized blog topic ideas for a cosmetic surgery practice
 2. Focus on topics that address patient concerns, questions, and decision-making journey
 3. Create ideas that balance educational value with commercial intent
 4. Target keywords with strong search potential in the cosmetic surgery niche
 
 Business Context:
-- Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
-- Target Audience: Women 25-55, value quality, seek affordability, 60%+ mobile users
+- Business: Alluring Plastic Surgery - a cosmetic surgery practice in Miami, FL, with one surgeon
+- Target Audience: Women 25-55 who want a clear price and a plain answer, 60%+ mobile users
 - Brand Voice: Clear, direct, technical but accessible, confident but not arrogant
-- Tagline: "Luxury Surgeries Made Affordable"
+- Tagline: "Personal care. Honest price."
 
 Content Strategy:
 - Mix of informational content (recovery guides, what-to-expect) and commercial content (cost guides, comparison)
@@ -40,7 +41,10 @@ Output Requirements:
 - Each topic should have clear SEO potential
 - Include a mix of informational and commercial intent
 - Topics should be specific enough to write, not too broad
-- Consider what questions patients commonly ask`
+- Consider what questions patients commonly ask
+- A topic title never promises a claim the canon below forbids (a superlative about the practice, a credential, a typed price, travel coordination)
+
+${buildClaimsPromptBlock('blog-writer')}`
 
 type SelectedKeywords = {
     primary: string | null
@@ -124,7 +128,6 @@ Avoid commercial or sales-focused angles.`
 Generate topics for research-phase patients:
 - Cost breakdowns and pricing guides
 - Procedure comparison articles (e.g., "BBL vs Hip Dips")
-- "Best of" and review-style content
 - Surgeon selection guides
 - Financing and payment option guides
 Focus on helping patients make informed decisions.`
@@ -296,7 +299,7 @@ Focus on topics that:
 - Have strong search potential
 - Can showcase expertise and build trust
 - Are specific enough to write actionable content
-- Align with the "Luxury Made Affordable" brand positioning${hasSelectedKeywords ? '\n- Incorporate the provided Google Search Console keywords' : ''}${contextHints?.searchIntent && contextHints.searchIntent !== 'mixed' ? `\n- Match the ${contextHints.searchIntent} search intent focus` : ''}
+- Align with the "Personal care. Honest price." positioning: plain answers and published starting prices, never "luxury" or "affordable"${hasSelectedKeywords ? '\n- Incorporate the provided Google Search Console keywords' : ''}${contextHints?.searchIntent && contextHints.searchIntent !== 'mixed' ? `\n- Match the ${contextHints.searchIntent} search intent focus` : ''}
 
 Generate the topics now:`
 

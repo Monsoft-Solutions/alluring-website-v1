@@ -11,12 +11,14 @@
  * the one thing it must not be.
  *
  * The format exists because a reader wants it, not because engines like it.
- * Someone who searched "how long do drains stay in" wants "7 to 14 days" before
+ * Someone who searched "how long do drains stay in" wants "1 to 2 weeks" before
  * they want anything else. That it also happens to be the most extractable
  * possible shape is a side effect.
  *
  * @module @workspace/ai/functions/extract-quick-answer
  */
+import { CLAIM_TOKEN_RULE } from '../prompts/blog/claim-tokens.prompt'
+
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
@@ -93,11 +95,13 @@ Phrase it the way a patient types it into a search box, not the way a brochure w
 
 **The answer**
 - ${QUICK_ANSWER_MIN_WORDS}-${QUICK_ANSWER_MAX_WORDS} words. Not shorter, not longer.
-- Open with the number, range, or timeframe. "Most drains come out 7 to 14 days after surgery." Never open with "At Alluring, we believe" or "It depends".
+- Open with the number, range, or timeframe. "When drains are placed, they usually come out in 1 to 2 weeks (Cindy Wu, MD, on the ASPS website)." Never open with "At Alluring, we believe" or "It depends".
 - It must stand completely alone. Someone reading only these sentences, with no article around them, should get a correct and useful answer. No "as mentioned above", no "this procedure", no pronoun whose referent is in a paragraph they haven't read.
 - Every number must already appear in the article. You are lifting the answer out of the piece, not writing a new one. If the article never commits to a number, say what it does commit to — a range, a typical case, a "depends on X" with X named.
 - Include the honest qualifier when one exists. "Most patients" and "usually" are accurate; deleting them to sound confident makes it wrong.
 - Plain sentences. No bullet points, no markdown, no headings, no bold.
+
+${CLAIM_TOKEN_RULE}
 
 **Never**
 - Invent, round, or extrapolate a figure the article does not contain.
@@ -126,7 +130,7 @@ function countWords(text: string): number {
  * })
  *
  * console.log(quickAnswer.answer)
- * // "Most tummy tuck drains come out 7 to 14 days after surgery, once..."
+ * // "When drains are placed after a tummy tuck, they usually come out in 1 to 2 weeks..."
  * ```
  */
 export async function extractQuickAnswer(

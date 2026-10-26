@@ -6,9 +6,11 @@
  *
  * @module @workspace/ai/pipelines/extraction-phase
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 import type { FaqItem } from '@workspace/shared/schemas/blog'
 
 import { extractMetadata } from '../functions/extract-metadata.function'
+import { normalizeClaimText } from '../functions/normalize-claim-text.function'
 import {
     extractFaqs,
     generateFaqSchema,
@@ -35,6 +37,12 @@ export type ExtractionPhaseOptions = {
     modelId?: string
     /** How hard the extraction model should think (default: none) */
     reasoningEffort?: ReasoningEffort
+    /**
+     * The live pricing snapshot (#354): the extracted fields' claim tokens
+     * and typed prices are checked against it. The 2026-09-15 sheet when
+     * omitted.
+     */
+    pricing?: PricingSnapshot
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -156,9 +164,39 @@ export async function runExtractionPhase(
             ),
         ])
 
-        const quickAnswer = quickAnswerOutcome.ok
+        // Claim tokens and typed prices in what the models extracted (#354),
+        // checked like the body: canonical tokens, typed prices as tokens,
+        // the rest reported.
+        const notes: string[] = []
+        const claimText = (
+            text: string,
+            field: Parameters<typeof normalizeClaimText>[1]
+        ) => {
+            const result = normalizeClaimText(text, field, options.pricing)
+            notes.push(...result.notes)
+            return result.text
+        }
+        const metaTitle = claimText(metadata.metaTitle, 'metaTitle')
+        const metaDescription = claimText(
+            metadata.metaDescription,
+            'metaDescription'
+        )
+        const excerpt = claimText(metadata.excerpt, 'excerpt')
+        const faqs = faqResult.faqs.map((faq) => ({
+            ...faq,
+            question: claimText(faq.question, 'faq'),
+            answer: claimText(faq.answer, 'faq'),
+        }))
+
+        const quickAnswerRaw = quickAnswerOutcome.ok
             ? serializeQuickAnswer(quickAnswerOutcome.value)
             : null
+        const quickAnswer = quickAnswerRaw
+            ? claimText(quickAnswerRaw, 'quickAnswer')
+            : null
+        for (const note of notes) {
+            console.warn(`[Extraction Phase] Claims: ${note}`)
+        }
 
         if (!quickAnswerOutcome.ok) {
             console.warn(
@@ -169,28 +207,28 @@ export async function runExtractionPhase(
             )
         }
 
-        const faqSchema = generateFaqSchema(faqResult.faqs)
+        const faqSchema = generateFaqSchema(faqs)
         const timeMs = Date.now() - startTime
 
         onProgress?.('extraction', 100, 'Extraction complete', {
             type: 'extraction-result',
-            faqCount: faqResult.faqs.length,
+            faqCount: faqs.length,
         })
 
         console.log(
-            `[Extraction Phase] Extraction complete: ${faqResult.faqs.length} FAQs, Quick Answer: ${quickAnswer ? 'yes' : 'no'}`
+            `[Extraction Phase] Extraction complete: ${faqs.length} FAQs, Quick Answer: ${quickAnswer ? 'yes' : 'no'}`
         )
         console.log(`[Extraction Phase] Time: ${timeMs}ms`)
 
         return {
             success: true,
-            metaTitle: metadata.metaTitle,
-            metaDescription: metadata.metaDescription,
-            excerpt: metadata.excerpt,
+            metaTitle,
+            metaDescription,
+            excerpt,
             suggestedTags: metadata.suggestedTags,
             readingTimeMinutes: metadata.readingTimeMinutes,
             suggestedCategory: metadata.suggestedCategory,
-            faqs: faqResult.faqs,
+            faqs,
             faqSchema,
             quickAnswer,
             timeMs,

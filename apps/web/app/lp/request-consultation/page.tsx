@@ -55,6 +55,7 @@ import {
     type ResolvedLpLanguage,
 } from '@/components/landing-pages/request-consultation/lp-language'
 import { buildLpPrices } from '@/components/landing-pages/request-consultation/lp-prices'
+import { getPricing } from '@/lib/queries/pricing.query'
 import { selectLpProof } from '@/components/landing-pages/request-consultation/lp-proof'
 import { resolveLpSection } from '@/components/landing-pages/request-consultation/lp-sections'
 import {
@@ -146,9 +147,11 @@ export default async function RequestConsultationLandingPage({
     const formVariant = await formVariantFrom(params)
     const copyVariant = await copyVariantFrom(params)
 
-    const [gallery, reviews] = await Promise.all([
+    const [gallery, reviews, pricing] = await Promise.all([
         getSpecialsFeaturedGalleryImages().catch(() => []),
         getPublishedGoogleReviews(REVIEWS_TO_READ).catch(() => null),
+        // Prices from the resolver, like the procedure pages (#354).
+        getPricing(),
     ])
 
     return (
@@ -158,9 +161,9 @@ export default async function RequestConsultationLandingPage({
             adVariant={adVariant}
             formVariant={formVariant}
             copyVariant={copyVariant}
-            chat={buildLpChat(adVariant, copyVariant)}
+            chat={buildLpChat(adVariant, copyVariant, pricing)}
             proof={selectLpProof(adVariant, gallery, reviews)}
-            prices={buildLpPrices(adVariant)}
+            prices={buildLpPrices(adVariant, pricing)}
             focusSection={resolveLpSection(first(params.s))}
         />
     )

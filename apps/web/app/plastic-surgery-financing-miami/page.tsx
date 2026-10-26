@@ -27,6 +27,7 @@ import {
     financingFaqConfig,
     financingFaqData,
 } from '@/lib/data/faq/financing-faq-data'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     financingCtaData,
@@ -45,17 +46,18 @@ const pageUrl = `${siteUrl}/plastic-surgery-financing-miami`
 /**
  * Page Metadata
  *
- * SEO-optimized metadata targeting financing-related searches.
- * CTR-optimized with 0% APR and instant approval messaging.
+ * SEO-optimized metadata targeting financing-related searches. Names the
+ * partners and quotes no rate or approval speed: those are Truth in Lending
+ * trigger terms the claims canon removes (§6, D6, #354).
  */
 const pageTitle =
-    'Plastic Surgery Financing Miami | 0% APR | Approved in Minutes'
+    'Plastic Surgery Financing Miami | Cherry, CareCredit, United Credit'
 
 export const metadata = toNextMetadata(seoConfig, {
     canonical: financingSeoData.canonical,
     title: pageTitle,
     description:
-        'Make your dream transformation affordable. 0% APR financing for BBL, breast surgery, tummy tuck & more. Cherry, CareCredit, United Credit. Apply in 60 seconds.',
+        'Financing for BBL, breast surgery, tummy tuck & more in Miami, through Cherry, CareCredit and United Credit, for qualified applicants. Approval and terms are set by the lender.',
     keywords: financingSeoData.keywords as unknown as string[],
 
     openGraph: {
@@ -63,7 +65,7 @@ export const metadata = toNextMetadata(seoConfig, {
         url: pageUrl,
         title: pageTitle,
         description:
-            'Make your dream transformation affordable. 0% APR financing for BBL, breast surgery, tummy tuck & more. Cherry, CareCredit, United Credit. Apply in 60 seconds.',
+            'Financing for BBL, breast surgery, tummy tuck & more in Miami, through Cherry, CareCredit and United Credit, for qualified applicants. Approval and terms are set by the lender.',
         siteName: siteConfig.business.name,
         images: [
             {
@@ -79,7 +81,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            '0% APR financing for cosmetic surgery. Instant approval. Cherry, CareCredit, United Credit accepted. Apply in 60 seconds.',
+            'Financing for BBL, breast surgery, tummy tuck & more in Miami, through Cherry, CareCredit and United Credit, for qualified applicants. Approval and terms are set by the lender.',
         images: [`${siteUrl}/images/hero-beautiful-latin-woman.jpg`],
     },
 
@@ -96,7 +98,31 @@ export const metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default function FinancingPage() {
+export default async function FinancingPage() {
+    // Claim tokens in the page copy and FAQ answers (prices, financing;
+    // #354), resolved once for the sections and their schema.
+    const [
+        faqs,
+        hero,
+        howItWorks,
+        partners,
+        proceduresData,
+        cta,
+        seoDescription,
+    ] = await resolveClaimsIn(
+        [
+            financingFaqData,
+            financingHeroData,
+            financingHowItWorksData,
+            financingPartnersData,
+            financingProceduresData,
+            financingCtaData,
+            financingSeoData.description,
+        ] as const,
+        'text',
+        'financing page'
+    )
+
     // Breadcrumb items for schema and navigation
     const breadcrumbItems = [
         { name: 'Home', item: siteUrl },
@@ -104,7 +130,7 @@ export default function FinancingPage() {
     ]
 
     // Transform FAQ data for schema
-    const faqSchemaItems = financingFaqData.map((faq) => ({
+    const faqSchemaItems = faqs.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
     }))
@@ -113,9 +139,9 @@ export default function FinancingPage() {
         <>
             {/* Structured Data - WebPage Schema */}
             <WebPageSchema
-                name='Plastic Surgery Financing Miami | 0% APR Plans'
+                name='Plastic Surgery Financing Miami'
                 url={pageUrl}
-                description={financingSeoData.description}
+                description={seoDescription}
             />
 
             {/* Structured Data - Breadcrumb Schema */}
@@ -127,26 +153,26 @@ export default function FinancingPage() {
             {/* Main Content */}
             <ContainerLayout as='div' noPaddingTop noPadding size='full'>
                 {/* Hero Section - Full viewport with parallax */}
-                <FinancingHero id='financing-hero' {...financingHeroData} />
+                <FinancingHero id='financing-hero' {...hero} />
 
                 {/* How It Works Section */}
                 <FinancingHowItWorks
                     id='how-it-works'
-                    {...financingHowItWorksData}
+                    {...howItWorks}
                     variant='default'
                 />
 
                 {/* Financing Partners Section */}
                 <FinancingPartners
                     id='financing-partners'
-                    {...financingPartnersData}
+                    {...partners}
                     variant='muted'
                 />
 
                 {/* Procedures Available Section */}
                 <FinancingProcedures
                     id='procedures'
-                    {...financingProceduresData}
+                    {...proceduresData}
                     variant='default'
                 />
 
@@ -155,7 +181,7 @@ export default function FinancingPage() {
                     id='financing-faq'
                     title={financingFaqConfig.title}
                     description={financingFaqConfig.description}
-                    faqs={financingFaqData}
+                    faqs={faqs}
                     variant='muted'
                     includeSchema={false}
                 />
@@ -163,18 +189,18 @@ export default function FinancingPage() {
                 {/* Final CTA Section - Luxury variant */}
                 <CTASection
                     id='financing-cta'
-                    eyebrow={financingCtaData.eyebrow}
-                    heading={financingCtaData.heading}
-                    description={financingCtaData.description}
+                    eyebrow={cta.eyebrow}
+                    heading={cta.heading}
+                    description={cta.description}
                     primaryButton={{
-                        text: financingCtaData.primaryButton.text,
-                        href: financingCtaData.primaryButton.href,
+                        text: cta.primaryButton.text,
+                        href: cta.primaryButton.href,
                     }}
                     secondaryButton={
-                        financingCtaData.secondaryButton
+                        cta.secondaryButton
                             ? {
-                                  text: financingCtaData.secondaryButton.text,
-                                  href: financingCtaData.secondaryButton.href,
+                                  text: cta.secondaryButton.text,
+                                  href: cta.secondaryButton.href,
                                   variant: 'outline',
                               }
                             : undefined

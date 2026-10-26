@@ -3,14 +3,30 @@
  *
  * Full-screen hero section with background image and glassmorphism content card.
  * Uses sticky background pattern similar to home page hero for better mobile experience.
+ *
+ * Its badges state only what the claims canon verifies (#354): the American
+ * Board of Surgery certification, the FACS fellowship, one surgeon and the
+ * Google rating. Pass `rating` from the synced Google figures; without it the
+ * static fallback in siteConfig shows.
  */
 
 import Image from 'next/image'
 import { ShieldCheck, Award, Star, Users } from 'lucide-react'
 
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
+
 import { siteConfig } from '@/lib/data/site-config'
 
-export function AboutHeroFullbleed() {
+export function AboutHeroFullbleed({
+    rating,
+}: {
+    /** The synced Google average rating. */
+    readonly rating?: number | null
+} = {}) {
+    const ratingText =
+        typeof rating === 'number'
+            ? rating.toFixed(1)
+            : (siteConfig.trustStats?.rating ?? '4.7')
     return (
         <section className='relative w-full'>
             {/* Sticky Image Background */}
@@ -18,7 +34,7 @@ export function AboutHeroFullbleed() {
                 <div className='pointer-events-none absolute inset-0 z-10 bg-stone-900/30' />
                 <Image
                     src='/images/hero-beautiful-latin-woman.jpg'
-                    alt='Alluring Plastic Surgery - Beautiful Results'
+                    alt='A smiling woman with long dark hair against a brown backdrop (model)'
                     fill
                     className='pointer-events-none object-cover'
                     priority
@@ -54,7 +70,7 @@ export function AboutHeroFullbleed() {
                             <div className='mb-8 flex items-center gap-3'>
                                 <span className='bg-gold-400 h-px w-8'></span>
                                 <span className='text-gold-500 text-sm font-bold tracking-[0.2em] uppercase'>
-                                    Excellence in Aesthetic Surgery
+                                    Cosmetic Surgery in Miami
                                 </span>
                             </div>
 
@@ -71,11 +87,9 @@ export function AboutHeroFullbleed() {
 
                             {/* Description */}
                             <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-600'>
-                                Alluring Plastic Surgery combines world-class
-                                surgical expertise with a luxury concierge
-                                experience. Double Board-Certified surgeons,
-                                state-of-the-art facility, and a promise that
-                                defines us:{' '}
+                                Alluring Plastic Surgery is a cosmetic surgery
+                                practice in Miami with one surgeon,{' '}
+                                {KARLINSKY_NAME}, and a promise that defines us:{' '}
                                 <strong className='font-bold text-stone-900'>
                                     {siteConfig.business.tagline}
                                 </strong>
@@ -88,10 +102,10 @@ export function AboutHeroFullbleed() {
                                     <ShieldCheck className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            Double
+                                            Board Certified
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            Board-Certified
+                                            American Board of Surgery
                                         </div>
                                     </div>
                                 </div>
@@ -100,10 +114,10 @@ export function AboutHeroFullbleed() {
                                     <Award className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            Board Certified
+                                            FACS
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            Surgeons
+                                            Fellow, American College of Surgeons
                                         </div>
                                     </div>
                                 </div>
@@ -112,10 +126,10 @@ export function AboutHeroFullbleed() {
                                     <Users className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            5,000+
+                                            One Surgeon
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            Patients
+                                            For every procedure
                                         </div>
                                     </div>
                                 </div>
@@ -124,10 +138,10 @@ export function AboutHeroFullbleed() {
                                     <Star className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            4.7 Stars
+                                            {ratingText} Stars
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            Rating
+                                            On Google
                                         </div>
                                     </div>
                                 </div>

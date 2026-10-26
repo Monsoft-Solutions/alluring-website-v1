@@ -252,12 +252,12 @@ old template. The registry entry and the count wait for the run, because
 `slug_check.mjs` treats a registry entry as a collision.
 
 - **The v2 allowlist.** A slug outside `BLOG_V2_SLUGS` renders the old
-  template, whose sidebar says "board-certified surgeons" and "5,000+ Happy
-  Patients". The v2 template is clean, but its top-15 rollout is under
-  review (CTR fell after 26 Sep 2026; readout around 17 Oct). Ask the user.
-  Recommend adding the slug unless that readout says otherwise. Say it
-  plainly: declining v2 publishes the post next to claims compliance.md
-  forbids.
+  template. The v2 template is the one kept to the claims canon, but its
+  top-15 rollout is under review (CTR fell after 26 Sep 2026; readout
+  around 17 Oct). Ask the user. Recommend adding the slug unless that
+  readout says otherwise. If the user declines, run `served_check.py` on the
+  old-template render and report any template claim the canon
+  (`docs/claims/canon.md`) forbids.
 - Run `pnpm --filter admin test` (registry integrity and the count), and
   `pnpm --filter web typecheck` if web code changed. Prefix any build with
   `env -u ANTHROPIC_API_KEY`.

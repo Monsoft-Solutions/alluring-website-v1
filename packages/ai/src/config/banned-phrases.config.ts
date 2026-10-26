@@ -66,11 +66,13 @@ export const CORPORATE_JARGON: BannedPhrase[] = [
         description: 'Overused marketing term',
     },
     {
+        // Claims canon §3/§10 (issue #354): an unverified facility claim.
+        // Delete it; a reworded facility description is just as unverified.
         phrase: 'state-of-the-art',
-        severity: 'minor',
+        severity: 'critical',
         category: 'corporate',
-        replacement: 'modern',
-        description: 'Consider more specific language',
+        description:
+            'Unverified facility claim: delete it rather than reword it (claims canon)',
     },
     {
         phrase: 'world-class',

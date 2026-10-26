@@ -342,13 +342,14 @@ export const optionalLastNameSchema = z
     .optional()
 
 /**
- * Preferred contact time options
+ * Preferred contact time options, inside office hours only (claims canon
+ * §9: Monday–Friday 9 AM–5 PM). 'evening' stays in the enum below so leads
+ * stored with it still validate, but the form no longer offers it.
  */
 export const PREFERRED_CONTACT_TIME_OPTIONS = [
     { value: '', label: 'Select preferred time' },
     { value: 'morning', label: '9am - 12pm' },
     { value: 'afternoon', label: '12pm - 5pm' },
-    { value: 'evening', label: '5pm - 7pm' },
 ] as const
 
 export type PreferredContactTime = 'morning' | 'afternoon' | 'evening' | ''

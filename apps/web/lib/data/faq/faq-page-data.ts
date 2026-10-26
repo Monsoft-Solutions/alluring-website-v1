@@ -7,17 +7,26 @@
  *
  * Content Strategy:
  * - Address common objections: safety, cost, recovery, results
- * - Reinforce "Luxury Made Affordable" positioning
+ * - Follow the claims canon (docs/claims/canon.md, #354)
  * - Support both local and out-of-town patients
  * - Guide toward booking a consultation
  */
+
+import {
+    FINANCING_SENTENCE_LONG,
+    FINANCING_SENTENCE_SHORT,
+} from '@workspace/shared/claims/financing'
 
 import type {
     FaqCategory,
     FaqItem,
     FaqCtaConfig,
 } from '@/lib/types/shared/faq.type'
-import { getFinancingPartnersString, siteConfig } from '@/lib/data/site-config'
+import { siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * FAQ page categories
@@ -39,19 +48,19 @@ export const faqPageData: Record<string, FaqItem[]> = {
     'getting-started': [
         {
             question: 'How do I schedule a consultation?',
-            answer: 'You can request a consultation via our online form, WhatsApp concierge, or by calling our Miami office directly. We offer both in-person appointments and virtual consultations for our out-of-town patients.',
+            answer: 'You can request a consultation with our online form or by calling our Miami office. We offer consultations in person in Miami or by video for out-of-town patients.',
         },
         {
             question: 'What happens during a consultation?',
-            answer: "Your consultation is a private, unhurried conversation with our board-certified surgeon. We'll discuss your goals, examine the areas you'd like to address, review your medical history, and create a personalized treatment plan. You'll receive a detailed quote and have all your questions answered—no pressure, just clarity.",
+            answer: `Your consultation is a private, unhurried conversation with ${KARLINSKY_NAME}. We'll discuss your goals, examine the areas you'd like to address, review your medical history, and create a personalized treatment plan. You'll receive a detailed quote and have all your questions answered—no pressure, just clarity.`,
         },
         {
             question: 'How long does a consultation take?',
-            answer: 'Plan for 45-60 minutes. We never rush our consultations because we believe understanding your vision is the foundation of exceptional results. Some patients finish sooner, but we always allocate enough time for a thorough discussion.',
+            answer: 'Plan for 45-60 minutes. We never rush a consultation, because understanding your goals comes first. Some patients finish sooner, but we always allocate enough time for a thorough discussion.',
         },
         {
             question: 'Do you offer virtual consultations?',
-            answer: "Yes! We offer secure video consultations for patients who can't visit our Miami office in person. Virtual consultations are perfect for initial discussions, procedure education, and treatment planning. Many out-of-town patients complete their virtual consult first, then fly in for their surgery.",
+            answer: "Yes. We offer secure video consultations for patients who can't visit our Miami office in person. Virtual consultations work well for initial discussions, procedure education, and treatment planning. Many out-of-town patients complete their virtual consult first, then fly in for their surgery.",
         },
         {
             question: 'Do I need a referral from my doctor?',
@@ -60,91 +69,87 @@ export const faqPageData: Record<string, FaqItem[]> = {
         {
             question:
                 "How do I know if I'm a good candidate for cosmetic surgery?",
-            answer: "Ideal candidates are in good overall health, maintain a stable weight, don't smoke (or are willing to quit), and have realistic expectations. Certain medical conditions may require additional evaluation. The best way to know for sure is to schedule a consultation—our team will review your health history and goals with you.",
+            answer: "Ideal candidates are in good overall health, maintain a stable weight, don't smoke (or are willing to quit), and have realistic expectations. Certain medical conditions may require additional evaluation. The best way to know is a consultation, where Dr. Karlinsky reviews your health history and goals and decides whether surgery is right for you.",
         },
     ],
     procedures: [
         {
             question: 'What procedures do you specialize in?',
-            answer: 'We specialize in a comprehensive range of body contouring and facial procedures including Brazilian Butt Lift (BBL), Breast Augmentation, Breast Lift, Breast Reduction, Tummy Tuck, Liposuction, Mommy Makeover, Facelift, and Blepharoplasty (eyelid surgery). Our surgeons have performed thousands of these procedures with exceptional results.',
+            answer: `We specialize in body contouring and facial procedures, including Brazilian Butt Lift (BBL), Breast Augmentation, Breast Lift, Breast Reduction, Tummy Tuck, Liposuction, Mommy Makeover, Facelift, and Blepharoplasty (eyelid surgery). One surgeon, ${KARLINSKY_NAME}, performs every procedure at Alluring.`,
         },
         {
             question: 'How do I know which procedure is right for me?',
-            answer: "That's exactly what your consultation is for. You'll speak with one of our dedicated Specialists who will discuss your goals, answer your questions, and guide you through the entire process. They'll help you understand your options and prepare you for a thorough evaluation with our board-certified surgeon. Every treatment plan is customized to you.",
+            answer: `That's exactly what your consultation is for. You'll speak with one of our dedicated Specialists who will discuss your goals, answer your questions, and guide you through the entire process. They'll help you understand your options and prepare you for a thorough evaluation with ${KARLINSKY_NAME}. Every treatment plan is customized to you.`,
         },
         {
             question: 'Can I combine multiple procedures in one surgery?',
-            answer: 'Yes, combining procedures is very common and can be more cost-effective. Popular combinations include the Mommy Makeover (tummy tuck + breast procedure), BBL with liposuction, or breast augmentation with a lift. Your surgeon will determine if combining procedures is safe and appropriate for your goals.',
+            answer: 'Yes, and combining them in one surgery lowers the total. Popular combinations include the Mommy Makeover (tummy tuck + breast procedure), BBL with liposuction, or breast augmentation with a lift. Your surgeon will determine if combining procedures is safe and appropriate for your goals.',
         },
         {
             question: "What if I'm not sure what I want?",
-            answer: "Absolutely come in for a consultation! Many patients come in with general goals like 'I want to look more youthful' or 'I'm unhappy with my midsection' without knowing the specific procedure. Our Specialists are experts at understanding your vision and guiding you toward the right options.",
+            answer: "Absolutely come in for a consultation! Many patients come in with general goals like 'I want to look more youthful' or 'I'm unhappy with my midsection' without knowing the specific procedure. Our Specialists listen to your goals and walk you through the options, and your surgeon decides what's right for you at consultation.",
         },
         {
             question: 'Where is the surgery performed?',
-            answer: 'All procedures are performed in our state-of-the-art surgical facility located right here in Miami by Double Board-Certified surgeons. We prioritize privacy, safety, and comfort.',
+            answer: `Every procedure is performed in Miami by one surgeon, ${KARLINSKY_NAME}, and you go home the same day. We prioritize privacy, safety, and comfort.`,
         },
     ],
     safety: [
         {
-            question: 'Are your surgeons board-certified?',
-            answer: 'Yes. Our surgeons are board-certified and specialize specifically in cosmetic and plastic surgery procedures. They maintain the highest standards of training, continuing education, and surgical excellence. You can verify credentials and learn more about each surgeon on our website.',
-        },
-        {
-            question: 'Is your surgical facility accredited?',
-            answer: 'Yes. All procedures are performed in our state-of-the-art surgical facility right here in Miami by Double Board-Certified surgeons. Our facility meets rigorous safety protocols, equipment standards, and staff qualifications.',
+            question: "What are your surgeon's credentials?",
+            answer: `Yes. One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
         },
         {
             question: 'What type of anesthesia do you use?',
-            answer: 'We use general anesthesia administered exclusively by board-certified MD anesthesiologists—never nurse anesthetists working without physician supervision. Your safety during surgery is our non-negotiable priority.',
+            answer: 'Most procedures are done under general anesthesia; liposuction and eyelid surgery can also be done under local anesthesia with sedation. An anesthesia provider monitors you throughout surgery, and your surgeon explains your plan at consultation.',
         },
         {
             question: 'What safety protocols do you follow?',
-            answer: 'We follow strict safety protocols including comprehensive pre-operative health screenings, state-of-the-art monitoring equipment, proper patient selection criteria, and evidence-based surgical techniques. Our facility maintains emergency equipment and protocols, and our entire team is trained in advanced life support.',
+            answer: 'We follow strict safety protocols including comprehensive pre-operative health screenings, proper patient selection criteria, and evidence-based surgical techniques.',
         },
         {
             question: 'How do you minimize surgical risks?',
-            answer: "Risk minimization starts with proper patient selection—we thoroughly evaluate your health to ensure you're a safe candidate. We use proven surgical techniques, limit operating times appropriately, and provide detailed pre- and post-operative instructions. Our surgeons never compromise safety for results.",
+            answer: "Risk minimization starts with proper patient selection—we thoroughly evaluate your health to ensure you're a safe candidate. We use proven surgical techniques, limit operating times appropriately, and provide detailed pre- and post-operative instructions.",
         },
     ],
     results: [
         {
             question: 'Will my results look natural?',
-            answer: "Natural-looking results are our signature. We believe the best cosmetic surgery is the kind no one can tell you've had—you simply look like the best version of yourself. Our surgeons take an artistic approach, respecting your natural proportions while enhancing your features.",
+            answer: 'Natural-looking results are the goal. Dr. Karlinsky plans around your natural proportions while enhancing your features.',
         },
         {
             question: 'How long will my results last?',
-            answer: 'Results vary by procedure, but most are designed to be long-lasting. BBL and breast augmentation results can last 10+ years. Facelift results typically last 7-10 years. The key to maintaining your results is a stable weight and healthy lifestyle.',
+            answer: 'Results vary by procedure, and most are long-lasting. The key to maintaining your results is a stable weight and healthy lifestyle.',
         },
         {
             question: 'When will I see my final results?',
-            answer: "You'll see immediate improvement, but final results develop over time as swelling resolves. For most body procedures, expect 3-6 months for final results. Facial procedures may settle in 6-12 months. We'll provide a timeline specific to your procedure.",
+            answer: "You'll see immediate improvement, but final results develop over time as swelling resolves. Most body procedures show their final result at about 3 to 6 months. Facial swelling can take several months to settle fully. We'll provide a timeline specific to your procedure.",
         },
         {
             question: 'Can I see before and after photos?',
-            answer: "Yes, we maintain an extensive gallery of before and after photos from real patients. Your Specialist can show you results from patients with similar anatomy and goals during your consultation. This helps set realistic expectations and gives you confidence in what's achievable.",
+            answer: "Yes. Our gallery has before and after photos from real patients. Your Specialist can show you results from patients with similar anatomy and goals during your consultation. This helps set realistic expectations and gives you confidence in what's achievable.",
         },
         {
             question: "What if I'm not happy with my results?",
-            answer: "Patient satisfaction is our priority. We set clear expectations during consultation so you know exactly what to expect. In the rare case that results don't meet expectations, we work with you to address any concerns. Many issues resolve naturally as healing progresses; others may be addressed with minor revisions.",
+            answer: "Patient satisfaction is our priority. We set clear expectations during consultation so you know exactly what to expect. If results don't meet expectations, we work with you to address any concerns. Many issues resolve naturally as healing progresses; others may be addressed with minor revisions.",
         },
     ],
     cost: [
         {
             question: 'Do you offer financing options?',
-            answer: `Yes—we believe luxury results should be accessible. We partner with ${getFinancingPartnersString()} to offer flexible monthly payment plans, many with promotional 0% interest periods for qualified applicants. Our patient coordinator can help you explore options that fit your budget.`,
+            answer: `Yes. ${FINANCING_SENTENCE_LONG} Our patient coordinator can go through the options with you.`,
         },
         {
             question: "What's included in the procedure price?",
-            answer: 'Our pricing is transparent and comprehensive. Your quote typically includes surgeon fees, anesthesia, facility fees, and standard post-operative care. Your Specialist will provide a detailed breakdown during your consultation so there are no surprises.',
+            answer: 'Your price is set for you after an exam, and Dr. Karlinsky confirms it at consultation. Your Specialist goes through what your quote covers with you.',
         },
         {
             question: 'Is there a consultation fee?',
-            answer: "Consultations are completely free. We believe in making it easy for you to explore your options and get personalized guidance without any upfront cost. During your free consultation, you'll receive undivided attention and a thorough evaluation.",
+            answer: 'No. Consultations are free, so you can explore your options and get personalized guidance with no obligation to book surgery.',
         },
         {
             question: 'Do you offer package pricing for multiple procedures?',
-            answer: 'Yes. When procedures are combined in one surgery, $500 comes off the total for two procedures and $1,000 for three (the practice price list). Your Specialist will discuss all options and provide pricing during your consultation.',
+            answer: 'Yes. [[combo-discount]] Your Specialist will discuss all options and provide pricing during your consultation.',
         },
         {
             question: 'Does insurance cover cosmetic surgery?',
@@ -152,29 +157,29 @@ export const faqPageData: Record<string, FaqItem[]> = {
         },
         {
             question: 'What financing credit score is required?',
-            answer: 'Qualification requirements vary by partner. Cherry accepts credit scores as low as 520, making financing accessible to more patients. CareCredit and United Credit may have different requirements, and our team can help you find the best option for your situation.',
+            answer: 'Each lender sets its own requirements, and our team can go through the options with you.',
         },
     ],
     recovery: [
         {
             question: 'How long will I need to take off work?',
-            answer: 'Recovery time varies by procedure. For BBL or Mommy Makeover, plan for 2 weeks off. Breast augmentation patients often return to desk work in 5-7 days. Facial procedures typically require 1-2 weeks before returning to public activities.',
+            answer: 'It depends on the procedure. After a BBL, most people return to desk work in 10 to 14 days, sitting on a pillow (Cleveland Clinic, The Aesthetic Society); ASPS says some go back between days 7 and 10. After a mommy makeover, plan on about 2 to 3 weeks. After breast augmentation, most people are back to light activity in about a week. After a facelift, plan on about 2 to 3 weeks, and after eyelid surgery most people are back at work in 7 to 10 days. Your surgeon gives you your own timeline.',
         },
         {
             question: 'When can I exercise again after surgery?',
-            answer: 'Light walking is encouraged immediately to promote circulation. Most patients can resume light cardio at 3-4 weeks and return to full workouts, including heavy lifting, at 6 weeks. Specific restrictions vary by procedure.',
+            answer: 'Walking starts right away. Strenuous exercise waits until your surgeon clears you: about 4 to 6 weeks after liposuction (The Aesthetic Society), 4 to 8 weeks after a tummy tuck (Cleveland Clinic) and 8 weeks after a BBL (The Aesthetic Society).',
         },
         {
             question: "I'm traveling from out of town—when can I fly home?",
-            answer: "For most procedures we recommend staying in Miami 7-10 days after surgery, so you can be seen for follow-up and cleared before you fly. For BBL you may need special seating on the flight home. We'll give you the exact number of nights for your procedure before you book a ticket — you arrange the travel itself.",
+            answer: "After a BBL, plan on 7 to 10 days in Miami, so you can be seen for follow-up and cleared before you fly. For other procedures, your surgeon tells you how many nights to stay before you're cleared to fly home. On the flight home after a BBL, get up and walk for 5 to 10 minutes for every hour you sit (ASPS's article on traveling after a BBL). We confirm your dates in writing before you book a ticket — you arrange the travel itself.",
         },
         {
             question: 'Do you offer recovery accommodations?',
-            answer: 'No. We do not operate recovery accommodation and we are not partnered with any recovery house or recovery suite, so we cannot book one for you or vouch for one. Patients arrange their own stay. What we provide is the clinical side: your follow-up appointments, written post-op instructions, and a number to call if something does not look right.',
+            answer: 'No. We do not operate recovery accommodation and we are not affiliated with any recovery house, so we cannot book one for you or vouch for one. Patients arrange their own stay. What we provide is the clinical side: your follow-up appointments, written post-op instructions, and a number to call if something does not look right.',
         },
         {
             question: 'What aftercare and support do you provide?',
-            answer: "Your care doesn't end when surgery does. We provide detailed post-operative instructions, prescribed medications, compression garments (if needed), and scheduled follow-up appointments. Our team is available by phone for any questions or concerns during your recovery.",
+            answer: "Your care doesn't end when surgery does. We provide detailed post-operative instructions, prescribed medications, and scheduled follow-up appointments. Our team is available by phone for any questions or concerns during your recovery.",
         },
         {
             question: 'What should I prepare before surgery?',
@@ -196,26 +201,23 @@ export const featuredFaqs: Array<{
     {
         question: 'How do I schedule a consultation?',
         answer: 'Schedule a free consultation by calling our office or filling out the online form. We offer both in-person and virtual consultations.',
-        details:
-            "During your consultation, you'll meet with a board-certified surgeon who will discuss your goals, examine you, and create a personalized treatment plan.",
+        details: `During your consultation, you'll meet ${KARLINSKY_NAME}, who will discuss your goals, examine you, and create a personalized treatment plan.`,
     },
     {
         question: 'What financing options are available?',
-        answer: 'We offer flexible financing through Cherry, CareCredit, and United Credit with plans starting as low as $99/month and 0% APR options.',
+        answer: FINANCING_SENTENCE_SHORT,
         details:
-            'Apply online or in-office for instant approval. Our patient coordinators can help you find the best plan for your budget.',
+            'Approval and terms are set by the lender. You can apply online or in the office, and our patient coordinators can go through the options with you.',
     },
     {
-        question: 'Are your surgeons board-certified?',
-        answer: 'Yes, our surgeons are double board-certified by both the American Board of Plastic Surgery and the American Board of Surgery.',
-        details:
-            'This dual certification demonstrates the highest level of training and expertise in plastic surgery.',
+        question: "What are your surgeon's credentials?",
+        answer: `Yes. One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
     },
     {
         question: 'What is the recovery time for plastic surgery?',
-        answer: 'Recovery varies by procedure: 1-2 weeks for breast augmentation, about 2 weeks off work for a BBL with normal activities at about 8 weeks, and 2-4 weeks for tummy tuck before returning to normal activities.',
+        answer: 'Recovery varies by procedure: about 1 week to light activity after breast augmentation; 10 to 14 days to desk work after a BBL (Cleveland Clinic, The Aesthetic Society), with exercise after 8 weeks once cleared; and about 2 weeks to work after a tummy tuck (Cindy Wu, MD, on the ASPS website).',
         details:
-            'Our team provides detailed post-operative instructions and 24/7 support during your recovery.',
+            'Our team provides detailed post-operative instructions and follow-up during your recovery.',
     },
     {
         question: 'Do you offer surgery for out-of-town patients?',
@@ -233,7 +235,7 @@ export const faqPageConfig = {
     title: 'Your Questions,',
     subtitle: 'Answered.',
     description:
-        'We believe transparency is the ultimate luxury. Find answers to the most common questions our patients ask about cosmetic surgery, financing, recovery, and more.',
+        'Find answers to the most common questions our patients ask about cosmetic surgery, financing, recovery, and more.',
 }
 
 /**
@@ -241,7 +243,7 @@ export const faqPageConfig = {
  */
 export const faqPageCtaConfig: FaqCtaConfig = {
     title: 'Still have questions?',
-    description: 'Our patient concierge is ready to help you.',
+    description: 'Our patient coordinators are ready to help you.',
     buttonText: 'Call Us Now',
     phoneNumber: siteConfig.contact.phone.replace(/[\s()-]/g, ''),
 }
@@ -252,14 +254,13 @@ export const faqPageCtaConfig: FaqCtaConfig = {
 export const faqFinalCtaData = {
     eyebrow: 'Ready to Begin?',
     heading: 'Your Transformation Starts with a Conversation',
-    description:
-        'Schedule your free consultation today. Our board-certified surgeons are ready to discuss your goals and create a personalized treatment plan.',
+    description: `Schedule your free consultation today. ${KARLINSKY_NAME} is ready to discuss your goals and create a personalized treatment plan.`,
     primaryButton: {
         text: 'Book Free Consultation',
         href: '/contact-us',
     },
     secondaryButton: {
-        text: 'Call (786) 305-8649',
+        text: `Call ${siteConfig.contact.phoneDisplay}`,
         href: `tel:${siteConfig.contact.phone.replace(/[\s()-]/g, '')}`,
     },
 }
@@ -270,7 +271,7 @@ export const faqFinalCtaData = {
 export const faqPageSeoData = {
     title: 'Plastic Surgery FAQ Miami | Your Questions Answered',
     description:
-        'Get answers to common questions about plastic surgery in Miami. Learn about procedures, costs, financing options, recovery times, and safety. Board-certified surgeons.',
+        'Get answers to common questions about plastic surgery in Miami. Learn about procedures, costs, financing options, recovery times, and safety. One surgeon: Victoria Karlinsky, MD, FACS.',
     keywords: [
         'plastic surgery FAQ',
         'cosmetic surgery questions',

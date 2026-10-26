@@ -22,12 +22,13 @@ import { Phone } from 'lucide-react'
 
 import { TrackedLink } from '@/components/analytics/tracked-link.component'
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 const NAV_LINKS: readonly { readonly label: string; readonly href: string }[] =
     [
         { label: 'Procedures', href: '/procedures' },
         { label: 'Results', href: '/gallery' },
-        { label: 'Surgeons', href: '/about' },
+        { label: 'Surgeon', href: '/about' },
         { label: 'Financing', href: '/plastic-surgery-financing-miami' },
     ] as const
 
@@ -94,9 +95,9 @@ export function AtelierFooter() {
                             Alluring
                         </p>
                         <p className='mt-4 max-w-xs leading-relaxed text-[#F6EDE4]/60'>
-                            Board-certified plastic surgery in Miami. Honest
-                            prices, honest answers, and a plan built around your
-                            body.
+                            Cosmetic surgery in Miami with one surgeon,{' '}
+                            {KARLINSKY_NAME}. Honest prices, honest answers, and
+                            a plan built around your body.
                         </p>
                     </div>
 
@@ -163,10 +164,11 @@ export function AtelierFooter() {
                         Surgery carries risk and is not suitable for everyone.
                     </p>
                     <p>
-                        Travelling in? We schedule your consultation, surgery
-                        and follow-ups and tell you how many nights you need in
-                        Miami. You book your own flights, lodging and transport
-                        — we are not affiliated with any recovery house.
+                        Travelling in? We confirm your surgery, pre-op and
+                        follow-up dates in writing and tell you how many nights
+                        to stay in Miami before you&apos;re cleared to fly home.
+                        You arrange the travel itself — we are not affiliated
+                        with any recovery house.
                     </p>
                     <p className='flex flex-wrap gap-x-5 gap-y-2 pt-3'>
                         <span>

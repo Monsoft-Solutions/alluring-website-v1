@@ -30,7 +30,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     canonical: '/html-sitemap',
     title: 'Sitemap | Alluring Plastic Surgery',
     description:
-        'Complete sitemap of Alluring Plastic Surgery website. Find all pages including procedures, surgeons, gallery, blog articles, and more.',
+        'Complete sitemap of Alluring Plastic Surgery website. Find all pages including procedures, our doctors, gallery, blog articles, and more.',
     robots: { index: true, follow: true },
 })
 
@@ -74,7 +74,7 @@ export default async function SitemapPage() {
 
     // Build dynamic sections
     const surgeonsSection: SitemapCategory = {
-        title: 'Our Surgeons',
+        title: 'Our Doctors',
         links: surgeons.map((surgeon) => ({
             label: surgeon.name,
             href: `/${surgeon.slug}`,

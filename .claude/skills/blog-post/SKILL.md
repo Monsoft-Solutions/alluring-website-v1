@@ -40,15 +40,16 @@ production it reports "already live".
 | Baselines, readouts, the AI panel, leads                              | [reference/measurement.md](reference/measurement.md)           |
 | `meta.json` format, every rule `check_post.py` enforces, risks        | `blog/README.md`                                               |
 
-| Source of truth           | File                                                                                  |
-| ------------------------- | ------------------------------------------------------------------------------------- |
-| The surgeon's credentials | `apps/web/lib/data/surgeons/karlinsky-credentials.constant.ts`                        |
-| Figures a post may state  | `apps/web/lib/data/procedures/facts/<cluster>.facts.ts` (bbl, lipo, tummy-tuck today) |
-| Prices                    | the facts file, else `docs/pricing/practice-price-list.md` (2026-09-15)               |
-| Clusters                  | `blog/tools/clusters.json`: procedure page, anchors, facts files, retired figures     |
-| Who owns which queries    | `packages/shared/src/seo/keyword-ownership-blog.constant.ts`, `topic-gate.util.ts`    |
-| The plan and its status   | `blog/plan.json` (the `seo-plan` skill keeps it)                                      |
-| URL rule                  | published before 2026-01-01 → `/slug`; from 2026 → `/blog/slug` (`blog-url.util.ts`)  |
+| Source of truth           | File                                                                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Every claim               | `docs/claims/canon.md`, the claims canon (#354); its "Decisions of 2026-10-25" block overrides the rest              |
+| The surgeon's credentials | `@workspace/shared/claims/surgeon` (`packages/shared/src/claims/surgeon.ts`)                                         |
+| Figures a post may state  | `apps/web/lib/data/procedures/facts/<cluster>.facts.ts` (bbl, lipo, tummy-tuck today)                                |
+| Prices                    | claim tokens (`[[price:bbl]]`), resolved from the live price list; catalog in `packages/shared/src/claims/README.md` |
+| Clusters                  | `blog/tools/clusters.json`: procedure page, anchors, facts files, retired figures                                    |
+| Who owns which queries    | `packages/shared/src/seo/keyword-ownership-blog.constant.ts`, `topic-gate.util.ts`                                   |
+| The plan and its status   | `blog/plan.json` (the `seo-plan` skill keeps it)                                                                     |
+| URL rule                  | published before 2026-01-01 → `/slug`; from 2026 → `/blog/slug` (`blog-url.util.ts`)                                 |
 
 ## The toolkit
 
@@ -281,18 +282,17 @@ The runbook, with commands and risks, is in
 5. Before the production run, two decisions for the user, in one pre-run
    PR (`code-changes.md` lists both under "Before the production run"):
     - **v2**: if the slug isn't in `BLOG_V2_SLUGS`, ask the user, and merge
-      and deploy that one line first. Declining v2 publishes the post beside
-      the old sidebar's "board-certified surgeons" and "5,000+ Happy
-      Patients", which compliance.md forbids.
+      and deploy that one line first. Declining v2 publishes the post on the
+      old template: run `served_check.py` on it and report any template
+      claim the canon forbids.
     - **The author page.** Every post, v2 included, names
       `/blog/authors/editorial-team` as its author (JSON-LD `author.url` and
       the byline link). That page renders the editorial-team entry of
-      `apps/web/lib/data/authors.data.ts` (lines 80–85 today), which claims
-      "board-certified plastic surgeons", "All content is reviewed by our
-      surgeons for medical accuracy", a "Medical Content Review Board" and
-      "HIPAA Compliance Certified". compliance.md forbids those, and the blog
-      has no medical reviewer. Propose a neutral rewrite of that entry in the
-      same PR, so the user decides both together.
+      `apps/web/lib/data/authors.data.ts`, which must follow the claims
+      canon: no surgeon authorship, no review board, no HIPAA claim (the blog
+      has no medical reviewer). If it still makes one of those claims,
+      propose a rewrite of that entry in the same PR, so the user decides
+      both together.
 6. Hand the user the `! psql …` line. Run it yourself only when the user
    says "run it yourself" for that file.
 7. `bash blog/tools/revalidate.sh blog-posts sitemap-urls blog-post-<slug>`.
@@ -440,9 +440,11 @@ read the results; this skill writes it.
 - Change a live post's slug, `published_at` or status, or edit generated SQL
   by hand. Change the post and rebuild.
 - State a figure without a source read this session, or invent a practice
-  protocol, a price or a quote from the surgeon.
+  protocol, a price or a quote from the surgeon. Type an Alluring price: it
+  is always a claim token.
 - Name the surgeon in a title. Say "board-certified plastic surgeon", ABPS,
-  AAAASF, "5,000+", "best", "luxury" or "affordable". Mention travel
-  arrangements or any market outside the US.
+  AAAASF, "5,000+", "best", "luxury" or "affordable", or anything else the
+  claims canon (`docs/claims/canon.md`) removes. Mention travel arrangements
+  or any market outside the US.
 - Run `pnpm --filter web google:index`. It submits the whole sitemap.
 - Commit, push or merge without being told.

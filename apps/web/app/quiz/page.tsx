@@ -68,7 +68,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            "Discover your ideal cosmetic procedure with our free 2-minute quiz. Personalized recommendations from Miami's trusted plastic surgery experts.",
+            'Discover your ideal cosmetic procedure with our free 2-minute quiz. Personalized recommendations from Alluring Plastic Surgery in Miami.',
         images: [`${siteUrl}/images/hero-beautiful-latin-woman.jpg`],
     },
 

@@ -54,6 +54,14 @@ export const CACHE_TAGS = {
     /** Tag for URL registry used in page classification */
     SITEMAP_URLS: 'sitemap-urls',
 
+    // Pricing tags
+    /**
+     * Tag for the pricing snapshot (price lines, per-procedure settings and
+     * the discount statement). Every page that prints a price or resolves a
+     * claim token reads it, so an admin price edit revalidates them all.
+     */
+    PRICING: 'pricing',
+
     /**
      * Generate a tag for a specific promotion by slug
      * @param slug - The promotion slug
@@ -105,6 +113,7 @@ export const ALLOWED_STATIC_TAGS = [
     CACHE_TAGS.INSTAGRAM_POSTS,
     CACHE_TAGS.GOOGLE_REVIEWS,
     CACHE_TAGS.SITEMAP_URLS,
+    CACHE_TAGS.PRICING,
 ] as const
 
 /**

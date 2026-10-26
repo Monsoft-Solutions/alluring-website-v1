@@ -110,8 +110,25 @@ def _confirmed_at_consultation(text: str) -> bool:
     return bool(re.search(r'\bconfirm', text, re.I) and re.search(r'\bconsultation', text, re.I))
 
 
+# A price claim token (#354): the site prints it from the live price list.
+PRICE_TOKEN_RX = re.compile(r'\[\[price(?:-range|-span)?:[a-z0-9:-]+\]\]')
+
+
 def _has_price(text: str, prices: set[int]) -> bool:
-    return any(bl._money(d.group(1)) in prices for d in bl.DOLLAR_RX.finditer(re.sub(r'\]\([^)]*\)', ']', text)))
+    """A practice price: a typed figure on the sheet, or a price claim token."""
+    t = re.sub(r'\]\([^)]*\)', ']', text)
+    return bool(PRICE_TOKEN_RX.search(t)) or any(bl._money(d.group(1)) in prices for d in bl.DOLLAR_RX.finditer(t))
+
+
+def claims_validate(fields: dict[str, str]) -> dict[str, dict] | None:
+    """Claim tokens and typed prices (packages/shared/src/claims) per field; None when node/tsx can't run."""
+    code, out, err = bl.run_node('lib/claims_check.mjs', [], stdin=json.dumps(fields))
+    if code != 0:
+        return None
+    try:
+        return json.loads(out)
+    except json.JSONDecodeError:
+        return None
 
 
 def unconfirmed_prices(body: str, prices: set[int]) -> list[str]:
@@ -480,6 +497,31 @@ def check(post: bl.Post, ctx: Ctx, final: bool = False) -> Result:
     for where, text in texts:
         P.extend(bl.sweep(where, text, ctx.credentials, old, allow_vaser=allow_vaser))
     P.extend(bl.sweep('sources list', src_section, ctx.credentials, only=bl.SOURCES_RULES, allow_vaser=allow_vaser))
+
+    # The claims canon's §11 rules (#354), read from
+    # packages/shared/src/claims/patterns.data.json: what SWEEP doesn't cover.
+    # `fail` rules are problems; `review` rules, and paired rules that pass a
+    # post's paired check only conditionally, are warnings for a person to read.
+    for where, text in texts:
+        canon_p, canon_w = bl.canon_sweep(where, text, ctx.credentials, allow_vaser=allow_vaser, extra_rules=old)
+        P.extend(canon_p)
+        W.extend(canon_w)
+
+    # Claim tokens and typed Alluring prices (#354): every Alluring price is a
+    # token the site resolves from the live price list, so a typed one is a
+    # problem even when the sheet licenses the figure.
+    # The body (and its FAQ) goes through validateGeneratedMdx, which reports
+    # both (mdx_validate); this covers the other fields.
+    claim_fields = {where: text for where, text in texts if text and where != 'content'}
+    claims = claims_validate(claim_fields)
+    if claims is None:
+        W.append('the claim token check did not run (node + tsx); only the token grammar was checked')
+        for where, text in claim_fields.items():
+            P.extend(bl.token_shape_problems(where, text))
+    else:
+        for where, res in claims.items():
+            P.extend(f'{where}: claim token {x}' for x in res.get('tokens', []))
+            P.extend(f'{where}: {x} (compliance.md "Prices": Alluring prices are tokens)' for x in res.get('typed', []))
 
     sheet, sheet_problems = bl.price_sheet_dollars(m['sources'])
     P.extend(sheet_problems)

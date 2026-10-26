@@ -31,7 +31,7 @@ const elsewhere: ModuleCandidateAlternative[] = [
     },
     {
         concern: 'You may want another pregnancy',
-        body: 'ASPS advises waiting until you are done, because weight changes can undo much of the result.',
+        body: 'ASPS advises women who may want future pregnancies to postpone a tummy tuck.',
     },
     {
         concern: 'You are still losing weight',

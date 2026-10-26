@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/pipelines/generation-phase
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 import { generateText, isStepCount } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
@@ -115,6 +116,13 @@ export type GenerationPhaseOptions = {
      * URLs when asked for a related article.
      */
     linkableBlogPosts?: LinkableBlogPost[]
+    /**
+     * The live pricing snapshot (#354), supplied by the caller for the same
+     * reason. The writer's claims block lists the claim tokens it allows,
+     * and the MDX validator checks the tokens the writer used against it.
+     * The 2026-09-15 price sheet when omitted.
+     */
+    pricing?: PricingSnapshot
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -196,6 +204,7 @@ export async function runGenerationPhase(
         contentEffort,
         maxSteps = DEFAULTS.MAX_STEPS,
         linkableBlogPosts,
+        pricing,
         onProgress,
     } = options
 
@@ -214,7 +223,8 @@ export async function runGenerationPhase(
         const contentType = input.contentType as ContentType | undefined
         const systemPrompt = buildAgenticSystemPrompt(
             contentType,
-            input.refresh
+            input.refresh,
+            pricing
         )
         const userPrompt = buildAgenticUserPrompt({
             title: input.title,
@@ -304,7 +314,7 @@ export async function runGenerationPhase(
 
         // Neutralise anything the blog renderer could not survive before the
         // content is allowed anywhere near the database.
-        const validation = validateGeneratedMdx(result.text)
+        const validation = validateGeneratedMdx(result.text, { pricing })
         const content = validation.content
         const wordCount = countWords(content)
         const timeMs = Date.now() - startTime

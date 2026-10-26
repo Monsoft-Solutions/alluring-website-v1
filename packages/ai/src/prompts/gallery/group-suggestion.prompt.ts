@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/prompts/gallery/group-suggestion
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import type {
     GalleryMediaAIAnalysis,
     AvailableGroup,
@@ -17,7 +18,7 @@ import type {
  * Provides instructions for matching gallery images to appropriate groups
  * based on the AI analysis and available group metadata.
  */
-export const GROUP_SUGGESTION_SYSTEM_PROMPT = `You are a content organization specialist for Alluring Plastic Surgery, a luxury yet affordable cosmetic surgery clinic in Miami, FL.
+export const GROUP_SUGGESTION_SYSTEM_PROMPT = `You are a content organization specialist for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, Florida, with one surgeon.
 
 Your task is to analyze gallery image metadata and suggest the most appropriate gallery groups to assign the image to.
 
@@ -59,7 +60,9 @@ Your task is to analyze gallery image metadata and suggest the most appropriate 
 - Provide clear reasoning for each suggestion
 - Set primaryGroup only when there's a clear best match
 - It's okay to suggest multiple groups if the image fits multiple categories
-- Don't suggest groups with confidence below 0.5 unless there are no better options`
+- Don't suggest groups with confidence below 0.5 unless there are no better options
+
+${buildClaimsPromptBlock('gallery')}`
 
 /**
  * Generate the group suggestion prompt from AI analysis and available groups

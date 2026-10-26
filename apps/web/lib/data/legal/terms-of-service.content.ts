@@ -58,10 +58,10 @@ All medical and surgical outcomes vary from patient to patient. Factors affectin
 - Adherence to pre-operative and post-operative instructions
 - Individual healing capacity
 
-### 3.3 Consult a Board-Certified Surgeon
+### 3.3 Consult a Qualified Surgeon
 
 Before making any decisions regarding cosmetic or plastic surgery procedures:
-- Schedule an in-person consultation with a board-certified plastic surgeon
+- Schedule an in-person consultation with a licensed surgeon, and check the surgeon's license and credentials on the issuing bodies' public records
 - Discuss your specific goals, concerns, and medical history
 - Review potential risks, complications, and realistic outcomes
 - Ask questions and ensure you fully understand the procedure
@@ -82,7 +82,7 @@ Your use of this website, including:
 - Viewing before and after photos
 - Reading testimonials or reviews
 
-Does NOT establish a doctor-patient relationship with Alluring Plastic Surgery or any of our surgeons.
+Does NOT establish a doctor-patient relationship with Alluring Plastic Surgery or its surgeon.
 
 ### 4.2 When a Relationship Begins
 
@@ -101,7 +101,7 @@ Information submitted through online contact forms or chat features:
 - May be reviewed by administrative staff for scheduling purposes
 - Is subject to our Privacy Policy and HIPAA guidelines (once you become a patient)
 
-For confidential medical discussions, please schedule an in-person or telephone consultation with one of our board-certified surgeons.
+For confidential medical discussions, please schedule an in-person or telephone consultation with Victoria Karlinsky, MD, FACS.
 
 ## 5. Consultation and Appointment Terms
 
@@ -129,7 +129,7 @@ If you need to cancel or reschedule your consultation:
 
 ### 5.4 No Guarantee of Procedure Acceptance
 
-Consultation does NOT guarantee that you will be accepted as a surgical candidate. Our surgeons reserve the right to:
+Consultation does NOT guarantee that you will be accepted as a surgical candidate. Your surgeon reserves the right to:
 - Decline to perform a procedure if medically contraindicated
 - Require additional medical clearance or evaluations
 - Recommend alternative treatments or procedures
@@ -139,7 +139,7 @@ Consultation does NOT guarantee that you will be accepted as a surgical candidat
 
 ### 6.1 Results Not Guaranteed
 
-Before and after photos displayed on this website represent actual patient results from procedures performed by our surgeons. However:
+Before and after photos displayed on this website represent actual patient results from procedures performed at Alluring Plastic Surgery. However:
 - Results shown are NOT guaranteed for all patients
 - Your individual results may differ significantly
 - Photos are selected to demonstrate potential outcomes, not typical outcomes
@@ -151,7 +151,7 @@ Individual results depend on numerous factors including:
 - Starting anatomy and body composition
 - Skin quality, elasticity, and tone
 - Age and overall health
-- Surgical technique and skill (which we strive to maintain at the highest level)
+- Surgical technique and skill
 - Post-operative care and adherence to instructions
 - Lifestyle factors and long-term maintenance
 

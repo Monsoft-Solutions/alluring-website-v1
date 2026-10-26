@@ -65,13 +65,17 @@ What stands out:
 - **Unpublished Instagram imports** are the main source of more results. Many
   are promotions quoting prices the practice no longer charges; the audit
   flags every caption with a price. Publish only real results with consent.
-- **Reviews**: 70 published reviews with text (4★+), 34 of all 82 synced
-  are Google translations. Facelift and blepharoplasty have none naming the
-  procedure, so their pages must use the neutral heading, and the practice
-  should ask recent patients for reviews.
+- **Reviews**: the counts change with every sync, so read the current
+  published, translated and per-procedure counts in admin → Reviews (the
+  synced `totalCount`). Never type a review count into page copy. Facelift
+  and blepharoplasty had no reviews naming the procedure at the last check,
+  so their pages use the neutral heading, and the practice should ask
+  recent patients for reviews.
 - **The Google review sync last ran 2026-08-04**. New reviews aren't reaching
   the site. Check the sync (admin → Reviews) before counting on new ones.
-- `surgeons-data.ts` still lists Dr. Rita Shats (OB/GYN) with "board
-  certified" titles, and Dr. Karlinsky with "Board Certified Cosmetic
-  Surgeon". The owner said Dr. Karlinsky is the only surgeon; #248 covers the
-  wording. Don't let a new page read either title.
+- `surgeons-data.ts` still lists Dr. Rita Shats (OB/GYN). Whether she stays
+  is open (claims canon D1): keep her existing mentions, add none, and her
+  "board certified" title is pending verification (ABOG, not FACOG). The
+  owner said Dr. Karlinsky is the only surgeon. Don't let a new page read a
+  title from `surgeons-data.ts`; take Dr. Karlinsky's wording from
+  `@workspace/shared/claims/surgeon`.

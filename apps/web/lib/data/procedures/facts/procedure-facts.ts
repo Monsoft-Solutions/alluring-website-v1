@@ -12,8 +12,54 @@
  * Pure data: no imports from `@/env`, Next or React, so a tsx script can read
  * it.
  *
+ * Alluring's own prices are not typed in the facts files (issue #354): their
+ * price facts read the 2026-09-15 sheet in `@workspace/shared/claims/prices`
+ * through {@link sheetUsd}, so a fact and the sheet can't drift. That sheet is
+ * the list-price fallback; pages print the live price, with any discount the
+ * admin sets, through the pricing resolver. The ASPS national averages are
+ * not Alluring prices and stay typed, with their attribution.
+ *
  * @module
  */
+import {
+    DEFAULT_BBL_TYPICAL_MAX_USD,
+    DEFAULT_COMBO_DISCOUNTS,
+    PRICE_SHEET,
+} from '@workspace/shared/claims/prices'
+import { formatUsd } from '@workspace/shared/claims/pricing'
+
+/**
+ * The list price of one price-sheet line, e.g. `sheetUsd('tummy-tuck',
+ * 'mini')` → 3000. Throws on an unknown line, so a renamed key fails the
+ * build instead of publishing a stale figure.
+ */
+export function sheetUsd(procedure: string, key: string): number {
+    const line = PRICE_SHEET.find(
+        (candidate) =>
+            candidate.procedure === procedure && candidate.key === key
+    )
+    if (!line) throw new Error(`No price-sheet line ${procedure}:${key}`)
+    return line.usd
+}
+
+/** The lowest and highest list price of a set of price-sheet lines. */
+export function sheetUsdRange(
+    procedure: string,
+    keep: (key: string) => boolean
+): { min: number; max: number } {
+    const prices = PRICE_SHEET.filter(
+        (line) => line.procedure === procedure && keep(line.key)
+    ).map((line) => line.usd)
+    if (prices.length === 0)
+        throw new Error(`No price-sheet lines for ${procedure}`)
+    return { min: Math.min(...prices), max: Math.max(...prices) }
+}
+
+/** "$5,500", the way the sheet's figures are written in a fact's statement. */
+export const formatSheetUsd = formatUsd
+
+/** The top of BBL's "most patients pay" range, and the combination discounts. */
+export { DEFAULT_BBL_TYPICAL_MAX_USD, DEFAULT_COMBO_DISCOUNTS }
 
 export type FigureUnit =
     | 'percent'
@@ -36,6 +82,8 @@ export type FigureUnit =
     | 'inch'
     /** A minimum or maximum age, e.g. "22 or older". */
     | 'age'
+    /** A temperature, e.g. a fever threshold: "101°F". */
+    | 'fahrenheit'
 
 /** One figure: a single value or an inclusive range, in one unit. */
 export type ProcedureFigure =
@@ -106,6 +154,7 @@ const UNIT_LABELS: Record<FigureUnit, [singular: string, plural: string]> = {
     bmi: ['BMI', 'BMI'],
     inch: ['inch', 'inches'],
     age: ['age', 'ages'],
+    fahrenheit: ['°F', '°F'],
 }
 
 function formatNumber(value: number, unit: FigureUnit): string {
@@ -138,6 +187,11 @@ export function formatProcedureFigure(figure: ProcedureFigure): string {
         return 'value' in figure
             ? `BMI ${formatNumber(figure.value, 'bmi')}`
             : `BMI ${range(figure.min, figure.max)}`
+    }
+    if (figure.unit === 'fahrenheit') {
+        return 'value' in figure
+            ? `${formatNumber(figure.value, 'fahrenheit')}°F`
+            : `${range(figure.min, figure.max)}°F`
     }
     if (figure.unit === 'age') {
         return 'value' in figure

@@ -1,9 +1,10 @@
 /**
- * Quiz Pricing Data
+ * Quiz Procedure Data
  *
- * Procedure pricing information for the quiz calculator.
- * Note: These are estimated ranges for display purposes.
- * Actual pricing determined during consultation.
+ * What the quiz says about each procedure it can recommend. It carries no
+ * price and no payment figure: Alluring's prices come from the pricing
+ * resolver and are shown on the procedure pages, and the claims canon
+ * removes every weekly or monthly figure (D6, #354).
  *
  * @module components/quiz/lib/quiz-pricing.data
  */
@@ -11,7 +12,10 @@
 import type { ProcedureDetails, ProcedureId } from './quiz-types'
 
 /**
- * Complete procedure details with pricing
+ * What the quiz shows for each procedure. `recoveryLabel` repeats the
+ * procedure page's `quickStats.recovery` (apps/web/lib/data/procedures),
+ * which the claims canon §7 allows as the practice's own hedged figure;
+ * `recoveryWeeks` only matches the recovery answer and is never shown.
  */
 export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
     'breast-augmentation': {
@@ -21,17 +25,6 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Enhance your curves with natural-looking breast implants',
         slug: 'breast-augmentation-miami',
         category: 'breast',
-        // Saline to silicone, from the practice's price sheet of 2026-09-15,
-        // as in breast-augmentation-miami.data.ts
-        priceRange: {
-            min: 3500,
-            max: 4500,
-        },
-        // priceRange over 36 months, like the other rows
-        monthlyPayment: {
-            min: 97,
-            max: 125,
-        },
         recoveryWeeks: 1,
         benefits: [
             'Enhanced breast size and shape',
@@ -39,6 +32,7 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Increased confidence',
             'Long-lasting results',
         ],
+        recoveryLabel: '1 Week to Light Activity',
         image: '/images/procedures/breast-augmentation.jpg',
     },
 
@@ -48,14 +42,6 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         shortDescription: 'Restore youthful breast position and firmness',
         slug: 'breast-lift-miami',
         category: 'breast',
-        priceRange: {
-            min: 5000,
-            max: 8000,
-        },
-        monthlyPayment: {
-            min: 139,
-            max: 222,
-        },
         recoveryWeeks: 2,
         benefits: [
             'Lifted, youthful breast position',
@@ -63,6 +49,7 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Reduced sagging',
             'Natural-looking results',
         ],
+        recoveryLabel: '1-2 Weeks to Work',
         image: '/images/procedures/breast-lift.jpg',
     },
 
@@ -73,21 +60,14 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Relieve discomfort and achieve proportionate breasts',
         slug: 'breast-reduction-miami',
         category: 'breast',
-        priceRange: {
-            min: 5500,
-            max: 9000,
-        },
-        monthlyPayment: {
-            min: 153,
-            max: 250,
-        },
         recoveryWeeks: 2,
         benefits: [
-            'Relief from back and neck pain',
+            'Can ease back and neck pain from heavy breasts',
             'Improved posture',
             'More clothing options',
             'Enhanced physical activity',
         ],
+        recoveryLabel: '1-2 Weeks to Work',
         image: '/images/procedures/breast-reduction.jpg',
     },
 
@@ -98,26 +78,14 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Remove stubborn fat and sculpt your ideal silhouette',
         slug: 'liposuction-miami',
         category: 'body',
-        // The minimum matches `pricing.startingAt` in
-        // liposuction-miami.data.ts (Lipo 360, the practice's price sheet of
-        // 2026-09-15). The maximum is the quiz's earlier figure: the practice
-        // has not confirmed a typical range yet.
-        priceRange: {
-            min: 4000,
-            max: 7000,
-        },
-        // priceRange over 36 months, like the other rows
-        monthlyPayment: {
-            min: 111,
-            max: 194,
-        },
-        recoveryWeeks: 1,
+        recoveryWeeks: 2,
         benefits: [
             'Targeted fat removal',
             'Sculpted body contours',
             'Permanent fat cell removal',
-            'Minimal scarring',
+            'Small incisions',
         ],
+        recoveryLabel: 'A Few Days to 2–3 Weeks Off Work',
         image: '/images/procedures/liposuction.jpg',
     },
 
@@ -128,17 +96,6 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Enhance your curves with natural fat transfer to the buttocks',
         slug: 'brazilian-butt-lift-bbl-miami',
         category: 'body',
-        // Matches `pricing` in brazilian-butt-lift-bbl-miami.data.ts (not
-        // imported: that file carries the page's whole markdown body).
-        priceRange: {
-            min: 5500,
-            max: 10000,
-        },
-        // priceRange over 36 months, like the other rows
-        monthlyPayment: {
-            min: 153,
-            max: 278,
-        },
         recoveryWeeks: 2,
         benefits: [
             'Natural enhancement using your own fat',
@@ -146,6 +103,7 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
             'Two-in-one procedure (liposuction + enhancement)',
             'Long-lasting results',
         ],
+        recoveryLabel: '10-14 Days Off Work',
         image: '/images/procedures/bbl.jpg',
     },
 
@@ -153,27 +111,17 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         id: 'tummy-tuck',
         title: 'Tummy Tuck',
         shortDescription:
-            'Flatten your abdomen and tighten loose skin and muscles',
+            'Flatten your abdomen and remove loose skin; a full tummy tuck also tightens the muscles',
         slug: 'tummy-tuck-miami',
         category: 'body',
-        // Mini to fleur-de-lis, from the practice's price sheet of 2026-09-15,
-        // as in tummy-tuck-miami.data.ts
-        priceRange: {
-            min: 3000,
-            max: 10000,
-        },
-        // priceRange over 36 months, like the other rows
-        monthlyPayment: {
-            min: 83,
-            max: 278,
-        },
-        recoveryWeeks: 3,
+        recoveryWeeks: 2,
         benefits: [
             'Flat, toned abdomen',
-            'Tightened abdominal muscles',
+            'Repaired abdominal muscles (full tummy tuck)',
             'Removed excess skin',
             'Improved waistline',
         ],
+        recoveryLabel: 'About 2 Weeks to a Desk Job',
         image: '/images/procedures/tummy-tuck.jpg',
     },
 
@@ -183,52 +131,29 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         shortDescription: 'Comprehensive post-pregnancy body restoration',
         slug: 'mommy-makeover-miami',
         category: 'combined',
-        // The price sheet has no mommy makeover line. The minimum is its
-        // cheapest parts less the two-procedure discount (mini tummy tuck
-        // $3,000 + saline augmentation $3,500 - $500); the maximum is the
-        // quiz's earlier figure. Budget matching only: the quiz never shows
-        // it, and neither is a published price.
-        priceRange: {
-            min: 6000,
-            max: 16000,
-        },
-        // priceRange over 36 months, like the other rows
-        monthlyPayment: {
-            min: 167,
-            max: 444,
-        },
-        recoveryWeeks: 4,
+        recoveryWeeks: 3,
         benefits: [
-            'Complete body transformation',
             'Address multiple areas in one surgery',
-            'Cost savings vs. separate procedures',
             'Single recovery period',
         ],
+        recoveryLabel: '2-3 Weeks to Light Activity',
         image: '/images/procedures/mommy-makeover.jpg',
     },
 
     facelift: {
         id: 'facelift',
         title: 'Facelift',
-        shortDescription:
-            'Turn back the clock with comprehensive facial rejuvenation',
+        shortDescription: 'Lift sagging skin on the face and neck',
         slug: 'facelift-miami',
         category: 'face',
-        priceRange: {
-            min: 7000,
-            max: 12000,
-        },
-        monthlyPayment: {
-            min: 194,
-            max: 333,
-        },
-        recoveryWeeks: 2,
+        recoveryWeeks: 3,
         benefits: [
             'Tightened facial skin',
             'Reduced jowls and sagging',
             'Defined jawline',
             'Natural-looking rejuvenation',
         ],
+        recoveryLabel: '2-3 Weeks',
         image: '/images/procedures/facelift.jpg',
     },
 
@@ -238,21 +163,14 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         shortDescription: 'Refresh your eyes by removing excess eyelid skin',
         slug: 'blepharoplasty-miami',
         category: 'face',
-        priceRange: {
-            min: 2500,
-            max: 5000,
-        },
-        monthlyPayment: {
-            min: 69,
-            max: 139,
-        },
         recoveryWeeks: 1,
         benefits: [
             'More youthful, alert appearance',
             'Removed under-eye bags',
-            'Improved vision (if impaired by drooping)',
-            'Quick recovery',
+            'Can help when drooping upper lids block vision',
+            'Most people are back at work in 7 to 10 days',
         ],
+        recoveryLabel: '7-10 Days to Work',
         image: '/images/procedures/blepharoplasty.jpg',
     },
 }
@@ -275,38 +193,4 @@ export function getProceduresByCategory(
     return Object.values(PROCEDURE_PRICING).filter(
         (p) => p.category === category
     )
-}
-
-/**
- * Format price for display
- */
-export function formatPrice(price: number): string {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(price)
-}
-
-/**
- * Format price range for display
- */
-export function formatPriceRange(min: number, max: number): string {
-    return `${formatPrice(min)} - ${formatPrice(max)}`
-}
-
-/**
- * Format monthly payment for display
- */
-export function formatMonthlyPayment(amount: number): string {
-    return `$${Math.round(amount)}/mo`
-}
-
-/**
- * Calculate savings message for combinations
- */
-export function getSavingsMessage(savings: number): string {
-    if (savings <= 0) return ''
-    return `Save ${formatPrice(savings)} with this combination`
 }

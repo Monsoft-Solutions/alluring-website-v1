@@ -22,6 +22,7 @@ import {
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { Surgeons } from '@/components/home/surgeons.component'
@@ -89,7 +90,11 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default function FAQPage() {
+export default async function FAQPage() {
+    // Claim tokens in the answers (prices, #354), resolved once for both
+    // the visible list and its schema.
+    const faqData = await resolveClaimsIn(faqPageData, 'text', 'faq /faqs')
+
     // Breadcrumb items for schema and navigation
     const breadcrumbItems = [
         { name: 'Home', item: siteUrl },
@@ -97,7 +102,7 @@ export default function FAQPage() {
     ]
 
     // Transform FAQ data for schema - flatten all categories
-    const allFaqItems = Object.values(faqPageData)
+    const allFaqItems = Object.values(faqData)
         .flat()
         .map((faq) => ({
             question: faq.question,
@@ -126,7 +131,7 @@ export default function FAQPage() {
                     id='faq'
                     as='h1'
                     categories={faqPageCategories}
-                    faqData={faqPageData}
+                    faqData={faqData}
                     badge={faqPageConfig.badge}
                     title={faqPageConfig.title}
                     subtitle={faqPageConfig.subtitle}
@@ -146,7 +151,7 @@ export default function FAQPage() {
                 {/* Google Reviews Section - Social Proof */}
                 <GoogleReviews
                     title='What Our Patients Say'
-                    subtitle='Real reviews from patients who trusted us with their care'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 

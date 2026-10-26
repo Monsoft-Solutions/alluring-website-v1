@@ -46,7 +46,9 @@ function strings(value: unknown): string[] {
  * anesthesiologist claim, the retired "luxury / affordable" register, "free"
  * before counsel settles s. 456.062, a payment figure or APR (Reg Z), a
  * credential Florida does not allow (#290) — or a procedure count with no
- * source on file (#292).
+ * source on file (#292). Since the claims canon (#354): no "all-inclusive"
+ * price or "no surprise fees" (D4), no soft-credit-check claim (D10), no
+ * reply time, no typed review count and no week-by-week recovery plan.
  */
 const BANNED = [
     /aaaasf|accredit|acredita/i,
@@ -56,6 +58,11 @@ const BANNED = [
     /\bapr\b|\$\d[\d,]*\s*(?:\/|per|a la)\s*(?:week|wk|mo|month|semana|mes)/i,
     /double[\s-]board|board[\s-]certified plastic|american board of plastic/i,
     /5,000|1,500|\b5000\b|\b1500\b/,
+    /all[\s-]inclusive|todo incluido|surprise fees|cargos sorpresa|no hidden/i,
+    /credit score|puntaje de cr[eé]dito/i,
+    /within \d+ (?:hours?|minutes?)|en (?:menos de )?\d+ horas/i,
+    /\b\d{2,4}\s*\+\s*(?:reviews|rese[nñ]as)|m[aá]s de \d+ rese[nñ]as/i,
+    /week[\s-]by[\s-]week|semana a semana/i,
 ]
 
 /**

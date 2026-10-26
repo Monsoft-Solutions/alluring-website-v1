@@ -6,6 +6,8 @@ import type { Surgeon } from '@/lib/types/surgeon.type'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 
+import { withFloridaStatement } from './florida-board-statement'
+
 interface SurgeonBioProps {
     surgeon: Surgeon
 }
@@ -91,7 +93,7 @@ export const SurgeonBio = ({ surgeon }: SurgeonBioProps) => {
                                         }}
                                         className='mb-8'
                                     >
-                                        {paragraph}
+                                        {withFloridaStatement(paragraph)}
                                     </motion.p>
                                 ))}
                         </div>
