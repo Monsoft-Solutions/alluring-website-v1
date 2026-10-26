@@ -17,7 +17,7 @@
  * Characters Google renders before truncating a title in search results.
  * Titles are built to fit this budget rather than being cut off mid-phrase.
  */
-const TITLE_LIMIT = 65
+export const TITLE_LIMIT = 65
 
 /**
  * Generate a page title with optional location optimization

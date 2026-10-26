@@ -9,6 +9,7 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import { generateText, isStepCount } from 'ai'
 
@@ -61,12 +62,19 @@ export type OrchestratorOptions = {
     estimatedWordCount?: number
     /** Blog domain for internal link detection */
     blogDomain?: string
+    /**
+     * The live price list (#354): the claims block's token catalog and the
+     * validator that checks the revision's tokens and typed prices. This is
+     * the last check before extraction and publish, so it must see the
+     * lines the admin has, not the 2026-09-15 sheet.
+     */
+    pricing?: PricingSnapshot
 }
 
 /**
  * Build the structured system prompt for content editing
  */
-function buildSystemPrompt(): string {
+function buildSystemPrompt(pricing?: PricingSnapshot): string {
     return `<role>
 You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a cosmetic surgery practice.
 Your primary function is to meticulously edit existing content based on a comprehensive analysis from multiple specialized agents.
@@ -228,7 +236,7 @@ Before producing output, verify:
 </validation_checklist>
 
 <claims_canon>
-${buildClaimsPromptBlock('blog-reviewer')}
+${buildClaimsPromptBlock('blog-reviewer', pricing)}
 </claims_canon>`
 }
 
@@ -503,6 +511,7 @@ export async function runOrchestrator(
         contentType,
         estimatedWordCount,
         blogDomain = DEFAULT_BLOG_DOMAIN,
+        pricing,
     } = options
 
     // Calculate content metrics
@@ -532,7 +541,7 @@ export async function runOrchestrator(
     )
 
     // Build prompts
-    const systemPrompt = buildSystemPrompt()
+    const systemPrompt = buildSystemPrompt(pricing)
     const userPrompt = buildUserPrompt({
         title,
         primaryKeyword,
@@ -574,7 +583,7 @@ export async function runOrchestrator(
 
     // The orchestrator rewrites the whole body, so it can reintroduce a hazard
     // the generation phase already cleared. Validate its output too.
-    const validation = validateGeneratedMdx(result.text)
+    const validation = validateGeneratedMdx(result.text, { pricing })
     const processingTimeMs = Date.now() - startTime
 
     if (!validation.clean) {

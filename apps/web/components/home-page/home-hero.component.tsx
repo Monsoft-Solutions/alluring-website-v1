@@ -59,6 +59,10 @@ export function HomeHero({
     prices,
     discountStatement,
 }: HomeHeroProps) {
+    // The asterisk and its caveat belong to the prices: with neither one
+    // published, the line and the footnote carry no price claim at all.
+    const hasPrice = Boolean(prices.lipo || prices.bbl)
+
     preload(HOME_MEDIA.heroPosterMobile, {
         as: 'image',
         media: '(width < 48rem)',
@@ -127,20 +131,26 @@ export function HomeHero({
 
                     <p className='mt-6 max-w-[31rem] text-[1.0625rem] leading-relaxed text-[var(--hp-ink-2)] md:text-lg'>
                         Body contouring by {KARLINSKY_NAME}.{' '}
-                        <strong className='font-semibold text-[var(--hp-ink)]'>
-                            {prices.lipo && (
-                                <>
-                                    Lipo 360 from{' '}
-                                    <PriceTag price={prices.lipo} />.{' '}
-                                </>
-                            )}
-                            {prices.bbl && (
-                                <>
-                                    BBL from <PriceTag price={prices.bbl} />.
-                                </>
-                            )}
-                            *
-                        </strong>{' '}
+                        {hasPrice && (
+                            <>
+                                <strong className='font-semibold text-[var(--hp-ink)]'>
+                                    {prices.lipo && (
+                                        <>
+                                            Lipo 360 from{' '}
+                                            <PriceTag price={prices.lipo} />
+                                            .{' '}
+                                        </>
+                                    )}
+                                    {prices.bbl && (
+                                        <>
+                                            BBL from{' '}
+                                            <PriceTag price={prices.bbl} />.
+                                        </>
+                                    )}
+                                    *
+                                </strong>{' '}
+                            </>
+                        )}
                         Financing available.
                     </p>
 
@@ -212,8 +222,14 @@ export function HomeHero({
             <div className='absolute inset-x-0 bottom-3 flex items-center justify-between gap-4 px-4 md:px-8'>
                 <HomeMotionToggle />
                 <p className='max-w-[34rem] text-right text-[0.6875rem] leading-snug text-[var(--hp-mute)]'>
-                    *{PRICE_VARIABLES}
-                    {discountStatement ? ` ${discountStatement}` : ''}{' '}
+                    {hasPrice && (
+                        <>
+                            *{PRICE_VARIABLES}
+                            {discountStatement
+                                ? ` ${discountStatement}`
+                                : ''}{' '}
+                        </>
+                    )}
                     {MODEL_DISCLOSURE}
                 </p>
             </div>

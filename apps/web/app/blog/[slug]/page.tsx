@@ -17,7 +17,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 import { getBlogPostSeoTitle } from '@/lib/seo/blog-post-title.util'
 import { getContentModifiedDate } from '@/lib/utils/content-freshness.util'
-import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
+import { resolveListClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
@@ -155,9 +155,8 @@ export default async function BlogPostPage({ params }: PageProps) {
         )
     }
 
-    const relatedProcedures = await resolveClaimsIn(
+    const relatedProcedures = await resolveListClaimsIn(
         getRelatedProcedures(post, 3),
-        'text',
         `related procedures of ${post.slug}`
     )
 

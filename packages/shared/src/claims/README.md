@@ -28,6 +28,7 @@ never the regex list.
 | `claims/tokens`       | The claim token grammar: parse, validate, resolve                                                                                                         |
 | `claims/typed-prices` | Typed Alluring prices in text: `findTypedPrices` (the check every writer runs) and `convertTypedPrices` (the pipeline and the post migration)             |
 | `claims/patterns`     | The §11 forbidden-claim regex list, typed, and a sweep (`findClaimHits`)                                                                                  |
+| `claims/code-tokens`  | The prices the web code depends on, for the admin Pricing guard: `CODE_DATA_TOKENS` (generated) and `CODE_PRICE_LOOKUPS`                                  |
 | `claims/prompt`       | `buildClaimsPromptBlock(audience, pricing)`                                                                                                               |
 | `claims` (barrel)     | Everything above except `patterns`. Server code, the admin and `packages/ai` only                                                                         |
 
@@ -205,7 +206,7 @@ resolves every string of an FAQ list or a JSON-LD object.
 | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
 | Post body, both templates                                                                                              | `getPublishedPostBySlug` (`resolvePostClaims`), before the TOC, CTA split and MDX compile                                                     | `markdown`                               |
 | Post title, meta title and description, excerpt, quick answer, FAQs (and their FAQPage, Speakable and Article JSON-LD) | the same call                                                                                                                                 | `text`                                   |
-| Cards, related, popular, adjacent, search, `llms*.txt` post lists                                                      | the blog list queries (`resolvePostListClaims`)                                                                                               | `text`                                   |
+| Cards, related, popular, adjacent, search, `llms*.txt` post lists                                                      | the blog list queries (`resolvePostListClaims`), at list prices (`withoutDiscounts`): they carry no 456.062 statement                         | `text`                                   |
 | Procedure data copy (`[[price:…]]` inside a description, FAQ, quick answer…)                                           | `resolveProcedureClaims` / `getResolvedProcedures` in the procedure routes, home cards, `/procedures`, `llms*.txt`, related procedures        | `content` as `markdown`, the rest `text` |
 | Chat                                                                                                                   | `buildChatSystemPrompt` (packages/ai) resolves `chat_config.system_prompt`, then appends the canon; the chat routes resolve `welcome_message` | `text`                                   |
 | FAQ data files (home, `/reviews`, `/faqs`, `/procedures`, mommy makeover LP)                                           | `resolveClaimsIn` in each page, before the list and its FAQPage schema                                                                        | `text`                                   |
@@ -213,7 +214,11 @@ resolves every string of an FAQ list or a JSON-LD object.
 
 A post that shows a discounted price gets the 456.062 statement once after
 its body (`post.discountStatement`); one that places `[[discount-statement]]`
-itself does not get a second copy. Visible prices on pages are
+itself does not get a second copy. Surfaces with no room for the statement
+(post cards and lists, the related-procedure cards under a post,
+`resolveListClaimsIn`) print list prices only. A post title or `seoTitle`
+that a discount pushes past 65 characters drops its "(N% off $X)" suffixes
+(`fitResolvedTitle`). Visible prices on pages are
 `<PriceTag>` (struck through while discounted) beside one
 `<DiscountStatement>`; plain-text surfaces use `lib/claims/price-text.server.ts`.
 
@@ -230,15 +235,29 @@ with the field and the fix), the web blog create API, and `blog/tools`
 **No typed Alluring price.** The same writers run `findTypedPrices`: a dollar
 figure equal to an active line, a combination discount or the top of the BBL
 range, in a sentence that doesn't attribute it to ASPS or another third party,
-is a defect, reported with the token to write. The pipeline converts it
+or to other practices ("other clinics", "elsewhere"), without naming the
+practice ("Alluring", "our", "we", lowercase "us"; "US" is the country), is a
+defect, reported with the token to write. The token comes from the
+procedures the sentence names; only a sentence that names none (a table row)
+reads its paragraph and section. The pipeline converts it
 (`convertTypedPrices`) when exactly one line fits; the admin, the MCP and the
 lint reject it. `pnpm --filter admin claims:convert-posts` (dry run, then
 `--apply`) migrated the posts that predate the tokens, saving a revision and
 dismissing their refresh candidates first.
 
+**No price in a heading.** A heading's price would show both figures in the
+table of contents while a discount is on, and its anchor would change with
+every price edit. `findHeadingPriceTokens` finds them: the field check
+(`findClaimTokenErrors`) rejects one, and `validateGeneratedMdx` reports it.
+
 **Pricing saves can't empty a token.** The admin Pricing page refuses a save
-that would make a token on a live post or in the chat config print nothing
-(a line deactivated, a starting line removed), listing where it is used.
+that would make a token print nothing (a line deactivated, a starting line
+removed) on a live post, in the chat config, or in the web app's code,
+listing where it is used. The code side is `claims/code-tokens`: every price
+token the web code writes, generated into `code-tokens.generated.ts` by
+`pnpm --filter web claims:code-tokens` (a web test fails while it is stale),
+plus `CODE_PRICE_LOOKUPS`, the prices components print in a sentence by a
+fixed key.
 
 ## Patterns
 
@@ -257,7 +276,11 @@ the bundlers and `tsx` that consume this package; plain Node ESM would need
 ## Prompts
 
 `buildClaimsPromptBlock(audience, pricing)` renders the canon for
-`'chat' | 'blog-writer' | 'blog-reviewer' | 'image' | 'gallery'`. The chat
+`'chat' | 'blog-writer' | 'blog-reviewer' | 'blog-planner' | 'image' | 'gallery'`.
+Topics, outlines and content briefs take `blog-planner`: the writer's rules
+without the token catalog, which they never use and which is most of the
+writer block's size. The review agents and the orchestrator are built per
+run with the live pricing. The chat
 block quotes the current starting prices in plain text (with any discount and
 its statement); the blog writer block lists the tokens and says "Never type an
 Alluring price. Use tokens."; the reviewer block treats a typed Alluring price

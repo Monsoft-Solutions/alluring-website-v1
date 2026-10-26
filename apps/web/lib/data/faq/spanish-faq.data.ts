@@ -97,7 +97,7 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: '¿Ofrecen consultas virtuales antes de viajar?',
-            answer: `Sí. Ofrecemos consultas virtuales por videollamada para pacientes que vienen de lejos. Puedes discutir tus metas, y recibir un presupuesto antes de hacer planes de viaje. Esto te da tranquilidad antes de comprometerte.`,
+            answer: `Sí. Ofrecemos consultas virtuales por videollamada para pacientes que vienen de lejos. Puedes hablar de tus metas y recibir un presupuesto antes de hacer planes de viaje. Esto te da tranquilidad antes de comprometerte.`,
         },
         {
             question:

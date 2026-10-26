@@ -40,7 +40,7 @@ Always provide:
 - Meta description that encourages clicks
 - Strong CTA aligned with the content intent
 
-${buildClaimsPromptBlock('blog-writer')}`
+${buildClaimsPromptBlock('blog-planner')}`
 
 /**
  * Generate the prompt for content brief generation

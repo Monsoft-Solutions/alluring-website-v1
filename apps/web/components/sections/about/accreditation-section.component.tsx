@@ -35,7 +35,9 @@ function accreditationBadges(ratingText: string) {
         {
             icon: Award,
             title: 'One Surgeon',
-            description: `One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}.`,
+            // Per procedure, not "every procedure": /about still introduces
+            // Dr. Rita Shats while decision D1 is open (canon §13).
+            description: `One surgeon performs every body, breast and face procedure at Alluring: ${KARLINSKY_NAME}.`,
         },
         {
             icon: Heart,

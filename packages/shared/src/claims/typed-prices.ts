@@ -12,18 +12,29 @@
  * **What counts.** A dollar figure equal to a published amount (an active
  * line's list price, a combination discount, the top of the BBL range),
  * outside a token, in a sentence that does not attribute it to a third
- * party (ASPS, The Aesthetic Society, ISAPS, "national average") without
- * also naming the practice. The three ASPS averages are never Alluring
- * figures and are never matched.
+ * party (ASPS, The Aesthetic Society, ISAPS, "national average") or to
+ * another practice ("other clinics", "elsewhere", "some surgeons") without
+ * also naming the practice ("Alluring", "our", "we", a lowercase "us"; the
+ * United States, "US" or "U.S.", is not the practice). The three ASPS
+ * averages are never Alluring figures and are never matched.
  *
  * **Which token.** The sentence (or table row) is searched for the
- * procedures it names, widening to the paragraph and then the section when
- * it names none. Among the lines of those procedures priced at that figure,
- * the one whose label words the sentence uses wins, with a bonus for the
- * procedure's starting line next to "from" or "starts at". A tie gives no
- * suggestion: a person picks the line. The suggestion always names the line
- * (`[[price:breast-lift:modified]]`, never `[[price:breast-lift]]`), so an
- * admin's change of starting line can't change what the sentence claims.
+ * procedures it names. When it names one or more, only their lines count,
+ * and a figure none of them is priced at gets no suggestion: it is never
+ * tied to another procedure mentioned nearby. Only a sentence that names no
+ * procedure (a table row under a "Breast augmentation cost" heading) widens
+ * to the paragraph and then the section. Among the lines priced at that
+ * figure, the one whose label words the sentence uses wins, with a bonus
+ * for the procedure's starting line next to "from" or "starts at". A tie
+ * gives no suggestion: a person picks the line. The suggestion always names
+ * the line (`[[price:breast-lift:modified]]`, never `[[price:breast-lift]]`),
+ * so an admin's change of starting line can't change what the sentence
+ * claims.
+ *
+ * **No suggestion** either for a figure in a sentence that compares the
+ * practice with others (it may be the other practice's price), or for a
+ * "Most patients pay between …" range at the start of a sentence: the
+ * token renders the lowercase fragment, so a person rewrites the sentence.
  *
  * @module @workspace/shared/claims/typed-prices
  */
@@ -87,8 +98,23 @@ const PROCEDURE_WORDS: Readonly<Record<string, RegExp>> = {
 const THIRD_PARTY =
     /\basps\b|american society of plastic surgeons|aesthetic society|\bisaps\b|national(?:ly)?\b|\baverages?\b|realself/i
 
-/** A sentence that is about the practice's own prices. */
-const PRACTICE = /\balluring\b|\bour\b|\bwe\b|\bus\b/i
+/**
+ * A sentence about other practices' or the market's prices: the figure may
+ * be theirs, so it is never read as an Alluring price on its own.
+ */
+const COMPARATIVE =
+    /\bother (?:clinics?|surgeons?|practices?|providers?|offices?|doctors?)\b|\belsewhere\b|\bsome (?:clinics|surgeons|practices|providers|offices|doctors)\b|\bcompetitors?\b|\bbig-name\b|\bindustry\b|\bcan run (?:to |as high as |up to )?\$|\$\s?[\d,]+\s+or more\b|\bupwards of \$/i
+
+/**
+ * Whether a sentence is about the practice's own prices: "Alluring", "our",
+ * "we", or "us" in lowercase. "US" and "U.S." are the United States, which
+ * this US-only site names all the time, never the practice.
+ */
+function namesPractice(sentence: string): boolean {
+    return (
+        /\balluring\b|\bour\b|\bwe\b/i.test(sentence) || /\bus\b/.test(sentence)
+    )
+}
 
 /** Words that never tell two lines apart. */
 const STOPWORDS = new Set(
@@ -104,7 +130,11 @@ const DOLLAR_FIGURE = /\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{2})?(?![\d,]*\d)/g
 const SPAN_PHRASE =
     /\$\s?(\d{1,3}(?:,\d{3})+|\d+)\s*(?:to|[–—-])\s*\$\s?(\d{1,3}(?:,\d{3})+|\d+)/g
 
-/** "most patients pay between $5,500 and $10,000", any dash or "to". */
+/**
+ * "most patients pay between $5,500 and $10,000", any dash or "to". Matched
+ * in any case; a capitalised "Most" is reported without a suggestion,
+ * because the token renders the lowercase fragment.
+ */
 const RANGE_PHRASE =
     /most patients pay (?:between )?\$\s?(\d{1,3}(?:,\d{3})+|\d+)\s*(?:and|to|[–—-])\s*\$\s?(\d{1,3}(?:,\d{3})+|\d+)/gi
 
@@ -131,15 +161,25 @@ function maskTokens(text: string): string {
     return masked
 }
 
+/**
+ * A full stop that ends a sentence: not the one closing an initial or a
+ * short abbreviation ("U.S.", "Dr.", "e.g."), so "According to RealSelf,
+ * U.S. patients pay …" stays one sentence with its attribution.
+ */
+const SENTENCE_END_BEFORE =
+    /(?<!\b(?:[A-Za-z]|Dr|Mrs?|Ms|vs|St|e\.g|i\.e))[.!?](?=\s)/g
+const SENTENCE_END_AFTER =
+    /(?<!\b(?:[A-Za-z]|Dr|Mrs?|Ms|vs|St|e\.g|i\.e))[.!?](?=\s|$)|\n/
+
 /** The sentence or table row around an offset. */
 function sentenceAt(text: string, start: number, end: number): string {
     const before = text.slice(0, start)
     const breakBefore = Math.max(
         before.lastIndexOf('\n'),
-        ...[...before.matchAll(/[.!?](?=\s)/g)].map((match) => match.index)
+        ...[...before.matchAll(SENTENCE_END_BEFORE)].map((match) => match.index)
     )
     const after = text.slice(end)
-    const breakAfter = after.search(/[.!?](?=\s|$)|\n/)
+    const breakAfter = after.search(SENTENCE_END_AFTER)
     return text.slice(
         breakBefore + 1,
         breakAfter === -1 ? text.length : end + breakAfter
@@ -173,12 +213,15 @@ function namedProcedures(text: string, pricing: PricingSnapshot): string[] {
 
 /**
  * The line a figure names in its sentence, or `null` when none or several
- * fit equally.
+ * fit equally. A sentence that names a procedure is read on its own: only
+ * those procedures' lines count, and none fitting is `null`. Only a
+ * sentence that names none (a table row) reads `wider`, the paragraph and
+ * then the section, in that order.
  */
 function pickLine(
     usd: number,
     sentence: string,
-    contexts: readonly string[],
+    wider: readonly string[],
     pricing: PricingSnapshot
 ): PriceLine | null {
     const active = pricing.lines.filter(
@@ -186,6 +229,8 @@ function pickLine(
     )
     if (active.length === 0) return null
 
+    const named = namedProcedures(sentence, pricing)
+    const contexts = named.length > 0 ? [sentence] : wider
     let candidates: PriceLine[] = []
     for (const context of contexts) {
         const procedures = namedProcedures(context, pricing)
@@ -269,12 +314,19 @@ export function findTypedPrices(
                 toUsd(low) === range.min.listUsd &&
                 toUsd(high) === range.max.listUsd
             ) {
+                // The token renders "most patients pay …" in lowercase, so
+                // a sentence that opens with it needs a person.
+                const capitalised = phrase.startsWith('M')
                 issues.push({
                     raw: phrase,
                     index: match.index,
                     usd: range.max.listUsd,
-                    reason: `A typed price range. Write [[price-range:${procedure}]].`,
-                    suggestion: `[[price-range:${procedure}]]`,
+                    reason: capitalised
+                        ? `A typed price range opening a sentence. [[price-range:${procedure}]] renders "most patients pay …" in lowercase: rewrite the sentence so the token follows other words ("At Alluring, [[price-range:${procedure}]]").`
+                        : `A typed price range. Write [[price-range:${procedure}]].`,
+                    suggestion: capitalised
+                        ? null
+                        : `[[price-range:${procedure}]]`,
                 })
                 for (
                     let at = match.index;
@@ -347,7 +399,10 @@ export function findTypedPrices(
         const start = match.index
         const end = start + match[0].length
         const sentence = sentenceAt(masked, start, end)
-        if (THIRD_PARTY.test(sentence) && !PRACTICE.test(sentence)) continue
+        const practice = namesPractice(sentence)
+        if (THIRD_PARTY.test(sentence) && !practice) continue
+        const comparative = COMPARATIVE.test(sentence)
+        if (comparative && !practice) continue
 
         let raw = match[0]
         let suggestion: string | null = null
@@ -358,15 +413,13 @@ export function findTypedPrices(
             suggestion = '[[combo-discount:2]]'
         } else if (combo && usd === pricing.comboDiscounts.three) {
             suggestion = '[[combo-discount:3]]'
-        } else {
+        } else if (!comparative) {
+            // A sentence that also compares with other practices may quote
+            // theirs: reported, but a person picks the token.
             const line = pickLine(
                 usd,
                 sentence,
-                [
-                    sentence,
-                    paragraphAt(masked, start),
-                    sectionAt(masked, start),
-                ],
+                [paragraphAt(masked, start), sectionAt(masked, start)],
                 pricing
             )
             if (line) {

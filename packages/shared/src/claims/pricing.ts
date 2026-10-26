@@ -460,6 +460,26 @@ export function formatComboDiscountSentence(pricing: PricingSnapshot): string {
     return `When procedures are combined in one surgery, ${formatUsd(two)} comes off the total for two procedures and ${formatUsd(three)} for three.`
 }
 
+/**
+ * The same prices with every discount off: list prices only. For surfaces
+ * that cannot carry the 456.062 statement next to a price (post cards,
+ * search results, related-procedure cards), so a discounted fee is never
+ * advertised without it (#354). The statement itself is dropped too.
+ */
+export function withoutDiscounts(pricing: PricingSnapshot): PricingSnapshot {
+    return {
+        ...pricing,
+        defaultDiscountPercent: 0,
+        discountStatement: null,
+        procedures: Object.fromEntries(
+            Object.entries(pricing.procedures).map(([key, settings]) => [
+                key,
+                { ...settings, discountPercent: 0, discountLabel: null },
+            ])
+        ),
+    }
+}
+
 /** Whether any procedure's prices currently carry a discount. */
 export function hasActiveDiscount(pricing: PricingSnapshot): boolean {
     const procedures = new Set(pricing.lines.map((line) => line.procedure))

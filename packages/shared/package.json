@@ -87,6 +87,11 @@
             "import": "./dist/claims/typed-prices.js",
             "default": "./dist/claims/typed-prices.js"
         },
+        "./claims/code-tokens": {
+            "types": "./dist/claims/code-tokens.d.ts",
+            "import": "./dist/claims/code-tokens.js",
+            "default": "./dist/claims/code-tokens.js"
+        },
         "./claims/patterns": {
             "types": "./dist/claims/patterns.d.ts",
             "import": "./dist/claims/patterns.js",

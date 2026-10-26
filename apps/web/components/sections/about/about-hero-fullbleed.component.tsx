@@ -129,7 +129,7 @@ export function AboutHeroFullbleed({
                                             One Surgeon
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            For every procedure
+                                            Body, breast and face
                                         </div>
                                     </div>
                                 </div>

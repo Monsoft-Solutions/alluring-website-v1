@@ -133,6 +133,8 @@ export type MdxSanitizationAction = {
         // rewritten to its canonical form or removed.
         | 'invalid-claim-token'
         | 'typed-price'
+        // A price token in a heading, reported for a person to move.
+        | 'price-token-in-heading'
         // Not an MDX hazard — a link to one of our own pages that does not
         // exist. Recorded alongside the rest so the admin card shows every
         // change made to the generated body in one place.

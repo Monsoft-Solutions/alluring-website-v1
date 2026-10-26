@@ -377,6 +377,37 @@ describe('savePricing', () => {
         expect(action.writes).toEqual([])
     })
 
+    it("refuses a change that would empty a token in the web app's code", async () => {
+        // No post uses it; procedure data and the tummy tuck page do.
+        const values = toPricingFormValues(seededRows())
+        const tummyTuck = values.procedures.find(
+            (procedure) => procedure.procedure === 'tummy-tuck'
+        )!
+        tummyTuck.lines = tummyTuck.lines.map((line) =>
+            line.key === 'fleur-de-lis' ? { ...line, active: false } : line
+        )
+
+        const result = await savePricing(values)
+        expect(result.success).toBe(false)
+        expect(!result.success && result.error).toContain(
+            'web code apps/web/lib/data/procedures/tummy-tuck-miami.data.ts: [[price:tummy-tuck:fleur-de-lis]]'
+        )
+        expect(action.writes).toEqual([])
+    })
+
+    it('refuses to leave a module page without its starting price', async () => {
+        const values = toPricingFormValues(seededRows())
+        values.procedures.find(
+            (procedure) => procedure.procedure === 'lipo'
+        )!.startingLineKey = null
+
+        const result = await savePricing(values)
+        expect(result.success).toBe(false)
+        expect(!result.success && result.error).toContain(
+            'web code apps/web/components/procedures/pages/lipo/lipo-page.component.tsx: [[price:lipo]]'
+        )
+    })
+
     it('refuses to edit before migration 0060 has seeded the tables', async () => {
         action.rows = { lines: [], procedures: [], settings: null }
         const result = await savePricing(toPricingFormValues(seededRows()))

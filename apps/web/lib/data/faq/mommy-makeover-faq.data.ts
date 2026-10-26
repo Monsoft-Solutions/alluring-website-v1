@@ -31,7 +31,7 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
     timing: [
         {
             question: 'When should I have a mommy makeover?',
-            answer: `Ideally, when you're done having children. Most surgeons advise waiting at least 6 months after giving birth and a few months after you stop breastfeeding, so your body can settle and results are more predictable. Your surgeon sets your timing at consultation.`,
+            answer: `Ideally, when you're done having children. We recommend waiting until your body has recovered from pregnancy, your weight is stable and you've finished breastfeeding. Your surgeon sets your timing at consultation.`,
         },
         {
             question: 'What if I get pregnant after my mommy makeover?',
@@ -39,7 +39,7 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long after breastfeeding should I wait?',
-            answer: `Most surgeons advise waiting at least 6 months after giving birth and a few months after you stop breastfeeding, so your body can settle and results are more predictable. Your surgeon sets your timing at consultation.`,
+            answer: `We recommend waiting until your body has recovered from pregnancy, your weight is stable and you've finished breastfeeding. Your surgeon sets your timing at consultation.`,
         },
         {
             question: 'Can I have a mommy makeover if I had a C-section?',

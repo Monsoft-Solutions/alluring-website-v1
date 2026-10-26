@@ -209,7 +209,7 @@ At **Alluring Plastic Surgery**, we're committed to helping you achieve your aes
         },
         {
             question: 'Will I have visible scars after my facelift?',
-            answer: `One surgeon performs every facelift at Alluring: ${KARLINSKY_NAME}. Most scars are discreetly placed along the hairline and behind the ears, and they fade over time.`,
+            answer: `Most scars are placed along the hairline and behind the ears, and they fade over time. ${KARLINSKY_NAME} shows you where yours will sit at consultation.`,
         },
         {
             question: 'How long does the procedure take?',

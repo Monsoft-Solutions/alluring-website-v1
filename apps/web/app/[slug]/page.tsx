@@ -36,7 +36,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 import { getBlogPostSeoTitle } from '@/lib/seo/blog-post-title.util'
 import { getContentModifiedDate } from '@/lib/utils/content-freshness.util'
 import { clampMetaDescription } from '@/lib/seo/meta-description.util'
-import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
+import { resolveListClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
@@ -121,8 +121,13 @@ function generateSurgeonMetadata(
         : `${siteUrl}${surgeon.images.featured}`
 
     // Brand the title: these are pages people reach by searching the surgeon's
-    // name alongside the practice, and the name alone is a thin <title>.
-    const pageTitle = `${surgeon.name} | ${siteConfig.business.name}`
+    // name alongside the practice. The no-name-in-titles rule (canon §2) is
+    // for procedure pages; a profile's name is its subject. Florida Rule
+    // 64B8-11.001(7) wants "MD" with the name, so Dr. Karlinsky's title uses
+    // her advertising name.
+    const titleName =
+        surgeon.id === 'dr-karlinsky' ? KARLINSKY_NAME : surgeon.name
+    const pageTitle = `${titleName} | ${siteConfig.business.name}`
     // shortBio is written for the page, not the SERP, so it needs clamping.
     const pageDescription = clampMetaDescription(surgeon.shortBio)
 
@@ -139,7 +144,7 @@ function generateSurgeonMetadata(
         openGraph: {
             type: 'profile',
             url: pageUrl,
-            title: `${pageTitle} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description: pageDescription,
             siteName: siteConfig.business.name,
             locale: 'en_US',
@@ -156,7 +161,7 @@ function generateSurgeonMetadata(
         // Twitter Card tags
         twitter: {
             card: 'summary_large_image',
-            title: `${pageTitle} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description: pageDescription,
             images: [ogImage],
         },
@@ -282,9 +287,8 @@ export default async function DynamicPage({ params }: PageProps) {
         }
 
         // Get related procedures for cross-linking (SEO benefit)
-        const relatedProcedures = await resolveClaimsIn(
+        const relatedProcedures = await resolveListClaimsIn(
             getRelatedProcedures(post, 3),
-            'text',
             `related procedures of ${post.slug}`
         )
 

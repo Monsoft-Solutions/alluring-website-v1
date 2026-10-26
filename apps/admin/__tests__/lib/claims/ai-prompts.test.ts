@@ -126,6 +126,17 @@ describe('the outline and topic prompts', () => {
         }
     })
 
+    it('carry the planner canon, without the token catalog', () => {
+        for (const prompt of [
+            GENERATE_OUTLINE_SYSTEM_PROMPT,
+            GENERATE_TOPICS_SYSTEM_PROMPT,
+            CONTENT_BRIEF_SYSTEM_PROMPT,
+        ]) {
+            expect(prompt).toContain('Never type an Alluring price')
+            expect(prompt).not.toContain('[[price:')
+        }
+    })
+
     it('no longer asks for "best of" topics', () => {
         expect(GENERATE_TOPICS_SYSTEM_PROMPT).not.toContain('"Best of"')
     })

@@ -115,18 +115,27 @@ export function normalizeClaimText(
     for (const r of typed.remaining) notes.push(`${field}: ${r.reason}`)
 
     // 3. Sentence-length tokens can't fit a title or meta description.
+    //    Every span is cut against the offsets of the one parse, from the
+    //    end, before any whitespace is touched: collapsing spaces between
+    //    cuts would shift the offsets of the tokens still to go.
     if (field === 'metaTitle' || field === 'metaDescription') {
-        for (const token of [...parseClaimTokens(text).tokens].reverse()) {
-            const isName =
-                token.name === 'surgeon' &&
-                SURGEON_NAMES.has(token.args[0] ?? '')
-            if (!SENTENCE_TOKENS.has(token.name) || isName) continue
-            text = (
+        const dropped = parseClaimTokens(text).tokens.filter(
+            (token) =>
+                SENTENCE_TOKENS.has(token.name) &&
+                !(
+                    token.name === 'surgeon' &&
+                    SURGEON_NAMES.has(token.args[0] ?? '')
+                )
+        )
+        for (const token of [...dropped].reverse()) {
+            text =
                 text.slice(0, token.index) +
                 text.slice(token.index + token.raw.length)
-            )
-                .replace(/\s{2,}/g, ' ')
-                .trim()
+        }
+        if (dropped.length > 0) {
+            text = text.replace(/\s{2,}/g, ' ').trim()
+        }
+        for (const token of dropped) {
             notes.push(
                 `${field}: dropped ${token.raw}, too long for this field`
             )

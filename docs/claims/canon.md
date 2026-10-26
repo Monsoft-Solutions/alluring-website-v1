@@ -471,7 +471,7 @@ CR13 (?:<title>|seo_?title|meta_title)[^\n]{0,200}(?:karlinsky|board[\s-]*certif
 - **CR10 (fail):** superiority claims about the surgeon or clinic.
 - **CR11 (fail):** review claims.
 - **CR12 (fail):** `trustStats.certified`.
-- **CR13 (fail):** run on title fields only.
+- **CR13 (fail):** run on title fields only. Exception: the surgeon's own profile page (`/dr-karlinsky`), whose title is her advertising name, "Victoria Karlinsky, MD, FACS | Alluring Plastic Surgery". Her name is that page's subject and its main search term.
 
 ### 11.2 Facility and safety (owner claims)
 

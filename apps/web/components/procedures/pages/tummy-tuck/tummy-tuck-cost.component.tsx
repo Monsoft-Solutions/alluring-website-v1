@@ -101,7 +101,9 @@ export function TummyTuckCost({
                 priceLabel='Price'
                 note={
                     <>
-                        List prices from our price sheet.
+                        {prices.lines.some((line) => line.discounted)
+                            ? 'Prices from our price sheet, with the current discount applied.'
+                            : 'List prices from our price sheet.'}
                         {lipoAddOn && (
                             <>
                                 {' '}

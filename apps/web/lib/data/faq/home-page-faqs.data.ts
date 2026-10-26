@@ -22,7 +22,7 @@ import type { FaqItem } from '@/lib/types/shared/faq.type'
 export const homePageFaqs: readonly FaqItem[] = [
     {
         question: 'How much does plastic surgery cost at Alluring?',
-        answer: `A BBL at Alluring starts at [[price:bbl]], and [[price-range:bbl]]. Lipo 360 starts at [[price:lipo:lipo360]]. Tummy tuck, mommy makeover, breast and face procedures are priced for each patient, and you get your price in writing after a free consultation. Your price depends on the areas treated, your anatomy and whether procedures are combined. Financing is available, subject to credit approval. Your surgeon confirms it at consultation. [[discount-statement]]`,
+        answer: `A BBL at Alluring starts at [[price:bbl]], and [[price-range:bbl]]. Lipo 360 starts at [[price:lipo:lipo360]]. Tummy tuck, mommy makeover, breast and face procedures are priced for each patient, and you get your price in writing after a free consultation. Your price depends on the areas treated, your anatomy and whether procedures are combined, and your surgeon confirms it at consultation. Financing is available, subject to credit approval. [[discount-statement]]`,
     },
     {
         question: 'Who performs the surgery?',

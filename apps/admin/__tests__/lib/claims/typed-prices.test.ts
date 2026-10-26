@@ -65,6 +65,37 @@ describe('convertTypedPrices', () => {
         expect(result.text).toBe(text)
         expect(result.remaining).toHaveLength(1)
     })
+
+    it.each([
+        // The paragraph names eyelid surgery, whose "both" line is $6,500,
+        // but the sentence is about a BBL.
+        'Eyelid surgery is popular here. A BBL with extra areas is $6,500.',
+        // The section names breast reduction ($8,000 for a large one), but
+        // the sentence is about a BBL.
+        '## Breast reduction\n\nIt removes weight.\n\nA BBL revision is $8,000.',
+    ])(
+        'never ties a figure to a procedure the sentence does not name: %j',
+        (text) => {
+            const result = convertTypedPrices(text)
+            expect(result.text).toBe(text)
+            expect(result.converted).toEqual([])
+            expect(result.remaining).toHaveLength(1)
+            expect(result.remaining[0]?.suggestion).toBeNull()
+        }
+    )
+
+    it('leaves a capitalised "Most patients pay" range for a person', () => {
+        const text =
+            'Most patients pay between $5,500 and $10,000 for a BBL at Alluring.'
+        const result = convertTypedPrices(text)
+        expect(result.text).toBe(text)
+        // One issue for the phrase; its two figures are not reported again.
+        expect(result.remaining).toHaveLength(1)
+        expect(result.remaining[0]).toMatchObject({
+            raw: 'Most patients pay between $5,500 and $10,000',
+            suggestion: null,
+        })
+    })
 })
 
 describe('findTypedPrices', () => {
@@ -77,6 +108,39 @@ describe('findTypedPrices', () => {
         expect(
             findTypedPrices('ASPS reports a national average of $5,500.')
         ).toEqual([])
+    })
+
+    it.each([
+        'The national average in the US is $4,500 for breast augmentation.',
+        'According to RealSelf, U.S. patients report paying $10,000 for a BBL.',
+        'RealSelf reviewers across the US report an average of $5,500.',
+    ])('reads "US" and "U.S." as the country, not the practice: %j', (text) => {
+        expect(findTypedPrices(text)).toEqual([])
+    })
+
+    it('still reads a lowercase "us" as the practice', () => {
+        expect(
+            findTypedPrices(
+                'ASPS lists a national figure, but a BBL with us starts at $5,500.'
+            )
+        ).toHaveLength(1)
+    })
+
+    it.each([
+        'Other clinics charge $5,500 for a BBL.',
+        'A big-name clinic in Miami can run $10,000 for a BBL.',
+        'Some surgeons quote $4,500 or more for a tummy tuck.',
+        'Elsewhere, a mini tummy tuck is $3,000.',
+    ])('skips figures attributed to other practices: %j', (text) => {
+        expect(findTypedPrices(text)).toEqual([])
+    })
+
+    it('reports, but never converts, a figure in a sentence comparing us with others', () => {
+        const text = 'Other clinics charge more, but our BBL starts at $5,500.'
+        const [issue, ...rest] = findTypedPrices(text)
+        expect(rest).toEqual([])
+        expect(issue).toMatchObject({ raw: '$5,500', suggestion: null })
+        expect(convertTypedPrices(text).text).toBe(text)
     })
 
     it('flags a sheet figure the practice states as its own', () => {

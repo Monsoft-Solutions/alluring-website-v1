@@ -551,6 +551,41 @@ export function parseClaimTokens(text: string): {
     return { tokens, malformed }
 }
 
+/** Tokens that print a dollar figure. */
+const FIGURE_TOKEN_NAMES: ReadonlySet<string> = new Set([
+    'price',
+    'price-span',
+    'price-range',
+    'combo-discount',
+])
+
+/**
+ * Price tokens in Markdown headings (`## BBL from [[price:bbl]]`), which a
+ * post must not have. A heading prints its price in markdown mode, so a
+ * discount shows "~~$5,500~~ $4,400" in the table of contents, and the
+ * heading's id (rehype-slug, from its text) changes with every price or
+ * discount edit, breaking every link to that section. Put the price in the
+ * sentence under the heading instead. Fenced code is skipped.
+ */
+export function findHeadingPriceTokens(markdown: string): ClaimToken[] {
+    if (!hasClaimTokens(markdown)) return []
+    const found: ClaimToken[] = []
+    let offset = 0
+    let inFence = false
+    for (const line of markdown.split('\n')) {
+        if (/^\s*(```|~~~)/.test(line)) inFence = !inFence
+        else if (!inFence && /^ {0,3}#{1,6}\s/.test(line)) {
+            for (const token of parseClaimTokens(line).tokens) {
+                if (FIGURE_TOKEN_NAMES.has(token.name)) {
+                    found.push({ ...token, index: offset + token.index })
+                }
+            }
+        }
+        offset += line.length + 1
+    }
+    return found
+}
+
 /**
  * Checks every token in a text against the grammar and the pricing. Content
  * with an error is rejected before it is saved: an unknown token would render

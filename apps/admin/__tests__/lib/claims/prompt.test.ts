@@ -118,6 +118,21 @@ describe("buildClaimsPromptBlock('blog-reviewer')", () => {
     })
 })
 
+describe("buildClaimsPromptBlock('blog-planner')", () => {
+    const prompt = buildClaimsPromptBlock('blog-planner')
+
+    it('keeps the rules but leaves out the token catalog', () => {
+        expect(prompt).toContain('Never type an Alluring price')
+        expect(prompt).toContain('One surgeon performs every procedure')
+        expect(prompt).not.toContain('[[')
+        expect(practiceFigures(prompt)).toEqual([])
+        // A fraction of the writer's block, which carries every token.
+        expect(prompt.length).toBeLessThan(
+            buildClaimsPromptBlock('blog-writer').length / 2
+        )
+    })
+})
+
 describe("buildClaimsPromptBlock('image')", () => {
     it('keeps prices out of images', () => {
         const prompt = buildClaimsPromptBlock('image', discounted)

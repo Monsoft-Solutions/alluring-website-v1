@@ -608,6 +608,11 @@ export async function runReviewPhaseForPost(
             currentPostSlug = original?.slug || currentPostSlug
         }
 
+        // The live price list (#354): the orchestrator's check is the last
+        // before extraction and publish, so it validates the revision's
+        // tokens against the lines the admin has, as generation does.
+        const pricing = await getPricingSnapshot()
+
         const { result, traceId } = await withPhaseSpan(
             'pipeline.review',
             postId,
@@ -626,6 +631,7 @@ export async function runReviewPhaseForPost(
                     orchestratorEffort: aiConfig.orchestratorEffort,
                     currentPostSlug,
                     pagesForQuery: createPagesForQueryAdapter(),
+                    pricing,
                 }),
             { model: aiConfig.reviewModelId, effort: aiConfig.reviewEffort }
         )

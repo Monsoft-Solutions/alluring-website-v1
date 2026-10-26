@@ -106,7 +106,7 @@ export const faqDataHome: Record<string, FaqItem[]> = {
     safety: [
         {
             question: "What are your surgeon's credentials?",
-            answer: `Yes. One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
+            answer: `One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
         },
         {
             question: 'What anesthesia do you use?',

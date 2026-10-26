@@ -25,18 +25,30 @@
  *       content the renderer would change (validateGeneratedMdx), invalid
  *       tokens or typed prices, and canon pattern hits per field. Writes
  *       base_sha back into the file. Exit 1 on any blocking problem.
- *   pnpm exec tsx scripts/claims-post-edits.ts apply <dir> [--write]
+ *   pnpm exec tsx scripts/claims-post-edits.ts apply <dir> [--write] [--replay]
  *       Checks every file in <dir> again, then (with --write) saves, per post
  *       in one transaction, a `blog_post_revision` (reason `claims-canon`)
  *       and the new fields, and dismisses the post's open refresh
  *       candidates. Without --write it is a dry run. Runs against whatever
  *       POSTGRES_URL the env gives it: rehearse on a `--db clone` worktree.
+ *       After writing it revalidates the web app's blog cache (`blog-posts`
+ *       and each post's `blog-post-<slug>`, through POST /api/revalidate with
+ *       NEXT_PUBLIC_WEB_URL and REVALIDATION_SECRET from the env): the post
+ *       detail sits in Vercel's data cache for 24 hours and survives
+ *       deploys, so without it readers keep the old text. With either
+ *       variable missing it prints what to revalidate instead.
+ *
+ * A post the AI pipeline is processing, a refresh working copy, and a post
+ * whose automatic refresh is running (`in_progress`) are refused, as the
+ * admin MCP refuses them: the running job would overwrite the edit.
  */
 import { createHash } from 'node:crypto'
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { config } from 'dotenv'
+
+import type { OpenRefreshStatus } from '../lib/mcp/post-guards.util'
 
 config({ path: ['.env.local', '.env'] })
 
@@ -107,8 +119,18 @@ async function main() {
     const { buildRevisionValues } = await import(
         '../lib/utils/refresh-merge.util'
     )
+    const { getWriteBlocker } = await import('../lib/mcp/post-guards.util')
+    const { CACHE_TAGS } = await import('@workspace/shared/cache')
 
     const [mode, target, ...rest] = process.argv.slice(2)
+
+    // --replay: the edit restores an earlier state (e.g. the token conversion),
+
+    // so canon hits in it are reported, not blocking. Renderer and token
+
+    // checks still block.
+
+    const replay = rest.includes('--replay')
     if ((mode !== 'check' && mode !== 'apply') || !target) {
         console.error(
             'usage: claims-post-edits.ts check <file> | apply <dir> [--write]'
@@ -155,6 +177,29 @@ async function main() {
         }
         const blocking: string[] = []
         const review: string[] = []
+
+        // The same guard as the MCP: a running pipeline phase or refresh
+        // would overwrite the edit when it finishes.
+        const [openRefresh] = await db
+            .select({ status: contentRefresh.status })
+            .from(contentRefresh)
+            .where(
+                and(
+                    eq(contentRefresh.blogPostId, post.id),
+                    inArray(contentRefresh.status, [
+                        'pending',
+                        'in_progress',
+                        'ready_for_review',
+                    ])
+                )
+            )
+            .limit(1)
+        const blocker = getWriteBlocker(
+            post,
+            (openRefresh?.status as OpenRefreshStatus | undefined) ?? null
+        )
+        if (blocker) blocking.push(blocker)
+
         const sha = fieldsSha(before)
         if (edit.base_sha && edit.base_sha !== sha) {
             blocking.push(
@@ -197,13 +242,22 @@ async function main() {
             faqs: f.faqs !== undefined ? f.faqs : before.faqs,
         }
 
+        // A replayed earlier state can still hold typed prices the later
+        // edits remove, so those are reported; every other renderer or token
+        // problem still blocks.
+        const typedPrice = (problem: string) =>
+            replay && /typed[- ]price|typed Alluring price/i.test(problem)
         const mdx = validateGeneratedMdx(next.content, { pricing })
         if (!mdx.clean) {
-            for (const action of mdx.actions)
-                blocking.push(`renderer: ${action.kind}: ${action.detail}`)
+            for (const action of mdx.actions) {
+                const line = `renderer: ${action.kind}: ${action.detail}`
+                ;(typedPrice(line) ? review : blocking).push(line)
+            }
         }
-        for (const problem of findClaimTokenErrors(next, pricing))
-            blocking.push(`tokens: ${problem}`)
+        for (const problem of findClaimTokenErrors(next, pricing)) {
+            const line = `tokens: ${problem}`
+            ;(typedPrice(line) ? review : blocking).push(line)
+        }
 
         const texts: [string, string | null, 'text' | 'title'][] = [
             ['title', next.title, 'title'],
@@ -240,10 +294,56 @@ async function main() {
                               .replace(/\s+/g, ' ')
                         : hit.match
                 const line = `${field} ${hit.id} [${hit.severity}] "${hit.match}" … ${ctx}`
-                ;(hit.severity === 'fail' ? blocking : review).push(line)
+                ;(hit.severity === 'fail' && !replay ? blocking : review).push(
+                    line
+                )
             }
         }
         return { edit, post, before, next, sha, blocking, review }
+    }
+
+    /**
+     * The web app keeps each post in `unstable_cache` (tags `blog-posts`
+     * and `blog-post-<slug>`, 24 h) and Vercel keeps that across deploys,
+     * so a database write alone never reaches readers. The route takes ten
+     * tags a request.
+     */
+    async function revalidateBlog(slugs: string[]) {
+        const tags = [
+            CACHE_TAGS.BLOG_POSTS,
+            ...slugs.map((slug) => CACHE_TAGS.blogPostBySlug(slug)),
+        ]
+        // The admin env module would demand every admin variable; this
+        // script only needs these two, read after dotenv above.
+        /* eslint-disable no-restricted-properties */
+        const webUrl = process.env.NEXT_PUBLIC_WEB_URL
+        const secret = process.env.REVALIDATION_SECRET
+        /* eslint-enable no-restricted-properties */
+        if (!webUrl || !secret) {
+            console.log(
+                `Not revalidated (NEXT_PUBLIC_WEB_URL or REVALIDATION_SECRET is unset). POST ${webUrl ?? '<web url>'}/api/revalidate, ten tags at a time: ${tags.join(', ')}`
+            )
+            return
+        }
+        for (let at = 0; at < tags.length; at += 10) {
+            const batch = tags.slice(at, at + 10)
+            try {
+                const response = await fetch(`${webUrl}/api/revalidate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ secret, tags: batch }),
+                })
+                console.log(
+                    response.ok
+                        ? `revalidated ${batch.join(', ')}`
+                        : `revalidation failed (${response.status}) for ${batch.join(', ')}: retry them by hand`
+                )
+            } catch (error) {
+                console.log(
+                    `revalidation failed for ${batch.join(', ')}: ${error instanceof Error ? error.message : String(error)}`
+                )
+            }
+        }
     }
 
     if (mode === 'check') {
@@ -279,6 +379,7 @@ async function main() {
         .sort()
     let failed = 0
     let written = 0
+    const writtenSlugs: string[] = []
     for (const name of files) {
         const result = await evaluate(join(target, name))
         if (result.blocking.length || !result.post || !result.next) {
@@ -317,10 +418,12 @@ async function main() {
                     .where(eq(blogPost.id, row.workingPostId))
         }
         written += 1
+        if (post.slug) writtenSlugs.push(post.slug)
     }
     console.log(
         `${files.length} file(s): ${failed} failing, ${write ? `${written} written` : 'dry run'}.`
     )
+    if (written > 0) await revalidateBlog(writtenSlugs)
     process.exit(failed ? 1 : 0)
 }
 

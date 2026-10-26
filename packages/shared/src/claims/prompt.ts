@@ -8,6 +8,9 @@
  *   gets the claim tokens to write instead.
  * - `blog-reviewer`: the review agents. Treat a typed Alluring price as a
  *   defect and tokens as correct.
+ * - `blog-planner`: topics, outlines and content briefs, which never write a
+ *   price. The writer's rules without the token catalog (about 5k tokens
+ *   the planner would pay for on every call and never use).
  * - `image`, `gallery`: image prompts and gallery copy. No prices at all.
  *
  * The server appends the chat block to whatever `chat_config.system_prompt`
@@ -68,6 +71,7 @@ export type ClaimsPromptAudience =
     | 'chat'
     | 'blog-writer'
     | 'blog-reviewer'
+    | 'blog-planner'
     | 'image'
     | 'gallery'
 
@@ -237,6 +241,7 @@ function tokenSection(
             catalog,
             bullets([
                 'Put [[price-caveat]] or [[price-caveat:long]] in the same paragraph, list or table as any price token.',
+                'Never put a price token in a heading: write "## How much does a BBL cost?" and give the price in the sentence under it.',
                 'Name the variant next to a starting price: "from [[price:tummy-tuck]] for a [[price-label:tummy-tuck]]". Where the sentence names the variant itself, name the line: "a mini tummy tuck is [[price:tummy-tuck:mini]]".',
                 'Facelift: there is no facelift-alone price and [[price:facelift]] is invalid. Only "A face and neck lift is [[price:facelift:face-neck-lift]]".',
                 'Liposuction of one area added to another procedure: "[[price-span:lipo:add-ons]], depending on the area".',
@@ -247,6 +252,22 @@ function tokenSection(
                 ...nationalAverageLines(),
             ]),
         ].join('\n\n')
+    )
+}
+
+/**
+ * Prices for the planners: what a plan may and may not promise. No token
+ * catalog: they never write a price, the writer does.
+ */
+function plannerPricesSection(): string {
+    return section(
+        'Prices',
+        bullets([
+            'Never type an Alluring price, a discounted figure or a "% off" in a topic, title, heading, outline point, brief or meta description. The writer places every Alluring price from the live price list.',
+            'A plan may cover what a price depends on and that the surgeon confirms it at consultation. It never promises a figure, a total for a combination, a deposit, or a weekly or monthly payment.',
+            'There is no facelift-alone price and no mommy makeover total. No "all-inclusive", "no hidden fees" or "everything included".',
+            "National averages are ASPS figures, not Alluring prices: attributed, with what they leave out, never placed so they read as the practice's price.",
+        ])
     )
 }
 
@@ -294,6 +315,17 @@ export function buildClaimsPromptBlock(
                 travelSection(),
                 regulated,
                 postContactSection()
+            )
+            break
+        case 'blog-planner':
+            parts.push(
+                surgeonSection(),
+                trustSection(),
+                plannerPricesSection(),
+                financingSection(),
+                section('Medical figures', bullets(MEDICAL_FIGURES)),
+                travelSection(),
+                regulated
             )
             break
         case 'image':

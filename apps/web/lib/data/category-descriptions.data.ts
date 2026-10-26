@@ -123,7 +123,7 @@ Whether you're still researching or preparing for your procedure, our guides hel
             {
                 question:
                     'How long should I wait after pregnancy for a mommy makeover?',
-                answer: 'Most surgeons advise waiting at least 6 months after giving birth and a few months after you stop breastfeeding, so your body can settle and results are more predictable. Your surgeon sets your timing at consultation.',
+                answer: "We recommend waiting until your body has recovered from pregnancy, your weight is stable and you've finished breastfeeding. Your surgeon sets your timing at consultation.",
             },
         ],
     },

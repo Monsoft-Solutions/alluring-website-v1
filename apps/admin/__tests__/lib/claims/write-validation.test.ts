@@ -153,6 +153,26 @@ describe('validateGeneratedMdx and claim tokens', () => {
             content,
         })
     })
+
+    it('reports a price token in a heading and leaves it for a person', () => {
+        const content = [
+            '## BBL from [[price:bbl]]',
+            '',
+            'A BBL starts at [[price:bbl]]. [[price-caveat]]',
+            '',
+            '```',
+            '## [[price:lipo]] in a code block is not a heading',
+            '```',
+            '',
+            '### Who is a [[price-label:tummy-tuck]] for?',
+        ].join('\n')
+        const result = validateGeneratedMdx(content)
+        expect(result.content).toBe(content)
+        expect(result.actions.map((action) => action.kind)).toEqual([
+            'price-token-in-heading',
+        ])
+        expect(result.actions[0]?.detail).toContain('[[price:bbl]]')
+    })
 })
 
 describe('findClaimTokenErrors', () => {
@@ -191,6 +211,22 @@ describe('findClaimTokenErrors', () => {
         ])
     })
 
+    it('rejects a price token in a body heading', () => {
+        expect(
+            findClaimTokenErrors(
+                {
+                    title: 'BBL from [[price:bbl]]',
+                    content: '## Lipo 360 from [[price:lipo:lipo360]]\n\nText.',
+                },
+                FALLBACK_PRICING
+            )
+        ).toEqual([
+            expect.stringMatching(
+                /^content: \[\[price:lipo:lipo360\]\] — a price in a heading/
+            ),
+        ])
+    })
+
     it('rejects a range for a procedure that publishes none', () => {
         const [error] = findClaimTokenErrors(
             { excerpt: 'Most pay [[price-range:tummy-tuck]].' },
@@ -213,6 +249,22 @@ describe('normalizeClaimText (extracted fields)', () => {
             'Mini tummy tuck from [[price:tummy-tuck:mini]] in Miami'
         )
         expect(meta.notes).toHaveLength(2)
+    })
+
+    it('drops several sentence tokens without cutting the text between them', async () => {
+        const { normalizeClaimText } = await import(
+            '@workspace/ai/functions/normalize-claim-text.function'
+        )
+        const meta = normalizeClaimText(
+            ' BBL from [[price:bbl]]  [[price-caveat]] in Miami.  [[financing]] Book a consultation. [[discount-statement]]',
+            'metaDescription'
+        )
+        expect(meta.text).toBe(
+            'BBL from [[price:bbl]] in Miami. Book a consultation.'
+        )
+        expect(
+            meta.notes.filter((note: string) => note.includes('dropped'))
+        ).toHaveLength(3)
     })
 
     it('rewrites a sloppy token and reports one it cannot resolve', async () => {

@@ -12,14 +12,21 @@
  * - Package builder for combinations
  * - Lead capture integration
  *
+ * The package builder's combination discount sentence comes from the pricing
+ * resolver (#354), so it follows the admin's combination discounts. The page
+ * stays static: `getPricing()` reads the cached snapshot, and a pricing save
+ * revalidates its tag.
+ *
  * @module app/quiz/page
  */
+import { formatComboDiscountSentence } from '@workspace/shared/claims/pricing'
 import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
 import type { Metadata } from 'next'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { QuizContainer } from '@/components/quiz'
 import { siteConfig } from '@/lib/data/site-config'
+import { getPricing } from '@/lib/queries/pricing.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 
@@ -85,7 +92,10 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     },
 })
 
-export default function QuizPage() {
+export default async function QuizPage() {
+    const comboDiscountSentence = formatComboDiscountSentence(
+        await getPricing()
+    )
     // Breadcrumb items for schema
     const breadcrumbItems = [
         { name: 'Home', item: siteUrl },
@@ -116,7 +126,9 @@ export default function QuizPage() {
 
                     {/* Quiz container */}
                     <div className='relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8'>
-                        <QuizContainer />
+                        <QuizContainer
+                            comboDiscountSentence={comboDiscountSentence}
+                        />
                     </div>
                 </section>
             </ContainerLayout>

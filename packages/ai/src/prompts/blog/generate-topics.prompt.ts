@@ -44,7 +44,7 @@ Output Requirements:
 - Consider what questions patients commonly ask
 - A topic title never promises a claim the canon below forbids (a superlative about the practice, a credential, a typed price, travel coordination)
 
-${buildClaimsPromptBlock('blog-writer')}`
+${buildClaimsPromptBlock('blog-planner')}`
 
 type SelectedKeywords = {
     primary: string | null

@@ -80,7 +80,7 @@ SEO Optimization:
 - Internal linking opportunities noted
 - External authority source suggestions
 
-${buildClaimsPromptBlock('blog-writer')}`
+${buildClaimsPromptBlock('blog-planner')}`
 
 type GenerateOutlineInput = {
     title: string

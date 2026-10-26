@@ -10,7 +10,11 @@
  * Falls back to the 2026-09-15 sheet in `@workspace/shared/claims/prices`
  * when the tables are empty (the snapshot builder does that) or the query
  * fails. A failure is caught *outside* `unstable_cache`, so a transient
- * database error is never cached for the TTL.
+ * database error is never cached for the TTL. Nor is it cached in a page:
+ * outside the build, a fallback render calls `unstable_noStore()`, which
+ * aborts an ISR regeneration (the last good page keeps being served) and
+ * is a no-op in a dynamic render (the chat, the API routes). During
+ * `next build`, with no database, the sheet is what the build prints.
  *
  * Server-only. Client components receive resolved values (`PriceDisplay`,
  * plain strings) as props and format with `@workspace/shared/claims/pricing`.
@@ -19,7 +23,8 @@
  */
 import 'server-only'
 
-import { unstable_cache } from 'next/cache'
+import { unstable_cache, unstable_noStore } from 'next/cache'
+import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 
 import { db } from '@workspace/db/client'
 import {
@@ -114,6 +119,14 @@ export async function getPricing(): Promise<PricingSnapshot> {
             '[pricing] Reading the pricing tables failed; using the 2026-09-15 price sheet.',
             error
         )
+        // A page regenerated now would keep the sheet's list prices for its
+        // whole revalidate window (a day), discounts and edits gone. Opting
+        // out of the cache makes Next abandon the regeneration and keep the
+        // last good page; a dynamic render just carries on with the sheet.
+        // eslint-disable-next-line no-restricted-properties -- NEXT_PHASE is set by `next build` itself, not an app variable the env module validates
+        if (process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
+            unstable_noStore()
+        }
         return FALLBACK_PRICING
     }
 }

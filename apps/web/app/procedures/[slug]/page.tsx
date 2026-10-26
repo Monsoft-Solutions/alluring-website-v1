@@ -12,6 +12,7 @@ import {
     getProcedureSurgeonNode,
     renderProcedurePage,
 } from '@/lib/procedures/procedure-page-registry'
+import { fitResolvedTitle } from '@/lib/seo/fit-title.util'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import {
     buildProcedureGraph,
@@ -70,9 +71,14 @@ export async function generateMetadata(
 
     // A hand-written title always wins. The generated pattern is a floor for
     // pages nobody has written metadata for, not something to override an
-    // author who picked the head term deliberately.
-    const pageTitle =
-        procedure.seoTitle ?? generateProcedureTitle(procedure.title)
+    // author who picked the head term deliberately. A hand-written title can
+    // name prices (#354); a discount that pushes it past the limit drops its
+    // "(N% off $X)" suffixes, and the generated title takes over only if it
+    // still does not fit.
+    const generatedTitle = generateProcedureTitle(procedure.title)
+    const pageTitle = procedure.seoTitle
+        ? fitResolvedTitle(procedure.seoTitle, generatedTitle)
+        : generatedTitle
 
     // Same for the description. Clamping still applies either way — it is a
     // safety net against overrun, and a hand-written one under the limit

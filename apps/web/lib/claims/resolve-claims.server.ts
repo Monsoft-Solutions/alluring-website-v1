@@ -18,6 +18,7 @@
  */
 import 'server-only'
 
+import { withoutDiscounts } from '@workspace/shared/claims/pricing'
 import {
     hasClaimTokens,
     resolveClaimTokens,
@@ -115,8 +116,29 @@ export async function resolvePostClaims<
 }
 
 /**
- * Titles and excerpts of a list of posts (cards, search, related posts,
- * `llms*.txt`), resolved as text. One pricing read for the whole list.
+ * {@link resolveClaimsIn} at list prices, for cards and lists that show no
+ * 456.062 statement (the related-procedure cards under a post). A discount
+ * prints only where the statement sits next to it: the post or procedure
+ * page itself.
+ */
+export async function resolveListClaimsIn<T>(
+    value: T,
+    context?: string
+): Promise<T> {
+    const pricing = withoutDiscounts(await getPricing())
+    return resolveClaimTokensIn(value, {
+        mode: 'text',
+        pricing,
+        onIssue: logIssue(context),
+    })
+}
+
+/**
+ * Titles and excerpts of a list of posts (cards, search, popular and
+ * related posts, prev/next, `llms*.txt`), resolved as text at list prices.
+ * None of those surfaces carries the 456.062 statement, so a discounted
+ * figure is never printed there (#354); the post page shows the discount
+ * with the statement. One pricing read for the whole list.
  */
 export async function resolvePostListClaims<
     T extends { slug: string; title: string; excerpt?: string | null },
@@ -130,7 +152,7 @@ export async function resolvePostListClaims<
     ) {
         return posts
     }
-    const pricing = await getPricing()
+    const pricing = withoutDiscounts(await getPricing())
     return posts.map((post) =>
         resolvePostTextClaims(post, pricing, logFieldIssue(`post ${post.slug}`))
     )

@@ -11,8 +11,10 @@
  *
  * A discount without the statement saves (the page warns); a value outside
  * the rules (`validatePricingForm`) does not, and neither does a change that
- * would make a claim token on a live post or in the chat config print
- * nothing (a line deactivated, a starting line removed).
+ * would make a claim token print nothing (a line deactivated, a starting
+ * line removed) on a live post, in the chat config, or in the web app's
+ * code: its procedure data, FAQ lists and landing pages, and the components
+ * that print a fixed line in a sentence (`codeClaimTokenSources`).
  *
  * @module lib/actions/pricing
  */
@@ -30,6 +32,7 @@ import {
     procedurePricing,
 } from '@workspace/db/schema/pricing'
 import { CACHE_TAGS } from '@workspace/shared/cache'
+import { codeClaimTokenSources } from '@workspace/shared/claims/code-tokens'
 import {
     getPricingWarnings,
     type PricingWarning,
@@ -74,8 +77,11 @@ function orNull(value: string): string | null {
 }
 
 /**
- * Every DB text that names prices with claim tokens and that readers see:
- * live and scheduled posts (each reader-facing field) and the chat config.
+ * Every text that names prices with claim tokens and that readers see: live
+ * and scheduled posts (each reader-facing field), the chat config, and the
+ * web app's code, whose tokens are generated into `CODE_DATA_TOKENS` (the
+ * admin can't read the web sources at runtime) plus the fixed-key lookups
+ * in `CODE_PRICE_LOOKUPS`.
  */
 async function claimTokenSources(): Promise<ClaimTokenSource[]> {
     const [posts, chat] = await Promise.all([
@@ -120,6 +126,7 @@ async function claimTokenSources(): Promise<ClaimTokenSource[]> {
             { source: 'chat system prompt', text: row.systemPrompt },
             { source: 'chat welcome message', text: row.welcomeMessage },
         ]),
+        ...codeClaimTokenSources(),
     ]
 }
 
@@ -157,8 +164,9 @@ export async function savePricing(input: unknown): Promise<SavePricingResult> {
         const current = toPricingFormValues(rows)
 
         // A line deactivated, or a starting line set to none, empties every
-        // token that names it: "A mini tummy tuck is ." on a live post. The
-        // save is refused until those posts stop naming it (#354).
+        // token that names it: "A mini tummy tuck is ." on a live post or a
+        // procedure page. The save is refused until that text stops naming
+        // it (#354).
         const broken = findClaimTokensBrokenBy(
             await claimTokenSources(),
             toPricingSnapshot(current),
@@ -170,7 +178,7 @@ export async function savePricing(input: unknown): Promise<SavePricingResult> {
                 broken.length > 12 ? ` and ${broken.length - 12} more` : ''
             return {
                 success: false,
-                error: `This change would make claim tokens on the site print nothing: ${shown}${more}. Edit those posts first (or keep the line active and the starting line set).`,
+                error: `This change would make claim tokens on the site print nothing: ${shown}${more}. Edit those posts first, or for "web code" ask a developer to change those files (or keep the line active and the starting line set).`,
             }
         }
         const currentLines = new Map(

@@ -97,7 +97,7 @@ export const faqPageData: Record<string, FaqItem[]> = {
     safety: [
         {
             question: "What are your surgeon's credentials?",
-            answer: `Yes. One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
+            answer: `One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
         },
         {
             question: 'What type of anesthesia do you use?',
@@ -211,7 +211,7 @@ export const featuredFaqs: Array<{
     },
     {
         question: "What are your surgeon's credentials?",
-        answer: `Yes. One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
+        answer: `One surgeon performs every procedure at Alluring: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
     },
     {
         question: 'What is the recovery time for plastic surgery?',

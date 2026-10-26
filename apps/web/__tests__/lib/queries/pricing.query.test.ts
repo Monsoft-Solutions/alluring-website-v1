@@ -10,6 +10,7 @@ import { FALLBACK_PRICING } from '@workspace/shared/claims/prices'
 const state = vi.hoisted(() => ({
     rows: new Map<unknown, unknown[]>(),
     fail: false,
+    noStore: vi.fn(),
     tables: {
         priceLine: { table: 'price_line' },
         procedurePricing: { table: 'procedure_pricing' },
@@ -20,6 +21,7 @@ const state = vi.hoisted(() => ({
 vi.mock('server-only', () => ({}))
 vi.mock('next/cache', () => ({
     unstable_cache: (fn: () => unknown) => fn,
+    unstable_noStore: state.noStore,
 }))
 vi.mock('@workspace/db/schema/pricing', () => state.tables)
 vi.mock('@workspace/db/client', () => {
@@ -53,6 +55,7 @@ const {
 const {
     resolveClaims,
     resolveClaimsIn,
+    resolveListClaimsIn,
     resolvePostClaims,
     resolvePostListClaims,
     resolveProcedureClaims,
@@ -102,6 +105,7 @@ function seed({
 beforeEach(() => {
     state.rows.clear()
     state.fail = false
+    state.noStore.mockClear()
 })
 
 afterEach(() => vi.restoreAllMocks())
@@ -127,6 +131,31 @@ describe('getPricing', () => {
         expect(await getPricing()).toBe(FALLBACK_PRICING)
         expect(error).toHaveBeenCalledTimes(1)
         expect(String(error.mock.calls[0]?.[0])).toContain('[pricing]')
+    })
+
+    it('keeps a failed read out of the page cache at runtime', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {})
+        state.fail = true
+        await getPricing()
+        // Aborts an ISR regeneration, so the last good page stays up.
+        expect(state.noStore).toHaveBeenCalledTimes(1)
+    })
+
+    it('lets the build print the sheet when it has no database', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {})
+        vi.stubEnv('NEXT_PHASE', 'phase-production-build')
+        state.fail = true
+        try {
+            expect(await getPricing()).toBe(FALLBACK_PRICING)
+            expect(state.noStore).not.toHaveBeenCalled()
+        } finally {
+            vi.unstubAllEnvs()
+        }
+    })
+
+    it('caches an empty table as usual: that is not an outage', async () => {
+        await getPricing()
+        expect(state.noStore).not.toHaveBeenCalled()
     })
 })
 
@@ -207,6 +236,31 @@ describe('resolvePostClaims and resolvePostListClaims', () => {
         expect(post.content).toBe('From ~~$5,500~~ $4,400.')
         expect(post.metaDescription).toBe('From $4,400 (20% off $5,500).')
         expect(post.discountStatement).toBe(STATEMENT)
+    })
+
+    it('print cards at list prices: they carry no 456.062 statement', async () => {
+        seed({ bblDiscount: 20, statement: STATEMENT })
+        const [card] = await resolvePostListClaims([
+            {
+                slug: 'bbl-cost',
+                title: 'BBL from [[price:bbl]]',
+                excerpt: 'A BBL starts at [[price:bbl]].',
+            },
+        ])
+        expect(card).toEqual({
+            slug: 'bbl-cost',
+            title: 'BBL from $5,500',
+            excerpt: 'A BBL starts at $5,500.',
+        })
+    })
+
+    it('print related-procedure cards at list prices', async () => {
+        seed({ bblDiscount: 20, statement: STATEMENT })
+        const [card] = await resolveListClaimsIn(
+            [{ title: 'BBL', shortDescription: 'From [[price:bbl]].' }],
+            'related procedures of a post'
+        )
+        expect(card?.shortDescription).toBe('From $5,500.')
     })
 
     it('skip the pricing read when no card has a token', async () => {

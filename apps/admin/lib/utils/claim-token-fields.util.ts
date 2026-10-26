@@ -11,6 +11,7 @@
  */
 import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 import {
+    findHeadingPriceTokens,
     parseClaimTokens,
     validateClaimTokens,
 } from '@workspace/shared/claims/tokens'
@@ -29,9 +30,10 @@ export type ClaimTokenFields = {
 
 /**
  * One line per invalid token, "field: [[token]] — reason", with the
- * canonical form when only case or spacing was wrong, and one per typed
- * Alluring price, "field: $5,500 — reason", with the token to write. Empty
- * when every token resolves and no price is typed.
+ * canonical form when only case or spacing was wrong, one per typed
+ * Alluring price, "field: $5,500 — reason", with the token to write, and one
+ * per price token in a body heading (`findHeadingPriceTokens`). Empty when
+ * every token resolves, no price is typed and no heading carries a price.
  */
 export function findClaimTokenErrors(
     fields: ClaimTokenFields,
@@ -60,6 +62,12 @@ export function findClaimTokenErrors(
                   ...findTypedPrices(text, { pricing }).map(
                       (issue) => `${field}: ${issue.raw} — ${issue.reason}`
                   ),
+                  ...(field === 'content'
+                      ? findHeadingPriceTokens(text).map(
+                            (token) =>
+                                `${field}: ${token.raw} — a price in a heading. Its table-of-contents entry would show both figures while a discount is on, and its anchor would change with every price edit. Move the price into the sentence under the heading.`
+                        )
+                      : []),
               ]
             : []
     )

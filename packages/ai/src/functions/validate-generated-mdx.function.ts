@@ -35,12 +35,16 @@
  * line becomes its token (`[[price:bbl:lipo360-bbl]]`), and any other is
  * reported. Validate against the live pricing (`options.pricing`) where the
  * caller has it: a line added in the admin is unknown to the 2026-09-15
- * fallback sheet.
+ * fallback sheet. A price token in a heading is reported and left as
+ * written: a person moves it into the text (`findHeadingPriceTokens`).
  *
  * @module @workspace/ai/functions/validate-generated-mdx
  */
 import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
-import { validateClaimTokens } from '@workspace/shared/claims/tokens'
+import {
+    findHeadingPriceTokens,
+    validateClaimTokens,
+} from '@workspace/shared/claims/tokens'
 import { convertTypedPrices } from '@workspace/shared/claims/typed-prices'
 import {
     DEFAULT_BLOG_CTA_ID,
@@ -67,6 +71,7 @@ export type MdxSanitizationAction = {
         | 'stray-expression'
         | 'invalid-claim-token'
         | 'typed-price'
+        | 'price-token-in-heading'
     /** Human-readable one-liner for the admin card */
     detail: string
 }
@@ -311,7 +316,8 @@ function normalizeTypedPrices(
  * Makes generated content safe to persist and render.
  *
  * Idempotent: running it over already-validated content returns the content
- * unchanged with no actions.
+ * unchanged, with no actions other than the report-only ones (a price token
+ * in a heading), which repeat until a person fixes them.
  *
  * @param rawContent - Markdown/MDX straight out of a model
  * @param options.pricing - The live pricing snapshot claim tokens are
@@ -388,6 +394,15 @@ export function validateGeneratedMdx(
 
     // 5. Typed Alluring prices, which never follow an admin edit.
     content = normalizeTypedPrices(content, actions, options.pricing)
+
+    // 6. Prices in headings: reported only. Moving one changes the sentence,
+    //    which is a person's call.
+    for (const token of findHeadingPriceTokens(content)) {
+        actions.push({
+            kind: 'price-token-in-heading',
+            detail: `Price token ${token.raw} in a heading: the table of contents would show both figures while a discount is on, and the heading's anchor would change with every price edit. Move it into the text under the heading.`,
+        })
+    }
 
     // Collapse the blank-line runs that stripping can leave behind.
     content = content.replace(/\n{3,}/g, '\n\n').trim()
